@@ -69,6 +69,10 @@ export class HsLayerEditorService {
       return true;
     }
     if (extent === null && this.HsLayerUtilsService.isLayerWMS(layer)) {
+      /**
+       * NOTE:
+       * Used when 'queryCapabilities' is set to false on layer. Otherwise set when parsing capabilities
+       */
       const url = this.HsLayerUtilsService.getURL(layer);
       const wrapper = await this.HsWmsGetCapabilitiesService.request(url);
       const parser = new WMSCapabilities();

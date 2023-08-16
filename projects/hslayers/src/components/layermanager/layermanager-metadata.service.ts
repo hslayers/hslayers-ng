@@ -32,6 +32,7 @@ import {HsWmsGetCapabilitiesService} from '../../common/get-capabilities/wms-get
 import {HsWmtsGetCapabilitiesService} from '../../common/get-capabilities/wmts-get-capabilities.service';
 import {
   WMSGetCapabilitiesResponse,
+  WmsDimension,
   WmsLayer,
 } from '../../common/get-capabilities/wms-get-capabilities-response.interface';
 
@@ -134,7 +135,7 @@ export class HsLayerManagerMetadataService {
    * @returns {any}
    * @description Looks for maxScaleDenominator in property object
    */
-  searchForScaleDenominator(properties: any) {
+  searchForScaleDenominator(properties: any): number {
     let maxResolution = properties.MaxScaleDenominator
       ? this.HsLayerUtilsService.calculateResolutionFromScale(
           properties.MaxScaleDenominator,
@@ -204,6 +205,95 @@ export class HsLayerManagerMetadataService {
     }
   }
 
+  private parseWmsCapsMultipleLayers(
+    layerName: string,
+    olLayer: Layer<Source>,
+    caps: WMSGetCapabilitiesResponse,
+    legends: Array<any>,
+  ) {
+    let layerObj;
+    const layerCaps = caps.Capability.Layer;
+    const layerObjs = []; //array of layer objects representing added layer
+    for (const subLayer of layerName.split(',')) {
+      const layerSubObject = this.identifyLayerObject(subLayer, layerCaps);
+      layerObjs.push(layerSubObject);
+      this.collectLegend(layerSubObject, legends);
+      if (
+        layerSubObject &&
+        layerSubObject.Layer !== undefined &&
+        getSubLayers(olLayer)
+      ) {
+        delete layerSubObject.Layer;
+      }
+    }
+    this.setCapsExtent(
+      this.hsAddDataUrlService.calcCombinedExtent(
+        layerObjs.map((lo) => this.getCapsExtent(lo)),
+      ),
+      olLayer,
+    );
+
+    if (getCachedCapabilities(olLayer) === undefined) {
+      layerObj = Object.assign(JSON.parse(JSON.stringify(layerObjs[0])), {
+        maxResolution: Math.max(
+          ...layerObjs.map((layer) => this.searchForScaleDenominator(layer)),
+        ),
+        Layer: layerObjs,
+      });
+    }
+    this.fillMetadataUrlsIfNotExist(olLayer, caps);
+    return layerObj;
+  }
+
+  private parseWmsCapsSingleLayer(
+    layerName: string,
+    layerDescriptor: HsLayerDescriptor,
+    caps: WMSGetCapabilitiesResponse,
+    legends: Array<any>,
+  ) {
+    const olLayer = layerDescriptor.layer;
+    const layerCaps = caps.Capability.Layer;
+    const layerObj = this.identifyLayerObject(
+      layerName,
+      layerCaps,
+      olLayer.get('serviceLayer'),
+    );
+    if (layerObj == undefined) {
+      return;
+    }
+    //TODO: This should be removed probably to not pollute layer object. Use cachedCapabilities instead
+    olLayer.setProperties(layerObj);
+    if (
+      (layerObj.Dimension as WmsDimension)?.name === 'time' ||
+      (layerObj.Dimension as WmsDimension[])?.find((dim) => dim.name === 'time')
+    ) {
+      this.HsDimensionTimeService.setupTimeLayer(layerDescriptor, layerObj);
+    }
+    if (layerObj.Layer && getSubLayers(olLayer)) {
+      layerObj.maxResolution = this.searchForScaleDenominator(layerObj);
+      /* layerObj.Layer contains sublayers and gets stored to cachedCapabilities. */
+      const subLayerArray = getSubLayers(olLayer).split(',');
+      layerObj.Layer = (layerObj.Layer as WmsLayer[]).filter((l) =>
+        subLayerArray.includes(l.Name),
+      );
+    }
+    if (
+      layerObj.queryable &&
+      this.HsLayerUtilsService.getLayerParams(olLayer)?.INFO_FORMAT == undefined
+    ) {
+      this.HsLayerUtilsService.updateLayerParams(olLayer, {
+        //TODO: Hslayers needs to support other formats too
+        INFO_FORMAT: 'application/vnd.ogc.gml', //Assumption that this will be supported by the server.
+      });
+    }
+    this.collectLegend(layerObj, legends);
+    this.setCapsExtent(this.getCapsExtent(layerObj), olLayer);
+    return layerObj;
+  }
+
+  /**
+   * Parse capabilities for WMS layer
+   */
   parseWmsCaps(
     layerDescriptor: HsLayerDescriptor,
     layerName: string,
@@ -211,75 +301,21 @@ export class HsLayerManagerMetadataService {
   ): void {
     const olLayer = layerDescriptor.layer;
     const legends: string[] = [];
-    const layerCaps = caps.Capability.Layer;
     let layerObj; //Main object representing layer created from capabilities which will be cached
     if (layerName.includes(',')) {
-      const layerObjs = []; //array of layer objects representing added layer
-      for (const subLayer of layerName.split(',')) {
-        const layerSubObject = this.identifyLayerObject(subLayer, layerCaps);
-        layerObjs.push(layerSubObject);
-        this.collectLegend(layerSubObject, legends);
-        if (
-          layerSubObject &&
-          layerSubObject.Layer !== undefined &&
-          getSubLayers(olLayer)
-        ) {
-          delete layerSubObject.Layer;
-        }
-      }
-      this.setCapsExtent(
-        this.hsAddDataUrlService.calcCombinedExtent(
-          layerObjs.map((lo) => this.getCapsExtent(lo)),
-        ),
-        olLayer,
-      );
-
-      if (getCachedCapabilities(olLayer) === undefined) {
-        layerObj = Object.assign(JSON.parse(JSON.stringify(layerObjs[0])), {
-          maxResolution: Math.max(
-            ...layerObjs.map((layer) => this.searchForScaleDenominator(layer)),
-          ),
-          Layer: layerObjs,
-        });
-      }
-      this.fillMetadataUrlsIfNotExist(olLayer, caps);
-    } else {
-      layerObj = this.identifyLayerObject(
+      layerObj = this.parseWmsCapsMultipleLayers(
         layerName,
-        layerCaps,
-        olLayer.get('serviceLayer'),
+        olLayer,
+        caps,
+        legends,
       );
-      if (layerObj == undefined) {
-        return;
-      }
-      //TODO: This should be removed probably to not pollute layer object. Use cachedCapabilities instead
-      olLayer.setProperties(layerObj);
-      if (
-        layerObj.Dimension?.name === 'time' ||
-        layerObj.Dimension?.filter((dim) => dim.name === 'time').length > 0
-      ) {
-        this.HsDimensionTimeService.setupTimeLayer(layerDescriptor, layerObj);
-      }
-      if (layerObj.Layer && getSubLayers(olLayer)) {
-        layerObj.maxResolution = this.searchForScaleDenominator(layerObj);
-        /* layerObj.Layer contains sublayers and gets stored to cachedCapabilities. */
-        const subLayerArray = getSubLayers(olLayer).split(',');
-        layerObj.Layer = layerObj.Layer.filter((l) =>
-          subLayerArray.includes(l.Name),
-        );
-      }
-      if (
-        layerObj.queryable &&
-        this.HsLayerUtilsService.getLayerParams(olLayer)?.INFO_FORMAT ==
-          undefined
-      ) {
-        this.HsLayerUtilsService.updateLayerParams(olLayer, {
-          //TODO: Hslayers needs to support other formats too
-          INFO_FORMAT: 'application/vnd.ogc.gml', //Assumption that this will be supported by the server.
-        });
-      }
-      this.collectLegend(layerObj, legends);
-      this.setCapsExtent(this.getCapsExtent(layerObj), olLayer);
+    } else {
+      layerObj = this.parseWmsCapsSingleLayer(
+        layerName,
+        layerDescriptor,
+        caps,
+        legends,
+      );
     }
     if (getCachedCapabilities(olLayer) === undefined) {
       setCacheCapabilities(olLayer, layerObj);
