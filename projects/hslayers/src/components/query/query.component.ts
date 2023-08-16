@@ -191,38 +191,4 @@ export class HsQueryComponent
           this.hsQueryBaseService.coordinates.length == 0))
     );
   }
-
-  //FIXME: is this only material relict??
-  showQueryDialog(ev) {
-    //TODO Rewrite this to new material design
-    /* this.$mdDialog
-      .show({
-        scope: this,
-        preserveScope: true,
-        templateUrl: './partials/infopanel.html',
-        parent: document.body,
-        targetEvent: ev,
-        clickOutsideToClose: true,
-      })
-      .then(
-        () => {
-          console.log('Closed.');
-        },
-        () => {
-          console.log('Cancelled.');
-        }
-      ); */
-  }
-
-  cancelQueryDialog() {
-    //this.$mdDialog.cancel();
-  }
-
-  showNoImagesWarning() {
-    /*this.$mdToast.show(
-      this.$mdToast.simple().textContent('No images matched the query.')
-      // .position(pinTo )
-      // .hideDelay(3000)
-    );*/
-  }
 }
