@@ -20,10 +20,6 @@ export interface HsEndpoint {
   language?;
   listLoading?;
   layers?: HsAddDataLayerDescriptor[];
-  /**
-   * @deprecated The parameter should not be used
-   */
-  originalConfiguredUser?: 'anonymous';
   user?: string;
   authenticated?: boolean;
   code_list_url?: string;

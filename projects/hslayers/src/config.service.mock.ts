@@ -10,7 +10,6 @@ export class HsConfigMock {
     info: false,
     composition_browser: false,
     toolbar: false,
-    mobile_settings: false,
     draw: false,
     datasource_selector: false,
     layermanager: false,

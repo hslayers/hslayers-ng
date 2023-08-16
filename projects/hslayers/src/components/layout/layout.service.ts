@@ -52,20 +52,6 @@ export class HsLayoutParams {
    */
   sidebarToggleable: boolean;
   /**
-   * DEPRECATED Always true
-   * @public
-   * @deprecated
-   * @default true
-   */
-  sidebarButtons: boolean;
-  /**
-   * DEPRECATED Helper property for showing some button on smaller screens
-   * @public
-   * @deprecated
-   * @default false
-   */
-  smallWidth: boolean;
-  /**
    * Show if any sidebar panel is opened (sidebar is completely expanded).
    * When hs.sidebar module is used in the app, it changes automatically to true during initialization.
    * @public
@@ -100,8 +86,6 @@ export class HsLayoutParams {
     this.sidebarRight = true;
     this.sidebarLabels = true;
     this.sidebarToggleable = true;
-    this.sidebarButtons = true;
-    this.smallWidth = false;
     this.sidebarExpanded = false;
     this.initializedOnce = false;
     this.minisidebar = false;

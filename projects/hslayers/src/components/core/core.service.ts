@@ -133,10 +133,8 @@ export class HsCoreService {
         window.innerWidth < this.hsConfig.mobileBreakpoint ||
         this.HsLayoutService.mainpanel != ''
       ) {
-        this.HsLayoutService.smallWidth = true; //deprecated
         this.HsLayoutService.sidebarLabels = false;
       } else {
-        this.HsLayoutService.smallWidth = false; //deprecated
         this.HsLayoutService.sidebarLabels = true;
       }
     } else {

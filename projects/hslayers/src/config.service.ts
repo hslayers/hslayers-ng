@@ -61,7 +61,6 @@ export class HsConfigObject {
     info?: boolean;
     composition_browser?: boolean;
     toolbar?: boolean;
-    mobile_settings?: boolean;
     draw?: boolean;
     datasource_selector?: boolean;
     layermanager?: boolean;
@@ -162,11 +161,6 @@ export class HsConfigObject {
       composition_browser: true,
       toolbar: true,
       measure: true,
-      /**
-       * @deprecated Panel not available
-       * TODO: Remove in 12
-       */
-      mobile_settings: false,
       draw: true,
       layermanager: true,
       print: true,
@@ -176,8 +170,7 @@ export class HsConfigObject {
       compositionLoadingProgress: false,
       sensors: true,
       /**
-       * @deprecated Panel not available
-       * TODO: Remove in 12
+       * @deprecated Panel not available, will be reimplemented
        */
       filter: false,
       search: false,
