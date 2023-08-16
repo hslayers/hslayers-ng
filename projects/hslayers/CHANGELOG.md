@@ -1,3 +1,47 @@
+# [12.0.0-next.1](https://github.com/hslayers/hslayers-ng/compare/12.0.0-next.0...12.0.0-next.1) (2023-08-16)
+
+
+### Bug Fixes
+
+* Calculate combined ArcGIS service layer extent only from valid extents ([d9592ae](https://github.com/hslayers/hslayers-ng/commit/d9592ae2229238b37a52fb3136db9f0bd67164ca))
+* Composition overwrite/rename option ([1490cde](https://github.com/hslayers/hslayers-ng/commit/1490cded37b1790f4d76745a388f2b619985df74))
+* Composition WFS layers should be removable ([b685906](https://github.com/hslayers/hslayers-ng/commit/b6859069e88535b102d052d299577dd310e64794))
+* Don't use public-api imports ([40a92c2](https://github.com/hslayers/hslayers-ng/commit/40a92c2dadbf4e892991fca485e9f6f1d590675d))
+* **eslint:** Update rules to angular-eslint@16 ([ac7484c](https://github.com/hslayers/hslayers-ng/commit/ac7484c7cd9ab2042b2c143cafcf6c09ff3e4666))
+* Geolocation ([8468c33](https://github.com/hslayers/hslayers-ng/commit/8468c33368c426e39e7bf1c57c70f590ba3abbd6))
+* Gracefully handle IDW layers in composition ([a36fc21](https://github.com/hslayers/hslayers-ng/commit/a36fc21cd7c23cb0c375df9715065792f1a99ce7))
+* Changed layer title in map swipe ([3440dbe](https://github.com/hslayers/hslayers-ng/commit/3440dbefb996e7c599faf90f0ee8643455c4f1d7))
+* Layman layers status ([d063b0d](https://github.com/hslayers/hslayers-ng/commit/d063b0d6e54ebceda2f022829dc7dff3550a19b6))
+* **Layman:** Request current-user only for Layman ([dfac713](https://github.com/hslayers/hslayers-ng/commit/dfac713cefd4e89f0cbac08f6c7d0e59fae730b7))
+* **Layman:** Set layerSynchronizing=false on error ([f1014bb](https://github.com/hslayers/hslayers-ng/commit/f1014bb50e38bbd3be0339737529d4be81976c97))
+* Loading of 4326 WFS features ([7155b70](https://github.com/hslayers/hslayers-ng/commit/7155b701a3fdb40db597c33ff448ed503881b786))
+* **test-app:** Use correct translate pipe & module ([3996bd6](https://github.com/hslayers/hslayers-ng/commit/3996bd662c4d03d0e248a9b7db1fc5dd7b73c037))
+* **types:** Add missing value to union type ([f03a3b7](https://github.com/hslayers/hslayers-ng/commit/f03a3b72029729c64416f46b5387e5a70bba64e1))
+* Use better condition to filter out invalid extents values ([18c2687](https://github.com/hslayers/hslayers-ng/commit/18c26873a9d340219e9fe6f90f709147188050db))
+
+
+### Code Refactoring
+
+* Remove statusmanager endpoint support ([26060da](https://github.com/hslayers/hslayers-ng/commit/26060da1282fff57644c93c54dc67b08a0625fbb))
+
+
+### Features
+
+* Display status of Layman layers ([f181056](https://github.com/hslayers/hslayers-ng/commit/f181056459879aa104cb91645090fdaf7111a3a3))
+* Sync language with wagtail ([b606e28](https://github.com/hslayers/hslayers-ng/commit/b606e281e3f6d2866454f43fc84c85dc04f94416))
+
+
+### Performance Improvements
+
+* Use new svh (small viewport height) unit to define fullscreen app ([5fd7c74](https://github.com/hslayers/hslayers-ng/commit/5fd7c74b0aa12fba3ad2f0e3334e5acaf5885c62))
+
+
+### BREAKING CHANGES
+
+* config.status_manager_url renamed to shareServiceUrl
+
+
+
 ## [12.0.0-next.0](https://github.com/hslayers/hslayers-ng/compare/11.2.0...12.0.0-next.0) (2023-06-30)
 
 ### BREAKING CHANGES
