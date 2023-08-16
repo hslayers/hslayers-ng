@@ -14,7 +14,7 @@ export class HsGeolocationComponent
   collapsed: boolean;
   constructor(
     private hsGeolocationService: HsGeolocationService,
-    public HsLayoutService: HsLayoutService
+    public HsLayoutService: HsLayoutService,
   ) {
     super(HsLayoutService);
   }

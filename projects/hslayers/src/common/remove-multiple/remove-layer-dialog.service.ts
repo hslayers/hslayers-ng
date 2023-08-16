@@ -28,7 +28,7 @@ export class HsRemoveLayerDialogService {
     private hsLanguageService: HsLanguageService,
     private hsDrawService: HsDrawService,
     private hsLaymanService: HsLaymanService,
-    private hsDialogContainerService: HsDialogContainerService
+    private hsDialogContainerService: HsDialogContainerService,
   ) {}
 
   /**
@@ -42,14 +42,14 @@ export class HsRemoveLayerDialogService {
         message: this.translate('DRAW.reallyDeleteThisLayer'),
         note: this.getDeleteNote(),
         title: this.translate('COMMON.confirmDelete'),
-      }
+      },
     );
     const confirmed: HsRmLayerDialogResponse = await dialog.waitResult();
     if (confirmed.value == 'yes') {
       const fromMapOnly = confirmed.type === 'map';
       await this.completeLayerRemoval(
         this.hsDrawService.selectedLayer,
-        fromMapOnly
+        fromMapOnly,
       );
       this.hsDrawService.selectedLayer = null;
       this.hsDrawService.fillDrawableLayers();
@@ -72,7 +72,7 @@ export class HsRemoveLayerDialogService {
         note: this.getDeleteNote(true),
         title: this.translate('COMMON.selectAndConfirmToDeleteMultiple'),
         items: items,
-      }
+      },
     );
     const confirmed: HsRmLayerDialogResponse = await dialog.waitResult();
     if (confirmed.value == 'yes') {
@@ -84,10 +84,10 @@ export class HsRemoveLayerDialogService {
           serviceCalledFrom: 'HsDrawService',
           disableLocalization: true,
           customDelay: 600000,
-        }
+        },
       );
       const drawableLaymanRm = this.hsDrawService.drawableLaymanLayers.filter(
-        (l) => l.toRemove
+        (l) => l.toRemove,
       );
 
       const drawableRm = (
@@ -114,8 +114,8 @@ export class HsRemoveLayerDialogService {
       this.hsToastService.removeByText(
         this.hsLanguageService.getTranslation(
           'LAYMAN.deletionInProgress',
-          undefined
-        )
+          undefined,
+        ),
       );
       this.hsDrawService.selectedLayer = null;
       this.hsDrawService.fillDrawableLayers();
@@ -124,7 +124,7 @@ export class HsRemoveLayerDialogService {
 
   private async completeLayerRemoval(
     layerToRemove: any,
-    fromMapOnly: boolean
+    fromMapOnly: boolean,
   ): Promise<void> {
     let definition;
     const isLayer = layerToRemove instanceof Layer;

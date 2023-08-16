@@ -13,13 +13,12 @@ import {HsStylerService} from '../../styler.service';
 })
 export class HsRuleListItemComponent implements OnInit {
   @Input() rule: any;
-  
   ruleVisible = false;
   svg: SafeHtml;
 
   constructor(
     public hsStylerService: HsStylerService,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
   ) {}
 
   ngOnInit(): void {

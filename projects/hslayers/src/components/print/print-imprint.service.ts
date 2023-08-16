@@ -11,29 +11,25 @@ import {TextStyle} from './types/text-style.type';
 export class HsPrintImprintService {
   constructor(
     private hsPrintLegendService: HsPrintLegendService,
-    private hsShareThumbnailService: HsShareThumbnailService
+    private hsShareThumbnailService: HsShareThumbnailService,
   ) {}
 
   /**
    * Draw imprint canvas
    * @param imprintObj - Imprint object
-   
    */
-  drawImprintCanvas(
-    imprintObj: ImprintObj,
-    
-  ): Promise<HTMLCanvasElement> {
+  drawImprintCanvas(imprintObj: ImprintObj): Promise<HTMLCanvasElement> {
     return new Promise(async (resolve, reject) => {
       const canvas = document.createElement('canvas');
       const ctx = canvas.getContext('2d');
       const img = await this.hsPrintLegendService.svgToImage(
-        this.imprintToSvg(imprintObj)
+        this.imprintToSvg(imprintObj),
       );
       if (img) {
         this.hsShareThumbnailService.setCanvasSize(
           canvas,
           img.width,
-          img.height
+          img.height,
         );
         ctx.drawImage(img, 0, 0);
       }
@@ -92,7 +88,7 @@ export class HsPrintImprintService {
       ' ',
       textStyle.textSize,
       ' ',
-      textStyle.fontFamily
+      textStyle.fontFamily,
     )};`;
 
     return tmpStyle;

@@ -1,4 +1,4 @@
-import {Group, Layer} from 'ol/layer';
+import {Layer} from 'ol/layer';
 import {Source} from 'ol/source';
 
 import {AddLayersRecursivelyOptions} from '../types/recursive-options.type';

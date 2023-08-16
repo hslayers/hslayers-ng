@@ -13,14 +13,10 @@ import {Cluster} from 'ol/source';
 import {GeoJSON} from 'ol/format';
 
 import {DEFAULT_VECTOR_LOAD_TYPE} from '../../enums/load-types.const';
-import {FileDataObject} from '../../file/types/file-data-object.type';
-import {
-  HsAddDataCommonFileService,
-  HsAddDataCommonFileServiceParams,
-} from '../../common/common-file.service';
+import {HsAddDataCommonFileService} from '../../common/common-file.service';
 import {HsAddDataVectorService} from '../vector.service';
 import {HsCommonLaymanService} from '../../../../common/layman/layman.service';
-import {HsConfig, HsConfigObject} from '../../../../config.service';
+import {HsConfig} from '../../../../config.service';
 import {HsLanguageService} from '../../../language/language.service';
 import {HsLayerManagerService} from '../../../layermanager/layermanager.service';
 import {HsLayerUtilsService} from '../../../utils/layer-utils.service';
@@ -67,7 +63,7 @@ export class HsAddDataVectorFileComponent
     private hsLayoutService: HsLayoutService,
     private hsMapService: HsMapService,
     private hsToastService: HsToastService,
-    private hsUtilsService: HsUtilsService
+    private hsUtilsService: HsUtilsService,
   ) {}
 
   ngAfterViewInit(): void {
@@ -116,7 +112,7 @@ export class HsAddDataVectorFileComponent
         await this.addAsWms();
       } else {
         const response = await this.hsAddDataVectorService.addNewLayer(
-          this.data
+          this.data,
         );
         if (!response.complete) {
           return;
@@ -159,7 +155,7 @@ export class HsAddDataVectorFileComponent
     let features = this.data.features.length > 0 ? this.data.features : [];
     if (this.fileType != 'geojson') {
       const nonJson = await this.hsAddDataVectorService.convertUploadedData(
-        this.fileInput.nativeElement.files[0]
+        this.fileInput.nativeElement.files[0],
       );
       features = nonJson.features; //proper typing will get rid of this
     }
@@ -173,7 +169,7 @@ export class HsAddDataVectorFileComponent
   handleFileUpload(evt: HsUploadedFiles): void {
     Array.from(evt.fileList).forEach(async (f) => {
       const uploadedData = await this.hsAddDataVectorService.readUploadedFile(
-        f
+        f,
       );
       if (uploadedData !== undefined && !uploadedData.error) {
         uploadedData.url !== undefined
@@ -242,14 +238,14 @@ export class HsAddDataVectorFileComponent
         this.hsToastService.createToastPopupMessage(
           this.hsLanguageService.getTranslation(
             'ADDLAYERS.ERROR.someErrorHappened',
-            undefined
+            undefined,
           ),
           this.hsLanguageService.getTranslationIgnoreNonExisting(
             'ADDLAYERS',
             `${uploadedData?.error ?? 'someErrorHappened'}`,
-            undefined
+            undefined,
           ),
-          {disableLocalization: true}
+          {disableLocalization: true},
         );
       }
     });
@@ -261,7 +257,7 @@ export class HsAddDataVectorFileComponent
       this.data.vectorLayers = this.hsLayerManagerService.data.layers.filter(
         (layer) => {
           return this.hsLayerUtilsService.isLayerVectorLayer(layer.layer);
-        }
+        },
       );
     }
   }

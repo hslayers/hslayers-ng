@@ -7,7 +7,6 @@ import {HsCommonEndpointsService} from '../../common/endpoints/endpoints.service
 import {HsCommonLaymanService} from '../../common/layman/layman.service';
 import {HsConfig} from '../../config.service';
 import {HsEndpoint} from './../../common/endpoints/endpoint.interface';
-import {HsLanguageService} from '../language/language.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsPanelBaseComponent} from '../layout/panels/panel-base.component';
 import {HsSaveMapDialogSpawnerService} from './dialog-spawner.service';
@@ -36,9 +35,8 @@ export class HsSaveMapComponent
     private hsCommonEndpointsService: HsCommonEndpointsService,
     //Running in background and watching observables
     private hsSaveMapDialogSpawnerService: HsSaveMapDialogSpawnerService,
-    private hsLanguageService: HsLanguageService,
     private hsSidebarService: HsSidebarService,
-    private hsSaveMapService: HsSaveMapService
+    private hsSaveMapService: HsSaveMapService,
   ) {
     super(hsLayoutService);
   }
@@ -91,7 +89,7 @@ export class HsSaveMapComponent
         if (composition && composition.endpoint) {
           const openedType = composition.endpoint.type;
           const found = this.hsCommonEndpointsService.endpoints.filter((ep) =>
-            ep.type.includes(openedType)
+            ep.type.includes(openedType),
           );
           if (found.length > 0) {
             this.hsSaveMapManagerService.selectEndpoint(found[0]);
@@ -105,6 +103,7 @@ export class HsSaveMapComponent
       }
     });
   }
+
   ngOnDestroy(): void {
     this.end.next();
     this.end.complete();

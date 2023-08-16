@@ -13,7 +13,7 @@ export class HsSaveMapResultDialogComponent implements HsDialogComponent {
 
   constructor(
     private hsDialogContainerService: HsDialogContainerService,
-    public hsSaveMapManagerService: HsSaveMapManagerService
+    public hsSaveMapManagerService: HsSaveMapManagerService,
   ) {}
 
   close(): void {

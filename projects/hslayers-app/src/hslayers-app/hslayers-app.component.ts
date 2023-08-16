@@ -1,5 +1,4 @@
 import * as proj from 'ol/proj';
-import {register as projRegister} from 'ol/proj/proj4';
 import {
   BingMaps,
   ImageArcGISRest,
@@ -12,7 +11,7 @@ import {
   XYZ,
 } from 'ol/source';
 import {Circle, Fill, Icon, Stroke, Style} from 'ol/style';
-import {Component, ElementRef, Input, OnInit} from '@angular/core';
+import {Component, ElementRef} from '@angular/core';
 import {GeoJSON} from 'ol/format';
 import {
   Group,
@@ -21,10 +20,11 @@ import {
   Vector as VectorLayer,
 } from 'ol/layer';
 import {View} from 'ol';
+import {register as projRegister} from 'ol/proj/proj4';
 
-import SparqlJson from 'hslayers-ng/common/layers/hs.source.SparqlJson';
 import {HsConfig} from 'hslayers-ng/config.service';
 import {InterpolatedSource} from 'hslayers-ng/common/layers/hs.source.interpolated';
+import {SparqlJson} from 'hslayers-ng/common/layers/hs.source.SparqlJson';
 
 @Component({
   selector: 'hslayers-app',
@@ -33,7 +33,10 @@ import {InterpolatedSource} from 'hslayers-ng/common/layers/hs.source.interpolat
 })
 export class HslayersAppComponent {
   id;
-  constructor(public HsConfig: HsConfig, private elementRef: ElementRef) {
+  constructor(
+    public HsConfig: HsConfig,
+    private elementRef: ElementRef,
+  ) {
     const w: any = window;
     w.ol = {
       layer: {
@@ -67,7 +70,7 @@ export class HslayersAppComponent {
       },
       View,
       proj,
-      projRegister
+      projRegister,
     };
 
     if (this.elementRef.nativeElement.id) {

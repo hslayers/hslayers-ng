@@ -1,9 +1,6 @@
-import {Component, Input, OnChanges, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnChanges, OnDestroy, OnInit} from '@angular/core';
 import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
-
-import {Layer} from 'ol/layer';
-import {Source} from 'ol/source';
 
 import {Dimension, getDimensions} from '../../../common/layer-extensions';
 import {HsDimensionDescriptor} from '../../../common/get-capabilities/dimension';
@@ -21,7 +18,8 @@ import {HsUtilsService} from '../../utils/utils.service';
 })
 export class HsLayerEditorDimensionsComponent
   extends HsLayerEditorWidgetBaseComponent
-  implements OnDestroy, OnChanges, OnInit {
+  implements OnDestroy, OnChanges, OnInit
+{
   name = 'dimensions';
   dimensions: Array<HsDimensionDescriptor> = [];
   private end = new Subject<void>();
@@ -32,7 +30,7 @@ export class HsLayerEditorDimensionsComponent
     public hsMapService: HsMapService,
     public hsEventBusService: HsEventBusService,
     public hsUtilsService: HsUtilsService,
-    hsLayerSelectorService: HsLayerSelectorService
+    hsLayerSelectorService: HsLayerSelectorService,
   ) {
     super(hsLayerSelectorService);
     this.hsEventBusService.layerDimensionDefinitionChanges
@@ -68,7 +66,7 @@ export class HsLayerEditorDimensionsComponent
         if (available) {
           if (typeof dimension.values === 'string') {
             dimension.values = this.hsDimensionTimeService.parseTimePoints(
-              dimension.values
+              dimension.values,
             );
           }
           this.dimensions.push(new HsDimensionDescriptor(key, dimension));
@@ -80,7 +78,7 @@ export class HsLayerEditorDimensionsComponent
   dimensionIsTime(dimension: Dimension): boolean {
     const dimensions = getDimensions(this.olLayer);
     const type = Object.keys(dimensions).find(
-      (key) => dimensions[key] === dimension
+      (key) => dimensions[key] === dimension,
     );
     // value of time.onlyInEditor used inversely here intentionally
     // ( => replacement for inline time-editor)

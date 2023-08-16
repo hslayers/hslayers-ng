@@ -1,12 +1,6 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {Subscription} from 'rxjs';
 
-import {
-  getDimension,
-  getExclusive,
-  getHsLaymanSynchronizing,
-} from '../../../common/layer-extensions';
-
 import {HsConfig} from '../../../config.service';
 import {HsDimensionTimeService} from '../../../common/get-capabilities/dimension-time.service';
 import {HsEventBusService} from '../../core/event-bus.service';
@@ -14,6 +8,11 @@ import {HsLayerDescriptor} from '../layer-descriptor.interface';
 import {HsLayerListService} from './layermanager-layerlist.service';
 import {HsLayerManagerService} from '../layermanager.service';
 import {HsLayerUtilsService} from '../../utils/layer-utils.service';
+import {
+  getDimension,
+  getExclusive,
+  getHsLaymanSynchronizing,
+} from '../../../common/layer-extensions';
 
 @Component({
   selector: 'hs-layermanager-layer-list',
@@ -29,12 +28,12 @@ export class HsLayerListComponent implements OnInit, OnDestroy {
   getExclusive = getExclusive;
   layerManagerUpdatesSubscription: Subscription;
   constructor(
-    public hsConfig: HsConfig, //In template
+    public hsConfig: HsConfig,
     public hsLayerManagerService: HsLayerManagerService,
     public hsDimensionTimeService: HsDimensionTimeService,
     public hsEventBusService: HsEventBusService,
-    public hsLayerUtilsService: HsLayerUtilsService, //In template
-    public hsLayerListService: HsLayerListService
+    public hsLayerUtilsService: HsLayerUtilsService,
+    public hsLayerListService: HsLayerListService,
   ) {
     this.layerManagerUpdatesSubscription =
       this.hsEventBusService.layerManagerUpdates.subscribe(() => {
@@ -42,6 +41,7 @@ export class HsLayerListComponent implements OnInit, OnDestroy {
         this.updateLayers();
       });
   }
+
   ngOnDestroy(): void {
     this.layerManagerUpdatesSubscription.unsubscribe();
   }

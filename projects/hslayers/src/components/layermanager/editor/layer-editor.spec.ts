@@ -5,10 +5,10 @@ import {
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
+import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
 
 import {Cluster, Vector as VectorSource} from 'ol/source';
-import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {Vector as VectorLayer} from 'ol/layer';
 
 import {HsAddDataOwsService} from '../../add-data/url/add-data-ows.service';
@@ -63,7 +63,7 @@ describe('layermanager editor', () => {
       platformBrowserDynamicTesting(),
       {
         teardown: {destroyAfterEach: false},
-      }
+      },
     );
   });
 

@@ -2,7 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 
 import {Subject, takeUntil} from 'rxjs';
 
-import {HsConfig, HsConfigObject} from '../../config.service';
+import {HsConfig} from '../../config.service';
 import {HsDialogContainerService} from '../layout/public-api';
 import {HsDrawLayerMetadataDialogComponent} from './draw-layer-metadata/draw-layer-metadata.component';
 import {HsDrawService} from './draw.service';
@@ -32,10 +32,11 @@ export class HsDrawComponent
     public hsUtilsService: HsUtilsService,
     public hsSidebarService: HsSidebarService,
     public HsDialogContainerService: HsDialogContainerService,
-    private hsConfig: HsConfig
+    private hsConfig: HsConfig,
   ) {
     super(hsLayoutService);
   }
+
   ngOnDestroy(): void {
     this.end.next();
     this.end.complete();
@@ -47,7 +48,7 @@ export class HsDrawComponent
       .subscribe(() => {
         this.HsDialogContainerService.create(
           HsDrawLayerMetadataDialogComponent,
-          {service: this.HsDrawService}
+          {service: this.HsDrawService},
         );
       });
 

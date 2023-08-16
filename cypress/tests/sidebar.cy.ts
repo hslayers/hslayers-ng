@@ -7,7 +7,7 @@ describe('Hslayers application', () => {
     cy.get('hs-layermanager-layer-list li .d-flex button.hs-checkmark').each(
       (button) => {
         cy.wrap(button).click();
-      }
+      },
     );
     //Close layer manager
     cy.get('.hs-sidebar-item[data-cy="layermanager"]:first').click();
@@ -24,7 +24,7 @@ describe('Hslayers application', () => {
           cy.get(`hs-panel-header[name="${panelName}"]`).should('be.visible');
           cy.wrap(sidebarButton).click();
         }
-      }
+      },
     );
     cy.get('.hs-sidebar-additional-items:first').click();
     cy.get('hs-mini-sidebar .hs-sidebar-item.hs-panel-hidden').each(
@@ -39,7 +39,7 @@ describe('Hslayers application', () => {
           cy.get(`hs-panel-header[name="${panelName}"]`).should('be.visible');
           cy.get('.hs-sidebar-additional-items:first').click();
         }
-      }
+      },
     );
   });
 

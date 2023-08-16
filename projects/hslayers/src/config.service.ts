@@ -1,11 +1,9 @@
 import {Injectable} from '@angular/core';
+import {Subject} from 'rxjs';
 
 import {Geometry} from 'ol/geom';
-import {Group, Layer} from 'ol/layer';
-import {Source} from 'ol/source';
-import {Subject} from 'rxjs';
-import {Vector as VectorLayer} from 'ol/layer';
-import {Vector as VectorSource} from 'ol/source';
+import {Group, Layer, Vector as VectorLayer} from 'ol/layer';
+import {Source, Vector as VectorSource} from 'ol/source';
 import {View} from 'ol';
 
 import {AddDataFileType} from './components/add-data/file/types/file.type';
@@ -258,7 +256,7 @@ export class HsConfig extends HsConfigObject {
     ]) {
       if (newConfig[prop] != undefined) {
         console.error(
-          `HsConfig.${prop} has been moved to HsCesiumConfig service or hslayersCesiumConfig.${prop} when using hslayers-cesium-app`
+          `HsConfig.${prop} has been moved to HsCesiumConfig service or hslayersCesiumConfig.${prop} when using hslayers-cesium-app`,
         );
       }
     }

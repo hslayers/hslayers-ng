@@ -12,8 +12,9 @@ export class HsSaveMapDialogComponent implements HsDialogComponent {
   data: {endpoint};
   constructor(
     private hsDialogContainerService: HsDialogContainerService,
-    public hsSaveMapManagerService: HsSaveMapManagerService
+    public hsSaveMapManagerService: HsSaveMapManagerService,
   ) {}
+
   close(): void {
     this.hsDialogContainerService.destroy(this);
   }

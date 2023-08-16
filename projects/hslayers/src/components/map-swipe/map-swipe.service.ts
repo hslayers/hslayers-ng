@@ -11,11 +11,12 @@ import {HsLayerEditorService} from '../layermanager/editor/layer-editor.service'
 import {HsLayerManagerService} from '../layermanager/layermanager.service';
 import {HsLayerShiftingService} from '../../common/layer-shifting/layer-shifting.service';
 import {HsLayoutService} from '../layout/layout.service';
+import {HsLogService} from '../../common/log/log.service';
 import {HsMapService} from '../map/map.service';
 import {HsShareUrlService} from '../permalink/share-url.service';
 import {HsToastService} from '../layout/toast/toast.service';
 import {LayerListItem} from './../../common/layer-shifting/layer-shifting.service';
-import {SwipeControl} from './swipe-control/swipe.control.class';
+import {SwipeControl} from './swipe-control/swipe.control';
 import {
   getQueryFilter,
   getSwipeSide,
@@ -51,6 +52,7 @@ export class HsMapSwipeService {
     public hsShareUrlService: HsShareUrlService,
     public hsLayoutService: HsLayoutService,
     private hsLayerEditorService: HsLayerEditorService,
+    private hsLog: HsLogService,
     private zone: NgZone,
   ) {
     this.swipeCtrl = null;
@@ -76,7 +78,7 @@ export class HsMapSwipeService {
       }
     });
     /**
-     * FIX ME : THIS SEEMS SKETCHY
+     * FIXME: THIS SEEMS SKETCHY
      * Doesnt seem probable this ever goes through
      */
     this.hsEventBusService.layerManagerUpdates.subscribe((layer) => {
@@ -135,6 +137,7 @@ export class HsMapSwipeService {
     }
     this.updateStorageOri();
   }
+
   /**
    * Initializes swipe control add adds it to the map
    */
@@ -191,6 +194,7 @@ export class HsMapSwipeService {
     this.swipeCtrl.set('orientation', this.orientation);
     this.updateStorageOri();
   }
+
   /**
    * Fill swipe control layers
    * @param layer - layer issued from layerManagerUpdates event
@@ -280,6 +284,7 @@ export class HsMapSwipeService {
     };
     setQueryFilter(layerItem.layer, filter);
   }
+
   /**
    * Move a layer to swipe control
    * @param lyrListItem - layer issued from layerManagerUpdates event
@@ -298,6 +303,7 @@ export class HsMapSwipeService {
       this.swipeCtrl.removeCompletely(lyrListItem.layer);
     }
   }
+
   /**
    * Move a layer to swipe control right side
    * @param layer - layer issued from layerManagerUpdates event
@@ -306,6 +312,7 @@ export class HsMapSwipeService {
     this.swipeCtrl.removeLayer(layer);
     this.swipeCtrl.addLayer(layer, true);
   }
+
   /**
    * Move a layer to swipe control left side
    * @param layer - layer issued from layerManagerUpdates event
@@ -335,7 +342,7 @@ export class HsMapSwipeService {
     try {
       this.hsMapService.getMap().renderSync();
     } catch (e) {
-      console.error(e);
+      this.hsLog.error(e);
     }
   }
   /**
@@ -402,7 +409,7 @@ export class HsMapSwipeService {
   }
 
   /**
-   * Sort layers to resemple layer order by ZIndex on the map
+   * Sort layers to resemble layer order by ZIndex on the map
    */
   sortLayers(): void {
     this.leftLayers = this.hsLayerManagerService.sortLayersByZ(this.leftLayers);

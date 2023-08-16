@@ -26,14 +26,14 @@ export class HsWmtsGetCapabilitiesService implements IGetCapabilities {
     public hsUtilsService: HsUtilsService,
     public hsWmsGetCapabilitiesService: HsWmsGetCapabilitiesService,
     public hsAddDataService: HsAddDataService,
-    public hsCapabilityCacheService: HsCapabilityCacheService
+    public hsCapabilityCacheService: HsCapabilityCacheService,
   ) {}
 
   /**
-   * Get WMTS service location without parameters from url string
+   * Get WMTS service location without parameters from URL string
    *
-   * @param str - Url string to parse
-   * @returns WMTS service Url
+   * @param str - URL string to parse
+   * @returns WMTS service URL
    */
   getPathFromUrl(str: string): string {
     if (str.indexOf('?') > -1) {
@@ -82,7 +82,7 @@ export class HsWmtsGetCapabilitiesService implements IGetCapabilities {
   async request(
     service_url: string,
 
-    owrCache?: boolean
+    owrCache?: boolean,
   ): Promise<CapabilitiesResponseWrapper> {
     service_url = service_url.replace(/&amp;/g, '&');
     const params = this.hsUtilsService.getParamsFromUrl(service_url);
@@ -113,7 +113,7 @@ export class HsWmtsGetCapabilitiesService implements IGetCapabilities {
             responseType: 'text',
             observe: 'response', // Set observe to 'response' to get headers as well
           })
-          .pipe(takeUntil(this.hsAddDataService.cancelUrlRequest))
+          .pipe(takeUntil(this.hsAddDataService.cancelUrlRequest)),
       );
       const contentType = r.headers.get('Content-Type');
       if (contentType?.includes('text/html')) {

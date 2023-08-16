@@ -2,7 +2,7 @@ import {FileDescriptor} from './file-descriptor.type';
 import {accessRightsModel} from '../../common/access-rights.model';
 
 /**
- * @param allowedStyles Allowed file formats (SLD, QML or both)
+ * @param allowedStyles - Allowed file formats (SLD, QML or both)
  */
 export type FileFormData = {
   abstract: string;

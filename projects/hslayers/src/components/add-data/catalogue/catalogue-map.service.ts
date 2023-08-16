@@ -39,7 +39,7 @@ export class HsAddDataCatalogueMapService {
     private hsCommonEndpointsService: HsCommonEndpointsService,
     private hsEventBusService: HsEventBusService,
     private hsLayoutService: HsLayoutService,
-    private hsUtilsService: HsUtilsService
+    private hsUtilsService: HsUtilsService,
   ) {
     this.hsEventBusService.mainPanelChanges.subscribe((which) => {
       if (which === 'addData') {
@@ -90,8 +90,8 @@ export class HsAddDataCatalogueMapService {
         (e) => this.mapPointerMoved(e),
         50,
         false,
-        this
-      )
+        this,
+      ),
     );
   }
 
@@ -103,12 +103,12 @@ export class HsAddDataCatalogueMapService {
       .getSource()
       .getFeaturesAtCoordinate(evt.coordinate);
     for (const endpoint of this.hsCommonEndpointsService.endpoints.filter(
-      (ep) => ep.layers
+      (ep) => ep.layers,
     )) {
       this.hsLayerUtilsService.highlightFeatures(
         featuresUnderMouse,
         this.extentLayer,
-        endpoint.layers
+        endpoint.layers,
       );
     }
   }
@@ -146,7 +146,7 @@ export class HsAddDataCatalogueMapService {
 
   highlightLayer(
     composition: HsMapCompositionDescriptor,
-    state: boolean
+    state: boolean,
   ): void {
     if (composition.featureId !== undefined) {
       const found = this.extentLayer
@@ -177,12 +177,12 @@ export class HsAddDataCatalogueMapService {
     first_pair = transform(
       first_pair,
       'EPSG:4326',
-      this.hsMapService.getMap().getView().getProjection()
+      this.hsMapService.getMap().getView().getProjection(),
     );
     second_pair = transform(
       second_pair,
       'EPSG:4326',
-      this.hsMapService.getMap().getView().getProjection()
+      this.hsMapService.getMap().getView().getProjection(),
     );
     if (
       isNaN(first_pair[0]) ||

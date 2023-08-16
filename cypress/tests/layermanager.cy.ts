@@ -7,7 +7,7 @@ describe('Hslayers application', () => {
     cy.get('hs-layermanager-layer-list li .d-flex button.hs-checkmark').each(
       (button) => {
         cy.wrap(button).click();
-      }
+      },
     );
   });
 
@@ -15,12 +15,12 @@ describe('Hslayers application', () => {
     cy.wrap(true).then(() => {
       if (!Cypress.isBrowser('chrome')) {
         cy.log(
-          'Skipping layer reordering test. Works in Chromium browser only'
+          'Skipping layer reordering test. Works in Chromium browser only',
         );
         return;
       }
       cy.get(
-        '.hs-main-panel:not([hidden]) hs-panel-header[name*="layermanager"] extra-buttons button:first'
+        '.hs-main-panel:not([hidden]) hs-panel-header[name*="layermanager"] extra-buttons button:first',
       ).click();
 
       cy.get('.cdk-drop-list').then(($list) => {
@@ -35,7 +35,7 @@ describe('Hslayers application', () => {
 
         cy.get('.cdk-drop-list .cdk-drag:first div p').should(
           'have.html',
-          toBeFirstLayerName
+          toBeFirstLayerName,
         );
       });
     });

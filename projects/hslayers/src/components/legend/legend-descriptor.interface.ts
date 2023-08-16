@@ -1,5 +1,6 @@
-import {Layer} from 'ol/layer';
 import {SafeHtml} from '@angular/platform-browser';
+
+import {Layer} from 'ol/layer';
 import {Source} from 'ol/source';
 
 export interface HsLegendDescriptor {

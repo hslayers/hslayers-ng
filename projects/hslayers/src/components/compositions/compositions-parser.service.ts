@@ -72,7 +72,7 @@ export class HsCompositionsParserService {
     private hsLanguageService: HsLanguageService,
     private hsCommonLaymanService: HsCommonLaymanService,
     private hsLayerManagerService: HsLayerManagerService,
-    private hsToastService: HsToastService
+    private hsToastService: HsToastService,
   ) {}
 
   /**
@@ -80,7 +80,6 @@ export class HsCompositionsParserService {
    * Load selected composition from server, parse it and add layers to map.
    * Optionally (based on app config) may open layer manager panel
    * @param url - Url of selected composition
-   
    * @param overwrite - Whether overwrite current composition in map -
    * remove all layers from maps which originate from composition (if not pasted, it counts as "true")
    * @param callback - Optional function which should be called when composition is successfully loaded
@@ -90,7 +89,7 @@ export class HsCompositionsParserService {
     url: string | any, //CSW record object
     overwrite?: boolean,
     callback?,
-    pre_parse?
+    pre_parse?,
   ): Promise<void> {
     if (typeof url !== 'string') {
       pre_parse = (res) => this.parseCSW(res);
@@ -108,12 +107,12 @@ export class HsCompositionsParserService {
     }
     options['withCredentials'] = isLaymanUrl(
       url,
-      this.hsCommonLaymanService.layman
+      this.hsCommonLaymanService.layman,
     );
     const data: any = await lastValueFrom(this.$http.get(url, options)).catch(
       (e) => {
         this.raiseCompositionLoadError(e);
-      }
+      },
     );
     if (data) {
       if (data.file) {
@@ -126,20 +125,19 @@ export class HsCompositionsParserService {
 
   /**
    * Check if the response holds the composition data and try to load the composition object
-   * @param response - Response from http get request requesting composition data
+   * @param response - Response from HTTP GET request requesting composition data
    * @param pre_parse - Function for pre-parsing loaded data about composition to accepted format
-   * @param url - Url of selected composition
+   * @param url - URL of selected composition
    * @param overwrite - Whether overwrite current composition in map -
    * remove all layers from maps which originate from composition (if not pasted, it counts as "true")
    * @param callback - Function which should be called when composition is successfully loaded
-   
    */
   async loaded(
     response,
     pre_parse,
     url,
     overwrite: boolean,
-    callback
+    callback,
   ): Promise<void> {
     this.hsEventBusService.compositionLoading.next(response);
     if (this.checkLoadSuccess(response)) {
@@ -148,7 +146,7 @@ export class HsCompositionsParserService {
       }
       /**
        * Don't set composition_loaded for basemap composition as it's just special way
-       * of setting intial state of the map similarly to default_layers
+       * of setting initial state of the map similarly to default_layers
        */
       if (!response.basemapComposition) {
         this.composition_loaded = url;
@@ -164,7 +162,7 @@ export class HsCompositionsParserService {
         response.data || response,
         overwrite && !pre_parse, //For CSW comps we need to wait for dialog to resolve before removing existing layers
         response.title,
-        response.extent
+        response.extent,
       );
       //Don't trigger compositionLoads when loading basemapComposition
       if (loaded && !response.basemapComposition) {
@@ -187,7 +185,7 @@ export class HsCompositionsParserService {
     }
     for (const link of layer.online) {
       const type = servicesSupportedByUrl.find((type) =>
-        link.protocolUri.toLowerCase().includes(type)
+        link.protocolUri.toLowerCase().includes(type),
       );
       if (type) {
         return {
@@ -210,7 +208,7 @@ export class HsCompositionsParserService {
       const layerObject = this.parseCSWLayer(layer);
       if (layerObject) {
         (layerObject.url.includes('LAYERS=') ? layers : services).push(
-          layerObject
+          layerObject,
         );
       }
     }
@@ -286,7 +284,7 @@ export class HsCompositionsParserService {
     compositionJSON.extent = transformExtent(
       compositionJSON.extent,
       compositionJSON.projection,
-      'EPSG:4326'
+      'EPSG:4326',
     );
 
     for (const layer of res.LayerList.Layer) {
@@ -338,7 +336,7 @@ export class HsCompositionsParserService {
     obj,
     overwrite: boolean,
     titleFromContainer?: boolean,
-    extentFromContainer?: string | Array<number>
+    extentFromContainer?: string | Array<number>,
   ): Promise<boolean> {
     if (overwrite == undefined || overwrite == true) {
       this.hsMapService.removeCompositionLayers(overwrite == true);
@@ -358,7 +356,7 @@ export class HsCompositionsParserService {
         this.loadWarningBootstrap(extent);
       } else {
         this.hsMapService.fitExtent(
-          transformExtentValue(extent, this.hsMapService.getCurrentProj())
+          transformExtentValue(extent, this.hsMapService.getCurrentProj()),
         );
       }
     }
@@ -384,7 +382,7 @@ export class HsCompositionsParserService {
           }
           this.hsMapService.addLayer(
             lyr as Layer<Source>,
-            DuplicateHandling.RemoveOriginal
+            DuplicateHandling.RemoveOriginal,
           );
         });
         this.hsLayerManagerService.updateLayerListPositions();
@@ -402,11 +400,11 @@ export class HsCompositionsParserService {
               const layerDescriptor =
                 this.hsLayerManagerService.getLayerDescriptorForOlLayer(
                   lyr,
-                  true
+                  true,
                 );
               this.hsLayerManagerService.changeBaseLayerVisibility(
                 true,
-                layerDescriptor
+                layerDescriptor,
               );
             }
           });
@@ -420,7 +418,6 @@ export class HsCompositionsParserService {
   /**
    * Finalize composition loading to the OL map
    * @param responseData - Response from http get request requesting composition data
-   
    */
   finalizeCompositionLoading(responseData): void {
     const open_lm_after_comp_loaded = this.hsConfig.open_lm_after_comp_loaded;
@@ -439,7 +436,6 @@ export class HsCompositionsParserService {
   /**
    * Create an error message in case of on an unsuccessful composition load
    * @param response - Response from http get request requesting composition data
-   
    */
   raiseCompositionLoadError(response): void {
     const respError: any = {};
@@ -448,21 +444,21 @@ export class HsCompositionsParserService {
       case 'no data':
         respError.title = this.hsLanguageService.getTranslation(
           'COMPOSITIONS.compositionNotFound',
-          undefined
+          undefined,
         );
         respError.abstract = this.hsLanguageService.getTranslation(
           'COMPOSITIONS.sorryButComposition',
-          undefined
+          undefined,
         );
         break;
       default:
         respError.title = this.hsLanguageService.getTranslation(
           'COMPOSITIONS.compositionNotLoaded',
-          undefined
+          undefined,
         );
         respError.abstract = this.hsLanguageService.getTranslation(
           'COMPOSITIONS.weAreSorryBut',
-          undefined
+          undefined,
         );
         break;
     }
@@ -473,7 +469,6 @@ export class HsCompositionsParserService {
    * @public
    * Send Ajax request to selected server to gain information about composition
    * @param url - Url to composition info
-   
    * @returns Object containing composition info
    */
   async loadInfo(url: string): Promise<any> {
@@ -496,6 +491,7 @@ export class HsCompositionsParserService {
     }
     return response.data || response;
   }
+
   /**
    * Parse Micka datasource WMC info to JSON object
    * @param response - Response from http get request requesting composition data
@@ -551,7 +547,6 @@ export class HsCompositionsParserService {
 
   parseMickaCSWInfo(response: string) {
     const res: any = xml2Json.xml2js(response, {compact: true});
-    console.log(res);
     const serviceIdentification =
       res['csw:GetRecordByIdResponse']['gmd:MD_Metadata'][
         'gmd:identificationInfo'
@@ -590,7 +585,7 @@ export class HsCompositionsParserService {
     if (keywordsInfo) {
       Array.isArray(keywordsInfo);
       infoDetails['keywords'] = keywordsInfo.map(
-        (kw) => kw['gco:CharacterString']._text
+        (kw) => kw['gco:CharacterString']._text,
       );
     }
     return infoDetails;
@@ -607,7 +602,6 @@ export class HsCompositionsParserService {
   /**
    * Load and display a warning dialog about out of bounds extent
    * @param extent - Extent value
-   
    */
   loadWarningBootstrap(extent): void {
     this.hsDialogContainerService.create(HsCompositionsWarningDialogComponent, {
@@ -616,15 +610,15 @@ export class HsCompositionsParserService {
       message: this.hsLanguageService.getTranslationIgnoreNonExisting(
         'COMPOSITIONS.dialogWarning',
         'outOfBounds',
-        undefined
+        undefined,
       ),
     });
   }
+
   /**
    * @public
    * Parse composition object to extract individual layers and add them to map
    * @param j - Composition object with Layers
-   
    * @returns Array of created layers
    */
   async jsonToLayers(j): Promise<Layer<Source>[]> {
@@ -642,21 +636,21 @@ export class HsCompositionsParserService {
         ) {
           this.$log.warn(
             'Was not able to parse layer from composition',
-            lyr_def
+            lyr_def,
           );
           this.hsToastService.createToastPopupMessage(
             this.hsLanguageService.getTranslation(
-              'COMPOSITIONS.errorWhileCreatingLayerFromComposition'
+              'COMPOSITIONS.errorWhileCreatingLayerFromComposition',
             ),
             this.hsLanguageService.getTranslation(
-              'COMPOSITIONS.notAbleToParseLayerFromComposition'
+              'COMPOSITIONS.notAbleToParseLayerFromComposition',
             ) +
               ' ' +
               lyr_def.title,
             {
               disableLocalization: true,
               serviceCalledFrom: 'HsCompositionsParserService',
-            }
+            },
           );
         }
       } else {
@@ -671,7 +665,6 @@ export class HsCompositionsParserService {
    * @public
    * Select correct layer parser for input data based on layer "className" property (HSLayers.Layer.WMS/OpenLayers.Layer.Vector)
    * @param lyr_def - Layer to be created (encapsulated in layer definition object)
-   
    * @returns Parser function to create layer (using config_parsers service)
    */
   async jsonToLayer(lyr_def): Promise<any> {
@@ -707,7 +700,7 @@ export class HsCompositionsParserService {
         } else {
           resultLayer =
             await this.hsCompositionsLayerParserService.createVectorLayer(
-              lyr_def
+              lyr_def,
             );
         }
         break;

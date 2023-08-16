@@ -19,16 +19,15 @@ export class HsPrintScaleService {
   scaleLineCSS = SCALE_LINE_CLASSES;
   constructor(
     private hsMapService: HsMapService,
-    private hsPrintLegendService: HsPrintLegendService
+    private hsPrintLegendService: HsPrintLegendService,
   ) {
-    this.hsMapService.loaded().then((_) => {
+    this.hsMapService.loaded().then(() => {
       this.defaultScaleLine = this.getMapScale();
     });
   }
 
   /**
    * Set original map scale if it exists
-   
    */
   setToDefaultScale(): void {
     if (this.defaultScaleLine && this.hsMapService.getMap()) {
@@ -39,7 +38,6 @@ export class HsPrintScaleService {
   /**
    * Triggered when the scale type or its values have been changed by the user
    * @param scaleObj - Scale object
-   
    */
   scaleChanged(scaleObj: ScaleObj): void {
     this.setMapScale(this.createNewScaleControl(scaleObj));
@@ -48,7 +46,6 @@ export class HsPrintScaleService {
   /**
    * Draw canvas with scale DOM element
    * @param scaleObj - Scale object
-   
    */
   async drawScaleCanvas(scaleObj: ScaleObj): Promise<HTMLCanvasElement> {
     const canvas = document.createElement('canvas');
@@ -77,13 +74,13 @@ export class HsPrintScaleService {
   /**
    * Create svg source from scale DOM element
    * @param type - Scale type
-   * @param scaleElem - Scale element from Openlayers map DOM
-   * @param cssClasses - CSS classes taken from openlayers css
+   * @param scaleElem - Scale element from OpenLayers map DOM
+   * @param cssClasses - CSS classes taken from OpenLayers css
    */
   private createScaleSvgSource(
     type: 'scaleline' | 'scalebar',
     scaleElem: Element,
-    cssClasses: string
+    cssClasses: string,
   ): string {
     let width: number;
     let height: number;
@@ -112,12 +109,11 @@ export class HsPrintScaleService {
   /**
    * Draw scale image from svg source into a canvas
    * @param canvas - HTMLCanvasElement
-   * @param svgSource - Svg source string
-   
+   * @param svgSource - SVG source string
    */
   private drawScaleImage(
     canvas: HTMLCanvasElement,
-    svgSource: string
+    svgSource: string,
   ): Promise<void> {
     return new Promise(async (resolve, reject) => {
       const ctx = canvas.getContext('2d');
@@ -131,7 +127,6 @@ export class HsPrintScaleService {
 
   /**
    * Get current map scale Control
-   
    */
   private getMapScale(): Control {
     for (const control of this.hsMapService.getMap().getControls().getArray()) {
@@ -165,7 +160,6 @@ export class HsPrintScaleService {
   /**
    * Set map scale to a new scale object
    * @param newControl - Control
-   
    */
   private setMapScale(newControl: Control): void {
     const currentScaleControl = this.getMapScale();

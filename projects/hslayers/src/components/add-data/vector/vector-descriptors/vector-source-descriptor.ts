@@ -37,7 +37,7 @@ export class VectorSourceDescriptor {
     url: string,
     srs,
     options: HsVectorLayerOptions,
-    mapProjection
+    mapProjection,
   ) {
     this.mapProjection = mapProjection;
 

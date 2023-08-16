@@ -30,17 +30,16 @@ export class HsMeasureService {
   constructor(
     public hsMapService: HsMapService,
     public HsUtilsService: HsUtilsService,
-    public HsEventBusService: HsEventBusService
+    public HsEventBusService: HsEventBusService,
   ) {
     this.setMeasureLayer();
     setTitle(this.measureVector, 'Measurement sketches');
   }
 
   /**
+   * Enable/disable multiple shape mode for measuring (switch without parameter)
    * @public
    * @param mode - Optional parameter if multiple shape mode should be enabled
-   
-   * Enable/disable multiple shape mode for measuring (switch without parameter)
    */
   switchMultipleMode(mode?: boolean): void {
     if (mode !== undefined) {
@@ -52,7 +51,6 @@ export class HsMeasureService {
 
   /**
    * Set new measure vector layer
-   
    */
   setMeasureLayer(): void {
     this.measureVector = new VectorLayer({
@@ -70,10 +68,9 @@ export class HsMeasureService {
   }
 
   /**
+   * Change geometry type of measurement without deleting of old ones
    * @public
    * @param type - Geometry type of measurement ('area' for polygon, 'line' for linestring)
-   
-   * Change geometry type of measurement without deleting of old ones
    */
   changeMeasureParams(type: string): void {
     this.hsMapService.getMap().removeInteraction(this.draw);
@@ -82,9 +79,8 @@ export class HsMeasureService {
   }
 
   /**
-   * @public
-   
    * Clear all measurements and restart measuring
+   * @public
    */
   clearMeasurement(): void {
     this.draw.setActive(false);
@@ -95,10 +91,8 @@ export class HsMeasureService {
   }
 
   /**
-   * @public
-   * @param type -
-   
    * Start measuring interaction in app
+   * @public
    */
   activateMeasuring(type: string): void {
     if (this.measuringActivated) {
@@ -127,9 +121,8 @@ export class HsMeasureService {
   }
 
   /**
-   * @public
-   
    * Stop measuring interaction in app
+   * @public
    */
   deactivateMeasuring(): void {
     this.hsMapService.loaded().then((map) => {
@@ -151,9 +144,8 @@ export class HsMeasureService {
   }
 
   /**
-   * @param evt - Callback param for mouse move event
-   
    * Callback for mouse and touch move event, compute live measurement results
+   * @param evt - Callback param for mouse move event
    */
   mouseMoveHandler(evt): void {
     if (this.sketches.length > 0) {
@@ -165,17 +157,17 @@ export class HsMeasureService {
           output = this.addMultiple(
             this.HsUtilsService.formatArea(
               geom as Polygon,
-              this.hsMapService.getCurrentProj()
+              this.hsMapService.getCurrentProj(),
             ),
-            output
+            output,
           );
         } else if (this.HsUtilsService.instOf(geom, LineString)) {
           output = this.addMultiple(
             this.HsUtilsService.formatLength(
               geom as LineString,
-              this.hsMapService.getCurrentProj()
+              this.hsMapService.getCurrentProj(),
             ),
-            output
+            output,
           );
         }
       }
@@ -187,11 +179,9 @@ export class HsMeasureService {
   }
 
   /**
-
+   * Adds two measure results for multiple shape mode to display joined result
    * @param val1 - Output of new object
    * @param val2 - Old value
-   * @returns 
-   * Adds two measure results for multiple shape mode to display joined result
    */
   addMultiple(val1: Measurement, val2: Measurement): Measurement {
     if (val2 == undefined) {
@@ -227,15 +217,14 @@ export class HsMeasureService {
   }
 
   /**
-   * @param type - Geometry type
-   
    * Initialize draw interaction on Ol.map and event handlers for handling start and end of drawing
+   * @param type - Geometry type
    */
   addInteraction(type: string): void {
     const drawType = type == 'area' ? 'Polygon' : 'LineString';
     this.draw = new Draw({
       source: this.measureVector.getSource(),
-      type: /** @type {GeometryType} */ drawType,
+      type: drawType,
       dragVertexDelay: 150,
     });
     this.hsMapService.getMap().addInteraction(this.draw);

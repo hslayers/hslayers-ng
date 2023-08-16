@@ -14,13 +14,13 @@ import {HsHistoryListService} from './history-list.service';
 })
 export class HsHistoryListComponent implements OnChanges {
   @Input() what: string; //input
-  
+
   @Output() historyUrlSelected = new EventEmitter<string>(); //output
   items: Array<string>;
   constructor(public HsHistoryListService: HsHistoryListService) {}
   ngOnChanges(changes: SimpleChanges): void {
     this.items = this.HsHistoryListService.readSourceHistory(
-      changes.what.currentValue
+      changes.what.currentValue,
     );
   }
   historyUrlClicked(value: string): void {

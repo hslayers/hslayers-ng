@@ -4,14 +4,15 @@ import {
   Pipe,
   PipeTransform,
 } from '@angular/core';
-import {CustomTranslationService} from './custom-translate.service';
-import {HsLanguageService} from './language.service';
 import {
   LangChangeEvent,
   TranslatePipe,
-  TranslateService,
   TranslationChangeEvent,
 } from '@ngx-translate/core';
+
+import {CustomTranslationService} from './custom-translate.service';
+import {HsLanguageService} from './language.service';
+
 @Injectable()
 @Pipe({
   name: 'translateHs',
@@ -25,7 +26,7 @@ export class TranslateCustomPipe
   constructor(
     private translate2: CustomTranslationService,
     private _theRef: ChangeDetectorRef,
-    private hsLanguageService: HsLanguageService
+    private hsLanguageService: HsLanguageService,
   ) {
     super(translate2, _theRef);
   }
@@ -49,7 +50,7 @@ export class TranslateCustomPipe
           interpolateParams = JSON.parse(validArgs);
         } catch (e) {
           throw new SyntaxError(
-            `Wrong parameter in TranslatePipe. Expected a valid Object, received: ${args[0]}`
+            `Wrong parameter in TranslatePipe. Expected a valid Object, received: ${args[0]}`,
           );
         }
       } else if (typeof args[0] === 'object' && !Array.isArray(args[0])) {
@@ -69,7 +70,7 @@ export class TranslateCustomPipe
             this.lastKey = null;
             this.updateTranslation(query, translator, module);
           }
-        }
+        },
       );
     }
 
@@ -81,7 +82,7 @@ export class TranslateCustomPipe
             this.lastKey = null; // we want to make sure it doesn't return the same value until it's been updated
             this.updateTranslation(query, translator, module);
           }
-        }
+        },
       );
     }
 
@@ -97,7 +98,7 @@ export class TranslateCustomPipe
   private updateTranslation(
     query: string,
     translator: CustomTranslationService,
-    module: string
+    module: string,
   ) {
     const onTranslation = (res: string) => {
       this.value = res !== undefined ? res : query;
@@ -125,11 +126,9 @@ export function equals(o1: any, o2: any): boolean {
   if (o1 !== o1 && o2 !== o2) {
     return true;
   } // NaN === NaN
-  let t1 = typeof o1,
-    t2 = typeof o2,
-    length: number,
-    key: any,
-    keySet: any;
+  const t1 = typeof o1,
+    t2 = typeof o2;
+  let length: number, key: any, keySet: any;
   if (t1 == t2 && t1 == 'object') {
     if (Array.isArray(o1)) {
       if (!Array.isArray(o2)) {

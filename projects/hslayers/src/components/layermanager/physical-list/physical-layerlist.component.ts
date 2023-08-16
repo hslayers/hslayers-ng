@@ -1,5 +1,5 @@
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 
 import {Subscription} from 'rxjs';
 
@@ -13,12 +13,12 @@ import {HsLayerShiftingService} from '../../../common/layer-shifting/layer-shift
 })
 export class HsLayerPhysicalListComponent implements OnDestroy, OnInit {
   layerManagerUpdatesSubscription: Subscription;
-
   layerShiftingAppRef;
   constructor(
     private hsEventBusService: HsEventBusService,
-    private hsLayerShiftingService: HsLayerShiftingService
+    private hsLayerShiftingService: HsLayerShiftingService,
   ) {}
+
   ngOnInit(): void {
     this.layerShiftingAppRef = this.hsLayerShiftingService;
     this.hsLayerShiftingService.fillLayers();
@@ -27,7 +27,7 @@ export class HsLayerPhysicalListComponent implements OnDestroy, OnInit {
         this.hsLayerShiftingService.fillLayers();
         if (layer !== undefined) {
           const layerFound = this.hsLayerShiftingService.layersCopy.find(
-            (wrapper) => wrapper.layer == layer
+            (wrapper) => wrapper.layer == layer,
           );
           if (layerFound !== undefined) {
             layerFound.active = true;
@@ -39,6 +39,7 @@ export class HsLayerPhysicalListComponent implements OnDestroy, OnInit {
   ngOnDestroy(): void {
     this.layerManagerUpdatesSubscription.unsubscribe();
   }
+
   drop(event: CdkDragDrop<any[]>): void {
     const draggedLayer = event.container.data[event.previousIndex];
     const replacedLayer = event.container.data[event.currentIndex];
@@ -46,7 +47,7 @@ export class HsLayerPhysicalListComponent implements OnDestroy, OnInit {
     moveItemInArray(
       this.layerShiftingAppRef.layersCopy,
       event.previousIndex,
-      event.currentIndex
+      event.currentIndex,
     );
 
     this.hsLayerShiftingService.moveTo(draggedLayer, replacedLayer.layer);

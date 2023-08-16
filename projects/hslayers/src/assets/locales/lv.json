@@ -296,7 +296,7 @@
     "addByAddress": "Pievienot kompozīciju pēc adreses",
     "Address": "Adrese",
     "clearFilters": "Notīrīt filtrus",
-    "compostionsNameAttributeIsNotDefined": "Kompozīcijas nosaukums nav definēts!",
+    "compositionsNameAttributeIsNotDefined": "Kompozīcijas nosaukums nav definēts!",
     "dialogDelete": {
       "doYouWantToDeleteMap": "Vai vēlaties dzēst karti?"
     },

@@ -14,22 +14,24 @@ import {
   WebMercatorProjection,
   createWorldTerrain,
 } from 'cesium';
-import {HsCesiumCameraService} from './hscesium-camera.service';
-import {HsCesiumLayersService} from './hscesium-layers.service';
-import {HsCesiumTimeService} from './hscesium-time.service';
+import {Subject} from 'rxjs';
+
 import {
   HsEventBusService,
   HsLayerManagerService,
   HsLayoutService,
+  HsLogService,
   HsMapService,
   HsQueryPopupComponent,
   HsUtilsService,
 } from 'hslayers-ng';
-import {Subject} from 'rxjs';
 
+import {HsCesiumCameraService} from './hscesium-camera.service';
 import {HsCesiumConfig} from './hscesium-config.service';
+import {HsCesiumLayersService} from './hscesium-layers.service';
 import {HsCesiumPickerService} from './picker.service';
 import {HsCesiumQueryPopupService} from './query-popup.service';
+import {HsCesiumTimeService} from './hscesium-time.service';
 
 @Injectable({
   providedIn: 'root',
@@ -43,6 +45,7 @@ export class HsCesiumService {
     public HsMapService: HsMapService,
     public HsLayermanagerService: HsLayerManagerService,
     public HsLayoutService: HsLayoutService,
+    private hsLog: HsLogService,
     public HsCesiumCameraService: HsCesiumCameraService,
     public HsCesiumLayersService: HsCesiumLayersService,
     public HsCesiumTimeService: HsCesiumTimeService,
@@ -50,12 +53,12 @@ export class HsCesiumService {
     public HsUtilsService: HsUtilsService,
     public HsCesiumConfig: HsCesiumConfig,
     private HsCesiumPicker: HsCesiumPickerService,
-    private hsCesiumQueryPopupService: HsCesiumQueryPopupService
+    private hsCesiumQueryPopupService: HsCesiumQueryPopupService,
   ) {}
 
   /**
-   * @public
    * Initializes Cesium map
+   * @public
    */
   init() {
     this.checkForBingKey();
@@ -67,8 +70,8 @@ export class HsCesiumService {
         this.HsCesiumConfig.cesiumAccessToken ||
         'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiIzZDk3ZmM0Mi01ZGFjLTRmYjQtYmFkNC02NTUwOTFhZjNlZjMiLCJpZCI6MTE2MSwiaWF0IjoxNTI3MTYxOTc5fQ.tOVBzBJjR3mwO3osvDVB_RwxyLX7W-emymTOkfz6yGA';
       if (!this.HsCesiumConfig.cesiumBase) {
-        console.error(
-          'Please set HsCesiumConfig.get().cesiumBase to the directory where cesium assets will be copied to'
+        this.hsLog.error(
+          'Please set HsCesiumConfig.get().cesiumBase to the directory where cesium assets will be copied to',
         );
       }
       (<any>window).CESIUM_BASE_URL = this.HsCesiumConfig.cesiumBase;
@@ -77,7 +80,7 @@ export class HsCesiumService {
         createWorldTerrain(this.HsCesiumConfig.createWorldTerrainOptions);
       if (this.HsCesiumConfig.newTerrainProviderOptions) {
         terrain_provider = new CesiumTerrainProvider(
-          this.HsCesiumConfig.newTerrainProviderOptions
+          this.HsCesiumConfig.newTerrainProviderOptions,
         );
       }
 
@@ -86,7 +89,7 @@ export class HsCesiumService {
         Camera.DEFAULT_VIEW_RECTANGLE = defaultViewport.rectangle;
         Camera.DEFAULT_VIEW_FACTOR = defaultViewport.viewFactor;
       } else {
-        console.error('Please set HsConfig.default_view');
+        this.hsLog.error('Please set HsConfig.default_view');
       }
 
       //TODO: research if this must be used or ignored
@@ -98,7 +101,7 @@ export class HsCesiumService {
 
       const viewer = new Viewer(
         this.HsLayoutService.contentWrapper.querySelector(
-          '.hs-cesium-container'
+          '.hs-cesium-container',
         ),
         {
           timeline: this.HsCesiumConfig.cesiumTimeline
@@ -132,7 +135,7 @@ export class HsCesiumService {
           shadows: this.getShadowMode(),
           scene3DOnly: true,
           sceneModePicker: false,
-        }
+        },
       );
 
       viewer.scene.debugShowFramesPerSecond = this.HsCesiumConfig
@@ -199,7 +202,7 @@ export class HsCesiumService {
           destination: Cartesian3.fromDegrees(
             data.coordinate[0],
             data.coordinate[1],
-            15000.0
+            15000.0,
           ),
         });
       });
@@ -223,7 +226,7 @@ export class HsCesiumService {
 
       this.HsEventBusService.cesiumLoads.next({viewer: viewer, service: this});
     } catch (ex) {
-      console.error(ex);
+      this.hsLog.error(ex);
     }
   }
 
@@ -244,7 +247,7 @@ export class HsCesiumService {
   linkOlLayerToCesiumLayer(ol_layer, cesium_layer) {
     return this.HsCesiumLayersService.linkOlLayerToCesiumLayer(
       ol_layer,
-      cesium_layer
+      cesium_layer,
     );
   }
 
@@ -260,7 +263,7 @@ export class HsCesiumService {
     this.HsCesiumLayersService.changeLayerParam(
       layer,
       dimension.name,
-      dimension.value
+      dimension.value,
     );
     this.HsCesiumLayersService.removeLayersWithOldParams();
   }
@@ -270,11 +273,11 @@ export class HsCesiumService {
       return;
     }
     this.HsLayoutService.contentWrapper.querySelector(
-      '.hs-cesium-container'
+      '.hs-cesium-container',
     ).style.height = size.height + 'px';
     const timelineElement = <HTMLElement>(
       this.HsLayoutService.layoutElement.querySelector(
-        '.cesium-viewer-timelineContainer'
+        '.cesium-viewer-timelineContainer',
       )
     );
     if (timelineElement) {
@@ -285,7 +288,7 @@ export class HsCesiumService {
     ) {
       const bottomElement = <HTMLElement>(
         this.HsLayoutService.layoutElement.querySelector(
-          '.cesium-viewer-bottom'
+          '.cesium-viewer-bottom',
         )
       );
       if (timelineElement) {
@@ -302,9 +305,6 @@ export class HsCesiumService {
   }
 }
 
-/**
- * @param file -
- */
 function loadSkyBoxSide(file) {
   return `${(<any>window).CESIUM_BASE_URL}Assets/Textures/SkyBox/${file}`;
 }

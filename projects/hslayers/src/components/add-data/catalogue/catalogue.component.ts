@@ -1,16 +1,11 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 
-import {DatasetType} from '../add-data.service';
 import {HsAddDataCatalogueMapService} from './catalogue-map.service';
-import {
-  HsAddDataCatalogueParams,
-  HsAddDataCatalogueService,
-} from './catalogue.service';
+import {HsAddDataCatalogueService} from './catalogue.service';
 import {HsAddDataLayerDescriptor} from './layer-descriptor.model';
 import {HsCommonLaymanService} from '../../../common/layman/layman.service';
-import {HsConfig, HsConfigObject} from '../../../config.service';
+import {HsConfig} from '../../../config.service';
 import {HsCoreService} from '../../core/core.service';
-import {HsEndpoint} from '../../../common/endpoints/endpoint.interface';
 import {HsLanguageService} from '../../language/language.service';
 import {HsLaymanService} from '../../save-map/layman.service';
 import {HsLayoutService} from '../../layout/layout.service';
@@ -33,17 +28,18 @@ export class HsAddDataCatalogueComponent implements OnInit {
   optionsButtonLabel = 'more';
   constructor(
     public hsLanguageService: HsLanguageService,
-    public hsConfig: HsConfig, //Used in template
-    public hsCore: HsCoreService, //Used in template
+    public hsConfig: HsConfig,
+    public hsCore: HsCoreService,
     public hsAddDataCatalogueService: HsAddDataCatalogueService,
-    public hsAddDataCatalogueMapService: HsAddDataCatalogueMapService, //Used in template
+    public hsAddDataCatalogueMapService: HsAddDataCatalogueMapService,
     public hsLayoutService: HsLayoutService,
     public hsUtilsService: HsUtilsService,
-    public hsLaymanService: HsLaymanService, //Used in template
+    public hsLaymanService: HsLaymanService,
     public hsCommonLaymanService: HsCommonLaymanService,
   ) {
     this.advancedSearch = false;
   }
+
   ngOnInit(): void {
     this.data = this.hsAddDataCatalogueService.data;
   }

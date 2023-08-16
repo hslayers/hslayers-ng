@@ -28,7 +28,7 @@ export class HsAddDataUrlService {
     public hsLanguageService: HsLanguageService,
     public hsLayoutService: HsLayoutService,
     private hsMapService: HsMapService,
-    private hsToastService: HsToastService
+    private hsToastService: HsToastService,
   ) {}
 
   /**
@@ -40,7 +40,7 @@ export class HsAddDataUrlService {
   selectLayerByName(
     layerToSelect: string,
     services,
-    selector: 'Title' | 'Name'
+    selector: 'Title' | 'Name',
   ): any {
     if (!layerToSelect) {
       return;
@@ -51,7 +51,7 @@ export class HsAddDataUrlService {
         selectedLayer = this.selectSubLayerByName(
           layerToSelect,
           serviceLayer,
-          selector
+          selector,
         );
         if (selectedLayer && serviceLayer[selector] == layerToSelect) {
           return selectedLayer;
@@ -68,21 +68,21 @@ export class HsAddDataUrlService {
   private selectSubLayerByName(
     layerToSelect: string,
     serviceLayer,
-    selector: 'Title' | 'Name'
+    selector: 'Title' | 'Name',
   ): any {
     let selectedLayer;
     if (serviceLayer.Layer && serviceLayer[selector] != layerToSelect) {
       selectedLayer = this.selectLayerByName(
         layerToSelect,
         serviceLayer.Layer,
-        selector
+        selector,
       );
     }
     if (serviceLayer[selector] == layerToSelect) {
       selectedLayer = this.setLayerCheckedTrue(
         layerToSelect,
         serviceLayer,
-        selector
+        selector,
       );
     }
     return selectedLayer;
@@ -95,7 +95,7 @@ export class HsAddDataUrlService {
   private setLayerCheckedTrue(
     layerToSelect: string,
     serviceLayer,
-    selector: 'Title' | 'Name'
+    selector: 'Title' | 'Name',
   ): any {
     if (serviceLayer[selector] == layerToSelect) {
       serviceLayer.checked = true;
@@ -126,7 +126,7 @@ export class HsAddDataUrlService {
         {
           serviceCalledFrom: 'HsAddDataUrlService',
           toastStyleClasses: 'bg-warning text-white',
-        }
+        },
       );
       return undefined;
     }

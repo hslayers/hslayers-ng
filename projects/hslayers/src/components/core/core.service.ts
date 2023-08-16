@@ -140,7 +140,7 @@ export class HsCoreService {
         this.HsLayoutService.sidebarLabels = true;
       }
     } else {
-      console.log('Map not yet initialized!');
+      this.log.log('Map not yet initialized!');
     }
     const neededSize = {
       width: map.offsetWidth,

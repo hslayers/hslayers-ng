@@ -25,7 +25,7 @@ export class HsAddDataCommonService {
     public hsToastService: HsToastService,
     public hsAddDataService: HsAddDataService,
     public hsDimensionService: HsDimensionService,
-    public hsEventBusService: HsEventBusService
+    public hsEventBusService: HsEventBusService,
   ) {
     this.hsAddDataService.cancelUrlRequest.subscribe(() => {
       this.clearParams();
@@ -74,7 +74,7 @@ export class HsAddDataCommonService {
       this.hsToastService.createToastPopupMessage(
         'ADDLAYERS.capabilitiesParsingProblem',
         'ADDLAYERS.unauthorizedAccess',
-        {serviceCalledFrom: 'HsAddDataCommonUrlService'}
+        {serviceCalledFrom: 'HsAddDataCommonUrlService'},
       );
     } else {
       this.hsAddDataUrlService.addDataCapsParsingError.next(e);
@@ -140,7 +140,7 @@ export class HsAddDataCommonService {
         } else {
           if (layer.Layer) {
             baseName = baseName.concat(
-              this.createBasemapName(layer.Layer, property)
+              this.createBasemapName(layer.Layer, property),
             );
           }
         }

@@ -6,7 +6,6 @@ import {Vector as VectorSource} from 'ol/source';
 
 import {HsConfig} from '../../config.service';
 import {HsFeatureTableService} from './feature-table.service';
-import {HsLanguageService} from '../language/language.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsMapService} from './../map/map.service';
 import {HsPanelBaseComponent} from '../layout/panels/panel-base.component';
@@ -26,36 +25,32 @@ export class HsFeatureTableComponent
     private hsFeatureTableService: HsFeatureTableService,
     private hsConfig: HsConfig,
     private hsMapService: HsMapService,
-    hsLayoutService: HsLayoutService,
-    private hsLanguageService: HsLanguageService,
-    private hsSidebarService: HsSidebarService
+    public hsLayoutService: HsLayoutService,
+    private hsSidebarService: HsSidebarService,
   ) {
     super(hsLayoutService);
   }
+
   ngOnInit(): void {
-    this.hsSidebarService.addButton(
-      {
-        panel: 'feature_table',
-        module: 'hs.feature-table',
-        order: 14,
-        fits: true,
-        title: 'PANEL_HEADER.FEATURE_TABLE',
-        description: 'SIDEBAR.descriptions.FEATURE_TABLE',
-        icon: 'icon-indexmanager',
-      },
-      
-    );
+    this.hsSidebarService.addButton({
+      panel: 'feature_table',
+      module: 'hs.feature-table',
+      order: 14,
+      fits: true,
+      title: 'PANEL_HEADER.FEATURE_TABLE',
+      description: 'SIDEBAR.descriptions.FEATURE_TABLE',
+      icon: 'icon-indexmanager',
+    });
     this.hsMapService.loaded().then(() => {
-      for (const layer of this.hsConfig
-        .layersInFeatureTable || []) {
+      for (const layer of this.hsConfig.layersInFeatureTable || []) {
         this.addLayerToTable(layer);
       }
     });
   }
 
   /**
-   * @param layer - Layer to add
    * Add layer to feature description table
+   * @param layer - Layer to add
    */
   addLayerToTable(layer: VectorLayer<VectorSource<Geometry>>): void {
     const layerDescriptor = this.hsFeatureTableService.addLayer(layer);

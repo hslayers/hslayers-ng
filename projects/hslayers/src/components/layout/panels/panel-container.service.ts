@@ -17,6 +17,7 @@ export class HsPanelContainerService
   panelDestroyObserver: Subject<any> = new Subject();
 
   constructor() {}
+
   /**
    * Create new dynamic panels. They are replayed in the PanelContainerComponent
    * in case of race conditions existing where panels are created before the
@@ -28,13 +29,13 @@ export class HsPanelContainerService
   create(
     component: Type<any>,
     data: any,
-    panelObserver?: ReplaySubject<HsPanelItem>
+    panelObserver?: ReplaySubject<HsPanelItem>,
   ): void {
     if (data === undefined) {
       data = {};
     }
     (panelObserver ?? this.panelObserver).next(
-      new HsPanelItem(component, data)
+      new HsPanelItem(component, data),
     );
   }
 
@@ -61,7 +62,7 @@ export class HsPanelContainerService
    */
   setPanelWidth(
     panelWidths: KeyNumberDict,
-    componentRefInstance: HsPanelComponent
+    componentRefInstance: HsPanelComponent,
   ): void {
     if (componentRefInstance === undefined) {
       return;

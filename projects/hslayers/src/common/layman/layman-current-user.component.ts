@@ -28,7 +28,7 @@ export class HsLaymanCurrentUserComponent implements OnInit {
   constructor(
     public HsCommonLaymanService: HsCommonLaymanService,
     public HsDialogContainerService: HsDialogContainerService,
-    private hsCommonEndpointsService: HsCommonEndpointsService
+    private hsCommonEndpointsService: HsCommonEndpointsService,
   ) {}
 
   ngOnInit(): void {
@@ -39,7 +39,7 @@ export class HsLaymanCurrentUserComponent implements OnInit {
           this.endpoint = layman;
           return this.endpoint?.type === 'layman';
         }
-      })
+      }),
     );
   }
 
@@ -82,7 +82,7 @@ export class HsLaymanCurrentUserComponent implements OnInit {
             clearTimeout(this.getCurrentUserTimer);
             this.monitorTries = this.MAX_MONITOR_TRIES;
           }
-        }
+        },
       );
       this.monitorTries++;
       if (this.monitorTries > this.MAX_MONITOR_TRIES) {

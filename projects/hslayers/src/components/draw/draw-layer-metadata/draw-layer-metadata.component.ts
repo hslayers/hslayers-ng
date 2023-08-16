@@ -25,7 +25,8 @@ import {
   templateUrl: './draw-layer-metadata.html',
 })
 export class HsDrawLayerMetadataDialogComponent
-  implements HsDialogComponent, OnInit {
+  implements HsDialogComponent, OnInit
+{
   @Input() data: {
     service: HsDrawService;
   };
@@ -46,7 +47,7 @@ export class HsDrawLayerMetadataDialogComponent
   tmpFeatures: any;
   constructor(
     public HsMapService: HsMapService,
-    public HsDialogContainerService: HsDialogContainerService
+    public HsDialogContainerService: HsDialogContainerService,
   ) {}
 
   viewRef: ViewRef;

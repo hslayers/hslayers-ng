@@ -18,7 +18,7 @@ export class HsLegendLayerStaticComponent implements OnInit {
     if (getLegends(this.layer.lyr)) {
       Object.assign(
         this.layerLegend,
-        this.hsLegendLayerStaticService.fillContent(this.layer.lyr)
+        this.hsLegendLayerStaticService.fillContent(this.layer.lyr),
       );
     }
     this.layer.lyr.on('change', (e) => {

@@ -17,7 +17,7 @@ export class HsSelectIconDialogComponent implements HsDialogComponent {
 
   constructor(
     private hsDialogContainerService: HsDialogContainerService,
-    public hsConfig: HsConfig
+    public hsConfig: HsConfig,
   ) {}
 
   cancel(): void {

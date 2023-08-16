@@ -23,13 +23,13 @@ export class HsFileRasterComponent
     public hsAddDataCommonService: HsAddDataCommonService,
     public hsAddDataCommonFileService: HsAddDataCommonFileService,
     public hsLayoutService: HsLayoutService,
-    public hsConfig: HsConfig
+    public hsConfig: HsConfig,
   ) {
     super(
       hsAddDataCommonService,
       hsAddDataCommonFileService,
       hsLayoutService,
-      hsConfig
+      hsConfig,
     );
   }
   ngOnInit(): void {

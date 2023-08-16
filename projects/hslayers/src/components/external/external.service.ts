@@ -1,12 +1,11 @@
 import {Injectable} from '@angular/core';
 
 import BaseLayer from 'ol/layer/Base';
-import Feature from 'ol/Feature';
+import {Feature} from 'ol';
 import {Geometry} from 'ol/geom';
 import {Layer} from 'ol/layer';
 import {ObjectEvent} from 'ol/Object';
-import {Source} from 'ol/source';
-import {Vector as VectorSource} from 'ol/source';
+import {Source, Vector as VectorSource} from 'ol/source';
 import {buffer, getCenter} from 'ol/extent';
 
 import {DOMFeatureLink} from '../../common/dom-feature-link.type';
@@ -45,7 +44,7 @@ export class HsExternalService {
     private hsQueryPopupService: HsQueryPopupService,
     private hsQueryBaseService: HsQueryBaseService,
     private hsQueryVectorService: HsQueryVectorService,
-    private hsLayoutService: HsLayoutService
+    private hsLayoutService: HsLayoutService,
   ) {
     this.hsMapService.loaded().then((map) => {
       for (const layer of map.getLayers().getArray()) {
@@ -78,7 +77,7 @@ export class HsExternalService {
           this.layerPropChanged(e),
           100,
           false,
-          this
+          this,
         );
       });
     }
@@ -101,12 +100,12 @@ export class HsExternalService {
         if (feature.getId() === undefined) {
           feature.setId(this.hsUtilsService.generateUuid());
         }
-        //We dont want to add handlers with the same feature and domElement twice
+        //We don't want to add handlers with the same feature and domElement twice
         if (
           feature &&
           (!this.featureLinks[feature.getId()] ||
             !this.featureLinks[feature.getId()].domElements.includes(
-              domElement
+              domElement,
             ))
         ) {
           const featureId = feature.getId();
@@ -162,7 +161,7 @@ export class HsExternalService {
       | ((feature: Feature<Geometry>, domElement: Element, event: any) => any),
     feature: any,
     domElement: Element,
-    e: Event
+    e: Event,
   ) {
     if (!this.hsMapService.getLayerForFeature(feature)?.getVisible()) {
       return;
@@ -207,7 +206,7 @@ export class HsExternalService {
     layer: Layer<Source>,
     source: VectorSource<Geometry>,
     link: DOMFeatureLink,
-    domElement: Element
+    domElement: Element,
   ): Feature<Geometry> {
     if (typeof link.feature == 'string' || typeof link.feature == 'number') {
       return source.getFeatureById(link.feature);

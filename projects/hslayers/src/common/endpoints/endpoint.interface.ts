@@ -49,9 +49,9 @@ export interface HsEndpoint {
   };
   /**
    * Examples:
-   *  onError: {compositionLoad: {handle: (e)=>{alert(e.message)}}},
-   *  onError: onError: {compositionLoad: EndpointErrorHandling.ignore},
-   *  onError: onError: {compositionLoad: EndpointErrorHandling.toast}, //Default
+   *  onError: \{compositionLoad: \{handle: (e)=\>\{alert(e.message)\}\}\},
+   *  onError: onError: \{compositionLoad: EndpointErrorHandling.ignore\},
+   *  onError: onError: \{compositionLoad: EndpointErrorHandling.toast\}, //Default
    */
   onError?: {
     compositionLoad?: EndpointErrorHandling | EndpointErrorHandler;

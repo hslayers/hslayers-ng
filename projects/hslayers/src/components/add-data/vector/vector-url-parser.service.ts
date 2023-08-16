@@ -11,7 +11,7 @@ export class HsVectorUrlParserService {
   constructor(
     public hsMapService: HsMapService,
     public hsShareUrlService: HsShareUrlService,
-    public hsAddDataVectorService: HsAddDataVectorService
+    public hsAddDataVectorService: HsAddDataVectorService,
   ) {
     this.hsMapService.loaded().then((map) => {
       this.checkUrlParamsAndAdd();
@@ -23,7 +23,7 @@ export class HsVectorUrlParserService {
       decodeURIComponent(this.HsShareUrlService.getParamValue('title')) ||
       'Layer';
     const abstract = decodeURIComponent(
-      this.HsShareUrlService.getParamValue('abstract')
+      this.HsShareUrlService.getParamValue('abstract'),
     );
 
     if (this.HsShareUrlService.getParamValue('geojson_to_connect')) {
@@ -41,7 +41,7 @@ export class HsVectorUrlParserService {
         title,
         title,
         abstract,
-        'EPSG:4326'
+        'EPSG:4326',
       );
       this.HsAddDataVectorService.fitExtent(lyr);
     }
@@ -55,7 +55,7 @@ export class HsVectorUrlParserService {
         title,
         abstract,
         'EPSG:4326',
-        {extractStyles: true}
+        {extractStyles: true},
       );
       this.HsAddDataVectorService.fitExtent(lyr);
     }

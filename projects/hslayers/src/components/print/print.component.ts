@@ -1,6 +1,5 @@
 import {Component, OnInit} from '@angular/core';
 
-import {HsConfig} from '../../config.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsPanelBaseComponent} from '../layout/panels/panel-base.component';
 import {HsPrintLegendService} from './print-legend.service';
@@ -27,12 +26,11 @@ export class HsPrintComponent extends HsPanelBaseComponent implements OnInit {
 
   constructor(
     HsLayoutService: HsLayoutService,
-    private hsConfig: HsConfig,
     private hsSidebarService: HsSidebarService,
     public hsUtilsService: HsUtilsService,
     private hsPrintService: HsPrintService,
     private hsPrintScaleService: HsPrintScaleService,
-    private hsPrintLegendService: HsPrintLegendService
+    private hsPrintLegendService: HsPrintLegendService,
   ) {
     super(HsLayoutService);
   }

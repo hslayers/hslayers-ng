@@ -38,7 +38,7 @@ export class HsFeatureInfoComponent
   constructor(
     private hsLanguageService: HsLanguageService,
     private hsQueryVectorService: HsQueryVectorService,
-    private hsDialogContainerService: HsDialogContainerService
+    private hsDialogContainerService: HsDialogContainerService,
   ) {
     super();
   }
@@ -72,7 +72,7 @@ export class HsFeatureInfoComponent
     }
     return this.hsLanguageService.getTranslation(
       'QUERY.untitledFeature',
-      undefined
+      undefined,
     );
   }
 
@@ -86,13 +86,13 @@ export class HsFeatureInfoComponent
       {
         message: this.hsLanguageService.getTranslation(
           'QUERY.reallyDelete',
-          undefined
+          undefined,
         ),
         title: this.hsLanguageService.getTranslation(
           'QUERY.confirmDelete',
-          undefined
+          undefined,
         ),
-      }
+      },
     );
     const confirmed = await dialog.waitResult();
     if (confirmed == 'yes') {
@@ -138,7 +138,7 @@ export class HsFeatureInfoComponent
     return this.hsLanguageService.getTranslationIgnoreNonExisting(
       module,
       text,
-      undefined
+      undefined,
     );
   }
 }

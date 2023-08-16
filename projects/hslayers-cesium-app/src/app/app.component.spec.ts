@@ -36,7 +36,7 @@ describe('AppComponent', () => {
     fixture.detectChanges();
     const compiled = fixture.nativeElement;
     expect(compiled.querySelector('.content span').textContent).toContain(
-      'hslayers-workspace app is running!'
+      'hslayers-workspace app is running!',
     );
   });
 });

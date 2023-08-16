@@ -6,6 +6,7 @@ import {
 } from '@angular/common';
 import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
 import {FormsModule} from '@angular/forms';
+
 import {HsLanguageModule} from '../language/language.module';
 import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
 import {HsShareComponent} from './share.component';

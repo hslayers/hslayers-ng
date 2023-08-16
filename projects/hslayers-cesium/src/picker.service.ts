@@ -25,7 +25,7 @@ export class HsCesiumPickerService {
     private HsCesiumQueryPopupService: HsCesiumQueryPopupService,
     private HsMapService: HsMapService,
     private hsConfig: HsConfig,
-    private hsUtilsService: HsUtilsService
+    private hsUtilsService: HsUtilsService,
   ) {}
 
   init(viewer: Viewer) {
@@ -41,15 +41,15 @@ export class HsCesiumPickerService {
 
     handler.setInputAction(
       (movement) => this.handleScreenInteraction(movement, 'left'),
-      ScreenSpaceEventType.LEFT_DOWN || ScreenSpaceEventType.RIGHT_DOWN
+      ScreenSpaceEventType.LEFT_DOWN || ScreenSpaceEventType.RIGHT_DOWN,
     );
     handler.setInputAction(
       (movement) => this.handleScreenInteraction(movement, 'right'),
-      ScreenSpaceEventType.RIGHT_DOWN
+      ScreenSpaceEventType.RIGHT_DOWN,
     );
     handler.setInputAction(
       (movement) => this.handleScreenInteraction(movement, 'left'),
-      ScreenSpaceEventType.LEFT_DOUBLE_CLICK
+      ScreenSpaceEventType.LEFT_DOUBLE_CLICK,
     );
     handler.setInputAction((movement) => {
       if (this.hsConfig.popUpDisplay === 'hover') {
@@ -57,14 +57,12 @@ export class HsCesiumPickerService {
           this.handleScreenInteraction,
           200,
           false,
-          this
+          this,
         )({position: movement.endPosition}, 'none');
       }
     }, ScreenSpaceEventType.MOUSE_MOVE);
   }
-  /**
-   * @param movement -
-   */
+
   handleScreenInteraction(movement, button: 'left' | 'right' | 'none') {
     const pickRay = this.viewer.camera.getPickRay(movement.position);
     const pickedObject = this.viewer.scene.pick(movement.position);
@@ -92,7 +90,7 @@ export class HsCesiumPickerService {
       }
       this.HsCesiumQueryPopupService.fillFeatures([
         this.HsMapService.getFeatureById(
-          (pickedObject.id as Entity).properties.HsCesiumFeatureId.getValue()
+          (pickedObject.id as Entity).properties.HsCesiumFeatureId.getValue(),
         ),
       ]);
       this.HsCesiumQueryPopupService.showPopup({pixel: movement.position});

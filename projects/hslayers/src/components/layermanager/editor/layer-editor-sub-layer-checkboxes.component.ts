@@ -1,4 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
+
 import {HsConfig} from '../../../config.service';
 import {
   HsLayerEditorSublayerService,
@@ -19,7 +20,7 @@ export class HsLayerEditorSubLayerCheckboxesComponent implements OnInit {
   constructor(
     public HsLayerEditorSublayerService: HsLayerEditorSublayerService,
     public HsLayerManagerService: HsLayerManagerService,
-    private hsConfig: HsConfig
+    private hsConfig: HsConfig,
   ) {}
 
   ngOnInit() {
@@ -41,9 +42,9 @@ export class HsLayerEditorSubLayerCheckboxesComponent implements OnInit {
   }
 
   /**
-   * @description Controls state of layer´s sublayers manipulated by input checkboxes
-   * @param {object} sublayer Selected sublayer
-   * @param {object} state New state of sublayer
+   * Controls state of layer´s sublayers manipulated by input checkboxes
+   * @param sublayer - Selected sublayer
+   * @param state - New state of sublayer
    */
   subLayerSelected(sublayer?, state?) {
     //TODO: Check if this works where subLayerSelected() is called from template. The second 'if' might fail

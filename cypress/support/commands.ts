@@ -47,11 +47,11 @@ declare namespace Cypress {
   interface Chainable {
     getBySel(
       dataTestAttribute: string,
-      args?: any
+      args?: any,
     ): Chainable<JQuery<HTMLElement>>;
     getBySelLike(
       dataTestPrefixAttribute: string,
-      args?: any
+      args?: any,
     ): Chainable<JQuery<HTMLElement>>;
   }
 }

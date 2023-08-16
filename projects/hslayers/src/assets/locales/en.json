@@ -312,7 +312,7 @@
     "addByAddress": "Add composition by address",
     "Address": "Address",
     "clearFilters": "Clear all filters",
-    "compostionsNameAttributeIsNotDefined": "Compositions name attribute is not defined!",
+    "compositionsNameAttributeIsNotDefined": "Compositions name attribute is not defined!",
     "dialogDelete": {
       "doYouWantToDeleteMap": "Do you want to delete map?"
     },

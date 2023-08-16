@@ -2,6 +2,7 @@ import Feature from 'ol/Feature';
 import {Geometry} from 'ol/geom';
 import {fromExtent as polygonFromExtent} from 'ol/geom/Polygon';
 import {transform} from 'ol/proj';
+
 import {generateUuid} from '../components/utils/utils.service';
 
 /**
@@ -11,7 +12,7 @@ import {generateUuid} from '../components/utils/utils.service';
  */
 export function addExtentFeature(
   record,
-  mapProjection
+  mapProjection,
 ): Feature<Geometry> | undefined {
   const attributes = {
     hs_notqueryable: true,
@@ -23,14 +24,14 @@ export function addExtentFeature(
   let mapExtent = mapProjection.getExtent();
   if (mapExtent === null) {
     console.warn(
-      'Map projection extent not found - fallback value used. To prevent unexpected results of app functionalities define it by yourself. Eg. mapExtent.setExtent([extent])'
+      'Map projection extent not found - fallback value used. To prevent unexpected results of app functionalities define it by yourself. Eg. mapExtent.setExtent([extent])',
     );
     mapProjection.setExtent(
       transformExtentValue(
         parseExtent([-180, -90, 180, 90]),
         mapProjection,
-        true
-      )
+        true,
+      ),
     );
     mapExtent = mapProjection.getExtent();
   }
@@ -56,7 +57,7 @@ export function addExtentFeature(
 export function transformExtentValue(
   pairs: number[][],
   mapProjection,
-  disableTransform?: boolean
+  disableTransform?: boolean,
 ): number[] {
   if (!pairs) {
     return;

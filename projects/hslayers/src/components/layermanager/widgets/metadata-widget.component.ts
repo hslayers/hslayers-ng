@@ -20,8 +20,8 @@ export class HsMetadataWidgetComponent extends HsLayerEditorWidgetBaseComponent 
   constructor(
     public HsLanguageService: HsLanguageService,
     hsLayerSelectorService: HsLayerSelectorService,
-    public metadataService: HsLayerManagerMetadataService, // Used in template
-    public HsLayerManagerService: HsLayerManagerService
+    public metadataService: HsLayerManagerMetadataService,
+    public HsLayerManagerService: HsLayerManagerService,
   ) {
     super(hsLayerSelectorService);
   }

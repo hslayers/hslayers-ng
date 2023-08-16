@@ -10,9 +10,9 @@ if (environment.production) {
 
 setTimeout(() => {
   const platform = platformBrowserDynamic();
-  const hslayerApps = document.querySelectorAll('hslayers-app');
+  const hslayersApps = document.querySelectorAll('hslayers-app');
 
-  hslayerApps.forEach(() => {
+  hslayersApps.forEach(() => {
     const bootstrap = () => platform.bootstrapModule(AppModule);
     bootstrap().catch((err) => console.log('bootstrap', err));
   });

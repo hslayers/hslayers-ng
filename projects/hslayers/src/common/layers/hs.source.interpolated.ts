@@ -1,12 +1,12 @@
 import IDW from 'ol-ext/source/IDW';
-import {Vector as VectorSource} from 'ol/source';
-import {LoadingStrategy} from 'ol/source/Vector';
 import colormap from 'colormap';
 import {Feature} from 'ol';
 import {GeoJSON} from 'ol/format';
 import {Geometry} from 'ol/geom';
+import {LoadingStrategy} from 'ol/source/Vector';
 import {Projection} from 'ol/proj';
 import {Subject} from 'rxjs';
+import {Vector as VectorSource} from 'ol/source';
 import {containsExtent, equals} from 'ol/extent';
 
 export const NORMALIZED_WEIGHT_PROPERTY_NAME = 'hs_normalized_IDW_value';
@@ -46,7 +46,7 @@ export class InterpolatedSource extends IDW {
                   //Delete cached extents which contain this extent because they have their feature counts limited
                   (cachedExt) =>
                     !equals(cachedExt, extent) &&
-                    containsExtent(cachedExt, extent)
+                    containsExtent(cachedExt, extent),
                 );
                 for (const extToRemove of toRemove) {
                   super.getSource().removeLoadedExtent(extToRemove);
@@ -63,7 +63,7 @@ export class InterpolatedSource extends IDW {
                 success,
                 failure,
               }),
-              extent
+              extent,
             );
           }
         },
@@ -159,7 +159,7 @@ export class InterpolatedSource extends IDW {
       src.clear();
       const limitInExt = this.options.maxFeaturesInExtent ?? Number.MAX_VALUE;
       src.addFeatures(
-        this.featureCache.getFeaturesInExtent(extent).slice(0, limitInExt)
+        this.featureCache.getFeaturesInExtent(extent).slice(0, limitInExt),
       );
     } else {
       src.addFeatures(features);
@@ -175,7 +175,7 @@ export class InterpolatedSource extends IDW {
     if (collection?.features?.length > 0) {
       const dataProj = (collection.crs || collection.srs) ?? 'EPSG:4326';
       collection.features = collection.features.filter(
-        (f) => !this.geoJSONFeatures.includes(f)
+        (f) => !this.geoJSONFeatures.includes(f),
       );
       this.geoJSONFeatures = this.geoJSONFeatures.concat(collection.features);
       collection.features = new GeoJSON().readFeatures(collection, {
@@ -241,8 +241,8 @@ export class InterpolatedSource extends IDW {
 /**
  * Gets predefined colorMap array based on name and number of shades.
  * If you want to reverse defined color map add '-reverse' to the map name
- * @param name Predefined color map name [https://github.com/bpostlethwaite/colormap]
- * @param nshades Number of shades [default = 100]
+ * @param name - Predefined color map name [https://github.com/bpostlethwaite/colormap]
+ * @param nshades - Number of shades [default = 100]
  * @returns Array of colors
  */
 function generateColormap(name: string, nshades: number = 100): number[] {
@@ -288,7 +288,7 @@ function getColorMap(mapName: string): (v: number) => number | number[] {
  * @param options
  */
 function getColorMapFromOptions(
-  options: InterpolatedSourceOptions
+  options: InterpolatedSourceOptions,
 ): (v: number) => number | number[] {
   let getColor;
   if (typeof options.colorMap == 'string') {

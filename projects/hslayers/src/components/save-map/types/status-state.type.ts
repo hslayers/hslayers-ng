@@ -5,4 +5,4 @@ export const StateValues = [
   'NOT_AVAILABLE',
 ] as const;
 
-export type StatusStateType = typeof StateValues[number];
+export type StatusStateType = (typeof StateValues)[number];

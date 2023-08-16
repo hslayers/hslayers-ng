@@ -26,13 +26,13 @@ export class HsQueryPopupService
     public zone: NgZone,
     private HsQueryBaseService: HsQueryBaseService,
     public hsQueryPopupWidgetContainerService: HsQueryPopupWidgetContainerService,
-    private hsQueryVectorService: HsQueryVectorService
+    private hsQueryVectorService: HsQueryVectorService,
   ) {
     super(
       hsMapService,
       hsUtilsService,
       zone,
-      hsQueryPopupWidgetContainerService
+      hsQueryPopupWidgetContainerService,
     );
 
     this.hsMapService.loaded().then((map) => {
@@ -46,8 +46,8 @@ export class HsQueryPopupService
             (e) => this.preparePopup(e),
             200,
             false,
-            this
-          )
+            this,
+          ),
         );
       } else if (
         this.hsConfig.popUpDisplay &&
@@ -59,8 +59,8 @@ export class HsQueryPopupService
             (e) => this.preparePopup(e),
             200,
             false,
-            this
-          )
+            this,
+          ),
         );
       }
     });
@@ -69,7 +69,6 @@ export class HsQueryPopupService
   /**
    * Register and set hover popup overlay
    * @param nativeElement - Popup HTML content
-   
    */
   registerPopup(nativeElement: HTMLElement): void {
     this.hoverPopup = new Overlay({
@@ -82,7 +81,6 @@ export class HsQueryPopupService
    * Get features dependent on mouse position.
    * For cesium the features will be filled differently.
    * @param e - Mouse event over the OL map
-   
    */
   preparePopup(e: {
     map: Map;
@@ -102,7 +100,7 @@ export class HsQueryPopupService
     }
     let tmpFeatures = this.HsQueryBaseService.getFeaturesUnderMouse(
       e.map,
-      e.pixel
+      e.pixel,
     );
     if (this.hsConfig.popUpDisplay === 'click') {
       /* Theres a separate process for selecting features 
@@ -119,7 +117,7 @@ export class HsQueryPopupService
 
     if (
       tmpFeatures.some(
-        (f) => !this.featuresUnderMouse.includes(f as Feature<Geometry>)
+        (f) => !this.featuresUnderMouse.includes(f as Feature<Geometry>),
       ) ||
       this.featuresUnderMouse.some((f) => !tmpFeatures.includes(f))
     ) {
@@ -131,7 +129,6 @@ export class HsQueryPopupService
   /**
    * Set popups position according to pixel where mouse is
    * @param e - Event, which triggered this function
-   
    */
   showPopup(e: any): void {
     const map = e.map;

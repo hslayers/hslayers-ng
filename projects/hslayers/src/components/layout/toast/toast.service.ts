@@ -46,11 +46,12 @@ export class HsToastService {
   constructor(
     public HsLanguageService: HsLanguageService,
     private HsLayoutService: HsLayoutService,
-    private hsConfig: HsConfig
+    private hsConfig: HsConfig,
   ) {}
+
   /**
-   * @param toast - Toast pop up
    * Callback method to remove Toast DOM element from view
+   * @param toast - Toast pop up
    */
   remove(toast: Toast): void {
     this.toasts = this.toasts.filter((t) => t !== toast);
@@ -77,12 +78,13 @@ export class HsToastService {
       !this.toasts.some(
         (toast) =>
           toast.textOrTpl === textOrTpl &&
-          toast?.serviceCalledFrom === options.serviceCalledFrom
+          toast?.serviceCalledFrom === options.serviceCalledFrom,
       )
     ) {
       this.toasts.push({textOrTpl, ...options});
     }
   }
+
   /**
    * Creates new toast message with custom text and custom styling
    * @param header - Header text to display
@@ -93,7 +95,7 @@ export class HsToastService {
   createToastPopupMessage(
     header: string,
     text: string,
-    options: customToastOptions = {}
+    options: customToastOptions = {},
   ): void {
     this.show(
       options.disableLocalization
@@ -109,14 +111,14 @@ export class HsToastService {
         classname: options.toastStyleClasses || `bg-danger text-light`,
         serviceCalledFrom: options.serviceCalledFrom,
         details: options.details || [],
-      }
+      },
     );
   }
 
   shown() {
-    //** Following hack is needed until ngBootstrap supports bootstrap5 fully */
+    /*FIXME: Following hack is needed until ngBootstrap supports bootstrap5 fully */
     for (const toastElement of this.HsLayoutService.contentWrapper.querySelectorAll(
-      '.toast-header .close'
+      '.toast-header .close',
     )) {
       const classList = toastElement.classList;
       classList.add('btn-close');

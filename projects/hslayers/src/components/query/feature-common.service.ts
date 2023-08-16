@@ -36,7 +36,7 @@ export class HsFeatureCommonService {
     private hsToastService: HsToastService,
     private hsLanguageService: HsLanguageService,
     private hsMapService: HsMapService,
-    private hsLayerUtilsService: HsLayerUtilsService
+    private hsLayerUtilsService: HsLayerUtilsService,
   ) {
     this.hsMapService.loaded().then((map) => {
       map.getLayers().on('change:length', () => {
@@ -44,24 +44,23 @@ export class HsFeatureCommonService {
       });
     });
   }
+
   /**
    * Translate string value to the selected UI language
    * @param module - Locales json key
    * @param text - Locales json key value
-   
    * @returns Translated text
    */
   translateString(module: string, text: string): string {
     return this.hsLanguageService.getTranslationIgnoreNonExisting(
       module,
       text,
-      undefined
+      undefined,
     );
   }
 
   /**
    * Update layer list from the current app map
-   
    */
   updateLayerList(): void {
     const layers = this.hsMapService
@@ -76,16 +75,15 @@ export class HsFeatureCommonService {
    * Prepare features for export
    * @param exportFormats - Export formats selected
    * @param features - Features to export
-   
    */
   toggleExportMenu(
     exportFormats: exportFormats[],
-    features: Feature<Geometry>[] | Feature<Geometry>
+    features: Feature<Geometry>[] | Feature<Geometry>,
   ): void {
     for (const format of exportFormats) {
       format.serializedData = this.hsQueryVectorService.exportData(
         format.name,
-        features
+        features,
       );
     }
   }
@@ -95,12 +93,11 @@ export class HsFeatureCommonService {
    * @param type - Action type ('move' or 'copy')
    * @param features - Features to interact with
    * @param toLayer - Target layer
-   
    */
   moveOrCopyFeature(
     type: 'move' | 'copy',
     features: Feature<Geometry>[],
-    toLayer: Layer<VectorSource<Geometry>>
+    toLayer: Layer<VectorSource<Geometry>>,
   ): void {
     features.forEach((feature) => {
       feature.setStyle(null); //To prevent feature from getting individual style
@@ -109,17 +106,16 @@ export class HsFeatureCommonService {
         this.hsQueryVectorService.removeFeature(feature);
       }
     });
-
     this.hsToastService.createToastPopupMessage(
       this.hsLanguageService.getTranslation('QUERY.feature.featureEdited'),
       this.hsLanguageService.getTranslation(
         `QUERY.feature.feature${type}Succ`,
-        undefined
+        undefined,
       ) + getTitle(toLayer),
       {
         toastStyleClasses: 'bg-success text-light',
         serviceCalledFrom: 'HsFeatureCommonService',
-      }
+      },
     );
   }
 }

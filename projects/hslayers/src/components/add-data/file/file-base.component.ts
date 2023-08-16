@@ -2,7 +2,6 @@ import {
   AfterViewInit,
   Component,
   ElementRef,
-  Input,
   OnDestroy,
   OnInit,
   ViewChild,
@@ -39,7 +38,7 @@ export class HsAddDataFileBaseComponent
     public hsAddDataCommonService: HsAddDataCommonService,
     public hsAddDataCommonFileService: HsAddDataCommonFileService,
     public hsLayoutService: HsLayoutService,
-    public hsConfig: HsConfig
+    public hsConfig: HsConfig,
   ) {}
 
   clearInput(): void {

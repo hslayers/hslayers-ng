@@ -74,7 +74,7 @@ describe('HsLayerUtilsService', () => {
       platformBrowserDynamicTesting(),
       {
         teardown: {destroyAfterEach: false},
-      }
+      },
     );
   });
   let hsLayerUtils: HsLayerUtilsService;
@@ -161,7 +161,7 @@ describe('HsLayerUtilsService', () => {
     let layerUrl = hsLayerUtils.getURL(tileWMTSLayer);
 
     expect(layerUrl).toEqual(
-      'https://openlayers.org/en/latest/examples/wmts.html'
+      'https://openlayers.org/en/latest/examples/wmts.html',
     );
     layerUrl = hsLayerUtils.getURL(tileOSMLayer);
     expect(layerUrl).toEqual('https://tile.openstreetmap.org/{z}/{x}/{y}.png');

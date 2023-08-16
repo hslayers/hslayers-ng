@@ -1,7 +1,6 @@
 import {ChangeDetectionStrategy, Component} from '@angular/core';
 
 import {HsAddDataService} from '../../../add-data.service';
-import {HsConfig} from '../../../../../config.service';
 import {HsUtilsService} from '../../../../utils/utils.service';
 
 @Component({
@@ -13,6 +12,5 @@ export class HsUrlProgressComponent {
   constructor(
     public hsAddDataService: HsAddDataService,
     public hsUtilsService: HsUtilsService,
-    private hsConfig: HsConfig
   ) {}
 }

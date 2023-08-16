@@ -59,7 +59,7 @@ export class HslayersComponent implements OnInit {
     private hsQueryPopupService: HsQueryPopupService,
     private HsMapSwipeService: HsMapSwipeService, //Leave this, need to inject somewhere
     private hsQueryPopupWidgetContainerService: HsQueryPopupWidgetContainerService, //Leave this, need to inject somewhere
-    private hsExternalService: HsExternalService //Leave this, need to inject somewhere
+    private hsExternalService: HsExternalService, //Leave this, need to inject somewhere
   ) {}
 
   /**
@@ -107,7 +107,7 @@ export class HslayersComponent implements OnInit {
     this.HsOverlayPanelContainerService.create(HsInfoComponent, {});
     this.HsOverlayPanelContainerService.create(
       HsLayerManagerGalleryComponent,
-      {}
+      {},
     );
     this.HsOverlayPanelContainerService.create(HsToolbarComponent, {});
     this.HsOverlayPanelContainerService.create(HsQueryPopupComponent, {

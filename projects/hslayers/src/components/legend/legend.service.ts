@@ -15,7 +15,6 @@ import {
   XYZ,
 } from 'ol/source';
 import {Style} from 'ol/style';
-import {StyleFunction, StyleLike} from 'ol/style/Style';
 
 import {HsLayerSelectorService} from '../layermanager/editor/layer-selector.service';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
@@ -81,7 +80,6 @@ export class HsLegendService {
       if (currentLayer === undefined) {
         return;
       }
-      const styleArray: Array<Style | Style[]> = [];
       if (!currentLayer.getStyle()) {
         return;
       }

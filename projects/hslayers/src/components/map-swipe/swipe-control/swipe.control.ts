@@ -141,7 +141,8 @@ export class SwipeControl extends Control {
     }
   }
 
-  /** Add layers array to clip
+  /**
+   * Add layers array to clip
    *	@param layers - to clip
    *	@param right - layers in the right part of the map, default left.
    */
@@ -153,7 +154,9 @@ export class SwipeControl extends Control {
       this.addLayer(l, right);
     }
   }
-  /** Add a layer to clip
+
+  /**
+   * Add a layer to clip
    *	@param layer - to clip
    *	@param right - layer in the right part of the map, default left.
    */
@@ -170,6 +173,7 @@ export class SwipeControl extends Control {
       }
     }
   }
+
   /**
    * Sets available layer events to enabled/disabled
    * @param enabled - (Optional) If true, map swipe control is enabled, else it is removed
@@ -183,7 +187,8 @@ export class SwipeControl extends Control {
     });
   }
 
-  /** Remove all layers
+  /**
+   * Remove all layers
    */
   removeLayers() {
     this.leftLayers.forEach((l) => {
@@ -194,7 +199,8 @@ export class SwipeControl extends Control {
     });
   }
 
-  /** Remove a specific layer from swipe control completely
+  /**
+   * Remove a specific layer from swipe control completely
    */
   removeCompletely(layerToRm: Layer<Source>): void {
     let layerFound;
@@ -209,7 +215,8 @@ export class SwipeControl extends Control {
     }
   }
 
-  /** Remove a layer to clip
+  /**
+   * Remove a layer to clip
    *	@param layer - to clip
    *  @param right - layer from right side to clip
    */
@@ -278,7 +285,7 @@ export class SwipeControl extends Control {
 
             this.set(
               'position',
-              this.getPosValue(this.getMap().getSize()[0], pageX)
+              this.getPosValue(this.getMap().getSize()[0], pageX),
             );
             this.dispatchEvent('moving');
           } else {
@@ -297,7 +304,7 @@ export class SwipeControl extends Control {
               document.documentElement.clientTop;
             this.set(
               'position',
-              this.getPosValue(this.getMap().getSize()[1], pageY)
+              this.getPosValue(this.getMap().getSize()[1], pageY),
             );
             this.dispatchEvent('moving');
           }
@@ -336,7 +343,7 @@ export class SwipeControl extends Control {
         pts[0][0] * ratio,
         pts[0][1] * ratio,
         pts[1][0] * ratio,
-        pts[1][1] * ratio
+        pts[1][1] * ratio,
       );
     }
   }
@@ -393,9 +400,10 @@ export class SwipeControl extends Control {
     }
   }
 
-  /** Get the position of an element or event action relative to the map
-   *	@param mapSize - OL Map size (width or height)
-   *  @param coord - Coordinate provided (X or Y)
+  /**
+   * Get the position of an element or event action relative to the map
+   * @param mapSize - OL Map size (width or height)
+   * @param coord - Coordinate provided (X or Y)
    * @returns Position relative to map size
    */
   getPosValue(mapSize: number, coord: number): number {

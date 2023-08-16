@@ -11,7 +11,7 @@ import {HsUrlTypeServiceModel} from '../../../url/models/url-type-service.model'
 export class HsUrlDetailsComponent implements AfterContentInit {
   @Input() injectedService: HsUrlTypeServiceModel;
   @Input() type: AddDataUrlType;
-  
+
   data;
   getDimensionValues: any;
   constructor(public hsAddDataCommonService: HsAddDataCommonService) {}
@@ -23,7 +23,6 @@ export class HsUrlDetailsComponent implements AfterContentInit {
   srsChanged(): void {
     this.data.resample_warning = this.hsAddDataCommonService.srsChanged(
       this.data.srs,
-      
     );
   }
 }

@@ -6,6 +6,7 @@ import {BehaviorSubject, Subject, lastValueFrom} from 'rxjs';
 import {CurrentUserResponse} from './types/current-user-response.type';
 import {HsEndpoint} from '../endpoints/endpoint.interface';
 import {HsLanguageService} from '../../components/language/language.service';
+import {HsLogService} from '../log/log.service';
 import {HsToastService} from '../../components/layout/toast/toast.service';
 
 @Injectable({
@@ -15,7 +16,7 @@ export class HsCommonLaymanService {
   authChange: Subject<HsEndpoint> = new Subject();
 
   layman$: BehaviorSubject<HsEndpoint | undefined> = new BehaviorSubject(
-    undefined
+    undefined,
   );
 
   public get layman(): HsEndpoint {
@@ -25,7 +26,8 @@ export class HsCommonLaymanService {
   constructor(
     private $http: HttpClient,
     public hsToastService: HsToastService,
-    public hsLanguageService: HsLanguageService
+    public hsLanguageService: HsLanguageService,
+    private hsLog: HsLogService,
   ) {}
 
   isAuthenticated() {
@@ -42,7 +44,7 @@ export class HsCommonLaymanService {
     const url = `${endpoint.url}/rest/current-user`;
     try {
       const res: CurrentUserResponse = await lastValueFrom(
-        this.$http.get(url, {withCredentials: true})
+        this.$http.get(url, {withCredentials: true}),
       );
 
       let somethingChanged = false;
@@ -65,7 +67,7 @@ export class HsCommonLaymanService {
       }
       return somethingChanged;
     } catch (e) {
-      console.warn(e);
+      this.hsLog.warn(e);
       return e;
     }
   }
@@ -81,7 +83,7 @@ export class HsCommonLaymanService {
     try {
       await lastValueFrom(this.$http.get(url, {withCredentials: true}));
     } catch (ex) {
-      console.warn(ex);
+      this.hsLog.warn(ex);
     } finally {
       endpoint.user = undefined;
       endpoint.authenticated = false;
@@ -92,7 +94,7 @@ export class HsCommonLaymanService {
   displayLaymanError(
     endpoint: HsEndpoint,
     errorMsg: string,
-    responseBody: {code?: number; message?: string; detail?: string}
+    responseBody: {code?: number; message?: string; detail?: string},
   ): void {
     let simplifiedResponse = '';
     if (responseBody.code === undefined) {
@@ -120,9 +122,9 @@ export class HsCommonLaymanService {
         this.hsLanguageService.getTranslationIgnoreNonExisting(
           'COMMON',
           simplifiedResponse,
-          undefined
+          undefined,
         ),
-      {disableLocalization: true, serviceCalledFrom: 'HsCommonLaymanService'}
+      {disableLocalization: true, serviceCalledFrom: 'HsCommonLaymanService'},
     );
   }
 
@@ -133,10 +135,10 @@ export class HsCommonLaymanService {
           headers: new HttpHeaders().set('Content-Type', 'text'),
           responseType: 'text',
           withCredentials: true,
-        })
+        }),
       );
     } catch (ex) {
-      console.error(ex);
+      this.hsLog.error(ex);
     }
   }
 }

@@ -24,7 +24,8 @@ import {InterpolatedSource} from '../../common/layers/hs.source.interpolated';
 })
 export class HsLegendComponent
   extends HsPanelBaseComponent
-  implements OnInit, OnDestroy {
+  implements OnInit, OnDestroy
+{
   layerDescriptors = [];
   titleSearch = '';
   name = 'legend';
@@ -37,7 +38,7 @@ export class HsLegendComponent
     public hsQueuesService: HsQueuesService,
     hsLayoutService: HsLayoutService,
     public hsLanguageService: HsLanguageService,
-    public hsSidebarService: HsSidebarService
+    public hsSidebarService: HsSidebarService,
   ) {
     super(hsLayoutService);
   }
@@ -72,7 +73,7 @@ export class HsLegendComponent
    */
   async addLayerToLegends(layer: Layer<Source>): Promise<void> {
     const descriptor = await this.hsLegendService.getLayerLegendDescriptor(
-      layer
+      layer,
     );
     if (descriptor) {
       const source: any = layer.getSource();
@@ -92,7 +93,7 @@ export class HsLegendComponent
             this.layerSourcePropChanged(e),
             100,
             false,
-            this
+            this,
           );
         });
       }
@@ -119,7 +120,7 @@ export class HsLegendComponent
    */
   noLayerExists(): boolean {
     const visibleLayers = this.layerDescriptors.filter(
-      (check) => check.visible
+      (check) => check.visible,
     );
     return visibleLayers.length == 0;
   }
@@ -203,7 +204,7 @@ export class HsLegendComponent
    */
   findLayerDescriptorBySource(source: Source): any {
     const found = this.layerDescriptors.filter(
-      (ld) => ld.lyr.getSource() == source
+      (ld) => ld.lyr.getSource() == source,
     );
     if (found.length > 0) {
       return found[0];

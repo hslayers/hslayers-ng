@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input} from '@angular/core';
 
 import {Geometry} from 'ol/geom';
 import {Layer} from 'ol/layer';
@@ -95,7 +95,7 @@ export class HsLayerEditorComponent {
   }
 
   /**
-   * Confirm saving a vector layer content as a geoJSON
+   * Confirm saving a vector layer content as a GeoJSON
    * @returns an empty promise
    */
   async createSaveDialog(): Promise<void> {
@@ -161,7 +161,7 @@ export class HsLayerEditorComponent {
 
   /**
    * Determines if selected layer is a Vector layer and
-   * styleable. Used for allowing styling
+   * stylable. Used for allowing styling
    */
   layerIsStyleable(): boolean {
     return this.HsLayerUtilsService.layerIsStyleable(this.olLayer());

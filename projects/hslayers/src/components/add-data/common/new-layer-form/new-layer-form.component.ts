@@ -1,10 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 
 import {FileDataObject} from '../../file/types/file-data-object.type';
-import {
-  HsAddDataCommonFileService,
-  HsAddDataCommonFileServiceParams,
-} from '../common-file.service';
+import {HsAddDataCommonFileService} from '../common-file.service';
 import {HsFileService} from '../../file/file.service';
 import {HsLaymanService} from '../../../save-map/layman.service';
 import {HsUploadedFiles} from './../../../../common/upload/upload.component';
@@ -24,7 +21,7 @@ export class HsNewLayerFormComponent implements OnInit {
   constructor(
     public hsAddDataCommonFileService: HsAddDataCommonFileService,
     private hsFileService: HsFileService,
-    public hsLaymanService: HsLaymanService
+    public hsLaymanService: HsLaymanService,
   ) {}
 
   ngOnInit() {

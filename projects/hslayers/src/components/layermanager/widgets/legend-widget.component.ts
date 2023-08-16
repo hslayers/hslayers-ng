@@ -12,7 +12,7 @@ export class HsLegendWidgetComponent extends HsLayerEditorWidgetBaseComponent {
   name = 'legend-widget';
   constructor(
     hsLayerSelectorService: HsLayerSelectorService,
-    public HsLayerEditorService: HsLayerEditorService
+    public HsLayerEditorService: HsLayerEditorService,
   ) {
     super(hsLayerSelectorService);
   }

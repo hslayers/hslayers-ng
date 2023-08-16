@@ -46,7 +46,7 @@ describe('add-data-url', () => {
       platformBrowserDynamicTesting(),
       {
         teardown: {destroyAfterEach: false},
-      }
+      },
     );
   });
 
@@ -88,13 +88,13 @@ describe('add-data-url', () => {
     httpClient = TestBed.inject(HttpClient);
     //Mock server response
     hsWmsGetCapabilitiesService.request = async (url) => {
-      const serviceURUL = url.includes('?')
+      const serviceURL = url.includes('?')
         ? url.substring(0, url.indexOf('?'))
         : url;
       return lastValueFrom(
-        httpClient.get(serviceURUL + '?service=WMS&request=getCapabilities', {
+        httpClient.get(serviceURL + '?service=WMS&request=getCapabilities', {
           responseType: 'text',
-        })
+        }),
       );
     };
   });

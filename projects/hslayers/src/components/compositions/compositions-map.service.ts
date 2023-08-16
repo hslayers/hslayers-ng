@@ -33,7 +33,7 @@ export class HsCompositionsMapService {
     private hsSaveMapService: HsSaveMapService,
     private hsLayerUtilsService: HsLayerUtilsService,
     private hsCommonEndpointsService: HsCommonEndpointsService,
-    private hsUtilsService: HsUtilsService
+    private hsUtilsService: HsUtilsService,
   ) {
     this.hsEventBusService.mainPanelChanges.subscribe((which) => {
       if (this.extentLayer) {
@@ -76,8 +76,8 @@ export class HsCompositionsMapService {
         (e) => this.mapPointerMoved(e),
         50,
         false,
-        this
-      )
+        this,
+      ),
     );
   }
 
@@ -110,20 +110,19 @@ export class HsCompositionsMapService {
 
   /**
    * Act on map pointer movement and highlight features under it
-   * @param evt -
-   
+   * @param evt
    */
   mapPointerMoved(evt) {
     const featuresUnderMouse = this.extentLayer
       .getSource()
       .getFeaturesAtCoordinate(evt.coordinate);
     for (const endpoint of this.hsCommonEndpointsService.endpoints.filter(
-      (ep) => ep.compositions
+      (ep) => ep.compositions,
     )) {
       this.hsLayerUtilsService.highlightFeatures(
         featuresUnderMouse,
         this.extentLayer,
-        endpoint.compositions
+        endpoint.compositions,
       );
     }
   }
@@ -131,12 +130,11 @@ export class HsCompositionsMapService {
   /**
    * Highlight composition from map feature referencing it
    * @param composition - Composition highlighted from map feature reference
-   * @param state - Highlighte state
-   
+   * @param state - Highlight state
    */
   highlightComposition(
     composition: HsMapCompositionDescriptor,
-    state: boolean
+    state: boolean,
   ) {
     if (composition.featureId !== undefined) {
       const found = this.extentLayer
@@ -150,7 +148,6 @@ export class HsCompositionsMapService {
 
   /**
    * Clear extent layer from all of the features
-   
    */
   clearExtentLayer() {
     this.extentLayer.getSource().clear();
@@ -166,11 +163,10 @@ export class HsCompositionsMapService {
   }
 
   /**
-   * Get feature record and unhighlight the same feature and composition
+   * Get feature record and un-highlight the same feature and composition
    * @param feature - Feature under the pointer
    * @param selector - Feature selector
    * @param list - Record list referenced from the feature
-   
    */
   getFeatureRecordAndUnhighlight(feature, selector, list: any[]) {
     const record = list?.find((record) => record.featureId == feature.getId());

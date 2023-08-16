@@ -2,12 +2,14 @@ import {DomSanitizer, SafeHtml} from '@angular/platform-browser';
 import {Injectable} from '@angular/core';
 
 import * as extent from 'ol/extent';
-import Feature, {FeatureLike} from 'ol/Feature';
 import {Cluster, Vector as VectorSource} from 'ol/source';
+// eslint-disable-next-line import/named
 import {Coordinate} from 'ol/coordinate';
+import {Feature, Map} from 'ol';
+// eslint-disable-next-line import/named
+import {FeatureLike} from 'ol/Feature';
 import {GeoJSON, WKT} from 'ol/format';
 import {Geometry, LineString, Polygon} from 'ol/geom';
-import {Map} from 'ol';
 import {Select} from 'ol/interaction';
 import {Subject} from 'rxjs';
 import {click} from 'ol/events/condition';
@@ -57,7 +59,7 @@ export class HsQueryVectorService {
     private hsLayerUtilsService: HsLayerUtilsService,
     private hsUtilsService: HsUtilsService,
     private hsEventBusService: HsEventBusService,
-    private domSanitizer: DomSanitizer
+    private domSanitizer: DomSanitizer,
   ) {
     this.hsQueryBaseService.getFeatureInfoStarted.subscribe((evt) => {
       this.hsQueryBaseService.clear('features');
@@ -159,7 +161,7 @@ export class HsQueryVectorService {
     let featureDescriptions = [];
     for (const feature of features) {
       featureDescriptions = featureDescriptions.concat(
-        this.getFeatureAttributes(feature)
+        this.getFeatureAttributes(feature),
       );
     }
     this.hsQueryBaseService.set(featureDescriptions, 'features');
@@ -175,7 +177,7 @@ export class HsQueryVectorService {
    */
   exportData(
     clickedFormat: 'WKT' | 'GeoJSON',
-    feature: Feature<Geometry>[] | Feature<Geometry>
+    feature: Feature<Geometry>[] | Feature<Geometry>,
   ): string {
     let fmt;
     const featureArray = Array.isArray(feature) ? feature : [feature];
@@ -228,7 +230,7 @@ export class HsQueryVectorService {
     if (type == 'Polygon') {
       const area = this.hsUtilsService.formatArea(
         geom as Polygon,
-        this.hsMapService.getCurrentProj()
+        this.hsMapService.getCurrentProj(),
       );
       return [
         {name: `${area.type} in ${area.unit}`, value: area.size},
@@ -238,7 +240,7 @@ export class HsQueryVectorService {
     if (type == 'LineString') {
       const length = this.hsUtilsService.formatLength(
         geom as LineString,
-        this.hsMapService.getCurrentProj()
+        this.hsMapService.getCurrentProj(),
       );
       return [
         {name: `${length.type} in ${length.unit}`, value: length.size},

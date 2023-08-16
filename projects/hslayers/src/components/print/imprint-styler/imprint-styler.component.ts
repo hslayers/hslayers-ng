@@ -1,5 +1,6 @@
-import {CANVAS_SIZES} from '../constants/position-options';
 import {Component, Input} from '@angular/core';
+
+import {CANVAS_SIZES} from '../constants/position-options';
 import {ImprintObj} from '../types/imprint-object.type';
 
 @Component({
@@ -8,7 +9,6 @@ import {ImprintObj} from '../types/imprint-object.type';
 })
 export class HsPrintImprintStylerComponent {
   @Input() imprintObj: ImprintObj;
-  
   sizes = CANVAS_SIZES;
 
   constructor() {}

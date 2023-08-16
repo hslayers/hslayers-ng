@@ -34,8 +34,17 @@ export class HsQueryFeatureListComponent {
   selectedLayer = null;
   getTitle = getTitle;
 
+  constructor(
+    private hsQueryVectorService: HsQueryVectorService,
+    private hsLanguageService: HsLanguageService,
+    private hsDialogContainerService: HsDialogContainerService,
+    public hsFeatureCommonService: HsFeatureCommonService,
+    private hsLayerUtilsService: HsLayerUtilsService,
+    public hsQueryBaseService: HsQueryBaseService,
+  ) {}
+
   /**
-   * Track item by openlayers feature, ol_uid value
+   * Track item by OpenLayers feature, ol_uid value
    * @param index - Index
    * @param item - Item provided
    */
@@ -46,15 +55,6 @@ export class HsQueryFeatureListComponent {
       return JSON.stringify(item);
     }
   }
-
-  constructor(
-    private hsQueryVectorService: HsQueryVectorService,
-    private hsLanguageService: HsLanguageService,
-    private hsDialogContainerService: HsDialogContainerService,
-    public hsFeatureCommonService: HsFeatureCommonService,
-    private hsLayerUtilsService: HsLayerUtilsService,
-    public hsQueryBaseService: HsQueryBaseService
-  ) {}
 
   /**
    * Get OL feature array
@@ -78,12 +78,11 @@ export class HsQueryFeatureListComponent {
 
   /**
    * Toggle export menu
-   
    */
   toggleExportMenu(): void {
     this.hsFeatureCommonService.toggleExportMenu(
       this.exportFormats,
-      this.olFeatureArray()
+      this.olFeatureArray(),
     );
     this.toggleMenus('exportMenuVisible', 'editMenuVisible');
   }
@@ -110,19 +109,17 @@ export class HsQueryFeatureListComponent {
 
   /**
    * Move or copy feature
-   
    */
   moveOrCopyFeature(): void {
     this.hsFeatureCommonService.moveOrCopyFeature(
       this.editType,
       this.olFeatureArray(),
-      this.selectedLayer
+      this.selectedLayer,
     );
   }
 
   /**
    * Remove all selected features
-   
    */
   async removeAllSelectedFeatures(): Promise<void> {
     const dialog = this.hsDialogContainerService.create(
@@ -130,13 +127,13 @@ export class HsQueryFeatureListComponent {
       {
         message: this.hsLanguageService.getTranslation(
           'QUERY.reallyDeleteAllSelectedLayers',
-          undefined
+          undefined,
         ),
         title: this.hsLanguageService.getTranslation(
           'COMMON.confirmDelete',
-          undefined
+          undefined,
         ),
-      }
+      },
     );
     const confirmed = await dialog.waitResult();
     if (confirmed == 'yes') {

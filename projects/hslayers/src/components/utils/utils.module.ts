@@ -1,4 +1,5 @@
 import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
+
 import {HsLayerUtilsService} from './layer-utils.service';
 import {HsUtilsService} from './utils.service';
 @NgModule({

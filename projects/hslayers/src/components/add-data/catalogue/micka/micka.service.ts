@@ -29,7 +29,7 @@ export class HsMickaBrowserService {
     public hsMapService: HsMapService,
     public hsUtilsService: HsUtilsService,
     public hsToastService: HsToastService,
-    public hsLanguageService: HsLanguageService
+    public hsLanguageService: HsLanguageService,
   ) {}
 
   /**
@@ -47,7 +47,7 @@ export class HsMickaBrowserService {
     dataset: HsEndpoint,
     data,
     extentFeatureCreated,
-    textField: string
+    textField: string,
   ): any {
     const url = this.createRequestUrl(dataset, data, textField);
     dataset.datasourcePaging.loaded = false;
@@ -68,7 +68,7 @@ export class HsMickaBrowserService {
           if (isErrorHandlerFunction(dataset.onError?.compositionLoad)) {
             (<EndpointErrorHandler>dataset.onError?.compositionLoad).handle(
               dataset,
-              e
+              e,
             );
             return of(e);
           }
@@ -80,24 +80,24 @@ export class HsMickaBrowserService {
               this.hsToastService.createToastPopupMessage(
                 this.hsLanguageService.getTranslation(
                   'ADDLAYERS.ERROR.errorWhileRequestingLayers',
-                  undefined
+                  undefined,
                 ),
                 dataset.title +
                   ': ' +
                   this.hsLanguageService.getTranslationIgnoreNonExisting(
                     'ERRORMESSAGES',
                     e.status ? e.status.toString() : e.message,
-                    {url}
+                    {url},
                   ),
                 {
                   disableLocalization: true,
                   serviceCalledFrom: 'HsMickaBrowserService',
-                }
+                },
               );
           }
           dataset.datasourcePaging.loaded = true;
           return of(e);
-        })
+        }),
       );
     // .subscribe(()=>{console.log('sub')});
     return dataset.httpCall;
@@ -111,7 +111,7 @@ export class HsMickaBrowserService {
         .getView()
         .calculateExtent(this.hsMapService.getMap().getSize()),
       this.hsMapService.getMap().getView().getProjection(),
-      'EPSG:4326'
+      'EPSG:4326',
     );
     const bbox = data.filterByExtent ? "BBOX='" + b.join(' ') + "'" : '';
     const sortBy =
@@ -180,7 +180,7 @@ export class HsMickaBrowserService {
         if (data.extentFeatureCreated) {
           const extentFeature = addExtentFeature(
             lyr,
-            this.hsMapService.getCurrentProj()
+            this.hsMapService.getCurrentProj(),
           );
           if (extentFeature) {
             lyr.featureId = extentFeature.getId();
@@ -239,7 +239,7 @@ export class HsMickaBrowserService {
         layer.links = layer.links.filter(
           (link) =>
             link.url.toLowerCase().includes(type) ||
-            (!Array.isArray(link) && link.includes(type))
+            (!Array.isArray(link) && link.includes(type)),
         );
       }
 
@@ -298,7 +298,7 @@ export class HsMickaBrowserService {
    */
   async describeWhatToAdd(
     ds: HsEndpoint,
-    layer: HsAddDataLayerDescriptor
+    layer: HsAddDataLayerDescriptor,
   ): Promise<any> {
     let whatToAdd: any = {type: 'none'};
     const type = layer.type || layer.trida;
@@ -339,7 +339,7 @@ export class HsMickaBrowserService {
         //Filter invalid links
         //TODO: possible kml, geojson, shp
         layer.links = layer.links.filter((link) =>
-          ['wms', 'wfs', 'wmts'].some((type) => this.isLinkValid(link, type))
+          ['wms', 'wfs', 'wmts'].some((type) => this.isLinkValid(link, type)),
         );
         //Check WMS endpoints
         if (layer.links.some((link) => this.isLinkValid(link, 'wms'))) {
@@ -377,7 +377,7 @@ export class HsMickaBrowserService {
       //   };
       // }
     } else {
-      console.warn(`Datasource type "${type}" not supported.`);
+      this.log.warn(`Datasource type "${type}" not supported.`);
       this.datasourceParsingError(layer.title, 'unsupportedDatasourceType');
       return false;
     }
@@ -401,18 +401,18 @@ export class HsMickaBrowserService {
     this.hsToastService.createToastPopupMessage(
       this.hsLanguageService.getTranslation(
         'ADDLAYERS.ERROR.errorWhileRequestingLayers',
-        undefined
+        undefined,
       ),
       title +
         ': ' +
         this.hsLanguageService.getTranslation(
           `ADDLAYERS.ERROR.${error}`,
-          undefined
+          undefined,
         ),
       {
         disableLocalization: true,
         serviceCalledFrom: 'HsMickaBrowserService',
-      }
+      },
     );
   }
 }

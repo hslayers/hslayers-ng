@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Observable, Subject, delay, map, startWith, takeUntil} from 'rxjs';
 
 import {HsButton} from './button.interface';
@@ -12,7 +12,7 @@ import {HsSidebarService} from './sidebar.service';
   selector: 'hs-mini-sidebar',
   templateUrl: './sidebar.component.html',
 })
-export class HsMiniSidebarComponent implements OnInit {
+export class HsMiniSidebarComponent implements OnInit, OnDestroy {
   buttons: HsButton[] = [];
   miniSidebarButton: {title: string};
   end = new Subject<void>();
@@ -23,8 +23,9 @@ export class HsMiniSidebarComponent implements OnInit {
     public HsSidebarService: HsSidebarService,
     public HsLayoutService: HsLayoutService,
     public HsConfig: HsConfig,
-    private HsEventBusService: HsEventBusService
+    private HsEventBusService: HsEventBusService,
   ) {}
+
   ngOnInit() {
     this.HsSidebarService.buttons
       .pipe(takeUntil(this.end))
@@ -39,7 +40,7 @@ export class HsMiniSidebarComponent implements OnInit {
     this.isVisible = this.HsEventBusService.mainPanelChanges.pipe(
       map((which) => {
         return which == 'sidebar';
-      })
+      }),
     );
   }
 
@@ -56,6 +57,7 @@ export class HsMiniSidebarComponent implements OnInit {
     this.HsSidebarService.showUnimportant =
       !this.HsSidebarService.showUnimportant;
   }
+
   /**
    * Toggle sidebar mode between expanded and narrow
    */

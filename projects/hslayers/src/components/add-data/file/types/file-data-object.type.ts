@@ -4,7 +4,7 @@ import {Source} from 'ol/source';
 import {FileFormDataObject} from './file-form-data.type';
 import {IntersectWithTooltip} from '../../../../common/type-intersection.type';
 
-type FileDataExtenstion = {
+type FileDataExtension = {
   addUnder?: Layer<Source>;
   extract_styles?: boolean;
   folder_name?: string;
@@ -15,5 +15,5 @@ type FileDataExtenstion = {
 };
 
 export type FileDataObject = IntersectWithTooltip<
-  Partial<FileFormDataObject> & FileDataExtenstion
+  Partial<FileFormDataObject> & FileDataExtension
 >;

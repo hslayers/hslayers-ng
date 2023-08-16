@@ -1,11 +1,9 @@
-import {Component, OnInit} from '@angular/core';
-import {Input, OnDestroy} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 
 import {Feature} from 'ol';
 import {Geometry} from 'ol/geom';
 
 import {HsFeatureCommonService} from '../feature-common.service';
-import {HsLayerUtilsService} from '../../utils/layer-utils.service';
 import {HsMapService} from '../../map/map.service';
 import {HsQueryVectorService} from '../query-vector.service';
 import {exportFormats} from '../feature-common.service';
@@ -42,7 +40,6 @@ export class HsQueryFeatureComponent implements OnDestroy, OnInit {
     private hsMapService: HsMapService,
     private hsQueryVectorService: HsQueryVectorService,
     private hsFeatureCommonService: HsFeatureCommonService,
-    private hsLayerUtilsService: HsLayerUtilsService
   ) {}
 
   ngOnInit(): void {
@@ -53,7 +50,7 @@ export class HsQueryFeatureComponent implements OnDestroy, OnInit {
           return;
         }
         const featureLayer = this.hsMapService.getLayerForFeature(
-          this.olFeature()
+          this.olFeature(),
         );
         this.availableLayers = layers.filter((layer) => layer != featureLayer);
       });
@@ -90,7 +87,7 @@ export class HsQueryFeatureComponent implements OnDestroy, OnInit {
     if (this.feature?.feature) {
       const feature = this.feature.feature;
       const getDuplicates = this.feature.attributes.filter(
-        (duplicate) => duplicate.name == attributeName
+        (duplicate) => duplicate.name == attributeName,
       );
       if (getDuplicates.length == 0) {
         const obj = {name: attributeName, value: attributeValue};
@@ -130,12 +127,11 @@ export class HsQueryFeatureComponent implements OnDestroy, OnInit {
 
   /**
    * Toggle export menus
-   
    */
   toggleExportMenu(): void {
     this.hsFeatureCommonService.toggleExportMenu(
       this.exportFormats,
-      this.olFeature()
+      this.olFeature(),
     );
     this.toggleMenus('exportMenuVisible', 'editMenuVisible');
   }
@@ -162,13 +158,12 @@ export class HsQueryFeatureComponent implements OnDestroy, OnInit {
 
   /**
    * Move or copy feature
-   
    */
   moveOrCopyFeature(): void {
     this.hsFeatureCommonService.moveOrCopyFeature(
       this.editType,
       [this.olFeature()],
-      this.selectedLayer
+      this.selectedLayer,
     );
   }
 

@@ -1,10 +1,8 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 
-import {Subject} from 'rxjs';
-import {takeUntil} from 'rxjs/operators';
+import {Subject, takeUntil} from 'rxjs';
 
 import {HsEventBusService} from '../core/event-bus.service';
-import {HsLanguageService} from '../language/language.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsMeasureService} from './measure.service';
 import {HsPanelBaseComponent} from '../layout/panels/panel-base.component';
@@ -27,8 +25,7 @@ export class HsMeasureComponent
     public hsLayoutService: HsLayoutService,
     public hsMeasureService: HsMeasureService,
     private hsUtilsService: HsUtilsService,
-    private hsLanguageService: HsLanguageService,
-    private hsSidebarService: HsSidebarService
+    private hsSidebarService: HsSidebarService,
   ) {
     super(hsLayoutService);
   }

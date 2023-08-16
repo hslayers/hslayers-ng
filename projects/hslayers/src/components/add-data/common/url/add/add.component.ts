@@ -25,7 +25,7 @@ export class HsUrlAddComponent {
   selectAll(): void {
     this._selectAll = !this._selectAll;
     this.checkAllRecords(
-      this.services?.length > 0 ? this.services : this.layers
+      this.services?.length > 0 ? this.services : this.layers,
     );
   }
 

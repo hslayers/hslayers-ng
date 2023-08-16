@@ -2,7 +2,6 @@ import {
   AfterViewInit,
   Component,
   ElementRef,
-  Input,
   NgZone,
   OnDestroy,
   ViewChild,
@@ -32,19 +31,20 @@ export class HsMapComponent implements AfterViewInit, OnDestroy {
     public HsCoreService: HsCoreService,
     public HsConfig: HsConfig,
     public HsEventBusService: HsEventBusService,
-    private zone: NgZone
+    private zone: NgZone,
   ) {
     this.unregisterMapSyncCenterHandlerSubscription =
       this.HsEventBusService.mapCenterSynchronizations.subscribe((data) => {
         this.onCenterSync(data);
       });
   }
+
   ngAfterViewInit(): void {
     const visibleLayersParam = this.HsShareUrlService.getParamValue(
-      HS_PRMS.visibleLayers
+      HS_PRMS.visibleLayers,
     );
     this.HsMapService.permalink = this.HsShareUrlService.getParamValue(
-      HS_PRMS.permalink
+      HS_PRMS.permalink,
     );
     this.HsMapService.externalCompositionId =
       this.HsShareUrlService.getParamValue(HS_PRMS.composition) ||
@@ -54,7 +54,7 @@ export class HsMapComponent implements AfterViewInit, OnDestroy {
       this.HsMapService.visibleLayersInUrl = visibleLayersParam.split(';');
     }
     this.zone.runOutsideAngular(() =>
-      this.HsMapService.init(this.map.nativeElement)
+      this.HsMapService.init(this.map.nativeElement),
     );
     const pos = this.HsShareUrlService.getParamValues([
       HS_PRMS.x,
@@ -65,7 +65,7 @@ export class HsMapComponent implements AfterViewInit, OnDestroy {
       this.HsMapService.moveToAndZoom(
         parseFloat(pos[HS_PRMS.x]),
         parseFloat(pos[HS_PRMS.y]),
-        parseInt(pos[HS_PRMS.zoom])
+        parseInt(pos[HS_PRMS.zoom]),
       );
     }
     if (
@@ -80,10 +80,11 @@ export class HsMapComponent implements AfterViewInit, OnDestroy {
   ngOnDestroy(): void {
     this.unregisterMapSyncCenterHandlerSubscription.unsubscribe();
   }
+
   /**
-   * @param data Coordinates in lon/lat and resolution
    * This gets called from Cesium map, to
    * synchronize center and resolution between Ol and Cesium maps
+   * @param data - Coordinates in lon/lat and resolution
    */
   onCenterSync(data?) {
     const center = data.center;
@@ -95,19 +96,19 @@ export class HsMapComponent implements AfterViewInit, OnDestroy {
     this.HsMapService.moveToAndZoom(
       transformed[0],
       transformed[1],
-      this.zoomForResolution(center[2])
+      this.zoomForResolution(center[2]),
     );
   }
 
   /**
-   * @param resolution Resolution
    * Calculates zoom level for a given resolution
+   * @param resolution - Resolution
    * @returns Zoom level for resolution. If resolution
    * was greater than 156543.03390625 return 0
    */
   zoomForResolution(resolution) {
     let zoom = 0;
-    //Sometimes resolution is under 0. Ratis
+    //Sometimes resolution is under 0.
     resolution = Math.abs(resolution);
     let r = 156543.03390625; // resolution for zoom 0
     while (resolution < r) {

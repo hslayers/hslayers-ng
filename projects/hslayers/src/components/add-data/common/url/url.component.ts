@@ -12,7 +12,7 @@ export class HsCommonUrlComponent {
   @Input() type: any; // @type'; TODO: comes from another scope
 
   @Input() url: any;
-  
+
   @Output() urlChange = new EventEmitter<any>();
   @Output() connect = new EventEmitter<any>();
 

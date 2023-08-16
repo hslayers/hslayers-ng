@@ -24,7 +24,7 @@ export class HsDimensionTimeService {
 
   constructor(
     public hsLog: HsLogService,
-    public HsUtilsService: HsUtilsService
+    public HsUtilsService: HsUtilsService,
   ) {}
 
   /**
@@ -69,12 +69,12 @@ export class HsDimensionTimeService {
       }
       if (indexOfM !== undefined) {
         month = parseFloat(
-          dateComponent.substring((indexOfY || -1) + 1, indexOfM)
+          dateComponent.substring((indexOfY || -1) + 1, indexOfM),
         );
       }
       if (indexOfD !== undefined) {
         day = parseFloat(
-          dateComponent.substring((indexOfM || indexOfY || -1) + 1, indexOfD)
+          dateComponent.substring((indexOfM || indexOfY || -1) + 1, indexOfD),
         );
       }
     }
@@ -93,12 +93,12 @@ export class HsDimensionTimeService {
       }
       if (indexOfm !== undefined) {
         minute = parseFloat(
-          timeComponent.substring((indexOfH || -1) + 1, indexOfm)
+          timeComponent.substring((indexOfH || -1) + 1, indexOfm),
         );
       }
       if (indexOfS !== undefined) {
         second = parseFloat(
-          timeComponent.substring((indexOfm || indexOfH || -1) + 1, indexOfS)
+          timeComponent.substring((indexOfm || indexOfH || -1) + 1, indexOfS),
         );
       }
     }
@@ -131,7 +131,7 @@ export class HsDimensionTimeService {
       Array.isArray(olLayer.get('dimensions_time').timeInterval)
     ) {
       this.hsLog.warn(
-        '"dimensions_time" is deprecated, use "dimensions" param with "time" object instead'
+        '"dimensions_time" is deprecated, use "dimensions" param with "time" object instead',
       );
       const currentDimensions = getDimensions(olLayer);
       const newTimeDimension = {
@@ -143,7 +143,7 @@ export class HsDimensionTimeService {
       } else {
         setDimensions(
           olLayer,
-          Object.assign(currentDimensions, {'time': newTimeDimension})
+          Object.assign(currentDimensions, {'time': newTimeDimension}),
         );
       }
     }
@@ -160,8 +160,7 @@ export class HsDimensionTimeService {
    */
   setupTimeLayer(
     currentLayer: HsLayerDescriptor,
-
-    serviceLayer?: HsWmsLayer
+    serviceLayer?: HsWmsLayer,
   ): void {
     const olLayer = currentLayer.layer;
     //parse config set at a Layer level
@@ -173,7 +172,7 @@ export class HsDimensionTimeService {
         serviceLayerTimeConfig = serviceLayer.Dimension;
       } else {
         serviceLayerTimeConfig = serviceLayer.Dimension?.find(
-          (dim) => dim.name == 'time'
+          (dim) => dim.name == 'time',
         ); // Let's assume there will be only one time dimension..
       }
     } else if (hsLayerTimeConfig) {
@@ -192,7 +191,7 @@ export class HsDimensionTimeService {
     if (isTileWms) {
       const src = olLayer.getSource() as TileWMS;
       layerParams = src.getParams();
-      src.on('change', (_) => {
+      src.on('change', () => {
         this.syncQueryParamToDimension(src, olLayer, currentLayer);
       });
     }
@@ -200,7 +199,7 @@ export class HsDimensionTimeService {
     if (isImgWms) {
       const src = olLayer.getSource() as ImageWMS;
       layerParams = src.getParams();
-      src.on('change', (_) => {
+      src.on('change', () => {
         this.syncQueryParamToDimension(src, olLayer, currentLayer);
       });
     }
@@ -233,7 +232,7 @@ export class HsDimensionTimeService {
   private syncQueryParamToDimension(
     src: TileWMS | ImageWMS,
     olLayer,
-    currentLayer: HsLayerDescriptor
+    currentLayer: HsLayerDescriptor,
   ) {
     const timeFromParams = src.getParams()['TIME'];
     if (
@@ -273,7 +272,7 @@ export class HsDimensionTimeService {
         return this.timePointsFromInterval(
           timeValues[0],
           timeValues[1],
-          this.parseInterval(timeValues[2])
+          this.parseInterval(timeValues[2]),
         );
       } else if (timeValues.length == 2) {
         // Duration, pattern: "1999-01-22T19:00:00/2018-01-22T13:00:00"
@@ -282,7 +281,7 @@ export class HsDimensionTimeService {
         return this.timePointsFromInterval(
           timeValues[0],
           timeValues[1],
-          24 * 60 * 60 * 1000
+          24 * 60 * 60 * 1000,
         );
       } else {
         throw new Error(`Invalid ISO8601 time definition provided: ${values}`);
@@ -298,7 +297,7 @@ export class HsDimensionTimeService {
    * Nevertheless we are duplicating some information.
    */
   private polyfillLayerDimensionsValues(
-    layerDescriptor: HsLayerDescriptor
+    layerDescriptor: HsLayerDescriptor,
   ): void {
     if (!getDimensions(layerDescriptor.layer)?.time) {
       setDimension(layerDescriptor.layer, {label: 'time'}, 'time');
@@ -316,7 +315,7 @@ export class HsDimensionTimeService {
   private timePointsFromInterval(
     start: string,
     end: string,
-    step: number
+    step: number,
   ): Array<string> {
     const timePoints = [];
     const endMillis = new Date(end).getTime();

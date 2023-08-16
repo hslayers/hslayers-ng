@@ -29,7 +29,7 @@ export class HsClearLayerComponent
   constructor(
     private hsLayerUtilsService: HsLayerUtilsService,
     private hsDialogContainerService: HsDialogContainerService,
-    private hsLanguageService: HsLanguageService
+    private hsLanguageService: HsLanguageService,
   ) {
     super();
   }
@@ -50,9 +50,9 @@ export class HsClearLayerComponent
           .replace('{0}', getTitle(layer)),
         title: this.hsLanguageService.getTranslation(
           'QUERY.confirmClear',
-          undefined
+          undefined,
         ),
-      }
+      },
     );
     const confirmed = await dialog.waitResult();
     if (confirmed == 'yes') {

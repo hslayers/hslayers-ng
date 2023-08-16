@@ -1,7 +1,6 @@
 import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 
-import {Subject} from 'rxjs';
-import {takeUntil} from 'rxjs/operators';
+import {Subject, takeUntil} from 'rxjs';
 
 import {HsDialogComponent} from './dialog-component.interface';
 import {HsDialogContainerService} from './dialog-container.service';
@@ -18,11 +17,13 @@ export class HsDialogContainerComponent implements OnInit, OnDestroy {
   interval: any;
   private end = new Subject<void>();
   constructor(public HsDialogContainerService: HsDialogContainerService) {}
+
   ngOnDestroy(): void {
     this.end.next();
     this.end.complete();
     this.HsDialogContainerService.cleanup();
   }
+
   ngOnInit(): void {
     this.HsDialogContainerService.dialogObserver
       .pipe(takeUntil(this.end))
@@ -53,7 +54,7 @@ export class HsDialogContainerComponent implements OnInit, OnDestroy {
     (<HsDialogComponent>componentRef.instance).data = dialogItem.data;
     (<HsDialogComponent>componentRef.instance).dialogItem = dialogItem;
     this.HsDialogContainerService.dialogs.push(
-      componentRef.instance as HsDialogComponent
+      componentRef.instance as HsDialogComponent,
     );
   }
 }

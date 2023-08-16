@@ -30,6 +30,7 @@ export function getLaymanFriendlyLayerName(title: string): string {
     .replace(/[^\w\s\-\.]/gm, '') //Remove spaces
     .trim()
     .replace(/[\s\-\._]+/gm, '_') //Remove dashes
+    // eslint-disable-next-line no-control-regex
     .replace(/[^\x00-\x7F]/g, ''); //Remove non-ascii letters https://stackoverflow.com/questions/20856197/remove-non-ascii-character-in-string
   return title;
 }
@@ -54,7 +55,7 @@ export function wfsNotAvailable(descr: HsLaymanLayerDescriptor) {
 
 export function layerParamPendingOrStarting(
   descr: HsLaymanLayerDescriptor,
-  param: string
+  param: string,
 ) {
   return descr[param]?.status == 'PENDING' || descr[param]?.status == 'STARTED';
 }

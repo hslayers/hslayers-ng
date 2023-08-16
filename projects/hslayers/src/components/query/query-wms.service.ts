@@ -1,13 +1,13 @@
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 
+import {Feature} from 'ol';
+import {Geometry} from 'ol/geom';
 import {Image as ImageLayer, Layer, Tile} from 'ol/layer';
 import {ImageWMS, Source, TileWMS, WMTS} from 'ol/source';
 import {WMSGetFeatureInfo} from 'ol/format';
 import {lastValueFrom} from 'rxjs';
 
-import {Feature} from 'ol';
-import {Geometry} from 'ol/geom';
 import {HsLanguageService} from '../language/language.service';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsLogService} from '../../common/log/log.service';
@@ -66,7 +66,6 @@ export class HsQueryWmsService {
    * Update feature list
    * @param updated - Feature list has been updated
    * @param group -
-   
    */
   updateFeatureList(
     updated: boolean,
@@ -87,7 +86,6 @@ export class HsQueryWmsService {
    * @param infoFormat - Request information format
    * @param coordinate - Clicked coordinates
    * @param layer - Target layer
-   
    */
   async request(
     url: string,
@@ -123,7 +121,6 @@ export class HsQueryWmsService {
    * Error callback to decrease infoCounter
    * @param coordinate - Clicked coordinates
    * @param exception - Error caught
-   
    */
   featureInfoError(coordinate: number[], exception): void {
     this.infoCounter--;
@@ -139,7 +136,6 @@ export class HsQueryWmsService {
    * @param infoFormat - Format of GetFeatureInfoResponse
    * @param coordinate - Coordinate of request
    * @param layer - Target layer
-   
    */
   featureInfoReceived(
     response: string,
@@ -179,7 +175,6 @@ export class HsQueryWmsService {
    * Parse Information from JSON based GetFeatureInfo response.
    * @param response - jsonGetFeatureInfo
    * @param layer - Target layer
-   
    */
   parseJSONResponse(response: jsonGetFeatureInfo, layer: Layer<Source>) {
     for (const feature of response.features) {
@@ -201,7 +196,6 @@ export class HsQueryWmsService {
    * Parse Information from XML based GetFeatureInfo response.
    * @param features - Parsed features
    * @param layer - Target layer
-   
    */
   parseXmlResponse(features: Feature<Geometry>[], layer: Layer<Source>): void {
     let updated = false;
@@ -251,7 +245,6 @@ export class HsQueryWmsService {
   /**
    * Acknowledge that queries for clicked coordinates have been collected
    * @param coordinate - Clicked coordinates
-   
    */
   queriesCollected(coordinate: number[]): void {
     const invisiblePopup: any = this.hsQueryBaseService.getInvisiblePopup();
@@ -267,7 +260,6 @@ export class HsQueryWmsService {
    * Get FeatureInfo from WMS queryable layer (only if format of response is XML/GML/HTML). Use hs.query.service_getwmsfeatureinfo service for request and parsing response.
    * @param layer - Layer to Query
    * @param coordinate - Clicked coordinates
-   
    */
   queryWmsLayer(
     layer: Layer<TileWMS | ImageWMS | WMTS>,

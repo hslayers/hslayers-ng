@@ -7,11 +7,11 @@ describe('Hslayers application', () => {
     cy.get('hs-layermanager-layer-list li .d-flex button.hs-checkmark').each(
       (button) => {
         cy.wrap(button).click();
-      }
+      },
     );
   });
 
-  function openStyler(){
+  function openStyler() {
     cy.get('.hs-lm-layerlist:not([hidden]):last .hs-lm-item:first')
       .find('.d-flex .info_btn')
       .click();
@@ -28,7 +28,7 @@ describe('Hslayers application', () => {
     cy.get('hs-symbolizer hs-mark-symbolizer select:first').should(
       'have.attr',
       'ng-reflect-model',
-      'circle'
+      'circle',
     );
   });
 
@@ -40,11 +40,11 @@ describe('Hslayers application', () => {
     cy.get('hs-rule-list-item').click();
     cy.get('hs-symbolizer-list-item:first').click();
     cy.get(
-      'hs-symbolizer hs-symbolizer-color-picker[data-cy="mark-symbolizer-color"] input'
+      'hs-symbolizer hs-symbolizer-color-picker[data-cy="mark-symbolizer-color"] input',
     ).should(
       'have.attr',
       'style',
-      'background-color: rgb(255, 255, 255); color: black;'
+      'background-color: rgb(255, 255, 255); color: black;',
     );
   });
 
@@ -54,17 +54,17 @@ describe('Hslayers application', () => {
     cy.get('hs-styles button[title="Upload style as SLD file"]').click();
     cy.get('hs-styles input[type=file]').selectFile(
       'cypress/fixtures/sld-1.1.0.sld',
-      {force: true}
+      {force: true},
     );
     cy.wait(500);
     cy.get('hs-rule-list-item').click();
     cy.get('hs-symbolizer-list-item').click();
     cy.get(
-      'hs-symbolizer hs-symbolizer-color-picker[data-cy="mark-symbolizer-color"] input'
+      'hs-symbolizer hs-symbolizer-color-picker[data-cy="mark-symbolizer-color"] input',
     ).should(
       'have.attr',
       'style',
-      'background-color: rgb(190, 207, 80); color: black;'
+      'background-color: rgb(190, 207, 80); color: black;',
     );
   });
 });

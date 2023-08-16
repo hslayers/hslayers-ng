@@ -27,6 +27,7 @@ export class HsDynamicTextComponent
   constructor(private sanitizer: DomSanitizer) {
     super();
   }
+
   ngOnInit(): void {
     this.layerDescriptor = this.data.layerDescriptor;
   }
@@ -38,7 +39,7 @@ export class HsDynamicTextComponent
    */
   generateContent(feature: Feature<Geometry>): SafeHtml {
     const displayFunction = getPopUp(
-      this.layerDescriptor.layer
+      this.layerDescriptor.layer,
     ).displayFunction;
     const content = displayFunction(feature);
     return this.sanitizer.bypassSecurityTrustHtml(content);

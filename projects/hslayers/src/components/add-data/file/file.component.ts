@@ -1,11 +1,9 @@
-import {Component, Input} from '@angular/core';
+import {Component} from '@angular/core';
 
 import {AddDataFileType, filesSupported} from './types/file.type';
 import {AddDataFileValues} from './file-type-values';
 import {HsConfig} from '../../../config.service';
 import {HsLanguageService} from '../../language/language.service';
-
-// import {HsDragDropLayerService} from './drag-drop-layer.service';
 
 @Component({
   selector: 'hs-add-data-file',
@@ -17,7 +15,7 @@ export class HsAddDataFileComponent {
 
   constructor(
     public hsConfig: HsConfig,
-    public hsLanguageService: HsLanguageService
+    public hsLanguageService: HsLanguageService,
   ) {
     if (Array.isArray(this.hsConfig.uploadTypes)) {
       this.types = this.hsConfig.uploadTypes

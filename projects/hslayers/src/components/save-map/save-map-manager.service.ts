@@ -1,4 +1,4 @@
-import {BehaviorSubject, Subject, lastValueFrom} from 'rxjs';
+import {BehaviorSubject, Subject} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 
@@ -155,7 +155,6 @@ export class HsSaveMapManagerService extends HsSaveMapManagerParams {
 
   /**
    * Set composition's data bounding box to the current OL map view extent
-   
    */
   setCurrentBoundingBox(): void {
     this.compoData.bbox = this.hsMapService.describeExtent();
@@ -165,7 +164,6 @@ export class HsSaveMapManagerService extends HsSaveMapManagerParams {
    * Save composition to external service database
    * @param saveAsNew - Save as new composition
    * @param endpoint - Endpoint's description
-   
    * @returns Promise result of POST
    */
   save(saveAsNew: boolean, endpoint: HsEndpoint): Promise<any> {
@@ -221,7 +219,6 @@ export class HsSaveMapManagerService extends HsSaveMapManagerParams {
 
   /**
    * Generate composition JSON for downloading
-   
    * @param compoData - Additional data for composition
    * @returns composition JSON
    */
@@ -246,7 +243,6 @@ export class HsSaveMapManagerService extends HsSaveMapManagerParams {
   /**
    * Initialization of Save map wizard from outside of component
    * @param composition - Composition selected from the compositions list
-   
    */
   openPanel(composition): void {
     this.hsLayoutService.setMainPanel('saveMap', true);
@@ -256,7 +252,6 @@ export class HsSaveMapManagerService extends HsSaveMapManagerParams {
 
   /**
    * Fill composition's layers from the OL map layers list
-   
    */
   private fillCompositionLayers(): void {
     const compoData = this.compoData;
@@ -286,7 +281,6 @@ export class HsSaveMapManagerService extends HsSaveMapManagerParams {
   /**
    * Process user's info into controller model, so they can be used in Save composition forms
    * @param response - HTTP response containing user data
-   
    */
   setUserDetails(response): void {
     const user = response.data;
@@ -310,7 +304,6 @@ export class HsSaveMapManagerService extends HsSaveMapManagerParams {
 
   /**
    * Callback for saving with new name
-   
    */
   selectNewName(): void {
     this.compoData.name = this.statusData.guessedTitle;
@@ -319,7 +312,6 @@ export class HsSaveMapManagerService extends HsSaveMapManagerParams {
 
   /**
    * Check if the composition's input form is valid
-   
    * @returns True if the form is valid, false otherwise
    */
   validateForm(): boolean {
@@ -329,8 +321,7 @@ export class HsSaveMapManagerService extends HsSaveMapManagerParams {
   }
 
   /**
-   * Reset localy stored composition's input data to default values
-   
+   * Reset locally stored composition's input data to default values
    */
   resetCompoData(): void {
     this.compoData.id = '';
@@ -394,7 +385,7 @@ export class HsSaveMapManagerService extends HsSaveMapManagerParams {
     if (this.statusData.guessedTitle) {
       this.compoData.name = this.statusData.guessedTitle;
     }
-    //TODO Check if this works and input is focused
+    //TODO: Check if this works and input is focused
     this.hsLayoutService.contentWrapper.querySelector('.hs-stc-title').focus();
   }
 }

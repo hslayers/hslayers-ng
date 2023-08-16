@@ -12,7 +12,7 @@ export class HsOpacityWidgetComponent extends HsLayerEditorWidgetBaseComponent {
   name = 'opacity-widget';
   constructor(
     hsLayerSelectorService: HsLayerSelectorService,
-    private hsEventBusService: HsEventBusService
+    private hsEventBusService: HsEventBusService,
   ) {
     super(hsLayerSelectorService);
   }

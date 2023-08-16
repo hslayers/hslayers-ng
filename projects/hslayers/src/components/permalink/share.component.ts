@@ -21,39 +21,39 @@ export class HsShareComponent extends HsPanelBaseComponent implements OnInit {
     public HsShareService: HsShareService,
     public HsShareUrlService: HsShareUrlService,
     public HsCore: HsCoreService,
-    HsLayoutService: HsLayoutService,
+    public HsLayoutService: HsLayoutService,
     public hsLanguageService: HsLanguageService,
     public hsSidebarService: HsSidebarService,
-    private hsConfig: HsConfig
+    private hsConfig: HsConfig,
   ) {
     super(HsLayoutService);
   }
 
   /**
-   * @returns {string} Iframe tag with src attribute on embed Url and default width and height (1000x700px)
-   * @description Create Iframe tag for embedded map
+   * Create Iframe tag for embedded map
+   * @returns Iframe tag with src attribute on embed Url and default width and height (1000x700px)
    */
   updateEmbedCode(): string {
     return this.HsShareService.getEmbedCode();
   }
 
   /**
-   * @returns {string} Right share Url
-   * @description Select right share Url based on shareLink property (either Permalink Url or PureMap url)
+   * Select right share Url based on shareLink property (either Permalink Url or PureMap url)
+   * @returns Right share Url
    */
   getShareUrl(): string {
     return this.HsShareService.getShareUrl();
   }
 
   /**
-   * @description Set share Url state invalid
+   * Set share Url state invalid
    */
   invalidateShareUrl(): void {
     this.HsShareService.invalidateShareUrl();
   }
 
   /**
-   * @description Create share post on selected social network
+   * Create share post on selected social network
    */
   shareOnSocial(): void {
     this.HsShareService.shareOnSocial(this.new_share);

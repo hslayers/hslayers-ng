@@ -11,13 +11,12 @@ import {HsLayerUtilsService} from '../../../utils/layer-utils.service';
   templateUrl: './target-position.component.html',
 })
 export class HsPositionComponent {
-  
-  @Input() addUnder: Layer<Source> | null; // @type'; TODO: comes from another scope
+  @Input() addUnder: Layer<Source> | null;
   @Output() addUnderChange = new EventEmitter<Layer<Source> | null>();
 
   constructor(
     public hsLayerUtilsService: HsLayerUtilsService,
-    public hsLayerManagerService: HsLayerManagerService
+    public hsLayerManagerService: HsLayerManagerService,
   ) {}
 
   updateChanges(): void {

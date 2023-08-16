@@ -47,7 +47,7 @@ import {
   setWorkspace,
 } from '../../common/layer-extensions';
 
-type activateParams = {
+type ActivateParams = {
   onDrawStart?;
   onDrawEnd?;
   onSelected?;
@@ -80,7 +80,7 @@ export class HsDrawService extends HsDrawServiceParams {
     public hsCommonLaymanService: HsCommonLaymanService,
     public hsToastService: HsToastService,
     public hsAddDataOwsService: HsAddDataOwsService,
-    private zone: NgZone
+    private zone: NgZone,
   ) {
     super();
     this.keyUp = this.keyUp.bind(this);
@@ -92,7 +92,7 @@ export class HsDrawService extends HsDrawServiceParams {
             this.setType(this.type);
           }
           this.fillDrawableLayers();
-        })
+        }),
       );
 
       this.modify = new Modify({
@@ -120,7 +120,7 @@ export class HsDrawService extends HsDrawServiceParams {
       this.hsEventBusService.vectorQueryFeatureDeselection.subscribe(
         ({feature, selector}) => {
           this.selectedFeatures.remove(feature);
-        }
+        },
       );
       this.hsLaymanService.laymanLayerPending.subscribe((pendingLayers) => {
         this.pendingLayers = pendingLayers;
@@ -247,7 +247,7 @@ export class HsDrawService extends HsDrawServiceParams {
       setEditor(drawLayer, {editable: true});
       setPath(
         drawLayer,
-        this.hsConfig.defaultDrawLayerPath || 'User generated'
+        this.hsConfig.defaultDrawLayerPath || 'User generated',
       );
       this.tmpDrawLayer = true;
       this.selectedLayer = drawLayer;
@@ -256,7 +256,7 @@ export class HsDrawService extends HsDrawServiceParams {
     this.type = what;
     if (this.selectedLayer) {
       this.source = this.hsLayerUtilsService.isLayerClustered(
-        this.selectedLayer
+        this.selectedLayer,
       )
         ? (this.selectedLayer.getSource() as Cluster).getSource() //Is it clustered vector layer?
         : this.selectedLayer.getSource();
@@ -276,7 +276,7 @@ export class HsDrawService extends HsDrawServiceParams {
     if (!(layer instanceof Layer)) {
       metadata = await this.hsLaymanBrowserService.fillLayerMetadata(
         this.laymanEndpoint,
-        layer
+        layer,
       );
     }
     if (metadata) {
@@ -286,7 +286,7 @@ export class HsDrawService extends HsDrawServiceParams {
           {
             message: this.translate('DRAW.thisLayerDoesNotSupportDrawing'),
             title: this.translate('DRAW.notAVectorLayer'),
-          }
+          },
         );
         const confirmed = await dialog.waitResult();
         if (confirmed == 'yes') {
@@ -302,7 +302,7 @@ export class HsDrawService extends HsDrawServiceParams {
       }
       if (metadata.style?.url) {
         style = await this.hsCommonLaymanService.getStyleFromUrl(
-          metadata.style?.url
+          metadata.style?.url,
         );
       }
       if (metadata.style?.type == 'sld') {
@@ -326,7 +326,7 @@ export class HsDrawService extends HsDrawServiceParams {
         layer.title,
         undefined,
         'EPSG:4326',
-        {workspace: layer.workspace, saveToLayman: true, style: style}
+        {workspace: layer.workspace, saveToLayman: true, style: style},
       );
       lyr = this.hsMapService.findLayerByTitle(layer.title);
     }
@@ -443,7 +443,6 @@ export class HsDrawService extends HsDrawServiceParams {
 
   /**
    * Deactivate all hs.draw interaction in map (Draw, Modify, Select)
-   * @returns {Promise}
    */
   async deactivateDrawing(): Promise<void> {
     const map = await this.hsMapService.loaded();
@@ -499,7 +498,7 @@ export class HsDrawService extends HsDrawServiceParams {
       .getLayers()
       .getArray()
       .filter((layer: Layer<Source>) =>
-        this.hsLayerUtilsService.isLayerDrawable(layer)
+        this.hsLayerUtilsService.isLayerDrawable(layer),
       );
 
     if (drawables.length == 0 && !this.tmpDrawLayer) {
@@ -522,7 +521,7 @@ export class HsDrawService extends HsDrawServiceParams {
           onlyMine: this.onlyMine,
           limit: '',
           query: {},
-        })
+        }),
       );
       if (this.laymanEndpoint.layers) {
         this.drawableLaymanLayers = this.laymanEndpoint.layers.filter(
@@ -530,7 +529,7 @@ export class HsDrawService extends HsDrawServiceParams {
             return (
               !this.hsMapService.findLayerByTitle(layer.title) && layer.editable
             );
-          }
+          },
         );
       }
     }
@@ -551,16 +550,13 @@ export class HsDrawService extends HsDrawServiceParams {
           !drawables.some(
             (layer) =>
               this.selectedLayer &&
-              getTitle(layer) == getTitle(this.selectedLayer)
+              getTitle(layer) == getTitle(this.selectedLayer),
           )) ||
         !this.selectedLayer
       );
     }
   }
 
-  /**
-   * @param event -
-   */
   keyUp(event) {
     if (event.key == 'Backspace') {
       this.removeLastPoint();
@@ -605,7 +601,7 @@ export class HsDrawService extends HsDrawServiceParams {
     onSelected,
     onDeselected,
     drawState = true,
-  }: activateParams): Promise<void> {
+  }: ActivateParams): Promise<void> {
     this.onDeselected = onDeselected;
     this.onSelected = onSelected;
     await this.deactivateDrawing();
@@ -638,7 +634,7 @@ export class HsDrawService extends HsDrawServiceParams {
         if (onDrawStart) {
           onDrawStart(e);
         }
-      })
+      }),
     );
 
     this.addHandler(
@@ -649,7 +645,7 @@ export class HsDrawService extends HsDrawServiceParams {
         if (onDrawEnd) {
           onDrawEnd(e);
         }
-      })
+      }),
     );
 
     //Add snap interaction -  must be added after the Modify and Draw interactions
@@ -665,9 +661,7 @@ export class HsDrawService extends HsDrawServiceParams {
   }
 
   /**
-   * Add draw interaction on map and set some enhancements on it which dont depend on activateDrawing function
-   * @param interaction
-   * @param active
+   * Add draw interaction on map and set some enhancements on it which don't depend on activateDrawing function
    */
   async setInteraction(interaction: Draw): Promise<void> {
     this.draw = interaction;
@@ -679,14 +673,14 @@ export class HsDrawService extends HsDrawServiceParams {
         if (this.hsUtilsService.runningInBrowser()) {
           document.addEventListener('keyup', this.keyUp.bind(this, e));
         }
-      })
+      }),
     );
 
     this.addHandler(
       interaction.on('drawstart', () => {
         this.drawActive = true;
         this.modify.setActive(false);
-      })
+      }),
     );
 
     this.addHandler(
@@ -694,7 +688,7 @@ export class HsDrawService extends HsDrawServiceParams {
         if (this.hsUtilsService.runningInBrowser()) {
           document.removeEventListener('keyup', this.keyUp.bind(this, e));
         }
-      })
+      }),
     );
   }
 
@@ -718,14 +712,14 @@ export class HsDrawService extends HsDrawServiceParams {
           type: this.type,
           symbolizer: this.requiredSymbolizer[this.type].join(' or '),
           panel: txtPanelTitle,
-        }
+        },
       );
       this.hsToastService.createToastPopupMessage(
         stylingMissingHeader,
         `${stylingMissingWarning}`,
         {
           serviceCalledFrom: 'HsDrawService',
-        }
+        },
       );
     }
   }
@@ -830,7 +824,7 @@ export class HsDrawService extends HsDrawServiceParams {
           {
             toastStyleClasses: 'bg-info text-white',
             serviceCalledFrom: 'HsDrawService',
-          }
+          },
         );
       }
     });

@@ -1,6 +1,5 @@
 import {HttpClient} from '@angular/common/http';
-import {Inject, Injectable} from '@angular/core';
-import {PLATFORM_ID} from '@angular/core';
+import {Inject, Injectable, PLATFORM_ID} from '@angular/core';
 import {isPlatformBrowser} from '@angular/common';
 
 import {LineString, Polygon} from 'ol/geom';
@@ -72,7 +71,8 @@ export class HsUtilsService {
    * @param url - URL to shorten
    * @returns Shortened URL
    * Promise which shortens URL by using some URL shortener.
-   * By default tinyurl is used, but user provided function in config.shortenUrl can be used. Example: function(url) {
+   * By default tinyurl is used, but user provided function in config.shortenUrl can be used.
+   * @example function(url) {
             return new Promise(function(resolve, reject){
                 $http.get("http://tinyurl.com/api-create.php?url=" + url, {
                     longUrl: url
@@ -166,17 +166,17 @@ export class HsUtilsService {
   }
 
   /**
-   * Create encoded Url string from object with parameters
+   * Create encoded URL string from object with parameters
    * @public
-   * @param {object} array - Parameter object with parameter key-value pairs
+   * @param params - Parameter object with parameter key-value pairs
    * @returns Joined encoded URL query string
    */
-  paramsToURL(array: any): string {
+  paramsToURL(params: any): string {
     const pairs = [];
-    for (const key in array) {
-      if (array.hasOwnProperty(key) && array[key] !== undefined) {
+    for (const key in params) {
+      if (params.hasOwnProperty(key) && params[key] !== undefined) {
         pairs.push(
-          encodeURIComponent(key) + '=' + encodeURIComponent(array[key]),
+          encodeURIComponent(key) + '=' + encodeURIComponent(params[key]),
         );
       }
     }
@@ -186,8 +186,8 @@ export class HsUtilsService {
   /**
    * Insert every element in the set of matched elements after the target.
    * @public
-   * @param {element} newNode - Element to insert
-   * @param {element} referenceNode - Element after which to insert
+   * @param newNode - Element to insert
+   * @param referenceNode - Element after which to insert
    */
   insertAfter(newNode, referenceNode): void {
     if (newNode.length !== undefined && newNode.length > 0) {
@@ -199,14 +199,14 @@ export class HsUtilsService {
   /**
    * Create URL string from object with parameters without encoding
    * @public
-   * @param {object} array - Parameter object with parameter key-value pairs
+   * @param params - Parameter object with parameter key-value pairs
    * @returns Joined URL query string
    */
-  paramsToURLWoEncode(array): string {
+  paramsToURLWoEncode(params): string {
     const pairs = [];
-    for (const key in array) {
-      if (array.hasOwnProperty(key)) {
-        pairs.push(key + '=' + array[key]);
+    for (const key in params) {
+      if (params.hasOwnProperty(key)) {
+        pairs.push(key + '=' + params[key]);
       }
     }
     return pairs.join('&');
@@ -217,18 +217,16 @@ export class HsUtilsService {
    * invoked, will not be triggered.
    * (https://davidwalsh.name/javascript-debounce-function)
    * @public
-   * @param {Function} func - Function to execute with throttling
+   * @param func - Function to execute with throttling
    * @param wait - The function will be called after it stops
    * being called for N milliseconds.
    * @param immediate - If `immediate` is passed, trigger the
    * function on the leading edge, instead of the trailing.
-   * @param {object} context - Context element which stores the timeout handle
-   * @returns {Function} Returns function which is debounced
+   * @param context - Context element which stores the timeout handle
+   * @returns Returns function which is debounced
    */
   debounce(func, wait: number, immediate: boolean, context) {
-    if (context === undefined) {
-      context = this;
-    }
+    context ??= this;
     return function (...args) {
       const later = function () {
         if (!immediate) {
@@ -302,8 +300,8 @@ export class HsUtilsService {
 
   /**
    * Creates a deep copy of the input object
-   * @param {object} from object to deep copy
-   * @param {object?} to optional target for copy
+   * @param from - object to deep copy
+   * @param to - optional target for copy
    * @returns a deep copy of input object
    */
   structuredClone(from, to?) {
@@ -355,13 +353,13 @@ export class HsUtilsService {
 
   /**
    * Remove duplicate items from an array
-   * @param {Array<object>} dirtyArray Array with possible duplicate objects
+   * @param dirtyArray - Array with possible duplicate objects
    * @param property - Property of objects which must be unique in the new array.
    * Use dot symbol (".") to denote a property chain in nested object.
    * Function will return an empty array if it won't find the property in the object.
-   * @returns {Array<object>} Array without duplicate objects
+   * @returns Array without duplicate objects
    */
-  removeDuplicates(dirtyArray: any, property: string): any {
+  removeDuplicates(dirtyArray: any[], property: string): any {
     const propertyChain = property.split('.');
     const flatArray = [...dirtyArray];
     for (const prop of propertyChain) {
@@ -448,10 +446,10 @@ export class HsUtilsService {
   }
 
   /**
+   * Compute and format line length with correct units (m/km)
    * @private
-   * @param {LineString} line
-   * @returns {Measurement} numeric length of line with used units
-   * @description Compute and format line length with correct units (m/km)
+   * @param line
+   * @returns numeric length of line with used units
    */
   formatLength(line: LineString, sourceProj: ProjectionLike): Measurement {
     let length = 0;
@@ -484,10 +482,10 @@ export class HsUtilsService {
   }
 
   /**
+   * Compute and format polygon area with correct units (m2/km2)
    * @private
-   * @param {Polygon} polygon
-   * @returns {object} area of polygon with used units
-   * @description Compute and format polygon area with correct units (m2/km2)
+   * @param polygon
+   * @returns area of polygon with used units
    */
   formatArea(polygon: Polygon, sourceProj: ProjectionLike): Measurement {
     const area = Math.abs(getArea(polygon));

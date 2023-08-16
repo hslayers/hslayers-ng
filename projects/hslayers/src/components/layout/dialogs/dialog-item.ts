@@ -10,5 +10,8 @@ export class HsDialogItem {
     });
     return promise;
   }
-  constructor(public component: Type<any>, public data: any) {}
+  constructor(
+    public component: Type<any>,
+    public data: any,
+  ) {}
 }

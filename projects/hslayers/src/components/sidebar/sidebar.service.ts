@@ -20,7 +20,7 @@ export class HsSidebarService {
    */
   buttons: Observable<HsButton[]>;
   /**
-   * If buttons with importancy property exist.
+   * If buttons with importance property exist.
    * If not, don't display expansion +/- icon
    */
   unimportantExist = false;
@@ -43,7 +43,7 @@ export class HsSidebarService {
     public HsLanguageService: HsLanguageService,
     public HsCoreService: HsCoreService,
     public HsEventBusService: HsEventBusService,
-    public HsUtilsService: HsUtilsService
+    public HsUtilsService: HsUtilsService,
   ) {
     this.buttons = this.buttonsSubject.asObservable();
     this.HsEventBusService.mainPanelChanges.subscribe((which) => {
@@ -88,7 +88,7 @@ export class HsSidebarService {
     }
     if (!this.unimportantExist) {
       this.HsLayoutService.minisidebar = this.importantButtons.some(
-        (b) => b.fits == false
+        (b) => b.fits == false,
       );
     }
   }
@@ -102,14 +102,11 @@ export class HsSidebarService {
   /**
    * Function to set if a button is important and always visible
    * or only when the sidebar buttons are expanded
-   *
-   * @param panelName
-   * @param state
    */
   setButtonImportancy(
     buttons: HsButton[],
     panelName: string,
-    state: boolean
+    state: boolean,
   ): void {
     const backCompat = {datasource_selector: 'addData'};
     panelName = backCompat[panelName] ? backCompat[panelName] : panelName;
@@ -123,6 +120,7 @@ export class HsSidebarService {
     this.unimportantExist = buttons.some((b) => b.important == false);
     this.HsLayoutService.minisidebar = this.unimportantExist;
   }
+
   buttonClicked(button: HsButton): void {
     if (button.click) {
       button.click();
@@ -130,6 +128,7 @@ export class HsSidebarService {
       this.HsLayoutService.setMainPanel(button.panel, true);
     }
   }
+
   setPanelState(buttons: Array<HsButton>): void {
     if (buttons.length == 0) {
       return;
@@ -155,7 +154,7 @@ export class HsSidebarService {
    * should be placed in sidebar rather then in map.
    * It´s necessary for buttons like 'measure' because simple
    * 'config.panelsEnabled = false' would prevent their functionality.
-   * @param {object} button buttons Buttons object
+   * @param button - Buttons object
    */
   checkConfigurableButtons(button: HsButton): boolean {
     if (typeof button.condition == 'undefined') {
@@ -168,10 +167,10 @@ export class HsSidebarService {
   }
 
   /**
+   * Check if sidebar button should be visible in classic sidebar or hidden inside minisidebar panel
+   * Toggles minisidebar button
    * @public
-   * @param {string} which Sidear button to be checked (specify panel name)
-   * @description Check if sidebar button should be visible in classic sidebar or hidden inside minisidebar panel
-   * @description Toggles minisidebar button
+   * @param which - Sidebar button to be checked (specify panel name)
    */
   fitsSidebar(button: HsButton): boolean {
     const mobileBreakpoint = this.hsConfig.mobileBreakpoint;
@@ -180,7 +179,7 @@ export class HsSidebarService {
     this.HsLayoutService.sidebarToggleable =
       window.innerWidth > mobileBreakpoint;
     let maxNumberOfButtons = Math.floor(
-      this.HsLayoutService.layoutElement[dimensionToCheck] / 65
+      this.HsLayoutService.layoutElement[dimensionToCheck] / 65,
     );
     maxNumberOfButtons =
       dimensionToCheck == 'clientHeight'

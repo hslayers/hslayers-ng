@@ -27,7 +27,7 @@ describe('HsMeasure', () => {
       platformBrowserDynamicTesting(),
       {
         teardown: {destroyAfterEach: false},
-      }
+      },
     );
   });
 

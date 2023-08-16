@@ -31,7 +31,7 @@ describe('Hslayers application', () => {
         //All layers checkboxes should be checked
         cy.get('hs-rm-layer-dialog .modal-body button.hs-checkmark').should(
           'have.length',
-          len
+          len,
         );
         cy.get('hs-rm-layer-dialog .modal-footer button').first().click();
         //Layers should be removed

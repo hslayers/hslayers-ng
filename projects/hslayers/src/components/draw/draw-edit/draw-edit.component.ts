@@ -1,15 +1,16 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 
 import * as polygonClipping from 'polygon-clipping';
-import Feature from 'ol/Feature';
-import Polygon from 'ol/geom/Polygon';
 import polygonSplitter from 'polygon-splitter';
+import {Feature} from 'ol';
+import {Polygon} from 'ol/geom';
 import {Vector} from 'ol/source';
 import {Vector as VectorLayer} from 'ol/layer';
 
 import {HsDrawService} from '../draw.service';
 import {HsEventBusService} from '../../core/event-bus.service';
 import {HsLanguageService} from '../../language/language.service';
+import {HsLogService} from '../../../common/log/log.service';
 import {HsMapService} from '../../map/map.service';
 import {HsQueryBaseService} from './../../query/query-base.service';
 import {HsQueryVectorService} from './../../query/query-vector.service';
@@ -42,9 +43,10 @@ export class DrawEditComponent implements OnDestroy, OnInit {
     public HsQueryBaseService: HsQueryBaseService,
     public HsQueryVectorService: HsQueryVectorService,
     public HsLanguageService: HsLanguageService,
+    private hsLog: HsLogService,
     public hsMapService: HsMapService,
     public hsToastService: HsToastService,
-    public hsEventBusService: HsEventBusService
+    public hsEventBusService: HsEventBusService,
   ) {}
 
   async ngOnInit(): Promise<void> {
@@ -57,7 +59,7 @@ export class DrawEditComponent implements OnDestroy, OnInit {
     await this.hsMapService.loaded();
     this.hsMapService.getMap().addLayer(this.editLayer);
     this.checkFeatureGeometryType(
-      this.HsQueryVectorService.selector.getFeatures().getArray()[0]
+      this.HsQueryVectorService.selector.getFeatures().getArray()[0],
     );
     this.vectorQueryFeatureSubscription =
       this.hsEventBusService.vectorQueryFeatureSelection.subscribe((data) => {
@@ -78,19 +80,19 @@ export class DrawEditComponent implements OnDestroy, OnInit {
               this.hsToastService.createToastPopupMessage(
                 this.HsLanguageService.getTranslation(
                   'DRAW.featureEditor.featureEditor',
-                  undefined
+                  undefined,
                 ),
                 this.HsLanguageService.getTranslation(
                   'DRAW.featureEditor.onlyOneSplitLine',
-                  undefined
+                  undefined,
                 ),
                 {
                   toastStyleClasses: 'bg-info text-light',
-                }
+                },
               );
             } else {
               //Remove lastly selected feature.
-              //TODO: Feature is removed from selector properly but its style is not refreshed(looks like its still selected)
+              //TODO: Feature is removed from selector properly but its style is not refreshed (looks like it's still selected)
               data.selector.getFeatures().pop();
             }
           }
@@ -109,7 +111,7 @@ export class DrawEditComponent implements OnDestroy, OnInit {
       map.removeLayer(this.editLayer);
       this.setType(this.HsDrawService.type);
       //Timeout necessary because setType triggers async deactivateDrawing
-      //HsDrawService.draw needs to be null in order to change draw soruce properly
+      //HsDrawService.draw needs to be null in order to change draw source properly
       setTimeout(() => {
         if (this.HsDrawService.previouslySelected) {
           this.HsDrawService.selectedLayer =
@@ -136,10 +138,10 @@ export class DrawEditComponent implements OnDestroy, OnInit {
       this.hsToastService.createToastPopupMessage(
         this.HsLanguageService.getTranslation(
           'DRAW.featureEditor.featureEditor',
-          undefined
+          undefined,
         ),
         'Only polygon geometry can be edited',
-        undefined
+        undefined,
       );
       this.resetState();
     }
@@ -181,18 +183,20 @@ export class DrawEditComponent implements OnDestroy, OnInit {
     }
   }
 
-  //Deselects multi selection. Only one feature can be edited at the time
-  //Index can specify whitch feature to preserve in selection
+  /**
+   * Deselects multi selection. Only one feature can be edited at the time
+   * Index can specify which feature to preserve in selection
+   */
   deselectMultiple(index = 1): void {
     this.hsToastService.createToastPopupMessage(
       this.HsLanguageService.getTranslation('DRAW.featureEditor.featureEditor'),
       this.HsLanguageService.getTranslation(
         'DRAW.featureEditor.onlyOneFeatureToEdit',
-        undefined
+        undefined,
       ),
       {
         toastStyleClasses: 'bg-info text-light',
-      }
+      },
     );
     setTimeout(() => {
       try {
@@ -204,12 +208,14 @@ export class DrawEditComponent implements OnDestroy, OnInit {
         this.HsQueryBaseService.selector.getFeatures().push(feature);
         this.HsQueryVectorService.createFeatureAttributeList();
       } catch (error) {
-        console.error(error);
+        this.hsLog.error(error);
       }
     });
   }
 
-  //Custom onDrawEnd callback preventing HsQueryBaseService.clearData
+  /**
+   * Custom onDrawEnd callback preventing HsQueryBaseService.clearData
+   */
   onDrawEnd(e): void {
     setTimeout(() => {
       if (this.selectedType == 'split') {
@@ -220,15 +226,15 @@ export class DrawEditComponent implements OnDestroy, OnInit {
           this.hsToastService.createToastPopupMessage(
             this.HsLanguageService.getTranslation(
               'DRAW.featureEditor.featureEditor',
-              undefined
+              undefined,
             ),
             this.HsLanguageService.getTranslation(
               'DRAW.featureEditor.onlyOneSplitLine',
-              undefined
+              undefined,
             ),
             {
               toastStyleClasses: 'bg-info text-light',
-            }
+            },
           );
         }
       }
@@ -246,7 +252,7 @@ export class DrawEditComponent implements OnDestroy, OnInit {
     this.HsDrawService.selectedLayer = this.editLayer;
 
     this.HsQueryBaseService.selector.setActive(
-      what === this.HsDrawService.type
+      what === this.HsDrawService.type,
     );
     this.HsDrawService.modify.setActive(what === this.HsDrawService.type);
 
@@ -263,7 +269,9 @@ export class DrawEditComponent implements OnDestroy, OnInit {
     return this.HsLanguageService.getTranslationIgnoreNonExisting(module, text);
   }
 
-  //Modifiy firstly selected features with the output of polygonClipping
+  /**
+   * Modify firstly selected features with the output of polygonClipping
+   */
   setCoordinatesToFirstFeature(coords): void {
     this.features[0].feature.getGeometry().setCoordinates(coords[0], 'XY');
   }
@@ -302,7 +310,7 @@ export class DrawEditComponent implements OnDestroy, OnInit {
         {
           type: 'LineString',
           coordinates: splittingLine.getGeometry().getCoordinates(),
-        }
+        },
       ).geometry.coordinates;
       properties = features[0].getProperties();
     } else {
@@ -315,7 +323,7 @@ export class DrawEditComponent implements OnDestroy, OnInit {
       newGeom = polygonClipping[type](editCoords[0], ...editCoords.slice(1));
     }
 
-    //TYPE SPECIFFIC ACTION
+    //TYPE SPECIFIC ACTION
     this[type](newGeom, properties);
   }
 
@@ -328,15 +336,15 @@ export class DrawEditComponent implements OnDestroy, OnInit {
       this.hsToastService.createToastPopupMessage(
         this.HsLanguageService.getTranslation(
           'DRAW.featureEditor.featureEditor',
-          undefined
+          undefined,
         ),
         this.HsLanguageService.getTranslation(
           'DRAW.featureEditor.noIntersection',
-          undefined
+          undefined,
         ),
         {
           toastStyleClasses: 'bg-warning text-light',
-        }
+        },
       );
     }
   }
@@ -348,7 +356,7 @@ export class DrawEditComponent implements OnDestroy, OnInit {
       //Remove all but the first (edited) features
       if (features.length != 1) {
         this.HsQueryVectorService.removeFeature(
-          features[features.length - 1].feature //pop() ??
+          features[features.length - 1].feature, //pop() ??
         );
       }
     }
@@ -360,10 +368,10 @@ export class DrawEditComponent implements OnDestroy, OnInit {
   split(coords, properties): void {
     for (const c of coords) {
       const layer = this.hsMapService.getLayerForFeature(
-        this.features[0].feature
+        this.features[0].feature,
       );
       const feature = new Feature(
-        Object.assign(properties, {geometry: new Polygon(c)})
+        Object.assign(properties, {geometry: new Polygon(c)}),
       );
 
       layer.getSource().addFeature(feature);
@@ -380,7 +388,7 @@ export class DrawEditComponent implements OnDestroy, OnInit {
       this.setCoordinatesToFirstFeature(newGeom);
     } else {
       const layer = this.hsMapService.getLayerForFeature(
-        this.features[0].feature
+        this.features[0].feature,
       );
 
       for (const geom of newGeom) {

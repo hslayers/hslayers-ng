@@ -27,14 +27,14 @@ export class HsWmsGetCapabilitiesService implements IGetCapabilities {
     public hsUtilsService: HsUtilsService,
     public hsCommonLaymanService: HsCommonLaymanService,
     public hsAddDataService: HsAddDataService,
-    private hsCapabilityCacheService: HsCapabilityCacheService
+    private hsCapabilityCacheService: HsCapabilityCacheService,
   ) {}
 
   /**
-   * Get WMS service location without parameters from url string
+   * Get WMS service location without parameters from URL string
    *
-   * @param str Url string to parse
-   * @returns WMS service Url
+   * @param str - URL string to parse
+   * @returns WMS service URL
    */
   getPathFromUrl(str: string): string {
     if (str.indexOf('?') > -1) {
@@ -48,7 +48,7 @@ export class HsWmsGetCapabilitiesService implements IGetCapabilities {
    * Create WMS parameter string from parameter object
    * TODO: Probably the same as utils.paramsToURL
    *
-   * @param obj Object with stored WMS service parameters
+   * @param obj - Object with stored WMS service parameters
    * @returns Parameter string or empty string if no object given
    */
   params2String(obj): string {
@@ -83,7 +83,7 @@ export class HsWmsGetCapabilitiesService implements IGetCapabilities {
   async request(
     service_url: string,
 
-    owrCache?: boolean
+    owrCache?: boolean,
   ): Promise<CapabilitiesResponseWrapper> {
     service_url = service_url.replace(/&amp;/g, '&');
     const params = this.hsUtilsService.getParamsFromUrl(service_url);
@@ -115,11 +115,11 @@ export class HsWmsGetCapabilitiesService implements IGetCapabilities {
             responseType: 'text',
             withCredentials: isLaymanUrl(
               url,
-              this.hsCommonLaymanService.layman
+              this.hsCommonLaymanService.layman,
             ),
             observe: 'response', // Set observe to 'response' to get headers as well
           })
-          .pipe(takeUntil(this.hsAddDataService.cancelUrlRequest))
+          .pipe(takeUntil(this.hsAddDataService.cancelUrlRequest)),
       );
       const contentType = r.headers.get('Content-Type');
       if (contentType?.includes('text/html')) {

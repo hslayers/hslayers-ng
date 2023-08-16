@@ -1,5 +1,5 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {Subject, Subscription, takeUntil} from 'rxjs';
+import {Subject, takeUntil} from 'rxjs';
 
 import {HsCommonLaymanService} from '../../common/layman/layman.service';
 import {HsCompositionsCatalogueService} from './compositions-catalogue.service';
@@ -22,7 +22,8 @@ import {HsSidebarService} from '../sidebar/sidebar.service';
 })
 export class HsCompositionsComponent
   extends HsPanelBaseComponent
-  implements OnDestroy, OnInit {
+  implements OnDestroy, OnInit
+{
   private end = new Subject<void>();
 
   keywordsVisible = false;
@@ -34,6 +35,7 @@ export class HsCompositionsComponent
   selectedCompId: string;
   loadFilteredCompositions: any;
   name = 'composition_browser';
+
   constructor(
     private hsCompositionsService: HsCompositionsService,
     private hsCompositionsParserService: HsCompositionsParserService,
@@ -49,6 +51,7 @@ export class HsCompositionsComponent
   ) {
     super(hsLayoutService);
   }
+
   ngOnInit(): void {
     this.hsSidebarService.addButton({
       panel: 'composition_browser',
@@ -104,7 +107,7 @@ export class HsCompositionsComponent
         record: {title: 'Composition from URL'},
       });
     } else {
-      this.hsCompositionsService.loadComposition(url, true).then((_) => {
+      this.hsCompositionsService.loadComposition(url, true).then(() => {
         this.addCompositionUrlVisible = false;
       });
     }
@@ -112,7 +115,6 @@ export class HsCompositionsComponent
 
   /**
    * @param evt - File upload event
-   
    * Handle composition upload from file list
    */
   handleFileSelect(evt): void {
@@ -132,6 +134,7 @@ export class HsCompositionsComponent
       reader.readAsText(f);
     }
   }
+
   /**
    * Open overwrite dialog
    * @param title - Dialog title
@@ -156,6 +159,7 @@ export class HsCompositionsComponent
       this.optionsButtonLabel = 'more';
     }
   }
+
   /**
    * Clear all options menu filters
    */
@@ -166,18 +170,21 @@ export class HsCompositionsComponent
     this.selectedCompId = '';
     this.hsCompositionsCatalogueService.clearFilters();
   }
+
   /**
    * Change add composition url button visibility
    */
   changeUrlButtonVisible(): void {
     this.addCompositionUrlVisible = !this.addCompositionUrlVisible;
   }
+
   /**
    * Open save map panel
    */
   openSaveMapPanel(): void {
     this.hsLayoutService.setMainPanel('saveMap');
   }
+
   /**
    * Act on composition clicked
    * @param composition - Composition list item selected
@@ -191,6 +198,7 @@ export class HsCompositionsComponent
       this.selectedCompId = '';
     }
   }
+
   /**
    * Reload compositions list
    */
@@ -221,6 +229,7 @@ export class HsCompositionsComponent
       undefined,
     );
   }
+
   /**
    * Get save map panel status
    */

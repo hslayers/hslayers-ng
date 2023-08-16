@@ -17,7 +17,7 @@ export class HsUrlGeoSparqlService {
     public hsAddDataService: HsAddDataService,
     public hsLanguageService: HsLanguageService,
     public hsLog: HsLogService,
-    public hsAddDataUrlService: HsAddDataUrlService
+    public hsAddDataUrlService: HsAddDataUrlService,
   ) {
     this.data = {
       table: {
@@ -36,12 +36,12 @@ export class HsUrlGeoSparqlService {
             headers: {'Accept': ['application/rdf+xml', 'application/xml']},
             responseType: 'blob',
           })
-          .pipe(takeUntil(this.hsAddDataService.cancelUrlRequest))
+          .pipe(takeUntil(this.hsAddDataService.cancelUrlRequest)),
       );
       const blobText = await r.text();
       const parsedResponse = new DOMParser().parseFromString(
         blobText,
-        'application/xml'
+        'application/xml',
       );
       if (parsedResponse?.activeElement?.localName?.toLowerCase() === 'rdf') {
         return true;
@@ -52,8 +52,8 @@ export class HsUrlGeoSparqlService {
         this.hsLanguageService.getTranslationIgnoreNonExisting(
           'ADDLAYERS.GEOSPARQL',
           'invalidEndpoint',
-          null
-        )
+          null,
+        ),
       );
     }
     return false;

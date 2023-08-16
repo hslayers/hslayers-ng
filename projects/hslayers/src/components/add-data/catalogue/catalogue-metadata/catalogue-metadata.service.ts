@@ -12,12 +12,9 @@ export class HsCatalogueMetadataService {
    * @param prestring -
    */
   decomposeMetadata(input, prestring?: string): any {
-    console.log(input);
     if (this.hsUtilsService.isPOJO(input)) {
-      console.log('Decomposing OBJ');
       return this.decomposeObject(input, prestring);
     } else if (Array.isArray(input)) {
-      console.log('Decomposing Arr');
       return this.decomposeArray(input, prestring);
     } else {
       return false;
@@ -33,8 +30,6 @@ export class HsCatalogueMetadataService {
     let subvalue = undefined;
     Object.entries(obj).forEach((entry) => {
       const [key, value] = entry;
-      console.log('deco', decomposed);
-      console.log(key, value);
       if (key == 'feature') {
         return;
       }
@@ -45,10 +40,8 @@ export class HsCatalogueMetadataService {
         newstring = key;
       }
       if (this.hsUtilsService.isPOJO(value)) {
-        console.log('decomposing obj ', value);
         subvalue = this.decomposeObject(value, newstring);
       } else if (Array.isArray(value)) {
-        console.log('decomposing arr ', value);
         subvalue = this.decomposeArray(value, newstring);
       } else {
         subvalue = value;
@@ -67,11 +60,9 @@ export class HsCatalogueMetadataService {
    * @param substring -
    */
   decomposeArray(arr: any[], substring: string): any {
-    console.log('decomposing array ', arr, 'with substring ', substring);
     let decomposed = undefined;
     let sub: any = '';
     arr.forEach((value) => {
-      console.log(value);
       if (this.hsUtilsService.isPOJO(value)) {
         sub = this.decomposeObject(value, substring);
       } else if (Array.isArray(value)) {
@@ -79,7 +70,6 @@ export class HsCatalogueMetadataService {
       } else {
         sub += value;
       }
-      console.log(sub);
       if (this.hsUtilsService.isPOJO(sub)) {
         decomposed = this.hsUtilsService.structuredClone(sub, decomposed);
       } else {

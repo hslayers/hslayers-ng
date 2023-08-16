@@ -1,6 +1,7 @@
 import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
+
 import {HsLanguageModule} from '../language/language.module';
 import {HsLaymanModule} from '../../common/layman/layman.module';
 import {HsLogModule} from '../../common/log/log.module';

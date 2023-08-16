@@ -46,7 +46,7 @@ export class HsShareService {
     public HsToastService: HsToastService,
     public HsLogService: HsLogService,
     private HttpClient: HttpClient,
-    public HsShareThumbnailService: HsShareThumbnailService
+    public HsShareThumbnailService: HsShareThumbnailService,
   ) {
     this.HsEventBusService.compositionLoads.subscribe((data) => {
       if (data.data) {
@@ -64,17 +64,16 @@ export class HsShareService {
       if (this.HsLayoutService.mainpanel == 'permalink') {
         this.generateThumbnail(
           this.HsLayoutService.contentWrapper.querySelector(
-            '.hs-permalink-thumbnail'
+            '.hs-permalink-thumbnail',
           ),
-          false
+          false,
         );
 
         this.HsShareUrlService.statusSaving = true;
-        const status_url = this.HsShareUrlService.endpointUrl();
         const layers = this.HsMapService.getLayersArray()
           .filter(
             (l) =>
-              getShowInLayerManager(l) == undefined || getShowInLayerManager(l)
+              getShowInLayerManager(l) == undefined || getShowInLayerManager(l),
           )
           .map((lyr: Layer) => {
             return {
@@ -92,7 +91,7 @@ export class HsShareService {
             this.HsMapService.getMap(),
             {layers, bbox},
             {},
-            {}
+            {},
           );
           await this.HsShareUrlService.updatePermalinkComposition(data);
         } catch (ex) {
@@ -111,10 +110,10 @@ export class HsShareService {
         this.shareUrlValid = false;
         try {
           this.pureMapUrl = await this.HsUtilsService.shortUrl(
-            this.HsShareUrlService.getPureMapUrl()
+            this.HsShareUrlService.getPureMapUrl(),
           );
           this.permalinkUrl = await this.HsUtilsService.shortUrl(
-            this.HsShareUrlService.getPermalinkUrl()
+            this.HsShareUrlService.getPermalinkUrl(),
           );
           this.getEmbedCode();
         } catch (ex) {
@@ -133,24 +132,24 @@ export class HsShareService {
             if (this.HsLayoutService.mainpanel == 'permalink') {
               this.generateThumbnail(
                 this.HsLayoutService.contentWrapper.querySelector(
-                  '.hs-permalink-thumbnail'
+                  '.hs-permalink-thumbnail',
                 ),
-                false
+                false,
               );
             }
           },
           300,
           false,
-          this
-        )
+          this,
+        ),
       );
     });
   }
 
   /**
+   * Get correct Embed code with correct share link type
    * @public
-   * @description Get correct Embed code with correct share link type
-   * @returns {string} embeddable iframe html code
+   * @returns embeddable iframe HTML code
    */
   getEmbedCode(): string {
     this.embedCode =
@@ -162,7 +161,7 @@ export class HsShareService {
 
   /**
    * @public
-   * @returns {string} Share URL
+   * @returns Share URL
    */
   getShareUrl(): string {
     let tmp;
@@ -176,25 +175,25 @@ export class HsShareService {
 
   /**
    * @public
-   * @returns {string} Encoded share URL
+   * @returns Encoded share URL
    */
   getShareUrlEncoded(): string {
     return encodeURIComponent(this.getShareUrl());
   }
 
   /**
+   * Make current share url invalid for social sharing
    * @public
-   * @description Make current share url invalid for social sharing
    */
   invalidateShareUrl(): void {
     this.shareUrlValid = false;
   }
 
   /**
+   * Share map on social network
    * @public
-   * @param {string} provider Social share provider (twitter/facebook)
-   * @param {boolean} newShare If new share record on server should be created
-   * @description Share map on social network
+   * @param provider - Social share provider (twitter/facebook)
+   * @param newShare - If new share record on server should be created
    */
   async shareOnSocial(newShare: boolean): Promise<void> {
     if (!this.shareUrlValid) {
@@ -205,7 +204,7 @@ export class HsShareService {
         const endpointUrl = this.HsShareUrlService.endpointUrl();
         const headers = new HttpHeaders().set(
           'Content-Type',
-          'text/plain; charset=utf-8'
+          'text/plain; charset=utf-8',
         );
         await lastValueFrom(
           this.HttpClient.post(
@@ -218,12 +217,12 @@ export class HsShareService {
               description: this.abstract,
               image: this.thumbnail,
             }),
-            {headers, responseType: 'text'}
-          )
+            {headers, responseType: 'text'},
+          ),
         );
 
         const shortUrl = await this.HsUtilsService.shortUrl(
-          `${endpointUrl}?request=socialshare&id=${this.HsShareUrlService.shareId}`
+          `${endpointUrl}?request=socialshare&id=${this.HsShareUrlService.shareId}`,
         );
         const shareUrl = shortUrl;
         this.openInShareApi(this.title, this.abstract, shareUrl);
@@ -250,23 +249,23 @@ export class HsShareService {
         this.HsToastService.createToastPopupMessage(
           this.HsLanguageService.getTranslation(
             'COMPOSITIONS.errorWhileSharingOnSocialNetwork',
-            undefined
+            undefined,
           ),
           this.HsLanguageService.getTranslationIgnoreNonExisting(
             'ERRORMESSAGES',
             error,
-            undefined
+            undefined,
           ),
-          {disableLocalization: true, serviceCalledFrom: 'HsShareService'}
+          {disableLocalization: true, serviceCalledFrom: 'HsShareService'},
         );
       });
   }
 
   /**
+   * Generate thumbnail of current map and save it to variable and selected element
    * @public
-   * @param {object} $element DOM img element where to place the thumbnail
-   * @param {boolean} newRender Force synchronous rendering again or use last canvas state
-   * @description Generate thumbnail of current map and save it to variable and selected element
+   * @param $element - DOM img element where to place the thumbnail
+   * @param newRender - Force synchronous rendering again or use last canvas state
    */
   generateThumbnail($element, newRender: boolean): void {
     this.rendered($element, newRender);
@@ -310,7 +309,7 @@ export class HsShareService {
     compositionJson: MapComposition,
     endpoint: HsEndpoint,
     compoData: CompoData,
-    saveAsNew: boolean
+    saveAsNew: boolean,
   ): Promise<any> {
     if (saveAsNew || compoData.id == '') {
       compoData.id = this.HsUtilsService.generateUuid();
@@ -325,7 +324,7 @@ export class HsShareService {
             project: this.hsConfig.project_name,
             thumbnail: compoData.thumbnail,
             request: 'save',
-          })
+          }),
         );
         resolve(response);
       } catch (err) {

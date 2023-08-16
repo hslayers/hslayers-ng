@@ -1,8 +1,7 @@
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 import {Component, OnDestroy} from '@angular/core';
 import {DomSanitizer} from '@angular/platform-browser';
-import {Subject} from 'rxjs';
-import {takeUntil} from 'rxjs/operators';
+import {Subject, takeUntil} from 'rxjs';
 
 import colorScales from 'colormap/colorScale';
 import {Geometry} from 'ol/geom';
@@ -45,7 +44,7 @@ export class HsStylerComponent
     public hsLayerUtilsService: HsLayerUtilsService,
     public hsUtilsService: HsUtilsService,
     public hsSaveMapService: HsSaveMapService,
-    public hsDialogContainerService: HsDialogContainerService
+    public hsDialogContainerService: HsDialogContainerService,
   ) {
     super(hsLayoutService);
     this.hsEventBusService.layerSelectedFromUrl
@@ -53,7 +52,7 @@ export class HsStylerComponent
       .subscribe((layer: Layer<Source>) => {
         if (layer !== null && this.hsUtilsService.instOf(layer, VectorLayer)) {
           this.hsStylerService.fill(
-            layer as VectorLayer<VectorSource<Geometry>>
+            layer as VectorLayer<VectorSource<Geometry>>,
           );
         }
       });
@@ -75,7 +74,7 @@ export class HsStylerComponent
     if (this.hsStylerService.unsavedChange) {
       const dialog = this.hsDialogContainerService.create(
         HsStylerEditDialogComponent,
-        {}
+        {},
       );
       const confirmed = await dialog.waitResult();
       if (confirmed == 'no') {
@@ -99,7 +98,7 @@ export class HsStylerComponent
     moveItemInArray(
       this.hsStylerService.styleObject.rules,
       event.previousIndex,
-      event.currentIndex
+      event.currentIndex,
     );
   }
 

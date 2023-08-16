@@ -20,7 +20,7 @@ export class HsLayerManagerRemoveLayerDialogComponent
     public HsDialogContainerService: HsDialogContainerService,
     public HsEventBusService: HsEventBusService,
     public HsDrawService: HsDrawService,
-    public HsMapService: HsMapService
+    public HsMapService: HsMapService,
   ) {}
 
   removeLayer(): void {

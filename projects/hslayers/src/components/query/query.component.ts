@@ -8,13 +8,12 @@ import {takeUntil} from 'rxjs/operators';
 
 import {HsDrawService} from '../draw/draw.service';
 import {HsEventBusService} from '../core/event-bus.service';
-import {HsLanguageService} from '../language/language.service';
 import {HsLayoutService} from '../layout/layout.service';
+import {HsLogService} from '../../common/log/log.service';
 import {HsMapService} from '../map/map.service';
 import {HsPanelBaseComponent} from '../layout/panels/panel-base.component';
 import {HsQueryBaseService} from './query-base.service';
 import {HsQueryVectorService} from './query-vector.service';
-import {HsQueryWmsService} from './query-wms.service';
 import {HsSidebarService} from '../sidebar/sidebar.service';
 
 @Component({
@@ -35,14 +34,13 @@ export class HsQueryComponent
 
   constructor(
     public hsQueryBaseService: HsQueryBaseService,
-    public hsLayoutService: HsLayoutService,
     private hsMapService: HsMapService,
+    public hsLayoutService: HsLayoutService,
+    private hsLog: HsLogService,
     private hsEventBusService: HsEventBusService,
     private hsQueryVectorService: HsQueryVectorService,
-    private hsQueryWmsService: HsQueryWmsService,
     private hsDrawService: HsDrawService,
     private hsSidebarService: HsSidebarService,
-    private hsLanguageService: HsLanguageService
   ) {
     super(hsLayoutService);
   }
@@ -67,7 +65,7 @@ export class HsQueryComponent
       .subscribe((feature) => {
         this.hsQueryBaseService.features.splice(
           this.hsQueryBaseService.features.indexOf(feature),
-          1
+          1,
         );
       });
     this.hsMapService.loaded().then((map) => {
@@ -133,7 +131,7 @@ export class HsQueryComponent
           return;
         }
         const bodyElementsFound = this.checkForBodyElements(
-          invisiblePopup.contentDocument.body.children
+          invisiblePopup.contentDocument.body.children,
         );
         if (!bodyElementsFound) {
           return;
@@ -147,11 +145,11 @@ export class HsQueryComponent
         }
         if (!coordinate) {
           //FIXME: why setting empty coordinates for pop-up?
-          console.log('empty coordinates for', this.popup);
+          this.hsLog.log('empty coordinates for', this.popup);
         } else {
           this.popup.show(
             coordinate,
-            invisiblePopup.contentDocument.body.innerHTML
+            invisiblePopup.contentDocument.body.innerHTML,
           );
           this.popupOpens.next('hs.query');
         }
@@ -193,6 +191,8 @@ export class HsQueryComponent
           this.hsQueryBaseService.coordinates.length == 0))
     );
   }
+
+  //FIXME: is this only material relict??
   showQueryDialog(ev) {
     //TODO Rewrite this to new material design
     /* this.$mdDialog

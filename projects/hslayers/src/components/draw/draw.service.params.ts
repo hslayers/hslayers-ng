@@ -21,13 +21,17 @@ export class HsDrawServiceParams {
 
   boxSelection: DragBox;
   boxSelectionActive = false;
-  //Snap interaction
+  /**
+   * Snap interaction
+   */
   snap: Snap;
   snapActive = false;
   snapSource: VectorSource<Geometry>;
   snapLayer: VectorLayer<VectorSource<Geometry>>;
-
-  type: 'Point' | 'Polygon' | 'LineString' | 'Circle'; //string of type GeometryType
+  /**
+   * String of type GeometryType
+   */
+  type: 'Point' | 'Polygon' | 'LineString' | 'Circle';
   selectedLayer: VectorLayer<VectorSource<Geometry>>;
   tmpDrawLayer: any;
   source: VectorSource<Geometry>;
@@ -36,7 +40,10 @@ export class HsDrawServiceParams {
   toggleSelectionString = 'selectAllFeatures';
   onSelected: any;
   currentStyle: any;
-  highlightDrawButton = false; // Toggles toolbar button 'Draw' class
+  /**
+   * Toggles toolbar button 'Draw' class
+   */
+  highlightDrawButton = false;
   onDeselected: any;
   laymanEndpoint: any;
   previouslySelected: any;
@@ -52,7 +59,9 @@ export class HsDrawServiceParams {
 
   layerMetadataDialog: Subject<void> = new Subject();
 
-  //Layer being loaded from layman (endpoint url pending)
+  /**
+   * Layer being loaded from layman (endpoint url pending)
+   */
   pendingLayers = [];
 
   requiredSymbolizer = {

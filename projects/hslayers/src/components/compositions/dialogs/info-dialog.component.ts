@@ -1,4 +1,5 @@
 import {Component, ViewRef} from '@angular/core';
+
 import {HsCompositionsService} from '../compositions.service';
 import {HsDialogComponent} from '../../layout/dialogs/dialog-component.interface';
 import {HsDialogContainerService} from '../../layout/dialogs/dialog-container.service';
@@ -12,11 +13,10 @@ export class HsCompositionsInfoDialogComponent implements HsDialogComponent {
   data: any;
   constructor(
     public HsDialogContainerService: HsDialogContainerService,
-    public HsCompositionsService: HsCompositionsService
+    public HsCompositionsService: HsCompositionsService,
   ) {}
 
   close(): void {
-    console.log(this.data);
     this.HsDialogContainerService.destroy(this);
   }
 }

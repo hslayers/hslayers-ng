@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 
-import {Layer, Vector as VectorLayer} from 'ol/layer';
+import {Layer} from 'ol/layer';
 import {Source} from 'ol/source';
 import {Subject} from 'rxjs';
 import {WMSCapabilities} from 'ol/format';
@@ -130,7 +130,6 @@ export class HsLayerEditorService {
   /**
    * @typedef {Array<number>} Extent
    * @param {Extent} extent - Extent in EPSG:4326
-   * @param layer
    */
   fitIfExtentSet(extent: number[], layer: Layer<Source>): void {
     if (extent !== null) {
@@ -139,9 +138,6 @@ export class HsLayerEditorService {
     }
   }
 
-  /**
-   * @param extent
-   */
   transformToCurrentProj(extent: number[]): number[] {
     return transformExtent(
       extent,

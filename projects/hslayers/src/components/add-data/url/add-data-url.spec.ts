@@ -41,7 +41,7 @@ describe('HsAddDataUrlComponent', () => {
       platformBrowserDynamicTesting(),
       {
         teardown: {destroyAfterEach: false},
-      }
+      },
     );
   });
 
@@ -85,7 +85,7 @@ describe('HsAddDataUrlComponent', () => {
       const r = await lastValueFrom(
         httpClient.get(serviceURL + '?service=WMS&request=getCapabilities', {
           responseType: 'text',
-        })
+        }),
       );
       const wrap = {response: r};
       return wrap;
@@ -126,7 +126,7 @@ describe('HsAddDataUrlComponent', () => {
       layerOptions: {style: undefined},
     });
     expect(
-      component.hsAddDataCommonService.hsAddDataService.datasetSelected.getValue()
+      component.hsAddDataCommonService.hsAddDataService.datasetSelected.getValue(),
     ).toBe('url');
   });
 });

@@ -9,7 +9,7 @@ import {FileDataObject} from '../../file/types/file-data-object.type';
 })
 export class HsSaveToLaymanComponent {
   @Input() data: FileDataObject;
-  
+
   descriptionVisible = false;
 
   constructor() {}

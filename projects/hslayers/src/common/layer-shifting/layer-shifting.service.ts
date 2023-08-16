@@ -31,7 +31,6 @@ export class HsLayerShiftingService {
   /**
    * Function by which to filter the displayed layers.
    * Usually just by showInLayermanager property.
-   
    */
   private layerFilter() {
     return this.hsLayerManagerService.data.layers.filter(
@@ -41,7 +40,6 @@ export class HsLayerShiftingService {
 
   /**
    * Get map layers
-   
    */
   private getMapLayers(): Layer<Source>[] {
     return this.hsMapService
@@ -67,7 +65,6 @@ export class HsLayerShiftingService {
    * Move the provided layer in the middle between all other rendered layers on the map
    * @param layer - provided layer
    * @param target - Target layer number, item or source
-   
    */
 
   moveTo(
@@ -87,7 +84,6 @@ export class HsLayerShiftingService {
    * Move and shift layer order to make changes on the map
    * @param providedLayer - provided layer
    * @param preferredZIndex - ZIndex value to switch to
-   
    */
   private moveAndShift(
     providedLayer: Layer<Source>,
@@ -133,7 +129,6 @@ export class HsLayerShiftingService {
 
   /**
    * Gets all layer ZIndex values from the layer list
-   
    * @returns Returns array of ZIndex values
    */
   private zIndexList(): number[] {
@@ -141,7 +136,6 @@ export class HsLayerShiftingService {
   }
   /**
    * Gets maximum value from ZIndex value array
-   
    * @returns Returns max ZIndex value
    */
   getMaxZ(): number {
@@ -149,7 +143,6 @@ export class HsLayerShiftingService {
   }
   /**
    * Gets minimum value from ZIndex value array
-   
    * @returns Returns min ZIndex value
    */
   getMinZ(): number {
@@ -160,7 +153,6 @@ export class HsLayerShiftingService {
    * Applies a new ZIndex value to the selected layer that is responsible for layer rendering on the map
    * @param indexTo - new ZIndex value for the selected layer
    * @param layer - Selected layer from physical layer list
-   
    */
   private setLayerZIndex(indexTo: number, layer: Layer<Source>): void {
     const layerSwitchedWith = this.layersCopy[indexTo].layer;
@@ -172,7 +164,6 @@ export class HsLayerShiftingService {
   /**
    * Move the provided layer under all other rendered layers on the map
    * @param layer - provided layer
-   
    */
   moveToBottom(layer: LayerListItem | Layer<Source>): void {
     this.moveAndShift(this.getOlLayer(layer), this.getMinZ());
@@ -180,7 +171,6 @@ export class HsLayerShiftingService {
   /**
    * Move the provided layer over all other rendered layers on the map
    * @param layer - provided layer
-   
    */
   moveToTop(layer: LayerListItem | Layer<Source>): void {
     this.moveAndShift(this.getOlLayer(layer), this.getMaxZ());
@@ -190,7 +180,6 @@ export class HsLayerShiftingService {
    * Changes selected layers ZIndex value - layer with the largest ZIndex will be rendered on top of all other layers
    * @param baseLayer - Selected layer from physical layer list
    * @param direction - Direction in which to move the selected layer - up/down
-   
    */
   swapSibling(baseLayer: LayerListItem, direction: string): void {
     const currentLayerIndex = this.layersCopy.indexOf(baseLayer);

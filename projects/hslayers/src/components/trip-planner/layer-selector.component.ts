@@ -13,9 +13,8 @@ import {HsTripPlannerService} from './trip-planner.service';
 })
 export class HsTripPlannerLayerSelectorComponent {
   @Input() label: string;
-  
   @Input() usage: 'route' | 'waypoints';
-  @Input() selectedwrapper: {
+  @Input() selectedWrapper: {
     layer: VectorLayer<VectorSource<Geometry>>;
     title: string;
   };
@@ -24,6 +23,6 @@ export class HsTripPlannerLayerSelectorComponent {
 
   constructor(
     public HsTripPlannerService: HsTripPlannerService,
-    public HsLayerUtilsService: HsLayerUtilsService
+    public HsLayerUtilsService: HsLayerUtilsService,
   ) {}
 }

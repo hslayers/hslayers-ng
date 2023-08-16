@@ -1,9 +1,10 @@
 import {Component} from '@angular/core';
+
 import {HsToastService} from './toast.service';
 
 @Component({
   selector: 'hs-toast',
-  templateUrl: './toast.html',
+  templateUrl: './toast.component.html',
   styles: [
     `
       :host {
@@ -20,5 +21,5 @@ import {HsToastService} from './toast.service';
   ],
 })
 export class HsToastComponent {
-  constructor(public PmToastService: HsToastService) {}
+  constructor(public hsToastService: HsToastService) {}
 }

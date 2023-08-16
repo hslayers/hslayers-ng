@@ -27,7 +27,7 @@ export class HsCatalogueMetadataComponent implements HsDialogComponent, OnInit {
     public hsConfig: HsConfig, // used in template
     public hsAddDataCatalogueService: HsAddDataCatalogueService, //used in template
     public hsAddDataCatalogueMapService: HsAddDataCatalogueMapService, //used in template
-    public hsDialogContainerService: HsDialogContainerService
+    public hsDialogContainerService: HsDialogContainerService,
   ) {}
 
   ngOnInit(): void {
@@ -35,7 +35,7 @@ export class HsCatalogueMetadataComponent implements HsDialogComponent, OnInit {
     this.selectedLayer = this.data.selectedLayer;
     this.selectedLayerKeys = Object.keys(this.selectedLayer);
     this.selectedLayerKeys = this.selectedLayerKeys.filter(
-      (e) => e !== 'endpoint'
+      (e) => e !== 'endpoint',
     );
   }
 
@@ -47,7 +47,7 @@ export class HsCatalogueMetadataComponent implements HsDialogComponent, OnInit {
   addLayerToMap(
     ds: HsEndpoint,
     layer: HsAddDataLayerDescriptor,
-    type: string
+    type: string,
   ): void {
     this.hsAddDataCatalogueService.addLayerToMap(ds, layer, type);
     this.close();

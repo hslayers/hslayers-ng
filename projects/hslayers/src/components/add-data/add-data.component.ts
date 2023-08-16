@@ -1,9 +1,9 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Subject, takeUntil} from 'rxjs';
 
 import {AddDataUrlType} from './url/types/url.type';
 import {DatasetType, HsAddDataService} from './add-data.service';
 import {HsAddDataUrlService} from './url/add-data-url.service';
-import {HsCommonEndpointsService} from '../../common/endpoints/endpoints.service';
 import {HsDialogContainerService} from '../layout/dialogs/dialog-container.service';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsGetCapabilitiesErrorComponent} from './common/capabilities-error-dialog/capabilities-error-dialog.component';
@@ -12,7 +12,6 @@ import {HsLayoutService} from '../layout/layout.service';
 import {HsPanelBaseComponent} from '../layout/panels/panel-base.component';
 import {HsShareUrlService} from '../permalink/share-url.service';
 import {HsSidebarService} from '../sidebar/sidebar.service';
-import {Subject, takeUntil} from 'rxjs';
 import {servicesSupportedByUrl} from './url/services-supported.const';
 
 @Component({
@@ -32,9 +31,8 @@ export class HsAddDataComponent
     public hsLayoutService: HsLayoutService,
     public hsEventBusService: HsEventBusService,
     public hsAddDataUrlService: HsAddDataUrlService,
-    private hsCommonEndpointsService: HsCommonEndpointsService,
     private hsSidebarService: HsSidebarService,
-    private hsDialogContainerService: HsDialogContainerService
+    private hsDialogContainerService: HsDialogContainerService,
   ) {
     super(hsLayoutService);
   }
@@ -62,7 +60,7 @@ export class HsAddDataComponent
       icon: 'icon-database',
     });
     servicesSupportedByUrl.forEach((type) =>
-      this.connectServiceFromUrlParam(type as AddDataUrlType)
+      this.connectServiceFromUrlParam(type as AddDataUrlType),
     );
 
     this.hsAddDataUrlService.addDataCapsParsingError
@@ -73,19 +71,19 @@ export class HsAddDataComponent
           error = this.hsLanguageService.getTranslationIgnoreNonExisting(
             'COMMON',
             'Authentication failed. Login to the catalogue.',
-            undefined
+            undefined,
           );
         } else if (error.includes('property')) {
           error = this.hsLanguageService.getTranslationIgnoreNonExisting(
             'ADDLAYERS',
             'serviceTypeNotMatching',
-            undefined
+            undefined,
           );
         } else {
           error = this.hsLanguageService.getTranslationIgnoreNonExisting(
             'ADDLAYERS',
             error,
-            undefined
+            undefined,
           );
         }
         this.hsDialogContainerService.create(HsGetCapabilitiesErrorComponent, {

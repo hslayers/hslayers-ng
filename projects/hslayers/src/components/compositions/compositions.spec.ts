@@ -28,7 +28,6 @@ import {HsCompositionsMickaService} from './endpoints/compositions-micka.service
 import {HsCompositionsService} from './compositions.service';
 import {HsConfig} from '../../config.service';
 import {HsConfigMock} from '../../config.service.mock';
-import {HsEventBusServiceMock} from '../core/event-bus.service.mock';
 import {HsLanguageModule} from '../language/language.module';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsLayoutService} from '../layout/layout.service';

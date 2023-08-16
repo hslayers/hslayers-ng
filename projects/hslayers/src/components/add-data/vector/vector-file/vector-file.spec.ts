@@ -56,7 +56,7 @@ describe('add-layers-vector', () => {
       platformBrowserDynamicTesting(),
       {
         teardown: {destroyAfterEach: false},
-      }
+      },
     );
   });
 

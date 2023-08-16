@@ -7,7 +7,7 @@ export class HsFiltersService {
   add(
     kind: 'AND' | 'OR' | 'NOT' | 'COMPARE',
     append: boolean,
-    collection: any[]
+    collection: any[],
   ): void {
     let filter;
     switch (kind) {

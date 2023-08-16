@@ -9,7 +9,7 @@ import {HsPrintScaleService} from './print-scale.service';
 import {HsPrintTitleService} from './print-title.service';
 import {HsShareThumbnailService} from '../permalink/share-thumbnail.service';
 import {PrintModel} from './types/print-object.type';
-import {xPos, yPos} from './types/XY-positions.type';
+import {xPos, yPos} from './types/xy-positions.type';
 
 @Injectable({
   providedIn: 'root',
@@ -21,25 +21,24 @@ export class HsPrintService {
     private hsPrintLegendService: HsPrintLegendService,
     private hsPrintScaleService: HsPrintScaleService,
     private hsPrintTitleService: HsPrintTitleService,
-    private hsPrintImprintService: HsPrintImprintService
+    private hsPrintImprintService: HsPrintImprintService,
   ) {}
 
   /**
    * Print styled print layout
    * @param print - Print object
-   
    * @param complete - If true, generated image will be opened and printing interface will be created
    */
   async print(
     print: PrintModel,
-    
-    complete?: boolean
+
+    complete?: boolean,
   ): Promise<void> {
     const obs = from(
       new Promise<string>(async (resolve, reject) => {
         const img = await this.createMapImage(print);
         resolve(img);
-      })
+      }),
     );
     obs
       .pipe(takeUntil(this.hsPrintLegendService.cancelRequest))
@@ -62,7 +61,6 @@ export class HsPrintService {
   /**
    * Download map print layout as png image
    * @param print - Print object
-   
    */
   async download(print: PrintModel): Promise<void> {
     const img = await this.createMapImage(print);
@@ -82,7 +80,6 @@ export class HsPrintService {
   /**
    * Create map image with additional styled text, optional scale, legend or imprint
    * @param print - Print object
-   
    */
   async createMapImage(print: PrintModel): Promise<string> {
     await this.hsMapService.loaded();
@@ -100,21 +97,21 @@ export class HsPrintService {
     if (print.titleObj?.text) {
       const tCanvas = await this.hsPrintTitleService.drawTitleCanvas(
         print.titleObj.text,
-        print.titleObj.textStyle
+        print.titleObj.textStyle,
       );
       if (tCanvas) {
         const textPos = this.getChildPosition(
           composition,
           tCanvas,
           print.titleObj.textStyle.posX,
-          print.titleObj.textStyle.posY ?? 'top'
+          print.titleObj.textStyle.posY ?? 'top',
         );
         ctx.drawImage(tCanvas, textPos[0], textPos[1]);
       }
     }
     if (print.scaleObj?.include) {
       const sCanvas = await this.hsPrintScaleService.drawScaleCanvas(
-        print.scaleObj
+        print.scaleObj,
       );
       if (sCanvas) {
         ctx.drawImage(sCanvas, 3, composition.height - sCanvas.height);
@@ -123,28 +120,28 @@ export class HsPrintService {
 
     if (print.legendObj?.include) {
       const lCanvas = await this.hsPrintLegendService.drawLegendCanvas(
-        print.legendObj
+        print.legendObj,
       );
       if (lCanvas) {
         const legendPos = this.getChildPosition(
           composition,
           lCanvas,
           print.legendObj.posX ?? 'right',
-          print.legendObj.posY ?? 'bottom'
+          print.legendObj.posY ?? 'bottom',
         );
         ctx.drawImage(lCanvas, legendPos[0], legendPos[1]);
       }
     }
     if (print.imprintObj?.author || print.imprintObj?.abstract) {
       const iCanvas = await this.hsPrintImprintService.drawImprintCanvas(
-        print.imprintObj
+        print.imprintObj,
       );
       if (iCanvas) {
         const imprintPos = this.getChildPosition(
           composition,
           iCanvas,
           print.imprintObj.textStyle.posX ?? 'center',
-          print.imprintObj.textStyle.posY ?? 'bottom'
+          print.imprintObj.textStyle.posY ?? 'bottom',
         );
         ctx.drawImage(iCanvas, imprintPos[0], imprintPos[1]);
       }
@@ -163,7 +160,7 @@ export class HsPrintService {
     parentC: HTMLCanvasElement,
     childC: HTMLCanvasElement,
     xPos: xPos,
-    yPos: yPos
+    yPos: yPos,
   ): number[] {
     const pos = [0, 0];
     if (!xPos && !yPos) {

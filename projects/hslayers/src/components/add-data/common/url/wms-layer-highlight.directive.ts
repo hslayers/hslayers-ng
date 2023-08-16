@@ -10,11 +10,11 @@ export class WmsLayerHighlightDirective {
 
   constructor(
     private hsUtilsService: HsUtilsService,
-    private elRef: ElementRef
+    private elRef: ElementRef,
   ) {
     setTimeout(() => {
       this.highlighted = this.hsUtilsService.isOverflown(
-        this.elRef.nativeElement
+        this.elRef.nativeElement,
       );
     }, 500);
   }

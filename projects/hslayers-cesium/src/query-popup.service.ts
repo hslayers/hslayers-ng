@@ -1,7 +1,6 @@
 import {Injectable, NgZone} from '@angular/core';
 
 import {
-  HsConfig,
   HsMapService,
   HsQueryPopupBaseService,
   HsQueryPopupServiceModel,
@@ -18,16 +17,15 @@ export class HsCesiumQueryPopupService
 {
   constructor(
     HsMapService: HsMapService,
-    private HsConfig: HsConfig,
     HsUtilsService: HsUtilsService,
     zone: NgZone,
-    hsQueryPopupWidgetContainerService: HsQueryPopupWidgetContainerService
+    hsQueryPopupWidgetContainerService: HsQueryPopupWidgetContainerService,
   ) {
     super(
       HsMapService,
       HsUtilsService,
       zone,
-      hsQueryPopupWidgetContainerService
+      hsQueryPopupWidgetContainerService,
     );
   }
 

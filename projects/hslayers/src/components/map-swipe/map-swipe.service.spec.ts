@@ -1,4 +1,5 @@
 import {TestBed} from '@angular/core/testing';
+import {of} from 'rxjs';
 
 import {HsConfig} from '../../config.service';
 import {HsConfigMock} from '../../config.service.mock';
@@ -13,7 +14,6 @@ import {HsMapSwipeService} from './map-swipe.service';
 import {HsShareUrlService} from '../permalink/share-url.service';
 import {HsToastService} from '../layout/toast/toast.service';
 import {mockHsLayerShiftingService} from '../../common/layer-shifting/layer-shifting.service.mock';
-import {of} from 'rxjs';
 
 class HsToastServiceMock {
   constructor() {}

@@ -8,7 +8,6 @@ import {Vector as VectorLayer} from 'ol/layer';
 import {Vector as VectorSource} from 'ol/source';
 import {WFS} from 'ol/format';
 
-import {HsCommonEndpointsService} from '../../common/endpoints/endpoints.service';
 import {HsCommonLaymanService} from '../../common/layman/layman.service';
 import {HsEndpoint} from './../../common/endpoints/endpoint.interface';
 import {HsLanguageService} from '../language/language.service';
@@ -36,12 +35,11 @@ export class HsLayerSynchronizerService {
   constructor(
     private hsUtilsService: HsUtilsService,
     private hsLaymanService: HsLaymanService,
-    private hsCommonEndpointsService: HsCommonEndpointsService,
     private hsMapService: HsMapService,
     private hsCommonLaymanService: HsCommonLaymanService,
     private hsToastService: HsToastService,
     private hsLanguageService: HsLanguageService,
-    private hsLogService: HsLogService
+    private hsLogService: HsLogService,
   ) {
     this.hsMapService.loaded().then((map) => {
       const layerAdded = (e) => this.addLayer(e.element);
@@ -63,7 +61,6 @@ export class HsLayerSynchronizerService {
   }
   /**
    * Reload all the synchronized layers after Layman's authorization change
-   
    */
   private reloadLayersOnAuthChange(): void {
     for (const layer of this.syncedLayers) {
@@ -77,7 +74,6 @@ export class HsLayerSynchronizerService {
   /**
    * Start synchronizing layer to database
    * @param layer - Layer to add
-   
    */
   addLayer(layer: VectorLayer<VectorSource<Geometry>>): void {
     if (this.isLayerSynchronizable(layer)) {
@@ -87,7 +83,7 @@ export class HsLayerSynchronizerService {
   }
 
   /**
-   * Check if the selected layer is synchronizable
+   * Check if the selected layer is synchronize-able
    * @param layer - Layer to check
    * @returns True if the layer can be synchronized, false otherwise
    */
@@ -97,7 +93,7 @@ export class HsLayerSynchronizerService {
       this.hsUtilsService.instOf(layer.getSource(), VectorSource) &&
       //Test whether format contains 'wfs' AND does not contain 'external'. Case insensitive
       new RegExp('^(?=.*wfs)(?:(?!external).)*$', 'i').test(
-        definition?.format?.toLowerCase()
+        definition?.format?.toLowerCase(),
       )
     );
   }
@@ -108,7 +104,7 @@ export class HsLayerSynchronizerService {
    * @param layer - Layer to add
    */
   async startMonitoringIfNeeded(
-    layer: VectorLayer<VectorSource<Geometry>>
+    layer: VectorLayer<VectorSource<Geometry>>,
   ): Promise<void> {
     const layerSource = layer.getSource();
     await this.pull(layer, layerSource);
@@ -117,7 +113,7 @@ export class HsLayerSynchronizerService {
         this.hsLaymanService.upsertLayer(
           this.findLaymanForWfsLayer(layer),
           layer,
-          false
+          false,
         );
       }
     });
@@ -127,7 +123,7 @@ export class HsLayerSynchronizerService {
         Array.isArray(e.feature) ? e.feature : [e.feature],
         [],
         [],
-        layer
+        layer,
       );
     });
     layerSource.on('removefeature', (e) => {
@@ -140,7 +136,7 @@ export class HsLayerSynchronizerService {
    * @param layer - Layer to add
    */
   findLaymanForWfsLayer(
-    layer: VectorLayer<VectorSource<Geometry>>
+    layer: VectorLayer<VectorSource<Geometry>>,
   ): HsEndpoint {
     const definitionUrl = getDefinition(layer).url;
     const laymanEp = this.hsCommonLaymanService?.layman;
@@ -155,11 +151,10 @@ export class HsLayerSynchronizerService {
    * them to OL VectorSource
    * @param layer - Layer to get Layman friendly name for
    * @param source - OL VectorSource to store features in
-   
    */
   async pull(
     layer: VectorLayer<VectorSource<Geometry>>,
-    source: VectorSource<Geometry>
+    source: VectorSource<Geometry>,
   ): Promise<void> {
     try {
       setEventsSuspended(layer, (getEventsSuspended(layer) || 0) + 1);
@@ -168,7 +163,7 @@ export class HsLayerSynchronizerService {
         setHsLaymanSynchronizing(layer, true);
         const response: string = await this.hsLaymanService.makeGetLayerRequest(
           laymanEndpoint,
-          layer
+          layer,
         );
         let featureString;
         if (response) {
@@ -180,11 +175,11 @@ export class HsLayerSynchronizerService {
           const format = new WFS();
           featureString = featureString.replace(
             /urn:x-ogc:def:crs:EPSG:3857/gm,
-            'EPSG:3857'
+            'EPSG:3857',
           );
           featureString = featureString.replaceAll(
             'http://www.opengis.net/gml/srs/epsg.xml#',
-            'EPSG:'
+            'EPSG:',
           );
           try {
             const features = format.readFeatures(featureString).map((f) => {
@@ -210,7 +205,6 @@ export class HsLayerSynchronizerService {
   /**
    * Observe feature changes and execute handler for them
    * @param f - Feature to observe
-   
    */
   observeFeature(f: Feature<Geometry>): void {
     f.getGeometry().on(
@@ -221,18 +215,17 @@ export class HsLayerSynchronizerService {
         },
         this.debounceInterval,
         false,
-        this
-      )
+        this,
+      ),
     );
     f.on('propertychange', (e: ObjectEvent) =>
-      this.handleFeaturePropertyChange(e.target as Feature<Geometry>)
+      this.handleFeaturePropertyChange(e.target as Feature<Geometry>),
     );
   }
 
   /**
    * Handler for feature change event
    * @param feature - Feature whose change event was captured
-   
    */
   handleFeatureChange(feature: Feature<Geometry>): void {
     this.sync([], [feature], [], this.hsMapService.getLayerForFeature(feature));
@@ -241,7 +234,6 @@ export class HsLayerSynchronizerService {
   /**
    * Handler for feature property change event
    * @param feature - Feature whose property change event was captured
-   
    */
   handleFeaturePropertyChange(feature: Feature<Geometry>): void {
     //NOTE Due to WFS specification, attribute addition is not possible, so we must delete the feature before.
@@ -256,13 +248,12 @@ export class HsLayerSynchronizerService {
    * @param upd - Features being uploaded
    * @param del - Features being deleted
    * @param layer - Layer interacted with
-   
    */
   sync(
     add: Feature<Geometry>[],
     upd: Feature<Geometry>[],
     del: Feature<Geometry>[],
-    layer: VectorLayer<VectorSource<Geometry>>
+    layer: VectorLayer<VectorSource<Geometry>>,
   ): void {
     if ((getEventsSuspended(layer) || 0) > 0) {
       return;
@@ -307,14 +298,14 @@ export class HsLayerSynchronizerService {
     this.hsToastService.createToastPopupMessage(
       this.hsLanguageService.getTranslation(
         'SAVECOMPOSITION.syncErrorDialog.errorWhenSyncing',
-        undefined
+        undefined,
       ),
       exception['ows:ExceptionReport']['ows:Exception']['ows:ExceptionText']
         ._text,
       {
         disableLocalization: true,
         serviceCalledFrom: 'HsLayerSynchronizerService',
-      }
+      },
     );
   }
 

@@ -1,9 +1,7 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
-import {Subject} from 'rxjs';
-import {takeUntil} from 'rxjs/operators';
-
+import {Component, OnDestroy} from '@angular/core';
 import {Feature} from 'ol';
 import {Geometry} from 'ol/geom';
+import {Subject, takeUntil} from 'rxjs';
 
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsSearchService} from './search.service';
@@ -18,12 +16,11 @@ import {setHighlighted} from '../../common/feature-extensions';
 })
 export class HsSearchResultsComponent implements OnDestroy {
   searchResultsVisible: boolean;
-
   fcode_zoom_map: any;
   private end = new Subject<void>();
   constructor(
     private hsEventBusService: HsEventBusService,
-    public hsSearchService: HsSearchService
+    public hsSearchService: HsSearchService,
   ) {
     this.hsEventBusService.searchResultsReceived
       .pipe(takeUntil(this.end))
@@ -42,6 +39,7 @@ export class HsSearchResultsComponent implements OnDestroy {
     this.end.next();
     this.end.complete();
   }
+
   /**
    * Handler for receiving results of search request, sends results to correct parser
    */
@@ -49,6 +47,7 @@ export class HsSearchResultsComponent implements OnDestroy {
     this.searchResultsVisible = true;
     this.hsSearchService.showResultsLayer();
   }
+
   clear(): void {
     this.searchResultsVisible = false;
   }
@@ -62,6 +61,7 @@ export class HsSearchResultsComponent implements OnDestroy {
       .getSource()
       .getFeatureById(featureId);
   }
+
   /**
    * @param result - Search result record
    * @param highlight - Feature highlight state
@@ -73,6 +73,7 @@ export class HsSearchResultsComponent implements OnDestroy {
       setHighlighted(found, highlight);
     }
   }
+
   /**
    * Zoom map to selected result from results list
    *

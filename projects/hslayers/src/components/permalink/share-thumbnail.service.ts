@@ -13,16 +13,11 @@ export class HsShareThumbnailService {
     public HsMapService: HsMapService,
     public HsLogService: HsLogService,
     rendererFactory: RendererFactory2,
-    private hsConfig: HsConfig
+    private hsConfig: HsConfig,
   ) {
     this.renderer = rendererFactory.createRenderer(null, null);
   }
 
-  /**
-   * @param canvas
-   * @param width
-   * @param height
-   */
   setCanvasSize(canvas, width: number, height: number): void {
     canvas.width = width;
     canvas.height = height;
@@ -30,9 +25,6 @@ export class HsShareThumbnailService {
     canvas.style.height = height + 'px';
   }
 
-  /**
-   * @param ctx
-   */
   setupContext(ctx): void {
     ctx.mozImageSmoothingEnabled = false;
     ctx.webkitImageSmoothingEnabled = false;
@@ -55,7 +47,7 @@ export class HsShareThumbnailService {
     this.setCanvasSize(
       collectorCanvas,
       firstCanvas?.width ?? width,
-      firstCanvas?.height ?? height
+      firstCanvas?.height ?? height,
     );
     const ctxCollector = collectorCanvas.getContext('2d');
     const ctxTarget = targetCanvas.getContext('2d');
@@ -80,11 +72,11 @@ export class HsShareThumbnailService {
           // Apply the transform to the export map context
           CanvasRenderingContext2D.prototype.setTransform.apply(
             ctxCollector,
-            matrix
+            matrix,
           );
           ctxCollector.drawImage(canvas, 0, 0);
         }
-      }
+      },
     );
 
     /* Final render pass */
@@ -97,7 +89,7 @@ export class HsShareThumbnailService {
       0,
       0,
       width,
-      height
+      height,
     );
     //console.log('image drawn', this.isCanvasTainted(targetCanvas));
     /**
@@ -114,12 +106,15 @@ export class HsShareThumbnailService {
       //this.data.thumbnail
       thumbnail = targetCanvas.toDataURL('image/jpeg', 0.85);
     } catch (e) {
-      console.log('catched, is tainted?', this.isCanvasTainted(targetCanvas));
+      this.HsLogService.log(
+        'catch, is tainted?',
+        this.isCanvasTainted(targetCanvas),
+      );
       //console.log(targetCanvas);
       this.HsLogService.warn(e);
       $element.setAttribute(
         'src',
-        this.hsConfig.assetsPath + 'img/notAvailable.png'
+        this.hsConfig.assetsPath + 'img/notAvailable.png',
       );
     }
     $element.style.width = width + 'px';

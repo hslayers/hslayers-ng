@@ -38,7 +38,7 @@ export class VectorSourceFromUrl extends VectorSource<Geometry> {
         super.getFormat().readFeatures(data, {
           dataProjection: this.featureProjection,
           featureProjection: this.mapProjection,
-        }) as Feature<Geometry>[]
+        }) as Feature<Geometry>[],
       );
 
       super.set('loaded', true);

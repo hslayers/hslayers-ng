@@ -18,7 +18,8 @@ import {accessRightsModel} from '../../../components/add-data/common/access-righ
   templateUrl: './set-permissions.component.html',
 })
 export class HsSetPermissionsDialogComponent
-  implements HsDialogComponent, OnInit {
+  implements HsDialogComponent, OnInit
+{
   dialogItem: HsDialogItem;
   viewRef: ViewRef;
   currentAccessRights: accessRightsModel = {
@@ -36,11 +37,11 @@ export class HsSetPermissionsDialogComponent
     private hsDialogContainerService: HsDialogContainerService,
     private hsLaymanService: HsLaymanService,
     private hsAddDataCatalogueService: HsAddDataCatalogueService,
-    private hsCompositionsCatalogueService: HsCompositionsCatalogueService
+    private hsCompositionsCatalogueService: HsCompositionsCatalogueService,
   ) {}
 
   ngOnInit(): void {
-    //Can set permision for layman endpoint only
+    //Can set permission for Layman endpoint only
     this.endpoint = this.hsCommonLaymanService.layman;
     if (!this.data.selectedRecord?.access_rights || !this.endpoint) {
       this.close();
@@ -95,7 +96,7 @@ export class HsSetPermissionsDialogComponent
         response = await this.hsLaymanService.makeUpsertLayerRequest(
           this.endpoint,
           null,
-          layerDesc
+          layerDesc,
         );
         if (response?.error) {
           return;
@@ -107,7 +108,7 @@ export class HsSetPermissionsDialogComponent
         response = await this.hsLaymanService.updateCompositionAccessRights(
           this.data.selectedRecord.name,
           this.endpoint,
-          this.currentAccessRights
+          this.currentAccessRights,
         );
         if (response?.error) {
           return;

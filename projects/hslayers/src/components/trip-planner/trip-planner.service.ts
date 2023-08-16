@@ -74,7 +74,7 @@ export class HsTripPlannerService {
     public HsLanguageService: HsLanguageService,
     private HsLayerUtilsService: HsLayerUtilsService,
     private HsLayoutService: HsLayoutService,
-    private hsConfig: HsConfig
+    private hsConfig: HsConfig,
   ) {
     this.modify = new Modify({
       features: this.movable_features,
@@ -156,7 +156,7 @@ export class HsTripPlannerService {
         },
         ...this.HsMapService.getLayersArray()
           .filter((layer: Layer<Source>) =>
-            this.HsLayerUtilsService.isLayerDrawable(layer)
+            this.HsLayerUtilsService.isLayerDrawable(layer),
           )
           .map((layer: VectorLayer<VectorSource<Geometry>>) => {
             return {layer, title: getTitle(layer)};
@@ -170,7 +170,7 @@ export class HsTripPlannerService {
   private fillDefaultLayerWrapper(usage: 'route' | 'waypoints') {
     if (this.selectedLayerWrapper[usage]) {
       this.selectedLayerWrapper[usage] = this.vectorLayers.find(
-        (w) => w.layer == this.selectedLayerWrapper[usage].layer
+        (w) => w.layer == this.selectedLayerWrapper[usage].layer,
       );
     } else {
       this.selectedLayerWrapper[usage] = this.vectorLayers[0];
@@ -185,7 +185,10 @@ export class HsTripPlannerService {
     });
     setTitle(
       this.waypointLayer,
-      this.HsLanguageService.getTranslation('TRIP_PLANNER.waypoints', undefined)
+      this.HsLanguageService.getTranslation(
+        'TRIP_PLANNER.waypoints',
+        undefined,
+      ),
     );
     this.HsMapService.getMap().addLayer(this.waypointLayer);
   }
@@ -200,8 +203,8 @@ export class HsTripPlannerService {
       this.routeLayer,
       this.HsLanguageService.getTranslation(
         'TRIP_PLANNER.travelRoute',
-        undefined
-      )
+        undefined,
+      ),
     );
     this.HsMapService.getMap().addLayer(this.routeLayer);
   }
@@ -213,7 +216,7 @@ export class HsTripPlannerService {
    */
   async selectLayer(
     layer: {layer: VectorLayer<VectorSource<Geometry>>; title: string},
-    usage: 'route' | 'waypoints'
+    usage: 'route' | 'waypoints',
   ): Promise<void> {
     if (usage == 'route') {
       this.routeLayer = layer.layer;
@@ -234,14 +237,14 @@ export class HsTripPlannerService {
         const new_cords = transform(
           feature.getGeometry().getCoordinates(),
           this.HsMapService.getCurrentProj().getCode(),
-          'EPSG:4326'
+          'EPSG:4326',
         );
         const wp: Waypoint = {
           lon: new_cords[0],
           lat: new_cords[1],
           name: 'Waypoint ' + (this.waypoints.length + 1),
           hash: this.HsUtilsService.hashCode(
-            JSON.stringify('Waypoint ' + this.waypoints.length + Math.random())
+            JSON.stringify('Waypoint ' + this.waypoints.length + Math.random()),
           ),
           routes: {from: null, to: null},
           featureId: feature.getId(),
@@ -270,16 +273,26 @@ export class HsTripPlannerService {
 
   /**
    * Add waypoint to waypoint list and recalculate route
-   * @param {number} lon Longitude number (part of Ol.coordinate Array)
-   * @param {number} lat Latitude number (part of Ol.coordinate Array)
+   * @param lon - Longitude number (part of Ol.coordinate Array)
+   * @param lat - Latitude number (part of Ol.coordinate Array)
    */
-  addWaypoint({x, y, lon, lat}) {
+  addWaypoint({
+    x,
+    y,
+    lon,
+    lat,
+  }: {
+    x: number;
+    y: number;
+    lon: number;
+    lat: number;
+  }) {
     const wp: Waypoint = {
       lon,
       lat,
       name: 'Waypoint ' + (this.waypoints.length + 1),
       hash: this.HsUtilsService.hashCode(
-        JSON.stringify('Waypoint ' + this.waypoints.length + Math.random())
+        JSON.stringify('Waypoint ' + this.waypoints.length + Math.random()),
       ),
       routes: {from: null, to: null},
       featureId: null,
@@ -312,7 +325,7 @@ export class HsTripPlannerService {
       const new_cords = transform(
         feature.getGeometry().getCoordinates(),
         this.HsMapService.getCurrentProj().getCode(),
-        'EPSG:4326'
+        'EPSG:4326',
       );
       wp.lon = new_cords[0];
       wp.lat = new_cords[1];
@@ -361,7 +374,7 @@ export class HsTripPlannerService {
   waypointRemoved(wp: Waypoint): void {
     try {
       this.waypointSource.removeFeature(
-        this.waypointSource.getFeatureById(wp.featureId)
+        this.waypointSource.getFeatureById(wp.featureId),
       );
     } catch (ex) {
       throw ex;
@@ -370,7 +383,7 @@ export class HsTripPlannerService {
 
   /**
    * Remove selected waypoint from trip
-   * @param {object} wp Waypoint object to remove
+   * @param wp - Waypoint object to remove
    */
   removeWaypoint(wp) {
     const wpIndex = this.waypoints.indexOf(wp);
@@ -416,7 +429,7 @@ export class HsTripPlannerService {
         const wpt = this.waypoints[i + 1];
         wpt.loading = true;
         const url = this.HsUtilsService.proxify(
-          'https://api.openrouteservice.org/v2/directions/driving-car/geojson'
+          'https://api.openrouteservice.org/v2/directions/driving-car/geojson',
         );
         const response = await lastValueFrom(
           this.$http
@@ -431,12 +444,12 @@ export class HsTripPlannerService {
               catchError((e) => {
                 let title = this.HsLanguageService.getTranslation(
                   'TRIP_PLANNER.serviceDown',
-                  undefined
+                  undefined,
                 );
                 if (e.status == 404) {
                   title = this.HsLanguageService.getTranslation(
                     'TRIP_PLANNER.missingAuth',
-                    undefined
+                    undefined,
                   );
                 }
                 this.HsToastService.createToastPopupMessage(
@@ -444,16 +457,16 @@ export class HsTripPlannerService {
                   this.HsLanguageService.getTranslationIgnoreNonExisting(
                     'ERRORMESSAGES',
                     e.message,
-                    {url}
+                    {url},
                   ),
                   {
                     disableLocalization: true,
                     serviceCalledFrom: 'HsTripPlannerService',
-                  }
+                  },
                 );
                 return of(null);
-              })
-            )
+              }),
+            ),
         );
         if (!response) {
           return;
@@ -475,8 +488,6 @@ export class HsTripPlannerService {
 
   /**
    * Format waypoint route distance in a human friendly way
-   * @param wp - Wayoint
-   * @param which
    * @returns Distance
    */
   formatDistance(wp: Waypoint, which?: string): string {

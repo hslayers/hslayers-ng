@@ -30,7 +30,7 @@ export class HsCompositionsLaymanService {
     private hsEventBusService: HsEventBusService,
     private hsToastService: HsToastService,
     private hsLanguageService: HsLanguageService,
-    private hsMapService: HsMapService
+    private hsMapService: HsMapService,
   ) {}
 
   /**
@@ -39,13 +39,12 @@ export class HsCompositionsLaymanService {
    * @param params - HTTP request query params
    * @param extentFeatureCreated - Function for creating extent vector feature that will reference all listed composition from the response
    * @param _bbox - Bounding box
-   
    */
   loadList(
     endpoint: HsEndpoint,
     params,
     extentFeatureCreated,
-    _bbox
+    _bbox,
   ): Observable<any> {
     endpoint.getCurrentUserIfNeeded(endpoint);
     endpoint.compositionsPaging.loaded = false;
@@ -64,7 +63,7 @@ export class HsCompositionsLaymanService {
         .getView()
         .calculateExtent(this.hsMapService.getMap().getSize()),
       this.hsMapService.getCurrentProj(),
-      'EPSG:3857'
+      'EPSG:3857',
     );
     const bbox = params.filterByExtent ? b.join(',') : '';
 
@@ -97,7 +96,7 @@ export class HsCompositionsLaymanService {
             this.hsCommonLaymanService.displayLaymanError(
               endpoint,
               'COMPOSITIONS.errorWhileRequestingCompositions',
-              response.body
+              response.body,
             );
           }
         }),
@@ -105,7 +104,7 @@ export class HsCompositionsLaymanService {
           if (isErrorHandlerFunction(endpoint.onError?.compositionLoad)) {
             (<EndpointErrorHandler>endpoint.onError?.compositionLoad).handle(
               endpoint,
-              e
+              e,
             );
             return of(e);
           }
@@ -117,32 +116,32 @@ export class HsCompositionsLaymanService {
               this.hsToastService.createToastPopupMessage(
                 this.hsLanguageService.getTranslation(
                   'COMPOSITIONS.errorWhileRequestingCompositions',
-                  undefined
+                  undefined,
                 ),
                 endpoint.title +
                   ': ' +
                   this.hsLanguageService.getTranslationIgnoreNonExisting(
                     'ERRORMESSAGES',
                     e.status ? e.status.toString() : e.message,
-                    {url: endpoint.url}
+                    {url: endpoint.url},
                   ),
                 {
                   disableLocalization: true,
                   serviceCalledFrom: 'HsCompositionsLaymanService',
-                }
+                },
               );
               break;
           }
           return of(e);
-        })
+        }),
       );
     return endpoint.listLoading;
   }
+
   /**
    * Middleware function before returning compositions list to the rest of the app
    * @param endpoint - Layman endpoint selected
    * @param response - HTTP request response
-   
    */
   compositionsReceived(endpoint: HsEndpoint, response): void {
     if (response.body.length == 0) {
@@ -173,17 +172,17 @@ export class HsCompositionsLaymanService {
       if (response.body.extentFeatureCreated) {
         const extentFeature = addExtentFeature(
           record,
-          this.hsMapService.getCurrentProj()
+          this.hsMapService.getCurrentProj(),
         );
         if (extentFeature) {
           tmp.featureId = extentFeature.getId().toString();
           response.body.extentFeatureCreated(extentFeature);
         }
       }
-
       return tmp;
     });
   }
+
   /**
    * Delete selected composition from Layman database
    * @param endpoint - Layman endpoint selected
@@ -191,7 +190,7 @@ export class HsCompositionsLaymanService {
    */
   async delete(
     endpoint: HsEndpoint,
-    composition: HsMapCompositionDescriptor
+    composition: HsMapCompositionDescriptor,
   ): Promise<void> {
     const url = `${endpoint.url}/rest/workspaces/${composition.workspace}/maps/${composition.name}`;
     await lastValueFrom(this.$http.delete(url, {withCredentials: true}));
@@ -201,21 +200,20 @@ export class HsCompositionsLaymanService {
   /**
    * Get information about the selected composition
    * @param composition - Composition selected
-   
    */
   async getInfo(composition: HsMapCompositionDescriptor): Promise<any> {
     const endpoint = composition.endpoint;
     if (composition.name == undefined) {
       this.displayWarningToast(
         endpoint,
-        'COMPOSITIONS.compostionsNameAttributeIsNotDefined'
+        'COMPOSITIONS.compositionsNameAttributeIsNotDefined',
       );
       return;
     }
     if (endpoint.url == undefined) {
       this.displayWarningToast(
         endpoint,
-        'COMPOSITIONS.endpointUrlIsNotDefined'
+        'COMPOSITIONS.endpointUrlIsNotDefined',
       );
       return;
     }
@@ -240,11 +238,11 @@ export class HsCompositionsLaymanService {
     endpoint.compositionsPaging.next = endpoint.compositionsPaging.limit;
     endpoint.compositionsPaging.matched = 0;
   }
+
   /**
    * Display warning toast about some error while requesting compositions
    * @param endpoint - Layman endpoint selected
    * @param message - Message to be displayed when warning is issued
-   
    */
   displayWarningToast(endpoint: HsEndpoint, message: string): void {
     this.hsToastService.createToastPopupMessage(
@@ -254,7 +252,7 @@ export class HsCompositionsLaymanService {
         disableLocalization: true,
         toastStyleClasses: 'bg-warning text-light',
         serviceCalledFrom: 'HsCompositionsLaymanService',
-      }
+      },
     );
   }
 }

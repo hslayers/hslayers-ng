@@ -2,9 +2,9 @@ import {Injectable} from '@angular/core';
 
 import {BehaviorSubject} from 'rxjs';
 
-import {EndpointErrorHandling, HsEndpoint} from './endpoint.interface';
 import {HsCommonLaymanService} from '../layman/layman.service';
 import {HsConfig} from '../../config.service';
+import {HsEndpoint} from './endpoint.interface';
 import {HsUtilsService} from '../../components/utils/utils.service';
 
 @Injectable({providedIn: 'root'})
@@ -15,7 +15,7 @@ export class HsCommonEndpointsService {
   constructor(
     public hsConfig: HsConfig,
     public hsCommonLaymanService: HsCommonLaymanService,
-    public hsUtilsService: HsUtilsService
+    public hsUtilsService: HsUtilsService,
   ) {
     this.fillEndpoints();
     this.hsConfig.configChanges.subscribe(() => {
@@ -60,7 +60,7 @@ export class HsCommonEndpointsService {
 
     if (this.endpoints) {
       this.hsCommonLaymanService.layman$.next(
-        this.endpoints.find((ep) => ep.type.includes('layman'))
+        this.endpoints.find((ep) => ep.type.includes('layman')),
       );
       this.endpointsFilled.next(this.endpoints);
     }

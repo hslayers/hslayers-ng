@@ -32,7 +32,7 @@ export class VectorLayerDescriptor {
     abstract,
     url: string,
     options: HsVectorLayerOptions,
-    mapProjection
+    mapProjection,
   ) {
     /**
      * Artificial object which is used when layer is saved to composition.

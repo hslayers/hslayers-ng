@@ -20,7 +20,7 @@ export class AppComponent implements OnInit {
   constructor(
     public HsConfig: HsConfig,
     private HsCesiumConfig: HsCesiumConfig,
-    private HsLayoutService: HsLayoutService
+    private HsLayoutService: HsLayoutService,
   ) {
     const geojsonObject = {
       'type': 'FeatureCollection',

@@ -1,16 +1,10 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 
-import {Subject} from 'rxjs';
-import {takeUntil} from 'rxjs/operators';
+import {Subject, takeUntil} from 'rxjs';
 
-import {HsCoreService} from '../../core/core.service';
 import {HsEndpoint} from '../../../common/endpoints/endpoint.interface';
-import {HsLayerUtilsService} from '../../utils/layer-utils.service';
 import {HsLayoutService} from '../../layout/layout.service';
-import {
-  HsSaveMapManagerParams,
-  HsSaveMapManagerService,
-} from '../save-map-manager.service';
+import {HsSaveMapManagerService} from '../save-map-manager.service';
 import {HsUtilsService} from '../../utils/utils.service';
 import {StatusData} from '../../save-map/types/status-data.type';
 
@@ -24,14 +18,12 @@ export class HsSaveMapAdvancedFormComponent implements OnDestroy, OnInit {
   overwrite = false;
   downloadableData: string;
   extraFormOpened = '';
-
   private end = new Subject<void>();
+
   constructor(
     public hsSaveMapManagerService: HsSaveMapManagerService,
-    private hsCoreService: HsCoreService,
     private hsUtilsService: HsUtilsService,
-    private hsLayerUtilsService: HsLayerUtilsService, //Used in template
-    private hsLayoutService: HsLayoutService
+    private hsLayoutService: HsLayoutService,
   ) {}
 
   ngOnInit(): void {
@@ -97,7 +89,7 @@ export class HsSaveMapAdvancedFormComponent implements OnDestroy, OnInit {
   selectDeselectAllLayers(): void {
     this.btnSelectDeselectClicked = !this.btnSelectDeselectClicked;
     this.hsSaveMapManagerService.compoData.layers.forEach(
-      (layer) => (layer.checked = this.btnSelectDeselectClicked)
+      (layer) => (layer.checked = this.btnSelectDeselectClicked),
     );
   }
 

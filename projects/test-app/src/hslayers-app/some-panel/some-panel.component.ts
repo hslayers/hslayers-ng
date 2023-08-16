@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewRef} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 
 import {HsLayoutService} from 'hslayers-ng/components/layout/layout.service';
 import {HsPanelBaseComponent} from 'hslayers-ng/components/layout/panels/panel-base.component';

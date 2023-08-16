@@ -13,7 +13,7 @@ export class HsLayerListService {
   constructor(
     public hsLayerManagerService: HsLayerManagerService,
     public hsLayerEditorSublayerService: HsLayerEditorSublayerService,
-    public hsLayerUtilsService: HsLayerUtilsService
+    public hsLayerUtilsService: HsLayerUtilsService,
   ) {}
 
   /**
@@ -26,7 +26,7 @@ export class HsLayerListService {
         if (this.hsLayerEditorSublayerService.hasSubLayers()) {
           this.changeSublayerVisibilityState(
             layer,
-            this.hsLayerManagerService.currentLayer.visible
+            this.hsLayerManagerService.currentLayer.visible,
           );
         }
       } else {
@@ -48,7 +48,6 @@ export class HsLayerListService {
 
   /**
    * Filters layers, and returns only the ones belonging to folder hierarchy level of directive
-
    * @returns Filtered HsLayerManagerService layers
    */
   filterLayers(folder): Array<HsLayerDescriptor> {

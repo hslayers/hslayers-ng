@@ -3,8 +3,6 @@ import {NgbAccordion} from '@ng-bootstrap/ng-bootstrap';
 
 import {HsAddDataOwsService} from '../../../add-data/url/add-data-ows.service';
 import {HsAddDataUrlService} from '../../../add-data/url/add-data-url.service';
-
-import {HsConfig} from '../../../../config.service';
 import {HsDialogComponent} from '../../../layout/dialogs/dialog-component.interface';
 import {HsDialogContainerService} from '../../../layout/dialogs/dialog-container.service';
 import {HsDialogItem} from '../../../layout/dialogs/dialog-item';
@@ -21,7 +19,7 @@ import {
 @Component({
   selector: 'hs-csw-layers-dialog',
   templateUrl: './csw-layers-dialog.component.html',
-  styleUrls: ['./csw-layers-dialog.component.css'],
+  styleUrls: ['./csw-layers-dialog.component.scss'],
 })
 export class CswLayersDialogComponent implements OnInit, HsDialogComponent {
   dialogItem: HsDialogItem;
@@ -37,7 +35,6 @@ export class CswLayersDialogComponent implements OnInit, HsDialogComponent {
     public hsUtilsService: HsUtilsService,
     public hsLayerUtilsService: HsLayerUtilsService,
     public hsMapService: HsMapService,
-    private hsConfig: HsConfig
   ) {}
 
   close(): void {
@@ -59,7 +56,7 @@ export class CswLayersDialogComponent implements OnInit, HsDialogComponent {
       service.typeService = this.hsAddDataOwsService.typeService;
       const data = service.typeService?.data;
       if (data?.layers?.length > 0) {
-        //Store data object outside service so it can be reasigned later
+        //Store data object outside service so it can be reassigned later
         service.data = Object.assign({}, service.typeService.data);
         service.loaded = true;
       } else {
@@ -97,7 +94,7 @@ export class CswLayersDialogComponent implements OnInit, HsDialogComponent {
       if (this.hsLayerUtilsService.isLayerWMS(layer) && !checkedOnly) {
         setSubLayers(
           layer,
-          layers.map((l) => l.getSource().getParams().LAYERS).join(',')
+          layers.map((l) => l.getSource().getParams().LAYERS).join(','),
         );
         setTitle(layer, service.title);
         layer.set('serviceLayer', true);
@@ -124,7 +121,7 @@ export class CswLayersDialogComponent implements OnInit, HsDialogComponent {
   }
 
   /**
-   * Removes service from CSW compostion
+   * Removes service from CSW composition
    */
   removeService(service): void {
     this.data.services = this.data.services.filter((s) => s != service);

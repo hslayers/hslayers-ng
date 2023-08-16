@@ -11,12 +11,11 @@ import {ScaleObj} from '../types/scale-object.type';
 })
 export class HsPrintScaleStylerComponent {
   @Input() scaleObj: ScaleObj;
-  
   stylingOptions = SCALE_STYLING_OPTIONS;
 
   constructor(
     private hsPrintScaleService: HsPrintScaleService,
-    private hsLanguageService: HsLanguageService
+    private hsLanguageService: HsLanguageService,
   ) {}
 
   /**
@@ -36,7 +35,6 @@ export class HsPrintScaleStylerComponent {
       module,
       text,
       undefined,
-      
     );
   }
 }

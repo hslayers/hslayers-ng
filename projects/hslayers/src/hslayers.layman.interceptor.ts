@@ -16,12 +16,10 @@ export class HslayersLaymanInterceptor implements HttpInterceptor {
 
   /**
    * Intercept every request to backend
-   * @param request request
-   * @param next next
    */
   intercept(
     request: HttpRequest<any>,
-    next: HttpHandler
+    next: HttpHandler,
   ): Observable<HttpEvent<any>> {
     if (this.commonLayman.layman?.type.includes('wagtail')) {
       return next.handle(request).pipe(
@@ -44,7 +42,7 @@ export class HslayersLaymanInterceptor implements HttpInterceptor {
             return response;
           }
           return evt;
-        })
+        }),
       );
     }
 
