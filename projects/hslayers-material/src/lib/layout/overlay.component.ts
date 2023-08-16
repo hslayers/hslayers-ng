@@ -18,13 +18,12 @@ import {platformModifierKeyOnly as platformModifierKeyOnlyCondition} from 'ol/ev
   styleUrls: ['./overlay.component.scss'],
 })
 export class HsMatOverlayComponent implements OnInit {
-  
   constructor(
     public HsConfig: HsConfig,
     private HsEventBusService: HsEventBusService,
     private HsMapService: HsMapService,
     private HsLayerManagerService: HsLayerManagerService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
   ) {}
 
   ngOnInit(): void {
@@ -40,7 +39,7 @@ export class HsMatOverlayComponent implements OnInit {
               ? platformModifierKeyOnlyCondition(browserEvent)
               : true;
           },
-        })
+        }),
       );
     });
 
@@ -92,11 +91,11 @@ export class HsMatOverlayComponent implements OnInit {
   maxView(): void {
     const extent = olExtent.createEmpty();
 
-    if (this.HsLayerManagerService.get().data.layers.length == 0) {
+    if (this.HsLayerManagerService.data.layers.length == 0) {
       return;
     }
 
-    this.HsLayerManagerService.get().data.layers.forEach((layer) => {
+    this.HsLayerManagerService.data.layers.forEach((layer) => {
       if (layer.visible && layer.layer instanceof VectorLayer) {
         olExtent.extend(extent, layer.layer.getSource().getExtent());
       }

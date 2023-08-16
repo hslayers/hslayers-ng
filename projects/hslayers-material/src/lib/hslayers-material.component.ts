@@ -16,7 +16,6 @@ import {HsConfig} from 'hslayers-ng';
 })
 export class HslayersMaterialComponent implements OnInit {
   @Input() config: HsConfig;
-  
   constructor(public HsConfig: HsConfig) {}
 
   ngOnInit(): void {

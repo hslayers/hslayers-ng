@@ -19,7 +19,7 @@ export class HsSensorsUnitListItemComponent {
   constructor(
     private hsSensorsService: HsSensorsService,
     private hsDialogContainerService: HsDialogContainerService,
-    private hsSensorsUnitDialogService: HsSensorsUnitDialogService
+    private hsSensorsUnitDialogService: HsSensorsUnitDialogService,
   ) {}
 
   /**
@@ -61,7 +61,9 @@ export class HsSensorsUnitListItemComponent {
       //If the opened sensor belongs to unit that's not included add it
       //NOTE: Might not even be possible as checkboxes are available only after unit is selected
       if (
-        !this.hsSensorsUnitDialogService.unit.find((u) => u.unit_id === sensor.unit_id)
+        !this.hsSensorsUnitDialogService.unit.find(
+          (u) => u.unit_id === sensor.unit_id,
+        )
       ) {
         this.hsSensorsUnitDialogService.unit.push(this.unit);
       }
@@ -79,15 +81,12 @@ export class HsSensorsUnitListItemComponent {
    */
   generateDialog(single = true): void {
     if (!this.hsSensorsUnitDialogService.unitDialogVisible) {
-      this.hsDialogContainerService.create(
-        HsSensorsUnitDialogComponent,
-        {}
-      );
+      this.hsDialogContainerService.create(HsSensorsUnitDialogComponent, {});
     } else {
       this.hsSensorsUnitDialogService.createChart(
         single
           ? this.hsSensorsUnitDialogService.unit[0]
-          : this.hsSensorsUnitDialogService.unit
+          : this.hsSensorsUnitDialogService.unit,
       );
     }
   }

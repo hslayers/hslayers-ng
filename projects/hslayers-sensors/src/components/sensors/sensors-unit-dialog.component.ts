@@ -1,8 +1,11 @@
 import {Component, ElementRef, OnDestroy, OnInit, ViewRef} from '@angular/core';
 
-import {HsConfig, HsDialogComponent} from 'hslayers-ng';
-import {HsDialogContainerService} from 'hslayers-ng';
-import {HsLayoutService} from 'hslayers-ng';
+import {
+  HsConfig,
+  HsDialogComponent,
+  HsDialogContainerService,
+  HsLayoutService,
+} from 'hslayers-ng';
 
 import {Aggregates, HsSensorsUnitDialogService} from './unit-dialog.service';
 import {Interval} from './types/interval.type';
@@ -26,17 +29,14 @@ export class HsSensorsUnitDialogComponent
     private hsDialogContainerService: HsDialogContainerService,
     private hsSensorsUnitDialogService: HsSensorsUnitDialogService,
     private hsConfig: HsConfig,
-    public elementRef: ElementRef
+    public elementRef: ElementRef,
   ) {}
 
   ngOnInit(): void {
     this.hsSensorsUnitDialogService.unitDialogVisible = true;
     this.hsSensorsUnitDialogService.dialogElement = this.elementRef;
 
-    this.timeButtonClicked(
-      this.hsSensorsUnitDialogService.intervals[2],
-      false
-    );
+    this.timeButtonClicked(this.hsSensorsUnitDialogService.intervals[2], false);
 
     combineLatest([
       this.hsLayoutService.panelSpaceWidth,
@@ -44,10 +44,7 @@ export class HsSensorsUnitDialogComponent
     ])
       .pipe(takeUntil(this.end))
       .subscribe(([panelSpace, sidebar]) => {
-        this.calculateDialogStyle(
-          panelSpace,
-          sidebar == 'bottom'
-        );
+        this.calculateDialogStyle(panelSpace, sidebar == 'bottom');
       });
   }
 
@@ -80,25 +77,22 @@ export class HsSensorsUnitDialogComponent
     return this.hsSensorsUnitDialogService.translate(text, 'SENSORNAMES');
   }
 
-    /**
+  /**
    * Fetch observations and rerender sensor chart when time interval changes
    * Observations are cleared ahead of fetch to make sure only requested timeframe is displayed
    */
-    private intervalChangeHandler(interval): void {
-      //Clear observations
-       this.hsSensorsUnitDialogService.observations = [];
-      const promises =  this.hsSensorsUnitDialogService.unit.map((u) => {
-        return this.hsSensorsUnitDialogService.getObservationHistory(
-          u,
-          interval
-        );
-      });
-      Promise.all(promises).then((_) => {
-        this.hsSensorsUnitDialogService.createChart(
-           this.hsSensorsUnitDialogService.unit
-        );
-      });
-    }
+  private intervalChangeHandler(interval): void {
+    //Clear observations
+    this.hsSensorsUnitDialogService.observations = [];
+    const promises = this.hsSensorsUnitDialogService.unit.map((u) => {
+      return this.hsSensorsUnitDialogService.getObservationHistory(u, interval);
+    });
+    Promise.all(promises).then((_) => {
+      this.hsSensorsUnitDialogService.createChart(
+        this.hsSensorsUnitDialogService.unit,
+      );
+    });
+  }
 
   /**
    * @param interval - Clicked interval button
@@ -122,8 +116,7 @@ export class HsSensorsUnitDialogComponent
    * Act on custom interval data change
    */
   customIntervalChanged(): void {
-    this.hsSensorsUnitDialogService.currentInterval =
-      this.customInterval;
+    this.hsSensorsUnitDialogService.currentInterval = this.customInterval;
     this.intervalChangeHandler(this.customInterval);
   }
 
@@ -156,8 +149,8 @@ export class HsSensorsUnitDialogComponent
    * Get unit description
    */
   getUnitDescription(): string {
-    return this.hsSensorsUnitDialogService
-      .unit.map((u) => u.description)
+    return this.hsSensorsUnitDialogService.unit
+      .map((u) => u.description)
       .join(', ');
   }
 

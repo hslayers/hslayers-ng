@@ -19,7 +19,7 @@ export class HsSensorsComponent extends HsPanelBaseComponent implements OnInit {
     private hsMapService: HsMapService,
     private hsSensorsService: HsSensorsService,
     public hsLayoutService: HsLayoutService,
-    public hsSensorsUnitDialogService: HsSensorsUnitDialogService
+    public hsSensorsUnitDialogService: HsSensorsUnitDialogService,
   ) {
     super(hsLayoutService);
   }
@@ -38,10 +38,12 @@ export class HsSensorsComponent extends HsPanelBaseComponent implements OnInit {
      */
     if (!this.hsSensorsUnitDialogService.comparisonAllowed) {
       this.hsSensorsUnitDialogService.unit
-        .filter((u) => u.unit_id != this.hsSensorsUnitDialogService.unit[0].unit_id)
+        .filter(
+          (u) => u.unit_id != this.hsSensorsUnitDialogService.unit[0].unit_id,
+        )
         .forEach((u) => this.hsSensorsService.deselectUnit(u));
       this.hsSensorsUnitDialogService.createChart(
-        this.hsSensorsUnitDialogService.unit
+        this.hsSensorsUnitDialogService.unit,
       );
     }
   }
@@ -78,7 +80,7 @@ export class HsSensorsComponent extends HsPanelBaseComponent implements OnInit {
   filterQuery(query) {
     return this.hsSensorsService.filterquery(
       this.hsSensorsService.units,
-      query
+      query,
     );
   }
 }
