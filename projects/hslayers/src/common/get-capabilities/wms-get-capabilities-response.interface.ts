@@ -114,7 +114,15 @@ export type WmsDimension = {
   current?: boolean;
   values: string | string[];
 };
-export type WmsLayer = {
+
+/***
+ * HsLayers extension of default WMS Layer object
+ */
+export type HsLayersWmsLayer = {
+  maxResolution: number;
+};
+
+export type WmsLayer = HsLayersWmsLayer & {
   Name?: NameType;
   Title: TitleType;
   Abstract?: AbstractType;
