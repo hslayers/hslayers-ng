@@ -26,6 +26,8 @@ export class HsRmLayerDialogComponent implements HsDialogComponent, OnInit {
   deleteFromOptions = ['map', 'catalogue'] as const;
   deleteFrom: (typeof this.deleteFromOptions)[number];
 
+  deleteAllowed = false;
+
   constructor(
     public HsDialogContainerService: HsDialogContainerService,
     public service: HsRemoveLayerDialogService,
@@ -68,13 +70,15 @@ export class HsRmLayerDialogComponent implements HsDialogComponent, OnInit {
     } else {
       item.toRemove = true;
     }
+    this.deleteAllowed = this.data.items.find((i) => i.toRemove);
   }
 
-  selectDeselectAll(): void {
+  toggleAll(): void {
     this._selectAll = !this._selectAll;
     for (const item of this.data.items) {
       item.toRemove = this._selectAll;
     }
+    this.deleteAllowed = this.data.items.find((i) => i.toRemove);
   }
 
   getTitle(item): string {

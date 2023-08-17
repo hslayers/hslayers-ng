@@ -12,7 +12,7 @@
                 <div class="d-flex flex-column mb-3"> <!-- pb-3 border-bottom -->
                     <p class="fw-bold h6">{{'LAYERS.removeLayer.deleteFrom' | translateHs }}: </p>
                     <div class="d-flex gap-3 justify-content-center px-5">
-                        <button *ngFor="let option of deleteFromOptions" type="button"
+                        <button *ngFor="let option of deleteFromOptions" type="button" [attr.data-cy]="option"
                             [hidden]="option === 'catalogue' && !this.isAuthenticated"
                             [ngClass]="{'active' : deleteFrom === option }" (click)="deleteFrom = option"
                             class="btn btn-sm btn-outline-primary w-50">{{service.translate('LAYERS.removeLayer.' +
@@ -26,7 +26,7 @@
                     <div style="max-height: 65vh;" *ngIf="data.items?.length > 0">
                         <div class="d-flex w-100 justify-content-center">
                             <button type="button" class="mt-1 btn btn-primary"
-                                (click)="selectDeselectAll()">{{'SAVECOMPOSITION.form.toggleAll' |
+                                (click)="toggleAll()">{{'SAVECOMPOSITION.form.toggleAll' |
                                 translateHs }}</button>
                         </div>
                         <div class="d-flex align-items-center" style="word-break:break-all"
@@ -40,7 +40,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" [disabled]="!deleteFrom" class="btn"
+                <button type="button" [disabled]="!deleteAllowed" class="btn"
                     [ngClass]="{'btn-primary': deleteFrom === 'map', 'btn-danger': deleteFrom === 'catalogue'}"
                     (click)="yes()" [title]="'COMMON.remove' | translateHs" data-dismiss="modal">{{'COMMON.remove' |
                     translateHs}}</button>
