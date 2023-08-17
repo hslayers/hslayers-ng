@@ -377,7 +377,6 @@ export class HsAddDataVectorService {
    */
   async checkForLayerInLayman(
     data: VectorDataObject,
-
     repetive?: boolean,
   ): Promise<OverwriteResponse> {
     let upsertReq: PostPatchLayerResponse;
