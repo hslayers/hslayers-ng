@@ -142,7 +142,6 @@ function createCircleSymbol(json: any): MarkSymbolizer {
     kind: 'Mark',
     wellKnownName: 'circle',
     color: json.image.fill.color || json.fill,
-
     radius: json.image.radius,
   };
   if (json.image.stroke) {

@@ -66,7 +66,6 @@ export const HS_PRMS_REGENERATED = [
   HS_PRMS.lang,
   HS_PRMS.panel,
   HS_PRMS.visibleLayers,
-
   HS_PRMS_BACKWARDS.x,
   HS_PRMS_BACKWARDS.y,
   HS_PRMS_BACKWARDS.zoom,

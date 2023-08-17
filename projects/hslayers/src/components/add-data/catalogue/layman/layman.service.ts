@@ -43,7 +43,6 @@ export class HsLaymanBrowserService {
    */
   queryCatalog(
     endpoint: HsEndpoint,
-
     data?: {
       onlyMine: boolean;
       limit?: string | number;

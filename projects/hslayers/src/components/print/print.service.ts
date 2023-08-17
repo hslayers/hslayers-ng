@@ -29,11 +29,7 @@ export class HsPrintService {
    * @param print - Print object
    * @param complete - If true, generated image will be opened and printing interface will be created
    */
-  async print(
-    print: PrintModel,
-
-    complete?: boolean,
-  ): Promise<void> {
+  async print(print: PrintModel, complete?: boolean): Promise<void> {
     const obs = from(
       new Promise<string>(async (resolve, reject) => {
         const img = await this.createMapImage(print);
