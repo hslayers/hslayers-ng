@@ -1,9 +1,6 @@
 describe('Hslayers application', () => {
-  beforeEach(() => {
-    cy.visit('/');
-  });
-
   it('Language panel should open', () => {
+    cy.visit('/');
     cy.get('.hs-sidebar-additional-items:first').click();
     cy.get(
       'hs-mini-sidebar .hs-sidebar-item.hs-panel-hidden[data-cy="language"]',
@@ -12,11 +9,19 @@ describe('Hslayers application', () => {
     cy.get('hs-language hs-panel-header').should(
       'have.attr',
       'ng-reflect-title',
-      'Nomainīt valodu',
+      'Změnit jazyk',
     );
     cy.get('hs-language hs-panel-header span').should(
       'contain.text',
-      'Nomainīt valodu',
+      'Změnit jazyk',
     );
+  });
+
+  it('App should open with a language other than the default', () => {
+    cy.visit('/?hs-lang=cs');
+
+    cy.get(
+      'hs-some-panel > .card > hs-panel-header > .card-header > .flex-grow-1',
+    ).should('contain.text', 'Můj úžasný panel');
   });
 });

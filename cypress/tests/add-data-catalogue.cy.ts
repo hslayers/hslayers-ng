@@ -75,7 +75,7 @@ describe('Hslayers application', () => {
     cy.get(
       'hs-add-data-catalogue .list-group hs-catalogue-list-item:first',
     ).click();
-    cy.get('.hs-catalogue-item-body a:first span')
+    cy.get('.hs-catalogue-item-body a:first span:not(.hs-loader)')
       .should('have.html', 'Add to map')
       .click();
     cy.get('[title*="What does it mean?"]:first').should('exist').click();
