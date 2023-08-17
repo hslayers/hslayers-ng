@@ -1,15 +1,9 @@
 {
   "extends": "../tsconfig.json",
-  "include": [
-    "**/*.ts"
-  ],
+  "include": ["**/*.ts"],
   "compilerOptions": {
     "target": "es2020",
-    "sourceMap": true,
-    "types": [
-      "cypress",
-      "node",
-      "cypress-real-events"
-    ]
+    "sourceMap": false,
+    "types": ["cypress", "node", "cypress-real-events"]
   }
 }

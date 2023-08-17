@@ -55,7 +55,7 @@ describe('Hslayers application', () => {
     cy.get(`hs-url-wms hs-common-url input + button`).click();
     addLayerAndCheckIfAdded();
     //it('Layer should be visible on map', () => {
-    cy.wait(2000); //Need to wait for failed layman request error toast to disappear if HsConfig.errorToastDuration is large
+    cy.wait(3000); //Need to wait for failed layman request error toast to disappear if HsConfig.errorToastDuration is large
     cy.get('.hs-ol-map').matchImage();
   });
 

@@ -40,4 +40,77 @@ describe('Hslayers application', () => {
       });
     });
   });
+
+  it('Should remove all layers and then reset to default', () => {
+    cy.get('.card-header > .d-flex > .btn-group > .dropdown-toggle').click();
+    cy.get('extra-buttons div.dropdown-menu.show').should('be.visible');
+    cy.get('extra-buttons div.dropdown-menu.show a:first').click();
+
+    cy.get('[data-cy="catalogue"]').should('not.be.visible');
+    const removeButton = cy
+      .get('hs-rm-layer-dialog .modal-footer button')
+      .first();
+    removeButton.should('be.disabled');
+
+    cy.get('.modal-body').find('button').contains('Toggle all').click();
+
+    cy.get('.modal-footer button:first').click();
+
+    cy.get('.hs-lm-mapcontentlist').children().should('have.length', 1); //All groups are removed
+
+    cy.get('.card-header > .d-flex > .btn-group > .dropdown-toggle').click();
+    cy.get('extra-buttons div.dropdown-menu.show')
+      .find('a')
+      .contains('Reset map')
+      .click();
+
+    cy.get('.hs-lm-mapcontentlist').children().should('have.length', 4); //All groups retrieved
+  });
+
+  it('Layermanager filter should hide layers', () => {
+    cy.get('hs-layer-manager .hs-filter').type('EVI');
+    cy.get('div.hs-lm-item-title')
+      .contains('IDW layer')
+      .should('not.be.visible');
+  });
+
+  it('Should try to load WMS content outside the extent (eg. ignore the extent)', () => {
+    //Enable EVI layer and zoom to its extent
+    cy.get('[data-test="EVI"] button.hs-lm-item-visibility').click();
+    cy.wait(2000);
+    cy.get('[data-test="EVI"] span.icon-settingsthree-gears ').click();
+    cy.get('.card-footer button[title="Zoom to layer"]').click();
+
+    /**
+     * Quite unreliable as the time necessary for the content to load can vary
+     */
+    cy.wait(7000);
+
+    cy.intercept('GET', 'http://localhost:8087/geoserver/jmacura_wms/ows*').as(
+      'myRequest',
+    );
+
+    //Zoom to different layer
+    cy.get(
+      '[data-test="Latvian municipalities (1 sub-layer)"] span.icon-settingsthree-gears ',
+    ).click();
+    cy.get('.card-footer button[title="Zoom to layer"]').click();
+
+    //Expect no requests as view is outside the extent
+    cy.get('@myRequest').then(($request) => {
+      if ($request) {
+        throw new Error('UNexpected getMap request was intercepted.');
+      } else {
+        //Ignore extent eg. allow requests to be made no matter the extent
+        cy.get('[data-test="EVI"] span.icon-settingsthree-gears ').click();
+        cy.get(
+          'hs-layer-editor hs-extent-widget #hs-layer-extent-toggle',
+        ).click();
+        cy.wait('@myRequest').should('exist');
+      }
+    });
+
+    // // Wait for the request to be made
+    // cy.wait('@myRequest').should('exist');
+  });
 });
