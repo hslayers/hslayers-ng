@@ -14,23 +14,24 @@ This is a monorepo for developing HSLayers-NG [Angular](https://angular.io/guide
 | 8                | 13.x                | 5.x         |
 | 9                | 13.x                | 5.x         | ^6.14.1
 | 10               | 14.x                | 5.x         | ^6.14.1, ^7.0.0
-| 11               | 15.x                | 5.x         | ^7.0.0
+| 11               | 15.x                | 5.x         | 7.x
+| 12               | 16.x                | 5.x         | 7.x
 
 It contains source code of libraries which need to be used in an existing Angular based container project:
-+ [hslayers](./projects/hslayers) - core components and services for map application based on OpenLayers 6 + Angular + [Bootstrap](https://getbootstrap.com/)
-+ [hslayers-cesium](./projects/hslayers-cesium) - Angular components for running HSLayers-NG UI with [Cesium](https://cesium.com/cesiumjs/) 3D map renderer
++ [hslayers](./projects/hslayers) - core components and services for map application based on OpenLayers + Angular + [Bootstrap](https://getbootstrap.com/),
++ [hslayers-cesium](./projects/hslayers-cesium) - Angular components for running HSLayers-NG UI with [Cesium](https://cesium.com/cesiumjs/) 3D map renderer,
 + [hslayers-sensors](./projects/hslayers-sensors) - Angular components for visualizing data from [Senslog](https://www.senslog.org/) server using [Vega](https://vega.github.io/vega/) charts.
 
 
 Source code for ready to use application bundles which can be included in html files through `<script>` tags:
-+ [hslayers-app](./projects/hslayers-app)
-+ [hslayers-cesium-app](./projects/hslayers-cesium-app) - Ready application built on HSLayers-NG and Cesium.
++ [hslayers-app](./projects/hslayers-app) - ready-to-use application built on HSLayers-NG,
++ [hslayers-cesium-app](./projects/hslayers-cesium-app) - ready-to-use application built on HSLayers-NG and Cesium.
 
-Configuration for these applications can be provided through global `hslayersNgConfig` function which exposes an object containing a subset of most common [OpenLayers](https://openlayers.org/en/latest/apidoc/) classes through ol parameter. In return the function must provide a JSON object conforming to [HsConfig](./projects/hslayers/src/config.service.ts) type. [See](https://github.com/hslayers/hslayers-ng/wiki/Config-parameters) example and config parameter descriptions. 
+Configuration for these applications can be provided through global `hslayersNgConfig` function which exposes an object containing a subset of most common [OpenLayers](https://openlayers.org/en/latest/apidoc/) classes through an `ol` parameter. In return the function must provide a JSON object conforming to [HsConfig](./projects/hslayers/src/config.service.ts) type. [See](https://github.com/hslayers/hslayers-ng/wiki/App-config-parameters) example and config parameter descriptions. 
 
 
 Server components:
-+ [hslayers-server](./projects/hslayers-server) - a simple [cors-anywhere](https://www.npmjs.com/package/cors-anywhere) based proxy server which can be used to overcome [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS) restrictions, fill API keys for services such as [geonames](https://www.geonames.org/) used for search and other tasks. Forking and modifying it to preserve secrets and not expose the proxy for everyone and all kinds of requests will be necessary.
++ [hslayers-server](./projects/hslayers-server) - a simple [cors-anywhere](https://www.npmjs.com/package/cors-anywhere) based proxy server which can be used to overcome [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS) restrictions, fill API keys for services such as [Geonames](https://www.geonames.org/) used for search and other tasks. Copying and modifying the .env file to preserve secrets and not expose them for everyone and all kinds of requests will be necessary.
 
 
 ## Development server
