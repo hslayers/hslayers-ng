@@ -113,14 +113,12 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
     try {
       this.loadingFeatures = false;
 
-      this.data.map_projection =
-        this.data.map_projection ??
-        this.hsMapService
-          .getMap()
-          .getView()
-          .getProjection()
-          .getCode()
-          .toUpperCase();
+      this.data.map_projection ??= this.hsMapService
+        .getMap()
+        .getView()
+        .getProjection()
+        .getCode()
+        .toUpperCase();
 
       let caps: any = xml2Json.xml2js(response, {compact: true});
       if (caps['wfs:WFS_Capabilities']) {
@@ -129,7 +127,13 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
         caps = caps['WFS_Capabilities'];
       }
       this.parseWFSJson(caps);
-      this.data.title = caps.ServiceIdentification.Title || 'WFS layer';
+      const serviceTitle = caps.ServiceIdentification?.Title;
+      this.data.title =
+        typeof serviceTitle === 'string'
+          ? serviceTitle
+          : this.hsWfsGetCapabilitiesService.service_url
+              .split('//')[1]
+              .split('/')[0];
       // this.description = addAnchors(caps.ServiceIdentification.Abstract);
       this.data.version = caps.ServiceIdentification.ServiceTypeVersion;
       const layer = Array.isArray(caps.FeatureTypeList.FeatureType)
@@ -340,7 +344,7 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
   /**
    * Loop through the list of layers and call getLayer
    * @param checkedOnly - Add all available layers or only checked ones. Checked=false=all
-   * @param shallow - Wether to go through full depth of layer tree or to stop on first queryable
+   * @param shallow - Whether to go through full depth of layer tree or to stop on first queryable
    */
   getLayers(
     checkedOnly?: boolean,
