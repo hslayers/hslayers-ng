@@ -80,7 +80,7 @@
     "resumablejs": "^1.1.0",
     "rxjs": "^7.8.1",
     "share-api-polyfill": "^1.1.1",
-    "tslib": "^2.6.1",
+    "tslib": "^2.6.2",
     "vega": "5.25.0",
     "vega-embed": "6.22.2",
     "vega-lite": "~5.14.1",
