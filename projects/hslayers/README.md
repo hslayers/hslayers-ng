@@ -101,5 +101,5 @@ Run `ng test hslayers` to execute the unit tests via [Karma](https://karma-runne
 
 ## Further help
 
-To get more help write raitisbe@gmail.com
+To get more help write h4e@lesprojekt.cz
 
