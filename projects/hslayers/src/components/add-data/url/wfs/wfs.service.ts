@@ -7,7 +7,6 @@ import {Layer, Vector as VectorLayer} from 'ol/layer';
 import {Source} from 'ol/source';
 import {get, transformExtent} from 'ol/proj';
 
-import WfsSource from '../../../../common/layers/hs.source.WfsSource';
 import {AddLayersRecursivelyOptions} from '../types/recursive-options.type';
 import {CapabilitiesResponseWrapper} from '../../../../common/get-capabilities/capabilities-response-wrapper';
 import {DuplicateHandling, HsMapService} from '../../../map/map.service';
@@ -21,6 +20,7 @@ import {HsUtilsService} from '../../../utils/utils.service';
 import {HsWfsGetCapabilitiesService} from '../../../../common/get-capabilities/wfs-get-capabilities.service';
 import {LayerOptions} from '../../../compositions/layer-parser/composition-layer-options.type';
 import {UrlDataObject} from '../types/data-object.type';
+import {WfsSource} from '../../../../common/layers/hs.source.WfsSource';
 
 @Injectable({
   providedIn: 'root',
