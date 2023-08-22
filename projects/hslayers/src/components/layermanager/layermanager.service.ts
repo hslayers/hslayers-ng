@@ -193,6 +193,7 @@ export class HsLayerManagerService {
       this.boxLayersInit();
     });
   }
+
   /**
    * Function for adding layer added to map into layer manager structure.
    * In service automatically used after layer is added to map.
