@@ -18,9 +18,9 @@ import {HsMapCompositionDescriptor} from '../compositions/models/composition-des
  * HsEventBusService provides observable events which you can subscribe to or fire them
  *
  * @example
- * HsEventBusService.sizeChanges.subscribe((size) =\> \{
+ * HsEventBusService.sizeChanges.subscribe((size) => {
  *              doSomethingWith(size);
- * \})
+ * })
  * @example
  * HsEventBusService.layerLoads.next();
  */
@@ -31,18 +31,20 @@ export class HsEventBusService {
   sizeChanges: Subject<any> = new Subject();
   /**
    * Fires when map completely reset
-   * @event mapResets
    */
   mapResets: Subject<void> = new Subject();
   compositionLoadStarts: Subject<string> = new Subject();
   compositionDeletes: Subject<HsMapCompositionDescriptor> = new Subject();
   /**
    * Fires when composition is loaded or not loaded with Error message
-   * @event compositionLoads
    */
   compositionLoads: Subject<any> = new Subject();
   compositionEdits: Subject<void> = new Subject();
   layerRemovals: Subject<Layer<Source>> = new Subject();
+  /**
+   * Fires when new layer is added to the app.
+   * Suppressed for layers defined in default_layers in HsConfig.
+   */
   layerAdditions: Subject<HsLayerDescriptor> = new Subject();
   LayerManagerBaseLayerVisibilityChanges: Subject<any> = new Subject();
   LayerManagerLayerVisibilityChanges: Subject<any> = new Subject();
@@ -50,14 +52,18 @@ export class HsEventBusService {
    * Fires when layer is added or removed in LayerManager or its z-index changes or its title changes via rename.
    */
   layerManagerUpdates: Subject<Layer<Source> | void> = new Subject();
+  /**
+   * Fires when layer finishes loading its features or tiles.
+   * Usually triggered once, when all features are loaded, or after all features/tiles in given view/extent are loaded.
+   */
   layerLoads: Subject<Layer<Source>> = new Subject();
   layerLoadings: Subject<{
     layer: Layer<Source>;
     progress: HsLayerLoadProgress;
   }> = new Subject();
   /**
-   * Fires when user enables layer time synchronization in the UI
-   * Used to synchronize time in PARAMS across WM(T)S-t layers
+   * Fires when user enables layer time synchronization in the UI.
+   * Used to synchronize time in PARAMS across WM(T)S-t layers.
    */
   layerTimeSynchronizations: Subject<{
     sync: boolean;
@@ -86,7 +92,6 @@ export class HsEventBusService {
   /**
    * Fires when current mainpanel change - toggle, change of opened panel.
    * replaces 'core.mainpanel_changed'
-   * @event mainPanelChanges
    */
   mainPanelChanges: Subject<string | null> = new Subject();
   /**
@@ -126,7 +131,6 @@ export class HsEventBusService {
   /**
    * Fires when composition is downloaded from server and parsing begins
    * replaces 'compositions.composition_loading'
-   * @event compositionLoading
    * @deprecated
    */
   compositionLoading: Subject<any> = new Subject();
@@ -147,7 +151,6 @@ export class HsEventBusService {
   mapClicked: Subject<any> = new Subject();
   /**
    * Fires when layerSelected parameter is found in the URL
-   * @event layerSelectedFromUrl
    */
   layerSelectedFromUrl: BehaviorSubject<Layer<Source>> = new BehaviorSubject(
     null,
