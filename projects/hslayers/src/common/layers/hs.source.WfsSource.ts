@@ -1,11 +1,11 @@
 import {HttpClient} from '@angular/common/http';
+import {lastValueFrom} from 'rxjs';
 
 import {Geometry} from 'ol/geom';
-import {Vector} from 'ol/source';
+import {ObjectEvent} from 'ol/Object';
 import {Vector as VectorSource} from 'ol/source';
 import {WFS} from 'ol/format';
 import {bbox} from 'ol/loadingstrategy';
-import {lastValueFrom} from 'rxjs';
 import {transformExtent} from 'ol/proj';
 
 import {HsUtilsService} from '../../components/utils/utils.service';
@@ -22,7 +22,7 @@ export type WfsOptions = {
 /**
  * Provides a source of features from WFS endpoint
  */
-export class WfsSource extends Vector<Geometry> {
+export class WfsSource extends VectorSource<Geometry> {
   constructor(
     hsUtilsService: HsUtilsService,
     http: HttpClient,
@@ -75,6 +75,7 @@ export class WfsSource extends Vector<Geometry> {
           hsUtilsService.paramsToURLWoEncode(params),
         ].join('?');
         url = hsUtilsService.proxify(url);
+        this.dispatchEvent('featuresloadstart');
         const response = await lastValueFrom(
           http.get(url, {responseType: 'text'}),
         );
@@ -86,6 +87,12 @@ export class WfsSource extends Vector<Geometry> {
             responseFeatureCRS,
           );
           (this as VectorSource<Geometry>).addFeatures(features);
+          this.dispatchEvent(
+            new ObjectEvent('propertychange', 'loaded', false),
+          );
+          this.dispatchEvent('featuresloadend');
+        } else {
+          this.dispatchEvent('featuresloaderror');
         }
       },
       strategy: bbox,
