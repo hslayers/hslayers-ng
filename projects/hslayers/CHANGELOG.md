@@ -1,3 +1,25 @@
+# [12.0.0](https://github.com/hslayers/hslayers-ng/compare/12.0.0-next.1...12.0.0) (2023-08-23)
+
+
+### Bug Fixes
+
+* **cesium:** Update code to Cesium 1.107 ([483d9da](https://github.com/hslayers/hslayers-ng/commit/483d9da220e53e9ea18154233f06856bfffc683a))
+* **eslint:** Load correct types for Jasmine ([d83b5cd](https://github.com/hslayers/hslayers-ng/commit/d83b5cd6b3733e1414b4e8a7de8fac11d92e4842))
+* **eslint:** Mute HttpClient not found errors ([6186828](https://github.com/hslayers/hslayers-ng/commit/6186828637a042ae6f44d5e1c5bb68220e741693))
+* **eslint:** Resolve imports with tsconfig ([5b3f2ef](https://github.com/hslayers/hslayers-ng/commit/5b3f2ef66fa74a7e2b78b85d8adccc6f6983282f))
+* **test:** Correctly mock service ([3150331](https://github.com/hslayers/hslayers-ng/commit/31503314a2b312254f7ff83c0b66322ced5dd985))
+* **wfs:** Manually dispatch loading events ([58ae852](https://github.com/hslayers/hslayers-ng/commit/58ae852f5c4a78c658cd209de2142f53f1b496bb))
+* **WFS:** Prevent [object Object] in warn message ([fda6df8](https://github.com/hslayers/hslayers-ng/commit/fda6df83177b5e1ba7b00845f13759517c3a8ab9))
+
+
+### Features
+
+* Extent from capabilities for WMS with multiple layers in LAYERS query param ([f5c2a2b](https://github.com/hslayers/hslayers-ng/commit/f5c2a2bafbb0b7bc5f50f67bbd78312a39a9be74))
+* Ignore extent toggle for WMS layers ([301af67](https://github.com/hslayers/hslayers-ng/commit/301af67b05ddfcccb5eb344f24f5a3d1fc642b91))
+* Set WMS layer extent while parsing capabilities ([e86e1e0](https://github.com/hslayers/hslayers-ng/commit/e86e1e0cb3e6cbf485a4ff184c115e1629d2e1c1))
+
+
+
 # [12.0.0-next.1](https://github.com/hslayers/hslayers-ng/compare/12.0.0-next.0...12.0.0-next.1) (2023-08-16)
 
 
