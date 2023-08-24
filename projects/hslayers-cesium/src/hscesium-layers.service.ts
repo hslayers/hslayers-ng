@@ -362,7 +362,9 @@ export class HsCesiumLayersService {
         }
       });
       //console.log('added to real layer',(new Date()).getTime() - window.lasttime); window.lasttime = (new Date()).getTime();
-      ol_source.get('cesiumStyler')(cesiumLayer);
+      if (ol_source.get('cesiumStyler')) {
+        ol_source.get('cesiumStyler')(cesiumLayer);
+      }
       //console.log('styling done',(new Date()).getTime() - window.lasttime); window.lasttime = (new Date()).getTime();
     });
   }
@@ -421,6 +423,7 @@ export class HsCesiumLayersService {
           this.viewer.dataSources
         ) {
           this.viewer.dataSources.add(<DataSource>cesium_layer);
+          //TODO: Point clicked, Datasources extents, Composition extents shall be also synced
           if (getTitle(lyr as Layer<Source>) != 'Point clicked') {
             this.linkOlSourceToCesiumDatasource(
               (lyr as VectorLayer<VectorSource<Geometry>>).getSource(),
