@@ -4,27 +4,38 @@ import dayjs from 'dayjs';
 import {
   Cartesian3,
   CesiumTerrainProvider,
+  DataSource,
   GeoJsonDataSource,
   GetFeatureInfoFormat,
+  ImageryLayer,
   KmlDataSource,
   OpenStreetMapImageryProvider,
   Resource,
+  UrlTemplateImageryProvider,
   Viewer,
   WebMapServiceImageryProvider,
   WebMercatorTilingScheme,
   createWorldTerrainAsync,
 } from 'cesium';
-import {DataSource, ImageryLayer} from 'cesium';
 import {GeoJSON, KML} from 'ol/format';
 import {Geometry} from 'ol/geom';
-import {Group} from 'ol/layer';
-import {Image as ImageLayer} from 'ol/layer';
-import {Image as ImageSource} from 'ol/source';
-import {ImageWMS, Source} from 'ol/source';
-import {Layer, Tile as TileLayer} from 'ol/layer';
-import {OSM, TileWMS} from 'ol/source';
-import {Tile as TileSource, Vector as VectorSource} from 'ol/source';
-import {Vector as VectorLayer} from 'ol/layer';
+import {
+  Group,
+  Image as ImageLayer,
+  Layer,
+  Tile as TileLayer,
+  Vector as VectorLayer,
+} from 'ol/layer';
+import {
+  Image as ImageSource,
+  ImageWMS,
+  OSM,
+  Source,
+  Tile as TileSource,
+  TileWMS,
+  Vector as VectorSource,
+  XYZ,
+} from 'ol/source';
 import {default as proj4} from 'proj4';
 
 import {
@@ -347,9 +358,7 @@ export class HsCesiumLayersService {
             cesiumLayer.entities.add(entity);
           }
         } catch (ex) {
-          if (console) {
-            this.hsLog.error(ex.toString());
-          }
+          this.hsLog.error(ex.toString());
         }
       });
       //console.log('added to real layer',(new Date()).getTime() - window.lasttime); window.lasttime = (new Date()).getTime();
@@ -424,26 +433,36 @@ export class HsCesiumLayersService {
   }
 
   async convertOlToCesiumProvider(
-    ol_lyr: Layer<Source>,
+    olLayer: Layer<Source>,
   ): Promise<ImageryLayer | DataSource> {
-    if (this.HsUtilsService.instOf(ol_lyr.getSource(), OSM)) {
+    const layerSource = olLayer.getSource();
+    if (this.HsUtilsService.instOf(layerSource, OSM)) {
       return new ImageryLayer(new OpenStreetMapImageryProvider({}), {
-        show: ol_lyr.getVisible(),
-        minimumTerrainLevel: getMinimumTerrainLevel(ol_lyr) || 15,
+        show: olLayer.getVisible(),
+        minimumTerrainLevel: getMinimumTerrainLevel(olLayer) || 15,
       });
-    } else if (this.HsUtilsService.instOf(ol_lyr.getSource(), TileWMS)) {
-      return this.createTileProvider(ol_lyr);
-    } else if (this.HsUtilsService.instOf(ol_lyr.getSource(), ImageWMS)) {
-      return this.createSingleImageProvider(ol_lyr as ImageLayer<ImageSource>);
-    } else if (this.HsUtilsService.instOf(ol_lyr, VectorLayer)) {
+    } else if (this.HsUtilsService.instOf(layerSource, XYZ)) {
+      return new ImageryLayer(
+        new UrlTemplateImageryProvider({
+          url: (layerSource as XYZ).getUrls()[0],
+        }),
+        {
+          show: olLayer.getVisible(),
+        },
+      );
+    } else if (this.HsUtilsService.instOf(layerSource, TileWMS)) {
+      return this.createTileProvider(olLayer);
+    } else if (this.HsUtilsService.instOf(layerSource, ImageWMS)) {
+      return this.createSingleImageProvider(olLayer as ImageLayer<ImageSource>);
+    } else if (this.HsUtilsService.instOf(olLayer, VectorLayer)) {
       const dataSource = await this.createVectorDataSource(
-        ol_lyr as VectorLayer<VectorSource<Geometry>>,
+        olLayer as VectorLayer<VectorSource<Geometry>>,
       );
       return dataSource;
     } else {
       this.hsLog.error(
         'Unsupported layer type for layer: ',
-        ol_lyr,
+        olLayer,
         'in Cesium converter',
       );
     }
