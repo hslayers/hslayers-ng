@@ -21,6 +21,7 @@ export class HsCesiumTimeService {
     private hsCesiumConfig: HsCesiumConfig,
   ) {
     this.hsCesiumConfig.viewerLoaded.subscribe((viewer) => {
+      this.viewer = viewer;
       this.monitorTimeLine();
     });
   }
