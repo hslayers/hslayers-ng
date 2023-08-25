@@ -41,11 +41,11 @@ export class HsCesiumCameraService extends CesiumCameraServiceParams {
   }
 
   /**
-   * @param distance -
-   * @param latitude -
    * Calculates the resolution for a given distance from the ground and latitude
+   * @param distance - height above the terrain
+   * @param latitude - latitude in degrees as decimal
    */
-  calcResolutionForDistance(distance, latitude) {
+  calcResolutionForDistance(distance: number, latitude: number) {
     // See the reverse calculation (calcDistanceForResolution_) for details
     const canvas = this.viewer.scene.canvas;
     const fov = (<PerspectiveFrustum>this.viewer.camera.frustum).fov;
@@ -127,9 +127,6 @@ export class HsCesiumCameraService extends CesiumCameraServiceParams {
   }
 
   getViewportPolygon() {
-    /**
-     * @param d -
-     */
     function cornerToDegrees(d) {
       try {
         return [
@@ -188,9 +185,6 @@ export class HsCesiumCameraService extends CesiumCameraServiceParams {
       ),
     );
 
-    /**
-     * @param p -
-     */
     function clamp(p) {
       const max_dist = 0.23;
       if (Math.abs(p[0] - center[0]) > max_dist) {
@@ -313,7 +307,7 @@ export class HsCesiumCameraService extends CesiumCameraServiceParams {
                     vertexFormat : EllipsoidSurfaceAppearance.VERTEX_FORMAT
                 })
             });
- 
+
             this.viewer.scene.primitives.removeAll();
             this.viewer.scene.primitives.add(new Cesium.Primitive({
                 geometryInstances : instance,
@@ -326,10 +320,10 @@ export class HsCesiumCameraService extends CesiumCameraServiceParams {
   }
 
   /**
+   * Calculates the distance from the ground based on resolution and latitude
    * @param resolution -
    * @param latitude -
    * @deprecated
-   * Calculates the distance from the ground based on resolution and latitude
    */
   calcDistanceForResolution(resolution, latitude) {
     const canvas = this.viewer.scene.canvas;

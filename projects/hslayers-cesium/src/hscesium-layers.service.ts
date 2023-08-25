@@ -327,7 +327,7 @@ export class HsCesiumLayersService {
     });
   }
 
-  syncFeatures(ol_source: VectorSource<Geometry>): void {
+  async syncFeatures(ol_source: VectorSource<Geometry>) {
     const tmp_source = new GeoJsonDataSource('tmp');
     GeoJsonDataSource.crsNames['EPSG:3857'] = function (coordinates) {
       const firstProjection =
@@ -342,31 +342,29 @@ export class HsCesiumLayersService {
       return Cartesian3.fromDegrees(newCoordinates[0], newCoordinates[1], 0);
     };
     //console.log('loading to cesium',(new Date()).getTime() - window.lasttime); window.lasttime = (new Date()).getTime();
-    const promise = tmp_source.load(
+    const source = await tmp_source.load(
       this.serializeVectorLayerToGeoJson(ol_source),
       {
         clampToGround: true,
       },
     );
-    promise.then((source) => {
-      const cesiumLayer = <DataSource>this.findCesiumLayer(ol_source);
-      //console.log('loaded in temp.',(new Date()).getTime() - window.lasttime); window.lasttime = (new Date()).getTime();
-      source.entities.values.forEach((entity) => {
-        try {
-          if (cesiumLayer.entities.getById(entity.id) == undefined) {
-            //console.log('Adding', entity.id);
-            cesiumLayer.entities.add(entity);
-          }
-        } catch (ex) {
-          this.hsLog.error(ex.toString());
+    const cesiumLayer = <DataSource>this.findCesiumLayer(ol_source);
+    //console.log('loaded in temp.',(new Date()).getTime() - window.lasttime); window.lasttime = (new Date()).getTime();
+    source.entities.values.forEach((entity) => {
+      try {
+        if (cesiumLayer.entities.getById(entity.id) == undefined) {
+          //console.log('Adding', entity.id);
+          cesiumLayer.entities.add(entity);
         }
-      });
-      //console.log('added to real layer',(new Date()).getTime() - window.lasttime); window.lasttime = (new Date()).getTime();
-      if (ol_source.get('cesiumStyler')) {
-        ol_source.get('cesiumStyler')(cesiumLayer);
+      } catch (ex) {
+        this.hsLog.error(ex.toString());
       }
-      //console.log('styling done',(new Date()).getTime() - window.lasttime); window.lasttime = (new Date()).getTime();
     });
+    //console.log('added to real layer',(new Date()).getTime() - window.lasttime); window.lasttime = (new Date()).getTime();
+    if (ol_source.get('cesiumStyler')) {
+      ol_source.get('cesiumStyler')(cesiumLayer);
+    }
+    //console.log('styling done',(new Date()).getTime() - window.lasttime); window.lasttime = (new Date()).getTime();
   }
 
   async processOlLayer(lyr: Layer<Source> | Group): Promise<void> {
