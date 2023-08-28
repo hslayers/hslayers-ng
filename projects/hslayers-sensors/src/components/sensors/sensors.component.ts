@@ -63,12 +63,9 @@ export class HsSensorsComponent extends HsPanelBaseComponent implements OnInit {
     if (this.data.viewMode) {
       this.setViewMode(this.data.viewMode);
     }
-    setTimeout(
-      () => {
-        this.hsSensorsService.getUnits(this.data.app);
-      },
-      this.hsConfig.get(this.data.app)?.senslog ? 0 : 300
-    );
+    if (this.hsConfig.get(this.data.app)?.senslog) {
+      this.hsSensorsService.getUnits(this.data.app);
+    }
   }
 
   /**

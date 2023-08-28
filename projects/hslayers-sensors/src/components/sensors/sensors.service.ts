@@ -114,6 +114,7 @@ export class HsSensorsService {
     this.hsConfig.configChanges.subscribe(() => {
       if (this.hsConfig.get(app).senslog != appRef.endpoint) {
         this.setEndpoint(app);
+        this.getUnits(app);
       }
     });
     this.setEndpoint(app);
