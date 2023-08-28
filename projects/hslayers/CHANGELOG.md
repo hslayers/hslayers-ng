@@ -1,3 +1,17 @@
+# [11.3.0](https://github.com/hslayers/hslayers-ng/compare/11.2.3...11.3.0) (2023-08-28)
+
+
+### Bug Fixes
+
+* **sensors:** More reliable way of getting units ([828b58f](https://github.com/hslayers/hslayers-ng/commit/828b58fb8810f34d2dd258defe99a1ca5d570ad1))
+
+
+### Features
+
+* Allow adding new, defaultly unsupported languages ([d8d3647](https://github.com/hslayers/hslayers-ng/commit/d8d36472a98c44441ca952fb838b40dfb59c1719))
+
+
+
 ## [11.2.3](https://github.com/hslayers/hslayers-ng/compare/11.2.2...11.2.3) (2023-07-25)
 
 
