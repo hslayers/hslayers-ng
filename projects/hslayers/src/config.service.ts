@@ -114,7 +114,7 @@ export class HsConfigObject {
    *    lang_code : label
    *  }
    */
-  additionalLanguages: {
+  additionalLanguages?: {
     [key: string]: string;
   };
   query?: {multi: boolean};

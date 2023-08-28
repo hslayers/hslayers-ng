@@ -368,6 +368,7 @@ export class HsSensorsService {
     ];
     appRef.layer = new VectorLayer<VectorSource<Geometry>>({
       properties: {
+        path: 'Sensors',
         title: 'Sensor units',
         popUp: {
           attributes: ['*'],
@@ -530,7 +531,7 @@ export class HsSensorsService {
                   sensor.sensor_name_translated + ' at ',
                   reading.timestamp
                 );
-              } else {
+              } else if (console) {
                 console.log(`No feature exists for unit ${unit.unit_id}`);
               }
 

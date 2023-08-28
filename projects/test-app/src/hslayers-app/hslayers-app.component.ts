@@ -63,7 +63,7 @@ export class HslayersAppComponent {
           compositionLoadingProgress: true,
           draw: true,
           tripPlanner: true,
-          mapSwipe: true,
+          mapSwipe: false,
           feature_table: true,
         },
         sidebarPosition: 'right',
@@ -399,7 +399,7 @@ export class HslayersAppComponent {
           layersInFeatureTable: [points],
           componentsEnabled: {
             basemapGallery: true,
-            mapSwipe: true,
+            mapSwipe: false,
           },
           enabledLanguages: 'sk, lv, en',
           language: 'en',

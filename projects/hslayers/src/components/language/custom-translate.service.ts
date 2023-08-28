@@ -54,7 +54,9 @@ export class WebpackTranslateLoader implements TranslateLoader {
               console.log('assetsPath OK');
             }
             let res;
-            if (!this.HsConfig.get(app).additionalLanguages[lang]) {
+            const additionalLanguages =
+              this.HsConfig.get(app).additionalLanguages;
+            if (additionalLanguages && additionalLanguages[lang]) {
               res = await lastValueFrom(
                 this.HttpClient.get(
                   `${hsConfig.get(app).assetsPath}/locales/${lang}.json`
