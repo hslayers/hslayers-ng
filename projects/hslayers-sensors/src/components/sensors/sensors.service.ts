@@ -28,6 +28,7 @@ import {HsSensorUnit} from './sensor-unit.class';
 import {HsSensorsUnitDialogComponent} from './sensors-unit-dialog.component';
 import {HsSensorsUnitDialogService} from './unit-dialog.service';
 import {HsUtilsService} from 'hslayers-ng';
+import {LangChangeEvent} from '@ngx-translate/core';
 import {SensLogEndpoint} from './types/senslog-endpoint.type';
 
 class SensorsServiceParams {
@@ -142,6 +143,32 @@ export class HsSensorsService {
         this
       )();
     });
+
+    const translator = this.hsLanguageService.getTranslator(app);
+    translator.onLangChange.subscribe((event: LangChangeEvent) => {
+      this.get(app).units.forEach((unit) => {
+        this.setSensorTranslations(unit);
+      });
+    });
+  }
+
+  /**
+   * Update senor name and phenomenon translations
+   * @param unit Sensor unit
+   */
+  private setSensorTranslations(unit) {
+    for (const sensor of unit.sensors) {
+      sensor.sensor_name_translated =
+        this.hsLanguageService.getTranslationIgnoreNonExisting(
+          'SENSORS.SENSORNAMES',
+          sensor.sensor_name
+        );
+      sensor.phenomenon_name_translated =
+        this.hsLanguageService.getTranslationIgnoreNonExisting(
+          'SENSORS.PHENOMENON',
+          sensor.phenomenon_name
+        );
+    }
   }
 
   /**
@@ -413,18 +440,7 @@ export class HsSensorsService {
           unit.sensors.sort((a, b) => {
             return b.sensor_id - a.sensor_id;
           });
-          for (const sensor of unit.sensors) {
-            sensor.sensor_name_translated =
-              this.hsLanguageService.getTranslationIgnoreNonExisting(
-                'SENSORS.SENSORNAMES',
-                sensor.sensor_name
-              );
-            sensor.phenomenon_name_translated =
-              this.hsLanguageService.getTranslationIgnoreNonExisting(
-                'SENSORS.PHENOMENON',
-                sensor.phenomenon_name
-              );
-          }
+          this.setSensorTranslations(unit);
           unit.sensorTypes = this.hsUtilsService.removeDuplicates(
             unit.sensorTypes,
             'name'
@@ -482,7 +498,6 @@ export class HsSensorsService {
           user: appRef.endpoint.user,
         };
     this.http
-
       .get(this.hsUtilsService.proxify(url, app), {
         params,
       })

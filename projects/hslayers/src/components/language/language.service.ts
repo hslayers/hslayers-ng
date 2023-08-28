@@ -32,8 +32,18 @@ export class HsLanguageService {
   ) {
     this.translateServiceFactory = translateServiceFactory;
     this.hsConfig.configChanges.subscribe(({app, config}) => {
+      const translator = this.getTranslator(app);
+      if (config.enabledLanguages) {
+        const langs = config.enabledLanguages.split(',');
+        const langsToAdd = langs.filter(
+          (l) => !translator.getLangs().includes(l)
+        );
+        translator.addLangs(langsToAdd.map((l) => `${app}|${l}`));
+      }
+      if (config.language) {
+        this.setLanguage(config.language, app);
+      }
       if (config.translationOverrides != undefined) {
-        const translator = this.getTranslator(app);
         if (translator?.currentLang) {
           translator.reloadLang(translator.currentLang);
         }
@@ -46,11 +56,27 @@ export class HsLanguageService {
    * @param lang - Language code without app prefix
    * Set language
    */
-  setLanguage(lang: string, app: string = 'default'): void {
+  setLanguage(lang: string, app = 'default', retryCount = 0): void {
     if (!lang.includes('|')) {
       lang = `${app}|${lang}`;
     }
     this.getTranslator(app).use(lang);
+
+    if (this.getTranslator(app).currentLang !== lang) {
+      if (retryCount < 5) {
+        console.warn(
+          `Setting language to: ${lang} failed. Retrying (${
+            retryCount + 1
+          }/5) after a short while.`
+        );
+        setTimeout(() => {
+          this.setLanguage(lang, app, retryCount + 1); // Increase retry count
+        }, 150);
+      } else {
+        console.error(`Setting language to: ${lang} failed after 5 attempts.`);
+      }
+    }
+
     this.apps[app].language = lang;
   }
 
@@ -78,7 +104,7 @@ export class HsLanguageService {
    * @returns Returns language code
    * Get code of current language
    */
-  getCurrentLanguageCode(app: string = 'default'): string {
+  getCurrentLanguageCode(app = 'default'): string {
     if (
       typeof this.apps[app].language == 'undefined' ||
       this.apps[app].language == ''
@@ -89,18 +115,21 @@ export class HsLanguageService {
   }
 
   /**
-   * @public
    * @returns Returns available languages
    * Get array of available languages based
    */
-  listAvailableLanguages(app: string = 'default'): any {
+  listAvailableLanguages(app = 'default'): {key: string; name: string}[] {
+    const additionalLanguages = this.hsConfig.get(app).additionalLanguages;
     const languageCodeNameMap = {
-      'en': 'English',
-      'cs': 'Česky',
-      'fr': 'Français',
-      'lv': 'Latviski',
-      'nl': 'Nederlands',
-      'sk': 'Slovensky',
+      ...{
+        en: 'English',
+        cs: 'Česky',
+        fr: 'Français',
+        lv: 'Latviski',
+        nl: 'Nederlands',
+        sk: 'Slovensky',
+      },
+      ...additionalLanguages,
     };
     const langs = [{key: 'en', name: 'English'}];
     for (const lang of this.getTranslator(app)
@@ -121,7 +150,7 @@ export class HsLanguageService {
    * @param params -
    * @returns Translation
    */
-  getTranslation(str: string, params?: any, app: string = 'default'): string {
+  getTranslation(str: string, params?: any, app = 'default'): string {
     return this.getTranslator(app).instant(str, params);
   }
 
@@ -132,7 +161,7 @@ export class HsLanguageService {
   async awaitTranslation(
     str: string,
     params?: any,
-    app: string = 'default'
+    app = 'default'
   ): Promise<string> {
     const translator = this.getTranslator(app);
     const lang = translator.currentLang.includes('|')
@@ -162,7 +191,7 @@ export class HsLanguageService {
     module: string,
     text: string,
     params?: any,
-    app: string = 'default'
+    app = 'default'
   ): string {
     const tmp = this.getTranslation(
       module + '.' + text,

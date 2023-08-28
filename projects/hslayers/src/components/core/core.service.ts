@@ -64,8 +64,7 @@ export class HsCoreService {
     translateService.addLangs(languages.map((l) => `${app}|${l}`));
     translateService.setDefaultLang(`${app}|en`);
     if (config.language) {
-      translateService.use(`${app}|${config.language}`);
-      this.hsLanguageService.apps[app].language = config.language;
+      this.hsLanguageService.setLanguage(config.language, app);
     } else {
       translateService.use(translateService.getDefaultLang());
     }

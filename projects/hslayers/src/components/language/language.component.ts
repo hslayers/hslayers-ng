@@ -11,8 +11,7 @@ import {HsSidebarService} from '../sidebar/sidebar.service';
 })
 export class HsLanguageComponent
   extends HsPanelBaseComponent
-  implements OnInit
-{
+  implements OnInit {
   available_languages: any;
   name = 'language';
   constructor(
@@ -22,6 +21,13 @@ export class HsLanguageComponent
     private hsSidebarService: HsSidebarService
   ) {
     super(hsLayoutService);
+
+    this.hsConfig.configChanges.subscribe(({app, config}) => {
+      if (config.additionalLanguages) {
+        this.available_languages =
+          this.hsLanguageService.listAvailableLanguages(app);
+      }
+    });
   }
 
   ngOnInit(): void {

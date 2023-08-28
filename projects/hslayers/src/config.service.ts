@@ -107,6 +107,16 @@ export class HsConfigObject {
   searchProvider?: any;
   language?: string;
   enabledLanguages?: string;
+  /**
+   * Allows adding not supported languages
+   * eg.
+   *  {
+   *    lang_code : label
+   *  }
+   */
+  additionalLanguages: {
+    [key: string]: string;
+  };
   query?: {multi: boolean};
   queryPoint?: string;
   popUpDisplay?: 'none' | 'click' | 'hover';
@@ -312,7 +322,7 @@ export class HsConfig {
     });
   }
 
-  get(app: string = 'default'): HsConfigObject {
+  get(app = 'default'): HsConfigObject {
     if (this.apps[app] == undefined) {
       return this.apps['default'];
     }

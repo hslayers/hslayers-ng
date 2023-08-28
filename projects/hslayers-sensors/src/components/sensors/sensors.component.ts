@@ -1,5 +1,5 @@
 import {Component, OnInit, ViewRef} from '@angular/core';
-import {HsLayoutService} from 'hslayers-ng';
+import {HsConfig, HsLayoutService} from 'hslayers-ng';
 import {HsMapService} from 'hslayers-ng';
 import {HsPanelBaseComponent} from 'hslayers-ng';
 import {HsSensorUnit} from './sensor-unit.class';
@@ -22,7 +22,8 @@ export class HsSensorsComponent extends HsPanelBaseComponent implements OnInit {
     private hsMapService: HsMapService,
     private hsSensorsService: HsSensorsService,
     public hsLayoutService: HsLayoutService,
-    public hsSensorsUnitDialogService: HsSensorsUnitDialogService
+    public hsSensorsUnitDialogService: HsSensorsUnitDialogService,
+    private hsConfig: HsConfig
   ) {
     super(hsLayoutService);
   }
@@ -62,7 +63,12 @@ export class HsSensorsComponent extends HsPanelBaseComponent implements OnInit {
     if (this.data.viewMode) {
       this.setViewMode(this.data.viewMode);
     }
-    this.hsSensorsService.getUnits(this.data.app);
+    setTimeout(
+      () => {
+        this.hsSensorsService.getUnits(this.data.app);
+      },
+      this.hsConfig.get(this.data.app)?.senslog ? 0 : 300
+    );
   }
 
   /**

@@ -53,13 +53,17 @@ export class WebpackTranslateLoader implements TranslateLoader {
               }
               console.log('assetsPath OK');
             }
-            const res = await lastValueFrom(
-              this.HttpClient.get(
-                `${hsConfig.get(app).assetsPath}/locales/${lang}.json`
-              )
-            );
+            let res;
+            if (!this.HsConfig.get(app).additionalLanguages[lang]) {
+              res = await lastValueFrom(
+                this.HttpClient.get(
+                  `${hsConfig.get(app).assetsPath}/locales/${lang}.json`
+                )
+              );
+            }
+
             this.loaded[lang] = true;
-            resolve(res);
+            resolve(res || en);
           })();
         })
       ),
