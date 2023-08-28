@@ -57,16 +57,10 @@ export class HsCoreService {
     } else {
       this.HsLayoutService.get(app).sidebarExpanded = true;
     }
-    const languages = config.enabledLanguages
-      ? config.enabledLanguages.split(',').map((lang) => lang.trim())
-      : ['cs', 'lv'];
+
     const translateService = this.hsLanguageService.getTranslator(app);
-    translateService.addLangs(languages.map((l) => `${app}|${l}`));
-    translateService.setDefaultLang(`${app}|en`);
-    if (config.language) {
-      this.hsLanguageService.setLanguage(config.language, app);
-    } else {
-      translateService.use(translateService.getDefaultLang());
+    if (!translateService.defaultLang) {
+      this.hsLanguageService.initLanguages(config, app);
     }
 
     if (this.initCalled) {

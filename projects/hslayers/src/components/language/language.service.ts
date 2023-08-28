@@ -2,7 +2,7 @@ import {HttpClient} from '@angular/common/http';
 import {Inject, Injectable} from '@angular/core';
 import {lastValueFrom} from 'rxjs';
 
-import {HsConfig} from '../../config.service';
+import {HsConfig, HsConfigObject} from '../../config.service';
 import {
   CustomTranslationService as HsCustomTranslationService,
   WebpackTranslateLoader,
@@ -33,6 +33,13 @@ export class HsLanguageService {
     this.translateServiceFactory = translateServiceFactory;
     this.hsConfig.configChanges.subscribe(({app, config}) => {
       const translator = this.getTranslator(app);
+      if (!translator.defaultLang) {
+        /**
+         * When config fetched via initializer service this gets in front of
+         * core service init method
+         */
+        this.initLanguages(config, app);
+      }
       if (config.enabledLanguages) {
         const langs = config.enabledLanguages.split(',');
         const langsToAdd = langs.filter(
@@ -49,6 +56,23 @@ export class HsLanguageService {
         }
       }
     });
+  }
+
+  /**
+   * Set up languages - default, list of allowed, the one to use
+   */
+  initLanguages(config: HsConfigObject, app: string) {
+    const languages = config.enabledLanguages
+      ? config.enabledLanguages.split(',').map((lang) => lang.trim())
+      : ['cs', 'lv'];
+    const translateService = this.getTranslator(app);
+    translateService.addLangs(languages.map((l) => `${app}|${l}`));
+    translateService.setDefaultLang(`${app}|en`);
+    if (config.language) {
+      this.setLanguage(config.language, app);
+    } else {
+      translateService.use(translateService.getDefaultLang());
+    }
   }
 
   /**
