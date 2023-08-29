@@ -224,7 +224,7 @@ export class HsSensorsService {
     unitDialogServiceRef.unit = unitDialogServiceRef.unit.filter(
       (u) => u.unit_id !== unit.unit_id
     );
-    unit.feature.set('selected', undefined);
+    unit.feature ? unit.feature.set('selected', undefined) : false;
     unit.sensors
       .filter((s) => s.checked)
       .forEach((s) => {
@@ -276,7 +276,7 @@ export class HsSensorsService {
       this.hsSensorsUnitDialogService.resetAggregations(app);
       //Reset features and sensors belonging to previously selected unit
       unitDialogServiceRef.unit.forEach((u) => {
-        u.feature.set('selected', undefined);
+        u.feature ? u.feature.set('selected', undefined) : false;
         u.expanded = false;
         u.sensors.forEach((s) => (s.checked = false));
       });
@@ -322,7 +322,7 @@ export class HsSensorsService {
         )
       );
 
-    unit.feature.set('selected', true);
+    unit.feature ? unit.feature.set('selected', true) : false;
     this.hsMapService
       .getMap(app)
       .getView()
