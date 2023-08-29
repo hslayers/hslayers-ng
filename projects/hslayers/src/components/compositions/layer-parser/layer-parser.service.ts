@@ -204,6 +204,10 @@ export class HsCompositionsLayerParserService {
       source,
       subLayers: lyr_def.subLayers,
       className: lyr_def.greyscale ? 'ol-layer hs-greyscale' : 'ol-layer',
+      //Not part of the composition scheme. Can be used when proxy needs to be turned off
+      //for all request associated with layer
+      enableProxy: lyr_def.enableProxy,
+      queryCapabilities: lyr_def.queryCapabilities,
     };
     const new_layer = lyr_def.singleTile
       ? new ImageLayer(layerOptions as ImageOptions<ImageSource>)
@@ -256,6 +260,10 @@ export class HsCompositionsLayerParserService {
       path: lyr_def.path,
       opacity: parseInt(lyr_def.opacity) || 1,
       source,
+      //Not part of the composition scheme. Can be used when proxy needs to be turned off
+      //for all request associated with layer
+      enableProxy: lyr_def.enableProxy,
+      queryCapabilities: lyr_def.queryCapabilities,
     };
     const new_layer = lyr_def.singleTile
       ? new ImageLayer(layerOptions as ImageOptions<ImageSource>)

@@ -11,7 +11,7 @@ export class HsCapabilityCacheService {
   cache: CapabilityCacheList = {};
   constructor() {}
   set(url: string, wrap: CapabilitiesResponseWrapper): void {
-    if (!wrap?.error && wrap.response?.layers?.length > 0) {
+    if (!wrap?.error) {
       this.cache[url] = wrap;
     }
   }
