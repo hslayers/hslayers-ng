@@ -141,7 +141,7 @@ describe('HsSaveMap', () => {
     // and "" should be omitted
     name = 'Some Czech Name Like "Vážně hustý název"';
     laymanName = getLaymanFriendlyLayerName(name);
-    expect(laymanName).toBe('some_czech_name_like_vn_hust_nzev');
+    expect(laymanName).toBe('some_czech_name_like_vazne_husty_nazev');
   });
 
   it('read layer title/name attributes and escape for layman', () => {
