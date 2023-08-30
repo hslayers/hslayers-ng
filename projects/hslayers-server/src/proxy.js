@@ -31,7 +31,6 @@ require('http')
       }
       else {
         req.url = decodeURIComponent(req.url);
-        req.url = req.url.replace('/proxy', '');
         const [base, queryParams] = req.url.split('?');
         const params = querystring.parse(queryParams);
         req.url = base + '?' + querystring.encode(params);
