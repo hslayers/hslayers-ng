@@ -3,6 +3,13 @@ import {Component, Input} from '@angular/core';
 @Component({
   selector: 'hs-pager',
   templateUrl: './pager.component.html',
+  styles: [
+    `
+      :host {
+        z-index: 100 !important;
+      }
+    `,
+  ],
 })
 export class HsPagerComponent {
   @Input() pagerService: any;
