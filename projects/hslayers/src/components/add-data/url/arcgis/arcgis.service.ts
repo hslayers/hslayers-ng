@@ -137,7 +137,7 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
       );
 
       /**
-       * Prioritize cached tiles  eg. ignore layer structure
+       * Prioritize cached tiles eg. ignore layer structure
        */
       this.hasCachedTiles = !!caps.tileInfo;
       this.data.layers = this.hasCachedTiles
@@ -153,7 +153,9 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
         this.data.layers ?? this.data.services,
       );
       this.data.srs =
-        this.data.srss.find((srs) => srs.includes('3857')) || this.data.srss[0];
+        this.data.srss.find((srs) =>
+          srs.includes(this.hsMapService.getCurrentProj().getCode()),
+        ) || this.data.srss[0];
 
       this.data.extent = caps.fullExtent;
       if (this.hasCachedTiles || (caps.tileInfo && this.isImageService())) {
@@ -288,6 +290,7 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
         : await this.calcAllLayersExtent(layers, options);
 
     const layerParams = {
+      className: options?.greyscale ? 'ol-layer hs-greyscale' : 'ol-layer',
       properties: {
         title: options.title,
         name: options.title,
