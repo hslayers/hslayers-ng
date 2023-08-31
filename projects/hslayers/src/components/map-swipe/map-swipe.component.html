@@ -21,21 +21,27 @@
     <div class="alert alert-info ps-2 text-center" role="alert">
       {{'MAP_SWIPE.dndLayers' | translateHs }}
     </div>
-    <div class="btn-group align-items-center d-flex justify-content-between" style="margin-bottom: 1rem;"
-      data-toggle="buttons">
-      <button class="btn btn-sm btn-secondary text-truncate" style="max-width: 30%;" type="button"
-        (click)="setOrientation()" [disabled]="!hsMapSwipeService.swipeControlActive">
-        {{getOrientationButtonString() | translateHs }}
-      </button>
-      <button class="btn btn-sm btn-secondary" type="button" (click)="resetSwipePos()"
-        [disabled]="!hsMapSwipeService.swipeControlActive">
-        {{'MAP_SWIPE.resetSlider' | translateHs }}
-      </button>
-      <button class="btn btn-sm btn-primary" type="button" (click)="setControl()"
-        [ngClass]="hsMapSwipeService.swipeControlActive ? 'active' : ''">
-        {{getEnabledButtonString() | translateHs }}
-      </button>
+    <div class="d-flex justify-content-between gap-2 mb-2">
+      <div class="btn-group align-items-center d-flex flex-grow-1" data-toggle="buttons">
+        <button *ngFor="let swipeOption of swipeOptions" class="btn btn-sm  text-truncate h-100" type="button"
+          (click)="setOrientation()" [disabled]="!hsMapSwipeService.swipeControlActive"
+          [ngClass]="hsMapSwipeService.orientation === swipeOption ? 'btn-primary' : 'btn-secondary'">
+          {{swipeOption | translateHs : {module:'MAP_SWIPE'} }}
+        </button>
+      </div>
+      <div class="btn-group">
+        <button class="btn btn-sm btn-secondary hs-map-swipe-reset" type="button" (click)="resetSwipePos()"
+          style="max-width: 15ch;" [title]="'MAP_SWIPE.resetSlider' | translateHs"
+          [disabled]="!hsMapSwipeService.swipeControlActive">
+          <i class="icon-refresh"></i>
+        </button>
+        <button class="btn btn-sm" type="button" (click)="setControl()"
+          [ngClass]="hsMapSwipeService.swipeControlActive ? 'active btn-danger' : 'btn-primary'">
+          {{getEnabledButtonString() | translateHs }}
+        </button>
+      </div>
     </div>
+
     <div *ngIf="layersAvailable() && hsMapSwipeService.swipeControlActive" class="pt-1">
       <table class="table table-sm table-striped table-borderless p-1" style="table-layout: fixed;">
         <tbody>

@@ -682,13 +682,13 @@
     "dndLayers": "Přetahujte vrstvy mezi sloupci pro přesun do opačné poloviny mapy",
     "enableSwipe": "Zapnout půlení",
     "entireMap": "Celá mapa",
-    "horizontalSwipe": "Vodorovný posuvník",
     "leftSide": "Levá strana",
     "noLayers": "Žádné vrstvy (přetáhněte vrstvu sem)",
     "resetSlider": "Vrátit posuvník",
     "rightSide": "Pravá strana",
     "top": "Horní část",
-    "verticalSwipe": "Svislý posuvník"
+    "horizontal": "Vodorovný posuvník",
+    "vertical": "Svislý posuvník"
   },
   "MEASURE": {
     "measureMd": {

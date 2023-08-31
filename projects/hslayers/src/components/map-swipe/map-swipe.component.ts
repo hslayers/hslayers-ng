@@ -23,8 +23,7 @@ import {HsSidebarService} from '../sidebar/sidebar.service';
 })
 export class HsMapSwipeComponent
   extends HsPanelBaseComponent
-  implements OnDestroy, OnInit
-{
+  implements OnDestroy, OnInit {
   private end = new Subject<void>();
   swipeSide = SwipeSide;
   placeholders = {
@@ -42,6 +41,7 @@ export class HsMapSwipeComponent
   }
 
   name = 'mapSwipe';
+  swipeOptions = ['vertical', 'horizontal'];
 
   ngOnInit() {
     this.hsSidebarService.addButton({
