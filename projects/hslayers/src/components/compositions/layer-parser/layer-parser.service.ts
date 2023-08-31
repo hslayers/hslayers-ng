@@ -227,7 +227,27 @@ export class HsCompositionsLayerParserService {
    * @param lyr_def - Layer definition object
    * @returns Ol Image or Tile layer
    */
-  createXYZLayer(lyr_def) {
+  async createXYZLayer(lyr_def) {
+    lyr_def.url = decodeURIComponent(lyr_def.url);
+    /**
+     * FIXME : NOT 100% reliable need to be revised along with
+     * loading of TileArcGISRest and ImageArcGISRest layers
+     */
+    if (lyr_def.url.includes('/rest/services/')) {
+      const newLayer = await this.hsAddDataOwsService.connectToOWS({
+        type: 'arcgis',
+        uri: lyr_def.url.split('tile/{z}/{y}/{x}')[0],
+        layer: lyr_def.title,
+        owrCache: false,
+        getOnly: true,
+        layerOptions: {
+          title: lyr_def.title,
+          base: lyr_def.base,
+          greyscale: lyr_def.greyscale,
+        },
+      });
+      return newLayer[0];
+    }
     const legends = this.getLegends(lyr_def);
     const source = new XYZ({
       url: decodeURIComponent(lyr_def.url),
