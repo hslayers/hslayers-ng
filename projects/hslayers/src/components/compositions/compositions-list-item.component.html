@@ -1,7 +1,7 @@
 <div class="hs-comp-item-title">{{composition.title || composition.name}}</div>
 <div class="hs-comp-item-body mt-2" [ngClass]="{'d-none': getCommonId(composition) !== selectedCompId}">
     <hr class="hs-dotted-line">
-    <div class="btn-group w-100" role="group">
+    <div class="btn-group w-100 align-items-center" role="group">
         <a class="btn btn-sm border-0" (click)="$event.stopPropagation();openComposition(composition)">
             <i class="icon-map icon-primary"></i><span class="ms-1">{{'COMMON.open' |
                 translateHs }}</span>
