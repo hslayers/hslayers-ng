@@ -682,13 +682,13 @@
     "dndLayers": "Use drag&drop to move layers between the map sides!",
     "enableSwipe": "Enable swipe",
     "entireMap": "Entire map",
-    "horizontalSwipe": "Horizontal swipe",
     "leftSide": "Left side",
     "noLayers": "No layers (drag any layer here)",
     "resetSlider": "Reset slider",
     "rightSide": "Right side",
     "top": "Top",
-    "verticalSwipe": "Vertical swipe"
+    "horizontal": "Horizontal swipe",
+    "vertical": "Vertical swipe"
   },
   "MEASURE": {
     "measureMd": {

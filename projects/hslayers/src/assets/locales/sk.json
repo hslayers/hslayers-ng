@@ -678,17 +678,17 @@
   },
   "MAP_SWIPE": {
     "bottom": "Spodná časť",
-    "disableSwipe": "Zakázať potiahnutie prstom",
+    "disableSwipe": "Vypnúť rozdelenie",
     "dndLayers": "Potiahnutím presuniete vrstvy medzi stranami mapy!",
-    "enableSwipe": "Povoliť potiahnutie prstom",
+    "enableSwipe": "Zapnúť rozdelenie",
     "entireMap": "Celá mapa",
-    "horizontalSwipe": "Horizontálny posuvník",
     "leftSide": "Ľavá strana",
     "noLayers": "Žiadne vrstvy (potiahnutím presunte vrstvy)",
     "resetSlider": "Resetovať posuvník",
     "rightSide": "Pravá strana",
     "top": "Vrchná časť",
-    "verticalSwipe": "Vertikálny posuvník"
+    "horizontal": "Horizontálny posuvník",
+    "vertical": "Vertikálny posuvník"
   },
   "MEASURE": {
     "measureMd": {

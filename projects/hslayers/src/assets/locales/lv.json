@@ -659,13 +659,13 @@
     "dndLayers": "Izmantojiet vilkšanu un nomešanu, lai pārvietotu slāņus starp kartes pusēm",
     "enableSwipe": "Iespējot vilkšanu",
     "entireMap": "Visa karte",
-    "horizontalSwipe": "Horizontālā vilkšana",
     "leftSide": "Kreisā puse",
     "noLayers": "Nav slāņu (velciet šeit jebkuru slāni)",
     "resetSlider": "Atiestatīt slīdni",
     "rightSide": "Labā puse",
     "top": "Augša",
-    "verticalSwipe": "Vertikālā vilkšana"
+    "horizontal": "Horizontālā vilkšana",
+    "vertical": "Vertikālā vilkšana"
   },
   "MEASURE": {
     "measureMd": {
