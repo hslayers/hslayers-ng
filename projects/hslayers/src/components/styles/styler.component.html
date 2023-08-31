@@ -34,8 +34,7 @@
         </div>
       </div>
     </div>
-    <hs-add-colormap [layer]="hsStylerService.layer"
-      (canceled)="hsStylerService.colorMapDialogVisible = false"
+    <hs-add-colormap [layer]="hsStylerService.layer" (canceled)="hsStylerService.colorMapDialogVisible = false"
       *ngIf="hsStylerService.colorMapDialogVisible"></hs-add-colormap>
     <ng-container *ngIf="hsStylerService.styleObject">
       <ul class="list-group hs-styler-content-list" cdkDropList (cdkDropListDropped)="drop($event)"
@@ -61,8 +60,8 @@
           [title]="'STYLER.uploadSld' | translateHs">
           <i class="icon-upload"></i>
         </button>
-        <button class="btn btn-danger" (click)="clear()" data-toggle="tooltip" [title]="'STYLER.clear' | translateHs">
-          <i class="icon-trash"></i>
+        <button class="btn btn-primary" (click)="clear()" data-toggle="tooltip" [title]="'STYLER.clear' | translateHs">
+          <i class="icon-refresh"></i>
         </button>
       </div>
       <div class="d-flex justify-content-between" *ngIf="hsStylerService.isAuthenticated && hsStylerService
