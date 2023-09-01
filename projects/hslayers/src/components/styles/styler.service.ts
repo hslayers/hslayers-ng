@@ -27,7 +27,10 @@ import {Vector as VectorLayer} from 'ol/layer';
 
 import {HsCommonLaymanService} from '../../common/layman/layman.service';
 import {HsConfig} from '../../config.service';
+import {HsConfirmDialogComponent} from '../../common/confirm/confirm-dialog.component';
+import {HsDialogContainerService} from '../layout/dialogs/dialog-container.service';
 import {HsEventBusService} from '../core/event-bus.service';
+import {HsLanguageService} from '../language/language.service';
 import {HsLayerSynchronizerService} from '../save-map/layer-synchronizer.service';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsLogService} from '../../common/log/log.service';
@@ -83,6 +86,8 @@ export class HsStylerService {
     private hsConfig: HsConfig,
     private hsCommonLaymanService: HsCommonLaymanService,
     private hsLayerSynchronizerService: HsLayerSynchronizerService,
+    private hsDialogContainerService: HsDialogContainerService,
+    private hsLanguageService: HsLanguageService,
   ) {
     this.pin_white_blue = new Style({
       image: new Icon({
@@ -698,11 +703,29 @@ export class HsStylerService {
   }
 
   async reset(): Promise<void> {
-    setSld(this.layer, undefined);
-    this.layer.setStyle(createDefaultStyle);
-    await this.initLayerStyle(this.layer);
-    await this.fill(this.layer);
-    await this.save();
+    const dialog = this.hsDialogContainerService.create(
+      HsConfirmDialogComponent,
+      {
+        message: this.hsLanguageService.getTranslation(
+          'STYLER.reallyResetStyleToDefault',
+          undefined,
+        ),
+        title: this.hsLanguageService.getTranslation(
+          'COMMON.confirmReset',
+          undefined,
+        ),
+      },
+    );
+    const confirmed = await dialog.waitResult();
+    if (confirmed == 'yes') {
+      this.sld = defaultStyle;
+      const style = (await this.parseStyle(defaultStyle)).style;
+      if (style) {
+        this.layer.setStyle(style);
+      }
+      this.resolveSldChange();
+      await this.fill(this.layer);
+    }
   }
 
   /**
@@ -710,6 +733,7 @@ export class HsStylerService {
    */
   async loadStyle(styleString: string): Promise<void> {
     try {
+      this.changesStore.delete(getUid(this.layer));
       const styleFmt = this.guessStyleFormat(styleString);
       if (styleFmt == 'sld') {
         const sldParser = new SLDParser({

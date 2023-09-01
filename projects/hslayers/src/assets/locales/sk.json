@@ -306,7 +306,8 @@
     "savingChanges": "Ukladanie zmien",
     "remove": "Odstrániť",
     "NOT_AVAILABLE": "Nedostupné",
-    "PREPARING": "Pripravuje sa"
+    "PREPARING": "Pripravuje sa",
+    "confirmReset": "Potvrďte reset"
   },
   "COMPOSITIONS": {
     "addByAddress": "Pridať kompozíciu z adresy",
@@ -966,7 +967,8 @@
     "mark": "Značka",
     "styleName": "Názov štýlu",
     "text": "Text",
-    "untitledRule": "Pravidlo bez názvu"
+    "untitledRule": "Pravidlo bez názvu",
+    "reallyResetStyleToDefault": "Naozaj chcete aplikovať predvolený štýl?"
   },
   "TOOLBAR": {
     "measureLinesAndPolygon": "Merať línie a polygóny"

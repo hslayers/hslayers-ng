@@ -1,16 +1,34 @@
 <div class="card hs-main-panel" [hidden]="(isVisible$ | async) === false">
   <div class="card-header d-flex align-items-center justify-content-between">
-    <span class="panel-title">
+    <span class="panel-title text-truncate">
       {{'LAYERMANAGER.layerEditor.styleLayer' | translateHs }}
       {{hsStylerService.layerTitle}}
     </span>
-    <button type="button" class="btn-close" (click)="close()" [title]="'COMMON.close' | translateHs"
-      [attr.aria-label]="'COMMON.close' | translateHs ">
-    </button>
+    <extra-buttons class="d-flex align-items-center">
+      <a class="but-title-sm hs-extra-buttons" download="style.sld" [hsDownload]="hsStylerService.sld"
+        mimeType="text/plain" [href]="downloadData" (downloadPrepared)="downloadData = $event"
+        [title]="'STYLER.downloadSld' | translateHs">
+        <i class="icon-download"></i></a>
+
+      <button class="but-title-sm hs-extra-buttons" (click)="uploadSld()" data-toggle="tooltip"
+        [ngClass]="uploaderVisible ? 'text-primary opacity-100' : ''" [title]="'STYLER.uploadSld' | translateHs">
+        <i class="icon-upload"></i>
+      </button>
+      <button class="but-title-sm hs-extra-buttons" (click)="clear()" data-toggle="tooltip"
+        [title]="'STYLER.clear' | translateHs">
+        <i class="icon-fatredo"></i>
+      </button>
+      <button type="button" class="btn-close btn btn-sm" (click)="close()" [title]="'COMMON.close' | translateHs"
+        [attr.aria-label]="'COMMON.close' | translateHs ">
+      </button>
+    </extra-buttons>
   </div>
-  <div class="card-body pe-2">
-    <input class="form-control" *ngIf="hsStylerService.styleObject" type="text"
-      [placeholder]="'STYLER.styleName' | translateHs" [(ngModel)]="hsStylerService.styleObject.name" />
+  <div class="card-body p-1 pe-2 pt-2">
+    <div class="form-floating pb-1" *ngIf="hsStylerService.styleObject">
+      <input type="text" class="form-control" id="hs-styler-style-title"
+        [placeholder]="'STYLER.styleName' | translateHs" [(ngModel)]="hsStylerService.styleObject.name">
+      <label for="hs-styler-style-title">{{'STYLER.styleName' | translateHs}}</label>
+    </div>
     <div class="d-flex flex-row justify-content-end">
       <div class="p-1 flex-grow-1">{{'STYLER.rules' | translateHs }}:</div>
       <div class="p-1">
@@ -45,41 +63,26 @@
       </ul>
     </ng-container>
   </div>
-  <div class="card-footer bg-white px-1">
+  <div class="card-footer bg-white px-1 border-0">
     <div class="form-group m-3" *ngIf="uploaderVisible">
       <hs-file-upload (uploaded)="handleFileUpload($event)" uploader="hs-sld-upload" acceptedFormats=".sld, .qml">
       </hs-file-upload>
     </div>
-    <div class="d-flex align-items-center justify-content-between">
-      <div class="btn-group" role="group" [attr.aria-label]="'STYLER.manageStyle' | translateHs">
-        <a class="btn btn-secondary" download="style.sld" [hsDownload]="hsStylerService.sld" mimeType="text/plain"
-          [href]="downloadData" (downloadPrepared)="downloadData = $event" [title]="'STYLER.downloadSld' | translateHs">
-          <i class="icon-download"></i></a>
-
-        <button class="btn btn-secondary" (click)="uploadSld()" data-toggle="tooltip"
-          [title]="'STYLER.uploadSld' | translateHs">
-          <i class="icon-upload"></i>
-        </button>
-        <button class="btn btn-primary" (click)="clear()" data-toggle="tooltip" [title]="'STYLER.clear' | translateHs">
-          <i class="icon-refresh"></i>
+    <div class="d-flex justify-content-end" *ngIf="hsStylerService.isAuthenticated && hsStylerService
+    .unsavedChange">
+      <div class="p-1 m-0 btn bg-danger bg-opacity-25 btn-sm py-0" role="alert"
+        *ngIf="!hsStylerService.syncing; else layerSyncing">
+        {{'COMMON.unsavedChanges' | translateHs}} <button class="btn btn-primary btn-sm m-1"
+          (click)="hsStylerService.setSldQml()" data-toggle="tooltip" [title]="'STYLER.unsavedChanges' | translateHs">
+          <i class="icon-save-floppy"></i>
         </button>
       </div>
-      <div class="d-flex justify-content-between" *ngIf="hsStylerService.isAuthenticated && hsStylerService
-      .unsavedChange">
-        <div class="p-1 m-0 btn bg-danger bg-opacity-25 btn-sm py-0" role="alert"
-          *ngIf="!hsStylerService.syncing; else layerSyncing">
-          {{'COMMON.unsavedChanges' | translateHs}} <button class="btn btn-primary btn-sm m-1"
-            (click)="hsStylerService.setSldQml()" data-toggle="tooltip" [title]="'STYLER.unsavedChanges' | translateHs">
-            <i class="icon-save-floppy"></i>
-          </button>
+      <ng-template #layerSyncing>
+        <div class="d-flex align-items-center p-2 bg-secondary text-white rounded btn">
+          <span class="hs-loader hs-loader-dark"></span>
+          {{'COMMON.savingChanges' | translateHs}}
         </div>
-        <ng-template #layerSyncing>
-          <div class="d-flex align-items-center p-2 bg-secondary text-white rounded btn">
-            <span class="hs-loader hs-loader-dark"></span>
-            {{'COMMON.savingChanges' | translateHs}}
-          </div>
-        </ng-template>
-      </div>
+      </ng-template>
     </div>
   </div>
 </div>
