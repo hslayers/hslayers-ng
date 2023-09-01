@@ -71,7 +71,7 @@
                                         style="overflow-y: auto; max-height: 10rem; min-width:10rem">
                                         <li *ngFor="let type of dataTypes; let index = index" class="p-2 p-md-0">
                                             <label style="cursor: pointer;"><input class="me-2" type="radio"
-                                                    name="type-index" [checked]="(index === 2)"
+                                                    name="type-index" [checked]="(index === 0)"
                                                     (change)="selectQueryType(type, 'type');resourceType.close()">{{translateString('ADDDATA.CATALOGUE.queryDataTypes',
                                                 type)}}</label>
                                         </li>

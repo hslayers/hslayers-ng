@@ -307,7 +307,8 @@
     "remove": "Odstranit",
     "NOT_AVAILABLE": "Nedostupné",
     "PREPARING": "Připravuje se",
-    "confirmReset": "Potvrďte reset"
+    "confirmReset": "Potvrďte reset",
+    "saving": "Ukládání"
   },
   "COMPOSITIONS": {
     "addByAddress": "Přidat kompozici z adresy",
@@ -685,7 +686,7 @@
     "entireMap": "Celá mapa",
     "leftSide": "Levá strana",
     "noLayers": "Žádné vrstvy (přetáhněte vrstvu sem)",
-    "resetSlider": "Vrátit posuvník",
+    "resetSlider": "Obnovit polohu posuvníku",
     "rightSide": "Pravá strana",
     "top": "Horní část",
     "horizontal": "Vodorovný posuvník",

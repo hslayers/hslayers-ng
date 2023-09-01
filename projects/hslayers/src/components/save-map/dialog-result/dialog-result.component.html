@@ -11,31 +11,39 @@
                 <button type="button" (click)="close()" class="btn-close" data-dismiss="modal"
                     [attr.aria-label]="'COMMON.close' | translateHs"></button>
             </div>
-            <div *ngIf="!hsSaveMapManagerService.statusData.status; else success" class="modal-body"
-                style="max-height: 600px; overflow-y: auto">
-
-                <div class="alert alert-danger" *ngIf="hsSaveMapManagerService.statusData.resultCode === 'not-saved'">
-                    {{ "SAVECOMPOSITION.dialogResult.requestWasProcessed" | translateHs }}
-                </div>
-                <div class="alert alert-danger" *ngIf="hsSaveMapManagerService.statusData.resultCode === 'error'">
-                    {{ "SAVECOMPOSITION.dialogResult.serverDidNotRespond" | translateHs }}
-                </div>
-                <div class="alert alert-danger">
-                    <dl>
-                        <dd class="ps-1 my-2">
-                            {{ hsSaveMapManagerService.statusData.error["message"] }}
-                        </dd>
-                    </dl>
-                </div>
+            <div class="align-items-center d-flex flex-column justify-content-center p-4" *ngIf="saving; else status">
+                <div class="hs-loader hs-loader-dark"></div>
             </div>
+
+            <ng-template #status>
+                <div class="modal-body" style="max-height: 600px; overflow-y: auto"
+                    *ngIf="!hsSaveMapManagerService.statusData.status; else success">
+
+                    <div class="alert alert-danger"
+                        *ngIf="hsSaveMapManagerService.statusData.resultCode === 'not-saved'">
+                        {{ "SAVECOMPOSITION.dialogResult.requestWasProcessed" | translateHs }}
+                    </div>
+                    <div class="alert alert-danger" *ngIf="hsSaveMapManagerService.statusData.resultCode === 'error'">
+                        {{ "SAVECOMPOSITION.dialogResult.serverDidNotRespond" | translateHs }}
+                    </div>
+                    <div class="alert alert-danger">
+                        <dl>
+                            <dd class="ps-1 my-2">
+                                {{ hsSaveMapManagerService.statusData.error["message"] }}
+                            </dd>
+                        </dl>
+                    </div>
+                </div>
+            </ng-template>
+
             <ng-template #success>
                 <div class="alert alert-success mx-2 my-4">
                     {{"SAVECOMPOSITION.dialogResult.success" | translateHs}}
                 </div>
             </ng-template>
             <div class="modal-footer"
-                [ngClass]="{'justify-content-between': hsSaveMapManagerService.statusData.resultCode === 'exists'}">
-                <div *ngIf="hsSaveMapManagerService.statusData.resultCode === 'exists'">
+                [ngClass]="{'justify-content-between': hsSaveMapManagerService.statusData.resultCode === 'exists' && !saving}">
+                <div *ngIf="hsSaveMapManagerService.statusData.resultCode === 'exists' && !saving">
                     <button type="button" class="btn btn-primary" (click)="initiateSave(false)">
                         {{ "SAVECOMPOSITION.form.overwrite" | translateHs }}
                     </button>
@@ -44,7 +52,8 @@
                     </button>
                 </div>
                 <button type="button" class="btn btn-primary" (click)="close()" data-dismiss="modal">
-                    {{ "COMMON.close" | translateHs }}
+                    <span [hidden]="!saving">{{'COMMON.saving' | translateHs}}...</span>
+                    <span [hidden]="saving">{{ "COMMON.close" | translateHs }}</span>
                 </button>
             </div>
         </div>
