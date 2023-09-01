@@ -290,7 +290,8 @@
     "return": "Atgriezties",
     "query": "Vaicājums",
     "composition": "Kompozīcija",
-    "remove": "Noņemt"
+    "remove": "Noņemt",
+    "saving": "Saglabā"
   },
   "COMPOSITIONS": {
     "addByAddress": "Pievienot kompozīciju pēc adreses",
@@ -661,7 +662,7 @@
     "entireMap": "Visa karte",
     "leftSide": "Kreisā puse",
     "noLayers": "Nav slāņu (velciet šeit jebkuru slāni)",
-    "resetSlider": "Atiestatīt slīdni",
+    "resetSlider": "Atiestatīt slīdņa pozīciju",
     "rightSide": "Labā puse",
     "top": "Augša",
     "horizontal": "Horizontālā vilkšana",

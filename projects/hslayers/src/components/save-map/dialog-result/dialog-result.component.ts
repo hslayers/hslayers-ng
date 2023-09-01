@@ -10,7 +10,7 @@ import {HsSaveMapManagerService} from '../save-map-manager.service';
 export class HsSaveMapResultDialogComponent implements HsDialogComponent {
   viewRef: ViewRef;
   data = {};
-
+  saving = false;
   constructor(
     private hsDialogContainerService: HsDialogContainerService,
     public hsSaveMapManagerService: HsSaveMapManagerService,
@@ -24,8 +24,10 @@ export class HsSaveMapResultDialogComponent implements HsDialogComponent {
    * Initiate composition's saving procedure
    * @param newSave - If true save a new composition, otherwise overwrite to current one
    */
-  initiateSave(newSave: boolean): void {
-    this.hsSaveMapManagerService.initiateSave(newSave);
+  async initiateSave(newSave: boolean): Promise<void> {
+    this.saving = true;
+    await this.hsSaveMapManagerService.initiateSave(newSave);
+    this.saving = false;
     this.close();
   }
 

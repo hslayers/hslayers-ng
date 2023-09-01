@@ -307,7 +307,8 @@
     "remove": "Remove",
     "NOT_AVAILABLE": "Not available",
     "PREPARING": "Preparing",
-    "confirmReset": "Confirm reset"
+    "confirmReset": "Confirm reset",
+    "saving": "Saving"
   },
   "COMPOSITIONS": {
     "addByAddress": "Add composition by address",
@@ -685,7 +686,7 @@
     "entireMap": "Entire map",
     "leftSide": "Left side",
     "noLayers": "No layers (drag any layer here)",
-    "resetSlider": "Reset slider",
+    "resetSlider": "Reset slider position",
     "rightSide": "Right side",
     "top": "Top",
     "horizontal": "Horizontal swipe",

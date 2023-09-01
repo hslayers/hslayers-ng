@@ -307,7 +307,8 @@
     "remove": "Odstrániť",
     "NOT_AVAILABLE": "Nedostupné",
     "PREPARING": "Pripravuje sa",
-    "confirmReset": "Potvrďte reset"
+    "confirmReset": "Potvrďte reset",
+    "saving": "Ukladanie"
   },
   "COMPOSITIONS": {
     "addByAddress": "Pridať kompozíciu z adresy",
@@ -685,7 +686,7 @@
     "entireMap": "Celá mapa",
     "leftSide": "Ľavá strana",
     "noLayers": "Žiadne vrstvy (potiahnutím presunte vrstvy)",
-    "resetSlider": "Resetovať posuvník",
+    "resetSlider": "Obnoviť polohu posuvníku",
     "rightSide": "Pravá strana",
     "top": "Vrchná časť",
     "horizontal": "Horizontálny posuvník",
