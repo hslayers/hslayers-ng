@@ -174,51 +174,20 @@ export class HsCompositionsLayerParserService {
    * @param lyr_def - Layer definition object
    * @returns Ol Image or Tile layer
    */
-  createArcGISLayer(lyr_def) {
-    const params = lyr_def.params;
-    const legends = this.getLegends(lyr_def);
-    if (params) {
-      delete params.REQUEST;
-    }
-    //delete params.FORMAT; Commented, because otherwise when loading from cookie or store, it displays jpeg
-    const sourceOptions = {
-      url: decodeURIComponent(lyr_def.url),
-      attributions: lyr_def.attribution
-        ? `<a href="${lyr_def.attribution.OnlineResource}">${lyr_def.attribution.Title}</a>`
-        : undefined,
-      params,
-      crossOrigin: 'anonymous',
-      projection: lyr_def.projection?.toUpperCase(),
-      ratio: lyr_def.ratio,
-    };
-    const source = lyr_def.singleTile
-      ? new ImageArcGISRest(sourceOptions)
-      : new TileArcGISRest(sourceOptions);
-    const layerOptions = {
-      title: lyr_def.title,
-      fromComposition: lyr_def.fromComposition ?? true,
-      maxResolution: lyr_def.maxResolution || Infinity,
-      minResolution: lyr_def.minResolution || 0,
-      showInLayerManager: lyr_def.displayInLayerSwitcher,
-      abstract: lyr_def.name || lyr_def.abstract,
-      base: lyr_def.base,
-      greyscale: lyr_def.greyscale,
-      className: lyr_def.greyscale ? 'ol-layer hs-greyscale' : 'ol-layer',
-      metadata: lyr_def.metadata,
-      dimensions: lyr_def.dimensions,
-      legends: legends,
-      path: lyr_def.path,
-      opacity: parseInt(lyr_def.opacity) || 1,
-      source,
-    };
-    const new_layer = lyr_def.singleTile
-      ? new ImageLayer(layerOptions as ImageOptions<ImageSource>)
-      : new Tile(layerOptions as TileOptions<TileSource>);
-
-    new_layer.setVisible(lyr_def.visibility);
-    //TODO Proxify
-    //OlMap.proxifyLayerLoader(new_layer, !lyr_def.singleTile);
-    return new_layer;
+  async createArcGISLayer(lyr_def) {
+    const newLayer = await this.hsAddDataOwsService.connectToOWS({
+      type: 'arcgis',
+      uri: lyr_def.url.split('tile/{z}/{y}/{x}')[0],
+      layer: lyr_def.title,
+      owrCache: false,
+      getOnly: true,
+      layerOptions: {
+        title: lyr_def.title,
+        base: lyr_def.base,
+        greyscale: lyr_def.greyscale,
+      },
+    });
+    return newLayer[0];
   }
 
   /**
