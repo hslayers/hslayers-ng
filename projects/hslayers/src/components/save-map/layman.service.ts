@@ -367,7 +367,7 @@ export class HsLaymanService implements HsSaverService {
       } catch (ex) {
         this.hsLogService.log(`Creating layer ${description.name}`);
       }
-      const exists = layerDesc?.name ? true : false;
+      const exists = !!layerDesc?.name;
       const res = await this.tryLoadLayer(
         endpoint,
         formData,
@@ -395,7 +395,6 @@ export class HsLaymanService implements HsSaverService {
     formData: FormData,
     asyncUpload: AsyncUpload,
     layerName: string,
-
     overwrite?: boolean,
   ): Promise<PostPatchLayerResponse> {
     layerName = getLaymanFriendlyLayerName(layerName);

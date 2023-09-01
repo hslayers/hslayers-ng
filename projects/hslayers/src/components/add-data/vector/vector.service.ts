@@ -11,6 +11,7 @@ import {PROJECTIONS as epsg4326Aliases} from 'ol/proj/epsg4326';
 import {HsAddDataCommonFileService} from '../common/common-file.service';
 import {HsAddDataService} from '../add-data.service';
 import {HsCommonLaymanService} from '../../../common/layman/layman.service';
+import {HsLaymanLayerDescriptor} from '../../save-map/interfaces/layman-layer-descriptor.interface';
 import {HsLaymanService} from '../../save-map/layman.service';
 import {HsLogService} from '../../../common/log/log.service';
 import {HsMapService} from '../../map/map.service';
@@ -291,10 +292,13 @@ export class HsAddDataVectorService {
         addLayerRes.complete = false;
         return addLayerRes;
       }
-      //Create layer on layman: OverwriteResponse.add
-      const upsertResponse = await this.upsertLayer(data);
+      const upsertResponse =
+        checkResult == OverwriteResponse.overwrite
+          ? {name: data.name}
+          : //Create layer on layman: OverwriteResponse.add
+            await this.upsertLayer(data);
       if (data.serializedStyle) {
-        await this.setLaymanLayerStyle(upsertResponse, data);
+        await this.setLaymanLayerStyle(upsertResponse.name, data);
       }
     }
     const layer = await this.addVectorLayer(
@@ -323,12 +327,12 @@ export class HsAddDataVectorService {
    * are in sync with what's on Layman e.g. to prevent inconsistencies caused by attribute names laundering
    */
   async setLaymanLayerStyle(
-    upsertResponse: PostPatchLayerResponse,
+    layerName: string,
     data: VectorDataObject,
   ): Promise<void> {
     const descriptor = await this.hsAddDataCommonFileService.describeNewLayer(
       this.hsAddDataCommonFileService.endpoint,
-      upsertResponse.name,
+      layerName,
       'style',
     );
     data.serializedStyle = await this.hsCommonLaymanService.getStyleFromUrl(
