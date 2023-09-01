@@ -306,7 +306,8 @@
     "savingChanges": "Saving changes",
     "remove": "Remove",
     "NOT_AVAILABLE": "Not available",
-    "PREPARING": "Preparing"
+    "PREPARING": "Preparing",
+    "confirmReset": "Confirm reset"
   },
   "COMPOSITIONS": {
     "addByAddress": "Add composition by address",
@@ -997,7 +998,8 @@
     "icon": "Icon",
     "text": "Text",
     "line": "Line",
-    "fill": "Fill"
+    "fill": "Fill",
+    "reallyResetStyleToDefault": "Do you really want to apply default style?"
   },
   "TOOLBAR": {
     "measureLinesAndPolygon": "Measure lines and polygon"

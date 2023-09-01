@@ -306,7 +306,8 @@
     "savingChanges": "Ukládání změn",
     "remove": "Odstranit",
     "NOT_AVAILABLE": "Nedostupné",
-    "PREPARING": "Připravuje se"
+    "PREPARING": "Připravuje se",
+    "confirmReset": "Potvrďte reset"
   },
   "COMPOSITIONS": {
     "addByAddress": "Přidat kompozici z adresy",
@@ -997,7 +998,8 @@
     "line": "Linie",
     "fill": "Výplň",
     "styleName": "Název stylu",
-    "unsavedChanges": "Máte neuložené změny stylu. Aby se změny zachovaly, ujistěte se před odchodem, že jste je uložili"
+    "unsavedChanges": "Máte neuložené změny stylu. Aby se změny zachovaly, ujistěte se před odchodem, že jste je uložili",
+    "reallyResetStyleToDefault": "Opravdu chcete použít výchozí styl?"
   },
   "TOOLBAR": {
     "measureLinesAndPolygon": "Měřit linie a polygony"
