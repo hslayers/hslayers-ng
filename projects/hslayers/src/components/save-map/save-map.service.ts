@@ -364,7 +364,11 @@ export class HsSaveMapService {
         json.dimensions = getDimensions(layer);
       }
       if (this.hsUtilsService.instOf(src, XYZ)) {
-        json.className = 'XYZ';
+        json.className = this.hsLayerUtilsService
+          .getURL(layer)
+          .includes('/rest/services')
+          ? 'ArcGISRest'
+          : 'XYZ';
       }
       if (
         this.hsUtilsService.instOf(src, ImageArcGISRest) ||
@@ -400,7 +404,12 @@ export class HsSaveMapService {
         json.subLayers = getSubLayers(layer);
         json.metadata.styles = src.get('styles');
       }
-      json.url = encodeURIComponent(this.hsLayerUtilsService.getURL(layer));
+      let url = this.hsLayerUtilsService.getURL(layer);
+      url =
+        json.className === 'ArcGISRest'
+          ? url.replace('/tile/{z}/{y}/{x}', '')
+          : url;
+      json.url = url;
       if (getAttribution(layer)) {
         json.attributions = getAttribution(layer);
       }
