@@ -724,7 +724,7 @@ export class HsStylerService {
         this.layer.setStyle(style);
       }
       this.resolveSldChange();
-      await this.fill(this.layer);
+      this.fill(this.layer);
     }
   }
 
@@ -740,15 +740,13 @@ export class HsStylerService {
           sldVersion: this.guessSldVersion(styleString),
         });
         await sldParser.readStyle(styleString);
-        setQml(this.layer, undefined);
-        setSld(this.layer, styleString);
+        this.sld = styleString;
       } else if (styleFmt == 'qml') {
         await this.qmlParser.readStyle(styleString);
-        setSld(this.layer, undefined);
-        setQml(this.layer, styleString);
+        this.qml = styleString;
       }
-      await this.fill(this.layer);
-      await this.save();
+      this.resolveSldChange();
+      this.fill(this.layer);
     } catch (err) {
       this.hsLogService.warn('SLD could not be parsed', err);
     }
