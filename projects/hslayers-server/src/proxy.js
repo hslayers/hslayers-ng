@@ -1,6 +1,6 @@
 require("dotenv").config();
 
-const querystring = require("querystring");
+const querystring = require("node:querystring");
 // Listen on a specific host via the HOST environment variable
 const host = process.env.HOST || "0.0.0.0";
 // Listen on a specific port via the PORT environment variable
@@ -30,10 +30,17 @@ require("http")
         res.end();
       } else {
         req.url = decodeURIComponent(req.url);
-        const [base, queryParams] = req.url.split("?");
-        const params = querystring.parse(queryParams);
-        req.url = base + "?" + querystring.encode(params);
-        if (req.url.indexOf("api.geonames.org/searchJSON") > -1) {
+        const [base, tld, pathAndQueryParams] = splitUrlAtTld(req.url);
+        const encodedPath = pathAndQueryParams.split("?")[0].split("/").map(segment => encodeURIComponent(segment))
+        const params = querystring.parse(pathAndQueryParams.split("?")[1]);
+        req.url =
+          base +
+          "." +
+          tld +
+          encodedPath.join("/") +
+          (Object.keys(params).length == 0 ? "" : "?") +
+          querystring.encode(params);
+        if (base.includes("api.geonames") && tld === "org" && pathAndQueryParams.startsWith("searchJSON")) {
           if (
             typeof params.provider == "undefined" ||
             params.provider == "geonames"
@@ -43,7 +50,7 @@ require("http")
             )}&username=${GEONAMES_APIKEY}`;
           }
         }
-        if (req.url.indexOf("api.openrouteservice.org") > -1) {
+        if (base.includes("api.openrouteservice") && tld == "org") {
           req.headers.authorization = process.env.OPENROUTESERVICE_API_KEY;
         }
 
@@ -75,4 +82,41 @@ function getIP() {
   }
 
   return "0";
+}
+
+/**
+ * Created by ChatGPT
+ * @param {string} url URL
+ * @returns Array consisting of [domain, TLD+port, rest of the URL]
+ */
+function splitUrlAtTld(url) {
+  // Regular expression to match the TLD with port (assuming it's a simple dot-based TLD)
+  const tldWithPortRegex = /\.([a-zA-Z]{2,}|[0-9]{1,3})(?::\d+)?(?:\/|$)/;
+
+  // Use the regex to find the TLD with port in the URL
+  const tldWithPortMatch = url.match(tldWithPortRegex);
+
+  if (tldWithPortMatch) {
+    // The TLD with port including the dot
+    const tldWithPort = tldWithPortMatch[0];
+
+    // Split the URL using the TLD with port as the delimiter
+    const parts = url.split(tldWithPort);
+
+    // Remove the leading dot from the TLD
+    const cleanedTLD = tldWithPort.slice(1);
+
+    return [
+      parts[0], // Everything before the TLD with port
+      cleanedTLD, // The TLD with port itself
+      parts[1] || "", // Everything after the TLD with port (if present)
+    ];
+  } else {
+    // No TLD with port found, return the original URL
+    return [
+      url,
+      "",
+      "",
+    ];
+  }
 }
