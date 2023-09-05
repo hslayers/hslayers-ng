@@ -436,7 +436,7 @@ export class HsSaveMapService {
       const definition = getDefinition(layer);
       if (definition && definition.url) {
         json.protocol = {
-          url: encodeURIComponent(definition.url),
+          url: `${definition.url}/geoserver/${getWorkspace(layer)}/wfs`,
           format: definition.format,
         };
         json.workspace = getWorkspace(layer);
