@@ -125,7 +125,7 @@
     "karma-chrome-launcher": "~3.2.0",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "^2.0.0",
-    "ng-packagr": "^16.2.2",
+    "ng-packagr": "^16.2.3",
     "prettier": "^3.0.3",
     "puppeteer": "^21.1.1",
     "sass": "^1.66.1",
