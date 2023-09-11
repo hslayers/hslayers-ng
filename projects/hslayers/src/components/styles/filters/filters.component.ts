@@ -25,6 +25,8 @@ export class HsFiltersComponent extends HsStylerPartBaseComponent {
 
   remove(): void {
     delete this.rule.filter;
+    //Trigger change detection
+    this.rule = {...this.rule};
     this.emitChange();
   }
 }
