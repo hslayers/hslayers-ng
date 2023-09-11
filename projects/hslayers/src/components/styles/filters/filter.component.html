@@ -3,7 +3,7 @@
     <div class="d-flex flex-row card-header p-0">
       <div class="p-2">{{hsFiltersService.humanReadableLogOp(filter[0])}}</div>
       <!-- TODO: Remove function call from template -->
-      <hs-add-filter-button (clicks)="hsFiltersService.add($event.kind, true, filter)"></hs-add-filter-button>
+      <hs-add-filter-button (clicks)="hsFiltersService.add($event.type, true, filter)"></hs-add-filter-button>
       <button class="btn btn-outline-danger btn-sm m-1" [title]="'STYLER.removeFilter' | translateHs  "
         (click)="remove()">
         <span class="icon-trash"></span>

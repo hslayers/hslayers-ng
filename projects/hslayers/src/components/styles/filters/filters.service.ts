@@ -1,24 +1,21 @@
 import {Injectable} from '@angular/core';
+import {filterType} from './filters.component';
 
 @Injectable({
   providedIn: 'root',
 })
 export class HsFiltersService {
-  add(
-    kind: 'AND' | 'OR' | 'NOT' | 'COMPARE',
-    append: boolean,
-    collection: any[],
-  ): void {
+  add(type: filterType, append: boolean, collection: any[]): void {
     let filter;
-    switch (kind) {
+    switch (type) {
       case 'AND':
-        filter = ['&&', ['==', '<attribute>', '<value>']];
+        filter = ['&&', ['==', undefined, '<value>']];
         break;
       case 'OR':
-        filter = ['||', ['==', '<attribute>', '<value>']];
+        filter = ['||', ['==', undefined, '<value>']];
         break;
       case 'COMPARE':
-        filter = ['==', '<attribute>', '<value>'];
+        filter = ['==', undefined, '<value>'];
         break;
       default:
     }

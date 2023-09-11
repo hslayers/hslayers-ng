@@ -4,17 +4,8 @@
       <span class="icon-plus"></span>
     </button>
     <div ngbDropdownMenu>
-      <button ngbDropdownItem (click)="emitClick('AND'); menu.close()">
-        {{'STYLER.andFilter' | translateHs }}
-      </button>
-      <button ngbDropdownItem (click)="emitClick('OR'); menu.close()">
-        {{'STYLER.orFilter' | translateHs }}
-      </button>
-      <button ngbDropdownItem (click)="emitClick('NOT'); menu.close()">
-        {{'STYLER.notFilter' | translateHs }}
-      </button>
-      <button ngbDropdownItem (click)="emitClick('COMPARE'); menu.close()">
-        {{'STYLER.comparisonFilter' | translateHs }}
+      <button ngbDropdownItem *ngFor="let filter of filterOptions" (click)="emitClick(filter); menu.close()">
+        {{ filter | translateHs : {module:'STYLER'} }}
       </button>
     </div>
   </div>

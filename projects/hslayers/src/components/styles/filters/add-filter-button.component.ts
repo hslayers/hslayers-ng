@@ -1,4 +1,5 @@
 import {Component, EventEmitter, Output} from '@angular/core';
+import {filterType} from './filters.component';
 
 @Component({
   selector: 'hs-add-filter-button',
@@ -7,7 +8,8 @@ import {Component, EventEmitter, Output} from '@angular/core';
 export class HsAddFilterButtonComponent {
   @Output() clicks = new EventEmitter();
 
-  emitClick(kind: string): void {
-    this.clicks.emit({kind});
+  readonly filterOptions: filterType[] = ['AND', 'OR', 'NOT', 'COMPARE'];
+  emitClick(type: filterType): void {
+    this.clicks.emit({type});
   }
 }
