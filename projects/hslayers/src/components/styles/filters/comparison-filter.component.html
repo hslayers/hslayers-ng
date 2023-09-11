@@ -1,12 +1,15 @@
-<div class="d-flex flex-row">
+<div class="d-flex flex-row form-group">
+  <select class="form-control form-select" style="width: 100%" [(ngModel)]="filter[1]" name="hs-sld-filter-attribute">
+    <option [ngValue]="undefined" [disabled]="true" selected hidden>Pick an attribute</option>
+    <option [ngValue]="attr" *ngFor="let attr of attributes">
+      {{attr}}
+    </option>
+  </select>
   <div>
-    <input class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="filter[1]" (change)="emitChange()" />
+    <input class="form-control" name="hs-sld-filter-comparison-sign" [(ngModel)]="filter[0]" (change)="emitChange()" />
   </div>
   <div>
-    <input class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="filter[0]" (change)="emitChange()" />
-  </div>
-  <div>
-    <input class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="filter[2]" (change)="emitChange()" />
+    <input class="form-control" name="hs-sld-filter-value" [(ngModel)]="filter[2]" (change)="emitChange()" />
   </div>
   <div>
     <button class="btn btn-outline-danger btn-sm rounded-0" style="height: 100%" (click)="remove()">
