@@ -1,6 +1,6 @@
 <div class="mb-2">
   <div class="d-flex flex-row justify-content-end">
-    <hs-add-filter-button (clicks)="add($event.type, false)"></hs-add-filter-button>
+    <hs-add-filter-button class="w-100" [rule]="rule" (clicks)="add($event.type, false)"></hs-add-filter-button>
   </div>
   <div *ngIf="hsFiltersService.isLogOp(rule.filter)" class="card"><!-- TODO: Remove function call from template -->
     <div class="d-flex flex-row card-header p-0">
