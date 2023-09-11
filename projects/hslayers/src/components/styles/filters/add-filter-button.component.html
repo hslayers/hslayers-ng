@@ -1,4 +1,4 @@
-<div class="p-1">
+<div class="p-1" *ngIf="!rule; else addFilterTabs">
   <div ngbDropdown class="d-inline-block" #menu="ngbDropdown">
     <button class="btn btn-outline-primary btn-sm" [title]="'STYLER.addFilter' | translateHs  " ngbDropdownToggle>
       <span class="icon-plus"></span>
@@ -10,3 +10,12 @@
     </div>
   </div>
 </div>
+
+<ng-template #addFilterTabs>
+  <div class="btn-group w-100 py-2 px-1">
+    <button class="btn btn-sm btn-outline-primary hs-add-filter-tab w-25 rounded-0" *ngFor="let filter of filterOptions"
+      [class.text-bg-primary]="filter === activeTab" (click)="emitClick(filter)">
+      {{ filter | translateHs : {module:'STYLER'} }}
+    </button>
+  </div>
+</ng-template>
