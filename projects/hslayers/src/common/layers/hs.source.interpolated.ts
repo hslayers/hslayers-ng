@@ -247,7 +247,7 @@ export class InterpolatedSource extends IDW {
  */
 function generateColormap(name: string, nshades: number = 100): number[] {
   const reverse = name.includes('-reverse');
-  name = reverse ? name.split('-')[0] : name;
+  name = reverse ? name.split('-reverse')[0] : name;
   const cmap = colormap({
     colormap: name,
     nshades,
