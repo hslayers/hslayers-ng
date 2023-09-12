@@ -1,0 +1,37 @@
+.hs-colorMap-picker-select {
+    min-height: 2em;
+}
+
+.hs-colorMap-picker-select,
+.hs-colorMap-picker-item {
+    span {
+        height: 1.2em;
+    }
+
+    span:not(.hs-colorMap-picker-item-label) {
+        max-width: 12em;
+
+    }
+}
+
+.hs-colorMap-picker-menu {
+    background: white;
+    border: 1px solid #00000036;
+
+    left: 50%;
+    transform: translate(-50%, 0);
+    width: 100%;
+    max-height: 50vh;
+    overflow-y: auto;
+    z-index: 10;
+
+    .hs-colorMap-picker-item {
+        padding: 0.25em 1em;
+
+        &:hover,
+        &.active {
+            color: white;
+            background-color: var(--bs-primary, #0d6efd);
+        }
+    }
+}

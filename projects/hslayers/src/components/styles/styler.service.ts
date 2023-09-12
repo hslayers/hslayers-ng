@@ -22,8 +22,8 @@ import {Icon, Style} from 'ol/style';
 import {OlStyleParser as OpenLayersParser} from 'geostyler-openlayers-parser';
 import {QGISStyleParser} from 'geostyler-qgis-parser';
 // eslint-disable-next-line import/named
+import {Layer, Vector as VectorLayer} from 'ol/layer';
 import {StyleFunction, StyleLike, createDefaultStyle} from 'ol/style/Style';
-import {Vector as VectorLayer} from 'ol/layer';
 
 import {HsCommonLaymanService} from '../../common/layman/layman.service';
 import {HsConfig} from '../../config.service';
@@ -38,7 +38,10 @@ import {HsMapService} from '../map/map.service';
 import {HsQueryVectorService} from '../query/query-vector.service';
 import {HsSaveMapService} from '../save-map/save-map.service';
 import {HsUtilsService} from '../utils/utils.service';
-import {awaitLayerSync} from '../../common/layman/layman-utils';
+import {
+  awaitLayerSync,
+  getLaymanFriendlyLayerName,
+} from '../../common/layman/layman-utils';
 import {defaultStyle} from './styles';
 import {
   getCluster,
@@ -750,5 +753,112 @@ export class HsStylerService {
     } catch (err) {
       this.hsLogService.warn('SLD could not be parsed', err);
     }
+  }
+
+  /**
+   * Calculate a stop-color value for gradient. Offset depend on number of colors (lenght)
+   * and current index.
+   * @param color RGB(A) color definition
+   * @param linearGradient SVG Linear Gradient element
+   * @param length Offset calculation - length of an array (number of colors)
+   * @param index Index of color
+   */
+  private appendColorToGradient(
+    color: number[],
+    linearGradient: SVGLinearGradientElement,
+    length: number,
+    index: number,
+  ): void {
+    const stop = document.createElementNS('http://www.w3.org/2000/svg', 'stop');
+    const step = 100 / length;
+    const offset = index * step;
+    stop.setAttribute('offset', `${100 - offset}%`);
+    const rgb = `rgb(${color[0]},${color[1]},${color[2]})`;
+    stop.setAttribute('stop-color', rgb);
+
+    linearGradient.appendChild(stop);
+  }
+
+  /**
+   * Generate SVG gradient for selected color map. Used by either
+   * - interpolated layer legend or
+   * - color map select options
+   */
+  generateSVGGradientForColorMap(input: Layer<any> | number[][]) {
+    const forLayer = input instanceof Layer;
+    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    svg.setAttribute('width', forLayer ? '75%' : '100%');
+    svg.setAttribute('height', '100%');
+
+    const defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
+    const linearGradient = document.createElementNS(
+      'http://www.w3.org/2000/svg',
+      'linearGradient',
+    );
+
+    const id = `${+new Date()}-idwGradient-${
+      forLayer
+        ? getLaymanFriendlyLayerName(input.get('name'))
+        : (Math.random() * 1000000).toFixed(0).toString()
+    }`;
+
+    linearGradient.setAttribute('id', id);
+    linearGradient.setAttribute(
+      'gradientTransform',
+      `rotate(${input instanceof Layer ? 90 : 0})`,
+    );
+
+    const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+    rect.setAttribute('width', forLayer ? '50%' : '100%');
+    rect.setAttribute('height', '100%');
+    rect.setAttribute('fill', `url('#${id}')`);
+
+    //Gradient def generation
+    if (input instanceof Layer) {
+      const source = input.getSource();
+      const arr = Array.from(Array(100).keys());
+      for (const i of arr.filter((e, i) => i % 5 === 5 - 1).reverse()) {
+        const color = source.getColor(i);
+        this.appendColorToGradient(color, linearGradient, 100, i);
+      }
+    } else {
+      for (const [i, color] of input.entries()) {
+        this.appendColorToGradient(
+          color,
+          linearGradient,
+          input.length + 1,
+          input.length - i,
+        );
+      }
+    }
+
+    defs.appendChild(linearGradient);
+
+    //Layout finishes. No need for labels for select option
+    svg.appendChild(defs);
+    svg.appendChild(rect);
+    if (input instanceof Layer) {
+      const max = document.createElementNS(
+        'http://www.w3.org/2000/svg',
+        'text',
+      );
+      max.setAttribute('x', '50%');
+      max.setAttribute('y', '10%');
+      max.innerHTML = 'High';
+
+      const min = document.createElementNS(
+        'http://www.w3.org/2000/svg',
+        'text',
+      );
+      min.setAttribute('x', '50%');
+      min.setAttribute('y', '95%');
+      min.innerHTML = 'Low';
+
+      svg.appendChild(max);
+      svg.appendChild(min);
+      svg.setAttribute('style', 'max-width: 7em');
+    }
+
+    return this.sanitizer.bypassSecurityTrustHtml(svg.outerHTML);
   }
 }
