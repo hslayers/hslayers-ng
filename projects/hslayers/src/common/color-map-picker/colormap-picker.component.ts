@@ -1,5 +1,11 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
-import {Component, EventEmitter, Output, forwardRef} from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+  forwardRef,
+} from '@angular/core';
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
 
 import colorScales from 'colormap/colorScale';
@@ -28,6 +34,7 @@ type hsStylerColorMapsKeyValue = {
   ],
 })
 export class ColormapPickerComponent implements ControlValueAccessor {
+  @Input() height?: string = '50vh';
   _colorMaps: hsStylerColorMaps;
   //Value propagated to ngModel
   colorMap: string;

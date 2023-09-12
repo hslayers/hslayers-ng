@@ -11,7 +11,8 @@
     </select>
   </div>
 
-  <hs-colormap-picker (change)="setColorMap()" [(ngModel)]="colorMap" [colorMaps]="colorMaps"></hs-colormap-picker>
+  <hs-colormap-picker (change)="setColorMap()" [height]="'30vh'" [(ngModel)]="colorMap"
+    [colorMaps]="colorMaps"></hs-colormap-picker>
   <div class="form-check">
     <label class="form-check-label" [for]="'hs-idw-widget-reversed' + hsConfig.id">
       {{ "COMMON.reversed" | translateHs }}
