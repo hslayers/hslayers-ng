@@ -4,24 +4,14 @@
       "LAYERMANAGER.layerEditor.interpolatedAttribute" | translateHs }}:</label>
 
     <select class="form-control form-select" style="width: 100%" [(ngModel)]="weightAttribute"
-      [ngModelOptions]="{standalone: true}" (change)="setWeight()">
+      name="hs-idw-widget-interpolated-attribute" (change)="setWeight()">
       <option [ngValue]="attr" *ngFor="let attr of attributes">
         {{attr}}
       </option>
     </select>
   </div>
 
-  <div class="form-inline pt-3">
-    <label class="control-label" style="width: 100%; justify-content: left">{{
-      "LAYERMANAGER.layerEditor.colorMap" | translateHs }}:</label>
-
-    <select class="form-control form-select" style="width: 100%" [(ngModel)]="colorMap"
-      [ngModelOptions]="{standalone: true}" (change)="setColorMap()">
-      <option [ngValue]="cm" *ngFor="let cm of colorMaps">
-        {{cm}}
-      </option>
-    </select>
-  </div>
+  <hs-colormap-picker (change)="setColorMap()" [(ngModel)]="colorMap" [colorMaps]="colorMaps"></hs-colormap-picker>
   <div class="form-check">
     <label class="form-check-label" [for]="'hs-idw-widget-reversed' + hsConfig.id">
       {{ "COMMON.reversed" | translateHs }}

@@ -9,6 +9,7 @@ import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
 import {HsAddColormapComponent} from './add-colormap.component';
 import {HsAddFilterButtonComponent} from './filters/add-filter-button.component';
 import {HsColorPickerComponent} from './symbolizers/color-picker/color-picker.component';
+import {HsColormapPickerModule} from '../../common/color-map-picker/colormap-picker.module';
 import {HsComparisonFilterComponent} from './filters/comparison-filter.component';
 import {HsDownloadModule} from '../../common/download/download.module';
 import {HsFillSymbolizerComponent} from './symbolizers/fill-symbolizer/fill-symbolizer.component';
@@ -67,6 +68,7 @@ import {HsUploadModule} from '../../common/upload/upload.module';
     HsUploadModule,
     HsDownloadModule,
     DragDropModule,
+    HsColormapPickerModule,
   ],
   exports: [
     HsStylerComponent,
