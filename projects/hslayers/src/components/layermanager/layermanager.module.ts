@@ -9,6 +9,7 @@ import {
 } from '@ng-bootstrap/ng-bootstrap';
 
 import {HsClusterWidgetComponent} from './widgets/cluster-widget.component';
+import {HsColormapPickerModule} from '../../common/color-map-picker/colormap-picker.module';
 import {HsCopyLayerDialogComponent} from './dialogs/copy-layer-dialog.component';
 import {HsExtentWidgetComponent} from './widgets/extent-widget/extent-widget.component';
 import {HsIdwWidgetComponent} from './widgets/idw-widget.component';
@@ -72,6 +73,7 @@ import {HsUiExtensionsModule} from '../../common/widgets/ui-extensions.module';
     NgbTooltipModule,
     DragDropModule,
     HsQueuesModule,
+    HsColormapPickerModule,
   ],
   exports: [
     HsLayerManagerComponent,

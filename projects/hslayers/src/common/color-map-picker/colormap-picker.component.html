@@ -1,0 +1,20 @@
+<div class="form-inline hs-colorMap-picker-container position-relative py-1">
+    <label class="control-label" style="width: 100%; justify-content: left">{{
+        "LAYERMANAGER.layerEditor.colorMap" | translateHs }}:</label>
+    <div class="form-control form-select hs-colorMap-picker-select d-flex justify-content-between"
+        (click)="menuVisible = !menuVisible" style="width: 100%" tabindex="0">
+        <ng-container *ngTemplateOutlet="colorMapRow;context:{cm: _colorMap}"></ng-container>
+    </div>
+    <section [hidden]="!menuVisible" class="hs-colorMap-picker-menu position-absolute">
+        <div class="hs-colorMap-picker-item d-flex justify-content-between py-1 cursor-pointer"
+            [class.active]="colorMap === cm.key" *ngFor="let cm of colorMaps | keyvalue" (click)="select(cm)">
+            <!-- <span class="hs-color-picker-item-label text-truncate">{{cm.key}}</span>
+            <span [innerHtml]="cm.value"></span> -->
+            <ng-container *ngTemplateOutlet="colorMapRow;context:{cm:cm}"></ng-container>
+        </div>
+    </section>
+</div>
+<ng-template #colorMapRow let-cm="cm">
+    <span class="hs-color-picker-item-label text-truncate">{{cm.key}}</span>
+    <span [innerHtml]="cm.value"></span>
+</ng-template>

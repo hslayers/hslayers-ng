@@ -32,7 +32,6 @@ import {
   getSld,
   getTitle,
 } from '../../common/layer-extensions';
-import {getLaymanFriendlyLayerName} from '../../common/layman/layman-utils';
 
 @Injectable({
   providedIn: 'root',
@@ -200,66 +199,17 @@ export class HsLegendService {
     );
   }
 
+  /**
+   * Generate SVG linear gradient for layers colormap
+   */
   generateInterpolatedLayerLegend(layer: Layer<any>) {
-    const source = layer.getSource();
-    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-    svg.setAttribute('width', '75%');
-    svg.setAttribute('height', '100%');
-    svg.setAttribute('style', 'max-width: 7em');
-
-    const defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
-    const linearGradient = document.createElementNS(
-      'http://www.w3.org/2000/svg',
-      'linearGradient',
-    );
-    const id = `${+new Date()}-idwGradient-${getLaymanFriendlyLayerName(
-      layer.get('name'),
-    )}`;
-
-    linearGradient.setAttribute('id', id);
-    linearGradient.setAttribute('gradientTransform', 'rotate(90)');
-
-    const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
-    rect.setAttribute('width', '50%');
-    rect.setAttribute('height', '100%');
-    rect.setAttribute('fill', `url('#${id}')`);
-
-    const arr = Array.from(Array(100).keys());
-    for (const i of arr.filter((e, i) => i % 5 === 5 - 1).reverse()) {
-      const color = source.getColor(i);
-      const stop = document.createElementNS(
-        'http://www.w3.org/2000/svg',
-        'stop',
-      );
-      stop.setAttribute('offset', `${100 - i}%`);
-      const rgb = `rgb(${color[0]},${color[1]},${color[2]})`;
-      stop.setAttribute('stop-color', rgb);
-
-      linearGradient.appendChild(stop);
-    }
-    defs.appendChild(linearGradient);
-
-    const max = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-    max.setAttribute('x', '50%');
-    max.setAttribute('y', '10%');
-    max.innerHTML = 'High';
-
-    const min = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-    min.setAttribute('x', '50%');
-    min.setAttribute('y', '95%');
-    min.innerHTML = 'Low';
-
-    svg.appendChild(defs);
-    svg.appendChild(rect);
-    svg.appendChild(max);
-    svg.appendChild(min);
     return {
       autoLegend: true,
       title: getTitle(layer),
       lyr: layer,
       type: 'vector',
       visible: layer.getVisible(),
-      svg: this.sanitizer.bypassSecurityTrustHtml(svg.outerHTML),
+      svg: this.hsStylerService.generateSVGGradientForColorMap(layer),
     };
   }
 

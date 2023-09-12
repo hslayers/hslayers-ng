@@ -1,6 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 
-import colorScales from 'colormap/colorScale';
 import {Vector as VectorLayer} from 'ol/layer';
 import {Vector as VectorSource} from 'ol/source';
 
@@ -17,7 +16,6 @@ export class HsAddColormapComponent implements OnInit {
   @Input() layer: VectorLayer<VectorSource>;
   weightAttribute: string;
   attributes: string[];
-  colorMaps = Object.keys(colorScales);
   colorMap: string;
   min: number | string = '';
   max: number | string = '';
