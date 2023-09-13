@@ -435,11 +435,13 @@ export class HsSaveMapService {
       json.className = 'Vector';
       const definition = getDefinition(layer);
       if (definition && definition.url) {
+        json.workspace = getWorkspace(layer);
         json.protocol = {
-          url: `${definition.url}/geoserver/${getWorkspace(layer)}/wfs`,
+          url: definition.url.includes(`/geoserver/${json.workspace}/`)
+            ? definition.url
+            : `${definition.url}/geoserver/${json.workspace}/wfs`,
           format: definition.format,
         };
-        json.workspace = getWorkspace(layer);
         delete json.features;
       } else {
         if (getWfsUrl(layer)) {
