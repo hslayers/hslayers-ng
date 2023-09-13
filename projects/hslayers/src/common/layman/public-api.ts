@@ -10,3 +10,4 @@ export * from './types/delete-layer-response.type';
 export * from './types/layman-user.type';
 export * from './dialog-set-permissions/set-permissions.component';
 export * from './layman-utils';
+export * from './transliteration-map';
