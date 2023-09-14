@@ -969,7 +969,9 @@
     "styleName": "Názov štýlu",
     "text": "Text",
     "untitledRule": "Pravidlo bez názvu",
-    "reallyResetStyleToDefault": "Naozaj chcete aplikovať predvolený štýl?"
+    "reallyResetStyleToDefault": "Naozaj chcete aplikovať predvolený štýl?",
+    "sldParsingError": "Chyba pri spracovaní štýlu",
+    "sldParsingErrorMessage": "Pri spracovaníposkytnutého štýlu SLD došlo k chybe. Bol použitý predvolený štýl."
   },
   "TOOLBAR": {
     "measureLinesAndPolygon": "Merať línie a polygóny"

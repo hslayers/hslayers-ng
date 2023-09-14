@@ -1000,7 +1000,9 @@
     "fill": "Výplň",
     "styleName": "Název stylu",
     "unsavedChanges": "Máte neuložené změny stylu. Aby se změny zachovaly, ujistěte se před odchodem, že jste je uložili",
-    "reallyResetStyleToDefault": "Opravdu chcete použít výchozí styl?"
+    "reallyResetStyleToDefault": "Opravdu chcete použít výchozí styl?",
+    "sldParsingError": "Chyba při spracování style",
+    "sldParsingErrorMessage": "Při zpracování poskytnutého stylu SLD došlo k chybě. Byl použit výchozí styl."
   },
   "TOOLBAR": {
     "measureLinesAndPolygon": "Měřit linie a polygony"
