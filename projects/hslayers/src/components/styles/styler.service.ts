@@ -37,6 +37,7 @@ import {HsLogService} from '../../common/log/log.service';
 import {HsMapService} from '../map/map.service';
 import {HsQueryVectorService} from '../query/query-vector.service';
 import {HsSaveMapService} from '../save-map/save-map.service';
+import {HsToastService} from '../layout/toast/toast.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {
   awaitLayerSync,
@@ -77,6 +78,10 @@ export class HsStylerService {
   syncing = false;
   sldVersion: SldVersion = '1.0.0';
 
+  //Cumbersome as we need to toggle it but needed to track parsing errors
+  //in order to be able to sync layer style and sld prop
+  sldParsingError = false;
+
   constructor(
     public hsQueryVectorService: HsQueryVectorService,
     public hsUtilsService: HsUtilsService,
@@ -91,6 +96,7 @@ export class HsStylerService {
     private hsLayerSynchronizerService: HsLayerSynchronizerService,
     private hsDialogContainerService: HsDialogContainerService,
     private hsLanguageService: HsLanguageService,
+    private hsToastService: HsToastService,
   ) {
     this.pin_white_blue = new Style({
       image: new Icon({
@@ -253,15 +259,20 @@ export class HsStylerService {
     }
     let sld = getSld(layer);
     const qml = getQml(layer);
-    let style = layer.getStyle();
+    const style = layer.getStyle();
     if ((!style || style == createDefaultStyle) && !sld && !qml) {
       sld = defaultStyle;
       setSld(layer, defaultStyle);
     }
     if ((sld || qml) && (!style || style == createDefaultStyle)) {
-      style = (await this.parseStyle(sld ?? qml)).style;
-      if (style) {
-        layer.setStyle(style);
+      const parsedStyle = await this.parseStyle(sld ?? qml);
+      if (parsedStyle.sld !== sld) {
+        sld = parsedStyle.sld;
+        setSld(layer, sld);
+        this.sldParsingError = false;
+      }
+      if (parsedStyle.style) {
+        layer.setStyle(parsedStyle.style);
       }
       if (getCluster(layer)) {
         if (!this.hsUtilsService.instOf(layer.getSource(), Cluster)) {
@@ -313,7 +324,9 @@ export class HsStylerService {
     }
     const styleType = this.guessStyleFormat(style);
     if (styleType == 'sld') {
-      return {sld: style, style: await this.sldToOlStyle(style)};
+      const olStyle = await this.sldToOlStyle(style);
+      const sld = this.sldParsingError ? defaultStyle : style;
+      return {sld: sld, style: olStyle};
     } else if (styleType == 'qml') {
       return {qml: style, style: await this.qmlToOlStyle(style)};
     } else if (
@@ -383,7 +396,7 @@ export class HsStylerService {
   private fixSymbolizerBugs(styleObject: GeoStylerStyle) {
     if (styleObject.rules) {
       for (const rule of styleObject.rules) {
-        if (rule.symbolizers) {
+        if (rule?.symbolizers) {
           for (const symb of rule.symbolizers) {
             if (symb.kind == 'Mark' && symb.wellKnownName !== undefined) {
               symb.wellKnownName =
@@ -472,8 +485,24 @@ export class HsStylerService {
     const options: ConstructorParams = {};
     options.sldVersion = this.guessSldVersion(sld);
     const sldParser = new SLDParser(options);
-    const {output: sldObject} = await sldParser.readStyle(sld);
-    return sldObject ?? {name: 'untitled style', rules: []};
+    const sldObject = await sldParser.readStyle(sld);
+    if (!sldObject || sldObject.errors) {
+      this.sldParsingError = true;
+      const defaultSldObject = await sldParser.readStyle(defaultStyle);
+
+      /**
+       * NOTE: Not ideal as there is no information about which layer is affected
+       */
+      this.hsToastService.createToastPopupMessage(
+        'STYLER.sldParsingError',
+        'STYLER.sldParsingErrorMessage',
+        {
+          serviceCalledFrom: 'HsStylerService',
+        },
+      );
+      return {...defaultSldObject.output, name: 'HSLayers default style'};
+    }
+    return sldObject.output;
   }
 
   /**

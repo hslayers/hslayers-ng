@@ -1000,7 +1000,9 @@
     "text": "Text",
     "line": "Line",
     "fill": "Fill",
-    "reallyResetStyleToDefault": "Do you really want to apply default style?"
+    "reallyResetStyleToDefault": "Do you really want to apply default style?",
+    "sldParsingError": "Style parsing error",
+    "sldParsingErrorMessage": "There was an error parsing provided SLD style. Default style used."
   },
   "TOOLBAR": {
     "measureLinesAndPolygon": "Measure lines and polygon"
