@@ -74,6 +74,7 @@ export class HsLayerManagerTimeEditorComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.end.next();
     this.end.complete();
+    this.availableTimes = [];
   }
 
   /**
