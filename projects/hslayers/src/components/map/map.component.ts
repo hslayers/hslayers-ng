@@ -79,6 +79,7 @@ export class HsMapComponent implements AfterViewInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.unregisterMapSyncCenterHandlerSubscription.unsubscribe();
+    this.HsMapService.getMap().getInteractions().clear();
   }
 
   /**
