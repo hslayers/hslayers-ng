@@ -70,6 +70,7 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
    */
   async listLayerFromCapabilities(
     wrapper: CapabilitiesResponseWrapper,
+    options?: LayerOptions,
   ): Promise<Layer<Source>[]> {
     if (!wrapper.response && !wrapper.error) {
       return;
@@ -85,12 +86,13 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
           this.data.layers,
           'arcgis',
         );
-        return this.getLayers();
+        return this.getLayers(undefined, undefined, options);
       }
     } catch (e) {
       this.hsAddDataCommonService.throwParsingError(e);
     }
   }
+
   /**
    * Parse information received in Arcgis getCapabilities response
    * @param response - getCapabilities response
@@ -194,8 +196,13 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
 
   /**
    * Loop through the list of layers and call getLayer
+   * layerOptions - used to propagate props when loading a layers from composition
    */
-  async getLayers(): Promise<Layer<Source>[]> {
+  async getLayers(
+    checkedOnly?: boolean,
+    shallow?: boolean,
+    layerOptions?: LayerOptions,
+  ): Promise<Layer<Source>[]> {
     if (
       this.data.layers === undefined &&
       this.data.services === undefined &&
@@ -213,6 +220,7 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
         tileSize: this.data.tile_size,
         crs: this.data.srs,
         base: this.data.base,
+        ...layerOptions,
       }),
     ];
     this.hsAddDataUrlService.zoomToLayers(this.data);
@@ -265,6 +273,7 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
         {},
       ),
       crossOrigin: 'anonymous',
+      ...options,
     };
     if (this.hasCachedTiles) {
       sourceParams.tileGrid = this.tileGrid;
@@ -290,7 +299,6 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
         : await this.calcAllLayersExtent(layers, options);
 
     const layerParams = {
-      className: options?.greyscale ? 'ol-layer hs-greyscale' : 'ol-layer',
       properties: {
         title: options.title,
         name: options.title,
