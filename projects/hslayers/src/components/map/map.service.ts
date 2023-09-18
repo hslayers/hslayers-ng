@@ -99,7 +99,10 @@ export class HsMapService {
    * Copy of the default_view for map resetting purposes
    */
   originalView: {center: number[]; zoom: number; rotation: number};
-
+  /**
+   * Keeps track of zoomWithModifier listener so its not registered multiple times when using router
+   */
+  zoomWithModifierListener;
   constructor(
     public hsConfig: HsConfig,
     public hsLayoutService: HsLayoutService,
@@ -440,48 +443,55 @@ export class HsMapService {
     // but the CTRL is not pressed
     if (
       this.hsConfig.zoomWithModifierKeyOnly &&
-      this.hsConfig.mapInteractionsEnabled != false
+      this.hsConfig.mapInteractionsEnabled != false &&
+      !this.zoomWithModifierListener
     ) {
-      map.on('wheel' as any, (e: MapBrowserEvent<any>) => {
-        const renderer = this.renderer;
-        //ctrlKey works for Win and Linux, metaKey for Mac
-        if (
-          !(e.originalEvent.ctrlKey || e.originalEvent.metaKey) &&
-          !this.hsLayoutService.contentWrapper.querySelector(
-            '.hs-zoom-info-dialog',
-          )
-        ) {
-          //TODO: change the name of platform modifier key dynamically based on OS
-          const platformModifierKey = 'CTRL/META';
-          //Following styles would be better written as ng-styles...
-          const html = renderer.createElement('div');
-          renderer.setAttribute(
-            html,
-            'class',
-            'alert alert-info mt-1 hs-zoom-info-dialog',
-          );
-          renderer.setAttribute(
-            html,
-            'style',
-            `position: absolute; right:15px; top:0.6em;z-index:101`,
-          );
-          const text = renderer.createText(
-            `${this.hsLanguageService.getTranslation('MAP.zoomKeyModifier', {
-              platformModifierKey: platformModifierKey,
-            })}`,
-          );
-          renderer.appendChild(html, text);
-          renderer.appendChild(
-            this.hsLayoutService.contentWrapper.querySelector('.hs-map-space'),
-            html,
-          );
-          setTimeout(() => {
-            this.hsLayoutService.contentWrapper
-              .querySelector('.hs-zoom-info-dialog')
-              .remove();
-          }, 4000);
-        }
-      });
+      this.zoomWithModifierListener = map.on(
+        'wheel' as any,
+        (e: MapBrowserEvent<any>) => {
+          const renderer = this.renderer;
+          //ctrlKey works for Win and Linux, metaKey for Mac
+          console.log('maponwheel');
+          if (
+            !(e.originalEvent.ctrlKey || e.originalEvent.metaKey) &&
+            !this.hsLayoutService.contentWrapper.querySelector(
+              '.hs-zoom-info-dialog',
+            )
+          ) {
+            //TODO: change the name of platform modifier key dynamically based on OS
+            const platformModifierKey = 'CTRL/META';
+            //Following styles would be better written as ng-styles...
+            const html = renderer.createElement('div');
+            renderer.setAttribute(
+              html,
+              'class',
+              'alert alert-info mt-1 hs-zoom-info-dialog',
+            );
+            renderer.setAttribute(
+              html,
+              'style',
+              `position: absolute; right:15px; top:0.6em;z-index:101`,
+            );
+            const text = renderer.createText(
+              `${this.hsLanguageService.getTranslation('MAP.zoomKeyModifier', {
+                platformModifierKey: platformModifierKey,
+              })}`,
+            );
+            renderer.appendChild(html, text);
+            renderer.appendChild(
+              this.hsLayoutService.contentWrapper.querySelector(
+                '.hs-map-space',
+              ),
+              html,
+            );
+            setTimeout(() => {
+              this.hsLayoutService.contentWrapper
+                .querySelector('.hs-zoom-info-dialog')
+                .remove();
+            }, 4000);
+          }
+        },
+      );
     }
 
     this.repopulateLayers(this.visibleLayersInUrl);
@@ -714,11 +724,12 @@ export class HsMapService {
 
   /**
    * Checks if layer already exists in map and resolves based on duplicateHandling strategy
+   * @returns True if layer should be processed (added to map etc.)
    */
   resolveDuplicateLayer(
     lyr: Layer<Source>,
     duplicateHandling?: DuplicateHandling,
-  ): void {
+  ): boolean {
     if (this.layerAlreadyExists(lyr)) {
       if (this.hsUtilsService.instOf(lyr.getSource(), OSM)) {
         duplicateHandling = DuplicateHandling.RemoveOriginal;
@@ -729,13 +740,15 @@ export class HsMapService {
             return;
           } */
           this.removeDuplicate(lyr);
-          break;
+          return true;
         case DuplicateHandling.IgnoreNew:
-          return;
+          return false;
         case DuplicateHandling.AddDuplicate:
         default:
+          return true;
       }
     }
+    return true;
   }
 
   /**
@@ -753,19 +766,21 @@ export class HsMapService {
     duplicateHandling?: DuplicateHandling,
     visibleOverride?: string[],
   ): void {
-    this.resolveDuplicateLayer(lyr, duplicateHandling);
-    if (visibleOverride) {
-      lyr.setVisible(this.layerTitleInArray(lyr, visibleOverride));
+    const addLayer = this.resolveDuplicateLayer(lyr, duplicateHandling);
+    if (addLayer) {
+      if (visibleOverride) {
+        lyr.setVisible(this.layerTitleInArray(lyr, visibleOverride));
+      }
+      const source = lyr.getSource();
+      if (this.hsUtilsService.instOf(source, VectorSource)) {
+        this.getVectorType(lyr);
+      }
+      this.proxifyLayer(lyr);
+      lyr.on('change:source', (e) => {
+        this.proxifyLayer(e.target as Layer<Source>);
+      });
+      this.map.addLayer(lyr);
     }
-    const source = lyr.getSource();
-    if (this.hsUtilsService.instOf(source, VectorSource)) {
-      this.getVectorType(lyr);
-    }
-    this.proxifyLayer(lyr);
-    lyr.on('change:source', (e) => {
-      this.proxifyLayer(e.target as Layer<Source>);
-    });
-    this.map.addLayer(lyr);
   }
 
   /**
@@ -776,26 +791,30 @@ export class HsMapService {
    * should be visible. Useful when the layer visibility is stored in a URL parameter
    */
   repopulateLayers(visibilityOverrides: string[]): void {
-    if (this.hsConfig.box_layers) {
-      let boxLayers: Layer[] = [];
-      this.hsConfig.box_layers.forEach((box) => {
-        boxLayers = boxLayers.concat(
-          (box.getLayers().getArray() as Layer<Source>[]).filter(
-            (layer) => layer,
-          ),
-        );
-      });
-      this.addLayersFromAppConfig(boxLayers, visibilityOverrides);
-    }
-
-    if (this.hsConfig.default_layers) {
-      const defaultLayers: Layer[] = this.hsConfig.default_layers.filter(
-        (lyr) => lyr,
-      );
-      if (defaultLayers.length > 0) {
-        this.map.removeLayer(this.placeholderOsm);
+    try {
+      if (this.hsConfig.box_layers) {
+        let boxLayers: Layer[] = [];
+        this.hsConfig.box_layers.forEach((box) => {
+          boxLayers = boxLayers.concat(
+            (box.getLayers().getArray() as Layer<Source>[]).filter(
+              (layer) => layer,
+            ),
+          );
+        });
+        this.addLayersFromAppConfig(boxLayers, visibilityOverrides);
       }
-      this.addLayersFromAppConfig(defaultLayers, visibilityOverrides);
+
+      if (this.hsConfig.default_layers) {
+        const defaultLayers: Layer[] = this.hsConfig.default_layers.filter(
+          (lyr) => lyr,
+        );
+        if (defaultLayers.length > 0) {
+          this.map.removeLayer(this.placeholderOsm);
+        }
+        this.addLayersFromAppConfig(defaultLayers, visibilityOverrides);
+      }
+    } catch (error) {
+      console.error(error);
     }
   }
 
