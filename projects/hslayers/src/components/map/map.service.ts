@@ -814,7 +814,8 @@ export class HsMapService {
         this.addLayersFromAppConfig(defaultLayers, visibilityOverrides);
       }
     } catch (error) {
-      console.error(error);
+      //TOAST?
+      console.error('Error while trying to repopulate layers', error);
     }
   }
 

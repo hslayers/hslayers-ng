@@ -34,7 +34,10 @@ export class HsSidebarService {
   sidebarLoad: Subject<void> = new Subject();
 
   destroy(): void {
-    console.warn('HsSidebarService destroy, fix me');
+    /**
+     * Clean up/reset buttons entries
+     */
+    this.buttonsSubject.next([]);
   }
 
   constructor(
