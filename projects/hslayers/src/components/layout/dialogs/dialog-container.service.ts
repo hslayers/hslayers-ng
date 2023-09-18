@@ -16,7 +16,8 @@ export class HsDialogContainerService {
   constructor() {}
 
   cleanup() {
-    console.warn('HsDialogContainerService clean up, fix me');
+    this.dialogObserver.complete();
+    this.dialogObserver = new ReplaySubject();
   }
 
   create(component: Type<any>, data: any): HsDialogItem {
