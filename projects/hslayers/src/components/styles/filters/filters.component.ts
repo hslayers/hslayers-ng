@@ -3,7 +3,7 @@ import {Component, Input} from '@angular/core';
 import {HsFiltersService} from './filters.service';
 import {HsStylerPartBaseComponent} from '../style-part-base.component';
 
-export type filterType = 'AND' | 'OR' | 'NOT' | 'COMPARE';
+export type FilterType = 'AND' | 'OR' | 'NOT' | 'COMPARE';
 
 @Component({
   selector: 'hs-filters',
@@ -16,7 +16,7 @@ export class HsFiltersComponent extends HsStylerPartBaseComponent {
     super();
   }
 
-  add(type: filterType, append: boolean): void {
+  add(type: FilterType, append: boolean): void {
     if (this.rule.filter == undefined) {
       this.rule.filter = [];
     }

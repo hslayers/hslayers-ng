@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, OnChanges, Output} from '@angular/core';
 import {Rule} from 'geostyler-style';
 
-import {filterType} from './filters.component';
+import {FilterType} from './filters.component';
 
 @Component({
   selector: 'hs-add-filter-button',
@@ -18,14 +18,14 @@ export class HsAddFilterButtonComponent implements OnChanges {
     this.setActiveTab(this.activeTab);
   }
 
-  activeTab: filterType;
-  readonly filterOptions: filterType[] = ['AND', 'OR', 'NOT', 'COMPARE'];
-  emitClick(type: filterType): void {
+  activeTab: FilterType;
+  readonly filterOptions: FilterType[] = ['AND', 'OR', 'NOT', 'COMPARE'];
+  emitClick(type: FilterType): void {
     this.clicks.emit({type});
     this.setActiveTab(type);
   }
 
-  setActiveTab(type: filterType) {
+  setActiveTab(type: FilterType) {
     this.activeTab = this.rule?.filter ? type : undefined;
   }
 }
