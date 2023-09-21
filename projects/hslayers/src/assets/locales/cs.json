@@ -1001,7 +1001,7 @@
     "styleName": "Název stylu",
     "unsavedChanges": "Máte neuložené změny stylu. Aby se změny zachovaly, ujistěte se před odchodem, že jste je uložili",
     "reallyResetStyleToDefault": "Opravdu chcete použít výchozí styl?",
-    "sldParsingError": "Chyba při spracování style",
+    "sldParsingError": "Chyba při zpracování stylu",
     "sldParsingErrorMessage": "Při zpracování poskytnutého stylu SLD došlo k chybě. Byl použit výchozí styl."
   },
   "TOOLBAR": {

@@ -825,10 +825,9 @@ export class HsStylerService {
       'linearGradient',
     );
 
-    const id = `${+new Date()}-idwGradient-${
-      forLayer
-        ? getLaymanFriendlyLayerName(input.get('name'))
-        : (Math.random() * 1000000).toFixed(0).toString()
+    const differentiator = Math.floor(Math.random() * 1000000000);
+    const id = `idwGradient-${differentiator}${
+      forLayer ? '-' + getLaymanFriendlyLayerName(input.get('name')) : ''
     }`;
 
     linearGradient.setAttribute('id', id);
@@ -846,7 +845,7 @@ export class HsStylerService {
     if (input instanceof Layer) {
       const source = input.getSource();
       const arr = Array.from(Array(100).keys());
-      for (const i of arr.filter((e, i) => i % 5 === 5 - 1).reverse()) {
+      for (const i of arr.filter((e, idx) => idx % 5 === 4).reverse()) {
         const color = source.getColor(i);
         this.appendColorToGradient(color, linearGradient, 100, i);
       }

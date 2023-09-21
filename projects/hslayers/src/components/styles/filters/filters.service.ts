@@ -1,11 +1,11 @@
+import {FilterType} from './filters.component';
 import {Injectable} from '@angular/core';
-import {filterType} from './filters.component';
 
 @Injectable({
   providedIn: 'root',
 })
 export class HsFiltersService {
-  add(type: filterType, append: boolean, collection: any[]): void {
+  add(type: FilterType, append: boolean, collection: any[]): void {
     let filter;
     switch (type) {
       case 'AND':
