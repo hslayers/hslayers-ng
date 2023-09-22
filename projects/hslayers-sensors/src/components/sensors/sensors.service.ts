@@ -1,5 +1,6 @@
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
+import {LangChangeEvent} from '@ngx-translate/core';
 import {Subject} from 'rxjs';
 
 import dayjs from 'dayjs';
@@ -12,6 +13,7 @@ import {
   HsEventBusService,
   HsLanguageService,
   HsLayoutService,
+  HsLogService,
   HsMapService,
   HsSidebarService,
   HsUtilsService,
@@ -84,6 +86,7 @@ export class HsSensorsService {
     private hsSensorsUnitDialogService: HsSensorsUnitDialogService,
     private hsSidebarService: HsSidebarService,
     private hsLanguageService: HsLanguageService,
+    private hsLog: HsLogService,
   ) {
     this.hsSidebarService.addButton({
       panel: 'sensors',
@@ -128,6 +131,31 @@ export class HsSensorsService {
         )();
       });
     });
+    const translator = this.hsLanguageService.getTranslator();
+    translator.onLangChange.subscribe((event: LangChangeEvent) => {
+      this.units.forEach((unit) => {
+        this.setSensorTranslations(unit);
+      });
+    });
+  }
+
+  /**
+   * Update senor name and phenomenon translations
+   * @param unit - Sensor unit
+   */
+  private setSensorTranslations(unit) {
+    for (const sensor of unit.sensors) {
+      sensor.sensor_name_translated =
+        this.hsLanguageService.getTranslationIgnoreNonExisting(
+          'SENSORS.SENSORNAMES',
+          sensor.sensor_name,
+        );
+      sensor.phenomenon_name_translated =
+        this.hsLanguageService.getTranslationIgnoreNonExisting(
+          'SENSORS.PHENOMENON',
+          sensor.phenomenon_name,
+        );
+    }
   }
 
   /**
@@ -303,6 +331,7 @@ export class HsSensorsService {
     ];
     this.layer = new VectorLayer<VectorSource<Geometry>>({
       properties: {
+        path: 'Sensors',
         title: 'Sensor units',
         popUp: {
           attributes: ['*'],
@@ -373,18 +402,7 @@ export class HsSensorsService {
           unit.sensors.sort((a, b) => {
             return b.sensor_id - a.sensor_id;
           });
-          for (const sensor of unit.sensors) {
-            sensor.sensor_name_translated =
-              this.hsLanguageService.getTranslationIgnoreNonExisting(
-                'SENSORS.SENSORNAMES',
-                sensor.sensor_name,
-              );
-            sensor.phenomenon_name_translated =
-              this.hsLanguageService.getTranslationIgnoreNonExisting(
-                'SENSORS.PHENOMENON',
-                sensor.phenomenon_name,
-              );
-          }
+          this.setSensorTranslations(unit);
           unit.sensorTypes = this.hsUtilsService.removeDuplicates(
             unit.sensorTypes,
             'name',
@@ -439,7 +457,6 @@ export class HsSensorsService {
           user: this.endpoint.user,
         };
     this.http
-
       .get(this.hsUtilsService.proxify(url), {
         params,
       })
@@ -472,7 +489,7 @@ export class HsSensorsService {
                   reading.timestamp,
                 );
               } else {
-                console.log(`No feature exists for unit ${unit.unit_id}`);
+                this.hsLog.log(`No feature exists for unit ${unit.unit_id}`);
               }
               sensor.lastObservationTimestamp = reading.timestamp;
             }

@@ -1,5 +1,10 @@
 import {Component, OnInit, ViewRef} from '@angular/core';
-import {HsLayoutService, HsMapService, HsPanelBaseComponent} from 'hslayers-ng';
+import {
+  HsConfig,
+  HsLayoutService,
+  HsMapService,
+  HsPanelBaseComponent,
+} from 'hslayers-ng';
 
 import {HsSensorUnit} from './sensor-unit.class';
 import {HsSensorsService} from './sensors.service';
@@ -17,17 +22,22 @@ export class HsSensorsComponent extends HsPanelBaseComponent implements OnInit {
 
   constructor(
     private hsMapService: HsMapService,
+    private hsConfig: HsConfig,
     private hsSensorsService: HsSensorsService,
     public hsLayoutService: HsLayoutService,
     public hsSensorsUnitDialogService: HsSensorsUnitDialogService,
   ) {
     super(hsLayoutService);
   }
+
   ngOnInit(): void {
     if (this.data.viewMode) {
       this.setViewMode(this.data.viewMode);
     }
-    this.hsSensorsService.getUnits();
+    setTimeout(
+      () => this.hsSensorsService.getUnits(),
+      this.hsConfig.senslog ? 0 : 300,
+    );
   }
 
   toggleComparisonAllowed(): void {
