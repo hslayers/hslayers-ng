@@ -55,7 +55,7 @@ export class HsSensorsUnitDialogService {
     private http: HttpClient,
     private hsUtilsService: HsUtilsService,
     private hsLogService: HsLogService,
-    private hsLanguageService: HsLanguageService
+    private hsLanguageService: HsLanguageService,
   ) {
     this.useTimeZone.subscribe((value) => {
       this.timeFormat = value ? 'HH:mm:ssZ' : 'HH:mm:ss';
@@ -84,7 +84,7 @@ export class HsSensorsUnitDialogService {
       this.sensorsSelected.splice(this.sensorsSelected.indexOf(sensor), 1);
       this.sensorIdsSelected.splice(
         this.sensorIdsSelected.indexOf(sensor.sensor_id),
-        1
+        1,
       );
     }
   }
@@ -149,7 +149,7 @@ export class HsSensorsUnitDialogService {
     result: {
       from_time;
       to_time;
-    }
+    },
   ) {
     const dayjsTime = dayjs(interval[part + 'Time']);
     if (interval[part + 'Time'] != undefined) {
@@ -179,44 +179,44 @@ export class HsSensorsUnitDialogService {
   }
 
   /**
-   * Filter out osbervations belonging to deselected sensor unit
+   * Filter out observations belonging to deselected sensor unit
    */
   filterObservations(unit): void {
     this.observations = this.observations.filter(
-      (o) => o.unit_id !== unit.unit_id
+      (o) => o.unit_id !== unit.unit_id,
     );
   }
 
   /**
    * @param unit - Object containing
    * {description, is_mobile, sensors, unit_id, unit_type}
-   * @param interval - Object {amount, unit}. Used to substract time
+   * @param interval - Object {amount, unit}. Used to subtract time
    * from current time, like 6 months before now
    * Gets list of observations in a given time frame for all
    * the sensors on a sensor unit (meteostation).
    * @returns Promise which resolves when observation history data is received
    */
   getObservationHistory(unit, interval): Promise<boolean> {
-    //TODO rewrite by spllitting getting the observable and subscribing to results in different functions
+    //TODO rewrite by splitting getting the observable and subscribing to results in different functions
     return new Promise((resolve, reject) => {
       const url = this.hsUtilsService.proxify(
-        `${this.endpoint.url}/${this.endpoint.liteApiPath}/rest/observation`
+        `${this.endpoint.url}/${this.endpoint.liteApiPath}/rest/observation`,
       );
       const time = this.getTimeForInterval(interval);
       const from_time = `${time.from_time.format(
-        'YYYY-MM-DD'
+        'YYYY-MM-DD',
       )} ${time.from_time.format(this.timeFormat)}`;
       const to_time = `${time.to_time.format(
-        'YYYY-MM-DD'
+        'YYYY-MM-DD',
       )} ${time.to_time.format(this.timeFormat)}`;
       interval.loading = true;
       this.http
         .get(
           `${url}?user_id=${encodeURIComponent(
-            this.endpoint.user_id
+            this.endpoint.user_id,
           )}&unit_id=${unit.unit_id}&from_time=${encodeURIComponent(
-            from_time
-          )}&to_time=${encodeURIComponent(to_time)}`
+            from_time,
+          )}&to_time=${encodeURIComponent(to_time)}`,
         )
         .subscribe({
           next: (response: Array<any>) => {
@@ -238,7 +238,7 @@ export class HsSensorsUnitDialogService {
 
   private getSensorDescriptor(unit) {
     let sensorDesc = unit.sensors.filter(
-      (s) => this.sensorIdsSelected.indexOf(s.sensor_id) > -1
+      (s) => this.sensorIdsSelected.indexOf(s.sensor_id) > -1,
     );
     if (sensorDesc.length > 0 && !this.comparisonAllowed) {
       sensorDesc = sensorDesc[0];
@@ -255,13 +255,13 @@ export class HsSensorsUnitDialogService {
             const time = dayjs(val.time_stamp);
             s.sensor_name = `${this.translate(
               this.sensorById[s.sensor_id].sensor_name_translated,
-              'SENSORNAMES'
+              'SENSORNAMES',
             )}_${val.unit_id}`;
             s.time = time.format('DD.MM.YYYY HH:mm');
             s.unit_id = val.unit_id;
             s.time_stamp = time.toDate();
             return s;
-          })
+          }),
       );
     }, []);
   }
@@ -299,7 +299,7 @@ export class HsSensorsUnitDialogService {
       ) {
         title = `${this.translate(
           sensorDesc[0].phenomenon_name,
-          'PHENOMENON'
+          'PHENOMENON',
         )} ${sensorDesc[0].uom}`;
       } else {
         title = `${this.translate('multipleUnits')} [${[
@@ -309,8 +309,9 @@ export class HsSensorsUnitDialogService {
     } else if (sensorDesc.sensor_id) {
       title = multi
         ? sensorDesc.uom
-        : `${this.translate(sensorDesc.phenomenon_name, 'PHENOMENON')} ${sensorDesc.uom
-        }`;
+        : `${this.translate(sensorDesc.phenomenon_name, 'PHENOMENON')} ${
+            sensorDesc.uom
+          }`;
     }
     const layer = {
       'encoding': {
@@ -382,7 +383,7 @@ export class HsSensorsUnitDialogService {
    * chart library. Observations for a specific unit from Senslog come
    * in a hierarchy, where 1st level contains object with timestamp and
    * for each timestamp there exist multiple sensor observations for
-   * varying count of sensors. This nested list is flatened to simple
+   * varying count of sensors. This nested list is flattened to simple
    * array of objects with {sensor_id, timestamp, value, sensor_name}
    */
   createChart(unit) {
@@ -392,7 +393,7 @@ export class HsSensorsUnitDialogService {
     let chartData;
     //Layered multi unit sensor view
     if (Array.isArray(unit)) {
-      //Array holdiding every chart layer object
+      //Array holding every chart layer object
       const layer = [];
       observations = this.getObservations();
 
@@ -400,14 +401,14 @@ export class HsSensorsUnitDialogService {
         const sensorDesc = this.getSensorDescriptor(u);
         if (Array.isArray(sensorDesc)) {
           sensorDesc.forEach((sd) =>
-            layer.push(this.createChartLayer(sd, true))
+            layer.push(this.createChartLayer(sd, true)),
           );
         } else {
           layer.push(this.createChartLayer(sensorDesc, true));
         }
         this.aggregations[u.description] = this.calculateAggregates(
           u,
-          observations
+          observations,
         );
       });
 
@@ -423,7 +424,7 @@ export class HsSensorsUnitDialogService {
 
       this.aggregations[unit.description] = this.calculateAggregates(
         unit,
-        observations
+        observations,
       );
       observations.sort((a, b) => a.time_stamp - b.time_stamp);
       //Combine common and layer dependent chart definition
@@ -436,7 +437,7 @@ export class HsSensorsUnitDialogService {
     try {
       vegaEmbed(
         this.dialogElement.nativeElement.querySelector('.hs-chartplace'),
-        chartData
+        chartData,
       );
     } catch (ex) {
       this.hsLogService.warn('Could not create vega chart:', ex);
@@ -474,12 +475,12 @@ export class HsSensorsUnitDialogService {
         tmp.max = Math.max(
           ...filteredObs.map((o) => {
             return o.value;
-          })
+          }),
         );
         tmp.min = Math.min(
           ...filteredObs.map((o) => {
             return o.value;
-          })
+          }),
         );
         tmp.avg =
           filteredObs.reduce((p, c) => p + c.value, 0) / filteredObs.length;
@@ -495,7 +496,7 @@ export class HsSensorsUnitDialogService {
   translate(text: string, group?: string): string {
     return this.hsLanguageService.getTranslationIgnoreNonExisting(
       'SENSORS' + (group != undefined ? '.' + group : ''),
-      text
+      text,
     );
   }
 }
