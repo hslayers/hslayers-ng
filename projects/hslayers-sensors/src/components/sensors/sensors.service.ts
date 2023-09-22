@@ -103,6 +103,7 @@ export class HsSensorsService {
       this.hsConfig.configChanges.subscribe(() => {
         if (this.hsConfig.senslog != this.endpoint) {
           this.setEndpoint();
+          this.getUnits();
         }
       });
       this.setEndpoint();
@@ -166,7 +167,7 @@ export class HsSensorsService {
       this.hsSensorsUnitDialogService.unit.filter(
         (u) => u.unit_id !== unit.unit_id,
       );
-    unit.feature.set('selected', undefined);
+    unit.feature?.set('selected', undefined);
     unit.sensors
       .filter((s) => s.checked)
       .forEach((s) => {
@@ -179,7 +180,7 @@ export class HsSensorsService {
   }
 
   /**
-   * Set endpoint for sensors service to receive data from senslog
+   * Set endpoint for sensors service to receive data from Senslog
    */
   private setEndpoint() {
     if (this.hsConfig.senslog) {
@@ -248,7 +249,7 @@ export class HsSensorsService {
       this.hsSensorsUnitDialogService.resetAggregations();
       //Reset features and sensors belonging to previously selected unit
       this.hsSensorsUnitDialogService.unit.forEach((u) => {
-        u.feature.set('selected', undefined);
+        u.feature?.set('selected', undefined);
         u.expanded = false;
         u.sensors.forEach((s) => (s.checked = false));
       });
@@ -290,7 +291,7 @@ export class HsSensorsService {
         ),
       );
 
-    unit.feature.set('selected', true);
+    unit.feature?.set('selected', true);
     this.hsMapService
       .getMap()
       .getView()
