@@ -104,6 +104,17 @@ export class HsConfigObject {
   searchProvider?: any;
   language?: string;
   enabledLanguages?: string;
+  /**
+   * Allows adding natively not supported languages.
+   * Use it together with `enabledLanguages` and `translationOverrides`.
+   * @example
+   *  {
+   *    'af' : 'Afrikaans'
+   *  }
+   */
+  additionalLanguages?: {
+    [key: string]: string;
+  };
   query?: {multi: boolean};
   queryPoint?: string;
   popUpDisplay?: 'none' | 'click' | 'hover';

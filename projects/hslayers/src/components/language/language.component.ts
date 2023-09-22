@@ -5,6 +5,7 @@ import {HsLanguageService} from './language.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsPanelBaseComponent} from '../layout/panels/panel-base.component';
 import {HsSidebarService} from '../sidebar/sidebar.service';
+
 @Component({
   selector: 'hs-language',
   templateUrl: './language.component.html',
@@ -22,6 +23,13 @@ export class HsLanguageComponent
     private hsSidebarService: HsSidebarService,
   ) {
     super(hsLayoutService);
+
+    this.hsConfig.configChanges.subscribe(() => {
+      if (this.hsConfig.additionalLanguages) {
+        this.available_languages =
+          this.hsLanguageService.listAvailableLanguages();
+      }
+    });
   }
 
   ngOnInit(): void {

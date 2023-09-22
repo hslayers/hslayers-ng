@@ -40,20 +40,10 @@ export class HsCoreService {
       } else {
         this.HsLayoutService.sidebarExpanded = true;
       }
-      const languages = this.hsConfig.enabledLanguages
-        ? this.hsConfig.enabledLanguages.split(',').map((lang) => lang.trim())
-        : ['cs', 'sk'];
       const translateService = this.hsLanguageService.getTranslator();
-      translateService.addLangs(languages);
-      translateService.setDefaultLang(`en`);
-
-      const langToUse = this.getLangToUse(
-        this.getDocumentLang(),
-        translateService,
-      );
-      translateService.use(`${langToUse}`);
-      this.hsLanguageService.language = langToUse;
-
+      if (!translateService.defaultLang) {
+        this.hsLanguageService.initLanguages();
+      }
       if (this.initCalled) {
         return;
       }
@@ -69,35 +59,6 @@ export class HsCoreService {
     this.HsEventBusService.updateMapSize.subscribe(() => {
       this.updateMapSize();
     });
-  }
-
-  /**
-   * Parse language code from HTML lang attr
-   * Takes only first part of lang definition in case 'en-us' format is used
-   */
-  private getDocumentLang(): string {
-    let documentLang = document.documentElement?.lang;
-    return (documentLang = documentLang.includes('-')
-      ? documentLang.split('-')[0]
-      : documentLang);
-  }
-
-  /**
-   * If possible sync language with HTML document lang attribute
-   * otherwise use lang used in config or default (en)
-   */
-  private getLangToUse(
-    documentLang: string,
-    translateService: CustomTranslationService,
-  ): string {
-    const htmlLangInPath = document.location.pathname.includes(
-      `/${documentLang}/`,
-    );
-    this.hsLanguageService.langFromCMS =
-      htmlLangInPath && translateService.getLangs().includes(documentLang);
-    return this.hsLanguageService.langFromCMS
-      ? documentLang
-      : this.hsConfig.language || translateService.getDefaultLang();
   }
 
   /**

@@ -380,7 +380,7 @@ export class HslayersAppComponent {
         basemapGallery: true,
         mapSwipe: true,
       },
-      enabledLanguages: 'sk, cs, en',
+      enabledLanguages: 'sk, cs, en, la',
       language: 'en',
       assetsPath: 'assets',
       saveMapStateOnReload: false,
@@ -651,6 +651,9 @@ export class HslayersAppComponent {
         idwVectorLayer,
       ],
       timeDisplayFormat: 'dd.MM.yyyy.',
+      additionalLanguages: {
+        'la': 'Lingua Latina',
+      },
       translationOverrides: {
         lv: {
           LAYERS: {
@@ -663,6 +666,9 @@ export class HslayersAppComponent {
         },
         sk: {
           'My Cool Panel': 'Môj úžasný panel',
+        },
+        la: {
+          'My Cool Panel': 'Mea tabula magna',
         },
       },
     });
