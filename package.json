@@ -104,7 +104,7 @@
     "@cypress/schematic": "^2.5.1",
     "@frsource/cypress-plugin-visual-regression-diff": "^3.2.14",
     "@types/jasmine": "~4.3.6",
-    "@types/jasminewd2": "~2.0.10",
+    "@types/jasminewd2": "~2.0.11",
     "@typescript-eslint/eslint-plugin": "^6.7.2",
     "@typescript-eslint/parser": "^6.7.2",
     "cypress": "~13.2.0",
