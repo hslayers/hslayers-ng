@@ -53,7 +53,7 @@
     "@ngx-translate/core": "^15.0.0",
     "@ngx-translate/http-loader": "^8.0.0",
     "@popperjs/core": "^2.11.7",
-    "bootstrap": "^5.3.1",
+    "bootstrap": "^5.3.2",
     "cesium": "^1.108.0",
     "colormap": "^2.3.2",
     "d3": "^7.8.4",
