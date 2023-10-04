@@ -1,16 +1,16 @@
-import {ElementRef, Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import { ElementRef, Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 
 import dayjs from 'dayjs';
 import objectSupport from 'dayjs/plugin/objectSupport';
-import {HsLanguageService, HsLogService, HsUtilsService} from 'hslayers-ng';
-import {default as vegaEmbed} from 'vega-embed';
+import { HsLanguageService, HsLogService, HsUtilsService } from 'hslayers-ng';
+import { default as vegaEmbed } from 'vega-embed';
 
-import {Aggregate} from './types/aggregate.type';
-import {BehaviorSubject} from 'rxjs';
-import {HsSensorUnit} from './sensor-unit.class';
-import {Interval} from './types/interval.type';
-import {SensLogEndpoint} from './types/senslog-endpoint.type';
+import { Aggregate } from './types/aggregate.type';
+import { BehaviorSubject } from 'rxjs';
+import { HsSensorUnit } from './sensor-unit.class';
+import { Interval, CustomInterval } from './types/interval.type';
+import { SensLogEndpoint } from './types/senslog-endpoint.type';
 
 dayjs.extend(objectSupport);
 
@@ -21,7 +21,6 @@ export class Aggregates {
 class SensorsUnitDialogServiceParams {
   unit: HsSensorUnit[] = [];
   unitDialogVisible: boolean;
-  currentInterval: any;
   sensorsSelected = [];
   sensorIdsSelected = [];
   endpoint: SensLogEndpoint;
@@ -29,12 +28,14 @@ class SensorsUnitDialogServiceParams {
   sensorById = {};
   dialogElement: ElementRef;
   aggregations: Aggregates = {};
+
+  currentInterval: Interval;
   intervals: Interval[] = [
-    {name: '1H', amount: 1, unit: 'hours'},
-    {name: '1D', amount: 1, unit: 'days'},
-    {name: '1W', amount: 1, unit: 'weeks'},
-    {name: '1M', amount: 1, unit: 'months'},
-    {name: '6M', amount: 6, unit: 'months'},
+    { name: '1H', amount: 1, unit: 'hours' },
+    { name: '1D', amount: 1, unit: 'days' },
+    { name: '1W', amount: 1, unit: 'weeks' },
+    { name: '1M', amount: 1, unit: 'months' },
+    { name: '6M', amount: 6, unit: 'months' },
   ];
 
   timeFormat: 'HH:mm:ss' | 'HH:mm:ssZ';
@@ -53,16 +54,18 @@ class SensorsUnitDialogServiceParams {
 export class HsSensorsUnitDialogService {
   apps: {
     [id: string]: SensorsUnitDialogServiceParams;
-  } = {default: new SensorsUnitDialogServiceParams()};
+  } = { default: new SensorsUnitDialogServiceParams() };
   constructor(
     private http: HttpClient,
     private hsUtilsService: HsUtilsService,
     private hsLogService: HsLogService,
     private hsLanguageService: HsLanguageService
-  ) {}
+  ) {
+  }
 
   init(app: string): void {
     const appRef = this.get(app);
+    appRef.currentInterval = appRef.intervals[2]
     appRef.useTimeZone.subscribe((value) => {
       appRef.timeFormat = value ? 'HH:mm:ssZ' : 'HH:mm:ss';
     });
@@ -152,7 +155,7 @@ export class HsSensorsUnitDialogService {
    * Get human readable time for interval value
    * @param interval - Interval selected
    */
-  getTimeForInterval(interval): {from_time; to_time} {
+  getTimeForInterval(interval): { from_time; to_time } {
     if (!interval.amount && !interval.unit) {
       return this.getTimeFromCalendarDate(interval);
     } else {
@@ -220,7 +223,7 @@ export class HsSensorsUnitDialogService {
    * @param app - App identifier
    * @returns Promise which resolves when observation history data is received
    */
-  getObservationHistory(unit, interval, app: string): Promise<boolean> {
+  getObservationHistory(unit, interval: Interval | CustomInterval, app: string): Promise<boolean> {
     const appRef = this.get(app);
     //TODO rewrite by spllitting getting the observable and subscribing to results in different functions
     return new Promise((resolve, reject) => {
@@ -318,7 +321,8 @@ export class HsSensorsUnitDialogService {
     };
   }
 
-  createChartLayer(sensorDesc, multi = false) {
+  createChartLayer(sensorDesc, app: string, multi = false) {
+    const currentInterval = this.get(app).currentInterval;
     let title = this.translate('noSensorsSelected');
     if (Array.isArray(sensorDesc) && sensorDesc.length > 0) {
       if (
@@ -337,9 +341,8 @@ export class HsSensorsUnitDialogService {
     } else if (sensorDesc.sensor_id) {
       title = multi
         ? sensorDesc.uom
-        : `${this.translate(sensorDesc.phenomenon_name, 'PHENOMENON')} ${
-            sensorDesc.uom
-          }`;
+        : `${this.translate(sensorDesc.phenomenon_name, 'PHENOMENON')} ${sensorDesc.uom
+        }`;
     }
     const layer = {
       'encoding': {
@@ -351,10 +354,18 @@ export class HsSensorsUnitDialogService {
           },
           'field': 'value',
           'type': 'quantitative',
-          'scale': {'zero': false, 'nice': 5},
+          'scale': { 'zero': false, 'nice': 5 },
         },
+        "tooltip": [
+          { "field": "value", "title": "Value" },
+          {
+            "field": "time_stamp",
+            "title": "Timestamp",
+            "timeUnit": currentInterval.unit === "months" ? "monthdate" : 'hoursminutes'
+          }
+        ]
       },
-      'mark': {'type': 'line', 'tooltip': {'content': 'data'}},
+      'mark': { 'type': 'line', 'tooltip': true },
     };
     if (multi) {
       layer['transform'] = [
@@ -375,7 +386,7 @@ export class HsSensorsUnitDialogService {
     const appRef = this.get(app);
     //See https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/flat for flattening array
     return {
-      '$schema': 'https://vega.github.io/schema/vega-lite/v4.15.0.json',
+      '$schema': 'https://vega.github.io/schema/vega-lite/v5.json',
       'config': {
         'mark': {
           'tooltip': null,
@@ -393,13 +404,6 @@ export class HsSensorsUnitDialogService {
       },
       'datasets': {
         'data-062c25e80e0ff23df3803082d5c6f7e7': observations,
-      },
-      'selection': {
-        'selector016': {
-          'bind': 'scales',
-          'encodings': ['x', 'y'],
-          'type': 'interval',
-        },
       },
       'encoding': this.getLayerSpecificEncoding(),
     } as any;
@@ -431,10 +435,10 @@ export class HsSensorsUnitDialogService {
         const sensorDesc = this.getSensorDescriptor(u, app);
         if (Array.isArray(sensorDesc)) {
           sensorDesc.forEach((sd) =>
-            layer.push(this.createChartLayer(sd, true))
+            layer.push(this.createChartLayer(sd, app, true))
           );
         } else {
-          layer.push(this.createChartLayer(sensorDesc, true));
+          layer.push(this.createChartLayer(sensorDesc, app, true));
         }
         appRef.aggregations[u.description] = this.calculateAggregates(
           u,
@@ -462,7 +466,7 @@ export class HsSensorsUnitDialogService {
       //Combine common and layer dependent chart definition
       chartData = {
         ...this.getCommonChartDefinitionPart(observations, app),
-        ...this.createChartLayer(sensorDesc),
+        ...this.createChartLayer(sensorDesc, app),
       };
     }
 
@@ -507,7 +511,7 @@ export class HsSensorsUnitDialogService {
         const filteredObs = observations
           .filter((obs) => obs.sensor_id == sensor.sensor_id)
           .map((obs) => {
-            return {value: obs.value, time: obs.time_stamp};
+            return { value: obs.value, time: obs.time_stamp };
           });
         tmp.max = Math.max(
           ...filteredObs.map((o) => {

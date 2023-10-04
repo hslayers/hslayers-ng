@@ -1,26 +1,24 @@
-import {Component, ElementRef, OnDestroy, OnInit, ViewRef} from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, ViewRef } from '@angular/core';
 
 import {
   HsConfig,
   HsConfigObject,
   HsDialogComponent,
-  HsShareThumbnailService,
 } from 'hslayers-ng';
-import {HsDialogContainerService} from 'hslayers-ng';
-import {HsLayoutService} from 'hslayers-ng';
+import { HsDialogContainerService } from 'hslayers-ng';
+import { HsLayoutService } from 'hslayers-ng';
 
-import {Aggregates, HsSensorsUnitDialogService} from './unit-dialog.service';
-import {Interval} from './types/interval.type';
-import {Subject, combineLatest, takeUntil} from 'rxjs';
+import { Aggregates, HsSensorsUnitDialogService } from './unit-dialog.service';
+import { Interval, CustomInterval } from './types/interval.type';
+import { Subject, combineLatest, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'hs-sensor-unit',
-  templateUrl: './partials/unit-dialog.component.html',
+  templateUrl: './partials/unit-dialog.component.html'
 })
 export class HsSensorsUnitDialogComponent
-  implements HsDialogComponent, OnInit, OnDestroy
-{
-  customInterval = {name: 'Custom', fromTime: new Date(), toTime: new Date()};
+  implements HsDialogComponent, OnInit, OnDestroy {
+  customInterval: CustomInterval = { name: 'Custom', fromTime: new Date(), toTime: new Date() };
   dialogStyle;
   private end = new Subject<void>();
   viewRef: ViewRef;
@@ -33,7 +31,7 @@ export class HsSensorsUnitDialogComponent
     private hsSensorsUnitDialogService: HsSensorsUnitDialogService,
     private hsConfig: HsConfig,
     public elementRef: ElementRef
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.hsSensorsUnitDialogService.get(this.data.app).unitDialogVisible = true;
@@ -95,7 +93,7 @@ export class HsSensorsUnitDialogComponent
    * Fetch observations and rerender sensor chart when time interval changes
    * Observations are cleared ahead of fetch to make sure only requested timeframe is displayed
    */
-  private intervalChangeHandler(interval): void {
+  private intervalChangeHandler(): void {
     const dialogUnitServiceRef = this.hsSensorsUnitDialogService.get(
       this.data.app
     );
@@ -104,7 +102,7 @@ export class HsSensorsUnitDialogComponent
     const promises = dialogUnitServiceRef.unit.map((u) => {
       return this.hsSensorsUnitDialogService.getObservationHistory(
         u,
-        interval,
+        dialogUnitServiceRef.currentInterval,
         this.data.app
       );
     });
@@ -133,7 +131,7 @@ export class HsSensorsUnitDialogComponent
       toTime: fromTo.to_time.toDate(),
     });
     if (generate) {
-      this.intervalChangeHandler(interval);
+      this.intervalChangeHandler();
     }
   }
 
@@ -143,7 +141,7 @@ export class HsSensorsUnitDialogComponent
   customIntervalChanged(): void {
     this.hsSensorsUnitDialogService.get(this.data.app).currentInterval =
       this.customInterval;
-    this.intervalChangeHandler(this.customInterval);
+    this.intervalChangeHandler();
   }
 
   calculateDialogStyle(
