@@ -4,9 +4,7 @@ import {LangChangeEvent} from '@ngx-translate/core';
 import {Subject} from 'rxjs';
 
 import dayjs from 'dayjs';
-import {Feature} from 'ol';
-import {Fill, Icon, Stroke, Style, Text} from 'ol/style';
-import {Geometry, MultiPolygon} from 'ol/geom';
+import {Geometry} from 'ol/geom';
 import {
   HsConfig,
   HsDialogContainerService,
@@ -17,7 +15,6 @@ import {
   HsMapService,
   HsSidebarService,
   HsUtilsService,
-  getFeatureName,
   getUnitId,
   setFeatureName,
   setUnitId,
@@ -25,12 +22,12 @@ import {
 import {Vector as VectorLayer} from 'ol/layer';
 import {Vector as VectorSource} from 'ol/source';
 import {WKT} from 'ol/format';
-import {getWidth} from 'ol/extent';
 
 import {HsSensorUnit} from './sensor-unit.class';
 import {HsSensorsUnitDialogComponent} from './sensors-unit-dialog.component';
 import {HsSensorsUnitDialogService} from './unit-dialog.service';
 import {SensLogEndpoint} from './types/senslog-endpoint.type';
+import {senorUnitStyle} from './partials/sensor-unit';
 
 const VISUALIZED_ATTR = 'Visualized attribute';
 @Injectable({
@@ -40,39 +37,6 @@ export class HsSensorsService {
   units: any = [];
   layer = null;
   endpoint: SensLogEndpoint;
-  sensorMarkerStyle: Style[];
-  labelStyle: Style;
-  olStyle = new Style({
-    geometry: function (feature) {
-      let geometry = feature.getGeometry();
-      if (geometry.getType() == 'MultiPolygon') {
-        // Only render label for the widest polygon of a multipolygon
-        const polygons = (geometry as MultiPolygon).getPolygons();
-        let widest = 0;
-        for (let i = 0, ii = polygons.length; i < ii; ++i) {
-          const polygon = polygons[i];
-          const width = getWidth(polygon.getExtent());
-          if (width > widest) {
-            widest = width;
-            geometry = polygon;
-          }
-        }
-      }
-      return geometry;
-    },
-    text: new Text({
-      font: '12px Calibri,sans-serif',
-      overflow: true,
-      fill: new Fill({
-        color: '#000',
-      }),
-      stroke: new Stroke({
-        color: '#fff',
-        width: 3,
-      }),
-    }),
-  });
-
   visualizedAttribute = new Subject<{attribute: string}>();
 
   constructor(
@@ -99,7 +63,6 @@ export class HsSensorsService {
     });
 
     this.hsMapService.loaded().then(() => {
-      this.labelStyle = this.olStyle;
       this.hsConfig.configChanges.subscribe(() => {
         if (this.hsConfig.senslog != this.endpoint) {
           this.setEndpoint();
@@ -314,23 +277,6 @@ export class HsSensorsService {
    * Create layer for displaying sensor data
    */
   createLayer() {
-    this.sensorMarkerStyle = [
-      new Style({
-        fill: new Fill({
-          color: 'rgba(255, 255, 255, 0.2)',
-        }),
-        stroke: new Stroke({
-          color: '#e49905',
-          width: 2,
-        }),
-        image: new Icon({
-          src: this.hsConfig.assetsPath + 'img/icons/wifi8.svg',
-          crossOrigin: 'anonymous',
-          anchor: [0.5, 1],
-        }),
-      }),
-      this.labelStyle,
-    ];
     this.layer = new VectorLayer<VectorSource<Geometry>>({
       properties: {
         path: 'Sensors',
@@ -341,20 +287,7 @@ export class HsSensorsService {
         editor: {
           editable: false,
         },
-      },
-      style: (feature: Feature<Geometry>) => {
-        if (
-          feature.get(VISUALIZED_ATTR) &&
-          feature.get(feature.get(VISUALIZED_ATTR)) != undefined
-        ) {
-          this.labelStyle
-            .getText()
-            .setText(feature.get(feature.get(VISUALIZED_ATTR)).toString());
-        } else {
-          this.labelStyle.getText().setText(getFeatureName(feature));
-        }
-        this.labelStyle.getText().setScale(feature.get('selected') ? 2 : 1);
-        return this.sensorMarkerStyle;
+        sld: senorUnitStyle
       },
       source: new VectorSource({}),
     });
