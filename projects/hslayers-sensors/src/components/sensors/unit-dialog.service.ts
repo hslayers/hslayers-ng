@@ -292,11 +292,14 @@ export class HsSensorsUnitDialogService {
     };
   }
 
+    /**
+   * Create vega chart definition layer
+   * @param multi Multiple sensor units comparison flag
+   */
   createChartLayer(sensorDesc, multi = false) {
     let title = this.translate('noSensorsSelected');
     if (Array.isArray(sensorDesc) && sensorDesc.length > 0) {
       if (
-        sensorDesc.length == 0 ||
         [...new Set(sensorDesc.map((obj) => obj.sensor_type))].length == 1
       ) {
         title = `${this.translate(
@@ -317,6 +320,17 @@ export class HsSensorsUnitDialogService {
     }
     const layer = {
       'encoding': {
+        'color': {
+          'field': 'sensor_name',
+          'legend': {
+            'title': multi
+              ? sensorDesc[0]?.unit_description
+              : this.hsLanguageService.getTranslation('SENSORS.sensors'),
+            'labelExpr': "split(datum.value, '_')[0]",
+          },
+          'type': 'nominal',
+          'sort': 'sensor_id',
+        },
         'y': {
           'axis': {
             'title': title,
@@ -325,33 +339,64 @@ export class HsSensorsUnitDialogService {
           },
           'field': 'value',
           'type': 'quantitative',
-          'scale': { 'zero': false, 'nice': 5 },
+          'scale': {'zero': false, 'nice': 5},
         },
-        "tooltip": [
-          { "field": "value", "title": "Value" },
+        'tooltip': [
+          {'field': 'value', 'title': 'Value'},
           {
-            "field": "time_stamp",
-            "title": "Timestamp",
-            "timeUnit": this.currentInterval.unit === "months" ? "monthdate" : 'hoursminutes'
-          }
-        ]
+            'field': 'time_stamp',
+            'title': 'Timestamp',
+            'timeUnit':
+              this.currentInterval.unit === 'months' ? 'monthdate' : 'hoursminutes',
+          },
+        ],
       },
-      'mark': { 'type': 'line', 'tooltip': true },
+      'mark': {'type': 'line', 'tooltip': true},
     };
     if (multi) {
       layer['transform'] = [
         {
-          'filter': `datum.sensor_name === '${sensorDesc.sensor_name}_${sensorDesc.unit_id}'`,
+          'filter': sensorDesc
+            .map(
+              (sd) => `datum.sensor_name === '${sd.sensor_name}_${sd.unit_id}'`
+            )
+            .join(' || '),
         },
       ];
+      layer['encoding']['color']['legend']['values'] =
+      this.getSensorLegendValues(sensorDesc);
     } else {
       layer.encoding = {
         ...layer.encoding,
-        ...this.getLayerSpecificEncoding(),
+        ...this.getCommonEncoding(),
       };
     }
     return layer;
   }
+
+    /**
+   * Get common part of the vega encoding
+   */
+    private getCommonEncoding() {
+      return {
+        'x': {
+          'axis': {
+            'title': 'Timestamp',
+            'labelOverlap': true,
+            'titleAnchor': 'middle',
+          },
+          'field': 'time_stamp',
+          'sort': false,
+          'type': 'temporal',
+        },
+      };
+    }
+  
+    private getSensorLegendValues(sensorDesc): string[] {
+      return Array.isArray(sensorDesc)
+        ? sensorDesc.map((sd) => `${sd.sensor_name}_${sd.unit_id}`)
+        : [`${sensorDesc.sensor_name}_${sensorDesc.unit_id}'`];
+    }
 
   getCommonChartDefinitionPart(observations) {
     //See https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/flat for flattening array
@@ -382,7 +427,7 @@ export class HsSensorsUnitDialogService {
           'type': 'interval',
         },
       },
-      'encoding': this.getLayerSpecificEncoding(),
+      'encoding': this.getCommonEncoding(),
     } as any;
   }
 
@@ -400,20 +445,17 @@ export class HsSensorsUnitDialogService {
     unit = Array.isArray(unit) ? (unit.length > 1 ? unit : unit[0]) : unit;
 
     let observations;
-    let chartData;
+    let chartData = {};
     //Layered multi unit sensor view
     if (Array.isArray(unit)) {
+      chartData['resolve'] = {'legend': {'color': 'independent'}};
       //Array holding every chart layer object
       const layer = [];
       observations = this.getObservations();
 
       unit.forEach((u) => {
         const sensorDesc = this.getSensorDescriptor(u);
-        if (Array.isArray(sensorDesc)) {
-          sensorDesc.forEach((sd) =>
-            layer.push(this.createChartLayer(sd, true)),
-          );
-        } else {
+        if (sensorDesc.length > 0) {
           layer.push(this.createChartLayer(sensorDesc, true));
         }
         this.aggregations[u.description] = this.calculateAggregates(
@@ -423,6 +465,7 @@ export class HsSensorsUnitDialogService {
       });
 
       chartData = {
+        ...chartData,
         ...this.getCommonChartDefinitionPart(observations),
         layer,
       };
