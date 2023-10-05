@@ -1,16 +1,16 @@
-import { ElementRef, Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import {ElementRef, Injectable} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
 
 import dayjs from 'dayjs';
 import objectSupport from 'dayjs/plugin/objectSupport';
-import { HsLanguageService, HsLogService, HsUtilsService } from 'hslayers-ng';
-import { default as vegaEmbed } from 'vega-embed';
+import {HsLanguageService, HsLogService, HsUtilsService} from 'hslayers-ng';
+import {default as vegaEmbed} from 'vega-embed';
 
-import { Aggregate } from './types/aggregate.type';
-import { BehaviorSubject } from 'rxjs';
-import { HsSensorUnit } from './sensor-unit.class';
-import { Interval, CustomInterval } from './types/interval.type';
-import { SensLogEndpoint } from './types/senslog-endpoint.type';
+import {Aggregate} from './types/aggregate.type';
+import {BehaviorSubject} from 'rxjs';
+import {CustomInterval, Interval} from './types/interval.type';
+import {HsSensorUnit} from './sensor-unit.class';
+import {SensLogEndpoint} from './types/senslog-endpoint.type';
 
 dayjs.extend(objectSupport);
 
@@ -31,11 +31,11 @@ class SensorsUnitDialogServiceParams {
 
   currentInterval: Interval;
   intervals: Interval[] = [
-    { name: '1H', amount: 1, unit: 'hours' },
-    { name: '1D', amount: 1, unit: 'days' },
-    { name: '1W', amount: 1, unit: 'weeks' },
-    { name: '1M', amount: 1, unit: 'months' },
-    { name: '6M', amount: 6, unit: 'months' },
+    {name: '1H', amount: 1, unit: 'hours'},
+    {name: '1D', amount: 1, unit: 'days'},
+    {name: '1W', amount: 1, unit: 'weeks'},
+    {name: '1M', amount: 1, unit: 'months'},
+    {name: '6M', amount: 6, unit: 'months'},
   ];
 
   timeFormat: 'HH:mm:ss' | 'HH:mm:ssZ';
@@ -54,18 +54,17 @@ class SensorsUnitDialogServiceParams {
 export class HsSensorsUnitDialogService {
   apps: {
     [id: string]: SensorsUnitDialogServiceParams;
-  } = { default: new SensorsUnitDialogServiceParams() };
+  } = {default: new SensorsUnitDialogServiceParams()};
   constructor(
     private http: HttpClient,
     private hsUtilsService: HsUtilsService,
     private hsLogService: HsLogService,
     private hsLanguageService: HsLanguageService
-  ) {
-  }
+  ) {}
 
   init(app: string): void {
     const appRef = this.get(app);
-    appRef.currentInterval = appRef.intervals[2]
+    appRef.currentInterval = appRef.intervals[2];
     appRef.useTimeZone.subscribe((value) => {
       appRef.timeFormat = value ? 'HH:mm:ssZ' : 'HH:mm:ss';
     });
@@ -155,7 +154,7 @@ export class HsSensorsUnitDialogService {
    * Get human readable time for interval value
    * @param interval - Interval selected
    */
-  getTimeForInterval(interval): { from_time; to_time } {
+  getTimeForInterval(interval): {from_time; to_time} {
     if (!interval.amount && !interval.unit) {
       return this.getTimeFromCalendarDate(interval);
     } else {
@@ -223,7 +222,11 @@ export class HsSensorsUnitDialogService {
    * @param app - App identifier
    * @returns Promise which resolves when observation history data is received
    */
-  getObservationHistory(unit, interval: Interval | CustomInterval, app: string): Promise<boolean> {
+  getObservationHistory(
+    unit,
+    interval: Interval | CustomInterval,
+    app: string
+  ): Promise<boolean> {
     const appRef = this.get(app);
     //TODO rewrite by spllitting getting the observable and subscribing to results in different functions
     return new Promise((resolve, reject) => {
@@ -291,23 +294,100 @@ export class HsSensorsUnitDialogService {
             s.time = time.format('DD.MM.YYYY HH:mm');
             s.unit_id = val.unit_id;
             s.time_stamp = time.toDate();
+            s.unit_description =
+              appRef.sensorById[s.sensor_id].unit_description;
             return s;
           })
       );
     }, []);
   }
 
-  private getLayerSpecificEncoding() {
-    return {
-      'color': {
-        'field': 'sensor_name',
-        'legend': {
-          'title': this.hsLanguageService.getTranslation('SENSORS.sensors'),
-          'labelExpr': "split(datum.value, '_')[0]",
+  /**
+   * Create vega chart definition layer
+   * @param multi Multiple sensor units comparison flag
+   */
+  private createChartLayer(sensorDesc, app: string, multi = false) {
+    const currentInterval = this.get(app).currentInterval;
+    let title = this.translate('noSensorsSelected');
+    if (Array.isArray(sensorDesc) && sensorDesc.length > 0) {
+      if ([...new Set(sensorDesc.map((obj) => obj.sensor_type))].length == 1) {
+        title = `${this.translate(
+          sensorDesc[0].phenomenon_name,
+          'PHENOMENON'
+        )} ${sensorDesc[0].uom}`;
+      } else {
+        title = `${this.translate('multipleUnits')} [${[
+          ...new Set(sensorDesc.map((obj) => obj.uom)),
+        ].join(',')}]`;
+      }
+    } else if (sensorDesc.sensor_id) {
+      title = multi
+        ? sensorDesc.uom
+        : `${this.translate(sensorDesc.phenomenon_name, 'PHENOMENON')} ${
+            sensorDesc.uom
+          }`;
+    }
+    const layer = {
+      'encoding': {
+        'color': {
+          'field': 'sensor_name',
+          'legend': {
+            'title': multi
+              ? sensorDesc[0]?.unit_description
+              : this.hsLanguageService.getTranslation('SENSORS.sensors'),
+            'labelExpr': "split(datum.value, '_')[0]",
+          },
+          'type': 'nominal',
+          'sort': 'sensor_id',
         },
-        'type': 'nominal',
-        'sort': 'sensor_id',
+        'y': {
+          'axis': {
+            'title': title,
+            'titleAnchor': 'end',
+            'titleLimit': 145,
+          },
+          'field': 'value',
+          'type': 'quantitative',
+          'scale': {'zero': false, 'nice': 5},
+        },
+        'tooltip': [
+          {'field': 'value', 'title': 'Value'},
+          {
+            'field': 'time_stamp',
+            'title': 'Timestamp',
+            'timeUnit':
+              currentInterval.unit === 'months' ? 'monthdate' : 'hoursminutes',
+          },
+        ],
       },
+      'mark': {'type': 'line', 'tooltip': true},
+    };
+    if (multi) {
+      layer['transform'] = [
+        {
+          'filter': sensorDesc
+            .map(
+              (sd) => `datum.sensor_name === '${sd.sensor_name}_${sd.unit_id}'`
+            )
+            .join(' || '),
+        },
+      ];
+      layer['encoding']['color']['legend']['values'] =
+        this.getSensorLegendValues(sensorDesc);
+    } else {
+      layer.encoding = {
+        ...layer.encoding,
+        ...this.getCommonEncoding(),
+      };
+    }
+    return layer;
+  }
+
+  /**
+   * Get common part of the vega encoding
+   */
+  private getCommonEncoding() {
+    return {
       'x': {
         'axis': {
           'title': 'Timestamp',
@@ -321,65 +401,10 @@ export class HsSensorsUnitDialogService {
     };
   }
 
-  createChartLayer(sensorDesc, app: string, multi = false) {
-    const currentInterval = this.get(app).currentInterval;
-    let title = this.translate('noSensorsSelected');
-    if (Array.isArray(sensorDesc) && sensorDesc.length > 0) {
-      if (
-        sensorDesc.length == 0 ||
-        [...new Set(sensorDesc.map((obj) => obj.sensor_type))].length == 1
-      ) {
-        title = `${this.translate(
-          sensorDesc[0].phenomenon_name,
-          'PHENOMENON'
-        )} ${sensorDesc[0].uom}`;
-      } else {
-        title = `${this.translate('multipleUnits')} [${[
-          ...new Set(sensorDesc.map((obj) => obj.uom)),
-        ].join(',')}]`;
-      }
-    } else if (sensorDesc.sensor_id) {
-      title = multi
-        ? sensorDesc.uom
-        : `${this.translate(sensorDesc.phenomenon_name, 'PHENOMENON')} ${sensorDesc.uom
-        }`;
-    }
-    const layer = {
-      'encoding': {
-        'y': {
-          'axis': {
-            'title': title,
-            'titleAnchor': 'end',
-            'titleLimit': 145,
-          },
-          'field': 'value',
-          'type': 'quantitative',
-          'scale': { 'zero': false, 'nice': 5 },
-        },
-        "tooltip": [
-          { "field": "value", "title": "Value" },
-          {
-            "field": "time_stamp",
-            "title": "Timestamp",
-            "timeUnit": currentInterval.unit === "months" ? "monthdate" : 'hoursminutes'
-          }
-        ]
-      },
-      'mark': { 'type': 'line', 'tooltip': true },
-    };
-    if (multi) {
-      layer['transform'] = [
-        {
-          'filter': `datum.sensor_name === '${sensorDesc.sensor_name}_${sensorDesc.unit_id}'`,
-        },
-      ];
-    } else {
-      layer.encoding = {
-        ...layer.encoding,
-        ...this.getLayerSpecificEncoding(),
-      };
-    }
-    return layer;
+  private getSensorLegendValues(sensorDesc): string[] {
+    return Array.isArray(sensorDesc)
+      ? sensorDesc.map((sd) => `${sd.sensor_name}_${sd.unit_id}`)
+      : [`${sensorDesc.sensor_name}_${sensorDesc.unit_id}'`];
   }
 
   getCommonChartDefinitionPart(observations, app: string) {
@@ -405,7 +430,7 @@ export class HsSensorsUnitDialogService {
       'datasets': {
         'data-062c25e80e0ff23df3803082d5c6f7e7': observations,
       },
-      'encoding': this.getLayerSpecificEncoding(),
+      'encoding': this.getCommonEncoding(),
     } as any;
   }
 
@@ -424,20 +449,17 @@ export class HsSensorsUnitDialogService {
     const appRef = this.get(app);
 
     let observations;
-    let chartData;
+    let chartData = {};
     //Layered multi unit sensor view
     if (Array.isArray(unit)) {
+      chartData['resolve'] = {'legend': {'color': 'independent'}};
       //Array holdiding every chart layer object
       const layer = [];
       observations = this.getObservations(app);
 
       unit.forEach((u) => {
         const sensorDesc = this.getSensorDescriptor(u, app);
-        if (Array.isArray(sensorDesc)) {
-          sensorDesc.forEach((sd) =>
-            layer.push(this.createChartLayer(sd, app, true))
-          );
-        } else {
+        if (sensorDesc.length > 0) {
           layer.push(this.createChartLayer(sensorDesc, app, true));
         }
         appRef.aggregations[u.description] = this.calculateAggregates(
@@ -448,6 +470,7 @@ export class HsSensorsUnitDialogService {
       });
 
       chartData = {
+        ...chartData,
         ...this.getCommonChartDefinitionPart(observations, app),
         layer,
       };
@@ -511,7 +534,7 @@ export class HsSensorsUnitDialogService {
         const filteredObs = observations
           .filter((obs) => obs.sensor_id == sensor.sensor_id)
           .map((obs) => {
-            return { value: obs.value, time: obs.time_stamp };
+            return {value: obs.value, time: obs.time_stamp};
           });
         tmp.max = Math.max(
           ...filteredObs.map((o) => {
