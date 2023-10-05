@@ -8,7 +8,7 @@ import {
 } from 'hslayers-ng';
 
 import {Aggregates, HsSensorsUnitDialogService} from './unit-dialog.service';
-import {Interval} from './types/interval.type';
+import {Interval, CustomInterval} from './types/interval.type';
 import {Subject, combineLatest, takeUntil} from 'rxjs';
 
 @Component({
@@ -18,7 +18,7 @@ import {Subject, combineLatest, takeUntil} from 'rxjs';
 export class HsSensorsUnitDialogComponent
   implements HsDialogComponent, OnInit, OnDestroy
 {
-  customInterval = {name: 'Custom', fromTime: new Date(), toTime: new Date()};
+  customInterval: CustomInterval = {name: 'Custom', fromTime: new Date(), toTime: new Date()};
   dialogStyle;
   private end = new Subject<void>();
   viewRef: ViewRef;
@@ -81,11 +81,11 @@ export class HsSensorsUnitDialogComponent
    * Fetch observations and rerender sensor chart when time interval changes
    * Observations are cleared ahead of fetch to make sure only requested timeframe is displayed
    */
-  private intervalChangeHandler(interval): void {
+  private intervalChangeHandler(): void {
     //Clear observations
     this.hsSensorsUnitDialogService.observations = [];
     const promises = this.hsSensorsUnitDialogService.unit.map((u) => {
-      return this.hsSensorsUnitDialogService.getObservationHistory(u, interval);
+      return this.hsSensorsUnitDialogService.getObservationHistory(u, this.hsSensorsUnitDialogService.currentInterval);
     });
     Promise.all(promises).then((_) => {
       this.hsSensorsUnitDialogService.createChart(
@@ -108,7 +108,7 @@ export class HsSensorsUnitDialogComponent
       toTime: fromTo.to_time.toDate(),
     });
     if (generate) {
-      this.intervalChangeHandler(interval);
+      this.intervalChangeHandler();
     }
   }
 
@@ -117,7 +117,7 @@ export class HsSensorsUnitDialogComponent
    */
   customIntervalChanged(): void {
     this.hsSensorsUnitDialogService.currentInterval = this.customInterval;
-    this.intervalChangeHandler(this.customInterval);
+    this.intervalChangeHandler();
   }
 
   calculateDialogStyle(panelSpaceWidth: number, sidebarAtBot: boolean) {

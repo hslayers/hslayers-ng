@@ -11,7 +11,7 @@ import {default as vegaEmbed} from 'vega-embed';
 
 import {Aggregate} from './types/aggregate.type';
 import {HsSensorUnit} from './sensor-unit.class';
-import {Interval} from './types/interval.type';
+import {CustomInterval, Interval} from './types/interval.type';
 import {SensLogEndpoint} from './types/senslog-endpoint.type';
 
 dayjs.extend(objectSupport);
@@ -26,7 +26,6 @@ export class Aggregates {
 export class HsSensorsUnitDialogService {
   unit: HsSensorUnit[] = [];
   unitDialogVisible: boolean;
-  currentInterval: any;
   sensorsSelected = [];
   sensorIdsSelected = [];
   endpoint: SensLogEndpoint;
@@ -34,6 +33,8 @@ export class HsSensorsUnitDialogService {
   sensorById = {};
   dialogElement: ElementRef;
   aggregations: Aggregates = {};
+
+  currentInterval: Interval;
   intervals: Interval[] = [
     {name: '1H', amount: 1, unit: 'hours'},
     {name: '1D', amount: 1, unit: 'days'},
@@ -57,6 +58,7 @@ export class HsSensorsUnitDialogService {
     private hsLogService: HsLogService,
     private hsLanguageService: HsLanguageService,
   ) {
+    this.currentInterval = this.intervals[2]
     this.useTimeZone.subscribe((value) => {
       this.timeFormat = value ? 'HH:mm:ssZ' : 'HH:mm:ss';
     });
@@ -196,7 +198,7 @@ export class HsSensorsUnitDialogService {
    * the sensors on a sensor unit (meteostation).
    * @returns Promise which resolves when observation history data is received
    */
-  getObservationHistory(unit, interval): Promise<boolean> {
+  getObservationHistory(unit: HsSensorUnit, interval: Interval | CustomInterval): Promise<boolean> {
     //TODO rewrite by splitting getting the observable and subscribing to results in different functions
     return new Promise((resolve, reject) => {
       const url = this.hsUtilsService.proxify(
@@ -323,10 +325,18 @@ export class HsSensorsUnitDialogService {
           },
           'field': 'value',
           'type': 'quantitative',
-          'scale': {'zero': false, 'nice': 5},
+          'scale': { 'zero': false, 'nice': 5 },
         },
+        "tooltip": [
+          { "field": "value", "title": "Value" },
+          {
+            "field": "time_stamp",
+            "title": "Timestamp",
+            "timeUnit": this.currentInterval.unit === "months" ? "monthdate" : 'hoursminutes'
+          }
+        ]
       },
-      'mark': {'type': 'line', 'tooltip': {'content': 'data'}},
+      'mark': { 'type': 'line', 'tooltip': true },
     };
     if (multi) {
       layer['transform'] = [
@@ -346,7 +356,7 @@ export class HsSensorsUnitDialogService {
   getCommonChartDefinitionPart(observations) {
     //See https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/flat for flattening array
     return {
-      '$schema': 'https://vega.github.io/schema/vega-lite/v4.15.0.json',
+      '$schema': 'https://vega.github.io/schema/vega-lite/v5.json',
       'config': {
         'mark': {
           'tooltip': null,
