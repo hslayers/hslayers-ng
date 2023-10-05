@@ -275,6 +275,7 @@ export class HsSensorsService {
       this.hsSensorsUnitDialogService.currentInterval = {
         amount: 1,
         unit: 'days',
+        name: '1D'
       };
     }
     //Get observations for selected unit
