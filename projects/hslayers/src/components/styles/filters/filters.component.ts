@@ -2,8 +2,7 @@ import {Component, Input} from '@angular/core';
 
 import {HsFiltersService} from './filters.service';
 import {HsStylerPartBaseComponent} from '../style-part-base.component';
-
-export type FilterType = 'AND' | 'OR' | 'NOT' | 'COMPARE';
+import { FilterType } from './filter.type';
 
 @Component({
   selector: 'hs-filters',

@@ -1,4 +1,4 @@
-import {FilterType} from './filters.component';
+import {FilterType} from './filter.type';
 import {Injectable} from '@angular/core';
 
 @Injectable({

@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, OnChanges, Output} from '@angular/core';
 import {Rule} from 'geostyler-style';
 
-import {FilterType} from './filters.component';
+import {FilterType} from './filter.type';
 
 @Component({
   selector: 'hs-add-filter-button',
