@@ -13,7 +13,9 @@ import {
   HsLayoutService,
   HsLogService,
   HsMapService,
+  HsQueryVectorService,
   HsSidebarService,
+  HsStylerService,
   HsUtilsService,
   getUnitId,
   setFeatureName,
@@ -50,6 +52,8 @@ export class HsSensorsService {
     private hsSensorsUnitDialogService: HsSensorsUnitDialogService,
     private hsSidebarService: HsSidebarService,
     private hsLanguageService: HsLanguageService,
+    private hsStylerService: HsStylerService,
+    private hsQueryVectorService: HsQueryVectorService,
     private hsLog: HsLogService,
   ) {
     this.hsSidebarService.addButton({

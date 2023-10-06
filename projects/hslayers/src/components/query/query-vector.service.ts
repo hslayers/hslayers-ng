@@ -21,6 +21,7 @@ import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsMapService} from '../map/map.service';
 import {HsQueryBaseService} from './query-base.service';
 import {HsUtilsService} from '../utils/utils.service';
+import {StyleLike, createDefaultStyle} from 'ol/style/Style';
 import {getFeatures} from '../../common/feature-extensions';
 import {
   getOnFeatureSelected,
@@ -85,7 +86,7 @@ export class HsQueryVectorService {
   /**
    * Set new selector for the app
    */
-  setNewSelector(): void {
+  setNewSelector(style?: StyleLike | null): void {
     const selector = new Select({
       condition: click,
       multi: this.hsConfig.query?.multi ? this.hsConfig.query.multi : false,
@@ -99,6 +100,7 @@ export class HsQueryVectorService {
           return true;
         }
       },
+      style: style === undefined ? createDefaultStyle : style,
     });
     this.selector = selector;
     this.hsQueryBaseService.vectorSelectorCreated.next(selector);
