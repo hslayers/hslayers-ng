@@ -238,7 +238,7 @@ export class HsSensorsService {
       this.hsSensorsUnitDialogService.currentInterval = {
         amount: 1,
         unit: 'days',
-        name: '1D'
+        name: '1D',
       };
     }
     //Get observations for selected unit
@@ -287,7 +287,7 @@ export class HsSensorsService {
         editor: {
           editable: false,
         },
-        sld: sensorUnitStyle
+        sld: sensorUnitStyle,
       },
       source: new VectorSource({}),
     });
@@ -330,34 +330,34 @@ export class HsSensorsService {
             return feature;
           });
         this.layer.getSource().addFeatures(features);
+
         this.units.forEach((unit: HsSensorUnit) => {
-          unit.sensorTypes = unit.sensors.map((s) => {
-            return {name: s.sensor_type};
-          });
           unit.sensors.sort((a, b) => {
             return b.sensor_id - a.sensor_id;
           });
+
+          unit.sensorTypes = unit.sensors.map((s) => {
+            s.sensor_id = `${unit.unit_id}_${s.sensor_id}`;
+            this.hsSensorsUnitDialogService.sensorById[s.sensor_id] = s;
+            s.unit_id = unit.unit_id;
+            s.unit_description = unit.description;
+
+            return {name: s.sensor_type};
+          });
+
           this.setSensorTranslations(unit);
           unit.sensorTypes = this.hsUtilsService.removeDuplicates(
             unit.sensorTypes,
             'name',
           );
           unit.sensorTypes.map(
-            (st) =>
-              (st.sensors = unit.sensors.filter(
-                (s) => s.sensor_type == st.name,
+            (sensorType) =>
+              (sensorType.sensors = unit.sensors.filter(
+                (s) => s.sensor_type == sensorType.name,
               )),
           );
         });
-        this.units.forEach((unit: HsSensorUnit) => {
-          unit.sensors.forEach((sensor) => {
-            sensor.sensor_id = `${unit.unit_id}_${sensor.sensor_id}`;
-            this.hsSensorsUnitDialogService.sensorById[sensor.sensor_id] =
-              sensor;
-            sensor.unit_id = unit.unit_id;
-            sensor.unit_description = unit.description;
-          });
-        });
+
         this.fillLastObservations();
         setInterval(() => this.fillLastObservations(), 60000);
       });
