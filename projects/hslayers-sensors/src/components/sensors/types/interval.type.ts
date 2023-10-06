@@ -1,7 +1,7 @@
 export type Interval = {
   name: '1H' | '1D' | '1W' | '1M' | '6M' | 'Custom';
   amount?: number;
-  unit?: 'hours' | 'days' | 'weeks' | 'months' | 'months';
+  unit?: 'hours' | 'days' | 'weeks' | 'months';
   loading?: boolean;
 };
 
