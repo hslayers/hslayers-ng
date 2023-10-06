@@ -1,3 +1,8 @@
+# To Be Released
+
+### Bug Fixes
+
+* Encode also URI path ([60a6a76](https://github.com/hslayers/hslayers-ng/commit/60a6a76a7d4ca9161cee443975734e9a53a0eed7))
 
 # 1.5.2 (2023-05-19)
 

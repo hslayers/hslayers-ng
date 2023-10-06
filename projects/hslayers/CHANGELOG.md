@@ -1,3 +1,42 @@
+# [12.1.0](https://github.com/hslayers/hslayers-ng/compare/12.0.0...12.1.0) (2023-10-06)
+
+
+### Bug Fixes
+
+* Adding a vector to layman with SLD ([381df4e](https://github.com/hslayers/hslayers-ng/commit/381df4e98ed1678047a56a2db320781d3171d967))
+* **cesium:** Pass viewer to class property ([3fcc28c](https://github.com/hslayers/hslayers-ng/commit/3fcc28c9407106b0860a06d1a11557f7138a1352))
+* **cesium:** Skip undefined cesiumStyler ([4ad5653](https://github.com/hslayers/hslayers-ng/commit/4ad5653923d53e0c79727361273922d153b00a3e))
+* Dialog container service clean up ([aaf8d2b](https://github.com/hslayers/hslayers-ng/commit/aaf8d2b92ac250b32e9318ed7688526392e33520))
+* Do not replace /proxy in resource urls ([aac1656](https://github.com/hslayers/hslayers-ng/commit/aac1656cc7166aaa9cc6965d9d357f3c59321cf4))
+* Identify layman url ([4122ebf](https://github.com/hslayers/hslayers-ng/commit/4122ebf93ae2c7907224e27c06310c2ac083dec5))
+* Layman vector layers in composition ([40c12b8](https://github.com/hslayers/hslayers-ng/commit/40c12b868ed55a06149125da56180cf24f116fb0))
+* Layman WFS url ([9c7aa2f](https://github.com/hslayers/hslayers-ng/commit/9c7aa2f7c40af8bb5399952391c5a0dfb5777770))
+* Loading of XYZ ArcgisREST layers from composition ([2935fcb](https://github.com/hslayers/hslayers-ng/commit/2935fcb4776e92b154b20bbf064526aebcfeb8e7))
+* Propagate composition layer params all the way to layer constructor ([d773e61](https://github.com/hslayers/hslayers-ng/commit/d773e612e92b98e3f4c61cd5526684e8fc172e7a))
+* Resolve layer duplication ([4bef4f9](https://github.com/hslayers/hslayers-ng/commit/4bef4f970952d7b42a2300adf6d2efd5b6c1b8a9))
+* Reverse color map IDW ([cffb866](https://github.com/hslayers/hslayers-ng/commit/cffb866e22fe47223258b0d2cc7571aa72097caf))
+* **sensors:** More reliable way of getting units ([e85be9f](https://github.com/hslayers/hslayers-ng/commit/e85be9f0bf9713ce0ad4586b61d6853fc2598a61))
+* Sidebar duplicating when used in router ([3835a0d](https://github.com/hslayers/hslayers-ng/commit/3835a0d71cc8a0dc2fb9a1b651bef61d8f3f6291))
+* Style compare filter removal ([8098752](https://github.com/hslayers/hslayers-ng/commit/8098752ca88b6d5164edf9542a10f06a91a4adb7))
+* Styler typescript import cycle ([21c4b68](https://github.com/hslayers/hslayers-ng/commit/21c4b686aa24911d066e4c4595e6ec77aa4852da))
+* Unsafe layman layer name ([dba6dd0](https://github.com/hslayers/hslayers-ng/commit/dba6dd04dd35856d7e28bbfea79a4b3efaef2528))
+* Use fallback when SLD style parsing fails ([4d09afc](https://github.com/hslayers/hslayers-ng/commit/4d09afc9c2dfc53c47959ab89640e8886557cf6d))
+* Wait for confirmation before syncing uploaded style ([c0d1f9c](https://github.com/hslayers/hslayers-ng/commit/c0d1f9c12848d625c23b4c388a59f6fad918f81a))
+* **wms-t:** Clean available times when destroyed ([e0d544b](https://github.com/hslayers/hslayers-ng/commit/e0d544be1aeeab99554a82f707c915a8bec06863))
+
+
+### Features
+
+* **cesium:** Support XYZ layers ([8d9e0e5](https://github.com/hslayers/hslayers-ng/commit/8d9e0e587d907084c368025c8987dcd478659bbd))
+* **lang:** Allow adding new languages ([fb56086](https://github.com/hslayers/hslayers-ng/commit/fb560860403b2374b23713b9cc0a67c6e7b03ce4))
+
+
+### Performance Improvements
+
+* **sensors:** Reduce number of iterations over units/sensors when parsing data ([b84cda0](https://github.com/hslayers/hslayers-ng/commit/b84cda0fedf0eb2a65ae73be5474c3fbe6e48250))
+
+
+
 # [12.0.0](https://github.com/hslayers/hslayers-ng/compare/12.0.0-next.1...12.0.0) (2023-08-23)
 
 
