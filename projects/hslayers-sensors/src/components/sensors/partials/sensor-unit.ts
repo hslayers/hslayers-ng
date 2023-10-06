@@ -1,4 +1,4 @@
-export const senorUnitStyle = 
+export const sensorUnitStyle = 
   `
     <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
     <StyledLayerDescriptor version="1.0.0" xsi:schemaLocation="http://www.opengis.net/sld StyledLayerDescriptor.xsd"

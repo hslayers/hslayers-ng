@@ -27,7 +27,7 @@ import {HsSensorUnit} from './sensor-unit.class';
 import {HsSensorsUnitDialogComponent} from './sensors-unit-dialog.component';
 import {HsSensorsUnitDialogService} from './unit-dialog.service';
 import {SensLogEndpoint} from './types/senslog-endpoint.type';
-import {senorUnitStyle} from './partials/sensor-unit';
+import {sensorUnitStyle} from './partials/sensor-unit';
 
 const VISUALIZED_ATTR = 'Visualized attribute';
 @Injectable({
@@ -287,7 +287,7 @@ export class HsSensorsService {
         editor: {
           editable: false,
         },
-        sld: senorUnitStyle
+        sld: sensorUnitStyle
       },
       source: new VectorSource({}),
     });
