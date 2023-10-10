@@ -275,7 +275,6 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
         {},
       ),
       crossOrigin: 'anonymous',
-      ...options,
     };
     if (this.hasCachedTiles) {
       sourceParams.tileGrid = this.tileGrid;
@@ -309,6 +308,7 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
         base: this.data.base,
         extent: this.data.extent,
         dimensions,
+        ...options,
       },
       source,
     };
