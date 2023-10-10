@@ -122,7 +122,12 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
         .getCode()
         .toUpperCase();
       this.data.title =
-        caps.name || caps.mapName || caps.documentInfo?.Title || 'Arcgis layer';
+        this.data.title && this.data.title != 'Arcgis layer'
+          ? this.data.title
+          : caps.name ||
+            caps.mapName ||
+            caps.documentInfo?.Title ||
+            'Arcgis layer';
       this.data.description = addAnchors(caps.description);
       this.data.version = caps.currentVersion;
       this.data.image_formats = caps.supportedImageFormatTypes
