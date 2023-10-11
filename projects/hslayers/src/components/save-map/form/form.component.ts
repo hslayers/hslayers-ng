@@ -1,30 +1,47 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 
-import {Subject, takeUntil} from 'rxjs';
+import {Observable, Subject, map, startWith, takeUntil} from 'rxjs';
 
 import {HsEndpoint} from '../../../common/endpoints/endpoint.interface';
+import {HsEventBusService} from '../../core/event-bus.service';
 import {HsLayoutService} from '../../layout/layout.service';
 import {HsSaveMapManagerService} from '../save-map-manager.service';
 import {HsUtilsService} from '../../utils/utils.service';
 import {StatusData} from '../../save-map/types/status-data.type';
+import {accessRightsModel} from '../../add-data/common/access-rights.model';
 
 @Component({
   selector: 'hs-save-map-form',
   templateUrl: './form.component.html',
 })
 export class HsSaveMapAdvancedFormComponent implements OnDestroy, OnInit {
-  btnSelectDeselectClicked = true;
   endpoint: HsEndpoint;
   overwrite = false;
   downloadableData: string;
   extraFormOpened = '';
+
+  isVisible: Observable<boolean>;
+
   private end = new Subject<void>();
+
+  _access_rights: accessRightsModel = {
+    'access_rights.write': 'private',
+    'access_rights.read': 'EVERYONE',
+  };
 
   constructor(
     public hsSaveMapManagerService: HsSaveMapManagerService,
     private hsUtilsService: HsUtilsService,
     private hsLayoutService: HsLayoutService,
-  ) {}
+    private hsEventBusService: HsEventBusService,
+  ) {
+    this.isVisible = this.hsEventBusService.mainPanelChanges.pipe(
+      startWith(this.hsLayoutService.mainpanel),
+      map((panel) => {
+        return panel === 'saveMap';
+      }),
+    );
+  }
 
   ngOnInit(): void {
     this.hsSaveMapManagerService.endpointSelected
@@ -65,6 +82,15 @@ export class HsSaveMapAdvancedFormComponent implements OnDestroy, OnInit {
   }
 
   /**
+   * Manually set access rights on form as component itself is not compatible with reactive forms
+   */
+  setAccessRights(data: accessRightsModel) {
+    this.hsSaveMapManagerService.compoData.patchValue({
+      access_rights: data,
+    });
+  }
+
+  /**
    * Save map composition as json file
    */
   saveCompoJson(): void {
@@ -81,16 +107,6 @@ export class HsSaveMapAdvancedFormComponent implements OnDestroy, OnInit {
     setTimeout(() => {
       window.URL.revokeObjectURL(url);
     }, 0);
-  }
-
-  /**
-   * Select or deselect all available composition's layers
-   */
-  selectDeselectAllLayers(): void {
-    this.btnSelectDeselectClicked = !this.btnSelectDeselectClicked;
-    this.hsSaveMapManagerService.compoData.layers.forEach(
-      (layer) => (layer.checked = this.btnSelectDeselectClicked),
-    );
   }
 
   /**
@@ -139,20 +155,11 @@ export class HsSaveMapAdvancedFormComponent implements OnDestroy, OnInit {
   }
 
   /**
-   * Set bounding box property from the current OL map view
-   */
-  setCurrentBoundingBox(): void {
-    this.hsSaveMapManagerService.setCurrentBoundingBox();
-  }
-
-  /**
    * Check if current user can overwrite the composition data
    */
   canOverwrite(): boolean {
-    return (
-      this.hsSaveMapManagerService.compoData.workspace &&
-      this.hsSaveMapManagerService.currentUser !==
-        this.hsSaveMapManagerService.compoData.workspace
-    );
+    const workspace =
+      this.hsSaveMapManagerService.compoData.controls.workspace.value;
+    return workspace && this.hsSaveMapManagerService.currentUser !== workspace;
   }
 }

@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 
 import {lastValueFrom, map} from 'rxjs';
@@ -20,6 +20,8 @@ enum GrantingOptions {
 })
 export class HsCommonLaymanAccessRightsComponent implements OnInit {
   @Input() access_rights: accessRightsModel;
+
+  @Output() access_rights_changed = new EventEmitter<accessRightsModel>();
 
   grantingOptions = GrantingOptions;
   currentOption: string = GrantingOptions.EVERYONE;
@@ -76,6 +78,11 @@ export class HsCommonLaymanAccessRightsComponent implements OnInit {
         this.access_rights['access_rights.write'] = 'private';
       }
     }
+    /**
+     * Notify parent component that value has changed so it can update reactiveForm
+     * model (hacky but quicker)
+     */
+    this.access_rights_changed.emit(this.access_rights);
   }
 
   /**

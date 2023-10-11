@@ -75,15 +75,8 @@ export class HsShareService {
             (l) =>
               getShowInLayerManager(l) == undefined || getShowInLayerManager(l),
           )
-          .map((lyr: Layer) => {
-            return {
-              title: getTitle(lyr),
-              checked: true,
-              layer: lyr,
-            };
-          })
           .sort((a, b) => {
-            return a.layer.getZIndex() - b.layer.getZIndex();
+            return a.getZIndex() - b.getZIndex();
           });
         try {
           const bbox = this.HsMapService.describeExtent();

@@ -1,11 +1,8 @@
 import {BehaviorSubject, Subject} from 'rxjs';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 
-import {Layer} from 'ol/layer';
-import {Source} from 'ol/source';
-
-import {BoundingBoxObject} from './types/bounding-box-object.type';
 import {CompoData} from './types/compo-data.type';
 import {HsConfig} from '../../config.service';
 import {HsEndpoint} from '../../common/endpoints/endpoint.interface';
@@ -22,8 +19,6 @@ import {MapComposition} from './types/map-composition.type';
 import {StatusData} from './types/status-data.type';
 import {UserData} from './types/user-data.type';
 import {accessRightsModel} from '../add-data/common/access-rights.model';
-import {getShowInLayerManager, getTitle} from '../../common/layer-extensions';
-
 export class HsSaveMapManagerParams {
   statusData: StatusData = {
     titleFree: undefined,
@@ -32,21 +27,31 @@ export class HsSaveMapManagerParams {
     changeTitle: undefined,
     groups: [],
   };
-  compoData: CompoData = {
-    name: '',
-    abstract: '',
-    keywords: '',
-    layers: [],
-    id: '',
-    thumbnail: undefined,
-    bbox: <BoundingBoxObject>{east: '0', south: '0', west: '0', north: '0'},
-    currentCompositionTitle: '',
-    currentComposition: undefined,
-    access_rights: <accessRightsModel>{
+
+  //TODO: USE REACTIVE FORM INSTEAD OF THIS
+  currentComposition = undefined;
+
+  compoData = new FormGroup({
+    name: new FormControl('', {
+      validators: Validators.required,
+      nonNullable: true,
+    }),
+    abstract: new FormControl('', {
+      validators: Validators.required,
+      nonNullable: true,
+    }),
+    workspace: new FormControl({value: undefined}), //{value: undefined, disabled: true}
+    keywords: new FormControl(''),
+
+    id: new FormControl(''),
+    thumbnail: new FormControl({value: undefined}),
+    currentCompositionTitle: new FormControl(''),
+    access_rights: new FormControl<accessRightsModel>({
       'access_rights.write': 'private',
       'access_rights.read': 'EVERYONE',
-    },
-  };
+    }),
+  });
+
   userData: UserData = {
     email: '',
     phone: '',
@@ -91,16 +96,16 @@ export class HsSaveMapManagerService extends HsSaveMapManagerParams {
     this.hsEventBusService.compositionLoads.subscribe((data) => {
       if (data.error == undefined) {
         const responseData = data.data ?? data;
-        this.compoData.id = responseData.id;
-        this.compoData.abstract = responseData.abstract;
-        this.compoData.name = responseData.name;
-        this.compoData.keywords = responseData.keywords;
-        this.compoData.currentComposition = responseData;
-        this.compoData.workspace = responseData.workspace;
-        this.compoData.currentCompositionTitle = this.compoData.name;
-        if (Object.keys(data).length !== 0) {
-          this.validateForm();
-        }
+        this.currentComposition = responseData;
+
+        this.compoData.patchValue({
+          id: responseData.id,
+          abstract: responseData.abstract,
+          name: responseData.name,
+          keywords: responseData.keywords,
+          workspace: responseData.workspace,
+          currentCompositionTitle: this.compoData.get('name').value,
+        });
       }
     });
 
@@ -110,7 +115,6 @@ export class HsSaveMapManagerService extends HsSaveMapManagerParams {
         this.hsLayoutService.mainpanel == 'statusCreator'
       ) {
         this.hsMapService.loaded().then(() => {
-          this.fillCompositionLayers();
           this.hsSaveMapService.generateThumbnail(
             this.hsLayoutService.contentWrapper.querySelector(
               '.hs-stc-thumbnail',
@@ -124,13 +128,13 @@ export class HsSaveMapManagerService extends HsSaveMapManagerParams {
     });
 
     this.hsEventBusService.olMapLoads.subscribe((map) => {
-      this.setCurrentBoundingBox();
+      //this.setCurrentBoundingBox();
       map.on(
         'postcompose',
         this.hsUtilsService.debounce(
           () => {
             if (this.hsLayoutService.mainpanel == 'saveMap') {
-              this.setCurrentBoundingBox();
+              //this.setCurrentBoundingBox();
               this.hsSaveMapService.generateThumbnail(
                 this.hsLayoutService.contentWrapper.querySelector(
                   '.hs-stc-thumbnail',
@@ -154,10 +158,10 @@ export class HsSaveMapManagerService extends HsSaveMapManagerParams {
   }
 
   /**
-   * Set composition's data bounding box to the current OL map view extent
+   * Update composition data object name
    */
-  setCurrentBoundingBox(): void {
-    this.compoData.bbox = this.hsMapService.describeExtent();
+  updateCompodataName(name: string) {
+    this.compoData.controls.name.setValue(name);
   }
 
   /**
@@ -169,12 +173,12 @@ export class HsSaveMapManagerService extends HsSaveMapManagerParams {
   save(saveAsNew: boolean, endpoint: HsEndpoint): Promise<any> {
     return new Promise((resolve, reject) => {
       const tempCompoData: CompoData = {};
-      Object.assign(tempCompoData, this.compoData);
+      Object.assign(tempCompoData, this.compoData.value);
       // Check whether layers were already formatted
-      if (tempCompoData.layers[0].layer) {
-        tempCompoData.layers = tempCompoData.layers.filter((l) => l.checked);
-      }
-      const compositionJson = this.generateCompositionJson(tempCompoData);
+      // if (tempCompoData.layers[0].layer) {
+      //   tempCompoData.layers = tempCompoData.layers.filter((l) => l.checked);
+      // }
+      const compositionJson = this.generateCompositionJson();
       let saver: HsSaverService = this.hsShareService;
       if (endpoint.type.includes('layman')) {
         saver = this.hsLaymanService;
@@ -222,19 +226,10 @@ export class HsSaveMapManagerService extends HsSaveMapManagerParams {
    * @param compoData - Additional data for composition
    * @returns composition JSON
    */
-  generateCompositionJson(compoData?: CompoData): MapComposition {
-    /*TODO: REFACTOR
-      Workaround for composition JSON generated for download. 
-      Should be handled differently and generated only once. Task for upcoming component rework
-    */
-    const tempCompoData: CompoData = {...(compoData ?? this.compoData)};
-    if (!compoData) {
-      tempCompoData.layers = tempCompoData.layers.filter((l) => l.checked);
-    }
-
+  generateCompositionJson(): MapComposition {
     return this.hsSaveMapService.map2json(
       this.hsMapService.getMap(),
-      tempCompoData,
+      this.compoData.value,
       this.userData,
       this.statusData,
     );
@@ -253,30 +248,7 @@ export class HsSaveMapManagerService extends HsSaveMapManagerParams {
   /**
    * Fill composition's layers from the OL map layers list
    */
-  private fillCompositionLayers(): void {
-    const compoData = this.compoData;
-    compoData.layers = [];
-    compoData.bbox = this.hsMapService.describeExtent();
-    compoData.layers = this.hsMapService
-      .getMap()
-      .getLayers()
-      .getArray()
-      .filter(
-        (lyr: Layer<Source>) =>
-          getShowInLayerManager(lyr) == undefined ||
-          getShowInLayerManager(lyr) == true,
-      )
-      .map((lyr: Layer<Source>) => {
-        return {
-          title: getTitle(lyr),
-          checked: true,
-          layer: lyr,
-        };
-      })
-      .sort((a, b) => {
-        return a.layer.getZIndex() - b.layer.getZIndex();
-      });
-  }
+  private fillCompositionLayers(): void {}
 
   /**
    * Process user's info into controller model, so they can be used in Save composition forms
@@ -306,7 +278,7 @@ export class HsSaveMapManagerService extends HsSaveMapManagerParams {
    * Callback for saving with new name
    */
   selectNewName(): void {
-    this.compoData.name = this.statusData.guessedTitle;
+    this.updateCompodataName(this.statusData.guessedTitle);
     this.changeTitle = true;
   }
 
@@ -315,21 +287,26 @@ export class HsSaveMapManagerService extends HsSaveMapManagerParams {
    * @returns True if the form is valid, false otherwise
    */
   validateForm(): boolean {
-    this.missingName = !this.compoData.name;
-    this.missingAbstract = !this.compoData.abstract;
-    return !!this.compoData.name && !!this.compoData.abstract;
+    this.missingName = !this.compoData.controls.name.value;
+    this.missingAbstract = !this.compoData.controls.abstract.value;
+    return (
+      !!this.compoData.controls.name.value &&
+      !!this.compoData.controls.abstract.value
+    );
   }
 
   /**
    * Reset locally stored composition's input data to default values
    */
   resetCompoData(): void {
-    this.compoData.id = '';
-    this.compoData.abstract = '';
-    this.compoData.name = '';
-    this.compoData.currentCompositionTitle = '';
-    this.compoData.keywords = '';
-    this.compoData.currentComposition = '';
+    this.compoData.patchValue({
+      id: '',
+      abstract: '',
+      name: '',
+      currentCompositionTitle: '',
+      keywords: '',
+    });
+    this.currentComposition = '';
   }
 
   /**
@@ -337,7 +314,7 @@ export class HsSaveMapManagerService extends HsSaveMapManagerParams {
    * @param saveAsNew - If true save a new composition, otherwise overwrite to current one
    */
   async initiateSave(saveAsNew: boolean): Promise<void> {
-    if (!this.validateForm()) {
+    if (!this.compoData.valid) {
       this.hsLogService.log('validationfailed');
       return;
     }
@@ -363,7 +340,7 @@ export class HsSaveMapManagerService extends HsSaveMapManagerParams {
       const error = response.error;
       if (error.code == 24) {
         this.statusData.overWriteNeeded = true;
-        this.compoData.name = error.detail.mapname;
+        this.updateCompodataName(error.detail.mapname);
         this.statusData.resultCode = 'exists';
       } else if (error.code == 32) {
         this.statusData.resultCode = 'not-saved';
@@ -383,7 +360,7 @@ export class HsSaveMapManagerService extends HsSaveMapManagerParams {
    */
   focusTitle() {
     if (this.statusData.guessedTitle) {
-      this.compoData.name = this.statusData.guessedTitle;
+      this.updateCompodataName(this.statusData.guessedTitle);
     }
     //TODO: Check if this works and input is focused
     this.hsLayoutService.contentWrapper.querySelector('.hs-stc-title').focus();
