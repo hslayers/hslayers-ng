@@ -150,8 +150,7 @@ export class HsSaveMapService {
     //json.sphericalMercator = map.sphericalMercator;
 
     // Layers properties
-    const olLayers = compoData.layers.map((l) => l.layer);
-    json.layers = this.layers2json(olLayers);
+    json.layers = this.layers2json(compoData.layers);
     json.current_base_layer = this.getCurrentBaseLayer();
     return json;
   }

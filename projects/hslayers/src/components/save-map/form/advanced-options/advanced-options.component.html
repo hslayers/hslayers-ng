@@ -1,0 +1,53 @@
+<fieldset class="form">
+    <div [formGroup]="parentFormGroup.controls.bbox">
+        <div class="d-flex w-100 pb-2 stc-extent-row">
+            <div class="form-floating px-0">
+                <input type="text" formControlName="east" class="form-control" id="floatingEast"
+                    [title]="'COMMON.east' | translateHs  ">
+                <label for="floatingEast">{{'COMMON.east' | translateHs }}</label>
+            </div>
+            <div class="form-floating px-0">
+                <input type="text" formControlName="south" class="form-control" id="floatingSouth"
+                    [title]="'COMMON.south' | translateHs  ">
+                <label for="floatingSouth">{{'COMMON.south' | translateHs }}</label>
+            </div>
+            <div class="form-floating px-0">
+                <input type="text" formControlName="west" class="form-control" id="floatingWest"
+                    [title]="'COMMON.west' | translateHs  ">
+                <label for="floatingWest">{{'COMMON.west' | translateHs }}</label>
+            </div>
+            <div class="form-floating px-0">
+                <input type="text" formControlName="north" class="form-control" id="floatingNorth"
+                    [title]="'COMMON.north' | translateHs  ">
+                <label for="floatingNorth">{{'COMMON.north' | translateHs }}</label>
+            </div>
+        </div>
+        <button type="button" class="mt-1 btn btn-secondary w-100"
+            (click)="setCurrentBoundingBox()">{{'SAVECOMPOSITION.form.userCurrentMapExtent'
+            | translateHs }}</button>
+    </div>
+
+    <div class="form-group">
+        <ul class="list-group" id="stc-layerlist">
+
+            <li *ngFor="let layer of layers; let i = index" class="list-group-item">
+                <div class="form-check text-truncate">
+                    <input type="checkbox" [value]="layer.layer"
+                        (change)="onChecklistChange($event.target.checked, layer)" class="form-check-input mt-0"
+                        name="hs-stclayer-{{i}}" [checked]="layer.checked">
+                    <label for="hs-stclayer-{{i}}" [title]="layer.title | translateHs : {module: 'LAYERS'}"
+                        class="form-check-label mw-100 text-truncate">{{layer.title | translateHs : {module:
+                        'LAYERS'} }}</label>
+                </div>
+            </li>
+            <li class="list-group-item" style="padding: 3px">
+                <div class="d-flex w-100 justify-content-center">
+                    <button type="button" class="mt-1 btn btn-primary"
+                        (click)="toggleLayers()">{{'SAVECOMPOSITION.form.toggleAll' |
+                        translateHs }}</button>
+                </div>
+            </li>
+        </ul>
+
+    </div>
+</fieldset>

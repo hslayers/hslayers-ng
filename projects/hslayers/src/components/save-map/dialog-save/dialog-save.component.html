@@ -13,13 +13,13 @@
                     {{'SAVECOMPOSITION.dialogSave.areYouAttempting' | translateHs }}
                 </div>
                 <div>
-                    <b>{{hsSaveMapManagerService.compoData.name}}</b>
+                    <!-- <b>{{hsSaveMapManagerService.compoData.name}}</b> -->
                 </div>
                 <div
                     *ngIf="!hsSaveMapManagerService.statusData?.titleFree && hsSaveMapManagerService.statusData?.hasPermission && !hsSaveMapManagerService.statusData?.changeTitle">
                     <div>
                         {{'SAVECOMPOSITION.dialogSave.wantToOverwrite' | translateHs }}
-                        <b>{{hsSaveMapManagerService.compoData.name}}</b>
+                        <!-- <b>{{hsSaveMapManagerService.compoData.name}}</b> -->
                     </div>
                     <p>
                         <button type="button" class="btn btn-secondary btn-lg" data-dismiss="modal"
@@ -36,10 +36,10 @@
                 <div
                     *ngIf="!hsSaveMapManagerService.statusData?.titleFree && hsSaveMapManagerService.statusData?.hasPermission && hsSaveMapManagerService.statusData?.changeTitle">
                     <div>{{'SAVECOMPOSITION.dialogSave.selectNewNameForMap' | translateHs }}</div>
-                    <p>
+                    <!-- <p>
                         <input type="text" class="form-control hs-stc-title"
                             [(ngModel)]="hsSaveMapManagerService.compoData.name">
-                    </p>
+                    </p> -->
                     <p>
                         <button type="button" class="btn btn-secondary btn-lg" data-dismiss="modal"
                             (click)="save(true); close()">{{'COMMON.save'
