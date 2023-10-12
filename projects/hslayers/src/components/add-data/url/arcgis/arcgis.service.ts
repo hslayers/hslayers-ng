@@ -223,7 +223,9 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
         ...layerOptions,
       }),
     ];
-    this.hsAddDataUrlService.zoomToLayers(this.data);
+    if (!layerOptions.fromComposition) {
+      this.hsAddDataUrlService.zoomToLayers(this.data);
+    }
     this.data.base = false;
     this.hsAddDataCommonService.clearParams();
     this.setDataToDefault();
