@@ -314,56 +314,61 @@ export class HsSensorsService {
           user_id: this.endpoint.user_id.toString(),
         },
       })
-      .subscribe((response) => {
-        this.units = response;
-        this.layer.getSource().clear();
-        const features = this.units
-          .filter(
-            (unit: HsSensorUnit) =>
-              unit.unit_position && unit.unit_position.asWKT,
-          )
-          .map((unit: HsSensorUnit) => {
-            const format = new WKT();
-            const feature = format.readFeature(unit.unit_position.asWKT, {
-              dataProjection: 'EPSG:4326',
-              featureProjection: 'EPSG:3857',
+      .subscribe({
+        next: (response) => {
+          this.units = response;
+          this.layer.getSource().clear();
+          const features = this.units
+            .filter(
+              (unit: HsSensorUnit) =>
+                unit.unit_position && unit.unit_position.asWKT,
+            )
+            .map((unit: HsSensorUnit) => {
+              const format = new WKT();
+              const feature = format.readFeature(unit.unit_position.asWKT, {
+                dataProjection: 'EPSG:4326',
+                featureProjection: 'EPSG:3857',
+              });
+              setFeatureName(feature, unit.description);
+              setUnitId(feature, unit.unit_id);
+              unit.feature = feature;
+              return feature;
             });
-            setFeatureName(feature, unit.description);
-            setUnitId(feature, unit.unit_id);
-            unit.feature = feature;
-            return feature;
+          this.layer.getSource().addFeatures(features);
+
+          this.units.forEach((unit: HsSensorUnit) => {
+            unit.sensors.sort((a, b) => {
+              return b.sensor_id - a.sensor_id;
+            });
+
+            unit.sensorTypes = unit.sensors.map((s) => {
+              s.sensor_id = `${unit.unit_id}_${s.sensor_id}`;
+              this.hsSensorsUnitDialogService.sensorById[s.sensor_id] = s;
+              s.unit_id = unit.unit_id;
+              s.unit_description = unit.description;
+
+              return {name: s.sensor_type};
+            });
+
+            this.setSensorTranslations(unit);
+            unit.sensorTypes = this.hsUtilsService.removeDuplicates(
+              unit.sensorTypes,
+              'name',
+            );
+            unit.sensorTypes.map(
+              (sensorType) =>
+                (sensorType.sensors = unit.sensors.filter(
+                  (s) => s.sensor_type == sensorType.name,
+                )),
+            );
           });
-        this.layer.getSource().addFeatures(features);
 
-        this.units.forEach((unit: HsSensorUnit) => {
-          unit.sensors.sort((a, b) => {
-            return b.sensor_id - a.sensor_id;
-          });
-
-          unit.sensorTypes = unit.sensors.map((s) => {
-            s.sensor_id = `${unit.unit_id}_${s.sensor_id}`;
-            this.hsSensorsUnitDialogService.sensorById[s.sensor_id] = s;
-            s.unit_id = unit.unit_id;
-            s.unit_description = unit.description;
-
-            return {name: s.sensor_type};
-          });
-
-          this.setSensorTranslations(unit);
-          unit.sensorTypes = this.hsUtilsService.removeDuplicates(
-            unit.sensorTypes,
-            'name',
-          );
-          unit.sensorTypes.map(
-            (sensorType) =>
-              (sensorType.sensors = unit.sensors.filter(
-                (s) => s.sensor_type == sensorType.name,
-              )),
-          );
-        });
-
-        this.fillLastObservations();
-        setInterval(() => this.fillLastObservations(), 60000);
+          this.fillLastObservations();
+          setInterval(() => this.fillLastObservations(), 60000);
+        },
+        error: (e) => {
+          console.error('Unit loading failed', e);
+        },
       });
   }
 
