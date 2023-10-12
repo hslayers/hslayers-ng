@@ -1,6 +1,6 @@
 defaults
-not > 0.5%
-not last 2 versions
+not < 0.5%
+safari >= 12
 not Firefox ESR
 not dead
 not IE 9-11 # For IE 9-11 support, remove 'not'.

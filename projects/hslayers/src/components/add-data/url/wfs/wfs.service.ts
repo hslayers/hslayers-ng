@@ -97,7 +97,9 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
           'wfs',
         );
         const collection = this.getLayers(true, false, layerOptions);
-        this.hsAddDataUrlService.zoomToLayers(this.data);
+        if (!layerOptions.fromComposition) {
+          this.hsAddDataUrlService.zoomToLayers(this.data);
+        }
         return collection;
       }
     } catch (e) {
@@ -357,7 +359,9 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
       this.getLayersRecursively(layer, {layerOptions}, collection);
     }
     this.data.extent = this.calcAllLayersExtent(collection);
-    this.hsAddDataUrlService.zoomToLayers(this.data);
+    if (!layerOptions.fromComposition) {
+      this.hsAddDataUrlService.zoomToLayers(this.data);
+    }
     this.hsAddDataCommonService.clearParams();
     this.setDataToDefault();
     this.hsAddDataCommonService.setPanelToCatalogue();

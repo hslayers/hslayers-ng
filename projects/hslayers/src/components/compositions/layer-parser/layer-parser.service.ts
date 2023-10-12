@@ -95,6 +95,7 @@ export class HsCompositionsLayerParserService {
           info_format: lyr_def.info_format,
           base: lyr_def.base,
           greyscale: lyr_def.greyscale,
+          fromComposition: true,
         },
       });
       return newLayer[0];
@@ -185,6 +186,7 @@ export class HsCompositionsLayerParserService {
         title: lyr_def.title,
         base: lyr_def.base,
         greyscale: lyr_def.greyscale,
+        fromComposition: true,
       },
     });
     return newLayer[0];
