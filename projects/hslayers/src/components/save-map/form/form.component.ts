@@ -184,9 +184,12 @@ export class HsSaveMapAdvancedFormComponent implements OnDestroy, OnInit {
 }
 /***
  * Can overwrite => workspace existuje
- *  rovnaky uživateľ -> overwrite
- *  rozidelny uživatelia (editable) => overwrite/new compo
+ * rovnaky uživateľ -> overwrite
+ *    - doteraz bol klik a následne je možné sa rozhodnúť čo dalej overwrite, rename. To je ale nekonzistentné s tým, čo sa deje pri rozdielnych
+ *     uživateľoch. Tj. ak máš práva tak sa po kliku na save automaticky uloží, nedá sa prepísat v podstate
+ * rozidelny uživatelia (editable) => overwrite/new compo
  * rozdielny uživatelia(not-editable) => new
  *    - mala by mat note že je to komzíci niekoho iného aj ked s nou nič neviem urobit?
  *  Aktuálne sa reálne nedá overwrite pretože request sa posiela na  current_user workspace tj. vždy nové *
+ * zmena stringu aby bolo jasnejšie že zmenou názvu zmizne 'overwrite'
  */
