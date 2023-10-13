@@ -3,7 +3,7 @@ export * from './layer-synchronizer.service';
 export * from './interfaces/layman-layer-descriptor.interface';
 export * from './layman.service';
 export * from './form/form.component';
-export * from './dialog-save/dialog-save.component';
+export * from './form/advanced-options/advanced-options.component';
 export * from './save-map-manager.service';
 export * from './save-map.component';
 export * from './save-map.module';
