@@ -33,17 +33,23 @@
     </div>
     <hs-save-map-advanced-options [hidden]="extraFormOpened !== 'advancedOptions'"></hs-save-map-advanced-options>
 
-    <div class="modal-footer w-100 pt-3">
-        <div [hidden]="!canOverwrite()" class="alert alert-info text-gray">
+    <div class="modal-footer w-100 pt-3" *ngIf="{canBeOverwriten: isNotMine() && overwrite} as composition">
+        <div *ngIf="isNotMine()" class="alert alert-info text-gray m-2">
             {{'SAVECOMPOSITION.saveOrOverwrite' | translateHs }}
         </div>
-        <div class="d-flex justify-content-end w-100" [class.justify-content-between]="overwrite">
-            <button *ngIf="overwrite" type="button" class="btn btn-danger" id="stc-save"
-                (click)="initiateSave(false)">{{'SAVECOMPOSITION.form.overwrite' | translateHs }}</button>
+        <div class="d-flex justify-content-end w-100" [class.justify-content-between]="composition.canBeOverwriten">
+            <button *ngIf="composition.canBeOverwriten" type="button" class="btn btn-danger position-relative"
+                id="stc-save" (click)="initiateSave(false)">{{'SAVECOMPOSITION.form.overwrite' | translateHs }}
+                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary"
+                    [title]="'SAVECOMPOSITION.form.overwrite' | translateHs">
+                    i
+                </span>
+            </button>
 
             <div class="d-flex justify-content-end gap-2">
                 <button type="submit" class="btn btn-primary" id="stc-saveas" [hidden]="!(isAllowed())">
                     <!-- TODO: Remove function call from template -->{{'COMMON.save' | translateHs }}
+                    <span *ngIf="composition.canBeOverwriten"> as new</span>
                 </button>
                 <a type="button" class="btn btn-secondary" (click)="saveCompoJson()"
                     id="stc-download">{{'COMMON.download' |

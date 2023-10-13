@@ -59,7 +59,6 @@ export class AdvancedOptionsComponent implements OnInit, OnDestroy {
 
     this.setCurrentBoundingBox();
 
-    console.log(this.parentFormGroup);
     this.parentFormGroup.addControl(
       'layers',
       new FormControl<saveMapLayer['layer'][]>(this.flattenValues()),
@@ -78,16 +77,22 @@ export class AdvancedOptionsComponent implements OnInit, OnDestroy {
     this.parentFormGroup.patchValue({bbox: this.hsMapService.describeExtent()});
   }
 
-  onChecklistChange(checked: boolean, layer: saveMapLayer) {
+  onChecklistChange(checked: boolean, layer: saveMapLayer): void {
     layer.checked = checked;
     this.parentFormGroup.get('layers').setValue(this.flattenValues());
   }
 
-  flattenValues() {
+  /**
+   * Flatten saveMapLayer type object list into simply OL layer array of selected layers
+   */
+  private flattenValues(): Layer<Source>[] {
     return this.layers.filter((l) => l.checked).map((l) => l.layer);
   }
 
-  fillCompositionLayers() {
+  /**
+   * Get layers which might be saved into composition
+   */
+  fillCompositionLayers(): void {
     this.layers = this.hsMapService
       .getMap()
       .getLayers()

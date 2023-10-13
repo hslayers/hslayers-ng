@@ -854,7 +854,7 @@
     "public": "Public",
     "readAccessRights": "Read access rights",
     "removeLayerError": "Layer {{layer}} was not deleted from the database. {{error}}",
-    "saveOrOverwrite": "This composition was created by another user",
+    "saveOrOverwrite": "Composition with this name was created by another user",
     "syncErrorDialog": {
       "errorWhenSyncing": "Error when syncing"
     },

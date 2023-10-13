@@ -11,8 +11,6 @@ export type CompoData = {
   id?: string;
   thumbnail?: any;
   bbox?: BoundingBoxObject;
-  currentCompositionTitle?: string;
-  currentComposition?: string;
   access_rights?: accessRightsModel;
   workspace?: string;
 };

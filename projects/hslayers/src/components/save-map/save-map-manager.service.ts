@@ -40,12 +40,11 @@ export class HsSaveMapManagerParams {
       validators: Validators.required,
       nonNullable: true,
     }),
-    workspace: new FormControl({value: undefined}), //{value: undefined, disabled: true}
+    workspace: new FormControl(undefined), //{value: undefined, disabled: true}
     keywords: new FormControl(''),
 
     id: new FormControl(''),
-    thumbnail: new FormControl({value: undefined}),
-    currentCompositionTitle: new FormControl(''),
+    thumbnail: new FormControl(undefined),
     access_rights: new FormControl<accessRightsModel>({
       'access_rights.write': 'private',
       'access_rights.read': 'EVERYONE',
@@ -101,10 +100,10 @@ export class HsSaveMapManagerService extends HsSaveMapManagerParams {
         this.compoData.patchValue({
           id: responseData.id,
           abstract: responseData.abstract,
-          name: responseData.name,
           keywords: responseData.keywords,
           workspace: responseData.workspace,
-          currentCompositionTitle: this.compoData.get('name').value,
+          //NOTE: Keep name last so its valueChange subscription has access to updated values
+          name: responseData.name,
         });
       }
     });
@@ -241,14 +240,8 @@ export class HsSaveMapManagerService extends HsSaveMapManagerParams {
    */
   openPanel(composition): void {
     this.hsLayoutService.setMainPanel('saveMap', true);
-    this.fillCompositionLayers();
     this.panelOpened.next({composition});
   }
-
-  /**
-   * Fill composition's layers from the OL map layers list
-   */
-  private fillCompositionLayers(): void {}
 
   /**
    * Process user's info into controller model, so they can be used in Save composition forms
@@ -303,10 +296,9 @@ export class HsSaveMapManagerService extends HsSaveMapManagerParams {
       id: '',
       abstract: '',
       name: '',
-      currentCompositionTitle: '',
       keywords: '',
     });
-    this.currentComposition = '';
+    this.currentComposition = undefined;
   }
 
   /**

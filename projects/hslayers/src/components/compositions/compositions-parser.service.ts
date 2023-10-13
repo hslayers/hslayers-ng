@@ -439,7 +439,7 @@ export class HsCompositionsParserService {
    */
   raiseCompositionLoadError(response): void {
     const respError: any = {};
-    respError.error = response.error;
+    respError.error = response.error ?? 'Composition file corrupted';
     switch (response.error) {
       case 'no data':
         respError.title = this.hsLanguageService.getTranslation(
