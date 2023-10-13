@@ -97,7 +97,7 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
           'wfs',
         );
         const collection = this.getLayers(true, false, layerOptions);
-        if (!layerOptions.fromComposition) {
+        if (!layerOptions?.fromComposition) {
           this.hsAddDataUrlService.zoomToLayers(this.data);
         }
         return collection;
@@ -359,7 +359,7 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
       this.getLayersRecursively(layer, {layerOptions}, collection);
     }
     this.data.extent = this.calcAllLayersExtent(collection);
-    if (!layerOptions.fromComposition) {
+    if (!layerOptions?.fromComposition) {
       this.hsAddDataUrlService.zoomToLayers(this.data);
     }
     this.hsAddDataCommonService.clearParams();

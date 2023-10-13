@@ -144,7 +144,7 @@ export class HsUrlWmtsService implements HsUrlTypeServiceModel {
       this.getLayersRecursively(layer, {layerOptions}, collection);
     }
     this.data.extent = this.hsAddDataUrlService.calcAllLayersExtent(collection);
-    if (!layerOptions.fromComposition) {
+    if (!layerOptions?.fromComposition) {
       this.hsAddDataUrlService.zoomToLayers(this.data);
     }
     this.hsAddDataCommonService.clearParams();
