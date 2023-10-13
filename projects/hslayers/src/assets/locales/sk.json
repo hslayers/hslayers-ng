@@ -823,7 +823,7 @@
     "public": "Verejné",
     "readAccessRights": "Právo čítať",
     "removeLayerError": "Vrstva '{{layer}}' nebola odstránená z databáze. {{error}}",
-    "saveOrOverwrite": "Táto kompozícia bola vytvorená iným užívateľom",
+    "saveOrOverwrite": "Kompozíciu s týmto názvom vytvoril iný používateľ",
     "syncErrorDialog": {
       "errorWhenSyncing": "Chyba pri synchronizácii"
     },

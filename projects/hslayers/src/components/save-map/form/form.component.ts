@@ -62,6 +62,15 @@ export class HsSaveMapAdvancedFormComponent implements OnDestroy, OnInit {
             .focus();
         }
       });
+
+    this.hsSaveMapManagerService.compoData.controls.name.valueChanges.subscribe(
+      (name: string) => {
+        this.overwrite =
+          this.hsSaveMapManagerService.compoData.controls.workspace.value &&
+          this.hsSaveMapManagerService.currentComposition.name &&
+          this.hsSaveMapManagerService.currentComposition.name === name;
+      },
+    );
   }
 
   ngOnDestroy(): void {
@@ -158,8 +167,26 @@ export class HsSaveMapAdvancedFormComponent implements OnDestroy, OnInit {
    * Check if current user can overwrite the composition data
    */
   canOverwrite(): boolean {
+    //NOTE: compoData workspace is set only in case composition is editable
+    return !!this.hsSaveMapManagerService.compoData.controls.workspace.value;
+  }
+
+  /**
+   *  Check wether composition belongs to different user.
+   *  Additionaly checks wether it is editable because if its not overwrite is not possible
+   *  and the note doesnt really adds value
+   */
+  isNotMine() {
     const workspace =
       this.hsSaveMapManagerService.compoData.controls.workspace.value;
     return workspace && this.hsSaveMapManagerService.currentUser !== workspace;
   }
 }
+/***
+ * Can overwrite => workspace existuje
+ *  rovnaky uživateľ -> overwrite
+ *  rozidelny uživatelia (editable) => overwrite/new compo
+ * rozdielny uživatelia(not-editable) => new
+ *    - mala by mat note že je to komzíci niekoho iného aj ked s nou nič neviem urobit?
+ *  Aktuálne sa reálne nedá overwrite pretože request sa posiela na  current_user workspace tj. vždy nové *
+ */

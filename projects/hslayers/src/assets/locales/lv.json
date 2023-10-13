@@ -830,7 +830,7 @@
     "public": "Publisks",
     "readAccessRights": "Lasīšanas piekļuves tiesības",
     "removeLayerError": "Slānis {{layer}} netika izdzēsts no datubāzes. {{error}}",
-    "saveOrOverwrite": "Šo kompozīciju izveidoja cits lietotājs",
+    "saveOrOverwrite": "Kompozīciju ar šādu nosaukumu izveidoja cits lietotājs",
     "syncErrorDialog": {
       "errorWhenSyncing": "Sinhronizējot radās kļūda"
     },
