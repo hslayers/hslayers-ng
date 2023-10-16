@@ -3,8 +3,15 @@ import {Injectable} from '@angular/core';
 
 import * as xml2Json from 'xml-js';
 import {Layer} from 'ol/layer';
+import {
+  Observable,
+  catchError,
+  lastValueFrom,
+  of,
+  shareReplay,
+  switchMap,
+} from 'rxjs';
 import {Source} from 'ol/source';
-import {lastValueFrom} from 'rxjs';
 import {transformExtent} from 'ol/proj';
 
 import {CswLayersDialogComponent} from './dialogs/csw-layers-dialog/csw-layers-dialog.component';
@@ -21,6 +28,7 @@ import {HsLayoutService} from '../layout/layout.service';
 import {HsLogService} from '../../common/log/log.service';
 import {HsToastService} from '../layout/toast/toast.service';
 import {HsUtilsService, generateUuid} from '../utils/utils.service';
+import {LaymanCompositionDescriptor} from './models/composition-descriptor.model';
 import {
   getLaymanFriendlyLayerName,
   isLaymanUrl,
@@ -39,6 +47,11 @@ import {servicesSupportedByUrl} from '../add-data/url/services-supported.const';
 })
 export class HsCompositionsParserService {
   /**
+   * Layman composition record
+   * holds access_rights
+   */
+  currentCompositionRecord: Observable<LaymanCompositionDescriptor>;
+  /**
    * @public
    * Stores current composition URL if there is one or NULL
    */
@@ -54,7 +67,6 @@ export class HsCompositionsParserService {
    */
   current_composition_title = '';
   current_composition_url: string;
-  current_composition_workspace: string;
   loadingOptions = {
     suspendZoomingToExtent: false,
     suspendPanelChange: false,
@@ -73,7 +85,33 @@ export class HsCompositionsParserService {
     private hsCommonLaymanService: HsCommonLaymanService,
     private hsLayerManagerService: HsLayerManagerService,
     private hsToastService: HsToastService,
-  ) {}
+  ) {
+    /**
+     * Composition opened -> request its descriptor
+     * in order to get access_rights and workspace properties
+     * (kinda duplicating request for compositions from catalogue - necessary for url ones)
+     */
+    this.currentCompositionRecord =
+      this.hsEventBusService.compositionLoads.pipe(
+        switchMap((_) => {
+          return this.$http.get<LaymanCompositionDescriptor>(
+            this.current_composition_url.replace('/file', ''),
+            {
+              withCredentials: isLaymanUrl(
+                this.current_composition_url,
+                this.hsCommonLaymanService.layman,
+              ),
+            },
+          );
+        }),
+        //Allows remove-all component to recieve value when created eg. late
+        shareReplay(1),
+        catchError((e) => {
+          console.error('Error while requesting composition metadata');
+          return of(e);
+        }),
+      );
+  }
 
   /**
    * @public
@@ -97,6 +135,7 @@ export class HsCompositionsParserService {
       this.loaded(url, pre_parse, url, overwrite, callback);
       return;
     }
+
     this.current_composition_url = url;
     url = url.replace(/&amp;/g, '&');
     url = this.hsUtilsService.proxify(url);
@@ -109,6 +148,7 @@ export class HsCompositionsParserService {
       url,
       this.hsCommonLaymanService.layman,
     );
+
     const data: any = await lastValueFrom(this.$http.get(url, options)).catch(
       (e) => {
         this.raiseCompositionLoadError(e);
@@ -139,7 +179,6 @@ export class HsCompositionsParserService {
     overwrite: boolean,
     callback,
   ): Promise<void> {
-    this.hsEventBusService.compositionLoading.next(response);
     if (this.checkLoadSuccess(response)) {
       if (this.hsUtilsService.isFunction(pre_parse)) {
         response = await pre_parse(response);
@@ -151,7 +190,7 @@ export class HsCompositionsParserService {
       if (!response.basemapComposition) {
         this.composition_loaded = url;
       }
-      response.workspace = this.current_composition_workspace;
+
       /*
       Response might contain {data:{abstract:...}} or {abstract:}
       directly. If there is data object,
@@ -341,7 +380,6 @@ export class HsCompositionsParserService {
     if (overwrite == undefined || overwrite == true) {
       this.hsMapService.removeCompositionLayers(overwrite == true);
     }
-    this.hsEventBusService.currentComposition.next(obj); //Doesn't seem to be used
     this.current_composition_title = titleFromContainer || obj.title;
     const possibleExtent = extentFromContainer || obj.extent;
     if (

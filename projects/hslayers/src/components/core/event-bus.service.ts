@@ -12,7 +12,10 @@ import {
   HsLayerDescriptor,
   HsLayerLoadProgress,
 } from '../layermanager/layer-descriptor.interface';
-import {HsMapCompositionDescriptor} from '../compositions/models/composition-descriptor.model';
+import {
+  HsMapCompositionDescriptor,
+  LaymanCompositionDescriptor,
+} from '../compositions/models/composition-descriptor.model';
 
 /**
  * HsEventBusService provides observable events which you can subscribe to or fire them
@@ -131,10 +134,8 @@ export class HsEventBusService {
   /**
    * Fires when composition is downloaded from server and parsing begins
    * replaces 'compositions.composition_loading'
-   * @deprecated
    */
-  compositionLoading: Subject<any> = new Subject();
-  currentComposition: BehaviorSubject<any> = new BehaviorSubject(null);
+  compositionLoading: Subject<string> = new Subject();
   /**
    * replaces 'search.resultsReceived'
    */

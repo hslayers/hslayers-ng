@@ -23,8 +23,8 @@
             width="256" height="256">
     </label>
 
-    <hs-layman-access-rights *ngIf="endpoint?.type.includes('layman')" [(access_rights)]="_access_rights"
-        (access_rights_changed)="setAccessRights($event)">
+    <hs-layman-access-rights *ngIf="endpoint?.type.includes('layman')"
+        [(access_rights)]="hsSaveMapManagerService._access_rights" (access_rights_changed)="setAccessRights($event)">
     </hs-layman-access-rights>
 
     <div class="mb-2 d-flex justify-content-center">
@@ -33,8 +33,8 @@
     </div>
     <hs-save-map-advanced-options [hidden]="extraFormOpened !== 'advancedOptions'"></hs-save-map-advanced-options>
 
-    <div class="modal-footer w-100 pt-3" *ngIf="{canBeOverwriten: isNotMine() && overwrite} as composition">
-        <div *ngIf="isNotMine()" class="alert alert-info text-gray m-2">
+    <div class="modal-footer w-100 pt-3" *ngIf="{canBeOverwriten: canOverwrite() && overwrite} as composition">
+        <div *ngIf="canOverwrite()" class="alert alert-info text-gray m-2">
             {{'SAVECOMPOSITION.saveOrOverwrite' | translateHs }}
         </div>
         <div class="d-flex justify-content-end w-100" [class.justify-content-between]="composition.canBeOverwriten">

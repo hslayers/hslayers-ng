@@ -1,5 +1,6 @@
 import {Component, Input, ViewRef} from '@angular/core';
 
+import {HsCompositionsParserService} from '../../compositions/compositions-parser.service';
 import {HsDialogComponent} from '../../layout/dialogs/dialog-component.interface';
 import {HsDialogContainerService} from '../../layout/dialogs/dialog-container.service';
 import {HsEventBusService} from '../../core/event-bus.service';
@@ -9,8 +10,7 @@ import {HsLayerManagerService} from '../layermanager.service';
   templateUrl: './remove-all-dialog.component.html',
 })
 export class HsLayerManagerRemoveAllDialogComponent
-  implements HsDialogComponent
-{
+  implements HsDialogComponent {
   @Input() data: any;
   viewRef: ViewRef;
 
@@ -18,6 +18,7 @@ export class HsLayerManagerRemoveAllDialogComponent
     public HsLayerManagerService: HsLayerManagerService,
     public HsDialogContainerService: HsDialogContainerService,
     public HsEventBusService: HsEventBusService,
+    public hsCompositionsParserService: HsCompositionsParserService,
   ) {}
 
   removeAllLayers(reloadComposition?: boolean): void {

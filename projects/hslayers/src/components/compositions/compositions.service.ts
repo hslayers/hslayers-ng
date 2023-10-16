@@ -309,9 +309,6 @@ export class HsCompositionsService {
   ): Promise<void> {
     const url = await this.getRecordUrl(record);
     if (url) {
-      //Provide save-map comoData workspace property and distinguish between editable and non-editable compositions
-      this.hsCompositionsParserService.current_composition_workspace =
-        record.editable ? record.workspace : null;
       if (
         this.hsCompositionsParserService.composition_edited ||
         this.hsCompositionsParserService.composition_loaded
@@ -411,9 +408,8 @@ export class HsCompositionsService {
       if (parsed.expires && parsed.expires < new Date().getTime()) {
         return;
       }
-      const layers = await this.hsCompositionsParserService.jsonToLayers(
-        parsed,
-      );
+      const layers =
+        await this.hsCompositionsParserService.jsonToLayers(parsed);
       for (let i = 0; i < layers.length; i++) {
         this.hsMapService.addLayer(layers[i], DuplicateHandling.IgnoreNew);
       }
