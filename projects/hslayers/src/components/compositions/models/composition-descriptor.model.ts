@@ -23,3 +23,18 @@ export interface HsMapCompositionDescriptor {
     write: string[];
   };
 }
+
+export interface LaymanCompositionDescriptor {
+  access_rights: {read: string[]; write: string[]};
+  bounding_box: number[];
+  name: string;
+  native_bounding_box: number[];
+  native_crs: string;
+  publication_type: 'map';
+  title: string;
+  updated_at: string;
+  url: string;
+  uuid: string;
+  workspace: string;
+  file: any;
+}

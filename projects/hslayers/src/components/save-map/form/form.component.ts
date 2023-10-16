@@ -24,11 +24,6 @@ export class HsSaveMapAdvancedFormComponent implements OnDestroy, OnInit {
 
   private end = new Subject<void>();
 
-  _access_rights: accessRightsModel = {
-    'access_rights.write': 'private',
-    'access_rights.read': 'EVERYONE',
-  };
-
   constructor(
     public hsSaveMapManagerService: HsSaveMapManagerService,
     private hsUtilsService: HsUtilsService,
@@ -160,36 +155,30 @@ export class HsSaveMapAdvancedFormComponent implements OnDestroy, OnInit {
    * @param newSave - If true save a new composition, otherwise overwrite to current one
    */
   initiateSave(newSave: boolean): void {
+    /***
+     * Overwriting composition of other user and making it private
+     * euqals (access for owner + current user )
+     */
+    const currentUser = this.hsSaveMapManagerService.currentUser;
+    const workspace =
+      this.hsSaveMapManagerService.compoData.get('workspace').value;
+    if (newSave == false && this.canOverwrite() && currentUser !== workspace) {
+      const access =
+        this.hsSaveMapManagerService.compoData.get('access_rights');
+      this.hsSaveMapManagerService.compoData.patchValue({
+        access_rights: {
+          ...access.value,
+          'access_rights.write': [workspace, currentUser].join(','),
+        },
+      });
+    }
     this.hsSaveMapManagerService.initiateSave(newSave);
   }
 
   /**
-   * Check if current user can overwrite the composition data
+   *  Check if current user can overwrite the composition data
    */
-  canOverwrite(): boolean {
-    //NOTE: compoData workspace is set only in case composition is editable
-    return !!this.hsSaveMapManagerService.compoData.controls.workspace.value;
-  }
-
-  /**
-   *  Check wether composition belongs to different user.
-   *  Additionaly checks wether it is editable because if its not overwrite is not possible
-   *  and the note doesnt really adds value
-   */
-  isNotMine() {
-    const workspace =
-      this.hsSaveMapManagerService.compoData.controls.workspace.value;
-    return workspace && this.hsSaveMapManagerService.currentUser !== workspace;
+  canOverwrite() {
+    return this.hsSaveMapManagerService.currentComposition?.editable;
   }
 }
-/***
- * Can overwrite => workspace existuje
- * rovnaky uživateľ -> overwrite
- *    - doteraz bol klik a následne je možné sa rozhodnúť čo dalej overwrite, rename. To je ale nekonzistentné s tým, čo sa deje pri rozdielnych
- *     uživateľoch. Tj. ak máš práva tak sa po kliku na save automaticky uloží, nedá sa prepísat v podstate
- * rozidelny uživatelia (editable) => overwrite/new compo
- * rozdielny uživatelia(not-editable) => new
- *    - mala by mat note že je to komzíci niekoho iného aj ked s nou nič neviem urobit?
- *  Aktuálne sa reálne nedá overwrite pretože request sa posiela na  current_user workspace tj. vždy nové *
- * zmena stringu aby bolo jasnejšie že zmenou názvu zmizne 'overwrite'
- */

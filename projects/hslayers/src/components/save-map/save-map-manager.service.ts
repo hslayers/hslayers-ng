@@ -1,9 +1,10 @@
-import {BehaviorSubject, Subject} from 'rxjs';
+import {BehaviorSubject, Subject, withLatestFrom} from 'rxjs';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 
 import {CompoData} from './types/compo-data.type';
+import {HsCompositionsParserService} from '../compositions/compositions-parser.service';
 import {HsConfig} from '../../config.service';
 import {HsEndpoint} from '../../common/endpoints/endpoint.interface';
 import {HsEventBusService} from '../core/event-bus.service';
@@ -15,10 +16,12 @@ import {HsSaveMapService} from './save-map.service';
 import {HsSaverService} from './interfaces/saver-service.interface';
 import {HsShareService} from '../permalink/share.service';
 import {HsUtilsService} from '../utils/utils.service';
+import {LaymanCompositionDescriptor} from '../compositions/models/composition-descriptor.model';
 import {MapComposition} from './types/map-composition.type';
 import {StatusData} from './types/status-data.type';
 import {UserData} from './types/user-data.type';
 import {accessRightsModel} from '../add-data/common/access-rights.model';
+
 export class HsSaveMapManagerParams {
   statusData: StatusData = {
     titleFree: undefined,
@@ -28,8 +31,12 @@ export class HsSaveMapManagerParams {
     groups: [],
   };
 
-  //TODO: USE REACTIVE FORM INSTEAD OF THIS
   currentComposition = undefined;
+
+  _access_rights: accessRightsModel = {
+    'access_rights.write': 'private',
+    'access_rights.read': 'EVERYONE',
+  };
 
   compoData = new FormGroup({
     name: new FormControl('', {
@@ -45,10 +52,7 @@ export class HsSaveMapManagerParams {
 
     id: new FormControl(''),
     thumbnail: new FormControl(undefined),
-    access_rights: new FormControl<accessRightsModel>({
-      'access_rights.write': 'private',
-      'access_rights.read': 'EVERYONE',
-    }),
+    access_rights: new FormControl<accessRightsModel>(this._access_rights),
   });
 
   userData: UserData = {
@@ -90,23 +94,35 @@ export class HsSaveMapManagerService extends HsSaveMapManagerParams {
     private hsUtilsService: HsUtilsService,
     private hsEventBusService: HsEventBusService,
     private hsLogService: HsLogService,
+    private hsCompositionsParserService: HsCompositionsParserService,
   ) {
     super();
-    this.hsEventBusService.compositionLoads.subscribe((data) => {
-      if (data.error == undefined) {
-        const responseData = data.data ?? data;
-        this.currentComposition = responseData;
 
-        this.compoData.patchValue({
-          id: responseData.id,
-          abstract: responseData.abstract,
-          keywords: responseData.keywords,
-          workspace: responseData.workspace,
-          //NOTE: Keep name last so its valueChange subscription has access to updated values
-          name: responseData.name,
-        });
-      }
-    });
+    this.hsCompositionsParserService.currentCompositionRecord
+      .pipe(withLatestFrom(this.hsEventBusService.compositionLoads))
+      .subscribe(([metadata, compositon]) => {
+        /***
+         * TODO test:
+         * WMC composition
+         * Micka without record on layman composition
+         */
+        if (compositon.error == undefined) {
+          const responseData = compositon.data ?? compositon;
+          this.currentComposition = responseData;
+
+          const workspace = this.parseAccessRights(metadata);
+
+          this.compoData.patchValue({
+            id: responseData.id,
+            abstract: responseData.abstract,
+            keywords: responseData.keywords,
+            workspace: workspace,
+            //NOTE: Keep name last so its valueChange subscription has access to updated values
+            name: responseData.name,
+            access_rights: this._access_rights,
+          });
+        }
+      });
 
     this.hsEventBusService.mainPanelChanges.subscribe((which) => {
       if (
@@ -147,6 +163,57 @@ export class HsSaveMapManagerService extends HsSaveMapManagerParams {
         ),
       );
     });
+  }
+
+  parseAccessRights(metadata: LaymanCompositionDescriptor): string {
+    this.currentComposition.editable = true;
+    const workspace = metadata.url.match(/\/workspaces\/([^/]+)/)
+      ? metadata.url.match(/\/workspaces\/([^/]+)/)[1]
+      : null;
+    const write = metadata.access_rights.write;
+    const read = metadata.access_rights.read;
+    if (this.currentUser === workspace) {
+      this.privateOrPublic(write, 'write', this.currentUser);
+      this.privateOrPublic(read, 'read', this.currentUser);
+    } else if (
+      write.includes(this.currentUser) ||
+      /**
+       * Different user + PUBLIC write
+       */
+      (write.length == 2 &&
+        [workspace, 'EVERYONE'].every((u) => write.includes(u)))
+    ) {
+      this.privateOrPublic(write, 'write', workspace);
+      this.privateOrPublic(read, 'read', workspace);
+    } else {
+      /**
+       * Not editable composition. Saved composition will have its own access rights
+       * No need to copy existing
+       */
+      this._access_rights[`access_rights.read`] = 'EVERYONE';
+      this._access_rights[`access_rights.write`] = 'private';
+      this.currentComposition.editable = false;
+    }
+
+    return workspace;
+  }
+
+  /**
+   * Transform access rights array recieved from Layman to simplified version used in HSL
+   * Map access string (read or write) to EVERYONE, private or keep original.
+   */
+  private privateOrPublic(
+    access: string[],
+    type: 'write' | 'read',
+    user: string,
+  ): void {
+    const filtered = access.filter((u) => u !== user);
+    this._access_rights[`access_rights.${type}`] =
+      filtered.length === 0
+        ? 'private'
+        : filtered.length === 1 && filtered[0] === 'EVERYONE'
+        ? filtered[0]
+        : access.join(',');
   }
 
   /**

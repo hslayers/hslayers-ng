@@ -15,8 +15,8 @@
                 <button class="btn btn-primary" (click)="removeAllLayers(false);"
                     data-dismiss="modal">{{'LAYERMANAGER.dialogRemoveAll.removeAllAdded' | translateHs
                     }}</button>
-                <button class="btn btn-primary" *ngIf="HsEventBusService.currentComposition.value"
-                    (click)="removeAllLayers(true)"
+                <button class="btn btn-primary" (click)="removeAllLayers(true)"
+                    *ngIf="hsCompositionsParserService.currentCompositionRecord | async"
                     data-dismiss="modal">{{'LAYERMANAGER.dialogRemoveAll.reloadComposition' | translateHs}}</button>
                 <button class="btn btn-secondary" (click)="close()" data-dismiss="modal">{{'COMMON.no' |
                     translateHs}}</button>
