@@ -513,20 +513,25 @@ export class HsCompositionsParserService {
   async loadInfo(url: string): Promise<any> {
     url = url.replace(/&amp;/g, '&');
     url = this.hsUtilsService.proxify(url);
-    let options;
-    options = {responseType: 'json'};
     let response;
     if (url.endsWith('.wmc')) {
-      options = {responseType: 'text'};
-      response = await lastValueFrom(this.$http.get(url, options));
+      response = await lastValueFrom(
+        this.$http.get(url, {responseType: 'text'}),
+      );
       response = this.parseMickaWmcInfo(response);
     } else if (url.includes('GetRecordById')) {
       //CSW composition
-      options = {responseType: 'text'};
-      response = await lastValueFrom(this.$http.get(url, options));
+      response = await lastValueFrom(
+        this.$http.get(url, {responseType: 'text'}),
+      );
       response = this.parseMickaCSWInfo(response);
     } else {
-      response = await lastValueFrom(this.$http.get(url, options));
+      response = await lastValueFrom(
+        this.$http.get(url, {
+          responseType: 'json',
+          withCredentials: !!this.hsCommonLaymanService.layman.user,
+        }),
+      );
     }
     return response.data || response;
   }
