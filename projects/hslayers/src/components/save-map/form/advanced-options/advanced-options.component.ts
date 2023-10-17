@@ -1,14 +1,14 @@
 import {BoundingBoxObject} from '../../types/bounding-box-object.type';
-import {Component, OnDestroy, OnInit, inject} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit, inject} from '@angular/core';
 import {
   ControlContainer,
-  FormArray,
   FormBuilder,
   FormControl,
   FormGroup,
-  Validators,
 } from '@angular/forms';
 import {HsMapService} from '../../../map/map.service';
+import {HsSaveMapService} from '../../save-map.service';
+import {HsUtilsService} from '../../../utils/utils.service';
 import {Layer} from 'ol/layer';
 import {Source} from 'ol/source';
 import {
@@ -33,18 +33,34 @@ export type saveMapLayer = {
   ],
 })
 export class AdvancedOptionsComponent implements OnInit, OnDestroy {
+  @Input() thumbnail: HTMLImageElement;
+
   layers: saveMapLayer[];
   btnSelectDeselectClicked = true;
+
+  postCompose = this.hsUtilsService.debounce(
+    () => {
+      this.setCurrentBoundingBox();
+      this.hsSaveMapService.generateThumbnail(this.thumbnail);
+    },
+    1000,
+    false,
+    this,
+  );
+
   constructor(
     public parentContainer: ControlContainer,
     private fb: FormBuilder,
     private hsMapService: HsMapService,
+    private hsUtilsService: HsUtilsService,
+    private hsSaveMapService: HsSaveMapService,
   ) {}
 
   get parentFormGroup() {
     return this.parentContainer.control as FormGroup;
   }
   visible = false;
+
   ngOnInit() {
     this.fillCompositionLayers();
     this.parentFormGroup.addControl(
@@ -56,18 +72,22 @@ export class AdvancedOptionsComponent implements OnInit, OnDestroy {
         north: new FormControl(0),
       }),
     );
-
+    //Not using postCompose method because of the delay
     this.setCurrentBoundingBox();
+    this.hsSaveMapService.generateThumbnail(this.thumbnail);
 
     this.parentFormGroup.addControl(
       'layers',
       new FormControl<saveMapLayer['layer'][]>(this.flattenValues()),
     );
+
+    this.hsMapService.getMap().on('postcompose', this.postCompose);
   }
 
   ngOnDestroy() {
     this.parentFormGroup.removeControl('bbox');
     this.parentFormGroup.removeControl('layers');
+    this.hsMapService.getMap().un('postcompose', this.postCompose);
   }
 
   /**

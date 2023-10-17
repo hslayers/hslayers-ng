@@ -19,8 +19,8 @@
         <label for="hs-save-map-keywords">{{'COMMON.keywords' | translateHs }}</label>
     </div>
     <label class="form-group">{{'COMMON.thumbnail' | translateHs }}
-        <img class="hs-stc-thumbnail img-thumbnail" [alt]="'SAVECOMPOSITION.compositionThumbnail' | translateHs "
-            width="256" height="256">
+        <img #compositionThumbnail class="hs-stc-thumbnail img-thumbnail"
+            [alt]="'SAVECOMPOSITION.compositionThumbnail' | translateHs " width="256" height="256">
     </label>
 
     <hs-layman-access-rights *ngIf="endpoint?.type.includes('layman')"
@@ -31,7 +31,8 @@
         <button type="button" class="btn btn-secondary me-2 w-50" id="stc-advanced-options"
             (click)="setExtraFormTo('advancedOptions')">{{'COMMON.advancedOptions' | translateHs }}</button>
     </div>
-    <hs-save-map-advanced-options [hidden]="extraFormOpened !== 'advancedOptions'"></hs-save-map-advanced-options>
+    <hs-save-map-advanced-options [thumbnail]="compositionThumbnail"
+        [hidden]="extraFormOpened !== 'advancedOptions'"></hs-save-map-advanced-options>
 
     <div class="modal-footer w-100 pt-3" *ngIf="{canBeOverwriten: canOverwrite() && overwrite} as composition">
         <div *ngIf="canOverwrite()" class="alert alert-info text-gray m-2">
