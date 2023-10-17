@@ -62,8 +62,7 @@ export class HsSaveMapAdvancedFormComponent implements OnDestroy, OnInit {
       (name: string) => {
         this.overwrite =
           this.hsSaveMapManagerService.compoData.controls.workspace.value &&
-          this.hsSaveMapManagerService.currentComposition.name &&
-          this.hsSaveMapManagerService.currentComposition.name === name;
+          this.hsSaveMapManagerService.currentComposition?.name === name;
       },
     );
   }
@@ -157,7 +156,7 @@ export class HsSaveMapAdvancedFormComponent implements OnDestroy, OnInit {
   initiateSave(newSave: boolean): void {
     /***
      * Overwriting composition of other user and making it private
-     * euqals (access for owner + current user )
+     *  = access for owner + current user
      */
     const currentUser = this.hsSaveMapManagerService.currentUser;
     const workspace =
