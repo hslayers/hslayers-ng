@@ -13,7 +13,7 @@
         </div>
         <hs-layman-current-user class="d-block pb-5" *ngIf="endpoint?.type.includes('layman')" [endpoint]="endpoint">
         </hs-layman-current-user>
-        <hs-save-map-form *ngIf="isAuthenticated || !endpoint?.type.includes('layman'); notAuthorized">
+        <hs-save-map-form *ngIf="isAuthenticated || !endpoint?.type.includes('layman'); else notAuthorized">
         </hs-save-map-form>
 
     </div>
