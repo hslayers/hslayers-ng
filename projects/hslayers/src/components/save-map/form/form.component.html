@@ -50,7 +50,7 @@
             <div class="d-flex justify-content-end gap-2">
                 <button type="submit" class="btn btn-primary" id="stc-saveas" [hidden]="!(isAllowed())">
                     <!-- TODO: Remove function call from template -->{{'COMMON.save' | translateHs }}
-                    <span *ngIf="composition.canBeOverwriten"> as new</span>
+                    <span *ngIf="composition.canBeOverwriten">{{'COMMON.asNew' | translateHs }}</span>
                 </button>
                 <a type="button" class="btn btn-secondary" (click)="saveCompoJson()"
                     id="stc-download">{{'COMMON.download' |

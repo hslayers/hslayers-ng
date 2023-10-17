@@ -308,7 +308,8 @@
     "NOT_AVAILABLE": "Nedostupné",
     "PREPARING": "Pripravuje sa",
     "confirmReset": "Potvrďte reset",
-    "saving": "Ukladanie"
+    "saving": "Ukladanie",
+    "asNew": "ako nové"
   },
   "COMPOSITIONS": {
     "addByAddress": "Pridať kompozíciu z adresy",

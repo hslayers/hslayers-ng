@@ -308,7 +308,8 @@
     "NOT_AVAILABLE": "Not available",
     "PREPARING": "Preparing",
     "confirmReset": "Confirm reset",
-    "saving": "Saving"
+    "saving": "Saving",
+    "asNew": "as new"
   },
   "COMPOSITIONS": {
     "addByAddress": "Add composition by address",
