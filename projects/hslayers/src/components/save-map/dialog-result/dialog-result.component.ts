@@ -26,6 +26,15 @@ export class HsSaveMapResultDialogComponent implements HsDialogComponent {
    */
   async initiateSave(newSave: boolean): Promise<void> {
     this.saving = true;
+    /**
+     * NOTE: No conditions tested as the only way this is called is when trying to overwrite
+     * Overwrite atempt cannot result in 'Composition exists' eg. in this method
+     * Thus - this has to always be making a request for current user workspace
+     */
+    this.hsSaveMapManagerService.compoData.patchValue({
+      workspace: this.hsSaveMapManagerService.currentUser,
+    });
+
     await this.hsSaveMapManagerService.initiateSave(newSave);
     this.saving = false;
     this.close();
