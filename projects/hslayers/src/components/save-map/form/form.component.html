@@ -35,7 +35,7 @@
         [hidden]="extraFormOpened !== 'advancedOptions'"></hs-save-map-advanced-options>
 
     <div class="modal-footer w-100 pt-3" *ngIf="{canBeOverwriten: canOverwrite() && overwrite} as composition">
-        <div *ngIf="canOverwrite()" class="alert alert-info text-gray m-2">
+        <div *ngIf="composition.canBeOverwriten" class="alert alert-info text-gray m-2">
             {{'SAVECOMPOSITION.saveOrOverwrite' | translateHs }}
         </div>
         <div class="d-flex justify-content-end w-100" [class.justify-content-between]="composition.canBeOverwriten">
