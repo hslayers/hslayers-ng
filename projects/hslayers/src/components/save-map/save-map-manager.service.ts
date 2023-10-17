@@ -129,39 +129,10 @@ export class HsSaveMapManagerService extends HsSaveMapManagerParams {
         this.hsLayoutService.mainpanel == 'saveMap' ||
         this.hsLayoutService.mainpanel == 'statusCreator'
       ) {
-        this.hsMapService.loaded().then(() => {
-          this.hsSaveMapService.generateThumbnail(
-            this.hsLayoutService.contentWrapper.querySelector(
-              '.hs-stc-thumbnail',
-            ),
-          );
-        });
         this.hsEventBusService.mapResets.subscribe(() => {
           this.resetCompoData();
         });
       }
-    });
-
-    this.hsEventBusService.olMapLoads.subscribe((map) => {
-      //this.setCurrentBoundingBox();
-      map.on(
-        'postcompose',
-        this.hsUtilsService.debounce(
-          () => {
-            if (this.hsLayoutService.mainpanel == 'saveMap') {
-              //this.setCurrentBoundingBox();
-              this.hsSaveMapService.generateThumbnail(
-                this.hsLayoutService.contentWrapper.querySelector(
-                  '.hs-stc-thumbnail',
-                ),
-              );
-            }
-          },
-          1000,
-          false,
-          this,
-        ),
-      );
     });
   }
 
