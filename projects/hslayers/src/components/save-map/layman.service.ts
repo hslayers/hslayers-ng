@@ -188,11 +188,13 @@ export class HsLaymanService implements HsSaverService {
     formdata.append('access_rights.read', rights.read);
     formdata.append('access_rights.write', rights.write);
 
-    const workspace = compoData.workspace
-      ? saveAsNew
+    const workspace =
+      compoData.workspace === endpoint.user
         ? endpoint.user
-        : compoData.workspace
-      : endpoint.user;
+        : saveAsNew
+        ? endpoint.user
+        : compoData.workspace;
+
     return await this.makeMapPostPatchRequest(
       endpoint,
       workspace,
