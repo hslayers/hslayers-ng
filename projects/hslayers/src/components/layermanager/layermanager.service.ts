@@ -490,25 +490,18 @@ export class HsLayerManagerService {
 
   /**
    * Place layer into layer manager folder structure based on path property hsl-path of layer
-   * @private
    * @param lyr - Layer to add into folder structure
    */
   populateFolders(lyr: Layer<Source>): void {
     let path = getPath(lyr);
-    if (!path) {
-      /* Check whether 'other' folder exists.
-        Can not just add getTranslationIgnoreNonExisting string in case no path exists
-        because on init the translation is ignored.
-      */
-      if (this.data.folders.sub_folders?.filter((f) => f.name == 'other')[0]) {
-        path = 'other';
-      } else {
-        path = this.hsLanguageService.getTranslationIgnoreNonExisting(
-          'LAYERMANAGER',
-          'other',
-          undefined,
-        );
-      }
+    if (
+      !path ||
+      path == 'Other' ||
+      this.hsLanguageService
+        .getTranslation('LAYERMANAGER')
+        ['other']?.toLowerCase() === path.toLowerCase()
+    ) {
+      path = 'other';
       setPath(lyr, path);
     }
     const parts = path.split('/');
@@ -1144,7 +1137,7 @@ export class HsLayerManagerService {
     } else {
       let path = getPath(layer);
       //If not set it'll be assigned inside populateFolders function as 'other'
-      path = path ? path : 'other';
+      path = path ?? 'other';
 
       pathLayers = this.data.layers.filter(
         (layer) => getPath(layer.layer) == path,
