@@ -101,16 +101,13 @@ export class HsSaveMapManagerService extends HsSaveMapManagerParams {
     this.hsCompositionsParserService.currentCompositionRecord
       .pipe(withLatestFrom(this.hsEventBusService.compositionLoads))
       .subscribe(([metadata, compositon]) => {
-        /***
-         * TODO test:
-         * WMC composition
-         * Micka without record on layman composition
-         */
         if (compositon.error == undefined) {
           const responseData = compositon.data ?? compositon;
           this.currentComposition = responseData;
 
-          const workspace = this.parseAccessRights(metadata);
+          const workspace = metadata['error']
+            ? this.currentUser
+            : this.parseAccessRights(metadata);
 
           this.compoData.patchValue({
             id: responseData.id,
