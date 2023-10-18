@@ -94,24 +94,29 @@ export class HsCompositionsParserService {
     this.currentCompositionRecord =
       this.hsEventBusService.compositionLoads.pipe(
         switchMap((_) => {
-          return this.$http.get<LaymanCompositionDescriptor>(
-            this.current_composition_url.replace('/file', ''),
-            {
-              withCredentials:
-                this.hsCommonLaymanService.layman.user &&
-                isLaymanUrl(
-                  this.current_composition_url,
-                  this.hsCommonLaymanService.layman,
-                ),
-            },
+          const fromLayman = isLaymanUrl(
+            this.current_composition_url,
+            this.hsCommonLaymanService.layman,
           );
+          return this.$http
+            .get<LaymanCompositionDescriptor>(
+              this.current_composition_url.replace('/file', ''),
+              {
+                withCredentials:
+                  this.hsCommonLaymanService.layman.user && fromLayman,
+              },
+            )
+            .pipe(
+              catchError((e) => {
+                fromLayman
+                  ? console.error('Could not composition metadata')
+                  : undefined;
+                return of(e);
+              }),
+            );
         }),
         //Allows remove-all component to recieve value when created eg. late
         shareReplay(1),
-        catchError((e) => {
-          console.error('Error while requesting composition metadata');
-          return of(e);
-        }),
       );
   }
 
