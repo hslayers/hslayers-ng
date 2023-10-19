@@ -27,14 +27,29 @@ export interface HsMapCompositionDescriptor {
 export interface LaymanCompositionDescriptor {
   access_rights: {read: string[]; write: string[]};
   bounding_box: number[];
+  description: string;
+  layman_metadata: {
+    publication_status: 'COMPLETE' | 'INCOMPLETE' | 'UPDATING';
+  };
+  metadata: {
+    identifier: string;
+    record_url: string;
+    csw_url: string;
+    comparison_url: string;
+    status?: any;
+    error?: any;
+  };
+  thumbnail: {
+    path: string;
+    url: string;
+    error?: any;
+  };
   name: string;
   native_bounding_box: number[];
   native_crs: string;
-  publication_type: 'map';
   title: string;
   updated_at: string;
   url: string;
   uuid: string;
-  workspace: string;
   file: any;
 }
