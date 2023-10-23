@@ -100,9 +100,9 @@ export class HsSaveMapManagerService extends HsSaveMapManagerParams {
 
     this.hsCompositionsParserService.currentCompositionRecord
       .pipe(withLatestFrom(this.hsEventBusService.compositionLoads))
-      .subscribe(([metadata, compositon]) => {
-        if (compositon.error == undefined) {
-          const responseData = compositon.data ?? compositon;
+      .subscribe(([metadata, composition]) => {
+        if (composition.error == undefined) {
+          const responseData = composition.data ?? composition;
           this.currentComposition = responseData;
 
           const workspace = metadata['error']
@@ -167,7 +167,7 @@ export class HsSaveMapManagerService extends HsSaveMapManagerParams {
   }
 
   /**
-   * Transform access rights array recieved from Layman to simplified version used in HSL
+   * Transform access rights array received from Layman to simplified version used in HSL
    * Map access string (read or write) to EVERYONE, private or keep original.
    */
   private privateOrPublic(
@@ -194,7 +194,7 @@ export class HsSaveMapManagerService extends HsSaveMapManagerParams {
   /**
    * Update composition data object name
    */
-  updateCompodataName(name: string) {
+  updateCompoDataName(name: string) {
     this.compoData.controls.name.setValue(name);
   }
 
@@ -306,7 +306,7 @@ export class HsSaveMapManagerService extends HsSaveMapManagerParams {
    * Callback for saving with new name
    */
   selectNewName(): void {
-    this.updateCompodataName(this.statusData.guessedTitle);
+    this.updateCompoDataName(this.statusData.guessedTitle);
     this.changeTitle = true;
   }
 
@@ -367,7 +367,7 @@ export class HsSaveMapManagerService extends HsSaveMapManagerParams {
       const error = response.error;
       if (error.code == 24) {
         this.statusData.overWriteNeeded = true;
-        this.updateCompodataName(error.detail.mapname);
+        this.updateCompoDataName(error.detail.mapname);
         this.statusData.resultCode = 'exists';
       } else if (error.code == 32) {
         this.statusData.resultCode = 'not-saved';
@@ -387,7 +387,7 @@ export class HsSaveMapManagerService extends HsSaveMapManagerParams {
    */
   focusTitle() {
     if (this.statusData.guessedTitle) {
-      this.updateCompodataName(this.statusData.guessedTitle);
+      this.updateCompoDataName(this.statusData.guessedTitle);
     }
     //TODO: Check if this works and input is focused
     this.hsLayoutService.contentWrapper.querySelector('.hs-stc-title').focus();

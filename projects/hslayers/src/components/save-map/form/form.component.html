@@ -34,12 +34,12 @@
     <hs-save-map-advanced-options [thumbnail]="compositionThumbnail"
         [hidden]="extraFormOpened !== 'advancedOptions'"></hs-save-map-advanced-options>
 
-    <div class="modal-footer w-100 pt-3" *ngIf="{canBeOverwriten: canOverwrite() && overwrite} as composition">
-        <div *ngIf="composition.canBeOverwriten" class="alert alert-info text-gray m-2">
+    <div class="modal-footer w-100 pt-3" *ngIf="{canBeOverwritten: canOverwrite() && overwrite} as composition">
+        <div *ngIf="composition.canBeOverwritten" class="alert alert-info text-gray m-2">
             {{'SAVECOMPOSITION.saveOrOverwrite' | translateHs }}
         </div>
-        <div class="d-flex justify-content-end w-100" [class.justify-content-between]="composition.canBeOverwriten">
-            <button *ngIf="composition.canBeOverwriten" type="button" class="btn btn-danger position-relative"
+        <div class="d-flex justify-content-end w-100" [class.justify-content-between]="composition.canBeOverwritten">
+            <button *ngIf="composition.canBeOverwritten" type="button" class="btn btn-danger position-relative"
                 id="stc-save" (click)="initiateSave(false)">{{'SAVECOMPOSITION.form.overwrite' | translateHs }}
                 <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary"
                     [title]="'SAVECOMPOSITION.form.overwrite' | translateHs">
@@ -50,7 +50,7 @@
             <div class="d-flex justify-content-end gap-2">
                 <button type="submit" class="btn btn-primary" id="stc-saveas" [hidden]="!(isAllowed())">
                     <!-- TODO: Remove function call from template -->{{'COMMON.save' | translateHs }}
-                    <span *ngIf="composition.canBeOverwriten">{{'COMMON.asNew' | translateHs }}</span>
+                    <span *ngIf="composition.canBeOverwritten">{{'COMMON.asNew' | translateHs }}</span>
                 </button>
                 <a type="button" class="btn btn-secondary" (click)="saveCompoJson()"
                     id="stc-download">{{'COMMON.download' |

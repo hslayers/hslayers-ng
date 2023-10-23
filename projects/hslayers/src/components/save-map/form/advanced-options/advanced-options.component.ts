@@ -1,4 +1,3 @@
-import {BoundingBoxObject} from '../../types/bounding-box-object.type';
 import {Component, Input, OnDestroy, OnInit, inject} from '@angular/core';
 import {
   ControlContainer,
@@ -6,11 +5,13 @@ import {
   FormControl,
   FormGroup,
 } from '@angular/forms';
+
+import {Layer} from 'ol/layer';
+import {Source} from 'ol/source';
+
 import {HsMapService} from '../../../map/map.service';
 import {HsSaveMapService} from '../../save-map.service';
 import {HsUtilsService} from '../../../utils/utils.service';
-import {Layer} from 'ol/layer';
-import {Source} from 'ol/source';
 import {
   getShowInLayerManager,
   getTitle,
