@@ -115,7 +115,7 @@ export class HsCompositionsParserService {
               }),
             );
         }),
-        //Allows remove-all component to recieve value when created eg. late
+        //Allows remove-all component to receive value when created eg. late
         shareReplay(1),
       );
   }
