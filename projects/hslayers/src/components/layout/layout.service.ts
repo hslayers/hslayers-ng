@@ -166,7 +166,7 @@ export class HsLayoutService extends HsLayoutParams {
   async updSidebarPosition() {
     const lastPosition = this.sidebarPosition$.getValue();
     const hslElement = this.layoutElement;
-    if (window.innerWidth <= this.hsConfig.mobileBreakpoint) {
+    if (hslElement.clientWidth <= this.hsConfig.mobileBreakpoint) {
       hslElement.classList.add('hs-mobile-view');
       if (lastPosition != 'bottom') {
         this.sidebarPosition$.next('bottom');

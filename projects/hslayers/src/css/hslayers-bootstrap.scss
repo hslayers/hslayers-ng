@@ -36,6 +36,9 @@ $list-group-item-padding-x: 1.25rem;
 }
 
 .hsl {
+  container-type: inline-size;
+  container-name: hslayers-element;
+
   @import "bootstrap/scss/reboot";
   @import "bootstrap/scss/type";
   @import "bootstrap/scss/images";

@@ -130,7 +130,7 @@
   }
 }
 
-@media screen and (max-width:767px) {
+@container hslayers-element (max-width:767px) {
   .basemapGallery .galleryDropdown {
     column-gap: 0.5rem;
     row-gap: 1rem;

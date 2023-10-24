@@ -178,9 +178,11 @@ export class HsSidebarService {
   fitsSidebar(button: HsButton): boolean {
     const mobileBreakpoint = this.hsConfig.mobileBreakpoint;
     const dimensionToCheck =
-      window.innerWidth > mobileBreakpoint ? 'clientHeight' : 'clientWidth';
+      this.HsLayoutService.layoutElement.clientWidth > mobileBreakpoint
+        ? 'clientHeight'
+        : 'clientWidth';
     this.HsLayoutService.sidebarToggleable =
-      window.innerWidth > mobileBreakpoint;
+      this.HsLayoutService.layoutElement.clientWidth > mobileBreakpoint;
     let maxNumberOfButtons = Math.floor(
       this.HsLayoutService.layoutElement[dimensionToCheck] / 65,
     );
