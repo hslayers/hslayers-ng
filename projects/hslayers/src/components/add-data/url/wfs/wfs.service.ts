@@ -48,7 +48,10 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
   data: UrlDataObject;
   definedProjections: string[];
   loadingFeatures: boolean;
+
+  private requestCancelSubjects: Map<string, Subject<void>> = new Map();
   cancelUrlRequest: Subject<void> = new Subject();
+
   constructor(
     private http: HttpClient,
     public hsUtilsService: HsUtilsService,
@@ -304,6 +307,12 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
    * Parse layer feature count and set feature limits
    */
   private parseFeatureCount(url: string, layer: hsWfsCapabilitiesLayer): void {
+    // Create a unique subject for this request
+    const cancelSubject = new Subject<void>();
+
+    // Associate the cancel subject with the request URL
+    this.requestCancelSubjects.set(url, cancelSubject);
+
     this.http
       .get(this.hsUtilsService.proxify(url), {responseType: 'text'})
       .pipe(takeUntil(this.cancelUrlRequest))
@@ -321,15 +330,28 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
           layer.featureCount > 1000
             ? (layer.limitFeatureCount = true)
             : (layer.limitFeatureCount = false);
+          layer.loading = false;
+          this.requestCancelSubjects.delete(url);
         },
         error: (e) => {
-          this.cancelUrlRequest.next();
-          this.hsAddDataCommonService.throwParsingError(e);
-        },
-        complete() {
+          this.cancelRequest(url);
+          layer.featureCount = -9999;
           layer.loading = false;
+          //this.hsAddDataCommonService.throwParsingError(e);
         },
       });
+  }
+
+  /**
+   * Cancel a specific request based on url as identifier
+   */
+  private cancelRequest(url: string) {
+    const cancelSubject = this.requestCancelSubjects.get(url);
+    if (cancelSubject) {
+      cancelSubject.next();
+      cancelSubject.complete();
+      this.requestCancelSubjects.delete(url);
+    }
   }
 
   /**

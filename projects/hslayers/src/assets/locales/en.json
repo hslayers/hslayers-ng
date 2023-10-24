@@ -146,7 +146,8 @@
     "WFS": {
       "addToMap": "Add to map",
       "loadingToManyAtOnce": "features. Loading too many at once (while zoomed out) may affect app performance",
-      "selectedLayerContains": "Selected layer contains"
+      "selectedLayerContains": "Selected layer contains",
+      "featureCountError": "Could not retrieve layer's feature count. In case of excesive number of features the layer may affect performance"
     },
     "WMTS": {
       "tileMatrix": "Tile matrix"
