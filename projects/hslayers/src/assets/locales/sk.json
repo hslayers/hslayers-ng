@@ -135,7 +135,8 @@
     "WFS": {
       "addToMap": "Pridať do mapy",
       "loadingToManyAtOnce": "prvkov. Načítanie příliš veľkého množstva prvkov naraz (pri oddialení) môže ovplyvniť výkon aplikácie",
-      "selectedLayerContains": "Vybraná vrstva obsahuje"
+      "selectedLayerContains": "Vybraná vrstva obsahuje",
+      "featureCountError": "Nepodarilo sa načítať počet prvkov vrstvy. \nV prípade ich nadmerného počtu môže vrstva ovplyvniť výkon"
     },
     "WMTS": {
       "tileMatrix": "Matica dlaždíc"

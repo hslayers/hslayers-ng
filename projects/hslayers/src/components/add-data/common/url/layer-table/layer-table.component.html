@@ -82,6 +82,9 @@
                         <span>{{layer[data.table.nameProperty]}}</span>
                         <span class="hs-loader hs-loader-dark position-absolute end-0 bottom-0 me-3"
                             [hidden]="!layer.loading"></span>
+                        <span style="transform: translateY(50%);" *ngIf="layer.featureCount === -9999"
+                            [title]="'ADDLAYERS.WFS.featureCountError' | translateHs"
+                            class="align-items-center bottom-50 d-flex end-0 h-75 me-3 p-2 position-absolute rounded-1 text-bg-warning">i</span>
                         <div *ngIf="layer.checked && type === 'wmts'"
                             class="d-flex flex-row justify-content-end align-items-baseline mt-1">
                             {{'ADDDATA.CATALOGUE.addAs' | translateHs }}
