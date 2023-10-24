@@ -236,7 +236,6 @@ export class HsSaveMapManagerService extends HsSaveMapManagerParams {
               compInfo.name = j[0].name;
             }
           } else {
-            this.hsEventBusService.compositionLoading.next(compInfo);
             this.hsEventBusService.compositionLoads.next(compInfo);
           }
           //const saveStatus = this.status ? 'ok' : 'not-saved';
