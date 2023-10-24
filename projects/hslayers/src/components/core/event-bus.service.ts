@@ -132,11 +132,6 @@ export class HsEventBusService {
    */
   olMapLoads: Subject<Map> = new Subject();
   /**
-   * Fires when composition is downloaded from server and parsing begins
-   * replaces 'compositions.composition_loading'
-   */
-  compositionLoading: Subject<string> = new Subject();
-  /**
    * replaces 'search.resultsReceived'
    */
   searchResultsReceived: Subject<void> = new Subject();
