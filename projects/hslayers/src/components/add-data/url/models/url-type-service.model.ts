@@ -39,4 +39,8 @@ export interface HsUrlTypeServiceModel {
   isImageService?(): boolean;
   zoomToLayers?(): void;
   collapseServices?(): void;
+  /**
+   *  Side effect to be triggered on a layer being checked
+   */
+  tableLayerChecked?($event: MouseEvent, layer: any): void;
 }

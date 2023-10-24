@@ -23,12 +23,12 @@ import {HsLayoutService} from '../../../layout/layout.service';
 import {HsUrlTypeServiceModel} from '../models/url-type-service.model';
 import {HsUtilsService} from '../../../utils/utils.service';
 import {HsWmsGetCapabilitiesService} from '../../../../common/get-capabilities/wms-get-capabilities.service';
+import {
+  HsWmsLayer,
+  WMSGetCapabilitiesResponse,
+} from '../../../../common/get-capabilities/wms-get-capabilities-response.interface';
 import {LayerOptions} from '../../../compositions/layer-parser/composition-layer-options.type';
 import {UrlDataObject} from '../types/data-object.type';
-import {
-  WMSGetCapabilitiesResponse,
-  HsWmsLayer,
-} from '../../../../common/get-capabilities/wms-get-capabilities-response.interface';
 import {addAnchors} from '../../../../common/attribution-utils';
 import {getPreferredFormat} from '../../../../common/format-utils';
 

@@ -1,6 +1,6 @@
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
-import {Subject, takeUntil} from 'rxjs';
+import {Subject, lastValueFrom, takeUntil} from 'rxjs';
 
 import * as xml2Json from 'xml-js';
 import {Layer, Vector as VectorLayer} from 'ol/layer';
@@ -15,12 +15,31 @@ import {HsAddDataUrlService} from '../add-data-url.service';
 import {HsEventBusService} from '../../../core/event-bus.service';
 import {HsLayoutService} from '../../../layout/layout.service';
 import {HsLogService} from '../../../../common/log/log.service';
+import {HsQueuesService} from '../../../../common/queues/queues.service';
 import {HsUrlTypeServiceModel} from '../models/url-type-service.model';
 import {HsUtilsService} from '../../../utils/utils.service';
 import {HsWfsGetCapabilitiesService} from '../../../../common/get-capabilities/wfs-get-capabilities.service';
 import {LayerOptions} from '../../../compositions/layer-parser/composition-layer-options.type';
 import {UrlDataObject} from '../types/data-object.type';
 import {WfsSource} from '../../../../common/layers/hs.source.WfsSource';
+
+type wfsCapabilitiesLayer = {
+  Abstract: string;
+  DefaultCRS: string;
+  Keywords: {
+    Keyword: string[];
+  };
+  Name: string;
+  Title: string;
+  WGS84BoundingBox: {LowerCorner: string; UpperCorner: string};
+  _attributes: any;
+};
+
+export type hsWfsCapabilitiesLayer = wfsCapabilitiesLayer & {
+  featureCount: number;
+  limitFeatureCount: boolean;
+  loading: boolean;
+};
 
 @Injectable({
   providedIn: 'root',
@@ -40,6 +59,7 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
     public hsLayoutService: HsLayoutService,
     public hsAddDataCommonService: HsAddDataCommonService,
     private hsAddDataUrlService: HsAddDataUrlService,
+    private hsQueuesService: HsQueuesService,
   ) {
     this.setDataToDefault();
   }
@@ -196,14 +216,17 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
         this.data.srss.find((srs) => srs.includes(fallbackProj)) ||
         this.data.srss[0];
 
-      if (!this.hsAddDataCommonService.layerToSelect) {
-        setTimeout(() => {
-          try {
-            this.parseFeatureCount();
-          } catch (e) {
-            throw new Error(e);
-          }
-        });
+      if (
+        !this.hsAddDataCommonService.layerToSelect &&
+        this.data.layers.length <= 10
+      ) {
+        try {
+          setTimeout(() => {
+            this.getFeatureCountForLayers(this.data.layers);
+          }, 0);
+        } catch (e) {
+          throw new Error(e);
+        }
       }
       this.hsAddDataCommonService.loadingInfo = false;
     } catch (e) {
@@ -255,10 +278,11 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
   }
 
   /**
-   * Parse layer feature count and set feature limits
+   * Construct and send WFS service getFeature-hits request for set o layers
    */
-  parseFeatureCount(): void {
-    for (const layer of this.data.layers) {
+  getFeatureCountForLayers(layers: hsWfsCapabilitiesLayer[]) {
+    for (const layer of layers) {
+      layer.loading = true;
       const params = {
         service: 'wfs',
         version: this.data.version, //== '2.0.0' ? '1.1.0' : this.version,
@@ -272,31 +296,54 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
         this.hsUtilsService.paramsToURLWoEncode(params),
       ].join('?');
 
-      this.http
-        .get(this.hsUtilsService.proxify(url), {responseType: 'text'})
-        .pipe(takeUntil(this.cancelUrlRequest))
-        .subscribe({
-          next: (response: any) => {
-            const oParser = new DOMParser();
-            const oDOM = oParser.parseFromString(response, 'application/xml');
-            const doc = oDOM.documentElement;
-            layer.featureCount = doc.getAttribute('numberOfFeatures');
-            //WFS 2.0.0
-            if (layer.featureCount == 0 || !layer.featureCount) {
-              layer.featureCount = doc.getAttribute('numberMatched');
-            }
-
-            layer.featureCount > 1000
-              ? (layer.limitFeatureCount = true)
-              : (layer.limitFeatureCount = false);
-          },
-          error: (e) => {
-            this.cancelUrlRequest.next();
-            this.hsAddDataCommonService.throwParsingError(e);
-          },
-        });
+      this.parseFeatureCount(url, layer);
     }
   }
+
+  /**
+   * Parse layer feature count and set feature limits
+   */
+  private parseFeatureCount(url: string, layer: hsWfsCapabilitiesLayer): void {
+    this.http
+      .get(this.hsUtilsService.proxify(url), {responseType: 'text'})
+      .pipe(takeUntil(this.cancelUrlRequest))
+      .subscribe({
+        next: (response: any) => {
+          const oParser = new DOMParser();
+          const oDOM = oParser.parseFromString(response, 'application/xml');
+          const doc = oDOM.documentElement;
+          layer.featureCount = parseInt(doc.getAttribute('numberOfFeatures'));
+          //WFS 2.0.0
+          if (layer.featureCount == 0 || !layer.featureCount) {
+            layer.featureCount = parseInt(doc.getAttribute('numberMatched'));
+          }
+
+          layer.featureCount > 1000
+            ? (layer.limitFeatureCount = true)
+            : (layer.limitFeatureCount = false);
+        },
+        error: (e) => {
+          this.cancelUrlRequest.next();
+          this.hsAddDataCommonService.throwParsingError(e);
+        },
+        complete() {
+          layer.loading = false;
+        },
+      });
+  }
+
+  /**
+   * Handle table row click event by getting layer feature count if necessary
+   */
+  tableLayerChecked($event, layer) {
+    if (
+      (layer as hsWfsCapabilitiesLayer).limitFeatureCount === undefined &&
+      layer.checked
+    ) {
+      this.getFeatureCountForLayers([layer]);
+    }
+  }
+
   /**
    * Parse WFS json file
    * @param json - JSON file
