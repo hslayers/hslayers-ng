@@ -49,12 +49,17 @@ export class HsLayerTableComponent implements AfterContentInit {
     }
   }
 
-  changed(whichArray: 'layers' | 'services'): void {
-    if (whichArray == 'layers') {
-      this.hsAddDataUrlService.searchForChecked(this.data.layers);
-    }
-    if (whichArray == 'services') {
-      this.hsAddDataUrlService.searchForChecked(this.data.services);
+  /**
+   * Checked property event handler
+   */
+  changed(whichArray: 'layers' | 'services', e: MouseEvent, layer: any): void {
+    this.hsAddDataUrlService.searchForChecked(this.data[whichArray]);
+    /**
+     * If possible calls side effect handling function defined on type service
+     * e.g. query getFeature-hits for WFS
+     */
+    if (this.injectedService.tableLayerChecked) {
+      this.injectedService.tableLayerChecked(e, layer);
     }
   }
 

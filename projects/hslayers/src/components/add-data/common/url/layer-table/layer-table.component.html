@@ -62,8 +62,9 @@
             <tbody *ngFor="let service of data.services; trackBy:( 'id' | trackByProperty )">
                 <tr>
                     <td>
-                        <input class="checkbox-lg" type="checkbox" name="service" (change)="changed('services')"
-                            style="cursor: pointer;" [(ngModel)]="service.checked" />
+                        <input class="checkbox-lg" type="checkbox" name="service"
+                            (change)="changed('services',$event,service)" style="cursor: pointer;"
+                            [(ngModel)]="service.checked" />
                     </td>
                     <td (click)="expandService(service)" data-toggle="tooltip"
                         [title]="'ADDDATA.requestServiceLayers' | translateHs " style="cursor: pointer;">
@@ -75,9 +76,12 @@
             <tbody *ngFor="let layer of data.layers; trackBy:( data.table.trackBy | trackByProperty )">
                 <tr>
                     <td><input class="checkbox-lg" type="checkbox" name="layer" style="cursor: pointer;"
-                            (change)="changed('layers')" [(ngModel)]="layer.checked" /></td>
-                    <td hsWmsLayerHighlight (click)="hsUrlWmsService.expandTableRow($event)" class="text-truncate"
-                        style="max-width: 45ch;"><span>{{layer[data.table.nameProperty]}}</span>
+                            (change)="changed('layers', $event, layer)" [(ngModel)]="layer.checked" /></td>
+                    <td hsWmsLayerHighlight (click)="hsUrlWmsService.expandTableRow($event)"
+                        class="text-truncate position-relative" style="max-width: 45ch;">
+                        <span>{{layer[data.table.nameProperty]}}</span>
+                        <span class="hs-loader hs-loader-dark position-absolute end-0 bottom-0 me-3"
+                            [hidden]="!layer.loading"></span>
                         <div *ngIf="layer.checked && type === 'wmts'"
                             class="d-flex flex-row justify-content-end align-items-baseline mt-1">
                             {{'ADDDATA.CATALOGUE.addAs' | translateHs }}

@@ -137,6 +137,10 @@ $list-group-item-padding-x: 1.25rem;
 
   .hs-wms-highlighted {
     cursor: pointer;
+
+    &>span {
+      pointer-events: none;
+    }
   }
 
   .hs-flex-fill {
