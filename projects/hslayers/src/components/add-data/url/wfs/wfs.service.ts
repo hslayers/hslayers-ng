@@ -359,7 +359,7 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
    */
   tableLayerChecked($event, layer) {
     if (
-      (layer as hsWfsCapabilitiesLayer).limitFeatureCount === undefined &&
+      (layer as hsWfsCapabilitiesLayer).featureCount === undefined &&
       layer.checked
     ) {
       this.getFeatureCountForLayers([layer]);
