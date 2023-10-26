@@ -36,6 +36,7 @@ import {HsLanguageService} from '../language/language.service';
 import {HsLaymanLayerDescriptor} from './interfaces/layman-layer-descriptor.interface';
 import {HsLogService} from '../../common/log/log.service';
 import {HsMapService} from '../map/map.service';
+import {HsQueuesService} from '../../common/queues/queues.service';
 import {HsSaverService} from './interfaces/saver-service.interface';
 import {HsToastService} from '../layout/toast/toast.service';
 import {HsUtilsService} from '../utils/utils.service';
@@ -75,6 +76,8 @@ export class HsLaymanService implements HsSaverService {
   totalProgress = 0;
   deleteQuery: Subscription;
   supportedCRRList: string[] = SUPPORTED_SRS_LIST;
+
+  pendingRequests: Map<string, Promise<HsLaymanLayerDescriptor>> = new Map();
   constructor(
     private hsUtilsService: HsUtilsService,
     private http: HttpClient,
@@ -84,6 +87,7 @@ export class HsLaymanService implements HsSaverService {
     private hsToastService: HsToastService,
     private hsLanguageService: HsLanguageService,
     private hsCommonLaymanService: HsCommonLaymanService,
+    private hsQueuesService: HsQueuesService,
   ) {
     this.hsCommonEndpointsService.endpointsFilled.subscribe(
       async (endpoints) => {
@@ -370,13 +374,18 @@ export class HsLaymanService implements HsSaverService {
         this.hsLogService.log(`Creating layer ${description.name}`);
       }
       const exists = !!layerDesc?.name;
-      const res = await this.tryLoadLayer(
-        endpoint,
-        formData,
-        asyncUpload,
-        layerDesc?.name ? description.name : '',
-        exists,
-      );
+      const que = this.hsQueuesService.ensureQueue('laymanLayerLoad', 1, 3000);
+      let res = undefined;
+      que.push(async (cb) => {
+        res = await this.tryLoadLayer(
+          endpoint,
+          formData,
+          asyncUpload,
+          layerDesc?.name ? description.name : '',
+          exists,
+        );
+        cb(null);
+      });
       return res;
     } catch (err) {
       throw err;
@@ -782,7 +791,8 @@ export class HsLaymanService implements HsSaverService {
   }
 
   /**
-   * Try getting layer's description from Layman.
+   * Try getting layer's description from Layman. Subsequent request with same parameters
+   * are reused.
    * @param endpoint - Layman's endpoint description
    * @param layerName - Interacted layer's name
    * @param workspace - Current Layman's workspace
@@ -795,6 +805,33 @@ export class HsLaymanService implements HsSaverService {
     workspace: string,
     ignoreStatus?: boolean,
   ): Promise<HsLaymanLayerDescriptor> {
+    const requestKey = `${workspace}/${layerName}`;
+
+    // Check if there's a pending request with the same parameters
+    if (this.pendingRequests.has(requestKey)) {
+      return this.pendingRequests.get(requestKey);
+    }
+    const desc = this.makeDescribeLayerRequest(
+      endpoint,
+      layerName,
+      workspace,
+      ignoreStatus,
+    );
+    // Store the promise for the request
+    this.pendingRequests.set(requestKey, desc);
+    return desc;
+  }
+
+  /**
+   * Try getting layer's description from Layman.
+   */
+  private async makeDescribeLayerRequest(
+    endpoint: HsEndpoint,
+    layerName: string,
+    workspace: string,
+    ignoreStatus?: boolean,
+  ): Promise<HsLaymanLayerDescriptor> {
+    const requestKey = `${workspace}/${layerName}`;
     try {
       layerName = getLaymanFriendlyLayerName(layerName); //Better safe than sorry
       const response: HsLaymanLayerDescriptor = await lastValueFrom(
@@ -819,8 +856,10 @@ export class HsLaymanService implements HsSaverService {
       );
       switch (true) {
         case response?.code == 15 || wfsFailed(response):
+          this.deletePendingDescribeRequest(requestKey, 0);
           return null;
         case response.name && ignoreStatus:
+          this.deletePendingDescribeRequest(requestKey, 1000);
           return {...response, workspace};
         case response.wfs &&
           (layerParamPendingOrStarting(response, 'wfs') ||
@@ -829,10 +868,11 @@ export class HsLaymanService implements HsSaverService {
             this.pendingLayers.push(layerName);
             this.laymanLayerPending.next(this.pendingLayers);
           }
-          await new Promise((resolve) => setTimeout(resolve, 3500));
-          return this.describeLayer(endpoint, layerName, workspace);
+          await new Promise((resolve) => setTimeout(resolve, 310));
+          return this.makeDescribeLayerRequest(endpoint, layerName, workspace);
         default:
           if (response.name) {
+            this.deletePendingDescribeRequest(requestKey, 1000);
             this.managePendingLayers(layerName);
             return {...response, workspace};
           }
@@ -842,6 +882,12 @@ export class HsLaymanService implements HsSaverService {
       this.hsLogService.error(ex);
       throw ex;
     }
+  }
+
+  private deletePendingDescribeRequest(key: string, timeout: number = 0) {
+    setTimeout(() => {
+      this.pendingRequests.delete(key);
+    }, timeout);
   }
 
   /**
