@@ -4,7 +4,8 @@
         <select class="form-control form-select" [(ngModel)]="addUnder" (ngModelChange)="updateChanges()"
             name="addUnder">
             <option [ngValue]="null" selected>{{'ADDLAYERS.none' | translateHs }}</option>
-            <option [ngValue]="layer.layer" *ngFor="let layer of hsLayerManagerService.data.layers">
+            <option [ngValue]="layer.layer"
+                *ngFor="let layer of hsLayerManagerService.data.layers | filter: layerInManager">
                 {{layer.title | translateHs : {module: 'LAYERS'} }}</option>
         </select>
     </div>
