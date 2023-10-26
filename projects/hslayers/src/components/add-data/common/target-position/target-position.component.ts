@@ -3,6 +3,7 @@ import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {Layer} from 'ol/layer';
 import {Source} from 'ol/source';
 
+import {HsLayerDescriptor} from '../../../layermanager/layer-descriptor.interface';
 import {HsLayerManagerService} from '../../../layermanager/layermanager.service';
 import {HsLayerUtilsService} from '../../../utils/layer-utils.service';
 
@@ -22,4 +23,12 @@ export class HsPositionComponent {
   updateChanges(): void {
     this.addUnderChange.next(this.addUnder);
   }
+
+  /**
+   * Filter layers by showInLayermanager property
+   * This function is passed as filter pipe function
+   */
+  layerInManager = (layer: HsLayerDescriptor): boolean => {
+    return layer.showInLayerManager;
+  };
 }
