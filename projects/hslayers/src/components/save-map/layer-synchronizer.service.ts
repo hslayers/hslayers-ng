@@ -209,7 +209,7 @@ export class HsLayerSynchronizerService {
           );
 
           featureString = featureString.replace(
-            /http:\/\/www.opengis.net\/gml\/srs\/epsg.xml#/g,
+            /http:\/\/www\.opengis\.net\/gml\/srs\/epsg\.xml#/g,
             'EPSG:',
           );
 
