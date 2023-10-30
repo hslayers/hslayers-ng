@@ -8,7 +8,8 @@
         {{hsFiltersService.humanReadableLogOp(rule.filter[0])}}<!-- TODO: Remove function call from template -->
       </div>
       <hs-add-filter-button (clicks)="add($event.type, true)"></hs-add-filter-button>
-      <button class="btn btn-outline-danger btn-sm m-1" [title]="'STYLER.removeFilter'" (click)="remove()">
+      <button class="btn btn-outline-danger btn-sm m-1" [title]="'STYLER.removeFilter' | translateHs"
+        (click)="remove()">
         <span class="icon-trash"></span>
       </button>
     </div>
