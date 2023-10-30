@@ -1,7 +1,8 @@
 <form class="form">
 
   <hs-symbolizer-color-picker [symbolizer]="symbolizer" attribute="color" opacityAttribute="opacity"
-    (changes)="opacityFix(); emitChange()" [label]="'STYLER.fillColor' | translateHs">
+    [class.disabled]="symbolizer.graphicFill !== undefined" (changes)="opacityFix(); emitChange()"
+    [label]="'STYLER.fillColor' | translateHs">
     <span class="badge bg-warning mt-2" *ngIf="symbolizer.graphicFill !== undefined"
       [title]="'STYLER.warningFillNotVisualizedDueToGraphic' | translateHs  ">!</span>
   </hs-symbolizer-color-picker>
@@ -38,7 +39,7 @@
           </div>
         </div>
         <button class="btn btn-outline-danger btn-sm" *ngIf="symbolizer.graphicFill !== undefined"
-          (click)="symbolizer.graphicFill = undefined">
+          (click)="symbolizer.graphicFill = undefined;emitChange()">
           <span class="icon-trash"></span>
         </button>
       </div>

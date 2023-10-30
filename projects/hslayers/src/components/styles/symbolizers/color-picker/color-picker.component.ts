@@ -10,11 +10,18 @@ import {HsStylerPartBaseComponent} from '../../style-part-base.component';
 @Component({
   selector: 'hs-symbolizer-color-picker',
   templateUrl: './color-picker.component.html',
+  styles: [
+    `
+      :host.disabled input.form-control {
+        background-color: lightgray !important;
+        opacity: 0.5;
+      }
+    `,
+  ],
 })
 export class HsColorPickerComponent
   extends HsStylerPartBaseComponent
-  implements OnInit
-{
+  implements OnInit {
   constructor(
     public hsColorPickerService: HsColorPickerService,
     private hsLog: HsLogService,

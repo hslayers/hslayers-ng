@@ -28,8 +28,8 @@ export class HsSelectIconDialogComponent implements HsDialogComponent {
   confirm(): void {
     if (this.data.selectedIcon) {
       this.data.symbolizer.image = this.data.selectedIcon.url;
-      this.data.emitChange();
     }
+    this.data.emitChange();
     this.hsDialogContainerService.destroy(this);
   }
 
