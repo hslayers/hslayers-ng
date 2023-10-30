@@ -38,22 +38,20 @@
                 <i class="icon-info-sign icon-primary"></i><span class="ms-1">{{'COMMON.metadata' |
                     translateHs }}</span>
             </a>
-            <ng-container *ngIf="layer.endpoint?.authenticated">
-                <a class="btn btn-sm border-0" (click)="$event.stopPropagation();showPermissions(layer)"
-                    data-toggle="tooltip" data-placement="bottom"
-                    [title]="layer.editable ? '' : 'DATASOURCE_SELECTOR.datasourceListItem.notAllowedToEditLayer' | translateHs ">
-                    <i class="icon-lock icon-primary" [ngClass]="{'text-muted': !layer.editable}"
-                        [ngStyle]="{'cursor' : layer.editable ? 'pointer' : 'default'}"></i><span class="ms-1"
-                        *ngIf="layer.editable">{{'COMMON.setPermissions' | translateHs }}</span>
-                </a>
-                <a class="btn btn-sm border-0" (click)="$event.stopPropagation();removeLayer(layer)"
-                    data-toggle="tooltip" data-placement="bottom"
-                    [title]="layer.editable ? '' : 'DATASOURCE_SELECTOR.datasourceListItem.notAllowedToEditLayer' | translateHs ">
-                    <i class="icon-trash text-danger" [ngClass]="layer.editable ? 'text-danger' : 'text-muted'"
-                        [ngStyle]="{'cursor' : layer.editable ? 'pointer' : 'default'}"></i><span class="ms-1"
-                        *ngIf="layer.editable">{{'COMMON.removeLayer' | translateHs }}</span>
-                </a>
-            </ng-container>
+            <a class="btn btn-sm border-0" (click)="$event.stopPropagation();showPermissions(layer)"
+                data-toggle="tooltip" data-placement="bottom"
+                [title]="layer.editable ? '' : 'DATASOURCE_SELECTOR.datasourceListItem.notAllowedToEditLayer' | translateHs ">
+                <i class="icon-lock icon-primary" [ngClass]="{'text-muted': !layer.editable}"
+                    [ngStyle]="{'cursor' : layer.editable ? 'pointer' : 'default'}"></i><span class="ms-1"
+                    *ngIf="layer.editable">{{'COMMON.setPermissions' | translateHs }}</span>
+            </a>
+            <a class="btn btn-sm border-0" (click)="$event.stopPropagation();removeLayer(layer)" data-toggle="tooltip"
+                data-placement="bottom"
+                [title]="layer.editable ? '' : 'DATASOURCE_SELECTOR.datasourceListItem.notAllowedToEditLayer' | translateHs ">
+                <i class="icon-trash text-danger" [ngClass]="layer.editable ? 'text-danger' : 'text-muted'"
+                    [ngStyle]="{'cursor' : layer.editable ? 'pointer' : 'default'}"></i><span class="ms-1"
+                    *ngIf="layer.editable">{{'COMMON.removeLayer' | translateHs }}</span>
+            </a>
         </div>
     </div>
     <div class="d-none">
