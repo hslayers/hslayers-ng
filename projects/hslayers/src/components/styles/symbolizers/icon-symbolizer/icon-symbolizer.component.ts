@@ -1,4 +1,5 @@
 import {Component, Input} from '@angular/core';
+import {take} from 'rxjs';
 
 import {IconSymbolizer} from 'geostyler-style';
 
@@ -34,5 +35,14 @@ export class HsIconSymbolizerComponent extends HsStylerPartBaseComponent {
 
   showIconSelector(): void {
     this.hsDialogContainerService.create(HsSelectIconDialogComponent, this);
+    this.hsDialogContainerService.dialogDestroyObserver
+      .pipe(take(1))
+      .subscribe((el) => {
+        if (this.selectedIcon) {
+          setTimeout(() => {
+            this.emitChange();
+          }, 250);
+        }
+      });
   }
 }
