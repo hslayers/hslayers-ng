@@ -9,11 +9,11 @@ describe('Hslayers application', () => {
     cy.get('hs-language hs-panel-header').should(
       'have.attr',
       'ng-reflect-title',
-      'Změnit jazyk',
+      'Linguam mutare',
     );
     cy.get('hs-language hs-panel-header span').should(
       'contain.text',
-      'Změnit jazyk',
+      'Linguam mutare',
     );
   });
 
