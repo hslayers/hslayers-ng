@@ -35,6 +35,7 @@ describe('Hslayers application', () => {
   it('Style can be reset to default', () => {
     openStyler();
     cy.get('hs-styles button[title="Reset to default style"]').click();
+    cy.get('.modal-footer > .btn-primary').click();
     cy.wait(500);
     cy.get('hs-symbolizer').should('not.exist');
     cy.get('hs-rule-list-item').click();
@@ -51,6 +52,7 @@ describe('Hslayers application', () => {
   it('Should support SLD 1.1.0', () => {
     openStyler();
     cy.get('hs-styles button[title="Reset to default style"]').click();
+    cy.get('.modal-footer > .btn-primary').click();
     cy.get('hs-styles button[title="Upload style as SLD file"]').click();
     cy.get('hs-styles input[type=file]').selectFile(
       'cypress/fixtures/sld-1.1.0.sld',
