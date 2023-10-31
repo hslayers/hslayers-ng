@@ -66,8 +66,8 @@ export class HsDrawServiceParams {
 
   requiredSymbolizer = {
     Point: ['Point'],
-    Polygon: ['Fill', 'Line'],
+    Polygon: ['Fill', 'Line', 'Polygon'],
     LineString: ['Line'],
-    Circle: ['Fill', 'Line'],
+    Circle: ['Fill', 'Line', 'Polygon'],
   };
 }
