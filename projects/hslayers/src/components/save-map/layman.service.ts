@@ -36,7 +36,6 @@ import {HsLanguageService} from '../language/language.service';
 import {HsLaymanLayerDescriptor} from './interfaces/layman-layer-descriptor.interface';
 import {HsLogService} from '../../common/log/log.service';
 import {HsMapService} from '../map/map.service';
-import {HsQueuesService} from '../../common/queues/queues.service';
 import {HsSaverService} from './interfaces/saver-service.interface';
 import {HsToastService} from '../layout/toast/toast.service';
 import {HsUtilsService} from '../utils/utils.service';
@@ -87,7 +86,6 @@ export class HsLaymanService implements HsSaverService {
     private hsToastService: HsToastService,
     private hsLanguageService: HsLanguageService,
     private hsCommonLaymanService: HsCommonLaymanService,
-    private hsQueuesService: HsQueuesService,
   ) {
     this.hsCommonEndpointsService.endpointsFilled.subscribe(
       async (endpoints) => {
@@ -374,18 +372,13 @@ export class HsLaymanService implements HsSaverService {
         this.hsLogService.log(`Creating layer ${description.name}`);
       }
       const exists = !!layerDesc?.name;
-      const que = this.hsQueuesService.ensureQueue('laymanLayerLoad', 1, 3000);
-      let res = undefined;
-      que.push(async (cb) => {
-        res = await this.tryLoadLayer(
-          endpoint,
-          formData,
-          asyncUpload,
-          layerDesc?.name ? description.name : '',
-          exists,
-        );
-        cb(null);
-      });
+      const res = await this.tryLoadLayer(
+        endpoint,
+        formData,
+        asyncUpload,
+        layerDesc?.name ? description.name : '',
+        exists,
+      );
       return res;
     } catch (err) {
       throw err;
