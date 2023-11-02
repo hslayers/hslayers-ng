@@ -49,10 +49,8 @@
 
     <hs-new-layer-form [data]="data"></hs-new-layer-form>
 
-    <button class="btn btn-primary w-100 mt-2" [disabled]="!(data.geomProperty && data.idProperty && data.title)"
-      (click)="add()"><i class="icon-plus"></i>
-      {{'COMMON.add' | translateHs }}
-    </button>
+    <hs-add-to-map [disabled]="!(data.geomProperty && data.idProperty && data.title)" (add)="add()"
+      [title]="'ADDLAYERS.addSelected'"></hs-add-to-map>
   </div>
 
   <!--
