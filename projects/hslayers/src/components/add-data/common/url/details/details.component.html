@@ -22,7 +22,7 @@
       <div class="input-group">
         <span class="input-group-text control-label">{{'ADDLAYERS.srs' | translateHs }}</span>
         <select class="form-control form-select form-select" name="srs" [(ngModel)]="data.srs" (change)="srsChanged()">
-          <option *ngFor="let i of data.srss | slice:0:50">{{i}}</option>
+          <option *ngFor="let i of data.srss | slice:0:50" [ngValue]="i">{{i | epsg}}</option>
         </select>
       </div>
     </div>
