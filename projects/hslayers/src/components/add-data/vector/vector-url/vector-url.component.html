@@ -5,9 +5,7 @@
   <div *ngIf="data.showDetails">
     <hs-new-layer-form [data]="data"></hs-new-layer-form>
 
-    <button class="btn btn-primary w-100 mt-2" [disabled]="!data.title" (click)="add()"><i class="icon-plus"></i>
-      {{'COMMON.add' | translateHs }}
-    </button>
+    <hs-add-to-map [disabled]="!data.title" (add)="add()" class="w-100 mt-2"></hs-add-to-map>
   </div>
 
 </form>

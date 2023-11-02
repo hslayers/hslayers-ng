@@ -5,6 +5,7 @@ import {FormsModule} from '@angular/forms';
 import {HsAddDataCommonModule} from '../common/common.module';
 import {HsAddDataVectorFileComponent} from './vector-file/vector-file.component';
 import {HsAddDataVectorUrlComponent} from './vector-url/vector-url.component';
+import {HsAddToMapButton} from '../../../common/add-to-map/add-to-map.component';
 import {HsCommonUrlModule} from '../common/url/url.module';
 import {HsLanguageModule} from '../../language/language.module';
 import {HsLaymanModule} from '../../../common/layman/layman.module';
@@ -20,6 +21,7 @@ import {HsUploadModule} from '../../../common/upload/upload.module';
     HsCommonUrlModule,
     HsLaymanModule,
     HsUploadModule,
+    HsAddToMapButton,
   ],
   exports: [HsAddDataVectorFileComponent, HsAddDataVectorUrlComponent],
   declarations: [HsAddDataVectorFileComponent, HsAddDataVectorUrlComponent],

@@ -2,7 +2,6 @@
   "ADDDATA": {
     "catalogue": "Datový katalog",
     "CATALOGUE": {
-      "addAs": "Přidat jako",
       "DESC": {
         "WFS": "Web Feature Service - stahovací: slouží pro práci s geografickými daty ve vektorové reprezentaci. Je výkonostne naročnejší, především při rozsáhlejších vrstvách, umožňuje však editaci, či zobrazení individuálních informacií ke každému prvku zvlášť.",
         "WMS": "Web Map Service - prohlížecí: data nahraje v podobě rastru. Přenášená data jsou obvykle menší co má za následek rychlejší načítání, no na druhou stranu ich není možné upravovat."
@@ -134,7 +133,6 @@
       "extractStyles": "Extrahovat styly"
     },
     "WFS": {
-      "addToMap": "Přidat do mapy",
       "loadingToManyAtOnce": "prvků. Načítání příliš mnoha prvků najednou (při oddálení) může ovlivnit výkon aplikace",
       "selectedLayerContains": "Vybraná vrstva obsahuje",
       "featureCountError": "Nelze načíst počet prvků vrstvy. \nV případě jejich nadměrného počtu může vrstva ovlivnit výkon"
@@ -458,7 +456,6 @@
     },
     "datasourceListItem": {
       "abortAdd": "Zrušit přidání",
-      "addToMap": "Přidat do mapy",
       "notAllowedToEditLayer": "Tuto datovou sadu nemáte oprávnění editovat",
       "whatDoesItMean": "Co to znamená?"
     },

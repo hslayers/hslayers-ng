@@ -3,6 +3,7 @@ import {FormsModule} from '@angular/forms';
 import {NgModule} from '@angular/core';
 
 import {HsAddDataCommonModule} from '../../common/common.module';
+import {HsAddToMapButton} from '../../../../common/add-to-map/add-to-map.component';
 import {HsCommonUrlModule} from '../../common/url/url.module';
 import {HsLanguageModule} from '../../../language/language.module';
 import {HsUrlGeoSparqlComponent} from './geosparql.component';
@@ -14,6 +15,7 @@ import {HsUrlGeoSparqlComponent} from './geosparql.component';
     HsAddDataCommonModule,
     HsCommonUrlModule,
     HsLanguageModule,
+    HsAddToMapButton,
   ],
   exports: [HsUrlGeoSparqlComponent],
   declarations: [HsUrlGeoSparqlComponent],

@@ -2,7 +2,6 @@
   "ADDDATA": {
     "catalogue": "Data Catalogue",
     "CATALOGUE": {
-      "addAs": "Add as",
       "DESC": {
         "WFS": "Web Feature Service: it adds the layer as a set of vector features. It is more power-consuming, especially with large layers, but it allows to edit features or to display individual feature info.",
         "WMS": "Web Map Service: it adds the layer as a raster image. The transferred data is usually smaller so it generally loads faster. Yet it does not give you the access to the underlying layer features."
@@ -144,7 +143,6 @@
       "extractStyles": "Extract styles"
     },
     "WFS": {
-      "addToMap": "Add to map",
       "loadingToManyAtOnce": "features. Loading too many at once (while zoomed out) may affect app performance",
       "selectedLayerContains": "Selected layer contains",
       "featureCountError": "Could not retrieve layer's feature count. In case of excesive number of features the layer may affect performance"
@@ -162,6 +160,7 @@
     "access": "Access",
     "add": "Add",
     "addAs": "Add as",
+    "addToMap": "Add to map",
     "advancedOptions": "Advanced options",
     "all": "All",
     "application": "Application",
@@ -458,7 +457,6 @@
     },
     "datasourceListItem": {
       "abortAdd": "Abort add",
-      "addToMap": "Add to map",
       "notAllowedToEditLayer": "You are not allowed to edit this layer",
       "whatDoesItMean": "What does it mean?"
     },

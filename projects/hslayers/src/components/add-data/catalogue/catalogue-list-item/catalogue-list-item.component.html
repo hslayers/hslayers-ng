@@ -12,20 +12,12 @@
         *ngIf="hsAddDataCatalogueService.selectedLayer?.id === layer.id">
         <hr class="hs-dotted-line w-100 ">
         <div class="d-flex flex-row justify-content-around align-items-end">
-            <!-- <div class="p-0" [hidden]="(selectTypeToAddLayerVisible)">
-                            <button type="button" class="btn btn-sm btn-primary align-middle" (click)="addLayerToMap(layer.endpoint, layer)"
-                                data-toggle="tooltip" [title]="'DATASOURCE_SELECTOR.datasourceListItem.addToMap' | translateHs "
-                                [ngClass]="{' btn-light text-primary' : layer.highlighted }">
-                                <i class="icon-plus"></i>
-                            </button>
-                            <span class="ms-2">{{'DATASOURCE_SELECTOR.datasourceListItem.addToMap' | translateHs }}</span>
-                        </div> -->
             <a class="btn btn-sm border-0" [class.disabled]="!layerAvailable" [hidden]="selectTypeToAddLayerVisible"
                 [ngClass]="{'text-muted': layerAvailable}"
                 (click)="$event.stopPropagation();addLayerToMap(layer.endpoint, layer)">
                 <i [hidden]="loadingInfo" class="icon-plus icon-primary"></i>
                 <span [hidden]="!loadingInfo" class="hs-loader"></span>
-                <span *ngIf="layerAvailable" class="ms-1">{{'DATASOURCE_SELECTOR.datasourceListItem.addToMap' |
+                <span *ngIf="layerAvailable" class="ms-1">{{'COMMON.addToMap' |
                     translateHs }}</span>
             </a>
             <a class="btn btn-sm border-0" [title]="'DATASOURCE_SELECTOR.datasourceListItem.abortAdd' | translateHs "
@@ -83,7 +75,7 @@
         <div class="d-flex flex-row justify-content-between align-items-center w-100">
             <div class="px-3">
                 <span class="btn btn-sm disabled border-0" disabled="true" aria-disabled="true">{{
-                    'ADDDATA.CATALOGUE.addAs' |
+                    'COMMON.addAs' |
                     translateHs }}&nbsp;</span>
                 <div class="btn-group btn-group-toggle h-100 pe-2 align-items-center" data-toggle="buttons">
                     <label class="btn btn-sm btn-outline-secondary" *ngFor="let type of whatToAddTypes"

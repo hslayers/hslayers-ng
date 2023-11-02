@@ -2,7 +2,6 @@
   "ADDDATA": {
     "catalogue": "Datu katalogs",
     "CATALOGUE": {
-      "addAs": "Pievienot kā",
       "DESC": {
         "WFS": "Web Feature Service - pievieno slāni kā vektoru grafisko objektu kopumu. Tas ir vairāk resursu patērējošs, it īpaši ar lieliem slāņiem, taču tas ļauj rediģēt objektus vai parādīt atsevišķu informāciju par objektiem",
         "WMS": "Web Map Service - pievieno slāni kā rastra attēlu. Pārsūtītie dati parasti ir mazāki, tāpēc tie parasti tiek ielādēti ātrāk. Tomēr tas nedod Jums piekļuvi pamata slāņa funkcijām."
@@ -128,7 +127,6 @@
       "extractStyles": "Izvilkt stilus"
     },
     "WFS": {
-      "addToMap": "Pievienot kartei",
       "loadingToManyAtOnce": "grafiskie objekti. Pārāk daudzu objektu ielāde vienlaikus (kamēr karte ir tālināta) var ietekmēt lietotnes veiktspēju",
       "selectedLayerContains": "Atlasītajā slānī ir"
     },
@@ -438,7 +436,6 @@
     },
     "datasourceListItem": {
       "abortAdd": "Atcelt pievienošanu",
-      "addToMap": "Pievienot kartei",
       "notAllowedToEditLayer": "Jums nav rediģēšanas tiesību, lai labotu šo slāni",
       "whatDoesItMean": "Ko tas nozīmē?"
     },
