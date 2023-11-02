@@ -12,15 +12,16 @@
         </div>
         <div class="d-flex ms-4 me-3 justify-content-between py-1 ">
             <div class="d-flex">
-                <div class="input-group-text border-0">
+                <div class="input-group-text border-0" style="line-height: normal;">
                     <input type="checkbox" class="checkbox-lg" [(ngModel)]="data.filterByExtent"
                         (change)="queryByFilter()" name="filterByExtent">
-                    <span class="ms-1">{{'COMPOSITIONS.filterByMap' | translateHs }}</span>
+                    <span class="ms-2">{{'COMPOSITIONS.filterByMap' | translateHs }}</span>
                 </div>
-                <div class="input-group-text border-0 ms-1" *ngIf="ctx.layman?.authenticated">
-                    <input type="checkbox" [(ngModel)]="data.onlyMine" (ngModelChange)="queryByFilter()"
-                        name="onlyMine">
-                    <span class="ms-1">{{'COMPOSITIONS.onlyMine' | translateHs }}</span>
+                <div class="input-group-text border-0 ms-1" *ngIf="ctx.layman?.authenticated"
+                    style="line-height: normal;">
+                    <input type="checkbox" class="checkbox-lg" [(ngModel)]="data.onlyMine"
+                        (ngModelChange)="queryByFilter()" name="onlyMine">
+                    <span class="ms-2">{{'COMPOSITIONS.onlyMine' | translateHs }}</span>
                 </div>
             </div>
             <div ngbDropdown display="dynamic" placement="bottom-right" class="d-inline-block"
