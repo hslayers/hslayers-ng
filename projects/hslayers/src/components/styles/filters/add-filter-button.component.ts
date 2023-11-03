@@ -19,7 +19,7 @@ export class HsAddFilterButtonComponent implements OnChanges {
   }
 
   activeTab: FilterType;
-  readonly filterOptions: FilterType[] = ['AND', 'OR', 'NOT', 'COMPARE'];
+  readonly filterOptions: FilterType[] = ['COMPARE', 'AND', 'OR', 'NOT'];
   emitClick(type: FilterType): void {
     this.clicks.emit({type});
     this.setActiveTab(type);

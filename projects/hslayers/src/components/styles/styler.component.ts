@@ -28,8 +28,7 @@ import {HsUtilsService} from '../utils/utils.service';
 })
 export class HsStylerComponent
   extends HsPanelBaseComponent
-  implements OnDestroy
-{
+  implements OnDestroy {
   layerTitle: string;
   private end = new Subject<void>();
   uploaderVisible = false;
@@ -100,6 +99,7 @@ export class HsStylerComponent
       event.previousIndex,
       event.currentIndex,
     );
+    this.hsStylerService.save();
   }
 
   handleFileUpload(evt: HsUploadedFiles): void {
