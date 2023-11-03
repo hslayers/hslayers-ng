@@ -9,30 +9,26 @@
     </hs-query-attribute-row>
     <hs-query-attribute-row *ngFor="let stat of feature.stats" [feature]="feature" [attribute]="stat" [readonly]="true">
     </hs-query-attribute-row>
-    <div class="row">
-        <div class="input-group m-1" [hidden]="!newAttribVisible">
-            <div class="input-group m-1">
-                <input class="form-control" [placeholder]="'QUERY.feature.attributeName' | translateHs  "
-                    [(ngModel)]="attributeName" [ngModelOptions]="{standalone: true}">
-            </div>
+
+    <div class="bg-light p-2 my-3" *ngIf="newAttribVisible">
+        <div class="form-floating mb-3">
+            <input class="form-control" [placeholder]="attributeName" [(ngModel)]="attributeName"
+                name="hs-add-feature-attribute-name">
+            <label for="hs-add-feature-attribute-name">{{'QUERY.feature.attributeName' | translateHs }}</label>
+        </div>
+        <div class="form-floating mb-3" [hidden]="!(attributeName && newAttribVisible)">
+            <input class="form-control" [placeholder]="attributeValue" [(ngModel)]="attributeValue"
+                name="hs-add-feature-attribute-value">
+            <label for="hs-add-feature-attribute-value">{{'QUERY.feature.attributeValue' | translateHs }}</label>
+        </div>
+        <div class="row justify-content-end" [hidden]="!(attributeName && attributeValue && newAttribVisible)">
+            <button class="btn btn-primary btn-sm w-auto d-flex gap-2 mx-2"
+                (click)="saveNewAttribute(attributeName,attributeValue)">{{'COMMON.save'
+                | translateHs}}<i class="icon-save-floppy"></i></button>
         </div>
     </div>
-    <div class="row">
-        <div class="input-group m-1" [hidden]="!(attributeName && newAttribVisible)">
-            <div class="input-group m-1">
-                <input class="form-control" [placeholder]="'QUERY.feature.attributeValue' | translateHs  "
-                    [(ngModel)]="attributeValue" [ngModelOptions]="{standalone: true}">
-            </div>
-        </div>
-    </div>
-    <div class="row" [hidden]="!(attributeName && attributeValue && newAttribVisible)">
-        <div class="col-6 mb-2 text-start">
-            <div class="btn-group">
-                <button class="btn btn-primary btn-sm" (click)="saveNewAttribute(attributeName,attributeValue)"><i
-                        class="icon-save-floppy"></i></button>
-            </div>
-        </div>
-    </div>
+
+
 
     <div [hidden]="!editType" class="row p-2 ">
         <div class="d-flex w-100 input-group input-group-sm align-items-baseline">
