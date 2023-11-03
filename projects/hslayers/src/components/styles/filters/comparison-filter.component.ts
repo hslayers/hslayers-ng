@@ -14,6 +14,7 @@ export class HsComparisonFilterComponent extends HsStylerPartBaseComponent {
   @Input() parent;
 
   attributes: string[];
+  operators = ['==', '*=', '!=', '<', '<=', '>', '>='];
 
   constructor(private hsLayerSelectorService: HsLayerSelectorService) {
     super();
