@@ -5,6 +5,8 @@ import {Injectable} from '@angular/core';
   providedIn: 'root',
 })
 export class HsFiltersService {
+  operators = ['==', '*=', '!=', '<', '<=', '>', '>='];
+
   add(type: FilterType, append: boolean, collection: any[]): void {
     let filter;
     switch (type) {

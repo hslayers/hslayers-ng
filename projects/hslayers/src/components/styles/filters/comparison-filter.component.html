@@ -5,10 +5,13 @@
       {{attr}}
     </option>
   </select>
-  <div>
-    <input class="form-control" name="hs-sld-filter-comparison-sign" [(ngModel)]="filter[0]" (change)="emitChange()" />
-  </div>
-  <div>
+  <select (change)="emitChange()" class="form-control form-select hs-sld-filter-comparison-sign"
+    style="width: min-content" [(ngModel)]="filter[0]" name="hs-sld-filter-comparison-sign">
+    <option [ngValue]="op" *ngFor="let op of operators">
+      {{op}}
+    </option>
+  </select>
+  <div style="min-width: 33%;">
     <input class="form-control" name="hs-sld-filter-value" [(ngModel)]="filter[2]" (change)="emitChange()" />
   </div>
   <div>
