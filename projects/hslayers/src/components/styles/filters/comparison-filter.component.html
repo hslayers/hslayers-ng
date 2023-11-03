@@ -1,4 +1,4 @@
-<div class="d-flex flex-row form-group">
+<div class="d-flex flex-row form-group p-1">
   <select class="form-control form-select" style="width: 100%" [(ngModel)]="filter[1]" name="hs-sld-filter-attribute">
     <option [ngValue]="undefined" [disabled]="true" selected hidden>Pick an attribute</option>
     <option [ngValue]="attr" *ngFor="let attr of attributes">

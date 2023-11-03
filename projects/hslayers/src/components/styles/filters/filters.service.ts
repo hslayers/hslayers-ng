@@ -9,13 +9,24 @@ export class HsFiltersService {
     let filter;
     switch (type) {
       case 'AND':
-        filter = ['&&', ['==', undefined, '<value>']];
+        filter = [
+          '&&',
+          ['==', undefined, '<value>'],
+          ['==', undefined, '<value>'],
+        ];
         break;
       case 'OR':
-        filter = ['||', ['==', undefined, '<value>']];
+        filter = [
+          '||',
+          ['==', undefined, '<value>'],
+          ['==', undefined, '<value>'],
+        ];
         break;
       case 'COMPARE':
         filter = ['==', undefined, '<value>'];
+        break;
+      case 'NOT':
+        filter = ['!', ['==', undefined, '<value>']];
         break;
       default:
     }
@@ -32,6 +43,6 @@ export class HsFiltersService {
   }
 
   isLogOp(filters: any[]): boolean {
-    return filters?.length > 0 && ['&&', '||'].includes(filters[0]);
+    return filters?.length > 0 && ['&&', '||', '!'].includes(filters[0]);
   }
 }

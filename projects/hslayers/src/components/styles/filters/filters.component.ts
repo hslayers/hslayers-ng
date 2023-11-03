@@ -1,8 +1,8 @@
 import {Component, Input} from '@angular/core';
 
+import {FilterType} from './filter.type';
 import {HsFiltersService} from './filters.service';
 import {HsStylerPartBaseComponent} from '../style-part-base.component';
-import { FilterType } from './filter.type';
 
 @Component({
   selector: 'hs-filters',
