@@ -126,6 +126,8 @@ export class HsCompositionsMickaService {
     for (const record of endpoint.compositions) {
       record.editable = false;
       record.endpoint = endpoint;
+      record.date = record.dateStamp;
+      delete record.dateStamp;
       if (record.thumbnail == undefined) {
         record.thumbnail = endpoint.url + '?request=loadthumb&id=' + record.id;
       }

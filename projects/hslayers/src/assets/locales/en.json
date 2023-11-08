@@ -310,7 +310,8 @@
     "PREPARING": "Preparing",
     "confirmReset": "Confirm reset",
     "saving": "Saving",
-    "asNew": "as new"
+    "asNew": "as new",
+    "createdBy": "Created by"
   },
   "COMPOSITIONS": {
     "addByAddress": "Add composition by address",

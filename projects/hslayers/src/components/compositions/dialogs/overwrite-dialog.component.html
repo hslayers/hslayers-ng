@@ -8,13 +8,22 @@
                     [attr.aria-label]="'COMMON.close' | translateHs ">
                 </button>
             </div>
-            <div  class="container py-2 gap-2 d-flex flex-column" style="max-height: 600px; overflow-y: auto">
+            <div class="container py-2 gap-2 d-flex flex-column" style="max-height: 600px; overflow-y: auto">
                 <div class="row">
-                    <div class="col-4" style="text-align: right;">{{'COMPOSITIONS.dialogoverwriteConfirm.youAreOpeningMap' | translateHs }}:</div>
+                    <div class="col-5" style="text-align: right;">
+                        {{'COMPOSITIONS.dialogoverwriteConfirm.youAreOpeningMap' | translateHs }}:</div>
                     <div class="fw-bold col-5 flex-grow-1">{{data.title}}</div>
                 </div>
+                <div class="row" *ngIf="data.workspace">
+                    <div class="col-5" style="text-align: right;">
+                        {{'COMMON.createdBy' | translateHs }}:
+                    </div>
+                    <div class="col-5 flex-grow-1">
+                        {{data.workspace}}
+                    </div>
+                </div>
                 <div class="row">
-                    <div class="col-4" style="text-align: right;">
+                    <div class="col-5" style="text-align: right;">
                         {{'COMMON.abstract' | translateHs }}:
                     </div>
                     <div class="col-5 flex-grow-1">
@@ -22,18 +31,19 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-4" style="text-align: right;">
+                    <div class="col-5" style="text-align: right;">
                         {{'COMMON.date' | translateHs }}:
                     </div>
                     <div class="col-5">
-                        {{data.dateStamp}}
+                        {{data.date}}
                     </div>
                 </div>
-                
+
             </div>
             <div class="modal-footer flex-nowrap">
-                <button type="button" class="btn btn-primary compositions-btn-overwrite align-self-stretch" (click)="overwrite()"
-                    data-dismiss="modal">{{'SAVECOMPOSITION.form.overwrite' | translateHs }}</button>
+                <button type="button" class="btn btn-primary compositions-btn-overwrite align-self-stretch"
+                    (click)="overwrite()" data-dismiss="modal">{{'SAVECOMPOSITION.form.overwrite' | translateHs
+                    }}</button>
                 <button type="button" class="btn btn-primary compositions-btn-add" (click)="add();"
                     data-dismiss="modal">{{'COMPOSITIONS.dialogoverwriteConfirm.mergeCompositions' |
                     translateHs}}</button>
@@ -41,8 +51,8 @@
                     class="btn btn-primary compositions-btn-save" (click)="save()" style="white-space: break-spaces;"
                     data-dismiss="modal">{{'COMPOSITIONS.dialogoverwriteConfirm.saveChangesFirst' |
                     translateHs}}</button>
-                <button type="button" class="btn btn-secondary compositions-btn-cancel align-self-stretch" (click)="close()"
-                    data-dismiss="modal">{{'COMMON.cancel' | translateHs }}</button>
+                <button type="button" class="btn btn-secondary compositions-btn-cancel align-self-stretch"
+                    (click)="close()" data-dismiss="modal">{{'COMMON.cancel' | translateHs }}</button>
             </div>
         </div>
     </div>

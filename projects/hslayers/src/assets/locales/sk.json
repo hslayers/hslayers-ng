@@ -310,7 +310,8 @@
     "PREPARING": "Pripravuje sa",
     "confirmReset": "Potvrďte reset",
     "saving": "Ukladanie",
-    "asNew": "ako nové"
+    "asNew": "ako nové",
+    "createdBy": "Vytvoril"
   },
   "COMPOSITIONS": {
     "addByAddress": "Pridať kompozíciu z adresy",
