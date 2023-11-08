@@ -22,6 +22,8 @@ export interface HsMapCompositionDescriptor {
     read: string[];
     write: string[];
   };
+  date?: string;
+  dateStamp?: string;
 }
 
 export interface LaymanCompositionDescriptor {

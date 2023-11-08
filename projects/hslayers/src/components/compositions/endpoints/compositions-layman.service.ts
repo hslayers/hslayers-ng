@@ -167,6 +167,7 @@ export class HsCompositionsLaymanService {
         url: `${endpoint.url}/rest/workspaces/${record.workspace}/maps/${record.name}`,
         endpoint,
         workspace: record.workspace,
+        date: record.updated_at.split('.')[0],
         id: `m-${record.uuid}`, //m-* to match micka's id structure.
       };
       if (response.body.extentFeatureCreated) {
