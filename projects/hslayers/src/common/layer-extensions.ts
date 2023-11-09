@@ -6,6 +6,7 @@ import {Group, Layer} from 'ol/layer';
 import {Source} from 'ol/source';
 
 import {DOMFeatureLink} from './dom-feature-link.type';
+import {Definition} from '../components/save-map/types/layer-json.type';
 import {HsLaymanLayerDescriptor} from '../components/save-map/interfaces/layman-layer-descriptor.interface';
 import {accessRightsModel} from '../components/add-data/common/access-rights.model';
 
@@ -72,10 +73,9 @@ export type Attribution = {
    */
   locked?: boolean;
 };
-export type Definition = {
-  format?: string;
-  url?: string;
-};
+
+export type LayerSwipeSide = 'left' | 'right';
+
 export type Editor = {
   editable?: boolean;
   /**
@@ -668,14 +668,11 @@ export function setWfsUrl(layer: Layer<Source>, url: string): void {
   layer.set(WFS_URL, url);
 }
 
-export function getSwipeSide(layer: Layer<Source>): 'left' | 'right' {
+export function getSwipeSide(layer: Layer<Source>): LayerSwipeSide {
   return layer.get(SWIPE_SIDE);
 }
 
-export function setSwipeSide(
-  layer: Layer<Source>,
-  side: 'left' | 'right',
-): void {
+export function setSwipeSide(layer: Layer<Source>, side: LayerSwipeSide): void {
   layer.set(SWIPE_SIDE, side);
 }
 

@@ -28,6 +28,7 @@ import {HsLayoutService} from '../layout/layout.service';
 import {HsLogService} from '../../common/log/log.service';
 import {HsToastService} from '../layout/toast/toast.service';
 import {HsUtilsService, generateUuid} from '../utils/utils.service';
+import {HslayersLayerJSON} from '../save-map/types/layer-json.type';
 import {LaymanCompositionDescriptor} from './models/composition-descriptor.model';
 import {
   getLaymanFriendlyLayerName,
@@ -276,7 +277,7 @@ export class HsCompositionsParserService {
 
     if (composition['layers']?.length > 0) {
       composition['layers'].filter((l) => {
-        l.className = l.type == 'wms' ? 'HSLayers.Layer.WMS' : null;
+        l.className = l.type == 'wms' ? 'WMS' : null;
         l.params = {
           FORMAT: 'image/png',
           INFO_FORMAT: 'text/html',
@@ -334,7 +335,7 @@ export class HsCompositionsParserService {
 
     for (const layer of res.LayerList.Layer) {
       const layerToAdd = {
-        className: 'HSLayers.Layer.WMS',
+        className: 'WMS',
         dimensions: undefined,
         legends: [''],
         maxResolution: null,
@@ -681,7 +682,8 @@ export class HsCompositionsParserService {
       if (layer == undefined) {
         if (
           !lyr_def.protocol ||
-          lyr_def.protocol.format != 'hs.format.externalWFS'
+          lyr_def.protocol.format != 'hs.format.externalWFS' || //bakcwards compatblity
+          lyr_def.protocol.format != 'externalWFS'
         ) {
           this.$log.warn(
             'Was not able to parse layer from composition',
@@ -712,19 +714,20 @@ export class HsCompositionsParserService {
 
   /**
    * @public
-   * Select correct layer parser for input data based on layer "className" property (HSLayers.Layer.WMS/OpenLayers.Layer.Vector)
+   * Select correct layer parser for input data based on layer "className" property (ArcGISRest, WNS, WFS)
    * @param lyr_def - Layer to be created (encapsulated in layer definition object)
    * @returns Parser function to create layer (using config_parsers service)
    */
-  async jsonToLayer(lyr_def): Promise<any> {
+  async jsonToLayer(lyr_def: HslayersLayerJSON): Promise<any> {
     let resultLayer;
     switch (lyr_def.className) {
-      case 'HSLayers.Layer.WMS':
+      case 'HSLayers.Layer.WMS': //backwards compatiblity
       case 'WMS':
         resultLayer =
           this.hsCompositionsLayerParserService.createWmsLayer(lyr_def);
         break;
-      case 'HSLayers.Layer.WMTS':
+      case 'HSLayers.Layer.WMTS': //backwards compatiblity
+      case 'WMTS':
         resultLayer =
           this.hsCompositionsLayerParserService.createWMTSLayer(lyr_def);
         break;
@@ -740,10 +743,8 @@ export class HsCompositionsParserService {
         resultLayer =
           this.hsCompositionsLayerParserService.createStaticImageLayer(lyr_def);
         break;
-      case 'OpenLayers.Layer.Vector':
       case 'Vector':
-      case 'hs.format.LaymanWfs':
-        if (lyr_def.protocol?.format == 'hs.format.externalWFS') {
+        if (lyr_def.protocol?.format.includes('externalWFS')) {
           resultLayer =
             this.hsCompositionsLayerParserService.createWFSLayer(lyr_def);
         } else {

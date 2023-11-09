@@ -62,19 +62,19 @@ export class VectorLayerDescriptor {
 
     switch (type ? type.toLowerCase() : '') {
       case 'kml':
-        definition.format = 'ol.format.KML';
+        definition.format = 'KML';
         definition.url = url;
         break;
       case 'geojson':
-        definition.format = 'ol.format.GeoJSON';
+        definition.format = 'GeoJSON';
         definition.url = url;
         break;
       case 'gpx':
-        definition.format = 'ol.format.GPX';
+        definition.format = 'GPX';
         definition.url = url;
         break;
       case 'sparql':
-        definition.format = 'hs.format.Sparql';
+        definition.format = 'Sparql';
         break;
       case 'wfs':
         Object.assign(this.layerParams, {

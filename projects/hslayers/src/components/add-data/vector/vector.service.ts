@@ -113,12 +113,12 @@ export class HsAddDataVectorService {
         if (options.saveToLayman) {
           if (this.hsUtilsService.undefineEmptyString(url) !== undefined) {
             setDefinition(lyr, {
-              format: 'hs.format.WFS',
+              format: 'WFS',
               url: url,
             });
           } else {
             setDefinition(lyr, {
-              format: 'hs.format.WFS',
+              format: 'WFS',
             });
           }
         }
