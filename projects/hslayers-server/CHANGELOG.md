@@ -1,8 +1,9 @@
-# To Be Released
+# 1.5.3 (2023-11-10)
 
 ### Bug Fixes
 
 * Encode also URI path ([60a6a76](https://github.com/hslayers/hslayers-ng/commit/60a6a76a7d4ca9161cee443975734e9a53a0eed7))
+* Do not replace /proxy in resource urls ([aac1656](https://github.com/hslayers/hslayers-ng/commit/aac1656cc7166aaa9cc6965d9d357f3c59321cf4))
 
 # 1.5.2 (2023-05-19)
 
