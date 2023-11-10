@@ -840,7 +840,8 @@
       "state": "Stát",
       "toggleAll": "Přepnout vše",
       "userCurrentMapExtent": "Použít aktuální rozsah mapy",
-      "write": "Zapisovat"
+      "write": "Zapisovat",
+      "alreadyExists": "Kompozice s vybraným názvem již existuje"
     },
     "panelMd": {
       "fillKeywords": "Vyplňte klíčová slova",

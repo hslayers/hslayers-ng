@@ -119,7 +119,7 @@ export async function awaitLayerSync(layer: Layer): Promise<boolean> {
  * @param layman - Layman endpoint
  */
 export function isLaymanUrl(url: string, layman: HsEndpoint): boolean {
-  if (!layman) {
+  if (!layman || !url) {
     return false;
   }
 

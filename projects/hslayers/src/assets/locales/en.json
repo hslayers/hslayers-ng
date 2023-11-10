@@ -840,7 +840,8 @@
       "state": "State",
       "toggleAll": "Toggle all",
       "userCurrentMapExtent": "Use current map extent",
-      "write": "Write"
+      "write": "Write",
+      "alreadyExists": "Composition with selected name already exists"
     },
     "panelMd": {
       "fillKeywords": "Fill keywords",

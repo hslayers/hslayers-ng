@@ -34,15 +34,18 @@
     <hs-save-map-advanced-options [thumbnail]="compositionThumbnail"
         [hidden]="extraFormOpened !== 'advancedOptions'"></hs-save-map-advanced-options>
 
-    <div class="modal-footer w-100 pt-3" *ngIf="{canBeOverwritten: canOverwrite() && overwrite} as composition">
-        <div *ngIf="composition.canBeOverwritten" class="alert alert-info text-gray m-2">
+    <div class="modal-footer w-100 pt-3" *ngIf="{
+            canBeOverwritten: canOverwrite() && overwrite,
+            mine: hsSaveMapManagerService.compoData.controls.workspace.value === hsSaveMapManagerService.currentUser
+        } as composition">
+        <div *ngIf="composition.canBeOverwritten  && !composition.mine" class="alert alert-info text-gray m-2">
             {{'SAVECOMPOSITION.saveOrOverwrite' | translateHs }}
         </div>
         <div class="d-flex justify-content-end w-100" [class.justify-content-between]="composition.canBeOverwritten">
             <button *ngIf="composition.canBeOverwritten" type="button" class="btn btn-danger position-relative"
                 id="stc-save" (click)="initiateSave(false)">{{'SAVECOMPOSITION.form.overwrite' | translateHs }}
                 <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary"
-                    [title]="'SAVECOMPOSITION.form.overwrite' | translateHs">
+                    [title]="'SAVECOMPOSITION.form.alreadyExists' | translateHs">
                     i
                 </span>
             </button>

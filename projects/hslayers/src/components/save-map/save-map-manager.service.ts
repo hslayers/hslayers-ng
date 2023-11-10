@@ -209,23 +209,11 @@ export class HsSaveMapManagerService extends HsSaveMapManagerParams {
       saver
         .save(compositionJson, endpoint, tempCompoData, saveAsNew)
         .then((response) => {
-          const compInfo: any = {};
-          const j = response;
           let status = false;
           if (endpoint.type.includes('layman')) {
-            if (saveAsNew) {
-              status = j.length == 1 && j[0].uuid !== undefined;
-            } else {
-              status = j.uuid !== undefined;
-            }
-          }
-          if (!status) {
-            if (endpoint.type.includes('layman') && j.status == 'CONFLICT') {
-              compInfo.id = j[0].uuid;
-              compInfo.name = j[0].name;
-            }
-          } else {
-            this.hsEventBusService.compositionLoads.next(compInfo);
+            status = saveAsNew
+              ? response.length == 1 && response[0].uuid !== undefined
+              : (status = response.uuid !== undefined);
           }
           //const saveStatus = this.status ? 'ok' : 'not-saved';
           //this.statusData.success = this.status;

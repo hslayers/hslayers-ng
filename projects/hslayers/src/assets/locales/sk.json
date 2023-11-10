@@ -809,7 +809,8 @@
       "state": "Štát",
       "toggleAll": "Prepnúť všetko",
       "userCurrentMapExtent": "Použiť aktuálny rozsah mapy",
-      "write": "Zápis"
+      "write": "Zápis",
+      "alreadyExists": "Kompozícia s vybratým názvom už existuje"
     },
     "panelMd": {
       "fillKeywords": "Vyplňte kľúčove slová",
