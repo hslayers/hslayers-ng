@@ -24,6 +24,10 @@
     </extra-buttons>
   </div>
   <div class="card-body p-1 pe-2 pt-2">
+    <div class="form-group m-3" *ngIf="uploaderVisible">
+      <hs-file-upload (uploaded)="handleFileUpload($event)" uploader="hs-sld-upload" acceptedFormats=".sld, .qml">
+      </hs-file-upload>
+    </div>
     <div class="form-floating pb-1" *ngIf="hsStylerService.styleObject">
       <input type="text" class="form-control" id="hs-styler-style-title"
         [placeholder]="'STYLER.styleName' | translateHs" [(ngModel)]="hsStylerService.styleObject.name">
@@ -64,10 +68,6 @@
     </ng-container>
   </div>
   <div class="card-footer bg-white px-1 border-0">
-    <div class="form-group m-3" *ngIf="uploaderVisible">
-      <hs-file-upload (uploaded)="handleFileUpload($event)" uploader="hs-sld-upload" acceptedFormats=".sld, .qml">
-      </hs-file-upload>
-    </div>
     <div class="d-flex justify-content-end" *ngIf="hsStylerService.isAuthenticated && hsStylerService
     .unsavedChange">
       <div class="p-1 m-0 btn bg-danger bg-opacity-25 btn-sm py-0" role="alert"
