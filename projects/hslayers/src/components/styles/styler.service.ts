@@ -354,8 +354,6 @@ export class HsStylerService {
   /**
    * Prepare current layers style for editing by converting
    * SLD attribute string to JSON and reading layers title
-   *
-   * @param layer - OL layer
    */
   async fill(layer: VectorLayer<VectorSource<Geometry>>): Promise<void> {
     const blankStyleObj = {name: 'untitled style', rules: []};
@@ -382,7 +380,12 @@ export class HsStylerService {
       }
       this.fixSymbolizerBugs(this.styleObject);
       this.geostylerWorkaround();
-      if (this.unsavedChange) {
+      /**
+       * Save (update OL style) layer style
+       * unsavedChange - synced layman layer with changes
+       * layerBeingMonitored - other vector layers
+       */
+      if (this.unsavedChange || !this.layerBeingMonitored) {
         //Update this.sld string in case styler for layer with unsaved changes was opened.
         //Could have been changed by styling other layer in the meantime
         this.save();
