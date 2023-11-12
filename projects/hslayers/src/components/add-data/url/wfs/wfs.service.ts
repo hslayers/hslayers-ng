@@ -15,7 +15,6 @@ import {HsAddDataUrlService} from '../add-data-url.service';
 import {HsEventBusService} from '../../../core/event-bus.service';
 import {HsLayoutService} from '../../../layout/layout.service';
 import {HsLogService} from '../../../../common/log/log.service';
-import {HsQueuesService} from '../../../../common/queues/queues.service';
 import {HsUrlTypeServiceModel} from '../models/url-type-service.model';
 import {HsUtilsService} from '../../../utils/utils.service';
 import {HsWfsGetCapabilitiesService} from '../../../../common/get-capabilities/wfs-get-capabilities.service';
@@ -23,7 +22,7 @@ import {LayerOptions} from '../../../compositions/layer-parser/composition-layer
 import {UrlDataObject} from '../types/data-object.type';
 import {WfsSource} from '../../../../common/layers/hs.source.WfsSource';
 
-type wfsCapabilitiesLayer = {
+type WfsCapabilitiesLayer = {
   Abstract: string;
   DefaultCRS: string;
   Keywords: {
@@ -35,7 +34,7 @@ type wfsCapabilitiesLayer = {
   _attributes: any;
 };
 
-export type hsWfsCapabilitiesLayer = wfsCapabilitiesLayer & {
+export type HsWfsCapabilitiesLayer = WfsCapabilitiesLayer & {
   featureCount: number;
   limitFeatureCount: boolean;
   loading: boolean;
@@ -62,7 +61,6 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
     public hsLayoutService: HsLayoutService,
     public hsAddDataCommonService: HsAddDataCommonService,
     private hsAddDataUrlService: HsAddDataUrlService,
-    private hsQueuesService: HsQueuesService,
   ) {
     this.setDataToDefault();
   }
@@ -281,9 +279,9 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
   }
 
   /**
-   * Construct and send WFS service getFeature-hits request for set o layers
+   * Construct and send WFS service getFeature-hits request for a set of layers
    */
-  getFeatureCountForLayers(layers: hsWfsCapabilitiesLayer[]) {
+  getFeatureCountForLayers(layers: HsWfsCapabilitiesLayer[]) {
     for (const layer of layers) {
       layer.loading = true;
       const params = {
@@ -306,7 +304,7 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
   /**
    * Parse layer feature count and set feature limits
    */
-  private parseFeatureCount(url: string, layer: hsWfsCapabilitiesLayer): void {
+  private parseFeatureCount(url: string, layer: HsWfsCapabilitiesLayer): void {
     // Create a unique subject for this request
     const cancelSubject = new Subject<void>();
 
@@ -343,7 +341,7 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
   }
 
   /**
-   * Cancel a specific request based on url as identifier
+   * Cancel a specific request based on URL as identifier
    */
   private cancelRequest(url: string) {
     const cancelSubject = this.requestCancelSubjects.get(url);
@@ -359,7 +357,7 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
    */
   tableLayerChecked($event, layer) {
     if (
-      (layer as hsWfsCapabilitiesLayer).featureCount === undefined &&
+      (layer as HsWfsCapabilitiesLayer).featureCount === undefined &&
       layer.checked
     ) {
       this.getFeatureCountForLayers([layer]);

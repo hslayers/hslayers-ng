@@ -101,8 +101,8 @@ export class HsLayerSynchronizerService {
   }
 
   /**
-   * Make 'maxRetryCount' attempts to wait until layer is available on layman before returning
-   * Use for tasks which require Layer presence on server
+   * Make 'maxRetryCount' attempts to wait until the layer is available on Layman before returning.
+   * Used for tasks which require layer presence on server
    */
   async layerExistsOnLayman(
     layer: VectorLayer<VectorSource<Geometry>>,
