@@ -289,7 +289,8 @@
     "query": "Vaicājums",
     "composition": "Kompozīcija",
     "remove": "Noņemt",
-    "saving": "Saglabā"
+    "saving": "Saglabā",
+    "addToMap": "Pievienot kartei"
   },
   "COMPOSITIONS": {
     "addByAddress": "Pievienot kompozīciju pēc adreses",

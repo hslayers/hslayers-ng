@@ -309,7 +309,8 @@
     "confirmReset": "Potvrďte reset",
     "saving": "Ukladanie",
     "asNew": "ako nové",
-    "createdBy": "Vytvoril"
+    "createdBy": "Vytvoril",
+    "addToMap": "Pridať do mapy"
   },
   "COMPOSITIONS": {
     "addByAddress": "Pridať kompozíciu z adresy",
