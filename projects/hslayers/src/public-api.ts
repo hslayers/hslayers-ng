@@ -9,6 +9,7 @@ export * from './hslayers.module';
 /*
  * COMMON
  */
+export * from './common/add-to-map/public-api';
 export * from './common/confirm/public-api';
 export * from './common/download/public-api';
 export * from './common/endpoints/public-api';

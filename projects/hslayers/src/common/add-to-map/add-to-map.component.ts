@@ -1,5 +1,6 @@
 import {CommonModule} from '@angular/common';
 import {Component, EventEmitter, Input, Output} from '@angular/core';
+
 import {HsLanguageModule} from '../../components/language/language.module';
 
 @Component({
