@@ -529,6 +529,7 @@ export class HsAddDataCommonFileService extends HsAddDataCommonFileServiceParams
     const descriptor = await this.describeNewLayer(
       this.endpoint,
       response.name,
+      ['wms', 'style'],
     );
     if (descriptor?.file.error) {
       const error = descriptor.file.error;
@@ -583,7 +584,7 @@ export class HsAddDataCommonFileService extends HsAddDataCommonFileServiceParams
   async describeNewLayer(
     endpoint: HsEndpoint,
     layerName: string,
-    pendingParam: string = 'wms',
+    pendingParams: string[] = ['wms'],
   ): Promise<HsLaymanLayerDescriptor> {
     try {
       const descriptor = await this.hsLaymanService.describeLayer(
@@ -591,10 +592,14 @@ export class HsAddDataCommonFileService extends HsAddDataCommonFileServiceParams
         layerName,
         endpoint.user,
       );
-      if (layerParamPendingOrStarting(descriptor, pendingParam)) {
+      if (
+        pendingParams.some((param) =>
+          layerParamPendingOrStarting(descriptor, param),
+        )
+      ) {
         return new Promise((resolve) => {
           setTimeout(() => {
-            resolve(this.describeNewLayer(endpoint, layerName, pendingParam));
+            resolve(this.describeNewLayer(endpoint, layerName, pendingParams));
           }, 2000);
         });
       } else {
