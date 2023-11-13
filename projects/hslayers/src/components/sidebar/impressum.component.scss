@@ -1,11 +1,16 @@
 .hs-impressum .hs-logo {
-    max-width: 100%;
-    padding-left: 5em;
-    padding-right: 5em;
+    display: inline-block;
+    width: 10rem;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
 }
-
 .hs-impressum .hs-logo img {
     width: 100%;
+    filter: grayscale(1);
+    transition: filter 500ms;
+}
+.hs-impressum:hover .hs-logo img {
+    filter: grayscale(0);
 }
 .hs-panelspace:not(.labels) .hs-impressum {
     display: none;
