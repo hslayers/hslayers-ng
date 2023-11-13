@@ -3,7 +3,7 @@ import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {NgModule} from '@angular/core';
 
-import {HsAddToMapButton} from '../../../../common/add-to-map/add-to-map.component';
+import {HsAddToMapButtonComponent} from '../../../../common/add-to-map/add-to-map.component';
 import {HsCommonUrlComponent} from './url.component';
 import {HsHistoryListModule} from './../../../../common/history-list/history-list.module';
 import {HsLanguageModule} from '../../../language/language.module';
@@ -23,7 +23,7 @@ import {WmsLayerHighlightDirective} from './wms-layer-highlight.directive';
     HsLanguageModule,
     HsHistoryListModule,
     HsUiExtensionsModule,
-    HsAddToMapButton,
+    HsAddToMapButtonComponent,
   ],
   exports: [
     HsUrlAddComponent,

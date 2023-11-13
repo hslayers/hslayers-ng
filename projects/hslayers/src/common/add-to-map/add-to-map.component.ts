@@ -42,9 +42,9 @@ import {HsLanguageModule} from '../../components/language/language.module';
  * title: Translation string to be used title
  */
 // eslint-disable-next-line @angular-eslint/component-class-suffix
-export class HsAddToMapButton {
+export class HsAddToMapButtonComponent {
   @Input() disabled: boolean;
-  @Input() title: string;
+  @Input() title: string = 'COMMON.addToMap';
   @Input() loading: boolean = false;
   @Input() classes: string;
 
