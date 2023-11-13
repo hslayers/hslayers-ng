@@ -801,7 +801,8 @@
     },
     "featuresSelected": "Features selected: ",
     "infoPanel": {
-      "clickOnMap": "Click on map for query results"
+      "clickOnMap": "Click on map for query results",
+      "noFeaturesSelected": "No features selected"
     },
     "reallyDelete": "Really delete this feature?",
     "reallyDeleteAllFeaturesFrom": "Really delete all features from layer {0}?",

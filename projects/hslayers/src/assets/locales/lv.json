@@ -774,7 +774,8 @@
     },
     "featuresSelected": "Atlasītie grafiskie objekti: ",
     "infoPanel": {
-      "clickOnMap": "Noklikšķiniet uz kartes, lai iegūtu vaicājuma rezultātus"
+      "clickOnMap": "Noklikšķiniet uz kartes, lai iegūtu vaicājuma rezultātus",
+      "noFeaturesSelected": "Nav atlasīts neviens grafiskos objektus"
     },
     "reallyDelete": "Vai tiešām vēlaties dzēst šo objektu?",
     "reallyDeleteAllFeaturesFrom": "Vai tiešām vēlaties izdzēst visus objektus no slāņa {0}?",

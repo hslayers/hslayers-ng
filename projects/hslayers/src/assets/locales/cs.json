@@ -801,7 +801,8 @@
     },
     "featuresSelected": "Vybrané prvky: ",
     "infoPanel": {
-      "clickOnMap": "Kliknutím do mapy zobrazíte výsledky dotazu"
+      "clickOnMap": "Kliknutím do mapy zobrazíte výsledky dotazu",
+      "noFeaturesSelected": "Nejsou vybrány žádné prvky"
     },
     "reallyDelete": "Opravdu smazat tento prvek?",
     "reallyDeleteAllFeaturesFrom": "Opravdu odstranit všechny prvky z vrstvy {0}?",
