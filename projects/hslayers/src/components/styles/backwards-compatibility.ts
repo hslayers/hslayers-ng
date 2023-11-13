@@ -53,7 +53,6 @@ export async function parseStyle(j): Promise<{sld?: string; style: Style}> {
       }
       const icon_json = {
         img: img,
-        imgSize: [img.width, img.height],
         crossOrigin: 'anonymous',
       };
       style_json.image = new Icon(icon_json);

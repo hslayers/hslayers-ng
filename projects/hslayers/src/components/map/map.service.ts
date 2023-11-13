@@ -1025,7 +1025,7 @@ export class HsMapService {
       (src as ImageWMS | ImageArcGISRest).setImageLoadFunction(
         async (image, url) => {
           /**
-           * No timeout for this que as non tiled images may in some cases take realy long to load and thus
+           * No timeout for this que as non tiled images may in some cases take really long to load and thus
            * block all the rest of the functionality that depends on http requests for the whole duration
            */
           const que = this.hsQueuesService.ensureQueue('imageLoad', 4);
@@ -1055,15 +1055,15 @@ export class HsMapService {
         this.laymanWmsLoadingFunction(image, src);
         return;
       }
-      image.getImage().onload = function () {
+      (image.getImage() as HTMLImageElement).onload = function () {
         resolve(image);
       };
 
-      image.getImage().onerror = function () {
+      (image.getImage() as HTMLImageElement).onerror = function () {
         resolve(image);
       };
 
-      image.getImage().onabort = function () {
+      (image.getImage() as HTMLImageElement).onabort = function () {
         resolve(image);
       };
 
