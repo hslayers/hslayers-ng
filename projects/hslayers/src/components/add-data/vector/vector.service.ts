@@ -333,7 +333,7 @@ export class HsAddDataVectorService {
     const descriptor = await this.hsAddDataCommonFileService.describeNewLayer(
       this.hsAddDataCommonFileService.endpoint,
       layerName,
-      'style',
+      ['style'],
     );
     data.serializedStyle = await this.hsCommonLaymanService.getStyleFromUrl(
       descriptor.style.url,
