@@ -5,7 +5,7 @@ import {NgModule} from '@angular/core';
 import {NgbProgressbarModule} from '@ng-bootstrap/ng-bootstrap';
 
 import {HsAddLayerAuthorizedComponent} from './add-layer-authorized/add-layer-authorized.component';
-import {HsAddToMapButton} from '../../../common/add-to-map/add-to-map.component';
+import {HsAddToMapButtonComponent} from '../../../common/add-to-map/add-to-map.component';
 import {HsAdvancedOptionsComponent} from './advanced-options/advanced-options.component';
 import {HsGetCapabilitiesErrorComponent} from './capabilities-error-dialog/capabilities-error-dialog.component';
 import {HsLanguageModule} from '../../language/language.module';
@@ -24,7 +24,7 @@ import {HsUiExtensionsModule} from '../../../common/widgets/ui-extensions.module
     HsLaymanModule,
     HsUiExtensionsModule,
     NgbProgressbarModule,
-    HsAddToMapButton,
+    HsAddToMapButtonComponent,
   ],
   exports: [
     HsGetCapabilitiesErrorComponent,
