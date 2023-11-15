@@ -129,16 +129,9 @@ export class CswLayersDialogComponent implements OnInit, HsDialogComponent {
    * Assigns per service data to the input addData-urlType service when switching between different services (many times of same type)
    */
   beforeChange(e): void {
-    console.log(
-      '🚀 ~ file: csw-layers-dialog.component.ts:132 ~ beforeChange ~ e:',
-      e,
-    );
     const service = this.data.services.find((s) => s.id == e);
-    console.log(
-      '🚀 ~ file: csw-layers-dialog.component.ts:133 ~ beforeChange ~ service:',
-      service,
-    );
     //Assign correct service data object to typeService
     service.typeService.data = service.data;
+    service.selected = true;
   }
 }

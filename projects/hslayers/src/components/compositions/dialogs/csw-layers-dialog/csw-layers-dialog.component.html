@@ -13,8 +13,8 @@
             </p>
             <div class="modal-body w-75 mh-75" style="max-height: 75vh; overflow-y: auto; margin:auto">
                 <div ngbAccordion [closeOthers]="true" #acc="ngbAccordion" (show)="beforeChange($event)">
-                    <div [ngbAccordionItem]="service.id" [collapsed]="true" [disabled]="!servicesLoaded" [id]="service.id"
-                        *ngFor="let service of data.services">
+                    <div [ngbAccordionItem]="service.id" [collapsed]="true" [disabled]="!servicesLoaded"
+                        [id]="service.id" *ngFor="let service of data.services" (hide)="service.selected = false">
                         <div ngbAccordionHeader>
                             <button ngbAccordionButton *ngIf="service.loaded; else loadingLayers"
                                 class="accordion-button justify-content-between">{{service.title}}
@@ -32,8 +32,8 @@
                         </div>
                         <div ngbAccordionCollapse>
                             <div ngbAccordionBody>
-                                <ng-template><!-- FIXME: service.typeService is updated only too late! -->
-                                    <hs-layer-table *ngIf="service.loaded" [type]="service.type"
+                                <ng-template>
+                                    <hs-layer-table *ngIf="service.loaded && service.selected" [type]="service.type"
                                         [injectedService]="service.typeService"> </hs-layer-table>
                                 </ng-template>
                             </div>
