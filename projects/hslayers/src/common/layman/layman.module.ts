@@ -3,7 +3,7 @@ import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 
 import {HsCommonLaymanAccessRightsComponent} from './access-rights/layman-access-rights.component';
-import {HsLanguageModule} from '../../components/language/language.module';
+import {TranslateCustomPipe} from '../../components/language/translate-custom.pipe';
 import {HsLaymanCurrentUserComponent} from './layman-current-user.component';
 import {HsLaymanLoginComponent} from './layman-login.component';
 import {HsSetPermissionsDialogComponent} from './dialog-set-permissions/set-permissions.component';
@@ -17,7 +17,7 @@ import {HsUiExtensionsModule} from '../widgets/ui-extensions.module';
     HsCommonLaymanAccessRightsComponent,
     HsSetPermissionsDialogComponent,
   ],
-  imports: [CommonModule, HsLanguageModule, HsUiExtensionsModule, FormsModule],
+  imports: [CommonModule, TranslateCustomPipe, HsUiExtensionsModule, FormsModule],
   exports: [
     HsLaymanLoginComponent,
     HsLaymanCurrentUserComponent,

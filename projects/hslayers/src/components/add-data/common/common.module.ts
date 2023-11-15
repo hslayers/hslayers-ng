@@ -8,7 +8,7 @@ import {HsAddLayerAuthorizedComponent} from './add-layer-authorized/add-layer-au
 import {HsAddToMapButtonComponent} from '../../../common/add-to-map/add-to-map.component';
 import {HsAdvancedOptionsComponent} from './advanced-options/advanced-options.component';
 import {HsGetCapabilitiesErrorComponent} from './capabilities-error-dialog/capabilities-error-dialog.component';
-import {HsLanguageModule} from '../../language/language.module';
+import {TranslateCustomPipe} from '../../language/translate-custom.pipe';
 import {HsLaymanModule} from '../../../common/layman/layman.module';
 import {HsNewLayerFormComponent} from './new-layer-form/new-layer-form.component';
 import {HsPositionComponent} from './target-position/target-position.component';
@@ -20,7 +20,7 @@ import {HsUiExtensionsModule} from '../../../common/widgets/ui-extensions.module
   imports: [
     CommonModule,
     FormsModule,
-    HsLanguageModule,
+    TranslateCustomPipe,
     HsLaymanModule,
     HsUiExtensionsModule,
     NgbProgressbarModule,

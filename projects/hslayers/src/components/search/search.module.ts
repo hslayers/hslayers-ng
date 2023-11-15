@@ -2,7 +2,7 @@ import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 
-import {HsLanguageModule} from '../language/language.module';
+import {TranslateCustomPipe} from '../language/translate-custom.pipe';
 import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
 import {HsSearchComponent} from './search.component';
 import {HsSearchInputComponent} from './search-input.component';
@@ -19,7 +19,7 @@ import {limitToPipe} from './limitTo.pipe';
     limitToPipe,
     HsSearchToolbarComponent,
   ],
-  imports: [FormsModule, CommonModule, HsPanelHelpersModule, HsLanguageModule],
+  imports: [FormsModule, CommonModule, HsPanelHelpersModule, TranslateCustomPipe],
   exports: [
     HsSearchComponent,
     HsSearchResultsComponent,

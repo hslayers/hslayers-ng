@@ -2,6 +2,7 @@ import {CommonModule} from '@angular/common';
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 
 import {HsLanguageModule} from '../../components/language/language.module';
+import {TranslateCustomPipe} from '../../components/language/translate-custom.pipe';
 
 @Component({
   selector: 'hs-add-to-map',
@@ -36,7 +37,7 @@ import {HsLanguageModule} from '../../components/language/language.module';
       }
     `,
   ],
-  imports: [CommonModule, HsLanguageModule],
+  imports: [CommonModule, HsLanguageModule, TranslateCustomPipe],
 })
 export class HsAddToMapButtonComponent {
   @Input() disabled: boolean;

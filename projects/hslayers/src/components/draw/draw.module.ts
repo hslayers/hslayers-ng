@@ -9,7 +9,7 @@ import {DrawPanelComponent} from './draw-panel/draw-panel.component';
 import {HsDrawComponent} from './draw.component';
 import {HsDrawLayerMetadataDialogComponent} from './draw-layer-metadata/draw-layer-metadata.component';
 import {HsDrawToolbarComponent} from './draw-toolbar/draw-toolbar.component';
-import {HsLanguageModule} from '../language/language.module';
+import {TranslateCustomPipe} from '../language/translate-custom.pipe';
 import {HsLaymanModule} from '../../common/layman/layman.module';
 import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
 import {HsQueryModule} from '../query/query.module';
@@ -31,7 +31,7 @@ import {HsStylerModule} from '../styles/styles.module';
     FormsModule,
     NgbDropdownModule,
     HsStylerModule,
-    HsLanguageModule,
+    TranslateCustomPipe,
     HsQueryModule,
     HsLaymanModule,
     HsRmLayerDialogModule,

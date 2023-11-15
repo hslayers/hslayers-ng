@@ -24,6 +24,7 @@ import {HsToolbarModule} from './components/toolbar/toolbar.module';
 import {HsTripPlannerModule} from './components/trip-planner/trip-planner.module';
 import {HslayersComponent} from './hslayers.component';
 import {HslayersLaymanInterceptor} from './hslayers.layman.interceptor';
+import {TranslateCustomPipe} from './components/language/translate-custom.pipe';
 
 @NgModule({
   declarations: [HslayersComponent],
@@ -37,6 +38,7 @@ import {HslayersLaymanInterceptor} from './hslayers.layman.interceptor';
     HsGeolocationModule,
     HsInfoModule,
     HsLanguageModule,
+    TranslateCustomPipe,
     HsLegendModule,
     HsTripPlannerModule,
     HsSaveMapModule,

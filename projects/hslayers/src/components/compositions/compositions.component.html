@@ -2,11 +2,12 @@
     [hidden]="(isVisible$ | async) === false" *ngIf="{layman: hsCommonLaymanService.layman$ | async } as ctx">
     <div class="hs-compositions-header">
         <hs-panel-header name="composition_browser" [title]="'PANEL_HEADER.COMPOSITIONS' | translateHs">
-            <extra-buttons class="d-flex align-items-center">
-                <button class="but-title-sm hs-extra-buttons" (click)="reload()"
-                    [title]="'COMMON.reload' | translateHs">
-                    <i class="glyphicon icon-fatredo"></i>
-                </button>
+            <button mainButton
+                class="hs-extra-buttons btn btn-sm btn-outline-secondary border-0 align-items-center d-flex gap-2"
+                (click)="reload()" [title]="'COMMON.reload' | translateHs"> {{'COMMON.reload' | translateHs}}
+                <i class="glyphicon icon-fatredo"></i>
+            </button>
+            <extra-buttons>
                 <button class="but-title-sm hs-extra-buttons" [title]="'PANEL_HEADER.SAVECOMPOSITION'|translateHs"
                     (click)="openSaveMapPanel()"
                     [hidden]="!saveMapAvailable()"><!-- TODO: Remove function call from template -->

@@ -3,13 +3,13 @@ import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 
 import {HsInfoComponent} from './info.component';
-import {HsLanguageModule} from '../language/language.module';
+import {TranslateCustomPipe} from '../language/translate-custom.pipe';
 import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   declarations: [HsInfoComponent],
-  imports: [FormsModule, CommonModule, HsPanelHelpersModule, HsLanguageModule],
+  imports: [FormsModule, CommonModule, HsPanelHelpersModule, TranslateCustomPipe],
   exports: [HsInfoComponent],
 })
 export class HsInfoModule {}

@@ -4,7 +4,7 @@ import {FormsModule} from '@angular/forms';
 
 import {HsAddDataCommonModule} from '../../common/common.module';
 import {HsFileShpComponent} from './shp.component';
-import {HsLanguageModule} from '../../../language/language.module';
+import {TranslateCustomPipe} from '../../../language/translate-custom.pipe';
 import {HsUploadModule} from '../../../../common/upload/upload.module';
 
 @NgModule({
@@ -12,7 +12,7 @@ import {HsUploadModule} from '../../../../common/upload/upload.module';
   imports: [
     CommonModule,
     FormsModule,
-    HsLanguageModule,
+    TranslateCustomPipe,
     HsUploadModule,
     HsAddDataCommonModule,
   ],

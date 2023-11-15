@@ -7,7 +7,7 @@ import {HsAddDataVectorFileComponent} from './vector-file/vector-file.component'
 import {HsAddDataVectorUrlComponent} from './vector-url/vector-url.component';
 import {HsAddToMapButtonComponent} from '../../../common/add-to-map/add-to-map.component';
 import {HsCommonUrlModule} from '../common/url/url.module';
-import {HsLanguageModule} from '../../language/language.module';
+import {TranslateCustomPipe} from '../../language/translate-custom.pipe';
 import {HsLaymanModule} from '../../../common/layman/layman.module';
 import {HsUploadModule} from '../../../common/upload/upload.module';
 
@@ -16,7 +16,7 @@ import {HsUploadModule} from '../../../common/upload/upload.module';
   imports: [
     CommonModule,
     FormsModule,
-    HsLanguageModule,
+    TranslateCustomPipe,
     HsAddDataCommonModule,
     HsCommonUrlModule,
     HsLaymanModule,

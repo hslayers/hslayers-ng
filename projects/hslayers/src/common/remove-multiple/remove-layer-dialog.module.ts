@@ -1,12 +1,12 @@
 import {CommonModule} from '@angular/common';
 import {NgModule} from '@angular/core';
 
-import {HsLanguageModule} from '../../components/language/language.module';
+import {TranslateCustomPipe} from '../../components/language/translate-custom.pipe';
 import {HsRmLayerDialogComponent} from './remove-layer-dialog.component';
 
 @NgModule({
   declarations: [HsRmLayerDialogComponent],
-  imports: [CommonModule, HsLanguageModule],
+  imports: [CommonModule, TranslateCustomPipe],
   exports: [HsRmLayerDialogComponent],
 })
 export class HsRmLayerDialogModule {}
