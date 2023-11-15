@@ -7,7 +7,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {NgbAccordion} from '@ng-bootstrap/ng-bootstrap';
+import {NgbAccordionDirective} from '@ng-bootstrap/ng-bootstrap';
 
 import {Subject} from 'rxjs';
 import {loadAsync} from 'jszip';
@@ -26,7 +26,7 @@ import {HsToastService} from '../../../../layout/toast/toast.service';
 export class RasterTimeseriesComponent implements OnInit, OnDestroy {
   @Input() data: FileDataObject;
 
-  @ViewChild('acc') accordionComponent: NgbAccordion;
+  @ViewChild('acc') accordion: NgbAccordionDirective;
   @ViewChild('hsTimeseriesTitle') fileTitleInput: ElementRef<HTMLInputElement>;
 
   private end = new Subject<void>();
@@ -94,7 +94,7 @@ export class RasterTimeseriesComponent implements OnInit, OnDestroy {
   /** On click handler used by user to mark inferred inputs as verified */
   verifyInputs(): void {
     this.form.patchValue({verified: true});
-    this.accordionComponent.expand('hs-timeseries-acc');
+    this.accordion.collapse('hs-timeseries-acc');
     this.data.timeRegex = `${this.form.controls.regex.value}`;
   }
 

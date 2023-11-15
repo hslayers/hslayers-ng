@@ -12,32 +12,34 @@
                 {{'COMPOSITIONS.cswDialog.infoText' | translateHs }}
             </p>
             <div class="modal-body w-75 mh-75" style="max-height: 75vh; overflow-y: auto; margin:auto">
-                <ngb-accordion [closeOthers]="true" #acc="ngbAccordion" (panelChange)="beforeChange($event)">
-                    <ngb-panel [disabled]="!servicesLoaded" [id]="service.id" *ngFor="let service of data.services">
-                        <ng-template ngbPanelHeader>
-                            <button ngbPanelToggle *ngIf="service.loaded; else loadingLayers"
+                <div ngbAccordion [closeOthers]="true" #acc="ngbAccordion" (show)="beforeChange($event)">
+                    <div [ngbAccordionItem]="service.id" [collapsed]="true" [disabled]="!servicesLoaded" [id]="service.id"
+                        *ngFor="let service of data.services">
+                        <div ngbAccordionHeader>
+                            <button ngbAccordionButton *ngIf="service.loaded; else loadingLayers"
                                 class="accordion-button justify-content-between">{{service.title}}
-                                <span>
-                                    <i class="icon-trash text-secondary pe-3 " role="button"
+                                <span class="ml-auto pe-3">
+                                    <i class="icon-trash text-secondary" role="button"
                                         (click)="$event.stopPropagation();removeService(service)"
                                         [title]="'COMMON.delete' | translateHs"></i>
-                                    <i class="text-black" role="button"
-                                        [ngClass]=" acc.isExpanded(service.id)  ? 'icon-chevron-down' : 'icon-chevron-right' "
-                                        [title]="'COMMON.toggle' | translateHs"></i>
                                 </span>
                             </button>
                             <ng-template #loadingLayers>
                                 <button
                                     class="accordion-button justify-content-between">{{'COMPOSITIONS.cswDialog.servicesLoading'
-                                    | translateHs}}&emsp;<span class="hs-loader"></span></button>
+                                    | translateHs}}&emsp;<span class="hs-loader ml-auto"></span></button>
                             </ng-template>
-                        </ng-template>
-                        <ng-template ngbPanelContent>
-                            <hs-layer-table *ngIf="service.loaded" [type]="service.type"
-                                [injectedService]="service.typeService"> </hs-layer-table>
-                        </ng-template>
-                    </ngb-panel>
-                </ngb-accordion>
+                        </div>
+                        <div ngbAccordionCollapse>
+                            <div ngbAccordionBody>
+                                <ng-template><!-- FIXME: service.typeService is updated only too late! -->
+                                    <hs-layer-table *ngIf="service.loaded" [type]="service.type"
+                                        [injectedService]="service.typeService"> </hs-layer-table>
+                                </ng-template>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="w-75 mh-75 m-auto p-3" [hidden]="layersString.length === 0">
                 {{'COMPOSITIONS.cswDialog.otherLayers' | translateHs }}: {{layersString}}

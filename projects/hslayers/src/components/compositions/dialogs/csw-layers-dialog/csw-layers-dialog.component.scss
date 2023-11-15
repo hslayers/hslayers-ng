@@ -1,5 +1,5 @@
 .accordion-button::after {
-    content: unset !important;
+    margin-left: 0 !important;
 }
 
 .accordion-button:hover {
@@ -8,4 +8,8 @@
 
 .accordion-button i:hover {
     color: #dc3545 !important;
+}
+
+.ml-auto {
+    margin-left: auto;
 }
