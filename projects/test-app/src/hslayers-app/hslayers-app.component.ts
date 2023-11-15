@@ -364,7 +364,7 @@ export class HslayersAppComponent {
         },
         {
           title: 'Micka',
-          url: 'https://watlas.lesprojekt.cz/micka/csw',
+          url: 'https://hub4everybody.com/micka/csw',
           language: 'eng',
           type: 'micka',
         },

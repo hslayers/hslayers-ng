@@ -11,30 +11,32 @@
 
     </div>
 
-    <ngb-accordion #acc="ngbAccordion" class="my-2" [hidden]="!formVisible" activeIds="hs-timeseries-acc">
-        <ngb-panel id="hs-timeseries-acc">
-            <ng-template ngbPanelHeader let-opened="opened">
-                <button ngbPanelToggle class="accordion-button text-black-50">{{'ADDDATA.FILE.selectedString' |
+    <div ngbAccordion #acc="ngbAccordion" class="my-2" [hidden]="!formVisible">
+        <div ngbAccordionItem [collapsed]="false" id="hs-timeseries-acc">
+            <div ngbAccordionHeader>
+                <button ngbAccordionButton class="accordion-button text-black-50">{{'ADDDATA.FILE.selectedString' |
                     translateHs }}: <span class="text-black ps-1">{{selectedString}}</span></button>
-            </ng-template>
-            <ng-template ngbPanelContent>
-                <form [formGroup]="form" class="d-flex flex-column ">
-                    <div class="form-floating mt-2 flex-fill"
-                        [ngClass]="{'verification-pending': !form.get('verified').value}">
-                        <input formControlName="regex" type="text" class="form-control form-control-sm"
-                            id="hs-timeseries-regex" [ngClass]="{'is-valid': form.get('verified').value}">
-                        <label for="hs-timeseries-regex">{{'ADDDATA.FILE.inferredRegex' |
-                            translateHs }}</label>
-                    </div>
-                    <div class="d-flex justify-content-between">
-                        <p class="text-black-50 small pt-1">{{'ADDDATA.FILE.verifyInferredRegex' |
-                            translateHs }}</p>
-                        <button type="button" (click)="verifyInputs()"
-                            class="btn btn-sm btn-primary m-2 w-25">{{'COMMON.confirm' |
-                            translateHs }}</button>
-                    </div>
+            </div>
+            <div ngbAccordionCollapse>
+                <form ngbAccordionBody [formGroup]="form" class="d-flex flex-column">
+                    <ng-template>
+                        <div class="form-floating mt-2 flex-fill"
+                            [ngClass]="{'verification-pending': !form.get('verified').value}">
+                            <input formControlName="regex" type="text" class="form-control form-control-sm"
+                                id="hs-timeseries-regex" [ngClass]="{'is-valid': form.get('verified').value}">
+                            <label for="hs-timeseries-regex">{{'ADDDATA.FILE.inferredRegex' |
+                                translateHs }}</label>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <p class="text-black-50 small pt-1">{{'ADDDATA.FILE.verifyInferredRegex' |
+                                translateHs }}</p>
+                            <button type="button" (click)="verifyInputs()"
+                                class="btn btn-sm btn-primary m-2 w-25">{{'COMMON.confirm' |
+                                translateHs }}</button>
+                        </div>
+                    </ng-template>
                 </form>
-            </ng-template>
-        </ngb-panel>
-    </ngb-accordion>
+            </div>
+        </div>
+    </div>
 </div>

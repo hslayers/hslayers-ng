@@ -1,5 +1,4 @@
-import {Component, Input, OnInit, ViewChild, ViewRef} from '@angular/core';
-import {NgbAccordion} from '@ng-bootstrap/ng-bootstrap';
+import {Component, Input, OnInit, ViewRef} from '@angular/core';
 
 import {HsAddDataOwsService} from '../../../add-data/url/add-data-ows.service';
 import {HsAddDataUrlService} from '../../../add-data/url/add-data-url.service';
@@ -24,7 +23,6 @@ import {
 export class CswLayersDialogComponent implements OnInit, HsDialogComponent {
   dialogItem: HsDialogItem;
   viewRef: ViewRef;
-  @ViewChild('acc') acc: NgbAccordion;
   @Input() data: any;
   servicesLoaded = false;
   layersString: string;
@@ -68,7 +66,7 @@ export class CswLayersDialogComponent implements OnInit, HsDialogComponent {
   }
 
   /**
-   * Determines wether all layers should be added or just the checked ones
+   * Determines whether all layers should be added or just the checked ones
    */
   lookForChecked(layers): boolean {
     for (const lyr of layers) {
@@ -131,7 +129,15 @@ export class CswLayersDialogComponent implements OnInit, HsDialogComponent {
    * Assigns per service data to the input addData-urlType service when switching between different services (many times of same type)
    */
   beforeChange(e): void {
-    const service = this.data.services.find((s) => s.id == e.panelId);
+    console.log(
+      '🚀 ~ file: csw-layers-dialog.component.ts:132 ~ beforeChange ~ e:',
+      e,
+    );
+    const service = this.data.services.find((s) => s.id == e);
+    console.log(
+      '🚀 ~ file: csw-layers-dialog.component.ts:133 ~ beforeChange ~ service:',
+      service,
+    );
     //Assign correct service data object to typeService
     service.typeService.data = service.data;
   }
