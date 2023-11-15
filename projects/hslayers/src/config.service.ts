@@ -211,6 +211,7 @@ export class HsConfigObject {
       mapSwipe: 550,
     };
     this.sidebarPosition = 'right';
+    this.sidebarToggleable = true;
     this.mobileBreakpoint = 767;
   }
 }
