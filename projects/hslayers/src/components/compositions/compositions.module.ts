@@ -15,7 +15,7 @@ import {HsCompositionsListItemComponent} from './compositions-list-item.componen
 import {HsCompositionsOverwriteDialogComponent} from './dialogs/overwrite-dialog.component';
 import {HsCompositionsShareDialogComponent} from './dialogs/share-dialog.component';
 import {HsCompositionsWarningDialogComponent} from './dialogs/warning-dialog.component';
-import {HsLanguageModule} from '../language/language.module';
+import {TranslateCustomPipe} from '../language/translate-custom.pipe';
 import {HsLaymanModule} from '../../common/layman/layman.module';
 import {HsPagerModule} from '../../common/pager/pager.module';
 import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
@@ -36,7 +36,7 @@ import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
     CommonModule,
     FormsModule,
     HsPanelHelpersModule,
-    HsLanguageModule,
+    TranslateCustomPipe,
     HsCompositionsLayerParserModule,
     NgbDropdownModule,
     NgbAccordionModule,

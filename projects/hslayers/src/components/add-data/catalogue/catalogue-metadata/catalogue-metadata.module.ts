@@ -3,11 +3,11 @@ import {FormsModule} from '@angular/forms';
 import {NgModule} from '@angular/core';
 
 import {HsCatalogueMetadataComponent} from './catalogue-metadata.component';
-import {HsLanguageModule} from '../../../language/language.module';
+import {TranslateCustomPipe} from '../../../language/translate-custom.pipe';
 import {HsUiExtensionsModule} from '../../../../common/widgets/ui-extensions.module';
 
 @NgModule({
-  imports: [CommonModule, FormsModule, HsLanguageModule, HsUiExtensionsModule],
+  imports: [CommonModule, FormsModule, TranslateCustomPipe, HsUiExtensionsModule],
   exports: [HsCatalogueMetadataComponent],
   declarations: [HsCatalogueMetadataComponent],
   providers: [],

@@ -4,7 +4,7 @@ import {FormsModule} from '@angular/forms';
 
 import {HsAddDataCommonModule} from '../../common/common.module';
 import {HsCommonUrlModule} from '../../common/url/url.module';
-import {HsLanguageModule} from '../../../language/language.module';
+import {TranslateCustomPipe} from '../../../language/translate-custom.pipe';
 import {HsUiExtensionsModule} from '../../../../common/widgets/ui-extensions.module';
 import {HsUrlWmtsComponent} from './wmts.component';
 
@@ -13,7 +13,7 @@ import {HsUrlWmtsComponent} from './wmts.component';
   imports: [
     CommonModule,
     FormsModule,
-    HsLanguageModule,
+    TranslateCustomPipe,
     HsAddDataCommonModule,
     HsUiExtensionsModule,
     HsCommonUrlModule,

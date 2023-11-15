@@ -3,7 +3,7 @@ import {CommonModule} from '@angular/common';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 import {AdvancedOptionsComponent} from './form/advanced-options/advanced-options.component';
-import {HsLanguageModule} from '../language/language.module';
+import {TranslateCustomPipe} from '../language/translate-custom.pipe';
 import {HsLaymanModule} from '../../common/layman/layman.module';
 import {HsLogModule} from '../../common/log/log.module';
 import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
@@ -27,7 +27,7 @@ import {HsUiExtensionsModule} from '../../common/widgets/ui-extensions.module';
     ReactiveFormsModule,
     HsLogModule,
     HsUiExtensionsModule,
-    HsLanguageModule,
+    TranslateCustomPipe,
     HsLaymanModule,
   ],
   exports: [HsSaveMapComponent],

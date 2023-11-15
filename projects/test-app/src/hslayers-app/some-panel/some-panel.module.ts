@@ -3,8 +3,8 @@ import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
-import {HsLanguageModule} from 'hslayers-ng/components/language/language.module';
 import {HsPanelHelpersModule} from 'hslayers-ng/components/layout/panels/panel-helpers.module';
+import {TranslateCustomPipe} from 'hslayers-ng/components/language/translate-custom.pipe';
 
 import {SomeComponent} from './some-panel.component';
 
@@ -13,7 +13,7 @@ import {SomeComponent} from './some-panel.component';
   imports: [
     CommonModule,
     FormsModule,
-    HsLanguageModule,
+    TranslateCustomPipe,
     HsPanelHelpersModule,
     NgbModule,
   ],

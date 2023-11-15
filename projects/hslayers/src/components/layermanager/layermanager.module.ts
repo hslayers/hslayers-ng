@@ -13,7 +13,7 @@ import {HsColormapPickerModule} from '../../common/color-map-picker/colormap-pic
 import {HsCopyLayerDialogComponent} from './dialogs/copy-layer-dialog.component';
 import {HsExtentWidgetComponent} from './widgets/extent-widget/extent-widget.component';
 import {HsIdwWidgetComponent} from './widgets/idw-widget.component';
-import {HsLanguageModule} from '../language/language.module';
+import {TranslateCustomPipe} from '../language/translate-custom.pipe';
 import {HsLayerEditorComponent} from './editor/layer-editor.component';
 import {HsLayerEditorDimensionsComponent} from './dimensions/layer-editor-dimensions.component';
 import {HsLayerEditorSubLayerCheckboxesComponent} from './editor/layer-editor-sub-layer-checkboxes.component';
@@ -62,7 +62,7 @@ import {HsUiExtensionsModule} from '../../common/widgets/ui-extensions.module';
     HsExtentWidgetComponent,
   ],
   imports: [
-    HsLanguageModule,
+    TranslateCustomPipe,
     CommonModule,
     FormsModule,
     HsPanelHelpersModule,

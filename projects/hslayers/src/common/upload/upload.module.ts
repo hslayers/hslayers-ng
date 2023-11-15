@@ -3,11 +3,11 @@ import {FormsModule} from '@angular/forms';
 import {NgModule} from '@angular/core';
 
 import {HsFileDropDirective} from './file-drop.directive';
-import {HsLanguageModule} from '../../components/language/language.module';
+import {TranslateCustomPipe} from '../../components/language/translate-custom.pipe';
 import {HsUploadComponent} from './upload.component';
 @NgModule({
   declarations: [HsUploadComponent, HsFileDropDirective],
-  imports: [CommonModule, HsLanguageModule, FormsModule],
+  imports: [CommonModule, TranslateCustomPipe, FormsModule],
   providers: [],
   exports: [HsUploadComponent, HsFileDropDirective],
 })

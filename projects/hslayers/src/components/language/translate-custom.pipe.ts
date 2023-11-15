@@ -16,6 +16,7 @@ import {HsLanguageService} from './language.service';
 @Injectable()
 @Pipe({
   name: 'translateHs',
+  standalone: true,
   pure: false, // required to update the value when the promise is resolved
 })
 export class TranslateCustomPipe

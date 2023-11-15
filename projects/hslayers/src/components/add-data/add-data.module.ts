@@ -6,7 +6,7 @@ import {HsAddDataCatalogueModule} from './catalogue/catalogue.module';
 import {HsAddDataComponent} from './add-data.component';
 import {HsAddDataFileModule} from './file/file.module';
 import {HsAddDataUrlModule} from './url/add-data-url.module';
-import {HsLanguageModule} from '../language/language.module';
+import {TranslateCustomPipe} from '../language/translate-custom.pipe';
 import {HsLayerOverwriteDialogComponent} from './dialog-overwrite-layer/overwrite-layer.component';
 import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
 import {HsRenameLayerDialogComponent} from './dialog-rename-layer/rename-layer.component';
@@ -21,7 +21,7 @@ import {HsRenameLayerDialogComponent} from './dialog-rename-layer/rename-layer.c
   imports: [
     CommonModule,
     FormsModule,
-    HsLanguageModule,
+    TranslateCustomPipe,
     HsPanelHelpersModule,
     HsAddDataUrlModule,
     HsAddDataFileModule,

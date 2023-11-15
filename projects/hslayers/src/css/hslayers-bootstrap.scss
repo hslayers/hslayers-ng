@@ -752,6 +752,12 @@ $list-group-item-padding-x: 1.25rem;
     margin-right: 0.5em;
   }
 
+  .extra-buttons-container extra-buttons {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
   .dropdown-toggle.hs-custom-toggle::after {
     display: inline-block;
     width: 0.47em;

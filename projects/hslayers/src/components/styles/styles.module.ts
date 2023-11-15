@@ -16,7 +16,7 @@ import {HsFillSymbolizerComponent} from './symbolizers/fill-symbolizer/fill-symb
 import {HsFilterComponent} from './filters/filter.component';
 import {HsFiltersComponent} from './filters/filters.component';
 import {HsIconSymbolizerComponent} from './symbolizers/icon-symbolizer/icon-symbolizer.component';
-import {HsLanguageModule} from '../language/language.module';
+import {TranslateCustomPipe} from '../language/translate-custom.pipe';
 import {HsLineSymbolizerComponent} from './symbolizers/line-symbolizer/line-symbolizer.component';
 import {HsMarkSymbolizerComponent} from './symbolizers/mark-symbolizer/mark-symbolizer.component';
 import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
@@ -64,7 +64,7 @@ import {HsUploadModule} from '../../common/upload/upload.module';
     HsPanelHelpersModule,
     FormsModule,
     NgbDropdownModule,
-    HsLanguageModule,
+    TranslateCustomPipe,
     HsUploadModule,
     HsDownloadModule,
     DragDropModule,

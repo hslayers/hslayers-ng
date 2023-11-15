@@ -6,7 +6,7 @@ import {NgbAccordionModule} from '@ng-bootstrap/ng-bootstrap';
 import {HsAddDataCommonModule} from '../../common/common.module';
 import {HsCommonUrlModule} from '../../common/url/url.module';
 import {HsFileRasterComponent} from './raster.component';
-import {HsLanguageModule} from '../../../language/language.module';
+import {TranslateCustomPipe} from '../../../language/translate-custom.pipe';
 import {HsUploadModule} from '../../../../common/upload/upload.module';
 import {RasterTimeseriesComponent} from './raster-timeseries/raster-timeseries.component';
 
@@ -17,7 +17,7 @@ import {RasterTimeseriesComponent} from './raster-timeseries/raster-timeseries.c
     ReactiveFormsModule,
     HsAddDataCommonModule,
     HsCommonUrlModule,
-    HsLanguageModule,
+    TranslateCustomPipe,
     HsUploadModule,
     NgbAccordionModule,
   ],

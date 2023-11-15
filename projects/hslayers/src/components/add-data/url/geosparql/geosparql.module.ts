@@ -5,7 +5,7 @@ import {NgModule} from '@angular/core';
 import {HsAddDataCommonModule} from '../../common/common.module';
 import {HsAddToMapButtonComponent} from '../../../../common/add-to-map/add-to-map.component';
 import {HsCommonUrlModule} from '../../common/url/url.module';
-import {HsLanguageModule} from '../../../language/language.module';
+import {TranslateCustomPipe} from '../../../language/translate-custom.pipe';
 import {HsUrlGeoSparqlComponent} from './geosparql.component';
 
 @NgModule({
@@ -14,7 +14,7 @@ import {HsUrlGeoSparqlComponent} from './geosparql.component';
     FormsModule,
     HsAddDataCommonModule,
     HsCommonUrlModule,
-    HsLanguageModule,
+    TranslateCustomPipe,
     HsAddToMapButtonComponent,
   ],
   exports: [HsUrlGeoSparqlComponent],

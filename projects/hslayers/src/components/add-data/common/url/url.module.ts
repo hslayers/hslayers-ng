@@ -6,7 +6,7 @@ import {NgModule} from '@angular/core';
 import {HsAddToMapButtonComponent} from '../../../../common/add-to-map/add-to-map.component';
 import {HsCommonUrlComponent} from './url.component';
 import {HsHistoryListModule} from './../../../../common/history-list/history-list.module';
-import {HsLanguageModule} from '../../../language/language.module';
+import {TranslateCustomPipe} from '../../../language/translate-custom.pipe';
 import {HsLayerTableComponent} from './layer-table/layer-table.component';
 import {HsNestedLayersTableComponent} from './nested-layers-table/nested-layers-table.component';
 import {HsUiExtensionsModule} from './../../../../common/widgets/ui-extensions.module';
@@ -20,7 +20,7 @@ import {WmsLayerHighlightDirective} from './wms-layer-highlight.directive';
   imports: [
     CommonModule,
     FormsModule,
-    HsLanguageModule,
+    TranslateCustomPipe,
     HsHistoryListModule,
     HsUiExtensionsModule,
     HsAddToMapButtonComponent,

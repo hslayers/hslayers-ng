@@ -1,0 +1,18 @@
+<div class="d-flex p-1"><span class="flex-grow-1 p-1">{{title}}<ng-content select="extra-title"></ng-content></span>
+    <ul class="nav nav-tabs justify-content-end my-1">
+        <li *ngFor="let tab of panelTabs" class="nav-item">
+            <a class="nav-link " aria-current="page">Compositions</a>
+        </li>
+    </ul>
+    <div class="d-flex">
+        <ng-content select="[mainButton]"></ng-content>
+        <div class="btn-group" ngbDropdown placement="left-top" display="dynamic">
+            <button ngbDropdownToggle class="btn bt-sm btn-outline-primary border-0 hs-extra-buttons me-1"
+                type="button"><i class="icon-menu"></i></button>
+            <div class="extra-buttons-container" ngbDropdownMenu>
+                <ng-content select="extra-buttons"></ng-content>
+            </div>
+        </div>
+    </div>
+
+</div>

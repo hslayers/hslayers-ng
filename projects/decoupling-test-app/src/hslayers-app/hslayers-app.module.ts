@@ -14,17 +14,17 @@ import {FormsModule} from '@angular/forms';
 import {HsAddDataModule} from '../../../hslayers/src/components/add-data/add-data.module';
 import {HsCompositionsModule} from '../../../hslayers/src/components/compositions/compositions.module';
 import {HsDrawModule} from '../../../hslayers/src/components/draw/draw.module';
-import {HsLanguageModule} from '../../../hslayers/src/components/language/language.module';
 import {HsLayerManagerModule} from '../../../hslayers/src/components/layermanager/layermanager.module';
 import {HsQueryModule} from '../../../hslayers/src/components/query/query.module';
 import {HslayersAppComponent} from './hslayers-app.component';
+import {TranslateCustomPipe} from '../../../hslayers/src/components/language/translate-custom.pipe';
 
 @NgModule({
   declarations: [HslayersAppComponent],
   imports: [
     BrowserModule,
     FormsModule,
-    HsLanguageModule,
+    TranslateCustomPipe,
     HsCoreModule,
     HsLayoutModule,
     HsDrawModule,

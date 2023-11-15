@@ -4,7 +4,7 @@ import {FormsModule} from '@angular/forms';
 
 import {HsAddDataUrlComponent} from './add-data-url.component';
 import {HsAddDataVectorModule} from '../vector/vector.module';
-import {HsLanguageModule} from '../../language/language.module';
+import {TranslateCustomPipe} from '../../language/translate-custom.pipe';
 import {HsUrlArcGisModule} from './arcgis/arcgis.module';
 import {HsUrlGeoSparqlModule} from './geosparql/geosparql.module';
 import {HsUrlWfsModule} from './wfs/wfs.module';
@@ -17,7 +17,7 @@ import {HsUrlWmtsModule} from './wmts/wmts.module';
   imports: [
     CommonModule,
     FormsModule,
-    HsLanguageModule,
+    TranslateCustomPipe,
     HsAddDataVectorModule,
     HsUrlArcGisModule,
     HsUrlGeoSparqlModule,

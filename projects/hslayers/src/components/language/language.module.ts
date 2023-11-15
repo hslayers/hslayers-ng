@@ -25,12 +25,13 @@ export function getWebpackTranslateLoader(
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  declarations: [HsLanguageComponent, TranslateCustomPipe],
+  declarations: [HsLanguageComponent],
   imports: [
     FormsModule,
     CommonModule,
     TranslateModule,
     HsPanelHelpersModule,
+    TranslateCustomPipe,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
@@ -40,7 +41,7 @@ export function getWebpackTranslateLoader(
       },
     }),
   ],
-  exports: [HsLanguageComponent, TranslateCustomPipe],
+  exports: [HsLanguageComponent],
   providers: [TranslateStore],
 })
 export class HsLanguageModule {}
