@@ -290,7 +290,8 @@
     "composition": "Kompozīcija",
     "remove": "Noņemt",
     "saving": "Saglabā",
-    "addToMap": "Pievienot kartei"
+    "addToMap": "Pievienot kartei",
+    "reorder": "Pārkārtot"
   },
   "COMPOSITIONS": {
     "addByAddress": "Pievienot kompozīciju pēc adreses",

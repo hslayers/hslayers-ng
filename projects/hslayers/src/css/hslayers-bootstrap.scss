@@ -252,7 +252,6 @@ $list-group-item-padding-x: 1.25rem;
   .hs-main-panel {
     border: none;
     margin-bottom: 0;
-    margin-top: 0.25rem !important;
   }
 
   div.hs-main-panel:not(.hs-stc-mainpanel)>div.card-body {
@@ -750,12 +749,6 @@ $list-group-item-padding-x: 1.25rem;
 
   .hs-extra-button {
     margin-right: 0.5em;
-  }
-
-  .extra-buttons-container extra-buttons {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
   }
 
   .dropdown-toggle.hs-custom-toggle::after {

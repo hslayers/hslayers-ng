@@ -1,18 +1,20 @@
-<div class="d-flex p-1"><span class="flex-grow-1 p-1">{{title}}<ng-content select="extra-title"></ng-content></span>
-    <ul class="nav nav-tabs justify-content-end my-1">
-        <li *ngFor="let tab of panelTabs" class="nav-item">
-            <a class="nav-link " aria-current="page">Compositions</a>
-        </li>
-    </ul>
+<ul class="w-100 nav nav-tabs pt-1 border-0 ps-1 flex-nowrap " style="height: calc(52px - 0.075rem);"
+    *ngIf="{hasExtraButtons: hasExtraButtons()} as header" [class.justify-content-between]="header.hasExtraButtons">
+    <li *ngFor="let tab of panelTabs" class="nav-item" (click)="tabClicked(tab)" style="max-height:103%">
+        <a [class.active]="active === tab" style="margin-top: 2px;"
+            class="active align-items-center d-flex h-100 justify-content-center nav-link" aria-current="page">
+            {{tab | translateHs : {module: 'PANEL_HEADER'} }}
+        </a>
+    </li>
     <div class="d-flex">
         <ng-content select="[mainButton]"></ng-content>
-        <div class="btn-group" ngbDropdown placement="left-top" display="dynamic">
+        <div [hidden]="!header.hasExtraButtons" class="btn-group" ngbDropdown placement="bottom-end" display="dynamic">
             <button ngbDropdownToggle class="btn bt-sm btn-outline-primary border-0 hs-extra-buttons me-1"
                 type="button"><i class="icon-menu"></i></button>
-            <div class="extra-buttons-container" ngbDropdownMenu>
+            <div #extraButtonsContainer class="extra-buttons-container" ngbDropdownMenu>
                 <ng-content select="extra-buttons"></ng-content>
             </div>
         </div>
     </div>
-
-</div>
+</ul>
+<!-- TODO: HOVER BORDER BOTTOM na tabe  -->

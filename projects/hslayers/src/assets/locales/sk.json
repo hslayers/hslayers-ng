@@ -310,7 +310,8 @@
     "saving": "Ukladanie",
     "asNew": "ako nové",
     "createdBy": "Vytvoril",
-    "addToMap": "Pridať do mapy"
+    "addToMap": "Pridať do mapy",
+    "reorder": "Usporiadať"
   },
   "COMPOSITIONS": {
     "addByAddress": "Pridať kompozíciu z adresy",
