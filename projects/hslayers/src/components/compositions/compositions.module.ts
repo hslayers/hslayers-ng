@@ -15,10 +15,11 @@ import {HsCompositionsListItemComponent} from './compositions-list-item.componen
 import {HsCompositionsOverwriteDialogComponent} from './dialogs/overwrite-dialog.component';
 import {HsCompositionsShareDialogComponent} from './dialogs/share-dialog.component';
 import {HsCompositionsWarningDialogComponent} from './dialogs/warning-dialog.component';
-import {TranslateCustomPipe} from '../language/translate-custom.pipe';
 import {HsLaymanModule} from '../../common/layman/layman.module';
 import {HsPagerModule} from '../../common/pager/pager.module';
+import {HsPanelHeaderComponent} from '../layout/panels/panel-header/panel-header.component';
 import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
+import {TranslateCustomPipe} from '../language/translate-custom.pipe';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -43,6 +44,7 @@ import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
     HsLaymanModule,
     HsPagerModule,
     HsCommonUrlModule,
+    HsPanelHeaderComponent,
   ],
   exports: [HsCompositionsComponent],
 })

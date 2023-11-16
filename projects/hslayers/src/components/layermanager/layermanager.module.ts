@@ -13,7 +13,6 @@ import {HsColormapPickerModule} from '../../common/color-map-picker/colormap-pic
 import {HsCopyLayerDialogComponent} from './dialogs/copy-layer-dialog.component';
 import {HsExtentWidgetComponent} from './widgets/extent-widget/extent-widget.component';
 import {HsIdwWidgetComponent} from './widgets/idw-widget.component';
-import {TranslateCustomPipe} from '../language/translate-custom.pipe';
 import {HsLayerEditorComponent} from './editor/layer-editor.component';
 import {HsLayerEditorDimensionsComponent} from './dimensions/layer-editor-dimensions.component';
 import {HsLayerEditorSubLayerCheckboxesComponent} from './editor/layer-editor-sub-layer-checkboxes.component';
@@ -30,11 +29,13 @@ import {HsLegendModule} from '../legend/legend.module';
 import {HsLegendWidgetComponent} from './widgets/legend-widget.component';
 import {HsMetadataWidgetComponent} from './widgets/metadata-widget.component';
 import {HsOpacityWidgetComponent} from './widgets/opacity-widget.component';
+import {HsPanelHeaderComponent} from '../layout/panels/panel-header/panel-header.component';
 import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
 import {HsQueuesModule} from '../../common/queues/queues.module';
 import {HsScaleWidgetComponent} from './widgets/scale-widget.component';
 import {HsTypeWidgetComponent} from './widgets/type-widget.component';
 import {HsUiExtensionsModule} from '../../common/widgets/ui-extensions.module';
+import {TranslateCustomPipe} from '../language/translate-custom.pipe';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -74,6 +75,7 @@ import {HsUiExtensionsModule} from '../../common/widgets/ui-extensions.module';
     DragDropModule,
     HsQueuesModule,
     HsColormapPickerModule,
+    HsPanelHeaderComponent,
   ],
   exports: [
     HsLayerManagerComponent,

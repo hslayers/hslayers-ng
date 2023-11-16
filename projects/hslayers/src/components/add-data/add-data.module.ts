@@ -6,10 +6,11 @@ import {HsAddDataCatalogueModule} from './catalogue/catalogue.module';
 import {HsAddDataComponent} from './add-data.component';
 import {HsAddDataFileModule} from './file/file.module';
 import {HsAddDataUrlModule} from './url/add-data-url.module';
-import {TranslateCustomPipe} from '../language/translate-custom.pipe';
 import {HsLayerOverwriteDialogComponent} from './dialog-overwrite-layer/overwrite-layer.component';
+import {HsPanelHeaderComponent} from '../layout/panels/panel-header/panel-header.component';
 import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
 import {HsRenameLayerDialogComponent} from './dialog-rename-layer/rename-layer.component';
+import {TranslateCustomPipe} from '../language/translate-custom.pipe';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -26,6 +27,7 @@ import {HsRenameLayerDialogComponent} from './dialog-rename-layer/rename-layer.c
     HsAddDataUrlModule,
     HsAddDataFileModule,
     HsAddDataCatalogueModule,
+    HsPanelHeaderComponent,
   ],
   exports: [HsAddDataComponent],
 })

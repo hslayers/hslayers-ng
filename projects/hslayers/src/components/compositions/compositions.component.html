@@ -1,27 +1,22 @@
 <div class="card hs-main-panel h-100 overflow-hidden" style="margin-top: 0 !important;"
     [hidden]="(isVisible$ | async) === false" *ngIf="{layman: hsCommonLaymanService.layman$ | async } as ctx">
     <div class="hs-compositions-header">
-        <hs-panel-header name="composition_browser" [title]="'PANEL_HEADER.COMPOSITIONS' | translateHs">
-            <button mainButton
-                class="hs-extra-buttons btn btn-sm btn-outline-secondary border-0 align-items-center d-flex gap-2"
-                (click)="reload()" [title]="'COMMON.reload' | translateHs"> {{'COMMON.reload' | translateHs}}
+        <hs-panel-header name="composition_browser" [panelTabs]="'COMPOSITIONS'">
+            <button mainButton class="btn btn-sm btn-outline-secondary border-0 align-items-center d-flex gap-2"
+                (click)="reload()"> {{'COMMON.reload' | translateHs}}
                 <i class="glyphicon icon-fatredo"></i>
             </button>
             <extra-buttons>
-                <button class="but-title-sm hs-extra-buttons" [title]="'PANEL_HEADER.SAVECOMPOSITION'|translateHs"
-                    (click)="openSaveMapPanel()"
-                    [hidden]="!saveMapAvailable()"><!-- TODO: Remove function call from template -->
-                    <span class="icon-save-floppy"></span>
-                </button>
-                <label class="but-title-sm hs-extra-buttons btn-file mb-0" style="padding: 1px 6px;"
-                    [title]="'COMPOSITIONS.import' | translateHs">
+                <a class="dropdown-item" (click)="openSaveMapPanel()">
+                    <i class="icon-save-floppy"></i>&nbsp;{{'PANEL_HEADER.SAVECOMPOSITION' | translateHs}}
+                </a>
+                <label class="dropdown-item cursor-pointer" style="text-wrap: pretty;">
                     <span class="icon-upload"></span><input type="file" (change)="handleFileSelect($event)"
-                        accept=".json" style="display: none;">
+                        accept=".json" style="display: none;"> {{'COMPOSITIONS.import' | translateHs}}
                 </label>
-                <button class="but-title-sm hs-extra-buttons" [title]="'COMPOSITIONS.addByAddress'|translateHs"
-                    (click)="changeUrlButtonVisible()">
-                    <span class="icon-plus"></span>
-                </button>
+                <a class="dropdown-item" (click)="changeUrlButtonVisible()">
+                    <i class="icon-plus"></i>&nbsp;{{'COMPOSITIONS.addByAddress'|translateHs}}
+                </a>
             </extra-buttons>
         </hs-panel-header>
         <div class="mt-3 mx-3 ps-1 d-flex justify-content-between">

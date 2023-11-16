@@ -1,30 +1,9 @@
 <div class="card hs-main-panel overflow-hidden h-100" style="margin-top: 0 !important;"
     [hidden]="(isVisible$ | async) === false">
-    <hs-panel-header name="addData" [title]="'PANEL_HEADER.DATASOURCE_SELECTOR' | translateHs">
+    <hs-panel-header name="addData" [panelTabs]="'catalogue,url,file'" (tabSelected)="selectDatasetType($event)">
     </hs-panel-header>
     <div class="card-body" style="overflow-y: auto;"
         *ngIf="{selected: hsAddDataService.datasetTypeSelected | async} as dataset">
-        <ul class="nav flex-column flex-sm-row dss-tabs sticky-md-top bg-white" role="tablist">
-            <li class="nav-item hs-tab-single-datasources">
-                <a class="nav-link" [ngClass]="{'bg-primary text-white': dataset.selected === 'catalogue'}" role="tab"
-                    data-toggle="tab" (click)="selectDatasetType('catalogue')">
-                    {{'ADDDATA.catalogue' | translateHs }}
-                </a>
-            </li>
-            <li class="nav-item hs-tab-single-datasources">
-                <a class="nav-link"
-                    [ngClass]="{'bg-primary text-white': dataset.selected === 'url' || dataset.selected === 'OWS'}"
-                    role="tab" data-toggle="tab" (click)="selectDatasetType('url')">
-                    URL
-                </a>
-            </li>
-            <li class="nav-item hs-tab-single-datasources">
-                <a class="nav-link" [ngClass]="{'bg-primary text-white': dataset.selected === 'file'}" role="tab"
-                    data-toggle="tab" (click)="selectDatasetType('file')">
-                    {{'ADDDATA.file' | translateHs }}
-                </a>
-            </li>
-        </ul>
         <hs-add-data-url *ngIf="dataset.selected === 'url' || dataset.selected === 'OWS'">
         </hs-add-data-url>
         <hs-add-data-file *ngIf="dataset.selected === 'file'">
