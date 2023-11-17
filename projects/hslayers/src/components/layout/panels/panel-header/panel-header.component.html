@@ -1,11 +1,6 @@
-<ul class="w-100 nav nav-tabs pt-1 border-0 ps-1 flex-nowrap " style="height: calc(52px - 0.075rem);"
-    *ngIf="{hasExtraButtons: hasExtraButtons()} as header" [class.justify-content-between]="header.hasExtraButtons">
-    <li *ngFor="let tab of panelTabs" class="nav-item" (click)="tabClicked(tab)" style="max-height:103%">
-        <a [class.active]="active === tab" style="margin-top: 2px;"
-            class="active align-items-center d-flex h-100 justify-content-center nav-link" aria-current="page">
-            {{tab | translateHs : {module: 'PANEL_HEADER'} }}
-        </a>
-    </li>
+<ul class="w-100 nav nav-tabs pt-1 border-0 ps-1 flex-nowrap" style="height: 99%;"
+    *ngIf="{hasExtraButtons: hasExtraButtons()} as header" [class.justify-content-between]="header.hasExtraButtons"
+    [class.flex-reverse]="header.hasExtraButtons">
     <div class="d-flex">
         <ng-content select="[mainButton]"></ng-content>
         <div [hidden]="!header.hasExtraButtons" class="btn-group" ngbDropdown placement="bottom-end" display="dynamic">
@@ -16,5 +11,12 @@
             </div>
         </div>
     </div>
+    <li *ngFor="let tab of panelTabs" class="nav-item" (click)="tabClicked(tab)" style="max-height:103%">
+        <a [class.active]="active === tab" style="margin-top: 2px;"
+            class="active align-items-center d-flex h-100 justify-content-center nav-link" aria-current="page">
+            {{tab | translateHs : {module: 'PANEL_HEADER'} }}
+        </a>
+    </li>
+
 </ul>
 <!-- TODO: HOVER BORDER BOTTOM na tabe  -->
