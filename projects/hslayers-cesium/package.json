@@ -22,14 +22,14 @@
   "license": "MIT",
   "scripts": {},
   "peerDependencies": {
-    "@angular/common": "^16.0.0",
-    "@angular/core": "^16.0.0",
-    "@angular/forms": "^16.0.0",
-    "@angular/localize": "^16.0.0",
+    "@angular/common": "^17.0.0",
+    "@angular/core": "^17.0.0",
+    "@angular/forms": "^17.0.0",
+    "@angular/localize": "^17.0.0",
     "@ngx-translate/core": "^15.0.0",
     "@ngx-translate/http-loader": "^8.0.0",
-    "cesium": "^1.104.0",
-    "hslayers-ng": "^12.0.0"
+    "cesium": "^1.114.0",
+    "hslayers-ng": "^13.0.0"
   },
   "dependencies": {
     "tslib": "^2.0.0"

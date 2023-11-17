@@ -194,8 +194,8 @@ export class HsLaymanService implements HsSaverService {
       compoData.workspace === endpoint.user
         ? endpoint.user
         : saveAsNew
-        ? endpoint.user
-        : compoData.workspace;
+          ? endpoint.user
+          : compoData.workspace;
 
     return await this.makeMapPostPatchRequest(
       endpoint,
@@ -407,8 +407,10 @@ export class HsLaymanService implements HsSaverService {
       const url = `${endpoint.url}/rest/workspaces/${endpoint.user}/layers${
         overwrite ? `/${layerName}` : `?${Math.random()}`
       }`;
-      let data = await lastValueFrom(
-        this.http[postOrPatch]<PostPatchLayerResponse>(url, formData, {
+      let data: PostPatchLayerResponse = await lastValueFrom(
+        this.http[postOrPatch](url, formData, {
+          observe: 'body',
+          responseType: 'json',
           withCredentials: true,
         }),
       ).catch((err) => {
