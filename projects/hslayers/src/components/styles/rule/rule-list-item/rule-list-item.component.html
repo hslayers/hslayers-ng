@@ -7,7 +7,7 @@
   </div>
   <div class="flex-grow-1 hs-vector-layer-legend">
     <div class="input-group input-group-sm">
-      <span class="input-group-text" style="background-color: #FFFFFF;" [innerHtml]="svg">@</span>
+      <span class="input-group-text" style="background-color: #FFFFFF;" [innerHtml]="svg">&#64;</span>
       <input type="text" class="form-control" (change)="hsStylerService.save();"
         [placeholder]="'STYLER.untitledRule' | translateHs " [(ngModel)]="rule.name">
     </div>
