@@ -1,8 +1,8 @@
 import {
+  AfterViewInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  ContentChild,
   ElementRef,
   EventEmitter,
   Input,
@@ -35,11 +35,16 @@ export function toArray(panels: string) {
       :host {
         border-bottom: 1px solid #dee2e6;
         display: block;
+        height: calc(48px + 0.25rem);
       }
 
       a.nav-link {
         min-width: 6rem;
         text-align: center;
+      }
+
+      .nav-tabs > div + li:last-child a {
+        cursor: default;
       }
     `,
   ],
@@ -61,6 +66,7 @@ export class HsPanelHeaderComponent implements OnDestroy, OnInit {
   constructor(
     public HsLayoutService: HsLayoutService,
     private hsLanguageService: HsLanguageService,
+    private ElementRef: ElementRef,
     private cdr: ChangeDetectorRef,
   ) {}
 
