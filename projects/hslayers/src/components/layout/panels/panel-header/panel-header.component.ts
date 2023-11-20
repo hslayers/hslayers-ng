@@ -1,5 +1,4 @@
 import {
-  AfterViewInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
@@ -14,7 +13,7 @@ import {
 
 import {HsLanguageService} from '../../../language/language.service';
 import {HsLayoutService} from '../../layout.service';
-import {NgForOf, NgIf} from '@angular/common';
+import {NgClass, NgForOf} from '@angular/common';
 import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
 import {Subject} from 'rxjs';
 import {TranslateCustomPipe} from '../../../language/translate-custom.pipe';
@@ -28,7 +27,7 @@ export function toArray(panels: string) {
   selector: 'hs-panel-header',
   standalone: true,
   templateUrl: './panel-header.component.html',
-  imports: [TranslateCustomPipe, NgbDropdownModule, NgForOf, NgIf],
+  imports: [TranslateCustomPipe, NgbDropdownModule, NgForOf, NgClass],
   changeDetection: ChangeDetectionStrategy.OnPush,
   styles: [
     `
@@ -36,15 +35,25 @@ export function toArray(panels: string) {
         border-bottom: 1px solid #dee2e6;
         display: block;
         height: calc(48px + 0.25rem);
+        position: relative;
       }
 
       a.nav-link {
         min-width: 6rem;
         text-align: center;
+
+        &:hover {
+          border-bottom: 0;
+        }
       }
 
       .nav-tabs > div + li:last-child a {
         cursor: default;
+      }
+
+      .extra-content {
+        right: 0;
+        transform: translateY(50%);
       }
     `,
   ],
@@ -90,7 +99,7 @@ export class HsPanelHeaderComponent implements OnDestroy, OnInit {
   }
 
   /**
-   * Check if there is some content in extraButtonsContainer element
+   * Check if there is some extra content
    */
   hasExtraButtons(): boolean {
     return this.extraButtons?.nativeElement.childElementCount > 0;
