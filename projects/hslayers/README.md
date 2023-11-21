@@ -17,6 +17,8 @@ HSLayers-NG is a library which extends OpenLayers functionality by providing a f
 | 10               | 14.x                | 5.x         | ^6.14.1, ^7.0.0
 | 11               | 15.x                | 5.x         | 7x
 | 12               | 16.x                | 5.3         | 7.x
+| 13               | 17.x                | 5.3         | ^8.2
+
 ## Demo
 
 Check out the examples and live projects to get an idea:  
@@ -41,7 +43,7 @@ It will install hslayers-ng for the default application specified in your angula
 `ng add hslayers-ng --project myProject`
 
 Add peer dependencies if not installed automatically by npm:
-`npm i bootstrap@^5.3 ol@^7 @angular/cdk@^16 @angular/common@^16 @angular/core@^16 @angular/forms@^16 @angular/compiler@^16 @angular/platform-browser@^16 @angular/platform-browser-dynamic@^16 @angular/localize@^16 @ngx-translate/core@^15 @ngx-translate/http-loader@^8 deepmerge@^4.0.0 dayjs@^1.0.0 @ng-bootstrap/ng-bootstrap@^15 ol-popup@^5.0.0 proj4@^2.8.1 share-api-polyfill@^1.0.0 rxjs@^7.0.0 zone.js@~0.12.0 xml-js@^1.6.11 ngx-cookie-service@^16 geostyler-style@^7.2.0 geostyler-sld-parser@^5 geostyler-openlayers-parser@^4 geostyler-legend@4 geostyler-qgis-parser@^2 ngx-color@^9 queue@^7 resumablejs@^1 d3@^7 jszip@^3 polygon-splitter@^0.0.11 polygon-clipping@^0.15.3 @popperjs/core@^2 ol-ext@^4`
+`npm i bootstrap@^5.3 ol@^8.2 @angular/cdk@^17 @angular/common@^17 @angular/core@^17 @angular/forms@^17 @angular/compiler@^17 @angular/platform-browser@^17 @angular/platform-browser-dynamic@^17 @angular/localize@^17 @ngx-translate/core@^15 @ngx-translate/http-loader@^8 deepmerge@^4.0.0 dayjs@^1.0.0 @ng-bootstrap/ng-bootstrap@^16 ol-popup@^5.0.0 proj4@^2.8.1 share-api-polyfill@^1.0.0 rxjs@^7.0.0 zone.js@~0.14.0 xml-js@^1.6.11 ngx-cookie-service@^17 geostyler-style@^7.2.0 geostyler-sld-parser@^5 geostyler-openlayers-parser@^4 geostyler-legend@4 geostyler-qgis-parser@^2 ngx-color@^9 queue@^7 resumablejs@^1 d3@^7 jszip@^3 polygon-splitter@^0.0.11 polygon-clipping@^0.15.3 @popperjs/core@^2 ol-ext@^4`
 
 For using hslayers-ng prebuilt bundle including Angular, Bootstrap and other dependencies by loading it through `<script>` tags see: [Hslayers-ng application](https://github.com/hslayers/hslayers-ng/tree/develop/projects/hslayers-app)
 
