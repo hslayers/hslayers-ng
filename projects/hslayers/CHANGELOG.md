@@ -1,3 +1,49 @@
+# [13.0.0](https://github.com/hslayers/hslayers-ng/compare/12.1.0...13.0.0) (2023-11-21)
+
+### Bug Fixes
+
+* **add2map:** Add missing export & translations ([c14a416](https://github.com/hslayers/hslayers-ng/commit/c14a416f9c57fdd67858cc64f79f695ab0fd5e61))
+* Allow only one hit request per WFS layer ([a4ccaf0](https://github.com/hslayers/hslayers-ng/commit/a4ccaf0ff14824b648334ec6e0f47261ee7a245a))
+* Allow WFS layer to be added if getFeatures-hits errors ([18ec0a4](https://github.com/hslayers/hslayers-ng/commit/18ec0a464b7f0bcbc958aada180306722b0c8c58)), closes [#4247](https://github.com/hslayers/hslayers-ng/issues/4247)
+* **arcgisrest:** Pass layer options to layer constructor not source ([6db79c7](https://github.com/hslayers/hslayers-ng/commit/6db79c707f8e7046754d3e4d9b508618ad527f22)), closes [#4314](https://github.com/hslayers/hslayers-ng/issues/4314)
+* **composistions:** Correct workspace when overwriting from result dialog ([8b960bc](https://github.com/hslayers/hslayers-ng/commit/8b960bcb174181ad4179071720fd771394d8c389))
+* **compositions:** Credentials for metadata, correct workspace on save ([4305f61](https://github.com/hslayers/hslayers-ng/commit/4305f61be6b4bb9c3192ad4ef220f9259154522d))
+* **compositions:** Don't parse access rights for WMC compositions ([bcb3fac](https://github.com/hslayers/hslayers-ng/commit/bcb3fac96d427452b9226f2bf90d45189d99e457))
+* **compositions:** Keep currentCompositionRecord observable alive after error ([094eab6](https://github.com/hslayers/hslayers-ng/commit/094eab6fb6841aab8ffa14416c8804bd7a218ce2))
+* **csw-dialog:** Incorrect service data in layer table ([ed6b62c](https://github.com/hslayers/hslayers-ng/commit/ed6b62c82ead196b88241b431314f41d89aa215b))
+* Do not display 'Save to catalogue' toggle for raster time-series ([f6b96de](https://github.com/hslayers/hslayers-ng/commit/f6b96de969e67f1d52f38e603e17cff21d7b4c47))
+* Don't translate paths in model ([7953ac3](https://github.com/hslayers/hslayers-ng/commit/7953ac3769755a5efe588a858e516e1acb0e4cf3))
+* Don't zoom on OWS layers from compositions ([77bc8be](https://github.com/hslayers/hslayers-ng/commit/77bc8be9666a6743b1ffb5d218ccfef4bf9b0dc5))
+* **draw:** No warning for circle and polygon with polygon symbolizer ([a540efc](https://github.com/hslayers/hslayers-ng/commit/a540efca1f7f4a85aba1227a16ec45ac6467e1b0))
+* Escape dots in featureString regex ([1bca8ab](https://github.com/hslayers/hslayers-ng/commit/1bca8ab112019a89d947f9308879ae46eea25072))
+* Filter out 'private' layers from 'add-under' dropdown ([3ed54d1](https://github.com/hslayers/hslayers-ng/commit/3ed54d1dffed47fec4fad297cc6ae76f651a08e0)), closes [#4445](https://github.com/hslayers/hslayers-ng/issues/4445)
+* Check layer options conditionally ([e9c8a58](https://github.com/hslayers/hslayers-ng/commit/e9c8a585a71e3b9e817c78421ccb701485377989))
+* **i18n:** Add missing i18n string ([6a0c0be](https://github.com/hslayers/hslayers-ng/commit/6a0c0be9511a9ba84621fc7e96913d8dc873c5ab))
+* Layman layer style PATCH race conditions, reuse pending describeLayer requests ([32f7621](https://github.com/hslayers/hslayers-ng/commit/32f76216266411472c0017957e6524ad9a4e4435))
+* LaymanCompositionDescriptor interface ([218cfed](https://github.com/hslayers/hslayers-ng/commit/218cfedff2366b091f4a75085bfe0c3d743fce2c))
+* Make sure both style and service is ready after file upload ([b394af6](https://github.com/hslayers/hslayers-ng/commit/b394af68fadb1ccb8cacba91d6d0348f0e83db07))
+* **ol:** Assume all imagery is using IMG element ([fc7076a](https://github.com/hslayers/hslayers-ng/commit/fc7076a7e2ba9d2334e0008b4e002473187e6029))
+* **save-map:** Hide current-user with layman-proxy ([e501801](https://github.com/hslayers/hslayers-ng/commit/e5018014ed6c6ded1a3dd8bfe8bfa9d054b0d4c0))
+* **sensors:** Catch getUnit errors ([6a50203](https://github.com/hslayers/hslayers-ng/commit/6a50203be8109537a096fcaa0d88e5d578dc115d))
+* Set style after style uploaded through styler panel ([0517166](https://github.com/hslayers/hslayers-ng/commit/0517166fbecd39c49e80a2e6b1ac314e213bbc60))
+* Sidebar toggle-able ([b33ff2a](https://github.com/hslayers/hslayers-ng/commit/b33ff2acff59b3411411032fba3c277cfa80b613))
+* Styler filters ([a4f1b9f](https://github.com/hslayers/hslayers-ng/commit/a4f1b9ff26873de2cd51b6ecfefb4caf5d94adce))
+* Update styles on rules reorder ([2644e45](https://github.com/hslayers/hslayers-ng/commit/2644e451972f6ed456e7637f31305f524239483a))
+* Use credentials to get composition data only when logged in ([dae72ad](https://github.com/hslayers/hslayers-ng/commit/dae72ada6b88cbc4cb72b6bc8faa9421d0b292d2))
+* **widgets:** Export EPSG Pipe ([c633736](https://github.com/hslayers/hslayers-ng/commit/c6337367dd21e0737d886ff804259e040a760f95))
+
+### Features
+
+* EPSG pipe - make EPSG selection user-friendly by providing name ([4f86c9a](https://github.com/hslayers/hslayers-ng/commit/4f86c9aad12d48476f67c24f05ae53dd6542f99f))
+* Register EPSG:3035 ETRS89-extended / LAEA Europe ([18aaab4](https://github.com/hslayers/hslayers-ng/commit/18aaab4f5d015e96bc51bdca8ac6825f6963d6fc))
+* Reusable add-to-map button component ([7dcc2f3](https://github.com/hslayers/hslayers-ng/commit/7dcc2f33dde278554df61fe3f29a234c8b030722))
+
+### BREAKING CHANGES
+* Due to the upgrade of OpenLayers to version 8.2, there are some changed type-definitions. `VectorSource<Geometry>` to `VectorSource<Feature<Geometry>>` might be the most common. Other changes are related to the introduction of `RenderFeature` class. ([#4492](https://github.com/hslayers/hslayers-ng/pull/4492))
+* Remove deprecated compositionLoading subject ([bc5de5c](https://github.com/hslayers/hslayers-ng/commit/bc5de5ca2bf67e9800498b23d2c69f954f6856a8))
+* currentComposition subject removed ([e87dedbad](https://github.com/hslayers/hslayers-ng/commit/e87dedbad67c2b4a3403387140181c728c69dc7e))
+* Remove deprecated composition dialog-save component ([d774383](https://github.com/hslayers/hslayers-ng/commit/e87dedbad67c2b4a3403387140181c728c69dc7e))
+
 # [12.1.0](https://github.com/hslayers/hslayers-ng/compare/12.0.0...12.1.0) (2023-10-06)
 
 
