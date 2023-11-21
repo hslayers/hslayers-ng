@@ -28,7 +28,7 @@
     "@angular/localize": "^17.0.0",
     "@ngx-translate/core": "^15.0.0",
     "@ngx-translate/http-loader": "^8.0.0",
-    "cesium": "^1.114.0",
+    "cesium": "^1.104.0",
     "hslayers-ng": "^13.0.0"
   },
   "dependencies": {

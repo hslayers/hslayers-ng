@@ -1,6 +1,6 @@
 # Hslayers-cesium
 
-This library contains components to to run Hslayers-NG ui interface with Cesium 3D as the map renderer instead of OpenLayers.
+This library contains components to run HSLayers-NG user interface with Cesium 3D as the map renderer instead of, or in complement to, OpenLayers.
 See [example](https://github.com/hslayers/examples/tree/master/cesium)
 
 ## Installation
