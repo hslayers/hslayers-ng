@@ -1,7 +1,7 @@
 import {Injectable, NgZone} from '@angular/core';
 import {lastValueFrom} from 'rxjs';
 
-import {Circle, Geometry} from 'ol/geom';
+import {Circle} from 'ol/geom';
 import {Cluster, Source, Vector as VectorSource} from 'ol/source';
 import {DragBox, Draw, Modify, Snap} from 'ol/interaction';
 import {DrawEvent} from 'ol/interaction/Draw';
@@ -348,7 +348,7 @@ export class HsDrawService extends HsDrawServiceParams {
    * Add draw layer to the map and repopulate list of drawables.
    * @param layer -
    */
-  addDrawLayer(layer: VectorLayer<VectorSource<Geometry>>): void {
+  addDrawLayer(layer: VectorLayer<VectorSource>): void {
     this.hsMapService.getMap().addLayer(layer);
     this.fillDrawableLayers();
   }
@@ -738,7 +738,7 @@ export class HsDrawService extends HsDrawServiceParams {
    * Handle snap interaction changes
    * Remove snap interaction if it already exists, recreate it if source is provided.
    */
-  toggleSnapping(source?: VectorSource<Geometry>): void {
+  toggleSnapping(source?: VectorSource): void {
     this.hsMapService.loaded().then((map) => {
       this.snapSource = source ? source : this.snapSource;
       if (this.snap) {
@@ -756,7 +756,7 @@ export class HsDrawService extends HsDrawServiceParams {
   /**
    * Changes layer source of snap interaction
    */
-  changeSnapSource(layer: VectorLayer<VectorSource<Geometry>>): void {
+  changeSnapSource(layer: VectorLayer<VectorSource>): void {
     //isLayerClustered
     const snapSourceToBeUsed = this.hsLayerUtilsService.isLayerClustered(layer)
       ? (layer.getSource() as Cluster).getSource()

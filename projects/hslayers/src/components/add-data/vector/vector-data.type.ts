@@ -25,7 +25,7 @@ export type VectorDataObject = {
   saveAvailable?: boolean;
   saveToLayman?: boolean;
   showDetails?: boolean;
-  sourceLayer?: VectorLayer<VectorSource<Geometry>>;
+  sourceLayer?: VectorLayer<VectorSource>;
   srs?: string;
   nativeSRS?: string;
   serializedStyle?: string | {content: string};

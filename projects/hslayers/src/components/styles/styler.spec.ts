@@ -62,7 +62,7 @@ describe('HsStyler', () => {
   beforeEach(() => {
     layer = new VectorLayer({
       properties: {title: 'Point'},
-      source: new VectorSource<Point | Polygon>({
+      source: new VectorSource<Feature<Point | Polygon>>({
         features: [
           new Feature({geometry: new Point([0, 0]), name: 'test'}),
           new Feature({

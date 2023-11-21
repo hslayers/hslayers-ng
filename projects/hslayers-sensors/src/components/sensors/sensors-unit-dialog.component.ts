@@ -8,7 +8,7 @@ import {
 } from 'hslayers-ng';
 
 import {Aggregates, HsSensorsUnitDialogService} from './unit-dialog.service';
-import {Interval, CustomInterval} from './types/interval.type';
+import {CustomInterval, Interval} from './types/interval.type';
 import {Subject, combineLatest, takeUntil} from 'rxjs';
 
 @Component({
@@ -18,7 +18,11 @@ import {Subject, combineLatest, takeUntil} from 'rxjs';
 export class HsSensorsUnitDialogComponent
   implements HsDialogComponent, OnInit, OnDestroy
 {
-  customInterval: CustomInterval = {name: 'Custom', fromTime: new Date(), toTime: new Date()};
+  customInterval: CustomInterval = {
+    name: 'Custom',
+    fromTime: new Date(),
+    toTime: new Date(),
+  };
   dialogStyle;
   private end = new Subject<void>();
   viewRef: ViewRef;
@@ -85,7 +89,10 @@ export class HsSensorsUnitDialogComponent
     //Clear observations
     this.hsSensorsUnitDialogService.observations = [];
     const promises = this.hsSensorsUnitDialogService.unit.map((u) => {
-      return this.hsSensorsUnitDialogService.getObservationHistory(u, this.hsSensorsUnitDialogService.currentInterval);
+      return this.hsSensorsUnitDialogService.getObservationHistory(
+        u,
+        this.hsSensorsUnitDialogService.currentInterval,
+      );
     });
     Promise.all(promises).then((_) => {
       this.hsSensorsUnitDialogService.createChart(

@@ -2,6 +2,7 @@
 import {Injectable, Renderer2, RendererFactory2} from '@angular/core';
 
 import ImageWrapper from 'ol/Image';
+import RenderFeature from 'ol/render/Feature';
 import projx from 'proj4';
 import {
   Cluster,
@@ -62,8 +63,8 @@ export enum DuplicateHandling {
 }
 
 type VectorAndSource = {
-  source: VectorSource<Geometry> | Cluster;
-  layer: VectorLayer<VectorSource<Geometry>>;
+  source: VectorSource | Cluster;
+  layer: VectorLayer<VectorSource>;
 };
 
 const proj4 = projx.default ?? projx;
@@ -124,7 +125,7 @@ export class HsMapService {
    */
   getLayerForFeature(
     feature: Feature<Geometry>,
-  ): VectorLayer<VectorSource<Geometry>> | VectorLayer<Cluster> {
+  ): VectorLayer<VectorSource> | VectorLayer<Cluster> {
     if (typeof feature.getId() == 'undefined') {
       feature.setId(this.hsUtilsService.generateUuid());
     }
@@ -138,7 +139,7 @@ export class HsMapService {
     for (const obj of layersToLookFor) {
       let found = false;
       if (obj.source.getFeatureById) {
-        //For ordinary vector layers we can search by Id
+        //For ordinary vector layers we can search by ID
         found = obj.source.getFeatureById(fid);
       } else {
         //For cluster layers we need to loop through features
@@ -165,7 +166,7 @@ export class HsMapService {
   refineLayerSearch(
     array: VectorAndSource[],
     feature: Feature<Geometry>,
-  ): VectorLayer<VectorSource<Geometry>> {
+  ): VectorLayer<VectorSource> {
     array = array.filter((entry) => entry.layer.getVisible());
     if (array.length > 1) {
       return array.find(
@@ -225,12 +226,13 @@ export class HsMapService {
   }
 
   /**
-   * Get geometry feature by its ID
+   * Get geometry feature by its ID.
+   * Used in hslayers-cesium.
    * @public
    * @param fid - Feature ID
    * @returns Feature
    */
-  getFeatureById(fid: string): Feature<Geometry> {
+  getFeatureById(fid: string): Feature<Geometry> | RenderFeature[] {
     if (this.featureLayerMapping[fid]) {
       if (this.featureLayerMapping[fid].length > 1) {
         this.hsLog.warn(`Multiple layers exist for feature id ${fid}`);
@@ -239,7 +241,7 @@ export class HsMapService {
       }
     } else {
       const layersToLookFor: {
-        source: VectorSource<Geometry> | Cluster;
+        source: VectorSource | Cluster;
         layer: any;
       }[] = [];
       this.getVectorLayers(layersToLookFor);
@@ -451,7 +453,6 @@ export class HsMapService {
         (e: MapBrowserEvent<any>) => {
           const renderer = this.renderer;
           //ctrlKey works for Win and Linux, metaKey for Mac
-          console.log('maponwheel');
           if (
             !(e.originalEvent.ctrlKey || e.originalEvent.metaKey) &&
             !this.hsLayoutService.contentWrapper.querySelector(
@@ -470,7 +471,7 @@ export class HsMapService {
             renderer.setAttribute(
               html,
               'style',
-              `position: absolute; right:15px; top:0.6em;z-index:101`,
+              `position: absolute; right:15px; top:0.6em; z-index:101`,
             );
             const text = renderer.createText(
               `${this.hsLanguageService.getTranslation('MAP.zoomKeyModifier', {

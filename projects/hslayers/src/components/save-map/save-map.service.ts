@@ -1,7 +1,6 @@
 import {Injectable} from '@angular/core';
 import {SerializedStyle} from './types/serialized-style.type';
 
-import Map from 'ol/Map';
 import {Circle, Icon, RegularShape, Style} from 'ol/style';
 import {
   Cluster,
@@ -13,7 +12,7 @@ import {
   WMTS,
   XYZ,
 } from 'ol/source';
-import {Feature} from 'ol';
+import {Feature, Map} from 'ol';
 import {GeoJSON} from 'ol/format';
 import {GeoJSONFeatureCollection} from 'ol/format/GeoJSON';
 import {Geometry} from 'ol/geom';
@@ -451,7 +450,7 @@ export class HsSaveMapService {
         } else {
           try {
             json.features = this.getFeaturesJson(
-              (src as VectorSource<Geometry>).getFeatures(),
+              (src as VectorSource).getFeatures(),
             );
           } catch (ex) {
             //Do nothing

@@ -97,7 +97,7 @@ export class HsFeatureCommonService {
   moveOrCopyFeature(
     type: 'move' | 'copy',
     features: Feature<Geometry>[],
-    toLayer: Layer<VectorSource<Geometry>>,
+    toLayer: Layer<VectorSource>,
   ): void {
     features.forEach((feature) => {
       feature.setStyle(null); //To prevent feature from getting individual style

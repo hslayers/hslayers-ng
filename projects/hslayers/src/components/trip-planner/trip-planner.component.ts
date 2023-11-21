@@ -1,5 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 
+import {Feature} from 'ol';
+
 import {HsConfig} from './../../config.service';
 import {HsCoreService} from './../core/core.service';
 import {HsLanguageService} from '../language/language.service';
@@ -82,6 +84,9 @@ export class HsTripPlannerComponent
   toggleEdit(waypoint: Waypoint): void {
     waypoint.editMode = !waypoint.editMode;
     const src = this.HsTripPlannerService.waypointLayer.getSource();
-    setHighlighted(src.getFeatureById(waypoint.featureId), waypoint.editMode);
+    setHighlighted(
+      src.getFeatureById(waypoint.featureId) as Feature, //FIXME: Type-cast shall be automatically inferred after OL >8.2
+      waypoint.editMode,
+    );
   }
 }

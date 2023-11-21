@@ -1,28 +1,24 @@
 import {Injectable} from '@angular/core';
 
+import {Feature} from 'ol';
 import {GeoJSON} from 'ol/format';
-import {Geometry} from 'ol/geom';
-import {
-  ImageArcGISRest,
-  Image as ImageSource,
-  ImageStatic,
-  ImageWMS,
-  Source,
-  TileArcGISRest,
-  Tile as TileSource,
-  TileWMS,
-  Vector as VectorSource,
-  XYZ,
-} from 'ol/source';
 import {
   Image as ImageLayer,
   Layer,
   Tile,
   Vector as VectorLayer,
 } from 'ol/layer';
-// eslint-disable-next-line import/named
 import {Options as ImageOptions} from 'ol/layer/BaseImage';
-// eslint-disable-next-line import/named
+import {
+  Image as ImageSource,
+  ImageStatic,
+  ImageWMS,
+  Source,
+  Tile as TileSource,
+  TileWMS,
+  Vector as VectorSource,
+  XYZ,
+} from 'ol/source';
 import {Options as TileOptions} from 'ol/layer/BaseTile';
 
 import {HsAddDataOwsService} from '../../add-data/url/add-data-ows.service';
@@ -287,9 +283,7 @@ export class HsCompositionsLayerParserService {
    * @public
    * @param lyr_def - Layer definition object
    */
-  async createSparqlLayer(
-    lyr_def,
-  ): Promise<VectorLayer<VectorSource<Geometry>>> {
+  async createSparqlLayer(lyr_def): Promise<VectorLayer<VectorSource>> {
     const url = decodeURIComponent(lyr_def.protocol.url);
     const definition: any = {};
     definition.url = url;
@@ -339,9 +333,7 @@ export class HsCompositionsLayerParserService {
    * @param lyr_def - Layer definition object
    * @returns Either valid vector layer or function for creation of other supported vector file types)
    */
-  async createVectorLayer(
-    lyr_def,
-  ): Promise<VectorLayer<VectorSource<Geometry>>> {
+  async createVectorLayer(lyr_def): Promise<VectorLayer<VectorSource>> {
     try {
       let format = '';
       if (lyr_def.protocol) {
@@ -423,10 +415,11 @@ export class HsCompositionsLayerParserService {
           break;
         default:
           const features = lyr_def.features
-            ? new GeoJSON().readFeatures(lyr_def.features, {
+            ? (new GeoJSON().readFeatures(lyr_def.features, {
                 dataProjection: 'EPSG:4326',
                 featureProjection: this.hsMapService.getCurrentProj(),
-              })
+                //FIXME: Type-cast shall be automatically inferred after OL >8.2
+              }) as Feature[])
             : undefined;
           layer = await this.HsAddDataVectorService.createVectorLayer(
             '',

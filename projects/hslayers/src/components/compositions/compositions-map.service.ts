@@ -23,7 +23,7 @@ import {getHighlighted, setHighlighted} from '../../common/feature-extensions';
   providedIn: 'root',
 })
 export class HsCompositionsMapService {
-  extentLayer: VectorLayer<VectorSource<Geometry>>;
+  extentLayer: VectorLayer<VectorSource>;
   pointerMoveListener: EventsKey;
 
   constructor(
@@ -84,7 +84,7 @@ export class HsCompositionsMapService {
   /**
    * Create new extent layer
    */
-  createNewExtentLayer(): VectorLayer<VectorSource<Geometry>> {
+  createNewExtentLayer(): VectorLayer<VectorSource> {
     return new VectorLayer({
       properties: {
         title: 'Composition extents',
@@ -139,7 +139,8 @@ export class HsCompositionsMapService {
     if (composition.featureId !== undefined) {
       const found = this.extentLayer
         .getSource()
-        .getFeatureById(composition.featureId);
+        //FIXME: Type-cast shall be automatically inferred after OL >8.2
+        .getFeatureById(composition.featureId) as Feature;
       if (found) {
         setHighlighted(found, state);
       }

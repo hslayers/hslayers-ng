@@ -551,7 +551,7 @@ export class HsLaymanService implements HsSaverService {
    */
   public async upsertLayer(
     endpoint: HsEndpoint,
-    layer: VectorLayer<VectorSource<Geometry>>,
+    layer: VectorLayer<VectorSource>,
     withFeatures: boolean,
   ): Promise<void> {
     if (layer.getSource().loading) {
@@ -720,7 +720,7 @@ export class HsLaymanService implements HsSaverService {
    * @param endpoint - Layman's endpoint description
    */
   private cacheLaymanDescriptor(
-    layer: VectorLayer<VectorSource<Geometry>>,
+    layer: VectorLayer<VectorSource>,
     desc: HsLaymanLayerDescriptor,
     endpoint: HsEndpoint,
   ): void {
@@ -738,7 +738,7 @@ export class HsLaymanService implements HsSaverService {
    */
   async makeGetLayerRequest(
     ep: HsEndpoint,
-    layer: VectorLayer<VectorSource<Geometry>>,
+    layer: VectorLayer<VectorSource>,
   ): Promise<string> {
     /* Clone because endpoint.user can change while the request is processed
     and then description might get cached even if anonymous user was set before.

@@ -4,7 +4,6 @@ import {EventsKey} from 'ol/events';
 import {Feature} from 'ol';
 import {Fill, Stroke, Style} from 'ol/style';
 import {Geometry} from 'ol/geom';
-import {Vector} from 'ol/source';
 import {Vector as VectorLayer} from 'ol/layer';
 import {Vector as VectorSource} from 'ol/source';
 import {transform} from 'ol/proj';
@@ -28,7 +27,7 @@ import {
   providedIn: 'root',
 })
 export class HsAddDataCatalogueMapService {
-  extentLayer: VectorLayer<VectorSource<Geometry>>;
+  extentLayer: VectorLayer<VectorSource>;
   pointerMoveListener: EventsKey;
 
   constructor(
@@ -58,7 +57,7 @@ export class HsAddDataCatalogueMapService {
     });
 
     this.extentLayer = new VectorLayer({
-      source: new Vector(),
+      source: new VectorSource(),
       properties: {
         title: 'Datasources extents',
         showInLayerManager: false,
@@ -151,7 +150,8 @@ export class HsAddDataCatalogueMapService {
     if (composition.featureId !== undefined) {
       const found = this.extentLayer
         .getSource()
-        .getFeatureById(composition.featureId);
+        //FIXME: Type-cast shall be automatically inferred after OL >8.2
+        .getFeatureById(composition.featureId) as Feature;
       if (found) {
         setHighlighted(found, state);
       }

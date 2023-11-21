@@ -2,7 +2,6 @@ import {Injectable} from '@angular/core';
 
 import {Feature} from 'ol';
 import {GPX, GeoJSON, KML} from 'ol/format';
-import {Geometry} from 'ol/geom';
 import {Layer, Vector as VectorLayer} from 'ol/layer';
 import {Projection, get as getProjection} from 'ol/proj';
 import {Source, Vector as VectorSource} from 'ol/source';
@@ -11,7 +10,6 @@ import {PROJECTIONS as epsg4326Aliases} from 'ol/proj/epsg4326';
 import {HsAddDataCommonFileService} from '../common/common-file.service';
 import {HsAddDataService} from '../add-data.service';
 import {HsCommonLaymanService} from '../../../common/layman/layman.service';
-import {HsLaymanLayerDescriptor} from '../../save-map/interfaces/layman-layer-descriptor.interface';
 import {HsLaymanService} from '../../save-map/layman.service';
 import {HsLogService} from '../../../common/log/log.service';
 import {HsMapService} from '../../map/map.service';
@@ -94,7 +92,7 @@ export class HsAddDataVectorService {
     srs: string,
     options: HsVectorLayerOptions,
     addUnder?: Layer<Source>,
-  ): Promise<VectorLayer<VectorSource<Geometry>>> {
+  ): Promise<VectorLayer<VectorSource>> {
     return new Promise(async (resolve, reject) => {
       try {
         const lyr = await this.createVectorLayer(
@@ -151,7 +149,7 @@ export class HsAddDataVectorService {
     abstract: string,
     srs: string,
     options: HsVectorLayerOptions = {},
-  ): Promise<VectorLayer<VectorSource<Geometry>>> {
+  ): Promise<VectorLayer<VectorSource>> {
     if (
       type?.toLowerCase() != 'sparql' &&
       type?.toLowerCase() != 'wfs' &&
@@ -210,7 +208,7 @@ export class HsAddDataVectorService {
    * Fit map view to layer's extent
    * @param lyr - Provided layer
    */
-  fitExtent(lyr: VectorLayer<VectorSource<Geometry>>): void {
+  fitExtent(lyr: VectorLayer<VectorSource>): void {
     const src = lyr.getSource();
     if (src.getFeatures().length > 0) {
       this.tryFit(src.getExtent(), src);
@@ -278,12 +276,12 @@ export class HsAddDataVectorService {
    */
   async addNewLayer(
     data: VectorDataObject,
-  ): Promise<{layer: VectorLayer<VectorSource<Geometry>>; complete: boolean}> {
+  ): Promise<{layer: VectorLayer<VectorSource>; complete: boolean}> {
     if (!this.hsAddDataCommonFileService.endpoint) {
       this.hsAddDataCommonFileService.pickEndpoint();
     }
     const addLayerRes: {
-      layer: VectorLayer<VectorSource<Geometry>>;
+      layer: VectorLayer<VectorSource>;
       complete: boolean;
     } = {layer: null, complete: true};
     if (data.saveToLayman && data.saveAvailable) {
@@ -544,8 +542,8 @@ export class HsAddDataVectorService {
       .some((code) => code === projection.getCode())
       ? getProjection('EPSG:4326')
       : this.hsLaymanService.supportedCRRList.indexOf(projection.getCode()) > -1
-      ? projection
-      : getProjection('EPSG:4326');
+        ? projection
+        : getProjection('EPSG:4326');
     //Features in map CRS
   }
 
@@ -564,7 +562,8 @@ export class HsAddDataVectorService {
       };
     }
     if (json.features?.length > 0) {
-      features = format.readFeatures(json);
+      //FIXME: Type-cast shall be automatically inferred after OL >8.2
+      features = format.readFeatures(json) as Feature[];
       this.transformFeaturesIfNeeded(features, projection);
     }
     const object = {

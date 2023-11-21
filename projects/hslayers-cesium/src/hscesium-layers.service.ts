@@ -18,7 +18,6 @@ import {
   createWorldTerrainAsync,
 } from 'cesium';
 import {GeoJSON, KML} from 'ol/format';
-import {Geometry} from 'ol/geom';
 import {
   Group,
   Image as ImageLayer,
@@ -204,7 +203,7 @@ export class HsCesiumLayersService {
     });
   }
 
-  serializeVectorLayerToGeoJson(ol_source: VectorSource<Geometry>): any {
+  serializeVectorLayerToGeoJson(ol_source: VectorSource): any {
     const f = new GeoJSON();
     const cesiumLayer = <DataSource>this.findCesiumLayer(ol_source);
     //console.log('start serialize',(new Date()).getTime() - window.lasttime); window.lasttime = (new Date()).getTime();
@@ -311,7 +310,7 @@ export class HsCesiumLayersService {
   }
 
   linkOlSourceToCesiumDatasource(
-    ol_source: VectorSource<Geometry>,
+    ol_source: VectorSource,
     cesium_layer: ImageryLayer | DataSource,
   ): void {
     this.ol2CsMappings.push({
@@ -322,12 +321,12 @@ export class HsCesiumLayersService {
     (ol_source as any).on('features:loaded', (e) => {
       const cesiumLayer = this.findCesiumLayer(e.target as Source);
       if (cesiumLayer) {
-        this.syncFeatures(e.target as VectorSource<Geometry>);
+        this.syncFeatures(e.target as VectorSource);
       }
     });
   }
 
-  async syncFeatures(ol_source: VectorSource<Geometry>) {
+  async syncFeatures(ol_source: VectorSource) {
     const tmp_source = new GeoJsonDataSource('tmp');
     GeoJsonDataSource.crsNames['EPSG:3857'] = function (coordinates) {
       const firstProjection =
@@ -424,7 +423,7 @@ export class HsCesiumLayersService {
           //TODO: Point clicked, Datasources extents, Composition extents shall be also synced
           if (getTitle(lyr as Layer<Source>) != 'Point clicked') {
             this.linkOlSourceToCesiumDatasource(
-              (lyr as VectorLayer<VectorSource<Geometry>>).getSource(),
+              (lyr as VectorLayer<VectorSource>).getSource(),
               cesium_layer,
             );
           }
@@ -457,7 +456,7 @@ export class HsCesiumLayersService {
       return this.createSingleImageProvider(olLayer as ImageLayer<ImageSource>);
     } else if (this.HsUtilsService.instOf(olLayer, VectorLayer)) {
       const dataSource = await this.createVectorDataSource(
-        olLayer as VectorLayer<VectorSource<Geometry>>,
+        olLayer as VectorLayer<VectorSource>,
       );
       return dataSource;
     } else {
@@ -470,7 +469,7 @@ export class HsCesiumLayersService {
   }
 
   async createVectorDataSource(
-    ol_lyr: VectorLayer<VectorSource<Geometry>>,
+    ol_lyr: VectorLayer<VectorSource>,
   ): Promise<DataSource> {
     if (
       ol_lyr.getSource().getFormat() &&

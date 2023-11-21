@@ -1,4 +1,4 @@
-import Feature from 'ol/Feature';
+import {Feature} from 'ol';
 import {Geometry} from 'ol/geom';
 import {Style} from 'ol/style';
 import {StyleFunction} from 'ol/style/Style';

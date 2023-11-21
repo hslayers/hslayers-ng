@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 
-import {Circle, Geometry, LineString, Point, Polygon} from 'ol/geom';
+import {Circle, LineString, Point, Polygon} from 'ol/geom';
 import {Cluster, Source, Vector as VectorSource} from 'ol/source';
 import {Layer, Vector as VectorLayer} from 'ol/layer';
 
@@ -44,9 +44,7 @@ export class HsLayerEditorVectorLayerService {
             layer as VectorLayer<Cluster>,
           );
         }
-        this.updateFeatureTableLayers(
-          layer as VectorLayer<VectorSource<Geometry>>,
-        );
+        this.updateFeatureTableLayers(layer as VectorLayer<VectorSource>);
       }
     } else if (this.hsUtilsService.instOf(layer.getSource(), Cluster)) {
       layer.setSource((layer.getSource() as Cluster).getSource());
@@ -56,7 +54,7 @@ export class HsLayerEditorVectorLayerService {
   createClusteredSource(layer: Layer<Source>, distance: number): Cluster {
     return new Cluster({
       distance,
-      source: layer.getSource() as VectorSource<Geometry>,
+      source: layer.getSource() as VectorSource,
       geometryFunction: function (feature) {
         if (!feature) {
           return null;
@@ -79,7 +77,7 @@ export class HsLayerEditorVectorLayerService {
     });
   }
 
-  updateFeatureTableLayers(layer: VectorLayer<VectorSource<Geometry>>): void {
+  updateFeatureTableLayers(layer: VectorLayer<VectorSource>): void {
     const currentLayerIndex = this.hsConfig.layersInFeatureTable?.findIndex(
       (l) => l == layer,
     );

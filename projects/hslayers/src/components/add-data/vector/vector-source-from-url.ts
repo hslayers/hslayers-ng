@@ -4,7 +4,7 @@ import {Geometry} from 'ol/geom';
 import {Vector as VectorSource} from 'ol/source';
 import {get as getProj} from 'ol/proj';
 
-export class VectorSourceFromUrl extends VectorSource<Geometry> {
+export class VectorSourceFromUrl extends VectorSource {
   featureProjection: any;
   mapProjection: any;
   error: boolean;

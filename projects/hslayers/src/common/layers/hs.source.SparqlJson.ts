@@ -1,7 +1,7 @@
 import * as xml2Json from 'xml-js';
 import {Feature} from 'ol';
 import {GeoJSON, WKT} from 'ol/format';
-import {Geometry, Point} from 'ol/geom';
+import {Point} from 'ol/geom';
 import {Vector} from 'ol/source';
 import {transform} from 'ol/proj';
 
@@ -67,7 +67,7 @@ export type SparqlOptions = {
 /**
  * Provides a source of features from SPARQL endpoint
  */
-export class SparqlJson extends Vector<Geometry> {
+export class SparqlJson extends Vector {
   category_map = {};
   category_id = 0;
   legend_categories;

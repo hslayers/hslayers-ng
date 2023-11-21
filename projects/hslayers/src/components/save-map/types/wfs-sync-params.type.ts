@@ -19,5 +19,5 @@ export type WfsSyncParams = {
   /** Array of features to delete */
   del: Feature<Geometry>[];
   /** OpenLayers layer which has to have a title attribute */
-  layer: VectorLayer<VectorSource<Geometry>>;
+  layer: VectorLayer<VectorSource>;
 };

@@ -4,9 +4,9 @@ import {HttpClient} from '@angular/common/http';
 import {Circle, Fill, Stroke, Style} from 'ol/style';
 import {Feature} from 'ol';
 import {GeoJSON} from 'ol/format';
+import {Geometry, Point} from 'ol/geom';
 import {Image as ImageLayer, Vector as VectorLayer} from 'ol/layer';
 import {OSM, TileWMS, Vector as VectorSource, XYZ} from 'ol/source';
-import {Point} from 'ol/geom';
 import {Tile} from 'ol/layer';
 import {catchError, lastValueFrom, takeUntil} from 'rxjs';
 import {transformExtent} from 'ol/proj';
@@ -309,7 +309,7 @@ export class HslayersAppComponent {
       },
       source: new VectorSource({
         features: new GeoJSON().readFeatures(geojsonObject),
-      }),
+      }) as VectorSource, //FIXME: Type-cast shall be automatically inferred after OL >8.2
     });
     const opticalMap = new Tile({
       source: new XYZ({
@@ -563,7 +563,7 @@ export class HslayersAppComponent {
           },
           source: new VectorSource({
             features: new GeoJSON().readFeatures(geojsonObject),
-          }),
+          }) as VectorSource, //FIXME: Type-cast shall be automatically inferred after OL >8.2
         }),
         new VectorLayer({
           visible: true,
@@ -593,7 +593,7 @@ export class HslayersAppComponent {
           },
           source: new VectorSource({
             features: new GeoJSON().readFeatures(geojsonObject),
-          }),
+          }) as VectorSource, //FIXME: Type-cast shall be automatically inferred after OL >8.2
         }),
         polygons,
         points,

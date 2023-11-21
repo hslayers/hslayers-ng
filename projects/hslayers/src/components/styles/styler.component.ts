@@ -4,7 +4,6 @@ import {DomSanitizer} from '@angular/platform-browser';
 import {Subject, takeUntil} from 'rxjs';
 
 import colorScales from 'colormap/colorScale';
-import {Geometry} from 'ol/geom';
 import {Layer} from 'ol/layer';
 import {Source} from 'ol/source';
 import {Vector as VectorLayer} from 'ol/layer';
@@ -28,7 +27,8 @@ import {HsUtilsService} from '../utils/utils.service';
 })
 export class HsStylerComponent
   extends HsPanelBaseComponent
-  implements OnDestroy {
+  implements OnDestroy
+{
   layerTitle: string;
   private end = new Subject<void>();
   uploaderVisible = false;
@@ -50,9 +50,7 @@ export class HsStylerComponent
       .pipe(takeUntil(this.end))
       .subscribe((layer: Layer<Source>) => {
         if (layer !== null && this.hsUtilsService.instOf(layer, VectorLayer)) {
-          this.hsStylerService.fill(
-            layer as VectorLayer<VectorSource<Geometry>>,
-          );
+          this.hsStylerService.fill(layer as VectorLayer<VectorSource>);
         }
       });
     this.hsEventBusService.mainPanelChanges

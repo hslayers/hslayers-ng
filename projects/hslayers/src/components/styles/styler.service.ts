@@ -19,10 +19,9 @@ import {
 } from 'geostyler-style';
 import {Geometry} from 'ol/geom';
 import {Icon, Style} from 'ol/style';
+import {Layer, Vector as VectorLayer} from 'ol/layer';
 import {OlStyleParser as OpenLayersParser} from 'geostyler-openlayers-parser';
 import {QGISStyleParser} from 'geostyler-qgis-parser';
-// eslint-disable-next-line import/named
-import {Layer, Vector as VectorLayer} from 'ol/layer';
 import {StyleFunction, StyleLike, createDefaultStyle} from 'ol/style/Style';
 
 import {HsCommonLaymanService} from '../../common/layman/layman.service';
@@ -59,9 +58,9 @@ import {parseStyle} from './backwards-compatibility';
   providedIn: 'root',
 })
 export class HsStylerService {
-  layer: VectorLayer<VectorSource<Geometry>> = null;
+  layer: VectorLayer<VectorSource> = null;
   layerBeingMonitored: boolean;
-  onSet: Subject<VectorLayer<VectorSource<Geometry>>> = new Subject();
+  onSet: Subject<VectorLayer<VectorSource>> = new Subject();
   layerTitle: string;
   styleObject: GeoStylerStyle;
   qmlParser = new QGISStyleParser();
@@ -133,14 +132,14 @@ export class HsStylerService {
         .filter((layer) =>
           this.hsLayerUtilsService.isLayerVectorLayer(layer),
         )) {
-        this.initLayerStyle(layer as VectorLayer<VectorSource<Geometry>>);
+        this.initLayerStyle(layer as VectorLayer<VectorSource>);
       }
       this.hsEventBusService.layerAdditions.subscribe((layerDescriptor) => {
         if (
           this.hsLayerUtilsService.isLayerVectorLayer(layerDescriptor.layer)
         ) {
           this.initLayerStyle(
-            layerDescriptor.layer as VectorLayer<VectorSource<Geometry>>,
+            layerDescriptor.layer as VectorLayer<VectorSource>,
           );
         }
       });
@@ -162,13 +161,13 @@ export class HsStylerService {
    * @returns Source of the input layer or source of its cluster's source
    */
   getLayerSource(
-    layer: VectorLayer<VectorSource<Geometry>>,
+    layer: VectorLayer<VectorSource>,
     isClustered: boolean,
-  ): VectorSource<Geometry> {
+  ): VectorSource {
     if (!layer) {
       return;
     }
-    let src: VectorSource<Geometry>;
+    let src: VectorSource;
     if (isClustered) {
       src = (layer.getSource() as Cluster).getSource();
     } else {
@@ -181,9 +180,7 @@ export class HsStylerService {
    * Style clustered layer features using cluster style or individual feature style.
    * @param layer - Any vector layer
    */
-  async styleClusteredLayer(
-    layer: VectorLayer<VectorSource<Geometry>>,
-  ): Promise<void> {
+  async styleClusteredLayer(layer: VectorLayer<VectorSource>): Promise<void> {
     await this.fill(layer);
     //Check if layer already has SLD style for clusters
     if (
@@ -230,7 +227,7 @@ export class HsStylerService {
    * Upload style created by createDefaultStyle method to layman thus syncing style of
    * vector layer added without SLD by rewriting its default value
    */
-  private trySyncingStyleToLayman(layer: VectorLayer<VectorSource<Geometry>>) {
+  private trySyncingStyleToLayman(layer: VectorLayer<VectorSource>) {
     if (this.hsLayerSynchronizerService.syncedLayers.includes(layer)) {
       awaitLayerSync(layer).then(() => {
         setSld(
@@ -251,9 +248,7 @@ export class HsStylerService {
    *
    * @param layer - OL layer to fill the missing style info
    */
-  async initLayerStyle(
-    layer: VectorLayer<VectorSource<Geometry>>,
-  ): Promise<void> {
+  async initLayerStyle(layer: VectorLayer<VectorSource>): Promise<void> {
     if (!this.isVectorLayer(layer)) {
       return;
     }
@@ -355,7 +350,7 @@ export class HsStylerService {
    * Prepare current layers style for editing by converting
    * SLD attribute string to JSON and reading layers title
    */
-  async fill(layer: VectorLayer<VectorSource<Geometry>>): Promise<void> {
+  async fill(layer: VectorLayer<VectorSource>): Promise<void> {
     const blankStyleObj = {name: 'untitled style', rules: []};
     try {
       if (!layer) {
@@ -788,12 +783,12 @@ export class HsStylerService {
   }
 
   /**
-   * Calculate a stop-color value for gradient. Offset depend on number of colors (lenght)
+   * Calculate a stop-color value for gradient. Offset depend on number of colors (length)
    * and current index.
-   * @param color RGB(A) color definition
-   * @param linearGradient SVG Linear Gradient element
-   * @param length Offset calculation - length of an array (number of colors)
-   * @param index Index of color
+   * @param color - RGB(A) color definition
+   * @param linearGradient - SVG Linear Gradient element
+   * @param length - Offset calculation - length of an array (number of colors)
+   * @param index - Index of color
    */
   private appendColorToGradient(
     color: number[],

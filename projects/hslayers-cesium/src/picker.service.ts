@@ -11,6 +11,7 @@ import {
   Viewer,
   defined,
 } from 'cesium';
+import {Feature} from 'ol';
 import {HsConfig, HsMapService, HsUtilsService} from 'hslayers-ng';
 
 import {HsCesiumQueryPopupService} from './query-popup.service';
@@ -88,10 +89,11 @@ export class HsCesiumPickerService {
       if (button == 'left' && pickedObject?.id?.onclick) {
         pickedObject.id.onclick(pickedObject.id);
       }
+      const featureLike = this.HsMapService.getFeatureById(
+        (pickedObject.id as Entity).properties.HsCesiumFeatureId.getValue(),
+      );
       this.HsCesiumQueryPopupService.fillFeatures([
-        this.HsMapService.getFeatureById(
-          (pickedObject.id as Entity).properties.HsCesiumFeatureId.getValue(),
-        ),
+        featureLike instanceof Feature ? featureLike : null,
       ]);
       this.HsCesiumQueryPopupService.showPopup({pixel: movement.position});
       return;
