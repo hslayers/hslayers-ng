@@ -22,7 +22,7 @@ export type WfsOptions = {
 /**
  * Provides a source of features from WFS endpoint
  */
-export class WfsSource extends VectorSource<Geometry> {
+export class WfsSource extends VectorSource {
   constructor(
     hsUtilsService: HsUtilsService,
     http: HttpClient,
@@ -86,7 +86,7 @@ export class WfsSource extends VectorSource<Geometry> {
             data_version,
             responseFeatureCRS,
           );
-          (this as VectorSource<Geometry>).addFeatures(features);
+          (this as VectorSource).addFeatures(features);
           this.dispatchEvent(
             new ObjectEvent('propertychange', 'loaded', false),
           );

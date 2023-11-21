@@ -138,7 +138,7 @@ export class HsLayerEditorComponent {
    */
   styleLayer(): void {
     const layer = this.olLayer();
-    this.HsStylerService.layer = layer as VectorLayer<VectorSource<Geometry>>;
+    this.HsStylerService.layer = layer as VectorLayer<VectorSource>;
     this.HsLayoutService.setMainPanel('styler');
   }
 

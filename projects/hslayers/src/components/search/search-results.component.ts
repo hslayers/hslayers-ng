@@ -59,7 +59,7 @@ export class HsSearchResultsComponent implements OnDestroy {
   findFeature(featureId: string): Feature<Geometry> {
     return this.hsSearchService.searchResultsLayer
       .getSource()
-      .getFeatureById(featureId);
+      .getFeatureById(featureId) as Feature;
   }
 
   /**

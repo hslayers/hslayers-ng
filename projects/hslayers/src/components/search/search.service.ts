@@ -24,7 +24,7 @@ import {setShowInLayerManager, setTitle} from '../../common/layer-extensions';
 export class HsSearchService {
   formatWKT = new WKT();
   canceler: Subject<any> = new Subject();
-  searchResultsLayer: VectorLayer<VectorSource<Geometry>>;
+  searchResultsLayer: VectorLayer<VectorSource>;
   pointerMoveEventKey;
   providers = {};
 

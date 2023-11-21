@@ -4,7 +4,6 @@ import {Injectable, NgZone} from '@angular/core';
 import {Cluster, ImageWMS, Source, TileArcGISRest, TileWMS} from 'ol/source';
 import {CollectionEvent} from 'ol/Collection';
 import {GeoJSON} from 'ol/format';
-import {Geometry} from 'ol/geom';
 import {
   Group,
   Image as ImageLayer,
@@ -1211,7 +1210,7 @@ export class HsLayerManagerService {
     const geojson = geojsonParser.writeFeatures(
       (this.hsLayerUtilsService.isLayerClustered(olLayer)
         ? (olLayer.getSource() as Cluster).getSource()
-        : (olLayer.getSource() as VectorSource<Geometry>)
+        : (olLayer.getSource() as VectorSource)
       ).getFeatures(),
       {
         dataProjection: 'EPSG:4326',
@@ -1289,7 +1288,7 @@ export class HsLayerManagerService {
         ?.getFeatures();
     } else {
       features = (
-        this.currentLayer.layer.getSource() as VectorSource<Geometry>
+        this.currentLayer.layer.getSource() as VectorSource
       )?.getFeatures();
     }
 
@@ -1298,9 +1297,7 @@ export class HsLayerManagerService {
       source: new VectorSource({
         features,
       }),
-      style: (
-        this.currentLayer.layer as VectorLayer<VectorSource<Geometry>>
-      ).getStyle(),
+      style: (this.currentLayer.layer as VectorLayer<VectorSource>).getStyle(),
     });
     setTitle(copiedLayer, newTitle);
     setName(copiedLayer, getName(this.currentLayer.layer));

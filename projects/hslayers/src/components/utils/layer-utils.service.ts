@@ -219,9 +219,7 @@ export class HsLayerUtilsService {
     if (!this.isLayerVectorLayer(layer)) {
       return;
     }
-    return (layer as VectorLayer<VectorSource<Geometry>>)
-      .getSource()
-      ?.getFormat();
+    return (layer as VectorLayer<VectorSource>).getSource()?.getFormat();
   }
 
   /**
@@ -393,12 +391,15 @@ export class HsLayerUtilsService {
    */
   highlightFeatures(
     featuresUnder: Feature<Geometry>[],
-    layer: VectorLayer<VectorSource<Geometry>>,
+    layer: VectorLayer<VectorSource>,
     list: {featureId?: string; highlighted?: boolean}[],
   ): void {
     const highlightedFeatures = list
       .filter((record) => record.highlighted)
-      .map((record) => layer.getSource().getFeatureById(record.featureId));
+      .map(
+        (record) =>
+          layer.getSource().getFeatureById(record.featureId) as Feature,
+      );
 
     const dontHighlight = highlightedFeatures
       .filter((feature) => feature && !featuresUnder.includes(feature))

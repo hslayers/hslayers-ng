@@ -4,7 +4,6 @@ import {Injectable} from '@angular/core';
 import LegendRenderer from 'geostyler-legend/dist/LegendRenderer/LegendRenderer';
 import {Feature} from 'ol';
 import {Style as GeoStylerStyle} from 'geostyler-style';
-import {Geometry} from 'ol/geom';
 import {Image as ImageLayer, Layer, Vector as VectorLayer} from 'ol/layer';
 import {OlStyleParser} from 'geostyler-openlayers-parser';
 import {SldStyleParser as SLDParser} from 'geostyler-sld-parser';
@@ -73,7 +72,7 @@ export class HsLegendService {
    * @returns Image as SVG string
    */
   async getVectorLayerLegendSvg(
-    currentLayer: VectorLayer<VectorSource<Geometry>>,
+    currentLayer: VectorLayer<VectorSource>,
   ): Promise<string> {
     try {
       if (currentLayer === undefined) {
@@ -193,9 +192,7 @@ export class HsLegendService {
 
   async setSvg(layer: Layer<Source>): Promise<SafeHtml> {
     return this.sanitizer.bypassSecurityTrustHtml(
-      await this.getVectorLayerLegendSvg(
-        layer as VectorLayer<VectorSource<Geometry>>,
-      ),
+      await this.getVectorLayerLegendSvg(layer as VectorLayer<VectorSource>),
     );
   }
 

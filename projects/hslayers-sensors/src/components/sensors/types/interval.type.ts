@@ -8,4 +8,4 @@ export type Interval = {
 export type CustomInterval = Interval & {
   fromTime: any;
   toTime: any;
-}
+};

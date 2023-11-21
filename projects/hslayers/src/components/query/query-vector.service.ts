@@ -128,7 +128,6 @@ export class HsQueryVectorService {
    * Get features under the mouse pointer on the map
    * @param map - Current map object
    * @param pixel - Target pixel
-   
    * @returns Array with features
    */
   getFeaturesUnderMouse(map: Map, pixel: number[]): FeatureLike[] {
@@ -155,7 +154,6 @@ export class HsQueryVectorService {
 
   /**
    * Create attribute list for all of the features selected with the selector
-   
    */
   createFeatureAttributeList(): void {
     this.hsQueryBaseService.attributes.length = 0;
@@ -174,7 +172,6 @@ export class HsQueryVectorService {
    * Export feature/s in specified format
    * @param clickedFormat - Export format
    * @param feature - Feature or features to export
-   
    * @returns Formatted features
    */
   exportData(
@@ -200,7 +197,6 @@ export class HsQueryVectorService {
   /**
    * Get layer name from the feature selected
    * @param feature - Feature selected
-   
    * @returns Layer name
    */
   getFeatureLayerName(feature: Feature<Geometry>): string {
@@ -223,7 +219,6 @@ export class HsQueryVectorService {
   /**
    * Adding a default stats to query based on feature geometry type
    * @param f - Selected feature from the map
-   
    * @returns Default feature stats
    */
   private addDefaultStats(f: Feature<Geometry>): {name: string; value: any}[] {
@@ -257,10 +252,9 @@ export class HsQueryVectorService {
   /**
    * Find layer source from the feature selected
    * @param feature - Selected feature from the map
-   
    * @returns Vector layer's source
    */
-  olSource(feature: Feature<Geometry>): VectorSource<Geometry> {
+  olSource(feature: Feature<Geometry>): VectorSource {
     const layer = this.hsMapService.getLayerForFeature(feature);
     if (layer == undefined) {
       return;
@@ -274,7 +268,6 @@ export class HsQueryVectorService {
   /**
    * Check if feature is removable
    * @param feature - Selected feature from the map
-   
    * @returns True if feature is removable, false otherwise
    */
   isFeatureRemovable(feature: Feature<Geometry>): boolean {
@@ -292,7 +285,6 @@ export class HsQueryVectorService {
   /**
    * Remove selected feature
    * @param feature - Selected feature from map
-   
    */
   removeFeature(feature: Feature<Geometry>): void {
     const source = this.olSource(feature);
@@ -306,7 +298,6 @@ export class HsQueryVectorService {
   /**
    * Handler for querying vector layers of map. Get information about selected feature.
    * @param feature - Selected feature from map
-   
    * @returns Feature attributes
    */
   getFeatureAttributes(feature: Feature<Geometry>): FeatureDescription[] {

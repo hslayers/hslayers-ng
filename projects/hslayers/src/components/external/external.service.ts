@@ -1,11 +1,11 @@
 import {Injectable} from '@angular/core';
 
 import BaseLayer from 'ol/layer/Base';
+import {Cluster, Source, Vector as VectorSource} from 'ol/source';
 import {Feature} from 'ol';
 import {Geometry} from 'ol/geom';
-import {Layer} from 'ol/layer';
+import {Layer, Vector as VectorLayer} from 'ol/layer';
 import {ObjectEvent} from 'ol/Object';
-import {Source, Vector as VectorSource} from 'ol/source';
 import {buffer, getCenter} from 'ol/extent';
 
 import {DOMFeatureLink} from '../../common/dom-feature-link.type';
@@ -15,6 +15,7 @@ import {
 } from '../../common/layer-extensions';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsLayoutService} from '../layout/layout.service';
+import {HsLogService} from '../../common/log/log.service';
 import {HsMapService} from '../map/map.service';
 import {HsQueryBaseService} from '../query/query-base.service';
 import {HsQueryPopupService} from '../query/query-popup.service';
@@ -41,6 +42,7 @@ export class HsExternalService {
     public hsMapService: HsMapService,
     public hsUtilsService: HsUtilsService,
     private hsLayerUtilsService: HsLayerUtilsService,
+    private hsLog: HsLogService,
     private hsQueryPopupService: HsQueryPopupService,
     private hsQueryBaseService: HsQueryBaseService,
     private hsQueryVectorService: HsQueryVectorService,
@@ -67,36 +69,46 @@ export class HsExternalService {
     }
   }
 
+  /**
+   * Registers DOM--feature links for newly added layer and
+   * also sets listener for 'propertychange' in case the domFeatureLinks are changed later on.
+   * The linked feature cannot be a RenderFeature.
+   * @param layer - OL BaseLayer (superclass of Layer)
+   */
   layerAdded(layer: BaseLayer): void {
-    if (this.hsLayerUtilsService.isLayerVectorLayer(layer)) {
-      if (getDomFeatureLinks(layer)) {
-        this.processLinks(layer as Layer);
-      }
-      layer.on('propertychange', (e) => {
-        this.hsUtilsService.debounce(
-          this.layerPropChanged(e),
-          100,
-          false,
-          this,
-        );
-      });
+    if (!this.hsLayerUtilsService.isLayerVectorLayer(layer)) {
+      return;
     }
+    if (getDomFeatureLinks(layer)) {
+      this.processLinks(layer as VectorLayer<VectorSource>);
+    }
+    (layer as VectorLayer<VectorSource>).on('propertychange', (e) => {
+      this.hsUtilsService.debounce(this.layerPropChanged(e), 100, false, this);
+    });
   }
+
   layerPropChanged(e: ObjectEvent): void {
     if (e.key == DOM_FEATURE_LINKS) {
-      this.processLinks(e.target as Layer<Source>);
+      this.processLinks(e.target);
     }
   }
 
-  private processLinks(layer: Layer<any>) {
-    const source: VectorSource<Geometry> =
-      this.hsLayerUtilsService.isLayerClustered(layer)
-        ? layer.getSource().getSource()
-        : layer.getSource();
+  private processLinks(layer: VectorLayer<VectorSource>) {
+    const source: VectorSource = this.hsLayerUtilsService.isLayerClustered(
+      layer,
+    )
+      ? (layer.getSource() as Cluster).getSource()
+      : layer.getSource();
     for (const link of getDomFeatureLinks(layer)) {
       const domElements = document.querySelectorAll(link.domSelector);
       domElements.forEach((domElement) => {
         const feature = this.getFeature(layer, source, link, domElement);
+        if (!feature) {
+          this.hsLog.error(
+            `Cannot bind event ${link.event} from ${domElement} to feature ${link.feature}. Feature not found!`,
+          );
+          return;
+        }
         if (feature.getId() === undefined) {
           feature.setId(this.hsUtilsService.generateUuid());
         }
@@ -159,7 +171,7 @@ export class HsExternalService {
       | 'hidePopup'
       | 'select'
       | ((feature: Feature<Geometry>, domElement: Element, event: any) => any),
-    feature: any,
+    feature: Feature,
     domElement: Element,
     e: Event,
   ) {
@@ -204,12 +216,14 @@ export class HsExternalService {
 
   private getFeature(
     layer: Layer<Source>,
-    source: VectorSource<Geometry>,
+    source: VectorSource,
     link: DOMFeatureLink,
     domElement: Element,
   ): Feature<Geometry> {
     if (typeof link.feature == 'string' || typeof link.feature == 'number') {
-      return source.getFeatureById(link.feature);
+      const featureLike = source.getFeatureById(link.feature);
+      //Filter out possible RenderFeatures
+      return featureLike instanceof Feature ? featureLike : undefined;
     } else if (this.hsUtilsService.instOf(link.feature, Feature)) {
       return link.feature as Feature<Geometry>;
     } else if (typeof link.feature == 'function') {

@@ -85,10 +85,11 @@ export class HsFeatureTableService {
    * @param layer - Layer from HsConfig.layersInFeatureTable
    */
   fillFeatureList(layer: Layer<Source>): void {
-    const source: VectorSource<Geometry> =
-      this.hsLayerUtilsService.isLayerClustered(layer)
-        ? (layer.getSource() as Cluster).getSource()
-        : (layer.getSource() as VectorSource<Geometry>);
+    const source: VectorSource = this.hsLayerUtilsService.isLayerClustered(
+      layer,
+    )
+      ? (layer.getSource() as Cluster).getSource()
+      : (layer.getSource() as VectorSource);
     this.features = source
       .getFeatures()
       .map((f) => this.describeFeature(f))
@@ -228,8 +229,8 @@ export class HsFeatureTableService {
         aFeature.charAt(0) > bFeature.charAt(0)
           ? 1
           : aFeature.charAt(0) < bFeature.charAt(0)
-          ? -1
-          : 0;
+            ? -1
+            : 0;
     }
     if (typeof aFeature == 'number' && typeof bFeature == 'number') {
       position = aFeature - bFeature;

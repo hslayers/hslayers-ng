@@ -1,11 +1,9 @@
 import {Injectable} from '@angular/core';
 
-import {Geometry} from 'ol/geom';
 import {Observable, Subject, Subscription} from 'rxjs';
 import {Vector as VectorLayer} from 'ol/layer';
 import {Vector as VectorSource} from 'ol/source';
 
-import SparqlJson from '../../common/layers/hs.source.SparqlJson';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsLegendDescriptor} from '../legend/legend-descriptor.interface';
 import {HsLegendLayerStaticService} from '../legend/legend-layer-static/legend-layer-static.service';
@@ -13,6 +11,7 @@ import {HsLegendService} from '../legend/legend.service';
 import {HsMapService} from '../map/map.service';
 import {HsShareThumbnailService} from '../permalink/share-thumbnail.service';
 import {LegendObj} from './types/legend-object.type';
+import {SparqlJson} from '../../common/layers/hs.source.SparqlJson';
 
 export class PrintLegendParams {
   legendWidth: number;
@@ -192,7 +191,7 @@ export class HsPrintLegendService extends PrintLegendParams {
     }
     if (desc.autoLegend) {
       const legendSource = await this.hsLegendService.getVectorLayerLegendSvg(
-        desc.lyr as VectorLayer<VectorSource<Geometry>>,
+        desc.lyr as VectorLayer<VectorSource>,
       );
       if (!legendSource) {
         return;

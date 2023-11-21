@@ -53,15 +53,15 @@ export class HsTripPlannerService {
   trip: any = {};
   movable_features = new Collection<Feature<Geometry>>();
   modify: Modify;
-  waypointSource: VectorSource<Point>;
-  waypointLayer: VectorLayer<VectorSource<Point>>;
-  routeSource: VectorSource<Geometry>;
-  routeLayer: VectorLayer<VectorSource<Geometry>>;
+  waypointSource: VectorSource<Feature<Point>>;
+  waypointLayer: VectorLayer<VectorSource<Feature<Point>>>;
+  routeSource: VectorSource;
+  routeLayer: VectorLayer<VectorSource>;
   timer: any;
-  vectorLayers: {layer: VectorLayer<VectorSource<Geometry>>; title: string}[];
+  vectorLayers: {layer: VectorLayer<VectorSource>; title: string}[];
   selectedLayerWrapper: {
-    route?: {layer: VectorLayer<VectorSource<Geometry>>; title: string};
-    waypoints?: {layer: VectorLayer<VectorSource<Geometry>>; title: string};
+    route?: {layer: VectorLayer<VectorSource>; title: string};
+    waypoints?: {layer: VectorLayer<VectorSource>; title: string};
   } = {};
 
   constructor(
@@ -158,7 +158,7 @@ export class HsTripPlannerService {
           .filter((layer: Layer<Source>) =>
             this.HsLayerUtilsService.isLayerDrawable(layer),
           )
-          .map((layer: VectorLayer<VectorSource<Geometry>>) => {
+          .map((layer: VectorLayer<VectorSource>) => {
             return {layer, title: getTitle(layer)};
           }),
       ];
@@ -215,7 +215,7 @@ export class HsTripPlannerService {
    * @param usage - route or waypoints
    */
   async selectLayer(
-    layer: {layer: VectorLayer<VectorSource<Geometry>>; title: string},
+    layer: {layer: VectorLayer<VectorSource>; title: string},
     usage: 'route' | 'waypoints',
   ): Promise<void> {
     if (usage == 'route') {
@@ -226,7 +226,9 @@ export class HsTripPlannerService {
       this.selectedLayerWrapper.route = layer;
     }
     if (usage == 'waypoints') {
-      this.waypointLayer = layer.layer as VectorLayer<VectorSource<Point>>;
+      this.waypointLayer = layer.layer as VectorLayer<
+        VectorSource<Feature<Point>>
+      >;
       if (this.waypointLayer) {
         this.waypointSource = this.waypointLayer.getSource();
       }
@@ -318,7 +320,10 @@ export class HsTripPlannerService {
    * @param wp - Waypoint object, with lat, lon and routes array
    */
   waypointAdded(wp: Waypoint): void {
-    const feature = this.waypointSource.getFeatureById(wp.featureId);
+    //FIXME: Type-cast shall be automatically inferred after OL >8.2
+    const feature = this.waypointSource.getFeatureById(
+      wp.featureId,
+    ) as Feature<Point>;
     this.movable_features.push(feature);
     feature.getGeometry().on('change', (e) => {
       this.removeRoutesForWaypoint(wp);
@@ -374,7 +379,8 @@ export class HsTripPlannerService {
   waypointRemoved(wp: Waypoint): void {
     try {
       this.waypointSource.removeFeature(
-        this.waypointSource.getFeatureById(wp.featureId),
+        //FIXME: Type-cast shall be automatically inferred after OL >8.2
+        this.waypointSource.getFeatureById(wp.featureId) as Feature<Point>,
       );
     } catch (ex) {
       throw ex;
@@ -473,7 +479,8 @@ export class HsTripPlannerService {
         }
         wpt.loading = false;
         const format = new GeoJSON();
-        const features = format.readFeatures(response);
+        //FIXME: Type-cast shall be automatically inferred after OL >8.2
+        const features = format.readFeatures(response) as Feature[];
         features[0]
           .getGeometry()
           .transform('EPSG:4326', this.HsMapService.getCurrentProj());

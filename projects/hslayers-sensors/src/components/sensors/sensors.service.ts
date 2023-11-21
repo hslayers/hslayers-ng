@@ -4,7 +4,6 @@ import {LangChangeEvent} from '@ngx-translate/core';
 import {Subject} from 'rxjs';
 
 import dayjs from 'dayjs';
-import {Geometry} from 'ol/geom';
 import {
   HsConfig,
   HsDialogContainerService,
@@ -281,7 +280,7 @@ export class HsSensorsService {
    * Create layer for displaying sensor data
    */
   createLayer() {
-    this.layer = new VectorLayer<VectorSource<Geometry>>({
+    this.layer = new VectorLayer<VectorSource>({
       properties: {
         path: 'Sensors',
         title: 'Sensor units',

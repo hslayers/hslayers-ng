@@ -130,7 +130,7 @@ export class HsConfigObject {
   zoomWithModifierKeyOnly?: boolean;
   pureMap?: boolean;
   translationOverrides?: any;
-  layersInFeatureTable?: VectorLayer<VectorSource<Geometry>>[];
+  layersInFeatureTable?: VectorLayer<VectorSource>[];
   open_lm_after_comp_loaded?: boolean;
   draggable_windows?: boolean;
   connectTypes?: AddDataUrlType[];

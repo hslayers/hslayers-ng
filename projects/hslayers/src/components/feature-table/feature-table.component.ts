@@ -1,6 +1,5 @@
 import {Component, OnInit} from '@angular/core';
 
-import {Geometry} from 'ol/geom';
 import {Vector as VectorLayer} from 'ol/layer';
 import {Vector as VectorSource} from 'ol/source';
 
@@ -19,7 +18,7 @@ export class HsFeatureTableComponent
   extends HsPanelBaseComponent
   implements OnInit
 {
-  layers: VectorLayer<VectorSource<Geometry>>[] = [];
+  layers: VectorLayer<VectorSource>[] = [];
   name = 'feature_table';
   constructor(
     private hsFeatureTableService: HsFeatureTableService,
@@ -52,7 +51,7 @@ export class HsFeatureTableComponent
    * Add layer to feature description table
    * @param layer - Layer to add
    */
-  addLayerToTable(layer: VectorLayer<VectorSource<Geometry>>): void {
+  addLayerToTable(layer: VectorLayer<VectorSource>): void {
     const layerDescriptor = this.hsFeatureTableService.addLayer(layer);
     if (layerDescriptor) {
       this.layers.push(layerDescriptor);

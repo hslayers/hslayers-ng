@@ -26,15 +26,15 @@ export class HsDrawServiceParams {
    */
   snap: Snap;
   snapActive = false;
-  snapSource: VectorSource<Geometry>;
-  snapLayer: VectorLayer<VectorSource<Geometry>>;
+  snapSource: VectorSource;
+  snapLayer: VectorLayer<VectorSource>;
   /**
    * String of type GeometryType
    */
   type: 'Point' | 'Polygon' | 'LineString' | 'Circle';
-  selectedLayer: VectorLayer<VectorSource<Geometry>>;
+  selectedLayer: VectorLayer<VectorSource>;
   tmpDrawLayer: any;
-  source: VectorSource<Geometry>;
+  source: VectorSource;
   drawActive = false;
   selectedFeatures: any = new Collection();
   toggleSelectionString = 'selectAllFeatures';
@@ -54,7 +54,7 @@ export class HsDrawServiceParams {
 
   public drawingLayerChanges: Subject<{
     layer: Layer<Source>;
-    source: VectorSource<Geometry>;
+    source: VectorSource;
   }> = new Subject();
 
   layerMetadataDialog: Subject<void> = new Subject();
