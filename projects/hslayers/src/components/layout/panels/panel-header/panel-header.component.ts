@@ -66,10 +66,12 @@ export class HsPanelHeaderComponent implements OnDestroy, OnInit {
 
   @Input() name: string;
   /**
-   * Part of translation string which exists on PANEL_HEADER module
-   * eg. COMPOSITIONS -> which will used for translation as as PANEL_HEADER.COMPOSITIONS
+   * Part of translation string which exists on 'translationModule' module
+   * eg. COMPOSITIONS -> which will used for translation as as 'translationModule'.COMPOSITIONS
    */
   @Input({transform: toArray}) panelTabs: string[];
+
+  @Input() translationModule: string = 'PANEL_HEADER';
 
   @Output() tabSelected = new EventEmitter<string>();
 
