@@ -95,7 +95,6 @@
       "metadataOfLayer": "Métadonnées de la couche dans",
       "metadataOfService": "Métadonnées de service",
       "opacity": "Opacité",
-      "styleLayer": "Couche de style",
       "zoomToLayer": "Zoom sur le calque"
     },
     "layerList": {
@@ -132,9 +131,11 @@
     "noLegendExists": "Aucune couche avec légende n'existe!"
   },
   "PANEL_HEADER": {
-    "DRAW": "Dessiner",
     "LEGEND": "Légendes",
-    "LM": "Gestionnaire des calques"
+    "LM": "Gestionnaire des calques",
+    "styler": "Couche de style",
+    "url": "URL",
+    "draw": "Dessiner"
   },
   "SIDEBAR": {
     "additionalPanels": "Panneaux supplémentaires"

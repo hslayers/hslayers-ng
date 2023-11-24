@@ -19,7 +19,8 @@ import {HsUtilsService} from '../utils/utils.service';
 })
 export class HsDrawComponent
   extends HsPanelBaseComponent
-  implements OnInit, OnDestroy {
+  implements OnInit, OnDestroy
+{
   name = 'draw';
   selectedOption = 'draw';
   private end = new Subject<void>();
@@ -56,7 +57,7 @@ export class HsDrawComponent
       module: 'hs.draw',
       order: 16,
       fits: true,
-      title: 'PANEL_HEADER.DRAW',
+      title: 'PANEL_HEADER.draw',
       description: 'SIDEBAR.descriptions.DRAW',
       icon: 'icon-pencil',
     });

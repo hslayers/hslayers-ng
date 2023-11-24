@@ -1,6 +1,5 @@
 {
   "ADDDATA": {
-    "catalogue": "Data Catalogue",
     "CATALOGUE": {
       "DESC": {
         "WFS": "Web Feature Service: it adds the layer as a set of vector features. It is more power-consuming, especially with large layers, but it allows to edit features or to display individual feature info.",
@@ -31,7 +30,6 @@
       },
       "theNumberOfRecords": "The number of records will be calculated as close as possible to the selected number"
     },
-    "file": "File",
     "FILE": {
       "onlyOneZipFileCan": "Only one zip file can be uploaded at once",
       "someOfTheUploadedFiles": "Uploaded file exceeded maximum allowed size of 20MB",
@@ -592,7 +590,6 @@
       "metadataOfService": "Metadata of service",
       "opacity": "Opacity",
       "savegeojson": "Download layer content as GeoJSON",
-      "styleLayer": "Style layer",
       "vector": "Vector",
       "vector (GeoJSON)": "Vector (GeoJSON)",
       "vector (KML)": "Vector (KML)",
@@ -707,7 +704,6 @@
     "APPLICATIONSETTINGS": "Application settings",
     "COMPOSITIONS": "Compositions",
     "DATASOURCE_SELECTOR": "Datasources",
-    "DRAW": "Draw",
     "FEATURE_TABLE": "Feature table",
     "FILTERFEATURES": "Filter features",
     "INFO": "Info",
@@ -723,7 +719,13 @@
     "SAVECOMPOSITION": "Save current map",
     "SEARCH": "Search",
     "SENSORS": "Sensors",
-    "TRIP_PLANNER": "Trip planner"
+    "TRIP_PLANNER": "Trip planner",
+    "styler": "Style layer",
+    "catalogue": "Data catalogue",
+    "url": "URL",
+    "file": "File",
+    "draw": "Draw",
+    "edit": "Edit"
   },
   "PERMALINK": {
     "directiveMd": {
@@ -1021,5 +1023,6 @@
     "waypointDrawingHint": "Please click on map to add waypoints",
     "waypointLayer": "Waypoint layer",
     "waypoints": "Waypoints"
-  }
+  },
+  "PABEL_HEADER": {}
 }

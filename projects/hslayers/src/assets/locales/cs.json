@@ -1,6 +1,5 @@
 {
   "ADDDATA": {
-    "catalogue": "Datový katalog",
     "CATALOGUE": {
       "DESC": {
         "WFS": "Web Feature Service - stahovací: slouží pro práci s geografickými daty ve vektorové reprezentaci. Je výkonostne naročnejší, především při rozsáhlejších vrstvách, umožňuje však editaci, či zobrazení individuálních informacií ke každému prvku zvlášť.",
@@ -31,7 +30,6 @@
       },
       "theNumberOfRecords": "Počet záznamů bude vypočten tak, aby byl co nejblíže to bude můžné k vybranému číslu"
     },
-    "file": "Soubor",
     "FILE": {
       "onlyOneZipFileCan": "Lze nahrát pouze jeden soubor ZIP najednou",
       "someOfTheUploadedFiles": "Nahrávaný soubor přesahuje maximální povolenou velikost 20MB",
@@ -592,7 +590,6 @@
       "metadataOfService": "Metadata služby",
       "opacity": "Průhlednost",
       "savegeojson": "Stáhnout obsah vrstvy jako GeoJSON",
-      "styleLayer": "Stylovat vrstvu",
       "vector": "Vektorová",
       "vector (GeoJSON)": "Vektorová (GeoJSON)",
       "vector (KML)": "Vektorová (KML)",
@@ -707,7 +704,6 @@
     "APPLICATIONSETTINGS": "Nastavení aplikace",
     "COMPOSITIONS": "Kompozice",
     "DATASOURCE_SELECTOR": "Datové zdroje",
-    "DRAW": "Kreslit",
     "FEATURE_TABLE": "Tabulka prvků",
     "FILTERFEATURES": "Filtrovat prvky",
     "INFO": "Info",
@@ -723,7 +719,13 @@
     "SAVECOMPOSITION": "Uložit aktuální mapu",
     "SEARCH": "Hledání",
     "SENSORS": "Senzory",
-    "TRIP_PLANNER": "Plánovač tras"
+    "TRIP_PLANNER": "Plánovač tras",
+    "styler": "Stylovat vrstvu",
+    "catalogue": "Datový katalog",
+    "url": "URL",
+    "file": "Soubor",
+    "draw": "Kreslit",
+    "edit": "Upraviť"
   },
   "PERMALINK": {
     "directiveMd": {

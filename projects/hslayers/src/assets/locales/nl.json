@@ -94,7 +94,6 @@
       "metadataOfLayer": "Metadata van laag in",
       "metadataOfService": "Metadata van service",
       "opacity": "Doorzichtigheid",
-      "styleLayer": "Stijllaag",
       "zoomToLayer": "Zoom in op laag"
     },
     "layerList": {
@@ -131,9 +130,12 @@
     "noLegendExists": "Er bestaat geen laag met legenda!"
   },
   "PANEL_HEADER": {
-    "DRAW": "Trek",
     "LEGEND": "Legenda",
-    "LM": "Beheer lagen"
+    "LM": "Beheer lagen",
+    "styler": "Stijllaag",
+    "url": "URL",
+    "file": "Fails",
+    "draw": "Trek"
   },
   "SIDEBAR": {
     "additionalPanels": "Extra panelen"

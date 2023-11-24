@@ -1,6 +1,5 @@
 {
   "ADDDATA": {
-    "catalogue": "Datu katalogs",
     "CATALOGUE": {
       "DESC": {
         "WFS": "Web Feature Service - pievieno slāni kā vektoru grafisko objektu kopumu. Tas ir vairāk resursu patērējošs, it īpaši ar lieliem slāņiem, taču tas ļauj rediģēt objektus vai parādīt atsevišķu informāciju par objektiem",
@@ -31,7 +30,6 @@
       },
       "theNumberOfRecords": "Ierakstu skaits tiks aprēķināts pēc iespējas tuvāk izvēlētajam skaitam"
     },
-    "file": "Fails",
     "FILE": {
       "onlyOneZipFileCan": "Vienlaikus var augšupielādēt tikai vienu ZIP failu",
       "someOfTheUploadedFiles": "Augšupielādētais fails pārsniedz maksimālo atļauto lielumu 20MB",
@@ -572,7 +570,6 @@
       "metadataOfService": "Servisa metadati",
       "opacity": "Necaurredzamība",
       "savegeojson": "Lejupielādējiet slāņa saturu kā GeoJSON",
-      "styleLayer": "Stilizēt slāni",
       "vector": "Vektoru",
       "vector (GeoJSON)": "Vektoru (GeoJSON)",
       "vector (KML)": "Vektoru (KML)",
@@ -680,7 +677,6 @@
     "APPLICATIONSETTINGS": "Lietojumprogrammas iestatījumi",
     "COMPOSITIONS": "Kompozīcijas",
     "DATASOURCE_SELECTOR": "Datu avoti",
-    "DRAW": "Zīmēt",
     "FEATURE_TABLE": "Grafisko objektu tabula",
     "FILTERFEATURES": "Filtrēt objektus",
     "INFO": "Informācija",
@@ -696,7 +692,12 @@
     "SAVECOMPOSITION": "Saglabāt pašreizējo karti",
     "SEARCH": "Meklēt",
     "SENSORS": "Sensori",
-    "TRIP_PLANNER": "Maršruta plānotājs"
+    "TRIP_PLANNER": "Maršruta plānotājs",
+    "styler": "Stilizēt slāni",
+    "catalogue": "\"Datu katalogs",
+    "url": "URL",
+    "draw": "Zīmēt",
+    "edit": "Rediģēt"
   },
   "PERMALINK": {
     "directiveMd": {
