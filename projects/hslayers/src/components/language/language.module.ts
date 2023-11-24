@@ -11,8 +11,8 @@ import {
 import {HsConfig} from '../../config.service';
 import {HsLanguageComponent} from './language.component';
 import {HsLogService} from '../../common/log/log.service';
+import {HsPanelHeaderComponent} from '../layout/panels/panel-header/panel-header.component';
 import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
-import {TranslateCustomPipe} from './translate-custom.pipe';
 import {WebpackTranslateLoader} from './custom-translate.service';
 
 export function getWebpackTranslateLoader(
@@ -31,7 +31,7 @@ export function getWebpackTranslateLoader(
     CommonModule,
     TranslateModule,
     HsPanelHelpersModule,
-    TranslateCustomPipe,
+    HsPanelHeaderComponent,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,

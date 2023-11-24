@@ -3,7 +3,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Subject, takeUntil} from 'rxjs';
 
 import {HsConfig} from '../../config.service';
-import {HsDialogContainerService} from '../layout/public-api';
+import {HsDialogContainerService} from '../layout/dialogs/dialog-container.service';
 import {HsDrawLayerMetadataDialogComponent} from './draw-layer-metadata/draw-layer-metadata.component';
 import {HsDrawService} from './draw.service';
 import {HsLanguageService} from './../language/language.service';
@@ -19,8 +19,7 @@ import {HsUtilsService} from '../utils/utils.service';
 })
 export class HsDrawComponent
   extends HsPanelBaseComponent
-  implements OnInit, OnDestroy
-{
+  implements OnInit, OnDestroy {
   name = 'draw';
   selectedOption = 'draw';
   private end = new Subject<void>();

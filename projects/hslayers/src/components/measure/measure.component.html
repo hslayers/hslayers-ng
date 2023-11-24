@@ -1,7 +1,5 @@
 <div class="card hs-main-panel" [hidden]="(isVisible$ | async) === false">
-  <hs-panel-header name="measure" [title]="'PANEL_HEADER.MEASURE' | translateHs">
-    <extra-title>&nbsp;<span [hidden]="!hsMeasureService.data.multipleShapeMode">{{'MEASURE.multipleShapes' |
-        translateHs }}</span></extra-title>
+  <hs-panel-header name="measure" [panelTabs]="'MEASURE'">
   </hs-panel-header>
   <div class="card-body p-2">
     <div class="btn-group btn-group-toggle" style="margin-bottom: 10px">

@@ -8,8 +8,8 @@ import {HsClearLayerComponent} from './widgets/clear-layer.component';
 import {HsDownloadModule} from '../../common/download/download.module';
 import {HsDynamicTextComponent} from './widgets/dynamic-text.component';
 import {HsFeatureInfoComponent} from './widgets/feature-info.component';
-import {TranslateCustomPipe} from '../language/translate-custom.pipe';
 import {HsLayerNameComponent} from './widgets/layer-name.component';
+import {HsPanelHeaderComponent} from '../layout/panels/panel-header/panel-header.component';
 import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
 import {HsQueryAttributeRowComponent} from './attribute-row/attribute-row.component';
 import {HsQueryComponent} from './query.component';
@@ -18,6 +18,7 @@ import {HsQueryFeatureComponent} from './feature/feature.component';
 import {HsQueryFeatureListComponent} from './feature-list/feature-list.component';
 import {HsQueryPopupComponent} from './query-popup/query-popup.component';
 import {HsQueryPopupWidgetBaseComponent} from './query-popup-widget-base.component';
+import {TranslateCustomPipe} from '../language/translate-custom.pipe';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -41,6 +42,7 @@ import {HsQueryPopupWidgetBaseComponent} from './query-popup-widget-base.compone
     TranslateCustomPipe,
     HsDownloadModule,
     NgbDropdownModule,
+    HsPanelHeaderComponent,
   ],
   exports: [
     HsQueryComponent,

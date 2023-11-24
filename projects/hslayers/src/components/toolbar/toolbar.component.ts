@@ -5,7 +5,7 @@ import {Subscription} from 'rxjs';
 import {HsCoreService} from '../core/core.service';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLayoutService} from '../layout/layout.service';
-import {HsPanelBaseComponent} from '../layout/public-api';
+import {HsPanelBaseComponent} from '../layout/panels/panel-base.component';
 import {HsToolbarPanelContainerService} from './toolbar-panel-container.service';
 
 @Component({
@@ -14,8 +14,7 @@ import {HsToolbarPanelContainerService} from './toolbar-panel-container.service'
 })
 export class HsToolbarComponent
   extends HsPanelBaseComponent
-  implements OnDestroy
-{
+  implements OnDestroy {
   collapsed = false;
   composition_title: any;
   composition_abstract: any;

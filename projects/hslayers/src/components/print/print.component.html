@@ -1,11 +1,9 @@
 <div class="card hs-main-panel" [hidden]="(isVisible$ | async) === false">
-    <hs-panel-header name="print" [title]="'PANEL_HEADER.PRINT' | translateHs ">
-        <extra-buttons>
-            <button class="but-title-sm hs-extra-buttons mt-1" (click)="setToDefault()"
-                [title]="'COMMON.resetToDefault' | translateHs ">
-                <i class="glyphicon icon-fatredo"></i>
-            </button>
-        </extra-buttons>
+    <hs-panel-header name="print" [panelTabs]="'PRINT'">
+        <button mainButton class="btn btn-sm btn-outline-secondary border-0" (click)="setToDefault()"
+            [title]="'COMMON.resetToDefault' | translateHs "> {{'COMMON.reset' | translateHs}}
+            <i class="glyphicon icon-fatredo"></i>
+        </button>
     </hs-panel-header>
     <div class="card-body">
         <div class="card-body">

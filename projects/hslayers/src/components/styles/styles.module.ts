@@ -16,9 +16,9 @@ import {HsFillSymbolizerComponent} from './symbolizers/fill-symbolizer/fill-symb
 import {HsFilterComponent} from './filters/filter.component';
 import {HsFiltersComponent} from './filters/filters.component';
 import {HsIconSymbolizerComponent} from './symbolizers/icon-symbolizer/icon-symbolizer.component';
-import {TranslateCustomPipe} from '../language/translate-custom.pipe';
 import {HsLineSymbolizerComponent} from './symbolizers/line-symbolizer/line-symbolizer.component';
 import {HsMarkSymbolizerComponent} from './symbolizers/mark-symbolizer/mark-symbolizer.component';
+import {HsPanelHeaderComponent} from '../layout/public-api';
 import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
 import {HsRuleComponent} from './rule/rule.component';
 import {HsRuleListItemComponent} from './rule/rule-list-item/rule-list-item.component';
@@ -32,6 +32,7 @@ import {HsSymbolizerComponent} from './symbolizers/symbolizer.component';
 import {HsSymbolizerListItemComponent} from './symbolizers/symbolizer-list-item/symbolizer-list-item.component';
 import {HsTextSymbolizerComponent} from './symbolizers/text-symbolizer/text-symbolizer.component';
 import {HsUploadModule} from '../../common/upload/upload.module';
+import {TranslateCustomPipe} from '../language/translate-custom.pipe';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -69,6 +70,7 @@ import {HsUploadModule} from '../../common/upload/upload.module';
     HsDownloadModule,
     DragDropModule,
     HsColormapPickerModule,
+    HsPanelHeaderComponent,
   ],
   exports: [
     HsStylerComponent,
