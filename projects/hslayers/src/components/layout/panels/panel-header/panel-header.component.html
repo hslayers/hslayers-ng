@@ -3,7 +3,7 @@
     <li *ngFor="let tab of panelTabs" class="nav-item" (click)="tabClicked(tab)" style="max-height:103%">
         <a [class.active]="active === tab" style="margin-top: 2px;"
             class="active align-items-center d-flex h-100 justify-content-center nav-link" aria-current="page">
-            {{tab | translateHs : {module: 'PANEL_HEADER'} }}
+            {{tab | translateHs : {module: translationModule} }}
         </a>
     </li>
 

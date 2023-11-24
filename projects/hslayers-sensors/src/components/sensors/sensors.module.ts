@@ -6,7 +6,11 @@ import {
 import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 
-import {TranslateCustomPipe, HsLogModule} from 'hslayers-ng';
+import {
+  HsLogModule,
+  HsPanelHeaderComponent,
+  TranslateCustomPipe,
+} from 'hslayers-ng';
 import {HsPanelHelpersModule} from 'hslayers-ng';
 import {NgbDatepickerModule} from '@ng-bootstrap/ng-bootstrap';
 
@@ -30,6 +34,7 @@ import {HsSensorsUnitListItemComponent} from './sensors-unit-list-item.component
     FormsModule,
     NgbDatepickerModule,
     TranslateCustomPipe,
+    HsPanelHeaderComponent,
   ],
   exports: [
     HsSensorsComponent,

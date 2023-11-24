@@ -6,6 +6,7 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {HsPanelHelpersModule} from 'hslayers-ng/components/layout/panels/panel-helpers.module';
 import {TranslateCustomPipe} from 'hslayers-ng/components/language/translate-custom.pipe';
 
+import {HsPanelHeaderComponent} from 'hslayers-ng/components/layout/panels/panel-header/panel-header.component';
 import {SomeComponent} from './some-panel.component';
 
 @NgModule({
@@ -16,6 +17,7 @@ import {SomeComponent} from './some-panel.component';
     TranslateCustomPipe,
     HsPanelHelpersModule,
     NgbModule,
+    HsPanelHeaderComponent,
   ],
   exports: [],
   declarations: [SomeComponent],
