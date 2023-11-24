@@ -4,7 +4,7 @@
         [ngClass]="HsDrawService.highlightDrawButton ? 'btn-outline-danger' : 'btn-outline-secondary'"
         (click)="toggleDrawToolbar()">
         <i [ngClass]="{'icon-pencil':!drawToolbarExpanded, 'icon-remove':drawToolbarExpanded}" data-toggle="tooltip"
-            [title]="'PANEL_HEADER.DRAW' | translateHs "></i></button>
+            [title]="'PANEL_HEADER.draw' | translateHs "></i></button>
     <div class="btn-group" *ngIf="drawToolbarExpanded">
         <div class="btn-group" ngbDropdown placement="bottom-left" display="dynamic">
             <button type="button" ngbDropdownToggle
