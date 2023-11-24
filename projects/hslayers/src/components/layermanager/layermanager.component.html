@@ -7,17 +7,16 @@
         </button>
         <extra-buttons>
             <a class="dropdown-item" (click)="removeMultipleLayers()">
-                <i class="glyphicon icon-trash hs-extra-button"></i>&nbsp;{{'DRAW.removeMultipleLayers'
+                <i class="glyphicon icon-trash"></i>&nbsp;{{'DRAW.removeMultipleLayers'
                 | translateHs }}
             </a>
             <a class="dropdown-item" (click)="removeAllLayers()">
-                <i
-                    class="glyphicon icon-trash hs-extra-button"></i>&nbsp;{{'LAYERMANAGER.dialogRemoveAll.removeAllAdded'
+                <i class="glyphicon icon-trash"></i>&nbsp;{{'LAYERMANAGER.dialogRemoveAll.removeAllAdded'
                 |
                 translateHs }}
             </a>
             <a class="dropdown-item" (click)="hsCore.resetMap()">
-                <i class="glyphicon icon-fatredo hs-extra-button"></i>&nbsp;{{'LAYERMANAGER.resetMap' |
+                <i class="glyphicon icon-fatredo"></i>&nbsp;{{'LAYERMANAGER.resetMap' |
                 translateHs }}
             </a>
             <a class="dropdown-item" *ngIf="hsLayerManagerService.data.layers?.length > 0 && !physicalLayerListEnabled"

@@ -36,6 +36,7 @@ export function toArray(panels: string) {
         display: block;
         height: calc(48px + 0.25rem);
         position: relative;
+        z-index: 10;
       }
 
       a.nav-link {

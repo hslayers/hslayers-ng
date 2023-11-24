@@ -1,25 +1,12 @@
 <div class="card hs-main-panel" [hidden]="(isVisible$ | async) === false">
-    <hs-panel-header name="draw" [title]="'PANEL_HEADER.DRAW' | translateHs ">
-        <extra-buttons>
-            <button class="but-title-sm" data-toggle="tooltip" [title]="'DRAW.drawInfo' | translateHs ">
-                <i class="icon-question-sign"></i>
-            </button>
-        </extra-buttons>
+    <hs-panel-header name="draw" (tabSelected)="componentOptionSelected($event)" [panelTabs]="'draw,edit'">
+        <button mainButton class="btn btn-sm position-absolute top-0" style="right: 0.25rem; cursor:help"
+            data-toggle="tooltip" [title]="'DRAW.drawInfo' | translateHs ">
+            <i class="icon-question-sign"></i>
+        </button>
     </hs-panel-header>
-
     <!-- draw panel -->
-    <ul class="nav nav-tabs justify-content-end my-1">
-        <li class="nav-item" (click)="componentOptionSelected('draw')">
-            <a [ngClass]="{'active': selectedOption === 'draw'}" class="nav-link "
-                aria-current="page">{{'PANEL_HEADER.DRAW' |
-                translateHs }}</a>
-        </li>
-        <li class="nav-item" (click)="componentOptionSelected('edit')">
-            <a [ngClass]="{'active': selectedOption === 'edit'}" class="nav-link " aria-current="page">{{'COMMON.edit' |
-                translateHs }}</a>
-        </li>
-    </ul>
-    <hs-draw-panel *ngIf="selectedOption === 'draw'"></hs-draw-panel>
+    <hs-draw-panel *ngIf="selectedOption === 'draw'" class="pt-1"></hs-draw-panel>
     <hs-draw-edit class="my-4 d-flex flex-column align-items-center" *ngIf="selectedOption === 'edit'">
     </hs-draw-edit>
     <div *ngIf="HsDrawService.pendingLayers.length > 0" class="m-auto w-100 p-3">

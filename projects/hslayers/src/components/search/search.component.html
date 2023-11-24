@@ -1,5 +1,5 @@
 <div [hidden]="(isVisible$ | async) === false">
-    <hs-panel-header name="Search" [title]="'PANEL_HEADER.SEARCH' | translateHs"></hs-panel-header>
+    <hs-panel-header name="Search" [panelTabs]="'SEARCH'"></hs-panel-header>
     <div class="input-group search-panel hs-search-address pt-1 pb-1 d-flex">
         <hs-search-input></hs-search-input>
         <hs-search-results></hs-search-results>

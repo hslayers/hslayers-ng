@@ -15,7 +15,7 @@
 </ng-template>
 
 <div class="card hs-main-panel" [hidden]="(isVisible$ | async) === false">
-  <hs-panel-header name="mapSwipe" [title]="'PANEL_HEADER.MAP_SWIPE' | translateHs">
+  <hs-panel-header name="mapSwipe" [panelTabs]="'MAP_SWIPE'">
   </hs-panel-header>
   <div class="card-body m-2">
     <div class="alert alert-info ps-2 text-center" role="alert">

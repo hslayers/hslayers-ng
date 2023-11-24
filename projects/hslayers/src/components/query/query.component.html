@@ -1,5 +1,5 @@
 <div class="card hs-main-panel" [hidden]="(isVisible$ | async) === false">
-    <hs-panel-header name="info" [title]="'PANEL_HEADER.INFO' | translateHs"></hs-panel-header>
+    <hs-panel-header name="info" [panelTabs]="'INFO'"></hs-panel-header>
     <div class="card hs-main-panel" *ngIf="noFeatureSelected()">
         <div class="d-flex flex-column align-items-center p-4">
             <i class="icon-cursor bg-primary p-3 text-white rounded "

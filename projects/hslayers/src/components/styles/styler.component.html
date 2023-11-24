@@ -1,28 +1,23 @@
 <div class="card hs-main-panel" [hidden]="(isVisible$ | async) === false">
-  <div class="card-header d-flex align-items-center justify-content-between">
-    <span class="panel-title text-truncate">
-      {{'LAYERMANAGER.layerEditor.styleLayer' | translateHs }}
-      {{hsStylerService.layerTitle}}
-    </span>
-    <extra-buttons class="d-flex align-items-center">
-      <a class="but-title-sm hs-extra-buttons" download="style.sld" [hsDownload]="hsStylerService.sld"
-        mimeType="text/plain" [href]="downloadData" (downloadPrepared)="downloadData = $event"
-        [title]="'STYLER.downloadSld' | translateHs">
-        <i class="icon-download"></i></a>
+  <hs-panel-header name="styler" [panelTabs]="'styler'">
 
-      <button class="but-title-sm hs-extra-buttons" (click)="uploadSld()" data-toggle="tooltip"
-        [ngClass]="uploaderVisible ? 'text-primary opacity-100' : ''" [title]="'STYLER.uploadSld' | translateHs">
-        <i class="icon-upload"></i>
-      </button>
-      <button class="but-title-sm hs-extra-buttons" (click)="clear()" data-toggle="tooltip"
-        [title]="'STYLER.clear' | translateHs">
-        <i class="icon-fatredo"></i>
-      </button>
-      <button type="button" class="btn-close btn btn-sm" (click)="close()" [title]="'COMMON.close' | translateHs"
-        [attr.aria-label]="'COMMON.close' | translateHs ">
-      </button>
+    <!-- TODO : {{hsStylerService.layerTitle}} -->
+    <button mainButton class="btn btn-sm btn-outline-secondary border-0 align-items-center d-flex gap-2"
+      [title]="'STYLER.clear' | translateHs" (click)="clear()"> {{'COMMON.reset' | translateHs}}
+      <i class="glyphicon icon-fatredo"></i>
+    </button>
+    <extra-buttons>
+      <a class="dropdown-item" download="style.sld" [hsDownload]="hsStylerService.sld" mimeType="text/plain"
+        [href]="downloadData" (downloadPrepared)="downloadData = $event">
+        <i class="icon-download"></i>
+        {{'STYLER.downloadSld' | translateHs}}
+      </a>
+
+      <a class="dropdown-item" (click)="uploadSld()" [ngClass]="uploaderVisible ? 'text-primary opacity-100' : ''">
+        <i class="icon-upload"></i>{{'STYLER.uploadSld' | translateHs}}
+      </a>
     </extra-buttons>
-  </div>
+  </hs-panel-header>
   <div class="card-body p-1 pe-2 pt-2">
     <div class="form-group m-3" *ngIf="uploaderVisible">
       <hs-file-upload (uploaded)="handleFileUpload($event)" uploader="hs-sld-upload" acceptedFormats=".sld, .qml">
