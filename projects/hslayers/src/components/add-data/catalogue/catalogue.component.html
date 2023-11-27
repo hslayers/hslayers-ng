@@ -107,7 +107,7 @@
             </div>
         </div>
     </div>
-    <div class="card d-flex" style="font-size: 1rem !important;">
+    <div class="card d-flex border-0" style="font-size: 1rem !important;">
         <div class="card-body">
             <!-- <div *ngIf="endpoint.type == 'micka'">
                     <hs-micka-filters micka-dataset-config="{url: endpoint.url}"></hs-micka-filters>
@@ -132,7 +132,6 @@
         </div>
     </div>
     <ng-container *ngIf="hsAddDataCatalogueService.matchedRecords !== 0 && !hsAddDataCatalogueService.dataLoading">
-        <hs-pager class="sticky-bottom bg-white border border-top-0"
-            [pagerService]="hsAddDataCatalogueService"></hs-pager>
+        <hs-pager class="sticky-bottom bg-white border-0" [pagerService]="hsAddDataCatalogueService"></hs-pager>
     </ng-container>
 </div>

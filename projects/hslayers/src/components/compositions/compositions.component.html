@@ -157,7 +157,7 @@
             </div>
         </div>
     </div>
-    <div class="card d-flex flex-fill border-bottom-0" style="font-size: 1rem !important; overflow-y:auto;     overflow-y: auto;
+    <div class="card d-flex flex-fill border-0" style="font-size: 1rem !important; overflow-y:auto;     overflow-y: auto;
     border-bottom-right-radius: 0;
     border-bottom-left-radius: 0;">
         <div class="card-body border-0">
@@ -183,7 +183,6 @@
     </div>
     <ng-container
         *ngIf="hsCompositionsCatalogueService.matchedRecords !== 0 && !hsCompositionsCatalogueService.dataLoading">
-        <hs-pager class="sticky-bottom bg-white border border-top-0"
-            [pagerService]="hsCompositionsCatalogueService"></hs-pager>
+        <hs-pager class="sticky-bottom bg-white border-0" [pagerService]="hsCompositionsCatalogueService"></hs-pager>
     </ng-container>
 </div>

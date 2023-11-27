@@ -1,6 +1,7 @@
 <div class="card panel-default hs-main-panel hs-layermanager-card" [hidden]="(isVisible$ | async) === false">
     <hs-panel-header name="layermanager" [panelTabs]="'LM'">
         <button mainButton class="btn btn-sm btn-outline-secondary border-0 align-items-center d-flex gap-2"
+            [class.text-bg-secondary]="physicalLayerListEnabled"
             (click)="physicalLayerListEnabled = !physicalLayerListEnabled" [title]="'LAYERMANAGER.enablePhysicalLayerList' |
             translateHs"> {{'COMMON.reorder' | translateHs}}
             <i class="glyphicon icon-layerorder"></i>
