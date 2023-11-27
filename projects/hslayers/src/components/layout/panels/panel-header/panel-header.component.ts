@@ -56,6 +56,14 @@ export function toArray(panels: string) {
         right: 0;
         transform: translateY(50%);
       }
+
+      @media screen and (max-width: 767px) {
+        .extra-content {
+          padding: 0 1rem 0 1rem;
+          justify-content: space-between;
+          gap: 1rem;
+        }
+      }
     `,
   ],
 })
