@@ -18,7 +18,7 @@ import {HsFiltersComponent} from './filters/filters.component';
 import {HsIconSymbolizerComponent} from './symbolizers/icon-symbolizer/icon-symbolizer.component';
 import {HsLineSymbolizerComponent} from './symbolizers/line-symbolizer/line-symbolizer.component';
 import {HsMarkSymbolizerComponent} from './symbolizers/mark-symbolizer/mark-symbolizer.component';
-import {HsPanelHeaderComponent} from '../layout/public-api';
+import {HsPanelHeaderComponent} from '../layout/panels/panel-header/panel-header.component';
 import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
 import {HsRuleComponent} from './rule/rule.component';
 import {HsRuleListItemComponent} from './rule/rule-list-item/rule-list-item.component';
