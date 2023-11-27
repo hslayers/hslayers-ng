@@ -18,7 +18,6 @@ import {HsConfigMock} from '../../config.service.mock';
 import {HsDialogContainerService} from '../layout/dialogs/dialog-container.service';
 import {HsEndpoint} from '../../common/endpoints/endpoint.interface';
 import {HsEventBusService} from '../core/event-bus.service';
-import {HsLanguageModule} from '../language/language.module';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsLaymanService} from './layman.service';
 import {HsLayoutService} from '../layout/layout.service';
@@ -31,6 +30,7 @@ import {HsSaveMapManagerService} from './save-map-manager.service';
 import {HsSaveMapManagerServiceMock} from './save-map-manager.service.mock';
 import {HsUtilsService} from '../utils/utils.service';
 import {HsUtilsServiceMock} from '../utils/utils.service.mock';
+import {TranslateCustomPipe} from '../language/translate-custom.pipe';
 import {
   getLayerName,
   getLaymanFriendlyLayerName,
@@ -85,7 +85,7 @@ describe('HsSaveMap', () => {
         FormsModule,
         HttpClientTestingModule,
         HttpClientTestingModule,
-        HsLanguageModule,
+        TranslateCustomPipe,
       ],
       declarations: [HsSaveMapComponent],
       providers: [

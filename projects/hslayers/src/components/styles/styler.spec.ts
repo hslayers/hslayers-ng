@@ -18,7 +18,6 @@ import {HsConfigMock} from '../../config.service.mock';
 import {HsDownloadModule} from '../../common/download/download.module';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsEventBusServiceMock} from '../core/event-bus.service.mock';
-import {HsLanguageModule} from '../language/language.module';
 import {HsLayerUtilsService} from './../utils/layer-utils.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsLayoutServiceMock} from '../layout/layout.service.mock';
@@ -31,6 +30,7 @@ import {HsStylerComponent} from './styler.component';
 import {HsStylerService} from './styler.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {HsUtilsServiceMock} from '../utils/utils.service.mock';
+import {TranslateCustomPipe} from '../language/translate-custom.pipe';
 
 class emptyMock {
   constructor() {}
@@ -85,7 +85,7 @@ describe('HsStyler', () => {
       imports: [
         FormsModule,
         HttpClientTestingModule,
-        HsLanguageModule,
+        TranslateCustomPipe,
         HsDownloadModule,
       ],
       declarations: [HsStylerComponent],

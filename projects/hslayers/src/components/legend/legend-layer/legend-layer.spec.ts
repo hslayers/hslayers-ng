@@ -16,7 +16,6 @@ import {Vector as VectorSource} from 'ol/source';
 
 import {HsConfig} from '../../../config.service';
 import {HsConfigMock} from '../../../config.service.mock';
-import {HsLanguageModule} from '../../language/language.module';
 import {HsLayerUtilsService} from '../../utils/layer-utils.service';
 import {HsLayoutService} from '../../layout/layout.service';
 import {HsLayoutServiceMock} from '../../layout/layout.service.mock';
@@ -31,6 +30,7 @@ import {HsPanelHelpersModule} from '../../layout/panels/panel-helpers.module';
 import {HsUiExtensionsModule} from '../../../common/widgets/ui-extensions.module';
 import {HsUtilsService} from '../../utils/utils.service';
 import {HsUtilsServiceMock} from '../../utils/utils.service.mock';
+import {TranslateCustomPipe} from '../../language/translate-custom.pipe';
 import {getCluster, setCluster} from '../../../common/layer-extensions';
 import {mockLayerUtilsService} from '../../utils/layer-utils.service.mock';
 
@@ -56,9 +56,9 @@ describe('HsLegendLayerComponent', () => {
       imports: [
         HsPanelHelpersModule,
         HsUiExtensionsModule,
-        HsLanguageModule,
         HttpClientTestingModule,
         FormsModule,
+        TranslateCustomPipe,
       ],
       declarations: [
         HsLegendComponent,

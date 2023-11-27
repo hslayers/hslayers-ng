@@ -33,6 +33,7 @@ import {HsQueryBaseService} from '../../query/query-base.service';
 import {HsQueryVectorService} from '../../query/query-vector.service';
 import {HsUtilsService} from '../../utils/utils.service';
 import {HsUtilsServiceMock} from '../../utils/utils.service.mock';
+import {TranslateCustomPipe} from '../../language/translate-custom.pipe';
 import {mockLayerUtilsService} from '../../utils/layer-utils.service.mock';
 class emptyMock {
   constructor() {}
@@ -89,7 +90,7 @@ describe('HsDrawPanel', () => {
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
       imports: [
         FormsModule,
-        HsLanguageModule,
+        TranslateCustomPipe,
         NgbDropdownModule,
         HttpClientTestingModule,
       ],

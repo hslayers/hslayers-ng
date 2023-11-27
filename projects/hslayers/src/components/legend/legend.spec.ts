@@ -17,7 +17,6 @@ import {TileWMS} from 'ol/source';
 
 import {HsConfig} from '../../config.service';
 import {HsConfigMock} from '../../config.service.mock';
-import {HsLanguageModule} from '../language/language.module';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsLayoutServiceMock} from '../layout/layout.service.mock';
@@ -27,10 +26,12 @@ import {HsLegendLayerStaticComponent} from './legend-layer-static/legend-layer-s
 import {HsLegendLayerVectorComponent} from './legend-layer-vector/legend-layer-vector.component';
 import {HsMapService} from '../map/map.service';
 import {HsMapServiceMock} from '../map/map.service.mock';
+import {HsPanelHeaderComponent} from '../layout/panels/panel-header/panel-header.component';
 import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
 import {HsUiExtensionsModule} from '../../common/widgets/ui-extensions.module';
 import {HsUtilsService} from '../utils/utils.service';
 import {HsUtilsServiceMock} from '../utils/utils.service.mock';
+import {TranslateCustomPipe} from '../language/translate-custom.pipe';
 import {mockLayerUtilsService} from '../utils/layer-utils.service.mock';
 
 const layerUtilsMock = mockLayerUtilsService();
@@ -53,8 +54,9 @@ describe('HsLegendComponent', () => {
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
       imports: [
         HsPanelHelpersModule,
+        HsPanelHeaderComponent,
         HsUiExtensionsModule,
-        HsLanguageModule,
+        TranslateCustomPipe,
         HttpClientTestingModule,
         FormsModule,
       ],

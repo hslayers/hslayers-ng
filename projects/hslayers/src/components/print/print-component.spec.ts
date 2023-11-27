@@ -11,9 +11,9 @@ import {HsConfig} from '../../config.service';
 import {HsConfigMock} from '../../config.service.mock';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsEventBusServiceMock} from '../core/event-bus.service.mock';
-import {HsLanguageModule} from '../language/language.module';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsLayoutServiceMock} from '../layout/layout.service.mock';
+import {HsPanelHeaderComponent} from '../layout/panels/panel-header/panel-header.component';
 import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
 import {HsPrintComponent} from './print.component';
 import {HsPrintImprintStylerComponent} from './imprint-styler/imprint-styler.component';
@@ -27,6 +27,7 @@ import {HsPrintTextStylerComponent} from './text-styler/text-styler.component';
 import {HsSidebarService} from '../sidebar/sidebar.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {HsUtilsServiceMock} from '../utils/utils.service.mock';
+import {TranslateCustomPipe} from '../language/translate-custom.pipe';
 import {mockHsPrintScaleService} from './mocks/print-scale.service.mock';
 import {mockHsPrintService} from './mocks/print.service.mock';
 
@@ -48,7 +49,8 @@ describe('HsPrintComponent', () => {
         CommonModule,
         FormsModule,
         HsPanelHelpersModule,
-        HsLanguageModule,
+        HsPanelHeaderComponent,
+        TranslateCustomPipe,
         ColorSketchModule,
         NgbDropdownModule,
         HttpClientTestingModule,
