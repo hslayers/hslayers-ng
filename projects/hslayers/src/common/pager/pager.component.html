@@ -1,4 +1,4 @@
-<div class="card-footer" *ngIf="resultsVisible()"> <!-- TODO: Remove function call from template -->
+<div class="card-footer bg-white" *ngIf="resultsVisible()"> <!-- TODO: Remove function call from template -->
   <ul class="pagination d-flex justify-content-center m-1 align-items-center">
     <li class="page-item">
       <a class="page-link" (click)="getPreviousRecords()" [ngClass]="{'disabled': pagerService.listStart === 0 }"><span
