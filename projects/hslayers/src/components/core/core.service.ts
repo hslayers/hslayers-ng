@@ -6,8 +6,8 @@ import {HsMapService} from '../map/map.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {Injectable} from '@angular/core';
 
-import {CustomTranslationService} from '../language/custom-translate.service';
 import {HsLanguageService} from '../language/language.service';
+import {HsQueryWmsService} from '../query/query-wms.service';
 
 @Injectable({
   providedIn: 'root',
@@ -21,6 +21,10 @@ export class HsCoreService {
 
   constructor(
     private hsLanguageService: HsLanguageService,
+    /**
+     * Just to init a service, keep
+     */
+    private hsQueryWmsService: HsQueryWmsService,
     public HsMapService: HsMapService,
     public hsConfig: HsConfig,
     public HsLayoutService: HsLayoutService,
