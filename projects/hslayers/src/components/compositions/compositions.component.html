@@ -2,7 +2,7 @@
     [hidden]="(isVisible$ | async) === false" *ngIf="{layman: hsCommonLaymanService.layman$ | async } as ctx">
     <div class="hs-compositions-header">
         <hs-panel-header name="composition_browser" [panelTabs]="'COMPOSITIONS'">
-            <button mainButton class="btn btn-sm btn-outline-secondary border-0 align-items-center d-flex gap-2"
+            <button mainButton class="btn btn-sm btn-outline-primary border-0 align-items-center d-flex gap-2"
                 (click)="reload()"> {{'COMMON.reload' | translateHs}}
                 <i class="glyphicon icon-fatredo"></i>
             </button>
@@ -163,7 +163,7 @@
         <div class="card-body border-0">
             <ul class="list-group">
                 <li *ngFor="let composition of hsCompositionsCatalogueService.compositionEntries"
-                    [hidden]="hsCompositionsCatalogueService.dataLoading" class="list-group-item clearfix"
+                    [hidden]="hsCompositionsCatalogueService.dataLoading" class="list-group-item border-0 border-bottom"
                     style="cursor: pointer;" [ngClass]="{'hs-endpoint-item-active' : composition.highlighted}"
                     (mouseover)="highlightComposition(composition, true)"
                     (mouseleave)="highlightComposition(composition, false)" (click)="compositionClicked(composition)"
@@ -171,12 +171,12 @@
                     <hs-compositions-list-item [composition]="composition" [selectedCompId]="selectedCompId">
                     </hs-compositions-list-item>
                 </li>
-                <li class="list-group-item text-primary text-center py-2"
+                <li class="list-group-item text-primary text-center py-2 border-0" style="font-size: 1.25rem;"
                     *ngIf="hsCompositionsCatalogueService.dataLoading"><span
-                        class="hs-loader hs-loader-dark pe-2"></span>&emsp;{{'COMMON.loading' |
+                        class="hs-loader hs-loader-dark pe-2 border-0"></span>&emsp;{{'COMMON.loading' |
                     translateHs }}</li>
                 <li [hidden]="hsCompositionsCatalogueService.compositionEntries.length > 0 || hsCompositionsCatalogueService.dataLoading"
-                    class="list-group-item">
+                    class="list-group-item text-center">
                     {{'DATASOURCE_SELECTOR.noResults' | translateHs }}</li>
             </ul>
         </div>

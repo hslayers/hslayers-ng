@@ -116,12 +116,12 @@
             <ul class="list-group">
                 <li [hidden]="hsAddDataCatalogueService.dataLoading" style="cursor: pointer;"
                     *ngFor="let layer of hsAddDataCatalogueService.catalogEntries; trackBy:( 'id' | trackByProperty )"
-                    class="list-group-item" [ngClass]="{ 'hs-endpoint-item-active': layer.highlighted}"
-                    (click)="layerSelected(layer)" (mouseover)="highlightLayer(layer, true)"
-                    (mouseleave)="highlightLayer(layer, false)">
+                    class="list-group-item border-0 border-bottom"
+                    [ngClass]="{ 'hs-endpoint-item-active': layer.highlighted}" (click)="layerSelected(layer)"
+                    (mouseover)="highlightLayer(layer, true)" (mouseleave)="highlightLayer(layer, false)">
                     <hs-catalogue-list-item [layer]="layer" class="w-100"></hs-catalogue-list-item>
                 </li>
-                <li class='list-group-item text-primary text-center py-2'
+                <li class='list-group-item text-primary text-center py-2 border-0' style="font-size: 1.25rem;"
                     [hidden]="!hsAddDataCatalogueService.dataLoading"><span
                         class="pe-2 hs-loader hs-loader-dark"></span>&emsp;{{'ADDDATA.CATALOGUE.loading' | translateHs
                     }}</li>
