@@ -19,6 +19,7 @@ import {HsWmsGetCapabilitiesService} from '../../../common/get-capabilities/wms-
 import {
   getCluster,
   getInlineLegend,
+  getWmsOriginalExtent,
   setCluster,
 } from '../../../common/layer-extensions';
 
@@ -63,6 +64,8 @@ export class HsLayerEditorService {
       extent = layer.getExtent();
     } else if ((<any>layer.getSource()).getExtent != undefined) {
       extent = (<any>layer.getSource()).getExtent();
+    } else if (getWmsOriginalExtent(layer)) {
+      extent = getWmsOriginalExtent(layer);
     }
     if (extent) {
       this.fitIfExtentSet(extent, layer);
@@ -133,7 +136,10 @@ export class HsLayerEditorService {
    */
   fitIfExtentSet(extent: number[], layer: Layer<Source>): void {
     if (extent !== null) {
-      layer.setExtent(extent);
+      //no Extent + originalExtent = ignoring extent
+      if (!(!layer.getExtent() && getWmsOriginalExtent(layer))) {
+        layer.setExtent(extent);
+      }
       this.HsMapService.fitExtent(extent);
     }
   }

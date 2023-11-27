@@ -25,6 +25,7 @@ export class HsExtentWidgetComponent extends HsLayerEditorWidgetBaseComponent {
     super(hsLayerSelectorService);
     this.isEnabled = this.layerDescriptor.pipe(
       map((l) => {
+        console.log(l);
         const originalExtent = getWmsOriginalExtent(l.layer);
         const isAllowed =
           originalExtent ?? this.hsLayerUtilsService.isLayerWMS(l.layer);
