@@ -1,4 +1,4 @@
-<div class="card hs-main-panel" *ngIf="{layman: hsCommonLaymanService.layman$ | async } as ctx">
+<div class="card hs-main-panel h-100" *ngIf="{layman: hsCommonLaymanService.layman$ | async } as ctx">
     <div class="hs-add-data-catalogue-header">
         <div class="mt-3 mx-3 ps-1 d-flex justify-content-between">
             <div class="input-group w-50">
@@ -107,12 +107,8 @@
             </div>
         </div>
     </div>
-    <div class="card d-flex border-0" style="font-size: 1rem !important;">
+    <div class="card d-flex border-0 flex-fill" style="font-size: 1rem !important; overflow-y: auto;">
         <div class="card-body">
-            <!-- <div *ngIf="endpoint.type == 'micka'">
-                    <hs-micka-filters micka-dataset-config="{url: endpoint.url}"></hs-micka-filters>
-                </div>
-            -->
             <ul class="list-group">
                 <li [hidden]="hsAddDataCatalogueService.dataLoading" style="cursor: pointer;"
                     *ngFor="let layer of hsAddDataCatalogueService.catalogEntries; trackBy:( 'id' | trackByProperty )"
