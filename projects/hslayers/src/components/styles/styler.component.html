@@ -16,10 +16,9 @@
       </a>
     </extra-buttons>
   </hs-panel-header>
-  <div class="alert align-items-center d-flex justify-content-between me-2 mx-1 my-2 p-2 rounded-0 text-bg-primary">
+  <div class="alert align-items-center d-flex justify-content-between me-2 mx-1 my-2 p-2 rounded-0 bg-primary-subtle">
     {{hsStylerService.layerTitle}}
-    <button type="button" class="btn-close p-0" style="filter: invert(1);" aria-label="Close"
-      (click)="close()"></button>
+    <button type="button" class="btn-close p-0" aria-label="Close" (click)="close()"></button>
   </div>
   <div class="card-body p-1 pe-2 pt-2">
     <div class="form-group m-3" *ngIf="uploaderVisible">
