@@ -35,6 +35,7 @@ export function toArray(panels: string) {
         border-bottom: 1px solid #dee2e6;
         display: block;
         height: calc(48px + 0.25rem);
+        min-height: calc(48px + 0.25rem);
         position: relative;
         z-index: 10;
       }
