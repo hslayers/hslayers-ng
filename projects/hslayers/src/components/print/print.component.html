@@ -1,6 +1,6 @@
 <div class="card hs-main-panel" [hidden]="(isVisible$ | async) === false">
     <hs-panel-header name="print" [panelTabs]="'PRINT'">
-        <button mainButton class="btn btn-sm btn-outline-secondary border-0" (click)="setToDefault()"
+        <button mainButton class="btn btn-sm btn-outline-primary border-0" (click)="setToDefault()"
             [title]="'COMMON.resetToDefault' | translateHs "> {{'COMMON.reset' | translateHs}}
             <i class="glyphicon icon-fatredo"></i>
         </button>
