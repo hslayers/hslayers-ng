@@ -10,14 +10,14 @@ import {
   Output,
   ViewChild,
 } from '@angular/core';
-
-import {HsLanguageService} from '../../../language/language.service';
-import {HsLayoutService} from '../../layout.service';
 import {NgClass, NgForOf} from '@angular/common';
 import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
 import {Subject} from 'rxjs';
-import {TranslateCustomPipe} from '../../../language/translate-custom.pipe';
 import {takeUntil, tap} from 'rxjs/operators';
+
+import {HsLanguageService} from '../../../language/language.service';
+import {HsLayoutService} from '../../layout.service';
+import {TranslateCustomPipe} from '../../../language/translate-custom.pipe';
 
 export function toArray(panels: string) {
   return panels.split(',');
@@ -76,7 +76,7 @@ export class HsPanelHeaderComponent implements OnDestroy, OnInit {
   @Input() name: string;
   /**
    * Part of translation string which exists on 'translationModule' module
-   * eg. COMPOSITIONS -> which will used for translation as as 'translationModule'.COMPOSITIONS
+   * eg. COMPOSITIONS --\> which will be used for translation as 'translationModule'.COMPOSITIONS
    */
   @Input({transform: toArray}) panelTabs: string[];
 
