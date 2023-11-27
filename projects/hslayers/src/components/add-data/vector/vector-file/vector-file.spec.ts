@@ -20,7 +20,6 @@ import {HsCommonLaymanService} from '../../../../common/layman/layman.service';
 import {HsConfig} from '../../../../config.service';
 import {HsConfigMock} from '../../../../config.service.mock';
 import {HsEndpoint} from '../../../../common/endpoints/endpoint.interface';
-import {HsLanguageModule} from '../../../language/language.module';
 import {HsLayerUtilsService} from '../../../utils/layer-utils.service';
 import {HsLayoutService} from '../../../layout/layout.service';
 import {HsLayoutServiceMock} from '../../../layout/layout.service.mock';
@@ -29,6 +28,7 @@ import {HsMapServiceMock} from '../../../map/map.service.mock';
 import {HsUploadComponent} from '../../../../common/upload/upload.component';
 import {HsUtilsService} from '../../../utils/utils.service';
 import {HsUtilsServiceMock} from '../../../utils/utils.service.mock';
+import {TranslateCustomPipe} from '../../../language/translate-custom.pipe';
 import {getTitle} from '../../../../common/layer-extensions';
 import {mockLayerUtilsService} from '../../../utils/layer-utils.service.mock';
 
@@ -69,8 +69,8 @@ describe('add-layers-vector', () => {
         CommonModule,
         HttpClientTestingModule,
         FormsModule,
-        HsLanguageModule,
         NgbDropdownModule,
+        TranslateCustomPipe,
       ],
       declarations: [HsAddDataVectorFileComponent, HsUploadComponent],
       providers: [

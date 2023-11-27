@@ -28,12 +28,12 @@ import {HsCompositionsMickaService} from './endpoints/compositions-micka.service
 import {HsCompositionsService} from './compositions.service';
 import {HsConfig} from '../../config.service';
 import {HsConfigMock} from '../../config.service.mock';
-import {HsLanguageModule} from '../language/language.module';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsLayoutServiceMock} from '../layout/layout.service.mock';
 import {HsMapService} from '../map/map.service';
 import {HsMapServiceMock} from '../map/map.service.mock';
+import {HsPanelHeaderComponent} from '../layout/panels/panel-header/panel-header.component';
 import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
 import {HsSaveMapService} from '../save-map/save-map.service';
 import {HsSaveMapServiceMock} from '../save-map/save-map.service.mock';
@@ -41,6 +41,7 @@ import {HsStylerModule} from '../styles/styles.module';
 import {HsStylerService} from '../styles/styler.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {HsUtilsServiceMock} from '../utils/utils.service.mock';
+import {TranslateCustomPipe} from '../language/translate-custom.pipe';
 import {compositionJson} from '../../../test/data/composition';
 import {compositionsJson} from '../../../test/data/compositions';
 import {getTitle} from '../../common/layer-extensions';
@@ -142,9 +143,10 @@ describe('compositions', () => {
         HttpClientTestingModule,
         HsPanelHelpersModule,
         FormsModule,
-        HsLanguageModule,
+        TranslateCustomPipe,
         HsStylerModule,
         NgbDropdownModule,
+        HsPanelHeaderComponent,
       ],
       declarations: [HsCompositionsComponent],
       providers: [

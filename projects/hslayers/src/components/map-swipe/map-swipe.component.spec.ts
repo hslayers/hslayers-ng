@@ -6,17 +6,18 @@ import {HttpClientTestingModule} from '@angular/common/http/testing';
 
 import {HsConfig} from '../../config.service';
 import {HsConfigMock} from '../../config.service.mock';
-import {HsLanguageModule} from '../language/language.module';
 import {HsLayerShiftingService} from '../../common/layer-shifting/layer-shifting.service';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsLayoutServiceMock} from '../layout/layout.service.mock';
 import {HsMapSwipeComponent} from './map-swipe.component';
 import {HsMapSwipeService} from './map-swipe.service';
+import {HsPanelHeaderComponent} from '../layout/panels/panel-header/panel-header.component';
 import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
 import {HsSidebarService} from '../sidebar/sidebar.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {HsUtilsServiceMock} from '../utils/utils.service.mock';
+import {TranslateCustomPipe} from '../language/translate-custom.pipe';
 import {mockHsLayerShiftingService} from '../../common/layer-shifting/layer-shifting.service.mock';
 import {mockLayerUtilsService} from '../utils/layer-utils.service.mock';
 
@@ -29,7 +30,8 @@ describe('HsMapSwipeComponent', () => {
       declarations: [HsMapSwipeComponent],
       imports: [
         HsPanelHelpersModule,
-        HsLanguageModule,
+        HsPanelHeaderComponent,
+        TranslateCustomPipe,
         HttpClientTestingModule,
         FormsModule,
         DragDropModule,

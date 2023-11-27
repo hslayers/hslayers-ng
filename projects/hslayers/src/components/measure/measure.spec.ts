@@ -9,7 +9,6 @@ import {HttpClientTestingModule} from '@angular/common/http/testing';
 
 import {HsConfig} from './../../config.service';
 import {HsConfigMock} from '../../config.service.mock';
-import {HsLanguageModule} from '../language/language.module';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsLayoutServiceMock} from '../layout/layout.service.mock';
 import {HsMapService} from '../map/map.service';
@@ -18,6 +17,7 @@ import {HsMeasureComponent} from './measure.component';
 import {HsMeasureService} from './measure.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {HsUtilsServiceMock} from '../utils/utils.service.mock';
+import {TranslateCustomPipe} from '../language/translate-custom.pipe';
 
 describe('HsMeasure', () => {
   beforeAll(() => {
@@ -38,7 +38,7 @@ describe('HsMeasure', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      imports: [FormsModule, HsLanguageModule, HttpClientTestingModule],
+      imports: [FormsModule, TranslateCustomPipe, HttpClientTestingModule],
       declarations: [HsMeasureComponent],
       providers: [
         HsMeasureService,
