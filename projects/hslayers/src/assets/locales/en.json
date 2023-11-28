@@ -313,7 +313,8 @@
     "reorder": "Reorder",
     "on": "on",
     "off": "off",
-    "Tile": "Tile"
+    "Tile": "Tile",
+    "done": "Done"
   },
   "COMPOSITIONS": {
     "addByAddress": "Add composition by address",
