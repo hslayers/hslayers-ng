@@ -18,8 +18,7 @@ import {accessRightsModel} from '../../../components/add-data/common/access-righ
   templateUrl: './set-permissions.component.html',
 })
 export class HsSetPermissionsDialogComponent
-  implements HsDialogComponent, OnInit
-{
+  implements HsDialogComponent, OnInit {
   dialogItem: HsDialogItem;
   viewRef: ViewRef;
   currentAccessRights: accessRightsModel = {
@@ -31,6 +30,7 @@ export class HsSetPermissionsDialogComponent
     selectedRecord: HsAddDataLayerDescriptor;
   };
   endpoint: HsEndpoint;
+  state: 'idle' | 'loading' | 'success' | 'error' = 'idle';
 
   constructor(
     public hsCommonLaymanService: HsCommonLaymanService,
@@ -85,6 +85,7 @@ export class HsSetPermissionsDialogComponent
    */
   async savePermissions(): Promise<void> {
     let response: PostPatchLayerResponse | any;
+    this.state = 'loading';
     switch (this.data.recordType) {
       case 'layer':
         const layerDesc: UpsertLayerObject = {
@@ -99,10 +100,11 @@ export class HsSetPermissionsDialogComponent
           layerDesc,
         );
         if (response?.error) {
+          this.state = 'error';
           return;
         }
+        this.state = 'success';
         this.hsAddDataCatalogueService.reloadData();
-        this.close();
         break;
       case 'composition':
         response = await this.hsLaymanService.updateCompositionAccessRights(
@@ -111,12 +113,16 @@ export class HsSetPermissionsDialogComponent
           this.currentAccessRights,
         );
         if (response?.error) {
+          this.state = 'error';
           return;
         }
+        this.state = 'success';
         this.hsCompositionsCatalogueService.loadFilteredCompositions();
-        this.close();
         break;
       default:
     }
+    setTimeout(() => {
+      this.state = 'idle';
+    }, 3500);
   }
 }

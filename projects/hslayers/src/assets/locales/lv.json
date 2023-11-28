@@ -292,7 +292,8 @@
     "addToMap": "Pievienot kartei",
     "reorder": "Pārkārtot",
     "off": "izslēgts",
-    "on": "ieslēgts"
+    "on": "ieslēgts",
+    "done": "Gatavs"
   },
   "COMPOSITIONS": {
     "addByAddress": "Pievienot kompozīciju pēc adreses",

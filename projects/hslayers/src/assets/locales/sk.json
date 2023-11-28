@@ -313,7 +313,8 @@
     "reorder": "Usporiadať",
     "on": "zapnuté",
     "off": "vypnuté",
-    "Tile": "Dlaždica"
+    "Tile": "Dlaždica",
+    "done": "Hotovo"
   },
   "COMPOSITIONS": {
     "addByAddress": "Pridať kompozíciu z adresy",
