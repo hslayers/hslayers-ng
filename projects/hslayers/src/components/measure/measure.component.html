@@ -2,7 +2,24 @@
   <hs-panel-header name="measure" [panelTabs]="'MEASURE'">
   </hs-panel-header>
   <div class="card-body p-2">
-    <div class="btn-group btn-group-toggle" style="margin-bottom: 10px">
+    <div class="mb-2">
+      {{'MEASURE.multipleShapes' | translateHs }}
+      <div class="btn-group btn-group-toggle">
+        <label class="btn btn-sm btn-secondary" [ngClass]="{'active': hsMeasureService.data.multipleShapeMode === true}"
+          for="hs-measure-multiple-true">
+          {{'COMMON.on' | translateHs | uppercase}}
+          <input type="radio" name="multiple" id="hs-measure-multiple-true" [value]="true"
+            [(ngModel)]="hsMeasureService.data.multipleShapeMode">
+        </label>
+        <label class="btn btn-sm btn-secondary"
+          [ngClass]="{'active': hsMeasureService.data.multipleShapeMode === false}" for="hs-measure-multiple-false">
+          {{'COMMON.off' | translateHs | uppercase}}
+          <input type="radio" name="multiple" id="hs-measure-multiple-false" [value]="false"
+            [(ngModel)]="hsMeasureService.data.multipleShapeMode">
+        </label>
+      </div>
+    </div>
+    <div class="btn-group btn-group-toggle mb-2">
       <label class="btn btn-secondary" [ngClass]="{'active': type === 'distance'}" for="hs-measure-distance">
         {{'COMMON.distance' | translateHs }}
         <input type="radio" name="type" id="hs-measure-distance" value="distance" [(ngModel)]="type"
@@ -14,7 +31,7 @@
           (ngModelChange)="changeMeasureParams()">
       </label>
     </div>
-    <button class="btn btn-secondary" style="float:right" (click)="clearAll()">{{'COMMON.clear' | translateHs
+    <button class="btn btn-secondary float-end" (click)="clearAll()">{{'COMMON.clear' | translateHs
       }}</button>
     <ul class="list-group">
       <li *ngFor="let measurement of hsMeasureService.data.measurements" class="list-group-item">
