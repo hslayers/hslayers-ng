@@ -1053,7 +1053,13 @@ export class HsMapService {
       }
       const laymanEp = this.hsCommonLaymanService.layman;
       if (laymanEp && src.startsWith(laymanEp.url)) {
-        this.laymanWmsLoadingFunction(image, src);
+        this.laymanWmsLoadingFunction(image, src)
+          .then((_) => {
+            resolve(image);
+          })
+          .catch((e) => {
+            resolve(image);
+          });
         return;
       }
       (image.getImage() as HTMLImageElement).onload = function () {
@@ -1075,23 +1081,31 @@ export class HsMapService {
 
   /**
    * Create a loader function for Layman WMS layers specifically
-   * @public
    * @param image - ol/Image, the image requested via WMS source
    * @param src - Original (unproxified) source URL
    */
-  laymanWmsLoadingFunction(image: ImageWrapper | ImageTile, src: string): void {
-    const xhr = new XMLHttpRequest();
-    xhr.withCredentials = true;
-    xhr.responseType = 'arraybuffer';
-    xhr.open('GET', src);
-    xhr.addEventListener('loadend', function (evt) {
-      const arrayBufferView = new Uint8Array(this.response);
-      const blob = new Blob([arrayBufferView], {type: 'image/png'});
-      const urlCreator = window.URL || window.webkitURL;
-      const imageUrl = urlCreator.createObjectURL(blob);
-      (image.getImage() as HTMLImageElement).src = imageUrl;
+  laymanWmsLoadingFunction(
+    image: ImageWrapper | ImageTile,
+    src: string,
+  ): Promise<any> {
+    return new Promise((resolve, reject) => {
+      const xhr = new XMLHttpRequest();
+      xhr.withCredentials = true;
+      xhr.responseType = 'arraybuffer';
+      xhr.open('GET', src);
+      xhr.addEventListener('loadend', function (evt) {
+        const arrayBufferView = new Uint8Array(this.response);
+        const blob = new Blob([arrayBufferView], {type: 'image/png'});
+        const urlCreator = window.URL || window.webkitURL;
+        const imageUrl = urlCreator.createObjectURL(blob);
+        (image.getImage() as HTMLImageElement).src = imageUrl;
+        resolve(image);
+      });
+      xhr.addEventListener('error', () => {
+        reject(new Error('Failed to load image. Network error.'));
+      });
+      xhr.send();
     });
-    xhr.send();
   }
 
   /**
