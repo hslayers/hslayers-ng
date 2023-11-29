@@ -37,4 +37,5 @@ export interface HsAddDataLayerDescriptor {
     write: string[];
   };
   wfsWmsStatus?: 'AVAILABLE' | 'PREPARING' | 'NOT_AVAILABLE';
+  useTiles: boolean;
 }

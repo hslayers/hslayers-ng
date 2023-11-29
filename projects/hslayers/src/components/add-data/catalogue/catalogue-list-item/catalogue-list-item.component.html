@@ -53,19 +53,9 @@
                 [href]='hsAddDataCatalogueService.layerDownload(layer.endpoint, layer)' data-toggle="tooltip"
                 [title]="'COMMON.download' | translateHs "><i class="icon-download"></i></a>
         </div>
-        <!-- <div class="p-0" [hidden]='getEndpoint(layer.endpoint).type != "micka" || layerRDF(layer.endpoint, layer) == "#"'>
-            <a class="btn btn-sm btn-secondary" [href]='layerRDF(layer.endpoint, layer)'
-                data-toggle="tooltip" title="GeoDCAT-AP" target="_blank"><i class="icon-share-alt"></i></a>
-        </div> -->
     </div>
 </div>
 <div>
-    <!-- <div class="p-0" [hidden]="!selectTypeToAddLayerVisible || selectedType">
-        <button type="button" class="btn btn-sm btn-danger" (click)="$event.stopPropagation();abortAdd()" data-toggle="tooltip"
-            [title]="'DATASOURCE_SELECTOR.datasourceListItem.abortAdd' | translateHs ">
-            <i class="icon-remove"></i>
-        </button>
-    </div> -->
     <div [hidden]="!loadingInfo" class="list-group-item text-primary text-center py-2">
         <span class="pe-2 hs-loader hs-loader-dark"></span>
         &emsp;{{'ADDDATA.CATALOGUE.loading' | translateHs }}
@@ -73,7 +63,7 @@
     <div class="card bg-light align-items-center"
         [hidden]="!selectTypeToAddLayerVisible || loadingInfo || hsAddDataCatalogueService.selectedLayer?.id !== layer.id">
         <div class="d-flex flex-row justify-content-between align-items-center w-100">
-            <div class="px-3">
+            <div class="px-3 py-2">
                 <span class="btn btn-sm disabled border-0" disabled="true" aria-disabled="true">{{
                     'COMMON.addAs' |
                     translateHs }}&nbsp;</span>
@@ -100,5 +90,4 @@
             </ul>
         </div>
     </div>
-
 </div>

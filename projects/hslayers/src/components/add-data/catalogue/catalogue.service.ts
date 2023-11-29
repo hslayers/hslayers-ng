@@ -440,6 +440,9 @@ export class HsAddDataCatalogueService extends HsAddDataCatalogueParams {
               ? layer.name
               : whatToAdd.name
             : undefined,
+        layerOptions: {
+          useTiles: layer.useTiles ?? true,
+        },
       });
     } else if (whatToAdd.type == 'WFS') {
       if (ds.type == 'micka') {

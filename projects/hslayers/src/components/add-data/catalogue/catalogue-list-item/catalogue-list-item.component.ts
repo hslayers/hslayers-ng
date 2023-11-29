@@ -66,6 +66,12 @@ export class HsCatalogueListItemComponent implements OnInit {
     );
     this.loadingInfo = false;
     if (Array.isArray(availableTypes)) {
+      /**
+       * Add third type allowing user to choose image source type
+       */
+      availableTypes.includes('WMS')
+        ? availableTypes.splice(1, 0, 'WMTS')
+        : availableTypes;
       this.whatToAddTypes = availableTypes;
       this.selectTypeToAddLayerVisible = true;
     } else {
@@ -88,8 +94,11 @@ export class HsCatalogueListItemComponent implements OnInit {
    */
   selectTypeAndAdd(type: string, event: MouseEvent): void {
     event.preventDefault();
-    this.selectedType = type;
-    this.addLayerToMap(this.layer.endpoint, this.layer);
+    this.selectedType = type === 'WMS' || type === 'WMTS' ? 'WMS' : type;
+    this.addLayerToMap(this.layer.endpoint, {
+      ...this.layer,
+      useTiles: type === 'WMTS',
+    });
   }
 
   /**
