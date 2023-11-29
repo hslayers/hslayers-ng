@@ -309,7 +309,9 @@
     "saving": "Saving",
     "asNew": "as new",
     "createdBy": "Created by",
-    "reorder": "Reorder"
+    "reorder": "Reorder",
+    "on": "on",
+    "off": "off"
   },
   "COMPOSITIONS": {
     "addByAddress": "Add composition by address",

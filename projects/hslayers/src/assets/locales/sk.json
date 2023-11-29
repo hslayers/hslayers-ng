@@ -309,7 +309,9 @@
     "asNew": "ako nové",
     "createdBy": "Vytvoril",
     "addToMap": "Pridať do mapy",
-    "reorder": "Usporiadať"
+    "reorder": "Usporiadať",
+    "on": "zapnuté",
+    "off": "vypnuté"
   },
   "COMPOSITIONS": {
     "addByAddress": "Pridať kompozíciu z adresy",
