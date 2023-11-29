@@ -1,6 +1,6 @@
 <div class="card hs-main-panel" [hidden]="(isVisible$ | async) === false">
     <hs-panel-header name="draw" (tabSelected)="componentOptionSelected($event)" [panelTabs]="'draw,edit'">
-        <button mainButton class="btn btn-sm position-absolute top-0" style="right: 0.25rem; cursor:help"
+        <button mainButton class="btn btn-sm" style="cursor: help"
             data-toggle="tooltip" [title]="'DRAW.drawInfo' | translateHs ">
             <i class="icon-question-sign"></i>
         </button>

@@ -22,7 +22,7 @@
             </a>
             <a class="dropdown-item" *ngIf="hsLayerManagerService.data.layers?.length > 0 && !physicalLayerListEnabled"
                 (click)="toggleVisibilityForAll()">
-                <i class="glyphicon" [ngClass]="allLayersVisible ? 'hs-checkmark' : 'hs-uncheckmark'"></i>
+                <i class="glyphicon me-0" [ngClass]="allLayersVisible ? 'hs-checkmark' : 'hs-uncheckmark'"></i>
                 {{'LAYERMANAGER.toggleAllLayerVisibility'|translateHs}}
             </a>
         </extra-buttons>
