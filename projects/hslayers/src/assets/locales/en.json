@@ -3,7 +3,8 @@
     "CATALOGUE": {
       "DESC": {
         "WFS": "Web Feature Service: it adds the layer as a set of vector features. It is more power-consuming, especially with large layers, but it allows to edit features or to display individual feature info.",
-        "WMS": "Web Map Service: it adds the layer as a raster image. The transferred data is usually smaller so it generally loads faster. Yet it does not give you the access to the underlying layer features."
+        "WMS": "Web Map Service: it adds the layer as a raster image. The transferred data is usually smaller so it generally loads faster. Yet it does not give you the access to the underlying layer features.",
+        "WMTS": "Web Map Tile Service - serves raster images simillarliy to WMS . The difference is that tile service serves content divided into 'tile' which are loaded individually - thus being potentially more performant."
       },
       "filterType": "Search within",
       "loading": "Loading data",

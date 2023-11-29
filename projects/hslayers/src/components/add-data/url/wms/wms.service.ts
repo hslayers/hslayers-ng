@@ -83,6 +83,7 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
    */
   async listLayerFromCapabilities(
     wrapper: CapabilitiesResponseWrapper,
+    options?: LayerOptions,
   ): Promise<Layer<Source>[]> {
     if (!wrapper.response && !wrapper.error) {
       return;
@@ -101,7 +102,7 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
           this.data.layers,
           'wms',
         );
-        return this.getLayers(true);
+        return this.getLayers(true, false, options);
       }
     } catch (e) {
       this.hsAddDataCommonService.throwParsingError(e);
@@ -347,8 +348,13 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
   /**
    * Loop through the list of layers and call getLayer.
    * @param checkedOnly - Add all available layers or only checked ones. checkedOnly=false=all
+   * @param layerOptions - Optional layer parameters. Used to parse composition layers
    */
-  getLayers(checkedOnly: boolean, shallow = false): Layer<Source>[] {
+  getLayers(
+    checkedOnly: boolean,
+    shallow?,
+    layerOptions?: LayerOptions,
+  ): Layer<Source>[] {
     if (this.data.layers === undefined) {
       return;
     }
@@ -361,6 +367,7 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
       const newLayer = this.getLayer(
         {},
         {
+          ...layerOptions,
           layerName: this.data.title.replace(/\//g, '&#47;'),
           path: this.hsUtilsService.undefineEmptyString(this.data.folder_name),
           imageFormat: this.data.image_format,
@@ -375,7 +382,7 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
       for (const layer of this.data.layers) {
         this.getLayersRecursively(
           layer,
-          {checkedOnly: checkedOnly, shallow: shallow},
+          {checkedOnly, shallow, layerOptions},
           collection,
         );
       }
@@ -439,7 +446,8 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
       },
       crossOrigin: 'anonymous',
     };
-    const source: ImageWMS | TileWMS = !this.data.use_tiles
+    const USE_TILES = options.useTiles ?? this.data.use_tiles;
+    const source: ImageWMS | TileWMS = !USE_TILES
       ? new ImageWMS(sourceOptions)
       : new TileWMS(sourceOptions);
     const metadata =
@@ -465,10 +473,10 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
       base: this.data.base,
       visible: this.data.visible,
     };
-    const new_layer = !this.data.use_tiles
-      ? new ImageLayer(layerOptions as ImageOptions<ImageSource>)
-      : new Tile(layerOptions as TileOptions<TileSource>);
-    this.hsMapService.proxifyLayerLoader(new_layer, this.data.use_tiles);
+    const new_layer = USE_TILES
+      ? new Tile(layerOptions as TileOptions<TileSource>)
+      : new ImageLayer(layerOptions as ImageOptions<ImageSource>);
+    this.hsMapService.proxifyLayerLoader(new_layer, USE_TILES);
     return new_layer;
   }
 
@@ -524,6 +532,7 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
     if (!options.checkedOnly || layer.checked) {
       collection.push(
         this.getLayer(layer, {
+          ...options.layerOptions,
           layerName: layer.Title.replace(/\//g, '&#47;'),
           path: this.hsUtilsService.undefineEmptyString(this.data.folder_name),
           imageFormat: this.data.image_format,
@@ -539,7 +548,10 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
       for (const sublayer of layer.Layer) {
         this.getLayersRecursively(
           sublayer,
-          {checkedOnly: options.checkedOnly},
+          {
+            checkedOnly: options.checkedOnly,
+            layerOptions: options.layerOptions,
+          },
           collection,
         );
       }

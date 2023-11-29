@@ -3,7 +3,8 @@
     "CATALOGUE": {
       "DESC": {
         "WFS": "Web Feature Service - pievieno slāni kā vektoru grafisko objektu kopumu. Tas ir vairāk resursu patērējošs, it īpaši ar lieliem slāņiem, taču tas ļauj rediģēt objektus vai parādīt atsevišķu informāciju par objektiem",
-        "WMS": "Web Map Service - pievieno slāni kā rastra attēlu. Pārsūtītie dati parasti ir mazāki, tāpēc tie parasti tiek ielādēti ātrāk. Tomēr tas nedod Jums piekļuvi pamata slāņa funkcijām."
+        "WMS": "Web Map Service - pievieno slāni kā rastra attēlu. Pārsūtītie dati parasti ir mazāki, tāpēc tie parasti tiek ielādēti ātrāk. Tomēr tas nedod Jums piekļuvi pamata slāņa funkcijām.",
+        "WMTS": "Web Map Tile Service - apkalpo rastra attēlus līdzīgi kā WMS . Atšķirība ir tāda, ka flīžu pakalpojums apkalpo saturu, kas sadalīts \"flīzēs\", kuras tiek ielādētas atsevišķi - tādējādi tas ir potenciāli jaudīgāks."
       },
       "filterType": "Meklēt pēc",
       "loading": "Notiek ielāde",

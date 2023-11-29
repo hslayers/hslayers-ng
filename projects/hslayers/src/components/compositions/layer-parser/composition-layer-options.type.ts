@@ -18,6 +18,7 @@ export type LayerOptions = {
   opacity?: number;
 
   //WMS
+  useTiles?: boolean;
   base?: boolean;
   imageFormat?: string;
   queryFormat?: string;

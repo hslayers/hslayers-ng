@@ -3,7 +3,8 @@
     "CATALOGUE": {
       "DESC": {
         "WFS": "Web Feature Service - stahovací: slouží pro práci s geografickými daty ve vektorové reprezentaci. Je výkonostne naročnejší, především při rozsáhlejších vrstvách, umožňuje však editaci, či zobrazení individuálních informacií ke každému prvku zvlášť.",
-        "WMS": "Web Map Service - prohlížecí: data nahraje v podobě rastru. Přenášená data jsou obvykle menší co má za následek rychlejší načítání, no na druhou stranu ich není možné upravovat."
+        "WMS": "Web Map Service - prohlížecí: data nahraje v podobě rastru. Přenášená data jsou obvykle menší co má za následek rychlejší načítání, no na druhou stranu ich není možné upravovat.",
+        "WMTS": "Web Map Tile Service - slouží pro rastrové obrázky podobně jako WMS . Rozdíl je v tom, že dlaždicová služba slouží pro obsah rozdělený do \"dlaždic\", které se načítají jednotlivě - jsou tedy potenciálně výkonnější."
       },
       "filterType": "Typ vyhledávání",
       "loading": "Načítání dat",
