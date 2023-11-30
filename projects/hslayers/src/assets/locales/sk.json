@@ -312,7 +312,8 @@
     "addToMap": "Pridať do mapy",
     "reorder": "Usporiadať",
     "on": "zapnuté",
-    "off": "vypnuté"
+    "off": "vypnuté",
+    "Tile": "Dlaždica"
   },
   "COMPOSITIONS": {
     "addByAddress": "Pridať kompozíciu z adresy",
@@ -603,7 +604,10 @@
       "max": "Max",
       "min": "Min",
       "ignoreExtent": "Ignorovať rozsah vrstvy",
-      "ignoreExtentInfo": "Zobraziť prvky alebo ich časti skryté mimo pôvodného rozsahu."
+      "ignoreExtentInfo": "Zobraziť prvky alebo ich časti skryté mimo pôvodného rozsahu.",
+      "changeLayerType": "Naozaj chcete zmeniť typ vrstvy?",
+      "layerTypeChangeNote": "Zmena môže ovplyvniť rýchlosť načítania",
+      "confirmLayerTypeChange": "Potvrďte zmenu typu vrstvy"
     },
     "layerList": {
       "layerIsQueryable": "Táto vrstva je dotazovateľná",

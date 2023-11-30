@@ -312,7 +312,8 @@
     "createdBy": "Created by",
     "reorder": "Reorder",
     "on": "on",
-    "off": "off"
+    "off": "off",
+    "Tile": "Tile"
   },
   "COMPOSITIONS": {
     "addByAddress": "Add composition by address",
@@ -603,7 +604,10 @@
       "min": "Min",
       "max": "Max",
       "ignoreExtent": "Ignore layer extent",
-      "ignoreExtentInfo": "Show features or their parts hidden outside of the initial extent."
+      "ignoreExtentInfo": "Show features or their parts hidden outside of the initial extent.",
+      "changeLayerType": "Do you really want to change layer type?",
+      "layerTypeChangeNote": "Change might affect loading performance",
+      "confirmLayerTypeChange": "Confirm layer type change"
     },
     "layerList": {
       "layerIsQueryable": "This layer is queryable",
