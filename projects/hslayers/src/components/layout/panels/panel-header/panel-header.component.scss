@@ -1,0 +1,34 @@
+:host {
+    border-bottom: 1px solid #dee2e6;
+    display: block;
+    height: calc(48px + 0.25rem);
+    min-height: calc(48px + 0.25rem);
+    position: relative;
+    z-index: 10;
+}
+
+a.nav-link {
+    min-width: 6rem;
+    text-align: center;
+
+    &:hover {
+        border-bottom: 0;
+    }
+}
+
+.nav-tabs>div+li:last-child a {
+    cursor: default;
+}
+
+.extra-content {
+    right: 0;
+    transform: translateY(50%);
+}
+
+@media screen and (max-width: 767px) {
+    .extra-content {
+        padding: 0 1rem 0 1rem;
+        justify-content: space-between;
+        gap: 1rem;
+    }
+}
