@@ -312,7 +312,8 @@
     "addToMap": "Přidat do mapy",
     "reorder": "Uspořádat",
     "on": "zapnuto",
-    "off": "vypnuto"
+    "off": "vypnuto",
+    "Tile": "Dlaždice"
   },
   "COMPOSITIONS": {
     "addByAddress": "Přidat kompozici z adresy",
@@ -603,7 +604,10 @@
       "min": "Minimum",
       "colorMap": "Barevná škála",
       "ignoreExtent": "Ignorovat rozsah vrstvy",
-      "ignoreExtentInfo": "Zobrazit prvky nebo jejich části skryté mimo původní rozsah."
+      "ignoreExtentInfo": "Zobrazit prvky nebo jejich části skryté mimo původní rozsah.",
+      "changeLayerType": "Opravdu chcete změnit typ vrstvy?",
+      "layerTypeChangeNote": "Změna může ovlivnit rychlost načítání",
+      "confirmLayerTypeChange": "Potvrďte změnu typu vrstvy"
     },
     "layerList": {
       "layerIsQueryable": "Tato vrstva je dotazovatelná",

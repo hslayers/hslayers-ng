@@ -36,6 +36,7 @@ import {HsScaleWidgetComponent} from './widgets/scale-widget.component';
 import {HsTypeWidgetComponent} from './widgets/type-widget.component';
 import {HsUiExtensionsModule} from '../../common/widgets/ui-extensions.module';
 import {TranslateCustomPipe} from '../language/translate-custom.pipe';
+import {WmsSourceWidgetComponent} from './widgets/wms-source-widget/wms-source-widget.component';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -75,6 +76,7 @@ import {TranslateCustomPipe} from '../language/translate-custom.pipe';
     DragDropModule,
     HsQueuesModule,
     HsColormapPickerModule,
+    WmsSourceWidgetComponent,
     HsPanelHeaderComponent,
   ],
   exports: [
