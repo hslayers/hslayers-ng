@@ -467,7 +467,8 @@
     "layerRDF": "Layer RDF",
     "metadataFor": "Metadata for",
     "noResults": "No results",
-    "suggestions": "Suggestions"
+    "suggestions": "Suggestions",
+    "seeFullRecord": "See full metadata record"
   },
   "DRAW": {
     "activateDrawing": "Activate drawing by choosing a feature type",

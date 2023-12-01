@@ -467,7 +467,8 @@
     "layerRDF": "RDF vrstva",
     "metadataFor": "Metadata o",
     "noResults": "Žádné výsledky",
-    "suggestions": "Návrhy"
+    "suggestions": "Návrhy",
+    "seeFullRecord": "Zobrazit úplný metadatový záznam"
   },
   "DRAW": {
     "activateDrawing": "Aktivujte kreslení výběrem typu prvku",

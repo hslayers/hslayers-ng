@@ -3,6 +3,7 @@
         <a class="hs-catalogue-list-item-title" data-toggle="tooltip" [title]="layer.abstract || ''">{{layer.title ||
             layer.abstract}}</a>
         <!-- STATUS BADGE -->
+        <span *ngIf="loadingMetadata" class="pe-2 hs-loader hs-loader-dark"></span>
         <span class="badge rounded-pill w-auto" *ngIf="!layerAvailable" [ngClass]="{
             'bg-danger':layer.wfsWmsStatus === 'NOT_AVAILABLE',
             'bg-warning':layer.wfsWmsStatus === 'PREPARING'

@@ -3,6 +3,8 @@ import {HsEndpoint} from '../../../common/endpoints/endpoint.interface';
 export interface HsAddDataLayerDescriptor {
   abstract?: string;
   bbox;
+  bounding_box?;
+  metadata;
   formats?;
   name?: string;
   serviceType?;
@@ -10,6 +12,7 @@ export interface HsAddDataLayerDescriptor {
   title?: string;
   trida?;
   type: string[];
+  availableTypes: string[];
   file?: {
     path?: string;
     file_type?: string;

@@ -33,10 +33,47 @@ export class HsCatalogueMetadataComponent implements HsDialogComponent, OnInit {
   ngOnInit(): void {
     this.selectedDS = this.data.selectedDS;
     this.selectedLayer = this.data.selectedLayer;
+
+    //Micka
+    if (this.selectedDS.type === 'micka') {
+      const availableTypes = this.selectedLayer.links
+        .map((l) => {
+          return ['WMS', 'WFS'].some((t) => l.protocol.includes(t))
+            ? l.protocol.includes('WMS')
+              ? 'WMS'
+              : 'WFS'
+            : null;
+        })
+        .filter((type) => !!type);
+      this.fillAvailableTypes(availableTypes);
+
+      this.selectedLayer.availableTypes = availableTypes;
+      this.selectedLayer.metadata = {};
+      this.selectedLayer.metadata.record_url = `${this.selectedDS.url.replace(
+        'csw',
+        'record/basic',
+      )}/${this.selectedLayer.id}`;
+    }
+    //Layman
+    else {
+      this.fillAvailableTypes(this.selectedLayer.type);
+      this.selectedLayer.availableTypes = this.selectedLayer.type;
+      this.selectedLayer.bbox = this.selectedLayer['native_bounding_box'];
+    }
+
     this.selectedLayerKeys = Object.keys(this.selectedLayer);
     this.selectedLayerKeys = this.selectedLayerKeys.filter(
       (e) => e !== 'endpoint',
     );
+  }
+
+  /**
+   * Add WMTS (Tiled WMS) option in case WMS is available
+   */
+  private fillAvailableTypes(types: string[]) {
+    if (types.includes('WMS')) {
+      types.splice(1, 0, 'WMTS');
+    }
   }
 
   /**
@@ -49,7 +86,15 @@ export class HsCatalogueMetadataComponent implements HsDialogComponent, OnInit {
     layer: HsAddDataLayerDescriptor,
     type: string,
   ): void {
-    this.hsAddDataCatalogueService.addLayerToMap(ds, layer, type);
+    type = type === 'WMS' || type === 'WMTS' ? 'WMS' : type;
+    this.hsAddDataCatalogueService.addLayerToMap(
+      ds,
+      {
+        ...layer,
+        useTiles: type === 'WMTS',
+      },
+      type,
+    );
     this.close();
   }
 
