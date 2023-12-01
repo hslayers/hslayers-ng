@@ -10,7 +10,6 @@
     </div>
     <div class="hs-catalogue-item-body d-flex flex-column w-100 justify-content-around mt-2"
         *ngIf="hsAddDataCatalogueService.selectedLayer?.id === layer.id">
-        <hr class="hs-dotted-line w-100 ">
         <div class="d-flex flex-row justify-content-around align-items-end">
             <div class="btn-group" (click)="$event.stopPropagation()">
                 <button type="button" class="btn btn-sm border-0" [class.disabled]="!layerAvailable"
@@ -80,7 +79,7 @@
                     <i class="icon-question-sign text-primary"></i>
                 </a>
             </div>
-            <a class="btn btn-sm border-0" [title]="'COMMON.close' | translateHs " style="margin-top: -1rem;"
+            <a class="btn btn-sm border-0" [title]="'COMMON.close' | translateHs "
                 (click)="$event.stopPropagation();abortAdd()" [hidden]="!selectTypeToAddLayerVisible">
                 <i class="icon-remove text-danger"></i>
             </a>

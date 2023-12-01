@@ -20,6 +20,14 @@ import {HsUtilsService} from '../../../utils/utils.service';
 @Component({
   selector: 'hs-catalogue-list-item',
   templateUrl: 'catalogue-list-item.component.html',
+  styles: [
+    `
+      .dropdown-toggle::after {
+        font-size: 1.25rem;
+        vertical-align: initial;
+      }
+    `,
+  ],
 })
 export class HsCatalogueListItemComponent implements OnInit {
   @Input() layer: HsAddDataLayerDescriptor;
