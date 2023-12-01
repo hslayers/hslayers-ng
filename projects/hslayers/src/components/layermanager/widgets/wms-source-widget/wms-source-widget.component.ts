@@ -23,7 +23,7 @@ import {Observable, map, tap} from 'rxjs';
   templateUrl: './wms-source-widget.component.html',
   styleUrl: './wms-source-widget.component.css',
 })
-export class WmsSourceWidgetComponent extends HsLayerEditorWidgetBaseComponent {
+export class HsWmsSourceWidgetComponent extends HsLayerEditorWidgetBaseComponent {
   name = 'wms-source-widget';
   isEnabled: Observable<boolean>;
 

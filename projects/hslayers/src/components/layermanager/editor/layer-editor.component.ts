@@ -32,7 +32,7 @@ import {HsOpacityWidgetComponent} from '../widgets/opacity-widget.component';
 import {HsScaleWidgetComponent} from '../widgets/scale-widget.component';
 import {HsStylerService} from '../../styles/styler.service';
 import {HsTypeWidgetComponent} from '../widgets/type-widget.component';
-import {WmsSourceWidgetComponent} from '../widgets/wms-source-widget/wms-source-widget.component';
+import {HsWmsSourceWidgetComponent } from '../widgets/wms-source-widget/wms-source-widget.component';
 import {
   getBase,
   getCachedCapabilities,
@@ -89,7 +89,7 @@ export class HsLayerEditorComponent {
       HsLayerEditorDimensionsComponent,
       HsOpacityWidgetComponent,
       HsIdwWidgetComponent,
-      WmsSourceWidgetComponent,
+      HsWmsSourceWidgetComponent ,
     ];
     for (const widgetClass of widgets) {
       this.hsWidgetContainerService.create(widgetClass, {});
