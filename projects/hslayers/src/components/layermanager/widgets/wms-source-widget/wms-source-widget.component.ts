@@ -84,7 +84,7 @@ export class WmsSourceWidgetComponent extends HsLayerEditorWidgetBaseComponent {
   }
 
   /**
-   * Clone layer properties and oarmeters and recreate it as a different type
+   * Clone layer properties and parameters and recreate it as a different type
    * (Tile or Image)
    */
   private recreateLayer() {
