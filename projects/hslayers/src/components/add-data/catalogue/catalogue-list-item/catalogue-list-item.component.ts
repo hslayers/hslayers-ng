@@ -16,6 +16,7 @@ import {HsLaymanService} from '../../../save-map/layman.service';
 import {HsLogService} from '../../../../common/log/log.service';
 import {HsSetPermissionsDialogComponent} from './../../../../common/layman/dialog-set-permissions/set-permissions.component';
 import {HsUtilsService} from '../../../utils/utils.service';
+
 @Component({
   selector: 'hs-catalogue-list-item',
   templateUrl: 'catalogue-list-item.component.html',
@@ -49,6 +50,19 @@ export class HsCatalogueListItemComponent implements OnInit {
       this.layer.endpoint.type === 'micka' ||
       this.layer.wfsWmsStatus === 'AVAILABLE';
   }
+
+  /**
+   * Toggle add layer options
+   */
+  toggleAddOptions(endpoint: HsEndpoint, layer: HsAddDataLayerDescriptor) {
+    if (!this.selectTypeToAddLayerVisible) {
+      this.loadingInfo = true;
+      this.addLayerToMap(endpoint, layer);
+      return;
+    }
+    this.abortAdd();
+  }
+
   /**
    * Add selected layer to map (into layer manager) if possible (supported formats: WMS, WFS, Sparql, kml, geojson, json)
    * @param endpoint - Datasource of selected layer
@@ -58,7 +72,6 @@ export class HsCatalogueListItemComponent implements OnInit {
     endpoint: HsEndpoint,
     layer: HsAddDataLayerDescriptor,
   ): Promise<void> {
-    this.loadingInfo = true;
     const availableTypes = await this.hsAddDataCatalogueService.addLayerToMap(
       endpoint,
       layer,
