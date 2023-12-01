@@ -21,7 +21,6 @@ import {Observable, map, tap} from 'rxjs';
   standalone: true,
   imports: [CommonModule, NgFor, HsConfirmModule, HsLanguageModule],
   templateUrl: './wms-source-widget.component.html',
-  styleUrl: './wms-source-widget.component.css',
 })
 export class HsWmsSourceWidgetComponent extends HsLayerEditorWidgetBaseComponent {
   name = 'wms-source-widget';
