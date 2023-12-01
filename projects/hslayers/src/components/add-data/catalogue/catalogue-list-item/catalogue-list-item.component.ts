@@ -38,6 +38,8 @@ export class HsCatalogueListItemComponent implements OnInit {
   whatToAddTypes: string[];
   loadingInfo = false;
 
+  loadingMetadata = false;
+
   //** Layers wfsWmsStatus is AVAILABLE  */
   layerAvailable: boolean;
   constructor(
@@ -149,15 +151,21 @@ export class HsCatalogueListItemComponent implements OnInit {
     endpoint: HsEndpoint,
     layer: HsAddDataLayerDescriptor,
   ): Promise<void> {
+    let layerWithMetadata;
     if (endpoint.type.includes('layman')) {
-      await this.hsLaymanBrowserService.fillLayerMetadata(endpoint, layer);
+      this.loadingMetadata = true;
+      layerWithMetadata = await this.hsLaymanBrowserService.fillLayerMetadata(
+        endpoint,
+        layer,
+      );
     }
     //this.metadata = this.hsDatasourcesMetadataService.decomposeMetadata(layer);
     //console.log(this.metadata);
     this.hsDialogContainerService.create(HsCatalogueMetadataComponent, {
-      selectedLayer: layer,
+      selectedLayer: layerWithMetadata || layer,
       selectedDS: endpoint,
     });
+    this.loadingMetadata = false;
   }
 
   /**
