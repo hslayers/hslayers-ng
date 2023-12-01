@@ -4,7 +4,6 @@ import {Component} from '@angular/core';
 import {HsConfirmDialogComponent} from '../../../../common/confirm/confirm-dialog.component';
 import {HsConfirmModule} from '../../../../common/confirm/confirm.module';
 import {HsDialogContainerService} from '../../../layout/dialogs/dialog-container.service';
-import {HsLanguageModule} from '../../../language/language.module';
 import {HsLanguageService} from '../../../language/language.service';
 import {HsLayerEditorWidgetBaseComponent} from '../layer-editor-widget-base.component';
 import {HsLayerSelectorService} from '../../editor/layer-selector.service';
@@ -15,11 +14,12 @@ import {HsUtilsService} from '../../../utils/utils.service';
 import {Image, Tile} from 'ol/layer';
 import {ImageWMS, TileWMS} from 'ol/source';
 import {Observable, map, tap} from 'rxjs';
+import {TranslateCustomPipe} from '../../../language/translate-custom.pipe';
 
 @Component({
   selector: 'hs-wms-source-widget',
   standalone: true,
-  imports: [CommonModule, NgFor, HsConfirmModule, HsLanguageModule],
+  imports: [CommonModule, NgFor, HsConfirmModule, TranslateCustomPipe],
   templateUrl: './wms-source-widget.component.html',
 })
 export class HsWmsSourceWidgetComponent extends HsLayerEditorWidgetBaseComponent {
