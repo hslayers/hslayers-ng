@@ -14,7 +14,7 @@
         <div class="d-flex flex-row justify-content-around align-items-end">
             <div class="btn-group" (click)="$event.stopPropagation()">
                 <button type="button" class="btn btn-sm border-0" [class.disabled]="!layerAvailable"
-                    (click)="selectTypeAndAdd('WMTS',$event)">
+                    (click)="selectTypeAndAdd('WMS',$event)">
                     <i class="icon-plus icon-primary"></i>
                     <span *ngIf="layerAvailable" class="ms-1">{{'COMMON.addToMap' |
                         translateHs }}</span>
