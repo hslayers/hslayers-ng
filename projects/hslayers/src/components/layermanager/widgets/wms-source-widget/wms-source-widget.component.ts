@@ -1,6 +1,10 @@
-import ImageLayer from 'ol/layer/Image';
 import {CommonModule, NgFor} from '@angular/common';
 import {Component} from '@angular/core';
+import {Observable, map, tap} from 'rxjs';
+
+import {Image as ImageLayer, Tile} from 'ol/layer';
+import {ImageWMS, TileWMS} from 'ol/source';
+
 import {HsConfirmDialogComponent} from '../../../../common/confirm/confirm-dialog.component';
 import {HsConfirmModule} from '../../../../common/confirm/confirm.module';
 import {HsDialogContainerService} from '../../../layout/dialogs/dialog-container.service';
@@ -11,9 +15,6 @@ import {HsLayerShiftingService} from '../../../../common/layer-shifting/layer-sh
 import {HsLayerUtilsService} from '../../../utils/layer-utils.service';
 import {HsMapService} from '../../../map/map.service';
 import {HsUtilsService} from '../../../utils/utils.service';
-import {Image, Tile} from 'ol/layer';
-import {ImageWMS, TileWMS} from 'ol/source';
-import {Observable, map, tap} from 'rxjs';
 import {TranslateCustomPipe} from '../../../language/translate-custom.pipe';
 
 @Component({
@@ -106,7 +107,9 @@ export class HsWmsSourceWidgetComponent extends HsLayerEditorWidgetBaseComponent
         : new TileWMS(sourceOptions);
     layerProps.map = undefined;
     const lyr =
-      this.currentType == 'Tile' ? new Image(layerProps) : new Tile(layerProps);
+      this.currentType == 'Tile'
+        ? new ImageLayer(layerProps)
+        : new Tile(layerProps);
 
     this.hsMapService.getMap().addLayer(lyr);
     this.hsLayerShiftingService.moveTo(lyr, this.olLayer.getZIndex());
