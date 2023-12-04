@@ -18,8 +18,9 @@
                 </ng-container>
             </div>
             <div class="modal-footer">
-                <div *ngIf="selectedDS.type === 'micka' || selectedLayer.wfsWmsStatus === 'AVAILABLE'">
-                    <button type="button" class="btn btn-primary ms-2" *ngFor="let type of selectedLayer.availableTypes"
+                <div class="d-flex" *ngIf="selectedDS.type === 'micka' || selectedLayer.wfsWmsStatus === 'AVAILABLE'">
+                    <button type="button" class="btn btn-primary ms-2 d-flex gap-2 align-items-center"
+                        *ngFor="let type of selectedLayer.availableTypes"
                         (click)="addLayerToMap(selectedDS, selectedLayer, type)" data-dismiss="modal">
                         <span class="icon-plus"></span><span>{{'DATASOURCE_SELECTOR.addToMapAs' | translateHs }}
                             {{type}}</span>
