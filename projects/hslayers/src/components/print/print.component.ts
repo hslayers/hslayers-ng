@@ -36,15 +36,6 @@ export class HsPrintComponent extends HsPanelBaseComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.hsSidebarService.addButton({
-      panel: 'print',
-      module: 'hs.print',
-      order: 10,
-      fits: true,
-      title: 'PANEL_HEADER.PRINT',
-      description: 'SIDEBAR.descriptions.PRINT',
-      icon: 'icon-print',
-    });
     this.setToDefault();
   }
 

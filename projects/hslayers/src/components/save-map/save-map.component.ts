@@ -19,8 +19,7 @@ import {HsSidebarService} from '../sidebar/sidebar.service';
 })
 export class HsSaveMapComponent
   extends HsPanelBaseComponent
-  implements OnDestroy, OnInit
-{
+  implements OnDestroy, OnInit {
   endpoint: HsEndpoint = null;
   endpoints: HsEndpoint[];
   isAuthenticated = false;
@@ -42,15 +41,6 @@ export class HsSaveMapComponent
   }
   ngOnInit() {
     this.endpoints = this.hsCommonEndpointsService.endpoints;
-    this.hsSidebarService.addButton({
-      panel: 'saveMap',
-      module: 'hs.save-map',
-      order: 12,
-      fits: true,
-      title: 'PANEL_HEADER.SAVECOMPOSITION',
-      description: 'SIDEBAR.descriptions.SAVECOMPOSITION',
-      icon: 'icon-save-floppy',
-    });
 
     this.hsCommonEndpointsService.endpointsFilled
       .pipe(takeUntil(this.end))

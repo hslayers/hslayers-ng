@@ -54,8 +54,6 @@ export class HsToolbarComponent
 
   isVisible(): boolean {
     return (
-      //FIXME: Toolbar panel??
-      this.HsLayoutService.panelEnabled('toolbar') &&
       this.HsLayoutService.componentEnabled('toolbar') &&
       this.HsLayoutService.componentEnabled('guiOverlay')
     );

@@ -52,16 +52,6 @@ export class HsDrawComponent
         );
       });
 
-    this.hsSidebarService.addButton({
-      panel: 'draw',
-      module: 'hs.draw',
-      order: 16,
-      fits: true,
-      title: 'PANEL_HEADER.draw',
-      description: 'SIDEBAR.descriptions.DRAW',
-      icon: 'icon-pencil',
-    });
-
     this.selectedOption.pipe(takeUntil(this.end)).subscribe((option) => {
       if (option == 'edit') {
         this.HsDrawService.setType(this.HsDrawService.type);

@@ -48,15 +48,6 @@ export class HsLegendComponent
   }
 
   ngOnInit(): void {
-    this.hsSidebarService.addButton({
-      panel: 'legend',
-      module: 'hs.legend',
-      order: 1,
-      fits: true,
-      title: 'PANEL_HEADER.LEGEND',
-      description: 'SIDEBAR.descriptions.LEGEND',
-      icon: 'icon-dotlist',
-    });
     this.hsMapService.loaded().then((map) => {
       map.getLayers().on('add', (e) => this.layerAdded(e));
       map.getLayers().on('remove', (e) => {

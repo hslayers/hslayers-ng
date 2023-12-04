@@ -342,6 +342,7 @@ export class HslayersAppComponent {
         compositionLoadingProgress: true,
         draw: true,
         mapSwipe: true,
+        language: false,
       },
       sidebarPosition: 'right',
       //TODO: Migrate to watlas
@@ -692,6 +693,18 @@ export class HslayersAppComponent {
     setTimeout(() => {
       this.hsEventBusService.layerDimensionDefinitionChanges.next(opticalMap);
     }, 100);
+
+    setTimeout(() => {
+      console.log('Update config');
+      this.hsConfig.update({
+        panelsEnabled: {
+          compositionLoadingProgress: false,
+          draw: false,
+          mapSwipe: false,
+          language: true,
+        },
+      });
+    }, 4000);
   }
   title = 'hslayers-workspace';
 
