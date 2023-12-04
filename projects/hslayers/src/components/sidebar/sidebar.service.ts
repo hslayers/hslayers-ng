@@ -13,6 +13,110 @@ import {HsUtilsService} from '../utils/utils.service';
   providedIn: 'root',
 })
 export class HsSidebarService {
+  buttonDefinition = {
+    'mapSwipe': {
+      panel: 'mapSwipe',
+      module: 'hs.mapSwipe',
+      order: 18,
+      fits: true,
+      title: 'PANEL_HEADER.MAP_SWIPE',
+      description: 'SIDEBAR.descriptions.MAP_SWIPE',
+      icon: 'icon-resizehorizontalalt',
+    },
+    'layermanager': {
+      panel: 'layermanager',
+      module: 'hs.layermanager',
+      order: 0,
+      fits: true,
+      title: 'PANEL_HEADER.LM',
+      description: 'SIDEBAR.descriptions.LM',
+      icon: 'icon-layers',
+    },
+    'legend': {
+      panel: 'legend',
+      module: 'hs.legend',
+      order: 1,
+      fits: true,
+      title: 'PANEL_HEADER.LEGEND',
+      description: 'SIDEBAR.descriptions.LEGEND',
+      icon: 'icon-dotlist',
+    },
+    'addData': {
+      panel: 'addData',
+      module: 'hs.addData',
+      order: 4,
+      fits: true,
+      title: 'PANEL_HEADER.ADDLAYERS',
+      description: 'SIDEBAR.descriptions.ADDLAYERS',
+      icon: 'icon-database',
+    },
+    'composition_browser': {
+      panel: 'composition_browser',
+      module: 'hs.compositions',
+      order: 3,
+      fits: true,
+      title: 'PANEL_HEADER.MAPCOMPOSITIONS',
+      description: 'SIDEBAR.descriptions.MAPCOMPOSITIONS',
+      icon: 'icon-map',
+    },
+    'draw': {
+      panel: 'draw',
+      module: 'hs.draw',
+      order: 16,
+      fits: true,
+      title: 'PANEL_HEADER.draw',
+      description: 'SIDEBAR.descriptions.DRAW',
+      icon: 'icon-pencil',
+    },
+    'language': {
+      panel: 'language',
+      module: 'hs.language',
+      order: 13,
+      fits: true,
+      title: 'PANEL_HEADER.LANGUAGE',
+      description: 'SIDEBAR.descriptions.LANGUAGE',
+      content: () => {
+        return this.HsLanguageService.getCurrentLanguageCode().toUpperCase();
+      },
+    },
+    'permalink': {
+      panel: 'permalink',
+      module: 'hs.permalink',
+      order: 11,
+      fits: true,
+      title: 'PANEL_HEADER.PERMALINK',
+      description: 'SIDEBAR.descriptions.PERMALINK',
+      icon: 'icon-share-alt',
+    },
+    'print': {
+      panel: 'print',
+      module: 'hs.print',
+      order: 10,
+      fits: true,
+      title: 'PANEL_HEADER.PRINT',
+      description: 'SIDEBAR.descriptions.PRINT',
+      icon: 'icon-print',
+    },
+    'info': {
+      panel: 'info',
+      module: 'hs.query',
+      order: 7,
+      fits: true,
+      title: 'PANEL_HEADER.INFO',
+      description: 'SIDEBAR.descriptions.INFO',
+      icon: 'icon-info-sign',
+    },
+    'saveMap': {
+      panel: 'saveMap',
+      module: 'hs.save-map',
+      order: 12,
+      fits: true,
+      title: 'PANEL_HEADER.SAVECOMPOSITION',
+      description: 'SIDEBAR.descriptions.SAVECOMPOSITION',
+      icon: 'icon-save-floppy',
+    },
+  };
+
   extraButtons: Array<HsButton> = [];
   buttonsSubject: BehaviorSubject<HsButton[]> = new BehaviorSubject([]);
   /**

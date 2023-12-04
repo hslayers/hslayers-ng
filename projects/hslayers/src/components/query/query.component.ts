@@ -45,15 +45,6 @@ export class HsQueryComponent
     super(hsLayoutService);
   }
   async ngOnInit() {
-    this.hsSidebarService.addButton({
-      panel: 'info',
-      module: 'hs.query',
-      order: 7,
-      fits: true,
-      title: 'PANEL_HEADER.INFO',
-      description: 'SIDEBAR.descriptions.INFO',
-      icon: 'icon-info-sign',
-    });
     this.popupOpens.pipe(takeUntil(this.end)).subscribe((source) => {
       if (source && source != 'hs.query' && this.popup !== undefined) {
         this.popup.hide();

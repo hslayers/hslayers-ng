@@ -209,15 +209,6 @@ export class HsLayerManagerComponent
   }
 
   ngOnInit(): void {
-    this.hsSidebarService.addButton({
-      panel: 'layermanager',
-      module: 'hs.layermanager',
-      order: 0,
-      fits: true,
-      title: 'PANEL_HEADER.LM',
-      description: 'SIDEBAR.descriptions.LM',
-      icon: 'icon-layers',
-    });
     this.layerTooltipDelay = this.hsConfig.layerTooltipDelay;
     this.layerlistVisible = true;
   }
