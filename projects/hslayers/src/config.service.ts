@@ -57,10 +57,9 @@ export class HsConfigObject {
   default_view?: View;
   panelsEnabled?: {
     legend?: boolean;
-    measure?: boolean;
+    //measure?: boolean;
     info?: boolean;
     composition_browser?: boolean;
-    toolbar?: boolean;
     draw?: boolean;
     datasource_selector?: boolean;
     layermanager?: boolean;
@@ -73,7 +72,7 @@ export class HsConfigObject {
     compositionLoadingProgress?: boolean;
     sensors?: boolean;
     filter?: boolean;
-    search?: boolean;
+    //search?: boolean;
     tripPlanner?: boolean;
     addData?: boolean;
     mapSwipe?: boolean;
@@ -170,8 +169,7 @@ export class HsConfigObject {
       legend: true,
       info: true,
       composition_browser: true,
-      toolbar: true,
-      measure: true,
+      // measure: false, TODO: Reimplement
       draw: true,
       layermanager: true,
       print: true,
@@ -179,12 +177,12 @@ export class HsConfigObject {
       language: true,
       permalink: true,
       compositionLoadingProgress: false,
-      sensors: true,
+      sensors: false,
       /**
        * @deprecated Panel not available, will be reimplemented
        */
       filter: false,
-      search: false,
+      //search: false, TODO: Reimplement
       tripPlanner: false,
       addData: true,
       mapSwipe: false,

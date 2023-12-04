@@ -50,15 +50,6 @@ export class HsAddDataComponent
   ngOnInit(): void {
     this.selectDatasetType('catalogue');
 
-    this.hsSidebarService.addButton({
-      panel: 'addData',
-      module: 'hs.addData',
-      order: 4,
-      fits: true,
-      title: 'PANEL_HEADER.ADDLAYERS',
-      description: 'SIDEBAR.descriptions.ADDLAYERS',
-      icon: 'icon-database',
-    });
     servicesSupportedByUrl.forEach((type) =>
       this.connectServiceFromUrlParam(type as AddDataUrlType),
     );
