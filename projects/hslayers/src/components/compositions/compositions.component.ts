@@ -53,15 +53,6 @@ export class HsCompositionsComponent
   }
 
   ngOnInit(): void {
-    this.hsSidebarService.addButton({
-      panel: 'composition_browser',
-      module: 'hs.compositions',
-      order: 3,
-      fits: true,
-      title: 'PANEL_HEADER.MAPCOMPOSITIONS',
-      description: 'SIDEBAR.descriptions.MAPCOMPOSITIONS',
-      icon: 'icon-map',
-    });
     this.loadFilteredCompositions = () =>
       this.hsCompositionsCatalogueService.loadFilteredCompositions();
     this.hsCompositionsService.notSavedOrEditedCompositionLoading

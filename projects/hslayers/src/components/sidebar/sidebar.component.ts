@@ -1,6 +1,15 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 
-import {Subject, Subscription, delay, of, startWith, takeUntil} from 'rxjs';
+import {
+  Subject,
+  Subscription,
+  debounceTime,
+  delay,
+  filter,
+  of,
+  startWith,
+  takeUntil,
+} from 'rxjs';
 
 import {HS_PRMS} from '../permalink/get-params';
 import {HsButton} from './button.interface';
@@ -41,8 +50,7 @@ export class HsSidebarComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     const panel = this.HsShareUrlService.getParamValue(HS_PRMS.panel);
     this.HsSidebarService.buttons
-      .pipe(startWith([]), delay(0))
-      .pipe(takeUntil(this.end))
+      .pipe(debounceTime(500), takeUntil(this.end))
       .subscribe((buttons) => {
         this.buttons = this.HsSidebarService.prepareForTemplate(buttons);
         this.HsSidebarService.setPanelState(this.buttons);
@@ -65,9 +73,42 @@ export class HsSidebarComponent implements OnInit, OnDestroy {
         this.HsSidebarService.setButtonVisibility(this.buttons);
       });
     this.HsConfig.configChanges.pipe(takeUntil(this.end)).subscribe(() => {
-      this.HsSidebarService.setPanelState(this.buttons);
+      this.refreshButtons();
     });
     this.HsSidebarService.sidebarLoad.next();
+  }
+
+  /**
+   * Refresh buttons array. Remove disabled ones and add the that were enabled
+   */
+  refreshButtons() {
+    const disabledPanels = Object.entries(this.HsConfig.panelsEnabled).reduce(
+      (acc, [panel, isEnabled]) => (!isEnabled ? [...acc, panel] : acc),
+      [],
+    );
+
+    /**
+     * Filter out disabled
+     */
+    const filteredButtons = this.buttons.filter(
+      (b) => !disabledPanels.includes(b.panel),
+    );
+    const filteredButtonsPanels = filteredButtons.map((b) => b.panel);
+
+    /**
+     * Add panels that were enabled
+     */
+    const toBeActivated = Object.entries(this.HsConfig.panelsEnabled)
+      .reduce(
+        (acc, [panel, isEnabled]) => (isEnabled ? [...acc, panel] : acc),
+        [],
+      )
+      .filter((b) => !filteredButtonsPanels.includes(b));
+
+    for (const b of toBeActivated) {
+      filteredButtons.push(this.HsSidebarService.buttonDefinition[b]);
+    }
+    this.HsSidebarService.buttonsSubject.next(filteredButtons);
   }
 
   /**

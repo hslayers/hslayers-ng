@@ -37,6 +37,7 @@ import {HsTripPlannerComponent} from './components/trip-planner/trip-planner.com
 
 import {HsOverlayPanelContainerService} from './components/layout/overlay-panel-container.service';
 import {HsPanelContainerService} from './components/layout/panels/panel-container.service';
+import {HsSidebarService} from './components/sidebar/sidebar.service';
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
@@ -60,6 +61,7 @@ export class HslayersComponent implements OnInit {
     private HsMapSwipeService: HsMapSwipeService, //Leave this, need to inject somewhere
     private hsQueryPopupWidgetContainerService: HsQueryPopupWidgetContainerService, //Leave this, need to inject somewhere
     private hsExternalService: HsExternalService, //Leave this, need to inject somewhere
+    private hsSidebarService: HsSidebarService,
   ) {}
 
   /**
@@ -81,6 +83,20 @@ export class HslayersComponent implements OnInit {
     if (this.id) {
       this.hsConfig.setAppId(this.id);
     }
+
+    const activePanels = Object.entries(this.hsConfig.panelsEnabled).reduce(
+      (acc, [panel, isEnabled]) => (isEnabled ? [...acc, panel] : acc),
+      [],
+    );
+
+    for (const panel of activePanels) {
+      if (this.hsSidebarService.buttonDefinition[panel]) {
+        this.hsSidebarService.addButton(
+          this.hsSidebarService.buttonDefinition[panel],
+        );
+      }
+    }
+
     this.createPanel('tripPlanner', HsTripPlannerComponent, {});
     this.createPanel('addData', HsAddDataComponent, {});
     this.createPanel('draw', HsDrawComponent, {});
