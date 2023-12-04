@@ -1,3 +1,26 @@
+# [13.1.0](https://github.com/hslayers/hslayers-ng/compare/13.0.0...13.1.0) (2023-12-04)
+
+
+### Bug Fixes
+
+* Don't set extent on 'zoom to' for layer with ignored extent ([bb142a8](https://github.com/hslayers/hslayers-ng/commit/bb142a87bf1206b640c49e6f5740e21913958df0))
+* Ensure header height ([e3242ee](https://github.com/hslayers/hslayers-ng/commit/e3242ee2539c6c133abda0b98e427eaa180c8813))
+* **GUI:** Align icons in extra panel buttons ([bf9e675](https://github.com/hslayers/hslayers-ng/commit/bf9e675a9d566b4d469278c5f56ea8a41d07adf0))
+* Layman WMS loading function ([6e9a688](https://github.com/hslayers/hslayers-ng/commit/6e9a6885c01922906deb6d259b0e2eaca541d8c3))
+* Missing WMS query service import preventing it from be used ([ccbc182](https://github.com/hslayers/hslayers-ng/commit/ccbc1827ca8aeeda8ad85ffc8852cab3feecf9c7)), closes [#4516](https://github.com/hslayers/hslayers-ng/issues/4516)
+* Scroll only list items in add-data catalogue ([4b15167](https://github.com/hslayers/hslayers-ng/commit/4b151677128cc399899be773ccac460d71147299))
+* **wms-source-widget:** Import standalone translate pipe ([899ec38](https://github.com/hslayers/hslayers-ng/commit/899ec38d45069bb7cbbd6852ec95fa69c668cadd))
+
+
+### Features
+
+* **layer-editor:** WMS layer type widget ([98bf85a](https://github.com/hslayers/hslayers-ng/commit/98bf85a4655e1f7b621d3c5def2b33f85c4233f0))
+* **measure:** Expose "measureMultiple" in GUI ([1cbb55e](https://github.com/hslayers/hslayers-ng/commit/1cbb55ef6ec4e3b13652ac72c02000540b46da13))
+* Micka metadata record anchor for datasets ([0290c7d](https://github.com/hslayers/hslayers-ng/commit/0290c7d35436260cf212bacb63e563e905d0940b))
+* **set-permissions:** State indications ([9f064ca](https://github.com/hslayers/hslayers-ng/pull/4524/commits/9f064ca8593ed44006f9f7040000e0ff7f465f98))
+
+
+
 # [13.0.0](https://github.com/hslayers/hslayers-ng/compare/12.1.0...13.0.0) (2023-11-21)
 
 ### Bug Fixes
