@@ -62,7 +62,7 @@
     "geostyler-legend": "^4.0.1",
     "geostyler-openlayers-parser": "^4.2.1",
     "geostyler-qgis-parser": "^2.0.0",
-    "geostyler-sld-parser": "^5.0.1",
+    "geostyler-sld-parser": "^5.2.0",
     "geostyler-style": "^7.4.0",
     "jszip": "^3.10.1",
     "knockout": "^3.5.1",
