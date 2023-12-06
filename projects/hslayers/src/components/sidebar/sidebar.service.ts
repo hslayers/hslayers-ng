@@ -96,8 +96,8 @@ export class HsSidebarService {
       description: 'SIDEBAR.descriptions.PRINT',
       icon: 'icon-print',
     },
-    'info': {
-      panel: 'info',
+    'query': {
+      panel: 'query',
       module: 'hs.query',
       order: 7,
       fits: true,
@@ -113,6 +113,26 @@ export class HsSidebarService {
       title: 'PANEL_HEADER.SAVECOMPOSITION',
       description: 'SIDEBAR.descriptions.SAVECOMPOSITION',
       icon: 'icon-save-floppy',
+    },
+    'measure': {
+      panel: 'measure',
+      module: 'hs.measure',
+      order: 2,
+      fits: true,
+      title: 'PANEL_HEADER.MEASURE',
+      description: 'SIDEBAR.descriptions.MEASURE',
+      icon: 'icon-design',
+      condition: true,
+    },
+    'search': {
+      panel: 'search',
+      module: 'hs.search',
+      order: 15,
+      fits: true,
+      title: 'PANEL_HEADER.SEARCH',
+      description: 'SIDEBAR.descriptions.SEARCH',
+      icon: 'icon-search',
+      condition: true,
     },
   };
 
@@ -200,6 +220,16 @@ export class HsSidebarService {
 
   addButton(button: HsButton) {
     this.buttons.pipe(take(1)).subscribe((cur) => {
+      /**
+       * Dont add button for measure or search in case thier toolbar
+       * alternativs are active
+       */
+      if (
+        button.condition &&
+        this.HsLayoutService.componentEnabled(`${button.panel}Toolbar`)
+      ) {
+        return;
+      }
       this.buttonsSubject.next([...cur, button]);
     });
   }
