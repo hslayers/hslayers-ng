@@ -1,4 +1,5 @@
-<div class="card hs-main-panel overflow-hidden h-100" style="margin-top: 0 !important;" *ngIf="isVisible$ | async">
+<div class="card hs-main-panel overflow-hidden h-100" style="margin-top: 0 !important;" [ngClass]="panelWidthClass"
+    *ngIf="isVisible$ | async">
     <hs-panel-header name="addData" [panelTabs]="'catalogue,url,file'" (tabSelected)="selectDatasetType($event)">
     </hs-panel-header>
     <div class="card-body" style="overflow-y: auto;"

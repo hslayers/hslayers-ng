@@ -19,7 +19,8 @@ import {HsUtilsService} from '../utils/utils.service';
 })
 export class HsDrawComponent
   extends HsPanelBaseComponent
-  implements OnInit, OnDestroy {
+  implements OnInit, OnDestroy
+{
   name = 'draw';
   selectedOption = 'draw';
   private end = new Subject<void>();
@@ -50,6 +51,7 @@ export class HsDrawComponent
           {service: this.HsDrawService},
         );
       });
+    super.ngOnInit();
   }
 
   componentOptionSelected(option) {

@@ -19,7 +19,8 @@ import {HsSidebarService} from '../sidebar/sidebar.service';
 })
 export class HsSaveMapComponent
   extends HsPanelBaseComponent
-  implements OnDestroy, OnInit {
+  implements OnDestroy, OnInit
+{
   endpoint: HsEndpoint = null;
   endpoints: HsEndpoint[];
   isAuthenticated = false;
@@ -40,6 +41,7 @@ export class HsSaveMapComponent
     super(hsLayoutService);
   }
   ngOnInit() {
+    super.ngOnInit();
     this.endpoints = this.hsCommonEndpointsService.endpoints;
 
     this.hsCommonEndpointsService.endpointsFilled
