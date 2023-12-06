@@ -1,4 +1,4 @@
-<div class="card panel-default hs-main-panel" [hidden]="(isVisible$ | async) === false">
+<div class="card panel-default hs-main-panel" *ngIf="isVisible$ | async">
     <hs-panel-header name="permalink" [panelTabs]="'PERMALINK'">
     </hs-panel-header>
     <div class="card-body">

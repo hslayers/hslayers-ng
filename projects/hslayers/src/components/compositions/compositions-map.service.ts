@@ -10,7 +10,6 @@ import {Vector as VectorSource} from 'ol/source';
 import {unByKey} from 'ol/Observable';
 
 import {HsCommonEndpointsService} from '../../common/endpoints/endpoints.service';
-import {HsEventBusService} from '../core/event-bus.service';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsMapCompositionDescriptor} from './models/composition-descriptor.model';
@@ -27,7 +26,6 @@ export class HsCompositionsMapService {
   pointerMoveListener: EventsKey;
 
   constructor(
-    private hsEventBusService: HsEventBusService,
     private hsMapService: HsMapService,
     private hsLayoutService: HsLayoutService,
     private hsSaveMapService: HsSaveMapService,
@@ -35,7 +33,7 @@ export class HsCompositionsMapService {
     private hsCommonEndpointsService: HsCommonEndpointsService,
     private hsUtilsService: HsUtilsService,
   ) {
-    this.hsEventBusService.mainPanelChanges.subscribe((which) => {
+    this.hsLayoutService.mainpanel$.subscribe((which) => {
       if (this.extentLayer) {
         if (
           this.hsLayoutService.mainpanel === 'composition_browser' ||

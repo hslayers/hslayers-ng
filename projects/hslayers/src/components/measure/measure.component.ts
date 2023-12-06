@@ -58,7 +58,7 @@ export class HsMeasureComponent
         this.hsLayoutService.panelEnabled('toolbar', true);
       });
 
-    this.hsEventBusService.mainPanelChanges
+    this.hsLayoutService.mainpanel$
       .pipe(takeUntil(this.end))
       .subscribe((which) => {
         if (this.hsLayoutService.mainpanel == 'measure') {

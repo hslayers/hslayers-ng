@@ -1,4 +1,4 @@
-<div class="card hs-main-panel" [hidden]="(isVisible$ | async) === false">
+<div class="card hs-main-panel" *ngIf="isVisible$ | async">
     <hs-panel-header name="draw" [selectedTab$]="selectedOption" [panelTabs]="'draw,edit'">
         <button mainButton class="btn btn-sm" style="cursor: help" data-toggle="tooltip"
             [title]="'DRAW.drawInfo' | translateHs ">

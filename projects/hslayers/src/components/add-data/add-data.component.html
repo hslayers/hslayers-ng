@@ -1,15 +1,13 @@
-<div class="card hs-main-panel overflow-hidden h-100" style="margin-top: 0 !important;"
-    [hidden]="(isVisible$ | async) === false">
+<div class="card hs-main-panel overflow-hidden h-100" style="margin-top: 0 !important;" *ngIf="isVisible$ | async">
     <hs-panel-header name="addData" [panelTabs]="'catalogue,url,file'"
         [selectedTab$]="hsAddDataService.datasetSelected">
-    </hs-panel-header>
-    <div class="card-body" style="overflow-y: auto;"
-        *ngIf="{selected: hsAddDataService.datasetTypeSelected | async} as dataset">
-        <hs-add-data-url *ngIf="dataset.selected === 'url' || dataset.selected === 'OWS'">
-        </hs-add-data-url>
-        <hs-add-data-file *ngIf="dataset.selected === 'file'">
-        </hs-add-data-file>
-        <hs-add-data-catalogue class="h-100 d-block" *ngIf="dataset.selected === 'catalogue'">
-        </hs-add-data-catalogue>
-    </div>
+        <div class="card-body" style="overflow-y: auto;"
+            *ngIf="{selected: hsAddDataService.datasetTypeSelected | async} as dataset">
+            <hs-add-data-url *ngIf="dataset.selected === 'url' || dataset.selected === 'OWS'">
+            </hs-add-data-url>
+            <hs-add-data-file *ngIf="dataset.selected === 'file'">
+            </hs-add-data-file>
+            <hs-add-data-catalogue class="h-100 d-block" *ngIf="dataset.selected === 'catalogue'">
+            </hs-add-data-catalogue>
+        </div>
 </div>

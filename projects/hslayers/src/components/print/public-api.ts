@@ -1,5 +1,4 @@
 export * from './print.component';
-export * from './print.module';
 export * from './print.service';
 export * from './constants/text-styling-options';
 export * from './constants/position-options';

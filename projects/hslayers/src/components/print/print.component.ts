@@ -1,18 +1,36 @@
+import {CommonModule} from '@angular/common';
 import {Component, OnInit} from '@angular/core';
+import {FormsModule} from '@angular/forms';
 
 import {HsLayoutService} from '../layout/layout.service';
 import {HsPanelBaseComponent} from '../layout/panels/panel-base.component';
+import {HsPanelHeaderComponent} from '../layout/panels/panel-header/panel-header.component';
+import {HsPrintImprintStylerComponent} from './imprint-styler/imprint-styler.component';
 import {HsPrintLegendService} from './print-legend.service';
+import {HsPrintLegendStylerComponent} from './legend-styler/legend-styler.component';
 import {HsPrintScaleService} from './print-scale.service';
+import {HsPrintScaleStylerComponent} from './scale-styler/scale-styler.component';
 import {HsPrintService} from './print.service';
-import {HsSidebarService} from '../sidebar/sidebar.service';
+import {HsPrintTextStylerComponent} from './text-styler/text-styler.component';
 import {HsUtilsService} from '../utils/utils.service';
 import {PrintModel} from './types/print-object.type';
 import {Styler} from './types/styler.type';
+import {TranslateCustomPipe} from '../language/translate-custom.pipe';
 
 @Component({
   selector: 'hs-print',
   templateUrl: './print.component.html',
+  standalone: true,
+  imports: [
+    HsPrintTextStylerComponent,
+    HsPrintScaleStylerComponent,
+    HsPrintLegendStylerComponent,
+    HsPrintImprintStylerComponent,
+    CommonModule,
+    FormsModule,
+    TranslateCustomPipe,
+    HsPanelHeaderComponent,
+  ],
 })
 export class HsPrintComponent extends HsPanelBaseComponent implements OnInit {
   name = 'print';
@@ -26,7 +44,6 @@ export class HsPrintComponent extends HsPanelBaseComponent implements OnInit {
 
   constructor(
     HsLayoutService: HsLayoutService,
-    private hsSidebarService: HsSidebarService,
     public hsUtilsService: HsUtilsService,
     private hsPrintService: HsPrintService,
     private hsPrintScaleService: HsPrintScaleService,
@@ -37,6 +54,7 @@ export class HsPrintComponent extends HsPanelBaseComponent implements OnInit {
 
   ngOnInit(): void {
     this.setToDefault();
+    super.ngOnInit();
   }
 
   /**

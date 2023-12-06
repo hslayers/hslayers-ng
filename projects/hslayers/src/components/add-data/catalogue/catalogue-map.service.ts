@@ -10,7 +10,6 @@ import {transform} from 'ol/proj';
 import {unByKey} from 'ol/Observable';
 
 import {HsCommonEndpointsService} from '../../../common/endpoints/endpoints.service';
-import {HsEventBusService} from '../../core/event-bus.service';
 import {HsLayerUtilsService} from '../../utils/layer-utils.service';
 import {HsLayoutService} from '../../layout/layout.service';
 import {HsLogService} from '../../../common/log/log.service';
@@ -36,11 +35,10 @@ export class HsAddDataCatalogueMapService {
     private hsSaveMapService: HsSaveMapService,
     public hsLayerUtilsService: HsLayerUtilsService,
     private hsCommonEndpointsService: HsCommonEndpointsService,
-    private hsEventBusService: HsEventBusService,
     private hsLayoutService: HsLayoutService,
     private hsUtilsService: HsUtilsService,
   ) {
-    this.hsEventBusService.mainPanelChanges.subscribe((which) => {
+    this.hsLayoutService.mainpanel$.subscribe((which) => {
       if (which === 'addData') {
         this.addPointerMoveListener();
       } else if (this.pointerMoveListener) {
