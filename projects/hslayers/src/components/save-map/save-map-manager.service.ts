@@ -121,7 +121,7 @@ export class HsSaveMapManagerService extends HsSaveMapManagerParams {
         }
       });
 
-    this.hsEventBusService.mainPanelChanges.subscribe((which) => {
+    this.hsLayoutService.mainpanel$.subscribe((which) => {
       if (
         this.hsLayoutService.mainpanel == 'saveMap' ||
         this.hsLayoutService.mainpanel == 'statusCreator'

@@ -43,10 +43,17 @@ import {
 })
 export class HsLayerManagerComponent
   extends HsPanelBaseComponent
-  implements OnInit, OnDestroy, AfterViewInit
-{
-  @ViewChild('layerEditor', {static: false, read: ElementRef})
+  implements OnInit, OnDestroy {
   layerEditorRef: ElementRef;
+  @ViewChild('layerEditor', {static: false, read: ElementRef}) set content(
+    content: ElementRef,
+  ) {
+    if (content) {
+      // initially setter gets called with undefined
+      this.layerEditorRef = content;
+      this.hsLayerManagerService.layerEditorElement = content.nativeElement;
+    }
+  }
   map: any;
   shiftDown = false;
   allLayersVisible = false;
@@ -213,10 +220,6 @@ export class HsLayerManagerComponent
     this.layerlistVisible = true;
   }
 
-  ngAfterViewInit(): void {
-    this.hsLayerManagerService.layerEditorElement =
-      this.layerEditorRef.nativeElement;
-  }
   changeBaseLayerVisibility(e?, layer?: Layer<Source>) {
     return this.hsLayerManagerService.changeBaseLayerVisibility(e, layer);
   }

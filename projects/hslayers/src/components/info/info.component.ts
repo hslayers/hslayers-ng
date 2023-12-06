@@ -94,9 +94,6 @@ export class HsInfoComponent extends HsPanelBaseComponent implements OnDestroy {
       .subscribe(() => {
         this.composition_edited = true;
       });
-    this.hsConfig.configChanges.pipe(takeUntil(this.end)).subscribe(() => {
-      this.isVisible$.next(this.isVisible());
-    });
   }
 
   ngOnDestroy(): void {

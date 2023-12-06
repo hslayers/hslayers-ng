@@ -76,7 +76,7 @@ $list-group-item-padding-x: 1.25rem;
   @import "bootstrap/scss/utilities/api";
 
   @for $i from 0 through 20 {
-    &:not(.hs-mobile-view) .hs-panelspace hs-panel-container.hs-panelplace>*>.hs-panel-width-#{400 + ($i * 25)} {
+    &:not(.hs-mobile-view) .hs-panelspace *.hs-panelplace>*>.hs-panel-width-#{400 + ($i * 25)} {
       width: 400 + ($i * 25)+px;
     }
   }

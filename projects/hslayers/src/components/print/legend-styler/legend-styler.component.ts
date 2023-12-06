@@ -1,15 +1,21 @@
+import {CommonModule} from '@angular/common';
 import {Component, Input} from '@angular/core';
+import {FormsModule} from '@angular/forms';
 
 import {ColorEvent} from 'ngx-color';
+import {ColorSketchModule} from 'ngx-color/sketch';
 
 import {CANVAS_SIZES, POSITION_OPTIONS} from '../constants/position-options';
 import {HsColorPickerService} from '../../styles/symbolizers/color-picker/color-picker.service';
 import {HsLanguageService} from './../../language/language.service';
 import {LegendObj} from '../types/legend-object.type';
+import {TranslateCustomPipe} from '../../language/translate-custom.pipe';
 
 @Component({
   selector: 'hs-print-legend-styler',
   templateUrl: './legend-styler.component.html',
+  standalone: true,
+  imports: [CommonModule, FormsModule, TranslateCustomPipe, ColorSketchModule],
 })
 export class HsPrintLegendStylerComponent {
   bcColor: string;

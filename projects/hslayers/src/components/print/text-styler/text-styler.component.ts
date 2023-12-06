@@ -2,11 +2,15 @@ import {Component, Input} from '@angular/core';
 
 import {ColorEvent} from 'ngx-color';
 
+import {ColorSketchModule} from 'ngx-color/sketch';
+import {CommonModule} from '@angular/common';
+import {FormsModule} from '@angular/forms';
 import {HsColorPickerService} from '../../styles/symbolizers/color-picker/color-picker.service';
 import {HsLanguageService} from '../../language/language.service';
 import {POSITION_OPTIONS} from '../constants/position-options';
 import {TEXT_STYLING_OPTIONS} from '../constants/text-styling-options';
 import {TextStyle} from '../types/text-style.type';
+import {TranslateCustomPipe} from '../../language/translate-custom.pipe';
 
 export enum ColorPickers {
   Fill = 'fill',
@@ -15,6 +19,8 @@ export enum ColorPickers {
 @Component({
   selector: 'hs-print-text-styler',
   templateUrl: './text-styler.component.html',
+  standalone: true,
+  imports: [CommonModule, FormsModule, TranslateCustomPipe, ColorSketchModule],
 })
 export class HsPrintTextStylerComponent {
   @Input() textStyle: TextStyle;
