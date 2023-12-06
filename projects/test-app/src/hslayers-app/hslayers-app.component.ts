@@ -339,7 +339,6 @@ export class HslayersAppComponent {
     });
     this.hsConfig.update({
       panelsEnabled: {
-        compositionLoadingProgress: true,
         draw: true,
         mapSwipe: true,
         language: true,

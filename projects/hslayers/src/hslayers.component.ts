@@ -103,7 +103,7 @@ export class HslayersComponent implements OnInit {
     this.createPanel('feature_table', HsFeatureTableComponent, {});
     this.createPanel('saveMap', HsSaveMapComponent, {});
     this.createPanel('language', HsLanguageComponent, {});
-    this.createPanel('info', HsQueryComponent, {});
+    this.createPanel('query', HsQueryComponent, {});
     this.createPanel('permalink', HsShareComponent, {});
     this.createPanel('measure', HsMeasureComponent, {});
     this.createPanel('composition_browser', HsCompositionsComponent, {});

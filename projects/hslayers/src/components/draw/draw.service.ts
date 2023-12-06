@@ -382,7 +382,7 @@ export class HsDrawService extends HsDrawServiceParams {
       this.hsLayoutService.mainpanel != 'draw' &&
       this.hsConfig.openQueryPanelOnDrawEnd
     ) {
-      this.hsLayoutService.setMainPanel('info');
+      this.hsLayoutService.setMainPanel('query');
     }
     setTimeout(() => {
       this.addFeatureToSelector(e.feature);

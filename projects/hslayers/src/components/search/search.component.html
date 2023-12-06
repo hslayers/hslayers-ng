@@ -1,4 +1,4 @@
-<div [hidden]="(isVisible$ | async) === false">
+<div *ngIf="isVisible$ | async">
     <hs-panel-header name="Search" [panelTabs]="'SEARCH'"></hs-panel-header>
     <div class="input-group search-panel hs-search-address pt-1 pb-1 d-flex">
         <hs-search-input></hs-search-input>

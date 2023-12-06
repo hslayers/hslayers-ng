@@ -6,6 +6,7 @@ export * from './dialogs/dialog-item';
 export * from './panels/panel-header/panel-header.component';
 export * from './panels/panel-component.interface';
 export * from './panels/panel-base.component';
+export * from './panels/gui-overlay-base.component';
 export * from './panels/panel-container.component';
 export * from './panels/panel-container.service.interface';
 export * from './panels/panel-container.service';

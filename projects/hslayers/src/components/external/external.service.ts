@@ -204,7 +204,7 @@ export class HsExternalService {
         this.hsQueryBaseService.clear('features');
         select.getFeatures().push(feature);
         this.hsQueryVectorService.createFeatureAttributeList();
-        this.hsLayoutService.setMainPanel('info');
+        this.hsLayoutService.setMainPanel('query');
         this.hsLayoutService.sidebarExpanded = true;
         break;
       default:

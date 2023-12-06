@@ -15,7 +15,8 @@ import {HsSidebarService} from '../sidebar/sidebar.service';
 })
 export class HsSearchComponent
   extends HsPanelBaseComponent
-  implements OnInit, OnDestroy {
+  implements OnInit, OnDestroy
+{
   replace = false;
   clearVisible = false;
   searchInputVisible: boolean;
@@ -41,15 +42,7 @@ export class HsSearchComponent
   }
 
   ngOnInit(): void {
-    // this.hsSidebarService.addButton({
-    //   panel: 'search',
-    //   module: 'hs.search',
-    //   order: 15,
-    //   fits: true,
-    //   title: 'PANEL_HEADER.SEARCH',
-    //   description: 'SIDEBAR.descriptions.SEARCH',
-    //   icon: 'icon-search',
-    // });
+    super.ngOnInit();
     window.innerWidth < this.hsConfig.mobileBreakpoint
       ? (this.searchInputVisible = false)
       : (this.searchInputVisible = true);

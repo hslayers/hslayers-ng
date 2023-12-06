@@ -20,7 +20,6 @@ import {HsLayerEditorWidgetBaseComponent} from './widgets/layer-editor-widget-ba
 import {HsLayerListComponent} from './logical-list/layermanager-layerlist.component';
 import {HsLayerManagerComponent} from './layermanager.component';
 import {HsLayerManagerFolderComponent} from './logical-list/layermanager-folder.component';
-import {HsLayerManagerGalleryComponent} from './gallery/layermanager-gallery.component';
 import {HsLayerManagerRemoveAllDialogComponent} from './dialogs/remove-all-dialog.component';
 import {HsLayerManagerRemoveLayerDialogComponent} from './dialogs/remove-layer-dialog.component';
 import {HsLayerManagerTimeEditorComponent} from './dimensions/layermanager-time-editor.component';
@@ -44,7 +43,6 @@ import {TranslateCustomPipe} from '../language/translate-custom.pipe';
     HsLayerManagerComponent,
     HsLayerEditorDimensionsComponent,
     HsLayerEditorSubLayerCheckboxesComponent,
-    HsLayerManagerGalleryComponent,
     HsLayerEditorComponent,
     HsLayerManagerFolderComponent,
     HsLayerListComponent,
@@ -83,7 +81,6 @@ import {TranslateCustomPipe} from '../language/translate-custom.pipe';
     HsLayerManagerComponent,
     HsLayerEditorDimensionsComponent,
     HsLayerEditorSubLayerCheckboxesComponent,
-    HsLayerManagerGalleryComponent,
     HsLayerEditorComponent,
     HsLayerManagerFolderComponent,
     HsLayerListComponent,

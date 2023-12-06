@@ -1,17 +1,19 @@
 import {Component, OnInit} from '@angular/core';
 
+import {HsGuiOverlayBaseComponent} from '../layout/panels/gui-overlay-base.component';
 import {HsGeolocationService} from './geolocation.service';
 import {HsLayoutService} from '../layout/layout.service';
-import {HsPanelBaseComponent} from '../layout/panels/panel-base.component';
 @Component({
   selector: 'hs-geolocation',
   templateUrl: './geolocation.component.html',
 })
 export class HsGeolocationComponent
-  extends HsPanelBaseComponent
-  implements OnInit
-{
+  extends HsGuiOverlayBaseComponent
+  implements OnInit {
   collapsed: boolean;
+
+  name = 'geolocationButton';
+
   constructor(
     private hsGeolocationService: HsGeolocationService,
     public HsLayoutService: HsLayoutService,
@@ -20,6 +22,7 @@ export class HsGeolocationComponent
   }
   ngOnInit(): void {
     this.collapsed = true;
+    super.ngOnInit();
   }
   isVisible(): boolean {
     return (

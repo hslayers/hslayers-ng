@@ -4,8 +4,8 @@ import {Subscription} from 'rxjs';
 
 import {HsCoreService} from '../core/core.service';
 import {HsEventBusService} from '../core/event-bus.service';
+import {HsGuiOverlayBaseComponent} from '../layout/panels/gui-overlay-base.component';
 import {HsLayoutService} from '../layout/layout.service';
-import {HsPanelBaseComponent} from '../layout/panels/panel-base.component';
 import {HsToolbarPanelContainerService} from './toolbar-panel-container.service';
 
 @Component({
@@ -13,8 +13,10 @@ import {HsToolbarPanelContainerService} from './toolbar-panel-container.service'
   templateUrl: './toolbar.component.html',
 })
 export class HsToolbarComponent
-  extends HsPanelBaseComponent
-  implements OnDestroy {
+  extends HsGuiOverlayBaseComponent
+  implements OnDestroy
+{
+  name = 'toolbar';
   collapsed = false;
   composition_title: any;
   composition_abstract: any;
@@ -50,12 +52,5 @@ export class HsToolbarComponent
       this.collapsed = is;
     }
     return this.collapsed;
-  }
-
-  isVisible(): boolean {
-    return (
-      this.HsLayoutService.componentEnabled('toolbar') &&
-      this.HsLayoutService.componentEnabled('guiOverlay')
-    );
   }
 }
