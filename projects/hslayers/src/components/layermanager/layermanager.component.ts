@@ -43,7 +43,8 @@ import {
 })
 export class HsLayerManagerComponent
   extends HsPanelBaseComponent
-  implements OnInit, OnDestroy {
+  implements OnInit, OnDestroy
+{
   layerEditorRef: ElementRef;
   @ViewChild('layerEditor', {static: false, read: ElementRef}) set content(
     content: ElementRef,
@@ -218,6 +219,7 @@ export class HsLayerManagerComponent
   ngOnInit(): void {
     this.layerTooltipDelay = this.hsConfig.layerTooltipDelay;
     this.layerlistVisible = true;
+    super.ngOnInit();
   }
 
   changeBaseLayerVisibility(e?, layer?: Layer<Source>) {

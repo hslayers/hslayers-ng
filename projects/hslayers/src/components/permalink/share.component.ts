@@ -61,5 +61,6 @@ export class HsShareComponent extends HsPanelBaseComponent implements OnInit {
 
   ngOnInit() {
     this.app = this.hsConfig.id;
+    super.ngOnInit();
   }
 }

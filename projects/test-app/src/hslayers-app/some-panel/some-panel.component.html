@@ -1,4 +1,4 @@
-<div [hidden]="(isVisible$ | async) === false" class="card hs-main-panel">
+<div *ngIf="isVisible$ | async" class="card hs-main-panel" [ngClass]="panelWidthClass">
   <hs-panel-header name="custom" [panelTabs]="'My Cool Panel'">
   </hs-panel-header>
   <div class="card-body">
