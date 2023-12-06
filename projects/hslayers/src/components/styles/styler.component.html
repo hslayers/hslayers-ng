@@ -1,4 +1,4 @@
-<div class="card hs-main-panel" [hidden]="(isVisible$ | async) === false">
+<div class="card hs-main-panel" *ngIf="isVisible$ | async" [ngClass]="panelWidthClass">
   <hs-panel-header name="styler" [panelTabs]="'styler'">
     <button mainButton class="btn btn-sm btn-outline-primary border-0 align-items-center d-flex gap-2"
       [title]="'STYLER.clear' | translateHs" (click)="clear()"> {{'COMMON.reset' | translateHs}}

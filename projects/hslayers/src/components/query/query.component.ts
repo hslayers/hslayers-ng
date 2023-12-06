@@ -20,8 +20,7 @@ import {HsQueryVectorService} from './query-vector.service';
 })
 export class HsQueryComponent
   extends HsPanelBaseComponent
-  implements OnDestroy, OnInit
-{
+  implements OnDestroy, OnInit {
   popup = new Popup();
   popupOpens: Subject<any> = new Subject();
   name = 'info';
@@ -41,6 +40,7 @@ export class HsQueryComponent
     super(hsLayoutService);
   }
   async ngOnInit() {
+    super.ngOnInit();
     this.popupOpens.pipe(takeUntil(this.end)).subscribe((source) => {
       if (source && source != 'hs.query' && this.popup !== undefined) {
         this.popup.hide();
