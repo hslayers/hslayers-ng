@@ -1,4 +1,4 @@
-<div class="card hs-main-panel" [hidden]="(isVisible$ | async) === false">
+<div class="card hs-main-panel" *ngIf="isVisible$ | async" [ngClass]="panelWidthClass">
   <hs-panel-header name="tripPlanner" [title]="'PANEL_HEADER.TRIP_PLANNER' | translateHs">
   </hs-panel-header>
   <div class="card-body">

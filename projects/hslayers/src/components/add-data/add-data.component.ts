@@ -20,8 +20,7 @@ import {servicesSupportedByUrl} from './url/services-supported.const';
 })
 export class HsAddDataComponent
   extends HsPanelBaseComponent
-  implements OnInit, OnDestroy
-{
+  implements OnInit, OnDestroy {
   private end = new Subject<void>();
 
   constructor(
@@ -81,6 +80,7 @@ export class HsAddDataComponent
           error: error,
         });
       });
+    super.ngOnInit();
   }
 
   connectServiceFromUrlParam(type: AddDataUrlType): void {

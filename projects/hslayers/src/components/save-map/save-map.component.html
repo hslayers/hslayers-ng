@@ -1,4 +1,5 @@
-<div class="card panel-default hs-main-panel mainpanel hs-stc-mainpanel" *ngIf="isVisible$ | async">
+<div class="card panel-default hs-main-panel mainpanel hs-stc-mainpanel" *ngIf="isVisible$ | async"
+    [ngClass]="panelWidthClass">
     <hs-panel-header name=" saveMap" [panelTabs]="'SAVECOMPOSITION'">
     </hs-panel-header>
     <div class="card-body">

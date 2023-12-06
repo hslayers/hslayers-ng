@@ -1,4 +1,4 @@
-<div class="card hs-main-panel" *ngIf="isVisible$ | async">
+<div class="card hs-main-panel" *ngIf="isVisible$ | async" [ngClass]="panelWidthClass">
     <hs-panel-header name="info" [panelTabs]="'INFO'"></hs-panel-header>
     <div class="card hs-main-panel" *ngIf="noFeatureSelected()">
         <div class="d-flex flex-column align-items-center p-4">

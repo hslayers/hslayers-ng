@@ -309,17 +309,6 @@ export class HsLayoutService extends HsLayoutParams {
       this.sidebarExpanded = true;
       this.sidebarLabels = false;
     }
-
-    const componentRefInstance = this.hsPanelContainerService.panels.find(
-      (p) => p.name == which,
-    );
-    //Set width of dynamically loaded panels
-    if (componentRefInstance) {
-      this.hsPanelContainerService.setPanelWidth(
-        this.hsConfig.panelWidths,
-        componentRefInstance,
-      );
-    }
     this.mainpanel$.next(which);
   }
 

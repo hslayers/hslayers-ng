@@ -86,16 +86,6 @@ export class HsPanelContainerComponent implements OnInit, OnDestroy {
     const componentRef = viewContainerRef.createComponent(panelItem.component);
     const componentRefInstance = <HsPanelComponent>componentRef.instance;
     componentRefInstance.viewRef = componentRef.hostView;
-    if (this.hsConfig) {
-      /*
-       * Assign panel width class to a component host first child
-       * Used to define panelSpace panel width
-       */
-      this.service.setPanelWidth(
-        this.hsConfig.panelWidths,
-        componentRefInstance,
-      );
-    }
 
     /* When component doesn't create its own data object 
     set data by merging two sources: html attribute (this.data) and parameter passed 
@@ -106,16 +96,11 @@ export class HsPanelContainerComponent implements OnInit, OnDestroy {
       componentRefInstance.data = panelItem.data;
     }
     this.service.panels.push(componentRefInstance);
-    // if (componentRefInstance.isVisible$) {
-    //   const visible = componentRefInstance.isVisible
-    //     ? componentRefInstance.isVisible()
-    //     : true;
-    //   componentRefInstance.isVisible$.next(visible);
-    // } else {
-    //   this.hsLog.warn(
-    //     componentRefInstance,
-    //     'should contain isVisible$ BehaviourSubject',
-    //   );
-    // }
+    if (!componentRefInstance.isVisible$) {
+      this.hsLog.warn(
+        componentRefInstance,
+        'should extend HsPanelBaseComponent',
+      );
+    }
   }
 }

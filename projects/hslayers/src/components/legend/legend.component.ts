@@ -24,8 +24,7 @@ import {InterpolatedSource} from '../../common/layers/hs.source.interpolated';
 })
 export class HsLegendComponent
   extends HsPanelBaseComponent
-  implements OnInit, OnDestroy
-{
+  implements OnInit, OnDestroy {
   layerDescriptors = [];
   titleSearch = '';
   name = 'legend';
@@ -55,6 +54,7 @@ export class HsLegendComponent
       });
       this.buildLegendsForLayers(map);
     });
+    super.ngOnInit();
   }
 
   /**
@@ -63,9 +63,8 @@ export class HsLegendComponent
    * @param layer - Layer to add legend for
    */
   async addLayerToLegends(layer: Layer<Source>): Promise<void> {
-    const descriptor = await this.hsLegendService.getLayerLegendDescriptor(
-      layer,
-    );
+    const descriptor =
+      await this.hsLegendService.getLayerLegendDescriptor(layer);
     if (descriptor) {
       const source: any = layer.getSource();
       if (this.hsUtilsService.instOf(source, InterpolatedSource)) {

@@ -20,8 +20,7 @@ import {setHighlighted} from '../../common/feature-extensions';
 })
 export class HsTripPlannerComponent
   extends HsPanelBaseComponent
-  implements OnInit
-{
+  implements OnInit {
   timer: any;
   name = 'tripPlanner';
 
@@ -39,6 +38,7 @@ export class HsTripPlannerComponent
     super(hsLayoutService);
   }
   async ngOnInit(): Promise<void> {
+    super.ngOnInit();
     this.hsSidebarService.addButton({
       panel: 'tripPlanner',
       module: 'hs-trip-planner',

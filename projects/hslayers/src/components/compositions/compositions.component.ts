@@ -19,8 +19,7 @@ import {HsPanelBaseComponent} from '../layout/panels/panel-base.component';
 })
 export class HsCompositionsComponent
   extends HsPanelBaseComponent
-  implements OnDestroy, OnInit
-{
+  implements OnDestroy, OnInit {
   private end = new Subject<void>();
 
   keywordsVisible = false;
@@ -58,6 +57,7 @@ export class HsCompositionsComponent
         };
         this.loadUnsavedDialogBootstrap(record);
       });
+    super.ngOnInit();
   }
 
   ngOnDestroy(): void {
