@@ -163,6 +163,7 @@
             "sourceMap": true,
             "vendorChunk": true,
             "optimization": false,
+            "namedChunks": true,
             "outputPath": "dist/test-app",
             "index": "projects/test-app/src/index.html",
             "main": "projects/test-app/src/main.ts",

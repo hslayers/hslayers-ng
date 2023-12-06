@@ -3,7 +3,6 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Observable, Subject, map, startWith, takeUntil} from 'rxjs';
 
 import {HsEndpoint} from '../../../common/endpoints/endpoint.interface';
-import {HsEventBusService} from '../../core/event-bus.service';
 import {HsLayoutService} from '../../layout/layout.service';
 import {HsSaveMapManagerService} from '../save-map-manager.service';
 import {HsUtilsService} from '../../utils/utils.service';
@@ -28,9 +27,8 @@ export class HsSaveMapAdvancedFormComponent implements OnDestroy, OnInit {
     public hsSaveMapManagerService: HsSaveMapManagerService,
     private hsUtilsService: HsUtilsService,
     private hsLayoutService: HsLayoutService,
-    private hsEventBusService: HsEventBusService,
   ) {
-    this.isVisible = this.hsEventBusService.mainPanelChanges.pipe(
+    this.isVisible = this.hsLayoutService.mainpanel$.pipe(
       startWith(this.hsLayoutService.mainpanel),
       map((panel) => {
         return panel === 'saveMap';

@@ -1,4 +1,4 @@
-import {BehaviorSubject} from 'rxjs';
+import {Observable} from 'rxjs';
 import {ViewRef} from '@angular/core';
 
 export interface HsPanelComponent {
@@ -6,8 +6,7 @@ export interface HsPanelComponent {
   viewRef: ViewRef;
   data: any;
   name: string;
-  isVisible(): boolean;
-  isVisible$: BehaviorSubject<boolean>;
+  isVisible$: Observable<boolean>;
   /**
    * Optional function so panel can clean up
    * after itself (delete data, related components etc.)

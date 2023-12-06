@@ -231,7 +231,9 @@ export class HsQueryBaseService {
       return;
     }
     this.queryActive = true;
-    this.hsMapService.getMap().addLayer(this.queryLayer);
+    this.hsMapService.loaded().then((map) => {
+      map.addLayer(this.queryLayer);
+    });
     this.hsSaveMapService.internalLayers.push(this.queryLayer);
     this.queryStatusChanges.next(true);
   }
@@ -244,7 +246,9 @@ export class HsQueryBaseService {
       return;
     }
     this.queryActive = false;
-    this.hsMapService.getMap().removeLayer(this.queryLayer);
+    this.hsMapService.loaded().then((map) => {
+      map.removeLayer(this.queryLayer);
+    });
     this.queryStatusChanges.next(false);
   }
 

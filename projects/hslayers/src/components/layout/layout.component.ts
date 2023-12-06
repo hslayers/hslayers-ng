@@ -31,9 +31,6 @@ export class HsLayoutComponent implements AfterViewInit, OnInit, OnDestroy {
   sidebarPosition: string;
   sidebarVisible: boolean;
   private end = new Subject<void>();
-  panelVisible(which, scope?): boolean {
-    return this.HsLayoutService.panelVisible(which, scope);
-  }
 
   panelEnabled(which, status?): boolean {
     return this.HsLayoutService.panelEnabled(which, status);

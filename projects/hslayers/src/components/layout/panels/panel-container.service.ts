@@ -10,8 +10,7 @@ import {KeyNumberDict} from '../../../config.service';
   providedIn: 'root',
 })
 export class HsPanelContainerService
-  implements HsPanelContainerServiceInterface
-{
+  implements HsPanelContainerServiceInterface {
   panels: HsPanelComponent[] = [];
   panelObserver: ReplaySubject<HsPanelItem> = new ReplaySubject();
   panelDestroyObserver: Subject<any> = new Subject();

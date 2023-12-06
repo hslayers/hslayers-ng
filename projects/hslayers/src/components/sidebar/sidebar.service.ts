@@ -4,7 +4,6 @@ import {Injectable} from '@angular/core';
 import {HsButton} from './button.interface';
 import {HsConfig} from './../../config.service';
 import {HsCoreService} from './../core/core.service';
-import {HsEventBusService} from '../core/event-bus.service';
 import {HsLanguageService} from './../language/language.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsUtilsService} from '../utils/utils.service';
@@ -149,11 +148,10 @@ export class HsSidebarService {
     public hsConfig: HsConfig,
     public HsLanguageService: HsLanguageService,
     public HsCoreService: HsCoreService,
-    public HsEventBusService: HsEventBusService,
     public HsUtilsService: HsUtilsService,
   ) {
     this.buttons = this.buttonsSubject.asObservable();
-    this.HsEventBusService.mainPanelChanges.subscribe((which) => {
+    this.HsLayoutService.mainpanel$.subscribe((which) => {
       /* NOTE: WE used to update map size only 'if (!HsLayoutService.sidebarExpanded) {' 
       but that leads to blank margin between map and window border 
       (see https://github.com/hslayers/hslayers-ng/issues/1107). Using timer to take
