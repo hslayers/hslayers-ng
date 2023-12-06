@@ -5,15 +5,18 @@ import {takeUntil} from 'rxjs/operators';
 
 import {HsConfig} from '../../config.service';
 import {HsEventBusService} from './../core/event-bus.service';
+import {HsGuiOverlayBaseComponent} from '../layout/panels/gui-overlay-base.component';
 import {HsLayoutService} from '../layout/layout.service';
-import {HsPanelBaseComponent} from '../layout/panels/panel-base.component';
 import {getTitle} from '../../common/layer-extensions';
 
 @Component({
   selector: 'hs-info',
   templateUrl: './info.component.html',
 })
-export class HsInfoComponent extends HsPanelBaseComponent implements OnDestroy {
+export class HsInfoComponent
+  extends HsGuiOverlayBaseComponent
+  implements OnDestroy
+{
   /**
    * Store if composition is loaded
    */
@@ -27,6 +30,8 @@ export class HsInfoComponent extends HsPanelBaseComponent implements OnDestroy {
   composition_id: string;
   info_image: string;
   composition_edited: boolean;
+
+  name = 'info';
   private end = new Subject<void>();
   constructor(
     private hsEventBusService: HsEventBusService,

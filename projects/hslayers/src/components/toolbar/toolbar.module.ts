@@ -6,12 +6,11 @@ import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
 
 import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
 import {HsToolbarComponent} from './toolbar.component';
-import {HsToolbarPanelBaseComponent} from './toolbar-panel-base.component';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  declarations: [HsToolbarComponent, HsToolbarPanelBaseComponent],
+  declarations: [HsToolbarComponent],
   imports: [CommonModule, FormsModule, NgbDropdownModule, HsPanelHelpersModule],
-  exports: [HsToolbarComponent, HsToolbarPanelBaseComponent],
+  exports: [HsToolbarComponent],
 })
 export class HsToolbarModule {}

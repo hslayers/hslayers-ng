@@ -15,7 +15,8 @@ import {HsUtilsService} from '../utils/utils.service';
 })
 export class HsMeasureComponent
   extends HsPanelBaseComponent
-  implements OnDestroy, OnInit {
+  implements OnDestroy, OnInit
+{
   type: string;
   name = 'measure';
   private end = new Subject<void>();
@@ -34,6 +35,7 @@ export class HsMeasureComponent
   }
 
   ngOnInit() {
+    super.ngOnInit();
     this.type = 'distance';
 
     if (this.hsUtilsService.runningInBrowser()) {
@@ -72,19 +74,6 @@ export class HsMeasureComponent
     if (this.hsLayoutService.mainpanel == 'measure') {
       this.hsMeasureService.activateMeasuring(this.type);
     }
-    //Don't need two buttons (sidebar and toolbar) to toggle measure panel
-    // if (!this.hsLayoutService.componentEnabled('measureToolbar')) {
-    //   this.hsSidebarService.addButton({
-    //     panel: 'measure',
-    //     module: 'hs.measure',
-    //     order: 2,
-    //     fits: true,
-    //     title: 'PANEL_HEADER.MEASURE',
-    //     description: 'SIDEBAR.descriptions.MEASURE',
-    //     icon: 'icon-design',
-    //     condition: true,
-    //   });
-    // }
   }
 
   /**
