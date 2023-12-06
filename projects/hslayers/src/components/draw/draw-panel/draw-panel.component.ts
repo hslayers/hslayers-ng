@@ -50,7 +50,7 @@ export class DrawPanelComponent implements OnDestroy {
   setType(what): void {
     const type = this.HsDrawService.setType(what);
     if (type) {
-      this.activateDrawing(this.hsLayoutService.panelVisible('draw'));
+      this.activateDrawing(this.hsLayoutService.mainpanel === 'draw');
     }
   }
 

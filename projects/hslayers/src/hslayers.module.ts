@@ -14,7 +14,6 @@ import {HsLayoutModule} from './components/layout/layout.module';
 import {HsLegendModule} from './components/legend/legend.module';
 import {HsMapSwipeModule} from './components/map-swipe/map-swipe.module';
 import {HsMeasureModule} from './components/measure/measure.module';
-import {HsPrintModule} from './components/print/print.module';
 import {HsQueryModule} from './components/query/query.module';
 import {HsSaveMapModule} from './components/save-map/save-map.module';
 import {HsSearchModule} from './components/search/search.module';
@@ -43,7 +42,6 @@ import {TranslateCustomPipe} from './components/language/translate-custom.pipe';
     HsTripPlannerModule,
     HsSaveMapModule,
     HsFeatureTableModule,
-    HsPrintModule,
     HsShareModule,
     HsQueryModule,
     HsSearchModule,

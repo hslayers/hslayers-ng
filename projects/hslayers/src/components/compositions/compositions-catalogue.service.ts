@@ -76,7 +76,7 @@ export class HsCompositionsCatalogueService {
     this.hsCommonEndpointsService.endpointsFilled.subscribe((endpoints) => {
       this.endpoints = endpoints ?? [];
     });
-    this.hsEventBusService.mainPanelChanges.subscribe((which) => {
+    this.hsLayoutService.mainpanel$.subscribe((which) => {
       if (
         this.hsLayoutService.mainpanel === 'composition_browser' ||
         this.hsLayoutService.mainpanel === 'composition'
@@ -213,9 +213,8 @@ export class HsCompositionsCatalogueService {
         return maxItem;
       }, null);
       /** Adjust the limit for epWithMany */
-      this.endpoints.find(
-        (ep) => ep != epWithFew,
-      ).compositionsPaging.limit -= 1;
+      this.endpoints.find((ep) => ep != epWithFew).compositionsPaging.limit -=
+        1;
       sumLimits -= 1;
     }
 

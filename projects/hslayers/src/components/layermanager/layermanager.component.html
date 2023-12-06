@@ -1,4 +1,4 @@
-<div class="card panel-default hs-main-panel hs-layermanager-card" [hidden]="(isVisible$ | async) === false">
+<div class="card panel-default hs-main-panel hs-layermanager-card" *ngIf="isVisible$ | async">
     <hs-panel-header name="layermanager" [panelTabs]="'LM'">
         <button mainButton class="btn btn-sm btn-outline-primary border-0 align-items-center d-flex gap-2"
             [class.text-bg-primary]="physicalLayerListEnabled"

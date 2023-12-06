@@ -60,7 +60,7 @@ export class HsShareService {
       }
     });
 
-    this.HsEventBusService.mainPanelChanges.subscribe(async (which) => {
+    this.HsLayoutService.mainpanel$.subscribe(async (which) => {
       if (this.HsLayoutService.mainpanel == 'permalink') {
         this.generateThumbnail(
           this.HsLayoutService.contentWrapper.querySelector(

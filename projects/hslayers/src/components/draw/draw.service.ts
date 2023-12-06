@@ -131,7 +131,7 @@ export class HsDrawService extends HsDrawServiceParams {
         this.fillDrawableLayers();
       });
 
-      this.hsEventBusService.mainPanelChanges.subscribe((which) => {
+      this.hsLayoutService.mainpanel$.subscribe((which) => {
         if (which === 'draw' && this.hsMapService.getMap()) {
           this.fillDrawableLayers();
         }

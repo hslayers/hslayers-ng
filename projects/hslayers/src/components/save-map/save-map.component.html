@@ -1,5 +1,5 @@
-<div class="card panel-default hs-main-panel mainpanel hs-stc-mainpanel" [hidden]="(isVisible$ | async) === false">
-    <hs-panel-header name="saveMap" [panelTabs]="'SAVECOMPOSITION'">
+<div class="card panel-default hs-main-panel mainpanel hs-stc-mainpanel" *ngIf="isVisible$ | async">
+    <hs-panel-header name=" saveMap" [panelTabs]="'SAVECOMPOSITION'">
     </hs-panel-header>
     <div class="card-body">
         <div class="form-group">

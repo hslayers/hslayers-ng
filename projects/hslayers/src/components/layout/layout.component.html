@@ -23,6 +23,10 @@
                     </hs-mini-sidebar>
                     <hs-panel-container [service]="HsPanelContainerService" class="hs-panelplace">
                     </hs-panel-container>
+
+                    @defer(when HsLayoutService.mainpanel === 'print'){
+                    <hs-print></hs-print>
+                    }
                 </div>
             </div>
         </div>

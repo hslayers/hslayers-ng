@@ -21,7 +21,6 @@ import {HsMapSwipeComponent} from './components/map-swipe/map-swipe.component';
 import {HsMapSwipeService} from './components/map-swipe/map-swipe.service';
 import {HsMeasureComponent} from './components/measure/measure.component';
 import {HsMeasureToolbarComponent} from './components/measure/measure-toolbar.component';
-import {HsPrintComponent} from './components/print/print.component';
 import {HsQueryComponent} from './components/query/query.component';
 import {HsQueryPopupComponent} from './components/query/query-popup/query-popup.component';
 import {HsQueryPopupService} from './components/query/query-popup.service';
@@ -106,7 +105,6 @@ export class HslayersComponent implements OnInit {
     this.createPanel('language', HsLanguageComponent, {});
     this.createPanel('info', HsQueryComponent, {});
     this.createPanel('permalink', HsShareComponent, {});
-    this.createPanel('print', HsPrintComponent, {});
     this.createPanel('measure', HsMeasureComponent, {});
     this.createPanel('composition_browser', HsCompositionsComponent, {});
     this.createPanel('legend', HsLegendComponent, {});

@@ -26,13 +26,6 @@ export class HsLayoutParams {
    */
   panel_enabled: any;
   /**
-   * Storage of current main panel (panel which is opened).
-   * When {@link HsLayoutService#defaultPanel defaultPanel} is specified, main panel is set to it during HsCore initialization.
-   * @public
-   * @default ''
-   */
-  mainpanel: string;
-  /**
    * Side on which sidebar will be shown (true = right side of map, false = left side of map)
    * @public
    * @default true
@@ -78,11 +71,16 @@ export class HsLayoutParams {
   sidebarVisible$: BehaviorSubject<boolean>;
   sidebarPosition$: BehaviorSubject<string>;
 
+  mainpanel$: BehaviorSubject<string>;
+
+  get mainpanel() {
+    return this.mainpanel$.getValue();
+  }
+
   constructor() {
     this.defaultPanel = '';
     this.panel_statuses = {};
     this.panel_enabled = {};
-    this.mainpanel = '';
     this.sidebarRight = true;
     this.sidebarLabels = true;
     this.sidebarToggleable = true;
@@ -104,6 +102,7 @@ export class HsLayoutService extends HsLayoutParams {
 
   sidebarPosition$ = new BehaviorSubject('left');
   sidebarVisible$ = new BehaviorSubject(true);
+  mainpanel$ = new BehaviorSubject(undefined);
 
   constructor(
     public hsConfig: HsConfig,
@@ -136,7 +135,7 @@ export class HsLayoutService extends HsLayoutParams {
       this.parseConfig();
     });
 
-    this.HsEventBusService.mainPanelChanges.subscribe((which) => {
+    this.mainpanel$.subscribe((which) => {
       this.updPanelSpaceWidth();
     });
 
@@ -208,39 +207,14 @@ export class HsLayoutService extends HsLayoutParams {
   }
 
   /**
-   * Find if selected panel is currently opened (in sidebar or as unpinned window)
-   * @param which - Which Name of panel to test
-   * @param panelComponent - Instance of panel component. Used for toggling multiple panels at the same time
-   * @returns Panel opened/closed status
-   */
-  panelVisible(which: string, panelComponent?: HsPanelComponent) {
-    if (panelComponent) {
-      if (panelComponent.name == undefined) {
-        panelComponent.name = which;
-      }
-    }
-    if (this.panel_statuses[which] !== undefined) {
-      return this.panel_statuses[which] && this.panelEnabled(which);
-    }
-    if (this.mainpanel == which) {
-      return true;
-    } else if (panelComponent) {
-      return panelComponent.unpinned;
-    } else {
-      return false;
-    }
-  }
-
-  /**
    * Close opened panel programmatically.
    * If sidebar toolbar is used in the app, sidebar stays expanded with sidebar labels.
    * Cannot resolve unpinned panels.
    * @public
    */
   hidePanels() {
-    this.mainpanel = '';
     this.sidebarLabels = true;
-    this.HsEventBusService.mainPanelChanges.next(null);
+    this.mainpanel$.next(undefined);
   }
 
   /**
@@ -268,13 +242,13 @@ export class HsLayoutService extends HsLayoutParams {
           this.setMainPanel(this.defaultPanel);
         }
       } else {
-        this.mainpanel = '';
+        this.mainpanel$.next(undefined);
         this.sidebarLabels = true;
       }
       this.sidebarExpanded = false;
     }
 
-    this.HsEventBusService.mainPanelChanges.next(which);
+    this.mainpanel$.next(which);
   }
 
   /**
@@ -335,21 +309,18 @@ export class HsLayoutService extends HsLayoutParams {
       this.sidebarExpanded = true;
       this.sidebarLabels = false;
     }
-    this.mainpanel = which;
+
     const componentRefInstance = this.hsPanelContainerService.panels.find(
       (p) => p.name == which,
     );
-    this.hsPanelContainerService.setPanelWidth(
-      this.hsConfig.panelWidths,
-      componentRefInstance,
-    );
-    for (const p of this.hsPanelContainerService.panels) {
-      const visible = p.isVisible();
-      if (p.isVisible$ && p.isVisible$.value != visible) {
-        p.isVisible$.next(visible);
-      }
+    //Set width of dynamically loaded panels
+    if (componentRefInstance) {
+      this.hsPanelContainerService.setPanelWidth(
+        this.hsConfig.panelWidths,
+        componentRefInstance,
+      );
     }
-    this.HsEventBusService.mainPanelChanges.next(which);
+    this.mainpanel$.next(which);
   }
 
   /**

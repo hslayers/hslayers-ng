@@ -88,7 +88,7 @@ export class HsAddDataCatalogueService extends HsAddDataCatalogueParams {
     public hsAddDataOwsService: HsAddDataOwsService,
   ) {
     super();
-    this.hsEventBusService.mainPanelChanges.subscribe((which) => {
+    this.hsLayoutService.mainpanel$.subscribe((which) => {
       if (this.panelVisible()) {
         this.extentChangeSuppressed = true;
         if (
@@ -553,6 +553,6 @@ export class HsAddDataCatalogueService extends HsAddDataCatalogueParams {
   }
 
   private panelVisible(): boolean {
-    return this.hsLayoutService.panelVisible('addData');
+    return this.hsLayoutService.mainpanel === 'addData';
   }
 }

@@ -106,16 +106,16 @@ export class HsPanelContainerComponent implements OnInit, OnDestroy {
       componentRefInstance.data = panelItem.data;
     }
     this.service.panels.push(componentRefInstance);
-    if (componentRefInstance.isVisible$) {
-      const visible = componentRefInstance.isVisible
-        ? componentRefInstance.isVisible()
-        : true;
-      componentRefInstance.isVisible$.next(visible);
-    } else {
-      this.hsLog.warn(
-        componentRefInstance,
-        'should contain isVisible$ BehaviourSubject',
-      );
-    }
+    // if (componentRefInstance.isVisible$) {
+    //   const visible = componentRefInstance.isVisible
+    //     ? componentRefInstance.isVisible()
+    //     : true;
+    //   componentRefInstance.isVisible$.next(visible);
+    // } else {
+    //   this.hsLog.warn(
+    //     componentRefInstance,
+    //     'should contain isVisible$ BehaviourSubject',
+    //   );
+    // }
   }
 }

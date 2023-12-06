@@ -1,4 +1,4 @@
-<div class="card hs-main-panel" [hidden]="(isVisible$ | async) === false">
+<div class="card hs-main-panel" *ngIf="isVisible$ | async" [ngClass]="panelWidthClass">
     <hs-panel-header name="print" [panelTabs]="'PRINT'">
         <button mainButton class="btn btn-sm btn-outline-primary border-0" (click)="setToDefault()"
             [title]="'COMMON.resetToDefault' | translateHs "> {{'COMMON.reset' | translateHs}}
@@ -33,17 +33,6 @@
                         translateHs }}</label>
                 </div>
             </div>
-            <!-- <div class="form-group">
-                <div class="input-group">
-                    <span class="input-group-text control-label">{{'Resolution' | translateHs }}</span>
-                    <select class="form-control form-select" [(ngModel)]="print.resolution" name="resolution"
-                        style="flex-grow: 1;" [ngModelOptions]="{standalone: true}">
-                        <option [ngValue]="deviceRes">{{deviceRes}}</option>
-                        <option *ngFor="let res of resolutions" [ngValue]="res">{{res}}
-                        </option>
-                    </select>
-                </div>
-            </div> -->
             <button type="button" class="btn w-100 mb-2 btn-outline-secondary dropdown-toggle dropdown-toggle-split"
                 (click)="setStylerVisible('title')" [disabled]="!print.titleObj.text">
                 {{'PRINT.titleStylingOptions' | translateHs }}

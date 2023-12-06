@@ -1,13 +1,18 @@
+import {CommonModule} from '@angular/common';
 import {Component, Input} from '@angular/core';
+import {FormsModule} from '@angular/forms';
 
 import {HsLanguageService} from './../../language/language.service';
 import {HsPrintScaleService} from '../print-scale.service';
 import {SCALE_STYLING_OPTIONS} from '../constants/scale-styling-options';
 import {ScaleObj} from '../types/scale-object.type';
+import {TranslateCustomPipe} from '../../language/translate-custom.pipe';
 
 @Component({
   selector: 'hs-print-scale-styler',
   templateUrl: './scale-styler.component.html',
+  standalone: true,
+  imports: [CommonModule, FormsModule, TranslateCustomPipe],
 })
 export class HsPrintScaleStylerComponent {
   @Input() scaleObj: ScaleObj;

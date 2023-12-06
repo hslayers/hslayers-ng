@@ -342,7 +342,7 @@ export class HslayersAppComponent {
         compositionLoadingProgress: true,
         draw: true,
         mapSwipe: true,
-        language: false,
+        language: true,
       },
       sidebarPosition: 'right',
       //TODO: Migrate to watlas
@@ -354,6 +354,7 @@ export class HslayersAppComponent {
             'https://atlas2.kraj-lbc.cz/rest/workspaces/fzadrazil/maps/vodstvo',*/
       panelWidths: {
         custom: 555,
+        print: 500,
       },
       open_lm_after_comp_loaded: false,
       queryPopupWidgets: ['layer-name', 'feature-info', 'clear-layer'],
@@ -693,18 +694,6 @@ export class HslayersAppComponent {
     setTimeout(() => {
       this.hsEventBusService.layerDimensionDefinitionChanges.next(opticalMap);
     }, 100);
-
-    setTimeout(() => {
-      console.log('Update config');
-      this.hsConfig.update({
-        panelsEnabled: {
-          compositionLoadingProgress: false,
-          draw: false,
-          mapSwipe: false,
-          language: true,
-        },
-      });
-    }, 4000);
   }
   title = 'hslayers-workspace';
 

@@ -7,14 +7,11 @@ import {HsCompositionsMapService} from './compositions-map.service';
 import {HsCompositionsOverwriteDialogComponent} from './dialogs/overwrite-dialog.component';
 import {HsCompositionsParserService} from './compositions-parser.service';
 import {HsCompositionsService} from './compositions.service';
-import {HsConfig} from '../../config.service';
 import {HsDialogContainerService} from '../layout/dialogs/dialog-container.service';
 import {HsLanguageService} from '../language/language.service';
-import {HsLaymanService} from './../save-map/layman.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsMapCompositionDescriptor} from './models/composition-descriptor.model';
 import {HsPanelBaseComponent} from '../layout/panels/panel-base.component';
-import {HsSidebarService} from '../sidebar/sidebar.service';
 
 @Component({
   selector: 'hs-compositions',
@@ -40,12 +37,9 @@ export class HsCompositionsComponent
     private hsCompositionsService: HsCompositionsService,
     private hsCompositionsParserService: HsCompositionsParserService,
     public hsLayoutService: HsLayoutService,
-    private hsConfig: HsConfig,
     private hsCompositionsMapService: HsCompositionsMapService,
     private hsDialogContainerService: HsDialogContainerService,
     public hsCompositionsCatalogueService: HsCompositionsCatalogueService,
-    private hsLaymanService: HsLaymanService,
-    private hsSidebarService: HsSidebarService,
     private hsLanguageService: HsLanguageService,
     public hsCommonLaymanService: HsCommonLaymanService,
   ) {

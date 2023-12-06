@@ -4,7 +4,6 @@ import {Observable, Subject, delay, map, startWith, takeUntil} from 'rxjs';
 import {HsButton} from './button.interface';
 import {HsConfig} from './../../config.service';
 import {HsCoreService} from '../core/core.service';
-import {HsEventBusService} from '../core/event-bus.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsSidebarService} from './sidebar.service';
 
@@ -23,7 +22,6 @@ export class HsMiniSidebarComponent implements OnInit, OnDestroy {
     public HsSidebarService: HsSidebarService,
     public HsLayoutService: HsLayoutService,
     public HsConfig: HsConfig,
-    private HsEventBusService: HsEventBusService,
   ) {}
 
   ngOnInit() {
@@ -37,7 +35,7 @@ export class HsMiniSidebarComponent implements OnInit, OnDestroy {
       title: 'SIDEBAR.additionalPanels',
     };
 
-    this.isVisible = this.HsEventBusService.mainPanelChanges.pipe(
+    this.isVisible = this.HsLayoutService.mainpanel$.pipe(
       map((which) => {
         return which == 'sidebar';
       }),

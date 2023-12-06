@@ -53,7 +53,7 @@ export class HsStylerComponent
           this.hsStylerService.fill(layer as VectorLayer<VectorSource>);
         }
       });
-    this.hsEventBusService.mainPanelChanges
+    this.hsLayoutService.mainpanel$
       .pipe(takeUntil(this.end))
       .subscribe((which) => {
         if (which == 'styler') {

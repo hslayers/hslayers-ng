@@ -4,17 +4,15 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 
 import Popup from 'ol-popup';
 import {Subject} from 'rxjs';
-import {takeUntil} from 'rxjs/operators';
+import {debounceTime, takeUntil} from 'rxjs/operators';
 
 import {HsDrawService} from '../draw/draw.service';
-import {HsEventBusService} from '../core/event-bus.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsLogService} from '../../common/log/log.service';
 import {HsMapService} from '../map/map.service';
 import {HsPanelBaseComponent} from '../layout/panels/panel-base.component';
 import {HsQueryBaseService} from './query-base.service';
 import {HsQueryVectorService} from './query-vector.service';
-import {HsSidebarService} from '../sidebar/sidebar.service';
 
 @Component({
   selector: 'hs-query',
@@ -37,10 +35,8 @@ export class HsQueryComponent
     private hsMapService: HsMapService,
     public hsLayoutService: HsLayoutService,
     private hsLog: HsLogService,
-    private hsEventBusService: HsEventBusService,
     private hsQueryVectorService: HsQueryVectorService,
     private hsDrawService: HsDrawService,
-    private hsSidebarService: HsSidebarService,
   ) {
     super(hsLayoutService);
   }
@@ -63,8 +59,8 @@ export class HsQueryComponent
       map.addOverlay(this.popup);
     });
     //add current panel queryable - activate/deactivate
-    this.hsEventBusService.mainPanelChanges
-      .pipe(takeUntil(this.end))
+    this.hsLayoutService.mainpanel$
+      .pipe(debounceTime(250), takeUntil(this.end))
       .subscribe((which) => {
         if (this.hsQueryBaseService.currentPanelQueryable()) {
           if (
