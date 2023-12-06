@@ -1,22 +1,28 @@
 import {ChangeDetectionStrategy, Component, ViewChild} from '@angular/core';
-import {NgbDropdown} from '@ng-bootstrap/ng-bootstrap';
+import {CommonModule} from '@angular/common';
 
+import {NgbDropdown, NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
+
+import {HsGuiOverlayBaseComponent} from '../../layout/panels/gui-overlay-base.component';
 import {HsLayerDescriptor} from '../layer-descriptor.interface';
 import {HsLayerManagerService} from '../layermanager.service';
 import {HsLayerUtilsService} from '../../utils/layer-utils.service';
 import {HsLayoutService} from '../../layout/layout.service';
-import {HsPanelBaseComponent} from '../../layout/panels/panel-base.component';
+import {TranslateCustomPipe} from '../../language/translate-custom.pipe';
 import {getBase, getGreyscale} from '../../../common/layer-extensions';
 
 @Component({
   selector: 'hs-layermanager-gallery',
   templateUrl: './layermanager-gallery.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [CommonModule, TranslateCustomPipe, NgbDropdownModule],
 })
-export class HsLayerManagerGalleryComponent extends HsPanelBaseComponent {
+export class HsLayerManagerGalleryComponent extends HsGuiOverlayBaseComponent {
   menuExpanded = false;
   getGreyscale = getGreyscale;
   @ViewChild('galleryDropdown', {static: false}) dropdown: NgbDropdown;
+  name = 'basemapGallery';
   constructor(
     public hsLayoutService: HsLayoutService,
     public hsLayerManagerService: HsLayerManagerService,
@@ -59,12 +65,5 @@ export class HsLayerManagerGalleryComponent extends HsPanelBaseComponent {
     );
     this.hsLayerManagerService.menuExpanded =
       !this.hsLayerManagerService.menuExpanded;
-  }
-
-  isVisible(): boolean {
-    return (
-      this.hsLayoutService.componentEnabled('basemapGallery') &&
-      this.hsLayoutService.componentEnabled('guiOverlay')
-    );
   }
 }

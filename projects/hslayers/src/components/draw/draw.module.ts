@@ -8,7 +8,6 @@ import {DrawEditComponent} from './draw-edit/draw-edit.component';
 import {DrawPanelComponent} from './draw-panel/draw-panel.component';
 import {HsDrawComponent} from './draw.component';
 import {HsDrawLayerMetadataDialogComponent} from './draw-layer-metadata/draw-layer-metadata.component';
-import {HsDrawToolbarComponent} from './draw-toolbar/draw-toolbar.component';
 import {HsLaymanModule} from '../../common/layman/layman.module';
 import {HsPanelHeaderComponent} from '../layout/panels/panel-header/panel-header.component';
 import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
@@ -22,7 +21,6 @@ import {TranslateCustomPipe} from '../language/translate-custom.pipe';
   declarations: [
     HsDrawComponent,
     HsDrawLayerMetadataDialogComponent,
-    HsDrawToolbarComponent,
     DrawPanelComponent,
     DrawEditComponent,
   ],
@@ -38,10 +36,6 @@ import {TranslateCustomPipe} from '../language/translate-custom.pipe';
     HsRmLayerDialogModule,
     HsPanelHeaderComponent,
   ],
-  exports: [
-    HsDrawComponent,
-    HsDrawLayerMetadataDialogComponent,
-    HsDrawToolbarComponent,
-  ],
+  exports: [HsDrawComponent, HsDrawLayerMetadataDialogComponent],
 })
 export class HsDrawModule {}

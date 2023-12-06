@@ -23,7 +23,7 @@ export class HsQueryComponent
   implements OnDestroy, OnInit {
   popup = new Popup();
   popupOpens: Subject<any> = new Subject();
-  name = 'info';
+  name = 'query';
   //To Unsubscribe all subscribers
   private end = new Subject<void>();
   //To deactivate queries (unsubscribe subscribers) per app
@@ -104,7 +104,7 @@ export class HsQueryComponent
           this.hsQueryBaseService.currentPanelQueryable() &&
           this.hsLayoutService.mainpanel != 'draw'
         ) {
-          this.hsLayoutService.setMainPanel('info');
+          this.hsLayoutService.setMainPanel('query');
         }
       });
 

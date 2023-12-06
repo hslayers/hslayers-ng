@@ -57,8 +57,8 @@ export class HsConfigObject {
   default_view?: View;
   panelsEnabled?: {
     legend?: boolean;
-    //measure?: boolean;
-    info?: boolean;
+    measure?: boolean;
+    query?: boolean;
     composition_browser?: boolean;
     draw?: boolean;
     datasource_selector?: boolean;
@@ -69,10 +69,9 @@ export class HsConfigObject {
     saveMap?: boolean;
     language?: boolean;
     permalink?: boolean;
-    compositionLoadingProgress?: boolean;
     sensors?: boolean;
     filter?: boolean;
-    //search?: boolean;
+    search?: boolean;
     tripPlanner?: boolean;
     addData?: boolean;
     mapSwipe?: boolean;
@@ -167,28 +166,28 @@ export class HsConfigObject {
     this.pathExclusivity = false;
     this.panelsEnabled = {
       legend: true,
-      info: true,
       composition_browser: true,
-      // measure: false, TODO: Reimplement
+      measure: true,
       draw: true,
       layermanager: true,
       print: true,
       saveMap: true,
       language: true,
       permalink: true,
-      compositionLoadingProgress: false,
+      query: true,
       sensors: false,
       /**
        * @deprecated Panel not available, will be reimplemented
        */
       filter: false,
-      //search: false, TODO: Reimplement
+      search: true,
       tripPlanner: false,
       addData: true,
       mapSwipe: false,
     };
     this.componentsEnabled = {
       guiOverlay: true,
+      info: true,
       sidebar: true,
       toolbar: true,
       drawToolbar: true,
@@ -198,6 +197,7 @@ export class HsConfigObject {
       defaultViewButton: true,
       mapControls: true,
       basemapGallery: false,
+      // Says whether it should be activated by default. Is overriden by url param
       mapSwipe: false,
     };
     this.queryPopupWidgets = ['layer-name', 'feature-info', 'clear-layer'];
