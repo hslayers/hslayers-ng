@@ -134,6 +134,15 @@ export class HsSidebarService {
       icon: 'icon-search',
       condition: true,
     },
+    'tripPlanner': {
+      panel: 'tripPlanner',
+      module: 'hs-trip-planner',
+      order: 17,
+      fits: true,
+      title: 'PANEL_HEADER.TRIP_PLANNER',
+      description: 'SIDEBAR.descriptions.TRIP_PLANNER',
+      icon: 'icon-sextant',
+    },
   };
 
   extraButtons: Array<HsButton> = [];
