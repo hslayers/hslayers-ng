@@ -67,6 +67,7 @@ export class WebpackTranslateLoader implements TranslateLoader {
             } catch (error) {
               if (
                 error.status == 404 &&
+                this.hsConfig.additionalLanguages &&
                 this.hsConfig.additionalLanguages[lang]
               ) {
                 //Additional language not present in assets/locales/ --> ignore

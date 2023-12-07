@@ -20,7 +20,8 @@ import {setHighlighted} from '../../common/feature-extensions';
 })
 export class HsTripPlannerComponent
   extends HsPanelBaseComponent
-  implements OnInit {
+  implements OnInit
+{
   timer: any;
   name = 'tripPlanner';
 
@@ -39,15 +40,6 @@ export class HsTripPlannerComponent
   }
   async ngOnInit(): Promise<void> {
     super.ngOnInit();
-    this.hsSidebarService.addButton({
-      panel: 'tripPlanner',
-      module: 'hs-trip-planner',
-      order: 17,
-      fits: true,
-      title: 'PANEL_HEADER.TRIP_PLANNER',
-      description: 'SIDEBAR.descriptions.TRIP_PLANNER',
-      icon: 'icon-sextant',
-    });
     if (this.HsConfig.default_layers === undefined) {
       this.HsConfig.default_layers = [];
     } else {

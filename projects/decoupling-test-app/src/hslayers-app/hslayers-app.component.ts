@@ -41,6 +41,30 @@ export class HslayersAppComponent {
         population: Math.round(Math.random() * 5000000),
       });
     }
+    const polygonSld = `<?xml version="1.0" encoding="ISO-8859-1"?>
+    <StyledLayerDescriptor version="1.0.0" 
+        xsi:schemaLocation="http://www.opengis.net/sld StyledLayerDescriptor.xsd" 
+        xmlns="http://www.opengis.net/sld" 
+        xmlns:ogc="http://www.opengis.net/ogc" 
+        xmlns:xlink="http://www.w3.org/1999/xlink" 
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+      <NamedLayer>
+        <Name>Simple point with stroke</Name>
+        <UserStyle>
+          <Title>Default</Title>
+          <FeatureTypeStyle>
+            <Rule>
+            <PolygonSymbolizer>
+            <Fill>
+              <CssParameter name="fill">#000080</CssParameter>
+            </Fill>
+          </PolygonSymbolizer>
+            </Rule>
+          </FeatureTypeStyle>
+        </UserStyle>
+      </NamedLayer>
+    </StyledLayerDescriptor>
+    `;
     const geojsonObject = {
       'type': 'FeatureCollection',
       'crs': {
@@ -148,16 +172,15 @@ export class HslayersAppComponent {
         ? `${window.location.protocol}//${window.location.hostname}:8085/`
         : '/proxy/',
       panelsEnabled: {
-        tripPlanner: true,
-        info: true,
-        compositionLoadingProgress: true,
+        tripPlanner: false,
+        query: true,
         addData: false,
       },
       componentsEnabled: {
         geolocationButton: true,
         guiOverlay: true,
       },
-      assetsPath: 'assets',
+      assetsPath: './dist/decoupling-test-app/assets',
       symbolizerIcons: [
         {name: 'bag', url: '/assets/icons/bag1.svg'},
         {name: 'banking', url: '/assets/icons/banking4.svg'},
@@ -273,6 +296,7 @@ export class HslayersAppComponent {
           source: new VectorSource({features}),
         }),
         new VectorLayer({
+          visible: true,
           properties: {
             title: 'Polygons',
             synchronize: false,
@@ -280,6 +304,7 @@ export class HslayersAppComponent {
             inlineLegend: true,
             popUp: {
               attributes: ['name'],
+              widgets: ['layer-name', 'clear-layer'],
             },
             editor: {
               editable: true,
@@ -288,35 +313,12 @@ export class HslayersAppComponent {
                 description: 'none',
               },
             },
-            sld: `<?xml version="1.0" encoding="ISO-8859-1"?>
-            <StyledLayerDescriptor version="1.0.0" 
-                xsi:schemaLocation="http://www.opengis.net/sld StyledLayerDescriptor.xsd" 
-                xmlns="http://www.opengis.net/sld" 
-                xmlns:ogc="http://www.opengis.net/ogc" 
-                xmlns:xlink="http://www.w3.org/1999/xlink" 
-                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-              <NamedLayer>
-                <Name>Simple point with stroke</Name>
-                <UserStyle>
-                  <Title>Default</Title>
-                  <FeatureTypeStyle>
-                    <Rule>
-                    <PolygonSymbolizer>
-                    <Fill>
-                      <CssParameter name="fill">#000080</CssParameter>
-                    </Fill>
-                  </PolygonSymbolizer>
-                    </Rule>
-                  </FeatureTypeStyle>
-                </UserStyle>
-              </NamedLayer>
-            </StyledLayerDescriptor>
-            `,
+            sld: polygonSld,
             path: 'User generated',
           },
           source: new VectorSource({
             features: new GeoJSON().readFeatures(geojsonObject),
-          }),
+          }) as VectorSource, //FIXME: Type-cast shall be automatically inferred after OL >8.2
         }),
         opticalMap,
       ],
