@@ -18,12 +18,12 @@ import {HsQueryModule} from './components/query/query.module';
 import {HsSaveMapModule} from './components/save-map/save-map.module';
 import {HsSearchModule} from './components/search/search.module';
 import {HsShareModule} from './components/share/share.module';
-import {HsStylerModule} from './components/styles/styles.module';
+import {HsStylerModule} from './components/styler/styles.module';
 import {HsToolbarModule} from './components/toolbar/toolbar.module';
 import {HsTripPlannerModule} from './components/trip-planner/trip-planner.module';
 import {HslayersComponent} from './hslayers.component';
 import {HslayersLaymanInterceptor} from './hslayers.layman.interceptor';
-import {TranslateCustomPipe} from './components/language/translate-custom.pipe';
+import {PrintModule} from './components/print/print.module';
 
 @NgModule({
   declarations: [HslayersComponent],
@@ -37,7 +37,6 @@ import {TranslateCustomPipe} from './components/language/translate-custom.pipe';
     HsGeolocationModule,
     HsInfoModule,
     HsLanguageModule,
-    TranslateCustomPipe,
     HsLegendModule,
     HsTripPlannerModule,
     HsSaveMapModule,
@@ -49,8 +48,9 @@ import {TranslateCustomPipe} from './components/language/translate-custom.pipe';
     HsStylerModule,
     HsToolbarModule,
     HsMapSwipeModule,
+    PrintModule,
   ],
-  exports: [HslayersComponent],
+  exports: [HslayersComponent, HsLayoutModule],
   providers: [
     {
       provide: HTTP_INTERCEPTORS,
