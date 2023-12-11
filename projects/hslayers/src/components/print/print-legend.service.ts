@@ -9,7 +9,7 @@ import {HsLegendDescriptor} from '../legend/legend-descriptor.interface';
 import {HsLegendLayerStaticService} from '../legend/legend-layer-static/legend-layer-static.service';
 import {HsLegendService} from '../legend/legend.service';
 import {HsMapService} from '../map/map.service';
-import {HsShareThumbnailService} from '../permalink/share-thumbnail.service';
+import {HsShareThumbnailService} from '../share/share-thumbnail.service';
 import {LegendObj} from './types/legend-object.type';
 import {SparqlJson} from '../../common/layers/hs.source.SparqlJson';
 

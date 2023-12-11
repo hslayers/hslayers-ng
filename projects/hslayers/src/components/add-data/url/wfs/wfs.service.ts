@@ -509,6 +509,6 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
       );
       this.hsMapService.getMap().addLayer(l);
     }
-    this.hsLayoutService.setMainPanel('layermanager');
+    this.hsLayoutService.setMainPanel('layerManager');
   }
 }

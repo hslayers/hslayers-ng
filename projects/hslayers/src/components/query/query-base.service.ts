@@ -45,7 +45,7 @@ export class HsQueryBaseService {
   popupClassname = '';
   nonQueryablePanels = [
     'measure',
-    'composition_browser',
+    'compositions',
     'analysis',
     'sensors',
     // 'draw',

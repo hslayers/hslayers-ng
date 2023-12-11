@@ -4,7 +4,7 @@ import {Source} from 'ol/source';
 import {Vector as VectorLayer} from 'ol/layer';
 import {Vector as VectorSource} from 'ol/source';
 
-import {HsLayerDescriptor} from '../../layermanager/layer-descriptor.interface';
+import {HsLayerDescriptor} from '../../layer-manager/layer-descriptor.interface';
 import {accessRightsModel} from '../common/access-rights.model';
 
 export type VectorDataObject = {

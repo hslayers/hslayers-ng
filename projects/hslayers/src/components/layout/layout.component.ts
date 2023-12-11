@@ -16,7 +16,7 @@ import {HsLogService} from '../../common/log/log.service';
 import {HsMapHostDirective} from './map-host.directive';
 import {HsOverlayPanelContainerService} from './overlay-panel-container.service';
 import {HsPanelContainerService} from './panels/panel-container.service';
-import {HsShareUrlService} from '../permalink/share-url.service';
+import {HsShareUrlService} from '../share/share-url.service';
 import {HsUtilsService} from '../utils/utils.service';
 
 @Component({

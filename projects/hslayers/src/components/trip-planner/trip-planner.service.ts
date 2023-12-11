@@ -17,7 +17,7 @@ import {HsLanguageService} from '../language/language.service';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsMapService} from '../map/map.service';
-import {HsShareUrlService} from '../permalink/share-url.service';
+import {HsShareUrlService} from '../share/share-url.service';
 import {HsToastService} from '../layout/toast/toast.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {getHighlighted} from '../../common/feature-extensions';

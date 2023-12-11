@@ -9,7 +9,6 @@ import {HsLayoutHostDirective} from './layout.directive';
 import {HsMapHostDirective} from './map-host.directive';
 import {HsMapModule} from '../map/map.module';
 import {HsPanelHelpersModule} from './panels/panel-helpers.module';
-import {HsPrintComponent} from '../print/print.component';
 import {HsSidebarModule} from '../sidebar/sidebar.module';
 import {HsToastModule} from './toast/toast.module';
 
@@ -29,7 +28,6 @@ import {HsToastModule} from './toast/toast.module';
     HsSidebarModule,
     HsPanelHelpersModule,
     HsToastModule,
-    HsPrintComponent,
   ],
   exports: [HsDialogContainerComponent, HsLayoutComponent],
 })

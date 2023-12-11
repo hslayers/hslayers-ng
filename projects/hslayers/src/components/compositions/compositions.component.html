@@ -1,7 +1,7 @@
 <div class="card hs-main-panel h-100 overflow-hidden" style="margin-top: 0 !important;" [ngClass]="panelWidthClass"
     *ngIf="isVisible$ | async">
     <div class="hs-compositions-header" *ngIf="{layman: hsCommonLaymanService.layman$ | async } as ctx">
-        <hs-panel-header name="composition_browser" [panelTabs]="'COMPOSITIONS'">
+        <hs-panel-header name="compositions" [panelTabs]="'COMPOSITIONS'">
             <button mainButton class="btn btn-sm btn-outline-primary border-0 align-items-center d-flex gap-2"
                 (click)="openSaveMapPanel()"> {{'PANEL_HEADER.SAVECOMPOSITION' | translateHs}}
                 <i class="glyphicon icon-save-floppy"></i>
