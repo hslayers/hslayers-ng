@@ -49,7 +49,7 @@ export * from './components/query/public-api';
 export * from './components/save-map/public-api';
 export * from './components/search/public-api';
 export * from './components/sidebar/public-api';
-export * from './components/styles/public-api';
+export * from './components/styler/public-api';
 export * from './components/toolbar/public-api';
 export * from './components/trip-planner/public-api';
 export * from './components/utils/public-api';

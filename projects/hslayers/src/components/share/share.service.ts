@@ -19,7 +19,7 @@ import {HsShareUrlService} from './share-url.service';
 import {HsToastService} from '../layout/toast/toast.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {MapComposition} from '../save-map/types/map-composition.type';
-import {getShowInLayerManager, getTitle} from '../../common/layer-extensions';
+import {getShowInLayerManager} from '../../common/layer-extensions';
 
 @Injectable({
   providedIn: 'root',

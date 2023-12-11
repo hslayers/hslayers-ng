@@ -13,7 +13,7 @@ import {HsCommonLaymanService} from '../../../common/layman/layman.service';
 import {HsLaymanService} from '../../save-map/layman.service';
 import {HsLogService} from '../../../common/log/log.service';
 import {HsMapService} from '../../map/map.service';
-import {HsStylerService} from '../../styles/styler.service';
+import {HsStylerService} from '../../styler/styler.service';
 import {HsUtilsService} from '../../utils/utils.service';
 import {HsVectorLayerOptions} from './vector-layer-options.type';
 import {OverwriteResponse} from '../enums/overwrite-response';

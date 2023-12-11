@@ -14,7 +14,7 @@ import {transformExtent} from 'ol/proj';
 import {HsConfig} from 'hslayers-ng/config.service';
 import {HsEventBusService} from 'hslayers-ng/components/core/event-bus.service';
 import {HsLayoutService} from 'hslayers-ng/components/layout/layout.service';
-import {HsPanelContainerService} from 'hslayers-ng/components/layout/panels/panel-container.service';
+import {HsPanelConstructorService} from 'hslayers-ng/components/layout/panels/panel-constructor.service';
 import {HsQueryPopupWidgetContainerService} from 'hslayers-ng/components/query/query-popup-widget-container.service';
 import {HsSidebarService} from 'hslayers-ng/components/sidebar/sidebar.service';
 import {HsUtilsService} from 'hslayers-ng/components/utils/utils.service';
@@ -22,7 +22,6 @@ import {InterpolatedSource} from 'hslayers-ng/common/layers/hs.source.interpolat
 import {SPOI} from 'hslayers-ng/common/layers/hs.source.SPOI';
 import {SparqlJson} from 'hslayers-ng/common/layers/hs.source.SparqlJson';
 
-import {HsPanelConstructorService} from '../../../hslayers/src/components/layout/panels/panel-constructor.service';
 import {PopupWidgetComponent} from './popup-widget.component';
 import {SomeComponent} from './some-panel/some-panel.component';
 

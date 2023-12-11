@@ -16,7 +16,7 @@ import {HsLayoutService} from '../layout/layout.service';
 import {HsPanelBaseComponent} from '../layout/panels/panel-base.component';
 import {HsSaveMapService} from '../save-map/save-map.service';
 import {HsStylerEditDialogComponent} from './edit-dialog/edit-dialog.component';
-import {HsStylerService} from '../styles/styler.service';
+import {HsStylerService} from '../styler/styler.service';
 import {HsUploadedFiles} from '../../common/upload/upload.component';
 import {HsUtilsService} from '../utils/utils.service';
 
