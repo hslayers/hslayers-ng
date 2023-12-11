@@ -18,10 +18,10 @@ import {Style} from 'ol/style';
 import {HsLayerSelectorService} from '../layer-manager/editor/layer-selector.service';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsLegendDescriptor} from './legend-descriptor.interface';
-import {HsStylerService} from '../styles/styler.service';
+import {HsStylerService} from '../styler/styler.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {InterpolatedSource} from '../../common/layers/hs.source.interpolated';
-import {defaultStyle} from '../styles/styles';
+import {defaultStyle} from '../styler/styles';
 import {
   getAutoLegend,
   getBase,

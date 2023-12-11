@@ -15,7 +15,7 @@ import {HsMapService} from '../../map/map.service';
 import {HsQueryBaseService} from './../../query/query-base.service';
 import {HsQueryVectorService} from './../../query/query-vector.service';
 import {HsToastService} from '../../layout/toast/toast.service';
-import {defaultStyle} from '../../styles/styles';
+import {defaultStyle} from '../../styler/styles';
 
 @Component({
   selector: 'hs-draw-edit',
