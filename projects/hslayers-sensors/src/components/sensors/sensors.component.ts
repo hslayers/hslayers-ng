@@ -77,13 +77,6 @@ export class HsSensorsComponent extends HsPanelBaseComponent implements OnInit {
   }
 
   /**
-   * Check if panel is visible
-   */
-  isVisible() {
-    return this.hsLayoutService.panelVisible('sensors');
-  }
-
-  /**
    * Filter sensors list with query value
    */
   filterQuery(query) {

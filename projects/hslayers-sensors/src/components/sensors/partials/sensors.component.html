@@ -1,6 +1,5 @@
-<div class="card panel-default hs-main-panel" [hidden]="(isVisible$ | async) === false">
-    <hs-panel-header name="sensors" [title]="'SENSORS'">
-    </hs-panel-header>
+<div class="card panel-default hs-main-panel" *ngIf="isVisible$">
+    <hs-panel-header name="sensors" [panelTabs]="'SENSORS'"></hs-panel-header>
     <div class="card-body">
         <p><input type="text" class="form-control" [placeholder]="'COMMON.filter' | translateHs "
                 [(ngModel)]="query.description"></p>
