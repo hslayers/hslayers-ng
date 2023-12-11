@@ -13,7 +13,7 @@ import {HsPanelHeaderComponent} from '../layout/panels/panel-header/panel-header
 import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
 import {HsQueryModule} from '../query/query.module';
 import {HsRmLayerDialogModule} from '../../common/remove-multiple/remove-layer-dialog.module';
-import {HsStylerModule} from '../styles/styles.module';
+import {HsStylerModule} from '../styler/styles.module';
 import {TranslateCustomPipe} from '../language/translate-custom.pipe';
 
 @NgModule({

@@ -14,7 +14,7 @@ import {HsConfig} from '../../config.service';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsMapService} from '../map/map.service';
-import {HsStylerService} from '../styles/styler.service';
+import {HsStylerService} from '../styler/styler.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {setShowInLayerManager, setTitle} from '../../common/layer-extensions';
 

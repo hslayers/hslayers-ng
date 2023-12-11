@@ -57,6 +57,10 @@ export class HsPanelConstructorService {
     buttonDefinition?: HsButton,
   ): Promise<void> {
     this._createPanel(name, data);
+    /**Create styler component automatically in case LM is present */
+    if (name == 'layerManager') {
+      this._createPanel('styler', data);
+    }
     this.hsSidebarService.addButton(
       this.hsSidebarService.buttonDefinition[name] || buttonDefinition,
     );
