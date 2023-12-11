@@ -2,13 +2,13 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 
 import {Subject, Subscription, debounceTime, takeUntil} from 'rxjs';
 
-import {HS_PRMS} from '../permalink/get-params';
+import {HS_PRMS} from '../share/get-params';
 import {HsButton} from './button.interface';
 import {HsConfig} from '../../config.service';
 import {HsCoreService} from './../core/core.service';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLayoutService} from '../layout/layout.service';
-import {HsShareUrlService} from '../permalink/share-url.service';
+import {HsShareUrlService} from '../share/share-url.service';
 import {HsSidebarService} from './sidebar.service';
 
 @Component({
@@ -73,7 +73,7 @@ export class HsSidebarComponent implements OnInit, OnDestroy {
    */
   refreshButtons() {
     const disabledPanels = Object.entries(this.HsConfig.panelsEnabled).reduce(
-      (acc, [panel, isEnabled]) => (!isEnabled ? [...acc, panel] : acc),
+      (acc, [panel, isEnabled]) => (isEnabled ? [...acc, panel] : acc),
       [],
     );
 
@@ -93,12 +93,27 @@ export class HsSidebarComponent implements OnInit, OnDestroy {
         (acc, [panel, isEnabled]) => (isEnabled ? [...acc, panel] : acc),
         [],
       )
-      .filter((b) => !filteredButtonsPanels.includes(b));
+      .filter((b) =>
+        ['search', 'measure'].includes(b)
+          ? this.resloveBtnWithCondition(b)
+          : !filteredButtonsPanels.includes(b),
+      );
 
     for (const b of toBeActivated) {
       filteredButtons.push(this.HsSidebarService.buttonDefinition[b]);
     }
     this.HsSidebarService.buttonsSubject.next(filteredButtons);
+  }
+
+  /**
+   * Resolve wether search/measure buttons should be visible after config update.
+   */
+  private resloveBtnWithCondition(panel: string) {
+    return !(
+      this.HsConfig.componentsEnabled['guiOverlay'] &&
+      this.HsConfig.componentsEnabled['toolbar'] &&
+      this.HsConfig.componentsEnabled[`${panel}Toolbar`]
+    );
   }
 
   /**
