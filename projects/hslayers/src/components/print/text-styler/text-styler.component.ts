@@ -1,10 +1,10 @@
+import {AsyncPipe, CommonModule, NgClass, NgIf, NgStyle} from '@angular/common';
 import {Component, Input} from '@angular/core';
+import {FormsModule} from '@angular/forms';
 
 import {ColorEvent} from 'ngx-color';
 
 import {ColorSketchModule} from 'ngx-color/sketch';
-import {CommonModule} from '@angular/common';
-import {FormsModule} from '@angular/forms';
 import {HsColorPickerService} from '../../styler/symbolizers/color-picker/color-picker.service';
 import {HsLanguageService} from '../../language/language.service';
 import {POSITION_OPTIONS} from '../constants/position-options';
@@ -20,7 +20,15 @@ export enum ColorPickers {
   selector: 'hs-print-text-styler',
   templateUrl: './text-styler.component.html',
   standalone: true,
-  imports: [CommonModule, FormsModule, TranslateCustomPipe, ColorSketchModule],
+  imports: [
+    NgIf,
+    NgStyle,
+    NgClass,
+    AsyncPipe,
+    FormsModule,
+    TranslateCustomPipe,
+    ColorSketchModule,
+  ],
 })
 export class HsPrintTextStylerComponent {
   @Input() textStyle: TextStyle;
