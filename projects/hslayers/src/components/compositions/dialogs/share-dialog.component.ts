@@ -2,7 +2,7 @@ import {Component, ViewRef} from '@angular/core';
 
 import {HsDialogComponent} from '../../layout/dialogs/dialog-component.interface';
 import {HsDialogContainerService} from '../../layout/dialogs/dialog-container.service';
-import {HsShareService} from '../../permalink/share.service';
+import {HsShareService} from '../../share/share.service';
 @Component({
   selector: 'hs-compositions-share-dialog',
   templateUrl: './share-dialog.component.html',

@@ -31,7 +31,6 @@ import {jsonGetFeatureInfo} from '../../common/get-feature-info/json-get-feature
 export class HsQueryWmsService {
   infoCounter = 0;
   constructor(
-    private hsQueryBaseService: HsQueryBaseService,
     private hsMapService: HsMapService,
     private hsLayerUtilsService: HsLayerUtilsService,
     private hsLanguageService: HsLanguageService,
@@ -39,6 +38,7 @@ export class HsQueryWmsService {
     private httpClient: HttpClient,
     private hsLogService: HsLogService,
     private hsQueryWmtsService: HsQueryWmtsService,
+    private hsQueryBaseService: HsQueryBaseService,
   ) {
     this.hsQueryBaseService.getFeatureInfoStarted.subscribe((evt) => {
       this.infoCounter = 0;

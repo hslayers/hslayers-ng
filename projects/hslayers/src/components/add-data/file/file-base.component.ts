@@ -67,7 +67,7 @@ export class HsAddDataFileBaseComponent
       .pipe(takeUntil(this.end))
       .subscribe((success) => {
         if (success) {
-          this.hsLayoutService.setMainPanel('layermanager');
+          this.hsLayoutService.setMainPanel('layerManager');
           this.hsAddDataCommonService.setPanelToCatalogue();
         }
         this.setDataToDefault();

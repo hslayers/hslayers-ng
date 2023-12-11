@@ -6,7 +6,7 @@ import {Geometry} from 'ol/geom';
 import {Observable, Subject, lastValueFrom} from 'rxjs';
 
 import {DuplicateHandling, HsMapService} from '../map/map.service';
-import {HS_PRMS} from '../permalink/get-params';
+import {HS_PRMS} from '../share/get-params';
 import {HsCommonEndpointsService} from '../../common/endpoints/endpoints.service';
 import {HsCompositionsLaymanService} from './endpoints/compositions-layman.service';
 import {HsCompositionsMapService} from './compositions-map.service';
@@ -19,7 +19,7 @@ import {HsEventBusService} from '../core/event-bus.service';
 import {HsLanguageService} from '../language/language.service';
 import {HsLogService} from '../../common/log/log.service';
 import {HsMapCompositionDescriptor} from './models/composition-descriptor.model';
-import {HsShareUrlService} from '../permalink/share-url.service';
+import {HsShareUrlService} from '../share/share-url.service';
 import {HsToastService} from '../layout/toast/toast.service';
 import {HsUtilsService} from '../utils/utils.service';
 

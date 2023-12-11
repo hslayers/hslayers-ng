@@ -394,7 +394,7 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
     this.setDataToDefault();
     this.hsAddDataCommonService.setPanelToCatalogue();
     if (collection.length > 0) {
-      this.hsLayoutService.setMainPanel('layermanager');
+      this.hsLayoutService.setMainPanel('layerManager');
     }
     return collection;
   }
