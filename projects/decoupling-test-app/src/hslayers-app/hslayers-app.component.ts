@@ -9,7 +9,10 @@ import {Vector as VectorLayer} from 'ol/layer';
 
 import {HsConfig} from 'hslayers-ng/config.service';
 import {HsEventBusService} from 'hslayers-ng/components/core/event-bus.service';
-import {HsLayoutService} from 'hslayers-ng/components/layout/public-api';
+import {
+  HsLayoutService,
+  HsPanelConstructorService,
+} from 'hslayers-ng/components/layout/public-api';
 import {HsQueryPopupComponent} from 'hslayers-ng/components/query/query-popup/query-popup.component';
 import {HsQueryPopupService} from 'hslayers-ng/components/query/query-popup.service';
 //import {HsQueryComponent} from '../../../hslayers/src/components/query/query.component';
@@ -26,6 +29,7 @@ export class HslayersAppComponent {
     private HsEventBusService: HsEventBusService,
     hsLayoutService: HsLayoutService,
     hsQueryPopupService: HsQueryPopupService, //hsToolbarPanelContainerService: HsToolbarPanelContainerService
+    private hsPanelConstructorService: HsPanelConstructorService,
   ) {
     const count = 200;
     const features = new Array(count);
@@ -175,12 +179,14 @@ export class HslayersAppComponent {
         tripPlanner: false,
         query: true,
         addData: false,
+        print: false,
+        compositions: true,
       },
       componentsEnabled: {
         geolocationButton: true,
         guiOverlay: true,
       },
-      assetsPath: './dist/decoupling-test-app/assets',
+      assetsPath: '/assets',
       symbolizerIcons: [
         {name: 'bag', url: '/assets/icons/bag1.svg'},
         {name: 'banking', url: '/assets/icons/banking4.svg'},
@@ -345,6 +351,8 @@ export class HslayersAppComponent {
       service: hsQueryPopupService,
     });
     //hsLayoutService.createOverlay(HsGeolocationComponent, {});
+
+    this.hsPanelConstructorService.createActivePanels();
   }
   title = 'hslayers-workspace';
 }
