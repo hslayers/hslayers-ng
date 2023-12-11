@@ -11,7 +11,7 @@ import {HsDimensionDescriptor} from '../../common/get-capabilities/dimension';
 import {
   HsLayerDescriptor,
   HsLayerLoadProgress,
-} from '../layermanager/layer-descriptor.interface';
+} from '../layer-manager/layer-descriptor.interface';
 import {
   HsMapCompositionDescriptor,
   LaymanCompositionDescriptor,

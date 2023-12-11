@@ -78,7 +78,7 @@ export class HsCompositionsCatalogueService {
     });
     this.hsLayoutService.mainpanel$.subscribe((which) => {
       if (
-        this.hsLayoutService.mainpanel === 'composition_browser' ||
+        this.hsLayoutService.mainpanel === 'compositions' ||
         this.hsLayoutService.mainpanel === 'composition'
       ) {
         this.loadFilteredCompositions();
@@ -90,7 +90,7 @@ export class HsCompositionsCatalogueService {
       hsUtilsService.debounce(
         ({map, event, extent}) => {
           if (
-            (this.hsLayoutService.mainpanel != 'composition_browser' &&
+            (this.hsLayoutService.mainpanel != 'compositions' &&
               this.hsLayoutService.mainpanel != 'composition') ||
             this.extentChangeSuppressed
           ) {
@@ -124,7 +124,7 @@ export class HsCompositionsCatalogueService {
 
     this.hsCommonLaymanService.authChange.subscribe((endpoint) => {
       if (
-        this.hsLayoutService.mainpanel != 'composition_browser' &&
+        this.hsLayoutService.mainpanel != 'compositions' &&
         this.hsLayoutService.mainpanel != 'composition'
       ) {
         return;

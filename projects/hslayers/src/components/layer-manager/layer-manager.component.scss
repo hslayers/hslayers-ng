@@ -1,0 +1,114 @@
+ul.hs-lm-baselayerlist {
+    margin-bottom: 0;
+}
+
+ul.hs-lm-mapcontentlist {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+ul.hs-lm-layerlist li.list-group-item.hs-lm-layerlist-header {
+    padding: 0.3em;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    cursor: pointer;
+    margin-left: -2px;
+    margin-right: -2px;
+}
+
+ul.hs-lm-layerlist li.list-group-item.hs-lm-layerlist-header span.glyphicon {
+    font-size: 0.65rem
+}
+
+li.hs-lm-item.hovering {
+    text-decoration: underline;
+}
+
+div.list-group-item.hs-lm-list {
+    border: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+.hs-lm-list>ul.list-group.row {
+    margin-bottom: 0;
+}
+
+.hs-lm-list li .info_btn {
+    cursor: pointer;
+}
+
+.hs-lm-list li .info_btn .icon-settingsthree-gears:hover::before {
+    color: $primary;
+}
+
+
+.hs-layermanager-card li.hs-lm-item,
+li.hs-dr-item {
+    word-wrap: break-word;
+    border-left: 0;
+    border-right: 0;
+    border-top: 0;
+    padding: 0.1em;
+    padding-top: 0.4em;
+    padding-left: 0.2em;
+    /*border-bottom: 0;*/
+}
+
+div ul.hs-lm-baselayerlist .hs-lm-item-title,
+div.hs-lm-item-title.hover {
+    cursor: pointer;
+}
+
+.hs-layermanager-card .hs-lm-item-visibility {
+    margin-top: -0.42em;
+}
+
+div ul.hs-lm-baselayerlist .hs-lm-item-title:hover,
+div.hs-lm-item-title.hover:hover {
+    text-decoration: underline;
+}
+
+.sublayerContainer input[type="checkbox"].form-check-input {
+    position: absolute;
+    left: -9999px;
+}
+
+.sublayerContainer {
+    padding-bottom: 2.5px;
+}
+
+li.hs-lm-header {
+    border-left: 0;
+    border-right: 0;
+    padding-left: 2em;
+}
+
+.hs-lm-map-content-header {
+    height: 2.56em;
+}
+
+.hs-lm-deactivated-layer {
+    color: #cccccc;
+}
+
+hs-layer-manager-time-editor button.btn {
+    line-height: inherit;
+
+    &:disabled {
+        color: $gray-500 !important;
+    }
+}
+
+&.hs-mobile-view {
+    ul.hs-lm-layerlist li.list-group-item.hs-lm-layerlist-header span.glyphicon {
+        font-size: 0.8rem;
+    }
+}
+
+
+@container hslayers-element (max-width:767px) {
+    &.hs-mobile-view .hs-lm-item .icon-settingsthree-gears {
+        font-size: 1.2rem;
+    }
+}

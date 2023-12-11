@@ -10,6 +10,7 @@ export * from './panels/gui-overlay-base.component';
 export * from './panels/panel-container.component';
 export * from './panels/panel-container.service.interface';
 export * from './panels/panel-container.service';
+export * from './panels/panel-constructor.service';
 export * from './panels/panel-helpers.module';
 export * from './panels/panel-host.directive';
 export * from './panels/panel-item';

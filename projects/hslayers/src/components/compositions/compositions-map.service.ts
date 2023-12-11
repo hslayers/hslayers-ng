@@ -36,7 +36,7 @@ export class HsCompositionsMapService {
     this.hsLayoutService.mainpanel$.subscribe((which) => {
       if (this.extentLayer) {
         if (
-          this.hsLayoutService.mainpanel === 'composition_browser' ||
+          this.hsLayoutService.mainpanel === 'compositions' ||
           this.hsLayoutService.mainpanel === 'composition'
         ) {
           this.extentLayer.setVisible(true);
@@ -44,7 +44,7 @@ export class HsCompositionsMapService {
           this.extentLayer.setVisible(false);
         }
       }
-      if (which === 'composition' || which === 'composition_browser') {
+      if (which === 'composition' || which === 'compositions') {
         this.addPointerMoveListener();
       } else if (this.pointerMoveListener) {
         unByKey(this.pointerMoveListener);
@@ -54,7 +54,7 @@ export class HsCompositionsMapService {
     this.extentLayer = this.createNewExtentLayer();
     this.hsMapService.loaded().then((map) => {
       if (
-        this.hsLayoutService.mainpanel === 'composition_browser' ||
+        this.hsLayoutService.mainpanel === 'compositions' ||
         this.hsLayoutService.mainpanel === 'composition'
       ) {
         this.addPointerMoveListener();

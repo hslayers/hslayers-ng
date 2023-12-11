@@ -5,7 +5,7 @@ import {Vector as VectorSource} from 'ol/source';
 
 import {HsLanguageService} from '../language/language.service';
 import {HsStylerService} from './styler.service';
-import {listNumericAttributes} from '../layermanager/widgets/idw-widget.component';
+import {listNumericAttributes} from '../layer-manager/widgets/idw-widget.component';
 
 @Component({
   selector: 'hs-add-colormap',

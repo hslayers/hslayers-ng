@@ -30,7 +30,7 @@ export class HsCompositionsComponent
   optionsMenuOpen = false;
   selectedCompId: string;
   loadFilteredCompositions: any;
-  name = 'composition_browser';
+  name = 'compositions';
 
   constructor(
     private hsCompositionsService: HsCompositionsService,

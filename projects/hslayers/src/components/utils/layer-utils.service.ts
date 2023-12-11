@@ -22,7 +22,7 @@ import {Tile as TileLayer} from 'ol/layer';
 import {isEmpty} from 'ol/extent';
 
 import {HsLanguageService} from '../language/language.service';
-import {HsLayerDescriptor} from '../layermanager/layer-descriptor.interface';
+import {HsLayerDescriptor} from '../layer-manager/layer-descriptor.interface';
 import {HsMapService} from '../map/map.service';
 import {HsUtilsService} from './utils.service';
 import {HsWmsLayer} from '../../common/get-capabilities/wms-get-capabilities-response.interface';

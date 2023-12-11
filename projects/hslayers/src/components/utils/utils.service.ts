@@ -226,6 +226,7 @@ export class HsUtilsService {
    * @returns Returns function which is debounced
    */
   debounce(func, wait: number, immediate: boolean, context) {
+    // eslint-disable-next-line @typescript-eslint/no-this-alias
     context ??= this;
     return function (...args) {
       const later = function () {
@@ -429,6 +430,13 @@ export class HsUtilsService {
    */
   capitalizeFirstLetter(target: string): string {
     return target.charAt(0).toUpperCase() + target.slice(1);
+  }
+
+  /**
+   * Transforms string from camelCase to kebab-case
+   */
+  camelToKebab(str) {
+    return str.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
   }
 
   undefineEmptyString(str: string): any {

@@ -80,7 +80,7 @@ export class HsStylerComponent
         this.hsStylerService.setSldQml();
       }
     }
-    this.hsLayoutService.setMainPanel('layermanager');
+    this.hsLayoutService.setMainPanel('layerManager');
   }
 
   uploadSld(): void {

@@ -18,7 +18,7 @@ import {HsAddDataVectorService} from '../vector.service';
 import {HsCommonLaymanService} from '../../../../common/layman/layman.service';
 import {HsConfig} from '../../../../config.service';
 import {HsLanguageService} from '../../../language/language.service';
-import {HsLayerManagerService} from '../../../layermanager/layermanager.service';
+import {HsLayerManagerService} from '../../../layer-manager/layer-manager.service';
 import {HsLayerUtilsService} from '../../../utils/layer-utils.service';
 import {HsLayoutService} from '../../../layout/layout.service';
 import {HsMapService} from '../../../map/map.service';
@@ -146,7 +146,7 @@ export class HsAddDataVectorFileComponent
    * After layer has successfully been added to the map, move to LM panel and clean up the code
    */
   moveToLayerManager(): void {
-    this.hsLayoutService.setMainPanel('layermanager');
+    this.hsLayoutService.setMainPanel('layerManager');
     this.hsAddDataVectorService.setPanelToCatalogue();
     this.setToDefault();
   }

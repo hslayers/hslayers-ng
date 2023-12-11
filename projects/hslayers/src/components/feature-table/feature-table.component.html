@@ -1,5 +1,5 @@
 <div class="card hs-main-panel" *ngIf="isVisible$ | async">
-    <hs-panel-header name="feature_table" [panelTabs]="'FEATURE_TABLE'"></hs-panel-header>
+    <hs-panel-header name="feature-table" [panelTabs]="'FEATURE_TABLE'"></hs-panel-header>
     <div class="card-body">
         <div *ngFor="let layer of layers">
             <hs-layer-features [layer]="layer"></hs-layer-features>

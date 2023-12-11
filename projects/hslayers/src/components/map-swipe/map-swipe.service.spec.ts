@@ -5,13 +5,13 @@ import {HsConfig} from '../../config.service';
 import {HsConfigMock} from '../../config.service.mock';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsEventBusServiceMock} from '../core/event-bus.service.mock';
-import {HsLayerEditorService} from '../layermanager/editor/layer-editor.service';
-import {HsLayerManagerService} from '../layermanager/layermanager.service';
+import {HsLayerEditorService} from '../layer-manager/editor/layer-editor.service';
+import {HsLayerManagerService} from '../layer-manager/layer-manager.service';
 import {HsLayerShiftingService} from '../../common/layer-shifting/layer-shifting.service';
 import {HsMapService} from '../map/map.service';
 import {HsMapServiceMock} from '../map/map.service.mock';
 import {HsMapSwipeService} from './map-swipe.service';
-import {HsShareUrlService} from '../permalink/share-url.service';
+import {HsShareUrlService} from '../share/share-url.service';
 import {HsToastService} from '../layout/toast/toast.service';
 import {mockHsLayerShiftingService} from '../../common/layer-shifting/layer-shifting.service.mock';
 

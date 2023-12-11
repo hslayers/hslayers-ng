@@ -4,7 +4,7 @@ describe('Hslayers application', () => {
     //Open layer manager
     cy.get('.hs-sidebar-item[data-cy="layermanager"]').click();
     //Turn off all layers
-    cy.get('hs-layermanager-layer-list li .d-flex button.hs-checkmark').each(
+    cy.get('hs-layer-manager-layer-list li .d-flex button.hs-checkmark').each(
       (button) => {
         cy.wrap(button).click();
       },

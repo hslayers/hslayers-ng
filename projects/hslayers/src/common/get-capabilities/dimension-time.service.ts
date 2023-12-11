@@ -4,7 +4,7 @@ import {Subject} from 'rxjs';
 import {ImageWMS, Source, TileWMS} from 'ol/source';
 import {Layer} from 'ol/layer';
 
-import {HsLayerDescriptor} from '../../components/layermanager/layer-descriptor.interface';
+import {HsLayerDescriptor} from '../../components/layer-manager/layer-descriptor.interface';
 import {HsLogService} from '../log/log.service';
 import {HsUtilsService} from '../../components/utils/utils.service';
 import {HsWmsLayer} from './wms-get-capabilities-response.interface';

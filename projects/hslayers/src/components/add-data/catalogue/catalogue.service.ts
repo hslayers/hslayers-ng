@@ -494,7 +494,7 @@ export class HsAddDataCatalogueService extends HsAddDataCatalogueParams {
             },
           });
         }
-        this.hsLayoutService.setMainPanel('layermanager');
+        this.hsLayoutService.setMainPanel('layerManager');
       }
     } else if (['KML', 'GEOJSON'].includes(whatToAdd.type)) {
       const layer = await this.hsAddDataVectorService.addVectorLayer(
@@ -518,7 +518,7 @@ export class HsAddDataCatalogueService extends HsAddDataCatalogueParams {
         layer: whatToAdd.recordType === 'dataset' ? whatToAdd.name : undefined,
       });
     } else {
-      this.hsLayoutService.setMainPanel('layermanager');
+      this.hsLayoutService.setMainPanel('layerManager');
     }
     return whatToAdd.type;
   }

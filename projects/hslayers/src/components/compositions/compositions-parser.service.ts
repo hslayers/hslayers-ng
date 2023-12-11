@@ -23,7 +23,7 @@ import {HsConfig} from '../../config.service';
 import {HsDialogContainerService} from '../layout/dialogs/dialog-container.service';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLanguageService} from '../language/language.service';
-import {HsLayerManagerService} from '../layermanager/layermanager.service';
+import {HsLayerManagerService} from '../layer-manager/layer-manager.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsLogService} from '../../common/log/log.service';
 import {HsToastService} from '../layout/toast/toast.service';
@@ -471,7 +471,7 @@ export class HsCompositionsParserService {
       !this.loadingOptions.suspendPanelChange
     ) {
       this.loadingOptions.suspendPanelChange = false;
-      this.hsLayoutService.setMainPanel('layermanager');
+      this.hsLayoutService.setMainPanel('layerManager');
     }
     this.composition_edited = false;
     this.hsEventBusService.compositionLoads.next(responseData);

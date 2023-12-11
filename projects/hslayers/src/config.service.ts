@@ -59,16 +59,15 @@ export class HsConfigObject {
     legend?: boolean;
     measure?: boolean;
     query?: boolean;
-    composition_browser?: boolean;
+    compositions?: boolean;
     draw?: boolean;
-    datasource_selector?: boolean;
-    layermanager?: boolean;
-    feature_table?: boolean;
+    layerManager?: boolean;
+    featureTable?: boolean;
     feature_crossfilter?: boolean;
     print?: boolean;
     saveMap?: boolean;
     language?: boolean;
-    permalink?: boolean;
+    share?: boolean;
     sensors?: boolean;
     filter?: boolean;
     search?: boolean;
@@ -166,14 +165,14 @@ export class HsConfigObject {
     this.pathExclusivity = false;
     this.panelsEnabled = {
       legend: true,
-      composition_browser: true,
+      compositions: true,
       measure: true,
       draw: true,
-      layermanager: true,
+      layerManager: true,
       print: true,
       saveMap: true,
       language: true,
-      permalink: true,
+      share: true,
       query: true,
       sensors: false,
       /**
@@ -204,7 +203,7 @@ export class HsConfigObject {
     this.panelWidths = {
       default: 425,
       ows: 700,
-      composition_browser: 550,
+      compositions: 550,
       addData: 700,
       mapSwipe: 550,
     };

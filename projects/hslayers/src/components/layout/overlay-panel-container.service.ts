@@ -1,6 +1,5 @@
-import {Injectable} from '@angular/core';
-
 import {HsPanelContainerService} from './panels/panel-container.service';
+import {Injectable} from '@angular/core';
 
 @Injectable({
   providedIn: 'root',

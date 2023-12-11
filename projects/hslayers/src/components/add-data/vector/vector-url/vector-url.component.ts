@@ -59,7 +59,7 @@ export class HsAddDataVectorUrlComponent implements OnInit, OnDestroy {
     const response: {layer; complete: boolean} =
       await this.hsAddDataVectorService.addNewLayer(this.data);
     if (response.complete) {
-      this.hsLayoutService.setMainPanel('layermanager');
+      this.hsLayoutService.setMainPanel('layerManager');
       this.setDataToDefault();
     }
   }

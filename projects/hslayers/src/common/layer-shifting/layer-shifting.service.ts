@@ -4,7 +4,7 @@ import {Layer} from 'ol/layer';
 import {Source} from 'ol/source';
 
 import {HsEventBusService} from '../../components/core/event-bus.service';
-import {HsLayerManagerService} from '../../components/layermanager/layermanager.service';
+import {HsLayerManagerService} from '../../components/layer-manager/layer-manager.service';
 import {HsMapService} from '../../components/map/map.service';
 import {HsUtilsService} from '../../components/utils/utils.service';
 import {getBase} from '../layer-extensions';

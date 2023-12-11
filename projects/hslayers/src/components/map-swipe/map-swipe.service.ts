@@ -7,13 +7,13 @@ import {Source} from 'ol/source';
 
 import {HsConfig} from '../../config.service';
 import {HsEventBusService} from '../core/event-bus.service';
-import {HsLayerEditorService} from '../layermanager/editor/layer-editor.service';
-import {HsLayerManagerService} from '../layermanager/layermanager.service';
+import {HsLayerEditorService} from '../layer-manager/editor/layer-editor.service';
+import {HsLayerManagerService} from '../layer-manager/layer-manager.service';
 import {HsLayerShiftingService} from '../../common/layer-shifting/layer-shifting.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsLogService} from '../../common/log/log.service';
 import {HsMapService} from '../map/map.service';
-import {HsShareUrlService} from '../permalink/share-url.service';
+import {HsShareUrlService} from '../share/share-url.service';
 import {HsToastService} from '../layout/toast/toast.service';
 import {LayerListItem} from './../../common/layer-shifting/layer-shifting.service';
 import {SwipeControl} from './swipe-control/swipe.control';

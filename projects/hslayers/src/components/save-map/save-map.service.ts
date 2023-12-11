@@ -26,7 +26,7 @@ import {CompoData} from './types/compo-data.type';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsLogService} from '../../common/log/log.service';
 import {HsMapService} from '../map/map.service';
-import {HsShareThumbnailService} from '../permalink/share-thumbnail.service';
+import {HsShareThumbnailService} from '../share/share-thumbnail.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {LayerJSON} from './types/layer-json.type';
 import {MapComposition} from './types/map-composition.type';

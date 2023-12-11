@@ -1,9 +1,9 @@
 import {Component, Input} from '@angular/core';
 import {Vector as VectorSource} from 'ol/source';
 
-import {HsLayerSelectorService} from '../../layermanager/editor/layer-selector.service';
+import {HsLayerSelectorService} from '../../layer-manager/editor/layer-selector.service';
 import {HsStylerPartBaseComponent} from '../style-part-base.component';
-import {listNumericAttributes} from '../../layermanager/widgets/idw-widget.component';
+import {listNumericAttributes} from '../../layer-manager/widgets/idw-widget.component';
 
 @Component({
   selector: 'hs-comparison-filter',

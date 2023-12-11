@@ -11,7 +11,7 @@ import {HsDialogContainerService} from '../../layout/dialogs/dialog-container.se
 import {HsLanguageService} from '../../language/language.service';
 import {HsLayoutService} from '../../layout/layout.service';
 import {HsLogService} from '../../../common/log/log.service';
-import {HsShareUrlService} from '../../permalink/share-url.service';
+import {HsShareUrlService} from '../../share/share-url.service';
 import {servicesSupportedByUrl} from './services-supported.const';
 
 @Component({

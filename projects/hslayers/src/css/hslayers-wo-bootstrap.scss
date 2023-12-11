@@ -740,9 +740,9 @@ $list-group-item-padding-x: 1.25rem;
   }
 
   @import "../components/layout/layout.component.scss";
-  @import "../components/layermanager/layermanager.component.scss";
-  @import "../components/layermanager/logical-list/layerlist.component.scss";
-  @import "../components/layermanager/gallery/layermanager-gallery.component.scss";
+  @import "../components/layer-manager/layer-manager.component.scss";
+  @import "../components/layer-manager/logical-list/layerlist.component.scss";
+  @import "../components/layer-manager/gallery/layer-manager-gallery.component.scss";
   @import "../components/sidebar/sidebar.component.scss";
   @import "../components/geolocation/geolocation.component.scss";
   @import "../components/sidebar/impressum.component.scss";

@@ -10,7 +10,7 @@ import {HsGetCapabilitiesErrorComponent} from './common/capabilities-error-dialo
 import {HsLanguageService} from '../language/language.service';
 import {HsLayoutService} from '../layout/layout.service';
 import {HsPanelBaseComponent} from '../layout/panels/panel-base.component';
-import {HsShareUrlService} from '../permalink/share-url.service';
+import {HsShareUrlService} from '../share/share-url.service';
 import {HsSidebarService} from '../sidebar/sidebar.service';
 import {servicesSupportedByUrl} from './url/services-supported.const';
 

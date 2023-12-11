@@ -15,7 +15,7 @@ import {
 } from 'ol/source';
 import {Style} from 'ol/style';
 
-import {HsLayerSelectorService} from '../layermanager/editor/layer-selector.service';
+import {HsLayerSelectorService} from '../layer-manager/editor/layer-selector.service';
 import {HsLayerUtilsService} from '../utils/layer-utils.service';
 import {HsLegendDescriptor} from './legend-descriptor.interface';
 import {HsStylerService} from '../styles/styler.service';
