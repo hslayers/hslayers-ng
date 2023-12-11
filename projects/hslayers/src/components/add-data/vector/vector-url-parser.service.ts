@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 
 import {HsAddDataVectorService} from './vector.service';
 import {HsMapService} from '../../map/map.service';
-import {HsShareUrlService} from '../../permalink/share-url.service';
+import {HsShareUrlService} from '../../share/share-url.service';
 
 @Injectable({
   providedIn: 'root',

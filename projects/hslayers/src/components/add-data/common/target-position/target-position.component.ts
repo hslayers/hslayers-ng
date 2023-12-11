@@ -3,8 +3,8 @@ import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {Layer} from 'ol/layer';
 import {Source} from 'ol/source';
 
-import {HsLayerDescriptor} from '../../../layermanager/layer-descriptor.interface';
-import {HsLayerManagerService} from '../../../layermanager/layermanager.service';
+import {HsLayerDescriptor} from '../../../layer-manager/layer-descriptor.interface';
+import {HsLayerManagerService} from '../../../layer-manager/layer-manager.service';
 import {HsLayerUtilsService} from '../../../utils/layer-utils.service';
 
 @Component({

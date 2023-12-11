@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 
 import {HsPrintLegendService} from './print-legend.service';
-import {HsShareThumbnailService} from '../permalink/share-thumbnail.service';
+import {HsShareThumbnailService} from '../share/share-thumbnail.service';
 import {ImprintObj} from './types/imprint-object.type';
 import {TextStyle} from './types/text-style.type';
 

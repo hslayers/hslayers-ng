@@ -14,7 +14,7 @@ import {HsLogService} from './../../common/log/log.service';
 import {HsMapService} from '../map/map.service';
 import {HsSaveMapService} from './save-map.service';
 import {HsSaverService} from './interfaces/saver-service.interface';
-import {HsShareService} from '../permalink/share.service';
+import {HsShareService} from '../share/share.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {LaymanCompositionDescriptor} from '../compositions/models/composition-descriptor.model';
 import {MapComposition} from './types/map-composition.type';
@@ -180,8 +180,8 @@ export class HsSaveMapManagerService extends HsSaveMapManagerParams {
       filtered.length === 0
         ? 'private'
         : filtered.length === 1 && filtered[0] === 'EVERYONE'
-        ? filtered[0]
-        : access.join(',');
+          ? filtered[0]
+          : access.join(',');
   }
 
   /**
@@ -376,7 +376,7 @@ export class HsSaveMapManagerService extends HsSaveMapManagerParams {
       this.statusData.error = error;
     } else {
       this.statusData.resultCode = 'success';
-      this.hsLayoutService.setMainPanel('layermanager', true);
+      this.hsLayoutService.setMainPanel('layerManager', true);
     }
     this.saveMapResulted.next(this.statusData);
   }

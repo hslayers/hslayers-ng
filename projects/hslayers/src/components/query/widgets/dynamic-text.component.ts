@@ -4,7 +4,7 @@ import {DomSanitizer, SafeHtml} from '@angular/platform-browser';
 import {Feature} from 'ol';
 import {Geometry} from 'ol/geom';
 
-import {HsLayerDescriptor} from '../../layermanager/layer-descriptor.interface';
+import {HsLayerDescriptor} from '../../layer-manager/layer-descriptor.interface';
 import {HsQueryPopupWidgetBaseComponent} from '../query-popup-widget-base.component';
 import {getPopUp} from '../../../common/layer-extensions';
 

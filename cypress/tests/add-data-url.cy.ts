@@ -1,9 +1,9 @@
 function checkIfLayerAdded(layerName) {
   cy.get(`hs-panel-header[name="layermanager"]`).should('be.visible');
   cy.get(
-    'hs-layermanager-layer-list li:first .d-flex button.hs-lm-item-visibility',
+    'hs-layer-manager-layer-list li:first .d-flex button.hs-lm-item-visibility',
   ).should('have.class', 'hs-checkmark');
-  cy.get('hs-layermanager-layer-list li:first .hs-lm-item-title').should(
+  cy.get('hs-layer-manager-layer-list li:first .hs-lm-item-title').should(
     'have.text',
     ` ${layerName} `, //Extra padding around title
   );
@@ -39,7 +39,7 @@ describe('Hslayers application', () => {
     //Open layer manager
     cy.get('.hs-sidebar-item[data-cy="layermanager"]').click();
     //Turn off all layers
-    cy.get('hs-layermanager-layer-list li .d-flex button.hs-checkmark').each(
+    cy.get('hs-layer-manager-layer-list li .d-flex button.hs-checkmark').each(
       (button) => {
         cy.wrap(button).click();
       },

@@ -8,7 +8,7 @@ import {HsExternalService} from './components/external/external.service';
 import {HsGeolocationComponent} from './components/geolocation/geolocation.component';
 import {HsInfoComponent} from './components/info/info.component';
 
-import {HsLayerManagerGalleryComponent} from './components/layer-manager/gallery/layermanager-gallery.component';
+import {HsLayerManagerGalleryComponent} from './components/layer-manager/gallery/layer-manager-gallery.component';
 import {HsLayoutComponent} from './components/layout/layout.component';
 
 import {HsMapSwipeService} from './components/map-swipe/map-swipe.service';

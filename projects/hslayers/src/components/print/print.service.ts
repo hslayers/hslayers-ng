@@ -7,7 +7,7 @@ import {HsPrintImprintService} from './print-imprint.service';
 import {HsPrintLegendService} from './print-legend.service';
 import {HsPrintScaleService} from './print-scale.service';
 import {HsPrintTitleService} from './print-title.service';
-import {HsShareThumbnailService} from '../permalink/share-thumbnail.service';
+import {HsShareThumbnailService} from '../share/share-thumbnail.service';
 import {PrintModel} from './types/print-object.type';
 import {xPos, yPos} from './types/xy-positions.type';
 

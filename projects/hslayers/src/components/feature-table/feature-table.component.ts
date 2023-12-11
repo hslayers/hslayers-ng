@@ -19,7 +19,7 @@ export class HsFeatureTableComponent
   implements OnInit
 {
   layers: VectorLayer<VectorSource>[] = [];
-  name = 'feature_table';
+  name = 'feature-table';
   constructor(
     private hsFeatureTableService: HsFeatureTableService,
     private hsConfig: HsConfig,
@@ -32,7 +32,7 @@ export class HsFeatureTableComponent
 
   ngOnInit(): void {
     this.hsSidebarService.addButton({
-      panel: 'feature_table',
+      panel: 'featureTable',
       module: 'hs.feature-table',
       order: 14,
       fits: true,
