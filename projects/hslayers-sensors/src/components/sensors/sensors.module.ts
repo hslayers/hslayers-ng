@@ -11,7 +11,6 @@ import {
   HsPanelHeaderComponent,
   TranslateCustomPipe,
 } from 'hslayers-ng';
-import {HsPanelHelpersModule} from 'hslayers-ng';
 import {NgbDatepickerModule} from '@ng-bootstrap/ng-bootstrap';
 
 import {HsSensorsComponent} from './sensors.component';
@@ -29,7 +28,6 @@ import {HsSensorsUnitListItemComponent} from './sensors-unit-list-item.component
   ],
   imports: [
     CommonModule,
-    HsPanelHelpersModule,
     HsLogModule,
     FormsModule,
     NgbDatepickerModule,
