@@ -22,8 +22,8 @@ export class HsSidebarService {
       description: 'SIDEBAR.descriptions.MAP_SWIPE',
       icon: 'icon-resizehorizontalalt',
     },
-    'layermanager': {
-      panel: 'layermanager',
+    'layerManager': {
+      panel: 'layerManager',
       module: 'hs.layermanager',
       order: 0,
       fits: true,
@@ -49,8 +49,8 @@ export class HsSidebarService {
       description: 'SIDEBAR.descriptions.ADDLAYERS',
       icon: 'icon-database',
     },
-    'composition_browser': {
-      panel: 'composition_browser',
+    'compositions': {
+      panel: 'compositions',
       module: 'hs.compositions',
       order: 3,
       fits: true,
@@ -78,8 +78,8 @@ export class HsSidebarService {
         return this.HsLanguageService.getCurrentLanguageCode().toUpperCase();
       },
     },
-    'permalink': {
-      panel: 'permalink',
+    'share': {
+      panel: 'share',
       module: 'hs.permalink',
       order: 11,
       fits: true,

@@ -4,7 +4,6 @@ import {ReplaySubject, Subject} from 'rxjs';
 import {HsPanelComponent} from './panel-component.interface';
 import {HsPanelContainerServiceInterface} from './panel-container.service.interface';
 import {HsPanelItem} from './panel-item';
-import {KeyNumberDict} from '../../../config.service';
 
 @Injectable({
   providedIn: 'root',
