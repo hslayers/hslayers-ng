@@ -20,13 +20,11 @@ import {HsQueryPopupService} from './components/query/query-popup.service';
 import {HsQueryPopupWidgetContainerService} from './components/query/query-popup-widget-container.service';
 
 import {HsSearchToolbarComponent} from './components/search/search-toolbar.component';
-import {HsStylerComponent} from './components/styles/styler.component';
 import {HsToolbarComponent} from './components/toolbar/toolbar.component';
 import {HsToolbarPanelContainerService} from './components/toolbar/toolbar-panel-container.service';
 
 import {HsOverlayPanelContainerService} from './components/layout/overlay-panel-container.service';
 import {HsPanelConstructorService} from './components/layout/panels/panel-constructor.service';
-import {HsPanelContainerService} from './components/layout/panels/panel-container.service';
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
@@ -47,7 +45,6 @@ export class HslayersComponent implements OnInit {
     private HsMapSwipeService: HsMapSwipeService, //Leave this, need to inject somewhere
     private hsQueryPopupWidgetContainerService: HsQueryPopupWidgetContainerService, //Leave this, need to inject somewhere
     private hsExternalService: HsExternalService, //Leave this, need to inject somewhere
-    private HsPanelContainerService: HsPanelContainerService,
     private HsPanelConstructorService: HsPanelConstructorService,
   ) {}
 
@@ -63,8 +60,6 @@ export class HslayersComponent implements OnInit {
      * Create panel components
      */
     this.HsPanelConstructorService.createActivePanels();
-
-    this.HsPanelContainerService.create(HsStylerComponent, {});
 
     this.hsToolbarPanelContainerService.create(HsSearchToolbarComponent, {});
     this.hsToolbarPanelContainerService.create(HsDrawToolbarComponent, {});

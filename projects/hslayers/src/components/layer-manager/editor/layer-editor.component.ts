@@ -30,7 +30,7 @@ import {HsMapService} from '../../map/map.service';
 import {HsMetadataWidgetComponent} from '../widgets/metadata-widget.component';
 import {HsOpacityWidgetComponent} from '../widgets/opacity-widget.component';
 import {HsScaleWidgetComponent} from '../widgets/scale-widget.component';
-import {HsStylerService} from '../../styles/styler.service';
+import {HsStylerService} from '../../styler/styler.service';
 import {HsTypeWidgetComponent} from '../widgets/type-widget.component';
 import {HsWmsSourceWidgetComponent } from '../widgets/wms-source-widget/wms-source-widget.component';
 import {

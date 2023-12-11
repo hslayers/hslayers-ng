@@ -37,8 +37,8 @@ import {HsPanelHeaderComponent} from '../layout/panels/panel-header/panel-header
 import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
 import {HsSaveMapService} from '../save-map/save-map.service';
 import {HsSaveMapServiceMock} from '../save-map/save-map.service.mock';
-import {HsStylerModule} from '../styles/styles.module';
-import {HsStylerService} from '../styles/styler.service';
+import {HsStylerModule} from '../styler/styles.module';
+import {HsStylerService} from '../styler/styler.service';
 import {HsUtilsService} from '../utils/utils.service';
 import {HsUtilsServiceMock} from '../utils/utils.service.mock';
 import {TranslateCustomPipe} from '../language/translate-custom.pipe';

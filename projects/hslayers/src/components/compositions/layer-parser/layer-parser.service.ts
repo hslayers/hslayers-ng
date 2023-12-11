@@ -27,7 +27,7 @@ import {HsCommonLaymanService} from '../../../common/layman/layman.service';
 import {HsLanguageService} from '../../language/language.service';
 import {HsLogService} from '../../../common/log/log.service';
 import {HsMapService} from '../../map/map.service';
-import {HsStylerService} from '../../styles/styler.service';
+import {HsStylerService} from '../../styler/styler.service';
 import {HsToastService} from '../../layout/toast/toast.service';
 import {HsVectorLayerOptions} from '../../add-data/vector/vector-layer-options.type';
 import {SparqlJson} from '../../../common/layers/hs.source.SparqlJson';

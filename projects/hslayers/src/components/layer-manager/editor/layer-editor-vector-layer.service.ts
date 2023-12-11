@@ -6,7 +6,7 @@ import {Layer, Vector as VectorLayer} from 'ol/layer';
 
 import {HsConfig} from './../../../config.service';
 import {HsMapService} from '../../map/map.service';
-import {HsStylerService} from './../../styles/styler.service';
+import {HsStylerService} from './../../styler/styler.service';
 import {HsUtilsService} from '../../utils/utils.service';
 
 @Injectable({

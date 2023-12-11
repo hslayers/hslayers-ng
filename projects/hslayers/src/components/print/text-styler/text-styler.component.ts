@@ -5,7 +5,7 @@ import {ColorEvent} from 'ngx-color';
 import {ColorSketchModule} from 'ngx-color/sketch';
 import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
-import {HsColorPickerService} from '../../styles/symbolizers/color-picker/color-picker.service';
+import {HsColorPickerService} from '../../styler/symbolizers/color-picker/color-picker.service';
 import {HsLanguageService} from '../../language/language.service';
 import {POSITION_OPTIONS} from '../constants/position-options';
 import {TEXT_STYLING_OPTIONS} from '../constants/text-styling-options';
