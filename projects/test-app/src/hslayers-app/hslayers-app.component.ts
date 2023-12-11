@@ -22,6 +22,7 @@ import {InterpolatedSource} from 'hslayers-ng/common/layers/hs.source.interpolat
 import {SPOI} from 'hslayers-ng/common/layers/hs.source.SPOI';
 import {SparqlJson} from 'hslayers-ng/common/layers/hs.source.SparqlJson';
 
+import {HsPanelConstructorService} from '../../../hslayers/src/components/layout/panels/panel-constructor.service';
 import {PopupWidgetComponent} from './popup-widget.component';
 import {SomeComponent} from './some-panel/some-panel.component';
 
@@ -33,25 +34,27 @@ import {SomeComponent} from './some-panel/some-panel.component';
 export class HslayersAppComponent {
   constructor(
     public hsConfig: HsConfig,
+    private hsUtilsService: HsUtilsService,
     private hsEventBusService: HsEventBusService,
     private hsQueryPopupWidgetContainerService: HsQueryPopupWidgetContainerService,
-    private hsUtilsService: HsUtilsService,
     private httpClient: HttpClient,
     public hsSidebarService: HsSidebarService,
-    public hsPanelContainerService: HsPanelContainerService,
+    public hsPanelConstructorService: HsPanelConstructorService,
     public hsLayoutService: HsLayoutService,
   ) {
-    /* Create new button in the sidebar */
-    this.hsSidebarService.addButton({
-      panel: 'custom',
-      module: 'some',
-      order: 0,
-      title: 'Custom panel',
-      description: 'Custom panel with some fancy features',
-      icon: 'icon-analytics-piechart',
-    });
-    /* Create new panel itself */
-    this.hsPanelContainerService.create(SomeComponent, {});
+    /* Create new panel and its button in the sidebar */
+    this.hsPanelConstructorService.createPanelAndButton(
+      SomeComponent,
+      {
+        panel: 'custom',
+        module: 'some',
+        order: 0,
+        title: 'Custom panel',
+        description: 'Custom panel with some fancy features',
+        icon: 'icon-analytics-piechart',
+      },
+      {},
+    );
     /* Switch to it */
     this.hsEventBusService.layoutLoads.subscribe(() => {
       this.hsLayoutService.setDefaultPanel('custom');
@@ -339,7 +342,7 @@ export class HslayersAppComponent {
     });
     this.hsConfig.update({
       panelsEnabled: {
-        draw: true,
+        draw: false,
         mapSwipe: true,
         language: true,
       },
