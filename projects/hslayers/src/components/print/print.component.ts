@@ -1,4 +1,4 @@
-import {CommonModule} from '@angular/common';
+import {AsyncPipe, NgClass, NgIf} from '@angular/common';
 import {Component, OnInit} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 
@@ -20,17 +20,6 @@ import {TranslateCustomPipe} from '../language/translate-custom.pipe';
 @Component({
   selector: 'hs-print',
   templateUrl: './print.component.html',
-  standalone: true,
-  imports: [
-    HsPrintTextStylerComponent,
-    HsPrintScaleStylerComponent,
-    HsPrintLegendStylerComponent,
-    HsPrintImprintStylerComponent,
-    CommonModule,
-    FormsModule,
-    TranslateCustomPipe,
-    HsPanelHeaderComponent,
-  ],
 })
 export class HsPrintComponent extends HsPanelBaseComponent implements OnInit {
   name = 'print';
