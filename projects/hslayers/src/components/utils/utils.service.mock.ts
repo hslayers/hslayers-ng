@@ -60,6 +60,14 @@ export class HsUtilsServiceMock {
     );
   }
 
+  capitalizeFirstLetter(target: string): string {
+    return target.charAt(0).toUpperCase() + target.slice(1);
+  }
+
+  camelToKebab(str) {
+    return str.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
+  }
+
   proxify(url, toEncoding) {
     return '/proxy/' + url;
   }

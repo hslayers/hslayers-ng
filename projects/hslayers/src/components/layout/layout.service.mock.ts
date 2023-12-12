@@ -1,13 +1,22 @@
 import {BehaviorSubject} from 'rxjs';
+import {HsConfig} from '../../config.service';
 
 export class HsLayoutServiceMock {
   panel_statuses = {};
   panel_enabled = {};
-  mainpanel: '';
+  mainpanel$ = new BehaviorSubject('');
+  get mainpanel() {
+    return this.mainpanel$.getValue();
+  }
   contentWrapper = document.createElement('div');
   sidebarPosition$ = new BehaviorSubject('left');
 
-  constructor() {}
+  /**
+   * Using HsConfig imported into layoutService in HsPanelBaseComponent
+   * for convenience of not having to pass it into super everywhere thus
+   * it needs to be that way it tests as well
+   */
+  constructor(public hsConfig: HsConfig) {}
 
   componentEnabled() {
     return true;

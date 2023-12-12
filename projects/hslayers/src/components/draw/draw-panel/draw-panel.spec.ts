@@ -86,6 +86,8 @@ describe('HsDrawPanel', () => {
   let component: DrawPanelComponent;
   let service: HsDrawService;
   beforeEach(() => {
+    const mockedConfig = new HsConfigMock();
+
     TestBed.configureTestingModule({
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
       imports: [
@@ -98,10 +100,13 @@ describe('HsDrawPanel', () => {
       providers: [
         HsDrawService,
         HsLanguageService,
-        {provide: HsLayoutService, useValue: new HsLayoutServiceMock()},
+        {
+          provide: HsLayoutService,
+          useValue: new HsLayoutServiceMock(mockedConfig),
+        },
         {provide: HsMapService, useValue: new HsMapServiceMock()},
         {provide: HsLayerUtilsService, useValue: mockLayerUtilsService()},
-        {provide: HsConfig, useValue: new HsConfigMock()},
+        {provide: HsConfig, useValue: mockedConfig},
         {provide: HsQueryBaseService, useValue: mockQueryBaseService},
         {provide: HsQueryVectorService, useValue: new HsQueryVectorMock()},
         {provide: HsLaymanService, useValue: mockLaymanService},

@@ -1,5 +1,6 @@
 export {HsPrintComponent} from './print.component';
 export {HsPrintService} from './print.service';
+export {PrintModule} from './print.module';
 // export * from './constants/text-styling-options';
 // export * from './constants/position-options';
 // export * from './types/xy-positions.type';

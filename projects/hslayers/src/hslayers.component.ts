@@ -1,27 +1,43 @@
-import {Component, Input, OnInit, ViewChild} from '@angular/core';
+import {Component, Input, OnInit, Type, ViewChild} from '@angular/core';
 
+import {HsAddDataComponent} from './components/add-data/add-data.component';
+import {HsCompositionsComponent} from './components/compositions/compositions.component';
 import {HsConfig, HsConfigObject} from './config.service';
-
+import {HsDrawComponent} from './components/draw/draw.component';
 import {HsDrawToolbarComponent} from './components/draw/draw-toolbar/draw-toolbar.component';
+// import {HsFeatureInfoComponent} from './components/query/query-popup-feature/feature-widgets/feature-info.component';
 import {HsExternalService} from './components/external/external.service';
-
+import {HsFeatureTableComponent} from './components/feature-table/feature-table.component';
 import {HsGeolocationComponent} from './components/geolocation/geolocation.component';
 import {HsInfoComponent} from './components/info/info.component';
-
+import {HsLanguageComponent} from './components/language/language.component';
+import {HsLayerManagerComponent} from './components/layer-manager/layer-manager.component';
 import {HsLayerManagerGalleryComponent} from './components/layer-manager/gallery/layer-manager-gallery.component';
+import {HsLayerManagerService} from './components/layer-manager/layer-manager.service';
 import {HsLayoutComponent} from './components/layout/layout.component';
-
+import {HsLayoutService} from './components/layout/layout.service';
+import {HsLegendComponent} from './components/legend/legend.component';
+import {HsMapSwipeComponent} from './components/map-swipe/map-swipe.component';
 import {HsMapSwipeService} from './components/map-swipe/map-swipe.service';
-
+import {HsMeasureComponent} from './components/measure/measure.component';
 import {HsMeasureToolbarComponent} from './components/measure/measure-toolbar.component';
-
+import {HsQueryComponent} from './components/query/query.component';
 import {HsQueryPopupComponent} from './components/query/query-popup/query-popup.component';
 import {HsQueryPopupService} from './components/query/query-popup.service';
 import {HsQueryPopupWidgetContainerService} from './components/query/query-popup-widget-container.service';
-
+import {HsSaveMapComponent} from './components/save-map/save-map.component';
+import {HsSearchComponent} from './components/search/search.component';
 import {HsSearchToolbarComponent} from './components/search/search-toolbar.component';
+import {HsShareComponent} from './components/share/share.component';
+import {HsStylerComponent} from './components/styler/styler.component';
 import {HsToolbarComponent} from './components/toolbar/toolbar.component';
 import {HsToolbarPanelContainerService} from './components/toolbar/toolbar-panel-container.service';
+import {HsTripPlannerComponent} from './components/trip-planner/trip-planner.component';
+
+import {
+  HsAddDataCatalogueComponent,
+  HsAddDataFileBaseComponent,
+} from './public-api';
 
 import {HsOverlayPanelContainerService} from './components/layout/overlay-panel-container.service';
 import {HsPanelConstructorService} from './components/layout/panels/panel-constructor.service';
