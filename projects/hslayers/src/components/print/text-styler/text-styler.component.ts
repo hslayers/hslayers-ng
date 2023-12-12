@@ -1,4 +1,11 @@
-import {AsyncPipe, CommonModule, NgClass, NgIf, NgStyle} from '@angular/common';
+import {
+  AsyncPipe,
+  CommonModule,
+  NgClass,
+  NgForOf,
+  NgIf,
+  NgStyle,
+} from '@angular/common';
 import {Component, Input} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 
@@ -21,6 +28,7 @@ export enum ColorPickers {
   templateUrl: './text-styler.component.html',
   standalone: true,
   imports: [
+    NgForOf,
     NgIf,
     NgStyle,
     NgClass,
