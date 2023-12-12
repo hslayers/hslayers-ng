@@ -40,8 +40,60 @@ export class HsPanelConstructorService {
     const cName = `Hs${this.hsUtilsService.capitalizeFirstLetter(
       name,
     )}Component`;
-    const kebabName = this.hsUtilsService.camelToKebab(name);
-    const i = await import(`../../${kebabName}/${kebabName}.component`);
+    let i;
+    switch (name) {
+      case 'layerManager':
+        i = await import('../../layer-manager/layer-manager.component');
+        break;
+      case 'draw':
+        i = await import('../../draw/draw.component');
+        break;
+      case 'addData':
+        i = await import('../../add-data/add-data.component');
+        break;
+      case 'compositions':
+        i = await import('../../compositions/compositions.component');
+        break;
+      case 'featureTable':
+        i = await import('../../feature-table/feature-table.component');
+        break;
+      case 'language':
+        i = await import('../../language/language.component');
+        break;
+      case 'legend':
+        i = await import('../../legend/legend.component');
+        break;
+      case 'mapSwipe':
+        i = await import('../../map-swipe/map-swipe.component');
+        break;
+      case 'measure':
+        i = await import('../../measure/measure.component');
+        break;
+      case 'print':
+        i = await import('../../print/print.component');
+        break;
+      case 'query':
+        i = await import('../../query/query.component');
+        break;
+      case 'saveMap':
+        i = await import('../../save-map/save-map.component');
+        break;
+      case 'search':
+        i = await import('../../search/search.component');
+        break;
+      case 'styler':
+        i = await import('../../styler/styler.component');
+        break;
+      case 'share':
+        i = await import('../../share/share.component');
+        break;
+      case 'tripPlanner':
+        i = await import('../../trip-planner/trip-planner.component');
+        break;
+
+      default:
+        break;
+    }
     this.HsPanelContainerService.create(i[cName], data || {});
   }
 
