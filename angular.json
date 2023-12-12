@@ -363,7 +363,7 @@
             "production": {
               "optimization": true,
               "sourceMap": true,
-              "namedChunks": true,
+              "namedChunks": false,
               "extractLicenses": true,
               "vendorChunk": true,
               "buildOptimizer": true,
