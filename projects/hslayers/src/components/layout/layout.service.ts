@@ -1,4 +1,4 @@
-import {BehaviorSubject, Observable, delay, map} from 'rxjs';
+import {BehaviorSubject, Observable, delay, map, skip} from 'rxjs';
 import {ElementRef, Injectable, Type, ViewContainerRef} from '@angular/core';
 
 import {HsConfig} from '../../config.service';
@@ -135,7 +135,7 @@ export class HsLayoutService extends HsLayoutParams {
       this.parseConfig();
     });
 
-    this.mainpanel$.subscribe((which) => {
+    this.mainpanel$.pipe(skip(1)).subscribe((which) => {
       this.updPanelSpaceWidth();
     });
 

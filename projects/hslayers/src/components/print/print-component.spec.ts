@@ -36,18 +36,18 @@ describe('HsPrintComponent', () => {
   let fixture: ComponentFixture<HsPrintComponent>;
   let service: HsPrintService;
   beforeEach(async () => {
+    const mockedConfig = new HsConfigMock();
+
     await TestBed.configureTestingModule({
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      declarations: [
-        HsPrintComponent,
+      declarations: [HsPrintComponent],
+      imports: [
+        CommonModule,
+        FormsModule,
         HsPrintTextStylerComponent,
         HsPrintScaleStylerComponent,
         HsPrintLegendStylerComponent,
         HsPrintImprintStylerComponent,
-      ],
-      imports: [
-        CommonModule,
-        FormsModule,
         HsPanelHelpersModule,
         HsPanelHeaderComponent,
         TranslateCustomPipe,
@@ -56,7 +56,10 @@ describe('HsPrintComponent', () => {
         HttpClientTestingModule,
       ],
       providers: [
-        {provide: HsLayoutService, useValue: new HsLayoutServiceMock()},
+        {
+          provide: HsLayoutService,
+          useValue: new HsLayoutServiceMock(mockedConfig),
+        },
         {
           provide: HsSidebarService,
           useValue: {
@@ -76,7 +79,7 @@ describe('HsPrintComponent', () => {
           useValue: new HsPrintLegendServiceMock(),
         },
         {provide: HsUtilsService, useValue: new HsUtilsServiceMock()},
-        {provide: HsConfig, useValue: new HsConfigMock()},
+        {provide: HsConfig, useValue: mockedConfig},
         {provide: HsEventBusService, useValue: new HsEventBusServiceMock()},
       ],
     }).compileComponents();

@@ -25,8 +25,16 @@ export class HsConfigMock {
     addData: false,
     mapSwipe: false,
   };
+  panelWidths = {
+    default: 425,
+  };
   componentsEnabled = {};
   assetsPath = '/assets';
-  configChanges?: Subject<HsConfig> = new Subject();
+  configChanges?: Subject<void> = new Subject();
+  id = 'testappid';
   constructor() {}
+
+  setAppId(id: string) {
+    this.id = id;
+  }
 }

@@ -6,6 +6,7 @@ import {CustomTranslationService} from './components/language/custom-translate.s
 import {HsConfig} from './config.service';
 import {HsConfigMock} from './config.service.mock';
 import {HsLayerUtilsService} from './components/utils/layer-utils.service';
+import {HsPanelConstructorService} from './components/layout/panels/panel-constructor.service';
 import {HsUtilsService} from './components/utils/utils.service';
 import {HsUtilsServiceMock} from './components/utils/utils.service.mock';
 import {HslayersComponent} from './hslayers.component';
@@ -25,6 +26,7 @@ describe('HslayersComponent', () => {
         {provide: HsConfig, useValue: new HsConfigMock()},
         {provide: HsUtilsService, useValue: new HsUtilsServiceMock()},
         {provide: HsLayerUtilsService, useValue: mockLayerUtilsService},
+        HsPanelConstructorService,
         CustomTranslationService,
       ],
     }).compileComponents();

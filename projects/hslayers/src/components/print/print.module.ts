@@ -24,12 +24,6 @@ import {TranslateCustomPipe} from '../language/translate-custom.pipe';
     HsPanelHeaderComponent,
   ],
   declarations: [HsPrintComponent],
-  exports: [
-    HsPrintComponent,
-    HsPrintImprintStylerComponent,
-    HsPrintLegendStylerComponent,
-    HsPrintTextStylerComponent,
-    HsPrintScaleStylerComponent,
-  ],
+  exports: [HsPrintComponent],
 })
 export class PrintModule {}

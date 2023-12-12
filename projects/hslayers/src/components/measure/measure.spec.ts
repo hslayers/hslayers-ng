@@ -36,16 +36,21 @@ describe('HsMeasure', () => {
   let service: HsMeasureService;
 
   beforeEach(() => {
+    const mockedConfig = new HsConfigMock();
+
     TestBed.configureTestingModule({
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
       imports: [FormsModule, TranslateCustomPipe, HttpClientTestingModule],
       declarations: [HsMeasureComponent],
       providers: [
         HsMeasureService,
-        {provide: HsLayoutService, useValue: new HsLayoutServiceMock()},
+        {
+          provide: HsLayoutService,
+          useValue: new HsLayoutServiceMock(mockedConfig),
+        },
         {provide: HsMapService, useValue: new HsMapServiceMock()},
         {provide: HsUtilsService, useValue: new HsUtilsServiceMock()},
-        {provide: HsConfig, useValue: new HsConfigMock()},
+        {provide: HsConfig, useValue: mockedConfig},
       ],
     }); //.compileComponents();
     fixture = TestBed.createComponent(HsMeasureComponent);
