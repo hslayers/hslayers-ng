@@ -68,6 +68,8 @@ describe('layermanager-layer-list', () => {
   });
 
   beforeEach(() => {
+    const mockedConfig = new HsConfigMock();
+
     const bed = TestBed.configureTestingModule({
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
       imports: [
@@ -110,9 +112,12 @@ describe('layermanager-layer-list', () => {
             getParamValue: () => undefined,
           },
         },
-        {provide: HsConfig, useValue: new HsConfigMock()},
+        {provide: HsConfig, useValue: mockedConfig},
         {provide: HsDrawService, useValue: new emptyMock()},
-        {provide: HsLayoutService, useValue: new HsLayoutServiceMock()},
+        {
+          provide: HsLayoutService,
+          useValue: new HsLayoutServiceMock(mockedConfig),
+        },
       ],
     });
     //bed.compileComponents();

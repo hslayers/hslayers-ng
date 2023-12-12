@@ -61,6 +61,8 @@ describe('add-layers-vector', () => {
   });
 
   beforeEach(() => {
+    const mockedConfig = new HsConfigMock();
+
     mockedMapService = new HsMapServiceMock();
     const mockedUtilsService: any = new HsUtilsServiceMock();
     const bed = TestBed.configureTestingModule({
@@ -77,10 +79,10 @@ describe('add-layers-vector', () => {
         HsAddDataVectorService,
         {provide: HsMapService, useValue: mockedMapService},
         {provide: HsUtilsService, useValue: mockedUtilsService},
-        {provide: HsConfig, useValue: new HsConfigMock()},
+        {provide: HsConfig, useValue: mockedConfig},
         {
           provide: HsLayoutService,
-          useValue: new HsLayoutServiceMock(),
+          useValue: new HsLayoutServiceMock(mockedConfig),
         },
         {
           provide: HsCommonLaymanService,

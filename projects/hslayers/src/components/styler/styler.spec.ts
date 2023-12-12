@@ -60,6 +60,8 @@ describe('HsStyler', () => {
   let component: HsStylerComponent;
   let service: HsStylerService;
   beforeEach(() => {
+    const mockedConfig = new HsConfigMock();
+
     layer = new VectorLayer({
       properties: {title: 'Point'},
       source: new VectorSource<Feature<Point | Polygon>>({
@@ -95,10 +97,13 @@ describe('HsStyler', () => {
         {provide: HsSaveMapService, useValue: new HsSaveMapServiceMock()},
         {provide: HsMapService, useValue: new HsMapServiceMock()},
         {provide: HsUtilsService, useValue: new HsUtilsServiceMock()},
-        {provide: HsLayoutService, useValue: new HsLayoutServiceMock()},
+        {
+          provide: HsLayoutService,
+          useValue: new HsLayoutServiceMock(mockedConfig),
+        },
         {provide: HsQueryVectorService, useValue: new emptyMock()},
         {provide: HsEventBusService, useValue: new HsEventBusServiceMock()},
-        {provide: HsConfig, useValue: new HsConfigMock()},
+        {provide: HsConfig, useValue: mockedConfig},
       ],
     }); //.compileComponents();
     fixture = TestBed.createComponent(HsStylerComponent);

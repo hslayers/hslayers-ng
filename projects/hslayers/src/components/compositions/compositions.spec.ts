@@ -129,7 +129,7 @@ describe('compositions', () => {
 
   beforeEach(() => {
     const mockedUtilsService: any = new HsUtilsServiceMock();
-    const mockedConfig: any = new HsConfigMock();
+    const mockedConfig = new HsConfigMock();
     const mockedMapService: any = new HsMapServiceMock();
     const mockedCommonLaymanService = new hsCommonLaymanServiceMock();
     const mockedStylerService = jasmine.createSpyObj('HsStylerService', [
@@ -176,7 +176,7 @@ describe('compositions', () => {
         {provide: HsConfig, useValue: mockedConfig},
         {
           provide: HsLayoutService,
-          useValue: new HsLayoutServiceMock(),
+          useValue: new HsLayoutServiceMock(mockedConfig),
         },
         {provide: HsLayerUtilsService, useValue: layerUtilsMock},
         HsStylerService,
