@@ -29,7 +29,20 @@ export interface KeyNumberDict {
 }
 
 export class HsConfigObject {
-  componentsEnabled?: any;
+  componentsEnabled?: {
+    guiOverlay?: boolean;
+    info?: boolean;
+    sidebar?: boolean;
+    toolbar?: boolean;
+    drawToolbar?: boolean;
+    searchToolbar?: boolean;
+    measureToolbar?: boolean;
+    geolocationButton?: boolean;
+    defaultViewButton?: boolean;
+    mapControls?: boolean;
+    basemapGallery?: boolean;
+    mapSwipe?: boolean;
+  };
   clusteringDistance?: number;
   mapInteractionsEnabled?: boolean;
   sidebarClosed?: boolean;
@@ -189,8 +202,8 @@ export class HsConfigObject {
       info: true,
       sidebar: true,
       toolbar: true,
-      drawToolbar: true,
       searchToolbar: true,
+      drawToolbar: true,
       measureToolbar: true,
       geolocationButton: true,
       defaultViewButton: true,
