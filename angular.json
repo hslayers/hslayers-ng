@@ -70,8 +70,8 @@
                 }
               ],
               "optimization": true,
-              "sourceMap": true,
-              "namedChunks": false,
+              "sourceMap": false,
+              "namedChunks": true,
               "extractLicenses": true,
               "vendorChunk": true,
               "buildOptimizer": true,
