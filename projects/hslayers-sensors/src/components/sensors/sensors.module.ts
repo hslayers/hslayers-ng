@@ -14,9 +14,7 @@ import {
 import {NgbDatepickerModule} from '@ng-bootstrap/ng-bootstrap';
 
 import {HsSensorsComponent} from './sensors.component';
-import {HsSensorsService} from './sensors.service';
 import {HsSensorsUnitDialogComponent} from './sensors-unit-dialog.component';
-import {HsSensorsUnitDialogService} from './unit-dialog.service';
 import {HsSensorsUnitListItemComponent} from './sensors-unit-list-item.component';
 
 @NgModule({
@@ -39,6 +37,5 @@ import {HsSensorsUnitListItemComponent} from './sensors-unit-list-item.component
     HsSensorsUnitDialogComponent,
     HsSensorsUnitListItemComponent,
   ],
-  providers: [HsSensorsService, HsSensorsUnitDialogService],
 })
 export class HsSensorsModule {}
