@@ -129,7 +129,7 @@
     "prettier": "^3.0.3",
     "puppeteer": "^21.6.0",
     "sass": "^1.69.5",
-    "ts-node": "^10.9.1",
+    "ts-node": "^10.9.2",
     "typescript": "~5.2.0"
   },
   "config": {
