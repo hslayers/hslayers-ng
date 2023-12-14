@@ -1,4 +1,4 @@
-<div class="card panel-default hs-main-panel" *ngIf="isVisible$">
+<div class="card panel-default hs-main-panel" *ngIf="isVisible$ | async">
     <hs-panel-header name="sensors" [panelTabs]="'SENSORS'"></hs-panel-header>
     <div class="card-body">
         <p><input type="text" class="form-control" [placeholder]="'COMMON.filter' | translateHs "
