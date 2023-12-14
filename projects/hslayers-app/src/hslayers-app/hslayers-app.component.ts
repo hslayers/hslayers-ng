@@ -23,6 +23,8 @@ import {View} from 'ol';
 import {register as projRegister} from 'ol/proj/proj4';
 
 import {HsConfig} from 'hslayers-ng/config.service';
+import {HsOverlayPanelContainerService} from 'hslayers-ng/components/layout/overlay-panel-container.service';
+import {HsPanelConstructorService} from 'hslayers-ng/components/layout/panels/panel-constructor.service';
 import {InterpolatedSource} from 'hslayers-ng/common/layers/hs.source.interpolated';
 import {SparqlJson} from 'hslayers-ng/common/layers/hs.source.SparqlJson';
 
@@ -36,6 +38,8 @@ export class HslayersAppComponent {
   constructor(
     public HsConfig: HsConfig,
     private elementRef: ElementRef,
+    private HsOverlayPanelContainerService: HsOverlayPanelContainerService,
+    private HsPanelConstructorService: HsPanelConstructorService,
   ) {
     const w: any = window;
     w.ol = {
@@ -82,6 +86,19 @@ export class HslayersAppComponent {
     } else if (w.hslayersNgConfig) {
       this.HsConfig.update(w.hslayersNgConfig(w.ol));
     }
+
+    if (this.id) {
+      this.HsConfig.setAppId(this.id);
+    }
+    /**
+     * Create panel components
+     */
+    this.HsPanelConstructorService.createActivePanels();
+
+    /**
+     * Create GUI overlay
+     */
+    this.HsOverlayPanelContainerService.createGuiOverlay();
   }
   title = 'hslayers-workspace';
 }

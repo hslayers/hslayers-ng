@@ -2,7 +2,7 @@ import {ApplicationRef, DoBootstrap, NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 
 import {HslayersAppComponent} from './hslayers-app.component';
-import {HslayersModule} from '../../../hslayers/src/public-api';
+import {HslayersModule} from '../../../hslayers/src/hslayers.module';
 
 @NgModule({
   declarations: [HslayersAppComponent],

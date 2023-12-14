@@ -292,10 +292,7 @@ export class HsLayoutService extends HsLayoutParams {
    * @param which - New panel to activate (panel name)
    * @param byGui - Whether function call came as result of GUI action
    */
-  setMainPanel(which: string, byGui?: boolean): Promise<void> {
-    if (!this.panelEnabled(which)) {
-      return;
-    }
+  setMainPanel(which: string, byGui?: boolean): void {
     if (which == this.mainpanel && byGui) {
       which = '';
       if (this.sidebarExpanded == true) {
