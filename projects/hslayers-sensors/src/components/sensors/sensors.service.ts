@@ -55,16 +55,6 @@ export class HsSensorsService {
     private hsQueryVectorService: HsQueryVectorService,
     private hsLog: HsLogService,
   ) {
-    this.hsSidebarService.addButton({
-      panel: 'sensors',
-      module: 'hs.sensors',
-      order: 6,
-      fits: true,
-      title: 'PANEL_HEADER.SENSORS',
-      description: '',
-      icon: 'icon-weightscale',
-    });
-
     this.hsMapService.loaded().then(() => {
       this.hsConfig.configChanges.subscribe(() => {
         if (this.hsConfig.senslog != this.endpoint) {
