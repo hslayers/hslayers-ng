@@ -73,7 +73,7 @@
     "ol-popup": "^4.0.0, ^5.0.0",
     "papaparse": "^5",
     "passport-oauth2-middleware": "^1.0.3",
-    "polygon-clipping": "^0.15.6",
+    "polygon-clipping": "^0.15.7",
     "polygon-splitter": "^0.0.11",
     "proj4": "^2.9.2",
     "queue": "^7.0.0",
