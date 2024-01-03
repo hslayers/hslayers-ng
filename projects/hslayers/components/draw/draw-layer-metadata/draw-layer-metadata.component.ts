@@ -4,7 +4,7 @@ import {HsDialogComponent} from 'hslayers-ng/components/layout';
 import {HsDialogContainerService} from 'hslayers-ng/components/layout';
 import {HsDrawService} from '../draw.service';
 import {HsMapService} from 'hslayers-ng/components/map';
-import {accessRightsModel} from '../../add-data/common/access-rights.model';
+import {accessRightsModel} from 'hslayers-ng/common/types';
 import {
   awaitLayerSync,
   getLaymanFriendlyLayerName,

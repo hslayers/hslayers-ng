@@ -1,7 +1,7 @@
 import {Vector as VectorSource} from 'ol/source';
 
 import {HsVectorLayerOptions} from '../vector-layer-options.type';
-import {accessRightsModel} from '../../common/access-rights.model';
+import {accessRightsModel} from 'hslayers-ng/common/types';
 
 export class VectorLayerDescriptor {
   mapProjection;

@@ -1,5 +1,5 @@
 import {FileDescriptor} from './file-descriptor.type';
-import {accessRightsModel} from '../../common/access-rights.model';
+import {accessRightsModel} from 'hslayers-ng/common/types';
 
 /**
  * @param allowedStyles - Allowed file formats (SLD, QML or both)

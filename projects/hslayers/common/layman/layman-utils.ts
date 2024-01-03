@@ -8,7 +8,7 @@ import {
   getHsLaymanSynchronizing,
   getName,
   getTitle,
-} from '../extensions/layer-extensions';
+} from 'hslayers-ng/common/extensions';
 
 export const PREFER_RESUMABLE_SIZE_LIMIT = 2 * 1024 * 1024; // 2 MB
 export const SUPPORTED_SRS_LIST = [
