@@ -1,13 +1,13 @@
 import {HsConfig} from 'hslayers-ng/config';
 import {HsEventBusService} from './event-bus.service';
-import {HsLayoutService} from 'hslayers-ng/components/layout/layout.service';
-import {HsLogService} from '../log/log.service';
+import {HsLayoutService} from 'hslayers-ng/components/layout';
+import {HsLogService} from 'hslayers-ng/shared/log';
 import {HsMapService} from 'hslayers-ng/components/map';
-import {HsUtilsService} from '../utils/utils.service';
+import {HsUtilsService} from 'hslayers-ng/shared/utils/';
 import {Injectable} from '@angular/core';
 
 import {HsLanguageService} from 'hslayers-ng/components/language';
-import {HsQueryWmsService} from 'hslayers-ng/components/query/query-wms.service';
+import {HsQueryWmsService} from 'hslayers-ng/components/query';
 
 @Injectable({
   providedIn: 'root',

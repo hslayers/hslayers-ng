@@ -9,8 +9,8 @@ import {getArea, getDistance} from 'ol/sphere';
 import {lastValueFrom} from 'rxjs';
 
 import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
-import {HsConfig} from './hslayers-ng/config';
-import {HsLogService} from '../log/log.service';
+import {HsConfig} from 'hslayers-ng/config';
+import {HsLogService} from 'hslayers-ng/shared/log';
 
 export type Measurement = {
   size: number;

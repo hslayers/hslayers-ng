@@ -5,10 +5,13 @@ import {HsConfig} from 'hslayers-ng/config';
 import {HsConfirmModule} from 'hslayers-ng/common/confirm';
 import {HsHistoryListModule} from 'hslayers-ng/common/history-list';
 import {HsLayoutModule} from 'hslayers-ng/components/layout/layout.module';
-import {HsLogModule} from '../log/log.module';
 import {HsMapModule} from 'hslayers-ng/components/map/map.module';
 import {HsSidebarModule} from 'hslayers-ng/components/sidebar/sidebar.module';
-import {HsUtilsModule} from '../utils/utils.module';
+
+/**
+ * This most likely wont be necessary at all
+ */
+
 @NgModule({
   declarations: [],
   imports: [
@@ -16,8 +19,6 @@ import {HsUtilsModule} from '../utils/utils.module';
     HsLayoutModule,
     HsSidebarModule,
     HsHistoryListModule,
-    HsLogModule,
-    HsUtilsModule,
     HsConfirmModule,
     HsMapModule,
   ],

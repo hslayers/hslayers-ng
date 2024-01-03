@@ -6,12 +6,12 @@ import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import {TestBed} from '@angular/core/testing';
 
 import {HsDimensionTimeService} from './dimension-time.service';
-import {HsEventBusService} from '../core/event-bus.service';
-import {HsEventBusServiceMock} from '../core/event-bus.service.mock';
-import {HsLayerUtilsService} from '../utils/layer-utils.service';
-import {HsUtilsService} from '../utils/utils.service';
-import {HsUtilsServiceMock} from '../utils/utils.service.mock';
-import {mockLayerUtilsService} from '../utils/layer-utils.service.mock';
+import {HsEventBusService} from 'hslayers-ng/shared/core';
+import {HsEventBusServiceMock} from 'hslayers-ng/shared/core';
+import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
+import {HsUtilsService} from 'hslayers-ng/shared/utils';
+import {HsUtilsServiceMock} from 'hslayers-ng/shared/utils';
+import {mockLayerUtilsService} from 'hslayers-ng/shared/utils';
 
 describe('HsGetCapabilitiesModule', () => {
   beforeAll(() => {

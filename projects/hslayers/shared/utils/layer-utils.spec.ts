@@ -11,7 +11,7 @@ import {Image as ImageLayer, Tile, Vector as VectorLayer} from 'ol/layer';
 import {HsLanguageService} from 'hslayers-ng/components/language';
 import {HsLayerUtilsService} from './layer-utils.service';
 import {HsMapService} from 'hslayers-ng/components/map';
-import {HsMapServiceMock} from 'hslayers-ng/components/map.mock';
+import {HsMapServiceMock} from 'hslayers-ng/components/map';
 import {HsUtilsService} from './utils.service';
 import {HsUtilsServiceMock} from './utils.service.mock';
 import {
@@ -22,7 +22,7 @@ import {
   setShowInLayerManager,
   setTitle,
 } from 'hslayers-ng/common/extensions';
-import {mockLanguageService} from 'hslayers-ng/components/language.mock';
+import {mockLanguageService} from 'hslayers-ng/components/language';
 
 const mockedLanguageService = mockLanguageService();
 
