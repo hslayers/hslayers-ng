@@ -1,11 +1,10 @@
-import {Geometry} from 'ol/geom';
 import {Layer} from 'ol/layer';
 import {Source} from 'ol/source';
 import {Vector as VectorLayer} from 'ol/layer';
 import {Vector as VectorSource} from 'ol/source';
 
 import {HsLayerDescriptor} from 'hslayers-ng/components/layer-manager';
-import {accessRightsModel} from '../common/access-rights.model';
+import {accessRightsModel} from 'hslayers-ng/common/types';
 
 export type VectorDataObject = {
   abstract?: string;

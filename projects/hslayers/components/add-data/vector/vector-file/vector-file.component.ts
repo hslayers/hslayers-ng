@@ -29,7 +29,7 @@ import {
 } from 'hslayers-ng/common/upload';
 import {HsUtilsService} from 'hslayers-ng/shared/utils';
 import {VectorFileDataType} from '../../common/advanced-options/advanced-options.component';
-import {accessRightsModel} from '../../common/access-rights.model';
+import {accessRightsModel} from 'hslayers-ng/common/types';
 
 @Component({
   selector: 'hs-file-vector',

@@ -3,7 +3,7 @@ import {Geometry} from 'ol/geom';
 import {Style} from 'ol/style';
 import {StyleFunction} from 'ol/style/Style';
 
-import {accessRightsModel} from '../common/access-rights.model';
+import {accessRightsModel} from 'hslayers-ng/common/types';
 
 export type HsVectorLayerOptions = {
   opacity?: number;

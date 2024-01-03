@@ -1,8 +1,8 @@
 import {Component, Input, OnInit, ViewRef} from '@angular/core';
 
 import {HsAddDataCatalogueMapService} from '../catalogue-map.service';
-import {HsAddDataCatalogueService} from '../catalogue.service';
-import {HsAddDataLayerDescriptor} from '../layer-descriptor.model';
+import {HsAddDataCatalogueService} from 'hslayers-ng/shared/add-data';
+import {HsAddDataLayerDescriptor} from 'hslayers-ng/common/types';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsDialogComponent} from 'hslayers-ng/components/layout';
 import {HsDialogContainerService} from 'hslayers-ng/components/layout';

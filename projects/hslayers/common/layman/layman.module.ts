@@ -6,7 +6,7 @@ import {HsCommonLaymanAccessRightsComponent} from './access-rights/layman-access
 import {HsLaymanCurrentUserComponent} from './layman-current-user.component';
 import {HsLaymanLoginComponent} from './layman-login.component';
 import {HsSetPermissionsDialogComponent} from './dialog-set-permissions/set-permissions.component';
-import {HsUiExtensionsModule} from '../widgets/ui-extensions.module';
+import {HsUiExtensionsModule} from 'hslayers-ng/common/widgets';
 import {TranslateCustomPipe} from 'hslayers-ng/components/language';
 
 @NgModule({

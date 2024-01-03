@@ -53,7 +53,7 @@ import {
 import {PostPatchLayerResponse} from 'hslayers-ng/common/layman';
 import {UpsertLayerObject} from './types/upsert-layer-object.type';
 import {WfsSyncParams} from './types/wfs-sync-params.type';
-import {accessRightsModel} from '../add-data/common/access-rights.model';
+import {accessRightsModel} from 'hslayers-ng/common/types';
 import {
   getAccessRights,
   getLaymanLayerDescriptor,

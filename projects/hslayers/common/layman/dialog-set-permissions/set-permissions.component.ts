@@ -1,10 +1,10 @@
 import {Component, OnInit, ViewRef} from '@angular/core';
 
+import {HsAddDataCatalogueService} from 'hslayers-ng/shared/add-data';
 import {
-  HsAddDataCatalogueService,
   HsAddDataLayerDescriptor,
   accessRightsModel,
-} from 'hslayers-ng/components/add-data';
+} from 'hslayers-ng/common/types';
 import {HsCommonLaymanService} from '../layman.service';
 import {HsCompositionsCatalogueService} from 'hslayers-ng/components/compositions';
 import {

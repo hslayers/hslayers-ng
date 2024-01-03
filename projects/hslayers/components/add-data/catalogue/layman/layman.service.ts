@@ -12,7 +12,7 @@ import {
   HsEndpoint,
   isErrorHandlerFunction,
 } from 'hslayers-ng/shared/endpoints';
-import {HsAddDataLayerDescriptor} from '../layer-descriptor.model';
+import {HsAddDataLayerDescriptor} from 'hslayers-ng/common/types';
 import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
 import {HsLanguageService} from 'hslayers-ng/components/language';
 import {HsLaymanLayerDescriptor} from 'hslayers-ng/components/save-map';

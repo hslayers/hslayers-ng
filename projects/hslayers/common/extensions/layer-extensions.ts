@@ -7,7 +7,7 @@ import {Source} from 'ol/source';
 
 import {DOMFeatureLink} from '../types/dom-feature-link.type';
 import {HsLaymanLayerDescriptor} from 'hslayers-ng/components/save-map';
-import {accessRightsModel} from 'hslayers-ng/components/add-data';
+import {accessRightsModel} from 'hslayers-ng/common/types';
 
 const ABSTRACT = 'abstract';
 const ACCESS_RIGHTS = 'access_rights';

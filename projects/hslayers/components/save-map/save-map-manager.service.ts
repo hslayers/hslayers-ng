@@ -20,7 +20,7 @@ import {LaymanCompositionDescriptor} from '../compositions/models/composition-de
 import {MapComposition} from './types/map-composition.type';
 import {StatusData} from './types/status-data.type';
 import {UserData} from './types/user-data.type';
-import {accessRightsModel} from '../add-data/common/access-rights.model';
+import {accessRightsModel} from 'hslayers-ng/common/types';
 
 export class HsSaveMapManagerParams {
   statusData: StatusData = {

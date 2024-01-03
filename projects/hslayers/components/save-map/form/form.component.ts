@@ -7,7 +7,7 @@ import {HsLayoutService} from 'hslayers-ng/components/layout';
 import {HsSaveMapManagerService} from '../save-map-manager.service';
 import {HsUtilsService} from 'hslayers-ng/shared/utils';
 import {StatusData} from '../../save-map/types/status-data.type';
-import {accessRightsModel} from '../../add-data/common/access-rights.model';
+import {accessRightsModel} from 'hslayers-ng/common/types';
 
 @Component({
   selector: 'hs-save-map-form',

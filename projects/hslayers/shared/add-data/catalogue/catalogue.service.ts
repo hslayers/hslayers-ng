@@ -4,20 +4,23 @@ import {Feature} from 'ol';
 import {Geometry} from 'ol/geom';
 import {Observable, forkJoin} from 'rxjs';
 
-import {DatasetType, HsAddDataService} from '../add-data.service';
-import {HsAddDataCatalogueMapService} from './catalogue-map.service';
-import {HsAddDataLayerDescriptor} from './layer-descriptor.model';
-import {HsAddDataOwsService} from '../url/add-data-ows.service';
-import {HsAddDataVectorService} from '../vector/vector.service';
+import {
+  DatasetType,
+  HsAddDataCatalogueMapService,
+  HsAddDataOwsService,
+  HsAddDataService,
+  HsAddDataVectorService,
+  HsLaymanBrowserService,
+  HsMickaBrowserService,
+} from 'hslayers-ng/components/add-data';
+import {HsAddDataLayerDescriptor} from 'hslayers-ng/common/types';
 import {HsCommonEndpointsService} from 'hslayers-ng/shared/endpoints';
 import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsEndpoint} from 'hslayers-ng/shared/endpoints';
 import {HsEventBusService} from 'hslayers-ng/shared/core';
-import {HsLaymanBrowserService} from './layman/layman.service';
 import {HsLayoutService} from 'hslayers-ng/components/layout';
 import {HsMapService} from 'hslayers-ng/components/map';
-import {HsMickaBrowserService} from './micka/micka.service';
 import {HsUtilsService} from 'hslayers-ng/shared/utils';
 
 //TODO: Find a better name and possibly turn it into a public interface
