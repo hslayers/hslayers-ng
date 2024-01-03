@@ -20,7 +20,7 @@ export * from './common/history-list/public-api';
 export * from './common/layer-shifting/public-api';
 export * from './common/layer-extensions';
 export * from './common/layers/public-api';
-export * from './common/layman/public-api';
+export * from '../common/layman/public-api';
 export * from './common/log/public-api';
 export * from './common/pager/public-api';
 export * from './common/queues/public-api';

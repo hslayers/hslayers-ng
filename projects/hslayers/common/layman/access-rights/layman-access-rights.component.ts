@@ -8,7 +8,7 @@ import {HsEndpoint} from 'hslayers-ng/shared/endpoints';
 import {HsLanguageService} from 'hslayers-ng/components/language';
 import {HsLogService} from 'hslayers-ng/shared/log';
 import {LaymanUser} from '../types/layman-user.type';
-import {accessRightsModel} from 'hslayers-ng/components/add-data';
+import {accessRightsModel} from 'hslayers-ng/common/types';
 
 enum GrantingOptions {
   PERUSER = 'per_user',

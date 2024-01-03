@@ -1,4 +1,4 @@
-import {HsAddDataLayerDescriptor} from 'hslayers-ng/components/add-data/catalogue/layer-descriptor.model';
+import {HsAddDataLayerDescriptor} from 'hslayers-ng/common/types';
 import {HsMapCompositionDescriptor} from 'hslayers-ng/components/compositions/models/composition-descriptor.model';
 
 export enum EndpointErrorHandling {
