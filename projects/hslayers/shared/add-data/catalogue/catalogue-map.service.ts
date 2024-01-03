@@ -13,14 +13,11 @@ import {HsCommonEndpointsService} from 'hslayers-ng/shared/endpoints';
 import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
 import {HsLayoutService} from 'hslayers-ng/components/layout';
 import {HsLogService} from 'hslayers-ng/shared/log';
-import {HsMapCompositionDescriptor} from '../../compositions/models/composition-descriptor.model';
+import {HsMapCompositionDescriptor} from 'hslayers-ng/components/compositions';
 import {HsMapService} from 'hslayers-ng/components/map';
-import {HsSaveMapService} from '../../save-map/save-map.service';
+import {HsSaveMapService} from 'hslayers-ng/components/save-map';
 import {HsUtilsService} from 'hslayers-ng/shared/utils';
-import {
-  getHighlighted,
-  setHighlighted,
-} from 'hslayers-ng/common/extensions';
+import {getHighlighted, setHighlighted} from 'hslayers-ng/common/extensions';
 
 @Injectable({
   providedIn: 'root',

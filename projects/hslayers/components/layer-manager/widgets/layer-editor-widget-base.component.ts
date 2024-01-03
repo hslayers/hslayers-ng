@@ -3,7 +3,7 @@ import {Component, OnDestroy, OnInit, ViewRef} from '@angular/core';
 
 import {Layer} from 'ol/layer';
 
-import {HsLayerDescriptor} from '../layer-descriptor.interface';
+import {HsLayerDescriptor} from 'hslayers-ng/common/types';
 import {HsLayerSelectorService} from '../editor/layer-selector.service';
 import {HsPanelComponent} from '../../layout/panels/panel-component.interface';
 

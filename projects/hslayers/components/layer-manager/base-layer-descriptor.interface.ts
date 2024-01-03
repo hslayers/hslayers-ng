@@ -1,4 +1,4 @@
-import {HsLayerDescriptor} from './layer-descriptor.interface';
+import {HsLayerDescriptor} from 'hslayers-ng/common/types';
 
 export interface HsBaseLayerDescriptor extends HsLayerDescriptor {
   galleryMiniMenu;

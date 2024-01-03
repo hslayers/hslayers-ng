@@ -7,7 +7,7 @@ import {
   HsDialogContainerService,
   HsToastService,
 } from 'hslayers-ng/components/layout';
-import {HsDrawService, TMP_LAYER_TITLE} from 'hslayers-ng/components/draw';
+import {HsDrawService, TMP_LAYER_TITLE} from 'hslayers-ng/shared/draw';
 import {HsLanguageService} from 'hslayers-ng/components/language';
 import {HsLaymanService} from 'hslayers-ng/components/save-map';
 import {HsMapService} from 'hslayers-ng/components/map';

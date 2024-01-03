@@ -22,7 +22,7 @@ import {HsLayoutService} from 'hslayers-ng/components/layout';
 import {HsToastService} from 'hslayers-ng/components/layout';
 import {HsUrlTypeServiceModel, Service} from '../models/url-type-service.model';
 import {HsUtilsService} from 'hslayers-ng/shared/utils';
-import {LayerOptions} from 'hslayers-ng/components/compositions';
+import {LayerOptions} from 'hslayers-ng/common/types';
 import {UrlDataObject} from '../types/data-object.type';
 import {addAnchors, getPreferredFormat} from 'hslayers-ng/common/utils';
 

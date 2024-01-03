@@ -20,11 +20,11 @@ import {
 } from 'hslayers-ng/shared/get-capabilities';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsConfigMock} from 'hslayers-ng/config';
-import {HsDrawService} from 'hslayers-ng/components/draw';
+import {HsDrawService} from 'hslayers-ng/shared/draw';
 import {HsLanguageModule} from 'hslayers-ng/components/language';
 import {HsLayerListComponent} from './layer-manager-layerlist.component';
 import {HsLayerListService} from './layer-manager-layerlist.service';
-import {HsLayerManagerService} from '../layer-manager.service';
+import {HsLayerManagerService} from 'hslayers-ng/shared/layer-manager'
 import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
 import {HsLayoutService} from 'hslayers-ng/components/layout';
 import {HsLayoutServiceMock} from 'hslayers-ng/components/layout';

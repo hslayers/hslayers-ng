@@ -2,7 +2,7 @@ import {Component, Input, ViewRef} from '@angular/core';
 
 import {HsDialogComponent} from 'hslayers-ng/components/layout';
 import {HsDialogContainerService} from 'hslayers-ng/components/layout';
-import {HsDrawService} from 'hslayers-ng/components/draw';
+import {HsDrawService} from 'hslayers-ng/shared/draw';
 import {HsEventBusService} from 'hslayers-ng/shared/core';
 import {HsMapService} from 'hslayers-ng/components/map';
 

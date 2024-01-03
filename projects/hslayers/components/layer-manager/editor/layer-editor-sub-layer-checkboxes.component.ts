@@ -5,7 +5,7 @@ import {
   HsLayerEditorSublayerService,
   KeyBooleanDict,
 } from './layer-editor-sub-layer.service';
-import {HsLayerManagerService} from '../layer-manager.service';
+import {HsLayerManagerService} from 'hslayers-ng/shared/layer-manager'
 
 @Component({
   selector: 'hs-layer-editor-sub-layer-checkbox',

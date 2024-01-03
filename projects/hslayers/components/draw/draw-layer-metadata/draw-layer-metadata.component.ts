@@ -2,7 +2,7 @@ import {Component, Input, OnInit, ViewRef} from '@angular/core';
 
 import {HsDialogComponent} from 'hslayers-ng/components/layout';
 import {HsDialogContainerService} from 'hslayers-ng/components/layout';
-import {HsDrawService} from '../draw.service';
+
 import {HsMapService} from 'hslayers-ng/components/map';
 import {accessRightsModel} from 'hslayers-ng/common/types';
 import {
@@ -25,8 +25,7 @@ import {
   templateUrl: './draw-layer-metadata.html',
 })
 export class HsDrawLayerMetadataDialogComponent
-  implements HsDialogComponent, OnInit
-{
+  implements HsDialogComponent, OnInit {
   @Input() data: {
     service: HsDrawService;
   };

@@ -16,7 +16,7 @@ import {
 } from 'hslayers-ng/components/save-map';
 import {HsLogService} from 'hslayers-ng/shared/log';
 import {HsMapService} from 'hslayers-ng/components/map';
-import {HsStylerService} from 'hslayers-ng/components/styler/styler.service';
+import {HsStylerService} from 'hslayers-ng/components/styler';
 import {HsUtilsService} from 'hslayers-ng/shared/utils';
 import {HsVectorLayerOptions} from './vector-layer-options.type';
 import {OverwriteResponse} from '../enums/overwrite-response';

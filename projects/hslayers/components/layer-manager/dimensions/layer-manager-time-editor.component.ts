@@ -6,7 +6,7 @@ import {takeUntil} from 'rxjs/operators';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsDimensionTimeService} from 'hslayers-ng/shared/get-capabilities';
 import {HsEventBusService} from 'hslayers-ng/shared/core';
-import {HsLayerDescriptor} from '../layer-descriptor.interface';
+import {HsLayerDescriptor} from 'hslayers-ng/common/types';
 import {HsLayoutService} from 'hslayers-ng/components/layout';
 
 @Component({

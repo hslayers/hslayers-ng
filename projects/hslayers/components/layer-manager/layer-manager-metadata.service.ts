@@ -29,8 +29,8 @@ import {
   HsWmtsGetCapabilitiesService,
   WMSGetCapabilitiesResponse,
   WmsDimension,
-} from 'hslayers-ng/shared/get-capabilities/';
-import {HsLayerDescriptor} from './layer-descriptor.interface';
+} from 'hslayers-ng/shared/get-capabilities';
+import {HsLayerDescriptor} from 'hslayers-ng/common/types';
 import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
 import {HsLogService} from 'hslayers-ng/shared/log';
 import {HsMapService} from 'hslayers-ng/components/map';

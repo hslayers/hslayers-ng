@@ -20,7 +20,7 @@ import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
 import {HsAddDataVectorService} from '../add-data/vector/vector.service';
 import {HsCommonEndpointsService} from 'hslayers-ng/shared/endpoints';
 import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
-import {HsCompositionsCatalogueService} from './compositions-catalogue.service';
+import {HsCompositionsCatalogueService} from 'hslayers-ng/shared/compositions';
 import {HsCompositionsComponent} from './compositions.component';
 import {HsCompositionsLayerParserService} from './layer-parser/layer-parser.service';
 import {HsCompositionsMapService} from './compositions-map.service';

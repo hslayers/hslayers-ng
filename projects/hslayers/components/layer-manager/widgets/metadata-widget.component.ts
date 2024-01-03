@@ -1,10 +1,10 @@
 import {Component} from '@angular/core';
 
 import {HsLanguageService} from 'hslayers-ng/components/language';
-import {HsLayerDescriptor} from '../layer-descriptor.interface';
+import {HsLayerDescriptor} from 'hslayers-ng/common/types';
 import {HsLayerEditorWidgetBaseComponent} from './layer-editor-widget-base.component';
 import {HsLayerManagerMetadataService} from '../layer-manager-metadata.service';
-import {HsLayerManagerService} from '../layer-manager.service';
+import {HsLayerManagerService} from 'hslayers-ng/shared/layer-manager'
 import {HsLayerSelectorService} from '../editor/layer-selector.service';
 import {getAbstract, setAbstract} from 'hslayers-ng/common/extensions';
 import {getAttribution} from 'hslayers-ng/common/extensions';
