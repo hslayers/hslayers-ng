@@ -22,10 +22,10 @@ import {Tile as TileLayer} from 'ol/layer';
 import {isEmpty} from 'ol/extent';
 
 import {HsLanguageService} from 'hslayers-ng/components/language';
-import {HsLayerDescriptor} from 'hslayers-ng/components/layer-manager/layer-descriptor.interface';
+import {HsLayerDescriptor} from 'hslayers-ng/components/layer-manager';
 import {HsMapService} from 'hslayers-ng/components/map';
 import {HsUtilsService} from './utils.service';
-import {HsWmsLayer} from '../get-capabilities/wms-get-capabilities-response.interface';
+import {HsWmsLayer} from 'hslayers-ng/shared/get-capabilities';
 import {
   getCluster,
   getEditor,
