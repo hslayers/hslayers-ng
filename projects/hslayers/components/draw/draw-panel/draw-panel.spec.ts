@@ -19,7 +19,7 @@ import {HsCommonEndpointsService} from 'hslayers-ng/shared/endpoints';
 import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsConfigMock} from 'hslayers-ng/config';
-import {HsDrawService} from '../draw.service';
+
 import {HsLanguageModule} from 'hslayers-ng/components/language';
 import {HsLanguageService} from 'hslayers-ng/components/language';
 import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';

@@ -4,13 +4,13 @@ import {Observable, forkJoin} from 'rxjs';
 
 import {HsCommonEndpointsService} from 'hslayers-ng/shared/endpoints';
 import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
-import {HsCompositionsInfoDialogComponent} from './dialogs/info-dialog.component';
-import {HsCompositionsService} from './compositions.service';
+import {HsCompositionsInfoDialogComponent} from 'hslayers-ng/components/compositions';
+import {HsCompositionsService} from 'hslayers-ng/components/compositions';
 import {HsDialogContainerService} from 'hslayers-ng/components/layout';
 import {HsEndpoint} from 'hslayers-ng/shared/endpoints';
 import {HsEventBusService} from 'hslayers-ng/shared/core';
 import {HsLayoutService} from 'hslayers-ng/components/layout';
-import {HsMapCompositionDescriptor} from './models/composition-descriptor.model';
+import {HsMapCompositionDescriptor} from 'hslayers-ng/components/compositions';
 import {HsMapService} from 'hslayers-ng/components/map';
 import {HsUtilsService} from 'hslayers-ng/shared/utils';
 import {
@@ -18,7 +18,7 @@ import {
   KEYWORDS,
   SORTBYVALUES,
   TYPES,
-} from './compositions-option-values';
+} from 'hslayers-ng/components/compositions';
 
 @Injectable({
   providedIn: 'root',

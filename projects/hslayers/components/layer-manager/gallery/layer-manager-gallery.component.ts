@@ -4,8 +4,8 @@ import {CommonModule} from '@angular/common';
 import {NgbDropdown, NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
 
 import {HsGuiOverlayBaseComponent} from '../../layout/panels/gui-overlay-base.component';
-import {HsLayerDescriptor} from '../layer-descriptor.interface';
-import {HsLayerManagerService} from '../layer-manager.service';
+import {HsLayerDescriptor} from 'hslayers-ng/common/types';
+import {HsLayerManagerService} from 'hslayers-ng/shared/layer-manager'
 import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
 import {HsLayoutService} from 'hslayers-ng/components/layout';
 import {TranslateCustomPipe} from 'hslayers-ng/components/language';

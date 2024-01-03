@@ -5,11 +5,11 @@ import {BehaviorSubject, Subject, takeUntil} from 'rxjs';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsDialogContainerService} from 'hslayers-ng/components/layout';
 import {HsDrawLayerMetadataDialogComponent} from './draw-layer-metadata/draw-layer-metadata.component';
-import {HsDrawService} from './draw.service';
+
 import {HsLanguageService} from 'hslayers-ng/components/language';
 import {HsLayoutService} from 'hslayers-ng/components/layout';
 import {HsPanelBaseComponent} from 'hslayers-ng/components/layout';
-import {HsQueryBaseService} from '../query/query-base.service';
+import {HsQueryBaseService} from 'hslayers-ng/components/query';
 import {HsSidebarService} from 'hslayers-ng/components/sidebar';
 import {HsUtilsService} from 'hslayers-ng/shared/utils';
 

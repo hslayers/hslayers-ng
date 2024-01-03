@@ -13,25 +13,25 @@ import {platformModifierKeyOnly} from 'ol/events/condition';
 import {unByKey} from 'ol/Observable';
 
 import {HsAddDataOwsService} from 'hslayers-ng/components/add-data';
-import {HsAddDataVectorService} from '../add-data/vector/vector.service';
+import {HsAddDataVectorService} from 'hslayers-ng/components/add-data';
 import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
 import {HsConfig} from 'hslayers-ng/config';
-import {HsConfirmDialogComponent} from './hslayers-ng/common/confirm';
+import {HsConfirmDialogComponent} from 'hslayers-ng/common/confirm';
 import {HsDialogContainerService} from 'hslayers-ng/components/layout';
 import {HsDrawServiceParams} from './draw.service.params';
 import {HsEventBusService} from 'hslayers-ng/shared/core';
 import {HsLanguageService} from 'hslayers-ng/components/language';
 import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
-import {HsLaymanBrowserService} from '../add-data/catalogue/layman/layman.service';
+import {HsLaymanBrowserService} from 'hslayers-ng/components/add-data';
 import {HsLaymanService} from 'hslayers-ng/components/save-map';
 import {HsLayoutService} from 'hslayers-ng/components/layout';
 import {HsLogService} from 'hslayers-ng/shared/log';
 import {HsMapService} from 'hslayers-ng/components/map';
-import {HsQueryBaseService} from '../query/query-base.service';
-import {HsQueryVectorService} from '../query/query-vector.service';
+import {HsQueryBaseService} from 'hslayers-ng/components/query';
+import {HsQueryVectorService} from 'hslayers-ng/components/query';
 import {HsToastService} from 'hslayers-ng/components/layout';
 import {HsUtilsService} from 'hslayers-ng/shared/utils';
-import {defaultStyle} from '../styler/styles';
+import {defaultStyle} from 'hslayers-ng/components/styler';
 import {
   getEditor,
   getName,

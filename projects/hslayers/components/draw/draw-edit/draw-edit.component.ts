@@ -7,15 +7,14 @@ import {Polygon} from 'ol/geom';
 import {Vector} from 'ol/source';
 import {Vector as VectorLayer} from 'ol/layer';
 
-import {HsDrawService} from '../draw.service';
 import {HsEventBusService} from 'hslayers-ng/shared/core';
 import {HsLanguageService} from 'hslayers-ng/components/language';
 import {HsLogService} from 'hslayers-ng/shared/log';
 import {HsMapService} from 'hslayers-ng/components/map';
-import {HsQueryBaseService} from '../../query/query-base.service';
-import {HsQueryVectorService} from '../../query/query-vector.service';
+import {HsQueryBaseService} from 'hslayers-ng/components/query';
+import {HsQueryVectorService} from 'hslayers-ng/components/query';
 import {HsToastService} from 'hslayers-ng/components/layout';
-import {defaultStyle} from '../../styler/styles';
+import {defaultStyle} from 'hslayers-ng/components/styler';
 
 @Component({
   selector: 'hs-draw-edit',

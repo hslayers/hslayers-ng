@@ -1,7 +1,7 @@
 export * from './dimensions/layer-editor-dimensions.component';
 export * from './dimensions/layer-manager-time-editor.component';
 export * from './base-layer-descriptor.interface';
-export * from './layer-descriptor.interface';
+export * from 'hslayers-ng/common/types';
 export * from './editor/layer-editor-vector-layer.service';
 export * from './editor/layer-editor.component';
 export * from './editor/layer-editor.service';
@@ -16,7 +16,6 @@ export * from './layer-manager-metadata.service';
 export * from './physical-list/physical-layerlist.component';
 export * from './layer-manager.component';
 export * from './layer-manager.module';
-export * from './layer-manager.service';
 export * from './dialogs/remove-all-dialog.component';
 export * from './dialogs/remove-layer-dialog.component';
 export * from './dialogs/copy-layer-dialog.component';

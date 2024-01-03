@@ -18,7 +18,7 @@ import {HsLogService} from 'hslayers-ng/shared/log';
 import {HsUrlTypeServiceModel} from '../models/url-type-service.model';
 import {HsUtilsService} from 'hslayers-ng/shared/utils';
 import {HsWfsGetCapabilitiesService} from 'hslayers-ng/shared/get-capabilities';
-import {LayerOptions} from 'hslayers-ng/components/compositions';
+import {LayerOptions} from 'hslayers-ng/common/types';
 import {UrlDataObject} from '../types/data-object.type';
 import {WfsSource} from 'hslayers-ng/common/layers';
 

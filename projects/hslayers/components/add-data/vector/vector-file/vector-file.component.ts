@@ -18,15 +18,12 @@ import {HsAddDataVectorService} from '../vector.service';
 import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsLanguageService} from 'hslayers-ng/components/language';
-import {HsLayerManagerService} from 'hslayers-ng/components/layer-manager';
+import {HsLayerManagerService} from 'hslayers-ng/shared/layer-manager';
 import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
 import {HsLayoutService} from 'hslayers-ng/components/layout';
 import {HsMapService} from 'hslayers-ng/components/map';
 import {HsToastService} from 'hslayers-ng/components/layout';
-import {
-  HsUploadComponent,
-  HsUploadedFiles,
-} from 'hslayers-ng/common/upload';
+import {HsUploadComponent, HsUploadedFiles} from 'hslayers-ng/common/upload';
 import {HsUtilsService} from 'hslayers-ng/shared/utils';
 import {VectorFileDataType} from '../../common/advanced-options/advanced-options.component';
 import {accessRightsModel} from 'hslayers-ng/common/types';

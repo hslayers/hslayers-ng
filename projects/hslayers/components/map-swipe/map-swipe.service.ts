@@ -8,7 +8,7 @@ import {Source} from 'ol/source';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsEventBusService} from 'hslayers-ng/shared/core';
 import {HsLayerEditorService} from 'hslayers-ng/components/layer-manager';
-import {HsLayerManagerService} from 'hslayers-ng/components/layer-manager';
+import {HsLayerManagerService} from 'hslayers-ng/shared/layer-manager';
 import {
   HsLayerShiftingService,
   LayerListItem,

@@ -4,7 +4,7 @@ import {Layer} from 'ol/layer';
 import {Source} from 'ol/source';
 
 import {HsEventBusService} from 'hslayers-ng/shared/core';
-import {HsLayerManagerService} from 'hslayers-ng/components/layer-manager';
+import {HsLayerManagerService} from 'hslayers-ng/shared/layer-manager';
 import {HsMapService} from 'hslayers-ng/components/map';
 import {HsUtilsService} from 'hslayers-ng/shared/utils';
 import {getBase} from 'hslayers-ng/common/extensions';

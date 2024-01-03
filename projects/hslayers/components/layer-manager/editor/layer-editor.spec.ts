@@ -21,7 +21,7 @@ import {
 import {HsClusterWidgetComponent} from '../widgets/cluster-widget.component';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsConfigMock} from 'hslayers-ng/config';
-import {HsDrawService} from 'hslayers-ng/components/draw';
+import {HsDrawService} from 'hslayers-ng/shared/draw';
 import {HsLanguageModule} from 'hslayers-ng/components/language';
 import {HsLayerEditorComponent} from './layer-editor.component';
 import {HsLayerEditorService} from './layer-editor.service';
