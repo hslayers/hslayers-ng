@@ -4,7 +4,7 @@ import {Layer} from 'ol/layer';
 import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
 import {HsDialogComponent} from 'hslayers-ng/components/layout';
 import {HsDialogContainerService} from 'hslayers-ng/components/layout';
-import {HsDialogItem} from 'hslayers-ng/components/layout/dialogs/dialog-item';
+import {HsDialogItem} from 'hslayers-ng/components/layout';
 import {HsLanguageService} from 'hslayers-ng/components/language';
 import {HsRemoveLayerDialogService} from './remove-layer-dialog.service';
 import {getTitle} from '../extensions/layer-extensions';
