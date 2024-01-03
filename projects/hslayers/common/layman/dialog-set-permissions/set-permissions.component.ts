@@ -1,24 +1,31 @@
 import {Component, OnInit, ViewRef} from '@angular/core';
 
-import {HsAddDataCatalogueService} from '../../../components/add-data/catalogue/catalogue.service';
-import {HsAddDataLayerDescriptor} from '../../../components/add-data/catalogue/layer-descriptor.model';
+import {
+  HsAddDataCatalogueService,
+  HsAddDataLayerDescriptor,
+  accessRightsModel,
+} from 'hslayers-ng/components/add-data';
 import {HsCommonLaymanService} from '../layman.service';
-import {HsCompositionsCatalogueService} from '../../../components/compositions/compositions-catalogue.service';
-import {HsDialogComponent} from '../../../components/layout/dialogs/dialog-component.interface';
-import {HsDialogContainerService} from '../../../components/layout/dialogs/dialog-container.service';
-import {HsDialogItem} from '../../../components/layout/dialogs/dialog-item';
-import {HsEndpoint} from '../../endpoints/endpoint.interface';
-import {HsLaymanService} from '../../../components/save-map/layman.service';
+import {HsCompositionsCatalogueService} from 'hslayers-ng/components/compositions';
+import {
+  HsDialogComponent,
+  HsDialogContainerService,
+  HsDialogItem,
+} from 'hslayers-ng/components/layout';
+import {HsEndpoint} from 'hslayers-ng/shared/endpoints';
+import {
+  HsLaymanService,
+  UpsertLayerObject,
+} from 'hslayers-ng/components/save-map';
 import {PostPatchLayerResponse} from '../types/post-patch-layer-response.type';
-import {UpsertLayerObject} from '../../../components/save-map/types/upsert-layer-object.type';
-import {accessRightsModel} from '../../../components/add-data/common/access-rights.model';
 
 @Component({
   selector: 'hs-set-permissions-dialog',
   templateUrl: './set-permissions.component.html',
 })
 export class HsSetPermissionsDialogComponent
-  implements HsDialogComponent, OnInit {
+  implements HsDialogComponent, OnInit
+{
   dialogItem: HsDialogItem;
   viewRef: ViewRef;
   currentAccessRights: accessRightsModel = {

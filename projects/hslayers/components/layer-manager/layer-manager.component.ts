@@ -11,23 +11,23 @@ import {Layer} from 'ol/layer';
 import {Source} from 'ol/source';
 import {Subject, takeUntil} from 'rxjs';
 
-import {HsConfig} from '../../config.service';
-import {HsCoreService} from '../core/core.service';
-import {HsDialogContainerService} from '../layout/dialogs/dialog-container.service';
-import {HsEventBusService} from '../core/event-bus.service';
-import {HsLanguageService} from '../language/language.service';
+import {HsConfig} from 'hslayers-ng/config';
+import {HsCoreService} from 'hslayers-ng/shared/core';
+import {HsDialogContainerService} from 'hslayers-ng/components/layout';
+import {HsEventBusService} from 'hslayers-ng/shared/core';
+import {HsLanguageService} from 'hslayers-ng/components/language';
 import {HsLayerDescriptor} from './layer-descriptor.interface';
 import {HsLayerListService} from './logical-list/layer-manager-layerlist.service';
 import {HsLayerManagerRemoveAllDialogComponent} from './dialogs/remove-all-dialog.component';
 import {HsLayerManagerService} from './layer-manager.service';
 import {HsLayerSynchronizerService} from '../save-map/layer-synchronizer.service';
-import {HsLayerUtilsService} from '../utils/layer-utils.service';
-import {HsLayoutService} from '../layout/layout.service';
-import {HsMapService} from '../map/map.service';
-import {HsPanelBaseComponent} from '../layout/panels/panel-base.component';
-import {HsRemoveLayerDialogService} from '../../common/remove-multiple/remove-layer-dialog.service';
-import {HsSidebarService} from '../sidebar/sidebar.service';
-import {HsUtilsService} from '../utils/utils.service';
+import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
+import {HsLayoutService} from 'hslayers-ng/components/layout';
+import {HsMapService} from 'hslayers-ng/components/map';
+import {HsPanelBaseComponent} from 'hslayers-ng/components/layout';
+import {HsRemoveLayerDialogService} from 'hslayers-ng/common/remove-multiple';
+import {HsSidebarService} from 'hslayers-ng/components/sidebar';
+import {HsUtilsService} from 'hslayers-ng/shared/utils';
 import {
   getActive,
   getAttribution,
@@ -35,7 +35,7 @@ import {
   getShowInLayerManager,
   getThumbnail,
   getTitle,
-} from '../../common/layer-extensions';
+} from 'hslayers-ng/common/extensions';
 
 @Component({
   selector: 'hs-layer-manager',

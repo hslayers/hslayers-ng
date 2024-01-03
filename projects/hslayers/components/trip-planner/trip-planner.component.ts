@@ -2,17 +2,17 @@ import {Component, OnInit} from '@angular/core';
 
 import {Feature} from 'ol';
 
-import {HsConfig} from './../../config.service';
-import {HsCoreService} from './../core/core.service';
-import {HsLanguageService} from '../language/language.service';
-import {HsLayerUtilsService} from '../utils/layer-utils.service';
-import {HsLayoutService} from '../layout/layout.service';
-import {HsMapService} from './../map/map.service';
-import {HsPanelBaseComponent} from '../layout/panels/panel-base.component';
-import {HsSidebarService} from '../sidebar/sidebar.service';
+import {HsConfig} from './hslayers-ng/config';
+import {HsCoreService} from 'hslayers-ng/shared/core';
+import {HsLanguageService} from 'hslayers-ng/components/language';
+import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
+import {HsLayoutService} from 'hslayers-ng/components/layout';
+import {HsMapService} from './hslayers-ng/components/map';
+import {HsPanelBaseComponent} from 'hslayers-ng/components/layout';
+import {HsSidebarService} from 'hslayers-ng/components/sidebar';
 import {HsTripPlannerService, Waypoint} from './trip-planner.service';
-import {HsUtilsService} from '../utils/utils.service';
-import {setHighlighted} from '../../common/feature-extensions';
+import {HsUtilsService} from 'hslayers-ng/shared/utils';
+import {setHighlighted} from 'hslayers-ng/common/extensions';
 
 @Component({
   selector: 'hs-trip-planner',

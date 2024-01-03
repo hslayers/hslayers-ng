@@ -5,8 +5,8 @@ import {
   CustomTranslationService,
   WebpackTranslateLoader,
 } from './custom-translate.service';
-import {HsConfig} from '../../config.service';
-import {HsLogService} from '../../common/log/log.service';
+import {HsConfig} from 'hslayers-ng/config';
+import {HsLogService} from 'hslayers-ng/shared/log';
 
 const DEFAULT_LANG = 'en' as const;
 

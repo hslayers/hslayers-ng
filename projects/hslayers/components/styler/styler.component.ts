@@ -9,16 +9,16 @@ import {Source} from 'ol/source';
 import {Vector as VectorLayer} from 'ol/layer';
 import {Vector as VectorSource} from 'ol/source';
 
-import {HsDialogContainerService} from '../layout/dialogs/dialog-container.service';
-import {HsEventBusService} from '../core/event-bus.service';
-import {HsLayerUtilsService} from './../utils/layer-utils.service';
-import {HsLayoutService} from '../layout/layout.service';
-import {HsPanelBaseComponent} from '../layout/panels/panel-base.component';
+import {HsDialogContainerService} from 'hslayers-ng/components/layout';
+import {HsEventBusService} from 'hslayers-ng/shared/core';
+import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
+import {HsLayoutService} from 'hslayers-ng/components/layout';
+import {HsPanelBaseComponent} from 'hslayers-ng/components/layout';
 import {HsSaveMapService} from '../save-map/save-map.service';
 import {HsStylerEditDialogComponent} from './edit-dialog/edit-dialog.component';
-import {HsStylerService} from '../styler/styler.service';
-import {HsUploadedFiles} from '../../common/upload/upload.component';
-import {HsUtilsService} from '../utils/utils.service';
+import {HsStylerService} from 'hslayers-ng/components/styler';
+import {HsUploadedFiles} from 'hslayers-ng/common/upload';
+import {HsUtilsService} from 'hslayers-ng/shared/utils';
 
 @Component({
   selector: 'hs-styles',

@@ -4,12 +4,12 @@ import colorScales from 'colormap/colorScale';
 import {Feature} from 'ol';
 import {Vector as VectorSource} from 'ol/source';
 
-import {HsConfig} from '../../../config.service';
-import {HsLanguageService} from '../../language/language.service';
+import {HsConfig} from 'hslayers-ng/config';
+import {HsLanguageService} from 'hslayers-ng/components/language';
 import {HsLayerEditorWidgetBaseComponent} from './layer-editor-widget-base.component';
 import {HsLayerSelectorService} from '../editor/layer-selector.service';
-import {HsUtilsService} from '../../utils/utils.service';
-import {InterpolatedSource} from '../../../common/layers/hs.source.interpolated';
+import {HsUtilsService} from 'hslayers-ng/shared/utils';
+import {InterpolatedSource} from 'hslayers-ng/common/layers';
 
 export function listNumericAttributes(features: Feature[]): string[] {
   return features.length > 0
@@ -35,8 +35,7 @@ export function listNumericAttributes(features: Feature[]): string[] {
  */
 export class HsIdwWidgetComponent
   extends HsLayerEditorWidgetBaseComponent
-  implements OnInit
-{
+  implements OnInit {
   weightAttribute: string;
   attributes: string[];
   name = 'idw-widget';

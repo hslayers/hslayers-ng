@@ -10,12 +10,12 @@ import {
 import {Subscription} from 'rxjs';
 import {transform} from 'ol/proj';
 
-import {HS_PRMS} from '../share/get-params';
-import {HsConfig} from '../../config.service';
-import {HsCoreService} from '../core/core.service';
-import {HsEventBusService} from '../core/event-bus.service';
+import {HS_PRMS} from 'hslayers-ng/components/share';
+import {HsConfig} from 'hslayers-ng/config';
+import {HsCoreService} from 'hslayers-ng/shared/core';
+import {HsEventBusService} from 'hslayers-ng/shared/core';
 import {HsMapService} from './map.service';
-import {HsShareUrlService} from '../share/share-url.service';
+import {HsShareUrlService} from 'hslayers-ng/components/share';
 
 @Component({
   selector: 'hs-map',

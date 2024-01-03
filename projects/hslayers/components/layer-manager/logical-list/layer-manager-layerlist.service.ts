@@ -3,8 +3,8 @@ import {Injectable} from '@angular/core';
 import {HsLayerDescriptor} from '../layer-descriptor.interface';
 import {HsLayerEditorSublayerService} from '../editor/layer-editor-sub-layer.service';
 import {HsLayerManagerService} from '../layer-manager.service';
-import {HsLayerUtilsService} from '../../utils/layer-utils.service';
-import {getPath} from '../../../common/layer-extensions';
+import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
+import {getPath} from 'hslayers-ng/common/extensions';
 
 @Injectable({
   providedIn: 'root',

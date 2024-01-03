@@ -1,8 +1,8 @@
 import {Injectable, Renderer2, RendererFactory2} from '@angular/core';
 
-import {HsConfig} from '../../config.service';
-import {HsLogService} from '../../common/log/log.service';
-import {HsMapService} from '../map/map.service';
+import {HsConfig} from 'hslayers-ng/config';
+import {HsLogService} from 'hslayers-ng/shared/log';
+import {HsMapService} from 'hslayers-ng/components/map';
 
 @Injectable({
   providedIn: 'root',

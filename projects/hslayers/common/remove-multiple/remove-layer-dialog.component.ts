@@ -1,13 +1,13 @@
 import {Component, OnInit, ViewRef} from '@angular/core';
 import {Layer} from 'ol/layer';
 
-import {HsCommonLaymanService} from '../layman/layman.service';
-import {HsDialogComponent} from '../../components/layout/dialogs/dialog-component.interface';
-import {HsDialogContainerService} from '../../components/layout/dialogs/dialog-container.service';
-import {HsDialogItem} from '../../components/layout/dialogs/dialog-item';
-import {HsLanguageService} from '../../components/language/language.service';
+import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
+import {HsDialogComponent} from 'hslayers-ng/components/layout';
+import {HsDialogContainerService} from 'hslayers-ng/components/layout';
+import {HsDialogItem} from 'hslayers-ng/components/layout/dialogs/dialog-item';
+import {HsLanguageService} from 'hslayers-ng/components/language';
 import {HsRemoveLayerDialogService} from './remove-layer-dialog.service';
-import {getTitle} from '../layer-extensions';
+import {getTitle} from '../extensions/layer-extensions';
 
 export type HsRmLayerDialogResponse = {
   value: 'yes' | 'no';

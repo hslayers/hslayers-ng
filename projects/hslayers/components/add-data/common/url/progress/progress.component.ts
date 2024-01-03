@@ -1,7 +1,7 @@
 import {ChangeDetectionStrategy, Component} from '@angular/core';
 
 import {HsAddDataService} from '../../../add-data.service';
-import {HsUtilsService} from '../../../../utils/utils.service';
+import {HsUtilsService} from 'hslayers-ng/shared/utils';
 
 @Component({
   selector: 'hs-url-progress',

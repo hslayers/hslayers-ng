@@ -2,7 +2,7 @@ import {CommonModule} from '@angular/common';
 import {NgModule} from '@angular/core';
 
 import {HsConfirmDialogComponent} from './confirm-dialog.component';
-import {TranslateCustomPipe} from '../../components/language/translate-custom.pipe';
+import {TranslateCustomPipe} from 'hslayers-ng/components/language';
 
 @NgModule({
   declarations: [HsConfirmDialogComponent],

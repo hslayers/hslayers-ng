@@ -12,25 +12,25 @@ import {fromCircle} from 'ol/geom/Polygon';
 import {platformModifierKeyOnly} from 'ol/events/condition';
 import {unByKey} from 'ol/Observable';
 
-import {HsAddDataOwsService} from '../add-data/url/add-data-ows.service';
+import {HsAddDataOwsService} from 'hslayers-ng/components/add-data';
 import {HsAddDataVectorService} from '../add-data/vector/vector.service';
-import {HsCommonLaymanService} from '../../common/layman/layman.service';
-import {HsConfig} from '../../config.service';
-import {HsConfirmDialogComponent} from './../../common/confirm/confirm-dialog.component';
-import {HsDialogContainerService} from '../layout/dialogs/dialog-container.service';
+import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
+import {HsConfig} from 'hslayers-ng/config';
+import {HsConfirmDialogComponent} from './hslayers-ng/common/confirm';
+import {HsDialogContainerService} from 'hslayers-ng/components/layout';
 import {HsDrawServiceParams} from './draw.service.params';
-import {HsEventBusService} from '../core/event-bus.service';
-import {HsLanguageService} from './../language/language.service';
-import {HsLayerUtilsService} from '../utils/layer-utils.service';
+import {HsEventBusService} from 'hslayers-ng/shared/core';
+import {HsLanguageService} from 'hslayers-ng/components/language';
+import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
 import {HsLaymanBrowserService} from '../add-data/catalogue/layman/layman.service';
-import {HsLaymanService} from '../save-map/layman.service';
-import {HsLayoutService} from '../layout/layout.service';
-import {HsLogService} from '../../common/log/log.service';
-import {HsMapService} from '../map/map.service';
+import {HsLaymanService} from 'hslayers-ng/components/save-map';
+import {HsLayoutService} from 'hslayers-ng/components/layout';
+import {HsLogService} from 'hslayers-ng/shared/log';
+import {HsMapService} from 'hslayers-ng/components/map';
 import {HsQueryBaseService} from '../query/query-base.service';
 import {HsQueryVectorService} from '../query/query-vector.service';
-import {HsToastService} from '../layout/toast/toast.service';
-import {HsUtilsService} from '../utils/utils.service';
+import {HsToastService} from 'hslayers-ng/components/layout';
+import {HsUtilsService} from 'hslayers-ng/shared/utils';
 import {defaultStyle} from '../styler/styles';
 import {
   getEditor,
@@ -45,7 +45,7 @@ import {
   setSld,
   setTitle,
   setWorkspace,
-} from '../../common/layer-extensions';
+} from 'hslayers-ng/common/extensions';
 
 type ActivateParams = {
   onDrawStart?;

@@ -18,23 +18,23 @@ import {
   setCacheCapabilities,
   setLegends,
   setMetadata,
-} from '../../common/layer-extensions';
+} from 'hslayers-ng/common/extensions';
 import {HsAddDataUrlService} from '../add-data/url/add-data-url.service';
-import {HsArcgisGetCapabilitiesService} from '../../common/get-capabilities/arcgis-get-capabilities.service';
-import {HsDimensionTimeService} from '../../common/get-capabilities/dimension-time.service';
-import {HsLayerDescriptor} from './layer-descriptor.interface';
-import {HsLayerUtilsService} from '../utils/layer-utils.service';
-import {HsLogService} from '../../common/log/log.service';
-import {HsMapService} from '../map/map.service';
-import {HsUrlWmsService} from '../add-data/url/wms/wms.service';
-import {HsWfsGetCapabilitiesService} from '../../common/get-capabilities/wfs-get-capabilities.service';
-import {HsWmsGetCapabilitiesService} from '../../common/get-capabilities/wms-get-capabilities.service';
 import {
+  HsArcgisGetCapabilitiesService,
+  HsDimensionTimeService,
+  HsWfsGetCapabilitiesService,
+  HsWmsGetCapabilitiesService,
   HsWmsLayer,
+  HsWmtsGetCapabilitiesService,
   WMSGetCapabilitiesResponse,
   WmsDimension,
-} from '../../common/get-capabilities/wms-get-capabilities-response.interface';
-import {HsWmtsGetCapabilitiesService} from '../../common/get-capabilities/wmts-get-capabilities.service';
+} from 'hslayers-ng/shared/get-capabilities/';
+import {HsLayerDescriptor} from './layer-descriptor.interface';
+import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
+import {HsLogService} from 'hslayers-ng/shared/log';
+import {HsMapService} from 'hslayers-ng/components/map';
+import {HsUrlWmsService} from '../add-data/url/wms/wms.service';
 
 @Injectable({
   providedIn: 'root',

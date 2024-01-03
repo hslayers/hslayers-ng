@@ -6,20 +6,20 @@ import {Layer} from 'ol/layer';
 import {lastValueFrom} from 'rxjs';
 
 import {CompoData} from '../save-map/types/compo-data.type';
-import {HsConfig} from '../../config.service';
-import {HsEndpoint} from '../../common/endpoints/endpoint.interface';
-import {HsEventBusService} from '../core/event-bus.service';
-import {HsLanguageService} from '../language/language.service';
-import {HsLayoutService} from '../layout/layout.service';
-import {HsLogService} from '../../common/log/log.service';
-import {HsMapService} from '../map/map.service';
+import {HsConfig} from 'hslayers-ng/config';
+import {HsEndpoint} from 'hslayers-ng/shared/endpoints';
+import {HsEventBusService} from 'hslayers-ng/shared/core';
+import {HsLanguageService} from 'hslayers-ng/components/language';
+import {HsLayoutService} from 'hslayers-ng/components/layout';
+import {HsLogService} from 'hslayers-ng/shared/log';
+import {HsMapService} from 'hslayers-ng/components/map';
 import {HsSaveMapService} from '../save-map/save-map.service';
 import {HsShareThumbnailService} from './share-thumbnail.service';
 import {HsShareUrlService} from './share-url.service';
-import {HsToastService} from '../layout/toast/toast.service';
-import {HsUtilsService} from '../utils/utils.service';
+import {HsToastService} from 'hslayers-ng/components/layout';
+import {HsUtilsService} from 'hslayers-ng/shared/utils';
 import {MapComposition} from '../save-map/types/map-composition.type';
-import {getShowInLayerManager} from '../../common/layer-extensions';
+import {getShowInLayerManager} from 'hslayers-ng/common/extensions';
 
 @Injectable({
   providedIn: 'root',

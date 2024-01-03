@@ -5,11 +5,11 @@ import {FormsModule} from '@angular/forms';
 import {HsAddDataCommonModule} from '../common/common.module';
 import {HsAddDataVectorFileComponent} from './vector-file/vector-file.component';
 import {HsAddDataVectorUrlComponent} from './vector-url/vector-url.component';
-import {HsAddToMapButtonComponent} from '../../../common/add-to-map/add-to-map.component';
+import {HsAddToMapButtonComponent} from 'hslayers-ng/common/add-to-map';
 import {HsCommonUrlModule} from '../common/url/url.module';
-import {TranslateCustomPipe} from '../../language/translate-custom.pipe';
-import {HsLaymanModule} from '../../../common/layman/layman.module';
-import {HsUploadModule} from '../../../common/upload/upload.module';
+import {HsLaymanModule} from 'hslayers-ng/common/layman';
+import {HsUploadModule} from 'hslayers-ng/common/upload';
+import {TranslateCustomPipe} from 'hslayers-ng/components/language';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

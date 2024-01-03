@@ -3,16 +3,16 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 
-import {HsCommonEndpointsService} from '../../common/endpoints/endpoints.service';
-import {HsCommonLaymanService} from '../../common/layman/layman.service';
-import {HsConfig} from '../../config.service';
-import {HsEndpoint} from './../../common/endpoints/endpoint.interface';
-import {HsLayoutService} from '../layout/layout.service';
-import {HsPanelBaseComponent} from '../layout/panels/panel-base.component';
+import {HsCommonEndpointsService} from 'hslayers-ng/shared/endpoints';
+import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
+import {HsConfig} from 'hslayers-ng/config';
+import {HsEndpoint} from 'hslayers-ng/shared/endpoints';
+import {HsLayoutService} from 'hslayers-ng/components/layout';
+import {HsPanelBaseComponent} from 'hslayers-ng/components/layout';
 import {HsSaveMapDialogSpawnerService} from './dialog-spawner.service';
 import {HsSaveMapManagerService} from './save-map-manager.service';
 import {HsSaveMapService} from './save-map.service';
-import {HsSidebarService} from '../sidebar/sidebar.service';
+import {HsSidebarService} from 'hslayers-ng/components/sidebar';
 @Component({
   selector: 'hs-save-map',
   templateUrl: './save-map.component.html',

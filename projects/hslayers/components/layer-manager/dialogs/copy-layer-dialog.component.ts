@@ -1,8 +1,8 @@
 import {Component, ViewRef} from '@angular/core';
 
-import {HsDialogComponent} from '../../layout/dialogs/dialog-component.interface';
-import {HsDialogContainerService} from '../../layout/dialogs/dialog-container.service';
-import {HsDialogItem} from '../../layout/dialogs/dialog-item';
+import {HsDialogComponent} from 'hslayers-ng/components/layout';
+import {HsDialogContainerService} from 'hslayers-ng/components/layout';
+import {HsDialogItem} from 'hslayers-ng/components/layout';
 @Component({
   selector: 'hs-copy-layer-dialog',
   templateUrl: './copy-layer-dialog.component.html',

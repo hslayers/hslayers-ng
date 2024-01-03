@@ -5,17 +5,17 @@ import {HsAddDataCatalogueService} from '../catalogue.service';
 import {HsAddDataLayerDescriptor} from '../layer-descriptor.model';
 import {HsCatalogueMetadataComponent} from '../catalogue-metadata/catalogue-metadata.component';
 import {HsCatalogueMetadataService} from '../catalogue-metadata/catalogue-metadata.service';
-import {HsCommonEndpointsService} from './../../../../common/endpoints/endpoints.service';
-import {HsConfig} from '../../../../config.service';
-import {HsConfirmDialogComponent} from '../../../../common/confirm/confirm-dialog.component';
-import {HsDialogContainerService} from '../../../layout/dialogs/dialog-container.service';
-import {HsEndpoint} from '../../../../common/endpoints/endpoint.interface';
-import {HsLanguageService} from '../../../language/language.service';
+import {HsCommonEndpointsService} from 'hslayers-ng/shared/endpoints';
+import {HsConfig} from 'hslayers-ng/config';
+import {HsConfirmDialogComponent} from 'hslayers-ng/common/confirm';
+import {HsDialogContainerService} from 'hslayers-ng/components/layout';
+import {HsEndpoint} from 'hslayers-ng/shared/endpoints';
+import {HsLanguageService} from 'hslayers-ng/components/language';
 import {HsLaymanBrowserService} from '../layman/layman.service';
-import {HsLaymanService} from '../../../save-map/layman.service';
-import {HsLogService} from '../../../../common/log/log.service';
-import {HsSetPermissionsDialogComponent} from './../../../../common/layman/dialog-set-permissions/set-permissions.component';
-import {HsUtilsService} from '../../../utils/utils.service';
+import {HsLaymanService} from 'hslayers-ng/components/save-map';
+import {HsLogService} from 'hslayers-ng/shared/log';
+import {HsSetPermissionsDialogComponent} from 'hslayers-ng/common/layman';
+import {HsUtilsService} from 'hslayers-ng/shared/utils';
 
 @Component({
   selector: 'hs-catalogue-list-item',

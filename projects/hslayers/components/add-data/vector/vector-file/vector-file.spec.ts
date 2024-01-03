@@ -15,22 +15,22 @@ import {Subject} from 'rxjs';
 
 import {HsAddDataVectorFileComponent} from './vector-file.component';
 import {HsAddDataVectorService} from '../vector.service';
-import {HsCommonEndpointsService} from '../../../../common/endpoints/endpoints.service';
-import {HsCommonLaymanService} from '../../../../common/layman/layman.service';
-import {HsConfig} from '../../../../config.service';
-import {HsConfigMock} from '../../../../config.service.mock';
-import {HsEndpoint} from '../../../../common/endpoints/endpoint.interface';
-import {HsLayerUtilsService} from '../../../utils/layer-utils.service';
-import {HsLayoutService} from '../../../layout/layout.service';
-import {HsLayoutServiceMock} from '../../../layout/layout.service.mock';
-import {HsMapService} from '../../../map/map.service';
-import {HsMapServiceMock} from '../../../map/map.service.mock';
-import {HsUploadComponent} from '../../../../common/upload/upload.component';
-import {HsUtilsService} from '../../../utils/utils.service';
-import {HsUtilsServiceMock} from '../../../utils/utils.service.mock';
-import {TranslateCustomPipe} from '../../../language/translate-custom.pipe';
-import {getTitle} from '../../../../common/layer-extensions';
-import {mockLayerUtilsService} from '../../../utils/layer-utils.service.mock';
+import {HsCommonEndpointsService} from 'hslayers-ng/shared/endpoints';
+import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
+import {HsConfig} from 'hslayers-ng/config';
+import {HsConfigMock} from 'hslayers-ng/config';
+import {HsEndpoint} from 'hslayers-ng/shared/endpoints';
+import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
+import {HsLayoutService} from 'hslayers-ng/components/layout';
+import {HsLayoutServiceMock} from 'hslayers-ng/components/layout';
+import {HsMapService} from 'hslayers-ng/components/map';
+import {HsMapServiceMock} from 'hslayers-ng/components/map';
+import {HsUploadComponent} from 'hslayers-ng/common/upload';
+import {HsUtilsService} from 'hslayers-ng/shared/utils';
+import {HsUtilsServiceMock} from 'hslayers-ng/shared/utils';
+import {TranslateCustomPipe} from 'hslayers-ng/components/language';
+import {getTitle} from '../hslayers-ng/common/extensions';
+import {mockLayerUtilsService} from 'hslayers-ng/shared/utils';
 
 class HsCommonLaymanServiceMock {
   constructor() {}

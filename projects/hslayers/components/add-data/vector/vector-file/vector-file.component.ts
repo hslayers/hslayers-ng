@@ -15,19 +15,19 @@ import {GeoJSON} from 'ol/format';
 import {DEFAULT_VECTOR_LOAD_TYPE} from '../../enums/load-types.const';
 import {HsAddDataCommonFileService} from '../../common/common-file.service';
 import {HsAddDataVectorService} from '../vector.service';
-import {HsCommonLaymanService} from '../../../../common/layman/layman.service';
-import {HsConfig} from '../../../../config.service';
-import {HsLanguageService} from '../../../language/language.service';
-import {HsLayerManagerService} from '../../../layer-manager/layer-manager.service';
-import {HsLayerUtilsService} from '../../../utils/layer-utils.service';
-import {HsLayoutService} from '../../../layout/layout.service';
-import {HsMapService} from '../../../map/map.service';
-import {HsToastService} from '../../../layout/toast/toast.service';
+import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
+import {HsConfig} from 'hslayers-ng/config';
+import {HsLanguageService} from 'hslayers-ng/components/language';
+import {HsLayerManagerService} from 'hslayers-ng/components/layer-manager';
+import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
+import {HsLayoutService} from 'hslayers-ng/components/layout';
+import {HsMapService} from 'hslayers-ng/components/map';
+import {HsToastService} from 'hslayers-ng/components/layout';
 import {
   HsUploadComponent,
   HsUploadedFiles,
-} from '../../../../common/upload/upload.component';
-import {HsUtilsService} from '../../../utils/utils.service';
+} from 'hslayers-ng/common/upload';
+import {HsUtilsService} from 'hslayers-ng/shared/utils';
 import {VectorFileDataType} from '../../common/advanced-options/advanced-options.component';
 import {accessRightsModel} from '../../common/access-rights.model';
 
@@ -36,8 +36,7 @@ import {accessRightsModel} from '../../common/access-rights.model';
   templateUrl: 'vector-file.component.html',
 })
 export class HsAddDataVectorFileComponent
-  implements OnInit, AfterViewInit, OnDestroy
-{
+  implements OnInit, AfterViewInit, OnDestroy {
   @Input() fileType: 'geojson' | 'kml' | 'gpx';
 
   @ViewChild(HsUploadComponent) hsUploadComponent: HsUploadComponent;
@@ -168,9 +167,8 @@ export class HsAddDataVectorFileComponent
 
   handleFileUpload(evt: HsUploadedFiles): void {
     Array.from(evt.fileList).forEach(async (f) => {
-      const uploadedData = await this.hsAddDataVectorService.readUploadedFile(
-        f,
-      );
+      const uploadedData =
+        await this.hsAddDataVectorService.readUploadedFile(f);
       if (uploadedData !== undefined && !uploadedData.error) {
         uploadedData.url !== undefined
           ? (this.data.base64url = uploadedData.url)

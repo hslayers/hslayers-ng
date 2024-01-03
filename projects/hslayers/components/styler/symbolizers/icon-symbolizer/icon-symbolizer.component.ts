@@ -3,10 +3,10 @@ import {take} from 'rxjs';
 
 import {IconSymbolizer} from 'geostyler-style';
 
-import {HsDialogContainerService} from '../../../layout/dialogs/dialog-container.service';
+import {HsDialogContainerService} from 'hslayers-ng/components/layout';
 import {HsSelectIconDialogComponent} from '../select-icon-dialog/select-icon-dialog.component';
 import {HsStylerPartBaseComponent} from '../../style-part-base.component';
-import {SymbolizerIcon} from '../../../../config.service';
+import {SymbolizerIcon} from 'hslayers-ng/config';
 
 @Component({
   selector: 'hs-icon-symbolizer',

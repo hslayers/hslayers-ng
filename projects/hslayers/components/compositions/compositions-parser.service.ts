@@ -15,31 +15,34 @@ import {Source} from 'ol/source';
 import {transformExtent} from 'ol/proj';
 
 import {CswLayersDialogComponent} from './dialogs/csw-layers-dialog/csw-layers-dialog.component';
-import {DuplicateHandling, HsMapService} from '../map/map.service';
-import {HsCommonLaymanService} from '../../common/layman/layman.service';
+import {DuplicateHandling, HsMapService} from 'hslayers-ng/components/map';
+import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
 import {HsCompositionsLayerParserService} from './layer-parser/layer-parser.service';
 import {HsCompositionsWarningDialogComponent} from './dialogs/warning-dialog.component';
-import {HsConfig} from '../../config.service';
-import {HsDialogContainerService} from '../layout/dialogs/dialog-container.service';
-import {HsEventBusService} from '../core/event-bus.service';
-import {HsLanguageService} from '../language/language.service';
-import {HsLayerManagerService} from '../layer-manager/layer-manager.service';
-import {HsLayoutService} from '../layout/layout.service';
-import {HsLogService} from '../../common/log/log.service';
-import {HsToastService} from '../layout/toast/toast.service';
-import {HsUtilsService, generateUuid} from '../utils/utils.service';
+import {HsConfig} from 'hslayers-ng/config';
+import {HsDialogContainerService} from 'hslayers-ng/components/layout';
+import {HsEventBusService} from 'hslayers-ng/shared/core';
+import {HsLanguageService} from 'hslayers-ng/components/language';
+import {HsLayerManagerService} from 'hslayers-ng/components/layer-manager';
+import {HsLayoutService} from 'hslayers-ng/components/layout';
+import {HsLogService} from 'hslayers-ng/shared/log';
+import {HsToastService} from 'hslayers-ng/components/layout';
+import {
+  HsUtilsService,
+  generateUuid,
+} from 'hslayers-ng/shared/utils';
 import {LaymanCompositionDescriptor} from './models/composition-descriptor.model';
 import {
   getLaymanFriendlyLayerName,
   isLaymanUrl,
-} from '../../common/layman/layman-utils';
+} from 'hslayers-ng/common/layman';
 import {
   getTitle,
   setFromBaseComposition,
   setMetadata,
   setSwipeSide,
-} from '../../common/layer-extensions';
-import {parseExtent, transformExtentValue} from '../../common/extent-utils';
+} from 'hslayers-ng/common/extensions';
+import {parseExtent, transformExtentValue} from 'hslayers-ng/common/utils';
 import {servicesSupportedByUrl} from '../add-data/url/services-supported.const';
 
 @Injectable({

@@ -6,17 +6,19 @@ import {Layer} from 'ol/layer';
 import {Map} from 'ol';
 import {Source} from 'ol/source';
 
-import {HsLanguageService} from '../language/language.service';
-import {HsLayerUtilsService} from '../utils/layer-utils.service';
-import {HsLayoutService} from '../layout/layout.service';
+import {HsLanguageService} from 'hslayers-ng/components/language';
+import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
+import {
+  HsLayoutService,
+  HsPanelBaseComponent,
+} from 'hslayers-ng/components/layout';
 import {HsLegendDescriptor} from './legend-descriptor.interface';
 import {HsLegendService} from './legend.service';
-import {HsMapService} from '../map/map.service';
-import {HsPanelBaseComponent} from '../layout/panels/panel-base.component';
-import {HsQueuesService} from '../../common/queues/queues.service';
-import {HsSidebarService} from '../sidebar/sidebar.service';
-import {HsUtilsService} from '../utils/utils.service';
-import {InterpolatedSource} from '../../common/layers/hs.source.interpolated';
+import {HsMapService} from 'hslayers-ng/components/map';
+import {HsQueuesService} from 'hslayers-ng/shared/queues';
+import {HsSidebarService} from 'hslayers-ng/components/sidebar';
+import {HsUtilsService} from 'hslayers-ng/shared/utils';
+import {InterpolatedSource} from 'hslayers-ng/common/layers';
 
 @Component({
   selector: 'hs-legend',
@@ -24,7 +26,8 @@ import {InterpolatedSource} from '../../common/layers/hs.source.interpolated';
 })
 export class HsLegendComponent
   extends HsPanelBaseComponent
-  implements OnInit, OnDestroy {
+  implements OnInit, OnDestroy
+{
   layerDescriptors = [];
   titleSearch = '';
   name = 'legend';

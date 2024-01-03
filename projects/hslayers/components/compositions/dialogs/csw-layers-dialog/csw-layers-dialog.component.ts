@@ -1,19 +1,19 @@
 import {Component, Input, OnInit, ViewRef} from '@angular/core';
 
-import {HsAddDataOwsService} from '../../../add-data/url/add-data-ows.service';
+import {HsAddDataOwsService} from 'hslayers-ng/components/add-data';
 import {HsAddDataUrlService} from '../../../add-data/url/add-data-url.service';
-import {HsDialogComponent} from '../../../layout/dialogs/dialog-component.interface';
-import {HsDialogContainerService} from '../../../layout/dialogs/dialog-container.service';
-import {HsDialogItem} from '../../../layout/dialogs/dialog-item';
-import {HsLayerUtilsService} from '../../../utils/layer-utils.service';
-import {HsMapService} from '../../../map/map.service';
-import {HsUtilsService} from '../../../utils/utils.service';
+import {HsDialogComponent} from 'hslayers-ng/components/layout';
+import {HsDialogContainerService} from 'hslayers-ng/components/layout';
+import {HsDialogItem} from 'hslayers-ng/components/layout';
+import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
+import {HsMapService} from 'hslayers-ng/components/map';
+import {HsUtilsService} from 'hslayers-ng/shared/utils';
 import {
   setFromComposition,
   setPath,
   setSubLayers,
   setTitle,
-} from '../../../../common/layer-extensions';
+} from '../hslayers-ng/common/extensions';
 
 @Component({
   selector: 'hs-csw-layers-dialog',

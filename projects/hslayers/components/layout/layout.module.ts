@@ -1,7 +1,7 @@
 import {CUSTOM_ELEMENTS_SCHEMA, DoBootstrap, NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 
-import {HsConfirmModule} from './../../common/confirm/confirm.module';
+import {HsConfirmModule} from 'hslayers-ng/common/confirm';
 import {HsDialogContainerComponent} from './dialogs/dialog-container.component';
 import {HsDialogHostDirective} from './dialogs/dialog-host.directive';
 import {HsLayoutComponent} from './layout.component';

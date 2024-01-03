@@ -8,19 +8,19 @@ import {Layer, Vector as VectorLayer} from 'ol/layer';
 import {ObjectEvent} from 'ol/Object';
 import {buffer, getCenter} from 'ol/extent';
 
-import {DOMFeatureLink} from '../../common/dom-feature-link.type';
+import {DOMFeatureLink} from 'hslayers-ng/common/types';
 import {
   DOM_FEATURE_LINKS,
   getDomFeatureLinks,
-} from '../../common/layer-extensions';
-import {HsLayerUtilsService} from '../utils/layer-utils.service';
-import {HsLayoutService} from '../layout/layout.service';
-import {HsLogService} from '../../common/log/log.service';
-import {HsMapService} from '../map/map.service';
+} from 'hslayers-ng/common/extensions';
+import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
+import {HsLayoutService} from 'hslayers-ng/components/layout';
+import {HsLogService} from 'hslayers-ng/shared/log';
+import {HsMapService} from 'hslayers-ng/components/map';
 import {HsQueryBaseService} from '../query/query-base.service';
 import {HsQueryPopupService} from '../query/query-popup.service';
 import {HsQueryVectorService} from '../query/query-vector.service';
-import {HsUtilsService} from '../utils/utils.service';
+import {HsUtilsService} from 'hslayers-ng/shared/utils';
 
 export type FeatureDomEventLink = {
   handles: EventListenerOrEventListenerObject[];

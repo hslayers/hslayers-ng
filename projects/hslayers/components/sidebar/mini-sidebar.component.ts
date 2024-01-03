@@ -2,9 +2,9 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Observable, Subject, delay, map, startWith, takeUntil} from 'rxjs';
 
 import {HsButton} from './button.interface';
-import {HsConfig} from './../../config.service';
-import {HsCoreService} from '../core/core.service';
-import {HsLayoutService} from '../layout/layout.service';
+import {HsConfig} from './hslayers-ng/config';
+import {HsCoreService} from 'hslayers-ng/shared/core';
+import {HsLayoutService} from 'hslayers-ng/components/layout';
 import {HsSidebarService} from './sidebar.service';
 
 @Component({

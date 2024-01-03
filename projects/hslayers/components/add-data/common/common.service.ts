@@ -4,10 +4,10 @@ import {Subject} from 'rxjs';
 
 import {HsAddDataService} from '../add-data.service';
 import {HsAddDataUrlService} from '../url/add-data-url.service';
-import {HsDimensionService} from '../../../common/get-capabilities/dimension.service';
-import {HsEventBusService} from '../../core/event-bus.service';
-import {HsMapService} from '../../map/map.service';
-import {HsToastService} from '../../layout/toast/toast.service';
+import {HsDimensionService} from 'hslayers-ng/shared/get-capabilities';
+import {HsEventBusService} from 'hslayers-ng/shared/core';
+import {HsMapService} from 'hslayers-ng/components/map';
+import {HsToastService} from 'hslayers-ng/components/layout';
 
 @Injectable({providedIn: 'root'})
 export class HsAddDataCommonService {

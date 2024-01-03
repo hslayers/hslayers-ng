@@ -6,12 +6,12 @@ import {Geometry} from 'ol/geom';
 import {Layer} from 'ol/layer';
 import {Source, Vector as VectorSource} from 'ol/source';
 
-import {HsLanguageService} from '../language/language.service';
-import {HsLayerUtilsService} from '../utils/layer-utils.service';
-import {HsMapService} from '../map/map.service';
+import {HsLanguageService} from 'hslayers-ng/components/language';
+import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
+import {HsMapService} from 'hslayers-ng/components/map';
 import {HsQueryVectorService} from './query-vector.service';
-import {HsToastService} from '../layout/toast/toast.service';
-import {getTitle} from '../../common/layer-extensions';
+import {HsToastService} from 'hslayers-ng/components/layout';
+import {getTitle} from 'hslayers-ng/common/extensions';
 
 export interface exportFormats {
   name: 'WKT' | 'GeoJSON';

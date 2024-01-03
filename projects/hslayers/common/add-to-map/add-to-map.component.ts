@@ -1,8 +1,10 @@
 import {CommonModule} from '@angular/common';
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 
-import {HsLanguageModule} from '../../components/language/language.module';
-import {TranslateCustomPipe} from '../../components/language/translate-custom.pipe';
+import {
+  HsLanguageModule,
+  TranslateCustomPipe,
+} from 'hslayers-ng/components/language';
 
 @Component({
   selector: 'hs-add-to-map',

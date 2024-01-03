@@ -9,18 +9,18 @@ import {Vector as VectorSource} from 'ol/source';
 import {transform} from 'ol/proj';
 import {unByKey} from 'ol/Observable';
 
-import {HsCommonEndpointsService} from '../../../common/endpoints/endpoints.service';
-import {HsLayerUtilsService} from '../../utils/layer-utils.service';
-import {HsLayoutService} from '../../layout/layout.service';
-import {HsLogService} from '../../../common/log/log.service';
+import {HsCommonEndpointsService} from 'hslayers-ng/shared/endpoints';
+import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
+import {HsLayoutService} from 'hslayers-ng/components/layout';
+import {HsLogService} from 'hslayers-ng/shared/log';
 import {HsMapCompositionDescriptor} from '../../compositions/models/composition-descriptor.model';
-import {HsMapService} from '../../map/map.service';
+import {HsMapService} from 'hslayers-ng/components/map';
 import {HsSaveMapService} from '../../save-map/save-map.service';
-import {HsUtilsService} from '../../utils/utils.service';
+import {HsUtilsService} from 'hslayers-ng/shared/utils';
 import {
   getHighlighted,
   setHighlighted,
-} from '../../../common/feature-extensions';
+} from 'hslayers-ng/common/extensions';
 
 @Injectable({
   providedIn: 'root',

@@ -2,10 +2,10 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 
 import {Observable, Subject, map, startWith, takeUntil} from 'rxjs';
 
-import {HsEndpoint} from '../../../common/endpoints/endpoint.interface';
-import {HsLayoutService} from '../../layout/layout.service';
+import {HsEndpoint} from 'hslayers-ng/shared/endpoints';
+import {HsLayoutService} from 'hslayers-ng/components/layout';
 import {HsSaveMapManagerService} from '../save-map-manager.service';
-import {HsUtilsService} from '../../utils/utils.service';
+import {HsUtilsService} from 'hslayers-ng/shared/utils';
 import {StatusData} from '../../save-map/types/status-data.type';
 import {accessRightsModel} from '../../add-data/common/access-rights.model';
 

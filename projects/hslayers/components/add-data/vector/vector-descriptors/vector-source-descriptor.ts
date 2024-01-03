@@ -4,7 +4,7 @@ import {Geometry} from 'ol/geom';
 import {Vector as VectorSource} from 'ol/source';
 
 import {HsVectorLayerOptions} from '../vector-layer-options.type';
-import {SparqlJson} from '../../../../common/layers/hs.source.SparqlJson';
+import {SparqlJson} from 'hslayers-ng/common/layers';
 import {VectorSourceFromUrl} from '../vector-source-from-url';
 
 export class VectorSourceDescriptor {

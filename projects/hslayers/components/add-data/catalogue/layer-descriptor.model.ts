@@ -1,4 +1,4 @@
-import {HsEndpoint} from '../../../common/endpoints/endpoint.interface';
+import {HsEndpoint} from 'hslayers-ng/shared/endpoints';
 
 export interface HsAddDataLayerDescriptor {
   abstract?: string;

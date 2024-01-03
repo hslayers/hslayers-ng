@@ -6,12 +6,12 @@ import {AddDataUrlValues} from './add-data-url-values';
 import {HsAddDataCommonService} from '../common/common.service';
 import {HsAddDataOwsService} from './add-data-ows.service';
 import {HsAddDataUrlService} from './add-data-url.service';
-import {HsConfig} from '../../../config.service';
-import {HsDialogContainerService} from '../../layout/dialogs/dialog-container.service';
-import {HsLanguageService} from '../../language/language.service';
-import {HsLayoutService} from '../../layout/layout.service';
-import {HsLogService} from '../../../common/log/log.service';
-import {HsShareUrlService} from '../../share/share-url.service';
+import {HsConfig} from 'hslayers-ng/config';
+import {HsDialogContainerService} from 'hslayers-ng/components/layout';
+import {HsLanguageService} from 'hslayers-ng/components/language';
+import {HsLayoutService} from 'hslayers-ng/components/layout';
+import {HsLogService} from 'hslayers-ng/shared/log';
+import {HsShareUrlService} from 'hslayers-ng/components/share';
 import {servicesSupportedByUrl} from './services-supported.const';
 
 @Component({

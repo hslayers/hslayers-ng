@@ -3,10 +3,10 @@ import {ChangeDetectionStrategy, Component, Input, OnInit} from '@angular/core';
 import {Feature} from 'ol';
 import {Geometry} from 'ol/geom';
 
-import {HsConfirmDialogComponent} from '../../../common/confirm/confirm-dialog.component';
-import {HsDialogContainerService} from '../../layout/dialogs/dialog-container.service';
-import {HsLanguageService} from '../../language/language.service';
-import {HsLayerDescriptor} from '../../layer-manager/layer-descriptor.interface';
+import {HsConfirmDialogComponent} from 'hslayers-ng/common/confirm';
+import {HsDialogContainerService} from 'hslayers-ng/components/layout';
+import {HsLanguageService} from 'hslayers-ng/components/language';
+import {HsLayerDescriptor} from 'hslayers-ng/components/layer-manager';
 import {HsQueryPopupServiceModel} from '../query-popup.service.model';
 import {HsQueryPopupWidgetBaseComponent} from '../query-popup-widget-base.component';
 import {HsQueryVectorService} from '../query-vector.service';
@@ -15,7 +15,7 @@ import {
   getFeatureName,
   getFeatureTitle,
   getFeatures,
-} from '../../../common/feature-extensions';
+} from 'hslayers-ng/common/extensions';
 
 @Component({
   selector: 'hs-feature-info',

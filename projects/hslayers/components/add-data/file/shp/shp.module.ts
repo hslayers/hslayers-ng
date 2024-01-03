@@ -4,8 +4,8 @@ import {FormsModule} from '@angular/forms';
 
 import {HsAddDataCommonModule} from '../../common/common.module';
 import {HsFileShpComponent} from './shp.component';
-import {TranslateCustomPipe} from '../../../language/translate-custom.pipe';
-import {HsUploadModule} from '../../../../common/upload/upload.module';
+import {TranslateCustomPipe} from 'hslayers-ng/components/language';
+import {HsUploadModule} from 'hslayers-ng/common/upload';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

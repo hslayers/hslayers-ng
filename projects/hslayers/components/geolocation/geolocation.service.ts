@@ -7,15 +7,15 @@ import {Rotate} from 'ol/control';
 import {Vector} from 'ol/source';
 import {Vector as VectorLayer} from 'ol/layer';
 
-import {HsLayoutService} from '../layout/layout.service';
-import {HsLogService} from '../../common/log/log.service';
-import {HsMapService} from '../map/map.service';
-import {HsUtilsService} from './../utils/utils.service';
+import {HsLayoutService} from 'hslayers-ng/components/layout';
+import {HsLogService} from 'hslayers-ng/shared/log';
+import {HsMapService} from 'hslayers-ng/components/map';
+import {HsUtilsService} from 'hslayers-ng/shared/utils';
 import {
   setRemovable,
   setShowInLayerManager,
   setTitle,
-} from '../../common/layer-extensions';
+} from 'hslayers-ng/common/extensions';
 
 @Injectable({
   providedIn: 'root',

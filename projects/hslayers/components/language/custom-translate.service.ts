@@ -12,8 +12,8 @@ import {
 } from '@ngx-translate/core';
 
 import en from '../../assets/locales/en.json';
-import {HsConfig} from '../../config.service';
-import {HsLogService} from '../../common/log/log.service';
+import {HsConfig} from 'hslayers-ng/config';
+import {HsLogService} from 'hslayers-ng/shared/log';
 
 export class WebpackTranslateLoader implements TranslateLoader {
   loaded = {};

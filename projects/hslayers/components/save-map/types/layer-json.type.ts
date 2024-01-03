@@ -4,7 +4,7 @@ import {
   Attribution,
   DimensionsList,
   Metadata,
-} from '../../../common/layer-extensions';
+} from 'hslayers-ng/common/extensions';
 import {SerializedStyle} from './serialized-style.type';
 
 export type LayerJSON = {

@@ -1,9 +1,11 @@
 import {Component, ViewRef} from '@angular/core';
 
 import {FileDataObject} from '../file/types/file-data-object.type';
-import {HsDialogComponent} from '../../layout/dialogs/dialog-component.interface';
-import {HsDialogContainerService} from '../../layout/dialogs/dialog-container.service';
-import {HsDialogItem} from '../../layout/dialogs/dialog-item';
+import {
+  HsDialogComponent,
+  HsDialogContainerService,
+  HsDialogItem,
+} from 'hslayers-ng/components/layout';
 import {HsRenameLayerDialogComponent} from '../dialog-rename-layer/rename-layer.component';
 import {VectorDataObject} from '../vector/vector-data.type';
 

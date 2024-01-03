@@ -3,15 +3,15 @@ import {Component} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
 
-import {HsConfig} from '../../../config.service';
+import {HsConfig} from 'hslayers-ng/config';
 import {HsDrawService} from '../draw.service';
 import {HsGuiOverlayBaseComponent} from '../../layout/panels/gui-overlay-base.component';
-import {HsLanguageService} from '../../language/language.service';
-import {HsLayerUtilsService} from '../../utils/layer-utils.service';
-import {HsLayoutService} from '../../layout/layout.service';
-import {HsRemoveLayerDialogService} from '../../../common/remove-multiple/remove-layer-dialog.service';
-import {TranslateCustomPipe} from '../../language/translate-custom.pipe';
-import {getTitle} from '../../../common/layer-extensions';
+import {HsLanguageService} from 'hslayers-ng/components/language';
+import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
+import {HsLayoutService} from 'hslayers-ng/components/layout';
+import {HsRemoveLayerDialogService} from 'hslayers-ng/common/remove-multiple';
+import {TranslateCustomPipe} from 'hslayers-ng/components/language';
+import {getTitle} from 'hslayers-ng/common/extensions';
 
 @Component({
   selector: 'hs-draw-toolbar',

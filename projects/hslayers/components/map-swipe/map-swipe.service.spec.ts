@@ -1,19 +1,21 @@
 import {TestBed} from '@angular/core/testing';
 import {of} from 'rxjs';
 
-import {HsConfig} from '../../config.service';
-import {HsConfigMock} from '../../config.service.mock';
-import {HsEventBusService} from '../core/event-bus.service';
-import {HsEventBusServiceMock} from '../core/event-bus.service.mock';
-import {HsLayerEditorService} from '../layer-manager/editor/layer-editor.service';
-import {HsLayerManagerService} from '../layer-manager/layer-manager.service';
-import {HsLayerShiftingService} from '../../common/layer-shifting/layer-shifting.service';
-import {HsMapService} from '../map/map.service';
-import {HsMapServiceMock} from '../map/map.service.mock';
+import {HsConfig} from 'hslayers-ng/config';
+import {HsConfigMock} from 'hslayers-ng/config';
+import {HsEventBusService} from 'hslayers-ng/shared/core';
+import {HsEventBusServiceMock} from 'hslayers-ng/shared/core';
+import {HsLayerEditorService} from 'hslayers-ng/components/layer-manager';
+import {HsLayerManagerService} from 'hslayers-ng/components/layer-manager';
+import {
+  HsLayerShiftingService,
+  mockHsLayerShiftingService,
+} from 'hslayers-ng/shared/layer-shifting';
+import {HsMapService} from 'hslayers-ng/components/map';
+import {HsMapServiceMock} from 'hslayers-ng/components/map';
 import {HsMapSwipeService} from './map-swipe.service';
-import {HsShareUrlService} from '../share/share-url.service';
-import {HsToastService} from '../layout/toast/toast.service';
-import {mockHsLayerShiftingService} from '../../common/layer-shifting/layer-shifting.service.mock';
+import {HsShareUrlService} from 'hslayers-ng/components/share';
+import {HsToastService} from 'hslayers-ng/components/layout';
 
 class HsToastServiceMock {
   constructor() {}

@@ -2,17 +2,17 @@ import {Injectable, NgZone} from '@angular/core';
 
 import {Observable, forkJoin} from 'rxjs';
 
-import {HsCommonEndpointsService} from '../../common/endpoints/endpoints.service';
-import {HsCommonLaymanService} from '../../common/layman/layman.service';
+import {HsCommonEndpointsService} from 'hslayers-ng/shared/endpoints';
+import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
 import {HsCompositionsInfoDialogComponent} from './dialogs/info-dialog.component';
 import {HsCompositionsService} from './compositions.service';
-import {HsDialogContainerService} from '../layout/dialogs/dialog-container.service';
-import {HsEndpoint} from '../../common/endpoints/endpoint.interface';
-import {HsEventBusService} from '../core/event-bus.service';
-import {HsLayoutService} from '../layout/layout.service';
+import {HsDialogContainerService} from 'hslayers-ng/components/layout';
+import {HsEndpoint} from 'hslayers-ng/shared/endpoints';
+import {HsEventBusService} from 'hslayers-ng/shared/core';
+import {HsLayoutService} from 'hslayers-ng/components/layout';
 import {HsMapCompositionDescriptor} from './models/composition-descriptor.model';
-import {HsMapService} from '../map/map.service';
-import {HsUtilsService} from '../utils/utils.service';
+import {HsMapService} from 'hslayers-ng/components/map';
+import {HsUtilsService} from 'hslayers-ng/shared/utils';
 import {
   INSPIRETHEMES,
   KEYWORDS,

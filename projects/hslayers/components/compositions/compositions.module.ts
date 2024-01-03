@@ -15,11 +15,11 @@ import {HsCompositionsListItemComponent} from './compositions-list-item.componen
 import {HsCompositionsOverwriteDialogComponent} from './dialogs/overwrite-dialog.component';
 import {HsCompositionsShareDialogComponent} from './dialogs/share-dialog.component';
 import {HsCompositionsWarningDialogComponent} from './dialogs/warning-dialog.component';
-import {HsLaymanModule} from '../../common/layman/layman.module';
-import {HsPagerModule} from '../../common/pager/pager.module';
-import {HsPanelHeaderComponent} from '../layout/panels/panel-header/panel-header.component';
-import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
-import {TranslateCustomPipe} from '../language/translate-custom.pipe';
+import {HsLaymanModule} from 'hslayers-ng/common/layman';
+import {HsPagerModule} from 'hslayers-ng/common/pager';
+import {HsPanelHeaderComponent} from 'hslayers-ng/components/layout';
+import {HsPanelHelpersModule} from 'hslayers-ng/components/layout';
+import {TranslateCustomPipe} from 'hslayers-ng/components/language';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

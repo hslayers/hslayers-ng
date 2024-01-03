@@ -4,11 +4,11 @@ import {Subject} from 'rxjs';
 import {Circle, Fill, Stroke, Style} from 'ol/style';
 
 import {HsDrawService} from '../draw.service';
-import {HsLanguageService} from '../../language/language.service';
-import {HsLayerUtilsService} from '../../utils/layer-utils.service';
-import {HsLayoutService} from '../../layout/layout.service';
-import {HsRemoveLayerDialogService} from '../../../common/remove-multiple/remove-layer-dialog.service';
-import {getTitle} from '../../../common/layer-extensions';
+import {HsLanguageService} from 'hslayers-ng/components/language';
+import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
+import {HsLayoutService} from 'hslayers-ng/components/layout';
+import {HsRemoveLayerDialogService} from 'hslayers-ng/common/remove-multiple';
+import {getTitle} from 'hslayers-ng/common/extensions';
 
 @Component({
   selector: 'hs-draw-panel',

@@ -10,13 +10,13 @@ import {WKT} from 'ol/format';
 import {transform} from 'ol/proj';
 import {unByKey} from 'ol/Observable';
 
-import {HsConfig} from '../../config.service';
-import {HsEventBusService} from '../core/event-bus.service';
-import {HsLayerUtilsService} from '../utils/layer-utils.service';
-import {HsMapService} from '../map/map.service';
-import {HsStylerService} from '../styler/styler.service';
-import {HsUtilsService} from '../utils/utils.service';
-import {setShowInLayerManager, setTitle} from '../../common/layer-extensions';
+import {HsConfig} from 'hslayers-ng/config';
+import {HsEventBusService} from 'hslayers-ng/shared/core';
+import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
+import {HsMapService} from 'hslayers-ng/components/map';
+import {HsStylerService} from 'hslayers-ng/components/styler';
+import {HsUtilsService} from 'hslayers-ng/shared/utils';
+import {setShowInLayerManager, setTitle} from 'hslayers-ng/common/extensions';
 
 @Injectable({
   providedIn: 'root',

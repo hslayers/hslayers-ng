@@ -1,9 +1,9 @@
 import {Component, Input, ViewRef} from '@angular/core';
 
 import {HsCompositionsParserService} from '../../compositions/compositions-parser.service';
-import {HsDialogComponent} from '../../layout/dialogs/dialog-component.interface';
-import {HsDialogContainerService} from '../../layout/dialogs/dialog-container.service';
-import {HsEventBusService} from '../../core/event-bus.service';
+import {HsDialogComponent} from 'hslayers-ng/components/layout';
+import {HsDialogContainerService} from 'hslayers-ng/components/layout';
+import {HsEventBusService} from 'hslayers-ng/shared/core';
 import {HsLayerManagerService} from '../layer-manager.service';
 @Component({
   selector: 'hs-layermanager-remove-all-dialog',
