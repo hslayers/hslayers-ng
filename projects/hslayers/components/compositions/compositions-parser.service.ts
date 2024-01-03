@@ -23,14 +23,11 @@ import {HsConfig} from 'hslayers-ng/config';
 import {HsDialogContainerService} from 'hslayers-ng/components/layout';
 import {HsEventBusService} from 'hslayers-ng/shared/core';
 import {HsLanguageService} from 'hslayers-ng/components/language';
-import {HsLayerManagerService} from 'hslayers-ng/components/layer-manager';
+import {HsLayerManagerService} from 'hslayers-ng/shared/layer-manager';
 import {HsLayoutService} from 'hslayers-ng/components/layout';
 import {HsLogService} from 'hslayers-ng/shared/log';
 import {HsToastService} from 'hslayers-ng/components/layout';
-import {
-  HsUtilsService,
-  generateUuid,
-} from 'hslayers-ng/shared/utils';
+import {HsUtilsService, generateUuid} from 'hslayers-ng/shared/utils';
 import {LaymanCompositionDescriptor} from './models/composition-descriptor.model';
 import {
   getLaymanFriendlyLayerName,

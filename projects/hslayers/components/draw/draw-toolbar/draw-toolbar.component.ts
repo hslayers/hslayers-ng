@@ -4,8 +4,8 @@ import {FormsModule} from '@angular/forms';
 import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
 
 import {HsConfig} from 'hslayers-ng/config';
-import {HsDrawService} from '../draw.service';
-import {HsGuiOverlayBaseComponent} from '../../layout/panels/gui-overlay-base.component';
+
+import {HsGuiOverlayBaseComponent} from 'hslayers-ng/components/layout';
 import {HsLanguageService} from 'hslayers-ng/components/language';
 import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
 import {HsLayoutService} from 'hslayers-ng/components/layout';

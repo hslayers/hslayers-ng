@@ -2,7 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Subject, takeUntil} from 'rxjs';
 
 import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
-import {HsCompositionsCatalogueService} from './compositions-catalogue.service';
+import {HsCompositionsCatalogueService} from 'hslayers-ng/shared/compositions';
 import {HsCompositionsMapService} from './compositions-map.service';
 import {HsCompositionsOverwriteDialogComponent} from './dialogs/overwrite-dialog.component';
 import {HsCompositionsParserService} from './compositions-parser.service';
@@ -19,7 +19,8 @@ import {HsPanelBaseComponent} from 'hslayers-ng/components/layout';
 })
 export class HsCompositionsComponent
   extends HsPanelBaseComponent
-  implements OnDestroy, OnInit {
+  implements OnDestroy, OnInit
+{
   private end = new Subject<void>();
 
   keywordsVisible = false;

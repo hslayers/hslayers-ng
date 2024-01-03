@@ -6,7 +6,7 @@ import {HsConfigMock} from 'hslayers-ng/config';
 import {HsEventBusService} from 'hslayers-ng/shared/core';
 import {HsEventBusServiceMock} from 'hslayers-ng/shared/core';
 import {HsLayerEditorService} from 'hslayers-ng/components/layer-manager';
-import {HsLayerManagerService} from 'hslayers-ng/components/layer-manager';
+import {HsLayerManagerService} from 'hslayers-ng/shared/layer-manager';
 import {
   HsLayerShiftingService,
   mockHsLayerShiftingService,

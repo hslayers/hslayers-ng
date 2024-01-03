@@ -4,7 +4,7 @@ import {HsCompositionsParserService} from '../../compositions/compositions-parse
 import {HsDialogComponent} from 'hslayers-ng/components/layout';
 import {HsDialogContainerService} from 'hslayers-ng/components/layout';
 import {HsEventBusService} from 'hslayers-ng/shared/core';
-import {HsLayerManagerService} from '../layer-manager.service';
+import {HsLayerManagerService} from 'hslayers-ng/shared/layer-manager'
 @Component({
   selector: 'hs-layermanager-remove-all-dialog',
   templateUrl: './remove-all-dialog.component.html',

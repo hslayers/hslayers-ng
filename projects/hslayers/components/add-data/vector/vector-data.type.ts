@@ -3,7 +3,7 @@ import {Source} from 'ol/source';
 import {Vector as VectorLayer} from 'ol/layer';
 import {Vector as VectorSource} from 'ol/source';
 
-import {HsLayerDescriptor} from 'hslayers-ng/components/layer-manager';
+import {HsLayerDescriptor} from 'hslayers-ng/common/types';
 import {accessRightsModel} from 'hslayers-ng/common/types';
 
 export type VectorDataObject = {

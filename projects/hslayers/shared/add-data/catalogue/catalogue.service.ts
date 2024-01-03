@@ -6,13 +6,13 @@ import {Observable, forkJoin} from 'rxjs';
 
 import {
   DatasetType,
-  HsAddDataCatalogueMapService,
   HsAddDataOwsService,
   HsAddDataService,
   HsAddDataVectorService,
   HsLaymanBrowserService,
   HsMickaBrowserService,
 } from 'hslayers-ng/components/add-data';
+import {HsAddDataCatalogueMapService} from 'hslayers-ng/shared/add-data';
 import {HsAddDataLayerDescriptor} from 'hslayers-ng/common/types';
 import {HsCommonEndpointsService} from 'hslayers-ng/shared/endpoints';
 import {HsCommonLaymanService} from 'hslayers-ng/common/layman';

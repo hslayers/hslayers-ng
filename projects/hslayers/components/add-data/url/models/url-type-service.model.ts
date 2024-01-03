@@ -3,7 +3,7 @@ import {Source} from 'ol/source';
 
 import {AddLayersRecursivelyOptions} from '../types/recursive-options.type';
 import {CapabilitiesResponseWrapper} from 'hslayers-ng/shared/get-capabilities';
-import {LayerOptions} from 'hslayers-ng/components/compositions';
+import {LayerOptions} from 'hslayers-ng/common/types';
 import {UrlDataObject} from '../types/data-object.type';
 
 export type Service = {

@@ -1,5 +1,5 @@
 import {IntersectWithTooltip} from 'hslayers-ng/common/types';
-import {LayerOptions} from 'hslayers-ng/components/compositions';
+import {LayerOptions} from 'hslayers-ng/common/types';
 
 export type LayerConnection = {
   owrCache?: boolean;

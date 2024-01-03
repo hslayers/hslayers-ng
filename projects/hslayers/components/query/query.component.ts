@@ -6,7 +6,7 @@ import Popup from 'ol-popup';
 import {Subject} from 'rxjs';
 import {debounceTime, takeUntil} from 'rxjs/operators';
 
-import {HsDrawService} from 'hslayers-ng/components/draw';
+import {HsDrawService} from 'hslayers-ng/shared/draw';
 import {HsLayoutService} from 'hslayers-ng/components/layout';
 import {HsLogService} from 'hslayers-ng/shared/log';
 import {HsMapService} from 'hslayers-ng/components/map';
