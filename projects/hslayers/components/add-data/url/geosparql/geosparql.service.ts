@@ -4,8 +4,8 @@ import {lastValueFrom, takeUntil} from 'rxjs';
 
 import {HsAddDataService} from '../../add-data.service';
 import {HsAddDataUrlService} from '../add-data-url.service';
-import {HsLanguageService} from '../../../language/language.service';
-import {HsLogService} from '../../../../common/log/log.service';
+import {HsLanguageService} from 'hslayers-ng/components/language';
+import {HsLogService} from 'hslayers-ng/shared/log';
 import {UrlDataObject} from '../types/data-object.type';
 
 @Injectable({providedIn: 'root'})

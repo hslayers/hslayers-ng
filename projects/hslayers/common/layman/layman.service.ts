@@ -4,10 +4,10 @@ import {Injectable} from '@angular/core';
 import {BehaviorSubject, Subject, lastValueFrom} from 'rxjs';
 
 import {CurrentUserResponse} from './types/current-user-response.type';
-import {HsEndpoint} from '../endpoints/endpoint.interface';
-import {HsLanguageService} from '../../components/language/language.service';
-import {HsLogService} from '../log/log.service';
-import {HsToastService} from '../../components/layout/toast/toast.service';
+import {HsEndpoint} from 'hslayers-ng/shared/endpoints';
+import {HsLanguageService} from 'hslayers-ng/components/language';
+import {HsLogService} from 'hslayers-ng/shared/log';
+import {HsToastService} from 'hslayers-ng/components/layout';
 
 @Injectable({
   providedIn: 'root',

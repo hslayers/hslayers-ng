@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 
-import {HsConfig} from '../../config.service';
+import {HsConfig} from 'hslayers-ng/config';
 import {HsPanelContainerService} from './panels/panel-container.service';
 import {HsToolbarPanelContainerService} from '../toolbar/toolbar-panel-container.service';
 

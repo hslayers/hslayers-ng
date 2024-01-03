@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 
-import {HsLanguageService} from '../../language/language.service';
+import {HsLanguageService} from 'hslayers-ng/components/language';
 import {HsLayerEditorWidgetBaseComponent} from './layer-editor-widget-base.component';
 import {HsLayerSelectorService} from '../editor/layer-selector.service';
 

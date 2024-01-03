@@ -5,14 +5,14 @@ import {Feature} from 'ol';
 import {Geometry} from 'ol/geom';
 import {Layer, Vector as VectorLayer} from 'ol/layer';
 
-import {HsLayerUtilsService} from '../utils/layer-utils.service';
-import {HsQueryVectorService} from './../query/query-vector.service';
-import {HsUtilsService} from './../utils/utils.service';
+import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
+import {HsQueryVectorService} from '../query/query-vector.service';
+import {HsUtilsService} from 'hslayers-ng/shared/utils';
 import {
   getBase,
   getShowInLayerManager,
   getTitle,
-} from '../../common/layer-extensions';
+} from 'hslayers-ng/common/extensions';
 
 type FeatureDescriptor = {
   name: string;

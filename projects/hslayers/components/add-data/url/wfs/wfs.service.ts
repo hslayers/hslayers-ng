@@ -8,19 +8,19 @@ import {Source} from 'ol/source';
 import {get, transformExtent} from 'ol/proj';
 
 import {AddLayersRecursivelyOptions} from '../types/recursive-options.type';
-import {CapabilitiesResponseWrapper} from '../../../../common/get-capabilities/capabilities-response-wrapper';
-import {DuplicateHandling, HsMapService} from '../../../map/map.service';
+import {CapabilitiesResponseWrapper} from 'hslayers-ng/shared/get-capabilities';
+import {DuplicateHandling, HsMapService} from 'hslayers-ng/components/map';
 import {HsAddDataCommonService} from '../../common/common.service';
 import {HsAddDataUrlService} from '../add-data-url.service';
-import {HsEventBusService} from '../../../core/event-bus.service';
-import {HsLayoutService} from '../../../layout/layout.service';
-import {HsLogService} from '../../../../common/log/log.service';
+import {HsEventBusService} from 'hslayers-ng/shared/core';
+import {HsLayoutService} from 'hslayers-ng/components/layout';
+import {HsLogService} from 'hslayers-ng/shared/log';
 import {HsUrlTypeServiceModel} from '../models/url-type-service.model';
-import {HsUtilsService} from '../../../utils/utils.service';
-import {HsWfsGetCapabilitiesService} from '../../../../common/get-capabilities/wfs-get-capabilities.service';
-import {LayerOptions} from '../../../compositions/layer-parser/composition-layer-options.type';
+import {HsUtilsService} from 'hslayers-ng/shared/utils';
+import {HsWfsGetCapabilitiesService} from 'hslayers-ng/shared/get-capabilities';
+import {LayerOptions} from 'hslayers-ng/components/compositions';
 import {UrlDataObject} from '../types/data-object.type';
-import {WfsSource} from '../../../../common/layers/hs.source.WfsSource';
+import {WfsSource} from 'hslayers-ng/common/layers';
 
 type WfsCapabilitiesLayer = {
   Abstract: string;

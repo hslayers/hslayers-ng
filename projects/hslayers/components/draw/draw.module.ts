@@ -8,13 +8,13 @@ import {DrawEditComponent} from './draw-edit/draw-edit.component';
 import {DrawPanelComponent} from './draw-panel/draw-panel.component';
 import {HsDrawComponent} from './draw.component';
 import {HsDrawLayerMetadataDialogComponent} from './draw-layer-metadata/draw-layer-metadata.component';
-import {HsLaymanModule} from '../../common/layman/layman.module';
-import {HsPanelHeaderComponent} from '../layout/panels/panel-header/panel-header.component';
-import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
-import {HsQueryModule} from '../query/query.module';
-import {HsRmLayerDialogModule} from '../../common/remove-multiple/remove-layer-dialog.module';
-import {HsStylerModule} from '../styler/styles.module';
-import {TranslateCustomPipe} from '../language/translate-custom.pipe';
+import {HsLaymanModule} from 'hslayers-ng/common/layman';
+import {HsPanelHeaderComponent} from 'hslayers-ng/components/layout';
+import {HsPanelHelpersModule} from 'hslayers-ng/components/layout';
+import {HsQueryModule} from 'hslayers-ng/components/query';
+import {HsRmLayerDialogModule} from 'hslayers-ng/common/remove-multiple';
+import {HsStylerModule} from 'hslayers-ng/components/styler';
+import {TranslateCustomPipe} from 'hslayers-ng/components/language';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

@@ -2,7 +2,7 @@ import {Component, Input} from '@angular/core';
 
 import {FileDataObject} from '../../file/types/file-data-object.type';
 import {HsAddDataCommonFileService} from '../common-file.service';
-import {HsLaymanService} from '../../../save-map/layman.service';
+import {HsLaymanService} from 'hslayers-ng/components/save-map';
 
 @Component({
   selector: 'hs-add-layer-authorized',

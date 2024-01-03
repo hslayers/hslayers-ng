@@ -3,7 +3,7 @@ import {Component} from '@angular/core';
 import {HsAddDataCommonService} from '../../common/common.service';
 import {HsAddDataOwsService} from '../add-data-ows.service';
 import {HsUrlWfsService} from './wfs.service';
-import {HsUtilsService} from '../../../../components/utils/utils.service';
+import {HsUtilsService} from 'hslayers-ng/shared/utils';
 
 @Component({
   selector: 'hs-url-wfs',

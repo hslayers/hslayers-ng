@@ -3,11 +3,11 @@ import {Observable, map} from 'rxjs';
 
 import {HsLayerEditorWidgetBaseComponent} from '../layer-editor-widget-base.component';
 import {HsLayerSelectorService} from '../../editor/layer-selector.service';
-import {HsLayerUtilsService} from '../../../utils/layer-utils.service';
+import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
 import {
   getWmsOriginalExtent,
   setWmsOriginalExtent,
-} from '../../../../common/layer-extensions';
+} from '../hslayers-ng/common/extensions';
 
 @Component({
   selector: 'hs-extent-widget',

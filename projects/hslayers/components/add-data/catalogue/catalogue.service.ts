@@ -9,16 +9,16 @@ import {HsAddDataCatalogueMapService} from './catalogue-map.service';
 import {HsAddDataLayerDescriptor} from './layer-descriptor.model';
 import {HsAddDataOwsService} from '../url/add-data-ows.service';
 import {HsAddDataVectorService} from '../vector/vector.service';
-import {HsCommonEndpointsService} from '../../../common/endpoints/endpoints.service';
-import {HsCommonLaymanService} from '../../../common/layman/layman.service';
-import {HsConfig} from '../../../config.service';
-import {HsEndpoint} from '../../../common/endpoints/endpoint.interface';
-import {HsEventBusService} from '../../core/event-bus.service';
+import {HsCommonEndpointsService} from 'hslayers-ng/shared/endpoints';
+import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
+import {HsConfig} from 'hslayers-ng/config';
+import {HsEndpoint} from 'hslayers-ng/shared/endpoints';
+import {HsEventBusService} from 'hslayers-ng/shared/core';
 import {HsLaymanBrowserService} from './layman/layman.service';
-import {HsLayoutService} from '../../layout/layout.service';
-import {HsMapService} from '../../map/map.service';
+import {HsLayoutService} from 'hslayers-ng/components/layout';
+import {HsMapService} from 'hslayers-ng/components/map';
 import {HsMickaBrowserService} from './micka/micka.service';
-import {HsUtilsService} from '../../utils/utils.service';
+import {HsUtilsService} from 'hslayers-ng/shared/utils';
 
 //TODO: Find a better name and possibly turn it into a public interface
 type WhatToAddDescriptor = {

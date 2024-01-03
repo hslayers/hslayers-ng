@@ -1,10 +1,14 @@
 import {Layer} from 'ol/layer';
 import {Source} from 'ol/source';
 
-import {HsEndpoint} from '../endpoints/endpoint.interface';
-import {HsLaymanLayerDescriptor} from '../../components/save-map/interfaces/layman-layer-descriptor.interface';
+import {HsEndpoint} from 'hslayers-ng/shared/endpoints';
+import {HsLaymanLayerDescriptor} from 'hslayers-ng/components/save-map';
 import {TRANSLITERATION_MAP} from './transliteration-map';
-import {getHsLaymanSynchronizing, getName, getTitle} from '../layer-extensions';
+import {
+  getHsLaymanSynchronizing,
+  getName,
+  getTitle,
+} from '../extensions/layer-extensions';
 
 export const PREFER_RESUMABLE_SIZE_LIMIT = 2 * 1024 * 1024; // 2 MB
 export const SUPPORTED_SRS_LIST = [

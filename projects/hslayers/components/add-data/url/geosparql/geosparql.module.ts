@@ -3,9 +3,9 @@ import {FormsModule} from '@angular/forms';
 import {NgModule} from '@angular/core';
 
 import {HsAddDataCommonModule} from '../../common/common.module';
-import {HsAddToMapButtonComponent} from '../../../../common/add-to-map/add-to-map.component';
+import {HsAddToMapButtonComponent} from 'hslayers-ng/common/add-to-map';
 import {HsCommonUrlModule} from '../../common/url/url.module';
-import {TranslateCustomPipe} from '../../../language/translate-custom.pipe';
+import {TranslateCustomPipe} from 'hslayers-ng/components/language';
 import {HsUrlGeoSparqlComponent} from './geosparql.component';
 
 @NgModule({

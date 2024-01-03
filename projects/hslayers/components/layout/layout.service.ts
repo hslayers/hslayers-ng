@@ -1,9 +1,9 @@
 import {BehaviorSubject, Observable, delay, map, skip} from 'rxjs';
 import {ElementRef, Injectable, Type, ViewContainerRef} from '@angular/core';
 
-import {HsConfig} from '../../config.service';
-import {HsEventBusService} from '../core/event-bus.service';
-import {HsLogService} from '../../common/log/log.service';
+import {HsConfig} from 'hslayers-ng/config';
+import {HsEventBusService} from 'hslayers-ng/shared/core';
+import {HsLogService} from 'hslayers-ng/shared/log';
 import {HsOverlayPanelContainerService} from './overlay-panel-container.service';
 import {HsPanelComponent} from './panels/panel-component.interface';
 import {HsPanelContainerService} from './panels/panel-container.service';

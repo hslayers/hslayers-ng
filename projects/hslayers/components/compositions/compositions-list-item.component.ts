@@ -4,12 +4,12 @@ import {HsCompositionsDeleteDialogComponent} from './dialogs/delete-dialog.compo
 import {HsCompositionsInfoDialogComponent} from './dialogs/info-dialog.component';
 import {HsCompositionsService} from './compositions.service';
 import {HsCompositionsShareDialogComponent} from './dialogs/share-dialog.component';
-import {HsConfig} from '../../config.service';
-import {HsDialogContainerService} from '../layout/dialogs/dialog-container.service';
-import {HsLanguageService} from '../language/language.service';
+import {HsConfig} from 'hslayers-ng/config';
+import {HsDialogContainerService} from 'hslayers-ng/components/layout';
+import {HsLanguageService} from 'hslayers-ng/components/language';
 import {HsMapCompositionDescriptor} from './models/composition-descriptor.model';
-import {HsSetPermissionsDialogComponent} from '../../common/layman/dialog-set-permissions/set-permissions.component';
-import {HsToastService} from '../layout/toast/toast.service';
+import {HsSetPermissionsDialogComponent} from '.hslayers-ng/common/layman';
+import {HsToastService} from 'hslayers-ng/components/layout';
 @Component({
   selector: 'hs-compositions-list-item',
   templateUrl: 'compositions-list-item.component.html',

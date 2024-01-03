@@ -9,25 +9,27 @@ import {PROJECTIONS as epsg4326Aliases} from 'ol/proj/epsg4326';
 
 import {HsAddDataCommonFileService} from '../common/common-file.service';
 import {HsAddDataService} from '../add-data.service';
-import {HsCommonLaymanService} from '../../../common/layman/layman.service';
-import {HsLaymanService} from '../../save-map/layman.service';
-import {HsLogService} from '../../../common/log/log.service';
-import {HsMapService} from '../../map/map.service';
-import {HsStylerService} from '../../styler/styler.service';
-import {HsUtilsService} from '../../utils/utils.service';
+import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
+import {
+  HsLaymanService,
+  UpsertLayerObject,
+} from 'hslayers-ng/components/save-map';
+import {HsLogService} from 'hslayers-ng/shared/log';
+import {HsMapService} from 'hslayers-ng/components/map';
+import {HsStylerService} from 'hslayers-ng/components/styler/styler.service';
+import {HsUtilsService} from 'hslayers-ng/shared/utils';
 import {HsVectorLayerOptions} from './vector-layer-options.type';
 import {OverwriteResponse} from '../enums/overwrite-response';
-import {PostPatchLayerResponse} from './../../../common/layman/types/post-patch-layer-response.type';
-import {SparqlJson} from '../../../common/layers/hs.source.SparqlJson';
-import {UpsertLayerObject} from '../../save-map/types/upsert-layer-object.type';
+import {PostPatchLayerResponse} from 'hslayers-ng/common/layman';
+import {SparqlJson} from 'hslayers-ng/common/layers';
 import {VectorDataObject} from './vector-data.type';
 import {VectorLayerDescriptor} from './vector-descriptors/vector-layer-descriptor';
 import {VectorSourceDescriptor} from './vector-descriptors/vector-source-descriptor';
 import {
   awaitLayerSync,
   getLaymanFriendlyLayerName,
-} from '../../../common/layman/layman-utils';
-import {setDefinition} from '../../../common/layer-extensions';
+} from 'hslayers-ng/common/layman';
+import {setDefinition} from 'hslayers-ng/common/extensions';
 
 @Injectable({
   providedIn: 'root',

@@ -3,8 +3,8 @@ import {CommonModule} from '@angular/common';
 import {CookieService} from 'ngx-cookie-service';
 import {FormsModule} from '@angular/forms';
 import {HsHistoryListComponent} from './history-list.component';
-import {TranslateCustomPipe} from '../../components/language/translate-custom.pipe';
 import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
+import {TranslateCustomPipe} from 'hslayers-ng/components/language';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

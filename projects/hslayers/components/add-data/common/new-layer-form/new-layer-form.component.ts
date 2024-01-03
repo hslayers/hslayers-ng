@@ -3,8 +3,8 @@ import {Component, Input, OnInit} from '@angular/core';
 import {FileDataObject} from '../../file/types/file-data-object.type';
 import {HsAddDataCommonFileService} from '../common-file.service';
 import {HsFileService} from '../../file/file.service';
-import {HsLaymanService} from '../../../save-map/layman.service';
-import {HsUploadedFiles} from './../../../../common/upload/upload.component';
+import {HsLaymanService} from 'hslayers-ng/components/save-map';
+import {HsUploadedFiles} from 'hslayers-ng/common/upload';
 
 @Component({
   selector: 'hs-new-layer-form',

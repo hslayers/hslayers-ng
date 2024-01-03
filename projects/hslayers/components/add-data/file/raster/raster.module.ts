@@ -6,9 +6,9 @@ import {NgbAccordionModule} from '@ng-bootstrap/ng-bootstrap';
 import {HsAddDataCommonModule} from '../../common/common.module';
 import {HsCommonUrlModule} from '../../common/url/url.module';
 import {HsFileRasterComponent} from './raster.component';
-import {TranslateCustomPipe} from '../../../language/translate-custom.pipe';
-import {HsUploadModule} from '../../../../common/upload/upload.module';
+import {HsUploadModule} from 'hslayers-ng/common/upload';
 import {RasterTimeseriesComponent} from './raster-timeseries/raster-timeseries.component';
+import {TranslateCustomPipe} from 'hslayers-ng/components/language';
 
 @NgModule({
   imports: [

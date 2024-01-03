@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {ReplaySubject} from 'rxjs';
 
 import {HsClearLayerComponent} from './widgets/clear-layer.component';
-import {HsConfig} from '../../config.service';
+import {HsConfig} from 'hslayers-ng/config';
 import {HsDynamicTextComponent} from './widgets/dynamic-text.component';
 import {HsFeatureInfoComponent} from './widgets/feature-info.component';
 import {HsLayerNameComponent} from './widgets/layer-name.component';

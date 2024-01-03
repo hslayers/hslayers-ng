@@ -3,10 +3,10 @@ import {Component, Input, OnInit, ViewRef} from '@angular/core';
 import {HsAddDataCatalogueMapService} from '../catalogue-map.service';
 import {HsAddDataCatalogueService} from '../catalogue.service';
 import {HsAddDataLayerDescriptor} from '../layer-descriptor.model';
-import {HsConfig} from '../../../../config.service';
-import {HsDialogComponent} from '../../../layout/dialogs/dialog-component.interface';
-import {HsDialogContainerService} from '../../../layout/dialogs/dialog-container.service';
-import {HsEndpoint} from '../../../../common/endpoints/endpoint.interface';
+import {HsConfig} from 'hslayers-ng/config';
+import {HsDialogComponent} from 'hslayers-ng/components/layout';
+import {HsDialogContainerService} from 'hslayers-ng/components/layout';
+import {HsEndpoint} from 'hslayers-ng/shared/endpoints';
 
 @Component({
   selector: 'hs-catalogue-metadata',

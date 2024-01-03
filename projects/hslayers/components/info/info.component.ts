@@ -3,11 +3,11 @@ import {Component, OnDestroy} from '@angular/core';
 import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 
-import {HsConfig} from '../../config.service';
-import {HsEventBusService} from './../core/event-bus.service';
+import {HsConfig} from 'hslayers-ng/config';
+import {HsEventBusService} from 'hslayers-ng/shared/core';
 import {HsGuiOverlayBaseComponent} from '../layout/panels/gui-overlay-base.component';
-import {HsLayoutService} from '../layout/layout.service';
-import {getTitle} from '../../common/layer-extensions';
+import {HsLayoutService} from 'hslayers-ng/components/layout';
+import {getTitle} from 'hslayers-ng/common/extensions';
 
 @Component({
   selector: 'hs-info',

@@ -2,15 +2,15 @@ import {Component, OnChanges, OnDestroy, OnInit} from '@angular/core';
 import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 
-import {Dimension, getDimensions} from '../../../common/layer-extensions';
-import {HsDimensionDescriptor} from '../../../common/get-capabilities/dimension';
-import {HsDimensionService} from '../../../common/get-capabilities/dimension.service';
-import {HsDimensionTimeService} from '../../../common/get-capabilities/dimension-time.service';
-import {HsEventBusService} from '../../core/event-bus.service';
+import {Dimension, getDimensions} from 'hslayers-ng/common/extensions';
+import {HsDimensionDescriptor} from 'hslayers-ng/shared/get-capabilities';
+import {HsDimensionService} from 'hslayers-ng/shared/get-capabilities';
+import {HsDimensionTimeService} from 'hslayers-ng/shared/get-capabilities';
+import {HsEventBusService} from 'hslayers-ng/shared/core';
 import {HsLayerEditorWidgetBaseComponent} from '../widgets/layer-editor-widget-base.component';
 import {HsLayerSelectorService} from '../editor/layer-selector.service';
-import {HsMapService} from '../../map/map.service';
-import {HsUtilsService} from '../../utils/utils.service';
+import {HsMapService} from 'hslayers-ng/components/map';
+import {HsUtilsService} from 'hslayers-ng/shared/utils';
 
 @Component({
   selector: 'hs-layer-editor-dimensions',
@@ -18,8 +18,7 @@ import {HsUtilsService} from '../../utils/utils.service';
 })
 export class HsLayerEditorDimensionsComponent
   extends HsLayerEditorWidgetBaseComponent
-  implements OnDestroy, OnChanges, OnInit
-{
+  implements OnDestroy, OnChanges, OnInit {
   name = 'dimensions';
   dimensions: Array<HsDimensionDescriptor> = [];
   private end = new Subject<void>();

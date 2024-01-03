@@ -13,28 +13,28 @@ import {Vector as VectorLayer} from 'ol/layer';
 import {Vector as VectorSource} from 'ol/source';
 
 import {DrawPanelComponent} from './draw-panel.component';
-import {HsAddDataOwsService} from '../../add-data/url/add-data-ows.service';
+import {HsAddDataOwsService} from 'hslayers-ng/components/add-data';
 import {HsAddDataVectorService} from '../../add-data/vector/vector.service';
-import {HsCommonEndpointsService} from '../../../common/endpoints/endpoints.service';
-import {HsCommonLaymanService} from '../../../common/layman/layman.service';
-import {HsConfig} from '../../../config.service';
-import {HsConfigMock} from '../../../config.service.mock';
+import {HsCommonEndpointsService} from 'hslayers-ng/shared/endpoints';
+import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
+import {HsConfig} from 'hslayers-ng/config';
+import {HsConfigMock} from 'hslayers-ng/config';
 import {HsDrawService} from '../draw.service';
-import {HsLanguageModule} from '../../language/language.module';
-import {HsLanguageService} from '../../language/language.service';
-import {HsLayerUtilsService} from '../../utils/layer-utils.service';
+import {HsLanguageModule} from 'hslayers-ng/components/language';
+import {HsLanguageService} from 'hslayers-ng/components/language';
+import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
 import {HsLaymanBrowserService} from '../../add-data/catalogue/layman/layman.service';
-import {HsLaymanService} from '../../save-map/layman.service';
-import {HsLayoutService} from '../../layout/layout.service';
-import {HsLayoutServiceMock} from '../../layout/layout.service.mock';
-import {HsMapService} from '../../map/map.service';
-import {HsMapServiceMock} from '../../map/map.service.mock';
+import {HsLaymanService} from 'hslayers-ng/components/save-map';
+import {HsLayoutService} from 'hslayers-ng/components/layout';
+import {HsLayoutServiceMock} from 'hslayers-ng/components/layout';
+import {HsMapService} from 'hslayers-ng/components/map';
+import {HsMapServiceMock} from 'hslayers-ng/components/map';
 import {HsQueryBaseService} from '../../query/query-base.service';
 import {HsQueryVectorService} from '../../query/query-vector.service';
-import {HsUtilsService} from '../../utils/utils.service';
-import {HsUtilsServiceMock} from '../../utils/utils.service.mock';
-import {TranslateCustomPipe} from '../../language/translate-custom.pipe';
-import {mockLayerUtilsService} from '../../utils/layer-utils.service.mock';
+import {HsUtilsService} from 'hslayers-ng/shared/utils';
+import {HsUtilsServiceMock} from 'hslayers-ng/shared/utils';
+import {TranslateCustomPipe} from 'hslayers-ng/components/language';
+import {mockLayerUtilsService} from 'hslayers-ng/shared/utils';
 class emptyMock {
   constructor() {}
 }

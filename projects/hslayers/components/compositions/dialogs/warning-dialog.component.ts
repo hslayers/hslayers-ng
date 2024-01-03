@@ -1,7 +1,7 @@
 import {Component, ViewRef} from '@angular/core';
 
-import {HsDialogComponent} from '../../layout/dialogs/dialog-component.interface';
-import {HsDialogContainerService} from '../../layout/dialogs/dialog-container.service';
+import {HsDialogComponent} from 'hslayers-ng/components/layout';
+import {HsDialogContainerService} from 'hslayers-ng/components/layout';
 @Component({
   selector: 'hs-compositions-warning-dialog',
   templateUrl: './warning-dialog.component.html',

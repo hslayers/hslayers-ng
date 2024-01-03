@@ -3,16 +3,16 @@ import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {NgModule} from '@angular/core';
 
-import {HsAddToMapButtonComponent} from '../../../../common/add-to-map/add-to-map.component';
+import {HsAddToMapButtonComponent} from 'hslayers-ng/common/add-to-map';
 import {HsCommonUrlComponent} from './url.component';
-import {HsHistoryListModule} from './../../../../common/history-list/history-list.module';
-import {TranslateCustomPipe} from '../../../language/translate-custom.pipe';
+import {HsHistoryListModule} from 'hslayers-ng/common/history-list';
 import {HsLayerTableComponent} from './layer-table/layer-table.component';
 import {HsNestedLayersTableComponent} from './nested-layers-table/nested-layers-table.component';
-import {HsUiExtensionsModule} from './../../../../common/widgets/ui-extensions.module';
+import {HsUiExtensionsModule} from 'hslayers-ng/common/widgets';
 import {HsUrlAddComponent} from './add/add.component';
 import {HsUrlDetailsComponent} from './details/details.component';
 import {HsUrlProgressComponent} from './progress/progress.component';
+import {TranslateCustomPipe} from 'hslayers-ng/components/language';
 import {WmsLayerHighlightDirective} from './wms-layer-highlight.directive';
 
 @NgModule({

@@ -1,5 +1,5 @@
 import {CompoData} from '../types/compo-data.type';
-import {HsEndpoint} from '../../../common/endpoints/endpoint.interface';
+import {HsEndpoint} from 'hslayers-ng/shared/endpoints';
 import {MapComposition} from '../types/map-composition.type';
 
 export interface HsSaverService {

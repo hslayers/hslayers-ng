@@ -2,10 +2,10 @@ import {Component, OnDestroy} from '@angular/core';
 
 import {Subscription} from 'rxjs';
 
-import {HsCoreService} from '../core/core.service';
-import {HsEventBusService} from '../core/event-bus.service';
+import {HsCoreService} from 'hslayers-ng/shared/core';
+import {HsEventBusService} from 'hslayers-ng/shared/core';
 import {HsGuiOverlayBaseComponent} from '../layout/panels/gui-overlay-base.component';
-import {HsLayoutService} from '../layout/layout.service';
+import {HsLayoutService} from 'hslayers-ng/components/layout';
 import {HsToolbarPanelContainerService} from './toolbar-panel-container.service';
 
 @Component({

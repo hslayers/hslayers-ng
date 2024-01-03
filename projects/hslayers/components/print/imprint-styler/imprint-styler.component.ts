@@ -6,7 +6,7 @@ import {NgForOf} from '@angular/common';
 import {CANVAS_SIZES} from '../constants/position-options';
 import {HsPrintTextStylerComponent} from '../text-styler/text-styler.component';
 import {ImprintObj} from '../types/imprint-object.type';
-import {TranslateCustomPipe} from '../../language/translate-custom.pipe';
+import {TranslateCustomPipe} from 'hslayers-ng/components/language';
 
 @Component({
   selector: 'hs-print-imprint-styler',

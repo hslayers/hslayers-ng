@@ -39,22 +39,22 @@ import {Vector as VectorLayer} from 'ol/layer';
 import {platformModifierKeyOnly as platformModifierKeyOnlyCondition} from 'ol/events/condition';
 import {register} from 'ol/proj/proj4';
 
-import {BoundingBoxObject} from './../save-map/types/bounding-box-object.type';
-import {HsCommonLaymanService} from '../../common/layman/layman.service';
-import {HsConfig} from '../../config.service';
-import {HsEventBusService} from '../core/event-bus.service';
-import {HsLanguageService} from '../language/language.service';
-import {HsLayoutService} from '../layout/layout.service';
-import {HsLogService} from '../../common/log/log.service';
-import {HsQueuesService} from '../../common/queues/queues.service';
-import {HsUtilsService} from '../utils/utils.service';
+import {BoundingBoxObject} from 'hslayers-ng/components/save-map';
+import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
+import {HsConfig} from 'hslayers-ng/config';
+import {HsEventBusService} from 'hslayers-ng/shared/core';
+import {HsLanguageService} from 'hslayers-ng/components/language';
+import {HsLayoutService} from 'hslayers-ng/components/layout';
+import {HsLogService} from 'hslayers-ng/shared/log';
+import {HsQueuesService} from 'hslayers-ng/shared/queues';
+import {HsUtilsService} from 'hslayers-ng/shared/utils';
 import {
   getDimensions,
   getEnableProxy,
   getFromComposition,
   getRemovable,
   getTitle,
-} from '../../common/layer-extensions';
+} from 'hslayers-ng/common/extensions';
 
 export enum DuplicateHandling {
   AddDuplicate = 0,

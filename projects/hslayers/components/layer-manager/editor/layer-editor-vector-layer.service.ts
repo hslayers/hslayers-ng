@@ -4,10 +4,10 @@ import {Circle, LineString, Point, Polygon} from 'ol/geom';
 import {Cluster, Source, Vector as VectorSource} from 'ol/source';
 import {Layer, Vector as VectorLayer} from 'ol/layer';
 
-import {HsConfig} from './../../../config.service';
-import {HsMapService} from '../../map/map.service';
-import {HsStylerService} from './../../styler/styler.service';
-import {HsUtilsService} from '../../utils/utils.service';
+import {HsConfig} from './hslayers-ng/config';
+import {HsMapService} from 'hslayers-ng/components/map';
+import {HsStylerService} from './hslayers-ng/components/styler';
+import {HsUtilsService} from 'hslayers-ng/shared/utils';
 
 @Injectable({
   providedIn: 'root',

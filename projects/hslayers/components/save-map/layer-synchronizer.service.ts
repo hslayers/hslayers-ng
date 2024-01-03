@@ -8,15 +8,15 @@ import {Vector as VectorLayer} from 'ol/layer';
 import {Vector as VectorSource} from 'ol/source';
 import {WFS} from 'ol/format';
 
-import {HsCommonLaymanService} from '../../common/layman/layman.service';
-import {HsEndpoint} from './../../common/endpoints/endpoint.interface';
-import {HsLanguageService} from '../language/language.service';
+import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
+import {HsEndpoint} from 'hslayers-ng/shared/endpoints';
+import {HsLanguageService} from 'hslayers-ng/components/language';
 import {HsLaymanService} from './layman.service';
-import {HsLogService} from '../../common/log/log.service';
-import {HsMapService} from '../map/map.service';
-import {HsToastService} from '../layout/toast/toast.service';
-import {HsUtilsService} from '../utils/utils.service';
-import {awaitLayerSync, isLaymanUrl} from '../../common/layman/layman-utils';
+import {HsLogService} from 'hslayers-ng/shared/log';
+import {HsMapService} from 'hslayers-ng/components/map';
+import {HsToastService} from 'hslayers-ng/components/layout';
+import {HsUtilsService} from 'hslayers-ng/shared/utils';
+import {awaitLayerSync, isLaymanUrl} from 'hslayers-ng/common/layman';
 import {
   getDefinition,
   getEventsSuspended,
@@ -25,7 +25,7 @@ import {
   setEventsSuspended,
   setHsLaymanSynchronizing,
   setLaymanLayerDescriptor,
-} from '../../common/layer-extensions';
+} from 'hslayers-ng/common/extensions';
 
 @Injectable({
   providedIn: 'root',

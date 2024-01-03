@@ -1,10 +1,10 @@
-import {HsConfig} from '../../../config.service';
+import {HsConfig} from 'hslayers-ng/config';
 import {Injectable, Type} from '@angular/core';
 
 import {HsButton} from '../../sidebar/button.interface';
 import {HsPanelContainerService} from './panel-container.service';
-import {HsSidebarService} from '../../sidebar/sidebar.service';
-import {HsUtilsService} from '../../utils/utils.service';
+import {HsSidebarService} from 'hslayers-ng/components/sidebar';
+import {HsUtilsService} from 'hslayers-ng/shared/utils';
 import {skip} from 'rxjs';
 
 @Injectable({
@@ -43,52 +43,62 @@ export class HsPanelConstructorService {
     let i;
     switch (name) {
       case 'layerManager':
-        i = await import('../../layer-manager/layer-manager.component');
+        i = await import(
+          'hslayers-ng/components/layer-manager/layer-manager.component'
+        );
         break;
       case 'draw':
-        i = await import('../../draw/draw.component');
+        i = await import('hslayers-ng/components/draw/draw.component');
         break;
       case 'addData':
-        i = await import('../../add-data/add-data.component');
+        i = await import('hslayers-ng/components/add-data/add-data.component');
         break;
       case 'compositions':
-        i = await import('../../compositions/compositions.component');
+        i = await import(
+          'hslayers-ng/components/compositions/compositions.component'
+        );
         break;
       case 'featureTable':
-        i = await import('../../feature-table/feature-table.component');
+        i = await import(
+          'hslayers-ng/components/feature-table/feature-table.component'
+        );
         break;
       case 'language':
-        i = await import('../../language/language.component');
+        i = await import('hslayers-ng/components/language/language.component');
         break;
       case 'legend':
-        i = await import('../../legend/legend.component');
+        i = await import('hslayers-ng/components/legend/legend.component');
         break;
       case 'mapSwipe':
-        i = await import('../../map-swipe/map-swipe.component');
+        i = await import(
+          'hslayers-ng/components/map-swipe/map-swipe.component'
+        );
         break;
       case 'measure':
-        i = await import('../../measure/measure.component');
+        i = await import('hslayers-ng/components/measure/measure.component');
         break;
       case 'print':
-        i = await import('../../print/print.component');
+        i = await import('hslayers-ng/components/print/print.component');
         break;
       case 'query':
-        i = await import('../../query/query.component');
+        i = await import('hslayers-ng/components/query/query.component');
         break;
       case 'saveMap':
-        i = await import('../../save-map/save-map.component');
+        i = await import('hslayers-ng/components/save-map/save-map.component');
         break;
       case 'search':
-        i = await import('../../search/search.component');
+        i = await import('hslayers-ng/components/search/search.component');
         break;
       case 'styler':
-        i = await import('../../styler/styler.component');
+        i = await import('hslayers-ng/components/styler/styler.component');
         break;
       case 'share':
-        i = await import('../../share/share.component');
+        i = await import('hslayers-ng/components/share/share.component');
         break;
       case 'tripPlanner':
-        i = await import('../../trip-planner/trip-planner.component');
+        i = await import(
+          'hslayers-ng/components/trip-planner/trip-planner.component'
+        );
         break;
 
       default:

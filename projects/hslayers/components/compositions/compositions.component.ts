@@ -1,17 +1,17 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Subject, takeUntil} from 'rxjs';
 
-import {HsCommonLaymanService} from '../../common/layman/layman.service';
+import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
 import {HsCompositionsCatalogueService} from './compositions-catalogue.service';
 import {HsCompositionsMapService} from './compositions-map.service';
 import {HsCompositionsOverwriteDialogComponent} from './dialogs/overwrite-dialog.component';
 import {HsCompositionsParserService} from './compositions-parser.service';
 import {HsCompositionsService} from './compositions.service';
-import {HsDialogContainerService} from '../layout/dialogs/dialog-container.service';
-import {HsLanguageService} from '../language/language.service';
-import {HsLayoutService} from '../layout/layout.service';
+import {HsDialogContainerService} from 'hslayers-ng/components/layout';
+import {HsLanguageService} from 'hslayers-ng/components/language';
+import {HsLayoutService} from 'hslayers-ng/components/layout';
 import {HsMapCompositionDescriptor} from './models/composition-descriptor.model';
-import {HsPanelBaseComponent} from '../layout/panels/panel-base.component';
+import {HsPanelBaseComponent} from 'hslayers-ng/components/layout';
 
 @Component({
   selector: 'hs-compositions',

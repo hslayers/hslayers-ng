@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 
-import {HsEventBusService} from '../../core/event-bus.service';
+import {HsEventBusService} from 'hslayers-ng/shared/core';
 import {HsLayerEditorWidgetBaseComponent} from './layer-editor-widget-base.component';
 import {HsLayerSelectorService} from '../editor/layer-selector.service';
 

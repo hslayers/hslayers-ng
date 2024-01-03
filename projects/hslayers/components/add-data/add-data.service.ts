@@ -4,12 +4,12 @@ import {BehaviorSubject, Subject} from 'rxjs';
 import {Layer} from 'ol/layer';
 import {Source} from 'ol/source';
 
-import {HsCommonEndpointsService} from '../../common/endpoints/endpoints.service';
-import {HsCommonLaymanService} from '../../common/layman/layman.service';
-import {HsConfig} from '../../config.service';
-import {HsMapService} from '../map/map.service';
-import {HsUtilsService} from '../utils/utils.service';
-import {getBase} from '../../common/layer-extensions';
+import {HsCommonEndpointsService} from 'hslayers-ng/shared/endpoints';
+import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
+import {HsConfig} from 'hslayers-ng/config';
+import {HsMapService} from 'hslayers-ng/components/map';
+import {HsUtilsService} from 'hslayers-ng/shared/utils';
+import {getBase} from 'hslayers-ng/common/extensions';
 
 export type DatasetType = 'url' | 'catalogue' | 'file' | 'OWS';
 

@@ -15,19 +15,19 @@ import {Subject} from 'rxjs';
 import {click} from 'ol/events/condition';
 import {toLonLat} from 'ol/proj';
 
-import {HsConfig} from '../../config.service';
-import {HsEventBusService} from '../core/event-bus.service';
-import {HsLayerUtilsService} from '../utils/layer-utils.service';
-import {HsMapService} from '../map/map.service';
+import {HsConfig} from 'hslayers-ng/config';
+import {HsEventBusService} from 'hslayers-ng/shared/core';
+import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
+import {HsMapService} from 'hslayers-ng/components/map';
 import {HsQueryBaseService} from './query-base.service';
-import {HsUtilsService} from '../utils/utils.service';
+import {HsUtilsService} from 'hslayers-ng/shared/utils';
 import {StyleLike, createDefaultStyle} from 'ol/style/Style';
-import {getFeatures} from '../../common/feature-extensions';
+import {getFeatures} from 'hslayers-ng/common/extensions';
 import {
   getOnFeatureSelected,
   getQueryable,
   getVirtualAttributes,
-} from '../../common/layer-extensions';
+} from 'hslayers-ng/common/extensions';
 
 type AttributeValuePair = {
   name;

@@ -5,24 +5,26 @@ import {Layer} from 'ol/layer';
 import {Map} from 'ol';
 import {Source} from 'ol/source';
 
-import {HsConfig} from '../../config.service';
-import {HsEventBusService} from '../core/event-bus.service';
-import {HsLayerEditorService} from '../layer-manager/editor/layer-editor.service';
-import {HsLayerManagerService} from '../layer-manager/layer-manager.service';
-import {HsLayerShiftingService} from '../../common/layer-shifting/layer-shifting.service';
-import {HsLayoutService} from '../layout/layout.service';
-import {HsLogService} from '../../common/log/log.service';
-import {HsMapService} from '../map/map.service';
-import {HsShareUrlService} from '../share/share-url.service';
-import {HsToastService} from '../layout/toast/toast.service';
-import {LayerListItem} from './../../common/layer-shifting/layer-shifting.service';
+import {HsConfig} from 'hslayers-ng/config';
+import {HsEventBusService} from 'hslayers-ng/shared/core';
+import {HsLayerEditorService} from 'hslayers-ng/components/layer-manager';
+import {HsLayerManagerService} from 'hslayers-ng/components/layer-manager';
+import {
+  HsLayerShiftingService,
+  LayerListItem,
+} from 'hslayers-ng/shared/layer-shifting';
+import {HsLayoutService} from 'hslayers-ng/components/layout';
+import {HsLogService} from 'hslayers-ng/shared/log';
+import {HsMapService} from 'hslayers-ng/components/map';
+import {HsShareUrlService} from 'hslayers-ng/components/share';
+import {HsToastService} from 'hslayers-ng/components/layout';
 import {SwipeControl} from './swipe-control/swipe.control';
 import {
   getQueryFilter,
   getSwipeSide,
   setQueryFilter,
   setSwipeSide,
-} from '../../common/layer-extensions';
+} from 'hslayers-ng/common/extensions';
 
 export enum SwipeSide {
   Left = 'left',

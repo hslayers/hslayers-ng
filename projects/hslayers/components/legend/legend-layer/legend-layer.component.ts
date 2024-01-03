@@ -4,8 +4,8 @@ import {SafeHtml} from '@angular/platform-browser';
 import {Subject, takeUntil} from 'rxjs';
 
 import {HsLegendService} from '../legend.service';
-import {HsStylerService} from '../../styler/styler.service';
-import {HsUtilsService} from '../../utils/utils.service';
+import {HsStylerService} from 'hslayers-ng/components/styler';
+import {HsUtilsService} from 'hslayers-ng/shared/utils';
 
 @Component({
   selector: 'hs-legend-layer-directive',

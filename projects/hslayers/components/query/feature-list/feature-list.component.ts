@@ -3,15 +3,15 @@ import {Component} from '@angular/core';
 import {Feature, getUid} from 'ol';
 import {Geometry} from 'ol/geom';
 
-import {HsConfirmDialogComponent} from '../../../common/confirm/confirm-dialog.component';
-import {HsDialogContainerService} from '../../layout/dialogs/dialog-container.service';
+import {HsConfirmDialogComponent} from 'hslayers-ng/common/confirm';
+import {HsDialogContainerService} from 'hslayers-ng/components/layout';
 import {HsFeatureCommonService} from '../feature-common.service';
-import {HsLanguageService} from '../../language/language.service';
-import {HsLayerUtilsService} from '../../utils/layer-utils.service';
+import {HsLanguageService} from 'hslayers-ng/components/language';
+import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
 import {HsQueryBaseService} from '../query-base.service';
 import {HsQueryVectorService} from '../query-vector.service';
 import {exportFormats} from '../feature-common.service';
-import {getTitle} from '../../../common/layer-extensions';
+import {getTitle} from 'hslayers-ng/common/extensions';
 
 @Component({
   selector: 'hs-query-feature-list',

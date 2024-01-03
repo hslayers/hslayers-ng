@@ -3,11 +3,11 @@ import {Component, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 
-import {HsConfig} from '../../../config.service';
-import {HsDimensionTimeService} from '../../../common/get-capabilities/dimension-time.service';
-import {HsEventBusService} from '../../core/event-bus.service';
+import {HsConfig} from 'hslayers-ng/config';
+import {HsDimensionTimeService} from 'hslayers-ng/shared/get-capabilities';
+import {HsEventBusService} from 'hslayers-ng/shared/core';
 import {HsLayerDescriptor} from '../layer-descriptor.interface';
-import {HsLayoutService} from '../../layout/layout.service';
+import {HsLayoutService} from 'hslayers-ng/components/layout';
 
 @Component({
   selector: 'hs-layer-manager-time-editor',

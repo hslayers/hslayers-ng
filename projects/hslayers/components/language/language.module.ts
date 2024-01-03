@@ -8,11 +8,11 @@ import {
   TranslateStore,
 } from '@ngx-translate/core';
 
-import {HsConfig} from '../../config.service';
+import {HsConfig} from 'hslayers-ng/config';
 import {HsLanguageComponent} from './language.component';
-import {HsLogService} from '../../common/log/log.service';
-import {HsPanelHeaderComponent} from '../layout/panels/panel-header/panel-header.component';
-import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
+import {HsLogService} from 'hslayers-ng/shared/log';
+import {HsPanelHeaderComponent} from 'hslayers-ng/components/layout';
+import {HsPanelHelpersModule} from 'hslayers-ng/components/layout';
 import {WebpackTranslateLoader} from './custom-translate.service';
 
 export function getWebpackTranslateLoader(

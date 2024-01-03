@@ -4,14 +4,14 @@ import {Observable, Subject, Subscription} from 'rxjs';
 import {Vector as VectorLayer} from 'ol/layer';
 import {Vector as VectorSource} from 'ol/source';
 
-import {HsLayerUtilsService} from '../utils/layer-utils.service';
-import {HsLegendDescriptor} from '../legend/legend-descriptor.interface';
+import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
+import {HsLegendDescriptor} from 'hslayers-ng/components/legend';
 import {HsLegendLayerStaticService} from '../legend/legend-layer-static/legend-layer-static.service';
-import {HsLegendService} from '../legend/legend.service';
-import {HsMapService} from '../map/map.service';
-import {HsShareThumbnailService} from '../share/share-thumbnail.service';
+import {HsLegendService} from 'hslayers-ng/components/legend';
+import {HsMapService} from 'hslayers-ng/components/map';
+import {HsShareThumbnailService} from 'hslayers-ng/components/share';
 import {LegendObj} from './types/legend-object.type';
-import {SparqlJson} from '../../common/layers/hs.source.SparqlJson';
+import {SparqlJson} from 'hslayers-ng/common/layers';
 
 export class PrintLegendParams {
   legendWidth: number;

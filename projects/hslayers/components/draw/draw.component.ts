@@ -2,16 +2,16 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 
 import {BehaviorSubject, Subject, takeUntil} from 'rxjs';
 
-import {HsConfig} from '../../config.service';
-import {HsDialogContainerService} from '../layout/dialogs/dialog-container.service';
+import {HsConfig} from 'hslayers-ng/config';
+import {HsDialogContainerService} from 'hslayers-ng/components/layout';
 import {HsDrawLayerMetadataDialogComponent} from './draw-layer-metadata/draw-layer-metadata.component';
 import {HsDrawService} from './draw.service';
-import {HsLanguageService} from './../language/language.service';
-import {HsLayoutService} from '../layout/layout.service';
-import {HsPanelBaseComponent} from '../layout/panels/panel-base.component';
+import {HsLanguageService} from 'hslayers-ng/components/language';
+import {HsLayoutService} from 'hslayers-ng/components/layout';
+import {HsPanelBaseComponent} from 'hslayers-ng/components/layout';
 import {HsQueryBaseService} from '../query/query-base.service';
-import {HsSidebarService} from '../sidebar/sidebar.service';
-import {HsUtilsService} from '../utils/utils.service';
+import {HsSidebarService} from 'hslayers-ng/components/sidebar';
+import {HsUtilsService} from 'hslayers-ng/shared/utils';
 
 @Component({
   selector: 'hs-draw',

@@ -3,7 +3,7 @@ import {Type} from '@angular/core';
 
 import {HsPanelComponent} from './panel-component.interface';
 import {HsPanelItem} from './panel-item';
-import {KeyNumberDict} from '../../../config.service';
+import {KeyNumberDict} from 'hslayers-ng/config';
 
 export interface HsPanelContainerServiceInterface {
   panels: HsPanelComponent[];

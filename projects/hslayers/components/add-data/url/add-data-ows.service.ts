@@ -7,18 +7,20 @@ import {AddDataUrlType} from './types/url.type';
 import {HsAddDataCommonService} from '../common/common.service';
 import {HsAddDataService} from '../add-data.service';
 import {HsAddDataUrlService} from './add-data-url.service';
-import {HsArcgisGetCapabilitiesService} from '../../../common/get-capabilities/arcgis-get-capabilities.service';
-import {HsHistoryListService} from '../../../common/history-list/history-list.service';
-import {HsLogService} from '../../../common/log/log.service';
+import {
+  HsArcgisGetCapabilitiesService,
+  HsWfsGetCapabilitiesService,
+  HsWmsGetCapabilitiesService,
+  HsWmtsGetCapabilitiesService,
+  IGetCapabilities,
+} from 'hslayers-ng/shared/get-capabilities';
+import {HsHistoryListService} from 'hslayers-ng/common/history-list';
+import {HsLogService} from 'hslayers-ng/shared/log';
 import {HsUrlArcGisService} from './arcgis/arcgis.service';
 import {HsUrlTypeServiceModel} from './models/url-type-service.model';
 import {HsUrlWfsService} from './wfs/wfs.service';
 import {HsUrlWmsService} from './wms/wms.service';
 import {HsUrlWmtsService} from './wmts/wmts.service';
-import {HsWfsGetCapabilitiesService} from '../../../common/get-capabilities/wfs-get-capabilities.service';
-import {HsWmsGetCapabilitiesService} from '../../../common/get-capabilities/wms-get-capabilities.service';
-import {HsWmtsGetCapabilitiesService} from '../../../common/get-capabilities/wmts-get-capabilities.service';
-import {IGetCapabilities} from '../../../common/get-capabilities/get-capabilities.interface';
 import {LayerConnection, OwsConnection} from './types/ows-connection.type';
 import {UrlDataObject} from './types/data-object.type';
 

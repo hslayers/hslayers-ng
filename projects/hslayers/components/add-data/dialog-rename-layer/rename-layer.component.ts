@@ -1,8 +1,10 @@
 import {Component, OnInit, ViewRef} from '@angular/core';
 
-import {HsDialogComponent} from '../../layout/dialogs/dialog-component.interface';
-import {HsDialogContainerService} from '../../layout/dialogs/dialog-container.service';
-import {HsDialogItem} from '../../layout/dialogs/dialog-item';
+import {
+  HsDialogComponent,
+  HsDialogContainerService,
+  HsDialogItem,
+} from 'hslayers-ng/components/layout';
 
 @Component({
   selector: 'hs-rename-layer-dialog',

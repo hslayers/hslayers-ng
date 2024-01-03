@@ -10,27 +10,26 @@ import {WMSCapabilities} from 'ol/format';
 import {get, transformExtent} from 'ol/proj';
 
 import {AddLayersRecursivelyOptions} from '../types/recursive-options.type';
-import {CapabilitiesResponseWrapper} from '../../../../common/get-capabilities/capabilities-response-wrapper';
-import {DuplicateHandling, HsMapService} from '../../../map/map.service';
+import {CapabilitiesResponseWrapper} from 'hslayers-ng/shared/get-capabilities';
+import {DuplicateHandling, HsMapService} from 'hslayers-ng/components/map';
 import {HsAddDataCommonService} from '../../common/common.service';
 import {HsAddDataService} from '../../add-data.service';
 import {HsAddDataUrlService} from '../add-data-url.service';
-import {HsConfig} from '../../../../config.service';
-import {HsDimensionService} from '../../../../common/get-capabilities/dimension.service';
-import {HsEventBusService} from '../../../core/event-bus.service';
-import {HsLayerUtilsService} from '../../../utils/layer-utils.service';
-import {HsLayoutService} from '../../../layout/layout.service';
+import {HsConfig} from 'hslayers-ng/config';
+import {HsDimensionService} from 'hslayers-ng/shared/get-capabilities';
+import {HsEventBusService} from 'hslayers-ng/shared/core';
+import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
+import {HsLayoutService} from 'hslayers-ng/components/layout';
 import {HsUrlTypeServiceModel} from '../models/url-type-service.model';
-import {HsUtilsService} from '../../../utils/utils.service';
-import {HsWmsGetCapabilitiesService} from '../../../../common/get-capabilities/wms-get-capabilities.service';
+import {HsUtilsService} from 'hslayers-ng/shared/utils';
+import {HsWmsGetCapabilitiesService} from 'hslayers-ng/shared/get-capabilities';
 import {
   HsWmsLayer,
   WMSGetCapabilitiesResponse,
-} from '../../../../common/get-capabilities/wms-get-capabilities-response.interface';
-import {LayerOptions} from '../../../compositions/layer-parser/composition-layer-options.type';
+} from 'hslayers-ng/shared/get-capabilities';
+import {LayerOptions} from 'hslayers-ng/components/compositions';
 import {UrlDataObject} from '../types/data-object.type';
-import {addAnchors} from '../../../../common/attribution-utils';
-import {getPreferredFormat} from '../../../../common/format-utils';
+import {addAnchors, getPreferredFormat} from 'hslayers-ng/common/utils';
 
 @Injectable({providedIn: 'root'})
 export class HsUrlWmsService implements HsUrlTypeServiceModel {

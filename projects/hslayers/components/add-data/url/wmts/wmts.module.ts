@@ -4,9 +4,9 @@ import {FormsModule} from '@angular/forms';
 
 import {HsAddDataCommonModule} from '../../common/common.module';
 import {HsCommonUrlModule} from '../../common/url/url.module';
-import {TranslateCustomPipe} from '../../../language/translate-custom.pipe';
-import {HsUiExtensionsModule} from '../../../../common/widgets/ui-extensions.module';
+import {HsUiExtensionsModule} from 'hslayers-ng/common/widgets';
 import {HsUrlWmtsComponent} from './wmts.component';
+import {TranslateCustomPipe} from 'hslayers-ng/components/language';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

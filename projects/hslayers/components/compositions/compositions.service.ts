@@ -5,23 +5,23 @@ import Feature from 'ol/Feature';
 import {Geometry} from 'ol/geom';
 import {Observable, Subject, lastValueFrom} from 'rxjs';
 
-import {DuplicateHandling, HsMapService} from '../map/map.service';
-import {HS_PRMS} from '../share/get-params';
-import {HsCommonEndpointsService} from '../../common/endpoints/endpoints.service';
+import {DuplicateHandling, HsMapService} from 'hslayers-ng/components/map';
+import {HS_PRMS} from 'hslayers-ng/components/share';
+import {HsCommonEndpointsService} from 'hslayers-ng/shared/endpoints';
 import {HsCompositionsLaymanService} from './endpoints/compositions-layman.service';
 import {HsCompositionsMapService} from './compositions-map.service';
 import {HsCompositionsMickaService} from './endpoints/compositions-micka.service';
 import {HsCompositionsParserService} from './compositions-parser.service';
-import {HsConfig} from '../../config.service';
-import {HsCoreService} from '../core/core.service';
-import {HsEndpoint} from '../../common/endpoints/endpoint.interface';
-import {HsEventBusService} from '../core/event-bus.service';
-import {HsLanguageService} from '../language/language.service';
-import {HsLogService} from '../../common/log/log.service';
+import {HsConfig} from 'hslayers-ng/config';
+import {HsCoreService} from 'hslayers-ng/shared/core';
+import {HsEndpoint} from 'hslayers-ng/shared/endpoints';
+import {HsEventBusService} from 'hslayers-ng/shared/core';
+import {HsLanguageService} from 'hslayers-ng/components/language';
+import {HsLogService} from 'hslayers-ng/shared/log';
 import {HsMapCompositionDescriptor} from './models/composition-descriptor.model';
-import {HsShareUrlService} from '../share/share-url.service';
-import {HsToastService} from '../layout/toast/toast.service';
-import {HsUtilsService} from '../utils/utils.service';
+import {HsShareUrlService} from 'hslayers-ng/components/share';
+import {HsToastService} from 'hslayers-ng/components/layout';
+import {HsUtilsService} from 'hslayers-ng/shared/utils';
 
 @Injectable({
   providedIn: 'root',

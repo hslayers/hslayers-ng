@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import {Injectable} from '@angular/core';
 
-import {HsUtilsService} from '../../../utils/utils.service';
+import {HsUtilsService} from 'hslayers-ng/shared/utils';
 
 @Injectable({providedIn: 'root'})
 export class HsCatalogueMetadataService {

@@ -13,24 +13,24 @@ import {Style} from 'ol/style';
 import {Vector as VectorLayer} from 'ol/layer';
 import {Vector as VectorSource} from 'ol/source';
 
-import {HsConfig} from '../../config.service';
-import {HsConfigMock} from '../../config.service.mock';
-import {HsDownloadModule} from '../../common/download/download.module';
-import {HsEventBusService} from '../core/event-bus.service';
-import {HsEventBusServiceMock} from '../core/event-bus.service.mock';
-import {HsLayerUtilsService} from './../utils/layer-utils.service';
-import {HsLayoutService} from '../layout/layout.service';
-import {HsLayoutServiceMock} from '../layout/layout.service.mock';
-import {HsMapService} from '../map/map.service';
-import {HsMapServiceMock} from '../map/map.service.mock';
+import {HsConfig} from 'hslayers-ng/config';
+import {HsConfigMock} from 'hslayers-ng/config';
+import {HsDownloadModule} from 'hslayers-ng/common/download';
+import {HsEventBusService} from 'hslayers-ng/shared/core';
+import {HsEventBusServiceMock} from 'hslayers-ng/shared/core';
+import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
+import {HsLayoutService} from 'hslayers-ng/components/layout';
+import {HsLayoutServiceMock} from 'hslayers-ng/components/layout';
+import {HsMapService} from 'hslayers-ng/components/map';
+import {HsMapServiceMock} from 'hslayers-ng/components/map';
 import {HsQueryVectorService} from '../query/query-vector.service';
-import {HsSaveMapService} from './../save-map/save-map.service';
+import {HsSaveMapService} from '../save-map/save-map.service';
 import {HsSaveMapServiceMock} from '../save-map/save-map.service.mock';
 import {HsStylerComponent} from './styler.component';
 import {HsStylerService} from './styler.service';
-import {HsUtilsService} from '../utils/utils.service';
-import {HsUtilsServiceMock} from '../utils/utils.service.mock';
-import {TranslateCustomPipe} from '../language/translate-custom.pipe';
+import {HsUtilsService} from 'hslayers-ng/shared/utils';
+import {HsUtilsServiceMock} from 'hslayers-ng/shared/utils';
+import {TranslateCustomPipe} from 'hslayers-ng/components/language';
 
 class emptyMock {
   constructor() {}

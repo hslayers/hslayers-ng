@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 
-import {HsConfig} from '../../config.service';
+import {HsConfig} from 'hslayers-ng/config';
 
 @Component({
   selector: 'hs-impressum',

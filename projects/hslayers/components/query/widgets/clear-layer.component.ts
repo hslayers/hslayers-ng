@@ -3,13 +3,13 @@ import {ChangeDetectionStrategy, Component, Input, OnInit} from '@angular/core';
 import {Layer} from 'ol/layer';
 import {Source} from 'ol/source';
 
-import {HsConfirmDialogComponent} from '../../../common/confirm/confirm-dialog.component';
-import {HsDialogContainerService} from '../../layout/dialogs/dialog-container.service';
-import {HsLanguageService} from '../../language/language.service';
-import {HsLayerUtilsService} from '../../utils/layer-utils.service';
+import {HsConfirmDialogComponent} from 'hslayers-ng/common/confirm';
+import {HsDialogContainerService} from 'hslayers-ng/components/layout';
+import {HsLanguageService} from 'hslayers-ng/components/language';
+import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
 import {HsQueryPopupServiceModel} from '../query-popup.service.model';
 import {HsQueryPopupWidgetBaseComponent} from '../query-popup-widget-base.component';
-import {getTitle} from '../../../common/layer-extensions';
+import {getTitle} from 'hslayers-ng/common/extensions';
 
 @Component({
   selector: 'hs-clear-layer',

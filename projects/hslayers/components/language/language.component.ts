@@ -1,10 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 
-import {HsConfig} from '../../config.service';
+import {HsConfig} from 'hslayers-ng/config';
 import {HsLanguageService} from './language.service';
-import {HsLayoutService} from '../layout/layout.service';
-import {HsPanelBaseComponent} from '../layout/panels/panel-base.component';
-import {HsSidebarService} from '../sidebar/sidebar.service';
+import {HsLayoutService} from 'hslayers-ng/components/layout';
+import {HsPanelBaseComponent} from 'hslayers-ng/components/layout';
+import {HsSidebarService} from 'hslayers-ng/components/sidebar';
 
 @Component({
   selector: 'hs-language',

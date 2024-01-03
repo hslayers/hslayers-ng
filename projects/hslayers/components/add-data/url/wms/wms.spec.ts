@@ -12,20 +12,19 @@ import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
 import {lastValueFrom} from 'rxjs';
 
 import serviceEndpoints from '../../../../../test/data/service-endpoints.json';
-import {HsCommonEndpointsService} from '../../../../common/endpoints/endpoints.service';
-import {HsConfig} from '../../../../config.service';
-import {HsConfigMock} from '../../../../config.service.mock';
-import {HsLanguageModule} from '../../../language/language.module';
-import {HsLayerUtilsService} from '../../../utils/layer-utils.service';
-import {HsMapService} from '../../../map/map.service';
-import {HsMapServiceMock} from '../../../map/map.service.mock';
-import {HsPanelHelpersModule} from '../../../layout/panels/panel-helpers.module';
+import {HsCommonEndpointsService} from 'hslayers-ng/shared/endpoints';
+import {HsConfig} from 'hslayers-ng/config';
+import {HsConfigMock} from 'hslayers-ng/config';
+import {HsLanguageModule} from 'hslayers-ng/components/language';
+import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
+import {HsMapService} from 'hslayers-ng/components/map';
+import {HsMapServiceMock} from 'hslayers-ng/components/map';
+import {HsPanelHelpersModule} from 'hslayers-ng/components/layout';
 import {HsUrlWmsComponent} from './wms.component';
 import {HsUrlWmsService} from './wms.service';
-import {HsUtilsService} from '../../../utils/utils.service';
-import {HsUtilsServiceMock} from '../../../utils/utils.service.mock';
-import {HsWmsGetCapabilitiesService} from '../../../../common/get-capabilities/wms-get-capabilities.service';
-import {mockLayerUtilsService} from '../../../utils/layer-utils.service.mock';
+import {HsUtilsService, mockLayerUtilsService} from 'hslayers-ng/shared/utils';
+import {HsUtilsServiceMock} from 'hslayers-ng/shared/utils';
+import {HsWmsGetCapabilitiesService} from 'hslayers-ng/shared/get-capabilities';
 
 class HsCommonEndpointsServiceMock {
   constructor() {}

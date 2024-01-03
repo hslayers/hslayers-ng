@@ -12,23 +12,24 @@ import {lastValueFrom} from 'rxjs';
 import serviceEndpoints from '../../../../test/data/service-endpoints.json';
 import {HsAddDataUrlComponent} from './add-data-url.component';
 import {HsAddDataVectorModule} from '../vector/vector.module';
-import {HsConfig} from '../../../config.service';
-import {HsConfigMock} from '../../../config.service.mock';
-import {HsLanguageModule} from '../../language/language.module';
-import {HsLayerUtilsService} from '../../utils/layer-utils.service';
-import {HsLayoutService} from '../../layout/layout.service';
-import {HsLayoutServiceMock} from '../../layout/layout.service.mock';
-import {HsMapService} from '../../map/map.service';
-import {HsMapServiceMock} from '../../map/map.service.mock';
+import {HsConfig} from 'hslayers-ng/config';
+import {HsConfigMock} from 'hslayers-ng/config';
+import {HsLanguageModule} from 'hslayers-ng/components/language';
+import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
+import {HsLayoutService} from 'hslayers-ng/components/layout';
+import {HsLayoutServiceMock} from 'hslayers-ng/components/layout';
+import {HsMapService, HsMapServiceMock} from 'hslayers-ng/components/map';
 import {HsUrlArcGisModule} from './arcgis/arcgis.module';
 import {HsUrlGeoSparqlModule} from './geosparql/geosparql.module';
 import {HsUrlWfsModule} from './wfs/wfs.module';
 import {HsUrlWmsModule} from './wms/wms.module';
 import {HsUrlWmtsModule} from './wmts/wmts.module';
-import {HsUtilsService} from '../../utils/utils.service';
-import {HsUtilsServiceMock} from '../../utils/utils.service.mock';
-import {HsWmsGetCapabilitiesService} from '../../../common/get-capabilities/wms-get-capabilities.service';
-import {mockLayerUtilsService} from '../../utils/layer-utils.service.mock';
+import {HsUtilsService} from 'hslayers-ng/shared/utils';
+import {
+  HsUtilsServiceMock,
+  mockLayerUtilsService,
+} from 'hslayers-ng/shared/utils';
+import {HsWmsGetCapabilitiesService} from 'hslayers-ng/shared/get-capabilities';
 
 let httpClient;
 let hsWmsGetCapabilitiesService;

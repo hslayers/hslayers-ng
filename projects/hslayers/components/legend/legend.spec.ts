@@ -15,24 +15,24 @@ import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {Tile as TileLayer} from 'ol/layer';
 import {TileWMS} from 'ol/source';
 
-import {HsConfig} from '../../config.service';
-import {HsConfigMock} from '../../config.service.mock';
-import {HsLayerUtilsService} from '../utils/layer-utils.service';
-import {HsLayoutService} from '../layout/layout.service';
-import {HsLayoutServiceMock} from '../layout/layout.service.mock';
+import {HsConfig} from 'hslayers-ng/config';
+import {HsConfigMock} from 'hslayers-ng/config';
+import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
+import {HsLayoutService} from 'hslayers-ng/components/layout';
+import {HsLayoutServiceMock} from 'hslayers-ng/components/layout';
 import {HsLegendComponent} from './legend.component';
 import {HsLegendLayerComponent} from './legend-layer/legend-layer.component';
 import {HsLegendLayerStaticComponent} from './legend-layer-static/legend-layer-static.component';
 import {HsLegendLayerVectorComponent} from './legend-layer-vector/legend-layer-vector.component';
-import {HsMapService} from '../map/map.service';
-import {HsMapServiceMock} from '../map/map.service.mock';
-import {HsPanelHeaderComponent} from '../layout/panels/panel-header/panel-header.component';
-import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
-import {HsUiExtensionsModule} from '../../common/widgets/ui-extensions.module';
-import {HsUtilsService} from '../utils/utils.service';
-import {HsUtilsServiceMock} from '../utils/utils.service.mock';
-import {TranslateCustomPipe} from '../language/translate-custom.pipe';
-import {mockLayerUtilsService} from '../utils/layer-utils.service.mock';
+import {HsMapService} from 'hslayers-ng/components/map';
+import {HsMapServiceMock} from 'hslayers-ng/components/map';
+import {HsPanelHeaderComponent} from 'hslayers-ng/components/layout';
+import {HsPanelHelpersModule} from 'hslayers-ng/components/layout';
+import {HsUiExtensionsModule} from 'hslayers-ng/common/widgets';
+import {HsUtilsService} from 'hslayers-ng/shared/utils';
+import {HsUtilsServiceMock} from 'hslayers-ng/shared/utils';
+import {TranslateCustomPipe} from 'hslayers-ng/components/language';
+import {mockLayerUtilsService} from 'hslayers-ng/shared/utils';
 
 const layerUtilsMock = mockLayerUtilsService();
 describe('HsLegendComponent', () => {

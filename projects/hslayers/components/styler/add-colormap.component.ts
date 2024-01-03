@@ -3,7 +3,7 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Vector as VectorLayer} from 'ol/layer';
 import {Vector as VectorSource} from 'ol/source';
 
-import {HsLanguageService} from '../language/language.service';
+import {HsLanguageService} from 'hslayers-ng/components/language';
 import {HsStylerService} from './styler.service';
 import {listNumericAttributes} from '../layer-manager/widgets/idw-widget.component';
 

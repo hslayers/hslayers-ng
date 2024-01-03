@@ -23,11 +23,11 @@ import {transformExtent} from 'ol/proj';
 
 import {BoundingBoxObject} from './types/bounding-box-object.type';
 import {CompoData} from './types/compo-data.type';
-import {HsLayerUtilsService} from '../utils/layer-utils.service';
-import {HsLogService} from '../../common/log/log.service';
-import {HsMapService} from '../map/map.service';
-import {HsShareThumbnailService} from '../share/share-thumbnail.service';
-import {HsUtilsService} from '../utils/utils.service';
+import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
+import {HsLogService} from 'hslayers-ng/shared/log';
+import {HsMapService} from 'hslayers-ng/components/map';
+import {HsShareThumbnailService} from 'hslayers-ng/components/share';
+import {HsUtilsService} from 'hslayers-ng/shared/utils';
 import {LayerJSON} from './types/layer-json.type';
 import {MapComposition} from './types/map-composition.type';
 import {SerializedImage} from './types/serialized-image.type';
@@ -52,7 +52,7 @@ import {
   getTitle,
   getWfsUrl,
   getWorkspace,
-} from '../../common/layer-extensions';
+} from 'hslayers-ng/common/extensions';
 
 const LOCAL_STORAGE_EXPIRE = 5000;
 

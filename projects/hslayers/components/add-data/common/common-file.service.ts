@@ -3,31 +3,33 @@ import {Injectable} from '@angular/core';
 import JSZip from 'jszip';
 import {Subject} from 'rxjs';
 
-import {AsyncUpload} from '../../save-map/types/async-upload.type';
+import {AsyncUpload} from 'hslayers-ng/components/save-map';
 import {FileDataObject} from '../file/types/file-data-object.type';
 import {FileFormData} from '../file/types/file-form-data.type';
 import {HsAddDataOwsService} from '../url/add-data-ows.service';
 import {HsAddDataService} from '../add-data.service';
 import {HsAddDataUrlService} from '../url/add-data-url.service';
-import {HsCommonEndpointsService} from '../../../common/endpoints/endpoints.service';
-import {HsCommonLaymanService} from '../../../common/layman/layman.service';
-import {HsDialogContainerService} from '../../layout/dialogs/dialog-container.service';
-import {HsEndpoint} from '../../../common/endpoints/endpoint.interface';
-import {HsLanguageService} from '../../language/language.service';
+import {
+  HsCommonEndpointsService,
+  HsEndpoint,
+} from 'hslayers-ng/shared/endpoints';
+import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
+import {HsDialogContainerService} from 'hslayers-ng/components/layout';
+import {HsLanguageService} from 'hslayers-ng/components/language';
 import {HsLayerOverwriteDialogComponent} from '../dialog-overwrite-layer/overwrite-layer.component';
-import {HsLaymanLayerDescriptor} from '../../save-map/interfaces/layman-layer-descriptor.interface';
-import {HsLaymanService} from '../../save-map/layman.service';
-import {HsLogService} from '../../../common/log/log.service';
-import {HsToastService} from '../../layout/toast/toast.service';
-import {HsUtilsService} from '../../utils/utils.service';
+import {HsLaymanLayerDescriptor} from 'hslayers-ng/components/save-map';
+import {HsLaymanService} from 'hslayers-ng/components/save-map';
+import {HsLogService} from 'hslayers-ng/shared/log';
+import {HsToastService} from 'hslayers-ng/components/layout';
+import {HsUtilsService} from 'hslayers-ng/shared/utils';
 import {OverwriteResponse} from '../enums/overwrite-response';
-import {PostPatchLayerResponse} from '../../../common/layman/types/post-patch-layer-response.type';
+import {PostPatchLayerResponse} from 'hslayers-ng/common/layman';
 import {VectorDataObject} from '../vector/vector-data.type';
 import {errorMessageOptions} from '../file/types/error-message-options.type';
 import {
   getLaymanFriendlyLayerName,
   layerParamPendingOrStarting,
-} from '../../../common/layman/layman-utils';
+} from 'hslayers-ng/common/layman';
 
 export const FILE_UPLOAD_SIZE_LIMIT = 10485760 as const; //10 * 1024 * 1024 = 10MB
 

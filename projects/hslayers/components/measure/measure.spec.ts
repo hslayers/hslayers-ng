@@ -7,17 +7,17 @@ import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
 
-import {HsConfig} from './../../config.service';
-import {HsConfigMock} from '../../config.service.mock';
-import {HsLayoutService} from '../layout/layout.service';
-import {HsLayoutServiceMock} from '../layout/layout.service.mock';
-import {HsMapService} from '../map/map.service';
-import {HsMapServiceMock} from '../map/map.service.mock';
+import {HsConfig} from './hslayers-ng/config';
+import {HsConfigMock} from 'hslayers-ng/config';
+import {HsLayoutService} from 'hslayers-ng/components/layout';
+import {HsLayoutServiceMock} from 'hslayers-ng/components/layout';
+import {HsMapService} from 'hslayers-ng/components/map';
+import {HsMapServiceMock} from 'hslayers-ng/components/map';
 import {HsMeasureComponent} from './measure.component';
 import {HsMeasureService} from './measure.service';
-import {HsUtilsService} from '../utils/utils.service';
-import {HsUtilsServiceMock} from '../utils/utils.service.mock';
-import {TranslateCustomPipe} from '../language/translate-custom.pipe';
+import {HsUtilsService} from 'hslayers-ng/shared/utils';
+import {HsUtilsServiceMock} from 'hslayers-ng/shared/utils';
+import {TranslateCustomPipe} from 'hslayers-ng/components/language';
 
 describe('HsMeasure', () => {
   beforeAll(() => {

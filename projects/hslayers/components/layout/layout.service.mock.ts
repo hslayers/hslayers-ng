@@ -1,5 +1,5 @@
 import {BehaviorSubject} from 'rxjs';
-import {HsConfig} from '../../config.service';
+import {HsConfig} from 'hslayers-ng/config';
 
 export class HsLayoutServiceMock {
   panel_statuses = {};

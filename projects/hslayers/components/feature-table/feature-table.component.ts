@@ -3,12 +3,12 @@ import {Component, OnInit} from '@angular/core';
 import {Vector as VectorLayer} from 'ol/layer';
 import {Vector as VectorSource} from 'ol/source';
 
-import {HsConfig} from '../../config.service';
+import {HsConfig} from 'hslayers-ng/config';
 import {HsFeatureTableService} from './feature-table.service';
-import {HsLayoutService} from '../layout/layout.service';
-import {HsMapService} from './../map/map.service';
-import {HsPanelBaseComponent} from '../layout/panels/panel-base.component';
-import {HsSidebarService} from '../sidebar/sidebar.service';
+import {HsLayoutService} from 'hslayers-ng/components/layout';
+import {HsMapService} from './hslayers-ng/components/map';
+import {HsPanelBaseComponent} from 'hslayers-ng/components/layout';
+import {HsSidebarService} from 'hslayers-ng/components/sidebar';
 
 @Component({
   selector: 'hs-feature-table',

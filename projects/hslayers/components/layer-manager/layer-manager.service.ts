@@ -14,14 +14,14 @@ import {
 import {Vector as VectorSource} from 'ol/source';
 import {unByKey} from 'ol/Observable';
 
-import {HS_PRMS} from '../share/get-params';
-import {HsAddDataOwsService} from '../add-data/url/add-data-ows.service';
+import {HS_PRMS} from 'hslayers-ng/components/share';
+import {HsAddDataOwsService} from 'hslayers-ng/components/add-data';
 import {HsBaseLayerDescriptor} from './base-layer-descriptor.interface';
-import {HsConfig} from '../../config.service';
-import {HsDimensionTimeService} from '../../common/get-capabilities/dimension-time.service';
-import {HsDrawService} from '../draw/draw.service';
-import {HsEventBusService} from '../core/event-bus.service';
-import {HsLanguageService} from '../language/language.service';
+import {HsConfig} from 'hslayers-ng/config';
+import {HsDimensionTimeService} from 'hslayers-ng/shared/get-capabilities';
+import {HsDrawService} from 'hslayers-ng/components/draw';
+import {HsEventBusService} from 'hslayers-ng/shared/core';
+import {HsLanguageService} from 'hslayers-ng/components/language';
 import {
   HsLayerDescriptor,
   HsLayerLoadProgress,
@@ -29,14 +29,14 @@ import {
 import {HsLayerEditorVectorLayerService} from './editor/layer-editor-vector-layer.service';
 import {HsLayerManagerMetadataService} from './layer-manager-metadata.service';
 import {HsLayerSelectorService} from './editor/layer-selector.service';
-import {HsLayerUtilsService} from '../utils/layer-utils.service';
-import {HsLayoutService} from '../layout/layout.service';
-import {HsLogService} from '../../common/log/log.service';
-import {HsMapService} from '../map/map.service';
-import {HsQueuesService} from '../../common/queues/queues.service';
-import {HsShareUrlService} from '../share/share-url.service';
-import {HsToastService} from '../layout/toast/toast.service';
-import {HsUtilsService} from '../utils/utils.service';
+import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
+import {HsLayoutService} from 'hslayers-ng/components/layout';
+import {HsLogService} from 'hslayers-ng/shared/log';
+import {HsMapService} from 'hslayers-ng/components/map';
+import {HsQueuesService} from 'hslayers-ng/shared/queues';
+import {HsShareUrlService} from 'hslayers-ng/components/share';
+import {HsToastService} from 'hslayers-ng/components/layout';
+import {HsUtilsService} from 'hslayers-ng/shared/utils';
 import {
   SHOW_IN_LAYER_MANAGER,
   getAbstract,
@@ -64,7 +64,7 @@ import {
   setPath,
   setSubLayers,
   setTitle,
-} from '../../common/layer-extensions';
+} from 'hslayers-ng/common/extensions';
 
 class HsLayermanagerDataObject {
   folders: any;

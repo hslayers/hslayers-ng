@@ -10,14 +10,14 @@ import {
   EndpointErrorHandling,
   HsEndpoint,
   isErrorHandlerFunction,
-} from '../../../../common/endpoints/endpoint.interface';
+} from 'hslayers-ng/shared/endpoints';
 import {HsAddDataLayerDescriptor} from '../layer-descriptor.model';
-import {HsLanguageService} from '../../../language/language.service';
-import {HsLogService} from '../../../../common/log/log.service';
-import {HsMapService} from '../../../map/map.service';
-import {HsToastService} from '../../../layout/toast/toast.service';
-import {HsUtilsService} from '../../../utils/utils.service';
-import {addExtentFeature} from '../../../../common/extent-utils';
+import {HsLanguageService} from 'hslayers-ng/components/language';
+import {HsLogService} from 'hslayers-ng/shared/log';
+import {HsMapService} from 'hslayers-ng/components/map';
+import {HsToastService} from 'hslayers-ng/components/layout';
+import {HsUtilsService} from 'hslayers-ng/shared/utils';
+import {addExtentFeature} from 'hslayers-ng/common/utils';
 
 @Injectable({providedIn: 'root'})
 export class HsMickaBrowserService {

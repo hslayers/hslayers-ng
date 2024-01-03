@@ -17,9 +17,9 @@ import {FileDataObject} from './types/file-data-object.type';
 import {FileDescriptor} from './types/file-descriptor.type';
 import {HsAddDataCommonFileService} from '../common/common-file.service';
 import {HsAddDataCommonService} from '../common/common.service';
-import {HsConfig} from '../../../config.service';
-import {HsLayoutService} from '../../layout/layout.service';
-import {HsUploadComponent} from '../../../common/upload/upload.component';
+import {HsConfig} from 'hslayers-ng/config';
+import {HsLayoutService} from 'hslayers-ng/components/layout';
+import {HsUploadComponent} from 'hslayers-ng/common/upload';
 
 @Component({
   template: '<div></div>',

@@ -24,24 +24,24 @@ import {OlStyleParser as OpenLayersParser} from 'geostyler-openlayers-parser';
 import {QGISStyleParser} from 'geostyler-qgis-parser';
 import {StyleFunction, StyleLike, createDefaultStyle} from 'ol/style/Style';
 
-import {HsCommonLaymanService} from '../../common/layman/layman.service';
-import {HsConfig} from '../../config.service';
-import {HsConfirmDialogComponent} from '../../common/confirm/confirm-dialog.component';
-import {HsDialogContainerService} from '../layout/dialogs/dialog-container.service';
-import {HsEventBusService} from '../core/event-bus.service';
-import {HsLanguageService} from '../language/language.service';
+import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
+import {HsConfig} from 'hslayers-ng/config';
+import {HsConfirmDialogComponent} from 'hslayers-ng/common/confirm';
+import {HsDialogContainerService} from 'hslayers-ng/components/layout';
+import {HsEventBusService} from 'hslayers-ng/shared/core';
+import {HsLanguageService} from 'hslayers-ng/components/language';
 import {HsLayerSynchronizerService} from '../save-map/layer-synchronizer.service';
-import {HsLayerUtilsService} from '../utils/layer-utils.service';
-import {HsLogService} from '../../common/log/log.service';
-import {HsMapService} from '../map/map.service';
+import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
+import {HsLogService} from 'hslayers-ng/shared/log';
+import {HsMapService} from 'hslayers-ng/components/map';
 import {HsQueryVectorService} from '../query/query-vector.service';
 import {HsSaveMapService} from '../save-map/save-map.service';
-import {HsToastService} from '../layout/toast/toast.service';
-import {HsUtilsService} from '../utils/utils.service';
+import {HsToastService} from 'hslayers-ng/components/layout';
+import {HsUtilsService} from 'hslayers-ng/shared/utils';
 import {
   awaitLayerSync,
   getLaymanFriendlyLayerName,
-} from '../../common/layman/layman-utils';
+} from 'hslayers-ng/common/layman';
 import {defaultStyle} from './styles';
 import {
   getCluster,
@@ -50,8 +50,8 @@ import {
   getTitle,
   setQml,
   setSld,
-} from '../../common/layer-extensions';
-import {getHighlighted} from '../../common/feature-extensions';
+} from 'hslayers-ng/common/extensions';
+import {getHighlighted} from 'hslayers-ng/common/extensions';
 import {parseStyle} from './backwards-compatibility';
 
 @Injectable({

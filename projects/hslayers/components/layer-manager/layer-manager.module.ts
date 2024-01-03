@@ -9,7 +9,7 @@ import {
 } from '@ng-bootstrap/ng-bootstrap';
 
 import {HsClusterWidgetComponent} from './widgets/cluster-widget.component';
-import {HsColormapPickerModule} from '../../common/color-map-picker/colormap-picker.module';
+import {HsColormapPickerModule} from 'hslayers-ng/common/color-map-picker';
 import {HsCopyLayerDialogComponent} from './dialogs/copy-layer-dialog.component';
 import {HsExtentWidgetComponent} from './widgets/extent-widget/extent-widget.component';
 import {HsIdwWidgetComponent} from './widgets/idw-widget.component';
@@ -24,18 +24,17 @@ import {HsLayerManagerRemoveAllDialogComponent} from './dialogs/remove-all-dialo
 import {HsLayerManagerRemoveLayerDialogComponent} from './dialogs/remove-layer-dialog.component';
 import {HsLayerManagerTimeEditorComponent} from './dimensions/layer-manager-time-editor.component';
 import {HsLayerPhysicalListComponent} from './physical-list/physical-layerlist.component';
-import {HsLegendModule} from '../legend/legend.module';
+import {HsLegendModule} from 'hslayers-ng/components/legend';
 import {HsLegendWidgetComponent} from './widgets/legend-widget.component';
 import {HsMetadataWidgetComponent} from './widgets/metadata-widget.component';
 import {HsOpacityWidgetComponent} from './widgets/opacity-widget.component';
-import {HsPanelHeaderComponent} from '../layout/panels/panel-header/panel-header.component';
-import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
-import {HsQueuesModule} from '../../common/queues/queues.module';
+import {HsPanelHeaderComponent} from 'hslayers-ng/components/layout';
+import {HsPanelHelpersModule} from 'hslayers-ng/components/layout';
 import {HsScaleWidgetComponent} from './widgets/scale-widget.component';
 import {HsTypeWidgetComponent} from './widgets/type-widget.component';
-import {HsUiExtensionsModule} from '../../common/widgets/ui-extensions.module';
+import {HsUiExtensionsModule} from 'hslayers-ng/common/widgets';
 import {HsWmsSourceWidgetComponent} from './widgets/wms-source-widget/wms-source-widget.component';
-import {TranslateCustomPipe} from '../language/translate-custom.pipe';
+import {TranslateCustomPipe} from 'hslayers-ng/components/language';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -72,7 +71,6 @@ import {TranslateCustomPipe} from '../language/translate-custom.pipe';
     NgbDropdownModule,
     NgbTooltipModule,
     DragDropModule,
-    HsQueuesModule,
     HsColormapPickerModule,
     HsWmsSourceWidgetComponent,
     HsPanelHeaderComponent,

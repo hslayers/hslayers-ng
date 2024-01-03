@@ -3,14 +3,14 @@ import {Component, EventEmitter, Input, Output, ViewChild} from '@angular/core';
 
 import {SymbolizerKind} from 'geostyler-style';
 
-import {HsStylerPartBaseComponent} from './../style-part-base.component';
-import {HsStylerService} from './../styler.service';
-import {Kinds} from './../symbolizers/symbolizer-kind.enum';
+import {HsStylerPartBaseComponent} from '../style-part-base.component';
+import {HsStylerService} from '../styler.service';
+import {Kinds} from '../symbolizers/symbolizer-kind.enum';
 
 @Component({
   selector: 'hs-rule',
   templateUrl: './rule.component.html',
-  styleUrls: ['./../styler.component.scss'],
+  styleUrls: ['../styler.component.scss'],
 })
 export class HsRuleComponent extends HsStylerPartBaseComponent {
   @Input() rule;

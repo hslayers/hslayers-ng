@@ -11,21 +11,20 @@ import {
   ArcGISResResponseLayerExtent,
   ArcGISRestResponseLayer,
 } from '../types/argis-response-type';
-import {CapabilitiesResponseWrapper} from '../../../../common/get-capabilities/capabilities-response-wrapper';
-import {DuplicateHandling, HsMapService} from '../../../map/map.service';
+import {CapabilitiesResponseWrapper} from 'hslayers-ng/shared/get-capabilities';
+import {DuplicateHandling, HsMapService} from 'hslayers-ng/components/map';
 import {HsAddDataCommonService} from '../../common/common.service';
 import {HsAddDataUrlService} from '../add-data-url.service';
-import {HsArcgisGetCapabilitiesService} from '../../../../common/get-capabilities/arcgis-get-capabilities.service';
-import {HsLanguageService} from '../../../language/language.service';
-import {HsLayerUtilsService} from '../../../utils/layer-utils.service';
-import {HsLayoutService} from '../../../layout/layout.service';
-import {HsToastService} from '../../../../components/layout/toast/toast.service';
+import {HsArcgisGetCapabilitiesService} from 'hslayers-ng/shared/get-capabilities';
+import {HsLanguageService} from 'hslayers-ng/components/language';
+import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
+import {HsLayoutService} from 'hslayers-ng/components/layout';
+import {HsToastService} from 'hslayers-ng/components/layout';
 import {HsUrlTypeServiceModel, Service} from '../models/url-type-service.model';
-import {HsUtilsService} from '../../../utils/utils.service';
-import {LayerOptions} from '../../../compositions/layer-parser/composition-layer-options.type';
+import {HsUtilsService} from 'hslayers-ng/shared/utils';
+import {LayerOptions} from 'hslayers-ng/components/compositions';
 import {UrlDataObject} from '../types/data-object.type';
-import {addAnchors} from '../../../../common/attribution-utils';
-import {getPreferredFormat} from '../../../../common/format-utils';
+import {addAnchors, getPreferredFormat} from 'hslayers-ng/common/utils';
 
 @Injectable({providedIn: 'root'})
 export class HsUrlArcGisService implements HsUrlTypeServiceModel {

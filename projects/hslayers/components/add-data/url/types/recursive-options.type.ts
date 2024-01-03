@@ -1,4 +1,4 @@
-import {LayerOptions} from '../../../compositions/layer-parser/composition-layer-options.type';
+import {LayerOptions} from 'hslayers-ng/components/compositions';
 
 /**
  * @param shallow - Whether to go through full depth of layer tree or to stop on first queryable

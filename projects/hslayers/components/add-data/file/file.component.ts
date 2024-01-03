@@ -2,8 +2,8 @@ import {Component} from '@angular/core';
 
 import {AddDataFileType, filesSupported} from './types/file.type';
 import {AddDataFileValues} from './file-type-values';
-import {HsConfig} from '../../../config.service';
-import {HsLanguageService} from '../../language/language.service';
+import {HsConfig} from 'hslayers-ng/config';
+import {HsLanguageService} from 'hslayers-ng/components/language';
 
 @Component({
   selector: 'hs-add-data-file',

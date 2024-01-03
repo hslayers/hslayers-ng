@@ -2,10 +2,10 @@ import {Component, OnInit} from '@angular/core';
 import {Input} from '@angular/core';
 import {Observable, map} from 'rxjs';
 
-import {HsCommonEndpointsService} from '../endpoints/endpoints.service';
+import {HsCommonEndpointsService} from 'hslayers-ng/shared/endpoints';
 import {HsCommonLaymanService} from './layman.service';
-import {HsDialogContainerService} from '../../components/layout/dialogs/dialog-container.service';
-import {HsEndpoint} from '../endpoints/endpoint.interface';
+import {HsDialogContainerService} from 'hslayers-ng/components/layout';
+import {HsEndpoint} from 'hslayers-ng/shared/endpoints';
 import {HsLaymanLoginComponent} from './layman-login.component';
 
 @Component({

@@ -1,14 +1,13 @@
 import {HttpClient} from '@angular/common/http';
 import {lastValueFrom} from 'rxjs';
 
-import {Geometry} from 'ol/geom';
 import {ObjectEvent} from 'ol/Object';
 import {Vector as VectorSource} from 'ol/source';
 import {WFS} from 'ol/format';
 import {bbox} from 'ol/loadingstrategy';
 import {transformExtent} from 'ol/proj';
 
-import {HsUtilsService} from '../../components/utils/utils.service';
+import {HsUtilsService} from 'hslayers-ng/shared/utils';
 
 export type WfsOptions = {
   data_version?: string;

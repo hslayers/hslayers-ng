@@ -21,17 +21,17 @@ import {
 } from 'ol/source';
 import {Options as TileOptions} from 'ol/layer/BaseTile';
 
-import {HsAddDataOwsService} from '../../add-data/url/add-data-ows.service';
+import {HsAddDataOwsService} from 'hslayers-ng/components/add-data';
 import {HsAddDataVectorService} from '../../add-data/vector/vector.service';
-import {HsCommonLaymanService} from '../../../common/layman/layman.service';
-import {HsLanguageService} from '../../language/language.service';
-import {HsLogService} from '../../../common/log/log.service';
-import {HsMapService} from '../../map/map.service';
-import {HsStylerService} from '../../styler/styler.service';
-import {HsToastService} from '../../layout/toast/toast.service';
+import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
+import {HsLanguageService} from 'hslayers-ng/components/language';
+import {HsLogService} from 'hslayers-ng/shared/log';
+import {HsMapService} from 'hslayers-ng/components/map';
+import {HsStylerService} from 'hslayers-ng/components/styler';
+import {HsToastService} from 'hslayers-ng/components/layout';
 import {HsVectorLayerOptions} from '../../add-data/vector/vector-layer-options.type';
-import {SparqlJson} from '../../../common/layers/hs.source.SparqlJson';
-import {setDefinition} from '../../../common/layer-extensions';
+import {SparqlJson} from 'hslayers-ng/common/layers';
+import {setDefinition} from 'hslayers-ng/common/extensions';
 
 @Injectable({
   providedIn: 'root',

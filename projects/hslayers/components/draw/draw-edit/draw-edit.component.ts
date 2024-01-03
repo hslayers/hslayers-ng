@@ -8,13 +8,13 @@ import {Vector} from 'ol/source';
 import {Vector as VectorLayer} from 'ol/layer';
 
 import {HsDrawService} from '../draw.service';
-import {HsEventBusService} from '../../core/event-bus.service';
-import {HsLanguageService} from '../../language/language.service';
-import {HsLogService} from '../../../common/log/log.service';
-import {HsMapService} from '../../map/map.service';
-import {HsQueryBaseService} from './../../query/query-base.service';
-import {HsQueryVectorService} from './../../query/query-vector.service';
-import {HsToastService} from '../../layout/toast/toast.service';
+import {HsEventBusService} from 'hslayers-ng/shared/core';
+import {HsLanguageService} from 'hslayers-ng/components/language';
+import {HsLogService} from 'hslayers-ng/shared/log';
+import {HsMapService} from 'hslayers-ng/components/map';
+import {HsQueryBaseService} from '../../query/query-base.service';
+import {HsQueryVectorService} from '../../query/query-vector.service';
+import {HsToastService} from 'hslayers-ng/components/layout';
 import {defaultStyle} from '../../styler/styles';
 
 @Component({

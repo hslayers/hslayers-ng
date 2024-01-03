@@ -7,32 +7,32 @@ import {Vector as VectorLayer} from 'ol/layer';
 import {Vector as VectorSource} from 'ol/source';
 
 import {HsClusterWidgetComponent} from '../widgets/cluster-widget.component';
-import {HsConfirmDialogComponent} from './../../../common/confirm/confirm-dialog.component';
+import {HsConfirmDialogComponent} from './hslayers-ng/common/confirm';
 import {HsCopyLayerDialogComponent} from '../dialogs/copy-layer-dialog.component';
-import {HsDialogContainerService} from '../../layout/dialogs/dialog-container.service';
-import {HsDimensionTimeService} from '../../../common/get-capabilities/dimension-time.service';
-import {HsDrawService} from '../../draw/draw.service';
-import {HsEventBusService} from '../../core/event-bus.service';
+import {HsDialogContainerService} from 'hslayers-ng/components/layout';
+import {HsDimensionTimeService} from 'hslayers-ng/shared/get-capabilities';
+import {HsDrawService} from 'hslayers-ng/components/draw';
+import {HsEventBusService} from 'hslayers-ng/shared/core';
 import {HsExtentWidgetComponent} from '../widgets/extent-widget/extent-widget.component';
 import {HsIdwWidgetComponent} from '../widgets/idw-widget.component';
-import {HsLanguageService} from './../../language/language.service';
-import {HsLayerDescriptor} from './../layer-descriptor.interface';
+import {HsLanguageService} from 'hslayers-ng/components/language';
+import {HsLayerDescriptor} from '../layer-descriptor.interface';
 import {HsLayerEditorDimensionsComponent} from '../dimensions/layer-editor-dimensions.component';
 import {HsLayerEditorService} from './layer-editor.service';
 import {HsLayerEditorSublayerService} from './layer-editor-sub-layer.service';
 import {HsLayerEditorWidgetContainerService} from '../widgets/layer-editor-widget-container.service';
 import {HsLayerManagerRemoveLayerDialogComponent} from '../dialogs/remove-layer-dialog.component';
 import {HsLayerManagerService} from '../layer-manager.service';
-import {HsLayerUtilsService} from '../../utils/layer-utils.service';
-import {HsLayoutService} from '../../layout/layout.service';
+import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
+import {HsLayoutService} from 'hslayers-ng/components/layout';
 import {HsLegendWidgetComponent} from '../widgets/legend-widget.component';
-import {HsMapService} from '../../map/map.service';
+import {HsMapService} from 'hslayers-ng/components/map';
 import {HsMetadataWidgetComponent} from '../widgets/metadata-widget.component';
 import {HsOpacityWidgetComponent} from '../widgets/opacity-widget.component';
 import {HsScaleWidgetComponent} from '../widgets/scale-widget.component';
-import {HsStylerService} from '../../styler/styler.service';
+import {HsStylerService} from 'hslayers-ng/components/styler';
 import {HsTypeWidgetComponent} from '../widgets/type-widget.component';
-import {HsWmsSourceWidgetComponent } from '../widgets/wms-source-widget/wms-source-widget.component';
+import {HsWmsSourceWidgetComponent} from '../widgets/wms-source-widget/wms-source-widget.component';
 import {
   getBase,
   getCachedCapabilities,
@@ -40,7 +40,7 @@ import {
   getRemovable,
   getTitle,
   setTitle,
-} from '../../../common/layer-extensions';
+} from 'hslayers-ng/common/extensions';
 
 @Component({
   selector: 'hs-layer-editor',
@@ -89,7 +89,7 @@ export class HsLayerEditorComponent {
       HsLayerEditorDimensionsComponent,
       HsOpacityWidgetComponent,
       HsIdwWidgetComponent,
-      HsWmsSourceWidgetComponent ,
+      HsWmsSourceWidgetComponent,
     ];
     for (const widgetClass of widgets) {
       this.hsWidgetContainerService.create(widgetClass, {});

@@ -1,8 +1,8 @@
 import {CommonModule} from '@angular/common';
 import {NgModule} from '@angular/core';
 
-import {TranslateCustomPipe} from '../../components/language/translate-custom.pipe';
 import {HsRmLayerDialogComponent} from './remove-layer-dialog.component';
+import {TranslateCustomPipe} from 'hslayers-ng/components/language';
 
 @NgModule({
   declarations: [HsRmLayerDialogComponent],

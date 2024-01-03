@@ -3,8 +3,8 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 
 import {Subscription} from 'rxjs';
 
-import {HsEventBusService} from '../../core/event-bus.service';
-import {HsLayerShiftingService} from '../../../common/layer-shifting/layer-shifting.service';
+import {HsEventBusService} from 'hslayers-ng/shared/core';
+import {HsLayerShiftingService} from 'hslayers-ng/shared/layer-shifting';
 
 @Component({
   selector: 'hs-layermanager-physical-layer-list',

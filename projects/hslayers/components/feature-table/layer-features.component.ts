@@ -4,10 +4,10 @@ import {Feature} from 'ol';
 import {Geometry} from 'ol/geom';
 
 import {HsFeatureTableService} from './feature-table.service';
-import {HsLanguageService} from './../language/language.service';
-import {HsLayerUtilsService} from '../utils/layer-utils.service';
-import {HsMapService} from '../map/map.service';
-import {HsUtilsService} from '../utils/utils.service';
+import {HsLanguageService} from 'hslayers-ng/components/language';
+import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
+import {HsMapService} from 'hslayers-ng/components/map';
+import {HsUtilsService} from 'hslayers-ng/shared/utils';
 
 type Operation = {
   action: 'zoom to' | 'delete' | 'custom action';

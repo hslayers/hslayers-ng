@@ -1,8 +1,8 @@
 import {Component, ViewRef} from '@angular/core';
 import {HsCompositionsParserService} from '../compositions-parser.service';
 import {HsCompositionsService} from '../compositions.service';
-import {HsDialogComponent} from '../../layout/dialogs/dialog-component.interface';
-import {HsDialogContainerService} from '../../layout/dialogs/dialog-container.service';
+import {HsDialogComponent} from 'hslayers-ng/components/layout';
+import {HsDialogContainerService} from 'hslayers-ng/components/layout';
 import {HsSaveMapManagerService} from '../../save-map/save-map-manager.service';
 
 @Component({

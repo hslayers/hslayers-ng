@@ -11,22 +11,22 @@ import Point from 'ol/geom/Point';
 import {Vector as VectorLayer} from 'ol/layer';
 import {Vector as VectorSource} from 'ol/source';
 
-import {HsCommonLaymanService} from '../../common/layman/layman.service';
-import {HsConfig} from '../../config.service';
-import {HsConfigMock} from '../../config.service.mock';
-import {HsCoreService} from '../core/core.service';
-import {HsEventBusService} from '../core/event-bus.service';
-import {HsLanguageService} from '../language/language.service';
-import {HsLayoutService} from '../layout/layout.service';
-import {HsLayoutServiceMock} from '../layout/layout.service.mock';
+import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
+import {HsConfig} from 'hslayers-ng/config';
+import {HsConfigMock} from 'hslayers-ng/config';
+import {HsCoreService} from 'hslayers-ng/shared/core';
+import {HsEventBusService} from 'hslayers-ng/shared/core';
+import {HsLanguageService} from 'hslayers-ng/components/language';
+import {HsLayoutService} from 'hslayers-ng/components/layout';
+import {HsLayoutServiceMock} from 'hslayers-ng/components/layout';
 import {HsMapComponent} from './map.component';
 import {HsMapDirective} from './map.directive';
 import {HsMapService} from './map.service';
-import {HsShareUrlService} from '../share/share-url.service';
-import {HsShareUrlServiceMock} from '../share/share-url.service.mock';
-import {HsUtilsService} from '../utils/utils.service';
-import {HsUtilsServiceMock} from '../utils/utils.service.mock';
-import {mockLanguageService} from '../language/language.service.mock';
+import {HsShareUrlService} from 'hslayers-ng/components/share';
+import {HsShareUrlServiceMock} from 'hslayers-ng/components/share.mock';
+import {HsUtilsService} from 'hslayers-ng/shared/utils';
+import {HsUtilsServiceMock} from 'hslayers-ng/shared/utils';
+import {mockLanguageService} from 'hslayers-ng/components/language.mock';
 
 class emptyMock {
   constructor() {}

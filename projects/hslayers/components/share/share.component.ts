@@ -1,13 +1,13 @@
 import {Component, OnInit} from '@angular/core';
 
-import {HsConfig} from '../../config.service';
-import {HsCoreService} from '../core/core.service';
-import {HsLanguageService} from '../language/language.service';
-import {HsLayoutService} from '../layout/layout.service';
-import {HsPanelBaseComponent} from '../layout/panels/panel-base.component';
+import {HsConfig} from 'hslayers-ng/config';
+import {HsCoreService} from 'hslayers-ng/shared/core';
+import {HsLanguageService} from 'hslayers-ng/components/language';
+import {HsLayoutService} from 'hslayers-ng/components/layout';
+import {HsPanelBaseComponent} from 'hslayers-ng/components/layout';
 import {HsShareService} from './share.service';
 import {HsShareUrlService} from './share-url.service';
-import {HsSidebarService} from '../sidebar/sidebar.service';
+import {HsSidebarService} from 'hslayers-ng/components/sidebar';
 
 @Component({
   selector: 'hs-share',

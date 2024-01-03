@@ -9,17 +9,17 @@ import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
 import {HsAddColormapComponent} from './add-colormap.component';
 import {HsAddFilterButtonComponent} from './filters/add-filter-button.component';
 import {HsColorPickerComponent} from './symbolizers/color-picker/color-picker.component';
-import {HsColormapPickerModule} from '../../common/color-map-picker/colormap-picker.module';
+import {HsColormapPickerModule} from 'hslayers-ng/common/color-map-picker';
 import {HsComparisonFilterComponent} from './filters/comparison-filter.component';
-import {HsDownloadModule} from '../../common/download/download.module';
+import {HsDownloadModule} from 'hslayers-ng/common/download';
 import {HsFillSymbolizerComponent} from './symbolizers/fill-symbolizer/fill-symbolizer.component';
 import {HsFilterComponent} from './filters/filter.component';
 import {HsFiltersComponent} from './filters/filters.component';
 import {HsIconSymbolizerComponent} from './symbolizers/icon-symbolizer/icon-symbolizer.component';
 import {HsLineSymbolizerComponent} from './symbolizers/line-symbolizer/line-symbolizer.component';
 import {HsMarkSymbolizerComponent} from './symbolizers/mark-symbolizer/mark-symbolizer.component';
-import {HsPanelHeaderComponent} from '../layout/panels/panel-header/panel-header.component';
-import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
+import {HsPanelHeaderComponent} from 'hslayers-ng/components/layout';
+import {HsPanelHelpersModule} from 'hslayers-ng/components/layout';
 import {HsRuleComponent} from './rule/rule.component';
 import {HsRuleListItemComponent} from './rule/rule-list-item/rule-list-item.component';
 import {HsScaleDenominatorComponent} from './filters/scale-denominator.component';
@@ -31,8 +31,8 @@ import {HsStylerPartBaseComponent} from './style-part-base.component';
 import {HsSymbolizerComponent} from './symbolizers/symbolizer.component';
 import {HsSymbolizerListItemComponent} from './symbolizers/symbolizer-list-item/symbolizer-list-item.component';
 import {HsTextSymbolizerComponent} from './symbolizers/text-symbolizer/text-symbolizer.component';
-import {HsUploadModule} from '../../common/upload/upload.module';
-import {TranslateCustomPipe} from '../language/translate-custom.pipe';
+import {HsUploadModule} from 'hslayers-ng/common/upload';
+import {TranslateCustomPipe} from 'hslayers-ng/components/language';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

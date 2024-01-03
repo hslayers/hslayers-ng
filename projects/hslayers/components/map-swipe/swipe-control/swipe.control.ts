@@ -6,7 +6,7 @@ import {Control} from 'ol/control';
 import {Layer} from 'ol/layer';
 import {Source} from 'ol/source';
 
-import {LayerListItem} from '../../../common/layer-shifting/layer-shifting.service';
+import {LayerListItem} from 'hslayers-ng/shared/layer-shifting';
 
 /**
  * Initialization options for SwipeControl

@@ -7,10 +7,10 @@ import {HsAddDataComponent} from './add-data.component';
 import {HsAddDataFileModule} from './file/file.module';
 import {HsAddDataUrlModule} from './url/add-data-url.module';
 import {HsLayerOverwriteDialogComponent} from './dialog-overwrite-layer/overwrite-layer.component';
-import {HsPanelHeaderComponent} from '../layout/panels/panel-header/panel-header.component';
-import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
+import {HsPanelHeaderComponent} from 'hslayers-ng/components/layout';
+import {HsPanelHelpersModule} from 'hslayers-ng/components/layout';
 import {HsRenameLayerDialogComponent} from './dialog-rename-layer/rename-layer.component';
-import {TranslateCustomPipe} from '../language/translate-custom.pipe';
+import {TranslateCustomPipe} from 'hslayers-ng/components/language';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

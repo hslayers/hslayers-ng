@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 
-import {HsHistoryListService} from '../../../../common/history-list/history-list.service';
+import {HsHistoryListService} from 'hslayers-ng/common/history-list';
 
 @Component({
   selector: 'hs-common-url',

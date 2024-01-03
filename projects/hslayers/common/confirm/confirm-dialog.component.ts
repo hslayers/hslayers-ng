@@ -1,8 +1,10 @@
 import {Component, ViewRef} from '@angular/core';
 
-import {HsDialogComponent} from '../../components/layout/dialogs/dialog-component.interface';
-import {HsDialogContainerService} from '../../components/layout/dialogs/dialog-container.service';
-import {HsDialogItem} from '../../components/layout/dialogs/dialog-item';
+import {
+  HsDialogComponent,
+  HsDialogContainerService,
+  HsDialogItem,
+} from 'hslayers-ng/components/layout';
 
 @Component({
   selector: 'hs-confirm-dialog',

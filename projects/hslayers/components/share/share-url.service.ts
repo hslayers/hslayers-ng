@@ -6,16 +6,16 @@ import {Subject, lastValueFrom, takeUntil} from 'rxjs';
 import {transformExtent} from 'ol/proj';
 
 import {HS_PRMS, HS_PRMS_BACKWARDS, HS_PRMS_REGENERATED} from './get-params';
-import {HsConfig} from '../../config.service';
-import {HsCoreService} from '../core/core.service';
-import {HsEventBusService} from '../core/event-bus.service';
-import {HsLanguageService} from '../language/language.service';
-import {HsLayoutService} from '../layout/layout.service';
-import {HsMapService} from '../map/map.service';
+import {HsConfig} from 'hslayers-ng/config';
+import {HsCoreService} from 'hslayers-ng/shared/core';
+import {HsEventBusService} from 'hslayers-ng/shared/core';
+import {HsLanguageService} from 'hslayers-ng/components/language';
+import {HsLayoutService} from 'hslayers-ng/components/layout';
+import {HsMapService} from 'hslayers-ng/components/map';
 import {HsSaveMapService} from '../save-map/save-map.service';
-import {HsUtilsService} from '../utils/utils.service';
+import {HsUtilsService} from 'hslayers-ng/shared/utils';
 import {MapComposition} from '../save-map/types/map-composition.type';
-import {getShowInLayerManager, getTitle} from '../../common/layer-extensions';
+import {getShowInLayerManager, getTitle} from 'hslayers-ng/common/extensions';
 
 @Injectable({providedIn: 'root'})
 export class HsShareUrlService {

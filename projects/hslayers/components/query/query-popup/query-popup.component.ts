@@ -9,15 +9,15 @@ import {
 
 import {BehaviorSubject, Subscription} from 'rxjs';
 
-import {HsConfig} from '../../../config.service';
-import {HsDialogComponent} from '../../layout/dialogs/dialog-component.interface';
-import {HsDialogItem} from '../../layout/dialogs/dialog-item';
-import {HsEventBusService} from '../../core/event-bus.service';
-import {HsMapService} from '../../map/map.service';
+import {HsConfig} from 'hslayers-ng/config';
+import {HsDialogComponent} from 'hslayers-ng/components/layout';
+import {HsDialogItem} from 'hslayers-ng/components/layout';
+import {HsEventBusService} from 'hslayers-ng/shared/core';
+import {HsMapService} from 'hslayers-ng/components/map';
 import {HsQueryPopupServiceModel} from '../query-popup.service.model';
 import {HsQueryPopupWidgetContainerService} from '../query-popup-widget-container.service';
-import {getFeatures} from '../../../common/feature-extensions';
-import {getPopUp} from '../../../common/layer-extensions';
+import {getFeatures} from 'hslayers-ng/common/extensions';
+import {getPopUp} from 'hslayers-ng/common/extensions';
 
 @Component({
   selector: 'hs-query-popup',

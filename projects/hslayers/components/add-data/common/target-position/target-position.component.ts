@@ -3,9 +3,11 @@ import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {Layer} from 'ol/layer';
 import {Source} from 'ol/source';
 
-import {HsLayerDescriptor} from '../../../layer-manager/layer-descriptor.interface';
-import {HsLayerManagerService} from '../../../layer-manager/layer-manager.service';
-import {HsLayerUtilsService} from '../../../utils/layer-utils.service';
+import {
+  HsLayerDescriptor,
+  HsLayerManagerService,
+} from 'hslayers-ng/components/layer-manager';
+import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
 
 @Component({
   selector: 'hs-target-position',

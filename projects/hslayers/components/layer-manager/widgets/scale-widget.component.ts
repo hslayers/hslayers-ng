@@ -4,8 +4,8 @@ import {METERS_PER_UNIT} from 'ol/proj';
 
 import {HsLayerEditorWidgetBaseComponent} from './layer-editor-widget-base.component';
 import {HsLayerSelectorService} from '../editor/layer-selector.service';
-import {HsLayerUtilsService} from '../../utils/layer-utils.service';
-import {HsMapService} from '../../map/map.service';
+import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
+import {HsMapService} from 'hslayers-ng/components/map';
 
 @Component({
   selector: 'hs-scale-widget',
