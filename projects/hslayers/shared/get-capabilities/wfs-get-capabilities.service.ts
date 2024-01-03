@@ -4,11 +4,11 @@ import {Injectable} from '@angular/core';
 import {lastValueFrom, takeUntil} from 'rxjs';
 
 import {CapabilitiesResponseWrapper} from './capabilities-response-wrapper';
-import {HsAddDataService} from 'hslayers-ng/components/add-data/add-data.service';
+import {HsAddDataService} from 'hslayers-ng/components/add-data';
 import {HsCapabilityCacheService} from './capability-cache.service';
-import {HsEventBusService} from '../core/event-bus.service';
+import {HsEventBusService} from 'hslayers-ng/shared/core';
 import {HsMapService} from 'hslayers-ng/components/map';
-import {HsUtilsService} from '../utils/utils.service';
+import {HsUtilsService} from 'hslayers-ng/shared/utils';
 import {IGetCapabilities} from './get-capabilities.interface';
 
 @Injectable({providedIn: 'root'})

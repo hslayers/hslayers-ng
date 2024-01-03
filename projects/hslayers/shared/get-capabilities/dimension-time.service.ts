@@ -4,11 +4,15 @@ import {Subject} from 'rxjs';
 import {ImageWMS, Source, TileWMS} from 'ol/source';
 import {Layer} from 'ol/layer';
 
-import {HsLayerDescriptor} from 'hslayers-ng/components/layer-manager/layer-descriptor.interface';
-import {HsLogService} from '../log/log.service';
-import {HsUtilsService} from '../utils/utils.service';
+import {HsLayerDescriptor} from 'hslayers-ng/components/layer-manager';
+import {HsLogService} from 'hslayers-ng/shared/log';
+import {HsUtilsService} from 'hslayers-ng/shared/utils';
 import {HsWmsLayer} from './wms-get-capabilities-response.interface';
-import {getDimensions, setDimension, setDimensions} from 'hslayers-ng/common/extensions';
+import {
+  getDimensions,
+  setDimension,
+  setDimensions,
+} from 'hslayers-ng/common/extensions';
 
 @Injectable({
   providedIn: 'root',
