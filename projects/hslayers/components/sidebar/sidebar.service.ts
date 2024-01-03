@@ -2,11 +2,11 @@ import {BehaviorSubject, Observable, Subject, take} from 'rxjs';
 import {Injectable} from '@angular/core';
 
 import {HsButton} from './button.interface';
-import {HsConfig} from './../../config.service';
-import {HsCoreService} from './../core/core.service';
-import {HsLanguageService} from './../language/language.service';
-import {HsLayoutService} from '../layout/layout.service';
-import {HsUtilsService} from '../utils/utils.service';
+import {HsConfig} from './hslayers-ng/config';
+import {HsCoreService} from 'hslayers-ng/shared/core';
+import {HsLanguageService} from 'hslayers-ng/components/language';
+import {HsLayoutService} from 'hslayers-ng/components/layout';
+import {HsUtilsService} from 'hslayers-ng/shared/utils';
 
 @Injectable({
   providedIn: 'root',

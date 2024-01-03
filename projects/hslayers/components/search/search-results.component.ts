@@ -3,9 +3,9 @@ import {Feature} from 'ol';
 import {Geometry} from 'ol/geom';
 import {Subject, takeUntil} from 'rxjs';
 
-import {HsEventBusService} from '../core/event-bus.service';
+import {HsEventBusService} from 'hslayers-ng/shared/core';
 import {HsSearchService} from './search.service';
-import {setHighlighted} from '../../common/feature-extensions';
+import {setHighlighted} from 'hslayers-ng/common/extensions';
 
 /**
  * Add search results template to page

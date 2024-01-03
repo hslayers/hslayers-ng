@@ -4,11 +4,11 @@ import {HttpClient} from '@angular/common/http';
 import {lastValueFrom, map} from 'rxjs';
 
 import {HsCommonLaymanService} from '../layman.service';
-import {HsEndpoint} from '../../endpoints/endpoint.interface';
-import {HsLanguageService} from '../../../components/language/language.service';
-import {HsLogService} from './../../log/log.service';
+import {HsEndpoint} from 'hslayers-ng/shared/endpoints';
+import {HsLanguageService} from 'hslayers-ng/components/language';
+import {HsLogService} from 'hslayers-ng/shared/log';
 import {LaymanUser} from '../types/layman-user.type';
-import {accessRightsModel} from '../../../components/add-data/common/access-rights.model';
+import {accessRightsModel} from 'hslayers-ng/components/add-data';
 
 enum GrantingOptions {
   PERUSER = 'per_user',

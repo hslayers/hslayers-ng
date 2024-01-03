@@ -3,14 +3,14 @@ import {AfterContentInit, Component, Input} from '@angular/core';
 import {HsAddDataCommonService} from '../../common.service';
 import {HsAddDataService} from '../../../add-data.service';
 import {HsAddDataUrlService} from '../../../url/add-data-url.service';
-import {HsLanguageService} from '../../../../language/language.service';
-import {HsLayerUtilsService} from '../../../../utils/layer-utils.service';
+import {HsLanguageService} from 'hslayers-ng/components/language';
+import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
 import {
   HsUrlTypeServiceModel,
   Service,
 } from '../../../url/models/url-type-service.model';
 import {HsUrlWmsService} from '../../../url/wms/wms.service';
-import {HsUtilsService} from '../../../../utils/utils.service';
+import {HsUtilsService} from 'hslayers-ng/shared/utils';
 @Component({
   selector: 'hs-layer-table',
   templateUrl: './layer-table.component.html',

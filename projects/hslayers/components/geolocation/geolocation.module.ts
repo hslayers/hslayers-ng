@@ -3,8 +3,8 @@ import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 
 import {HsGeolocationComponent} from './geolocation.component';
-import {TranslateCustomPipe} from '../language/translate-custom.pipe';
-import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
+import {TranslateCustomPipe} from 'hslayers-ng/components/language';
+import {HsPanelHelpersModule} from 'hslayers-ng/components/layout';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

@@ -5,16 +5,17 @@ import {Input} from '@angular/core';
 import {Subscription} from 'rxjs';
 
 import {HsCommonLaymanService} from './layman.service';
-import {HsDialogComponent} from '../../components/layout/dialogs/dialog-component.interface';
-import {HsDialogContainerService} from '../../components/layout/dialogs/dialog-container.service';
+import {
+  HsDialogComponent,
+  HsDialogContainerService,
+} from 'hslayers-ng/components/layout';
 
 @Component({
   selector: 'hs-layman-login',
   templateUrl: './layman-login.component.html',
 })
 export class HsLaymanLoginComponent
-  implements HsDialogComponent, OnDestroy, OnInit
-{
+  implements HsDialogComponent, OnDestroy, OnInit {
   @Input() data: {
     url: string;
   };

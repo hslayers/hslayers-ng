@@ -2,7 +2,7 @@ import {Layer} from 'ol/layer';
 import {Source} from 'ol/source';
 
 import {FileFormDataObject} from './file-form-data.type';
-import {IntersectWithTooltip} from '../../../../common/type-intersection.type';
+import {IntersectWithTooltip} from 'hslayers-ng/common/types';
 
 type FileDataExtension = {
   addUnder?: Layer<Source>;

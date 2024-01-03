@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 
 import {Cluster} from 'ol/source';
 
-import {HsConfig} from '../../../config.service';
+import {HsConfig} from 'hslayers-ng/config';
 import {HsLayerEditorService} from '../editor/layer-editor.service';
 import {HsLayerEditorWidgetBaseComponent} from './layer-editor-widget-base.component';
 import {HsLayerSelectorService} from '../editor/layer-selector.service';

@@ -1,14 +1,14 @@
 import {Component, Input, OnInit, ViewRef} from '@angular/core';
 
-import {HsDialogComponent} from '../../layout/dialogs/dialog-component.interface';
-import {HsDialogContainerService} from '../../layout/dialogs/dialog-container.service';
+import {HsDialogComponent} from 'hslayers-ng/components/layout';
+import {HsDialogContainerService} from 'hslayers-ng/components/layout';
 import {HsDrawService} from '../draw.service';
-import {HsMapService} from '../../map/map.service';
+import {HsMapService} from 'hslayers-ng/components/map';
 import {accessRightsModel} from '../../add-data/common/access-rights.model';
 import {
   awaitLayerSync,
   getLaymanFriendlyLayerName,
-} from '../../../common/layman/layman-utils';
+} from 'hslayers-ng/common/layman';
 import {
   getEditor,
   getPath,
@@ -18,7 +18,7 @@ import {
   setName,
   setPath,
   setTitle,
-} from '../../../common/layer-extensions';
+} from 'hslayers-ng/common/extensions';
 
 @Component({
   selector: 'hs-draw-layer-metadata',

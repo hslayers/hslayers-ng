@@ -23,3 +23,4 @@ export * from './layout.module';
 export * from './layout.service';
 export * from './overlay-panel-container.service';
 export * from './map-host.directive';
+export * from './layout.service.mock';

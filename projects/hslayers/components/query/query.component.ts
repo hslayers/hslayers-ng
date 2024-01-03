@@ -6,11 +6,11 @@ import Popup from 'ol-popup';
 import {Subject} from 'rxjs';
 import {debounceTime, takeUntil} from 'rxjs/operators';
 
-import {HsDrawService} from '../draw/draw.service';
-import {HsLayoutService} from '../layout/layout.service';
-import {HsLogService} from '../../common/log/log.service';
-import {HsMapService} from '../map/map.service';
-import {HsPanelBaseComponent} from '../layout/panels/panel-base.component';
+import {HsDrawService} from 'hslayers-ng/components/draw';
+import {HsLayoutService} from 'hslayers-ng/components/layout';
+import {HsLogService} from 'hslayers-ng/shared/log';
+import {HsMapService} from 'hslayers-ng/components/map';
+import {HsPanelBaseComponent} from 'hslayers-ng/components/layout';
 import {HsQueryBaseService} from './query-base.service';
 import {HsQueryVectorService} from './query-vector.service';
 

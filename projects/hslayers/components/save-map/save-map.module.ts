@@ -3,15 +3,14 @@ import {CommonModule} from '@angular/common';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 import {AdvancedOptionsComponent} from './form/advanced-options/advanced-options.component';
-import {HsLaymanModule} from '../../common/layman/layman.module';
-import {HsLogModule} from '../../common/log/log.module';
-import {HsPanelHeaderComponent} from '../layout/panels/panel-header/panel-header.component';
-import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
+import {HsLaymanModule} from 'hslayers-ng/common/layman';
+import {HsPanelHeaderComponent} from 'hslayers-ng/components/layout';
+import {HsPanelHelpersModule} from 'hslayers-ng/components/layout';
 import {HsSaveMapAdvancedFormComponent} from './form/form.component';
 import {HsSaveMapComponent} from './save-map.component';
 import {HsSaveMapResultDialogComponent} from './dialog-result/dialog-result.component';
-import {HsUiExtensionsModule} from '../../common/widgets/ui-extensions.module';
-import {TranslateCustomPipe} from '../language/translate-custom.pipe';
+import {HsUiExtensionsModule} from 'hslayers-ng/common/widgets';
+import {TranslateCustomPipe} from 'hslayers-ng/components/language';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -26,7 +25,6 @@ import {TranslateCustomPipe} from '../language/translate-custom.pipe';
     HsPanelHelpersModule,
     FormsModule,
     ReactiveFormsModule,
-    HsLogModule,
     HsUiExtensionsModule,
     TranslateCustomPipe,
     HsLaymanModule,

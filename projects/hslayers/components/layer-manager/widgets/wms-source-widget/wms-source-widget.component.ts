@@ -5,17 +5,17 @@ import {Observable, map, tap} from 'rxjs';
 import {Image as ImageLayer, Tile} from 'ol/layer';
 import {ImageWMS, TileWMS} from 'ol/source';
 
-import {HsConfirmDialogComponent} from '../../../../common/confirm/confirm-dialog.component';
-import {HsConfirmModule} from '../../../../common/confirm/confirm.module';
-import {HsDialogContainerService} from '../../../layout/dialogs/dialog-container.service';
-import {HsLanguageService} from '../../../language/language.service';
+import {HsConfirmDialogComponent} from 'hslayers-ng/common/confirm';
+import {HsConfirmModule} from 'hslayers-ng/common/confirm';
+import {HsDialogContainerService} from 'hslayers-ng/components/layout';
+import {HsLanguageService} from 'hslayers-ng/components/language';
 import {HsLayerEditorWidgetBaseComponent} from '../layer-editor-widget-base.component';
 import {HsLayerSelectorService} from '../../editor/layer-selector.service';
-import {HsLayerShiftingService} from '../../../../common/layer-shifting/layer-shifting.service';
-import {HsLayerUtilsService} from '../../../utils/layer-utils.service';
-import {HsMapService} from '../../../map/map.service';
-import {HsUtilsService} from '../../../utils/utils.service';
-import {TranslateCustomPipe} from '../../../language/translate-custom.pipe';
+import {HsLayerShiftingService} from 'hslayers-ng/shared/layer-shifting';
+import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
+import {HsMapService} from 'hslayers-ng/components/map';
+import {HsUtilsService} from 'hslayers-ng/shared/utils';
+import {TranslateCustomPipe} from 'hslayers-ng/components/language';
 
 @Component({
   selector: 'hs-wms-source-widget',

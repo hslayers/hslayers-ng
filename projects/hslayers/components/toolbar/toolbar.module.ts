@@ -4,7 +4,7 @@ import {FormsModule} from '@angular/forms';
 
 import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
 
-import {HsPanelHelpersModule} from '../layout/panels/panel-helpers.module';
+import {HsPanelHelpersModule} from 'hslayers-ng/components/layout';
 import {HsToolbarComponent} from './toolbar.component';
 
 @NgModule({

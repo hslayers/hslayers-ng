@@ -8,10 +8,10 @@ import {HsAddDataCatalogueComponent} from './catalogue.component';
 import {HsCatalogueListItemComponent} from './catalogue-list-item/catalogue-list-item.component';
 import {HsCatalogueMetadataComponent} from './catalogue-metadata/catalogue-metadata.component';
 import {HsCatalogueMetadataModule} from './catalogue-metadata/catalogue-metadata.module';
-import {HsLaymanModule} from '../../../common/layman/layman.module';
-import {HsPagerModule} from '../../../common/pager/pager.module';
-import {HsUiExtensionsModule} from '../../../common/widgets/ui-extensions.module';
-import {TranslateCustomPipe} from '../../language/translate-custom.pipe';
+import {HsLaymanModule} from 'hslayers-ng/common/layman';
+import {HsPagerModule} from 'hslayers-ng/common/pager';
+import {HsUiExtensionsModule} from 'hslayers-ng/common/widgets';
+import {TranslateCustomPipe} from 'hslayers-ng/components/language';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

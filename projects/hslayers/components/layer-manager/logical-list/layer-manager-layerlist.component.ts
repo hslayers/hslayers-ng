@@ -1,18 +1,18 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {Subscription} from 'rxjs';
 
-import {HsConfig} from '../../../config.service';
-import {HsDimensionTimeService} from '../../../common/get-capabilities/dimension-time.service';
-import {HsEventBusService} from '../../core/event-bus.service';
+import {HsConfig} from 'hslayers-ng/config';
+import {HsDimensionTimeService} from 'hslayers-ng/shared/get-capabilities';
+import {HsEventBusService} from 'hslayers-ng/shared/core';
 import {HsLayerDescriptor} from '../layer-descriptor.interface';
 import {HsLayerListService} from './layer-manager-layerlist.service';
 import {HsLayerManagerService} from '../layer-manager.service';
-import {HsLayerUtilsService} from '../../utils/layer-utils.service';
+import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
 import {
   getDimension,
   getExclusive,
   getHsLaymanSynchronizing,
-} from '../../../common/layer-extensions';
+} from 'hslayers-ng/common/extensions';
 
 @Component({
   selector: 'hs-layer-manager-layer-list',

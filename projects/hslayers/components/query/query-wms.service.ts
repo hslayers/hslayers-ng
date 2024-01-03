@@ -8,13 +8,13 @@ import {ImageWMS, Source, TileWMS, WMTS} from 'ol/source';
 import {WMSGetFeatureInfo} from 'ol/format';
 import {lastValueFrom} from 'rxjs';
 
-import {HsLanguageService} from '../language/language.service';
-import {HsLayerUtilsService} from '../utils/layer-utils.service';
-import {HsLogService} from '../../common/log/log.service';
-import {HsMapService} from '../map/map.service';
+import {HsLanguageService} from 'hslayers-ng/components/language';
+import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
+import {HsLogService} from 'hslayers-ng/shared/log';
+import {HsMapService} from 'hslayers-ng/components/map';
 import {HsQueryBaseService} from './query-base.service';
 import {HsQueryWmtsService} from './query-wmts.service';
-import {HsUtilsService, instOf} from '../utils/utils.service';
+import {HsUtilsService, instOf} from 'hslayers-ng/shared/utils';
 import {
   getBase,
   getFeatureInfoLang,
@@ -22,8 +22,8 @@ import {
   getInfoFormat,
   getPopupClass,
   getQueryFilter,
-} from '../../common/layer-extensions';
-import {jsonGetFeatureInfo} from '../../common/get-feature-info/json-get-feature-info.type';
+} from 'hslayers-ng/common/extensions';
+import {jsonGetFeatureInfo} from 'hslayers-ng/common/get-feature-info';
 
 @Injectable({
   providedIn: 'root',

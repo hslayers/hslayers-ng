@@ -2,7 +2,7 @@ import {Component, Input, OnInit} from '@angular/core';
 
 import {HsLegendLayerStaticService} from './legend-layer-static.service';
 import {LayerLegend} from './types/layer-legend.type';
-import {getLegends} from '../../../common/layer-extensions';
+import {getLegends} from 'hslayers-ng/common/extensions';
 
 @Component({
   selector: 'hs-legend-layer-static',

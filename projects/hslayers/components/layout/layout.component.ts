@@ -9,15 +9,15 @@ import {
 
 import {Subject, delay, takeUntil} from 'rxjs';
 
-import {HsConfig} from '../../config.service';
-import {HsEventBusService} from '../core/event-bus.service';
+import {HsConfig} from 'hslayers-ng/config';
+import {HsEventBusService} from 'hslayers-ng/shared/core';
 import {HsLayoutService} from './layout.service';
-import {HsLogService} from '../../common/log/log.service';
+import {HsLogService} from 'hslayers-ng/shared/log';
 import {HsMapHostDirective} from './map-host.directive';
 import {HsOverlayPanelContainerService} from './overlay-panel-container.service';
 import {HsPanelContainerService} from './panels/panel-container.service';
-import {HsShareUrlService} from '../share/share-url.service';
-import {HsUtilsService} from '../utils/utils.service';
+import {HsShareUrlService} from 'hslayers-ng/components/share';
+import {HsUtilsService} from 'hslayers-ng/shared/utils';
 
 @Component({
   selector: 'hs-layout',

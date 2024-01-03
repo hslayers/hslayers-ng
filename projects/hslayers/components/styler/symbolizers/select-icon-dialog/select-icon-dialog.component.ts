@@ -1,9 +1,9 @@
 import {Component, ViewRef} from '@angular/core';
 
-import {HsConfig, SymbolizerIcon} from '../../../../config.service';
-import {HsDialogComponent} from '../../../layout/dialogs/dialog-component.interface';
-import {HsDialogContainerService} from '../../../layout/dialogs/dialog-container.service';
-import {HsDialogItem} from '../../../layout/dialogs/dialog-item';
+import {HsConfig, SymbolizerIcon} from 'hslayers-ng/config';
+import {HsDialogComponent} from 'hslayers-ng/components/layout';
+import {HsDialogContainerService} from 'hslayers-ng/components/layout';
+import {HsDialogItem} from 'hslayers-ng/components/layout';
 import {HsIconSymbolizerComponent} from '../icon-symbolizer/icon-symbolizer.component';
 
 @Component({

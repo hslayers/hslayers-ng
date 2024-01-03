@@ -28,17 +28,17 @@ import {CompoData} from './types/compo-data.type';
 import {
   DeleteAllLayersResponse,
   DeleteSingleLayerResponse,
-} from '../../common/layman/types/delete-layer-response.type';
-import {HsCommonEndpointsService} from '../../common/endpoints/endpoints.service';
-import {HsCommonLaymanService} from '../../common/layman/layman.service';
-import {HsEndpoint} from '../../common/endpoints/endpoint.interface';
-import {HsLanguageService} from '../language/language.service';
+} from 'hslayers-ng/common/layman';
+import {HsCommonEndpointsService} from 'hslayers-ng/shared/endpoints';
+import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
+import {HsEndpoint} from 'hslayers-ng/shared/endpoints';
+import {HsLanguageService} from 'hslayers-ng/components/language';
 import {HsLaymanLayerDescriptor} from './interfaces/layman-layer-descriptor.interface';
-import {HsLogService} from '../../common/log/log.service';
-import {HsMapService} from '../map/map.service';
+import {HsLogService} from 'hslayers-ng/shared/log';
+import {HsMapService} from 'hslayers-ng/components/map';
 import {HsSaverService} from './interfaces/saver-service.interface';
-import {HsToastService} from '../layout/toast/toast.service';
-import {HsUtilsService} from '../utils/utils.service';
+import {HsToastService} from 'hslayers-ng/components/layout';
+import {HsUtilsService} from 'hslayers-ng/shared/utils';
 import {MapComposition} from './types/map-composition.type';
 import {
   PREFER_RESUMABLE_SIZE_LIMIT,
@@ -49,8 +49,8 @@ import {
   layerParamPendingOrStarting,
   wfsFailed,
   wfsNotAvailable,
-} from '../../common/layman/layman-utils';
-import {PostPatchLayerResponse} from '../../common/layman/types/post-patch-layer-response.type';
+} from 'hslayers-ng/common/layman';
+import {PostPatchLayerResponse} from 'hslayers-ng/common/layman';
 import {UpsertLayerObject} from './types/upsert-layer-object.type';
 import {WfsSyncParams} from './types/wfs-sync-params.type';
 import {accessRightsModel} from '../add-data/common/access-rights.model';
@@ -63,7 +63,7 @@ import {
   getWorkspace,
   setHsLaymanSynchronizing,
   setLaymanLayerDescriptor,
-} from '../../common/layer-extensions';
+} from 'hslayers-ng/common/extensions';
 
 @Injectable({
   providedIn: 'root',

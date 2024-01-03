@@ -5,7 +5,7 @@ import {Layer} from 'ol/layer';
 import {Source} from 'ol/source';
 
 import {LayerLegend} from './types/layer-legend.type';
-import {getLegends} from '../../../common/layer-extensions';
+import {getLegends} from 'hslayers-ng/common/extensions';
 
 @Injectable({
   providedIn: 'root',

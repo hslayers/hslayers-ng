@@ -6,10 +6,10 @@ import {NgbDropdown, NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
 import {HsGuiOverlayBaseComponent} from '../../layout/panels/gui-overlay-base.component';
 import {HsLayerDescriptor} from '../layer-descriptor.interface';
 import {HsLayerManagerService} from '../layer-manager.service';
-import {HsLayerUtilsService} from '../../utils/layer-utils.service';
-import {HsLayoutService} from '../../layout/layout.service';
-import {TranslateCustomPipe} from '../../language/translate-custom.pipe';
-import {getBase, getGreyscale} from '../../../common/layer-extensions';
+import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
+import {HsLayoutService} from 'hslayers-ng/components/layout';
+import {TranslateCustomPipe} from 'hslayers-ng/components/language';
+import {getBase, getGreyscale} from 'hslayers-ng/common/extensions';
 
 @Component({
   selector: 'hs-layer-manager-gallery',

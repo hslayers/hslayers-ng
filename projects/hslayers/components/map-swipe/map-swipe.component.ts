@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy} from '@angular/core';
 
 import {
   CdkDragDrop,
@@ -10,11 +10,11 @@ import {Subject} from 'rxjs';
 import {
   HsLayerShiftingService,
   LayerListItem,
-} from '../../common/layer-shifting/layer-shifting.service';
-import {HsLayoutService} from '../layout/layout.service';
+} from 'hslayers-ng/shared/layer-shifting';
+import {HsLayoutService} from 'hslayers-ng/components/layout';
 import {HsMapSwipeService, SwipeSide} from './map-swipe.service';
-import {HsPanelBaseComponent} from '../layout/panels/panel-base.component';
-import {HsSidebarService} from '../sidebar/sidebar.service';
+import {HsPanelBaseComponent} from 'hslayers-ng/components/layout';
+import {HsSidebarService} from 'hslayers-ng/components/sidebar';
 
 @Component({
   selector: 'hs-map-swipe',

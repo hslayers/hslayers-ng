@@ -4,12 +4,12 @@ import {FormsModule} from '@angular/forms';
 
 import {HsAddDataUrlComponent} from './add-data-url.component';
 import {HsAddDataVectorModule} from '../vector/vector.module';
-import {TranslateCustomPipe} from '../../language/translate-custom.pipe';
 import {HsUrlArcGisModule} from './arcgis/arcgis.module';
 import {HsUrlGeoSparqlModule} from './geosparql/geosparql.module';
 import {HsUrlWfsModule} from './wfs/wfs.module';
 import {HsUrlWmsModule} from './wms/wms.module';
 import {HsUrlWmtsModule} from './wmts/wmts.module';
+import {TranslateCustomPipe} from 'hslayers-ng/components/language';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

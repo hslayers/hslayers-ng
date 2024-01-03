@@ -4,14 +4,14 @@ import {Subject, takeUntil} from 'rxjs';
 import {AddDataUrlType} from './url/types/url.type';
 import {DatasetType, HsAddDataService} from './add-data.service';
 import {HsAddDataUrlService} from './url/add-data-url.service';
-import {HsDialogContainerService} from '../layout/dialogs/dialog-container.service';
-import {HsEventBusService} from '../core/event-bus.service';
+import {HsDialogContainerService} from 'hslayers-ng/components/layout';
+import {HsEventBusService} from 'hslayers-ng/shared/core';
 import {HsGetCapabilitiesErrorComponent} from './common/capabilities-error-dialog/capabilities-error-dialog.component';
-import {HsLanguageService} from '../language/language.service';
-import {HsLayoutService} from '../layout/layout.service';
-import {HsPanelBaseComponent} from '../layout/panels/panel-base.component';
-import {HsShareUrlService} from '../share/share-url.service';
-import {HsSidebarService} from '../sidebar/sidebar.service';
+import {HsLanguageService} from 'hslayers-ng/components/language';
+import {HsLayoutService} from 'hslayers-ng/components/layout';
+import {HsPanelBaseComponent} from 'hslayers-ng/components/layout';
+import {HsShareUrlService} from 'hslayers-ng/components/share';
+import {HsSidebarService} from 'hslayers-ng/components/sidebar';
 import {servicesSupportedByUrl} from './url/services-supported.const';
 
 @Component({

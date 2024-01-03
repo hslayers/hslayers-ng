@@ -16,11 +16,11 @@ import {
 import {Style} from 'ol/style';
 
 import {HsLayerSelectorService} from '../layer-manager/editor/layer-selector.service';
-import {HsLayerUtilsService} from '../utils/layer-utils.service';
+import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
 import {HsLegendDescriptor} from './legend-descriptor.interface';
-import {HsStylerService} from '../styler/styler.service';
-import {HsUtilsService} from '../utils/utils.service';
-import {InterpolatedSource} from '../../common/layers/hs.source.interpolated';
+import {HsStylerService} from 'hslayers-ng/components/styler';
+import {HsUtilsService} from 'hslayers-ng/shared/utils';
+import {InterpolatedSource} from 'hslayers-ng/common/layers';
 import {defaultStyle} from '../styler/styles';
 import {
   getAutoLegend,
@@ -30,7 +30,7 @@ import {
   getShowInLayerManager,
   getSld,
   getTitle,
-} from '../../common/layer-extensions';
+} from 'hslayers-ng/common/extensions';
 
 @Injectable({
   providedIn: 'root',

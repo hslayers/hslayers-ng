@@ -11,31 +11,31 @@ import {Subject} from 'rxjs';
 import {Map} from 'ol';
 import {Vector as VectorLayer} from 'ol/layer';
 
-import {HsCommonEndpointsService} from '../../common/endpoints/endpoints.service';
-import {HsCommonLaymanService} from '../../common/layman/layman.service';
-import {HsConfig} from '../../config.service';
-import {HsConfigMock} from '../../config.service.mock';
-import {HsDialogContainerService} from '../layout/dialogs/dialog-container.service';
-import {HsEndpoint} from '../../common/endpoints/endpoint.interface';
-import {HsEventBusService} from '../core/event-bus.service';
-import {HsLayerUtilsService} from '../utils/layer-utils.service';
+import {HsCommonEndpointsService} from 'hslayers-ng/shared/endpoints';
+import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
+import {HsConfig} from 'hslayers-ng/config';
+import {HsConfigMock} from 'hslayers-ng/config';
+import {HsDialogContainerService} from 'hslayers-ng/components/layout';
+import {HsEndpoint} from 'hslayers-ng/shared/endpoints';
+import {HsEventBusService} from 'hslayers-ng/shared/core';
+import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
 import {HsLaymanService} from './layman.service';
-import {HsLayoutService} from '../layout/layout.service';
-import {HsLayoutServiceMock} from '../layout/layout.service.mock';
-import {HsMapService} from '../map/map.service';
-import {HsMapServiceMock} from '../map/map.service.mock';
+import {HsLayoutService} from 'hslayers-ng/components/layout';
+import {HsLayoutServiceMock} from 'hslayers-ng/components/layout';
+import {HsMapService} from 'hslayers-ng/components/map';
+import {HsMapServiceMock} from 'hslayers-ng/components/map';
 import {HsSaveMapComponent} from './save-map.component';
 import {HsSaveMapDialogSpawnerService} from './dialog-spawner.service';
 import {HsSaveMapManagerService} from './save-map-manager.service';
 import {HsSaveMapManagerServiceMock} from './save-map-manager.service.mock';
-import {HsUtilsService} from '../utils/utils.service';
-import {HsUtilsServiceMock} from '../utils/utils.service.mock';
-import {TranslateCustomPipe} from '../language/translate-custom.pipe';
+import {HsUtilsService} from 'hslayers-ng/shared/utils';
+import {HsUtilsServiceMock} from 'hslayers-ng/shared/utils';
+import {TranslateCustomPipe} from 'hslayers-ng/components/language';
 import {
   getLayerName,
   getLaymanFriendlyLayerName,
-} from '../../common/layman/layman-utils';
-import {mockLayerUtilsService} from '../utils/layer-utils.service.mock';
+} from 'hslayers-ng/common/layman';
+import {mockLayerUtilsService} from 'hslayers-ng/shared/utils';
 
 class emptyMock {
   constructor() {}
