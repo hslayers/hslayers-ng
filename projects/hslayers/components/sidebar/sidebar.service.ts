@@ -2,7 +2,7 @@ import {BehaviorSubject, Observable, Subject, take} from 'rxjs';
 import {Injectable} from '@angular/core';
 
 import {HsButton} from './button.interface';
-import {HsConfig} from './hslayers-ng/config';
+import {HsConfig} from 'hslayers-ng/config';
 import {HsCoreService} from 'hslayers-ng/shared/core';
 import {HsLanguageService} from 'hslayers-ng/shared/language';
 import {HsLayoutService} from 'hslayers-ng/shared/layout';

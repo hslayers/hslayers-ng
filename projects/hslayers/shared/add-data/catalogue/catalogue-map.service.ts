@@ -15,7 +15,7 @@ import {HsLayoutService} from 'hslayers-ng/shared/layout';
 import {HsLogService} from 'hslayers-ng/shared/log';
 import {HsMapCompositionDescriptor} from 'hslayers-ng/components/compositions';
 import {HsMapService} from 'hslayers-ng/shared/map';
-import {HsSaveMapService} from 'hslayers-ng/components/save-map';
+import {HsSaveMapService} from 'hslayers-ng/shared/save-map';
 import {HsUtilsService} from 'hslayers-ng/shared/utils';
 import {getHighlighted, setHighlighted} from 'hslayers-ng/common/extensions';
 

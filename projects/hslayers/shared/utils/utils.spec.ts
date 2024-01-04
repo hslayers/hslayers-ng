@@ -11,7 +11,7 @@ import {LineString, Polygon} from 'ol/geom';
 import {Point} from 'ol/geom';
 import {Vector as VectorLayer} from 'ol/layer';
 
-import {HsConfig} from './hslayers-ng/config';
+import {HsConfig} from 'hslayers-ng/config';
 import {HsLayerUtilsService} from './layer-utils.service';
 import {HsLogService} from 'hslayers-ng/shared/log';
 import {HsUtilsService, instOf} from './utils.service';

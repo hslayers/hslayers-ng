@@ -10,12 +10,9 @@ import {Layer} from 'ol/layer';
 import {Source} from 'ol/source';
 
 import {HsMapService} from 'hslayers-ng/shared/map';
-import {HsSaveMapService} from '../../save-map.service';
+import {HsSaveMapService} from 'hslayers-ng/shared/save-map';
 import {HsUtilsService} from 'hslayers-ng/shared/utils';
-import {
-  getShowInLayerManager,
-  getTitle,
-} from '../hslayers-ng/common/extensions';
+import {getShowInLayerManager, getTitle} from 'hslayers-ng/common/extensions';
 
 export type saveMapLayer = {
   checked: boolean;
