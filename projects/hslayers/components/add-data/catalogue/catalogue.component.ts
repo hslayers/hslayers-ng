@@ -7,7 +7,7 @@ import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsCoreService} from 'hslayers-ng/shared/core';
 import {HsLanguageService} from 'hslayers-ng/shared/language';
-import {HsLaymanService} from 'hslayers-ng/components/save-map';
+import {HsLaymanService} from 'hslayers-ng/shared/save-map';
 import {HsLayoutService} from 'hslayers-ng/shared/layout';
 import {HsUtilsService} from 'hslayers-ng/shared/utils';
 

@@ -8,7 +8,7 @@ import {HsCompositionsParserService} from '../compositions/compositions-parser.s
 import {HsConfig} from 'hslayers-ng/config';
 import {HsEndpoint} from 'hslayers-ng/shared/endpoints';
 import {HsEventBusService} from 'hslayers-ng/shared/core';
-import {HsLaymanService} from './layman.service';
+import {HsLaymanService} from '../../shared/save-map/layman.service';
 import {HsLayoutService} from 'hslayers-ng/shared/layout';
 import {HsLogService} from 'hslayers-ng/shared/log';
 import {HsMapService} from 'hslayers-ng/components/map';

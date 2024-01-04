@@ -5,3 +5,6 @@ export * from './add-data/layer-descriptor.model';
 export * from './compositions/composition-layer-options.type';
 export * from './layer-manager/layer-descriptor.interface';
 export * from './bounding-box-object.type';
+export * from './layman/status-state.type';
+export * from './layman/layman-layer-descriptor.interface';
+export * from './layman/upsert-layer-object.type';

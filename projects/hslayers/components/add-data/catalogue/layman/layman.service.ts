@@ -15,7 +15,7 @@ import {
 import {HsAddDataLayerDescriptor} from 'hslayers-ng/common/types';
 import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
 import {HsLanguageService} from 'hslayers-ng/shared/language';
-import {HsLaymanLayerDescriptor} from 'hslayers-ng/components/save-map';
+import {HsLaymanLayerDescriptor} from 'hslayers-ng/common/types';
 import {HsLogService} from 'hslayers-ng/shared/log';
 import {HsMapService} from 'hslayers-ng/components/map';
 import {HsToastService} from 'hslayers-ng/common/toast';

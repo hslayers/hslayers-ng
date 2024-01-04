@@ -13,19 +13,16 @@ import {
   HsDialogItem,
 } from 'hslayers-ng/common/dialogs';
 import {HsEndpoint} from 'hslayers-ng/shared/endpoints';
-import {
-  HsLaymanService,
-  UpsertLayerObject,
-} from 'hslayers-ng/components/save-map';
+import {HsLaymanService} from 'hslayers-ng/shared/save-map';
 import {PostPatchLayerResponse} from '../types/post-patch-layer-response.type';
+import {UpsertLayerObject} from 'hslayers-ng/common/types';
 
 @Component({
   selector: 'hs-set-permissions-dialog',
   templateUrl: './set-permissions.component.html',
 })
 export class HsSetPermissionsDialogComponent
-  implements HsDialogComponent, OnInit
-{
+  implements HsDialogComponent, OnInit {
   dialogItem: HsDialogItem;
   viewRef: ViewRef;
   currentAccessRights: accessRightsModel = {
