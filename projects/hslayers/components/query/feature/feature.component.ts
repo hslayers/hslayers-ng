@@ -4,7 +4,7 @@ import {Feature} from 'ol';
 import {Geometry} from 'ol/geom';
 
 import {HsFeatureCommonService} from '../feature-common.service';
-import {HsMapService} from 'hslayers-ng/components/map';
+import {HsMapService} from 'hslayers-ng/shared/map';
 import {HsQueryVectorService} from '../query-vector.service';
 import {exportFormats} from '../feature-common.service';
 import {getTitle} from 'hslayers-ng/common/extensions';

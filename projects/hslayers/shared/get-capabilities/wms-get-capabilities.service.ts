@@ -11,7 +11,7 @@ import {HsAddDataService} from 'hslayers-ng/components/add-data';
 import {HsCapabilityCacheService} from './capability-cache.service';
 import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
 import {HsEventBusService} from 'hslayers-ng/shared/core';
-import {HsMapService} from 'hslayers-ng/components/map';
+import {HsMapService} from 'hslayers-ng/shared/map';
 import {HsUtilsService} from 'hslayers-ng/shared/utils';
 import {IGetCapabilities} from './get-capabilities.interface';
 import {Metadata} from 'hslayers-ng/common/extensions';

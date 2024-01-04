@@ -33,7 +33,7 @@ import {
 import {HsLayerDescriptor} from 'hslayers-ng/common/types';
 import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
 import {HsLogService} from 'hslayers-ng/shared/log';
-import {HsMapService} from 'hslayers-ng/components/map';
+import {HsMapService} from 'hslayers-ng/shared/map';
 import {HsUrlWmsService} from '../add-data/url/wms/wms.service';
 
 @Injectable({

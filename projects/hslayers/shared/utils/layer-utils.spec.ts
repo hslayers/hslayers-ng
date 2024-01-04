@@ -10,8 +10,8 @@ import {Image as ImageLayer, Tile, Vector as VectorLayer} from 'ol/layer';
 
 import {HsLanguageService} from 'hslayers-ng/shared/language';
 import {HsLayerUtilsService} from './layer-utils.service';
-import {HsMapService} from 'hslayers-ng/components/map';
-import {HsMapServiceMock} from 'hslayers-ng/components/map';
+import {HsMapService} from 'hslayers-ng/shared/map';
+import {HsMapServiceMock} from 'hslayers-ng/shared/map';
 import {HsUtilsService} from './utils.service';
 import {HsUtilsServiceMock} from './utils.service.mock';
 import {

@@ -11,7 +11,7 @@ import {HsEventBusService} from 'hslayers-ng/shared/core';
 import {HsLaymanService} from 'hslayers-ng/shared/save-map';
 import {HsLayoutService} from 'hslayers-ng/shared/layout';
 import {HsLogService} from 'hslayers-ng/shared/log';
-import {HsMapService} from 'hslayers-ng/components/map';
+import {HsMapService} from 'hslayers-ng/shared/map';
 import {HsSaveMapService} from './save-map.service';
 import {HsSaverService} from './interfaces/saver-service.interface';
 import {HsShareService} from 'hslayers-ng/components/share';

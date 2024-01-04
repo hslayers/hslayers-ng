@@ -12,7 +12,7 @@ import {
   ArcGISRestResponseLayer,
 } from '../types/argis-response-type';
 import {CapabilitiesResponseWrapper} from 'hslayers-ng/shared/get-capabilities';
-import {DuplicateHandling, HsMapService} from 'hslayers-ng/components/map';
+import {DuplicateHandling, HsMapService} from 'hslayers-ng/shared/map';
 import {HsAddDataCommonService} from '../../common/common.service';
 import {HsAddDataUrlService} from '../add-data-url.service';
 import {HsArcgisGetCapabilitiesService} from 'hslayers-ng/shared/get-capabilities';

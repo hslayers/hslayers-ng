@@ -30,8 +30,8 @@ import {HsLayerEditorVectorLayerService} from './layer-editor-vector-layer.servi
 import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
 import {HsLayoutService} from 'hslayers-ng/shared/layout';
 import {HsLayoutServiceMock} from 'hslayers-ng/shared/layout';
-import {HsMapService} from 'hslayers-ng/components/map';
-import {HsMapServiceMock} from 'hslayers-ng/components/map';
+import {HsMapService} from 'hslayers-ng/shared/map';
+import {HsMapServiceMock} from 'hslayers-ng/shared/map';
 import {HsPanelHelpersModule} from 'hslayers-ng/common/panels';
 import {HsShareUrlService} from 'hslayers-ng/components/share';
 import {HsStylerService} from 'hslayers-ng/components/styler';

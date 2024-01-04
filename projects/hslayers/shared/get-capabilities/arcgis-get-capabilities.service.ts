@@ -10,7 +10,7 @@ import {HsAddDataService} from 'hslayers-ng/components/add-data';
 import {HsCapabilityCacheService} from './capability-cache.service';
 import {HsEventBusService} from 'hslayers-ng/shared/core';
 import {HsLogService} from 'hslayers-ng/shared/log';
-import {HsMapService} from 'hslayers-ng/components/map';
+import {HsMapService} from 'hslayers-ng/shared/map';
 import {HsUtilsService} from 'hslayers-ng/shared/utils';
 import {IGetCapabilities} from './get-capabilities.interface';
 import {getPreferredFormat} from 'hslayers-ng/common/utils';

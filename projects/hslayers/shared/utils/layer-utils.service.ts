@@ -23,7 +23,7 @@ import {isEmpty} from 'ol/extent';
 
 import {HsLanguageService} from 'hslayers-ng/shared/language';
 import {HsLayerDescriptor} from 'hslayers-ng/common/types';
-import {HsMapService} from 'hslayers-ng/components/map';
+import {HsMapService} from 'hslayers-ng/shared/map';
 import {HsUtilsService} from './utils.service';
 import {HsWmsLayer} from 'hslayers-ng/shared/get-capabilities';
 import {

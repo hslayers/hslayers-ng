@@ -11,7 +11,7 @@ import {lastValueFrom} from 'rxjs';
 import {HsLanguageService} from 'hslayers-ng/shared/language';
 import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
 import {HsLogService} from 'hslayers-ng/shared/log';
-import {HsMapService} from 'hslayers-ng/components/map';
+import {HsMapService} from 'hslayers-ng/shared/map';
 import {HsQueryBaseService} from './query-base.service';
 import {HsQueryWmtsService} from './query-wmts.service';
 import {HsUtilsService, instOf} from 'hslayers-ng/shared/utils';

@@ -25,7 +25,7 @@ import {BoundingBoxObject} from 'hslayers-ng/common/types';
 import {CompoData} from './types/compo-data.type';
 import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
 import {HsLogService} from 'hslayers-ng/shared/log';
-import {HsMapService} from 'hslayers-ng/components/map';
+import {HsMapService} from 'hslayers-ng/shared/map';
 import {HsShareThumbnailService} from 'hslayers-ng/components/share';
 import {HsUtilsService} from 'hslayers-ng/shared/utils';
 import {LayerJSON} from './types/layer-json.type';

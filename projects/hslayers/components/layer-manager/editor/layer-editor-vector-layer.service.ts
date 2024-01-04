@@ -5,7 +5,7 @@ import {Cluster, Source, Vector as VectorSource} from 'ol/source';
 import {Layer, Vector as VectorLayer} from 'ol/layer';
 
 import {HsConfig} from './hslayers-ng/config';
-import {HsMapService} from 'hslayers-ng/components/map';
+import {HsMapService} from 'hslayers-ng/shared/map';
 import {HsStylerService} from './hslayers-ng/components/styler';
 import {HsUtilsService} from 'hslayers-ng/shared/utils';
 

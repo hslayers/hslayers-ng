@@ -9,7 +9,7 @@ import {
 import {Layer} from 'ol/layer';
 import {Source} from 'ol/source';
 
-import {HsMapService} from 'hslayers-ng/components/map';
+import {HsMapService} from 'hslayers-ng/shared/map';
 import {HsSaveMapService} from '../../save-map.service';
 import {HsUtilsService} from 'hslayers-ng/shared/utils';
 import {

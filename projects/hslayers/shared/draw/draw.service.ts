@@ -26,7 +26,7 @@ import {HsLaymanBrowserService} from 'hslayers-ng/components/add-data';
 import {HsLaymanService} from 'hslayers-ng/shared/save-map';
 import {HsLayoutService} from 'hslayers-ng/shared/layout';
 import {HsLogService} from 'hslayers-ng/shared/log';
-import {HsMapService} from 'hslayers-ng/components/map';
+import {HsMapService} from 'hslayers-ng/shared/map';
 import {HsQueryBaseService} from 'hslayers-ng/components/query';
 import {HsQueryVectorService} from 'hslayers-ng/components/query';
 import {HsToastService} from 'hslayers-ng/common/toast';
