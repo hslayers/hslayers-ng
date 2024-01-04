@@ -3,7 +3,7 @@ import {Injectable} from '@angular/core';
 import JSZip from 'jszip';
 import {Subject} from 'rxjs';
 
-import {AsyncUpload} from 'hslayers-ng/components/save-map';
+import {AsyncUpload} from 'hslayers-ng/common/types';
 import {FileDataObject} from '../file/types/file-data-object.type';
 import {FileFormData} from '../file/types/file-form-data.type';
 import {HsAddDataOwsService} from '../url/add-data-ows.service';

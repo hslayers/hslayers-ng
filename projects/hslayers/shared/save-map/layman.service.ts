@@ -22,9 +22,9 @@ import {Source} from 'ol/source';
 import {Vector as VectorLayer} from 'ol/layer';
 import {Vector as VectorSource} from 'ol/source';
 
-import {AboutLayman} from '../../components/save-map/types/about-layman-response.type';
-import {AsyncUpload} from '../../components/save-map/types/async-upload.type';
-import {CompoData} from '../../components/save-map/types/compo-data.type';
+import {AboutLayman} from 'hslayers-ng/components/save-map';
+import {AsyncUpload} from 'hslayers-ng/common/types';
+import {CompoData} from 'hslayers-ng/components/save-map';
 import {
   DeleteAllLayersResponse,
   DeleteSingleLayerResponse,
@@ -36,10 +36,10 @@ import {HsLanguageService} from 'hslayers-ng/shared/language';
 import {HsLaymanLayerDescriptor} from 'hslayers-ng/common/types';
 import {HsLogService} from 'hslayers-ng/shared/log';
 import {HsMapService} from 'hslayers-ng/components/map';
-import {HsSaverService} from '../../components/save-map/interfaces/saver-service.interface';
+import {HsSaverService} from 'hslayers-ng/components/save-map';
 import {HsToastService} from 'hslayers-ng/common/toast';
 import {HsUtilsService} from 'hslayers-ng/shared/utils';
-import {MapComposition} from '../../components/save-map/types/map-composition.type';
+import {MapComposition} from 'hslayers-ng/components/save-map';
 import {
   PREFER_RESUMABLE_SIZE_LIMIT,
   SUPPORTED_SRS_LIST,
@@ -52,7 +52,7 @@ import {
 } from 'hslayers-ng/common/layman';
 import {PostPatchLayerResponse} from 'hslayers-ng/common/layman';
 import {UpsertLayerObject} from 'hslayers-ng/common/types';
-import {WfsSyncParams} from '../../components/save-map/types/wfs-sync-params.type';
+import {WfsSyncParams} from 'hslayers-ng/components/save-map';
 import {accessRightsModel} from 'hslayers-ng/common/types';
 import {
   getAccessRights,

@@ -8,3 +8,4 @@ export * from './bounding-box-object.type';
 export * from './layman/status-state.type';
 export * from './layman/layman-layer-descriptor.interface';
 export * from './layman/upsert-layer-object.type';
+export * from './add-data/async-upload.type';
