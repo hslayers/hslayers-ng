@@ -1,7 +1,7 @@
 import {Layer} from 'ol/layer';
 
-import {BoundingBoxObject} from 'hslayers-ng/common/types';
-import {accessRightsModel} from 'hslayers-ng/common/types';
+import {BoundingBoxObject} from '../bounding-box-object.type';
+import {accessRightsModel} from '../access-rights.model';
 
 export type CompoData = {
   name?: string;

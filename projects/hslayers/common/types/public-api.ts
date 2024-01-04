@@ -15,5 +15,6 @@ export * from './compositions/map-composition.type';
 export * from './compositions/serialized-style.type';
 export * from './compositions/serialized-image.type';
 export * from './compositions/layer-json.type';
+export * from './compositions/composition-data.type';
 
 export * from './extensions/layer-extensions.type';
