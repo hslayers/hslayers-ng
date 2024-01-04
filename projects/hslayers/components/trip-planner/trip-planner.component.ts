@@ -2,12 +2,12 @@ import {Component, OnInit} from '@angular/core';
 
 import {Feature} from 'ol';
 
-import {HsConfig} from './hslayers-ng/config';
+import {HsConfig} from 'hslayers-ng/config';
 import {HsCoreService} from 'hslayers-ng/shared/core';
 import {HsLanguageService} from 'hslayers-ng/shared/language';
 import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
 import {HsLayoutService} from 'hslayers-ng/shared/layout';
-import {HsMapService} from './hslayers-ng/components/map';
+import {HsMapService} from 'hslayers-ng/components/map';
 import {HsPanelBaseComponent} from 'hslayers-ng/common/panels';
 import {HsSidebarService} from 'hslayers-ng/components/sidebar';
 import {HsTripPlannerService, Waypoint} from './trip-planner.service';

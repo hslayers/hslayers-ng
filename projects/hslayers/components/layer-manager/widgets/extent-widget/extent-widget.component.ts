@@ -7,7 +7,7 @@ import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
 import {
   getWmsOriginalExtent,
   setWmsOriginalExtent,
-} from '../hslayers-ng/common/extensions';
+} from 'hslayers-ng/common/extensions';
 
 @Component({
   selector: 'hs-extent-widget',
