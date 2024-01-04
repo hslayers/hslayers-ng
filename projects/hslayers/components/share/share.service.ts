@@ -4,7 +4,7 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {lastValueFrom} from 'rxjs';
 
-import {CompoData} from 'hslayers-ng/components/save-map';
+import {CompoData} from 'hslayers-ng/common/types';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsEndpoint} from 'hslayers-ng/shared/endpoints';
 import {HsEventBusService} from 'hslayers-ng/shared/core';

@@ -7,7 +7,6 @@ export * from './save-map.component';
 export * from './save-map.module';
 export * from './dialog-result/dialog-result.component';
 export * from './interfaces/saver-service.interface';
-export * from './types/compo-data.type';
 export * from './types/status-data.type';
 export * from './types/about-layman-response.type';
 export * from './types/wfs-sync-params.type';

@@ -1,4 +1,4 @@
-import {CompoData} from '../types/compo-data.type';
+import {CompoData} from 'hslayers-ng/common/types';
 import {HsEndpoint} from 'hslayers-ng/shared/endpoints';
 import {MapComposition} from 'hslayers-ng/common/types';
 
