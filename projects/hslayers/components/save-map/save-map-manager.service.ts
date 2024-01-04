@@ -3,7 +3,7 @@ import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 
-import {CompoData} from './types/compo-data.type';
+import {CompoData} from 'hslayers-ng/common/types';
 import {HsCompositionsParserService} from '../compositions/compositions-parser.service';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsEndpoint} from 'hslayers-ng/shared/endpoints';

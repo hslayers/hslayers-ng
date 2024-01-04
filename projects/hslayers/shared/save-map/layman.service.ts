@@ -24,7 +24,7 @@ import {Vector as VectorSource} from 'ol/source';
 
 import {AboutLayman} from 'hslayers-ng/components/save-map';
 import {AsyncUpload} from 'hslayers-ng/common/types';
-import {CompoData} from 'hslayers-ng/components/save-map';
+import {CompoData} from 'hslayers-ng/common/types';
 import {
   DeleteAllLayersResponse,
   DeleteSingleLayerResponse,
@@ -39,7 +39,7 @@ import {HsMapService} from 'hslayers-ng/shared/map';
 import {HsSaverService} from 'hslayers-ng/components/save-map';
 import {HsToastService} from 'hslayers-ng/common/toast';
 import {HsUtilsService} from 'hslayers-ng/shared/utils';
-import {MapComposition} from 'hslayers-ng/components/save-map';
+import {MapComposition} from 'hslayers-ng/common/types';
 import {
   PREFER_RESUMABLE_SIZE_LIMIT,
   SUPPORTED_SRS_LIST,

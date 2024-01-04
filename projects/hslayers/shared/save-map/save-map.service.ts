@@ -21,7 +21,7 @@ import {Vector as VectorSource} from 'ol/source';
 import {transformExtent} from 'ol/proj';
 
 import {BoundingBoxObject} from 'hslayers-ng/common/types';
-import {CompoData} from '../../components/save-map/types/compo-data.type';
+import {CompoData} from 'hslayers-ng/common/types';
 import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
 import {HsLogService} from 'hslayers-ng/shared/log';
 import {HsMapService} from 'hslayers-ng/shared/map';
