@@ -12,7 +12,7 @@ import {HsUiExtensionsModule} from 'hslayers-ng/common/widgets';
 import {HsUrlAddComponent} from './add/add.component';
 import {HsUrlDetailsComponent} from './details/details.component';
 import {HsUrlProgressComponent} from './progress/progress.component';
-import {TranslateCustomPipe} from 'hslayers-ng/components/language';
+import {TranslateCustomPipe} from 'hslayers-ng/shared/language';
 import {WmsLayerHighlightDirective} from './wms-layer-highlight.directive';
 
 @NgModule({

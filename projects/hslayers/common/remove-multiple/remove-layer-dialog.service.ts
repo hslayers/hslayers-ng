@@ -3,19 +3,17 @@ import {Injectable} from '@angular/core';
 import {Layer} from 'ol/layer';
 import {Source} from 'ol/source';
 
-import {
-  HsDialogContainerService,
-  HsToastService,
-} from 'hslayers-ng/components/layout';
+import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
 import {HsDrawService, TMP_LAYER_TITLE} from 'hslayers-ng/shared/draw';
-import {HsLanguageService} from 'hslayers-ng/components/language';
+import {HsLanguageService} from 'hslayers-ng/shared/language';
 import {HsLaymanService} from 'hslayers-ng/components/save-map';
 import {HsMapService} from 'hslayers-ng/components/map';
 import {
   HsRmLayerDialogComponent,
   HsRmLayerDialogResponse,
 } from './remove-layer-dialog.component';
-import {getDefinition, getTitle} from '../extensions/layer-extensions';
+import {HsToastService} from 'hslayers-ng/common/toast';
+import {getDefinition, getTitle} from 'hslayers-ng/common/extensions';
 
 @Injectable({
   providedIn: 'root',

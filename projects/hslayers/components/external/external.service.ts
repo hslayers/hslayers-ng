@@ -14,7 +14,7 @@ import {
   getDomFeatureLinks,
 } from 'hslayers-ng/common/extensions';
 import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
-import {HsLayoutService} from 'hslayers-ng/components/layout';
+import {HsLayoutService} from 'hslayers-ng/shared/layout';
 import {HsLogService} from 'hslayers-ng/shared/log';
 import {HsMapService} from 'hslayers-ng/components/map';
 import {HsQueryBaseService} from '../query/query-base.service';

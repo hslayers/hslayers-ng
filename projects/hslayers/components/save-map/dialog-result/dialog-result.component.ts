@@ -1,7 +1,7 @@
 import {Component, ViewRef} from '@angular/core';
 
-import {HsDialogComponent} from 'hslayers-ng/components/layout';
-import {HsDialogContainerService} from 'hslayers-ng/components/layout';
+import {HsDialogComponent} from 'hslayers-ng/common/dialogs';
+import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
 import {HsSaveMapManagerService} from '../save-map-manager.service';
 @Component({
   selector: 'hs-save-map-dialog-result',

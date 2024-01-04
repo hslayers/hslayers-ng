@@ -1,16 +1,17 @@
 import {Component, Input, ViewRef} from '@angular/core';
 
 import {HsCompositionsParserService} from '../../compositions/compositions-parser.service';
-import {HsDialogComponent} from 'hslayers-ng/components/layout';
-import {HsDialogContainerService} from 'hslayers-ng/components/layout';
+import {HsDialogComponent} from 'hslayers-ng/common/dialogs';
+import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
 import {HsEventBusService} from 'hslayers-ng/shared/core';
-import {HsLayerManagerService} from 'hslayers-ng/shared/layer-manager'
+import {HsLayerManagerService} from 'hslayers-ng/shared/layer-manager';
 @Component({
   selector: 'hs-layermanager-remove-all-dialog',
   templateUrl: './remove-all-dialog.component.html',
 })
 export class HsLayerManagerRemoveAllDialogComponent
-  implements HsDialogComponent {
+  implements HsDialogComponent
+{
   @Input() data: any;
   viewRef: ViewRef;
 

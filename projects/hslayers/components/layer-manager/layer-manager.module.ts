@@ -28,13 +28,13 @@ import {HsLegendModule} from 'hslayers-ng/components/legend';
 import {HsLegendWidgetComponent} from './widgets/legend-widget.component';
 import {HsMetadataWidgetComponent} from './widgets/metadata-widget.component';
 import {HsOpacityWidgetComponent} from './widgets/opacity-widget.component';
-import {HsPanelHeaderComponent} from 'hslayers-ng/components/layout';
-import {HsPanelHelpersModule} from 'hslayers-ng/components/layout';
+import {HsPanelHeaderComponent} from 'hslayers-ng/common/panels';
+import {HsPanelHelpersModule} from 'hslayers-ng/common/panels';
 import {HsScaleWidgetComponent} from './widgets/scale-widget.component';
 import {HsTypeWidgetComponent} from './widgets/type-widget.component';
 import {HsUiExtensionsModule} from 'hslayers-ng/common/widgets';
 import {HsWmsSourceWidgetComponent} from './widgets/wms-source-widget/wms-source-widget.component';
-import {TranslateCustomPipe} from 'hslayers-ng/components/language';
+import {TranslateCustomPipe} from 'hslayers-ng/shared/language';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

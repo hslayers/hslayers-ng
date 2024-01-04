@@ -7,11 +7,11 @@ import {HsCompositionsMapService} from './compositions-map.service';
 import {HsCompositionsOverwriteDialogComponent} from './dialogs/overwrite-dialog.component';
 import {HsCompositionsParserService} from './compositions-parser.service';
 import {HsCompositionsService} from './compositions.service';
-import {HsDialogContainerService} from 'hslayers-ng/components/layout';
-import {HsLanguageService} from 'hslayers-ng/components/language';
-import {HsLayoutService} from 'hslayers-ng/components/layout';
+import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
+import {HsLanguageService} from 'hslayers-ng/shared/language';
+import {HsLayoutService} from 'hslayers-ng/shared/layout';
 import {HsMapCompositionDescriptor} from './models/composition-descriptor.model';
-import {HsPanelBaseComponent} from 'hslayers-ng/components/layout';
+import {HsPanelBaseComponent} from 'hslayers-ng/common/panels';
 
 @Component({
   selector: 'hs-compositions',
@@ -19,8 +19,7 @@ import {HsPanelBaseComponent} from 'hslayers-ng/components/layout';
 })
 export class HsCompositionsComponent
   extends HsPanelBaseComponent
-  implements OnDestroy, OnInit
-{
+  implements OnDestroy, OnInit {
   private end = new Subject<void>();
 
   keywordsVisible = false;

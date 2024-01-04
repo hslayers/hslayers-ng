@@ -16,8 +16,8 @@ import {transform} from 'ol/proj';
 
 import {HsConfig} from 'hslayers-ng/config';
 import {HsEventBusService} from 'hslayers-ng/shared/core';
-import {HsLanguageService} from 'hslayers-ng/components/language';
-import {HsLayoutService} from 'hslayers-ng/components/layout';
+import {HsLanguageService} from 'hslayers-ng/shared/language';
+import {HsLayoutService} from 'hslayers-ng/shared/layout';
 import {HsMapService} from 'hslayers-ng/components/map';
 import {HsSaveMapService} from '../save-map/save-map.service';
 import {HsUtilsService} from 'hslayers-ng/shared/utils';

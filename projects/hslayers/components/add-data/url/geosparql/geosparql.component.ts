@@ -4,7 +4,7 @@ import {HsAddDataCommonFileService} from '../../common/common-file.service';
 import {HsAddDataCommonService} from '../../common/common.service';
 import {HsAddDataVectorService} from '../../vector/vector.service';
 import {HsHistoryListService} from 'hslayers-ng/common/history-list';
-import {HsLayoutService} from 'hslayers-ng/components/layout';
+import {HsLayoutService} from 'hslayers-ng/shared/layout';
 import {HsUrlGeoSparqlService} from './geosparql.service';
 
 @Component({

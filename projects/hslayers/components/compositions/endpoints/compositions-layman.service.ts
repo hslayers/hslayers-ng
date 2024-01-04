@@ -13,10 +13,10 @@ import {
 import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
 import {HsCompositionsParserService} from '../compositions-parser.service';
 import {HsEventBusService} from 'hslayers-ng/shared/core';
-import {HsLanguageService} from 'hslayers-ng/components/language';
+import {HsLanguageService} from 'hslayers-ng/shared/language';
 import {HsMapCompositionDescriptor} from '../models/composition-descriptor.model';
 import {HsMapService} from 'hslayers-ng/components/map';
-import {HsToastService} from 'hslayers-ng/components/layout';
+import {HsToastService} from 'hslayers-ng/common/toast';
 import {addExtentFeature} from 'hslayers-ng/common/utils';
 
 @Injectable({

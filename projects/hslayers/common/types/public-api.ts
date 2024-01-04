@@ -4,3 +4,4 @@ export * from './access-rights.model';
 export * from './add-data/layer-descriptor.model';
 export * from './compositions/composition-layer-options.type';
 export * from './layer-manager/layer-descriptor.interface';
+export * from './bounding-box-object.type';

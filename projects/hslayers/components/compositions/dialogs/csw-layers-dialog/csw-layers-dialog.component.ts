@@ -2,9 +2,9 @@ import {Component, Input, OnInit, ViewRef} from '@angular/core';
 
 import {HsAddDataOwsService} from 'hslayers-ng/components/add-data';
 import {HsAddDataUrlService} from '../../../add-data/url/add-data-url.service';
-import {HsDialogComponent} from 'hslayers-ng/components/layout';
-import {HsDialogContainerService} from 'hslayers-ng/components/layout';
-import {HsDialogItem} from 'hslayers-ng/components/layout';
+import {HsDialogComponent} from 'hslayers-ng/common/dialogs';
+import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
+import {HsDialogItem} from 'hslayers-ng/common/dialogs';
 import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
 import {HsMapService} from 'hslayers-ng/components/map';
 import {HsUtilsService} from 'hslayers-ng/shared/utils';
@@ -13,7 +13,7 @@ import {
   setPath,
   setSubLayers,
   setTitle,
-} from '../hslayers-ng/common/extensions';
+} from 'hslayers-ng/common/extensions';
 
 @Component({
   selector: 'hs-csw-layers-dialog',

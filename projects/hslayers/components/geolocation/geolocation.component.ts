@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 
-import {HsGuiOverlayBaseComponent} from '../layout/panels/gui-overlay-base.component';
+import {HsGuiOverlayBaseComponent} from '../../common/panels/gui-overlay-base.component';
 import {HsGeolocationService} from './geolocation.service';
-import {HsLayoutService} from 'hslayers-ng/components/layout';
+import {HsLayoutService} from 'hslayers-ng/shared/layout';
 @Component({
   selector: 'hs-geolocation',
   templateUrl: './geolocation.component.html',

@@ -8,14 +8,15 @@ import {HsCommonLaymanService} from './layman.service';
 import {
   HsDialogComponent,
   HsDialogContainerService,
-} from 'hslayers-ng/components/layout';
+} from 'hslayers-ng/common/dialogs';
 
 @Component({
   selector: 'hs-layman-login',
   templateUrl: './layman-login.component.html',
 })
 export class HsLaymanLoginComponent
-  implements HsDialogComponent, OnDestroy, OnInit {
+  implements HsDialogComponent, OnDestroy, OnInit
+{
   @Input() data: {
     url: string;
   };

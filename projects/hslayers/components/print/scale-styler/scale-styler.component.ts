@@ -2,11 +2,11 @@ import {CommonModule} from '@angular/common';
 import {Component, Input} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 
-import {HsLanguageService} from 'hslayers-ng/components/language';
+import {HsLanguageService} from 'hslayers-ng/shared/language';
 import {HsPrintScaleService} from '../print-scale.service';
 import {SCALE_STYLING_OPTIONS} from '../constants/scale-styling-options';
 import {ScaleObj} from '../types/scale-object.type';
-import {TranslateCustomPipe} from 'hslayers-ng/components/language';
+import {TranslateCustomPipe} from 'hslayers-ng/shared/language';
 
 @Component({
   selector: 'hs-print-scale-styler',

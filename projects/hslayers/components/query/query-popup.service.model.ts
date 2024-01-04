@@ -4,7 +4,7 @@ import {ReplaySubject} from 'rxjs';
 import {Vector as VectorLayer} from 'ol/layer';
 import {Vector as VectorSource} from 'ol/source';
 
-import {HsPanelItem} from '../layout/panels/panel-item';
+import {HsPanelItem} from '../../common/panels/panel-item';
 import {HsQueryPopupData} from './popup-data';
 
 export type HsFeatureLayer = {

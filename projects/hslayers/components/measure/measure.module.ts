@@ -5,9 +5,9 @@ import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
 
 import {HsMeasureComponent} from './measure.component';
 import {HsMeasureToolbarComponent} from './measure-toolbar.component';
-import {HsPanelHeaderComponent} from '../layout//panels/panel-header/panel-header.component';
-import {HsPanelHelpersModule} from 'hslayers-ng/components/layout';
-import {TranslateCustomPipe} from 'hslayers-ng/components/language';
+import {HsPanelHeaderComponent} from '../../common/panels/panel-header/panel-header.component';
+import {HsPanelHelpersModule} from 'hslayers-ng/common/panels';
+import {TranslateCustomPipe} from 'hslayers-ng/shared/language';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

@@ -5,7 +5,7 @@ import {
   HsDialogComponent,
   HsDialogContainerService,
   HsDialogItem,
-} from 'hslayers-ng/components/layout';
+} from 'hslayers-ng/common/dialogs';
 import {HsRenameLayerDialogComponent} from '../dialog-rename-layer/rename-layer.component';
 import {VectorDataObject} from '../vector/vector-data.type';
 

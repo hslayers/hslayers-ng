@@ -5,7 +5,7 @@ import {Layer} from 'ol/layer';
 
 import {HsLayerDescriptor} from 'hslayers-ng/common/types';
 import {HsLayerSelectorService} from '../editor/layer-selector.service';
-import {HsPanelComponent} from '../../layout/panels/panel-component.interface';
+import {HsPanelComponent} from '../../../common/panels/panel-component.interface';
 
 @Component({
   template: '<div></div>',

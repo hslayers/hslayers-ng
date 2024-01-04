@@ -21,7 +21,7 @@ import {METERS_PER_UNIT} from 'ol/proj';
 import {Tile as TileLayer} from 'ol/layer';
 import {isEmpty} from 'ol/extent';
 
-import {HsLanguageService} from 'hslayers-ng/components/language';
+import {HsLanguageService} from 'hslayers-ng/shared/language';
 import {HsLayerDescriptor} from 'hslayers-ng/common/types';
 import {HsMapService} from 'hslayers-ng/components/map';
 import {HsUtilsService} from './utils.service';

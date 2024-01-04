@@ -14,13 +14,13 @@ import {
   HsEndpoint,
 } from 'hslayers-ng/shared/endpoints';
 import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
-import {HsDialogContainerService} from 'hslayers-ng/components/layout';
-import {HsLanguageService} from 'hslayers-ng/components/language';
+import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
+import {HsLanguageService} from 'hslayers-ng/shared/language';
 import {HsLayerOverwriteDialogComponent} from '../dialog-overwrite-layer/overwrite-layer.component';
 import {HsLaymanLayerDescriptor} from 'hslayers-ng/components/save-map';
 import {HsLaymanService} from 'hslayers-ng/components/save-map';
 import {HsLogService} from 'hslayers-ng/shared/log';
-import {HsToastService} from 'hslayers-ng/components/layout';
+import {HsToastService} from 'hslayers-ng/common/toast';
 import {HsUtilsService} from 'hslayers-ng/shared/utils';
 import {OverwriteResponse} from '../enums/overwrite-response';
 import {PostPatchLayerResponse} from 'hslayers-ng/common/layman';

@@ -4,9 +4,9 @@ import {Subscription} from 'rxjs';
 
 import {HsConfig} from 'hslayers-ng/config';
 import {HsEventBusService} from 'hslayers-ng/shared/core';
-import {HsLanguageService} from 'hslayers-ng/components/language';
-import {HsLayoutService} from 'hslayers-ng/components/layout';
-import {HsPanelBaseComponent} from 'hslayers-ng/components/layout';
+import {HsLanguageService} from 'hslayers-ng/shared/language';
+import {HsLayoutService} from 'hslayers-ng/shared/layout';
+import {HsPanelBaseComponent} from 'hslayers-ng/common/panels';
 import {HsSidebarService} from 'hslayers-ng/components/sidebar';
 
 @Component({

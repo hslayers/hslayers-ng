@@ -19,7 +19,7 @@ import {HsLanguageModule} from 'hslayers-ng/components/language';
 import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
 import {HsMapService} from 'hslayers-ng/components/map';
 import {HsMapServiceMock} from 'hslayers-ng/components/map';
-import {HsPanelHelpersModule} from 'hslayers-ng/components/layout';
+import {HsPanelHelpersModule} from 'hslayers-ng/common/panels';
 import {HsUrlWmsComponent} from './wms.component';
 import {HsUrlWmsService} from './wms.service';
 import {HsUtilsService, mockLayerUtilsService} from 'hslayers-ng/shared/utils';

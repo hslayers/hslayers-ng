@@ -3,12 +3,13 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {BehaviorSubject, Subject, takeUntil} from 'rxjs';
 
 import {HsConfig} from 'hslayers-ng/config';
-import {HsDialogContainerService} from 'hslayers-ng/components/layout';
+import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
 import {HsDrawLayerMetadataDialogComponent} from './draw-layer-metadata/draw-layer-metadata.component';
 
-import {HsLanguageService} from 'hslayers-ng/components/language';
-import {HsLayoutService} from 'hslayers-ng/components/layout';
-import {HsPanelBaseComponent} from 'hslayers-ng/components/layout';
+import {HsDrawService} from 'hslayers-ng/shared/draw';
+import {HsLanguageService} from 'hslayers-ng/shared/language';
+import {HsLayoutService} from 'hslayers-ng/shared/layout';
+import {HsPanelBaseComponent} from 'hslayers-ng/common/panels';
 import {HsQueryBaseService} from 'hslayers-ng/components/query';
 import {HsSidebarService} from 'hslayers-ng/components/sidebar';
 import {HsUtilsService} from 'hslayers-ng/shared/utils';

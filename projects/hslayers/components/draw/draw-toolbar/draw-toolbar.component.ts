@@ -5,12 +5,13 @@ import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
 
 import {HsConfig} from 'hslayers-ng/config';
 
-import {HsGuiOverlayBaseComponent} from 'hslayers-ng/components/layout';
-import {HsLanguageService} from 'hslayers-ng/components/language';
+import {HsDrawService} from 'hslayers-ng/shared/draw';
+import {HsGuiOverlayBaseComponent} from 'hslayers-ng/common/panels';
+import {HsLanguageService} from 'hslayers-ng/shared/language';
 import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
-import {HsLayoutService} from 'hslayers-ng/components/layout';
+import {HsLayoutService} from 'hslayers-ng/shared/layout';
 import {HsRemoveLayerDialogService} from 'hslayers-ng/common/remove-multiple';
-import {TranslateCustomPipe} from 'hslayers-ng/components/language';
+import {TranslateCustomPipe} from 'hslayers-ng/shared/language';
 import {getTitle} from 'hslayers-ng/common/extensions';
 
 @Component({

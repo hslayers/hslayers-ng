@@ -7,7 +7,7 @@ import {HsAddDataCommonService} from '../../common/common.service';
 import {HsAddDataFileBaseComponent} from '../file-base.component';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsFileService} from '../file.service';
-import {HsLayoutService} from 'hslayers-ng/components/layout';
+import {HsLayoutService} from 'hslayers-ng/shared/layout';
 import {HsUploadedFiles} from 'hslayers-ng/common/upload';
 
 @Component({
