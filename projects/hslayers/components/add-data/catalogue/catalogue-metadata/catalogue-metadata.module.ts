@@ -4,7 +4,7 @@ import {NgModule} from '@angular/core';
 
 import {HsCatalogueMetadataComponent} from './catalogue-metadata.component';
 import {HsUiExtensionsModule} from 'hslayers-ng/common/widgets';
-import {TranslateCustomPipe} from 'hslayers-ng/components/language';
+import {TranslateCustomPipe} from 'hslayers-ng/shared/language';
 
 @NgModule({
   imports: [

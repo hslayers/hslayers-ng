@@ -11,16 +11,16 @@ import {
   mockHsLayerShiftingService,
 } from 'hslayers-ng/shared/layer-shifting';
 import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
-import {HsLayoutService} from 'hslayers-ng/components/layout';
-import {HsLayoutServiceMock} from 'hslayers-ng/components/layout';
+import {HsLayoutService} from 'hslayers-ng/shared/layout';
+import {HsLayoutServiceMock} from 'hslayers-ng/shared/layout';
 import {HsMapSwipeComponent} from './map-swipe.component';
 import {HsMapSwipeService} from './map-swipe.service';
-import {HsPanelHeaderComponent} from 'hslayers-ng/components/layout';
-import {HsPanelHelpersModule} from 'hslayers-ng/components/layout';
+import {HsPanelHeaderComponent} from 'hslayers-ng/common/panels';
+import {HsPanelHelpersModule} from 'hslayers-ng/common/panels';
 import {HsSidebarService} from 'hslayers-ng/components/sidebar';
 import {HsUtilsService} from 'hslayers-ng/shared/utils';
 import {HsUtilsServiceMock} from 'hslayers-ng/shared/utils';
-import {TranslateCustomPipe} from 'hslayers-ng/components/language';
+import {TranslateCustomPipe} from 'hslayers-ng/shared/language';
 import {mockLayerUtilsService} from 'hslayers-ng/shared/utils';
 
 describe('HsMapSwipeComponent', () => {

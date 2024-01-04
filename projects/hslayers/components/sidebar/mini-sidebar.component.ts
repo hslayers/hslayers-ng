@@ -4,7 +4,7 @@ import {Observable, Subject, delay, map, startWith, takeUntil} from 'rxjs';
 import {HsButton} from './button.interface';
 import {HsConfig} from './hslayers-ng/config';
 import {HsCoreService} from 'hslayers-ng/shared/core';
-import {HsLayoutService} from 'hslayers-ng/components/layout';
+import {HsLayoutService} from 'hslayers-ng/shared/layout';
 import {HsSidebarService} from './sidebar.service';
 
 @Component({

@@ -21,18 +21,18 @@ import {HsConfig} from 'hslayers-ng/config';
 import {HsDimensionTimeService} from 'hslayers-ng/shared/get-capabilities';
 import {HsDrawService} from 'hslayers-ng/shared/draw';
 import {HsEventBusService} from 'hslayers-ng/shared/core';
-import {HsLanguageService} from 'hslayers-ng/components/language';
+import {HsLanguageService} from 'hslayers-ng/shared/language';
 import {HsLayerDescriptor, HsLayerLoadProgress} from 'hslayers-ng/common/types';
 import {HsLayerEditorVectorLayerService} from '../../components/layer-manager/editor/layer-editor-vector-layer.service';
 import {HsLayerManagerMetadataService} from '../../components/layer-manager/layer-manager-metadata.service';
 import {HsLayerSelectorService} from '../../components/layer-manager/editor/layer-selector.service';
 import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
-import {HsLayoutService} from 'hslayers-ng/components/layout';
+import {HsLayoutService} from 'hslayers-ng/shared/layout';
 import {HsLogService} from 'hslayers-ng/shared/log';
 import {HsMapService} from 'hslayers-ng/components/map';
 import {HsQueuesService} from 'hslayers-ng/shared/queues';
 import {HsShareUrlService} from 'hslayers-ng/components/share';
-import {HsToastService} from 'hslayers-ng/components/layout';
+import {HsToastService} from 'hslayers-ng/common/toast';
 import {HsUtilsService} from 'hslayers-ng/shared/utils';
 import {
   SHOW_IN_LAYER_MANAGER,

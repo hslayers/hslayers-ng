@@ -5,11 +5,11 @@ import {HsCompositionsInfoDialogComponent} from './dialogs/info-dialog.component
 import {HsCompositionsService} from './compositions.service';
 import {HsCompositionsShareDialogComponent} from './dialogs/share-dialog.component';
 import {HsConfig} from 'hslayers-ng/config';
-import {HsDialogContainerService} from 'hslayers-ng/components/layout';
-import {HsLanguageService} from 'hslayers-ng/components/language';
+import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
+import {HsLanguageService} from 'hslayers-ng/shared/language';
 import {HsMapCompositionDescriptor} from './models/composition-descriptor.model';
-import {HsSetPermissionsDialogComponent} from '.hslayers-ng/common/layman';
-import {HsToastService} from 'hslayers-ng/components/layout';
+import {HsSetPermissionsDialogComponent} from 'hslayers-ng/common/layman';
+import {HsToastService} from 'hslayers-ng/common/toast';
 @Component({
   selector: 'hs-compositions-list-item',
   templateUrl: 'compositions-list-item.component.html',

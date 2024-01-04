@@ -7,11 +7,11 @@ import {Source} from 'ol/source';
 import {transform} from 'ol/proj';
 
 import {AddDataUrlType} from './types/url.type';
-import {HsLanguageService} from 'hslayers-ng/components/language';
-import {HsLayoutService} from 'hslayers-ng/components/layout';
+import {HsLanguageService} from 'hslayers-ng/shared/language';
+import {HsLayoutService} from 'hslayers-ng/shared/layout';
 import {HsLogService} from 'hslayers-ng/shared/log';
 import {HsMapService} from 'hslayers-ng/components/map';
-import {HsToastService} from 'hslayers-ng/components/layout';
+import {HsToastService} from 'hslayers-ng/common/toast';
 import {UrlDataObject} from './types/data-object.type';
 
 @Injectable({

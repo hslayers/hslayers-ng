@@ -19,7 +19,7 @@ import {HsConfig} from 'hslayers-ng/config';
 import {HsDimensionService} from 'hslayers-ng/shared/get-capabilities';
 import {HsEventBusService} from 'hslayers-ng/shared/core';
 import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
-import {HsLayoutService} from 'hslayers-ng/components/layout';
+import {HsLayoutService} from 'hslayers-ng/shared/layout';
 import {HsUrlTypeServiceModel} from '../models/url-type-service.model';
 import {HsUtilsService} from 'hslayers-ng/shared/utils';
 import {HsWmsGetCapabilitiesService} from 'hslayers-ng/shared/get-capabilities';

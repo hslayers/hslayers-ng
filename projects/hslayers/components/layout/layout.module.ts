@@ -2,15 +2,15 @@ import {CUSTOM_ELEMENTS_SCHEMA, DoBootstrap, NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 
 import {HsConfirmModule} from 'hslayers-ng/common/confirm';
-import {HsDialogContainerComponent} from './dialogs/dialog-container.component';
-import {HsDialogHostDirective} from './dialogs/dialog-host.directive';
+import {HsDialogContainerComponent} from '../../common/dialogs/dialog-container.component';
+import {HsDialogHostDirective} from '../../common/dialogs/dialog-host.directive';
 import {HsLayoutComponent} from './layout.component';
 import {HsLayoutHostDirective} from './layout.directive';
 import {HsMapHostDirective} from './map-host.directive';
-import {HsMapModule} from '../map/map.module';
-import {HsPanelHelpersModule} from './panels/panel-helpers.module';
-import {HsSidebarModule} from '../sidebar/sidebar.module';
-import {HsToastModule} from './toast/toast.module';
+import {HsMapModule} from 'hslayers-ng/components/map';
+import {HsPanelHelpersModule} from 'hslayers-ng/common/panels';
+import {HsSidebarModule} from 'hslayers-ng/components/sidebar';
+import {HsToastModule} from 'hslayers-ng/common/toast';
 
 @NgModule({
   declarations: [

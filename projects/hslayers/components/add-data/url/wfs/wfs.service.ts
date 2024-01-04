@@ -13,7 +13,7 @@ import {DuplicateHandling, HsMapService} from 'hslayers-ng/components/map';
 import {HsAddDataCommonService} from '../../common/common.service';
 import {HsAddDataUrlService} from '../add-data-url.service';
 import {HsEventBusService} from 'hslayers-ng/shared/core';
-import {HsLayoutService} from 'hslayers-ng/components/layout';
+import {HsLayoutService} from 'hslayers-ng/shared/layout';
 import {HsLogService} from 'hslayers-ng/shared/log';
 import {HsUrlTypeServiceModel} from '../models/url-type-service.model';
 import {HsUtilsService} from 'hslayers-ng/shared/utils';

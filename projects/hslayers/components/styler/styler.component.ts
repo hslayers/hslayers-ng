@@ -9,11 +9,11 @@ import {Source} from 'ol/source';
 import {Vector as VectorLayer} from 'ol/layer';
 import {Vector as VectorSource} from 'ol/source';
 
-import {HsDialogContainerService} from 'hslayers-ng/components/layout';
+import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
 import {HsEventBusService} from 'hslayers-ng/shared/core';
 import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
-import {HsLayoutService} from 'hslayers-ng/components/layout';
-import {HsPanelBaseComponent} from 'hslayers-ng/components/layout';
+import {HsLayoutService} from 'hslayers-ng/shared/layout';
+import {HsPanelBaseComponent} from 'hslayers-ng/common/panels';
 import {HsSaveMapService} from '../save-map/save-map.service';
 import {HsStylerEditDialogComponent} from './edit-dialog/edit-dialog.component';
 import {HsStylerService} from 'hslayers-ng/components/styler';
@@ -27,8 +27,7 @@ import {HsUtilsService} from 'hslayers-ng/shared/utils';
 })
 export class HsStylerComponent
   extends HsPanelBaseComponent
-  implements OnDestroy
-{
+  implements OnDestroy {
   layerTitle: string;
   private end = new Subject<void>();
   uploaderVisible = false;

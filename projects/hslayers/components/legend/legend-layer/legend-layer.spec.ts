@@ -17,8 +17,8 @@ import {Vector as VectorSource} from 'ol/source';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsConfigMock} from 'hslayers-ng/config';
 import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
-import {HsLayoutService} from 'hslayers-ng/components/layout';
-import {HsLayoutServiceMock} from 'hslayers-ng/components/layout';
+import {HsLayoutService} from 'hslayers-ng/shared/layout';
+import {HsLayoutServiceMock} from 'hslayers-ng/shared/layout';
 import {HsLegendComponent} from '../legend.component';
 import {HsLegendLayerComponent} from './legend-layer.component';
 import {HsLegendLayerStaticComponent} from '../legend-layer-static/legend-layer-static.component';
@@ -26,11 +26,11 @@ import {HsLegendLayerVectorComponent} from '../legend-layer-vector/legend-layer-
 import {HsLegendService} from '../legend.service';
 import {HsMapService} from 'hslayers-ng/components/map';
 import {HsMapServiceMock} from 'hslayers-ng/components/map';
-import {HsPanelHelpersModule} from 'hslayers-ng/components/layout';
+import {HsPanelHelpersModule} from 'hslayers-ng/common/panels';
 import {HsUiExtensionsModule} from 'hslayers-ng/common/widgets';
 import {HsUtilsService} from 'hslayers-ng/shared/utils';
 import {HsUtilsServiceMock} from 'hslayers-ng/shared/utils';
-import {TranslateCustomPipe} from 'hslayers-ng/components/language';
+import {TranslateCustomPipe} from 'hslayers-ng/shared/language';
 import {getCluster, setCluster} from 'hslayers-ng/common/extensions';
 import {mockLayerUtilsService} from 'hslayers-ng/shared/utils';
 

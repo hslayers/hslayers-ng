@@ -17,9 +17,9 @@ import {HsCompositionsShareDialogComponent} from './dialogs/share-dialog.compone
 import {HsCompositionsWarningDialogComponent} from './dialogs/warning-dialog.component';
 import {HsLaymanModule} from 'hslayers-ng/common/layman';
 import {HsPagerModule} from 'hslayers-ng/common/pager';
-import {HsPanelHeaderComponent} from 'hslayers-ng/components/layout';
-import {HsPanelHelpersModule} from 'hslayers-ng/components/layout';
-import {TranslateCustomPipe} from 'hslayers-ng/components/language';
+import {HsPanelHeaderComponent} from 'hslayers-ng/common/panels';
+import {HsPanelHelpersModule} from 'hslayers-ng/common/panels';
+import {TranslateCustomPipe} from 'hslayers-ng/shared/language';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

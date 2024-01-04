@@ -4,7 +4,7 @@ import {lastValueFrom} from 'rxjs';
 import {
   CustomTranslationService,
   WebpackTranslateLoader,
-} from './custom-translate.service';
+} from '../../components/language/custom-translate.service';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsLogService} from 'hslayers-ng/shared/log';
 

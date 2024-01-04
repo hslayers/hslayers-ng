@@ -5,8 +5,8 @@ import {NgModule} from '@angular/core';
 import {DragDropModule} from '@angular/cdk/drag-drop';
 
 import {HsMapSwipeComponent} from './map-swipe.component';
-import {HsPanelHeaderComponent} from 'hslayers-ng/components/layout';
-import {TranslateCustomPipe} from 'hslayers-ng/components/language';
+import {HsPanelHeaderComponent} from 'hslayers-ng/common/panels';
+import {TranslateCustomPipe} from 'hslayers-ng/shared/language';
 
 @NgModule({
   declarations: [HsMapSwipeComponent],

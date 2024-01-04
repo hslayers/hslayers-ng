@@ -18,7 +18,7 @@ import {FileDescriptor} from './types/file-descriptor.type';
 import {HsAddDataCommonFileService} from '../common/common-file.service';
 import {HsAddDataCommonService} from '../common/common.service';
 import {HsConfig} from 'hslayers-ng/config';
-import {HsLayoutService} from 'hslayers-ng/components/layout';
+import {HsLayoutService} from 'hslayers-ng/shared/layout';
 import {HsUploadComponent} from 'hslayers-ng/common/upload';
 
 @Component({

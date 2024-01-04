@@ -7,10 +7,10 @@ import {Subject} from 'rxjs';
 import {debounceTime, takeUntil} from 'rxjs/operators';
 
 import {HsDrawService} from 'hslayers-ng/shared/draw';
-import {HsLayoutService} from 'hslayers-ng/components/layout';
+import {HsLayoutService} from 'hslayers-ng/shared/layout';
 import {HsLogService} from 'hslayers-ng/shared/log';
 import {HsMapService} from 'hslayers-ng/components/map';
-import {HsPanelBaseComponent} from 'hslayers-ng/components/layout';
+import {HsPanelBaseComponent} from 'hslayers-ng/common/panels';
 import {HsQueryBaseService} from './query-base.service';
 import {HsQueryVectorService} from './query-vector.service';
 

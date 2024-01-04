@@ -8,7 +8,7 @@ import {ImageWMS, Source, TileWMS, WMTS} from 'ol/source';
 import {WMSGetFeatureInfo} from 'ol/format';
 import {lastValueFrom} from 'rxjs';
 
-import {HsLanguageService} from 'hslayers-ng/components/language';
+import {HsLanguageService} from 'hslayers-ng/shared/language';
 import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
 import {HsLogService} from 'hslayers-ng/shared/log';
 import {HsMapService} from 'hslayers-ng/components/map';

@@ -27,16 +27,16 @@ import {StyleFunction, StyleLike, createDefaultStyle} from 'ol/style/Style';
 import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsConfirmDialogComponent} from 'hslayers-ng/common/confirm';
-import {HsDialogContainerService} from 'hslayers-ng/components/layout';
+import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
 import {HsEventBusService} from 'hslayers-ng/shared/core';
-import {HsLanguageService} from 'hslayers-ng/components/language';
+import {HsLanguageService} from 'hslayers-ng/shared/language';
 import {HsLayerSynchronizerService} from '../save-map/layer-synchronizer.service';
 import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
 import {HsLogService} from 'hslayers-ng/shared/log';
 import {HsMapService} from 'hslayers-ng/components/map';
 import {HsQueryVectorService} from '../query/query-vector.service';
 import {HsSaveMapService} from '../save-map/save-map.service';
-import {HsToastService} from 'hslayers-ng/components/layout';
+import {HsToastService} from 'hslayers-ng/common/toast';
 import {HsUtilsService} from 'hslayers-ng/shared/utils';
 import {
   awaitLayerSync,

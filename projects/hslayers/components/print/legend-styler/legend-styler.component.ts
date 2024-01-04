@@ -7,9 +7,9 @@ import {ColorSketchModule} from 'ngx-color/sketch';
 
 import {CANVAS_SIZES, POSITION_OPTIONS} from '../constants/position-options';
 import {HsColorPickerService} from '../../styler/symbolizers/color-picker/color-picker.service';
-import {HsLanguageService} from 'hslayers-ng/components/language';
+import {HsLanguageService} from 'hslayers-ng/shared/language';
 import {LegendObj} from '../types/legend-object.type';
-import {TranslateCustomPipe} from 'hslayers-ng/components/language';
+import {TranslateCustomPipe} from 'hslayers-ng/shared/language';
 
 @Component({
   selector: 'hs-print-legend-styler',

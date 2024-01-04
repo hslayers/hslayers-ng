@@ -4,11 +4,11 @@ import {Feature} from 'ol';
 
 import {HsConfig} from './hslayers-ng/config';
 import {HsCoreService} from 'hslayers-ng/shared/core';
-import {HsLanguageService} from 'hslayers-ng/components/language';
+import {HsLanguageService} from 'hslayers-ng/shared/language';
 import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
-import {HsLayoutService} from 'hslayers-ng/components/layout';
+import {HsLayoutService} from 'hslayers-ng/shared/layout';
 import {HsMapService} from './hslayers-ng/components/map';
-import {HsPanelBaseComponent} from 'hslayers-ng/components/layout';
+import {HsPanelBaseComponent} from 'hslayers-ng/common/panels';
 import {HsSidebarService} from 'hslayers-ng/components/sidebar';
 import {HsTripPlannerService, Waypoint} from './trip-planner.service';
 import {HsUtilsService} from 'hslayers-ng/shared/utils';

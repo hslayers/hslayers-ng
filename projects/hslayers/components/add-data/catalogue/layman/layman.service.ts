@@ -14,11 +14,11 @@ import {
 } from 'hslayers-ng/shared/endpoints';
 import {HsAddDataLayerDescriptor} from 'hslayers-ng/common/types';
 import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
-import {HsLanguageService} from 'hslayers-ng/components/language';
+import {HsLanguageService} from 'hslayers-ng/shared/language';
 import {HsLaymanLayerDescriptor} from 'hslayers-ng/components/save-map';
 import {HsLogService} from 'hslayers-ng/shared/log';
 import {HsMapService} from 'hslayers-ng/components/map';
-import {HsToastService} from 'hslayers-ng/components/layout';
+import {HsToastService} from 'hslayers-ng/common/toast';
 import {HsUtilsService} from 'hslayers-ng/shared/utils';
 import {addExtentFeature} from 'hslayers-ng/common/utils';
 @Injectable({providedIn: 'root'})

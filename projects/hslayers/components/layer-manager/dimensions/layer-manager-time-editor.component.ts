@@ -7,7 +7,7 @@ import {HsConfig} from 'hslayers-ng/config';
 import {HsDimensionTimeService} from 'hslayers-ng/shared/get-capabilities';
 import {HsEventBusService} from 'hslayers-ng/shared/core';
 import {HsLayerDescriptor} from 'hslayers-ng/common/types';
-import {HsLayoutService} from 'hslayers-ng/components/layout';
+import {HsLayoutService} from 'hslayers-ng/shared/layout';
 
 @Component({
   selector: 'hs-layer-manager-time-editor',

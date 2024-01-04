@@ -4,7 +4,7 @@ import {CookieService} from 'ngx-cookie-service';
 import {FormsModule} from '@angular/forms';
 import {HsHistoryListComponent} from './history-list.component';
 import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
-import {TranslateCustomPipe} from 'hslayers-ng/components/language';
+import {TranslateCustomPipe} from 'hslayers-ng/shared/language';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

@@ -13,12 +13,12 @@ import {transform} from 'ol/proj';
 
 import {HsConfig} from 'hslayers-ng/config';
 import {HsEventBusService} from 'hslayers-ng/shared/core';
-import {HsLanguageService} from 'hslayers-ng/components/language';
+import {HsLanguageService} from 'hslayers-ng/shared/language';
 import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
-import {HsLayoutService} from 'hslayers-ng/components/layout';
+import {HsLayoutService} from 'hslayers-ng/shared/layout';
 import {HsMapService} from 'hslayers-ng/components/map';
 import {HsShareUrlService} from 'hslayers-ng/components/share';
-import {HsToastService} from 'hslayers-ng/components/layout';
+import {HsToastService} from 'hslayers-ng/common/toast';
 import {HsUtilsService} from 'hslayers-ng/shared/utils';
 import {getHighlighted} from 'hslayers-ng/common/extensions';
 import {getTitle, setTitle} from 'hslayers-ng/common/extensions';

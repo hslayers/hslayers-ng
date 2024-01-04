@@ -10,7 +10,7 @@ import {
   TranslationChangeEvent,
 } from '@ngx-translate/core';
 
-import {CustomTranslationService} from './custom-translate.service';
+import {CustomTranslationService} from 'hslayers-ng/components/language';
 import {HsLanguageService} from './language.service';
 
 @Injectable()
