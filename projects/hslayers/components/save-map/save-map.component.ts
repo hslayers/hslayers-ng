@@ -11,7 +11,7 @@ import {HsLayoutService} from 'hslayers-ng/shared/layout';
 import {HsPanelBaseComponent} from 'hslayers-ng/common/panels';
 import {HsSaveMapDialogSpawnerService} from './dialog-spawner.service';
 import {HsSaveMapManagerService} from './save-map-manager.service';
-import {HsSaveMapService} from './save-map.service';
+import {HsSaveMapService} from 'hslayers-ng/shared/save-map';
 import {HsSidebarService} from 'hslayers-ng/components/sidebar';
 @Component({
   selector: 'hs-save-map',

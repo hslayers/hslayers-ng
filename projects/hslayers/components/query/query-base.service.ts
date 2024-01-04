@@ -19,7 +19,7 @@ import {HsEventBusService} from 'hslayers-ng/shared/core';
 import {HsLanguageService} from 'hslayers-ng/shared/language';
 import {HsLayoutService} from 'hslayers-ng/shared/layout';
 import {HsMapService} from 'hslayers-ng/shared/map';
-import {HsSaveMapService} from '../save-map/save-map.service';
+import {HsSaveMapService} from 'hslayers-ng/shared/save-map';
 import {HsUtilsService} from 'hslayers-ng/shared/utils';
 
 @Injectable({

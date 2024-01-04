@@ -29,7 +29,7 @@ import {HsUploadComponent} from 'hslayers-ng/common/upload';
 import {HsUtilsService} from 'hslayers-ng/shared/utils';
 import {HsUtilsServiceMock} from 'hslayers-ng/shared/utils';
 import {TranslateCustomPipe} from 'hslayers-ng/shared/language';
-import {getTitle} from '../hslayers-ng/common/extensions';
+import {getTitle} from 'hslayers-ng/common/extensions';
 import {mockLayerUtilsService} from 'hslayers-ng/shared/utils';
 
 class HsCommonLaymanServiceMock {

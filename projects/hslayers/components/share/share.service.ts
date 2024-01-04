@@ -2,10 +2,9 @@ import 'share-api-polyfill';
 
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Injectable} from '@angular/core';
-import {Layer} from 'ol/layer';
 import {lastValueFrom} from 'rxjs';
 
-import {CompoData} from '../save-map/types/compo-data.type';
+import {CompoData} from 'hslayers-ng/components/save-map';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsEndpoint} from 'hslayers-ng/shared/endpoints';
 import {HsEventBusService} from 'hslayers-ng/shared/core';
@@ -13,12 +12,12 @@ import {HsLanguageService} from 'hslayers-ng/shared/language';
 import {HsLayoutService} from 'hslayers-ng/shared/layout';
 import {HsLogService} from 'hslayers-ng/shared/log';
 import {HsMapService} from 'hslayers-ng/shared/map';
-import {HsSaveMapService} from '../save-map/save-map.service';
+import {HsSaveMapService} from 'hslayers-ng/shared/save-map';
 import {HsShareThumbnailService} from './share-thumbnail.service';
 import {HsShareUrlService} from './share-url.service';
 import {HsToastService} from 'hslayers-ng/common/toast';
 import {HsUtilsService} from 'hslayers-ng/shared/utils';
-import {MapComposition} from '../save-map/types/map-composition.type';
+import {MapComposition} from 'hslayers-ng/common/types';
 import {getShowInLayerManager} from 'hslayers-ng/common/extensions';
 
 @Injectable({

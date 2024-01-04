@@ -1,6 +1,3 @@
-import {Injectable} from '@angular/core';
-import {SerializedStyle} from './types/serialized-style.type';
-
 import {Circle, Icon, RegularShape, Style} from 'ol/style';
 import {
   Cluster,
@@ -17,22 +14,24 @@ import {GeoJSON} from 'ol/format';
 import {GeoJSONFeatureCollection} from 'ol/format/GeoJSON';
 import {Geometry} from 'ol/geom';
 import {Image as ImageLayer, Tile, Vector as VectorLayer} from 'ol/layer';
+import {Injectable} from '@angular/core';
 import {Layer} from 'ol/layer';
+import {SerializedStyle} from 'hslayers-ng/common/types';
 import {Vector as VectorSource} from 'ol/source';
 import {transformExtent} from 'ol/proj';
 
 import {BoundingBoxObject} from 'hslayers-ng/common/types';
-import {CompoData} from './types/compo-data.type';
+import {CompoData} from '../../components/save-map/types/compo-data.type';
 import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
 import {HsLogService} from 'hslayers-ng/shared/log';
 import {HsMapService} from 'hslayers-ng/shared/map';
 import {HsShareThumbnailService} from 'hslayers-ng/components/share';
 import {HsUtilsService} from 'hslayers-ng/shared/utils';
-import {LayerJSON} from './types/layer-json.type';
-import {MapComposition} from './types/map-composition.type';
-import {SerializedImage} from './types/serialized-image.type';
-import {StatusData} from './types/status-data.type';
-import {UserData} from './types/user-data.type';
+import {LayerJSON} from 'hslayers-ng/common/types';
+import {MapComposition} from 'hslayers-ng/common/types';
+import {SerializedImage} from 'hslayers-ng/common/types';
+import {StatusData} from '../../components/save-map/types/status-data.type';
+import {UserData} from 'hslayers-ng/common/types';
 import {
   getAttribution,
   getBase,

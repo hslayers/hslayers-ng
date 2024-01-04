@@ -14,7 +14,7 @@ import {HsEventBusService} from 'hslayers-ng/shared/core';
 import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
 import {HsLayoutService} from 'hslayers-ng/shared/layout';
 import {HsPanelBaseComponent} from 'hslayers-ng/common/panels';
-import {HsSaveMapService} from '../save-map/save-map.service';
+import {HsSaveMapService} from 'hslayers-ng/shared/save-map';
 import {HsStylerEditDialogComponent} from './edit-dialog/edit-dialog.component';
 import {HsStylerService} from 'hslayers-ng/components/styler';
 import {HsUploadedFiles} from 'hslayers-ng/common/upload';

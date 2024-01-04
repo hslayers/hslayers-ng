@@ -5,9 +5,18 @@ import {Geometry} from 'ol/geom';
 import {Group, Layer} from 'ol/layer';
 import {Source} from 'ol/source';
 
+import {
+  Attribution,
+  Definition,
+  Dimension,
+  DimensionsList,
+  Editor,
+  Metadata,
+  accessRightsModel,
+  popUp,
+} from 'hslayers-ng/common/types';
 import {DOMFeatureLink} from '../types/dom-feature-link.type';
 import {HsLaymanLayerDescriptor} from 'hslayers-ng/common/types';
-import {accessRightsModel} from 'hslayers-ng/common/types';
 
 const ABSTRACT = 'abstract';
 const ACCESS_RIGHTS = 'access_rights';
@@ -58,42 +67,6 @@ const WFS_URL = 'wfsUrl';
 const WORKSPACE = 'workspace';
 export const DOM_FEATURE_LINKS = 'domFeatureLinks';
 const WMS_ORIGINAL_EXTENT = 'wmsOriginalExtent';
-
-export type Attribution = {
-  onlineResource?: string;
-  title?: string;
-  logoUrl?: {
-    format?: string;
-    onlineResource?: string;
-  };
-  /**
-   * If set to true even if get capabilities receives some attribution,
-   * it will not be updated and existing hardcoded attribution will be used
-   */
-  locked?: boolean;
-};
-export type Definition = {
-  format?: string;
-  url?: string;
-};
-export type Editor = {
-  editable?: boolean;
-  /**
-   * Object of key value pairs where key is the attribute name and value
-   * is the default attribute value to set
-   */
-  defaultAttributes?: any;
-};
-export type popUpAttribute = {
-  attribute: string;
-  displayFunction?: any;
-  label?: string;
-};
-export type popUp = {
-  attributes?: Array<popUpAttribute | string>;
-  widgets?: string[];
-  displayFunction?: any;
-};
 
 export function getAccessRights(layer: Layer<Source>): accessRightsModel {
   return layer.get(ACCESS_RIGHTS);
@@ -193,24 +166,6 @@ export function setDefinition(
 
 export function getDefinition(layer: Layer<Source>): Definition {
   return layer.get(DEFINITION);
-}
-
-export interface Dimension {
-  label: string;
-  onlyInEditor?: boolean;
-  type?: 'datetime' | 'date';
-  value?: any;
-  default?: any;
-  units?: string;
-  /**
-   * Can be represented either by an array of values or, in case of time, as a ISO8601 time definition
-   */
-  values?: any[] | string;
-  availability?(): boolean;
-}
-
-export interface DimensionsList {
-  [key: string]: Dimension;
 }
 
 /**
@@ -473,18 +428,6 @@ export function setMaxResolutionDenominator(
 export function getMaxResolutionDenominator(layer: Layer<Source>): number {
   return layer.get(MAX_RESOLUTION_DENOMINATOR);
 }
-
-export type MetadataUrl = {
-  type?: string;
-  format?: string;
-  onlineResource?: string;
-};
-
-export type Metadata = {
-  id?: string | number;
-  urls?: MetadataUrl[];
-  styles?: any;
-};
 
 /**
  * Store metadata which were parsed from layer definition in composition json.
