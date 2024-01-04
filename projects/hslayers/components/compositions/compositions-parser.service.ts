@@ -15,7 +15,7 @@ import {Source} from 'ol/source';
 import {transformExtent} from 'ol/proj';
 
 import {CswLayersDialogComponent} from './dialogs/csw-layers-dialog/csw-layers-dialog.component';
-import {DuplicateHandling, HsMapService} from 'hslayers-ng/components/map';
+import {DuplicateHandling, HsMapService} from 'hslayers-ng/shared/map';
 import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
 import {HsCompositionsLayerParserService} from './layer-parser/layer-parser.service';
 import {HsCompositionsWarningDialogComponent} from './dialogs/warning-dialog.component';

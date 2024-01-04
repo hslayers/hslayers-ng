@@ -4,3 +4,4 @@ export * from './share.component';
 export * from './share.module';
 export * from './share.service';
 export * from './share-thumbnail.service';
+export * from './share-url.service.mock';

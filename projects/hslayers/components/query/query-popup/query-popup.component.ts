@@ -13,7 +13,7 @@ import {HsConfig} from 'hslayers-ng/config';
 import {HsDialogComponent} from 'hslayers-ng/common/dialogs';
 import {HsDialogItem} from 'hslayers-ng/common/dialogs';
 import {HsEventBusService} from 'hslayers-ng/shared/core';
-import {HsMapService} from 'hslayers-ng/components/map';
+import {HsMapService} from 'hslayers-ng/shared/map';
 import {HsQueryPopupServiceModel} from '../query-popup.service.model';
 import {HsQueryPopupWidgetContainerService} from '../query-popup-widget-container.service';
 import {getFeatures} from 'hslayers-ng/common/extensions';

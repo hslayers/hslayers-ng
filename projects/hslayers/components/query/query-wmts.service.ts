@@ -5,7 +5,7 @@ import {Layer} from 'ol/layer';
 import {WMTS} from 'ol/source';
 import {transform} from 'ol/proj';
 
-import {HsMapService} from 'hslayers-ng/components/map';
+import {HsMapService} from 'hslayers-ng/shared/map';
 import {HsUtilsService} from 'hslayers-ng/shared/utils';
 import {getInfoFormat} from 'hslayers-ng/common/extensions';
 

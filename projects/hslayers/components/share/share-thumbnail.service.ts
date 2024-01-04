@@ -2,7 +2,7 @@ import {Injectable, Renderer2, RendererFactory2} from '@angular/core';
 
 import {HsConfig} from 'hslayers-ng/config';
 import {HsLogService} from 'hslayers-ng/shared/log';
-import {HsMapService} from 'hslayers-ng/components/map';
+import {HsMapService} from 'hslayers-ng/shared/map';
 
 @Injectable({
   providedIn: 'root',

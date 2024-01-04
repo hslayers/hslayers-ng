@@ -13,7 +13,7 @@ import {HsLayerEditorWidgetBaseComponent} from '../layer-editor-widget-base.comp
 import {HsLayerSelectorService} from '../../editor/layer-selector.service';
 import {HsLayerShiftingService} from 'hslayers-ng/shared/layer-shifting';
 import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
-import {HsMapService} from 'hslayers-ng/components/map';
+import {HsMapService} from 'hslayers-ng/shared/map';
 import {HsUtilsService} from 'hslayers-ng/shared/utils';
 import {TranslateCustomPipe} from 'hslayers-ng/shared/language';
 

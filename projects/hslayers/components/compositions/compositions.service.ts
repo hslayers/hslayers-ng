@@ -5,7 +5,7 @@ import Feature from 'ol/Feature';
 import {Geometry} from 'ol/geom';
 import {Observable, Subject, lastValueFrom} from 'rxjs';
 
-import {DuplicateHandling, HsMapService} from 'hslayers-ng/components/map';
+import {DuplicateHandling, HsMapService} from 'hslayers-ng/shared/map';
 import {HS_PRMS} from 'hslayers-ng/components/share';
 import {HsCommonEndpointsService} from 'hslayers-ng/shared/endpoints';
 import {HsCompositionsLaymanService} from './endpoints/compositions-layman.service';

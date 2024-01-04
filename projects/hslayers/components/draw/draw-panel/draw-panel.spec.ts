@@ -27,8 +27,8 @@ import {HsLaymanBrowserService} from '../../add-data/catalogue/layman/layman.ser
 import {HsLaymanService} from 'hslayers-ng/shared/save-map';
 import {HsLayoutService} from 'hslayers-ng/shared/layout';
 import {HsLayoutServiceMock} from 'hslayers-ng/shared/layout';
-import {HsMapService} from 'hslayers-ng/components/map';
-import {HsMapServiceMock} from 'hslayers-ng/components/map';
+import {HsMapService} from 'hslayers-ng/shared/map';
+import {HsMapServiceMock} from 'hslayers-ng/shared/map';
 import {HsQueryBaseService} from '../../query/query-base.service';
 import {HsQueryVectorService} from '../../query/query-vector.service';
 import {HsUtilsService} from 'hslayers-ng/shared/utils';

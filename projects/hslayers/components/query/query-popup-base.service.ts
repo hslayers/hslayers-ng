@@ -4,7 +4,7 @@ import {ReplaySubject} from 'rxjs';
 import {Feature} from 'ol';
 import {Geometry} from 'ol/geom';
 
-import {HsMapService} from 'hslayers-ng/components/map';
+import {HsMapService} from 'hslayers-ng/shared/map';
 import {HsPanelItem} from '../../common/panels/panel-item';
 import {HsQueryPopupData} from './popup-data';
 import {HsQueryPopupWidgetContainerService} from './query-popup-widget-container.service';

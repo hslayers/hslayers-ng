@@ -26,7 +26,7 @@ import {HsAddDataVectorService} from '../../add-data/vector/vector.service';
 import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
 import {HsLanguageService} from 'hslayers-ng/shared/language';
 import {HsLogService} from 'hslayers-ng/shared/log';
-import {HsMapService} from 'hslayers-ng/components/map';
+import {HsMapService} from 'hslayers-ng/shared/map';
 import {HsStylerService} from 'hslayers-ng/components/styler';
 import {HsToastService} from 'hslayers-ng/common/toast';
 import {HsVectorLayerOptions} from '../../add-data/vector/vector-layer-options.type';

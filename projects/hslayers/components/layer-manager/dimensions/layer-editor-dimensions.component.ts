@@ -9,7 +9,7 @@ import {HsDimensionTimeService} from 'hslayers-ng/shared/get-capabilities';
 import {HsEventBusService} from 'hslayers-ng/shared/core';
 import {HsLayerEditorWidgetBaseComponent} from '../widgets/layer-editor-widget-base.component';
 import {HsLayerSelectorService} from '../editor/layer-selector.service';
-import {HsMapService} from 'hslayers-ng/components/map';
+import {HsMapService} from 'hslayers-ng/shared/map';
 import {HsUtilsService} from 'hslayers-ng/shared/utils';
 
 @Component({
