@@ -3,7 +3,7 @@ import {Component, Input, OnInit, ViewRef} from '@angular/core';
 import {HsDialogComponent} from 'hslayers-ng/common/dialogs';
 import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
 import {HsDrawService} from 'hslayers-ng/shared/draw';
-import {HsMapService} from 'hslayers-ng/components/map';
+import {HsMapService} from 'hslayers-ng/shared/map';
 import {accessRightsModel} from 'hslayers-ng/common/types';
 import {
   awaitLayerSync,

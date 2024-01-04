@@ -15,7 +15,7 @@ import {
 } from 'hslayers-ng/shared/layer-shifting';
 import {HsLayoutService} from 'hslayers-ng/shared/layout';
 import {HsLogService} from 'hslayers-ng/shared/log';
-import {HsMapService} from 'hslayers-ng/components/map';
+import {HsMapService} from 'hslayers-ng/shared/map';
 import {HsShareUrlService} from 'hslayers-ng/components/share';
 import {HsToastService} from 'hslayers-ng/common/toast';
 import {SwipeControl} from './swipe-control/swipe.control';

@@ -14,7 +14,7 @@ import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
 import {HsLayoutService} from 'hslayers-ng/shared/layout';
 import {HsLegendDescriptor} from 'hslayers-ng/components/legend';
 import {HsLegendService} from 'hslayers-ng/components/legend';
-import {HsMapService} from 'hslayers-ng/components/map';
+import {HsMapService} from 'hslayers-ng/shared/map';
 import {HsWmsGetCapabilitiesService} from 'hslayers-ng/shared/get-capabilities';
 import {
   getCluster,

@@ -11,7 +11,7 @@ import {get, transformExtent} from 'ol/proj';
 
 import {AddLayersRecursivelyOptions} from '../types/recursive-options.type';
 import {CapabilitiesResponseWrapper} from 'hslayers-ng/shared/get-capabilities';
-import {DuplicateHandling, HsMapService} from 'hslayers-ng/components/map';
+import {DuplicateHandling, HsMapService} from 'hslayers-ng/shared/map';
 import {HsAddDataCommonService} from '../../common/common.service';
 import {HsAddDataService} from '../../add-data.service';
 import {HsAddDataUrlService} from '../add-data-url.service';

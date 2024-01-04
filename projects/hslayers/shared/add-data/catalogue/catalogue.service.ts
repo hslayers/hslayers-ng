@@ -20,7 +20,7 @@ import {HsConfig} from 'hslayers-ng/config';
 import {HsEndpoint} from 'hslayers-ng/shared/endpoints';
 import {HsEventBusService} from 'hslayers-ng/shared/core';
 import {HsLayoutService} from 'hslayers-ng/shared/layout';
-import {HsMapService} from 'hslayers-ng/components/map';
+import {HsMapService} from 'hslayers-ng/shared/map';
 import {HsUtilsService} from 'hslayers-ng/shared/utils';
 
 //TODO: Find a better name and possibly turn it into a public interface

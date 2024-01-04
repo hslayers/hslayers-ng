@@ -35,7 +35,7 @@ import {HsEndpoint} from 'hslayers-ng/shared/endpoints';
 import {HsLanguageService} from 'hslayers-ng/shared/language';
 import {HsLaymanLayerDescriptor} from 'hslayers-ng/common/types';
 import {HsLogService} from 'hslayers-ng/shared/log';
-import {HsMapService} from 'hslayers-ng/components/map';
+import {HsMapService} from 'hslayers-ng/shared/map';
 import {HsSaverService} from 'hslayers-ng/components/save-map';
 import {HsToastService} from 'hslayers-ng/common/toast';
 import {HsUtilsService} from 'hslayers-ng/shared/utils';

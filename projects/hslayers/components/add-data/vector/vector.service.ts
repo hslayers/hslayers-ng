@@ -12,7 +12,7 @@ import {HsAddDataService} from '../add-data.service';
 import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
 import {HsLaymanService} from 'hslayers-ng/shared/save-map';
 import {HsLogService} from 'hslayers-ng/shared/log';
-import {HsMapService} from 'hslayers-ng/components/map';
+import {HsMapService} from 'hslayers-ng/shared/map';
 import {HsStylerService} from 'hslayers-ng/components/styler';
 import {HsUtilsService} from 'hslayers-ng/shared/utils';
 import {HsVectorLayerOptions} from './vector-layer-options.type';

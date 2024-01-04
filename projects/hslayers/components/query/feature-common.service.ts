@@ -8,7 +8,7 @@ import {Source, Vector as VectorSource} from 'ol/source';
 
 import {HsLanguageService} from 'hslayers-ng/shared/language';
 import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
-import {HsMapService} from 'hslayers-ng/components/map';
+import {HsMapService} from 'hslayers-ng/shared/map';
 import {HsQueryVectorService} from './query-vector.service';
 import {HsToastService} from 'hslayers-ng/common/toast';
 import {getTitle} from 'hslayers-ng/common/extensions';

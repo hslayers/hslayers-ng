@@ -9,7 +9,7 @@ import {Vector as VectorLayer} from 'ol/layer';
 
 import {HsLayoutService} from 'hslayers-ng/shared/layout';
 import {HsLogService} from 'hslayers-ng/shared/log';
-import {HsMapService} from 'hslayers-ng/components/map';
+import {HsMapService} from 'hslayers-ng/shared/map';
 import {HsUtilsService} from 'hslayers-ng/shared/utils';
 import {
   setRemovable,

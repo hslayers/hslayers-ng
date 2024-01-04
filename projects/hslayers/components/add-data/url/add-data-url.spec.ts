@@ -18,7 +18,7 @@ import {HsLanguageModule} from 'hslayers-ng/components/language';
 import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
 import {HsLayoutService} from 'hslayers-ng/shared/layout';
 import {HsLayoutServiceMock} from 'hslayers-ng/shared/layout';
-import {HsMapService, HsMapServiceMock} from 'hslayers-ng/components/map';
+import {HsMapService, HsMapServiceMock} from 'hslayers-ng/shared/map';
 import {HsUrlArcGisModule} from './arcgis/arcgis.module';
 import {HsUrlGeoSparqlModule} from './geosparql/geosparql.module';
 import {HsUrlWfsModule} from './wfs/wfs.module';

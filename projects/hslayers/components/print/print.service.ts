@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 
 import {from, takeUntil} from 'rxjs';
 
-import {HsMapService} from 'hslayers-ng/components/map';
+import {HsMapService} from 'hslayers-ng/shared/map';
 import {HsPrintImprintService} from './print-imprint.service';
 import {HsPrintLegendService} from './print-legend.service';
 import {HsPrintScaleService} from './print-scale.service';

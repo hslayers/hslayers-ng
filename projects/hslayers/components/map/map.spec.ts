@@ -21,12 +21,12 @@ import {HsLayoutService} from 'hslayers-ng/shared/layout';
 import {HsLayoutServiceMock} from 'hslayers-ng/shared/layout';
 import {HsMapComponent} from './map.component';
 import {HsMapDirective} from './map.directive';
-import {HsMapService} from './map.service';
+import {HsMapService} from 'hslayers-ng/shared/map';
 import {HsShareUrlService} from 'hslayers-ng/components/share';
-import {HsShareUrlServiceMock} from 'hslayers-ng/components/share.mock';
+import {HsShareUrlServiceMock} from 'hslayers-ng/components/share';
 import {HsUtilsService} from 'hslayers-ng/shared/utils';
 import {HsUtilsServiceMock} from 'hslayers-ng/shared/utils';
-import {mockLanguageService} from 'hslayers-ng/components/language.mock';
+import {mockLanguageService} from 'hslayers-ng/shared/language';
 
 class emptyMock {
   constructor() {}
