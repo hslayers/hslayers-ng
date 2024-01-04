@@ -1,4 +1,4 @@
-import {StatusStateType} from '../types/status-state.type';
+import {StatusStateType} from './status-state.type';
 
 export interface HsLaymanLayerDescriptor {
   uuid?: string;

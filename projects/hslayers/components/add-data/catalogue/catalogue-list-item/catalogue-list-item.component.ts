@@ -12,7 +12,7 @@ import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
 import {HsEndpoint} from 'hslayers-ng/shared/endpoints';
 import {HsLanguageService} from 'hslayers-ng/shared/language';
 import {HsLaymanBrowserService} from '../layman/layman.service';
-import {HsLaymanService} from 'hslayers-ng/components/save-map';
+import {HsLaymanService} from 'hslayers-ng/shared/save-map';
 import {HsLogService} from 'hslayers-ng/shared/log';
 import {HsSetPermissionsDialogComponent} from 'hslayers-ng/common/layman';
 import {HsUtilsService} from 'hslayers-ng/shared/utils';

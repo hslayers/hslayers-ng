@@ -3,7 +3,7 @@ import {HsEventBusService} from './event-bus.service';
 import {HsLayoutService} from 'hslayers-ng/shared/layout';
 import {HsLogService} from 'hslayers-ng/shared/log';
 import {HsMapService} from 'hslayers-ng/components/map';
-import {HsUtilsService} from 'hslayers-ng/shared/utils/';
+import {HsUtilsService} from 'hslayers-ng/shared/utils';
 import {Injectable} from '@angular/core';
 
 import {HsLanguageService} from 'hslayers-ng/shared/language';

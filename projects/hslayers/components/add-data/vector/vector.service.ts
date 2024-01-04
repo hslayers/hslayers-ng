@@ -10,10 +10,7 @@ import {PROJECTIONS as epsg4326Aliases} from 'ol/proj/epsg4326';
 import {HsAddDataCommonFileService} from '../common/common-file.service';
 import {HsAddDataService} from '../add-data.service';
 import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
-import {
-  HsLaymanService,
-  UpsertLayerObject,
-} from 'hslayers-ng/components/save-map';
+import {HsLaymanService} from 'hslayers-ng/shared/save-map';
 import {HsLogService} from 'hslayers-ng/shared/log';
 import {HsMapService} from 'hslayers-ng/components/map';
 import {HsStylerService} from 'hslayers-ng/components/styler';
@@ -22,6 +19,7 @@ import {HsVectorLayerOptions} from './vector-layer-options.type';
 import {OverwriteResponse} from '../enums/overwrite-response';
 import {PostPatchLayerResponse} from 'hslayers-ng/common/layman';
 import {SparqlJson} from 'hslayers-ng/common/layers';
+import {UpsertLayerObject} from 'hslayers-ng/common/types';
 import {VectorDataObject} from './vector-data.type';
 import {VectorLayerDescriptor} from './vector-descriptors/vector-layer-descriptor';
 import {VectorSourceDescriptor} from './vector-descriptors/vector-source-descriptor';
