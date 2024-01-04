@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {HsConfirmDialogComponent} from 'hslayers-ng/common/confirm';
-import {HsDialogContainerService} from 'hslayers-ng/components/layout';
+import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
 
 @Component({
   selector: 'hs-styles-edit-dialog',

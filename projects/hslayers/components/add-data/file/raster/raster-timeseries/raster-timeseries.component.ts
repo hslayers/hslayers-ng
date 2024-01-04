@@ -16,7 +16,7 @@ import {takeUntil} from 'rxjs/operators';
 import {FileDataObject} from '../../types/file-data-object.type';
 import {FileDescriptor} from '../../types/file-descriptor.type';
 import {HsAddDataCommonFileService} from '../../../common/common-file.service';
-import {HsToastService} from 'hslayers-ng/components/layout';
+import {HsToastService} from 'hslayers-ng/common/toast';
 
 @Component({
   selector: 'hs-file-raster-timeseries',

@@ -3,12 +3,12 @@ import {CommonModule} from '@angular/common';
 
 import {NgbDropdown, NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
 
-import {HsGuiOverlayBaseComponent} from '../../layout/panels/gui-overlay-base.component';
+import {HsGuiOverlayBaseComponent} from '../../../common/panels/gui-overlay-base.component';
 import {HsLayerDescriptor} from 'hslayers-ng/common/types';
 import {HsLayerManagerService} from 'hslayers-ng/shared/layer-manager'
 import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
-import {HsLayoutService} from 'hslayers-ng/components/layout';
-import {TranslateCustomPipe} from 'hslayers-ng/components/language';
+import {HsLayoutService} from 'hslayers-ng/shared/layout';
+import {TranslateCustomPipe} from 'hslayers-ng/shared/language';
 import {getBase, getGreyscale} from 'hslayers-ng/common/extensions';
 
 @Component({

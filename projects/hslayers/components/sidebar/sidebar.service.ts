@@ -4,8 +4,8 @@ import {Injectable} from '@angular/core';
 import {HsButton} from './button.interface';
 import {HsConfig} from './hslayers-ng/config';
 import {HsCoreService} from 'hslayers-ng/shared/core';
-import {HsLanguageService} from 'hslayers-ng/components/language';
-import {HsLayoutService} from 'hslayers-ng/components/layout';
+import {HsLanguageService} from 'hslayers-ng/shared/language';
+import {HsLayoutService} from 'hslayers-ng/shared/layout';
 import {HsUtilsService} from 'hslayers-ng/shared/utils';
 
 @Injectable({

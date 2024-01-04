@@ -18,8 +18,8 @@ import {HsFiltersComponent} from './filters/filters.component';
 import {HsIconSymbolizerComponent} from './symbolizers/icon-symbolizer/icon-symbolizer.component';
 import {HsLineSymbolizerComponent} from './symbolizers/line-symbolizer/line-symbolizer.component';
 import {HsMarkSymbolizerComponent} from './symbolizers/mark-symbolizer/mark-symbolizer.component';
-import {HsPanelHeaderComponent} from 'hslayers-ng/components/layout';
-import {HsPanelHelpersModule} from 'hslayers-ng/components/layout';
+import {HsPanelHeaderComponent} from 'hslayers-ng/common/panels';
+import {HsPanelHelpersModule} from 'hslayers-ng/common/panels';
 import {HsRuleComponent} from './rule/rule.component';
 import {HsRuleListItemComponent} from './rule/rule-list-item/rule-list-item.component';
 import {HsScaleDenominatorComponent} from './filters/scale-denominator.component';
@@ -32,7 +32,7 @@ import {HsSymbolizerComponent} from './symbolizers/symbolizer.component';
 import {HsSymbolizerListItemComponent} from './symbolizers/symbolizer-list-item/symbolizer-list-item.component';
 import {HsTextSymbolizerComponent} from './symbolizers/text-symbolizer/text-symbolizer.component';
 import {HsUploadModule} from 'hslayers-ng/common/upload';
-import {TranslateCustomPipe} from 'hslayers-ng/components/language';
+import {TranslateCustomPipe} from 'hslayers-ng/shared/language';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

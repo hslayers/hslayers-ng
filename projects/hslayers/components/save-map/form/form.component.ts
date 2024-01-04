@@ -3,7 +3,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Observable, Subject, map, startWith, takeUntil} from 'rxjs';
 
 import {HsEndpoint} from 'hslayers-ng/shared/endpoints';
-import {HsLayoutService} from 'hslayers-ng/components/layout';
+import {HsLayoutService} from 'hslayers-ng/shared/layout';
 import {HsSaveMapManagerService} from '../save-map-manager.service';
 import {HsUtilsService} from 'hslayers-ng/shared/utils';
 import {StatusData} from '../../save-map/types/status-data.type';

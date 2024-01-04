@@ -8,7 +8,7 @@ import {transform} from 'ol/proj';
 
 import {HsCesiumConfig} from 'hslayers-cesium/src/hscesium-config.service';
 import {HsConfig} from 'hslayers-ng/config.service';
-import {HsLayoutService} from 'hslayers-ng/components/layout/layout.service';
+import {HsLayoutService} from 'hslayers-ng/shared/layout';
 import {HslayersCesiumComponent} from 'hslayers-cesium/src/hscesium.component';
 
 @Component({

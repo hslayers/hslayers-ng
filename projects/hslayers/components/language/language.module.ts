@@ -11,8 +11,8 @@ import {
 import {HsConfig} from 'hslayers-ng/config';
 import {HsLanguageComponent} from './language.component';
 import {HsLogService} from 'hslayers-ng/shared/log';
-import {HsPanelHeaderComponent} from 'hslayers-ng/components/layout';
-import {HsPanelHelpersModule} from 'hslayers-ng/components/layout';
+import {HsPanelHeaderComponent} from 'hslayers-ng/common/panels';
+import {HsPanelHelpersModule} from 'hslayers-ng/common/panels';
 import {WebpackTranslateLoader} from './custom-translate.service';
 
 export function getWebpackTranslateLoader(

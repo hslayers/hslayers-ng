@@ -4,7 +4,7 @@ import {lastValueFrom, takeUntil} from 'rxjs';
 
 import {HsAddDataService} from '../../add-data.service';
 import {HsAddDataUrlService} from '../add-data-url.service';
-import {HsLanguageService} from 'hslayers-ng/components/language';
+import {HsLanguageService} from 'hslayers-ng/shared/language';
 import {HsLogService} from 'hslayers-ng/shared/log';
 import {UrlDataObject} from '../types/data-object.type';
 

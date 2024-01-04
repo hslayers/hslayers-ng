@@ -11,7 +11,7 @@ import {
   HsDialogComponent,
   HsDialogContainerService,
   HsDialogItem,
-} from 'hslayers-ng/components/layout';
+} from 'hslayers-ng/common/dialogs';
 import {HsEndpoint} from 'hslayers-ng/shared/endpoints';
 import {
   HsLaymanService,
@@ -24,7 +24,8 @@ import {PostPatchLayerResponse} from '../types/post-patch-layer-response.type';
   templateUrl: './set-permissions.component.html',
 })
 export class HsSetPermissionsDialogComponent
-  implements HsDialogComponent, OnInit {
+  implements HsDialogComponent, OnInit
+{
   dialogItem: HsDialogItem;
   viewRef: ViewRef;
   currentAccessRights: accessRightsModel = {

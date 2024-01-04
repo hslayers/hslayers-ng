@@ -20,13 +20,13 @@ import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
 import {HsCompositionsLayerParserService} from './layer-parser/layer-parser.service';
 import {HsCompositionsWarningDialogComponent} from './dialogs/warning-dialog.component';
 import {HsConfig} from 'hslayers-ng/config';
-import {HsDialogContainerService} from 'hslayers-ng/components/layout';
+import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
 import {HsEventBusService} from 'hslayers-ng/shared/core';
-import {HsLanguageService} from 'hslayers-ng/components/language';
+import {HsLanguageService} from 'hslayers-ng/shared/language';
 import {HsLayerManagerService} from 'hslayers-ng/shared/layer-manager';
-import {HsLayoutService} from 'hslayers-ng/components/layout';
+import {HsLayoutService} from 'hslayers-ng/shared/layout';
 import {HsLogService} from 'hslayers-ng/shared/log';
-import {HsToastService} from 'hslayers-ng/components/layout';
+import {HsToastService} from 'hslayers-ng/common/toast';
 import {HsUtilsService, generateUuid} from 'hslayers-ng/shared/utils';
 import {LaymanCompositionDescriptor} from './models/composition-descriptor.model';
 import {

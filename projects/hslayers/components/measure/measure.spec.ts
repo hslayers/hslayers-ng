@@ -9,15 +9,15 @@ import {HttpClientTestingModule} from '@angular/common/http/testing';
 
 import {HsConfig} from './hslayers-ng/config';
 import {HsConfigMock} from 'hslayers-ng/config';
-import {HsLayoutService} from 'hslayers-ng/components/layout';
-import {HsLayoutServiceMock} from 'hslayers-ng/components/layout';
+import {HsLayoutService} from 'hslayers-ng/shared/layout';
+import {HsLayoutServiceMock} from 'hslayers-ng/shared/layout';
 import {HsMapService} from 'hslayers-ng/components/map';
 import {HsMapServiceMock} from 'hslayers-ng/components/map';
 import {HsMeasureComponent} from './measure.component';
 import {HsMeasureService} from './measure.service';
 import {HsUtilsService} from 'hslayers-ng/shared/utils';
 import {HsUtilsServiceMock} from 'hslayers-ng/shared/utils';
-import {TranslateCustomPipe} from 'hslayers-ng/components/language';
+import {TranslateCustomPipe} from 'hslayers-ng/shared/language';
 
 describe('HsMeasure', () => {
   beforeAll(() => {

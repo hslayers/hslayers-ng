@@ -4,9 +4,8 @@ import {ElementRef, Injectable, Type, ViewContainerRef} from '@angular/core';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsEventBusService} from 'hslayers-ng/shared/core';
 import {HsLogService} from 'hslayers-ng/shared/log';
-import {HsOverlayPanelContainerService} from './overlay-panel-container.service';
-import {HsPanelComponent} from './panels/panel-component.interface';
-import {HsPanelContainerService} from './panels/panel-container.service';
+import {HsOverlayPanelContainerService} from '../../components/layout/overlay-panel-container.service';
+import {HsPanelContainerService} from 'hslayers-ng/shared/layout';
 
 export class HsLayoutParams {
   /**

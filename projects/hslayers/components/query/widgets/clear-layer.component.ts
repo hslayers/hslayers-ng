@@ -4,8 +4,8 @@ import {Layer} from 'ol/layer';
 import {Source} from 'ol/source';
 
 import {HsConfirmDialogComponent} from 'hslayers-ng/common/confirm';
-import {HsDialogContainerService} from 'hslayers-ng/components/layout';
-import {HsLanguageService} from 'hslayers-ng/components/language';
+import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
+import {HsLanguageService} from 'hslayers-ng/shared/language';
 import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
 import {HsQueryPopupServiceModel} from '../query-popup.service.model';
 import {HsQueryPopupWidgetBaseComponent} from '../query-popup-widget-base.component';
@@ -18,8 +18,7 @@ import {getTitle} from 'hslayers-ng/common/extensions';
 })
 export class HsClearLayerComponent
   extends HsQueryPopupWidgetBaseComponent
-  implements OnInit
-{
+  implements OnInit {
   @Input() data: {
     layerDescriptor: any;
     service: HsQueryPopupServiceModel;

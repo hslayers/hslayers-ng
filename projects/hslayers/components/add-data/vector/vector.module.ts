@@ -9,7 +9,7 @@ import {HsAddToMapButtonComponent} from 'hslayers-ng/common/add-to-map';
 import {HsCommonUrlModule} from '../common/url/url.module';
 import {HsLaymanModule} from 'hslayers-ng/common/layman';
 import {HsUploadModule} from 'hslayers-ng/common/upload';
-import {TranslateCustomPipe} from 'hslayers-ng/components/language';
+import {TranslateCustomPipe} from 'hslayers-ng/shared/language';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

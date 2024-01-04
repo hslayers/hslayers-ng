@@ -4,9 +4,9 @@ import {Subject} from 'rxjs';
 import {Circle, Fill, Stroke, Style} from 'ol/style';
 
 
-import {HsLanguageService} from 'hslayers-ng/components/language';
+import {HsLanguageService} from 'hslayers-ng/shared/language';
 import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
-import {HsLayoutService} from 'hslayers-ng/components/layout';
+import {HsLayoutService} from 'hslayers-ng/shared/layout';
 import {HsRemoveLayerDialogService} from 'hslayers-ng/common/remove-multiple';
 import {getTitle} from 'hslayers-ng/common/extensions';
 

@@ -4,8 +4,8 @@ import {HsAddDataCatalogueMapService} from 'hslayers-ng/shared/add-data';
 import {HsAddDataCatalogueService} from 'hslayers-ng/shared/add-data';
 import {HsAddDataLayerDescriptor} from 'hslayers-ng/common/types';
 import {HsConfig} from 'hslayers-ng/config';
-import {HsDialogComponent} from 'hslayers-ng/components/layout';
-import {HsDialogContainerService} from 'hslayers-ng/components/layout';
+import {HsDialogComponent} from 'hslayers-ng/common/dialogs';
+import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
 import {HsEndpoint} from 'hslayers-ng/shared/endpoints';
 
 @Component({

@@ -3,9 +3,9 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Subject, takeUntil} from 'rxjs';
 
 import {HsEventBusService} from 'hslayers-ng/shared/core';
-import {HsLayoutService} from 'hslayers-ng/components/layout';
+import {HsLayoutService} from 'hslayers-ng/shared/layout';
 import {HsMeasureService} from './measure.service';
-import {HsPanelBaseComponent} from 'hslayers-ng/components/layout';
+import {HsPanelBaseComponent} from 'hslayers-ng/common/panels';
 import {HsSidebarService} from 'hslayers-ng/components/sidebar';
 import {HsUtilsService} from 'hslayers-ng/shared/utils';
 

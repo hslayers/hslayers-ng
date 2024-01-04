@@ -11,7 +11,7 @@ import {unByKey} from 'ol/Observable';
 
 import {HsCommonEndpointsService} from 'hslayers-ng/shared/endpoints';
 import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
-import {HsLayoutService} from 'hslayers-ng/components/layout';
+import {HsLayoutService} from 'hslayers-ng/shared/layout';
 import {HsMapCompositionDescriptor} from './models/composition-descriptor.model';
 import {HsMapService} from 'hslayers-ng/components/map';
 import {HsSaveMapService} from '../save-map/save-map.service';

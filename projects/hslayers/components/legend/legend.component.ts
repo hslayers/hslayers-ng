@@ -6,15 +6,13 @@ import {Layer} from 'ol/layer';
 import {Map} from 'ol';
 import {Source} from 'ol/source';
 
-import {HsLanguageService} from 'hslayers-ng/components/language';
+import {HsLanguageService} from 'hslayers-ng/shared/language';
 import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
-import {
-  HsLayoutService,
-  HsPanelBaseComponent,
-} from 'hslayers-ng/components/layout';
+import {HsLayoutService} from 'hslayers-ng/shared/layout';
 import {HsLegendDescriptor} from './legend-descriptor.interface';
 import {HsLegendService} from './legend.service';
 import {HsMapService} from 'hslayers-ng/components/map';
+import {HsPanelBaseComponent} from 'hslayers-ng/common/panels';
 import {HsQueuesService} from 'hslayers-ng/shared/queues';
 import {HsSidebarService} from 'hslayers-ng/components/sidebar';
 import {HsUtilsService} from 'hslayers-ng/shared/utils';

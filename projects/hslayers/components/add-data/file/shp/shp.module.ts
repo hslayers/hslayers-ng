@@ -4,7 +4,7 @@ import {FormsModule} from '@angular/forms';
 
 import {HsAddDataCommonModule} from '../../common/common.module';
 import {HsFileShpComponent} from './shp.component';
-import {TranslateCustomPipe} from 'hslayers-ng/components/language';
+import {TranslateCustomPipe} from 'hslayers-ng/shared/language';
 import {HsUploadModule} from 'hslayers-ng/common/upload';
 
 @NgModule({

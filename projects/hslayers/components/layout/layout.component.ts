@@ -11,11 +11,11 @@ import {Subject, delay, takeUntil} from 'rxjs';
 
 import {HsConfig} from 'hslayers-ng/config';
 import {HsEventBusService} from 'hslayers-ng/shared/core';
-import {HsLayoutService} from './layout.service';
+import {HsLayoutService} from 'hslayers-ng/shared/layout';
 import {HsLogService} from 'hslayers-ng/shared/log';
 import {HsMapHostDirective} from './map-host.directive';
 import {HsOverlayPanelContainerService} from './overlay-panel-container.service';
-import {HsPanelContainerService} from './panels/panel-container.service';
+import {HsPanelContainerService} from 'hslayers-ng/shared/layout';
 import {HsShareUrlService} from 'hslayers-ng/components/share';
 import {HsUtilsService} from 'hslayers-ng/shared/utils';
 

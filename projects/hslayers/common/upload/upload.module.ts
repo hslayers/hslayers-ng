@@ -4,7 +4,7 @@ import {NgModule} from '@angular/core';
 
 import {HsFileDropDirective} from './file-drop.directive';
 import {HsUploadComponent} from './upload.component';
-import {TranslateCustomPipe} from 'hslayers-ng/components/language';
+import {TranslateCustomPipe} from 'hslayers-ng/shared/language';
 @NgModule({
   declarations: [HsUploadComponent, HsFileDropDirective],
   imports: [CommonModule, TranslateCustomPipe, FormsModule],

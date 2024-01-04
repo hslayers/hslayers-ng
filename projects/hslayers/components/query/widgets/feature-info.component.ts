@@ -4,8 +4,8 @@ import {Feature} from 'ol';
 import {Geometry} from 'ol/geom';
 
 import {HsConfirmDialogComponent} from 'hslayers-ng/common/confirm';
-import {HsDialogContainerService} from 'hslayers-ng/components/layout';
-import {HsLanguageService} from 'hslayers-ng/components/language';
+import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
+import {HsLanguageService} from 'hslayers-ng/shared/language';
 import {HsLayerDescriptor} from 'hslayers-ng/common/types';
 import {HsQueryPopupServiceModel} from '../query-popup.service.model';
 import {HsQueryPopupWidgetBaseComponent} from '../query-popup-widget-base.component';
@@ -24,8 +24,7 @@ import {
 })
 export class HsFeatureInfoComponent
   extends HsQueryPopupWidgetBaseComponent
-  implements OnInit
-{
+  implements OnInit {
   layerDescriptor: any;
   attributesForHover: any[] = [];
   name = 'feature-info';

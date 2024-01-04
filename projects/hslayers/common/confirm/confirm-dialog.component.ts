@@ -4,7 +4,7 @@ import {
   HsDialogComponent,
   HsDialogContainerService,
   HsDialogItem,
-} from 'hslayers-ng/components/layout';
+} from 'hslayers-ng/common/dialogs';
 
 @Component({
   selector: 'hs-confirm-dialog',

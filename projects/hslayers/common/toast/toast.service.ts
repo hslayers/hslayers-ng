@@ -1,8 +1,8 @@
 import {Injectable, TemplateRef} from '@angular/core';
 
 import {HsConfig} from 'hslayers-ng/config';
-import {HsLanguageService} from 'hslayers-ng/components/language';
-import {HsLayoutService} from '../layout.service';
+import {HsLanguageService} from 'hslayers-ng/shared/language';
+import {HsLayoutService} from 'hslayers-ng/shared/layout';
 
 export interface Toast {
   autohide?: boolean;

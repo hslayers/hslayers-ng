@@ -3,10 +3,10 @@ import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
 
-import {HsPanelHelpersModule} from 'hslayers-ng/components/layout';
+import {HsPanelHelpersModule} from 'hslayers-ng/common/panels';
 import {HsTripPlannerComponent} from './trip-planner.component';
 import {HsTripPlannerLayerSelectorComponent} from './layer-selector.component';
-import {TranslateCustomPipe} from 'hslayers-ng/components/language';
+import {TranslateCustomPipe} from 'hslayers-ng/shared/language';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

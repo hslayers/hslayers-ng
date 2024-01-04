@@ -8,7 +8,7 @@ import {WMTSCapabilities} from 'ol/format';
 import {transformExtent} from 'ol/proj';
 
 import {CapabilitiesResponseWrapper} from 'hslayers-ng/shared/get-capabilities';
-import {HsLayoutService} from 'hslayers-ng/components/layout';
+import {HsLayoutService} from 'hslayers-ng/shared/layout';
 import {HsMapService} from 'hslayers-ng/components/map';
 import {LayerOptions} from 'hslayers-ng/common/types';
 import {addAnchors} from 'hslayers-ng/common/utils';

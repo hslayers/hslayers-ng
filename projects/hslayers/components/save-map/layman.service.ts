@@ -32,12 +32,12 @@ import {
 import {HsCommonEndpointsService} from 'hslayers-ng/shared/endpoints';
 import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
 import {HsEndpoint} from 'hslayers-ng/shared/endpoints';
-import {HsLanguageService} from 'hslayers-ng/components/language';
+import {HsLanguageService} from 'hslayers-ng/shared/language';
 import {HsLaymanLayerDescriptor} from './interfaces/layman-layer-descriptor.interface';
 import {HsLogService} from 'hslayers-ng/shared/log';
 import {HsMapService} from 'hslayers-ng/components/map';
 import {HsSaverService} from './interfaces/saver-service.interface';
-import {HsToastService} from 'hslayers-ng/components/layout';
+import {HsToastService} from 'hslayers-ng/common/toast';
 import {HsUtilsService} from 'hslayers-ng/shared/utils';
 import {MapComposition} from './types/map-composition.type';
 import {

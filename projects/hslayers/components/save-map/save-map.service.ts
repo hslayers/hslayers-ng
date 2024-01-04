@@ -21,7 +21,7 @@ import {Layer} from 'ol/layer';
 import {Vector as VectorSource} from 'ol/source';
 import {transformExtent} from 'ol/proj';
 
-import {BoundingBoxObject} from './types/bounding-box-object.type';
+import {BoundingBoxObject} from 'hslayers-ng/common/types';
 import {CompoData} from './types/compo-data.type';
 import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
 import {HsLogService} from 'hslayers-ng/shared/log';

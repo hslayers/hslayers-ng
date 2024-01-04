@@ -8,7 +8,7 @@ import {HsCommonUrlModule} from '../../common/url/url.module';
 import {HsFileRasterComponent} from './raster.component';
 import {HsUploadModule} from 'hslayers-ng/common/upload';
 import {RasterTimeseriesComponent} from './raster-timeseries/raster-timeseries.component';
-import {TranslateCustomPipe} from 'hslayers-ng/components/language';
+import {TranslateCustomPipe} from 'hslayers-ng/shared/language';
 
 @NgModule({
   imports: [

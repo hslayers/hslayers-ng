@@ -9,12 +9,12 @@ import {DrawPanelComponent} from './draw-panel/draw-panel.component';
 import {HsDrawComponent} from './draw.component';
 import {HsDrawLayerMetadataDialogComponent} from './draw-layer-metadata/draw-layer-metadata.component';
 import {HsLaymanModule} from 'hslayers-ng/common/layman';
-import {HsPanelHeaderComponent} from 'hslayers-ng/components/layout';
-import {HsPanelHelpersModule} from 'hslayers-ng/components/layout';
+import {HsPanelHeaderComponent} from 'hslayers-ng/common/panels';
+import {HsPanelHelpersModule} from 'hslayers-ng/common/panels';
 import {HsQueryModule} from 'hslayers-ng/components/query';
 import {HsRmLayerDialogModule} from 'hslayers-ng/common/remove-multiple';
 import {HsStylerModule} from 'hslayers-ng/components/styler';
-import {TranslateCustomPipe} from 'hslayers-ng/components/language';
+import {TranslateCustomPipe} from 'hslayers-ng/shared/language';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

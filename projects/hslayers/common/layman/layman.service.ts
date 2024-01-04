@@ -5,9 +5,9 @@ import {BehaviorSubject, Subject, lastValueFrom} from 'rxjs';
 
 import {CurrentUserResponse} from './types/current-user-response.type';
 import {HsEndpoint} from 'hslayers-ng/shared/endpoints';
-import {HsLanguageService} from 'hslayers-ng/components/language';
+import {HsLanguageService} from 'hslayers-ng/shared/language';
 import {HsLogService} from 'hslayers-ng/shared/log';
-import {HsToastService} from 'hslayers-ng/components/layout';
+import {HsToastService} from 'hslayers-ng/common/toast';
 
 @Injectable({
   providedIn: 'root',

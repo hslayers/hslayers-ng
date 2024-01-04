@@ -5,11 +5,11 @@ import {Observable, catchError, map, of, timeout} from 'rxjs';
 
 import {HsCompositionsParserService} from '../compositions-parser.service';
 import {HsEndpoint} from 'hslayers-ng/shared/endpoints';
-import {HsLanguageService} from 'hslayers-ng/components/language';
+import {HsLanguageService} from 'hslayers-ng/shared/language';
 import {HsLogService} from 'hslayers-ng/shared/log';
 import {HsMapCompositionDescriptor} from '../models/composition-descriptor.model';
 import {HsMapService} from 'hslayers-ng/components/map';
-import {HsToastService} from 'hslayers-ng/components/layout';
+import {HsToastService} from 'hslayers-ng/common/toast';
 import {HsUtilsService} from 'hslayers-ng/shared/utils';
 import {addExtentFeature} from 'hslayers-ng/common/utils';
 

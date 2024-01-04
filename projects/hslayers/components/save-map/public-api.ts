@@ -11,7 +11,6 @@ export * from './dialog-result/dialog-result.component';
 export * from './save-map.service';
 export * from './interfaces/saver-service.interface';
 export * from './types/status-state.type';
-export * from './types/bounding-box-object.type';
 export * from './types/compo-data.type';
 export * from './types/user-data.type';
 export * from './types/status-data.type';

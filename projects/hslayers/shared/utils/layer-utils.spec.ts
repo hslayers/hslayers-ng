@@ -8,7 +8,7 @@ import {TestBed} from '@angular/core/testing';
 import {Cluster, ImageWMS, OSM, TileWMS, Vector, WMTS} from 'ol/source';
 import {Image as ImageLayer, Tile, Vector as VectorLayer} from 'ol/layer';
 
-import {HsLanguageService} from 'hslayers-ng/components/language';
+import {HsLanguageService} from 'hslayers-ng/shared/language';
 import {HsLayerUtilsService} from './layer-utils.service';
 import {HsMapService} from 'hslayers-ng/components/map';
 import {HsMapServiceMock} from 'hslayers-ng/components/map';

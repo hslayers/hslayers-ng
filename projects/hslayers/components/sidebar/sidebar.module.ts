@@ -2,9 +2,9 @@ import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 
 import {HsImpressumComponent} from './impressum.component';
-import {TranslateCustomPipe} from 'hslayers-ng/components/language';
+import {TranslateCustomPipe} from 'hslayers-ng/shared/language';
 import {HsMiniSidebarComponent} from './mini-sidebar.component';
-import {HsPanelHelpersModule} from 'hslayers-ng/components/layout';
+import {HsPanelHelpersModule} from 'hslayers-ng/common/panels';
 import {HsSidebarComponent} from './sidebar.component';
 import {SortByPipe} from './sortBy.pipe';
 

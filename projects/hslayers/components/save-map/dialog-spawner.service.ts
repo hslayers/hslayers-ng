@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 
-import {HsDialogContainerService} from 'hslayers-ng/components/layout';
+import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
 import {HsSaveMapManagerService} from './save-map-manager.service';
 import {HsSaveMapResultDialogComponent} from './dialog-result/dialog-result.component';
 

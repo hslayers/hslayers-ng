@@ -11,9 +11,9 @@ import {
   HsLayerShiftingService,
   LayerListItem,
 } from 'hslayers-ng/shared/layer-shifting';
-import {HsLayoutService} from 'hslayers-ng/components/layout';
+import {HsLayoutService} from 'hslayers-ng/shared/layout';
 import {HsMapSwipeService, SwipeSide} from './map-swipe.service';
-import {HsPanelBaseComponent} from 'hslayers-ng/components/layout';
+import {HsPanelBaseComponent} from 'hslayers-ng/common/panels';
 import {HsSidebarService} from 'hslayers-ng/components/sidebar';
 
 @Component({

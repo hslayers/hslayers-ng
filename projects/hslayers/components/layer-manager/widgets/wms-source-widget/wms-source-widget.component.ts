@@ -7,15 +7,15 @@ import {ImageWMS, TileWMS} from 'ol/source';
 
 import {HsConfirmDialogComponent} from 'hslayers-ng/common/confirm';
 import {HsConfirmModule} from 'hslayers-ng/common/confirm';
-import {HsDialogContainerService} from 'hslayers-ng/components/layout';
-import {HsLanguageService} from 'hslayers-ng/components/language';
+import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
+import {HsLanguageService} from 'hslayers-ng/shared/language';
 import {HsLayerEditorWidgetBaseComponent} from '../layer-editor-widget-base.component';
 import {HsLayerSelectorService} from '../../editor/layer-selector.service';
 import {HsLayerShiftingService} from 'hslayers-ng/shared/layer-shifting';
 import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
 import {HsMapService} from 'hslayers-ng/components/map';
 import {HsUtilsService} from 'hslayers-ng/shared/utils';
-import {TranslateCustomPipe} from 'hslayers-ng/components/language';
+import {TranslateCustomPipe} from 'hslayers-ng/shared/language';
 
 @Component({
   selector: 'hs-wms-source-widget',

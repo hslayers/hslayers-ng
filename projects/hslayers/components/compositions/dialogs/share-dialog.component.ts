@@ -3,7 +3,7 @@ import {Component, ViewRef} from '@angular/core';
 import {
   HsDialogComponent,
   HsDialogContainerService,
-} from 'hslayers-ng/components/layout';
+} from 'hslayers-ng/common/dialogs';
 import {HsShareService} from 'hslayers-ng/components/share';
 @Component({
   selector: 'hs-compositions-share-dialog',

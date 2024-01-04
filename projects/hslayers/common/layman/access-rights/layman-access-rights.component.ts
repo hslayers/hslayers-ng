@@ -5,7 +5,7 @@ import {lastValueFrom, map} from 'rxjs';
 
 import {HsCommonLaymanService} from '../layman.service';
 import {HsEndpoint} from 'hslayers-ng/shared/endpoints';
-import {HsLanguageService} from 'hslayers-ng/components/language';
+import {HsLanguageService} from 'hslayers-ng/shared/language';
 import {HsLogService} from 'hslayers-ng/shared/log';
 import {LaymanUser} from '../types/layman-user.type';
 import {accessRightsModel} from 'hslayers-ng/common/types';

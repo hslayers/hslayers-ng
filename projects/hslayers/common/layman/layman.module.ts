@@ -7,7 +7,7 @@ import {HsLaymanCurrentUserComponent} from './layman-current-user.component';
 import {HsLaymanLoginComponent} from './layman-login.component';
 import {HsSetPermissionsDialogComponent} from './dialog-set-permissions/set-permissions.component';
 import {HsUiExtensionsModule} from 'hslayers-ng/common/widgets';
-import {TranslateCustomPipe} from 'hslayers-ng/components/language';
+import {TranslateCustomPipe} from 'hslayers-ng/shared/language';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

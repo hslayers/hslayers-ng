@@ -13,11 +13,11 @@ import {
   HsLayerShiftingService,
   LayerListItem,
 } from 'hslayers-ng/shared/layer-shifting';
-import {HsLayoutService} from 'hslayers-ng/components/layout';
+import {HsLayoutService} from 'hslayers-ng/shared/layout';
 import {HsLogService} from 'hslayers-ng/shared/log';
 import {HsMapService} from 'hslayers-ng/components/map';
 import {HsShareUrlService} from 'hslayers-ng/components/share';
-import {HsToastService} from 'hslayers-ng/components/layout';
+import {HsToastService} from 'hslayers-ng/common/toast';
 import {SwipeControl} from './swipe-control/swipe.control';
 import {
   getQueryFilter,

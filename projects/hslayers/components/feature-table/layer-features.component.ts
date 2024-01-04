@@ -4,7 +4,7 @@ import {Feature} from 'ol';
 import {Geometry} from 'ol/geom';
 
 import {HsFeatureTableService} from './feature-table.service';
-import {HsLanguageService} from 'hslayers-ng/components/language';
+import {HsLanguageService} from 'hslayers-ng/shared/language';
 import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
 import {HsMapService} from 'hslayers-ng/components/map';
 import {HsUtilsService} from 'hslayers-ng/shared/utils';

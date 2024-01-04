@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 
-import {HsLanguageService} from 'hslayers-ng/components/language';
+import {HsLanguageService} from 'hslayers-ng/shared/language';
 import {HsLayerDescriptor} from 'hslayers-ng/common/types';
 import {HsLayerEditorWidgetBaseComponent} from './layer-editor-widget-base.component';
 import {HsLayerManagerMetadataService} from '../layer-manager-metadata.service';

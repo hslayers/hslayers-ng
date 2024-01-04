@@ -3,7 +3,7 @@ import {take} from 'rxjs';
 
 import {IconSymbolizer} from 'geostyler-style';
 
-import {HsDialogContainerService} from 'hslayers-ng/components/layout';
+import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
 import {HsSelectIconDialogComponent} from '../select-icon-dialog/select-icon-dialog.component';
 import {HsStylerPartBaseComponent} from '../../style-part-base.component';
 import {SymbolizerIcon} from 'hslayers-ng/config';

@@ -9,7 +9,7 @@ import {HsUrlGeoSparqlModule} from './geosparql/geosparql.module';
 import {HsUrlWfsModule} from './wfs/wfs.module';
 import {HsUrlWmsModule} from './wms/wms.module';
 import {HsUrlWmtsModule} from './wmts/wmts.module';
-import {TranslateCustomPipe} from 'hslayers-ng/components/language';
+import {TranslateCustomPipe} from 'hslayers-ng/shared/language';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

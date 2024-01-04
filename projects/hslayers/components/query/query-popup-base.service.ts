@@ -5,7 +5,7 @@ import {Feature} from 'ol';
 import {Geometry} from 'ol/geom';
 
 import {HsMapService} from 'hslayers-ng/components/map';
-import {HsPanelItem} from '../layout/panels/panel-item';
+import {HsPanelItem} from '../../common/panels/panel-item';
 import {HsQueryPopupData} from './popup-data';
 import {HsQueryPopupWidgetContainerService} from './query-popup-widget-container.service';
 import {HsUtilsService} from 'hslayers-ng/shared/utils';

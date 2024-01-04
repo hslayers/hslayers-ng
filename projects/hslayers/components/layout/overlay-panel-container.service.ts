@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 
 import {HsConfig} from 'hslayers-ng/config';
-import {HsPanelContainerService} from './panels/panel-container.service';
+import {HsPanelContainerService} from 'hslayers-ng/shared/layout';
 import {HsToolbarPanelContainerService} from '../toolbar/toolbar-panel-container.service';
 
 @Injectable({

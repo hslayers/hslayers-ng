@@ -7,7 +7,7 @@ import {Subject, takeUntil} from 'rxjs';
 import {HsAddDataCommonFileService} from '../../common/common-file.service';
 import {HsAddDataVectorService} from '../vector.service';
 import {HsHistoryListService} from 'hslayers-ng/common/history-list';
-import {HsLayoutService} from 'hslayers-ng/components/layout';
+import {HsLayoutService} from 'hslayers-ng/shared/layout';
 import {VectorDataObject} from '../vector-data.type';
 
 @Component({

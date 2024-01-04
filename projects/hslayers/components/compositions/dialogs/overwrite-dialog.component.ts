@@ -1,8 +1,8 @@
 import {Component, ViewRef} from '@angular/core';
 import {HsCompositionsParserService} from '../compositions-parser.service';
 import {HsCompositionsService} from '../compositions.service';
-import {HsDialogComponent} from 'hslayers-ng/components/layout';
-import {HsDialogContainerService} from 'hslayers-ng/components/layout';
+import {HsDialogComponent} from 'hslayers-ng/common/dialogs';
+import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
 import {HsSaveMapManagerService} from '../../save-map/save-map-manager.service';
 
 @Component({
@@ -10,8 +10,7 @@ import {HsSaveMapManagerService} from '../../save-map/save-map-manager.service';
   templateUrl: './overwrite-dialog.component.html',
 })
 export class HsCompositionsOverwriteDialogComponent
-  implements HsDialogComponent
-{
+  implements HsDialogComponent {
   viewRef: ViewRef;
   data: any;
 

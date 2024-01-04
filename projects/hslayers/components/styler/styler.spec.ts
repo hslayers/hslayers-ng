@@ -19,8 +19,8 @@ import {HsDownloadModule} from 'hslayers-ng/common/download';
 import {HsEventBusService} from 'hslayers-ng/shared/core';
 import {HsEventBusServiceMock} from 'hslayers-ng/shared/core';
 import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
-import {HsLayoutService} from 'hslayers-ng/components/layout';
-import {HsLayoutServiceMock} from 'hslayers-ng/components/layout';
+import {HsLayoutService} from 'hslayers-ng/shared/layout';
+import {HsLayoutServiceMock} from 'hslayers-ng/shared/layout';
 import {HsMapService} from 'hslayers-ng/components/map';
 import {HsMapServiceMock} from 'hslayers-ng/components/map';
 import {HsQueryVectorService} from '../query/query-vector.service';
@@ -30,7 +30,7 @@ import {HsStylerComponent} from './styler.component';
 import {HsStylerService} from './styler.service';
 import {HsUtilsService} from 'hslayers-ng/shared/utils';
 import {HsUtilsServiceMock} from 'hslayers-ng/shared/utils';
-import {TranslateCustomPipe} from 'hslayers-ng/components/language';
+import {TranslateCustomPipe} from 'hslayers-ng/shared/language';
 
 class emptyMock {
   constructor() {}

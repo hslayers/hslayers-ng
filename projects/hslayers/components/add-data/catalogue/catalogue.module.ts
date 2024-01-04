@@ -11,7 +11,7 @@ import {HsCatalogueMetadataModule} from './catalogue-metadata/catalogue-metadata
 import {HsLaymanModule} from 'hslayers-ng/common/layman';
 import {HsPagerModule} from 'hslayers-ng/common/pager';
 import {HsUiExtensionsModule} from 'hslayers-ng/common/widgets';
-import {TranslateCustomPipe} from 'hslayers-ng/components/language';
+import {TranslateCustomPipe} from 'hslayers-ng/shared/language';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

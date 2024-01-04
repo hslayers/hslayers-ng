@@ -11,7 +11,7 @@ import {HsLayerEditorVectorLayerService} from './layer-editor-vector-layer.servi
 import {HsLayerManagerMetadataService} from '../layer-manager-metadata.service';
 import {HsLayerSelectorService} from './layer-selector.service';
 import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
-import {HsLayoutService} from 'hslayers-ng/components/layout';
+import {HsLayoutService} from 'hslayers-ng/shared/layout';
 import {HsLegendDescriptor} from 'hslayers-ng/components/legend';
 import {HsLegendService} from 'hslayers-ng/components/legend';
 import {HsMapService} from 'hslayers-ng/components/map';
