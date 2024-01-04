@@ -1,4 +1,4 @@
-import {accessRightsModel} from 'hslayers-ng/common/types';
+import {accessRightsModel} from '../access-rights.model';
 
 export type UpsertLayerObject = {
   title?: string;

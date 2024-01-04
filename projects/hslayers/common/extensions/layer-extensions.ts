@@ -6,7 +6,7 @@ import {Group, Layer} from 'ol/layer';
 import {Source} from 'ol/source';
 
 import {DOMFeatureLink} from '../types/dom-feature-link.type';
-import {HsLaymanLayerDescriptor} from 'hslayers-ng/components/save-map';
+import {HsLaymanLayerDescriptor} from 'hslayers-ng/common/types';
 import {accessRightsModel} from 'hslayers-ng/common/types';
 
 const ABSTRACT = 'abstract';

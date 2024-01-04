@@ -6,7 +6,7 @@ import {Source} from 'ol/source';
 import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
 import {HsDrawService, TMP_LAYER_TITLE} from 'hslayers-ng/shared/draw';
 import {HsLanguageService} from 'hslayers-ng/shared/language';
-import {HsLaymanService} from 'hslayers-ng/components/save-map';
+import {HsLaymanService} from 'hslayers-ng/shared/save-map';
 import {HsMapService} from 'hslayers-ng/components/map';
 import {
   HsRmLayerDialogComponent,

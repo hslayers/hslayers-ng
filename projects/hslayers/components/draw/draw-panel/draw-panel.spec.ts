@@ -24,7 +24,7 @@ import {HsLanguageModule} from 'hslayers-ng/components/language';
 import {HsLanguageService} from 'hslayers-ng/shared/language';
 import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
 import {HsLaymanBrowserService} from '../../add-data/catalogue/layman/layman.service';
-import {HsLaymanService} from 'hslayers-ng/components/save-map';
+import {HsLaymanService} from 'hslayers-ng/shared/save-map';
 import {HsLayoutService} from 'hslayers-ng/shared/layout';
 import {HsLayoutServiceMock} from 'hslayers-ng/shared/layout';
 import {HsMapService} from 'hslayers-ng/components/map';

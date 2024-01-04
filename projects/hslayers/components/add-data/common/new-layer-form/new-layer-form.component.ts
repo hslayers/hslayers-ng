@@ -3,7 +3,7 @@ import {Component, Input, OnInit} from '@angular/core';
 import {FileDataObject} from '../../file/types/file-data-object.type';
 import {HsAddDataCommonFileService} from '../common-file.service';
 import {HsFileService} from '../../file/file.service';
-import {HsLaymanService} from 'hslayers-ng/components/save-map';
+import {HsLaymanService} from 'hslayers-ng/shared/save-map';
 import {HsUploadedFiles} from 'hslayers-ng/common/upload';
 
 @Component({

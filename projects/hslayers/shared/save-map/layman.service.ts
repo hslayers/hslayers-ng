@@ -22,9 +22,9 @@ import {Source} from 'ol/source';
 import {Vector as VectorLayer} from 'ol/layer';
 import {Vector as VectorSource} from 'ol/source';
 
-import {AboutLayman} from './types/about-layman-response.type';
-import {AsyncUpload} from './types/async-upload.type';
-import {CompoData} from './types/compo-data.type';
+import {AboutLayman} from '../../components/save-map/types/about-layman-response.type';
+import {AsyncUpload} from '../../components/save-map/types/async-upload.type';
+import {CompoData} from '../../components/save-map/types/compo-data.type';
 import {
   DeleteAllLayersResponse,
   DeleteSingleLayerResponse,
@@ -33,13 +33,13 @@ import {HsCommonEndpointsService} from 'hslayers-ng/shared/endpoints';
 import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
 import {HsEndpoint} from 'hslayers-ng/shared/endpoints';
 import {HsLanguageService} from 'hslayers-ng/shared/language';
-import {HsLaymanLayerDescriptor} from './interfaces/layman-layer-descriptor.interface';
+import {HsLaymanLayerDescriptor} from 'hslayers-ng/common/types';
 import {HsLogService} from 'hslayers-ng/shared/log';
 import {HsMapService} from 'hslayers-ng/components/map';
-import {HsSaverService} from './interfaces/saver-service.interface';
+import {HsSaverService} from '../../components/save-map/interfaces/saver-service.interface';
 import {HsToastService} from 'hslayers-ng/common/toast';
 import {HsUtilsService} from 'hslayers-ng/shared/utils';
-import {MapComposition} from './types/map-composition.type';
+import {MapComposition} from '../../components/save-map/types/map-composition.type';
 import {
   PREFER_RESUMABLE_SIZE_LIMIT,
   SUPPORTED_SRS_LIST,
@@ -51,8 +51,8 @@ import {
   wfsNotAvailable,
 } from 'hslayers-ng/common/layman';
 import {PostPatchLayerResponse} from 'hslayers-ng/common/layman';
-import {UpsertLayerObject} from './types/upsert-layer-object.type';
-import {WfsSyncParams} from './types/wfs-sync-params.type';
+import {UpsertLayerObject} from 'hslayers-ng/common/types';
+import {WfsSyncParams} from '../../components/save-map/types/wfs-sync-params.type';
 import {accessRightsModel} from 'hslayers-ng/common/types';
 import {
   getAccessRights,
