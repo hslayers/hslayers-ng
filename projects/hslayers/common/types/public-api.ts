@@ -9,6 +9,10 @@ export * from './capabilities-response-wrapper';
 export * from './layman/status-state.type';
 export * from './layman/layman-layer-descriptor.interface';
 export * from './layman/upsert-layer-object.type';
+export * from './layman/about-layman-response.type';
+
+export * from './save-map/status-data.type';
+export * from './save-map/wfs-sync-params.type';
 
 export * from './add-data/models/layer-descriptor.model';
 export * from './add-data/async-upload.type';
