@@ -11,7 +11,7 @@ import {
   EndpointErrorHandling,
   HsEndpoint,
   isErrorHandlerFunction,
-} from 'hslayers-ng/shared/endpoints';
+} from 'hslayers-ng/common/types';
 import {HsAddDataLayerDescriptor} from 'hslayers-ng/common/types';
 import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
 import {HsLanguageService} from 'hslayers-ng/shared/language';

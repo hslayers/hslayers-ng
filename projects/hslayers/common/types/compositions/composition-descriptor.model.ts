@@ -1,4 +1,4 @@
-import {HsEndpoint} from 'hslayers-ng/shared/endpoints';
+import {HsEndpoint} from '../endpoint.interface';
 
 export interface HsMapCompositionDescriptor {
   abstract?: string;
