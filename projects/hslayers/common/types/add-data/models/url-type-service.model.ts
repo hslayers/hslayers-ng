@@ -1,10 +1,10 @@
 import {Layer} from 'ol/layer';
 import {Source} from 'ol/source';
 
-import {AddLayersRecursivelyOptions} from '../types/recursive-options.type';
-import {CapabilitiesResponseWrapper} from 'hslayers-ng/shared/get-capabilities';
-import {LayerOptions} from 'hslayers-ng/common/types';
-import {UrlDataObject} from '../types/data-object.type';
+import {AddLayersRecursivelyOptions} from '../recursive-options.type';
+import {CapabilitiesResponseWrapper} from '../../capabilities-response-wrapper';
+import {LayerOptions} from '../../compositions/composition-layer-options.type';
+import {UrlDataObject} from '../data-object.type';
 
 export type Service = {
   name: string;

@@ -11,7 +11,7 @@ import {Image as ImageLayer} from 'ol/layer';
 import {ImageWMS} from 'ol/source';
 import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
 
-import {HsAddDataOwsService} from 'hslayers-ng/components/add-data';
+import {HsAddDataOwsService} from 'hslayers-ng/shared/add-data';
 import {
   HsArcgisGetCapabilitiesService,
   HsWfsGetCapabilitiesService,
