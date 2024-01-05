@@ -3,7 +3,7 @@ import {Geometry} from 'ol/geom';
 import {Vector as VectorLayer} from 'ol/layer';
 import {Vector as VectorSource} from 'ol/source';
 
-import {HsEndpoint} from 'hslayers-ng/common/types';
+import {HsEndpoint} from '../endpoint.interface';
 
 /**
  * Object describing endpoint, layer and arrays

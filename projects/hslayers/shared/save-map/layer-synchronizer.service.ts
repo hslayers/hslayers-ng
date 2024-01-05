@@ -11,7 +11,7 @@ import {WFS} from 'ol/format';
 import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
 import {HsEndpoint} from 'hslayers-ng/common/types';
 import {HsLanguageService} from 'hslayers-ng/shared/language';
-import {HsLaymanService} from 'hslayers-ng/shared/save-map';
+import {HsLaymanService} from './layman.service';
 import {HsLogService} from 'hslayers-ng/shared/log';
 import {HsMapService} from 'hslayers-ng/shared/map';
 import {HsToastService} from 'hslayers-ng/common/toast';

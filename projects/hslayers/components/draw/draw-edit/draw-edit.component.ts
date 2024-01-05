@@ -14,7 +14,7 @@ import {HsMapService} from 'hslayers-ng/shared/map';
 import {HsQueryBaseService} from 'hslayers-ng/shared/query';
 import {HsQueryVectorService} from 'hslayers-ng/shared/query';
 import {HsToastService} from 'hslayers-ng/common/toast';
-import {defaultStyle} from 'hslayers-ng/components/styler';
+import {defaultStyle} from 'hslayers-ng/shared/styler';
 
 @Component({
   selector: 'hs-draw-edit',

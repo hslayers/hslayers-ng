@@ -31,7 +31,7 @@ import {HsQueryBaseService} from 'hslayers-ng/shared/query';
 import {HsQueryVectorService} from 'hslayers-ng/shared/query';
 import {HsToastService} from 'hslayers-ng/common/toast';
 import {HsUtilsService} from 'hslayers-ng/shared/utils';
-import {defaultStyle} from 'hslayers-ng/components/styler';
+import {defaultStyle} from 'hslayers-ng/shared/styler';
 import {
   getEditor,
   getName,

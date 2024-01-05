@@ -9,7 +9,7 @@ import {HsLegendDescriptor} from 'hslayers-ng/components/legend';
 import {HsLegendLayerStaticService} from '../legend/legend-layer-static/legend-layer-static.service';
 import {HsLegendService} from 'hslayers-ng/components/legend';
 import {HsMapService} from 'hslayers-ng/shared/map';
-import {HsShareThumbnailService} from 'hslayers-ng/components/share';
+import {HsShareThumbnailService} from 'hslayers-ng/shared/share';
 import {LegendObj} from './types/legend-object.type';
 import {SparqlJson} from 'hslayers-ng/common/layers';
 

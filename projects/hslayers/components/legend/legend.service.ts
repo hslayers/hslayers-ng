@@ -21,7 +21,7 @@ import {HsLegendDescriptor} from './legend-descriptor.interface';
 import {HsStylerService} from 'hslayers-ng/shared/styler';
 import {HsUtilsService} from 'hslayers-ng/shared/utils';
 import {InterpolatedSource} from 'hslayers-ng/common/layers';
-import {defaultStyle} from '../styler/styles';
+import {defaultStyle} from 'hslayers-ng/shared/styler';
 import {
   getAutoLegend,
   getBase,

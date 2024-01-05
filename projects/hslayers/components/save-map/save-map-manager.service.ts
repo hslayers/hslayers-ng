@@ -13,12 +13,12 @@ import {HsLayoutService} from 'hslayers-ng/shared/layout';
 import {HsLogService} from 'hslayers-ng/shared/log';
 import {HsMapService} from 'hslayers-ng/shared/map';
 import {HsSaveMapService} from 'hslayers-ng/shared/save-map';
-import {HsSaverService} from './interfaces/saver-service.interface';
+import {HsSaverService} from 'hslayers-ng/shared/save-map';
 import {HsShareService} from 'hslayers-ng/components/share';
 import {HsUtilsService} from 'hslayers-ng/shared/utils';
 import {LaymanCompositionDescriptor} from '../../common/types/compositions/composition-descriptor.model';
 import {MapComposition} from 'hslayers-ng/common/types';
-import {StatusData} from './types/status-data.type';
+import {StatusData} from '../../common/types/save-map/status-data.type';
 import {UserData} from 'hslayers-ng/common/types';
 import {accessRightsModel} from 'hslayers-ng/common/types';
 
