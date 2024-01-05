@@ -1,5 +1,4 @@
 export * from './arcgis-get-capabilities.service';
-export * from './capabilities-response-wrapper';
 export * from './capability-cache.service';
 export * from './dimension-time.service';
 export * from './dimension.service';

@@ -6,8 +6,7 @@ import {Source, WMTS} from 'ol/source';
 import {WMTSCapabilities} from 'ol/format';
 import {lastValueFrom, takeUntil} from 'rxjs';
 
-import {CapabilitiesResponseWrapper} from './capabilities-response-wrapper';
-import {HsAddDataService} from 'hslayers-ng/shared/add-data';
+import {CapabilitiesResponseWrapper} from 'hslayers-ng/common/types';
 import {HsCapabilityCacheService} from './capability-cache.service';
 import {HsEventBusService} from 'hslayers-ng/shared/core';
 import {HsMapService} from 'hslayers-ng/shared/map';
@@ -25,7 +24,6 @@ export class HsWmtsGetCapabilitiesService implements IGetCapabilities {
     public hsMapService: HsMapService,
     public hsUtilsService: HsUtilsService,
     public hsWmsGetCapabilitiesService: HsWmsGetCapabilitiesService,
-    public hsAddDataService: HsAddDataService,
     public hsCapabilityCacheService: HsCapabilityCacheService,
   ) {}
 
@@ -112,7 +110,7 @@ export class HsWmtsGetCapabilitiesService implements IGetCapabilities {
             responseType: 'text',
             observe: 'response', // Set observe to 'response' to get headers as well
           })
-          .pipe(takeUntil(this.hsAddDataService.cancelUrlRequest)),
+          .pipe(takeUntil(this.hsEventBusService.cancelAddDataUrlRequest)),
       );
       const contentType = r.headers.get('Content-Type');
       if (contentType?.includes('text/html')) {

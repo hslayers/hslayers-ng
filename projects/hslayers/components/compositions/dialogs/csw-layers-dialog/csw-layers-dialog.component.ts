@@ -1,7 +1,7 @@
 import {Component, Input, OnInit, ViewRef} from '@angular/core';
 
-import {HsAddDataOwsService} from 'hslayers-ng/components/add-data';
-import {HsAddDataUrlService} from '../../../add-data/url/add-data-url.service';
+import {HsAddDataOwsService} from 'hslayers-ng/shared/add-data';
+import {HsAddDataUrlService} from 'hslayers-ng/shared/add-data';
 import {HsDialogComponent} from 'hslayers-ng/common/dialogs';
 import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
 import {HsDialogItem} from 'hslayers-ng/common/dialogs';

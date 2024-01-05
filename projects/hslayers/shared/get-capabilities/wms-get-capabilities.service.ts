@@ -6,8 +6,7 @@ import {Source, TileWMS} from 'ol/source';
 import {WMSCapabilities} from 'ol/format';
 import {lastValueFrom, takeUntil} from 'rxjs';
 
-import {CapabilitiesResponseWrapper} from './capabilities-response-wrapper';
-import {HsAddDataService} from 'hslayers-ng/shared/add-data';
+import {CapabilitiesResponseWrapper} from 'hslayers-ng/common/types';
 import {HsCapabilityCacheService} from './capability-cache.service';
 import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
 import {HsEventBusService} from 'hslayers-ng/shared/core';
@@ -26,7 +25,6 @@ export class HsWmsGetCapabilitiesService implements IGetCapabilities {
     public hsMapService: HsMapService,
     public hsUtilsService: HsUtilsService,
     public hsCommonLaymanService: HsCommonLaymanService,
-    public hsAddDataService: HsAddDataService,
     private hsCapabilityCacheService: HsCapabilityCacheService,
   ) {}
 
@@ -118,7 +116,7 @@ export class HsWmsGetCapabilitiesService implements IGetCapabilities {
             ),
             observe: 'response', // Set observe to 'response' to get headers as well
           })
-          .pipe(takeUntil(this.hsAddDataService.cancelUrlRequest)),
+          .pipe(takeUntil(this.hsEventBusService.cancelAddDataUrlRequest)),
       );
       const contentType = r.headers.get('Content-Type');
       if (contentType?.includes('text/html')) {

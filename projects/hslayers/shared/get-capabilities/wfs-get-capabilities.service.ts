@@ -3,8 +3,7 @@ import {Injectable} from '@angular/core';
 
 import {lastValueFrom, takeUntil} from 'rxjs';
 
-import {CapabilitiesResponseWrapper} from './capabilities-response-wrapper';
-import {HsAddDataService} from 'hslayers-ng/shared/add-data';
+import {CapabilitiesResponseWrapper} from 'hslayers-ng/common/types';
 import {HsCapabilityCacheService} from './capability-cache.service';
 import {HsEventBusService} from 'hslayers-ng/shared/core';
 import {HsMapService} from 'hslayers-ng/shared/map';
@@ -19,7 +18,6 @@ export class HsWfsGetCapabilitiesService implements IGetCapabilities {
     public hsEventBusService: HsEventBusService,
     public hsMapService: HsMapService,
     public hsUtilsService: HsUtilsService,
-    public hsAddDataService: HsAddDataService,
     public hsCapabilityCacheService: HsCapabilityCacheService,
   ) {}
 
@@ -107,7 +105,7 @@ export class HsWfsGetCapabilitiesService implements IGetCapabilities {
             responseType: 'text',
             observe: 'response', // Set observe to 'response' to get headers as well
           })
-          .pipe(takeUntil(this.hsAddDataService.cancelUrlRequest)),
+          .pipe(takeUntil(this.hsEventBusService.cancelAddDataUrlRequest)),
       );
       /**
        * Retry with different version number
@@ -119,7 +117,7 @@ export class HsWfsGetCapabilitiesService implements IGetCapabilities {
               responseType: 'text',
               observe: 'response', // Set observe to 'response' to get headers as well
             })
-            .pipe(takeUntil(this.hsAddDataService.cancelUrlRequest)),
+            .pipe(takeUntil(this.hsEventBusService.cancelAddDataUrlRequest)),
         );
       }
       const contentType = r.headers.get('Content-Type');

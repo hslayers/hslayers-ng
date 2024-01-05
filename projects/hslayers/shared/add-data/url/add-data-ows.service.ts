@@ -3,10 +3,14 @@ import {Injectable} from '@angular/core';
 import {Layer} from 'ol/layer';
 import {Source} from 'ol/source';
 
-import {AddDataUrlType} from './types/url.type';
-import {HsAddDataCommonService} from '../common/common.service';
-import {HsAddDataService} from 'hslayers-ng/shared/add-data';
+import {HsAddDataCommonService} from '../common.service';
+import {HsAddDataService} from '../add-data.service';
 import {HsAddDataUrlService} from './add-data-url.service';
+import {HsUrlArcGisService} from './arcgis.service';
+import {HsUrlWfsService} from './wfs.service';
+import {HsUrlWmsService} from './wms.service';
+import {HsUrlWmtsService} from './wmts.service';
+
 import {
   HsArcgisGetCapabilitiesService,
   HsWfsGetCapabilitiesService,
@@ -14,15 +18,13 @@ import {
   HsWmtsGetCapabilitiesService,
   IGetCapabilities,
 } from 'hslayers-ng/shared/get-capabilities';
-import {HsHistoryListService} from 'hslayers-ng/common/history-list';
 import {HsLogService} from 'hslayers-ng/shared/log';
-import {HsUrlArcGisService} from './arcgis/arcgis.service';
-import {HsUrlTypeServiceModel} from './models/url-type-service.model';
-import {HsUrlWfsService} from './wfs/wfs.service';
-import {HsUrlWmsService} from './wms/wms.service';
-import {HsUrlWmtsService} from './wmts/wmts.service';
-import {LayerConnection, OwsConnection} from './types/ows-connection.type';
-import {UrlDataObject} from './types/data-object.type';
+
+import {AddDataUrlType} from 'hslayers-ng/common/types';
+import {HsHistoryListService} from 'hslayers-ng/common/history-list';
+import {HsUrlTypeServiceModel} from 'hslayers-ng/common/types';
+import {LayerConnection, OwsConnection} from 'hslayers-ng/common/types';
+import {UrlDataObject} from 'hslayers-ng/common/types';
 
 @Injectable({
   providedIn: 'root',

@@ -7,17 +7,18 @@ import {Source} from 'ol/source';
 import {WMTSCapabilities} from 'ol/format';
 import {transformExtent} from 'ol/proj';
 
-import {CapabilitiesResponseWrapper} from 'hslayers-ng/shared/get-capabilities';
+import {CapabilitiesResponseWrapper} from 'hslayers-ng/common/types';
 import {HsLayoutService} from 'hslayers-ng/shared/layout';
 import {HsMapService} from 'hslayers-ng/shared/map';
-import {LayerOptions} from 'hslayers-ng/common/types';
-import {addAnchors} from 'hslayers-ng/common/utils';
 
-import {AddLayersRecursivelyOptions} from '../types/recursive-options.type';
-import {HsAddDataCommonService} from '../../common/common.service';
-import {HsAddDataUrlService} from '../add-data-url.service';
-import {HsUrlTypeServiceModel} from '../models/url-type-service.model';
-import {UrlDataObject} from '../types/data-object.type';
+import {HsAddDataCommonService} from '../common.service';
+import {HsAddDataUrlService} from './add-data-url.service';
+
+import {AddLayersRecursivelyOptions} from 'hslayers-ng/common/types';
+import {HsUrlTypeServiceModel} from 'hslayers-ng/common/types';
+import {LayerOptions} from 'hslayers-ng/common/types';
+import {UrlDataObject} from 'hslayers-ng/common/types';
+import {addAnchors} from 'hslayers-ng/common/utils';
 
 @Injectable({providedIn: 'root'})
 export class HsUrlWmtsService implements HsUrlTypeServiceModel {

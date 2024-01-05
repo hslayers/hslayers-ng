@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 
 import {HsAddDataCommonFileService} from '../../common/common-file.service';
-import {HsAddDataCommonService} from '../../common/common.service';
+import {HsAddDataCommonService} from 'hslayers-ng/shared/add-data';
 import {HsAddDataVectorService} from '../../vector/vector.service';
 import {HsHistoryListService} from 'hslayers-ng/common/history-list';
 import {HsLayoutService} from 'hslayers-ng/shared/layout';

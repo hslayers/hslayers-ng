@@ -1,7 +1,7 @@
 import {Layer} from 'ol/layer';
 import {Source} from 'ol/source';
 
-import {CapabilitiesResponseWrapper} from './capabilities-response-wrapper';
+import {CapabilitiesResponseWrapper} from 'hslayers-ng/common/types';
 
 export interface IGetCapabilities {
   getPathFromUrl(str: string): string;

@@ -11,7 +11,7 @@ import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
 import {Cluster, Vector as VectorSource} from 'ol/source';
 import {Vector as VectorLayer} from 'ol/layer';
 
-import {HsAddDataOwsService} from 'hslayers-ng/components/add-data';
+import {HsAddDataOwsService} from 'hslayers-ng/shared/add-data';
 import {
   HsArcgisGetCapabilitiesService,
   HsWfsGetCapabilitiesService,

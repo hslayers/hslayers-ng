@@ -10,20 +10,20 @@ import {transformExtent} from 'ol/proj';
 import {
   ArcGISResResponseLayerExtent,
   ArcGISRestResponseLayer,
-} from '../types/argis-response-type';
-import {CapabilitiesResponseWrapper} from 'hslayers-ng/shared/get-capabilities';
+} from 'hslayers-ng/common/types';
+import {CapabilitiesResponseWrapper} from 'hslayers-ng/common/types';
 import {DuplicateHandling, HsMapService} from 'hslayers-ng/shared/map';
-import {HsAddDataCommonService} from '../../common/common.service';
-import {HsAddDataUrlService} from '../add-data-url.service';
+import {HsAddDataCommonService} from '../common.service';
+import {HsAddDataUrlService} from './add-data-url.service';
 import {HsArcgisGetCapabilitiesService} from 'hslayers-ng/shared/get-capabilities';
 import {HsLanguageService} from 'hslayers-ng/shared/language';
 import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
 import {HsLayoutService} from 'hslayers-ng/shared/layout';
 import {HsToastService} from 'hslayers-ng/common/toast';
-import {HsUrlTypeServiceModel, Service} from '../models/url-type-service.model';
+import {HsUrlTypeServiceModel, Service} from 'hslayers-ng/common/types';
 import {HsUtilsService} from 'hslayers-ng/shared/utils';
 import {LayerOptions} from 'hslayers-ng/common/types';
-import {UrlDataObject} from '../types/data-object.type';
+import {UrlDataObject} from 'hslayers-ng/common/types';
 import {addAnchors, getPreferredFormat} from 'hslayers-ng/common/utils';
 
 @Injectable({providedIn: 'root'})

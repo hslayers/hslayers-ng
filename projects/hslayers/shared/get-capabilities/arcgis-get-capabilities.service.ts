@@ -5,8 +5,7 @@ import {Layer, Tile} from 'ol/layer';
 import {Source, TileWMS} from 'ol/source';
 import {lastValueFrom, takeUntil} from 'rxjs';
 
-import {CapabilitiesResponseWrapper} from './capabilities-response-wrapper';
-import {HsAddDataService} from 'hslayers-ng/shared/add-data';
+import {CapabilitiesResponseWrapper} from 'hslayers-ng/common/types';
 import {HsCapabilityCacheService} from './capability-cache.service';
 import {HsEventBusService} from 'hslayers-ng/shared/core';
 import {HsLogService} from 'hslayers-ng/shared/log';
@@ -23,7 +22,6 @@ export class HsArcgisGetCapabilitiesService implements IGetCapabilities {
     public hsMapService: HsMapService,
     public hsUtilsService: HsUtilsService,
     public hsLogService: HsLogService,
-    public hsAddDataService: HsAddDataService,
     public hsCapabilityCacheService: HsCapabilityCacheService,
   ) {}
 
@@ -99,7 +97,7 @@ export class HsArcgisGetCapabilitiesService implements IGetCapabilities {
             responseType: 'json',
             observe: 'response', // Set observe to 'response' to get headers as well
           })
-          .pipe(takeUntil(this.hsAddDataService.cancelUrlRequest)),
+          .pipe(takeUntil(this.hsEventBusService.cancelAddDataUrlRequest)),
       );
       const wrap = {response: r.body};
       this.hsCapabilityCacheService.set(url, wrap);

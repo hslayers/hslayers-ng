@@ -1,4 +1,4 @@
-import {HsEndpoint} from '../endpoint.interface';
+import {HsEndpoint} from '../../endpoint.interface';
 
 export interface HsAddDataLayerDescriptor {
   abstract?: string;

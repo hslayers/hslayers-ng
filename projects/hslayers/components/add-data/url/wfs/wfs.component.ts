@@ -1,8 +1,8 @@
 import {Component} from '@angular/core';
 
-import {HsAddDataCommonService} from '../../common/common.service';
-import {HsAddDataOwsService} from '../add-data-ows.service';
-import {HsUrlWfsService} from './wfs.service';
+import {HsAddDataCommonService} from 'hslayers-ng/shared/add-data';
+import {HsAddDataOwsService} from 'hslayers-ng/shared/add-data';
+import {HsUrlWfsService} from 'hslayers-ng/shared/add-data';
 import {HsUtilsService} from 'hslayers-ng/shared/utils';
 
 @Component({

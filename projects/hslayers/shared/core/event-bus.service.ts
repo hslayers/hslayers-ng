@@ -146,5 +146,9 @@ export class HsEventBusService {
     null,
   );
   updateMapSize: Subject<void> = new Subject();
+  /**
+   * Cancels any external URL data request from datasources panel
+   */
+  cancelAddDataUrlRequest: Subject<void> = new Subject();
   constructor() {}
 }

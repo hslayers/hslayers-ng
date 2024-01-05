@@ -12,7 +12,7 @@ import {fromCircle} from 'ol/geom/Polygon';
 import {platformModifierKeyOnly} from 'ol/events/condition';
 import {unByKey} from 'ol/Observable';
 
-import {HsAddDataOwsService} from 'hslayers-ng/components/add-data';
+import {HsAddDataOwsService} from 'hslayers-ng/shared/add-data';
 import {HsAddDataVectorService} from 'hslayers-ng/components/add-data';
 import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
 import {HsConfig} from 'hslayers-ng/config';

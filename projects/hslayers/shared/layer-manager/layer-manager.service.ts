@@ -15,7 +15,7 @@ import {Vector as VectorSource} from 'ol/source';
 import {unByKey} from 'ol/Observable';
 
 import {HS_PRMS} from 'hslayers-ng/components/share';
-import {HsAddDataOwsService} from 'hslayers-ng/components/add-data';
+import {HsAddDataOwsService} from 'hslayers-ng/shared/add-data';
 import {HsBaseLayerDescriptor} from '../../components/layer-manager/base-layer-descriptor.interface';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsDimensionTimeService} from 'hslayers-ng/shared/get-capabilities';

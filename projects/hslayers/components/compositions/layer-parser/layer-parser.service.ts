@@ -21,7 +21,7 @@ import {
 } from 'ol/source';
 import {Options as TileOptions} from 'ol/layer/BaseTile';
 
-import {HsAddDataOwsService} from 'hslayers-ng/components/add-data';
+import {HsAddDataOwsService} from 'hslayers-ng/shared/add-data';
 import {HsAddDataVectorService} from 'hslayers-ng/components/add-data';
 import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
 import {HsLanguageService} from 'hslayers-ng/shared/language';

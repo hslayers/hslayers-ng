@@ -2,11 +2,11 @@ import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {lastValueFrom, takeUntil} from 'rxjs';
 
-import {HsAddDataService} from 'hslayers-ng/shared/add-data';
-import {HsAddDataUrlService} from '../add-data-url.service';
+import {HsAddDataUrlService} from 'hslayers-ng/shared/add-data';
+import {HsEventBusService} from 'hslayers-ng/shared/core';
 import {HsLanguageService} from 'hslayers-ng/shared/language';
 import {HsLogService} from 'hslayers-ng/shared/log';
-import {UrlDataObject} from '../types/data-object.type';
+import {UrlDataObject} from 'hslayers-ng/common/types';
 
 @Injectable({providedIn: 'root'})
 export class HsUrlGeoSparqlService {
@@ -14,7 +14,7 @@ export class HsUrlGeoSparqlService {
 
   constructor(
     public httpClient: HttpClient,
-    public hsAddDataService: HsAddDataService,
+    public hsEventBusService: HsEventBusService,
     public hsLanguageService: HsLanguageService,
     public hsLog: HsLogService,
     public hsAddDataUrlService: HsAddDataUrlService,
@@ -36,7 +36,7 @@ export class HsUrlGeoSparqlService {
             headers: {'Accept': ['application/rdf+xml', 'application/xml']},
             responseType: 'blob',
           })
-          .pipe(takeUntil(this.hsAddDataService.cancelUrlRequest)),
+          .pipe(takeUntil(this.hsEventBusService.cancelAddDataUrlRequest)),
       );
       const blobText = await r.text();
       const parsedResponse = new DOMParser().parseFromString(

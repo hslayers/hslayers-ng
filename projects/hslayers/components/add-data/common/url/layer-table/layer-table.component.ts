@@ -1,15 +1,12 @@
-import {AddDataUrlType} from '../../../url/types/url.type';
+import {AddDataUrlType} from 'hslayers-ng/common/types';
 import {AfterContentInit, Component, Input} from '@angular/core';
-import {HsAddDataCommonService} from '../../common.service';
+import {HsAddDataCommonService} from 'hslayers-ng/shared/add-data';
 import {HsAddDataService} from 'hslayers-ng/shared/add-data';
-import {HsAddDataUrlService} from '../../../url/add-data-url.service';
+import {HsAddDataUrlService} from 'hslayers-ng/shared/add-data';
 import {HsLanguageService} from 'hslayers-ng/shared/language';
 import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
-import {
-  HsUrlTypeServiceModel,
-  Service,
-} from '../../../url/models/url-type-service.model';
-import {HsUrlWmsService} from '../../../url/wms/wms.service';
+import {HsUrlTypeServiceModel, Service} from 'hslayers-ng/common/types';
+import {HsUrlWmsService} from 'hslayers-ng/shared/add-data';
 import {HsUtilsService} from 'hslayers-ng/shared/utils';
 @Component({
   selector: 'hs-layer-table',

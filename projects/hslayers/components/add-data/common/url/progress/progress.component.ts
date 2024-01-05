@@ -1,6 +1,6 @@
 import {ChangeDetectionStrategy, Component} from '@angular/core';
 
-import {HsAddDataService} from 'hslayers-ng/shared/add-data';
+import {HsEventBusService} from 'hslayers-ng/shared/core';
 import {HsUtilsService} from 'hslayers-ng/shared/utils';
 
 @Component({
@@ -10,7 +10,7 @@ import {HsUtilsService} from 'hslayers-ng/shared/utils';
 })
 export class HsUrlProgressComponent {
   constructor(
-    public hsAddDataService: HsAddDataService,
+    public hsEventBusService: HsEventBusService,
     public hsUtilsService: HsUtilsService,
   ) {}
 }

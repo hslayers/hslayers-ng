@@ -7,7 +7,7 @@ import {Observable, forkJoin} from 'rxjs';
 import {DatasetType} from 'hslayers-ng/common/types';
 import {HsAddDataCatalogueMapService} from './catalogue-map.service';
 import {HsAddDataLayerDescriptor} from 'hslayers-ng/common/types';
-import {HsAddDataOwsService} from '../url/add-data-ows.service';
+import {HsAddDataOwsService} from 'hslayers-ng/shared/add-data';
 import {HsAddDataService} from 'hslayers-ng/shared/add-data';
 import {HsAddDataVectorService} from '../vector/vector.service';
 import {HsCommonEndpointsService} from 'hslayers-ng/shared/endpoints';

@@ -3,7 +3,7 @@ import {AfterViewInit, Component, OnInit} from '@angular/core';
 import {AddDataFileType} from '../types/file.type';
 import {DEFAULT_SHP_LOAD_TYPE} from '../../enums/load-types.const';
 import {HsAddDataCommonFileService} from '../../common/common-file.service';
-import {HsAddDataCommonService} from '../../common/common.service';
+import {HsAddDataCommonService} from 'hslayers-ng/shared/add-data';
 import {HsAddDataFileBaseComponent} from '../file-base.component';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsFileService} from '../file.service';

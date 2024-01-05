@@ -1,4 +1,4 @@
-import {HsAddDataLayerDescriptor} from './add-data/layer-descriptor.model';
+import {HsAddDataLayerDescriptor} from './add-data/models/layer-descriptor.model';
 import {HsMapCompositionDescriptor} from './compositions/composition-descriptor.model';
 
 export enum EndpointErrorHandling {
