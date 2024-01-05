@@ -5,7 +5,7 @@ import {Source} from 'ol/source';
 
 import {AddDataUrlType} from './types/url.type';
 import {HsAddDataCommonService} from '../common/common.service';
-import {HsAddDataService} from '../add-data.service';
+import {HsAddDataService} from 'hslayers-ng/shared/add-data';
 import {HsAddDataUrlService} from './add-data-url.service';
 import {
   HsArcgisGetCapabilitiesService,

@@ -1,6 +1,6 @@
 import {ChangeDetectionStrategy, Component} from '@angular/core';
 
-import {HsAddDataService} from '../../../add-data.service';
+import {HsAddDataService} from 'hslayers-ng/shared/add-data';
 import {HsUtilsService} from 'hslayers-ng/shared/utils';
 
 @Component({
