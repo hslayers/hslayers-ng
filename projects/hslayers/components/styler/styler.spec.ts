@@ -23,7 +23,7 @@ import {HsLayoutService} from 'hslayers-ng/shared/layout';
 import {HsLayoutServiceMock} from 'hslayers-ng/shared/layout';
 import {HsMapService} from 'hslayers-ng/shared/map';
 import {HsMapServiceMock} from 'hslayers-ng/shared/map';
-import {HsQueryVectorService} from '../query/query-vector.service';
+import {HsQueryVectorService} from 'hslayers-ng/shared/query';
 import {HsSaveMapService} from 'hslayers-ng/shared/save-map';
 import {HsSaveMapServiceMock} from 'hslayers-ng/shared/save-map.mock';
 import {HsStylerComponent} from './styler.component';

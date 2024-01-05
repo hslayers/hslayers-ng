@@ -11,8 +11,8 @@ import {HsLayoutService} from 'hslayers-ng/shared/layout';
 import {HsLogService} from 'hslayers-ng/shared/log';
 import {HsMapService} from 'hslayers-ng/shared/map';
 import {HsPanelBaseComponent} from 'hslayers-ng/common/panels';
-import {HsQueryBaseService} from './query-base.service';
-import {HsQueryVectorService} from './query-vector.service';
+import {HsQueryBaseService} from 'hslayers-ng/shared/query';
+import {HsQueryVectorService} from 'hslayers-ng/shared/query';
 
 @Component({
   selector: 'hs-query',
@@ -20,7 +20,8 @@ import {HsQueryVectorService} from './query-vector.service';
 })
 export class HsQueryComponent
   extends HsPanelBaseComponent
-  implements OnDestroy, OnInit {
+  implements OnDestroy, OnInit
+{
   popup = new Popup();
   popupOpens: Subject<any> = new Subject();
   name = 'query';

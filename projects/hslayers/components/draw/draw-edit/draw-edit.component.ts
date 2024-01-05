@@ -11,8 +11,8 @@ import {HsEventBusService} from 'hslayers-ng/shared/core';
 import {HsLanguageService} from 'hslayers-ng/shared/language';
 import {HsLogService} from 'hslayers-ng/shared/log';
 import {HsMapService} from 'hslayers-ng/shared/map';
-import {HsQueryBaseService} from 'hslayers-ng/components/query';
-import {HsQueryVectorService} from 'hslayers-ng/components/query';
+import {HsQueryBaseService} from 'hslayers-ng/shared/query';
+import {HsQueryVectorService} from 'hslayers-ng/shared/query';
 import {HsToastService} from 'hslayers-ng/common/toast';
 import {defaultStyle} from 'hslayers-ng/components/styler';
 

@@ -6,7 +6,7 @@ import {Geometry} from 'ol/geom';
 import {Layer, Vector as VectorLayer} from 'ol/layer';
 
 import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
-import {HsQueryVectorService} from '../query/query-vector.service';
+import {HsQueryVectorService} from 'hslayers-ng/shared/query';
 import {HsUtilsService} from 'hslayers-ng/shared/utils';
 import {
   getBase,

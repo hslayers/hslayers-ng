@@ -34,7 +34,7 @@ import {HsLayerSynchronizerService} from 'hslayers-ng/shared/save-map';
 import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
 import {HsLogService} from 'hslayers-ng/shared/log';
 import {HsMapService} from 'hslayers-ng/shared/map';
-import {HsQueryVectorService} from 'hslayers-ng/components/query';
+import {HsQueryVectorService} from 'hslayers-ng/shared/query';
 import {HsSaveMapService} from 'hslayers-ng/shared/save-map';
 import {HsToastService} from 'hslayers-ng/common/toast';
 import {HsUtilsService} from 'hslayers-ng/shared/utils';

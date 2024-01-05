@@ -19,7 +19,7 @@ import {HsConfig} from 'hslayers-ng/config';
 import {HsEventBusService} from 'hslayers-ng/shared/core';
 import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
 import {HsMapService} from 'hslayers-ng/shared/map';
-import {HsQueryBaseService} from './query-base.service';
+import {HsQueryBaseService} from 'hslayers-ng/shared/query';
 import {HsUtilsService} from 'hslayers-ng/shared/utils';
 import {StyleLike, createDefaultStyle} from 'ol/style/Style';
 import {getFeatures} from 'hslayers-ng/common/extensions';
