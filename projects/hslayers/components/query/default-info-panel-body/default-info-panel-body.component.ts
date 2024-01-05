@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 
-import {HsQueryBaseService} from '../query-base.service';
+import {HsQueryBaseService} from 'hslayers-ng/shared/query';
 
 @Component({
   selector: 'hs-query-default-info-panel-body',

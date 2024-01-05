@@ -8,8 +8,8 @@ import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
 import {HsFeatureCommonService} from '../feature-common.service';
 import {HsLanguageService} from 'hslayers-ng/shared/language';
 import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
-import {HsQueryBaseService} from '../query-base.service';
-import {HsQueryVectorService} from '../query-vector.service';
+import {HsQueryBaseService} from 'hslayers-ng/shared/query';
+import {HsQueryVectorService} from 'hslayers-ng/shared/query';
 import {exportFormats} from '../feature-common.service';
 import {getTitle} from 'hslayers-ng/common/extensions';
 

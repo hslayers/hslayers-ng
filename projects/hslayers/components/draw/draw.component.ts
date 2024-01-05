@@ -10,7 +10,7 @@ import {HsDrawService} from 'hslayers-ng/shared/draw';
 import {HsLanguageService} from 'hslayers-ng/shared/language';
 import {HsLayoutService} from 'hslayers-ng/shared/layout';
 import {HsPanelBaseComponent} from 'hslayers-ng/common/panels';
-import {HsQueryBaseService} from 'hslayers-ng/components/query';
+import {HsQueryBaseService} from 'hslayers-ng/shared/query';
 import {HsSidebarService} from 'hslayers-ng/components/sidebar';
 import {HsUtilsService} from 'hslayers-ng/shared/utils';
 
@@ -20,7 +20,8 @@ import {HsUtilsService} from 'hslayers-ng/shared/utils';
 })
 export class HsDrawComponent
   extends HsPanelBaseComponent
-  implements OnInit, OnDestroy {
+  implements OnInit, OnDestroy
+{
   name = 'draw';
   selectedOption = new BehaviorSubject('draw');
   private end = new Subject<void>();
