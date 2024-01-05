@@ -2,8 +2,8 @@ import {Injectable} from '@angular/core';
 
 import {Subject} from 'rxjs';
 
-import {HsAddDataService} from 'hslayers-ng/shared/add-data';
-import {HsAddDataUrlService} from '../url/add-data-url.service';
+import {HsAddDataService} from './add-data.service';
+import {HsAddDataUrlService} from './url/add-data-url.service';
 import {HsDimensionService} from 'hslayers-ng/shared/get-capabilities';
 import {HsEventBusService} from 'hslayers-ng/shared/core';
 import {HsMapService} from 'hslayers-ng/shared/map';

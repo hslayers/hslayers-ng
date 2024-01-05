@@ -22,10 +22,6 @@ export class HsAddDataService {
     undefined,
   );
   datasetTypeSelected = this.datasetSelected.asObservable();
-  /**
-   * Cancels any external URL data request from datasources panel
-   */
-  cancelUrlRequest: Subject<void> = new Subject();
   constructor(
     public hsMapService: HsMapService,
     public hsUtilsService: HsUtilsService,

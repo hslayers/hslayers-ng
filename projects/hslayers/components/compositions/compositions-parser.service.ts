@@ -40,7 +40,7 @@ import {
   setSwipeSide,
 } from 'hslayers-ng/common/extensions';
 import {parseExtent, transformExtentValue} from 'hslayers-ng/common/utils';
-import {servicesSupportedByUrl} from '../add-data/url/services-supported.const';
+import {servicesSupportedByUrl} from 'hslayers-ng/common/types';
 
 @Injectable({
   providedIn: 'root',

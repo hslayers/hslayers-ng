@@ -1,8 +1,8 @@
 import {Component} from '@angular/core';
 
-import {HsAddDataCommonService} from '../../common/common.service';
-import {HsAddDataOwsService} from '../add-data-ows.service';
-import {HsUrlWmtsService} from './wmts.service';
+import {HsAddDataCommonService} from 'hslayers-ng/shared/add-data';
+import {HsAddDataOwsService} from 'hslayers-ng/shared/add-data';
+import {HsUrlWmtsService} from 'hslayers-ng/shared/add-data';
 
 @Component({
   selector: 'hs-url-wmts',

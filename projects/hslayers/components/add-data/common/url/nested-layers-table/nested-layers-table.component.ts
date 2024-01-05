@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 
-import {HsUrlWmsService} from '../../../url/wms/wms.service';
+import {HsUrlWmsService} from 'hslayers-ng/shared/add-data';
 
 @Component({
   selector: 'hs-nested-layers-table',

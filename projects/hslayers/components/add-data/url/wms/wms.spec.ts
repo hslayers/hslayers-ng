@@ -21,7 +21,7 @@ import {HsMapService} from 'hslayers-ng/shared/map';
 import {HsMapServiceMock} from 'hslayers-ng/shared/map';
 import {HsPanelHelpersModule} from 'hslayers-ng/common/panels';
 import {HsUrlWmsComponent} from './wms.component';
-import {HsUrlWmsService} from './wms.service';
+import {HsUrlWmsService} from 'hslayers-ng/shared/add-data';
 import {HsUtilsService, mockLayerUtilsService} from 'hslayers-ng/shared/utils';
 import {HsUtilsServiceMock} from 'hslayers-ng/shared/utils';
 import {HsWmsGetCapabilitiesService} from 'hslayers-ng/shared/get-capabilities';
