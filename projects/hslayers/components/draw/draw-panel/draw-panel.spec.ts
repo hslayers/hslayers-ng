@@ -14,7 +14,7 @@ import {Vector as VectorSource} from 'ol/source';
 
 import {DrawPanelComponent} from './draw-panel.component';
 import {HsAddDataOwsService} from 'hslayers-ng/components/add-data';
-import {HsAddDataVectorService} from '../../add-data/vector/vector.service';
+import {HsAddDataVectorService} from 'hslayers-ng/components/add-data';
 import {HsCommonEndpointsService} from 'hslayers-ng/shared/endpoints';
 import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
 import {HsConfig} from 'hslayers-ng/config';
@@ -23,7 +23,7 @@ import {HsConfigMock} from 'hslayers-ng/config';
 import {HsLanguageModule} from 'hslayers-ng/components/language';
 import {HsLanguageService} from 'hslayers-ng/shared/language';
 import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
-import {HsLaymanBrowserService} from '../../add-data/catalogue/layman/layman.service';
+import {HsLaymanBrowserService} from 'hslayers-ng/components/add-data';
 import {HsLaymanService} from 'hslayers-ng/shared/save-map';
 import {HsLayoutService} from 'hslayers-ng/shared/layout';
 import {HsLayoutServiceMock} from 'hslayers-ng/shared/layout';

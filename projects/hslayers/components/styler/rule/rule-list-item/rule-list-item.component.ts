@@ -4,7 +4,7 @@ import {DomSanitizer, SafeHtml} from '@angular/platform-browser';
 import LegendRenderer from 'geostyler-legend/dist/LegendRenderer/LegendRenderer';
 import {Style as GeoStylerStyle} from 'geostyler-style';
 
-import {HsStylerService} from '../../styler.service';
+import {HsStylerService} from 'hslayers-ng/shared/styler';
 
 @Component({
   selector: 'hs-rule-list-item',

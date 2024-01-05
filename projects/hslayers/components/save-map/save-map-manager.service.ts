@@ -16,7 +16,7 @@ import {HsSaveMapService} from 'hslayers-ng/shared/save-map';
 import {HsSaverService} from './interfaces/saver-service.interface';
 import {HsShareService} from 'hslayers-ng/components/share';
 import {HsUtilsService} from 'hslayers-ng/shared/utils';
-import {LaymanCompositionDescriptor} from '../compositions/models/composition-descriptor.model';
+import {LaymanCompositionDescriptor} from '../../common/types/compositions/composition-descriptor.model';
 import {MapComposition} from 'hslayers-ng/common/types';
 import {StatusData} from './types/status-data.type';
 import {UserData} from 'hslayers-ng/common/types';

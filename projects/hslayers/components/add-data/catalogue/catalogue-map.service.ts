@@ -13,7 +13,7 @@ import {HsCommonEndpointsService} from 'hslayers-ng/shared/endpoints';
 import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
 import {HsLayoutService} from 'hslayers-ng/shared/layout';
 import {HsLogService} from 'hslayers-ng/shared/log';
-import {HsMapCompositionDescriptor} from 'hslayers-ng/components/compositions';
+import {HsMapCompositionDescriptor} from 'hslayers-ng/common/types';
 import {HsMapService} from 'hslayers-ng/shared/map';
 import {HsSaveMapService} from 'hslayers-ng/shared/save-map';
 import {HsUtilsService} from 'hslayers-ng/shared/utils';

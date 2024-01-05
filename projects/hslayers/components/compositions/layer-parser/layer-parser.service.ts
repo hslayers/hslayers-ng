@@ -22,12 +22,12 @@ import {
 import {Options as TileOptions} from 'ol/layer/BaseTile';
 
 import {HsAddDataOwsService} from 'hslayers-ng/components/add-data';
-import {HsAddDataVectorService} from '../../add-data/vector/vector.service';
+import {HsAddDataVectorService} from 'hslayers-ng/components/add-data';
 import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
 import {HsLanguageService} from 'hslayers-ng/shared/language';
 import {HsLogService} from 'hslayers-ng/shared/log';
 import {HsMapService} from 'hslayers-ng/shared/map';
-import {HsStylerService} from 'hslayers-ng/components/styler';
+import {HsStylerService} from 'hslayers-ng/shared/styler';
 import {HsToastService} from 'hslayers-ng/common/toast';
 import {HsVectorLayerOptions} from '../../add-data/vector/vector-layer-options.type';
 import {SparqlJson} from 'hslayers-ng/common/layers';

@@ -13,14 +13,14 @@ import {Subject, takeUntil} from 'rxjs';
 
 import {HsConfig} from 'hslayers-ng/config';
 import {HsCoreService} from 'hslayers-ng/shared/core';
-import {HsDialogItem} from 'hslayers-ng/common/dialogs';
+import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
 import {HsEventBusService} from 'hslayers-ng/shared/core';
 import {HsLanguageService} from 'hslayers-ng/shared/language';
 import {HsLayerDescriptor} from 'hslayers-ng/common/types';
 import {HsLayerListService} from './logical-list/layer-manager-layerlist.service';
 import {HsLayerManagerRemoveAllDialogComponent} from './dialogs/remove-all-dialog.component';
 import {HsLayerManagerService} from 'hslayers-ng/shared/layer-manager';
-import {HsLayerSynchronizerService} from '../save-map/layer-synchronizer.service';
+import {HsLayerSynchronizerService} from 'hslayers-ng/shared/save-map';
 import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
 import {HsLayoutService} from 'hslayers-ng/shared/layout';
 import {HsMapService} from 'hslayers-ng/shared/map';

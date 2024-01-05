@@ -27,7 +27,7 @@ import {HsQueryVectorService} from '../query/query-vector.service';
 import {HsSaveMapService} from 'hslayers-ng/shared/save-map';
 import {HsSaveMapServiceMock} from 'hslayers-ng/shared/save-map.mock';
 import {HsStylerComponent} from './styler.component';
-import {HsStylerService} from './styler.service';
+import {HsStylerService} from 'hslayers-ng/shared/styler';
 import {HsUtilsService} from 'hslayers-ng/shared/utils';
 import {HsUtilsServiceMock} from 'hslayers-ng/shared/utils';
 import {TranslateCustomPipe} from 'hslayers-ng/shared/language';

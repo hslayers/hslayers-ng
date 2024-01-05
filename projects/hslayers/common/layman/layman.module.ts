@@ -5,7 +5,6 @@ import {FormsModule} from '@angular/forms';
 import {HsCommonLaymanAccessRightsComponent} from './access-rights/layman-access-rights.component';
 import {HsLaymanCurrentUserComponent} from './layman-current-user.component';
 import {HsLaymanLoginComponent} from './layman-login.component';
-import {HsSetPermissionsDialogComponent} from './dialog-set-permissions/set-permissions.component';
 import {HsUiExtensionsModule} from 'hslayers-ng/common/widgets';
 import {TranslateCustomPipe} from 'hslayers-ng/shared/language';
 
@@ -15,7 +14,6 @@ import {TranslateCustomPipe} from 'hslayers-ng/shared/language';
     HsLaymanLoginComponent,
     HsLaymanCurrentUserComponent,
     HsCommonLaymanAccessRightsComponent,
-    HsSetPermissionsDialogComponent,
   ],
   imports: [
     CommonModule,
@@ -27,7 +25,6 @@ import {TranslateCustomPipe} from 'hslayers-ng/shared/language';
     HsLaymanLoginComponent,
     HsLaymanCurrentUserComponent,
     HsCommonLaymanAccessRightsComponent,
-    HsSetPermissionsDialogComponent,
   ],
 })
 export class HsLaymanModule {}
