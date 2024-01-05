@@ -4,7 +4,7 @@ import {Injectable} from '@angular/core';
 import {Observable, catchError, map, of, timeout} from 'rxjs';
 
 import {HsCompositionsParserService} from '../compositions-parser.service';
-import {HsEndpoint} from 'hslayers-ng/shared/endpoints';
+import {HsEndpoint} from 'hslayers-ng/common/types';
 import {HsLanguageService} from 'hslayers-ng/shared/language';
 import {HsLogService} from 'hslayers-ng/shared/log';
 import {HsMapCompositionDescriptor} from '../../../common/types/compositions/composition-descriptor.model';

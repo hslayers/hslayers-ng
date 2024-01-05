@@ -7,7 +7,7 @@ import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
 import {HsCompositionsInfoDialogComponent} from './dialogs/info-dialog.component';
 import {HsCompositionsService} from './compositions.service';
 import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
-import {HsEndpoint} from 'hslayers-ng/shared/endpoints';
+import {HsEndpoint} from 'hslayers-ng/common/types';
 import {HsEventBusService} from 'hslayers-ng/shared/core';
 import {HsLayoutService} from 'hslayers-ng/shared/layout';
 import {HsMapCompositionDescriptor} from 'hslayers-ng/common/types';

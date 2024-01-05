@@ -9,7 +9,7 @@ import {HsCommonEndpointsService} from 'hslayers-ng/shared/endpoints';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsConfirmDialogComponent} from 'hslayers-ng/common/confirm';
 import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
-import {HsEndpoint} from 'hslayers-ng/shared/endpoints';
+import {HsEndpoint} from 'hslayers-ng/common/types';
 import {HsLanguageService} from 'hslayers-ng/shared/language';
 import {HsLaymanBrowserService} from '../layman/layman.service';
 import {HsLaymanService} from 'hslayers-ng/shared/save-map';

@@ -13,7 +13,7 @@ import {HsAddDataVectorService} from '../vector/vector.service';
 import {HsCommonEndpointsService} from 'hslayers-ng/shared/endpoints';
 import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
 import {HsConfig} from 'hslayers-ng/config';
-import {HsEndpoint} from 'hslayers-ng/shared/endpoints';
+import {HsEndpoint} from 'hslayers-ng/common/types';
 import {HsEventBusService} from 'hslayers-ng/shared/core';
 import {HsLaymanBrowserService} from './layman/layman.service';
 import {HsLayoutService} from 'hslayers-ng/shared/layout';

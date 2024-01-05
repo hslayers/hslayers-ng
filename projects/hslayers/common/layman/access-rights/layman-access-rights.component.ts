@@ -4,7 +4,7 @@ import {HttpClient} from '@angular/common/http';
 import {lastValueFrom, map} from 'rxjs';
 
 import {HsCommonLaymanService} from '../layman.service';
-import {HsEndpoint} from 'hslayers-ng/shared/endpoints';
+import {HsEndpoint} from 'hslayers-ng/common/types';
 import {HsLanguageService} from 'hslayers-ng/shared/language';
 import {HsLogService} from 'hslayers-ng/shared/log';
 import {LaymanUser} from '../types/layman-user.type';

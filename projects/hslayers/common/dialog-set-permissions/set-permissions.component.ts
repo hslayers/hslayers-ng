@@ -13,7 +13,7 @@ import {
   HsDialogContainerService,
   HsDialogItem,
 } from 'hslayers-ng/common/dialogs';
-import {HsEndpoint} from 'hslayers-ng/shared/endpoints';
+import {HsEndpoint} from 'hslayers-ng/common/types';
 import {HsLaymanModule} from 'hslayers-ng/common/layman';
 import {HsLaymanService} from 'hslayers-ng/shared/save-map';
 import {PostPatchLayerResponse} from '../layman/types/post-patch-layer-response.type';
