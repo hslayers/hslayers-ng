@@ -1,7 +1,7 @@
 import {AddDataUrlType} from '../../../url/types/url.type';
 import {AfterContentInit, Component, Input} from '@angular/core';
 import {HsAddDataCommonService} from '../../common.service';
-import {HsAddDataService} from '../../../add-data.service';
+import {HsAddDataService} from 'hslayers-ng/shared/add-data';
 import {HsAddDataUrlService} from '../../../url/add-data-url.service';
 import {HsLanguageService} from 'hslayers-ng/shared/language';
 import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';

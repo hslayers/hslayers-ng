@@ -7,7 +7,7 @@ import {Layer} from 'ol/layer';
 import {Select} from 'ol/interaction';
 import {Source} from 'ol/source';
 
-import {HsDimensionDescriptor} from 'hslayers-ng/shared/get-capabilities';
+import {HsDimensionDescriptor} from 'hslayers-ng/common/dimensions';
 import {HsLayerDescriptor, HsLayerLoadProgress} from 'hslayers-ng/common/types';
 import {HsMapCompositionDescriptor} from 'hslayers-ng/common/types';
 

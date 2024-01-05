@@ -8,7 +8,7 @@ import {Source, Vector as VectorSource} from 'ol/source';
 import {PROJECTIONS as epsg4326Aliases} from 'ol/proj/epsg4326';
 
 import {HsAddDataCommonFileService} from '../common/common-file.service';
-import {HsAddDataService} from '../add-data.service';
+import {HsAddDataService} from 'hslayers-ng/shared/add-data';
 import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
 import {HsLaymanService} from 'hslayers-ng/shared/save-map';
 import {HsLogService} from 'hslayers-ng/shared/log';

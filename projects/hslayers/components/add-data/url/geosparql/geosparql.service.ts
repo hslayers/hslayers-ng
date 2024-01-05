@@ -2,7 +2,7 @@ import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {lastValueFrom, takeUntil} from 'rxjs';
 
-import {HsAddDataService} from '../../add-data.service';
+import {HsAddDataService} from 'hslayers-ng/shared/add-data';
 import {HsAddDataUrlService} from '../add-data-url.service';
 import {HsLanguageService} from 'hslayers-ng/shared/language';
 import {HsLogService} from 'hslayers-ng/shared/log';

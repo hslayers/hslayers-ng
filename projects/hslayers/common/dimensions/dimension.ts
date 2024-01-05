@@ -1,6 +1,5 @@
 import dayjs from 'dayjs';
 
-//Move to common/dimensions
 export class HsDimensionDescriptor {
   public type: string;
   public value: any;

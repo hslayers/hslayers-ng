@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {Layer} from 'ol/layer';
 import {Source, Vector as VectorSource, XYZ} from 'ol/source';
 
-import {HsDimensionDescriptor} from './dimension';
+import {HsDimensionDescriptor} from 'hslayers-ng/common/dimensions';
 import {HsDimensionTimeService} from './dimension-time.service';
 import {HsEventBusService} from 'hslayers-ng/shared/core';
 import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';

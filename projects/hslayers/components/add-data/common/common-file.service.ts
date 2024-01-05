@@ -7,7 +7,7 @@ import {AsyncUpload} from 'hslayers-ng/common/types';
 import {FileDataObject} from '../file/types/file-data-object.type';
 import {FileFormData} from '../file/types/file-form-data.type';
 import {HsAddDataOwsService} from '../url/add-data-ows.service';
-import {HsAddDataService} from '../add-data.service';
+import {HsAddDataService} from 'hslayers-ng/shared/add-data';
 import {HsAddDataUrlService} from '../url/add-data-url.service';
 import {
   HsCommonEndpointsService,

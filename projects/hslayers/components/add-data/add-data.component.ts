@@ -3,7 +3,7 @@ import {Subject, takeUntil} from 'rxjs';
 
 import {AddDataUrlType} from './url/types/url.type';
 import {DatasetType} from 'hslayers-ng/common/types';
-import {HsAddDataService} from './add-data.service';
+import {HsAddDataService} from 'hslayers-ng/shared/add-data';
 import {HsAddDataUrlService} from './url/add-data-url.service';
 import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
 import {HsEventBusService} from 'hslayers-ng/shared/core';
@@ -21,7 +21,8 @@ import {servicesSupportedByUrl} from './url/services-supported.const';
 })
 export class HsAddDataComponent
   extends HsPanelBaseComponent
-  implements OnInit, OnDestroy {
+  implements OnInit, OnDestroy
+{
   private end = new Subject<void>();
 
   constructor(

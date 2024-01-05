@@ -8,7 +8,7 @@ import {DatasetType} from 'hslayers-ng/common/types';
 import {HsAddDataCatalogueMapService} from './catalogue-map.service';
 import {HsAddDataLayerDescriptor} from 'hslayers-ng/common/types';
 import {HsAddDataOwsService} from '../url/add-data-ows.service';
-import {HsAddDataService} from '../add-data.service';
+import {HsAddDataService} from 'hslayers-ng/shared/add-data';
 import {HsAddDataVectorService} from '../vector/vector.service';
 import {HsCommonEndpointsService} from 'hslayers-ng/shared/endpoints';
 import {HsCommonLaymanService} from 'hslayers-ng/common/layman';

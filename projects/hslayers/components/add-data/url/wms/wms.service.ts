@@ -13,7 +13,7 @@ import {AddLayersRecursivelyOptions} from '../types/recursive-options.type';
 import {CapabilitiesResponseWrapper} from 'hslayers-ng/shared/get-capabilities';
 import {DuplicateHandling, HsMapService} from 'hslayers-ng/shared/map';
 import {HsAddDataCommonService} from '../../common/common.service';
-import {HsAddDataService} from '../../add-data.service';
+import {HsAddDataService} from 'hslayers-ng/shared/add-data';
 import {HsAddDataUrlService} from '../add-data-url.service';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsDimensionService} from 'hslayers-ng/shared/get-capabilities';
