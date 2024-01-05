@@ -18,7 +18,7 @@ import {HsEndpoint} from 'hslayers-ng/shared/endpoints';
 import {HsEventBusService} from 'hslayers-ng/shared/core';
 import {HsLanguageService} from 'hslayers-ng/shared/language';
 import {HsLogService} from 'hslayers-ng/shared/log';
-import {HsMapCompositionDescriptor} from './models/composition-descriptor.model';
+import {HsMapCompositionDescriptor} from '../../common/types/compositions/composition-descriptor.model';
 import {HsShareUrlService} from 'hslayers-ng/components/share';
 import {HsToastService} from 'hslayers-ng/common/toast';
 import {HsUtilsService} from 'hslayers-ng/shared/utils';

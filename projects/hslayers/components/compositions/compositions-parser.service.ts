@@ -28,7 +28,7 @@ import {HsLayoutService} from 'hslayers-ng/shared/layout';
 import {HsLogService} from 'hslayers-ng/shared/log';
 import {HsToastService} from 'hslayers-ng/common/toast';
 import {HsUtilsService, generateUuid} from 'hslayers-ng/shared/utils';
-import {LaymanCompositionDescriptor} from './models/composition-descriptor.model';
+import {LaymanCompositionDescriptor} from '../../common/types/compositions/composition-descriptor.model';
 import {
   getLaymanFriendlyLayerName,
   isLaymanUrl,

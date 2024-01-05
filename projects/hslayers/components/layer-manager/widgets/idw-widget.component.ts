@@ -7,23 +7,9 @@ import {Vector as VectorSource} from 'ol/source';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsLanguageService} from 'hslayers-ng/shared/language';
 import {HsLayerEditorWidgetBaseComponent} from './layer-editor-widget-base.component';
-import {HsLayerSelectorService} from '../editor/layer-selector.service';
-import {HsUtilsService} from 'hslayers-ng/shared/utils';
+import {HsLayerSelectorService} from 'hslayers-ng/shared/layer-manager';
+import {HsLayerUtilsService, HsUtilsService} from 'hslayers-ng/shared/utils';
 import {InterpolatedSource} from 'hslayers-ng/common/layers';
-
-export function listNumericAttributes(features: Feature[]): string[] {
-  return features.length > 0
-    ? Object.keys(features[0].getProperties()).filter(
-        (attr) => {
-          return (
-            attr != 'geometry' &&
-            attr != 'hs_normalized_IDW_value' &&
-            !isNaN(Number(features[0].get(attr)))
-          );
-        }, //Check if number
-      )
-    : [];
-}
 
 @Component({
   selector: 'hs-idw-widget',
@@ -35,7 +21,8 @@ export function listNumericAttributes(features: Feature[]): string[] {
  */
 export class HsIdwWidgetComponent
   extends HsLayerEditorWidgetBaseComponent
-  implements OnInit {
+  implements OnInit
+{
   weightAttribute: string;
   attributes: string[];
   name = 'idw-widget';
@@ -49,6 +36,7 @@ export class HsIdwWidgetComponent
     public HsLanguageService: HsLanguageService,
     hsLayerSelectorService: HsLayerSelectorService,
     private hsUtilsService: HsUtilsService,
+    private hsLayerUtilsService: HsLayerUtilsService,
     public hsConfig: HsConfig,
   ) {
     super(hsLayerSelectorService);
@@ -93,7 +81,7 @@ export class HsIdwWidgetComponent
   }
 
   listNumericAttributes(features: Feature[]): string[] {
-    return listNumericAttributes(features);
+    return this.hsLayerUtilsService.listNumericAttributes(features);
   }
 
   getIdwSource(): InterpolatedSource {

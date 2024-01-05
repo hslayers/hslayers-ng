@@ -1,25 +1,30 @@
+import {CommonModule} from '@angular/common';
 import {Component, OnInit, ViewRef} from '@angular/core';
 
-import {HsAddDataCatalogueService} from 'hslayers-ng/shared/add-data';
+import {HsAddDataCatalogueService} from 'hslayers-ng/components/add-data';
 import {
   HsAddDataLayerDescriptor,
   accessRightsModel,
 } from 'hslayers-ng/common/types';
-import {HsCommonLaymanService} from '../layman.service';
-import {HsCompositionsCatalogueService} from 'hslayers-ng/shared/compositions';
+import {HsCommonLaymanService} from '../layman/layman.service';
+import {HsCompositionsCatalogueService} from 'hslayers-ng/components/compositions';
 import {
   HsDialogComponent,
   HsDialogContainerService,
   HsDialogItem,
 } from 'hslayers-ng/common/dialogs';
 import {HsEndpoint} from 'hslayers-ng/shared/endpoints';
+import {HsLaymanModule} from 'hslayers-ng/common/layman';
 import {HsLaymanService} from 'hslayers-ng/shared/save-map';
-import {PostPatchLayerResponse} from '../types/post-patch-layer-response.type';
+import {PostPatchLayerResponse} from '../layman/types/post-patch-layer-response.type';
+import {TranslateCustomPipe} from 'hslayers-ng/shared/language';
 import {UpsertLayerObject} from 'hslayers-ng/common/types';
 
 @Component({
   selector: 'hs-set-permissions-dialog',
   templateUrl: './set-permissions.component.html',
+  standalone: true,
+  imports: [CommonModule, TranslateCustomPipe, HsLaymanModule],
 })
 export class HsSetPermissionsDialogComponent
   implements HsDialogComponent, OnInit {

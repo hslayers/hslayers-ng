@@ -25,7 +25,7 @@ import {HsLanguageService} from 'hslayers-ng/shared/language';
 import {HsLayerDescriptor, HsLayerLoadProgress} from 'hslayers-ng/common/types';
 import {HsLayerEditorVectorLayerService} from '../../components/layer-manager/editor/layer-editor-vector-layer.service';
 import {HsLayerManagerMetadataService} from '../../components/layer-manager/layer-manager-metadata.service';
-import {HsLayerSelectorService} from '../../components/layer-manager/editor/layer-selector.service';
+import {HsLayerSelectorService} from './layer-selector.service';
 import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
 import {HsLayoutService} from 'hslayers-ng/shared/layout';
 import {HsLogService} from 'hslayers-ng/shared/log';

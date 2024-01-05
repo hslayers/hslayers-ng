@@ -9,7 +9,7 @@ import {transformExtent} from 'ol/proj';
 import {HsEventBusService} from 'hslayers-ng/shared/core';
 import {HsLayerEditorVectorLayerService} from './layer-editor-vector-layer.service';
 import {HsLayerManagerMetadataService} from '../layer-manager-metadata.service';
-import {HsLayerSelectorService} from './layer-selector.service';
+import {HsLayerSelectorService} from 'hslayers-ng/shared/layer-manager';
 import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
 import {HsLayoutService} from 'hslayers-ng/shared/layout';
 import {HsLegendDescriptor} from 'hslayers-ng/components/legend';

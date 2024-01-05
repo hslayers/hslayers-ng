@@ -20,7 +20,6 @@ export * from './types/recursive-options.type';
 export * from './types/url.type';
 export * from './add-data-url-values';
 export * from './add-data-ows.service';
-export * from './services-supported.const';
 export * from './geosparql/geosparql.component';
 export * from './geosparql/geosparql.module';
 export * from './geosparql/geosparql.service';

@@ -2,7 +2,7 @@ import {Component} from '@angular/core';
 
 import {HsLanguageService} from 'hslayers-ng/shared/language';
 import {HsLayerEditorWidgetBaseComponent} from './layer-editor-widget-base.component';
-import {HsLayerSelectorService} from '../editor/layer-selector.service';
+import {HsLayerSelectorService} from 'hslayers-ng/shared/layer-manager';
 
 @Component({
   selector: 'hs-type-widget',

@@ -3,7 +3,7 @@ import {Component} from '@angular/core';
 import {METERS_PER_UNIT} from 'ol/proj';
 
 import {HsLayerEditorWidgetBaseComponent} from './layer-editor-widget-base.component';
-import {HsLayerSelectorService} from '../editor/layer-selector.service';
+import {HsLayerSelectorService} from 'hslayers-ng/shared/layer-manager';
 import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
 import {HsMapService} from 'hslayers-ng/shared/map';
 

@@ -1,9 +1,9 @@
 import {Component, Input} from '@angular/core';
 import {Vector as VectorSource} from 'ol/source';
 
-import {HsLayerSelectorService} from '../../layer-manager/editor/layer-selector.service';
+import {HsLayerSelectorService} from 'hslayers-ng/shared/layer-manager';
+import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
 import {HsStylerPartBaseComponent} from '../style-part-base.component';
-import {listNumericAttributes} from '../../layer-manager/widgets/idw-widget.component';
 
 @Component({
   selector: 'hs-comparison-filter',
@@ -16,12 +16,15 @@ export class HsComparisonFilterComponent extends HsStylerPartBaseComponent {
   attributes: string[];
   operators = ['==', '*=', '!=', '<', '<=', '>', '>='];
 
-  constructor(private hsLayerSelectorService: HsLayerSelectorService) {
+  constructor(
+    private hsLayerSelectorService: HsLayerSelectorService,
+    private hsLayerUtilsService: HsLayerUtilsService,
+  ) {
     super();
     const layer = this.hsLayerSelectorService.currentLayer.layer;
     const src = layer.getSource();
     const features = (src as VectorSource).getFeatures();
-    this.attributes = listNumericAttributes(features);
+    this.attributes = this.hsLayerUtilsService.listNumericAttributes(features);
   }
 
   remove(): void {
