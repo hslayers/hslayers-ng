@@ -12,7 +12,7 @@ import {
 } from 'hslayers-ng/common/types';
 import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
 import {HsCompositionsParserService} from '../compositions-parser.service';
-import {HsEventBusService} from 'hslayers-ng/shared/core';
+import {HsEventBusService} from 'hslayers-ng/shared/event-bus';
 import {HsLanguageService} from 'hslayers-ng/shared/language';
 import {HsMapCompositionDescriptor} from '../../../common/types/compositions/composition-descriptor.model';
 import {HsMapService} from 'hslayers-ng/shared/map';

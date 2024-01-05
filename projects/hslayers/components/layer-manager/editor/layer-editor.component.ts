@@ -12,7 +12,7 @@ import {HsCopyLayerDialogComponent} from '../dialogs/copy-layer-dialog.component
 import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
 import {HsDimensionTimeService} from 'hslayers-ng/shared/get-capabilities';
 import {HsDrawService} from 'hslayers-ng/shared/draw';
-import {HsEventBusService} from 'hslayers-ng/shared/core';
+import {HsEventBusService} from 'hslayers-ng/shared/event-bus';
 import {HsExtentWidgetComponent} from '../widgets/extent-widget/extent-widget.component';
 import {HsIdwWidgetComponent} from '../widgets/idw-widget.component';
 import {HsLanguageService} from 'hslayers-ng/shared/language';

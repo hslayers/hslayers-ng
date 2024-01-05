@@ -6,7 +6,7 @@ import {Injectable} from '@angular/core';
 import {Vector as VectorLayer} from 'ol/layer';
 import {Vector as VectorSource} from 'ol/source';
 
-import {HsEventBusService} from 'hslayers-ng/shared/core';
+import {HsEventBusService} from 'hslayers-ng/shared/event-bus';
 import {HsMapService} from 'hslayers-ng/shared/map';
 import {HsUtilsService, Measurement} from 'hslayers-ng/shared/utils';
 import {setTitle} from 'hslayers-ng/common/extensions';

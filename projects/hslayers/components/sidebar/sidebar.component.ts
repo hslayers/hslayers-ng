@@ -6,7 +6,7 @@ import {HS_PRMS} from 'hslayers-ng/components/share';
 import {HsButton} from './button.interface';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsCoreService} from 'hslayers-ng/shared/core';
-import {HsEventBusService} from 'hslayers-ng/shared/core';
+import {HsEventBusService} from 'hslayers-ng/shared/event-bus';
 import {HsLayoutService} from 'hslayers-ng/shared/layout';
 import {HsShareUrlService} from 'hslayers-ng/components/share';
 import {HsSidebarService} from './sidebar.service';

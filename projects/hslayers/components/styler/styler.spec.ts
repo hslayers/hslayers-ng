@@ -16,7 +16,7 @@ import {Vector as VectorSource} from 'ol/source';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsConfigMock} from 'hslayers-ng/config';
 import {HsDownloadModule} from 'hslayers-ng/common/download';
-import {HsEventBusService} from 'hslayers-ng/shared/core';
+import {HsEventBusService} from 'hslayers-ng/shared/event-bus';
 import {HsEventBusServiceMock} from 'hslayers-ng/shared/core';
 import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
 import {HsLayoutService} from 'hslayers-ng/shared/layout';

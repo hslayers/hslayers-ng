@@ -14,7 +14,7 @@ import {Subject, takeUntil} from 'rxjs';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsCoreService} from 'hslayers-ng/shared/core';
 import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
-import {HsEventBusService} from 'hslayers-ng/shared/core';
+import {HsEventBusService} from 'hslayers-ng/shared/event-bus';
 import {HsLanguageService} from 'hslayers-ng/shared/language';
 import {HsLayerDescriptor} from 'hslayers-ng/common/types';
 import {HsLayerListService} from './logical-list/layer-manager-layerlist.service';

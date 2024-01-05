@@ -3,7 +3,7 @@ import {Component, Input, ViewRef} from '@angular/core';
 import {HsDialogComponent} from 'hslayers-ng/common/dialogs';
 import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
 import {HsDrawService} from 'hslayers-ng/shared/draw';
-import {HsEventBusService} from 'hslayers-ng/shared/core';
+import {HsEventBusService} from 'hslayers-ng/shared/event-bus';
 import {HsMapService} from 'hslayers-ng/shared/map';
 
 @Component({

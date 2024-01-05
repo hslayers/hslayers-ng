@@ -41,59 +41,64 @@ export class HsPanelConstructorService {
       name,
     )}Component`;
     let i;
-    switch (name) {
-      case 'layerManager':
-        i = await import('hslayers-ng/components/layer-manager');
-        break;
-      case 'draw':
-        i = await import('hslayers-ng/components/draw');
-        break;
-      case 'addData':
-        i = await import('hslayers-ng/components/add-data');
-        break;
-      case 'compositions':
-        i = await import('hslayers-ng/components/compositions');
-        break;
-      case 'featureTable':
-        i = await import('hslayers-ng/components/feature-table');
-        break;
-      case 'language':
-        i = await import('hslayers-ng/components/language');
-        break;
-      case 'legend':
-        i = await import('hslayers-ng/components/legend');
-        break;
-      case 'mapSwipe':
-        i = await import('hslayers-ng/components/map-swipe');
-        break;
-      case 'measure':
-        i = await import('hslayers-ng/components/measure');
-        break;
-      case 'print':
-        i = await import('hslayers-ng/components/print');
-        break;
-      case 'query':
-        i = await import('hslayers-ng/components/query');
-        break;
-      case 'saveMap':
-        i = await import('hslayers-ng/components/save-map');
-        break;
-      case 'search':
-        i = await import('hslayers-ng/components/search');
-        break;
-      case 'styler':
-        i = await import('hslayers-ng/components/styler');
-        break;
-      case 'share':
-        i = await import('hslayers-ng/components/share');
-        break;
-      case 'tripPlanner':
-        i = await import('hslayers-ng/components/trip-planner');
-        break;
+    /***
+     *
+     * FIX ME: THIS WONT WORK CAUSE OF CIRULAR DEPS WILL HAVE TO FIGURE OUT LATER
+     *
+     */
+    // switch (name) {
+    //   case 'layerManager':
+    //     i = await import('hslayers-ng/components/layer-manager');
+    //     break;
+    //   case 'draw':
+    //     i = await import('hslayers-ng/components/draw');
+    //     break;
+    //   case 'addData':
+    //     i = await import('hslayers-ng/components/add-data');
+    //     break;
+    //   case 'compositions':
+    //     i = await import('hslayers-ng/components/compositions');
+    //     break;
+    //   case 'featureTable':
+    //     i = await import('hslayers-ng/components/feature-table');
+    //     break;
+    //   case 'language':
+    //     i = await import('hslayers-ng/components/language');
+    //     break;
+    //   case 'legend':
+    //     i = await import('hslayers-ng/components/legend');
+    //     break;
+    //   case 'mapSwipe':
+    //     i = await import('hslayers-ng/components/map-swipe');
+    //     break;
+    //   case 'measure':
+    //     i = await import('hslayers-ng/components/measure');
+    //     break;
+    //   case 'print':
+    //     i = await import('hslayers-ng/components/print');
+    //     break;
+    //   case 'query':
+    //     i = await import('hslayers-ng/components/query');
+    //     break;
+    //   case 'saveMap':
+    //     i = await import('hslayers-ng/components/save-map');
+    //     break;
+    //   case 'search':
+    //     i = await import('hslayers-ng/components/search');
+    //     break;
+    //   case 'styler':
+    //     i = await import('hslayers-ng/components/styler');
+    //     break;
+    //   case 'share':
+    //     i = await import('hslayers-ng/components/share');
+    //     break;
+    //   case 'tripPlanner':
+    //     i = await import('hslayers-ng/components/trip-planner');
+    //     break;
 
-      default:
-        break;
-    }
+    //   default:
+    //     break;
+    // }
     this.HsPanelContainerService.create(i[cName], data || {});
   }
 

@@ -1,5 +1,5 @@
 import {HsConfig} from 'hslayers-ng/config';
-import {HsEventBusService} from './event-bus.service';
+import {HsEventBusService} from '../event-bus/event-bus.service';
 import {HsLayoutService} from 'hslayers-ng/shared/layout';
 import {HsLogService} from 'hslayers-ng/shared/log';
 import {HsMapService} from 'hslayers-ng/shared/map';
@@ -27,7 +27,7 @@ export class HsCoreService {
     private log: HsLogService,
     public HsEventBusService: HsEventBusService,
   ) {
-    this.HsEventBusService.layoutLoads.subscribe(({element, innerElement}) => {
+    this.HsLayoutService.layoutLoads.subscribe(({element, innerElement}) => {
       // Initialization function for HSLayers elements and their sizes.
       // Stores element and container references and sets event listeners for map resizing.
       if (

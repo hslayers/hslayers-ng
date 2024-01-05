@@ -1,11 +1,10 @@
-import {BehaviorSubject, Observable, delay, map, skip} from 'rxjs';
+import {BehaviorSubject, Observable, Subject, delay, map, skip} from 'rxjs';
 import {ElementRef, Injectable, Type, ViewContainerRef} from '@angular/core';
 
 import {HsConfig} from 'hslayers-ng/config';
-import {HsEventBusService} from 'hslayers-ng/shared/core';
 import {HsLogService} from 'hslayers-ng/shared/log';
-import {HsOverlayPanelContainerService} from '../../components/layout/overlay-panel-container.service';
-import {HsPanelContainerService} from 'hslayers-ng/shared/layout';
+import {HsOverlayPanelContainerService} from 'hslayers-ng/shared/panels';
+import {HsPanelContainerService} from 'hslayers-ng/shared/panels';
 
 export class HsLayoutParams {
   /**
@@ -103,9 +102,10 @@ export class HsLayoutService extends HsLayoutParams {
   sidebarVisible$ = new BehaviorSubject(true);
   mainpanel$ = new BehaviorSubject(undefined);
 
+  layoutLoads: Subject<{element: any; innerElement: string}> = new Subject();
+
   constructor(
     public hsConfig: HsConfig,
-    public HsEventBusService: HsEventBusService,
     public $log: HsLogService,
     public hsPanelContainerService: HsPanelContainerService,
     public hsOverlayPanelContainerService: HsOverlayPanelContainerService,
@@ -138,7 +138,7 @@ export class HsLayoutService extends HsLayoutParams {
       this.updPanelSpaceWidth();
     });
 
-    this.HsEventBusService.layoutLoads.subscribe(() => {
+    this.layoutLoads.subscribe(() => {
       this.updPanelSpaceWidth();
       this.updSidebarPosition();
       this.updSidebarVisible(true);

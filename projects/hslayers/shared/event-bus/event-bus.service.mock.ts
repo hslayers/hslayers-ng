@@ -11,6 +11,5 @@ export class HsEventBusServiceMock {
   mainPanelChanges: Subject<any> = new Subject();
   layerManagerUpdates: Subject<any> = new Subject();
   mapResets: Subject<any> = new Subject();
-  layoutLoads: Subject<any> = new Subject();
   constructor() {}
 }
