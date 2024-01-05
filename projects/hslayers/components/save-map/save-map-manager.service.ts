@@ -6,7 +6,7 @@ import {Injectable} from '@angular/core';
 import {CompoData} from 'hslayers-ng/common/types';
 import {HsCompositionsParserService} from '../compositions/compositions-parser.service';
 import {HsConfig} from 'hslayers-ng/config';
-import {HsEndpoint} from 'hslayers-ng/shared/endpoints';
+import {HsEndpoint} from 'hslayers-ng/common/types';
 import {HsEventBusService} from 'hslayers-ng/shared/core';
 import {HsLaymanService} from 'hslayers-ng/shared/save-map';
 import {HsLayoutService} from 'hslayers-ng/shared/layout';

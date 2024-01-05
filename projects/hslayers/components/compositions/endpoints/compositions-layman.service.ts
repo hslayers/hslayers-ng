@@ -9,7 +9,7 @@ import {
   EndpointErrorHandling,
   HsEndpoint,
   isErrorHandlerFunction,
-} from 'hslayers-ng/shared/endpoints';
+} from 'hslayers-ng/common/types';
 import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
 import {HsCompositionsParserService} from '../compositions-parser.service';
 import {HsEventBusService} from 'hslayers-ng/shared/core';
@@ -54,8 +54,8 @@ export class HsCompositionsLaymanService {
       params.sortBy == 'date:D'
         ? 'last_change'
         : params.sortBy !== undefined && params.sortBy != 'None' //Set by date by default, was requested long time ago
-        ? params.sortBy
-        : 'last_change';
+          ? params.sortBy
+          : 'last_change';
 
     const b = transformExtent(
       this.hsMapService

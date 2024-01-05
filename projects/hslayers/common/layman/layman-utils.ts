@@ -1,7 +1,7 @@
 import {Layer} from 'ol/layer';
 import {Source} from 'ol/source';
 
-import {HsEndpoint} from 'hslayers-ng/shared/endpoints';
+import {HsEndpoint} from 'hslayers-ng/common/types';
 import {HsLaymanLayerDescriptor} from '../types/layman/layman-layer-descriptor.interface';
 import {TRANSLITERATION_MAP} from './transliteration-map';
 import {

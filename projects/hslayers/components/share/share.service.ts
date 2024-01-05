@@ -6,7 +6,7 @@ import {lastValueFrom} from 'rxjs';
 
 import {CompoData} from 'hslayers-ng/common/types';
 import {HsConfig} from 'hslayers-ng/config';
-import {HsEndpoint} from 'hslayers-ng/shared/endpoints';
+import {HsEndpoint} from 'hslayers-ng/common/types';
 import {HsEventBusService} from 'hslayers-ng/shared/core';
 import {HsLanguageService} from 'hslayers-ng/shared/language';
 import {HsLayoutService} from 'hslayers-ng/shared/layout';

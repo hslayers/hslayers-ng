@@ -16,7 +16,7 @@ import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsConfigMock} from 'hslayers-ng/config';
 import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
-import {HsEndpoint} from 'hslayers-ng/shared/endpoints';
+import {HsEndpoint} from 'hslayers-ng/common/types';
 import {HsEventBusService} from 'hslayers-ng/shared/core';
 import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
 import {HsLaymanService} from 'hslayers-ng/shared/save-map';
