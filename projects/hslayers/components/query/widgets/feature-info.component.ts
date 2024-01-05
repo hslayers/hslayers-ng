@@ -9,7 +9,7 @@ import {HsLanguageService} from 'hslayers-ng/shared/language';
 import {HsLayerDescriptor} from 'hslayers-ng/common/types';
 import {HsQueryPopupServiceModel} from '../query-popup.service.model';
 import {HsQueryPopupWidgetBaseComponent} from '../query-popup-widget-base.component';
-import {HsQueryVectorService} from '../query-vector.service';
+import {HsQueryVectorService} from 'hslayers-ng/shared/query';
 import {
   getFeatureLabel,
   getFeatureName,

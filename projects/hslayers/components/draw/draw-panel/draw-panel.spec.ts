@@ -20,7 +20,6 @@ import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsConfigMock} from 'hslayers-ng/config';
 
-import {HsLanguageModule} from 'hslayers-ng/components/language';
 import {HsLanguageService} from 'hslayers-ng/shared/language';
 import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
 import {HsLaymanBrowserService} from 'hslayers-ng/components/add-data';
@@ -29,8 +28,8 @@ import {HsLayoutService} from 'hslayers-ng/shared/layout';
 import {HsLayoutServiceMock} from 'hslayers-ng/shared/layout';
 import {HsMapService} from 'hslayers-ng/shared/map';
 import {HsMapServiceMock} from 'hslayers-ng/shared/map';
-import {HsQueryBaseService} from '../../query/query-base.service';
-import {HsQueryVectorService} from '../../query/query-vector.service';
+import {HsQueryBaseService} from 'hslayers-ng/shared/query';
+import {HsQueryVectorService} from 'hslayers-ng/shared/query';
 import {HsUtilsService} from 'hslayers-ng/shared/utils';
 import {HsUtilsServiceMock} from 'hslayers-ng/shared/utils';
 import {TranslateCustomPipe} from 'hslayers-ng/shared/language';

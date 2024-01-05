@@ -17,9 +17,9 @@ import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
 import {HsLayoutService} from 'hslayers-ng/shared/layout';
 import {HsLogService} from 'hslayers-ng/shared/log';
 import {HsMapService} from 'hslayers-ng/shared/map';
-import {HsQueryBaseService} from '../query/query-base.service';
+import {HsQueryBaseService} from 'hslayers-ng/shared/query';
 import {HsQueryPopupService} from '../query/query-popup.service';
-import {HsQueryVectorService} from '../query/query-vector.service';
+import {HsQueryVectorService} from 'hslayers-ng/shared/query';
 import {HsUtilsService} from 'hslayers-ng/shared/utils';
 
 export type FeatureDomEventLink = {
