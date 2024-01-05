@@ -3,7 +3,7 @@ import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 
 import {Dimension} from 'hslayers-ng/common/types';
-import {HsDimensionDescriptor} from 'hslayers-ng/shared/get-capabilities';
+import {HsDimensionDescriptor} from 'hslayers-ng/common/dimensions';
 import {HsDimensionService} from 'hslayers-ng/shared/get-capabilities';
 import {HsDimensionTimeService} from 'hslayers-ng/shared/get-capabilities';
 import {HsEventBusService} from 'hslayers-ng/shared/core';
@@ -19,7 +19,8 @@ import {getDimensions} from 'hslayers-ng/common/extensions';
 })
 export class HsLayerEditorDimensionsComponent
   extends HsLayerEditorWidgetBaseComponent
-  implements OnDestroy, OnChanges, OnInit {
+  implements OnDestroy, OnChanges, OnInit
+{
   name = 'dimensions';
   dimensions: Array<HsDimensionDescriptor> = [];
   private end = new Subject<void>();

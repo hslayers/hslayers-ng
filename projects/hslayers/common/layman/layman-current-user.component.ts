@@ -2,7 +2,6 @@ import {Component, OnInit} from '@angular/core';
 import {Input} from '@angular/core';
 import {Observable, map} from 'rxjs';
 
-import {HsCommonEndpointsService} from 'hslayers-ng/shared/endpoints';
 import {HsCommonLaymanService} from './layman.service';
 import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
 import {HsEndpoint} from 'hslayers-ng/common/types';
@@ -28,7 +27,6 @@ export class HsLaymanCurrentUserComponent implements OnInit {
   constructor(
     public HsCommonLaymanService: HsCommonLaymanService,
     public HsDialogContainerService: HsDialogContainerService,
-    private hsCommonEndpointsService: HsCommonEndpointsService,
   ) {}
 
   ngOnInit(): void {
