@@ -42,7 +42,7 @@ import {
   awaitLayerSync,
   getLaymanFriendlyLayerName,
 } from 'hslayers-ng/common/layman';
-import {defaultStyle} from 'hslayers-ng/components/styler';
+import {defaultStyle} from './default-style';
 import {
   getCluster,
   getQml,
@@ -52,7 +52,7 @@ import {
   setSld,
 } from 'hslayers-ng/common/extensions';
 import {getHighlighted} from 'hslayers-ng/common/extensions';
-import {parseStyle} from 'hslayers-ng/components/styler';
+import {parseStyle} from './backwards-compatibility';
 
 @Injectable({
   providedIn: 'root',

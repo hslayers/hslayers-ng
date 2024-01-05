@@ -22,7 +22,7 @@ import {Source} from 'ol/source';
 import {Vector as VectorLayer} from 'ol/layer';
 import {Vector as VectorSource} from 'ol/source';
 
-import {AboutLayman} from 'hslayers-ng/components/save-map';
+import {AboutLayman} from 'hslayers-ng/common/types';
 import {AsyncUpload} from 'hslayers-ng/common/types';
 import {CompoData} from 'hslayers-ng/common/types';
 import {
@@ -36,7 +36,7 @@ import {HsLanguageService} from 'hslayers-ng/shared/language';
 import {HsLaymanLayerDescriptor} from 'hslayers-ng/common/types';
 import {HsLogService} from 'hslayers-ng/shared/log';
 import {HsMapService} from 'hslayers-ng/shared/map';
-import {HsSaverService} from 'hslayers-ng/components/save-map';
+import {HsSaverService} from './saver-service.interface';
 import {HsToastService} from 'hslayers-ng/common/toast';
 import {HsUtilsService} from 'hslayers-ng/shared/utils';
 import {MapComposition} from 'hslayers-ng/common/types';
@@ -52,7 +52,7 @@ import {
 } from 'hslayers-ng/common/layman';
 import {PostPatchLayerResponse} from 'hslayers-ng/common/layman';
 import {UpsertLayerObject} from 'hslayers-ng/common/types';
-import {WfsSyncParams} from 'hslayers-ng/components/save-map';
+import {WfsSyncParams} from 'hslayers-ng/common/types';
 import {accessRightsModel} from 'hslayers-ng/common/types';
 import {
   getAccessRights,

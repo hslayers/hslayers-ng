@@ -25,12 +25,12 @@ import {CompoData} from 'hslayers-ng/common/types';
 import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
 import {HsLogService} from 'hslayers-ng/shared/log';
 import {HsMapService} from 'hslayers-ng/shared/map';
-import {HsShareThumbnailService} from 'hslayers-ng/components/share';
+import {HsShareThumbnailService} from 'hslayers-ng/shared/share';
 import {HsUtilsService} from 'hslayers-ng/shared/utils';
 import {LayerJSON} from 'hslayers-ng/common/types';
 import {MapComposition} from 'hslayers-ng/common/types';
 import {SerializedImage} from 'hslayers-ng/common/types';
-import {StatusData} from '../../components/save-map/types/status-data.type';
+import {StatusData} from 'hslayers-ng/common/types';
 import {UserData} from 'hslayers-ng/common/types';
 import {
   getAttribution,

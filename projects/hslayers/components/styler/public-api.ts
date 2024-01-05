@@ -22,4 +22,3 @@ export * from './styles.module';
 export * from './symbolizers/symbolizer-list-item/symbolizer-list-item.component';
 export * from './rule/rule-list-item/rule-list-item.component';
 export * from './add-colormap.component';
-export * from './backwards-compatibility';

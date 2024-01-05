@@ -6,7 +6,7 @@ import {HsEndpoint} from 'hslayers-ng/common/types';
 import {HsLayoutService} from 'hslayers-ng/shared/layout';
 import {HsSaveMapManagerService} from '../save-map-manager.service';
 import {HsUtilsService} from 'hslayers-ng/shared/utils';
-import {StatusData} from '../../save-map/types/status-data.type';
+import {StatusData} from '../../../common/types/save-map/status-data.type';
 import {accessRightsModel} from 'hslayers-ng/common/types';
 
 @Component({
