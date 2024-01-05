@@ -4,7 +4,7 @@ import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 
 import {HsConfig} from 'hslayers-ng/config';
-import {HsEventBusService} from 'hslayers-ng/shared/core';
+import {HsEventBusService} from 'hslayers-ng/shared/event-bus';
 import {HsGuiOverlayBaseComponent} from '../../common/panels/gui-overlay-base.component';
 import {HsLayoutService} from 'hslayers-ng/shared/layout';
 import {getTitle} from 'hslayers-ng/common/extensions';

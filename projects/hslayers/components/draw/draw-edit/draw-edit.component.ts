@@ -7,7 +7,7 @@ import {Polygon} from 'ol/geom';
 import {Vector} from 'ol/source';
 import {Vector as VectorLayer} from 'ol/layer';
 
-import {HsEventBusService} from 'hslayers-ng/shared/core';
+import {HsEventBusService} from 'hslayers-ng/shared/event-bus';
 import {HsLanguageService} from 'hslayers-ng/shared/language';
 import {HsLogService} from 'hslayers-ng/shared/log';
 import {HsMapService} from 'hslayers-ng/shared/map';

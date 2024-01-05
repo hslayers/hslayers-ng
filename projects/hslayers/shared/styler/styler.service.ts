@@ -28,7 +28,7 @@ import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsConfirmDialogComponent} from 'hslayers-ng/common/confirm';
 import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
-import {HsEventBusService} from 'hslayers-ng/shared/core';
+import {HsEventBusService} from 'hslayers-ng/shared/event-bus';
 import {HsLanguageService} from 'hslayers-ng/shared/language';
 import {HsLayerSynchronizerService} from 'hslayers-ng/shared/save-map';
 import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';

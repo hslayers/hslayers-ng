@@ -6,7 +6,7 @@ import {Subject} from 'rxjs';
 import {WMSCapabilities} from 'ol/format';
 import {transformExtent} from 'ol/proj';
 
-import {HsEventBusService} from 'hslayers-ng/shared/core';
+import {HsEventBusService} from 'hslayers-ng/shared/event-bus';
 import {HsLayerEditorVectorLayerService} from './layer-editor-vector-layer.service';
 import {HsLayerManagerMetadataService} from '../layer-manager-metadata.service';
 import {HsLayerSelectorService} from 'hslayers-ng/shared/layer-manager';

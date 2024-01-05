@@ -17,7 +17,7 @@ import {HsAddDataService} from '../add-data.service';
 import {HsAddDataUrlService} from './add-data-url.service';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsDimensionService} from 'hslayers-ng/shared/get-capabilities';
-import {HsEventBusService} from 'hslayers-ng/shared/core';
+import {HsEventBusService} from 'hslayers-ng/shared/event-bus';
 import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
 import {HsLayoutService} from 'hslayers-ng/shared/layout';
 import {HsUrlTypeServiceModel} from 'hslayers-ng/common/types';

@@ -12,7 +12,7 @@ import {Source, Vector as VectorSource} from 'ol/source';
 import {transform} from 'ol/proj';
 
 import {HsConfig} from 'hslayers-ng/config';
-import {HsEventBusService} from 'hslayers-ng/shared/core';
+import {HsEventBusService} from 'hslayers-ng/shared/event-bus';
 import {HsLanguageService} from 'hslayers-ng/shared/language';
 import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
 import {HsLayoutService} from 'hslayers-ng/shared/layout';

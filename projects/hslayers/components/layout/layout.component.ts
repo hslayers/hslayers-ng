@@ -10,12 +10,12 @@ import {
 import {Subject, delay, takeUntil} from 'rxjs';
 
 import {HsConfig} from 'hslayers-ng/config';
-import {HsEventBusService} from 'hslayers-ng/shared/core';
+import {HsEventBusService} from 'hslayers-ng/shared/event-bus';
 import {HsLayoutService} from 'hslayers-ng/shared/layout';
 import {HsLogService} from 'hslayers-ng/shared/log';
 import {HsMapHostDirective} from './map-host.directive';
-import {HsOverlayPanelContainerService} from './overlay-panel-container.service';
-import {HsPanelContainerService} from 'hslayers-ng/shared/layout';
+import {HsOverlayPanelContainerService} from 'hslayers-ng/shared/layout';
+import {HsPanelContainerService} from 'hslayers-ng/shared/panels';
 import {HsQueryWmsService} from 'hslayers-ng/components/query';
 import {HsShareUrlService} from 'hslayers-ng/components/share';
 import {HsUtilsService} from 'hslayers-ng/shared/utils';
@@ -78,7 +78,7 @@ export class HsLayoutComponent implements AfterViewInit, OnInit, OnDestroy {
       this.HsLayoutService.scrollTo(this.elementRef);
     }
 
-    this.HsEventBusService.layoutLoads.next({
+    this.HsLayoutService.layoutLoads.next({
       element: this.elementRef.nativeElement,
       innerElement: '.hs-map-space',
     });

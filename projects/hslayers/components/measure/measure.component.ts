@@ -2,7 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 
 import {Subject, takeUntil} from 'rxjs';
 
-import {HsEventBusService} from 'hslayers-ng/shared/core';
+import {HsEventBusService} from 'hslayers-ng/shared/event-bus';
 import {HsLayoutService} from 'hslayers-ng/shared/layout';
 import {HsMeasureService} from './measure.service';
 import {HsPanelBaseComponent} from 'hslayers-ng/common/panels';

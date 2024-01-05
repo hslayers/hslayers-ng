@@ -15,7 +15,7 @@ import {HsCompositionsParserService} from './compositions-parser.service';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsCoreService} from 'hslayers-ng/shared/core';
 import {HsEndpoint} from 'hslayers-ng/common/types';
-import {HsEventBusService} from 'hslayers-ng/shared/core';
+import {HsEventBusService} from 'hslayers-ng/shared/event-bus';
 import {HsLanguageService} from 'hslayers-ng/shared/language';
 import {HsLogService} from 'hslayers-ng/shared/log';
 import {HsMapCompositionDescriptor} from '../../common/types/compositions/composition-descriptor.model';
