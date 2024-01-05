@@ -1,5 +1,4 @@
 export * from './dialog-spawner.service';
-export * from './layer-synchronizer.service';
 export * from './form/form.component';
 export * from './form/advanced-options/advanced-options.component';
 export * from './save-map-manager.service';

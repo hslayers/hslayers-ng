@@ -10,7 +10,7 @@ import {HsConfirmModule} from 'hslayers-ng/common/confirm';
 import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
 import {HsLanguageService} from 'hslayers-ng/shared/language';
 import {HsLayerEditorWidgetBaseComponent} from '../layer-editor-widget-base.component';
-import {HsLayerSelectorService} from '../../editor/layer-selector.service';
+import {HsLayerSelectorService} from 'hslayers-ng/shared/layer-manager';
 import {HsLayerShiftingService} from 'hslayers-ng/shared/layer-shifting';
 import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
 import {HsMapService} from 'hslayers-ng/shared/map';

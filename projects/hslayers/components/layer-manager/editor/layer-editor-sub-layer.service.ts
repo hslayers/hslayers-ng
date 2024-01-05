@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 
 import {HsLayerDescriptor} from 'hslayers-ng/common/types';
 import {HsLayerManagerService} from 'hslayers-ng/shared/layer-manager'
-import {HsLayerSelectorService} from './layer-selector.service';
+import {HsLayerSelectorService} from 'hslayers-ng/shared/layer-manager';
 import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
 import {getCachedCapabilities} from 'hslayers-ng/common/extensions';
 

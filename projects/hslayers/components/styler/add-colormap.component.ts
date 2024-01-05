@@ -4,8 +4,8 @@ import {Vector as VectorLayer} from 'ol/layer';
 import {Vector as VectorSource} from 'ol/source';
 
 import {HsLanguageService} from 'hslayers-ng/shared/language';
-import {HsStylerService} from './styler.service';
-import {listNumericAttributes} from '../layer-manager/widgets/idw-widget.component';
+import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
+import {HsStylerService} from 'hslayers-ng/shared/styler';
 
 @Component({
   selector: 'hs-add-colormap',
@@ -24,12 +24,13 @@ export class HsAddColormapComponent implements OnInit {
   constructor(
     public HsLanguageService: HsLanguageService,
     private hsStylerService: HsStylerService,
+    private hsLayerUtilsService: HsLayerUtilsService,
   ) {}
 
   ngOnInit(): void {
     const src = this.layer.getSource();
     const features = src.getFeatures();
-    this.attributes = listNumericAttributes(features);
+    this.attributes = this.hsLayerUtilsService.listNumericAttributes(features);
   }
 
   changeAttrib() {

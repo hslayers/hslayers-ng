@@ -2,7 +2,8 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Subject, takeUntil} from 'rxjs';
 
 import {AddDataUrlType} from './url/types/url.type';
-import {DatasetType, HsAddDataService} from './add-data.service';
+import {DatasetType} from 'hslayers-ng/common/types';
+import {HsAddDataService} from './add-data.service';
 import {HsAddDataUrlService} from './url/add-data-url.service';
 import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
 import {HsEventBusService} from 'hslayers-ng/shared/core';

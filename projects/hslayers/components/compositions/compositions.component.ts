@@ -2,7 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Subject, takeUntil} from 'rxjs';
 
 import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
-import {HsCompositionsCatalogueService} from 'hslayers-ng/shared/compositions';
+import {HsCompositionsCatalogueService} from './compositions-catalogue.service';
 import {HsCompositionsMapService} from './compositions-map.service';
 import {HsCompositionsOverwriteDialogComponent} from './dialogs/overwrite-dialog.component';
 import {HsCompositionsParserService} from './compositions-parser.service';
@@ -10,7 +10,7 @@ import {HsCompositionsService} from './compositions.service';
 import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
 import {HsLanguageService} from 'hslayers-ng/shared/language';
 import {HsLayoutService} from 'hslayers-ng/shared/layout';
-import {HsMapCompositionDescriptor} from './models/composition-descriptor.model';
+import {HsMapCompositionDescriptor} from '../../common/types/compositions/composition-descriptor.model';
 import {HsPanelBaseComponent} from 'hslayers-ng/common/panels';
 
 @Component({
@@ -19,7 +19,8 @@ import {HsPanelBaseComponent} from 'hslayers-ng/common/panels';
 })
 export class HsCompositionsComponent
   extends HsPanelBaseComponent
-  implements OnDestroy, OnInit {
+  implements OnDestroy, OnInit
+{
   private end = new Subject<void>();
 
   keywordsVisible = false;

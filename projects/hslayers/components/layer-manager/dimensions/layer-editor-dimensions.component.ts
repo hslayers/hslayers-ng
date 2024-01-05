@@ -8,7 +8,7 @@ import {HsDimensionService} from 'hslayers-ng/shared/get-capabilities';
 import {HsDimensionTimeService} from 'hslayers-ng/shared/get-capabilities';
 import {HsEventBusService} from 'hslayers-ng/shared/core';
 import {HsLayerEditorWidgetBaseComponent} from '../widgets/layer-editor-widget-base.component';
-import {HsLayerSelectorService} from '../editor/layer-selector.service';
+import {HsLayerSelectorService} from 'hslayers-ng/shared/layer-manager';
 import {HsMapService} from 'hslayers-ng/shared/map';
 import {HsUtilsService} from 'hslayers-ng/shared/utils';
 import {getDimensions} from 'hslayers-ng/common/extensions';
@@ -19,8 +19,7 @@ import {getDimensions} from 'hslayers-ng/common/extensions';
 })
 export class HsLayerEditorDimensionsComponent
   extends HsLayerEditorWidgetBaseComponent
-  implements OnDestroy, OnChanges, OnInit
-{
+  implements OnDestroy, OnChanges, OnInit {
   name = 'dimensions';
   dimensions: Array<HsDimensionDescriptor> = [];
   private end = new Subject<void>();

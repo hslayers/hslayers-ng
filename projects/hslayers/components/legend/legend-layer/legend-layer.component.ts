@@ -4,7 +4,7 @@ import {SafeHtml} from '@angular/platform-browser';
 import {Subject, takeUntil} from 'rxjs';
 
 import {HsLegendService} from '../legend.service';
-import {HsStylerService} from 'hslayers-ng/components/styler';
+import {HsStylerService} from 'hslayers-ng/shared/styler';
 import {HsUtilsService} from 'hslayers-ng/shared/utils';
 
 @Component({

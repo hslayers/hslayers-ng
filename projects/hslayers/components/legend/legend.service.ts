@@ -15,10 +15,10 @@ import {
 } from 'ol/source';
 import {Style} from 'ol/style';
 
-import {HsLayerSelectorService} from '../layer-manager/editor/layer-selector.service';
+import {HsLayerSelectorService} from 'hslayers-ng/shared/layer-manager';
 import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
 import {HsLegendDescriptor} from './legend-descriptor.interface';
-import {HsStylerService} from 'hslayers-ng/components/styler';
+import {HsStylerService} from 'hslayers-ng/shared/styler';
 import {HsUtilsService} from 'hslayers-ng/shared/utils';
 import {InterpolatedSource} from 'hslayers-ng/common/layers';
 import {defaultStyle} from '../styler/styles';

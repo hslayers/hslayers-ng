@@ -16,6 +16,7 @@ import {HsLogService} from 'hslayers-ng/shared/log';
 import {HsMapHostDirective} from './map-host.directive';
 import {HsOverlayPanelContainerService} from './overlay-panel-container.service';
 import {HsPanelContainerService} from 'hslayers-ng/shared/layout';
+import {HsQueryWmsService} from 'hslayers-ng/components/query';
 import {HsShareUrlService} from 'hslayers-ng/components/share';
 import {HsUtilsService} from 'hslayers-ng/shared/utils';
 
@@ -37,6 +38,10 @@ export class HsLayoutComponent implements AfterViewInit, OnInit, OnDestroy {
   }
 
   constructor(
+    /**
+     * Just to init a service, keep
+     */
+    private hsQueryWmsService: HsQueryWmsService,
     private elementRef: ElementRef,
     public HsConfig: HsConfig,
     public HsLayoutService: HsLayoutService,

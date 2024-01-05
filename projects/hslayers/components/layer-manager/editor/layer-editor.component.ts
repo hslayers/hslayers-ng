@@ -30,7 +30,7 @@ import {HsMapService} from 'hslayers-ng/shared/map';
 import {HsMetadataWidgetComponent} from '../widgets/metadata-widget.component';
 import {HsOpacityWidgetComponent} from '../widgets/opacity-widget.component';
 import {HsScaleWidgetComponent} from '../widgets/scale-widget.component';
-import {HsStylerService} from 'hslayers-ng/components/styler';
+import {HsStylerService} from 'hslayers-ng/shared/styler';
 import {HsTypeWidgetComponent} from '../widgets/type-widget.component';
 import {HsWmsSourceWidgetComponent} from '../widgets/wms-source-widget/wms-source-widget.component';
 import {

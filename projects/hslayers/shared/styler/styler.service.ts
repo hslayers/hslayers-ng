@@ -30,11 +30,11 @@ import {HsConfirmDialogComponent} from 'hslayers-ng/common/confirm';
 import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
 import {HsEventBusService} from 'hslayers-ng/shared/core';
 import {HsLanguageService} from 'hslayers-ng/shared/language';
-import {HsLayerSynchronizerService} from '../save-map/layer-synchronizer.service';
+import {HsLayerSynchronizerService} from 'hslayers-ng/shared/save-map';
 import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
 import {HsLogService} from 'hslayers-ng/shared/log';
 import {HsMapService} from 'hslayers-ng/shared/map';
-import {HsQueryVectorService} from '../query/query-vector.service';
+import {HsQueryVectorService} from 'hslayers-ng/components/query';
 import {HsSaveMapService} from 'hslayers-ng/shared/save-map';
 import {HsToastService} from 'hslayers-ng/common/toast';
 import {HsUtilsService} from 'hslayers-ng/shared/utils';
@@ -42,7 +42,7 @@ import {
   awaitLayerSync,
   getLaymanFriendlyLayerName,
 } from 'hslayers-ng/common/layman';
-import {defaultStyle} from './styles';
+import {defaultStyle} from 'hslayers-ng/components/styler';
 import {
   getCluster,
   getQml,
@@ -52,7 +52,7 @@ import {
   setSld,
 } from 'hslayers-ng/common/extensions';
 import {getHighlighted} from 'hslayers-ng/common/extensions';
-import {parseStyle} from './backwards-compatibility';
+import {parseStyle} from 'hslayers-ng/components/styler';
 
 @Injectable({
   providedIn: 'root',

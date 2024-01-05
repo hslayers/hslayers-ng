@@ -6,7 +6,7 @@ import {Layer, Vector as VectorLayer} from 'ol/layer';
 
 import {HsConfig} from 'hslayers-ng/config';
 import {HsMapService} from 'hslayers-ng/shared/map';
-import {HsStylerService} from 'hslayers-ng/components/styler';
+import {HsStylerService} from 'hslayers-ng/shared/styler';
 import {HsUtilsService} from 'hslayers-ng/shared/utils';
 
 @Injectable({

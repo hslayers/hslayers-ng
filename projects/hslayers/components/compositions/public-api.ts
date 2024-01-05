@@ -15,4 +15,4 @@ export * from './compositions-parser.service';
 export * from './compositions.component';
 export * from './compositions.module';
 export * from './compositions.service';
-export * from './models/composition-descriptor.model';
+export * from './compositions-catalogue.service';

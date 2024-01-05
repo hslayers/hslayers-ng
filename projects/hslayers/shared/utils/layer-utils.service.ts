@@ -490,4 +490,18 @@ export class HsLayerUtilsService {
     const mpu = METERS_PER_UNIT[units];
     return denominator / (mpu * 39.37 * dpi);
   }
+
+  listNumericAttributes(features: Feature[]): string[] {
+    return features.length > 0
+      ? Object.keys(features[0].getProperties()).filter(
+          (attr) => {
+            return (
+              attr != 'geometry' &&
+              attr != 'hs_normalized_IDW_value' &&
+              !isNaN(Number(features[0].get(attr)))
+            );
+          }, //Check if number
+        )
+      : [];
+  }
 }

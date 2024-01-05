@@ -7,7 +7,6 @@ import {HsUtilsService} from 'hslayers-ng/shared/utils';
 import {Injectable} from '@angular/core';
 
 import {HsLanguageService} from 'hslayers-ng/shared/language';
-import {HsQueryWmsService} from 'hslayers-ng/components/query';
 
 @Injectable({
   providedIn: 'root',
@@ -21,10 +20,6 @@ export class HsCoreService {
 
   constructor(
     private hsLanguageService: HsLanguageService,
-    /**
-     * Just to init a service, keep
-     */
-    private hsQueryWmsService: HsQueryWmsService,
     public HsMapService: HsMapService,
     public hsConfig: HsConfig,
     public HsLayoutService: HsLayoutService,

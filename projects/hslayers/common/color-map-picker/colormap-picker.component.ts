@@ -9,7 +9,7 @@ import {
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
 
 import colorScales from 'colormap/colorScale';
-import {HsStylerService} from 'hslayers-ng/components/styler';
+import {HsStylerService} from 'hslayers-ng/shared/styler';
 
 export type hsStylerColorMaps = {
   [name: string]: SVGSVGElement;

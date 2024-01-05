@@ -33,7 +33,8 @@ import {accessRightsModel} from 'hslayers-ng/common/types';
   templateUrl: 'vector-file.component.html',
 })
 export class HsAddDataVectorFileComponent
-  implements OnInit, AfterViewInit, OnDestroy {
+  implements OnInit, AfterViewInit, OnDestroy
+{
   @Input() fileType: 'geojson' | 'kml' | 'gpx';
 
   @ViewChild(HsUploadComponent) hsUploadComponent: HsUploadComponent;
