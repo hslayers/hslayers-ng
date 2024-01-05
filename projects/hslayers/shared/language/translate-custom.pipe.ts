@@ -10,7 +10,7 @@ import {
   TranslationChangeEvent,
 } from '@ngx-translate/core';
 
-import {CustomTranslationService} from 'hslayers-ng/components/language';
+import {CustomTranslationService} from './custom-translate.service';
 import {HsLanguageService} from './language.service';
 
 @Injectable()
@@ -21,8 +21,7 @@ import {HsLanguageService} from './language.service';
 })
 export class TranslateCustomPipe
   extends TranslatePipe
-  implements PipeTransform
-{
+  implements PipeTransform {
   onLangChangeOverridden: boolean;
   constructor(
     private translate2: CustomTranslationService,

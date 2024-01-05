@@ -13,7 +13,7 @@ import {HsLanguageComponent} from './language.component';
 import {HsLogService} from 'hslayers-ng/shared/log';
 import {HsPanelHeaderComponent} from 'hslayers-ng/common/panels';
 import {HsPanelHelpersModule} from 'hslayers-ng/common/panels';
-import {WebpackTranslateLoader} from './custom-translate.service';
+import {WebpackTranslateLoader} from 'hslayers-ng/shared/language';
 
 export function getWebpackTranslateLoader(
   hsConfig: HsConfig,
