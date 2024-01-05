@@ -1,16 +1,15 @@
 import {Injectable, Type} from '@angular/core';
 import {ReplaySubject, Subject} from 'rxjs';
 
-import {HsPanelComponent} from '../../common/panels/panel-component.interface';
-import {HsPanelContainerServiceInterface} from './panel-container.service.interface';
-import {HsPanelItem} from '../../common/panels/panel-item';
+import {HsPanelComponent} from 'hslayers-ng/common/panels';
+import {HsPanelContainerServiceInterface} from 'hslayers-ng/common/panels';
+import {HsPanelItem} from 'hslayers-ng/common/panels';
 
 @Injectable({
   providedIn: 'root',
 })
 export class HsPanelContainerService
-  implements HsPanelContainerServiceInterface
-{
+  implements HsPanelContainerServiceInterface {
   panels: HsPanelComponent[] = [];
   panelObserver: ReplaySubject<HsPanelItem> = new ReplaySubject();
   panelDestroyObserver: Subject<any> = new Subject();

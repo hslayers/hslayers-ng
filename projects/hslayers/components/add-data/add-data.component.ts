@@ -6,7 +6,7 @@ import {DatasetType} from 'hslayers-ng/common/types';
 import {HsAddDataService} from 'hslayers-ng/shared/add-data';
 import {HsAddDataUrlService} from 'hslayers-ng/shared/add-data';
 import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
-import {HsEventBusService} from 'hslayers-ng/shared/core';
+import {HsEventBusService} from 'hslayers-ng/shared/event-bus';
 import {HsGetCapabilitiesErrorComponent} from './common/capabilities-error-dialog/capabilities-error-dialog.component';
 import {HsLanguageService} from 'hslayers-ng/shared/language';
 import {HsLayoutService} from 'hslayers-ng/shared/layout';
@@ -21,8 +21,7 @@ import {servicesSupportedByUrl} from 'hslayers-ng/common/types';
 })
 export class HsAddDataComponent
   extends HsPanelBaseComponent
-  implements OnInit, OnDestroy
-{
+  implements OnInit, OnDestroy {
   private end = new Subject<void>();
 
   constructor(

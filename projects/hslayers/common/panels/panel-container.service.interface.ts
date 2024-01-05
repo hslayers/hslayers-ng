@@ -1,8 +1,8 @@
 import {ReplaySubject, Subject} from 'rxjs';
 import {Type} from '@angular/core';
 
-import {HsPanelComponent} from '../../common/panels/panel-component.interface';
-import {HsPanelItem} from '../../common/panels/panel-item';
+import {HsPanelComponent} from './panel-component.interface';
+import {HsPanelItem} from './panel-item';
 import {KeyNumberDict} from 'hslayers-ng/config';
 
 export interface HsPanelContainerServiceInterface {

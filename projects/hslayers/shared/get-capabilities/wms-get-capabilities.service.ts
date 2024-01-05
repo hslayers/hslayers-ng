@@ -9,7 +9,7 @@ import {lastValueFrom, takeUntil} from 'rxjs';
 import {CapabilitiesResponseWrapper} from 'hslayers-ng/common/types';
 import {HsCapabilityCacheService} from './capability-cache.service';
 import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
-import {HsEventBusService} from 'hslayers-ng/shared/core';
+import {HsEventBusService} from 'hslayers-ng/shared/event-bus';
 import {HsMapService} from 'hslayers-ng/shared/map';
 import {HsUtilsService} from 'hslayers-ng/shared/utils';
 import {IGetCapabilities} from './get-capabilities.interface';

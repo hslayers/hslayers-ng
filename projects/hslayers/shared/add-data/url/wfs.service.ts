@@ -12,7 +12,7 @@ import {CapabilitiesResponseWrapper} from 'hslayers-ng/common/types';
 import {DuplicateHandling, HsMapService} from 'hslayers-ng/shared/map';
 import {HsAddDataCommonService} from '../common.service';
 import {HsAddDataUrlService} from './add-data-url.service';
-import {HsEventBusService} from 'hslayers-ng/shared/core';
+import {HsEventBusService} from 'hslayers-ng/shared/event-bus';
 import {HsLayoutService} from 'hslayers-ng/shared/layout';
 import {HsLogService} from 'hslayers-ng/shared/log';
 import {HsUrlTypeServiceModel} from 'hslayers-ng/common/types';

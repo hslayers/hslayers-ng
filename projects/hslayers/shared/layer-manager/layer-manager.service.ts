@@ -20,7 +20,7 @@ import {HsBaseLayerDescriptor} from '../../components/layer-manager/base-layer-d
 import {HsConfig} from 'hslayers-ng/config';
 import {HsDimensionTimeService} from 'hslayers-ng/shared/get-capabilities';
 import {HsDrawService} from 'hslayers-ng/shared/draw';
-import {HsEventBusService} from 'hslayers-ng/shared/core';
+import {HsEventBusService} from 'hslayers-ng/shared/event-bus';
 import {HsLanguageService} from 'hslayers-ng/shared/language';
 import {HsLayerDescriptor, HsLayerLoadProgress} from 'hslayers-ng/common/types';
 import {HsLayerEditorVectorLayerService} from '../../components/layer-manager/editor/layer-editor-vector-layer.service';

@@ -4,7 +4,7 @@ import {Source, Vector as VectorSource, XYZ} from 'ol/source';
 
 import {HsDimensionDescriptor} from 'hslayers-ng/common/dimensions';
 import {HsDimensionTimeService} from './dimension-time.service';
-import {HsEventBusService} from 'hslayers-ng/shared/core';
+import {HsEventBusService} from 'hslayers-ng/shared/event-bus';
 import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
 import {HsLogService} from 'hslayers-ng/shared/log';
 import {HsMapService} from 'hslayers-ng/shared/map';

@@ -3,7 +3,7 @@ import {Injectable} from '@angular/core';
 import {lastValueFrom, takeUntil} from 'rxjs';
 
 import {HsAddDataUrlService} from 'hslayers-ng/shared/add-data';
-import {HsEventBusService} from 'hslayers-ng/shared/core';
+import {HsEventBusService} from 'hslayers-ng/shared/event-bus';
 import {HsLanguageService} from 'hslayers-ng/shared/language';
 import {HsLogService} from 'hslayers-ng/shared/log';
 import {UrlDataObject} from 'hslayers-ng/common/types';

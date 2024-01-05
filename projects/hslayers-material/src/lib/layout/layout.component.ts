@@ -105,7 +105,7 @@ export class HsMatLayoutComponent implements AfterViewInit, OnInit {
     //    'Main element (#hs-app) needs height property to be defined...fallback value added'
     //  );
     //}
-    this.HsEventBusService.layoutLoads.next({
+    this.HsLayoutService.layoutLoads.next({
       element: this.elementRef.nativeElement,
       innerElement: '.hs-map-space',
     });

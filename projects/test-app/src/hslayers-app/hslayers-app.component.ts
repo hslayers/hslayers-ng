@@ -55,7 +55,7 @@ export class HslayersAppComponent {
       {},
     );
     /* Switch to it */
-    this.hsEventBusService.layoutLoads.subscribe(() => {
+    this.hsLayoutService.layoutLoads.subscribe(() => {
       this.hsLayoutService.setDefaultPanel('custom');
     });
 

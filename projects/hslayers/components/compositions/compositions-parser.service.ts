@@ -21,7 +21,7 @@ import {HsCompositionsLayerParserService} from './layer-parser/layer-parser.serv
 import {HsCompositionsWarningDialogComponent} from './dialogs/warning-dialog.component';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
-import {HsEventBusService} from 'hslayers-ng/shared/core';
+import {HsEventBusService} from 'hslayers-ng/shared/event-bus';
 import {HsLanguageService} from 'hslayers-ng/shared/language';
 import {HsLayerManagerService} from 'hslayers-ng/shared/layer-manager';
 import {HsLayoutService} from 'hslayers-ng/shared/layout';

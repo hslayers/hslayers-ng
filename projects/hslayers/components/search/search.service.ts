@@ -11,7 +11,7 @@ import {transform} from 'ol/proj';
 import {unByKey} from 'ol/Observable';
 
 import {HsConfig} from 'hslayers-ng/config';
-import {HsEventBusService} from 'hslayers-ng/shared/core';
+import {HsEventBusService} from 'hslayers-ng/shared/event-bus';
 import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
 import {HsMapService} from 'hslayers-ng/shared/map';
 import {HsStylerService} from 'hslayers-ng/shared/styler';

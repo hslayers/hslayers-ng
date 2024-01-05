@@ -13,7 +13,7 @@ import {transform} from 'ol/proj';
 import {HS_PRMS} from 'hslayers-ng/components/share';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsCoreService} from 'hslayers-ng/shared/core';
-import {HsEventBusService} from 'hslayers-ng/shared/core';
+import {HsEventBusService} from 'hslayers-ng/shared/event-bus';
 import {HsMapService} from 'hslayers-ng/shared/map';
 import {HsShareUrlService} from 'hslayers-ng/components/share';
 

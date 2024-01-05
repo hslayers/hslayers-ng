@@ -3,7 +3,7 @@ import {Component, Input, ViewRef} from '@angular/core';
 import {HsCompositionsParserService} from '../../compositions/compositions-parser.service';
 import {HsDialogComponent} from 'hslayers-ng/common/dialogs';
 import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
-import {HsEventBusService} from 'hslayers-ng/shared/core';
+import {HsEventBusService} from 'hslayers-ng/shared/event-bus';
 import {HsLayerManagerService} from 'hslayers-ng/shared/layer-manager';
 @Component({
   selector: 'hs-layermanager-remove-all-dialog',

@@ -17,7 +17,7 @@ import {HsConfig} from 'hslayers-ng/config';
 import {HsConfigMock} from 'hslayers-ng/config';
 import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
 import {HsEndpoint} from 'hslayers-ng/common/types';
-import {HsEventBusService} from 'hslayers-ng/shared/core';
+import {HsEventBusService} from 'hslayers-ng/shared/event-bus';
 import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
 import {HsLaymanService} from 'hslayers-ng/shared/save-map';
 import {HsLayoutService} from 'hslayers-ng/shared/layout';
@@ -52,7 +52,6 @@ class HsEventBusServiceMock {
   mapResets: Subject<any> = new Subject();
   mainPanelChanges: Subject<any> = new Subject();
   olMapLoads: Subject<Map> = new Subject();
-  layoutLoads: Subject<any> = new Subject();
   layoutResizes: Subject<any> = new Subject();
   updateMapSize: Subject<any> = new Subject();
 }

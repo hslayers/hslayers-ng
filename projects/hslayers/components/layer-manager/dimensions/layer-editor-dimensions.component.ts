@@ -6,7 +6,7 @@ import {Dimension} from 'hslayers-ng/common/types';
 import {HsDimensionDescriptor} from 'hslayers-ng/common/dimensions';
 import {HsDimensionService} from 'hslayers-ng/shared/get-capabilities';
 import {HsDimensionTimeService} from 'hslayers-ng/shared/get-capabilities';
-import {HsEventBusService} from 'hslayers-ng/shared/core';
+import {HsEventBusService} from 'hslayers-ng/shared/event-bus';
 import {HsLayerEditorWidgetBaseComponent} from '../widgets/layer-editor-widget-base.component';
 import {HsLayerSelectorService} from 'hslayers-ng/shared/layer-manager';
 import {HsMapService} from 'hslayers-ng/shared/map';

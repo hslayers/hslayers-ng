@@ -6,7 +6,7 @@ import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import {TestBed} from '@angular/core/testing';
 
 import {HsDimensionTimeService} from './dimension-time.service';
-import {HsEventBusService} from 'hslayers-ng/shared/core';
+import {HsEventBusService} from 'hslayers-ng/shared/event-bus';
 import {HsEventBusServiceMock} from 'hslayers-ng/shared/core';
 import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
 import {HsUtilsService} from 'hslayers-ng/shared/utils';

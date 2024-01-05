@@ -14,7 +14,7 @@ import {takeUntil} from 'rxjs/operators';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsLogService} from 'hslayers-ng/shared/log';
 import {HsPanelComponent} from './panel-component.interface';
-import {HsPanelContainerServiceInterface} from 'hslayers-ng/shared/layout';
+import {HsPanelContainerServiceInterface} from './panel-container.service.interface';
 import {HsPanelHostDirective} from './panel-host.directive';
 import {HsPanelItem} from './panel-item';
 

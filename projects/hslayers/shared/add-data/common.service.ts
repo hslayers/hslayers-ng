@@ -5,7 +5,7 @@ import {Subject} from 'rxjs';
 import {HsAddDataService} from './add-data.service';
 import {HsAddDataUrlService} from './url/add-data-url.service';
 import {HsDimensionService} from 'hslayers-ng/shared/get-capabilities';
-import {HsEventBusService} from 'hslayers-ng/shared/core';
+import {HsEventBusService} from 'hslayers-ng/shared/event-bus';
 import {HsMapService} from 'hslayers-ng/shared/map';
 import {HsToastService} from 'hslayers-ng/common/toast';
 
