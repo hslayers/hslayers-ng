@@ -2,10 +2,10 @@ import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 
+import {FilterPipe} from 'hslayers-ng/common/pipes';
 import {HsCommonLaymanAccessRightsComponent} from './access-rights/layman-access-rights.component';
 import {HsLaymanCurrentUserComponent} from './layman-current-user.component';
 import {HsLaymanLoginComponent} from './layman-login.component';
-import {HsUiExtensionsModule} from 'hslayers-ng/common/widgets';
 import {TranslateCustomPipe} from 'hslayers-ng/shared/language';
 
 @NgModule({
@@ -15,12 +15,7 @@ import {TranslateCustomPipe} from 'hslayers-ng/shared/language';
     HsLaymanCurrentUserComponent,
     HsCommonLaymanAccessRightsComponent,
   ],
-  imports: [
-    CommonModule,
-    TranslateCustomPipe,
-    HsUiExtensionsModule,
-    FormsModule,
-  ],
+  imports: [CommonModule, TranslateCustomPipe, FilterPipe, FormsModule],
   exports: [
     HsLaymanLoginComponent,
     HsLaymanCurrentUserComponent,

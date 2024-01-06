@@ -4,9 +4,8 @@ import {FormsModule} from '@angular/forms';
 
 import {HsAddDataCommonModule} from '../../common/common.module';
 import {HsCommonUrlModule} from '../../common/url/url.module';
-import {TranslateCustomPipe} from 'hslayers-ng/shared/language';
-import {HsUiExtensionsModule} from 'hslayers-ng/common/widgets';
 import {HsUrlWfsComponent} from './wfs.component';
+import {TranslateCustomPipe} from 'hslayers-ng/shared/language';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -15,7 +14,6 @@ import {HsUrlWfsComponent} from './wfs.component';
     FormsModule,
     TranslateCustomPipe,
     HsAddDataCommonModule,
-    HsUiExtensionsModule,
     HsCommonUrlModule,
   ],
   exports: [HsUrlWfsComponent],

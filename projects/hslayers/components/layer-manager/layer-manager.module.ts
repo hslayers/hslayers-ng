@@ -8,6 +8,7 @@ import {
   NgbTooltipModule,
 } from '@ng-bootstrap/ng-bootstrap';
 
+import {FilterPipe} from 'hslayers-ng/common/pipes';
 import {HsClusterWidgetComponent} from './widgets/cluster-widget.component';
 import {HsColormapPickerModule} from 'hslayers-ng/common/color-map-picker';
 import {HsCopyLayerDialogComponent} from './dialogs/copy-layer-dialog.component';
@@ -32,7 +33,6 @@ import {HsPanelHeaderComponent} from 'hslayers-ng/common/panels';
 import {HsPanelHelpersModule} from 'hslayers-ng/common/panels';
 import {HsScaleWidgetComponent} from './widgets/scale-widget.component';
 import {HsTypeWidgetComponent} from './widgets/type-widget.component';
-import {HsUiExtensionsModule} from 'hslayers-ng/common/widgets';
 import {HsWmsSourceWidgetComponent} from './widgets/wms-source-widget/wms-source-widget.component';
 import {TranslateCustomPipe} from 'hslayers-ng/shared/language';
 
@@ -66,7 +66,6 @@ import {TranslateCustomPipe} from 'hslayers-ng/shared/language';
     FormsModule,
     HsPanelHelpersModule,
     HsLegendModule,
-    HsUiExtensionsModule,
     NgbDatepickerModule,
     NgbDropdownModule,
     NgbTooltipModule,
@@ -74,6 +73,7 @@ import {TranslateCustomPipe} from 'hslayers-ng/shared/language';
     HsColormapPickerModule,
     HsWmsSourceWidgetComponent,
     HsPanelHeaderComponent,
+    FilterPipe,
   ],
   exports: [
     HsLayerManagerComponent,

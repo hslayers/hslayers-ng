@@ -4,7 +4,6 @@ import {FormsModule} from '@angular/forms';
 
 import {HsAddDataCommonModule} from '../../common/common.module';
 import {HsCommonUrlModule} from '../../common/url/url.module';
-import {HsUiExtensionsModule} from 'hslayers-ng/common/widgets';
 import {HsUrlWmtsComponent} from './wmts.component';
 import {TranslateCustomPipe} from 'hslayers-ng/shared/language';
 
@@ -15,7 +14,6 @@ import {TranslateCustomPipe} from 'hslayers-ng/shared/language';
     FormsModule,
     TranslateCustomPipe,
     HsAddDataCommonModule,
-    HsUiExtensionsModule,
     HsCommonUrlModule,
   ],
   exports: [HsUrlWmtsComponent],

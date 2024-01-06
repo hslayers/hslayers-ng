@@ -4,7 +4,9 @@ export * from './access-rights.model';
 export * from './layer-manager/layer-descriptor.interface';
 export * from './bounding-box-object.type';
 export * from './endpoint.interface';
-export * from './capabilities-response-wrapper';
+
+export * from './get-capabilitites/capabilities-response-wrapper';
+export * from './get-capabilitites/wms-get-capabilities-response.interface';
 
 export * from './layman/status-state.type';
 export * from './layman/layman-layer-descriptor.interface';

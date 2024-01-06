@@ -2,7 +2,6 @@ import {Injectable, TemplateRef} from '@angular/core';
 
 import {HsConfig} from 'hslayers-ng/config';
 import {HsLanguageService} from 'hslayers-ng/shared/language';
-import {HsLayoutService} from 'hslayers-ng/shared/layout';
 
 export interface Toast {
   autohide?: boolean;
@@ -45,7 +44,6 @@ export class HsToastService {
   toasts: Toast[] = [];
   constructor(
     public HsLanguageService: HsLanguageService,
-    private HsLayoutService: HsLayoutService,
     private hsConfig: HsConfig,
   ) {}
 

@@ -9,7 +9,6 @@ import {HsPanelHelpersModule} from 'hslayers-ng/common/panels';
 import {HsSaveMapAdvancedFormComponent} from './form/form.component';
 import {HsSaveMapComponent} from './save-map.component';
 import {HsSaveMapResultDialogComponent} from './dialog-result/dialog-result.component';
-import {HsUiExtensionsModule} from 'hslayers-ng/common/widgets';
 import {TranslateCustomPipe} from 'hslayers-ng/shared/language';
 
 @NgModule({
@@ -25,7 +24,6 @@ import {TranslateCustomPipe} from 'hslayers-ng/shared/language';
     HsPanelHelpersModule,
     FormsModule,
     ReactiveFormsModule,
-    HsUiExtensionsModule,
     TranslateCustomPipe,
     HsLaymanModule,
     HsPanelHeaderComponent,

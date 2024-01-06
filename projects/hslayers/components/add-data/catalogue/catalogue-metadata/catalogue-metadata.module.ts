@@ -3,7 +3,7 @@ import {FormsModule} from '@angular/forms';
 import {NgModule} from '@angular/core';
 
 import {HsCatalogueMetadataComponent} from './catalogue-metadata.component';
-import {HsUiExtensionsModule} from 'hslayers-ng/common/widgets';
+import {HsUiExtensionsRecursiveDdComponent} from 'hslayers-ng/common/widgets';
 import {TranslateCustomPipe} from 'hslayers-ng/shared/language';
 
 @NgModule({
@@ -11,7 +11,7 @@ import {TranslateCustomPipe} from 'hslayers-ng/shared/language';
     CommonModule,
     FormsModule,
     TranslateCustomPipe,
-    HsUiExtensionsModule,
+    HsUiExtensionsRecursiveDdComponent,
   ],
   exports: [HsCatalogueMetadataComponent],
   declarations: [HsCatalogueMetadataComponent],
