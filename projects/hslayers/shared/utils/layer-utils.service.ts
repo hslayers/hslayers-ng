@@ -12,7 +12,7 @@ import {
   WMTS,
   XYZ,
 } from 'ol/source';
-import {Feature} from 'ol';
+import {Feature, View} from 'ol';
 import {default as FeatureFormat} from 'ol/format/Feature';
 import {GPX, GeoJSON, KML, TopoJSON} from 'ol/format';
 import {Geometry} from 'ol/geom';
@@ -23,7 +23,6 @@ import {isEmpty} from 'ol/extent';
 
 import {HsLanguageService} from 'hslayers-ng/shared/language';
 import {HsLayerDescriptor} from 'hslayers-ng/common/types';
-import {HsMapService} from 'hslayers-ng/shared/map';
 import {HsUtilsService} from './utils.service';
 import {HsWmsLayer} from 'hslayers-ng/shared/get-capabilities';
 import {
@@ -41,7 +40,6 @@ export class HsLayerUtilsService {
   constructor(
     public HsUtilsService: HsUtilsService,
     public HsLanguageService: HsLanguageService,
-    public hsMapService: HsMapService,
     private zone: NgZone,
   ) {}
 
@@ -480,11 +478,10 @@ export class HsLayerUtilsService {
     return layer.loadProgress?.error;
   }
 
-  calculateResolutionFromScale(denominator: number) {
+  calculateResolutionFromScale(denominator: number, view: View) {
     if (!denominator) {
       return denominator;
     }
-    const view = this.hsMapService.getMap().getView();
     const units = view.getProjection().getUnits();
     const dpi = 25.4 / 0.28;
     const mpu = METERS_PER_UNIT[units];

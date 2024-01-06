@@ -131,9 +131,11 @@ export class HsLayerManagerMetadataService {
    * Looks for maxScaleDenominator in property object
    */
   searchForScaleDenominator(properties: any): number {
+    const view = this.hsMapService.getMap().getView();
     let maxResolution = properties.MaxScaleDenominator
       ? this.HsLayerUtilsService.calculateResolutionFromScale(
           properties.MaxScaleDenominator,
+          view,
         )
       : null;
 
@@ -141,6 +143,7 @@ export class HsLayerManagerMetadataService {
     const minResolution = properties.MinScaleDenominator
       ? this.HsLayerUtilsService.calculateResolutionFromScale(
           properties.MinScaleDenominator,
+          view,
         )
       : 0;
 
@@ -158,6 +161,7 @@ export class HsLayerManagerMetadataService {
             sublayer.maxResolution =
               this.HsLayerUtilsService.calculateResolutionFromScale(
                 sublayer.MaxScaleDenominator,
+                view,
               );
             if (
               maxResolution < sublayer.maxResolution &&
@@ -166,6 +170,7 @@ export class HsLayerManagerMetadataService {
               maxResolution =
                 this.HsLayerUtilsService.calculateResolutionFromScale(
                   sublayer.MaxScaleDenominator,
+                  view,
                 );
             }
           } else if (!sublayer.maxResolution) {

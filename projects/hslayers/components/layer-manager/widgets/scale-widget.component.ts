@@ -43,7 +43,10 @@ export class HsScaleWidgetComponent extends HsLayerEditorWidgetBaseComponent {
     }
     const layer = this.olLayer;
     layer.setMinResolution(
-      this.hsLayerUtilsService.calculateResolutionFromScale(newValue),
+      this.hsLayerUtilsService.calculateResolutionFromScale(
+        newValue,
+        this.hsMapService.getMap().getView(),
+      ),
     );
   }
 
@@ -65,7 +68,10 @@ export class HsScaleWidgetComponent extends HsLayerEditorWidgetBaseComponent {
     }
     const layer = this.olLayer;
     layer.setMaxResolution(
-      this.hsLayerUtilsService.calculateResolutionFromScale(newValue),
+      this.hsLayerUtilsService.calculateResolutionFromScale(
+        newValue,
+        this.hsMapService.getMap().getView(),
+      ),
     );
   }
 
