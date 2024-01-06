@@ -451,15 +451,18 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
       : new TileWMS(sourceOptions);
     const metadata =
       this.hsWmsGetCapabilitiesService.getMetadataObjectWithUrls(layer);
+    const view = this.hsMapService.getMap().getView();
     const layerOptions = {
       title: options.layerName,
       name: options.layerName,
       source,
       minResolution: this.HsLayerUtilsService.calculateResolutionFromScale(
         layer.MinScaleDenominator,
+        view,
       ),
       maxResolution: this.HsLayerUtilsService.calculateResolutionFromScale(
         layer.MaxScaleDenominator,
+        view,
       ),
       removable: true,
       abstract: layer.Abstract,
