@@ -12,7 +12,7 @@ import {HsUtilsService} from 'hslayers-ng/shared/utils';
 import {
   HsWmsLayer,
   WmsDimension,
-} from './wms-get-capabilities-response.interface';
+} from '../../common/types/get-capabilitites/wms-get-capabilities-response.interface';
 import {getDimensions} from 'hslayers-ng/common/extensions';
 
 @Injectable({

@@ -2,7 +2,7 @@ import {Layer} from 'ol/layer';
 import {Source} from 'ol/source';
 
 import {AddLayersRecursivelyOptions} from '../recursive-options.type';
-import {CapabilitiesResponseWrapper} from '../../capabilities-response-wrapper';
+import {CapabilitiesResponseWrapper} from '../../get-capabilitites/capabilities-response-wrapper';
 import {LayerOptions} from '../../compositions/composition-layer-options.type';
 import {UrlDataObject} from '../data-object.type';
 

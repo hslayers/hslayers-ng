@@ -7,6 +7,7 @@ const cache: TrackByFunctionCache = {};
 @Pipe({
   name: 'trackByProperty',
   pure: true,
+  standalone: true,
 })
 export class TrackByPropertyPipe implements PipeTransform {
   public transform(propertyName: string) {
