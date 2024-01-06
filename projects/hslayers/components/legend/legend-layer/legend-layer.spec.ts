@@ -27,7 +27,6 @@ import {HsLegendService} from '../legend.service';
 import {HsMapService} from 'hslayers-ng/shared/map';
 import {HsMapServiceMock} from 'hslayers-ng/shared/map';
 import {HsPanelHelpersModule} from 'hslayers-ng/common/panels';
-import {HsUiExtensionsModule} from 'hslayers-ng/common/widgets';
 import {HsUtilsService} from 'hslayers-ng/shared/utils';
 import {HsUtilsServiceMock} from 'hslayers-ng/shared/utils';
 import {TranslateCustomPipe} from 'hslayers-ng/shared/language';
@@ -57,7 +56,6 @@ describe('HsLegendLayerComponent', () => {
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
       imports: [
         HsPanelHelpersModule,
-        HsUiExtensionsModule,
         HttpClientTestingModule,
         FormsModule,
         TranslateCustomPipe,

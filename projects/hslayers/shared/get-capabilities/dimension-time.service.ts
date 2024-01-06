@@ -7,7 +7,7 @@ import {Layer} from 'ol/layer';
 import {HsLayerDescriptor} from 'hslayers-ng/common/types';
 import {HsLogService} from 'hslayers-ng/shared/log';
 import {HsUtilsService} from 'hslayers-ng/shared/utils';
-import {HsWmsLayer} from './wms-get-capabilities-response.interface';
+import {HsWmsLayer} from '../../common/types/get-capabilitites/wms-get-capabilities-response.interface';
 import {
   getDimensions,
   setDimension,

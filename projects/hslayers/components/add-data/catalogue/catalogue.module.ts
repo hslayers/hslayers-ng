@@ -10,7 +10,7 @@ import {HsCatalogueMetadataComponent} from './catalogue-metadata/catalogue-metad
 import {HsCatalogueMetadataModule} from './catalogue-metadata/catalogue-metadata.module';
 import {HsLaymanModule} from 'hslayers-ng/common/layman';
 import {HsPagerModule} from 'hslayers-ng/common/pager';
-import {HsUiExtensionsModule} from 'hslayers-ng/common/widgets';
+import {TrackByPropertyPipe} from 'hslayers-ng/common/pipes';
 import {TranslateCustomPipe} from 'hslayers-ng/shared/language';
 
 @NgModule({
@@ -20,7 +20,7 @@ import {TranslateCustomPipe} from 'hslayers-ng/shared/language';
     CommonModule,
     FormsModule,
     TranslateCustomPipe,
-    HsUiExtensionsModule,
+    TrackByPropertyPipe,
     HsLaymanModule,
     NgbDropdownModule,
     HsPagerModule,

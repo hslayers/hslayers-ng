@@ -4,14 +4,13 @@ import {BehaviorSubject, Subject} from 'rxjs';
 import {Layer} from 'ol/layer';
 import {Source} from 'ol/source';
 
+import {DatasetType} from 'hslayers-ng/common/types';
 import {HsCommonEndpointsService} from 'hslayers-ng/shared/endpoints';
 import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsMapService} from 'hslayers-ng/shared/map';
 import {HsUtilsService} from 'hslayers-ng/shared/utils';
 import {getBase} from 'hslayers-ng/common/extensions';
-
-export type DatasetType = 'url' | 'catalogue' | 'file' | 'OWS';
 
 @Injectable({
   providedIn: 'root',

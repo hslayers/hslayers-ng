@@ -28,7 +28,6 @@ import {HsMapService} from 'hslayers-ng/shared/map';
 import {HsMapServiceMock} from 'hslayers-ng/shared/map';
 import {HsPanelHeaderComponent} from 'hslayers-ng/common/panels';
 import {HsPanelHelpersModule} from 'hslayers-ng/common/panels';
-import {HsUiExtensionsModule} from 'hslayers-ng/common/widgets';
 import {HsUtilsService} from 'hslayers-ng/shared/utils';
 import {HsUtilsServiceMock} from 'hslayers-ng/shared/utils';
 import {TranslateCustomPipe} from 'hslayers-ng/shared/language';
@@ -57,7 +56,6 @@ describe('HsLegendComponent', () => {
       imports: [
         HsPanelHelpersModule,
         HsPanelHeaderComponent,
-        HsUiExtensionsModule,
         TranslateCustomPipe,
         HttpClientTestingModule,
         FormsModule,
