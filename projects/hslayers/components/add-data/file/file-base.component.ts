@@ -12,10 +12,10 @@ import {Source} from 'ol/source';
 import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 
-import {AddDataFileType} from './types/file.type';
-import {FileDataObject} from './types/file-data-object.type';
-import {FileDescriptor} from './types/file-descriptor.type';
-import {HsAddDataCommonFileService} from '../common/common-file.service';
+import {AddDataFileType} from 'hslayers-ng/common/types';
+import {FileDataObject} from 'hslayers-ng/common/types';
+import {FileDescriptor} from 'hslayers-ng/common/types';
+import {HsAddDataCommonFileService} from 'hslayers-ng/shared/add-data';
 import {HsAddDataCommonService} from 'hslayers-ng/shared/add-data';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsLayoutService} from 'hslayers-ng/shared/layout';

@@ -27,7 +27,7 @@ export class HsAddDataCommonService {
     public hsDimensionService: HsDimensionService,
     public hsEventBusService: HsEventBusService,
   ) {
-    this.hsAddDataService.cancelUrlRequest.subscribe(() => {
+    this.hsEventBusService.cancelAddDataUrlRequest.subscribe(() => {
       this.clearParams();
     });
   }

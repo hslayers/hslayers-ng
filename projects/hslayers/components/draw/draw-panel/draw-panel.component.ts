@@ -3,7 +3,7 @@ import {Subject} from 'rxjs';
 
 import {Circle, Fill, Stroke, Style} from 'ol/style';
 
-
+import {HsDrawService} from 'hslayers-ng/shared/draw';
 import {HsLanguageService} from 'hslayers-ng/shared/language';
 import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
 import {HsLayoutService} from 'hslayers-ng/shared/layout';

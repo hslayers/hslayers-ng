@@ -22,7 +22,18 @@ import {
   setShowInLayerManager,
   setTitle,
 } from 'hslayers-ng/common/extensions';
-import {mockLanguageService} from 'hslayers-ng/components/language';
+
+function mockLanguageService() {
+  return jasmine.createSpyObj('HsLanguageService', [
+    'getTranslation',
+    'getTranslationIgnoreNonExisting',
+    'getTranslator',
+    'setLanguage',
+    'getCurrentLanguageCode',
+    'listAvailableLanguages',
+    'awaitTranslation',
+  ]);
+}
 
 const mockedLanguageService = mockLanguageService();
 

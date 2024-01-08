@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import {Component, Input, OnInit} from '@angular/core';
 
-import {HsAddDataCatalogueService} from '../catalogue.service';
+import {HsAddDataCatalogueService} from 'hslayers-ng/shared/add-data';
 import {HsAddDataLayerDescriptor} from 'hslayers-ng/common/types';
 import {HsCatalogueMetadataComponent} from '../catalogue-metadata/catalogue-metadata.component';
 import {HsCatalogueMetadataService} from '../catalogue-metadata/catalogue-metadata.service';
@@ -11,10 +11,10 @@ import {HsConfirmDialogComponent} from 'hslayers-ng/common/confirm';
 import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
 import {HsEndpoint} from 'hslayers-ng/common/types';
 import {HsLanguageService} from 'hslayers-ng/shared/language';
-import {HsLaymanBrowserService} from '../layman/layman.service';
+import {HsLaymanBrowserService} from 'hslayers-ng/shared/add-data';
 import {HsLaymanService} from 'hslayers-ng/shared/save-map';
 import {HsLogService} from 'hslayers-ng/shared/log';
-import {HsSetPermissionsDialogComponent} from 'hslayers-ng/common/layman';
+import {HsSetPermissionsDialogComponent} from 'hslayers-ng/common/dialog-set-permissions';
 import {HsUtilsService} from 'hslayers-ng/shared/utils';
 
 @Component({
@@ -179,6 +179,7 @@ export class HsCatalogueListItemComponent implements OnInit {
     this.hsDialogContainerService.create(HsSetPermissionsDialogComponent, {
       recordType: 'layer',
       selectedRecord: layer,
+      onPermissionSaved: this.hsAddDataCatalogueService.reloadData(),
     });
   }
 

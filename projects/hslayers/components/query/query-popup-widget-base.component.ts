@@ -1,7 +1,7 @@
 import {BehaviorSubject} from 'rxjs';
 import {Component, ViewRef} from '@angular/core';
 
-import {HsPanelComponent} from '../../common/panels/panel-component.interface';
+import {HsPanelComponent} from 'hslayers-ng/common/panels';
 @Component({
   template: '<div></div>',
 })

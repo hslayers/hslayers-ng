@@ -4,11 +4,11 @@ import {Layer} from 'ol/layer';
 import {Source} from 'ol/source';
 import {Subject, takeUntil} from 'rxjs';
 
-import {HsAddDataCommonFileService} from '../../common/common-file.service';
-import {HsAddDataVectorService} from '../vector.service';
+import {HsAddDataCommonFileService} from 'hslayers-ng/shared/add-data';
+import {HsAddDataVectorService} from 'hslayers-ng/shared/add-data';
 import {HsHistoryListService} from 'hslayers-ng/common/history-list';
 import {HsLayoutService} from 'hslayers-ng/shared/layout';
-import {VectorDataObject} from '../vector-data.type';
+import {VectorDataObject} from 'hslayers-ng/common/types';
 
 @Component({
   selector: 'hs-url-vector',

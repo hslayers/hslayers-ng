@@ -13,9 +13,9 @@ import {Subject} from 'rxjs';
 import {loadAsync} from 'jszip';
 import {takeUntil} from 'rxjs/operators';
 
-import {FileDataObject} from '../../types/file-data-object.type';
-import {FileDescriptor} from '../../types/file-descriptor.type';
-import {HsAddDataCommonFileService} from '../../../common/common-file.service';
+import {FileDataObject} from 'hslayers-ng/common/types';
+import {FileDescriptor} from 'hslayers-ng/common/types';
+import {HsAddDataCommonFileService} from 'hslayers-ng/shared/add-data';
 import {HsToastService} from 'hslayers-ng/common/toast';
 
 @Component({

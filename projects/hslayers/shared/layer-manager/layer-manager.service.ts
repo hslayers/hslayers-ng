@@ -16,15 +16,15 @@ import {unByKey} from 'ol/Observable';
 
 import {HS_PRMS} from 'hslayers-ng/components/share';
 import {HsAddDataOwsService} from 'hslayers-ng/shared/add-data';
-import {HsBaseLayerDescriptor} from '../../components/layer-manager/base-layer-descriptor.interface';
+import {HsBaseLayerDescriptor} from 'hslayers-ng/common/types';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsDimensionTimeService} from 'hslayers-ng/shared/get-capabilities';
 import {HsDrawService} from 'hslayers-ng/shared/draw';
 import {HsEventBusService} from 'hslayers-ng/shared/event-bus';
 import {HsLanguageService} from 'hslayers-ng/shared/language';
 import {HsLayerDescriptor, HsLayerLoadProgress} from 'hslayers-ng/common/types';
-import {HsLayerEditorVectorLayerService} from '../../components/layer-manager/editor/layer-editor-vector-layer.service';
-import {HsLayerManagerMetadataService} from '../../components/layer-manager/layer-manager-metadata.service';
+import {HsLayerEditorVectorLayerService} from './layer-editor-vector-layer.service';
+import {HsLayerManagerMetadataService} from './layer-manager-metadata.service';
 import {HsLayerSelectorService} from './layer-selector.service';
 import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
 import {HsLayoutService} from 'hslayers-ng/shared/layout';

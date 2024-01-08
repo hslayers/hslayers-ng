@@ -26,7 +26,7 @@ import {HsLanguageModule} from 'hslayers-ng/components/language';
 import {HsLayerEditorComponent} from './layer-editor.component';
 import {HsLayerEditorService} from './layer-editor.service';
 import {HsLayerEditorSublayerService} from './layer-editor-sub-layer.service';
-import {HsLayerEditorVectorLayerService} from './layer-editor-vector-layer.service';
+import {HsLayerEditorVectorLayerService} from 'hslayers-ng/shared/layer-manager';
 import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
 import {HsLayoutService} from 'hslayers-ng/shared/layout';
 import {HsLayoutServiceMock} from 'hslayers-ng/shared/layout';

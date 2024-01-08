@@ -9,10 +9,7 @@ import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
 import {HsLogService} from 'hslayers-ng/shared/log';
 import {HsMapService} from 'hslayers-ng/shared/map';
 import {HsUtilsService} from 'hslayers-ng/shared/utils';
-import {
-  HsWmsLayer,
-  WmsDimension,
-} from '../../common/types/get-capabilitites/wms-get-capabilities-response.interface';
+import {HsWmsLayer, WmsDimension} from 'hslayers-ng/common/types';
 import {getDimensions} from 'hslayers-ng/common/extensions';
 
 @Injectable({

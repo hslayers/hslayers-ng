@@ -3,8 +3,6 @@ import {ElementRef, Injectable, Type, ViewContainerRef} from '@angular/core';
 
 import {HsConfig} from 'hslayers-ng/config';
 import {HsLogService} from 'hslayers-ng/shared/log';
-import {HsOverlayPanelContainerService} from 'hslayers-ng/shared/panels';
-import {HsPanelContainerService} from 'hslayers-ng/shared/panels';
 
 export class HsLayoutParams {
   /**
@@ -107,8 +105,6 @@ export class HsLayoutService extends HsLayoutParams {
   constructor(
     public hsConfig: HsConfig,
     public $log: HsLogService,
-    public hsPanelContainerService: HsPanelContainerService,
-    public hsOverlayPanelContainerService: HsOverlayPanelContainerService,
   ) {
     super();
     Object.defineProperty(this, 'panelListElement', {
@@ -363,13 +359,13 @@ export class HsLayoutService extends HsLayoutParams {
     });
   }
 
-  createPanel(panelComponent: Type<any>, data?: any): void {
-    this.hsPanelContainerService.create(panelComponent, data || {});
-  }
+  // createPanel(panelComponent: Type<any>, data?: any): void {
+  //   this.hsPanelContainerService.create(panelComponent, data || {});
+  // }
 
-  createOverlay(panelComponent: Type<any>, data?: any): void {
-    this.hsOverlayPanelContainerService.create(panelComponent, data || {});
-  }
+  // createOverlay(panelComponent: Type<any>, data?: any): void {
+  //   this.hsOverlayPanelContainerService.create(panelComponent, data || {});
+  // }
 
   scrollTo(el: ElementRef) {
     el.nativeElement.scrollIntoView({behavior: 'smooth'});

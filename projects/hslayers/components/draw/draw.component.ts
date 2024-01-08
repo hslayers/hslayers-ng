@@ -20,8 +20,7 @@ import {HsUtilsService} from 'hslayers-ng/shared/utils';
 })
 export class HsDrawComponent
   extends HsPanelBaseComponent
-  implements OnInit, OnDestroy
-{
+  implements OnInit, OnDestroy {
   name = 'draw';
   selectedOption = new BehaviorSubject('draw');
   private end = new Subject<void>();

@@ -20,7 +20,7 @@ import {HsUtilsService} from 'hslayers-ng/shared/utils';
 import {HsWfsGetCapabilitiesService} from 'hslayers-ng/shared/get-capabilities';
 import {LayerOptions} from 'hslayers-ng/common/types';
 import {UrlDataObject} from 'hslayers-ng/common/types';
-import {WfsSource} from 'hslayers-ng/common/layers';
+import {WfsSource} from './hs.source.WfsSource';
 
 type WfsCapabilitiesLayer = {
   Abstract: string;

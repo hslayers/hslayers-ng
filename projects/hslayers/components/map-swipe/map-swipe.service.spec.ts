@@ -4,18 +4,16 @@ import {of} from 'rxjs';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsConfigMock} from 'hslayers-ng/config';
 import {HsEventBusService} from 'hslayers-ng/shared/event-bus';
-import {HsEventBusServiceMock} from 'hslayers-ng/shared/core';
+import {HsEventBusServiceMock} from 'hslayers-ng/shared/event-bus';
 import {HsLayerEditorService} from 'hslayers-ng/components/layer-manager';
 import {HsLayerManagerService} from 'hslayers-ng/shared/layer-manager';
-import {
-  HsLayerShiftingService,
-  mockHsLayerShiftingService,
-} from 'hslayers-ng/shared/layer-shifting';
+import {HsLayerShiftingService} from 'hslayers-ng/shared/layer-shifting';
 import {HsMapService} from 'hslayers-ng/shared/map';
 import {HsMapServiceMock} from 'hslayers-ng/shared/map';
 import {HsMapSwipeService} from './map-swipe.service';
 import {HsShareUrlService} from 'hslayers-ng/components/share';
 import {HsToastService} from 'hslayers-ng/common/toast';
+import {mockHsLayerShiftingService} from 'hslayers-ng/testing';
 
 class HsToastServiceMock {
   constructor() {}

@@ -5,12 +5,12 @@ import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
 import {HsCompositionsCatalogueService} from './compositions-catalogue.service';
 import {HsCompositionsMapService} from './compositions-map.service';
 import {HsCompositionsOverwriteDialogComponent} from './dialogs/overwrite-dialog.component';
-import {HsCompositionsParserService} from './compositions-parser.service';
+import {HsCompositionsParserService} from 'hslayers-ng/shared/compositions';
 import {HsCompositionsService} from './compositions.service';
 import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
 import {HsLanguageService} from 'hslayers-ng/shared/language';
 import {HsLayoutService} from 'hslayers-ng/shared/layout';
-import {HsMapCompositionDescriptor} from '../../common/types/compositions/composition-descriptor.model';
+import {HsMapCompositionDescriptor} from 'hslayers-ng/common/types';
 import {HsPanelBaseComponent} from 'hslayers-ng/common/panels';
 
 @Component({
