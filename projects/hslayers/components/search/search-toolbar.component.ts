@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 
-import {HsGuiOverlayBaseComponent} from '../../common/panels/gui-overlay-base.component';
+import {HsGuiOverlayBaseComponent} from 'hslayers-ng/common/panels';
 import {HsLayoutService} from 'hslayers-ng/shared/layout';
 
 @Component({

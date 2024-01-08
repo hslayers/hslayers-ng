@@ -15,7 +15,7 @@ import {
   accessRightsModel,
   popUp,
 } from 'hslayers-ng/common/types';
-import {DOMFeatureLink} from '../types/dom-feature-link.type';
+import {DOMFeatureLink} from 'hslayers-ng/common/types';
 import {HsLaymanLayerDescriptor} from 'hslayers-ng/common/types';
 
 const ABSTRACT = 'abstract';

@@ -14,7 +14,7 @@ import {Vector as VectorSource} from 'ol/source';
 
 import {DrawPanelComponent} from './draw-panel.component';
 import {HsAddDataOwsService} from 'hslayers-ng/shared/add-data';
-import {HsAddDataVectorService} from 'hslayers-ng/components/add-data';
+import {HsAddDataVectorService} from 'hslayers-ng/shared/add-data';
 import {HsCommonEndpointsService} from 'hslayers-ng/shared/endpoints';
 import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
 import {HsConfig} from 'hslayers-ng/config';

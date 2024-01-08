@@ -1,8 +1,6 @@
 export * from './dimensions/layer-editor-dimensions.component';
 export * from './dimensions/layer-manager-time-editor.component';
-export * from './base-layer-descriptor.interface';
 export * from 'hslayers-ng/common/types';
-export * from './editor/layer-editor-vector-layer.service';
 export * from './editor/layer-editor.component';
 export * from './editor/layer-editor.service';
 export * from './editor/layer-editor-sub-layer-checkboxes.component';
@@ -11,7 +9,6 @@ export * from './logical-list/layer-manager-folder.component';
 export * from './logical-list/layer-manager-layerlist.service';
 export * from './gallery/layer-manager-gallery.component';
 export * from './logical-list/layer-manager-layerlist.component';
-export * from './layer-manager-metadata.service';
 export * from './physical-list/physical-layerlist.component';
 export * from './layer-manager.component';
 export * from './layer-manager.module';

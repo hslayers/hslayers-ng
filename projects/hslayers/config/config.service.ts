@@ -1,16 +1,15 @@
 import {Injectable} from '@angular/core';
 import {Subject} from 'rxjs';
 
-import {Geometry} from 'ol/geom';
 import {Group, Layer, Vector as VectorLayer} from 'ol/layer';
 import {Source, Vector as VectorSource} from 'ol/source';
 import {View} from 'ol';
 
-import {AddDataFileType} from './components/add-data/file/types/file.type';
-import {AddDataUrlType} from './components/add-data/url/types/url.type';
-import {HsEndpoint} from './common/endpoints/endpoint.interface';
-import {QueryPopupWidgetsType} from './components/query/widgets/widgets.type';
-import {WidgetItem} from './components/query/widgets/widget-item.type';
+import {AddDataFileType} from 'hslayers-ng/common/types';
+import {AddDataUrlType} from 'hslayers-ng/common/types';
+import {HsEndpoint} from 'hslayers-ng/common/types';
+import {QueryPopupWidgetsType} from 'hslayers-ng/common/types';
+import {WidgetItem} from 'hslayers-ng/common/types';
 
 export type SymbolizerIcon = {
   name: string;

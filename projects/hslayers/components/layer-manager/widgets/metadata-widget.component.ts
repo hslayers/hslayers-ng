@@ -3,8 +3,8 @@ import {Component} from '@angular/core';
 import {HsLanguageService} from 'hslayers-ng/shared/language';
 import {HsLayerDescriptor} from 'hslayers-ng/common/types';
 import {HsLayerEditorWidgetBaseComponent} from './layer-editor-widget-base.component';
-import {HsLayerManagerMetadataService} from '../layer-manager-metadata.service';
-import {HsLayerManagerService} from 'hslayers-ng/shared/layer-manager'
+import {HsLayerManagerMetadataService} from 'hslayers-ng/shared/layer-manager';
+import {HsLayerManagerService} from 'hslayers-ng/shared/layer-manager';
 import {HsLayerSelectorService} from 'hslayers-ng/shared/layer-manager';
 import {getAbstract, setAbstract} from 'hslayers-ng/common/extensions';
 import {getAttribution} from 'hslayers-ng/common/extensions';

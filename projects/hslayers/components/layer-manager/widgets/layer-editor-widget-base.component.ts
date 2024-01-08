@@ -5,14 +5,13 @@ import {Layer} from 'ol/layer';
 
 import {HsLayerDescriptor} from 'hslayers-ng/common/types';
 import {HsLayerSelectorService} from 'hslayers-ng/shared/layer-manager';
-import {HsPanelComponent} from '../../../common/panels/panel-component.interface';
+import {HsPanelComponent} from 'hslayers-ng/common/panels';
 
 @Component({
   template: '<div></div>',
 })
 export class HsLayerEditorWidgetBaseComponent
-  implements HsPanelComponent, OnInit, OnDestroy
-{
+  implements HsPanelComponent, OnInit, OnDestroy {
   /**
    * This could be used to enable/disable widgets by name on HsConfig level
    */

@@ -5,7 +5,4 @@ export * from './url/public-api';
 export * from './vector/public-api';
 export * from './add-data.component';
 export * from './add-data.module';
-export * from './dialog-overwrite-layer/overwrite-layer.component';
-export * from './dialog-rename-layer/rename-layer.component';
 export * from './enums/load-types.const';
-export * from './enums/overwrite-response';

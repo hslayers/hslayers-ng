@@ -26,10 +26,21 @@ import {HsShareUrlService} from 'hslayers-ng/components/share';
 import {HsShareUrlServiceMock} from 'hslayers-ng/components/share';
 import {HsUtilsService} from 'hslayers-ng/shared/utils';
 import {HsUtilsServiceMock} from 'hslayers-ng/shared/utils';
-import {mockLanguageService} from 'hslayers-ng/shared/language';
 
 class emptyMock {
   constructor() {}
+}
+
+function mockLanguageService() {
+  return jasmine.createSpyObj('HsLanguageService', [
+    'getTranslation',
+    'getTranslationIgnoreNonExisting',
+    'getTranslator',
+    'setLanguage',
+    'getCurrentLanguageCode',
+    'listAvailableLanguages',
+    'awaitTranslation',
+  ]);
 }
 
 describe('HsMapService', () => {
