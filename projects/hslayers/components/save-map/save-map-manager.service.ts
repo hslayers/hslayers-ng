@@ -4,7 +4,7 @@ import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 
 import {CompoData} from 'hslayers-ng/common/types';
-import {HsCompositionsParserService} from '../compositions/compositions-parser.service';
+import {HsCompositionsParserService} from 'hslayers-ng/shared/compositions';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsEndpoint} from 'hslayers-ng/common/types';
 import {HsEventBusService} from 'hslayers-ng/shared/event-bus';
@@ -16,9 +16,9 @@ import {HsSaveMapService} from 'hslayers-ng/shared/save-map';
 import {HsSaverService} from 'hslayers-ng/shared/save-map';
 import {HsShareService} from 'hslayers-ng/components/share';
 import {HsUtilsService} from 'hslayers-ng/shared/utils';
-import {LaymanCompositionDescriptor} from '../../common/types/compositions/composition-descriptor.model';
+import {LaymanCompositionDescriptor} from 'hslayers-ng/common/types';
 import {MapComposition} from 'hslayers-ng/common/types';
-import {StatusData} from '../../common/types/save-map/status-data.type';
+import {StatusData} from 'hslayers-ng/common/types';
 import {UserData} from 'hslayers-ng/common/types';
 import {accessRightsModel} from 'hslayers-ng/common/types';
 

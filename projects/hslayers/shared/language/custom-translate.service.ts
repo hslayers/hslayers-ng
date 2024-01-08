@@ -11,7 +11,7 @@ import {
   TranslateService,
 } from '@ngx-translate/core';
 
-import en from '../../assets/locales/en.json';
+//import en from '../../src/assets/locales/en.json';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsLogService} from 'hslayers-ng/shared/log';
 
@@ -32,7 +32,13 @@ export class WebpackTranslateLoader implements TranslateLoader {
     //Idea taken from https://github.com/denniske/ngx-translate-multi-http-loader/blob/master/projects/ngx-translate/multi-http-loader/src/lib/multi-http-loader.ts
     const requests: Observable<any>[] = [
       //these translations are loaded as promises in order, where next one overwrites previous loaders values
-      from(new Promise((resolve) => resolve(en))),
+      /***
+       *
+       * FIXME:  No fallback in case no assets can be reached or assetsPath not set
+       * not sure how to access assets files from within secondary entrypoint
+       *
+       */
+      // from(new Promise((resolve) => resolve(en))),
       from(
         new Promise(async (resolve) => {
           (async () => {
@@ -47,7 +53,7 @@ export class WebpackTranslateLoader implements TranslateLoader {
                 await new Promise((resolve2) => setTimeout(resolve2, 100));
               }
               if (counter >= MAX_CONFIG_POLLS) {
-                resolve(en); //This is needed to display English if assetsPath will never be set.
+                //resolve(en); //This is needed to display English if assetsPath will never be set.
                 if (lang != 'en') {
                   this.hsLog.error(
                     'Please set HsConfig.assetsPath so translations can be loaded',
@@ -79,7 +85,7 @@ export class WebpackTranslateLoader implements TranslateLoader {
               }
             }
             this.loaded[lang] = true;
-            resolve(res || en);
+            resolve(res); //en fallback missing
           })();
         }),
       ),

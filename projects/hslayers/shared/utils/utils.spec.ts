@@ -15,7 +15,7 @@ import {HsConfig} from 'hslayers-ng/config';
 import {HsLayerUtilsService} from './layer-utils.service';
 import {HsLogService} from 'hslayers-ng/shared/log';
 import {HsUtilsService, instOf} from './utils.service';
-import {mockLayerUtilsService} from './layer-utils.service.mock';
+import {mockLayerUtilsService} from '../../testing/layer-utils.service.mock';
 
 class EmptyMock {
   constructor() {}

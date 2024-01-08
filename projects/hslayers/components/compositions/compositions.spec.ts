@@ -17,12 +17,12 @@ import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {BehaviorSubject, Subject, of} from 'rxjs';
 import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
 
-import {HsAddDataVectorService} from 'hslayers-ng/components/add-data';
+import {HsAddDataVectorService} from 'hslayers-ng/shared/add-data';
 import {HsCommonEndpointsService} from 'hslayers-ng/shared/endpoints';
 import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
 import {HsCompositionsCatalogueService} from './compositions-catalogue.service';
 import {HsCompositionsComponent} from './compositions.component';
-import {HsCompositionsLayerParserService} from './layer-parser/layer-parser.service';
+import {HsCompositionsLayerParserService} from 'hslayers-ng/shared/compositions';
 import {HsCompositionsMapService} from './compositions-map.service';
 import {HsCompositionsMickaService} from './endpoints/compositions-micka.service';
 import {HsCompositionsService} from './compositions.service';
@@ -45,7 +45,7 @@ import {TranslateCustomPipe} from 'hslayers-ng/shared/language';
 import {compositionJson} from '../../../test/data/composition';
 import {compositionsJson} from '../../../test/data/compositions';
 import {getTitle} from 'hslayers-ng/common/extensions';
-import {mockLayerUtilsService} from 'hslayers-ng/shared/utils';
+import {mockLayerUtilsService} from 'hslayers-ng/testing';
 
 class HsCompositionsMickaServiceMock {
   constructor(private originalService: HsCompositionsMickaService) {}

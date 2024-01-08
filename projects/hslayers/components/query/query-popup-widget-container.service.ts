@@ -7,8 +7,8 @@ import {HsDynamicTextComponent} from './widgets/dynamic-text.component';
 import {HsFeatureInfoComponent} from './widgets/feature-info.component';
 import {HsLayerNameComponent} from './widgets/layer-name.component';
 import {HsPanelContainerService} from 'hslayers-ng/shared/panels';
-import {HsPanelItem} from '../../common/panels/panel-item';
-import {WidgetItem} from './widgets/widget-item.type';
+import {HsPanelItem} from 'hslayers-ng/common/panels';
+import {WidgetItem} from 'hslayers-ng/common/types';
 
 @Injectable({
   providedIn: 'root',

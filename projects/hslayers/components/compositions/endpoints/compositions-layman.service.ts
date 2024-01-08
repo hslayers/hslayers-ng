@@ -11,10 +11,10 @@ import {
   isErrorHandlerFunction,
 } from 'hslayers-ng/common/types';
 import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
-import {HsCompositionsParserService} from '../compositions-parser.service';
+import {HsCompositionsParserService} from 'hslayers-ng/shared/compositions';
 import {HsEventBusService} from 'hslayers-ng/shared/event-bus';
 import {HsLanguageService} from 'hslayers-ng/shared/language';
-import {HsMapCompositionDescriptor} from '../../../common/types/compositions/composition-descriptor.model';
+import {HsMapCompositionDescriptor} from 'hslayers-ng/common/types';
 import {HsMapService} from 'hslayers-ng/shared/map';
 import {HsToastService} from 'hslayers-ng/common/toast';
 import {addExtentFeature} from 'hslayers-ng/common/utils';

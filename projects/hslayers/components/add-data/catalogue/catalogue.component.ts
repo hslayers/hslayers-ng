@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 
-import {HsAddDataCatalogueMapService} from './catalogue-map.service';
-import {HsAddDataCatalogueService} from './catalogue.service';
+import {HsAddDataCatalogueMapService} from 'hslayers-ng/shared/add-data';
+import {HsAddDataCatalogueService} from 'hslayers-ng/shared/add-data';
 import {HsAddDataLayerDescriptor} from 'hslayers-ng/common/types';
 import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
 import {HsConfig} from 'hslayers-ng/config';

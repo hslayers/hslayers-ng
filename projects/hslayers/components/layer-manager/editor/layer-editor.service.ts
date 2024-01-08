@@ -7,8 +7,8 @@ import {WMSCapabilities} from 'ol/format';
 import {transformExtent} from 'ol/proj';
 
 import {HsEventBusService} from 'hslayers-ng/shared/event-bus';
-import {HsLayerEditorVectorLayerService} from './layer-editor-vector-layer.service';
-import {HsLayerManagerMetadataService} from '../layer-manager-metadata.service';
+import {HsLayerEditorVectorLayerService} from 'hslayers-ng/shared/layer-manager';
+import {HsLayerManagerMetadataService} from 'hslayers-ng/shared/layer-manager';
 import {HsLayerSelectorService} from 'hslayers-ng/shared/layer-manager';
 import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
 import {HsLayoutService} from 'hslayers-ng/shared/layout';

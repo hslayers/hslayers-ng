@@ -6,10 +6,7 @@ import {HttpClientTestingModule} from '@angular/common/http/testing';
 
 import {HsConfig} from 'hslayers-ng/config';
 import {HsConfigMock} from 'hslayers-ng/config';
-import {
-  HsLayerShiftingService,
-  mockHsLayerShiftingService,
-} from 'hslayers-ng/shared/layer-shifting';
+import {HsLayerShiftingService} from 'hslayers-ng/shared/layer-shifting';
 import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
 import {HsLayoutService} from 'hslayers-ng/shared/layout';
 import {HsLayoutServiceMock} from 'hslayers-ng/shared/layout';
@@ -21,7 +18,10 @@ import {HsSidebarService} from 'hslayers-ng/components/sidebar';
 import {HsUtilsService} from 'hslayers-ng/shared/utils';
 import {HsUtilsServiceMock} from 'hslayers-ng/shared/utils';
 import {TranslateCustomPipe} from 'hslayers-ng/shared/language';
-import {mockLayerUtilsService} from 'hslayers-ng/shared/utils';
+import {
+  mockHsLayerShiftingService,
+  mockLayerUtilsService,
+} from 'hslayers-ng/testing';
 
 describe('HsMapSwipeComponent', () => {
   let component: HsMapSwipeComponent;

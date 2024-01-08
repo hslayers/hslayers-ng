@@ -13,8 +13,8 @@ import {Cluster} from 'ol/source';
 import {GeoJSON} from 'ol/format';
 
 import {DEFAULT_VECTOR_LOAD_TYPE} from '../../enums/load-types.const';
-import {HsAddDataCommonFileService} from '../../common/common-file.service';
-import {HsAddDataVectorService} from '../vector.service';
+import {HsAddDataCommonFileService} from 'hslayers-ng/shared/add-data';
+import {HsAddDataVectorService} from 'hslayers-ng/shared/add-data';
 import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsLanguageService} from 'hslayers-ng/shared/language';

@@ -1,13 +1,11 @@
 import {CommonModule} from '@angular/common';
 import {Component, OnInit, ViewRef} from '@angular/core';
 
-import {HsAddDataCatalogueService} from 'hslayers-ng/components/add-data';
 import {
   HsAddDataLayerDescriptor,
   accessRightsModel,
 } from 'hslayers-ng/common/types';
-import {HsCommonLaymanService} from '../layman/layman.service';
-import {HsCompositionsCatalogueService} from 'hslayers-ng/components/compositions';
+import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
 import {
   HsDialogComponent,
   HsDialogContainerService,
@@ -16,7 +14,7 @@ import {
 import {HsEndpoint} from 'hslayers-ng/common/types';
 import {HsLaymanModule} from 'hslayers-ng/common/layman';
 import {HsLaymanService} from 'hslayers-ng/shared/save-map';
-import {PostPatchLayerResponse} from '../layman/types/post-patch-layer-response.type';
+import {PostPatchLayerResponse} from 'hslayers-ng/common/layman';
 import {TranslateCustomPipe} from 'hslayers-ng/shared/language';
 import {UpsertLayerObject} from 'hslayers-ng/common/types';
 
@@ -26,8 +24,14 @@ import {UpsertLayerObject} from 'hslayers-ng/common/types';
   standalone: true,
   imports: [CommonModule, TranslateCustomPipe, HsLaymanModule],
 })
+/***
+ *
+ * FIXME: NOT TESTED AFTER THE CHANGE (onPermissionSaved)
+ *
+ */
 export class HsSetPermissionsDialogComponent
-  implements HsDialogComponent, OnInit {
+  implements HsDialogComponent, OnInit
+{
   dialogItem: HsDialogItem;
   viewRef: ViewRef;
   currentAccessRights: accessRightsModel = {
@@ -37,6 +41,7 @@ export class HsSetPermissionsDialogComponent
   data: {
     recordType: string;
     selectedRecord: HsAddDataLayerDescriptor;
+    onPermissionSaved: () => any;
   };
   endpoint: HsEndpoint;
   state: 'idle' | 'loading' | 'success' | 'error' = 'idle';
@@ -45,8 +50,6 @@ export class HsSetPermissionsDialogComponent
     public hsCommonLaymanService: HsCommonLaymanService,
     private hsDialogContainerService: HsDialogContainerService,
     private hsLaymanService: HsLaymanService,
-    private hsAddDataCatalogueService: HsAddDataCatalogueService,
-    private hsCompositionsCatalogueService: HsCompositionsCatalogueService,
   ) {}
 
   ngOnInit(): void {
@@ -113,10 +116,10 @@ export class HsSetPermissionsDialogComponent
           return;
         }
         this.state = 'success';
-        this.hsAddDataCatalogueService.reloadData();
+        this.data.onPermissionSaved();
         break;
       case 'composition':
-        response = await this.hsLaymanService.updateCompositionAccessRights(
+        await this.hsLaymanService.updateCompositionAccessRights(
           this.data.selectedRecord.name,
           this.endpoint,
           this.currentAccessRights,
@@ -126,7 +129,7 @@ export class HsSetPermissionsDialogComponent
           return;
         }
         this.state = 'success';
-        this.hsCompositionsCatalogueService.loadFilteredCompositions();
+        this.data.onPermissionSaved();
         break;
       default:
     }

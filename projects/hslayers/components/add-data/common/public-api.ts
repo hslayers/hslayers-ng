@@ -1,5 +1,4 @@
 export * from './common.module';
-export * from './common-file.service';
 export * from './url/public-api';
 export * from './advanced-options/advanced-options.component';
 export * from './capabilities-error-dialog/capabilities-error-dialog.component';

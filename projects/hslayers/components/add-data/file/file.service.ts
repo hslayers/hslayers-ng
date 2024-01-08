@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 
-import {FileDataObject} from './types/file-data-object.type';
-import {HsAddDataCommonFileService} from '../common/common-file.service';
+import {FileDataObject} from 'hslayers-ng/common/types';
+import {HsAddDataCommonFileService} from 'hslayers-ng/shared/add-data';
 import {HsLanguageService} from 'hslayers-ng/shared/language';
 import {HsUploadedFiles} from 'hslayers-ng/common/upload';
 

@@ -14,7 +14,7 @@ import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
 import {Subject} from 'rxjs';
 
 import {HsAddDataVectorFileComponent} from './vector-file.component';
-import {HsAddDataVectorService} from '../vector.service';
+import {HsAddDataVectorService} from 'hslayers-ng/shared/add-data';
 import {HsCommonEndpointsService} from 'hslayers-ng/shared/endpoints';
 import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
 import {HsConfig} from 'hslayers-ng/config';

@@ -6,7 +6,7 @@ import {HsLegendComponent} from './legend.component';
 import {HsLegendLayerComponent} from './legend-layer/legend-layer.component';
 import {HsLegendLayerStaticComponent} from './legend-layer-static/legend-layer-static.component';
 import {HsLegendLayerVectorComponent} from './legend-layer-vector/legend-layer-vector.component';
-import {HsPanelHeaderComponent} from '../../common/panels/panel-header/panel-header.component';
+import {HsPanelHeaderComponent} from 'hslayers-ng/common/panels';
 import {HsPanelHelpersModule} from 'hslayers-ng/common/panels';
 import {TranslateCustomPipe} from 'hslayers-ng/shared/language';
 @NgModule({

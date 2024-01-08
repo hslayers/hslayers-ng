@@ -7,13 +7,10 @@ import {EpsgPipe, TrackByPropertyPipe} from 'hslayers-ng/common/pipes';
 import {HsAddToMapButtonComponent} from 'hslayers-ng/common/add-to-map';
 import {HsCommonUrlComponent} from './url.component';
 import {HsHistoryListModule} from 'hslayers-ng/common/history-list';
-import {HsLayerTableComponent} from './layer-table/layer-table.component';
-import {HsNestedLayersTableComponent} from './nested-layers-table/nested-layers-table.component';
 import {HsUrlAddComponent} from './add/add.component';
 import {HsUrlDetailsComponent} from './details/details.component';
 import {HsUrlProgressComponent} from './progress/progress.component';
 import {TranslateCustomPipe} from 'hslayers-ng/shared/language';
-import {WmsLayerHighlightDirective} from './wms-layer-highlight.directive';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -30,19 +27,13 @@ import {WmsLayerHighlightDirective} from './wms-layer-highlight.directive';
     HsUrlAddComponent,
     HsUrlProgressComponent,
     HsCommonUrlComponent,
-    HsNestedLayersTableComponent,
-    WmsLayerHighlightDirective,
     HsUrlDetailsComponent,
-    HsLayerTableComponent,
   ],
   declarations: [
     HsUrlAddComponent,
     HsUrlProgressComponent,
     HsCommonUrlComponent,
-    HsNestedLayersTableComponent,
-    WmsLayerHighlightDirective,
     HsUrlDetailsComponent,
-    HsLayerTableComponent,
   ],
 })
 export class HsCommonUrlModule {}

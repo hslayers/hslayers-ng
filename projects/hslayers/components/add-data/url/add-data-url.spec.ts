@@ -9,7 +9,6 @@ import {FormsModule} from '@angular/forms';
 import {HttpClient, HttpClientModule} from '@angular/common/http';
 import {lastValueFrom} from 'rxjs';
 
-import serviceEndpoints from '../../../../test/data/service-endpoints.json';
 import {HsAddDataUrlComponent} from './add-data-url.component';
 import {HsAddDataVectorModule} from '../vector/vector.module';
 import {HsConfig} from 'hslayers-ng/config';
@@ -25,11 +24,10 @@ import {HsUrlWfsModule} from './wfs/wfs.module';
 import {HsUrlWmsModule} from './wms/wms.module';
 import {HsUrlWmtsModule} from './wmts/wmts.module';
 import {HsUtilsService} from 'hslayers-ng/shared/utils';
-import {
-  HsUtilsServiceMock,
-  mockLayerUtilsService,
-} from 'hslayers-ng/shared/utils';
+import {HsUtilsServiceMock} from 'hslayers-ng/shared/utils';
 import {HsWmsGetCapabilitiesService} from 'hslayers-ng/shared/get-capabilities';
+import {mockLayerUtilsService} from 'hslayers-ng/testing';
+import {testingServiceEndpoints} from 'hslayers-ng/testing';
 
 let httpClient;
 let hsWmsGetCapabilitiesService;
@@ -115,7 +113,7 @@ describe('HsAddDataUrlComponent', () => {
 
     await component.hsAddDataOwsService.connectToOWS({
       type: 'wms',
-      uri: serviceEndpoints.wms[1],
+      uri: testingServiceEndpoints.wms[1],
       layer: 'GR_ZM100',
       layerOptions: {style: undefined},
     });
@@ -126,7 +124,7 @@ describe('HsAddDataUrlComponent', () => {
   it('Should load dataset metadata record as service', async () => {
     await component.hsAddDataOwsService.connectToOWS({
       type: 'wms',
-      uri: serviceEndpoints.wms[1],
+      uri: testingServiceEndpoints.wms[1],
       layer: 'Random non existent name',
       layerOptions: {style: undefined},
     });

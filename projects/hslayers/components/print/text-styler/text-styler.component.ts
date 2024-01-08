@@ -12,7 +12,7 @@ import {FormsModule} from '@angular/forms';
 import {ColorEvent} from 'ngx-color';
 
 import {ColorSketchModule} from 'ngx-color/sketch';
-import {HsColorPickerService} from '../../styler/symbolizers/color-picker/color-picker.service';
+import {HsColorPickerService} from 'hslayers-ng/components/styler';
 import {HsLanguageService} from 'hslayers-ng/shared/language';
 import {POSITION_OPTIONS} from '../constants/position-options';
 import {TEXT_STYLING_OPTIONS} from '../constants/text-styling-options';

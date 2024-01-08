@@ -10,7 +10,7 @@ import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsConfigMock} from 'hslayers-ng/config';
 import {HsEventBusService} from 'hslayers-ng/shared/event-bus';
-import {HsEventBusServiceMock} from 'hslayers-ng/shared/core';
+import {HsEventBusServiceMock} from 'hslayers-ng/shared/event-bus';
 import {HsLayoutService} from 'hslayers-ng/shared/layout';
 import {HsLayoutServiceMock} from 'hslayers-ng/shared/layout';
 import {HsPanelHeaderComponent} from 'hslayers-ng/common/panels';

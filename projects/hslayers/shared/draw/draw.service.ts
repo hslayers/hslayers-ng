@@ -13,7 +13,7 @@ import {platformModifierKeyOnly} from 'ol/events/condition';
 import {unByKey} from 'ol/Observable';
 
 import {HsAddDataOwsService} from 'hslayers-ng/shared/add-data';
-import {HsAddDataVectorService} from 'hslayers-ng/components/add-data';
+import {HsAddDataVectorService} from 'hslayers-ng/shared/add-data';
 import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsConfirmDialogComponent} from 'hslayers-ng/common/confirm';
@@ -22,7 +22,7 @@ import {HsDrawServiceParams} from './draw.service.params';
 import {HsEventBusService} from 'hslayers-ng/shared/event-bus';
 import {HsLanguageService} from 'hslayers-ng/shared/language';
 import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
-import {HsLaymanBrowserService} from 'hslayers-ng/components/add-data';
+import {HsLaymanBrowserService} from 'hslayers-ng/shared/add-data';
 import {HsLaymanService} from 'hslayers-ng/shared/save-map';
 import {HsLayoutService} from 'hslayers-ng/shared/layout';
 import {HsLogService} from 'hslayers-ng/shared/log';

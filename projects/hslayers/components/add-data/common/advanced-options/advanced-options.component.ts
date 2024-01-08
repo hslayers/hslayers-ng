@@ -1,9 +1,9 @@
 import {Component, Input, OnInit} from '@angular/core';
 
-import {FileDataObject} from '../../file/types/file-data-object.type';
-import {HsAddDataVectorService} from '../../vector/vector.service';
+import {FileDataObject} from 'hslayers-ng/common/types';
+import {HsAddDataVectorService} from 'hslayers-ng/shared/add-data';
 import {IntersectWithTooltip} from 'hslayers-ng/common/types';
-import {VectorDataObject} from '../../vector/vector-data.type';
+import {VectorDataObject} from 'hslayers-ng/common/types';
 
 export type VectorFileDataType = IntersectWithTooltip<
   Partial<FileDataObject> & VectorDataObject

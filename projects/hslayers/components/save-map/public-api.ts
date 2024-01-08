@@ -5,5 +5,3 @@ export * from './save-map-manager.service';
 export * from './save-map.component';
 export * from './save-map.module';
 export * from './dialog-result/dialog-result.component';
-export * from '../../common/types/save-map/status-data.type';
-export * from '../../common/types/save-map/wfs-sync-params.type';

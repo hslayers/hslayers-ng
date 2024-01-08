@@ -1,7 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 
-import {AddDataFileType} from '../types/file.type';
-import {HsAddDataCommonFileService} from '../../common/common-file.service';
+import {AddDataFileType} from 'hslayers-ng/common/types';
+import {HsAddDataCommonFileService} from 'hslayers-ng/shared/add-data';
 import {HsAddDataCommonService} from 'hslayers-ng/shared/add-data';
 import {HsAddDataFileBaseComponent} from '../file-base.component';
 import {HsConfig} from 'hslayers-ng/config';

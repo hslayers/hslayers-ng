@@ -1,7 +1,7 @@
 import {Component, Input} from '@angular/core';
 
-import {FileDataObject} from '../../file/types/file-data-object.type';
-import {HsAddDataCommonFileService} from '../common-file.service';
+import {FileDataObject} from 'hslayers-ng/common/types';
+import {HsAddDataCommonFileService} from 'hslayers-ng/shared/add-data';
 import {HsLaymanService} from 'hslayers-ng/shared/save-map';
 
 @Component({

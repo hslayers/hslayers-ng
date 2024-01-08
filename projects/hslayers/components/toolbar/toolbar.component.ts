@@ -4,9 +4,9 @@ import {Subscription} from 'rxjs';
 
 import {HsCoreService} from 'hslayers-ng/shared/core';
 import {HsEventBusService} from 'hslayers-ng/shared/event-bus';
-import {HsGuiOverlayBaseComponent} from '../../common/panels/gui-overlay-base.component';
+import {HsGuiOverlayBaseComponent} from 'hslayers-ng/common/panels';
 import {HsLayoutService} from 'hslayers-ng/shared/layout';
-import {HsToolbarPanelContainerService} from '../../shared/panels/toolbar/toolbar-panel-container.service';
+import {HsToolbarPanelContainerService} from 'hslayers-ng/shared/panels';
 
 @Component({
   selector: 'hs-toolbar',
@@ -14,8 +14,7 @@ import {HsToolbarPanelContainerService} from '../../shared/panels/toolbar/toolba
 })
 export class HsToolbarComponent
   extends HsGuiOverlayBaseComponent
-  implements OnDestroy
-{
+  implements OnDestroy {
   name = 'toolbar';
   collapsed = false;
   composition_title: any;

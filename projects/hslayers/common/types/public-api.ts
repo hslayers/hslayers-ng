@@ -1,9 +1,11 @@
 export * from './dom-feature-link.type';
 export * from './type-intersection.type';
 export * from './access-rights.model';
-export * from './layer-manager/layer-descriptor.interface';
 export * from './bounding-box-object.type';
 export * from './endpoint.interface';
+
+export * from './layer-manager/layer-descriptor.interface';
+export * from './layer-manager/base-layer-descriptor.interface';
 
 export * from './get-capabilitites/capabilities-response-wrapper';
 export * from './get-capabilitites/wms-get-capabilities-response.interface';
@@ -26,6 +28,16 @@ export * from './add-data/models/url-type-service.model';
 export * from './add-data/services-supported.const';
 export * from './add-data/recursive-options.type';
 export * from './add-data/argis-response-type';
+export * from './add-data/file/file-descriptor.type';
+export * from './add-data/file/file-data-object.type';
+export * from './add-data/file/file-form-data.type';
+export * from './add-data/overwrite-response';
+export * from './add-data/vector/vector-data.type';
+export * from './add-data/vector/vector-layer-descriptor';
+export * from './add-data/vector/vector-source-descriptor';
+export * from './add-data/vector/vector-layer-options.type';
+export * from './add-data/vector/vector-source-from-url';
+export * from './add-data/file/file.type';
 
 export * from './compositions/composition-layer-options.type';
 export * from './compositions/user-data.type';
@@ -35,5 +47,8 @@ export * from './compositions/serialized-image.type';
 export * from './compositions/layer-json.type';
 export * from './compositions/composition-data.type';
 export * from './compositions/composition-descriptor.model';
+
+export * from './query/widgets.type';
+export * from './query/widget-item.type';
 
 export * from './extensions/layer-extensions.type';

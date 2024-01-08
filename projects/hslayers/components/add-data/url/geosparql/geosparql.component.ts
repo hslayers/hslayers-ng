@@ -1,8 +1,8 @@
 import {Component} from '@angular/core';
 
-import {HsAddDataCommonFileService} from '../../common/common-file.service';
+import {HsAddDataCommonFileService} from 'hslayers-ng/shared/add-data';
 import {HsAddDataCommonService} from 'hslayers-ng/shared/add-data';
-import {HsAddDataVectorService} from '../../vector/vector.service';
+import {HsAddDataVectorService} from 'hslayers-ng/shared/add-data';
 import {HsHistoryListService} from 'hslayers-ng/common/history-list';
 import {HsLayoutService} from 'hslayers-ng/shared/layout';
 import {HsUrlGeoSparqlService} from './geosparql.service';

@@ -1,5 +1,6 @@
 import {Component, Input} from '@angular/core';
 
+import {HsCompositionsCatalogueService} from './compositions-catalogue.service';
 import {HsCompositionsDeleteDialogComponent} from './dialogs/delete-dialog.component';
 import {HsCompositionsInfoDialogComponent} from './dialogs/info-dialog.component';
 import {HsCompositionsService} from './compositions.service';
@@ -7,9 +8,10 @@ import {HsCompositionsShareDialogComponent} from './dialogs/share-dialog.compone
 import {HsConfig} from 'hslayers-ng/config';
 import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
 import {HsLanguageService} from 'hslayers-ng/shared/language';
-import {HsMapCompositionDescriptor} from '../../common/types/compositions/composition-descriptor.model';
-import {HsSetPermissionsDialogComponent} from 'hslayers-ng/common/layman';
+import {HsMapCompositionDescriptor} from 'hslayers-ng/common/types';
+import {HsSetPermissionsDialogComponent} from 'hslayers-ng/common/dialog-set-permissions';
 import {HsToastService} from 'hslayers-ng/common/toast';
+
 @Component({
   selector: 'hs-compositions-list-item',
   templateUrl: 'compositions-list-item.component.html',
@@ -24,6 +26,7 @@ export class HsCompositionsListItemComponent {
     private hsDialogContainerService: HsDialogContainerService,
     private hsConfig: HsConfig,
     private hsLanguageService: HsLanguageService,
+    private hsCompositionsCatalogueService: HsCompositionsCatalogueService,
   ) {}
 
   /**
@@ -87,6 +90,8 @@ export class HsCompositionsListItemComponent {
     this.hsDialogContainerService.create(HsSetPermissionsDialogComponent, {
       recordType: 'composition',
       selectedRecord: composition,
+      onPermissionSaved:
+        this.hsCompositionsCatalogueService.loadFilteredCompositions(),
     });
   }
 

@@ -1,5 +1,5 @@
 import {HsConfig} from 'hslayers-ng/config';
-import {HsEventBusService} from '../event-bus/event-bus.service';
+import {HsEventBusService} from 'hslayers-ng/shared/event-bus';
 import {HsLayoutService} from 'hslayers-ng/shared/layout';
 import {HsLogService} from 'hslayers-ng/shared/log';
 import {HsMapService} from 'hslayers-ng/shared/map';

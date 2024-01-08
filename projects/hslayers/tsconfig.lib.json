@@ -8,19 +8,14 @@
     "inlineSources": true,
     "types": [],
     "resolveJsonModule": true,
-    "lib": [
-      "dom",
-      "es2018"
-    ]
+    "lib": ["dom", "es2019"]
   },
   "angularCompilerOptions": {
     "skipTemplateCodegen": true,
     "strictMetadataEmit": true,
     "experimentalDecorators": true,
     "strictInjectionParameters": true,
-    "enableResourceInlining": true,
+    "enableResourceInlining": true
   },
-  "exclude": [
-    "**/*.spec.ts"
-  ]
+  "exclude": ["**/*.spec.ts", "./testing", "**/*.mock.ts"]
 }
