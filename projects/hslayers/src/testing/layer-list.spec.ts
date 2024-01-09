@@ -19,25 +19,25 @@ import {
   HsWmtsGetCapabilitiesService,
 } from 'hslayers-ng/shared/get-capabilities';
 import {HsConfig} from 'hslayers-ng/config';
-import {HsConfigMock} from 'hslayers-ng/config';
+import {HsConfigMock} from './config.service.mock';
 import {HsDrawService} from 'hslayers-ng/shared/draw';
 import {HsLanguageModule} from 'hslayers-ng/components/language';
-import {HsLayerListComponent} from './layer-manager-layerlist.component';
-import {HsLayerListService} from './layer-manager-layerlist.service';
-import {HsLayerManagerService} from 'hslayers-ng/shared/layer-manager'
+import {HsLayerListComponent} from 'hslayers-ng/components/layer-manager';
+import {HsLayerListService} from 'hslayers-ng/components/layer-manager';
+import {HsLayerManagerService} from 'hslayers-ng/shared/layer-manager';
 import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
 import {HsLayoutService} from 'hslayers-ng/shared/layout';
-import {HsLayoutServiceMock} from 'hslayers-ng/shared/layout';
+import {HsLayoutServiceMock} from './layout.service.mock';
 import {HsMapService} from 'hslayers-ng/shared/map';
-import {HsMapServiceMock} from 'hslayers-ng/shared/map';
+import {HsMapServiceMock} from './map.service.mock';
 import {HsPanelHelpersModule} from 'hslayers-ng/common/panels';
 import {HsShareUrlService} from 'hslayers-ng/components/share';
 import {HsUtilsService} from 'hslayers-ng/shared/utils';
-import {HsUtilsServiceMock} from 'hslayers-ng/shared/utils';
+import {HsUtilsServiceMock} from './utils.service.mock';
 
 import {mockHsLayerListService} from './layer-manager-layerlist.service.mock';
-import {mockLayerUtilsService} from 'hslayers-ng/shared/utils';
-import {wmsGetCapabilitiesResponse} from '../../../../test/data/wms-capabilities';
+import {mockLayerUtilsService} from './layer-utils.service.mock';
+import {wmsGetCapabilitiesResponse} from './data/wms-capabilities';
 
 class emptyMock {
   constructor() {}

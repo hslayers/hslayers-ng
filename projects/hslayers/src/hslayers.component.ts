@@ -1,16 +1,16 @@
 import {Component, Input, OnInit, Type, ViewChild} from '@angular/core';
 
-import {HsConfig, HsConfigObject} from './config.service';
-// import {HsFeatureInfoComponent} from './components/query/query-popup-feature/feature-widgets/feature-info.component';
-import {HsExternalService} from './components/external/external.service';
-import {HsLayoutComponent} from './components/layout/layout.component';
-import {HsMapSwipeService} from './components/map-swipe/map-swipe.service';
-import {HsQueryPopupComponent} from './components/query/query-popup/query-popup.component';
-import {HsQueryPopupService} from './components/query/query-popup.service';
-import {HsQueryPopupWidgetContainerService} from './components/query/query-popup-widget-container.service';
+import {HsConfig, HsConfigObject} from 'hslayers-ng/config';
+// import {HsFeatureInfoComponent} from 'hslayers-ng/components/query/query-popup-feature/feature-widgets/feature-info.component';
+import {HsExternalService} from 'hslayers-ng/shared/external';
+import {HsLayoutComponent} from 'hslayers-ng/components/layout';
+import {HsMapSwipeService} from 'hslayers-ng/components/map-swipe';
+import {HsQueryPopupComponent} from 'hslayers-ng/components/query';
+import {HsQueryPopupService} from 'hslayers-ng/components/query';
+import {HsQueryPopupWidgetContainerService} from 'hslayers-ng/components/query';
 
-import {HsOverlayPanelContainerService} from './components/layout/overlay-panel-container.service';
-import {HsPanelConstructorService} from './components/layout/panels/panel-constructor.service';
+import {HsOverlayPanelContainerService} from 'hslayers-ng/shared/panels';
+import {HsPanelConstructorService} from 'hslayers-ng/shared/panels';
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector

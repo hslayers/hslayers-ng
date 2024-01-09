@@ -12,10 +12,10 @@ import {Point} from 'ol/geom';
 import {Vector as VectorLayer} from 'ol/layer';
 
 import {HsConfig} from 'hslayers-ng/config';
-import {HsLayerUtilsService} from './layer-utils.service';
+import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
 import {HsLogService} from 'hslayers-ng/shared/log';
-import {HsUtilsService, instOf} from './utils.service';
-import {mockLayerUtilsService} from '../../testing/layer-utils.service.mock';
+import {HsUtilsService, instOf} from 'hslayers-ng/shared/utils';
+import {mockLayerUtilsService} from './layer-utils.service.mock';
 
 class EmptyMock {
   constructor() {}

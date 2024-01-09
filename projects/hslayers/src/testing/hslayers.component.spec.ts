@@ -2,16 +2,16 @@ import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
 
-import {CustomTranslationService} from './components/language/custom-translate.service';
-import {HsConfig} from './config.service';
+import {CustomTranslationService} from 'hslayers-ng/shared/language';
+import {HsConfig} from 'hslayers-ng/config';
 import {HsConfigMock} from './config.service.mock';
-import {HsLayerUtilsService} from './components/utils/layer-utils.service';
-import {HsPanelConstructorService} from './components/layout/panels/panel-constructor.service';
-import {HsUtilsService} from './components/utils/utils.service';
-import {HsUtilsServiceMock} from './components/utils/utils.service.mock';
-import {HslayersComponent} from './hslayers.component';
-import {TranslateTestingModule} from './components/language/translate-testing.module';
-import {mockLayerUtilsService} from './components/utils/layer-utils.service.mock';
+import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
+import {HsPanelConstructorService} from 'hslayers-ng/shared/panels';
+import {HsUtilsService} from 'hslayers-ng/shared/utils';
+import {HsUtilsServiceMock} from './utils.service.mock';
+import {HslayersComponent} from 'hslayers-ng';
+import {TranslateTestingModule} from 'hslayers-ng/components/language';
+import {mockLayerUtilsService} from './layer-utils.service.mock';
 
 describe('HslayersComponent', () => {
   let component: HslayersComponent;

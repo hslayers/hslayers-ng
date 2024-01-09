@@ -1,34 +1,32 @@
 import {HTTP_INTERCEPTORS} from '@angular/common/http';
 import {NgModule} from '@angular/core';
 
-import {HsAddDataModule} from './components/add-data/add-data.module';
-import {HsCompositionsModule} from './components/compositions/compositions.module';
-import {HsCoreModule} from './components/core/core.module';
-import {HsDrawModule} from './components/draw/draw.module';
-import {HsFeatureTableModule} from './components/feature-table/feature-table.module';
-import {HsGeolocationModule} from './components/geolocation/geolocation.module';
-import {HsInfoModule} from './components/info/info.module';
-import {HsLanguageModule} from './components/language/language.module';
-import {HsLayerManagerModule} from './components/layer-manager/layer-manager.module';
-import {HsLayoutModule} from './components/layout/layout.module';
-import {HsLegendModule} from './components/legend/legend.module';
-import {HsMapSwipeModule} from './components/map-swipe/map-swipe.module';
-import {HsMeasureModule} from './components/measure/measure.module';
-import {HsQueryModule} from './components/query/query.module';
-import {HsSaveMapModule} from './components/save-map/save-map.module';
-import {HsSearchModule} from './components/search/search.module';
-import {HsShareModule} from './components/share/share.module';
-import {HsStylerModule} from './components/styler/styles.module';
-import {HsToolbarModule} from './components/toolbar/toolbar.module';
-import {HsTripPlannerModule} from './components/trip-planner/trip-planner.module';
+import {HsAddDataModule} from 'hslayers-ng/components/add-data';
+import {HsCompositionsModule} from 'hslayers-ng/components/compositions';
+import {HsDrawModule} from 'hslayers-ng/components/draw';
+import {HsFeatureTableModule} from 'hslayers-ng/components/feature-table';
+import {HsGeolocationModule} from 'hslayers-ng/components/geolocation';
+import {HsInfoModule} from 'hslayers-ng/components/info';
+import {HsLanguageModule} from 'hslayers-ng/components/language';
+import {HsLayerManagerModule} from 'hslayers-ng/components/layer-manager';
+import {HsLayoutModule} from 'hslayers-ng/components/layout';
+import {HsLegendModule} from 'hslayers-ng/components/legend';
+import {HsMapSwipeModule} from 'hslayers-ng/components/map-swipe';
+import {HsMeasureModule} from 'hslayers-ng/components/measure';
+import {HsQueryModule} from 'hslayers-ng/components/query';
+import {HsSaveMapModule} from 'hslayers-ng/components/save-map';
+import {HsSearchModule} from 'hslayers-ng/components/search';
+import {HsShareModule} from 'hslayers-ng/components/share';
+import {HsStylerModule} from 'hslayers-ng/components/styler';
+import {HsToolbarModule} from 'hslayers-ng/components/toolbar';
+import {HsTripPlannerModule} from 'hslayers-ng/components/trip-planner';
 import {HslayersComponent} from './hslayers.component';
 import {HslayersLaymanInterceptor} from './hslayers.layman.interceptor';
-import {PrintModule} from './components/print/print.module';
+import {PrintModule} from 'hslayers-ng/components/print';
 
 @NgModule({
   declarations: [HslayersComponent],
   imports: [
-    HsCoreModule,
     HsLayoutModule,
     HsLayerManagerModule,
     HsMeasureModule,

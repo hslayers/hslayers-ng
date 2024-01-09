@@ -11,20 +11,21 @@ import {HttpClient, HttpClientModule} from '@angular/common/http';
 import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
 import {lastValueFrom} from 'rxjs';
 
-import serviceEndpoints from '../../../../../test/data/service-endpoints.json';
 import {HsCommonEndpointsService} from 'hslayers-ng/shared/endpoints';
 import {HsConfig} from 'hslayers-ng/config';
-import {HsConfigMock} from 'hslayers-ng/config';
+import {HsConfigMock} from './config.service.mock';
 import {HsLanguageModule} from 'hslayers-ng/components/language';
 import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
 import {HsMapService} from 'hslayers-ng/shared/map';
-import {HsMapServiceMock} from 'hslayers-ng/shared/map';
+import {HsMapServiceMock} from './map.service.mock';
 import {HsPanelHelpersModule} from 'hslayers-ng/common/panels';
-import {HsUrlWmsComponent} from './wms.component';
+import {HsUrlWmsComponent} from 'hslayers-ng//components/add-data';
 import {HsUrlWmsService} from 'hslayers-ng/shared/add-data';
-import {HsUtilsService, mockLayerUtilsService} from 'hslayers-ng/shared/utils';
-import {HsUtilsServiceMock} from 'hslayers-ng/shared/utils';
+import {HsUtilsService} from 'hslayers-ng/shared/utils';
+import {HsUtilsServiceMock} from './utils.service.mock';
 import {HsWmsGetCapabilitiesService} from 'hslayers-ng/shared/get-capabilities';
+import {mockLayerUtilsService} from './layer-utils.service.mock';
+import {testingServiceEndpoints} from './data/service-endpoints';
 
 class HsCommonEndpointsServiceMock {
   constructor() {}
@@ -108,7 +109,7 @@ describe('add-data-url', () => {
     expect(component).toBeTruthy();
   });
 
-  serviceEndpoints.wms.forEach((url, index) => {
+  testingServiceEndpoints.wms.forEach((url, index) => {
     (function (url, index) {
       it(`should parse capabilities ${index}`, (done) => {
         if (
