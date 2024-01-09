@@ -12,11 +12,11 @@ async function changeImpressumHslVersion() {
     await readFile('projects/hslayers/package.json', 'utf8')
   );
 
-  let impressumSrc = await readFile('projects/hslayers/src/components/sidebar/impressum.component.ts', 'utf8')
+  let impressumSrc = await readFile('projects/hslayers/components/sidebar/impressum.component.ts', 'utf8')
 
   impressumSrc = impressumSrc.replace(/this.version.=.'.*?'/, `this.version = '${packageJson.version}\'`);
   await writeFile(
-    'projects/hslayers/src/components/sidebar/impressum.component.ts',
+    'projects/hslayers/components/sidebar/impressum.component.ts',
     impressumSrc
   );
 }
