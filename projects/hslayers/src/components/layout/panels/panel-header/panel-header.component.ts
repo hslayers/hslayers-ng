@@ -1,3 +1,6 @@
+import {AsyncPipe, NgClass, NgForOf, NgIf} from '@angular/common';
+
+import {BehaviorSubject, Subject} from 'rxjs';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -10,9 +13,7 @@ import {
   Output,
   ViewChild,
 } from '@angular/core';
-import {NgClass, NgForOf} from '@angular/common';
 import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
-import {Subject} from 'rxjs';
 import {takeUntil, tap} from 'rxjs/operators';
 
 import {HsLanguageService} from '../../../language/language.service';
@@ -27,7 +28,14 @@ export function toArray(panels: string) {
   selector: 'hs-panel-header',
   standalone: true,
   templateUrl: './panel-header.component.html',
-  imports: [TranslateCustomPipe, NgbDropdownModule, NgForOf, NgClass],
+  imports: [
+    TranslateCustomPipe,
+    NgbDropdownModule,
+    NgForOf,
+    NgClass,
+    AsyncPipe,
+    NgIf,
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrl: './panel-header.component.scss',
 })
@@ -46,6 +54,7 @@ export class HsPanelHeaderComponent implements OnDestroy, OnInit {
   @Input() translationModule: string = 'PANEL_HEADER';
 
   @Output() tabSelected = new EventEmitter<string>();
+  @Input() selectedTab$: BehaviorSubject<string>;
 
   constructor(
     public HsLayoutService: HsLayoutService,
@@ -60,7 +69,9 @@ export class HsPanelHeaderComponent implements OnDestroy, OnInit {
   }
 
   ngOnInit() {
-    this.active = this.panelTabs[0];
+    if (!this.selectedTab$) {
+      this.selectedTab$ = new BehaviorSubject(this.panelTabs[0]);
+    }
     this.hsLanguageService
       .getTranslator()
       .onLangChange.pipe(
@@ -80,11 +91,10 @@ export class HsPanelHeaderComponent implements OnDestroy, OnInit {
     return this.extraButtons?.nativeElement.childElementCount > 0;
   }
   /**
-   * Emit add event to trigger bind action
+   * Next value of activated tab to the BehaviorSubject
    */
   tabClicked(tab: string): void {
-    this.active = tab;
-    this.tabSelected.emit(tab);
+    this.selectedTab$.next(tab);
   }
 
   closePanel(): void {
