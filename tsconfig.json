@@ -19,6 +19,8 @@
       "@angular/*": ["node_modules/@angular/*"],
       "rxjs/*": ["node_modules/rxjs/*"],
       "ol/*": ["node_modules/ol/*"],
+      "@hslayers-ng": ["dist/hslayers/"],
+      "@hslayers-ng/*": ["dist/hslayers/*"],
       "hslayers-ng": ["projects/hslayers/src/public-api.ts"],
       "hslayers-ng/*": ["projects/hslayers/*"],
       "@ngx-translate/*": ["node_modules/@ngx-translate/*"],

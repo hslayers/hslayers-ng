@@ -10,7 +10,7 @@ import {HsQueryPopupService} from 'hslayers-ng/components/query';
 import {HsQueryPopupWidgetContainerService} from 'hslayers-ng/components/query';
 
 import {HsOverlayPanelContainerService} from 'hslayers-ng/shared/panels';
-import {HsPanelConstructorService} from 'hslayers-ng/shared/panels';
+import {HsPanelConstructorService} from 'hslayers-ng/shared/panel-constructor';
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector

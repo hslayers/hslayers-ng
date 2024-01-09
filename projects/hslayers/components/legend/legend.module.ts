@@ -8,6 +8,7 @@ import {HsLegendLayerStaticComponent} from './legend-layer-static/legend-layer-s
 import {HsLegendLayerVectorComponent} from './legend-layer-vector/legend-layer-vector.component';
 import {HsPanelHeaderComponent} from 'hslayers-ng/common/panels';
 import {HsPanelHelpersModule} from 'hslayers-ng/common/panels';
+import {HttpClientModule} from '@angular/common/http';
 import {TranslateCustomPipe} from 'hslayers-ng/shared/language';
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -20,6 +21,7 @@ import {TranslateCustomPipe} from 'hslayers-ng/shared/language';
   imports: [
     CommonModule,
     FormsModule,
+    HttpClientModule,
     HsPanelHelpersModule,
     FilterPipe,
     TranslateCustomPipe,
