@@ -131,24 +131,20 @@ export class HsAddDataCommonService {
    * @returns
    */
   createBasemapName(layerOrLayers: any | Array<any>, property: string): string {
-    let baseName = '';
+    const baseNameParts = [];
     if (Array.isArray(layerOrLayers)) {
       for (const layer of layerOrLayers) {
         if (layer.checked) {
-          baseName = layer[property];
-          break;
-        } else {
-          if (layer.Layer) {
-            baseName = baseName.concat(
-              this.createBasemapName(layer.Layer, property),
-            );
-          }
+          baseNameParts.push(layer[property]);
+        } else if (layer.Layer) {
+          const nested = this.createBasemapName(layer.Layer, property);
+          nested.length > 0 ? baseNameParts.push(nested) : null;
         }
       }
     } else {
-      baseName = layerOrLayers[property];
+      baseNameParts[0] = layerOrLayers[property];
     }
-    return baseName;
+    return baseNameParts.join();
   }
 
   /**
