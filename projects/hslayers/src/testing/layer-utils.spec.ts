@@ -9,10 +9,10 @@ import {Cluster, ImageWMS, OSM, TileWMS, Vector, WMTS} from 'ol/source';
 import {Image as ImageLayer, Tile, Vector as VectorLayer} from 'ol/layer';
 
 import {HsLanguageService} from 'hslayers-ng/shared/language';
-import {HsLayerUtilsService} from './layer-utils.service';
+import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
 import {HsMapService} from 'hslayers-ng/shared/map';
-import {HsMapServiceMock} from 'hslayers-ng/shared/map';
-import {HsUtilsService} from './utils.service';
+import {HsMapServiceMock} from './map.service.mock';
+import {HsUtilsService} from 'hslayers-ng/shared/utils';
 import {HsUtilsServiceMock} from './utils.service.mock';
 import {
   getTitle,

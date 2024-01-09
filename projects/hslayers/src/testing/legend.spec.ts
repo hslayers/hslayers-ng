@@ -16,22 +16,22 @@ import {Tile as TileLayer} from 'ol/layer';
 import {TileWMS} from 'ol/source';
 
 import {HsConfig} from 'hslayers-ng/config';
-import {HsConfigMock} from 'hslayers-ng/config';
+import {HsConfigMock} from './config.service.mock';
 import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
 import {HsLayoutService} from 'hslayers-ng/shared/layout';
-import {HsLayoutServiceMock} from 'hslayers-ng/shared/layout';
-import {HsLegendComponent} from './legend.component';
-import {HsLegendLayerComponent} from './legend-layer/legend-layer.component';
-import {HsLegendLayerStaticComponent} from './legend-layer-static/legend-layer-static.component';
-import {HsLegendLayerVectorComponent} from './legend-layer-vector/legend-layer-vector.component';
+import {HsLayoutServiceMock} from './layout.service.mock';
+import {HsLegendComponent} from 'hslayers-ng/components/legend';
+import {HsLegendLayerComponent} from 'hslayers-ng/components/legend';
+import {HsLegendLayerStaticComponent} from 'hslayers-ng/components/legend';
+import {HsLegendLayerVectorComponent} from 'hslayers-ng/components/legend';
 import {HsMapService} from 'hslayers-ng/shared/map';
-import {HsMapServiceMock} from 'hslayers-ng/shared/map';
+import {HsMapServiceMock} from './map.service.mock';
 import {HsPanelHeaderComponent} from 'hslayers-ng/common/panels';
 import {HsPanelHelpersModule} from 'hslayers-ng/common/panels';
 import {HsUtilsService} from 'hslayers-ng/shared/utils';
-import {HsUtilsServiceMock} from 'hslayers-ng/shared/utils';
+import {HsUtilsServiceMock} from './utils.service.mock';
 import {TranslateCustomPipe} from 'hslayers-ng/shared/language';
-import {mockLayerUtilsService} from 'hslayers-ng/shared/utils';
+import {mockLayerUtilsService} from './layer-utils.service.mock';
 
 const layerUtilsMock = mockLayerUtilsService();
 describe('HsLegendComponent', () => {

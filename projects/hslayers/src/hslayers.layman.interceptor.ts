@@ -8,7 +8,7 @@ import {
 import {Injectable} from '@angular/core';
 import {Observable, map} from 'rxjs';
 
-import {HsCommonLaymanService} from './common/layman/layman.service';
+import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
 
 @Injectable()
 export class HslayersLaymanInterceptor implements HttpInterceptor {

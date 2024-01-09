@@ -1,6 +1,6 @@
 import {Subject} from 'rxjs';
 
-import {HsSaveMapManagerParams} from './save-map-manager.service';
+import {HsSaveMapManagerParams} from 'hslayers-ng/components/save-map';
 
 export class HsSaveMapManagerServiceMock extends HsSaveMapManagerParams {
   constructor() {
