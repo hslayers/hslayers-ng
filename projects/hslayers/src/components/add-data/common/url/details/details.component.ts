@@ -14,6 +14,7 @@ export class HsUrlDetailsComponent implements AfterContentInit {
 
   data;
   getDimensionValues: any;
+  advancedPanelVisible = false;
   constructor(public hsAddDataCommonService: HsAddDataCommonService) {}
   ngAfterContentInit(): void {
     this.data = this.injectedService.data;
