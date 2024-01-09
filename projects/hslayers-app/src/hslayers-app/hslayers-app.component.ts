@@ -22,11 +22,11 @@ import {
 import {View} from 'ol';
 import {register as projRegister} from 'ol/proj/proj4';
 
-import {HsConfig} from 'hslayers-ng/config.service';
-import {HsOverlayPanelContainerService} from 'hslayers-ng/components/layout/overlay-panel-container.service';
-import {HsPanelConstructorService} from 'hslayers-ng/components/layout/panels/panel-constructor.service';
-import {InterpolatedSource} from 'hslayers-ng/common/layers/hs.source.interpolated';
-import {SparqlJson} from 'hslayers-ng/common/layers/hs.source.SparqlJson';
+import {HsConfig} from '@hslayers-ng/config';
+//import {HsOverlayPanelContainerService} from '@hslayers-ng/components/layout/overlay-panel-container.service';
+import {HsPanelConstructorService} from 'hslayers-ng/shared/panel-constructor';
+import {InterpolatedSource} from 'hslayers-ng/common/layers';
+import {SparqlJson} from 'hslayers-ng/common/layers';
 
 @Component({
   selector: 'hslayers-app',
@@ -38,7 +38,7 @@ export class HslayersAppComponent {
   constructor(
     public HsConfig: HsConfig,
     private elementRef: ElementRef,
-    private HsOverlayPanelContainerService: HsOverlayPanelContainerService,
+    //private HsOverlayPanelContainerService: HsOverlayPanelContainerService,
     private HsPanelConstructorService: HsPanelConstructorService,
   ) {
     const w: any = window;
@@ -98,7 +98,7 @@ export class HslayersAppComponent {
     /**
      * Create GUI overlay
      */
-    this.HsOverlayPanelContainerService.createGuiOverlay();
+    //this.HsOverlayPanelContainerService.createGuiOverlay();
   }
   title = 'hslayers-workspace';
 }
