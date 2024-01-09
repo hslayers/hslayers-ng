@@ -7,14 +7,13 @@ import {Point} from 'ol/geom';
 import {Tile} from 'ol/layer';
 import {Vector as VectorLayer} from 'ol/layer';
 
-import {HsConfig} from 'hslayers-ng/config.service';
-import {HsEventBusService} from 'hslayers-ng/components/core/event-bus.service';
-import {
-  HsLayoutService,
-  HsPanelConstructorService,
-} from 'hslayers-ng/components/layout/public-api';
-import {HsQueryPopupComponent} from 'hslayers-ng/components/query/query-popup/query-popup.component';
-import {HsQueryPopupService} from 'hslayers-ng/components/query/query-popup.service';
+import {HsConfig} from 'hslayers-ng/config';
+import {HsEventBusService} from 'hslayers-ng/shared/event-bus';
+import {HsLayoutService} from 'hslayers-ng/shared/layout';
+import {HsQueryPopupComponent} from 'hslayers-ng/components/query';
+import {HsQueryPopupService} from 'hslayers-ng/components/query';
+//import {HslayersService} from 'hslayers-ng';
+//HsPanelConstructorService,
 //import {HsQueryComponent} from '../../../hslayers/src/components/query/query.component';
 //import {HsToolbarPanelContainerService} from 'hslayers-ng/components/toolbar/toolbar-panel-container.service';
 
@@ -27,9 +26,10 @@ export class HslayersAppComponent {
   constructor(
     public HsConfig: HsConfig,
     private HsEventBusService: HsEventBusService,
+    //private HslayersService: HslayersService,
     hsLayoutService: HsLayoutService,
     hsQueryPopupService: HsQueryPopupService, //hsToolbarPanelContainerService: HsToolbarPanelContainerService
-    private hsPanelConstructorService: HsPanelConstructorService,
+    //private hsPanelConstructorService: HsPanelConstructorService,
   ) {
     const count = 200;
     const features = new Array(count);
@@ -347,12 +347,12 @@ export class HslayersAppComponent {
     //hsToolbarPanelContainerService.create(HsSearchToolbarComponent, {});
     //hsToolbarPanelContainerService.create(HsDrawToolbarComponent, {});
     //hsToolbarPanelContainerService.create(HsMeasureToolbarComponent, {});
-    hsLayoutService.createOverlay(HsQueryPopupComponent, {
-      service: hsQueryPopupService,
-    });
+    // hsLayoutService.createOverlay(HsQueryPopupComponent, {
+    //  service: hsQueryPopupService,
+    // });
     //hsLayoutService.createOverlay(HsGeolocationComponent, {});
 
-    this.hsPanelConstructorService.createActivePanels();
+    //this.hsPanelConstructorService.createActivePanels();
   }
   title = 'hslayers-workspace';
 }
