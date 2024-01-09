@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 
-import {HsLayoutService} from 'hslayers-ng/components/layout/layout.service';
-import {HsPanelBaseComponent} from 'hslayers-ng/components/layout/panels/panel-base.component';
+import {HsLayoutService} from 'hslayers-ng/shared/layout';
+import {HsPanelBaseComponent} from 'hslayers-ng/common/panels';
 
 @Component({
   selector: 'hs-some-panel',

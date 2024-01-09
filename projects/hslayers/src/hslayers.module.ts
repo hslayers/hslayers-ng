@@ -1,4 +1,4 @@
-import {HTTP_INTERCEPTORS} from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {NgModule} from '@angular/core';
 
 import {HsAddDataModule} from 'hslayers-ng/components/add-data';
@@ -27,6 +27,7 @@ import {PrintModule} from 'hslayers-ng/components/print';
 @NgModule({
   declarations: [HslayersComponent],
   imports: [
+    HttpClientModule,
     HsLayoutModule,
     HsLayerManagerModule,
     HsMeasureModule,
