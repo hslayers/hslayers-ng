@@ -1,6 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 
-import {Subject, takeUntil} from 'rxjs';
+import {BehaviorSubject, Subject, takeUntil} from 'rxjs';
 
 import {HsConfig} from '../../config.service';
 import {HsDialogContainerService} from '../layout/dialogs/dialog-container.service';
@@ -22,7 +22,7 @@ export class HsDrawComponent
   implements OnInit, OnDestroy
 {
   name = 'draw';
-  selectedOption = 'draw';
+  selectedOption = new BehaviorSubject('draw');
   private end = new Subject<void>();
   constructor(
     public HsDrawService: HsDrawService,
@@ -61,12 +61,11 @@ export class HsDrawComponent
       description: 'SIDEBAR.descriptions.DRAW',
       icon: 'icon-pencil',
     });
-  }
 
-  componentOptionSelected(option) {
-    this.selectedOption = option;
-    if (this.selectedOption == 'edit') {
-      this.HsDrawService.setType(this.HsDrawService.type);
-    }
+    this.selectedOption.pipe(takeUntil(this.end)).subscribe((option) => {
+      if (option == 'edit') {
+        this.HsDrawService.setType(this.HsDrawService.type);
+      }
+    });
   }
 }
