@@ -13,19 +13,19 @@ import {Vector as VectorSource} from 'ol/source';
 
 import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
 import {HsConfig} from 'hslayers-ng/config';
-import {HsConfigMock} from 'hslayers-ng/config';
+import {HsConfigMock} from './config.service.mock';
 import {HsCoreService} from 'hslayers-ng/shared/core';
 import {HsEventBusService} from 'hslayers-ng/shared/event-bus';
 import {HsLanguageService} from 'hslayers-ng/shared/language';
 import {HsLayoutService} from 'hslayers-ng/shared/layout';
-import {HsLayoutServiceMock} from 'hslayers-ng/shared/layout';
-import {HsMapComponent} from './map.component';
-import {HsMapDirective} from './map.directive';
+import {HsLayoutServiceMock} from './layout.service.mock';
+import {HsMapComponent} from 'hslayers-ng/components/map';
+import {HsMapDirective} from 'hslayers-ng/components/map';
 import {HsMapService} from 'hslayers-ng/shared/map';
 import {HsShareUrlService} from 'hslayers-ng/components/share';
-import {HsShareUrlServiceMock} from 'hslayers-ng/components/share';
+import {HsShareUrlServiceMock} from './share-url.service.mock';
 import {HsUtilsService} from 'hslayers-ng/shared/utils';
-import {HsUtilsServiceMock} from 'hslayers-ng/shared/utils';
+import {HsUtilsServiceMock} from './utils.service.mock';
 
 class emptyMock {
   constructor() {}

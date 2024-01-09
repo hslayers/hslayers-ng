@@ -1,7 +1,5 @@
 import {Subject} from 'rxjs';
 
-import {HsConfig} from './config.service';
-
 export class HsConfigMock {
   reverseLayerList: boolean;
   panelsEnabled = {
