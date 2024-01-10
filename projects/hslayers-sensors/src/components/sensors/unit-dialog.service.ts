@@ -4,14 +4,15 @@ import {HttpClient} from '@angular/common/http';
 
 import dayjs from 'dayjs';
 import objectSupport from 'dayjs/plugin/objectSupport';
-import {HsLanguageService} from 'hslayers-ng';
-import {HsLogService} from 'hslayers-ng';
-import {HsUtilsService} from 'hslayers-ng';
 import {default as vegaEmbed} from 'vega-embed';
 
+import {HsLanguageService} from 'hslayers-ng/shared/language';
+import {HsLogService} from 'hslayers-ng/shared/log';
+import {HsUtilsService} from 'hslayers-ng/shared/utils';
+
 import {Aggregate} from './types/aggregate.type';
-import {HsSensorUnit} from './sensor-unit.class';
 import {CustomInterval, Interval} from './types/interval.type';
+import {HsSensorUnit} from './sensor-unit.class';
 import {SensLogEndpoint} from './types/senslog-endpoint.type';
 
 dayjs.extend(objectSupport);
@@ -58,7 +59,7 @@ export class HsSensorsUnitDialogService {
     private hsLogService: HsLogService,
     private hsLanguageService: HsLanguageService,
   ) {
-    this.currentInterval = this.intervals[2]
+    this.currentInterval = this.intervals[2];
     this.useTimeZone.subscribe((value) => {
       this.timeFormat = value ? 'HH:mm:ssZ' : 'HH:mm:ss';
     });
@@ -198,7 +199,10 @@ export class HsSensorsUnitDialogService {
    * the sensors on a sensor unit (meteostation).
    * @returns Promise which resolves when observation history data is received
    */
-  getObservationHistory(unit: HsSensorUnit, interval: Interval | CustomInterval): Promise<boolean> {
+  getObservationHistory(
+    unit: HsSensorUnit,
+    interval: Interval | CustomInterval,
+  ): Promise<boolean> {
     //TODO rewrite by splitting getting the observable and subscribing to results in different functions
     return new Promise((resolve, reject) => {
       const url = this.hsUtilsService.proxify(
@@ -292,16 +296,14 @@ export class HsSensorsUnitDialogService {
     };
   }
 
-    /**
+  /**
    * Create vega chart definition layer
    * @param multi Multiple sensor units comparison flag
    */
   createChartLayer(sensorDesc, multi = false) {
     let title = this.translate('noSensorsSelected');
     if (Array.isArray(sensorDesc) && sensorDesc.length > 0) {
-      if (
-        [...new Set(sensorDesc.map((obj) => obj.sensor_type))].length == 1
-      ) {
+      if ([...new Set(sensorDesc.map((obj) => obj.sensor_type))].length == 1) {
         title = `${this.translate(
           sensorDesc[0].phenomenon_name,
           'PHENOMENON',
@@ -347,7 +349,9 @@ export class HsSensorsUnitDialogService {
             'field': 'time_stamp',
             'title': 'Timestamp',
             'timeUnit':
-              this.currentInterval.unit === 'months' ? 'monthdate' : 'hoursminutes',
+              this.currentInterval.unit === 'months'
+                ? 'monthdate'
+                : 'hoursminutes',
           },
         ],
       },
@@ -358,13 +362,13 @@ export class HsSensorsUnitDialogService {
         {
           'filter': sensorDesc
             .map(
-              (sd) => `datum.sensor_name === '${sd.sensor_name}_${sd.unit_id}'`
+              (sd) => `datum.sensor_name === '${sd.sensor_name}_${sd.unit_id}'`,
             )
             .join(' || '),
         },
       ];
       layer['encoding']['color']['legend']['values'] =
-      this.getSensorLegendValues(sensorDesc);
+        this.getSensorLegendValues(sensorDesc);
     } else {
       layer.encoding = {
         ...layer.encoding,
@@ -374,29 +378,29 @@ export class HsSensorsUnitDialogService {
     return layer;
   }
 
-    /**
+  /**
    * Get common part of the vega encoding
    */
-    private getCommonEncoding() {
-      return {
-        'x': {
-          'axis': {
-            'title': 'Timestamp',
-            'labelOverlap': true,
-            'titleAnchor': 'middle',
-          },
-          'field': 'time_stamp',
-          'sort': false,
-          'type': 'temporal',
+  private getCommonEncoding() {
+    return {
+      'x': {
+        'axis': {
+          'title': 'Timestamp',
+          'labelOverlap': true,
+          'titleAnchor': 'middle',
         },
-      };
-    }
-  
-    private getSensorLegendValues(sensorDesc): string[] {
-      return Array.isArray(sensorDesc)
-        ? sensorDesc.map((sd) => `${sd.sensor_name}_${sd.unit_id}`)
-        : [`${sensorDesc.sensor_name}_${sensorDesc.unit_id}'`];
-    }
+        'field': 'time_stamp',
+        'sort': false,
+        'type': 'temporal',
+      },
+    };
+  }
+
+  private getSensorLegendValues(sensorDesc): string[] {
+    return Array.isArray(sensorDesc)
+      ? sensorDesc.map((sd) => `${sd.sensor_name}_${sd.unit_id}`)
+      : [`${sensorDesc.sensor_name}_${sensorDesc.unit_id}'`];
+  }
 
   getCommonChartDefinitionPart(observations) {
     //See https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/flat for flattening array

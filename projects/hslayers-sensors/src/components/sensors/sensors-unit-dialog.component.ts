@@ -1,11 +1,11 @@
 import {Component, ElementRef, OnDestroy, OnInit, ViewRef} from '@angular/core';
 
+import {HsConfig} from 'hslayers-ng/config';
 import {
-  HsConfig,
   HsDialogComponent,
   HsDialogContainerService,
-  HsLayoutService,
-} from 'hslayers-ng';
+} from 'hslayers-ng/common/dialogs';
+import {HsLayoutService} from 'hslayers-ng/shared/layout';
 
 import {Aggregates, HsSensorsUnitDialogService} from './unit-dialog.service';
 import {CustomInterval, Interval} from './types/interval.type';
@@ -16,8 +16,7 @@ import {Subject, combineLatest, takeUntil} from 'rxjs';
   templateUrl: './partials/unit-dialog.component.html',
 })
 export class HsSensorsUnitDialogComponent
-  implements HsDialogComponent, OnInit, OnDestroy
-{
+  implements HsDialogComponent, OnInit, OnDestroy {
   customInterval: CustomInterval = {
     name: 'Custom',
     fromTime: new Date(),
