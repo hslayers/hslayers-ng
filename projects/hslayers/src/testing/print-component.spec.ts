@@ -24,7 +24,7 @@ import {HsPrintScaleService} from 'hslayers-ng/components/print';
 import {HsPrintScaleStylerComponent} from 'hslayers-ng/components/print';
 import {HsPrintService} from 'hslayers-ng/components/print';
 import {HsPrintTextStylerComponent} from 'hslayers-ng/components/print';
-import {HsSidebarService} from 'hslayers-ng/components/sidebar';
+import {HsSidebarService} from 'hslayers-ng/shared/sidebar';
 import {HsUtilsService} from 'hslayers-ng/shared/utils';
 import {HsUtilsServiceMock} from './utils.service.mock';
 import {TranslateCustomPipe} from 'hslayers-ng/shared/language';

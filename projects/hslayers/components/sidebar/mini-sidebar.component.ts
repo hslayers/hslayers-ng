@@ -1,11 +1,11 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Observable, Subject, delay, map, startWith, takeUntil} from 'rxjs';
 
-import {HsButton} from './button.interface';
+import {HsButton} from 'hslayers-ng/common/types';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsCoreService} from 'hslayers-ng/shared/core';
 import {HsLayoutService} from 'hslayers-ng/shared/layout';
-import {HsSidebarService} from './sidebar.service';
+import {HsSidebarService} from 'hslayers-ng/shared/sidebar';
 
 @Component({
   selector: 'hs-mini-sidebar',

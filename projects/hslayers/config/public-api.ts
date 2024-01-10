@@ -1,1 +1,7 @@
-export * from './config.service';
+export {
+  HsConfig,
+  HsConfigObject,
+  SymbolizerIcon,
+  MapSwipeOptions,
+  KeyNumberDict,
+} from './config.service';

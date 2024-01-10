@@ -14,7 +14,7 @@ import {HsLegendService} from './legend.service';
 import {HsMapService} from 'hslayers-ng/shared/map';
 import {HsPanelBaseComponent} from 'hslayers-ng/common/panels';
 import {HsQueuesService} from 'hslayers-ng/shared/queues';
-import {HsSidebarService} from 'hslayers-ng/components/sidebar';
+import {HsSidebarService} from 'hslayers-ng/shared/sidebar';
 import {HsUtilsService} from 'hslayers-ng/shared/utils';
 import {InterpolatedSource} from 'hslayers-ng/common/layers';
 
