@@ -3,13 +3,13 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Subject, Subscription, debounceTime, takeUntil} from 'rxjs';
 
 import {HS_PRMS} from 'hslayers-ng/components/share';
-import {HsButton} from './button.interface';
+import {HsButton} from 'hslayers-ng/common/types';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsCoreService} from 'hslayers-ng/shared/core';
 import {HsEventBusService} from 'hslayers-ng/shared/event-bus';
 import {HsLayoutService} from 'hslayers-ng/shared/layout';
 import {HsShareUrlService} from 'hslayers-ng/components/share';
-import {HsSidebarService} from './sidebar.service';
+import {HsSidebarService} from 'hslayers-ng/shared/sidebar';
 
 @Component({
   selector: 'hs-sidebar',

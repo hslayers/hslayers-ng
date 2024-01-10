@@ -14,7 +14,7 @@ import {HsMapSwipeComponent} from 'hslayers-ng/components/map-swipe';
 import {HsMapSwipeService} from 'hslayers-ng/components/map-swipe';
 import {HsPanelHeaderComponent} from 'hslayers-ng/common/panels';
 import {HsPanelHelpersModule} from 'hslayers-ng/common/panels';
-import {HsSidebarService} from 'hslayers-ng/components/sidebar';
+import {HsSidebarService} from 'hslayers-ng/shared/sidebar';
 import {HsUtilsService} from 'hslayers-ng/shared/utils';
 import {HsUtilsServiceMock} from './utils.service.mock';
 import {TranslateCustomPipe} from 'hslayers-ng/shared/language';

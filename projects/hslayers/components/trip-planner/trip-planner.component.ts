@@ -9,7 +9,7 @@ import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
 import {HsLayoutService} from 'hslayers-ng/shared/layout';
 import {HsMapService} from 'hslayers-ng/shared/map';
 import {HsPanelBaseComponent} from 'hslayers-ng/common/panels';
-import {HsSidebarService} from 'hslayers-ng/components/sidebar';
+import {HsSidebarService} from 'hslayers-ng/shared/sidebar';
 import {HsTripPlannerService, Waypoint} from './trip-planner.service';
 import {HsUtilsService} from 'hslayers-ng/shared/utils';
 import {setHighlighted} from 'hslayers-ng/common/extensions';

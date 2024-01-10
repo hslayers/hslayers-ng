@@ -1,1 +1,1 @@
-export * from './log.service';
+export {HsLogService} from './log.service';
