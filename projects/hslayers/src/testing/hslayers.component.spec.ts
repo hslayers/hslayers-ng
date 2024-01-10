@@ -6,7 +6,6 @@ import {CustomTranslationService} from 'hslayers-ng/shared/language';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsConfigMock} from './config.service.mock';
 import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
-import {HsPanelConstructorService} from 'hslayers-ng/shared/panels';
 import {HsUtilsService} from 'hslayers-ng/shared/utils';
 import {HsUtilsServiceMock} from './utils.service.mock';
 import {HslayersComponent} from 'hslayers-ng';
@@ -26,7 +25,6 @@ describe('HslayersComponent', () => {
         {provide: HsConfig, useValue: new HsConfigMock()},
         {provide: HsUtilsService, useValue: new HsUtilsServiceMock()},
         {provide: HsLayerUtilsService, useValue: mockLayerUtilsService},
-        HsPanelConstructorService,
         CustomTranslationService,
       ],
     }).compileComponents();
