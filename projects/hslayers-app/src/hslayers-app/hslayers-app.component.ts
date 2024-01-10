@@ -22,7 +22,7 @@ import {
 import {View} from 'ol';
 import {register as projRegister} from 'ol/proj/proj4';
 
-import {HsConfig} from '@hslayers-ng/config';
+import {HsConfig} from 'hslayers-ng/config';
 //import {HsOverlayPanelContainerService} from '@hslayers-ng/components/layout/overlay-panel-container.service';
 import {HsPanelConstructorService} from 'hslayers-ng/shared/panel-constructor';
 import {InterpolatedSource} from 'hslayers-ng/common/layers';
