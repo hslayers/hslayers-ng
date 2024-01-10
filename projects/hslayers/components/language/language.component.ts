@@ -4,7 +4,7 @@ import {HsConfig} from 'hslayers-ng/config';
 import {HsLanguageService} from 'hslayers-ng/shared/language';
 import {HsLayoutService} from 'hslayers-ng/shared/layout';
 import {HsPanelBaseComponent} from 'hslayers-ng/common/panels';
-import {HsSidebarService} from 'hslayers-ng/components/sidebar';
+import {HsSidebarService} from 'hslayers-ng/shared/sidebar';
 
 @Component({
   selector: 'hs-language',

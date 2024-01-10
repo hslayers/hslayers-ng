@@ -1,9 +1,9 @@
 import {HsConfig} from 'hslayers-ng/config';
 import {Injectable, Type} from '@angular/core';
 
-import {HsButton} from 'hslayers-ng/components/sidebar';
+import {HsButton} from 'hslayers-ng/common/types';
 import {HsPanelContainerService} from 'hslayers-ng/shared/panels';
-import {HsSidebarService} from 'hslayers-ng/components/sidebar';
+import {HsSidebarService} from 'hslayers-ng/shared/sidebar';
 import {HsUtilsService} from 'hslayers-ng/shared/utils';
 import {skip} from 'rxjs';
 
@@ -41,11 +41,6 @@ export class HsPanelConstructorService {
       name,
     )}Component`;
     let i;
-    /***
-     *
-     * FIX ME: THIS WONT WORK CAUSE OF CIRULAR DEPS WILL HAVE TO FIGURE OUT LATER
-     *
-     */
     switch (name) {
       case 'layerManager':
         i = await import('hslayers-ng/components/layer-manager');

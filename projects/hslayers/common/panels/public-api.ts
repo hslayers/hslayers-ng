@@ -1,10 +1,13 @@
-export * from './panel-header/panel-header.component';
-export * from './panel-component.interface';
-export * from './panel-base.component';
-export * from './gui-overlay-base.component';
-export * from './panel-container.component';
-export * from './panel-container.service.interface';
+export {
+  HsPanelHeaderComponent,
+  toArray,
+} from './panel-header/panel-header.component';
+export {HsPanelComponent} from './panel-component.interface';
+export {HsPanelBaseComponent} from './panel-base.component';
+export {HsGuiOverlayBaseComponent} from './gui-overlay-base.component';
+export {HsPanelContainerComponent} from './panel-container.component';
+export {HsPanelContainerServiceInterface} from './panel-container.service.interface';
 
-export * from './panel-helpers.module';
-export * from './panel-host.directive';
-export * from './panel-item';
+export {HsPanelHelpersModule} from './panel-helpers.module';
+export {HsPanelHostDirective} from './panel-host.directive';
+export {HsPanelItem} from './panel-item';

@@ -1,3 +1,6 @@
 export {HsLanguageService} from './language.service';
-export * from './translate-custom.pipe';
-export * from './custom-translate.service';
+export {TranslateCustomPipe, equals} from './translate-custom.pipe';
+export {
+  WebpackTranslateLoader,
+  CustomTranslationService,
+} from './custom-translate.service';

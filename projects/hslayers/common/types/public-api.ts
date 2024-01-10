@@ -3,6 +3,7 @@ export * from './type-intersection.type';
 export * from './access-rights.model';
 export * from './bounding-box-object.type';
 export * from './endpoint.interface';
+export * from './button.interface';
 
 export * from './layer-manager/layer-descriptor.interface';
 export * from './layer-manager/base-layer-descriptor.interface';
