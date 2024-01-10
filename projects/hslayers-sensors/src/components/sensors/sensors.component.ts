@@ -1,10 +1,8 @@
 import {Component, OnInit, ViewRef} from '@angular/core';
-import {
-  HsConfig,
-  HsLayoutService,
-  HsMapService,
-  HsPanelBaseComponent,
-} from 'hslayers-ng';
+import {HsConfig} from 'hslayers-ng/config';
+import {HsLayoutService} from 'hslayers-ng/shared/layout';
+import {HsMapService} from 'hslayers-ng/shared/map';
+import {HsPanelBaseComponent} from 'hslayers-ng/common/panels';
 
 import {HsSensorUnit} from './sensor-unit.class';
 import {HsSensorsService} from './sensors.service';
