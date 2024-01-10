@@ -1,25 +1,26 @@
+import dayjs from 'dayjs';
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {LangChangeEvent} from '@ngx-translate/core';
 import {Subject} from 'rxjs';
 
-import dayjs from 'dayjs';
+import {HsConfig} from 'hslayers-ng/config/config.service';
+import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
+import {HsEventBusService} from 'hslayers-ng/shared/event-bus';
+import {HsLanguageService} from 'hslayers-ng/shared/language';
+import {HsLayoutService} from 'hslayers-ng/shared/layout';
+import {HsLogService} from 'hslayers-ng/shared/log';
+import {HsMapService} from 'hslayers-ng/shared/map';
+import {HsQueryVectorService} from 'hslayers-ng/shared/query';
+import {HsSidebarService} from 'hslayers-ng/shared/sidebar';
+import {HsStylerService} from 'hslayers-ng/shared/styler';
+import {HsUtilsService} from 'hslayers-ng/shared/utils';
 import {
-  HsConfig,
-  HsDialogContainerService,
-  HsEventBusService,
-  HsLanguageService,
-  HsLayoutService,
-  HsLogService,
-  HsMapService,
-  HsQueryVectorService,
-  HsSidebarService,
-  HsStylerService,
-  HsUtilsService,
   getUnitId,
   setFeatureName,
   setUnitId,
-} from 'hslayers-ng';
+} from 'hslayers-ng/common/extensions';
+
 import {Vector as VectorLayer} from 'ol/layer';
 import {Vector as VectorSource} from 'ol/source';
 import {WKT} from 'ol/format';

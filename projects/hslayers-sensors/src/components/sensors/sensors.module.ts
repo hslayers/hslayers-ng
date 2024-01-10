@@ -5,13 +5,10 @@ import {
 } from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
-
-import {
-  HsLogModule,
-  HsPanelHeaderComponent,
-  TranslateCustomPipe,
-} from 'hslayers-ng';
 import {NgbDatepickerModule} from '@ng-bootstrap/ng-bootstrap';
+
+import {HsPanelHeaderComponent} from 'hslayers-ng/common/panels';
+import {TranslateCustomPipe} from 'hslayers-ng/shared/language';
 
 import {HsSensorsComponent} from './sensors.component';
 import {HsSensorsUnitDialogComponent} from './sensors-unit-dialog.component';
@@ -26,7 +23,6 @@ import {HsSensorsUnitListItemComponent} from './sensors-unit-list-item.component
   ],
   imports: [
     CommonModule,
-    HsLogModule,
     FormsModule,
     NgbDatepickerModule,
     TranslateCustomPipe,

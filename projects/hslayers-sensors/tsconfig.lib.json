@@ -12,24 +12,16 @@
     "allowSyntheticDefaultImports": true,
     "resolveJsonModule": true,
     "esModuleInterop": true,
-    "lib": [
-      "dom",
-      "es2018"
-    ],
+    "lib": ["dom", "es2019"],
     "paths": {
-      "hslayers-ng": [
-        "dist/hslayers/*",
-        "dist/hslayers"
-      ],
+      "hslayers-ng": ["./dist/hslayers"],
+      "hslayers-ng/*": ["./dist/hslayers/*"]
     }
   },
   "angularCompilerOptions": {
     "skipTemplateCodegen": true,
     "strictMetadataEmit": true,
-    "enableResourceInlining": true,
+    "enableResourceInlining": true
   },
-  "exclude": [
-    "**/*.spec.ts",
-    "**/*.d.ts"
-  ]
+  "exclude": ["**/*.spec.ts", "**/*.d.ts"]
 }
