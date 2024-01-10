@@ -1,4 +1,4 @@
-import {BehaviorSubject} from 'rxjs';
+import {BehaviorSubject, Subject} from 'rxjs';
 import {HsConfig} from 'hslayers-ng/config';
 
 export class HsLayoutServiceMock {
@@ -10,7 +10,7 @@ export class HsLayoutServiceMock {
   }
   contentWrapper = document.createElement('div');
   sidebarPosition$ = new BehaviorSubject('left');
-
+  layoutLoads = new Subject();
   /**
    * Using HsConfig imported into layoutService in HsPanelBaseComponent
    * for convenience of not having to pass it into super everywhere thus

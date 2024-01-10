@@ -16,7 +16,7 @@ import {HsEventBusService} from 'hslayers-ng/shared/event-bus';
 import {HsLayoutService} from 'hslayers-ng/shared/layout';
 import {HsPanelConstructorService} from 'hslayers-ng/shared/panels';
 import {HsQueryPopupWidgetContainerService} from 'hslayers-ng/components/query';
-import {HsSidebarService} from 'hslayers-ng/components/sidebar';
+import {HsSidebarService} from 'hslayers-ng/shared/sidebar';
 import {HsUtilsService} from 'hslayers-ng/shared/utils';
 import {InterpolatedSource} from 'hslayers-ng/common/layers';
 import {SPOI} from 'hslayers-ng/common/layers';
