@@ -10,12 +10,22 @@ import {Vector as VectorLayer} from 'ol/layer';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsEventBusService} from 'hslayers-ng/shared/event-bus';
 import {HsLayoutService} from 'hslayers-ng/shared/layout';
-import {HsQueryPopupComponent} from 'hslayers-ng/components/query';
-import {HsQueryPopupService} from 'hslayers-ng/components/query';
-//import {HslayersService} from 'hslayers-ng';
-//HsPanelConstructorService,
-//import {HsQueryComponent} from '../../../hslayers/src/components/query/query.component';
-//import {HsToolbarPanelContainerService} from 'hslayers-ng/components/toolbar/toolbar-panel-container.service';
+/**
+ * Dynamic panels
+ */
+//import {HsPanelConstructorService} from 'hslayers-ng/shared/panel-constructor';
+/**
+ * Pop-pup
+ */
+//import {HsQueryPopupComponent} from 'hslayers-ng/components/query';
+//import {HsQueryPopupService} from 'hslayers-ng/components/query';
+/**
+ * Dynamic overlays
+ */
+//import {HsOverlayConstructorService} from 'hslayers-ng/shared/panel-constructor';
+import {HsLayerManagerComponent} from 'hslayers-ng/components/layer-manager';
+import {HsPanelContainerService} from 'hslayers-ng/shared/panels';
+import {HsSidebarService} from 'hslayers-ng/shared/sidebar';
 
 @Component({
   selector: 'hslayers-app',
@@ -26,10 +36,13 @@ export class HslayersAppComponent {
   constructor(
     public HsConfig: HsConfig,
     private HsEventBusService: HsEventBusService,
+    private hsSidebarService: HsSidebarService,
     //private HslayersService: HslayersService,
     hsLayoutService: HsLayoutService,
-    hsQueryPopupService: HsQueryPopupService, //hsToolbarPanelContainerService: HsToolbarPanelContainerService
-    //private hsPanelConstructorService: HsPanelConstructorService,
+    //hsQueryPopupService: HsQueryPopupService,
+    //HsOverlayConstructorService: HsOverlayConstructorService,
+    // private hsPanelConstructorService: HsPanelConstructorService,
+    private HsPanelContainerService: HsPanelContainerService,
   ) {
     const count = 200;
     const features = new Array(count);
@@ -177,10 +190,8 @@ export class HslayersAppComponent {
         : '/proxy/',
       panelsEnabled: {
         tripPlanner: false,
-        query: true,
         addData: false,
-        print: false,
-        compositions: true,
+        mapSwipe: false,
       },
       componentsEnabled: {
         geolocationButton: true,
@@ -343,16 +354,39 @@ export class HslayersAppComponent {
     setTimeout(() => {
       this.HsEventBusService.layerDimensionDefinitionChanges.next(opticalMap);
     }, 100);
-    //hsLayoutService.createPanel(HsQueryComponent, {});
-    //hsToolbarPanelContainerService.create(HsSearchToolbarComponent, {});
-    //hsToolbarPanelContainerService.create(HsDrawToolbarComponent, {});
-    //hsToolbarPanelContainerService.create(HsMeasureToolbarComponent, {});
-    // hsLayoutService.createOverlay(HsQueryPopupComponent, {
-    //  service: hsQueryPopupService,
-    // });
-    //hsLayoutService.createOverlay(HsGeolocationComponent, {});
 
+    /***
+     * TO ENABLE POPUPS
+     */
+    // HsOverlayConstructorService.create(HsQueryPopupComponent, {
+    //   service: hsQueryPopupService,
+    // });
+
+    /***
+     * EASILY CREATE COMPONENTS + MAKE CHUNKS FOR ALL COMPONENTS
+     * WHICH WOULD BE DOWNLOADED BY BROWSER BASED ON
+     * COMPONENTS ENABLED
+     */
     //this.hsPanelConstructorService.createActivePanels();
+
+    /**
+     * SAME FOR GUI OVERALAY
+     */
+    // HsOverlayConstructorService.createGuiOverlay();
+
+    // this.hsPanelConstructorService.createPanelAndButton(
+    //   HsLayerManagerComponent,
+    //   this.hsSidebarService.buttonDefinition['layerManager'],
+    // );
+
+    /***
+     * CREATE COMPONENT INDIVIDUALY - omitting services with dynamic imports (constructors)
+     * so that no lazy chunks are part of the build, only treeshaken parts included in main
+     */
+    this.HsPanelContainerService.create(HsLayerManagerComponent, {});
+    this.hsSidebarService.addButton(
+      this.hsSidebarService.buttonDefinition['layerManager'],
+    );
   }
   title = 'hslayers-workspace';
 }
