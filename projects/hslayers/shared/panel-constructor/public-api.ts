@@ -1,1 +1,2 @@
-export * from '../panel-constructor/panel-constructor.service';
+export * from './panel-constructor.service';
+export * from './overlay-constructor.service';

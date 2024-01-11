@@ -9,7 +9,7 @@ import {HsQueryPopupComponent} from 'hslayers-ng/components/query';
 import {HsQueryPopupService} from 'hslayers-ng/components/query';
 import {HsQueryPopupWidgetContainerService} from 'hslayers-ng/components/query';
 
-import {HsOverlayPanelContainerService} from 'hslayers-ng/shared/panels';
+import {HsOverlayConstructorService} from 'hslayers-ng/shared/panel-constructor';
 import {HsPanelConstructorService} from 'hslayers-ng/shared/panel-constructor';
 
 @Component({
@@ -25,7 +25,7 @@ export class HslayersComponent implements OnInit {
 
   constructor(
     public hsConfig: HsConfig,
-    private HsOverlayPanelContainerService: HsOverlayPanelContainerService,
+    private HsOverlayConstructorService: HsOverlayConstructorService,
     private hsQueryPopupService: HsQueryPopupService,
     private HsMapSwipeService: HsMapSwipeService, //Leave this, need to inject somewhere
     private hsQueryPopupWidgetContainerService: HsQueryPopupWidgetContainerService, //Leave this, need to inject somewhere
@@ -49,9 +49,9 @@ export class HslayersComponent implements OnInit {
     /**
      * Create GUI overlay
      */
-    this.HsOverlayPanelContainerService.createGuiOverlay();
+    this.HsOverlayConstructorService.createGuiOverlay();
 
-    this.HsOverlayPanelContainerService.create(HsQueryPopupComponent, {
+    this.HsOverlayConstructorService.create(HsQueryPopupComponent, {
       service: this.hsQueryPopupService,
     });
   }

@@ -364,7 +364,7 @@ export class HsLayoutService extends HsLayoutParams {
   // }
 
   // createOverlay(panelComponent: Type<any>, data?: any): void {
-  //   this.hsOverlayPanelContainerService.create(panelComponent, data || {});
+  //   this.HsOverlayConstructorService.create(panelComponent, data || {});
   // }
 
   scrollTo(el: ElementRef) {
