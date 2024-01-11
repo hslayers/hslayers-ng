@@ -1,13 +1,13 @@
 import {Injectable} from '@angular/core';
 
 import {HsConfig} from 'hslayers-ng/config';
-import {HsPanelContainerService} from '../panel-container.service';
-import {HsToolbarPanelContainerService} from '../toolbar/toolbar-panel-container.service';
+import {HsPanelContainerService} from 'hslayers-ng/shared/panels';
+import {HsToolbarPanelContainerService} from 'hslayers-ng/shared/panels';
 
 @Injectable({
   providedIn: 'root',
 })
-export class HsOverlayPanelContainerService extends HsPanelContainerService {
+export class HsOverlayConstructorService extends HsPanelContainerService {
   constructor(
     private hsConfig: HsConfig,
     private hsToolbarPanelContainerService: HsToolbarPanelContainerService,
@@ -24,44 +24,32 @@ export class HsOverlayPanelContainerService extends HsPanelContainerService {
   ) {
     const cName = `Hs${this.capitalizeFirstLetter(name)}Component`;
     let i;
-    /***
-     *
-     * FIX ME: THIS WONT WORK CAUSE OF CIRULAR DEPS WILL HAVE TO FIGURE OUT LATER
-     *
-     */
-    // switch (name) {
-    //   case 'toolbar':
-    //     i = await import('../../../components/toolbar/toolbar.component');
-    //     break;
-    //   case 'measureToolbar':
-    //     i = await import(
-    //       '../../../components/measure/measure-toolbar.component'
-    //     );
-    //     break;
-    //   case 'searchToolbar':
-    //     i = await import('../../../components/search/search-toolbar.component');
-    //     break;
-    //   case 'drawToolbar':
-    //     i = await import(
-    //       '../../../components/draw/draw-toolbar/draw-toolbar.component'
-    //     );
-    //     break;
-    //   case 'layerManagerGallery':
-    //     // eslint-disable-next-line prettier/prettier
-    //     i = await import('../../../components/layer-manager/gallery/layer-manager-gallery.component');
-    //     break;
-    //   case 'info':
-    //     i = await import('../../../components/info/info.component');
-    //     break;
-    //   case 'geolocation':
-    //     i = await import(
-    //       '../../../components/geolocation/geolocation.component'
-    //     );
-    //     break;
-    //   default:
-    //     console.warn(`Trying to create unidentified GUI component ${name}`);
-    //     break;
-    // }
+    switch (name) {
+      case 'toolbar':
+        i = await import('hslayers-ng/components/toolbar');
+        break;
+      case 'measureToolbar':
+        i = await import('hslayers-ng/components/measure');
+        break;
+      case 'searchToolbar':
+        i = await import('hslayers-ng/components/search');
+        break;
+      case 'drawToolbar':
+        i = await import('hslayers-ng/components/draw');
+        break;
+      case 'layerManagerGallery':
+        i = await import('hslayers-ng/components/layer-manager');
+        break;
+      case 'info':
+        i = await import('hslayers-ng/components/info');
+        break;
+      case 'geolocation':
+        i = await import('hslayers-ng/components/geolocation');
+        break;
+      default:
+        console.warn(`Trying to create unidentified GUI component ${name}`);
+        break;
+    }
     service.create(i[cName], {});
   }
 
