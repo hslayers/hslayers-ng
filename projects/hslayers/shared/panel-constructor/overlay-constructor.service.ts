@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 
 import {HsConfig} from 'hslayers-ng/config';
+import {HsOverlayContainerService} from 'hslayers-ng/shared/panels';
 import {HsPanelContainerService} from 'hslayers-ng/shared/panels';
 import {HsToolbarPanelContainerService} from 'hslayers-ng/shared/panels';
 
@@ -11,6 +12,7 @@ export class HsOverlayConstructorService extends HsPanelContainerService {
   constructor(
     private hsConfig: HsConfig,
     private hsToolbarPanelContainerService: HsToolbarPanelContainerService,
+    private HsOverlayContainerService: HsOverlayContainerService,
   ) {
     super();
   }
@@ -20,7 +22,7 @@ export class HsOverlayConstructorService extends HsPanelContainerService {
    */
   private async _createGuiComponent(
     name: string,
-    service: HsPanelContainerService = this,
+    service: HsPanelContainerService = this.HsOverlayContainerService,
   ) {
     const cName = `Hs${this.capitalizeFirstLetter(name)}Component`;
     let i;
@@ -28,9 +30,9 @@ export class HsOverlayConstructorService extends HsPanelContainerService {
       case 'toolbar':
         i = await import('hslayers-ng/components/toolbar');
         break;
-      case 'measureToolbar':
-        i = await import('hslayers-ng/components/measure');
-        break;
+      // case 'measureToolbar':
+      //   i = await import('hslayers-ng/components/measure');
+      //   break;
       case 'searchToolbar':
         i = await import('hslayers-ng/components/search');
         break;

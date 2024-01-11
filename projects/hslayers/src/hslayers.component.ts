@@ -1,7 +1,6 @@
-import {Component, Input, OnInit, Type, ViewChild} from '@angular/core';
+import {Component, Input, OnInit, ViewChild} from '@angular/core';
 
 import {HsConfig, HsConfigObject} from 'hslayers-ng/config';
-// import {HsFeatureInfoComponent} from 'hslayers-ng/components/query/query-popup-feature/feature-widgets/feature-info.component';
 import {HsExternalService} from 'hslayers-ng/shared/external';
 import {HsLayoutComponent} from 'hslayers-ng/components/layout';
 import {HsMapSwipeService} from 'hslayers-ng/components/map-swipe';
