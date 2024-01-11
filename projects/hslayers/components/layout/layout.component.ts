@@ -2,6 +2,7 @@ import {
   AfterViewInit,
   Component,
   ElementRef,
+  Input,
   OnDestroy,
   OnInit,
   ViewChild,
@@ -9,12 +10,12 @@ import {
 
 import {Subject, delay, takeUntil} from 'rxjs';
 
-import {HsConfig} from 'hslayers-ng/config';
+import {HsConfig, HsConfigObject} from 'hslayers-ng/config';
 import {HsEventBusService} from 'hslayers-ng/shared/event-bus';
 import {HsLayoutService} from 'hslayers-ng/shared/layout';
 import {HsLogService} from 'hslayers-ng/shared/log';
 import {HsMapHostDirective} from './map-host.directive';
-import {HsOverlayConstructorService} from 'hslayers-ng/shared/panel-constructor';
+import {HsOverlayContainerService} from 'hslayers-ng/shared/panels';
 import {HsPanelContainerService} from 'hslayers-ng/shared/panels';
 import {HsQueryWmsService} from 'hslayers-ng/components/query';
 import {HsShareUrlService} from 'hslayers-ng/components/share';
@@ -25,6 +26,14 @@ import {HsUtilsService} from 'hslayers-ng/shared/utils';
   templateUrl: './layout.component.html',
 })
 export class HsLayoutComponent implements AfterViewInit, OnInit, OnDestroy {
+  /**
+   * FIXME : Setting of a config and app id should work without necessity of
+   * using hslayers component. Layout execution needs to be checked first
+   * so that we dont end up with two elements with the same id
+   */
+  // @Input() config: HsConfigObject;
+  // @Input() id: string;
+
   @ViewChild('hslayout') hslayout: ElementRef;
   @ViewChild(HsMapHostDirective, {static: true})
   mapHost: HsMapHostDirective;
@@ -49,7 +58,7 @@ export class HsLayoutComponent implements AfterViewInit, OnInit, OnDestroy {
     public HsEventBusService: HsEventBusService,
     private HsUtilsService: HsUtilsService,
     public HsPanelContainerService: HsPanelContainerService,
-    public HsOverlayConstructorService: HsOverlayConstructorService,
+    public HsOverlayContainerService: HsOverlayContainerService,
     private hsShareUrlService: HsShareUrlService,
   ) {}
 

@@ -2,6 +2,7 @@ import {CUSTOM_ELEMENTS_SCHEMA, DoBootstrap, NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 
 import {HsConfirmModule} from 'hslayers-ng/common/confirm';
+import {HsDialogContainerComponent} from 'hslayers-ng/common/dialogs';
 import {HsLayoutComponent} from './layout.component';
 import {HsLayoutHostDirective} from './layout.directive';
 import {HsMapHostDirective} from './map-host.directive';
@@ -20,6 +21,7 @@ import {HsToastModule} from 'hslayers-ng/common/toast';
     HsSidebarModule,
     HsPanelHelpersModule,
     HsToastModule,
+    HsDialogContainerComponent,
   ],
   exports: [HsLayoutComponent],
 })
