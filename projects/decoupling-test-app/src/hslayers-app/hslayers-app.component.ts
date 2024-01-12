@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component} from '@angular/core';
 
 import Feature from 'ol/Feature';
 import {GeoJSON} from 'ol/format';
@@ -14,11 +14,6 @@ import {HsLayoutService} from 'hslayers-ng/shared/layout';
  * Dynamic panels
  */
 //import {HsPanelConstructorService} from 'hslayers-ng/shared/panel-constructor';
-/**
- * Pop-pup
- */
-//import {HsQueryPopupComponent} from 'hslayers-ng/components/query';
-//import {HsQueryPopupService} from 'hslayers-ng/components/query';
 /**
  * Dynamic overlays
  */
@@ -39,7 +34,6 @@ export class HslayersAppComponent {
     private hsSidebarService: HsSidebarService,
     //private HslayersService: HslayersService,
     hsLayoutService: HsLayoutService,
-    //hsQueryPopupService: HsQueryPopupService,
     //HsOverlayConstructorService: HsOverlayConstructorService,
     // private hsPanelConstructorService: HsPanelConstructorService,
     private HsPanelContainerService: HsPanelContainerService,
@@ -356,28 +350,19 @@ export class HslayersAppComponent {
     }, 100);
 
     /***
-     * TO ENABLE POPUPS
-     */
-    // HsOverlayConstructorService.create(HsQueryPopupComponent, {
-    //   service: hsQueryPopupService,
-    // });
-
-    /***
      * EASILY CREATE COMPONENTS + MAKE CHUNKS FOR ALL COMPONENTS
      * WHICH WOULD BE DOWNLOADED BY BROWSER BASED ON
-     * COMPONENTS ENABLED
+     * PANELS ENABLED
      */
     //this.hsPanelConstructorService.createActivePanels();
 
     /**
-     * SAME FOR GUI OVERALAY
+     * SAME FOR GUI OVERALAY - based on componentsEnabled
+     *  - toolbars
+     *  - popup
+     *  - mapGallery, geolocation etc.
      */
     // HsOverlayConstructorService.createGuiOverlay();
-
-    // this.hsPanelConstructorService.createPanelAndButton(
-    //   HsLayerManagerComponent,
-    //   this.hsSidebarService.buttonDefinition['layerManager'],
-    // );
 
     /***
      * CREATE COMPONENT INDIVIDUALY - omitting services with dynamic imports (constructors)
