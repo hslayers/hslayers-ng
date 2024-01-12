@@ -86,10 +86,6 @@ export class HslayersAppComponent {
     } else if (w.hslayersNgConfig) {
       this.HsConfig.update(w.hslayersNgConfig(w.ol));
     }
-
-    if (this.id) {
-      this.HsConfig.setAppId(this.id);
-    }
     /**
      * Create panel components
      */
