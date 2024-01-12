@@ -980,7 +980,7 @@ $list-group-item-padding-x: 1.25rem;
     }
   }
 
-  @import "../../components/layout/layout.component.scss";
+  @import "../hslayers.component.scss";
   @import "../../components/layer-manager/layer-manager.component.scss";
   @import "../../components/layer-manager/logical-list/layerlist.component.scss";
   @import "../../components/layer-manager/gallery/layer-manager-gallery.component.scss";

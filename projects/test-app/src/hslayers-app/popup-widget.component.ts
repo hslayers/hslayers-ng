@@ -1,8 +1,8 @@
 /* eslint-disable @angular-eslint/component-selector */
 import {Component} from '@angular/core';
 
-import {HsPanelComponent, HsQueryPopupWidgetBaseComponent} from 'hslayers-ng';
-
+import {HsPanelComponent} from 'hslayers-ng/common/panels';
+import {HsQueryPopupWidgetBaseComponent} from 'hslayers-ng/common/query-popup';
 @Component({
   selector: 'popup-widget',
   templateUrl: './popup-widget.html',
