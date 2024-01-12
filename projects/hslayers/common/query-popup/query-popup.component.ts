@@ -27,7 +27,6 @@ export class HsQueryPopupComponent
   implements OnDestroy, HsDialogComponent, AfterViewInit, OnInit
 {
   getFeatures = getFeatures;
-  olMapLoadsSubscription: Subscription;
   attributesForHover = [];
   dialogItem?: HsDialogItem;
   viewRef: ViewRef;
@@ -49,11 +48,9 @@ export class HsQueryPopupComponent
   }
 
   ngOnInit() {
-    this.olMapLoadsSubscription = this.hsEventBusService.olMapLoads.subscribe(
-      (map) => {
-        map.addOverlay(this.data.service.hoverPopup);
-      },
-    );
+    this.hsMapService.loaded().then((map) => {
+      map.addOverlay(this.data.service.hoverPopup);
+    });
     this.hsQueryPopupWidgetContainerService.initWidgets(
       this.hsConfig.queryPopupWidgets,
     );
@@ -62,7 +59,6 @@ export class HsQueryPopupComponent
   ngOnDestroy(): void {
     this.hsMapService.getMap().removeOverlay(this.data.service.hoverPopup);
     this.hsQueryPopupWidgetContainerService.cleanup();
-    this.olMapLoadsSubscription.unsubscribe();
   }
 
   /**
