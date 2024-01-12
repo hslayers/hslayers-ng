@@ -9,6 +9,7 @@
     "build-app": "ng build hslayers-app --configuration production",
     "build-cesium": "ng build hslayers-cesium --configuration production",
     "build-cesium-app": "ng build hslayers-cesium-app --configuration production",
+    "build-decoupling-app": "ng build decoupling-test-app --configuration production",
     "build-sensors": "ng build hslayers-sensors --configuration production",
     "prebuild-watch": "node projects/hslayers/prebuild.js",
     "postbuild": "npm run build-css && npm run build-css-colors && npm run build-css-wo-bootstrap",
