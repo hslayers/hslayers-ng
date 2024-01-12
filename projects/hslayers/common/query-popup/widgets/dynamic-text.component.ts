@@ -15,8 +15,7 @@ import {getPopUp} from 'hslayers-ng/common/extensions';
 })
 export class HsDynamicTextComponent
   extends HsQueryPopupWidgetBaseComponent
-  implements OnInit
-{
+  implements OnInit {
   layerDescriptor: any;
   name = 'dynamic-text';
 
