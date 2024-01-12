@@ -14,8 +14,8 @@ import {HsDialogComponent} from 'hslayers-ng/common/dialogs';
 import {HsDialogItem} from 'hslayers-ng/common/dialogs';
 import {HsEventBusService} from 'hslayers-ng/shared/event-bus';
 import {HsMapService} from 'hslayers-ng/shared/map';
-import {HsQueryPopupServiceModel} from '../query-popup.service.model';
-import {HsQueryPopupWidgetContainerService} from '../query-popup-widget-container.service';
+import {HsQueryPopupServiceModel} from './query-popup.service.model';
+import {HsQueryPopupWidgetContainerService} from './query-popup-widget-container.service';
 import {getFeatures} from 'hslayers-ng/common/extensions';
 import {getPopUp} from 'hslayers-ng/common/extensions';
 

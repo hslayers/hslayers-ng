@@ -41,6 +41,7 @@ export class HsConfigObject {
     mapControls?: boolean;
     basemapGallery?: boolean;
     mapSwipe?: boolean;
+    queryPopup?: boolean;
   };
   clusteringDistance?: number;
   mapInteractionsEnabled?: boolean;
@@ -210,6 +211,7 @@ export class HsConfigObject {
       basemapGallery: false,
       // Says whether it should be activated by default. Is overriden by url param
       mapSwipe: false,
+      queryPopup: true,
     };
     this.queryPopupWidgets = ['layer-name', 'feature-info', 'clear-layer'];
     this.panelWidths = {

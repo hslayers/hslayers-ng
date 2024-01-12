@@ -24,7 +24,8 @@ import {
 })
 export class HsFeatureInfoComponent
   extends HsQueryPopupWidgetBaseComponent
-  implements OnInit {
+  implements OnInit
+{
   layerDescriptor: any;
   attributesForHover: any[] = [];
   name = 'feature-info';
