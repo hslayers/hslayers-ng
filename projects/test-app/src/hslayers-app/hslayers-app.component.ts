@@ -14,16 +14,16 @@ import {transformExtent} from 'ol/proj';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsEventBusService} from 'hslayers-ng/shared/event-bus';
 import {HsLayoutService} from 'hslayers-ng/shared/layout';
-import {HsPanelConstructorService} from 'hslayers-ng/shared/panel-constructor';
-import {HsQueryPopupWidgetContainerService} from 'hslayers-ng/components/query';
+import {
+  HsOverlayConstructorService,
+  HsPanelConstructorService,
+} from 'hslayers-ng/shared/panel-constructor';
 import {HsSidebarService} from 'hslayers-ng/shared/sidebar';
 import {HsUtilsService} from 'hslayers-ng/shared/utils';
 import {InterpolatedSource} from 'hslayers-ng/common/layers';
 import {SPOI} from 'hslayers-ng/common/layers';
-import {SparqlJson} from 'hslayers-ng/common/layers';
-
-import {PopupWidgetComponent} from './popup-widget.component';
 import {SomeComponent} from './some-panel/some-panel.component';
+import {SparqlJson} from 'hslayers-ng/common/layers';
 
 @Component({
   selector: 'hslayers-app',
@@ -35,11 +35,11 @@ export class HslayersAppComponent {
     public hsConfig: HsConfig,
     private hsUtilsService: HsUtilsService,
     private hsEventBusService: HsEventBusService,
-    private hsQueryPopupWidgetContainerService: HsQueryPopupWidgetContainerService,
     private httpClient: HttpClient,
     public hsSidebarService: HsSidebarService,
     public hsPanelConstructorService: HsPanelConstructorService,
     public hsLayoutService: HsLayoutService,
+    private hsOverlayConstructorService: HsOverlayConstructorService,
   ) {
     /* Create new panel and its button in the sidebar */
     this.hsPanelConstructorService.createPanelAndButton(
@@ -345,7 +345,7 @@ export class HslayersAppComponent {
         mapSwipe: true,
         language: true,
       },
-      sidebarPosition: 'right',
+      sidebarPosition: 'left',
       //TODO: Migrate to watlas
       // base_layers: {
       //   url: 'https://hub.lesprojekt.cz/rest/workspaces/leitnerfilip/maps/corine_layerorder/file',
@@ -686,15 +686,14 @@ export class HslayersAppComponent {
         '2019-04-18',
       ];
     }
-    this.hsQueryPopupWidgetContainerService.create(
-      PopupWidgetComponent,
-      undefined,
-    );
 
     //Simulating ajax
     setTimeout(() => {
       this.hsEventBusService.layerDimensionDefinitionChanges.next(opticalMap);
     }, 100);
+
+    this.hsPanelConstructorService.createActivePanels();
+    this.hsOverlayConstructorService.createGuiOverlay();
   }
   title = 'hslayers-workspace';
 
