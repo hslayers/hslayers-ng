@@ -1,3 +1,4 @@
+import {HsQueryPopupService} from 'hslayers-ng/common/query-popup';
 import {Injectable} from '@angular/core';
 
 import {HsConfig} from 'hslayers-ng/config';
@@ -13,6 +14,7 @@ export class HsOverlayConstructorService extends HsPanelContainerService {
     private hsConfig: HsConfig,
     private hsToolbarPanelContainerService: HsToolbarPanelContainerService,
     private HsOverlayContainerService: HsOverlayContainerService,
+    private hsQueryPopupService: HsQueryPopupService,
   ) {
     super();
   }
@@ -25,14 +27,19 @@ export class HsOverlayConstructorService extends HsPanelContainerService {
     service: HsPanelContainerService = this.HsOverlayContainerService,
   ) {
     const cName = `Hs${this.capitalizeFirstLetter(name)}Component`;
+    const data =
+      name == 'queryPopup' ? {service: this.hsQueryPopupService} : {};
     let i;
     switch (name) {
+      case 'queryPopup':
+        i = await import('hslayers-ng/common/query-popup');
+        break;
       case 'toolbar':
         i = await import('hslayers-ng/components/toolbar');
         break;
-      // case 'measureToolbar':
-      //   i = await import('hslayers-ng/components/measure');
-      //   break;
+      case 'measureToolbar':
+        i = await import('hslayers-ng/components/measure');
+        break;
       case 'searchToolbar':
         i = await import('hslayers-ng/components/search');
         break;
@@ -52,7 +59,7 @@ export class HsOverlayConstructorService extends HsPanelContainerService {
         console.warn(`Trying to create unidentified GUI component ${name}`);
         break;
     }
-    service.create(i[cName], {});
+    service.create(i[cName], data);
   }
 
   /**
@@ -85,6 +92,9 @@ export class HsOverlayConstructorService extends HsPanelContainerService {
       /**
        * GUI OVERLAY
        */
+      if (this.hsConfig.componentsEnabled.queryPopup) {
+        this._createGuiComponent('queryPopup');
+      }
       if (this.hsConfig.componentsEnabled.basemapGallery) {
         this._createGuiComponent('layerManagerGallery');
       }
