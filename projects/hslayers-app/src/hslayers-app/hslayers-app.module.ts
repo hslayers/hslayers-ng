@@ -1,13 +1,12 @@
 import {ApplicationRef, DoBootstrap, NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
-import {HttpClientModule} from '@angular/common/http';
 
-import {HsLayoutModule} from 'hslayers-ng/components/layout';
 import {HslayersAppComponent} from './hslayers-app.component';
+import {HslayersModule} from 'hslayers-ng';
 
 @NgModule({
   declarations: [HslayersAppComponent],
-  imports: [BrowserModule, HttpClientModule, HsLayoutModule],
+  imports: [BrowserModule, HslayersModule],
   providers: [],
 })
 export class AppModule implements DoBootstrap {
