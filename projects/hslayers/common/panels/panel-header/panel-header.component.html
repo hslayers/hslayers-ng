@@ -1,8 +1,7 @@
-<ul class="w-100 nav nav-tabs pt-1 border-0 ps-1 flex-nowrap" style="height: 99%;"
-    *ngIf="{tab: selectedTab$ | async} as active ">
+<ul class="w-100 nav nav-tabs pt-1 border-0 ps-1 flex-nowrap" style="height: 99%;">
 
     <li *ngFor="let tab of panelTabs" class="nav-item" (click)="tabClicked(tab)" style="max-height:103%">
-        <a [class.active]="active.tab === tab" style="margin-top: 2px;"
+        <a [class.active]="(selectedTab$ | async) === tab" style="margin-top: 2px;"
             class="active align-items-center d-flex h-100 justify-content-center nav-link" aria-current="page">
             {{tab | translateHs : {module: translationModule} }}
         </a>
