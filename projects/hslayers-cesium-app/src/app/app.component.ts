@@ -23,7 +23,8 @@ import {
 import {View} from 'ol';
 
 import {HsCesiumConfig, HslayersCesiumComponent} from 'hslayers-cesium';
-import {HsConfig, HsLayoutService} from 'hslayers-ng';
+import {HsConfig} from 'hslayers-ng/config';
+import {HsLayoutService} from 'hslayers-ng/shared/layout';
 
 @Component({
   selector: 'hslayers-cesium-app',

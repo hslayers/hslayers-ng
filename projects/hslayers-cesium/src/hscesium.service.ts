@@ -17,15 +17,13 @@ import {
 } from 'cesium';
 import {Subject} from 'rxjs';
 
-import {
-  HsEventBusService,
-  HsLayerManagerService,
-  HsLayoutService,
-  HsLogService,
-  HsMapService,
-  HsQueryPopupComponent,
-  HsUtilsService,
-} from 'hslayers-ng';
+import {HsEventBusService} from 'hslayers-ng/shared/event-bus';
+import {HsLayerManagerService} from 'hslayers-ng/shared/layer-manager';
+import {HsLayoutService} from 'hslayers-ng/shared/layout';
+import {HsLogService} from 'hslayers-ng/shared/log';
+import {HsMapService} from 'hslayers-ng/shared/map';
+import {HsQueryPopupComponent} from 'hslayers-ng/common/query-popup';
+import {HsUtilsService} from 'hslayers-ng/shared/utils';
 
 import {HsCesiumCameraService} from './hscesium-camera.service';
 import {HsCesiumConfig} from './hscesium-config.service';
@@ -33,6 +31,7 @@ import {HsCesiumLayersService} from './hscesium-layers.service';
 import {HsCesiumPickerService} from './picker.service';
 import {HsCesiumQueryPopupService} from './query-popup.service';
 import {HsCesiumTimeService} from './hscesium-time.service';
+import {HsOverlayConstructorService} from 'hslayers-ng/shared/panel-constructor';
 
 @Injectable({
   providedIn: 'root',
@@ -55,6 +54,7 @@ export class HsCesiumService {
     public HsCesiumConfig: HsCesiumConfig,
     private HsCesiumPicker: HsCesiumPickerService,
     private hsCesiumQueryPopupService: HsCesiumQueryPopupService,
+    private hsOverlayConstructorService: HsOverlayConstructorService,
   ) {}
 
   /**
@@ -217,13 +217,13 @@ export class HsCesiumService {
       });
 
       //Remove overlays registered when init was called last time (when switching between 2d/3d)
-      for (const p of this.HsLayoutService.HsOverlayConstructorService.panels) {
+      for (const p of this.hsOverlayConstructorService.panels) {
         if (this.HsUtilsService.instOf(p, HsQueryPopupComponent)) {
-          this.HsLayoutService.HsOverlayConstructorService.destroy(p);
+          this.hsOverlayConstructorService.destroy(p);
         }
       }
 
-      this.HsLayoutService.createOverlay(HsQueryPopupComponent, {
+      this.hsOverlayConstructorService.create(HsQueryPopupComponent, {
         service: this.hsCesiumQueryPopupService,
       });
 

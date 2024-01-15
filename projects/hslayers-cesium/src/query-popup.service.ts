@@ -1,20 +1,19 @@
 import {Injectable, NgZone} from '@angular/core';
 
+import {HsMapService} from 'hslayers-ng/shared/map';
 import {
-  HsMapService,
   HsQueryPopupBaseService,
   HsQueryPopupServiceModel,
   HsQueryPopupWidgetContainerService,
-  HsUtilsService,
-} from 'hslayers-ng';
+} from 'hslayers-ng/common/query-popup';
+import {HsUtilsService} from 'hslayers-ng/shared/utils';
 
 @Injectable({
   providedIn: 'root',
 })
 export class HsCesiumQueryPopupService
   extends HsQueryPopupBaseService
-  implements HsQueryPopupServiceModel
-{
+  implements HsQueryPopupServiceModel {
   constructor(
     HsMapService: HsMapService,
     HsUtilsService: HsUtilsService,
