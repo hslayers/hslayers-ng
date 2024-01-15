@@ -1,6 +1,6 @@
 export * from './dimensions/layer-editor-dimensions.component';
 export * from './dimensions/layer-manager-time-editor.component';
-export * from 'hslayers-ng/common/types';
+export * from 'hslayers-ng/types';
 export * from './editor/layer-editor.component';
 export * from './editor/layer-editor.service';
 export * from './editor/layer-editor-sub-layer-checkboxes.component';

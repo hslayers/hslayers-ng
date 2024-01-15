@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 
-import {CapabilitiesResponseWrapper} from 'hslayers-ng/common/types';
+import {CapabilitiesResponseWrapper} from 'hslayers-ng/types';
 
 export interface CapabilityCacheList {
   [key: string]: CapabilitiesResponseWrapper;

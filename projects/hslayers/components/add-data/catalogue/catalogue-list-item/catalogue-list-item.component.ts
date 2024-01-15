@@ -2,14 +2,14 @@
 import {Component, Input, OnInit} from '@angular/core';
 
 import {HsAddDataCatalogueService} from 'hslayers-ng/shared/add-data';
-import {HsAddDataLayerDescriptor} from 'hslayers-ng/common/types';
+import {HsAddDataLayerDescriptor} from 'hslayers-ng/types';
 import {HsCatalogueMetadataComponent} from '../catalogue-metadata/catalogue-metadata.component';
 import {HsCatalogueMetadataService} from '../catalogue-metadata/catalogue-metadata.service';
 import {HsCommonEndpointsService} from 'hslayers-ng/shared/endpoints';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsConfirmDialogComponent} from 'hslayers-ng/common/confirm';
 import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
-import {HsEndpoint} from 'hslayers-ng/common/types';
+import {HsEndpoint} from 'hslayers-ng/types';
 import {HsLanguageService} from 'hslayers-ng/shared/language';
 import {HsLaymanBrowserService} from 'hslayers-ng/shared/add-data';
 import {HsLaymanService} from 'hslayers-ng/shared/save-map';

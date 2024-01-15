@@ -10,8 +10,8 @@ import {transformExtent} from 'ol/proj';
 import {
   ArcGISResResponseLayerExtent,
   ArcGISRestResponseLayer,
-} from 'hslayers-ng/common/types';
-import {CapabilitiesResponseWrapper} from 'hslayers-ng/common/types';
+} from 'hslayers-ng/types';
+import {CapabilitiesResponseWrapper} from 'hslayers-ng/types';
 import {DuplicateHandling, HsMapService} from 'hslayers-ng/shared/map';
 import {HsAddDataCommonService} from '../common.service';
 import {HsAddDataUrlService} from './add-data-url.service';
@@ -20,10 +20,10 @@ import {HsLanguageService} from 'hslayers-ng/shared/language';
 import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
 import {HsLayoutService} from 'hslayers-ng/shared/layout';
 import {HsToastService} from 'hslayers-ng/common/toast';
-import {HsUrlTypeServiceModel, Service} from 'hslayers-ng/common/types';
+import {HsUrlTypeServiceModel, Service} from 'hslayers-ng/types';
 import {HsUtilsService} from 'hslayers-ng/shared/utils';
-import {LayerOptions} from 'hslayers-ng/common/types';
-import {UrlDataObject} from 'hslayers-ng/common/types';
+import {LayerOptions} from 'hslayers-ng/types';
+import {UrlDataObject} from 'hslayers-ng/types';
 import {addAnchors, getPreferredFormat} from 'hslayers-ng/common/utils';
 
 @Injectable({providedIn: 'root'})

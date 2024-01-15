@@ -15,11 +15,11 @@ import {HsLogService} from 'hslayers-ng/shared/log';
 import {HsMapService} from 'hslayers-ng/shared/map';
 import {HsStylerService} from 'hslayers-ng/shared/styler';
 import {HsUtilsService} from 'hslayers-ng/shared/utils';
-import {OverwriteResponse} from 'hslayers-ng/common/types';
+import {OverwriteResponse} from 'hslayers-ng/types';
 import {PostPatchLayerResponse} from 'hslayers-ng/common/layman';
 import {SparqlJson} from 'hslayers-ng/common/layers';
-import {UpsertLayerObject} from 'hslayers-ng/common/types';
-import {VectorDataObject} from 'hslayers-ng/common/types';
+import {UpsertLayerObject} from 'hslayers-ng/types';
+import {VectorDataObject} from 'hslayers-ng/types';
 
 import {
   awaitLayerSync,
@@ -27,9 +27,9 @@ import {
 } from 'hslayers-ng/common/layman';
 import {setDefinition} from 'hslayers-ng/common/extensions';
 
-import {HsVectorLayerOptions} from 'hslayers-ng/common/types';
-import {VectorLayerDescriptor} from 'hslayers-ng/common/types';
-import {VectorSourceDescriptor} from 'hslayers-ng/common/types';
+import {HsVectorLayerOptions} from 'hslayers-ng/types';
+import {VectorLayerDescriptor} from 'hslayers-ng/types';
+import {VectorSourceDescriptor} from 'hslayers-ng/types';
 
 @Injectable({
   providedIn: 'root',

@@ -6,7 +6,7 @@ import {HsAddDataUrlService} from 'hslayers-ng/shared/add-data';
 import {HsEventBusService} from 'hslayers-ng/shared/event-bus';
 import {HsLanguageService} from 'hslayers-ng/shared/language';
 import {HsLogService} from 'hslayers-ng/shared/log';
-import {UrlDataObject} from 'hslayers-ng/common/types';
+import {UrlDataObject} from 'hslayers-ng/types';
 
 @Injectable({providedIn: 'root'})
 export class HsUrlGeoSparqlService {

@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 
-import {HsLayerDescriptor} from 'hslayers-ng/common/types';
+import {HsLayerDescriptor} from 'hslayers-ng/types';
 import {HsLayerEditorSublayerService} from '../editor/layer-editor-sub-layer.service';
 import {HsLayerManagerService} from 'hslayers-ng/shared/layer-manager'
 import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';

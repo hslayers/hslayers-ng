@@ -4,7 +4,7 @@ import {Observable, map} from 'rxjs';
 
 import {HsCommonLaymanService} from './layman.service';
 import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
-import {HsEndpoint} from 'hslayers-ng/common/types';
+import {HsEndpoint} from 'hslayers-ng/types';
 import {HsLaymanLoginComponent} from './layman-login.component';
 
 @Component({

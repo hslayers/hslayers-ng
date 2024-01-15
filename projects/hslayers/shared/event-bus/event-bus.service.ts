@@ -8,8 +8,8 @@ import {Select} from 'ol/interaction';
 import {Source} from 'ol/source';
 
 import {HsDimensionDescriptor} from 'hslayers-ng/common/dimensions';
-import {HsLayerDescriptor, HsLayerLoadProgress} from 'hslayers-ng/common/types';
-import {HsMapCompositionDescriptor} from 'hslayers-ng/common/types';
+import {HsLayerDescriptor, HsLayerLoadProgress} from 'hslayers-ng/types';
+import {HsMapCompositionDescriptor} from 'hslayers-ng/types';
 
 /**
  * HsEventBusService provides observable events which you can subscribe to or fire them

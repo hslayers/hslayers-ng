@@ -2,12 +2,12 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 
 import {Observable, Subject, map, startWith, takeUntil} from 'rxjs';
 
-import {HsEndpoint} from 'hslayers-ng/common/types';
+import {HsEndpoint} from 'hslayers-ng/types';
 import {HsLayoutService} from 'hslayers-ng/shared/layout';
 import {HsSaveMapManagerService} from '../save-map-manager.service';
 import {HsUtilsService} from 'hslayers-ng/shared/utils';
-import {StatusData} from 'hslayers-ng/common/types';
-import {accessRightsModel} from 'hslayers-ng/common/types';
+import {StatusData} from 'hslayers-ng/types';
+import {accessRightsModel} from 'hslayers-ng/types';
 
 @Component({
   selector: 'hs-save-map-form',

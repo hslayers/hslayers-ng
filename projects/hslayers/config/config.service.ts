@@ -5,11 +5,11 @@ import {Group, Layer, Vector as VectorLayer} from 'ol/layer';
 import {Source, Vector as VectorSource} from 'ol/source';
 import {View} from 'ol';
 
-import {AddDataFileType} from 'hslayers-ng/common/types';
-import {AddDataUrlType} from 'hslayers-ng/common/types';
-import {HsEndpoint} from 'hslayers-ng/common/types';
-import {QueryPopupWidgetsType} from 'hslayers-ng/common/types';
-import {WidgetItem} from 'hslayers-ng/common/types';
+import {AddDataFileType} from 'hslayers-ng/types';
+import {AddDataUrlType} from 'hslayers-ng/types';
+import {HsEndpoint} from 'hslayers-ng/types';
+import {QueryPopupWidgetsType} from 'hslayers-ng/types';
+import {WidgetItem} from 'hslayers-ng/types';
 
 export type SymbolizerIcon = {
   name: string;
