@@ -16,13 +16,13 @@ import {unByKey} from 'ol/Observable';
 
 import {HS_PRMS} from 'hslayers-ng/components/share';
 import {HsAddDataOwsService} from 'hslayers-ng/shared/add-data';
-import {HsBaseLayerDescriptor} from 'hslayers-ng/common/types';
+import {HsBaseLayerDescriptor} from 'hslayers-ng/types';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsDimensionTimeService} from 'hslayers-ng/shared/get-capabilities';
 import {HsDrawService} from 'hslayers-ng/shared/draw';
 import {HsEventBusService} from 'hslayers-ng/shared/event-bus';
 import {HsLanguageService} from 'hslayers-ng/shared/language';
-import {HsLayerDescriptor, HsLayerLoadProgress} from 'hslayers-ng/common/types';
+import {HsLayerDescriptor, HsLayerLoadProgress} from 'hslayers-ng/types';
 import {HsLayerEditorVectorLayerService} from './layer-editor-vector-layer.service';
 import {HsLayerManagerMetadataService} from './layer-manager-metadata.service';
 import {HsLayerSelectorService} from './layer-selector.service';

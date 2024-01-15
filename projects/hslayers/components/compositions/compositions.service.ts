@@ -14,11 +14,11 @@ import {HsCompositionsMickaService} from './endpoints/compositions-micka.service
 import {HsCompositionsParserService} from 'hslayers-ng/shared/compositions';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsCoreService} from 'hslayers-ng/shared/core';
-import {HsEndpoint} from 'hslayers-ng/common/types';
+import {HsEndpoint} from 'hslayers-ng/types';
 import {HsEventBusService} from 'hslayers-ng/shared/event-bus';
 import {HsLanguageService} from 'hslayers-ng/shared/language';
 import {HsLogService} from 'hslayers-ng/shared/log';
-import {HsMapCompositionDescriptor} from 'hslayers-ng/common/types';
+import {HsMapCompositionDescriptor} from 'hslayers-ng/types';
 import {HsShareUrlService} from 'hslayers-ng/components/share';
 import {HsToastService} from 'hslayers-ng/common/toast';
 import {HsUtilsService} from 'hslayers-ng/shared/utils';

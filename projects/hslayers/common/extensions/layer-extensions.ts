@@ -14,9 +14,9 @@ import {
   Metadata,
   accessRightsModel,
   popUp,
-} from 'hslayers-ng/common/types';
-import {DOMFeatureLink} from 'hslayers-ng/common/types';
-import {HsLaymanLayerDescriptor} from 'hslayers-ng/common/types';
+} from 'hslayers-ng/types';
+import {DOMFeatureLink} from 'hslayers-ng/types';
+import {HsLaymanLayerDescriptor} from 'hslayers-ng/types';
 
 const ABSTRACT = 'abstract';
 const ACCESS_RIGHTS = 'access_rights';

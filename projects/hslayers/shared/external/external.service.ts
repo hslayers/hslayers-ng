@@ -8,7 +8,7 @@ import {Layer, Vector as VectorLayer} from 'ol/layer';
 import {ObjectEvent} from 'ol/Object';
 import {buffer, getCenter} from 'ol/extent';
 
-import {DOMFeatureLink} from 'hslayers-ng/common/types';
+import {DOMFeatureLink} from 'hslayers-ng/types';
 import {
   DOM_FEATURE_LINKS,
   getDomFeatureLinks,

@@ -20,11 +20,11 @@ import {
 } from 'hslayers-ng/shared/get-capabilities';
 import {HsLogService} from 'hslayers-ng/shared/log';
 
-import {AddDataUrlType} from 'hslayers-ng/common/types';
+import {AddDataUrlType} from 'hslayers-ng/types';
 import {HsHistoryListService} from 'hslayers-ng/common/history-list';
-import {HsUrlTypeServiceModel} from 'hslayers-ng/common/types';
-import {LayerConnection, OwsConnection} from 'hslayers-ng/common/types';
-import {UrlDataObject} from 'hslayers-ng/common/types';
+import {HsUrlTypeServiceModel} from 'hslayers-ng/types';
+import {LayerConnection, OwsConnection} from 'hslayers-ng/types';
+import {UrlDataObject} from 'hslayers-ng/types';
 
 @Injectable({
   providedIn: 'root',

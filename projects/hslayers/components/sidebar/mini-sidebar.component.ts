@@ -1,7 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Observable, Subject, delay, map, startWith, takeUntil} from 'rxjs';
 
-import {HsButton} from 'hslayers-ng/common/types';
+import {HsButton} from 'hslayers-ng/types';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsCoreService} from 'hslayers-ng/shared/core';
 import {HsLayoutService} from 'hslayers-ng/shared/layout';

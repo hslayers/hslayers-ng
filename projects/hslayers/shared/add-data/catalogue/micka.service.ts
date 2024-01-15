@@ -10,8 +10,8 @@ import {
   EndpointErrorHandling,
   HsEndpoint,
   isErrorHandlerFunction,
-} from 'hslayers-ng/common/types';
-import {HsAddDataLayerDescriptor} from 'hslayers-ng/common/types';
+} from 'hslayers-ng/types';
+import {HsAddDataLayerDescriptor} from 'hslayers-ng/types';
 import {HsLanguageService} from 'hslayers-ng/shared/language';
 import {HsLogService} from 'hslayers-ng/shared/log';
 import {HsMapService} from 'hslayers-ng/shared/map';

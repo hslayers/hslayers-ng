@@ -12,7 +12,7 @@ import {unByKey} from 'ol/Observable';
 import {HsCommonEndpointsService} from 'hslayers-ng/shared/endpoints';
 import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
 import {HsLayoutService} from 'hslayers-ng/shared/layout';
-import {HsMapCompositionDescriptor} from 'hslayers-ng/common/types';
+import {HsMapCompositionDescriptor} from 'hslayers-ng/types';
 import {HsMapService} from 'hslayers-ng/shared/map';
 import {HsSaveMapService} from 'hslayers-ng/shared/save-map';
 import {HsUtilsService} from 'hslayers-ng/shared/utils';

@@ -22,9 +22,9 @@ import {Tile as TileLayer} from 'ol/layer';
 import {isEmpty} from 'ol/extent';
 
 import {HsLanguageService} from 'hslayers-ng/shared/language';
-import {HsLayerDescriptor} from 'hslayers-ng/common/types';
+import {HsLayerDescriptor} from 'hslayers-ng/types';
 import {HsUtilsService} from './utils.service';
-import {HsWmsLayer} from 'hslayers-ng/common/types';
+import {HsWmsLayer} from 'hslayers-ng/types';
 import {
   getCluster,
   getEditor,

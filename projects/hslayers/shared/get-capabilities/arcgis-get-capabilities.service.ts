@@ -5,7 +5,7 @@ import {Layer, Tile} from 'ol/layer';
 import {Source, TileWMS} from 'ol/source';
 import {lastValueFrom, takeUntil} from 'rxjs';
 
-import {CapabilitiesResponseWrapper} from 'hslayers-ng/common/types';
+import {CapabilitiesResponseWrapper} from 'hslayers-ng/types';
 import {HsCapabilityCacheService} from './capability-cache.service';
 import {HsEventBusService} from 'hslayers-ng/shared/event-bus';
 import {HsLogService} from 'hslayers-ng/shared/log';

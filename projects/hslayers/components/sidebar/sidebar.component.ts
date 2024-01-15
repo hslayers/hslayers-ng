@@ -3,7 +3,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Subject, Subscription, debounceTime, takeUntil} from 'rxjs';
 
 import {HS_PRMS} from 'hslayers-ng/components/share';
-import {HsButton} from 'hslayers-ng/common/types';
+import {HsButton} from 'hslayers-ng/types';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsCoreService} from 'hslayers-ng/shared/core';
 import {HsEventBusService} from 'hslayers-ng/shared/event-bus';

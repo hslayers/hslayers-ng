@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Subject} from 'rxjs';
 
-import {HsLayerDescriptor} from 'hslayers-ng/common/types';
+import {HsLayerDescriptor} from 'hslayers-ng/types';
 
 @Injectable({
   providedIn: 'root',
