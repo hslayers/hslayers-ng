@@ -1,4 +1,4 @@
-import {accessRightsModel} from 'hslayers-ng/common/types';
+import {accessRightsModel} from 'hslayers-ng/types';
 
 export type GetLayersResponse = {
   access_rights: accessRightsModel;

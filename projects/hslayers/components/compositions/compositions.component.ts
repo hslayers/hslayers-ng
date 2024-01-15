@@ -10,7 +10,7 @@ import {HsCompositionsService} from './compositions.service';
 import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
 import {HsLanguageService} from 'hslayers-ng/shared/language';
 import {HsLayoutService} from 'hslayers-ng/shared/layout';
-import {HsMapCompositionDescriptor} from 'hslayers-ng/common/types';
+import {HsMapCompositionDescriptor} from 'hslayers-ng/types';
 import {HsPanelBaseComponent} from 'hslayers-ng/common/panels';
 
 @Component({

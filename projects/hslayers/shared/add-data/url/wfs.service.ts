@@ -7,19 +7,19 @@ import {Layer, Vector as VectorLayer} from 'ol/layer';
 import {Source} from 'ol/source';
 import {get, transformExtent} from 'ol/proj';
 
-import {AddLayersRecursivelyOptions} from 'hslayers-ng/common/types';
-import {CapabilitiesResponseWrapper} from 'hslayers-ng/common/types';
+import {AddLayersRecursivelyOptions} from 'hslayers-ng/types';
+import {CapabilitiesResponseWrapper} from 'hslayers-ng/types';
 import {DuplicateHandling, HsMapService} from 'hslayers-ng/shared/map';
 import {HsAddDataCommonService} from '../common.service';
 import {HsAddDataUrlService} from './add-data-url.service';
 import {HsEventBusService} from 'hslayers-ng/shared/event-bus';
 import {HsLayoutService} from 'hslayers-ng/shared/layout';
 import {HsLogService} from 'hslayers-ng/shared/log';
-import {HsUrlTypeServiceModel} from 'hslayers-ng/common/types';
+import {HsUrlTypeServiceModel} from 'hslayers-ng/types';
 import {HsUtilsService} from 'hslayers-ng/shared/utils';
 import {HsWfsGetCapabilitiesService} from 'hslayers-ng/shared/get-capabilities';
-import {LayerOptions} from 'hslayers-ng/common/types';
-import {UrlDataObject} from 'hslayers-ng/common/types';
+import {LayerOptions} from 'hslayers-ng/types';
+import {UrlDataObject} from 'hslayers-ng/types';
 import {WfsSource} from './hs.source.WfsSource';
 
 type WfsCapabilitiesLayer = {

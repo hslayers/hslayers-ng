@@ -9,12 +9,12 @@ import {
   EndpointErrorHandling,
   HsEndpoint,
   isErrorHandlerFunction,
-} from 'hslayers-ng/common/types';
+} from 'hslayers-ng/types';
 import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
 import {HsCompositionsParserService} from 'hslayers-ng/shared/compositions';
 import {HsEventBusService} from 'hslayers-ng/shared/event-bus';
 import {HsLanguageService} from 'hslayers-ng/shared/language';
-import {HsMapCompositionDescriptor} from 'hslayers-ng/common/types';
+import {HsMapCompositionDescriptor} from 'hslayers-ng/types';
 import {HsMapService} from 'hslayers-ng/shared/map';
 import {HsToastService} from 'hslayers-ng/common/toast';
 import {addExtentFeature} from 'hslayers-ng/common/utils';

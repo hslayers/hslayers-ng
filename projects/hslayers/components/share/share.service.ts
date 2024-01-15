@@ -4,9 +4,9 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {lastValueFrom} from 'rxjs';
 
-import {CompoData} from 'hslayers-ng/common/types';
+import {CompoData} from 'hslayers-ng/types';
 import {HsConfig} from 'hslayers-ng/config';
-import {HsEndpoint} from 'hslayers-ng/common/types';
+import {HsEndpoint} from 'hslayers-ng/types';
 import {HsEventBusService} from 'hslayers-ng/shared/event-bus';
 import {HsLanguageService} from 'hslayers-ng/shared/language';
 import {HsLayoutService} from 'hslayers-ng/shared/layout';
@@ -17,7 +17,7 @@ import {HsShareThumbnailService} from 'hslayers-ng/shared/share';
 import {HsShareUrlService} from './share-url.service';
 import {HsToastService} from 'hslayers-ng/common/toast';
 import {HsUtilsService} from 'hslayers-ng/shared/utils';
-import {MapComposition} from 'hslayers-ng/common/types';
+import {MapComposition} from 'hslayers-ng/types';
 import {getShowInLayerManager} from 'hslayers-ng/common/extensions';
 
 @Injectable({

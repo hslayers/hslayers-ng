@@ -8,7 +8,7 @@ import {HsFeatureInfoComponent} from './widgets/feature-info.component';
 import {HsLayerNameComponent} from './widgets/layer-name.component';
 import {HsPanelContainerService} from 'hslayers-ng/shared/panels';
 import {HsPanelItem} from 'hslayers-ng/common/panels';
-import {WidgetItem} from 'hslayers-ng/common/types';
+import {WidgetItem} from 'hslayers-ng/types';
 
 @Injectable({
   providedIn: 'root',

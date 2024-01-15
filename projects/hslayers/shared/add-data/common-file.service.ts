@@ -21,14 +21,14 @@ import {
   layerParamPendingOrStarting,
 } from 'hslayers-ng/common/layman';
 
-import {AsyncUpload} from 'hslayers-ng/common/types';
-import {FileDataObject} from 'hslayers-ng/common/types';
-import {FileFormData} from 'hslayers-ng/common/types';
-import {HsEndpoint} from 'hslayers-ng/common/types';
+import {AsyncUpload} from 'hslayers-ng/types';
+import {FileDataObject} from 'hslayers-ng/types';
+import {FileFormData} from 'hslayers-ng/types';
+import {HsEndpoint} from 'hslayers-ng/types';
 import {HsLayerOverwriteDialogComponent} from 'hslayers-ng/common/dialogs';
-import {HsLaymanLayerDescriptor} from 'hslayers-ng/common/types';
-import {OverwriteResponse} from 'hslayers-ng/common/types';
-import {VectorDataObject} from 'hslayers-ng/common/types';
+import {HsLaymanLayerDescriptor} from 'hslayers-ng/types';
+import {OverwriteResponse} from 'hslayers-ng/types';
+import {VectorDataObject} from 'hslayers-ng/types';
 
 export type errorMessageOptions = {
   message?: string;

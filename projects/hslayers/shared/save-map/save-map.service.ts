@@ -16,22 +16,22 @@ import {Geometry} from 'ol/geom';
 import {Image as ImageLayer, Tile, Vector as VectorLayer} from 'ol/layer';
 import {Injectable} from '@angular/core';
 import {Layer} from 'ol/layer';
-import {SerializedStyle} from 'hslayers-ng/common/types';
+import {SerializedStyle} from 'hslayers-ng/types';
 import {Vector as VectorSource} from 'ol/source';
 import {transformExtent} from 'ol/proj';
 
-import {BoundingBoxObject} from 'hslayers-ng/common/types';
-import {CompoData} from 'hslayers-ng/common/types';
+import {BoundingBoxObject} from 'hslayers-ng/types';
+import {CompoData} from 'hslayers-ng/types';
 import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
 import {HsLogService} from 'hslayers-ng/shared/log';
 import {HsMapService} from 'hslayers-ng/shared/map';
 import {HsShareThumbnailService} from 'hslayers-ng/shared/share';
 import {HsUtilsService} from 'hslayers-ng/shared/utils';
-import {LayerJSON} from 'hslayers-ng/common/types';
-import {MapComposition} from 'hslayers-ng/common/types';
-import {SerializedImage} from 'hslayers-ng/common/types';
-import {StatusData} from 'hslayers-ng/common/types';
-import {UserData} from 'hslayers-ng/common/types';
+import {LayerJSON} from 'hslayers-ng/types';
+import {MapComposition} from 'hslayers-ng/types';
+import {SerializedImage} from 'hslayers-ng/types';
+import {StatusData} from 'hslayers-ng/types';
+import {UserData} from 'hslayers-ng/types';
 import {
   getAttribution,
   getBase,

@@ -9,7 +9,7 @@ import {Vector as VectorSource} from 'ol/source';
 import {WFS} from 'ol/format';
 
 import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
-import {HsEndpoint} from 'hslayers-ng/common/types';
+import {HsEndpoint} from 'hslayers-ng/types';
 import {HsLanguageService} from 'hslayers-ng/shared/language';
 import {HsLaymanService} from './layman.service';
 import {HsLogService} from 'hslayers-ng/shared/log';

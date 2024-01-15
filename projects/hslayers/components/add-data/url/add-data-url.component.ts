@@ -1,7 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Subject} from 'rxjs';
 
-import {AddDataUrlType} from 'hslayers-ng/common/types';
+import {AddDataUrlType} from 'hslayers-ng/types';
 import {AddDataUrlValues} from './add-data-url-values';
 import {HsAddDataCommonService} from 'hslayers-ng/shared/add-data';
 import {HsAddDataOwsService} from 'hslayers-ng/shared/add-data';
@@ -12,7 +12,7 @@ import {HsLanguageService} from 'hslayers-ng/shared/language';
 import {HsLayoutService} from 'hslayers-ng/shared/layout';
 import {HsLogService} from 'hslayers-ng/shared/log';
 import {HsShareUrlService} from 'hslayers-ng/components/share';
-import {servicesSupportedByUrl} from 'hslayers-ng/common/types';
+import {servicesSupportedByUrl} from 'hslayers-ng/types';
 
 @Component({
   selector: 'hs-add-data-url',

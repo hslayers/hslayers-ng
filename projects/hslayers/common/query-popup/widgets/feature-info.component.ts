@@ -6,7 +6,7 @@ import {Geometry} from 'ol/geom';
 import {HsConfirmDialogComponent} from 'hslayers-ng/common/confirm';
 import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
 import {HsLanguageService} from 'hslayers-ng/shared/language';
-import {HsLayerDescriptor} from 'hslayers-ng/common/types';
+import {HsLayerDescriptor} from 'hslayers-ng/types';
 import {HsQueryPopupServiceModel} from '../query-popup.service.model';
 import {HsQueryPopupWidgetBaseComponent} from '../query-popup-widget-base.component';
 import {HsQueryVectorService} from 'hslayers-ng/shared/query';

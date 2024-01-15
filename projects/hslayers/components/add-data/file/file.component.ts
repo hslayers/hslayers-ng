@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 
-import {AddDataFileType, filesSupported} from 'hslayers-ng/common/types';
+import {AddDataFileType, filesSupported} from 'hslayers-ng/types';
 import {AddDataFileValues} from './file-type-values';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsLanguageService} from 'hslayers-ng/shared/language';

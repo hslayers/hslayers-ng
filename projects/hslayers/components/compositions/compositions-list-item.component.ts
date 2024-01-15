@@ -8,7 +8,7 @@ import {HsCompositionsShareDialogComponent} from './dialogs/share-dialog.compone
 import {HsConfig} from 'hslayers-ng/config';
 import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
 import {HsLanguageService} from 'hslayers-ng/shared/language';
-import {HsMapCompositionDescriptor} from 'hslayers-ng/common/types';
+import {HsMapCompositionDescriptor} from 'hslayers-ng/types';
 import {HsSetPermissionsDialogComponent} from 'hslayers-ng/common/dialog-set-permissions';
 import {HsToastService} from 'hslayers-ng/common/toast';
 

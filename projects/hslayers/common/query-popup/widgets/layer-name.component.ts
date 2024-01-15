@@ -1,6 +1,6 @@
 import {ChangeDetectionStrategy, Component, Input, OnInit} from '@angular/core';
 
-import {HsLayerDescriptor} from 'hslayers-ng/common/types';
+import {HsLayerDescriptor} from 'hslayers-ng/types';
 import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
 import {HsQueryPopupWidgetBaseComponent} from '../query-popup-widget-base.component';
 

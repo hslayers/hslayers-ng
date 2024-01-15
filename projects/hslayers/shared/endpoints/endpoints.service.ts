@@ -4,7 +4,7 @@ import {BehaviorSubject} from 'rxjs';
 
 import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
 import {HsConfig} from 'hslayers-ng/config';
-import {HsEndpoint} from 'hslayers-ng/common/types';
+import {HsEndpoint} from 'hslayers-ng/types';
 import {HsUtilsService} from 'hslayers-ng/shared/utils';
 
 @Injectable({providedIn: 'root'})

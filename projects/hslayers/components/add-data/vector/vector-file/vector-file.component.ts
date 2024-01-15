@@ -26,7 +26,7 @@ import {HsToastService} from 'hslayers-ng/common/toast';
 import {HsUploadComponent, HsUploadedFiles} from 'hslayers-ng/common/upload';
 import {HsUtilsService} from 'hslayers-ng/shared/utils';
 import {VectorFileDataType} from '../../common/advanced-options/advanced-options.component';
-import {accessRightsModel} from 'hslayers-ng/common/types';
+import {accessRightsModel} from 'hslayers-ng/types';
 
 @Component({
   selector: 'hs-file-vector',

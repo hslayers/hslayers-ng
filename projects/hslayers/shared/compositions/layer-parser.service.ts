@@ -29,7 +29,7 @@ import {HsLogService} from 'hslayers-ng/shared/log';
 import {HsMapService} from 'hslayers-ng/shared/map';
 import {HsStylerService} from 'hslayers-ng/shared/styler';
 import {HsToastService} from 'hslayers-ng/common/toast';
-import {HsVectorLayerOptions} from 'hslayers-ng/common/types';
+import {HsVectorLayerOptions} from 'hslayers-ng/types';
 import {SparqlJson} from 'hslayers-ng/common/layers';
 import {setDefinition} from 'hslayers-ng/common/extensions';
 

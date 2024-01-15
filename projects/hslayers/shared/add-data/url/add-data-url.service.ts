@@ -6,13 +6,13 @@ import {Layer} from 'ol/layer';
 import {Source} from 'ol/source';
 import {transform} from 'ol/proj';
 
-import {AddDataUrlType} from 'hslayers-ng/common/types';
+import {AddDataUrlType} from 'hslayers-ng/types';
 import {HsLanguageService} from 'hslayers-ng/shared/language';
 import {HsLayoutService} from 'hslayers-ng/shared/layout';
 import {HsLogService} from 'hslayers-ng/shared/log';
 import {HsMapService} from 'hslayers-ng/shared/map';
 import {HsToastService} from 'hslayers-ng/common/toast';
-import {UrlDataObject} from 'hslayers-ng/common/types';
+import {UrlDataObject} from 'hslayers-ng/types';
 
 @Injectable({
   providedIn: 'root',

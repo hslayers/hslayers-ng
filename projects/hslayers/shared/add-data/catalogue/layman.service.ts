@@ -11,11 +11,11 @@ import {
   EndpointErrorHandling,
   HsEndpoint,
   isErrorHandlerFunction,
-} from 'hslayers-ng/common/types';
-import {HsAddDataLayerDescriptor} from 'hslayers-ng/common/types';
+} from 'hslayers-ng/types';
+import {HsAddDataLayerDescriptor} from 'hslayers-ng/types';
 import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
 import {HsLanguageService} from 'hslayers-ng/shared/language';
-import {HsLaymanLayerDescriptor} from 'hslayers-ng/common/types';
+import {HsLaymanLayerDescriptor} from 'hslayers-ng/types';
 import {HsLogService} from 'hslayers-ng/shared/log';
 import {HsMapService} from 'hslayers-ng/shared/map';
 import {HsToastService} from 'hslayers-ng/common/toast';

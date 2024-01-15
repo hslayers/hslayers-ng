@@ -2,7 +2,7 @@ import {Component, OnChanges, OnDestroy, OnInit} from '@angular/core';
 import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 
-import {Dimension} from 'hslayers-ng/common/types';
+import {Dimension} from 'hslayers-ng/types';
 import {HsDimensionDescriptor} from 'hslayers-ng/common/dimensions';
 import {HsDimensionService} from 'hslayers-ng/shared/get-capabilities';
 import {HsDimensionTimeService} from 'hslayers-ng/shared/get-capabilities';

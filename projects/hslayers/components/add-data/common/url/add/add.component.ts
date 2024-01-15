@@ -4,7 +4,7 @@ import {HsAddDataUrlService} from 'hslayers-ng/shared/add-data';
 import {
   HsUrlTypeServiceModel,
   Service,
-} from 'hslayers-ng/common/types';
+} from 'hslayers-ng/types';
 
 @Component({
   selector: 'hs-url-add',

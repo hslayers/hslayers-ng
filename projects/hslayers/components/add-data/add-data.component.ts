@@ -1,8 +1,8 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Subject, takeUntil} from 'rxjs';
 
-import {AddDataUrlType} from 'hslayers-ng/common/types';
-import {DatasetType} from 'hslayers-ng/common/types';
+import {AddDataUrlType} from 'hslayers-ng/types';
+import {DatasetType} from 'hslayers-ng/types';
 import {HsAddDataService} from 'hslayers-ng/shared/add-data';
 import {HsAddDataUrlService} from 'hslayers-ng/shared/add-data';
 import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
@@ -13,7 +13,7 @@ import {HsLayoutService} from 'hslayers-ng/shared/layout';
 import {HsPanelBaseComponent} from 'hslayers-ng/common/panels';
 import {HsShareUrlService} from 'hslayers-ng/components/share';
 import {HsSidebarService} from 'hslayers-ng/shared/sidebar';
-import {servicesSupportedByUrl} from 'hslayers-ng/common/types';
+import {servicesSupportedByUrl} from 'hslayers-ng/types';
 
 @Component({
   selector: 'hs-add-data',

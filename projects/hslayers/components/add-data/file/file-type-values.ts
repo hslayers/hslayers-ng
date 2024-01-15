@@ -1,4 +1,4 @@
-import {AddDataFileType} from 'hslayers-ng/common/types';
+import {AddDataFileType} from 'hslayers-ng/types';
 
 export const AddDataFileValues: Array<{id: AddDataFileType; text: string}> = [
   {

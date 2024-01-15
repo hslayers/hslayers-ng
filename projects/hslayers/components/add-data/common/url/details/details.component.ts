@@ -1,8 +1,8 @@
 import {AfterContentInit, Component, Input} from '@angular/core';
 
-import {AddDataUrlType} from 'hslayers-ng/common/types';
+import {AddDataUrlType} from 'hslayers-ng/types';
 import {HsAddDataCommonService} from 'hslayers-ng/shared/add-data';
-import {HsUrlTypeServiceModel} from 'hslayers-ng/common/types';
+import {HsUrlTypeServiceModel} from 'hslayers-ng/types';
 
 @Component({
   selector: 'hs-url-details',

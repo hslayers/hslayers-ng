@@ -28,7 +28,7 @@ import {HsLayoutService} from 'hslayers-ng/shared/layout';
 import {HsLogService} from 'hslayers-ng/shared/log';
 import {HsToastService} from 'hslayers-ng/common/toast';
 import {HsUtilsService, generateUuid} from 'hslayers-ng/shared/utils';
-import {LaymanCompositionDescriptor} from 'hslayers-ng/common/types';
+import {LaymanCompositionDescriptor} from 'hslayers-ng/types';
 import {
   getLaymanFriendlyLayerName,
   isLaymanUrl,
@@ -40,7 +40,7 @@ import {
   setSwipeSide,
 } from 'hslayers-ng/common/extensions';
 import {parseExtent, transformExtentValue} from 'hslayers-ng/common/utils';
-import {servicesSupportedByUrl} from 'hslayers-ng/common/types';
+import {servicesSupportedByUrl} from 'hslayers-ng/types';
 
 @Injectable({
   providedIn: 'root',

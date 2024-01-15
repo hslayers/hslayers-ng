@@ -1,4 +1,4 @@
-import {AddDataUrlType} from 'hslayers-ng/common/types';
+import {AddDataUrlType} from 'hslayers-ng/types';
 
 export const AddDataUrlValues: Array<{id: AddDataUrlType; text: string}> = [
   {

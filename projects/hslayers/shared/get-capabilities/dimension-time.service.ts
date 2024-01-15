@@ -4,10 +4,10 @@ import {Subject} from 'rxjs';
 import {ImageWMS, Source, TileWMS} from 'ol/source';
 import {Layer} from 'ol/layer';
 
-import {HsLayerDescriptor} from 'hslayers-ng/common/types';
+import {HsLayerDescriptor} from 'hslayers-ng/types';
 import {HsLogService} from 'hslayers-ng/shared/log';
 import {HsUtilsService} from 'hslayers-ng/shared/utils';
-import {HsWmsLayer} from 'hslayers-ng/common/types';
+import {HsWmsLayer} from 'hslayers-ng/types';
 import {
   getDimensions,
   setDimension,

@@ -13,8 +13,8 @@ import {Subject} from 'rxjs';
 import {loadAsync} from 'jszip';
 import {takeUntil} from 'rxjs/operators';
 
-import {FileDataObject} from 'hslayers-ng/common/types';
-import {FileDescriptor} from 'hslayers-ng/common/types';
+import {FileDataObject} from 'hslayers-ng/types';
+import {FileDescriptor} from 'hslayers-ng/types';
 import {HsAddDataCommonFileService} from 'hslayers-ng/shared/add-data';
 import {HsToastService} from 'hslayers-ng/common/toast';
 

@@ -5,7 +5,7 @@ import {Source} from 'ol/source';
 import {WMSCapabilities, WMTSCapabilities} from 'ol/format';
 import {get as getProjection, transformExtent} from 'ol/proj';
 
-import {Attribution, MetadataUrl} from 'hslayers-ng/common/types';
+import {Attribution, MetadataUrl} from 'hslayers-ng/types';
 import {HsAddDataUrlService} from 'hslayers-ng/shared/add-data';
 import {
   HsArcgisGetCapabilitiesService,
@@ -19,7 +19,7 @@ import {
   HsWmsLayer,
   WMSGetCapabilitiesResponse,
   WmsDimension,
-} from 'hslayers-ng/common/types';
+} from 'hslayers-ng/types';
 import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
 import {HsLogService} from 'hslayers-ng/shared/log';
 import {HsMapService} from 'hslayers-ng/shared/map';
