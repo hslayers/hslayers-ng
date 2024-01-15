@@ -4,6 +4,7 @@ import {FormsModule} from '@angular/forms';
 
 import {HsAddDataCommonModule} from '../../common/common.module';
 import {HsCommonUrlModule} from '../../common/url/url.module';
+import {HsLayerTableComponent} from 'hslayers-ng/common/layer-table';
 import {HsUrlWfsComponent} from './wfs.component';
 import {TranslateCustomPipe} from 'hslayers-ng/shared/language';
 
@@ -15,6 +16,7 @@ import {TranslateCustomPipe} from 'hslayers-ng/shared/language';
     TranslateCustomPipe,
     HsAddDataCommonModule,
     HsCommonUrlModule,
+    HsLayerTableComponent,
   ],
   exports: [HsUrlWfsComponent],
   declarations: [HsUrlWfsComponent],
