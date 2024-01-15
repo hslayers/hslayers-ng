@@ -37,18 +37,20 @@ import {
 } from 'ol/source';
 import {default as proj4} from 'proj4';
 
+import {HsConfig} from 'hslayers-ng/config';
+import {HsEventBusService} from 'hslayers-ng/shared/event-bus';
 import {
-  HsConfig,
-  HsEventBusService,
   HsLayerUtilsService,
-  HsLogService,
-  HsMapService,
   HsUtilsService,
   generateUuid,
+} from 'hslayers-ng/shared/utils';
+import {HsLogService} from 'hslayers-ng/shared/log';
+import {HsMapService} from 'hslayers-ng/shared/map';
+import {
   getDimensions,
   getMinimumTerrainLevel,
   getTitle,
-} from 'hslayers-ng';
+} from 'hslayers-ng/common/extensions';
 
 import {HsCesiumConfig} from './hscesium-config.service';
 import {OlCesiumObjectMapItem} from './ol-cesium-object-map-item.class';

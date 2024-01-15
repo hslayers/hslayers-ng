@@ -2,8 +2,8 @@ import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
 
 import {AppComponent} from './app.component';
-import {HsCesiumModule} from '../../../hslayers-cesium/src/public-api';
-import {HslayersModule} from '../../../hslayers/src/public-api';
+import {HsCesiumModule} from 'hslayers-cesium';
+import {HslayersModule} from 'hslayers-ng';
 
 @NgModule({
   declarations: [AppComponent],

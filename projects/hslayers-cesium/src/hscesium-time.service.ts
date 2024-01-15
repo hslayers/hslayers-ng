@@ -4,10 +4,11 @@ import dayjs from 'dayjs';
 import {Viewer, WebMapServiceImageryProvider} from 'cesium';
 import {default as utc} from 'dayjs/plugin/utc';
 
-import {HsEventBusService, HsUtilsService, getTitle} from 'hslayers-ng';
-
 import {HsCesiumConfig} from './hscesium-config.service';
 import {HsCesiumLayersService} from './hscesium-layers.service';
+import {HsEventBusService} from 'hslayers-ng/shared/event-bus';
+import {HsUtilsService} from 'hslayers-ng/shared/utils';
+import {getTitle} from 'hslayers-ng/common/extensions';
 
 @Injectable({
   providedIn: 'root',

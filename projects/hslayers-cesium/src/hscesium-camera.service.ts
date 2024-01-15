@@ -13,9 +13,10 @@ import {
 } from 'cesium';
 import {get as getProj, transformExtent} from 'ol/proj';
 
-import {HsConfig, HsLogService, HsMapService} from 'hslayers-ng';
-
 import {HsCesiumConfig} from './hscesium-config.service';
+import {HsConfig} from 'hslayers-ng/config';
+import {HsLogService} from 'hslayers-ng/shared/log';
+import {HsMapService} from 'hslayers-ng/shared/map';
 
 export class CesiumCameraServiceParams {
   viewer: Viewer;
