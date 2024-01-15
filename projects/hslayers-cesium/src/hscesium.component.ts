@@ -1,16 +1,12 @@
 import {AfterViewInit, Component} from '@angular/core';
 
-import {
-  HS_PRMS,
-  HsCoreService,
-  HsEventBusService,
-  HsLayoutService,
-  HsMapService,
-  HsShareUrlService,
-  HsSidebarService,
-} from 'hslayers-ng';
-
+import {HS_PRMS, HsShareUrlService} from 'hslayers-ng/components/share';
 import {HsCesiumService} from './hscesium.service';
+import {HsCoreService} from 'hslayers-ng/shared/core';
+import {HsEventBusService} from 'hslayers-ng/shared/event-bus';
+import {HsLayoutService} from 'hslayers-ng/shared/layout';
+import {HsMapService} from 'hslayers-ng/shared/map';
+import {HsSidebarService} from 'hslayers-ng/shared/sidebar';
 
 @Component({
   selector: 'hs-cesium',
