@@ -91,7 +91,7 @@ export class HsCompositionsListItemComponent {
       recordType: 'composition',
       selectedRecord: composition,
       onPermissionSaved:
-        this.hsCompositionsCatalogueService.loadFilteredCompositions(),
+        this.hsCompositionsCatalogueService.loadFilteredCompositions,
     });
   }
 
