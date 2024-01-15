@@ -90,8 +90,10 @@ export class HsCompositionsListItemComponent {
     this.hsDialogContainerService.create(HsSetPermissionsDialogComponent, {
       recordType: 'composition',
       selectedRecord: composition,
-      onPermissionSaved:
-        this.hsCompositionsCatalogueService.loadFilteredCompositions,
+      onPermissionSaved: {
+        service: this.hsCompositionsCatalogueService,
+        method: 'loadFilteredCompositions',
+      },
     });
   }
 
