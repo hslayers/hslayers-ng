@@ -1,10 +1,7 @@
 import {CommonModule} from '@angular/common';
 import {Component, OnInit, ViewRef} from '@angular/core';
 
-import {
-  HsAddDataLayerDescriptor,
-  accessRightsModel,
-} from 'hslayers-ng/types';
+import {HsAddDataLayerDescriptor, accessRightsModel} from 'hslayers-ng/types';
 import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
 import {
   HsDialogComponent,
@@ -24,14 +21,8 @@ import {UpsertLayerObject} from 'hslayers-ng/types';
   standalone: true,
   imports: [CommonModule, TranslateCustomPipe, HsLaymanModule],
 })
-/***
- *
- * FIXME: NOT TESTED AFTER THE CHANGE (onPermissionSaved)
- *
- */
 export class HsSetPermissionsDialogComponent
-  implements HsDialogComponent, OnInit
-{
+  implements HsDialogComponent, OnInit {
   dialogItem: HsDialogItem;
   viewRef: ViewRef;
   currentAccessRights: accessRightsModel = {

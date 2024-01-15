@@ -345,7 +345,7 @@ export class HslayersAppComponent {
         mapSwipe: true,
         language: true,
       },
-      sidebarPosition: 'left',
+      sidebarPosition: 'right',
       //TODO: Migrate to watlas
       // base_layers: {
       //   url: 'https://hub.lesprojekt.cz/rest/workspaces/leitnerfilip/maps/corine_layerorder/file',
