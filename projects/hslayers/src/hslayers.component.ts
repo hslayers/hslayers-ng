@@ -15,12 +15,10 @@ import {HsExternalService} from 'hslayers-ng/shared/external';
 import {HsLayoutService} from 'hslayers-ng/shared/layout';
 import {HsLogService} from 'hslayers-ng/shared/log';
 import {HsMapHostDirective} from './map-host.directive';
-import {HsMapSwipeService} from 'hslayers-ng/components/map-swipe';
 import {
   HsOverlayContainerService,
   HsPanelContainerService,
 } from 'hslayers-ng/shared/panels';
-import {HsQueryPopupWidgetContainerService} from 'hslayers-ng/common/query-popup';
 import {HsUtilsService} from 'hslayers-ng/shared/utils';
 
 @Component({
@@ -50,11 +48,6 @@ export class HslayersComponent implements AfterViewInit, OnInit, OnDestroy {
     public HsEventBusService: HsEventBusService,
     public HsPanelContainerService: HsPanelContainerService,
     public HsOverlayContainerService: HsOverlayContainerService,
-    /**
-     * FIXME: REVISE THE NECESSITY OF THESE.
-     */
-    private HsMapSwipeService: HsMapSwipeService, //Leave this, need to inject somewhere
-    private hsQueryPopupWidgetContainerService: HsQueryPopupWidgetContainerService, //Leave this, need to inject somewhere
     private hsExternalService: HsExternalService, //Leave this, need to inject somewhere
   ) {}
 
