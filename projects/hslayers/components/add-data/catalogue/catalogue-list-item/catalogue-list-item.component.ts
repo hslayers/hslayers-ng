@@ -179,7 +179,10 @@ export class HsCatalogueListItemComponent implements OnInit {
     this.hsDialogContainerService.create(HsSetPermissionsDialogComponent, {
       recordType: 'layer',
       selectedRecord: layer,
-      onPermissionSaved: this.hsAddDataCatalogueService.reloadData,
+      onPermissionSaved: {
+        service: this.hsAddDataCatalogueService,
+        method: 'reloadData',
+      },
     });
   }
 
