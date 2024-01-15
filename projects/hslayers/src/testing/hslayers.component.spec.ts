@@ -6,9 +6,9 @@ import {CustomTranslationService} from 'hslayers-ng/shared/language';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsConfigMock} from './config.service.mock';
 import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
+import {HsMapHostDirective, HslayersComponent} from 'hslayers-ng';
 import {HsUtilsService} from 'hslayers-ng/shared/utils';
 import {HsUtilsServiceMock} from './utils.service.mock';
-import {HslayersComponent} from 'hslayers-ng';
 import {TranslateTestingModule} from 'hslayers-ng/components/language';
 import {mockLayerUtilsService} from './layer-utils.service.mock';
 
@@ -18,7 +18,7 @@ describe('HslayersComponent', () => {
   let hsConfig;
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [HslayersComponent],
+      declarations: [HslayersComponent, HsMapHostDirective],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
       imports: [TranslateTestingModule, HttpClientTestingModule],
       providers: [
