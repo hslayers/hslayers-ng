@@ -5,6 +5,7 @@ import {FormsModule} from '@angular/forms';
 import {HsUrlWmsService} from 'hslayers-ng/shared/add-data';
 import {TrackByPropertyPipe} from 'hslayers-ng/common/pipes';
 import {TranslateCustomPipe} from 'hslayers-ng/shared/language';
+import {WmsLayerHighlightDirective} from '../wms-layer-highlight.directive';
 
 @Component({
   selector: 'hs-nested-layers-table',
@@ -15,6 +16,7 @@ import {TranslateCustomPipe} from 'hslayers-ng/shared/language';
     CommonModule,
     TranslateCustomPipe,
     TrackByPropertyPipe,
+    WmsLayerHighlightDirective,
   ],
 })
 export class HsNestedLayersTableComponent {
