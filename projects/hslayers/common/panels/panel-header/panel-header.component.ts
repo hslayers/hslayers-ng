@@ -40,7 +40,8 @@ export function toArray(panels: string) {
   styleUrl: './panel-header.component.scss',
 })
 export class HsPanelHeaderComponent implements OnDestroy, OnInit {
-  @ViewChild('extraButtonsContainer', {static: true}) extraButtons: ElementRef;
+  @ViewChild('extraButtonsContainer', {static: true})
+  extraButtons: ElementRef;
   active: string;
   private end = new Subject<void>();
 
