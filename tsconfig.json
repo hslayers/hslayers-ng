@@ -22,8 +22,6 @@
       "hslayers-ng": ["projects/hslayers/src/public-api.ts"],
       "hslayers-ng/*": ["projects/hslayers/*"],
       "@ngx-translate/*": ["node_modules/@ngx-translate/*"],
-      "hslayers-material": ["dist/hslayers-material"],
-      "hslayers-material/*": ["dist/hslayers-material/*"],
       "hslayers-cesium": ["dist/hslayers-cesium"],
       "hslayers-cesium/*": [
         "projects/hslayers-cesium/*",
