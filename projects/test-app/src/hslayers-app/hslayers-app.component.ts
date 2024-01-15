@@ -345,6 +345,10 @@ export class HslayersAppComponent {
         mapSwipe: true,
         language: true,
       },
+      componentsEnabled: {
+        basemapGallery: true,
+        mapSwipe: false,
+      },
       sidebarPosition: 'right',
       //TODO: Migrate to watlas
       // base_layers: {
@@ -379,10 +383,6 @@ export class HslayersAppComponent {
         orientation: 'vertical',
       },
       layersInFeatureTable: [points],
-      componentsEnabled: {
-        basemapGallery: true,
-        mapSwipe: true,
-      },
       enabledLanguages: 'sk, cs, en, la',
       language: 'en',
       assetsPath: 'assets',
