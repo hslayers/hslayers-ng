@@ -7,6 +7,7 @@ import {EpsgPipe, TrackByPropertyPipe} from 'hslayers-ng/common/pipes';
 import {HsAddToMapButtonComponent} from 'hslayers-ng/common/add-to-map';
 import {HsCommonUrlComponent} from './url.component';
 import {HsHistoryListModule} from 'hslayers-ng/common/history-list';
+import {HsLayerTableComponent} from 'hslayers-ng/common/layer-table';
 import {HsUrlAddComponent} from './add/add.component';
 import {HsUrlDetailsComponent} from './details/details.component';
 import {HsUrlProgressComponent} from './progress/progress.component';
@@ -22,6 +23,7 @@ import {TranslateCustomPipe} from 'hslayers-ng/shared/language';
     HsAddToMapButtonComponent,
     EpsgPipe,
     TrackByPropertyPipe,
+    HsLayerTableComponent,
   ],
   exports: [
     HsUrlAddComponent,
