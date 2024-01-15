@@ -22,17 +22,26 @@ import {UpsertLayerObject} from 'hslayers-ng/types';
   imports: [CommonModule, TranslateCustomPipe, HsLaymanModule],
 })
 export class HsSetPermissionsDialogComponent
-  implements HsDialogComponent, OnInit {
+  implements HsDialogComponent, OnInit
+{
   dialogItem: HsDialogItem;
   viewRef: ViewRef;
   currentAccessRights: accessRightsModel = {
     'access_rights.write': 'private',
     'access_rights.read': 'EVERYONE',
   };
+  /**
+   * @param onPermissionSaved Callback method as service instance and method name.
+   * Pass service as property to not polute the component
+   * and because compoent is cosntructed dynamically via dialog service (no input)
+   */
   data: {
     recordType: string;
     selectedRecord: HsAddDataLayerDescriptor;
-    onPermissionSaved: () => any;
+    onPermissionSaved: {
+      service: any;
+      method: string;
+    };
   };
   endpoint: HsEndpoint;
   state: 'idle' | 'loading' | 'success' | 'error' = 'idle';
@@ -107,7 +116,9 @@ export class HsSetPermissionsDialogComponent
           return;
         }
         this.state = 'success';
-        this.data.onPermissionSaved();
+        this.data.onPermissionSaved.service[
+          this.data.onPermissionSaved.method
+        ]();
         break;
       case 'composition':
         await this.hsLaymanService.updateCompositionAccessRights(
@@ -120,7 +131,9 @@ export class HsSetPermissionsDialogComponent
           return;
         }
         this.state = 'success';
-        this.data.onPermissionSaved();
+        this.data.onPermissionSaved.service[
+          this.data.onPermissionSaved.method
+        ]();
         break;
       default:
     }
