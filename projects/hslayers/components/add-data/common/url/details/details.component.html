@@ -92,7 +92,6 @@
   <ng-container *ngIf="type === 'wms'">
     <hs-target-position [(addUnder)]="data.add_under"></hs-target-position>
   </ng-container>
-  <hr />
   <hs-layer-table [type]="type" [injectedService]="injectedService"> </hs-layer-table>
   <hs-url-add class="w-100" [injectedService]="injectedService" [services]="data.services" [layers]="data.layers">
   </hs-url-add>
