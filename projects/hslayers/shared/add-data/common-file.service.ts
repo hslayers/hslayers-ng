@@ -1,6 +1,5 @@
 import {Injectable} from '@angular/core';
 
-import JSZip from 'jszip';
 import {Subject} from 'rxjs';
 
 import {HsAddDataOwsService} from './url/add-data-ows.service';
@@ -344,6 +343,7 @@ export class HsAddDataCommonFileService extends HsAddDataCommonFileServiceParams
     const sld = formDataParams.serializedStyle;
     const formData = new FormData();
     let zipFile;
+    const JSZip = (await import('jszip')).default;
     const zip = new JSZip();
     if (this.isZip(files[0].type)) {
       zipFile = new Blob([files[0].content], {type: files[0].type});
