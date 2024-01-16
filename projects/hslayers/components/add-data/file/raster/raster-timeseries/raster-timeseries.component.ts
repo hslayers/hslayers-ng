@@ -10,7 +10,6 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {NgbAccordionDirective} from '@ng-bootstrap/ng-bootstrap';
 
 import {Subject} from 'rxjs';
-import {loadAsync} from 'jszip';
 import {takeUntil} from 'rxjs/operators';
 
 import {FileDataObject} from 'hslayers-ng/types';
@@ -83,8 +82,9 @@ export class RasterTimeseriesComponent implements OnInit, OnDestroy {
       });
   }
 
-  private getFileTitle(content: string | ArrayBuffer): void {
-    loadAsync(content).then((zip) => {
+  private async getFileTitle(content: string | ArrayBuffer): Promise<void> {
+    const jszip = (await import('jszip')).default;
+    jszip.loadAsync(content).then((zip) => {
       // Get an array of filenames within the zip archive
       const filenames = Object.keys(zip.files);
       this.fileTitle = filenames[0];
