@@ -2,7 +2,7 @@ describe('Hslayers application', () => {
   beforeEach(() => {
     cy.visit('/');
     //Open layer manager
-    cy.get('.hs-sidebar-item[data-cy="layermanager"]').click();
+    cy.get('.hs-sidebar-item[data-cy="layerManager"]').click();
   });
 
   it('Should zoom to feature', () => {

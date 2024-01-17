@@ -2,7 +2,7 @@ describe('Hslayers application', () => {
   beforeEach(() => {
     cy.visit('/');
     //Open layer manager
-    cy.get('.hs-sidebar-item[data-cy="layermanager"]').click();
+    cy.get('.hs-sidebar-item[data-cy="layerManager"]').click();
     //Turn off all layers
     cy.get('hs-layer-manager-layer-list li .d-flex button.hs-checkmark').each(
       (button) => {
@@ -51,9 +51,10 @@ describe('Hslayers application', () => {
 
   it('Should support SLD 1.1.0', () => {
     openStyler();
-    cy.get('hs-styles button[title="Reset to default style"]').click();
-    cy.get('.modal-footer > .btn-primary').click();
-    cy.get('hs-styles button[title="Upload style as SLD file"]').click();
+    cy.get('hs-panel-header .dropdown-toggle').click();
+    cy.get('.extra-buttons-container').should('be.visible');
+    cy.get('extra-buttons a:nth-child(2)').click();
+
     cy.get('hs-styles input[type=file]').selectFile(
       'cypress/fixtures/sld-1.1.0.sld',
       {force: true},
