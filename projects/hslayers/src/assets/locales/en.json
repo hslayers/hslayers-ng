@@ -609,7 +609,8 @@
       "ignoreExtentInfo": "Show features or their parts hidden outside of the initial extent.",
       "changeLayerType": "Do you really want to change layer type?",
       "layerTypeChangeNote": "Change might affect loading performance",
-      "confirmLayerTypeChange": "Confirm layer type change"
+      "confirmLayerTypeChange": "Confirm layer type change",
+      "styleLayer": "Style layer"
     },
     "layerList": {
       "layerIsQueryable": "This layer is queryable",

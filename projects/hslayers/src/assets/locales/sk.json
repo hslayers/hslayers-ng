@@ -609,7 +609,8 @@
       "ignoreExtentInfo": "Zobraziť prvky alebo ich časti skryté mimo pôvodného rozsahu.",
       "changeLayerType": "Naozaj chcete zmeniť typ vrstvy?",
       "layerTypeChangeNote": "Zmena môže ovplyvniť rýchlosť načítania",
-      "confirmLayerTypeChange": "Potvrďte zmenu typu vrstvy"
+      "confirmLayerTypeChange": "Potvrďte zmenu typu vrstvy",
+      "styleLayer": "Upraviť štýl vrstvy"
     },
     "layerList": {
       "layerIsQueryable": "Táto vrstva je dotazovateľná",

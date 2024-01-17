@@ -29,4 +29,5 @@ hslayers-server.db
 projects/hslayers-server/data/hsl-share.db
 cypress/videos
 cypress/screenshots
+cypress/downloads/*
 cypress/tests/__image_snapshots__

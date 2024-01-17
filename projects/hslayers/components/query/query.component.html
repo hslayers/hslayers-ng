@@ -1,5 +1,5 @@
 <div class="card hs-main-panel" *ngIf="isVisible$ | async" [ngClass]="panelWidthClass">
-    <hs-panel-header name="info" [panelTabs]="'INFO'"></hs-panel-header>
+    <hs-panel-header name="query" [panelTabs]="'INFO'"></hs-panel-header>
     <div class="card hs-main-panel" *ngIf="noFeatureSelected()">
         <div class="d-flex flex-column align-items-center p-4">
             <i class="icon-cursor bg-primary p-3 text-white rounded "
@@ -8,7 +8,7 @@
             <p class="small">{{'QUERY.infoPanel.clickOnMap' | translateHs }}</p>
         </div>
     </div>
-    <hs-query-default-info-panel-body *ngIf="hsLayoutService.mainpanel === 'info'">
+    <hs-query-default-info-panel-body *ngIf="hsLayoutService.mainpanel === 'query'">
     </hs-query-default-info-panel-body>
     <hs-custom-info-panel-body></hs-custom-info-panel-body>
     <div class="container-fluid"

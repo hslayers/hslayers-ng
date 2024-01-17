@@ -70,22 +70,39 @@ describe('Hslayers application', () => {
     );
   });
 
-  it('Should be possible to add layer as WMS', () => {
+  it('Should be possible to add layer', () => {
     cy.wait(2000);
     cy.get(
       'hs-add-data-catalogue .list-group hs-catalogue-list-item:first',
     ).click();
-    cy.get('.hs-catalogue-item-body a:first span:not(.hs-loader)')
+    cy.get('.hs-catalogue-item-body div div.btn-group span:not(.hs-loader)')
       .should('have.html', 'Add to map')
       .click();
-    cy.get('[title*="What does it mean?"]:first').should('exist').click();
-    cy.get(
-      'hs-catalogue-list-item div[data-toggle="buttons"]:first label:first',
-    ).click();
-
     //Should switch to Layermanager
     cy.get(
-      '.hs-main-panel:not([hidden]) hs-panel-header[name*="layermanager"]',
+      '.hs-main-panel:not([hidden]) hs-panel-header[name*="layerManager"]',
+    ).should('exist');
+  });
+
+  it('Should be possible to add layer as WMST/WMTS/WFS', () => {
+    cy.wait(2000);
+    cy.get(
+      'hs-add-data-catalogue .list-group hs-catalogue-list-item:first',
+    ).click();
+    cy.get('.hs-catalogue-item-body div div button.dropdown-toggle').click();
+
+    cy.get('[title*="What does it mean?"]:first').should('exist').click();
+    cy.get('hs-catalogue-list-item div[data-toggle="buttons"] label').should(
+      'have.length',
+      3,
+    );
+    cy.get(
+      'hs-catalogue-list-item div[data-toggle="buttons"] label:first',
+    ).click();
+
+    // //Should switch to Layermanager
+    cy.get(
+      '.hs-main-panel:not([hidden]) hs-panel-header[name*="layerManager"]',
     ).should('exist');
   });
 });

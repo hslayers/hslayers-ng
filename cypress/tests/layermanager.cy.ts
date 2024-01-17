@@ -1,8 +1,10 @@
 describe('Hslayers application', () => {
   beforeEach(() => {
     cy.visit('/');
+    cy.wait(2000);
+
     //Open layer manager
-    cy.get('.hs-sidebar-item[data-cy="layermanager"]').click();
+    cy.get('.hs-sidebar-item[data-cy="layerManager"]').click();
     //Turn off all layers
     cy.get('hs-layer-manager-layer-list li .d-flex button.hs-checkmark').each(
       (button) => {
@@ -19,9 +21,7 @@ describe('Hslayers application', () => {
         );
         return;
       }
-      cy.get(
-        '.hs-main-panel:not([hidden]) hs-panel-header[name*="layermanager"] extra-buttons button:first',
-      ).click();
+      cy.get('[data-cy="mainButtonContainer"] > .btn').click();
 
       cy.get('.cdk-drop-list').then(($list) => {
         const toBeFirstLayerName = $list.find('.cdk-drag:nth-child(2) div p')[0]
@@ -42,9 +42,9 @@ describe('Hslayers application', () => {
   });
 
   it('Should remove all layers and then reset to default', () => {
-    cy.get('.card-header > .d-flex > .btn-group > .dropdown-toggle').click();
-    cy.get('extra-buttons div.dropdown-menu.show').should('be.visible');
-    cy.get('extra-buttons div.dropdown-menu.show a:first').click();
+    cy.get('hs-panel-header .dropdown-toggle').click();
+    cy.get('.extra-buttons-container').should('be.visible');
+    cy.get('extra-buttons a:first').click();
 
     cy.get('[data-cy="catalogue"]').should('not.be.visible');
     const removeButton = cy
@@ -58,11 +58,8 @@ describe('Hslayers application', () => {
 
     cy.get('.hs-lm-mapcontentlist').children().should('have.length', 1); //All groups are removed
 
-    cy.get('.card-header > .d-flex > .btn-group > .dropdown-toggle').click();
-    cy.get('extra-buttons div.dropdown-menu.show')
-      .find('a')
-      .contains('Reset map')
-      .click();
+    cy.get('hs-panel-header .dropdown-toggle').click();
+    cy.get('extra-buttons').find('a').contains('Reset map').click();
 
     cy.get('.hs-lm-mapcontentlist').children().should('have.length', 4); //All groups retrieved
   });

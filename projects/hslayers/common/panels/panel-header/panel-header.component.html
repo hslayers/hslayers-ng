@@ -8,7 +8,7 @@
     </li>
 
     <div class="extra-content d-flex position-absolute top-0">
-        <div #mainButtonContainer class="d-flex">
+        <div #mainButtonContainer class="d-flex" data-cy="mainButtonContainer">
             <ng-content select="[mainButton]"></ng-content>
         </div>
         <div [hidden]="!hasExtraButtons()" class="btn-group" ngbDropdown placement="bottom-end" display="dynamic">

@@ -6,12 +6,7 @@ describe('Hslayers application', () => {
       'hs-mini-sidebar .hs-sidebar-item.hs-panel-hidden[data-cy="language"]',
     ).click();
     cy.get('hs-language .list-group .btn:last').click();
-    cy.get('hs-language hs-panel-header').should(
-      'have.attr',
-      'ng-reflect-title',
-      'Linguam mutare',
-    );
-    cy.get('hs-language hs-panel-header span').should(
+    cy.get('hs-language hs-panel-header a.nav-link').should(
       'contain.text',
       'Linguam mutare',
     );
@@ -20,8 +15,9 @@ describe('Hslayers application', () => {
   it('App should open with a language other than the default', () => {
     cy.visit('/?hs-lang=cs');
 
-    cy.get(
-      'hs-some-panel > .card > hs-panel-header > .card-header > .flex-grow-1',
-    ).should('contain.text', 'Můj úžasný panel');
+    cy.get('hs-some-panel hs-panel-header a.nav-link').should(
+      'contain.text',
+      'Můj úžasný panel',
+    );
   });
 });
