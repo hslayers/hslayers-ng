@@ -2,7 +2,7 @@ describe('Hslayers application', () => {
   beforeEach(() => {
     cy.visit('/');
     //Open layer manager
-    cy.get('.hs-sidebar-item[data-cy="layermanager"]').click();
+    cy.get('.hs-sidebar-item[data-cy="layerManager"]').click();
     //Turn off all layers
     cy.get('hs-layer-manager-layer-list li .d-flex button.hs-checkmark').each(
       (button) => {
@@ -10,7 +10,7 @@ describe('Hslayers application', () => {
       },
     );
     //Close layer manager
-    cy.get('.hs-sidebar-item[data-cy="layermanager"]:first').click();
+    cy.get('.hs-sidebar-item[data-cy="layerManager"]:first').click();
   });
 
   it('All panels should open', () => {
@@ -43,12 +43,15 @@ describe('Hslayers application', () => {
     );
   });
 
-  it('Only 8 sidebar panels should be visible', () => {
+  /**
+   * This changes based on current test-app config
+   */
+  it('Only 9 sidebar panels should be visible', () => {
     cy.viewport(600, 1000);
     // Wait for the layout to update
     cy.wait(500);
     cy.get('hs-sidebar  span.hs-sidebar-item:not(.hs-panel-hidden)')
       .its('length')
-      .should('equal', 8);
+      .should('equal', 9);
   });
 });
