@@ -23,6 +23,9 @@ export class HsUrlDetailsComponent implements AfterContentInit {
   constructor(public hsAddDataCommonService: HsAddDataCommonService) {}
   ngAfterContentInit(): void {
     this.data = this.injectedService.data;
+    if (this.type == 'wms') {
+      this.data.group = true;
+    }
     this.getDimensionValues = this.hsAddDataCommonService.getDimensionValues;
   }
 

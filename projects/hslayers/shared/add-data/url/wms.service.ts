@@ -70,7 +70,6 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
         trackBy: 'Name',
         nameProperty: 'Title',
       },
-      group: true,
     };
   }
 
