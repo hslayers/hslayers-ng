@@ -5,6 +5,11 @@ export type UrlDataObject = {
   add_all?: boolean;
   add_under?: Layer<Source>;
   base?: boolean;
+  /**
+   *  Used with WMS to control whether each checked layer should be added as a separate layer
+   * or only one layer grouping all the checked
+   */
+  group?: boolean;
   bbox?: string;
   caps?: any;
   description?: string;

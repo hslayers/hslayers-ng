@@ -70,6 +70,7 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
         trackBy: 'Name',
         nameProperty: 'Title',
       },
+      group: true,
     };
   }
 
@@ -359,7 +360,7 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
     this.data.visible = checkedOnly
       ? this.data.layers.filter((l) => l.checked === true).length <= 10
       : false;
-    if (this.data.base) {
+    if (this.data.base || this.data.group) {
       const newLayer = this.getLayer(
         {},
         {
@@ -428,12 +429,13 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
       attributions,
       projection: this.data.srs,
       params: {
-        LAYERS: this.data.base
-          ? this.hsAddDataCommonService.createBasemapName(
-              this.data.layers,
-              'Name',
-            )
-          : layer.Name,
+        LAYERS:
+          this.data.base || this.data.group
+            ? this.hsAddDataCommonService.getGroupedLayerNames(
+                this.data.layers,
+                'Name',
+              )
+            : layer.Name,
         INFO_FORMAT: layer.queryable ? options.queryFormat : undefined,
         FORMAT: options.imageFormat,
         VERSION: this.data.version,

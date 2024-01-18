@@ -124,20 +124,23 @@ export class HsAddDataCommonService {
   }
 
   /**
-   * Constructs body of LAYER parameter for getMap request
+   * Constructs body of LAYER parameter for getMap request for grouped layer e.g.
+   * for a basemap or thematic layer with property group set to true
    * @param layerOrLayers - layer object or layers received from capabilities. If no layer is provided
    * merge all checked layer ids into one string
    * @param property - layer property
-   * @returns
    */
-  createBasemapName(layerOrLayers: any | Array<any>, property: string): string {
+  getGroupedLayerNames(
+    layerOrLayers: any | Array<any>,
+    property: string,
+  ): string {
     const baseNameParts = [];
     if (Array.isArray(layerOrLayers)) {
       for (const layer of layerOrLayers) {
         if (layer.checked) {
           baseNameParts.push(layer[property]);
         } else if (layer.Layer) {
-          const nested = this.createBasemapName(layer.Layer, property);
+          const nested = this.getGroupedLayerNames(layer.Layer, property);
           nested.length > 0 ? baseNameParts.push(nested) : null;
         }
       }
