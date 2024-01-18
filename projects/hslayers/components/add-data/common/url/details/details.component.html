@@ -8,7 +8,7 @@
 
     <div class="hs-add-url-wms-addas d-flex flex-row justify-content-start align-items-baseline my-2">
       <span class="control-label input-group-text">{{'COMMON.addAs' | translateHs }}</span>
-      <div class="d-flex flex-fill gap-2 justify-content-end align-items-center mx-2 ">
+      <div class="d-flex flex-fill gap-2 justify-content-end align-items-center">
         <div class="btn-group ">
           <button type="button" class="btn btn-sm btn-outline-secondary" (click)="setBase(true)"
             [ngClass]="{'active':data.base}">
@@ -34,7 +34,7 @@
     </div>
   </div>
 
-  <button type="button" class="btn w-100 btn-outline-secondary dropdown-toggle dropdown-toggle-split"
+  <button type="button" class="btn w-100 btn-outline-secondary dropdown-toggle dropdown-toggle-split mb-2"
     (click)="advancedPanelVisible = !advancedPanelVisible">
     {{'COMMON.advancedOptions' | translateHs }}
   </button>
