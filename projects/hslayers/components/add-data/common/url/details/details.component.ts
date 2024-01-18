@@ -7,6 +7,11 @@ import {HsUrlTypeServiceModel} from 'hslayers-ng/types';
 @Component({
   selector: 'hs-url-details',
   templateUrl: './details.component.html',
+  styles: `
+    .hs-add-url-wms-addas button{
+      min-width: 5rem
+    }
+  `,
 })
 export class HsUrlDetailsComponent implements AfterContentInit {
   @Input() injectedService: HsUrlTypeServiceModel;
@@ -25,5 +30,10 @@ export class HsUrlDetailsComponent implements AfterContentInit {
     this.data.resample_warning = this.hsAddDataCommonService.srsChanged(
       this.data.srs,
     );
+  }
+
+  setBase(state: boolean) {
+    this.data.base = state;
+    this.data.group = state || this.data.group;
   }
 }

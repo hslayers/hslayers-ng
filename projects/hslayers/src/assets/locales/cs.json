@@ -314,7 +314,10 @@
     "on": "zapnuto",
     "off": "vypnuto",
     "Tile": "Dlaždice",
-    "done": "Hotovo"
+    "done": "Hotovo",
+    "group": "skupina",
+    "single": "singl",
+    "separateLayers": "samostatné vrstvy"
   },
   "COMPOSITIONS": {
     "addByAddress": "Přidat kompozici z adresy",
