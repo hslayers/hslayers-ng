@@ -18,8 +18,7 @@ import {getTitle} from 'hslayers-ng/common/extensions';
 })
 export class HsClearLayerComponent
   extends HsQueryPopupWidgetBaseComponent
-  implements OnInit
-{
+  implements OnInit {
   @Input() data: {
     layerDescriptor: any;
     service: HsQueryPopupServiceModel;
@@ -48,10 +47,7 @@ export class HsClearLayerComponent
         message: this.hsLanguageService
           .getTranslation('QUERY.reallyDeleteAllFeaturesFrom', undefined)
           .replace('{0}', getTitle(layer)),
-        title: this.hsLanguageService.getTranslation(
-          'QUERY.confirmClear',
-          undefined,
-        ),
+        title: 'QUERY.confirmClear',
       },
     );
     const confirmed = await dialog.waitResult();

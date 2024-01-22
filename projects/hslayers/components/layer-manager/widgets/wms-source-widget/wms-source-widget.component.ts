@@ -6,9 +6,7 @@ import {Image as ImageLayer, Tile} from 'ol/layer';
 import {ImageWMS, TileWMS} from 'ol/source';
 
 import {HsConfirmDialogComponent} from 'hslayers-ng/common/confirm';
-import {HsConfirmModule} from 'hslayers-ng/common/confirm';
 import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
-import {HsLanguageService} from 'hslayers-ng/shared/language';
 import {HsLayerEditorWidgetBaseComponent} from '../layer-editor-widget-base.component';
 import {HsLayerSelectorService} from 'hslayers-ng/shared/layer-manager';
 import {HsLayerShiftingService} from 'hslayers-ng/shared/layer-shifting';
@@ -20,7 +18,7 @@ import {TranslateCustomPipe} from 'hslayers-ng/shared/language';
 @Component({
   selector: 'hs-wms-source-widget',
   standalone: true,
-  imports: [CommonModule, NgFor, HsConfirmModule, TranslateCustomPipe],
+  imports: [CommonModule, NgFor, HsConfirmDialogComponent, TranslateCustomPipe],
   templateUrl: './wms-source-widget.component.html',
 })
 export class HsWmsSourceWidgetComponent extends HsLayerEditorWidgetBaseComponent {
@@ -36,7 +34,6 @@ export class HsWmsSourceWidgetComponent extends HsLayerEditorWidgetBaseComponent
     private hsMapService: HsMapService,
     private hsLayerShiftingService: HsLayerShiftingService,
     private hsDialogContainerService: HsDialogContainerService,
-    private hsLanguageService: HsLanguageService,
   ) {
     super(hsLayerSelectorService);
     this.isEnabled = this.layerDescriptor.pipe(
@@ -63,18 +60,9 @@ export class HsWmsSourceWidgetComponent extends HsLayerEditorWidgetBaseComponent
     const dialog = this.hsDialogContainerService.create(
       HsConfirmDialogComponent,
       {
-        message: this.hsLanguageService.getTranslation(
-          'LAYERMANAGER.layerEditor.changeLayerType',
-          undefined,
-        ),
-        note: this.hsLanguageService.getTranslation(
-          'LAYERMANAGER.layerEditor.layerTypeChangeNote',
-          undefined,
-        ),
-        title: this.hsLanguageService.getTranslation(
-          'LAYERMANAGER.layerEditor.confirmLayerTypeChange',
-          undefined,
-        ),
+        message: 'LAYERMANAGER.layerEditor.changeLayerType',
+        note: 'LAYERMANAGER.layerEditor.layerTypeChangeNote',
+        title: 'LAYERMANAGER.layerEditor.confirmLayerTypeChange',
       },
     );
     const confirmed = await dialog.waitResult();

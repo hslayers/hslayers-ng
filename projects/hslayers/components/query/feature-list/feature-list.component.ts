@@ -6,8 +6,6 @@ import {Geometry} from 'ol/geom';
 import {HsConfirmDialogComponent} from 'hslayers-ng/common/confirm';
 import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
 import {HsFeatureCommonService} from '../feature-common.service';
-import {HsLanguageService} from 'hslayers-ng/shared/language';
-import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
 import {HsQueryBaseService} from 'hslayers-ng/shared/query';
 import {HsQueryVectorService} from 'hslayers-ng/shared/query';
 import {exportFormats} from '../feature-common.service';
@@ -36,10 +34,8 @@ export class HsQueryFeatureListComponent {
 
   constructor(
     private hsQueryVectorService: HsQueryVectorService,
-    private hsLanguageService: HsLanguageService,
     private hsDialogContainerService: HsDialogContainerService,
     public hsFeatureCommonService: HsFeatureCommonService,
-    private hsLayerUtilsService: HsLayerUtilsService,
     public hsQueryBaseService: HsQueryBaseService,
   ) {}
 
@@ -125,14 +121,8 @@ export class HsQueryFeatureListComponent {
     const dialog = this.hsDialogContainerService.create(
       HsConfirmDialogComponent,
       {
-        message: this.hsLanguageService.getTranslation(
-          'QUERY.reallyDeleteAllSelectedLayers',
-          undefined,
-        ),
-        title: this.hsLanguageService.getTranslation(
-          'COMMON.confirmDelete',
-          undefined,
-        ),
+        message: 'QUERY.reallyDeleteAllSelectedLayers',
+        title: 'COMMON.confirmDelete',
       },
     );
     const confirmed = await dialog.waitResult();

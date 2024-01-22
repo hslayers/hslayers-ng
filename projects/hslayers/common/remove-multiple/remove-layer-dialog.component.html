@@ -3,7 +3,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">
-                    {{data.title}}
+                    {{data.title | translateHs}}
                 </h4>
                 <button type="button" (click)="no()" class="btn-close" data-dismiss="modal"
                     [attr.aria-label]="'COMMON.close' | translateHs "></button>
@@ -19,9 +19,9 @@
                             option)}}</button>
                     </div>
                 </div>
-                <p *ngIf="deleteFrom === 'catalogue'" class="h6 small">{{data.note}}</p>
+                <p *ngIf="deleteFrom === 'catalogue'" class="h6 small">{{data.note | translateHs}}</p>
                 <div *ngIf="deleteFrom && data.multiple">
-                    <p class="fw-bold h6">{{data.message}}</p>
+                    <p class="fw-bold h6">{{data.message | translateHs}}</p>
 
                     <div style="max-height: 65vh;" *ngIf="data.items?.length > 0">
                         <div class="d-flex w-100 justify-content-center">

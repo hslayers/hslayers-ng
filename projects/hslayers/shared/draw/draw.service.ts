@@ -284,8 +284,8 @@ export class HsDrawService extends HsDrawServiceParams {
         const dialog = this.hsDialogContainerService.create(
           HsConfirmDialogComponent,
           {
-            message: this.translate('DRAW.thisLayerDoesNotSupportDrawing'),
-            title: this.translate('DRAW.notAVectorLayer'),
+            message: 'DRAW.thisLayerDoesNotSupportDrawing',
+            title: 'DRAW.notAVectorLayer',
           },
         );
         const confirmed = await dialog.waitResult();

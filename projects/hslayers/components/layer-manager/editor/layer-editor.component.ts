@@ -15,7 +15,6 @@ import {HsDrawService} from 'hslayers-ng/shared/draw';
 import {HsEventBusService} from 'hslayers-ng/shared/event-bus';
 import {HsExtentWidgetComponent} from '../widgets/extent-widget/extent-widget.component';
 import {HsIdwWidgetComponent} from '../widgets/idw-widget.component';
-import {HsLanguageService} from 'hslayers-ng/shared/language';
 import {HsLayerDescriptor} from 'hslayers-ng/types';
 import {HsLayerEditorDimensionsComponent} from '../dimensions/layer-editor-dimensions.component';
 import {HsLayerEditorService} from './layer-editor.service';
@@ -74,7 +73,6 @@ export class HsLayerEditorComponent {
     public HsDrawService: HsDrawService,
     public HsEventBusService: HsEventBusService,
     public HsDialogContainerService: HsDialogContainerService,
-    public HsLanguageService: HsLanguageService,
     public hsWidgetContainerService: HsLayerEditorWidgetContainerService,
   ) {}
 
@@ -104,15 +102,8 @@ export class HsLayerEditorComponent {
     const dialog = this.HsDialogContainerService.create(
       HsConfirmDialogComponent,
       {
-        message:
-          this.HsLanguageService.getTranslation(
-            'LAYERMANAGER.layerEditor.savegeojson',
-            undefined,
-          ) + '?',
-        title: this.HsLanguageService.getTranslation(
-          'COMMON.confirm',
-          undefined,
-        ),
+        message: 'LAYERMANAGER.layerEditor.savegeojson',
+        title: 'COMMON.confirm',
       },
     );
     const confirmed = await dialog.waitResult();
@@ -248,15 +239,8 @@ export class HsLayerEditorComponent {
     const dialog = this.HsDialogContainerService.create(
       HsCopyLayerDialogComponent,
       {
-        message:
-          this.HsLanguageService.getTranslation(
-            'LAYERMANAGER.layerEditor.copyLayer',
-            undefined,
-          ) + '?',
-        title: this.HsLanguageService.getTranslation(
-          'COMMON.copyLayer',
-          undefined,
-        ),
+        message: 'LAYERMANAGER.layerEditor.copyLayer',
+        title: 'COMMON.copyLayer',
         layerTitle: getTitle(this.currentLayer.layer),
       },
     );

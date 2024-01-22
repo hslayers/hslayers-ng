@@ -36,9 +36,9 @@ export class HsRemoveLayerDialogService {
       HsRmLayerDialogComponent,
       {
         multiple: false,
-        message: this.translate('DRAW.reallyDeleteThisLayer'),
+        message: 'DRAW.reallyDeleteThisLayer',
         note: this.getDeleteNote(),
-        title: this.translate('COMMON.confirmDelete'),
+        title: 'COMMON.confirmDelete',
       },
     );
     const confirmed: HsRmLayerDialogResponse = await dialog.waitResult();
@@ -65,9 +65,9 @@ export class HsRemoveLayerDialogService {
       HsRmLayerDialogComponent,
       {
         multiple: true,
-        message: this.translate('DRAW.pleaseCheckTheLayers'),
+        message: 'DRAW.pleaseCheckTheLayers',
         note: this.getDeleteNote(true),
-        title: this.translate('COMMON.selectAndConfirmToDeleteMultiple'),
+        title: 'COMMON.selectAndConfirmToDeleteMultiple',
         items: items,
       },
     );
@@ -151,7 +151,9 @@ export class HsRemoveLayerDialogService {
 
   getDeleteNote(plural?: boolean): string {
     return this.hsDrawService.isAuthenticated
-      ? this.translate(plural ? 'DRAW.deleteNotePlural' : 'DRAW.deleteNote')
+      ? plural
+        ? 'DRAW.deleteNotePlural'
+        : 'DRAW.deleteNote'
       : '';
   }
 }

@@ -736,14 +736,8 @@ export class HsStylerService {
     const dialog = this.hsDialogContainerService.create(
       HsConfirmDialogComponent,
       {
-        message: this.hsLanguageService.getTranslation(
-          'STYLER.reallyResetStyleToDefault',
-          undefined,
-        ),
-        title: this.hsLanguageService.getTranslation(
-          'COMMON.confirmReset',
-          undefined,
-        ),
+        message: 'STYLER.reallyResetStyleToDefault',
+        title: 'COMMON.confirmReset',
       },
     );
     const confirmed = await dialog.waitResult();

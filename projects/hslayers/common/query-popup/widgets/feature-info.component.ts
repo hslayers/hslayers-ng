@@ -24,8 +24,7 @@ import {
 })
 export class HsFeatureInfoComponent
   extends HsQueryPopupWidgetBaseComponent
-  implements OnInit
-{
+  implements OnInit {
   layerDescriptor: any;
   attributesForHover: any[] = [];
   name = 'feature-info';
@@ -84,14 +83,8 @@ export class HsFeatureInfoComponent
     const dialog = this.hsDialogContainerService.create(
       HsConfirmDialogComponent,
       {
-        message: this.hsLanguageService.getTranslation(
-          'QUERY.reallyDelete',
-          undefined,
-        ),
-        title: this.hsLanguageService.getTranslation(
-          'QUERY.confirmDelete',
-          undefined,
-        ),
+        message: 'QUERY.reallyDelete',
+        title: 'QUERY.confirmDelete',
       },
     );
     const confirmed = await dialog.waitResult();

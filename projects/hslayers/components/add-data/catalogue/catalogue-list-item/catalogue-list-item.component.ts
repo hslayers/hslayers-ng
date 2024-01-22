@@ -207,18 +207,9 @@ export class HsCatalogueListItemComponent implements OnInit {
     const dialog = this.hsDialogContainerService.create(
       HsConfirmDialogComponent,
       {
-        message: this.hsLanguageService.getTranslation(
-          'DRAW.reallyDeleteThisLayer',
-          undefined,
-        ),
-        note: this.hsLanguageService.getTranslation(
-          'DRAW.deleteNote',
-          undefined,
-        ),
-        title: this.hsLanguageService.getTranslation(
-          'COMMON.confirmDelete',
-          undefined,
-        ),
+        message: 'DRAW.reallyDeleteThisLayer',
+        note: 'DRAW.deleteNote',
+        title: 'COMMON.confirmDelete',
       },
     );
     const confirmed = await dialog.waitResult();
