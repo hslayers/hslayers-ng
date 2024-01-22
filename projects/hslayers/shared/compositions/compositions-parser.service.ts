@@ -656,11 +656,7 @@ export class HsCompositionsParserService {
     this.hsDialogContainerService.create(HsCompositionsWarningDialogComponent, {
       extent: extent,
       composition_title: this.current_composition_title,
-      message: this.hsLanguageService.getTranslationIgnoreNonExisting(
-        'COMPOSITIONS.dialogWarning',
-        'outOfBounds',
-        undefined,
-      ),
+      message: 'COMPOSITIONS.dialogWarning.outOfBounds',
     });
   }
 

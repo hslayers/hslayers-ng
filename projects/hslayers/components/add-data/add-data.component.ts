@@ -8,7 +8,6 @@ import {HsAddDataUrlService} from 'hslayers-ng/shared/add-data';
 import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
 import {HsEventBusService} from 'hslayers-ng/shared/event-bus';
 import {HsGetCapabilitiesErrorComponent} from './common/capabilities-error-dialog/capabilities-error-dialog.component';
-import {HsLanguageService} from 'hslayers-ng/shared/language';
 import {HsLayoutService} from 'hslayers-ng/shared/layout';
 import {HsPanelBaseComponent} from 'hslayers-ng/common/panels';
 import {HsShareUrlService} from 'hslayers-ng/components/share';
@@ -26,7 +25,6 @@ export class HsAddDataComponent
 
   constructor(
     public hsAddDataService: HsAddDataService,
-    public hsLanguageService: HsLanguageService,
     public hsShareUrlService: HsShareUrlService,
     public hsLayoutService: HsLayoutService,
     public hsEventBusService: HsEventBusService,
@@ -59,23 +57,11 @@ export class HsAddDataComponent
       .subscribe((e) => {
         let error = e.toString();
         if (error?.includes('Unsuccessful OAuth2')) {
-          error = this.hsLanguageService.getTranslationIgnoreNonExisting(
-            'COMMON',
-            'Authentication failed. Login to the catalogue.',
-            undefined,
-          );
+          error = 'COMMON.Authentication failed. Login to the catalogue.';
         } else if (error.includes('property')) {
-          error = this.hsLanguageService.getTranslationIgnoreNonExisting(
-            'ADDLAYERS',
-            'serviceTypeNotMatching',
-            undefined,
-          );
+          error = 'ADDLAYERS.serviceTypeNotMatching';
         } else {
-          error = this.hsLanguageService.getTranslationIgnoreNonExisting(
-            'ADDLAYERS',
-            error,
-            undefined,
-          );
+          error = `ADDLAYERS.${error}`;
         }
         this.hsDialogContainerService.create(HsGetCapabilitiesErrorComponent, {
           error: error,
