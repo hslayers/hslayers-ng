@@ -3,13 +3,13 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">
-                    {{data.title}}
+                    {{data.title | translateHs}} ?
                 </h4>
                 <button type="button" (click)="no()" class="btn-close" data-dismiss="modal"
                     [attr.aria-label]="'COMMON.close' | translateHs"></button>
             </div>
             <div class="modal-body" style="overflow-y:auto">
-                <p class="fw-bold h6">{{data.message}}</p>
+                <p class="fw-bold h6">{{data.message | translateHs}}</p>
                 <div class="form-floating m-2">
                     <input class="form-control" name="title" [(ngModel)]="data.layerTitle"
                         [placeholder]="'COMMON.title' | translateHs" />

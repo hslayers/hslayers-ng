@@ -2,7 +2,6 @@ import {CommonModule} from '@angular/common';
 import {HttpClientModule} from '@angular/common/http';
 import {NgModule} from '@angular/core';
 
-import {HsConfirmModule} from 'hslayers-ng/common/confirm';
 import {HsDialogContainerComponent} from 'hslayers-ng/common/dialogs';
 import {HsLayoutHostDirective} from './layout.directive';
 import {HsMapHostDirective} from './map-host.directive';
@@ -17,7 +16,6 @@ import {HslayersComponent} from './hslayers.component';
   imports: [
     HttpClientModule,
     CommonModule,
-    HsConfirmModule,
     HsMapModule,
     HsSidebarModule,
     HsPanelHelpersModule,
