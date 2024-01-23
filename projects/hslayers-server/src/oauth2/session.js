@@ -1,9 +1,9 @@
-require('dotenv').config();
+import 'dotenv/config';
 
-const session = require('express-session');
-const connectSQLite3 = require('connect-sqlite3');
+import session from 'express-session';
+import connectSQLite3 from 'connect-sqlite3';
 
-exports.createExpressSession = () => {
+export const createExpressSession = () => {
   const SQLiteStore = connectSQLite3(session);
   const session_store = new SQLiteStore({
     table: 'sessions',

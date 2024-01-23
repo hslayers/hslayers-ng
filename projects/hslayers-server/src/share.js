@@ -1,8 +1,13 @@
-const express = require('express');
-const cors = require('cors');
-const share = express();
+import express from 'express';
+import cors from 'cors';
+import Database from 'better-sqlite3';
+import { fileURLToPath } from 'node:url';
+import { dirname } from 'node:path';
 
-const Database = require('better-sqlite3');
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+const share = express();
 
 // parse incoming POST requests body to JSON
 share.use(express.json());
@@ -31,7 +36,7 @@ share.get('/', context => {
         getThumbnail(context.query.id, context);
         break;
 
-      case 'list': // only for backward compatilibity, should not be used anymore
+      case 'list': // only for backward compatibility, should not be used anymore
         formatResponseJson({ "success": true, "results": [], "error": "no data" }, context, 200);
         break;
 

@@ -1,12 +1,15 @@
-require("dotenv").config();
+import 'dotenv/config';
+import cors_anywhere from 'cors-anywhere';
+import { encode as encodeQuerystring, parse as parseQuerystring} from 'node:querystring';
+import { createServer } from 'node:http';
+import { networkInterfaces } from 'node:os';
 
-const querystring = require("node:querystring");
 // Listen on a specific host via the HOST environment variable
-const host = process.env.HOST || "0.0.0.0";
+const host = process.env.HOST || '0.0.0.0';
 // Listen on a specific port via the PORT environment variable
 const port = process.env.PROXY_PORT || 8085;
 
-const cors_proxy = require("cors-anywhere").createServer({
+const cors_proxy = cors_anywhere.createServer({
   originWhitelist: [], // Allow all origins
   httpProxyOptions: {
     // Disable X-Forwarded-* headers since some map servers use it to generate URLs in capabilities
@@ -19,69 +22,69 @@ const cors_proxy = require("cors-anywhere").createServer({
     },
   },
 });
-const GEONAMES_APIKEY = process.env.HS_GEONAMES_API_KEY || "hslayersng";
+const GEONAMES_APIKEY = process.env.HS_GEONAMES_API_KEY || 'hslayersng';
 
-require("http")
-  .createServer((req, res) => {
+createServer((req, res) => {
+    console.log('🚀 ~ .createServer ~ req:', req.url, req.headers);
     try {
-      if (req.url == "" || req.url == "/") {
-        res.write("HSLayers server proxy<br />");
+      if (req.url == '' || req.url == '/') {
+        res.write('HSLayers server proxy<br />');
         res.write(`${getIP()}:${port}`);
         res.end();
       } else {
         req.url = decodeURIComponent(req.url);
         const [base, tld, pathAndQueryParams] = splitUrlAtTld(req.url);
-        const encodedPath = pathAndQueryParams.split("?")[0].split("/").map(segment => encodeURIComponent(segment))
-        const params = querystring.parse(pathAndQueryParams.split("?")[1]);
+        console.log('🚀 ~ .createServer ~ base, tld, pathAndQueryParams:', base, tld, pathAndQueryParams);
+        const encodedPath = pathAndQueryParams.split('?')[0].split('/').map(segment => encodeURIComponent(segment))
+        const params = parseQuerystring(pathAndQueryParams.split('?')[1]);
         req.url =
           base +
-          "." +
+          '.' +
           tld +
-          encodedPath.join("/") +
-          (Object.keys(params).length == 0 ? "" : "?") +
-          querystring.encode(params);
-        if (base.includes("api.geonames") && tld === "org" && pathAndQueryParams.startsWith("searchJSON")) {
+          encodedPath.join('/') +
+          (Object.keys(params).length == 0 ? '' : '?') +
+          encodeQuerystring(params);
+        console.log('🚀 ~ .createServer ~ req.url after process:', req.url);
+        if (base.includes('api.geonames') && tld === 'org' && pathAndQueryParams.startsWith('searchJSON')) {
           if (
-            typeof params.provider == "undefined" ||
-            params.provider == "geonames"
+            typeof params.provider == 'undefined' ||
+            params.provider == 'geonames'
           ) {
             req.url = `/http://api.geonames.org/searchJSON?name_startsWith=${encodeURIComponent(
-              params.name_startsWith,
+              params.name_startsWith
             )}&username=${GEONAMES_APIKEY}`;
           }
         }
-        if (base.includes("api.openrouteservice") && tld == "org") {
+        if (base.includes('api.openrouteservice') && tld == 'org') {
           req.headers.authorization = process.env.OPENROUTESERVICE_API_KEY;
         }
 
-        cors_proxy.emit("request", req, res);
+        cors_proxy.emit('request', req, res);
       }
     } catch (ex) {
-      res.writeHead(500, { "Content-Type": "text/plain" });
-      res.write("Invalid request");
+      res.writeHead(500, { 'Content-Type': 'text/plain' });
+      res.write('Invalid request');
       res.write(ex);
       res.end();
     }
   })
   .listen(port, host, () => {
-    console.log("HSLayers proxy listening on " + host + ":" + port);
+    console.log('HSLayers proxy listening on ' + host + ':' + port);
   });
 
 function getIP() {
-  const { networkInterfaces } = require("os");
-
   const nets = networkInterfaces();
 
   for (const name of Object.keys(nets)) {
     for (const net of nets[name]) {
       // Skip over non-IPv4 and internal (i.e. 127.0.0.1) addresses
-      if (net.family === "IPv4" && !net.internal) {
+      if (net.family === 'IPv4' && !net.internal) {
         return net.address;
       }
     }
   }
 
-  return "0";
+  return '0';
 }
 
 /**
@@ -109,14 +112,14 @@ function splitUrlAtTld(url) {
     return [
       parts[0], // Everything before the TLD with port
       cleanedTLD, // The TLD with port itself
-      parts[1] || "", // Everything after the TLD with port (if present)
+      parts[1] || '', // Everything after the TLD with port (if present)
     ];
   } else {
     // No TLD with port found, return the original URL
     return [
       url,
-      "",
-      "",
+      '',
+      '',
     ];
   }
 }

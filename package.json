@@ -21,6 +21,7 @@
     "build-watch": "ng build hslayers --watch",
     "find-circular": "npx madge --circular --extensions ts ./projects/hslayers/",
     "test": "ng test hslayers",
+    "test-server": "cd ./projects/hslayers-server && npm test",
     "lint": "eslint --ignore-path .gitignore --fix-dry-run ./",
     "lint-stats": "eslint --ignore-path .gitignore --format node_modules/eslint-stats/byErrorAndWarning.js ./",
     "e2e": "ng e2e",
