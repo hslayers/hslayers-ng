@@ -1,17 +1,13 @@
-require('dotenv').config();
+import 'dotenv/config';
+import express from 'express';
+import cors from 'cors';
+import passport from 'passport';
+import { Strategy as OAuth2 } from 'passport-oauth2';
+import { Strategy as OAuth2Refresh } from 'passport-oauth2-middleware';
+import { createProxyMiddleware } from 'http-proxy-middleware';
 
-const https = require('https');
-const express = require('express');
-const cors = require('cors');
-
-const passport = require('passport');
-const OAuth2 = require('passport-oauth2').Strategy;
-const OAuth2Refresh = require('passport-oauth2-middleware').Strategy;
-const sqlite = require('better-sqlite3');
-const { createProxyMiddleware } = require('http-proxy-middleware');
-
-const authnUtil = require('./oauth2/util');
-const sessionUtil = require('./oauth2/session');
+import * as authnUtil from './oauth2/util.js';
+import * as sessionUtil from './oauth2/session.js';
 
 const app = express();
 

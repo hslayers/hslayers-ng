@@ -1,12 +1,11 @@
-require('dotenv').config();
+import 'dotenv/config';
 
-
-exports.addIncomingTimestamp = (req, res, next) => {
+export const addIncomingTimestamp = (req, res, next) => {
   req.incoming_timestamp = Date.now();
   next();
 };
 
-exports.ensureUsername = async (access_token, profile) => {
+export const ensureUsername = async (access_token, profile) => {
   if (!profile['username']) {
     const got = await import('got');
     var response = await got.got.patch(`${process.env.LAYMAN_USER_PROFILE_URL}?adjust_username=true`, {
@@ -22,7 +21,7 @@ exports.ensureUsername = async (access_token, profile) => {
   return profile;
 };
 
-exports.deleteUserSession = async (req) => {
+export const deleteUserSession = async (req) => {
   let authenticated = !!(req.session.passport && req.session.passport.user);
   if (authenticated) {
     const user = req.session.passport.user;
@@ -47,7 +46,7 @@ const getAuthenticationHeaders = (user) => {
   }
 };
 
-exports.handleProxyRes = (proxyRes, req, res) => {
+export const handleProxyRes = (proxyRes, req, res) => {
   this.allowOrigin(proxyRes, req, res);
   res.statusMessage = proxyRes.statusMessage;
   res.status(proxyRes.statusCode);
@@ -83,7 +82,7 @@ exports.handleProxyRes = (proxyRes, req, res) => {
   });
 };
 
-exports.addAuthenticationHeaders = (proxyReq, req, res) => {
+export const addAuthenticationHeaders = (proxyReq, req, res) => {
   if (req.session.passport && req.session.passport.user) {
     const user = req.session.passport.user;
     const headers = getAuthenticationHeaders(user);
@@ -94,7 +93,7 @@ exports.addAuthenticationHeaders = (proxyReq, req, res) => {
   }
 };
 
-exports.allowOrigin = (proxyRes, req, res) => {
+export const allowOrigin = (proxyRes, req, res) => {
   var whitelist = JSON.parse(process.env.CORS_WHITELIST);
   var origin = req.header('Origin');
   if (whitelist.indexOf(origin) !== -1) {
