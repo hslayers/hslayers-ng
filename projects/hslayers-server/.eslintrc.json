@@ -1,0 +1,31 @@
+{
+  "env": {
+    "browser": false,
+    "es6": true,
+    "node": true,
+    "mocha": true
+  },
+  "globals": {},
+  "parserOptions": {
+    "sourceType": "module",
+    "ecmaVersion": 2020
+  },
+  "overrides": [
+    {
+      "files": [
+        "*.js"
+      ],
+      "extends": [
+        "eslint:recommended"
+      ]
+    },
+    {
+      "files": [
+        "**/*.spec.js"
+      ],
+      "extends": [
+        "plugin:mocha/recommended"
+      ]
+    }
+  ]
+}
