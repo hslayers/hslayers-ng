@@ -7,6 +7,7 @@ import {HsCompositionsMapService} from './compositions-map.service';
 import {HsCompositionsOverwriteDialogComponent} from './dialogs/overwrite-dialog.component';
 import {HsCompositionsParserService} from 'hslayers-ng/shared/compositions';
 import {HsCompositionsService} from './compositions.service';
+import {HsConfig} from 'hslayers-ng/config';
 import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
 import {HsLanguageService} from 'hslayers-ng/shared/language';
 import {HsLayoutService} from 'hslayers-ng/shared/layout';
@@ -34,6 +35,7 @@ export class HsCompositionsComponent
   name = 'compositions';
 
   constructor(
+    public hsConfig: HsConfig,
     private hsCompositionsService: HsCompositionsService,
     private hsCompositionsParserService: HsCompositionsParserService,
     public hsLayoutService: HsLayoutService,
