@@ -1,31 +1,50 @@
 import { expect } from 'chai';
 
-import * as proxyModule from '../src/proxy.js';
+import { splitUrlAtTld, encodeUrlPathAndParams } from '../src/proxy.js';
 
-describe('Proxy module', function () {
-  describe('#splitUrlAtTld()', function () {
-    it('should split to three parts on localhost', function () {
-      const url = ''
-      expect()
+describe('Proxy module', function() {
+  describe('#splitUrlAtTld()', function() {
+
+    //The URL is supposed to be always relative to the proxy base (i.e. only the queried URL)
+
+    it('should split to three parts with ČÚZK service', function() {
+      const url = '/https://ags.cuzk.cz/arcgis2/services/dmr4g/ImageServer/WMSServer?REQUEST=GetMap&SERVICE=WMS&VERSION=1.3.0&FORMAT=image/png&STYLES=default&TRANSPARENT=true&LAYERS=dmr4g:GrayscaleHillshade&WIDTH=256&HEIGHT=256&CRS=EPSG:3857&BBOX=1878516.4071364924,6574807.42497772,2191602.474992574,6887893.492833802'
+      const split = splitUrlAtTld(url);
+      expect(split).to.be.an.instanceOf(Array);
+      expect(split).to.have.length(3);
+      expect(split[0]).to.equal('/https://ags.cuzk');
+      expect(split[1]).to.equal('cz');
+      expect(split[2]).to.equal('arcgis2/services/dmr4g/ImageServer/WMSServer?REQUEST=GetMap&SERVICE=WMS&VERSION=1.3.0&FORMAT=image/png&STYLES=default&TRANSPARENT=true&LAYERS=dmr4g:GrayscaleHillshade&WIDTH=256&HEIGHT=256&CRS=EPSG:3857&BBOX=1878516.4071364924,6574807.42497772,2191602.474992574,6887893.492833802');
     });
 
-    it('should split to three parts on IP', function () {
-      const url = ''
-      expect()
+    it('should split to three parts with ags.plzen.eu service containing diacritics', function() {
+      const url = '/https://ags.plzen.eu/arcgis/rest/services/GIS_Historicke/GIS_HIS_Plzeň_1926/MapServer?f=json'
+      const split = splitUrlAtTld(url);
+      expect(split).to.be.an.instanceOf(Array);
+      expect(split).to.have.length(3);
+      expect(split[0]).to.equal('/https://ags.plzen');
+      expect(split[1]).to.equal('eu');
+      expect(split[2]).to.equal('arcgis/rest/services/GIS_Historicke/GIS_HIS_Plzeň_1926/MapServer?f=json');
     });
 
-    it('should split to three parts on public domain 1', function () {
-      const url = 'https://hub4everybody.com/proxy/https://ags.plzen.eu/arcgis/rest/services/GIS_Historicke/GIS_HIS_Plzen_1895/MapServer?f=json'
-      expect()
-    });
-    it('should split to three parts on public domain 2', function () { //FIXME:
-      const url = 'https://watlas.lesprojekt.cz/en/proxy/arcgis2/services/dmr4g/ImageServer/WMSServer/?REQUEST=GetMap&SERVICE=WMS&VERSION=1.3.0&FORMAT=image/png&STYLES=default&TRANSPARENT=true&LAYERS=dmr4g:GrayscaleHillshade&WIDTH=256&HEIGHT=256&CRS=EPSG:3857&BBOX=1878516.4071364924,6574807.42497772,2191602.474992574,6887893.492833802'
-      expect()
-    });
-    it('should split to three parts on public domain 3', function () { //FIXME:
-      const url = 'https://hub4everybody.com/proxy/arcgis2/services/dmr4g/ImageServer/WMSServer?REQUEST=GetMap&SERVICE=WMS&VERSION=1.3.0&FORMAT=image/png&STYLES=default&TRANSPARENT=true&LAYERS=dmr4g:GrayscaleHillshade&WIDTH=256&HEIGHT=256&CRS=EPSG:3857&BBOX=1878516.4071364924,6574807.42497772,2191602.474992574,6887893.492833802'
-      expect()
-    });
+    // Add more test cases as needed
+  });
+
+  describe('#encodeUrlPathAndParams()', function() {
+    it('should encode slashes, commas and colons in the search params', function() {
+      const url = '/https://ags.cuzk.cz/arcgis2/services/dmr4g/ImageServer/WMSServer?REQUEST=GetMap&SERVICE=WMS&VERSION=1.3.0&FORMAT=image/png&STYLES=default&TRANSPARENT=true&LAYERS=dmr4g:GrayscaleHillshade&WIDTH=256&HEIGHT=256&CRS=EPSG:3857&BBOX=1878516.4071364924,6574807.42497772,2191602.474992574,6887893.492833802';
+      const safeUrl = encodeUrlPathAndParams(url);
+      expect(safeUrl).to.exist;
+      expect(safeUrl).to.equal('/https://ags.cuzk.cz/arcgis2/services/dmr4g/ImageServer/WMSServer?REQUEST=GetMap&SERVICE=WMS&VERSION=1.3.0&FORMAT=image%2Fpng&STYLES=default&TRANSPARENT=true&LAYERS=dmr4g%3AGrayscaleHillshade&WIDTH=256&HEIGHT=256&CRS=EPSG%3A3857&BBOX=1878516.4071364924%2C6574807.42497772%2C2191602.474992574%2C6887893.492833802');
+    })
+
+    it('should encode letter ň in Plzeň in the URL path', function() {
+      const url = '/https://ags.plzen.eu/arcgis/rest/services/GIS_Historicke/GIS_HIS_Plzeň_1926/MapServer?f=json';
+      const safeUrl = encodeUrlPathAndParams(url);
+      expect(safeUrl).to.exist;
+      expect(safeUrl).to.equal('/https://ags.plzen.eu/arcgis/rest/services/GIS_Historicke/GIS_HIS_Plze%C5%88_1926/MapServer?f=json');
+    })
+
     // Add more test cases as needed
   });
 });
