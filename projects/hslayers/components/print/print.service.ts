@@ -128,7 +128,10 @@ export class HsPrintService {
         ctx.drawImage(lCanvas, legendPos[0], legendPos[1]);
       }
     }
-    if (print.imprintObj?.author || print.imprintObj?.abstract) {
+    if (
+      (print.imprintObj?.include && print.imprintObj?.author) ||
+      print.imprintObj?.abstract
+    ) {
       const iCanvas = await this.hsPrintImprintService.drawImprintCanvas(
         print.imprintObj,
       );
