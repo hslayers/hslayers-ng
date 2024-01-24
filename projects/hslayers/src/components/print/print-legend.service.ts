@@ -79,7 +79,7 @@ export class HsPrintLegendService extends PrintLegendParams {
   async drawLegendCanvas(legendObj: LegendObj): Promise<HTMLCanvasElement> {
     const canvas = document.createElement('canvas');
     const ctx = canvas.getContext('2d');
-    this.legendWidth = legendObj.width || 200; //Needs to have some default width if none is set
+    this.legendWidth = legendObj.width;
     const legendImages = await this.getLegendImages();
     if (legendImages?.length > 0) {
       const canvasHeight = legendImages
@@ -122,7 +122,7 @@ export class HsPrintLegendService extends PrintLegendParams {
     legendObj: LegendObj,
   ): void {
     const ctx = canvas.getContext('2d');
-    ctx.fillStyle = legendObj.bcColor || 'white';
+    ctx.fillStyle = legendObj.bcColor;
     ctx.rect(0, 0, canvas.width, canvas.height);
     ctx.fillRect(0, 0, canvas.width, canvas.height);
   }
