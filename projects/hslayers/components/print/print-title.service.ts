@@ -64,12 +64,6 @@ export class HsPrintTitleService {
     ctx: CanvasRenderingContext2D,
     textStyle: TextStyle,
   ): void {
-    if (!textStyle.textSize) {
-      textStyle.textSize = '30px';
-    }
-    if (!textStyle.fontFamily) {
-      textStyle.fontFamily = 'Times New Roman';
-    }
     ctx.font = textStyle.fontStyle.concat(
       ' ',
       textStyle.textSize,

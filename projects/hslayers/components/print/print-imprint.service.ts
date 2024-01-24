@@ -43,8 +43,8 @@ export class HsPrintImprintService {
    */
   private imprintToSvg(imprintObj: ImprintObj): string {
     const styles = this.getStyles(imprintObj.textStyle);
-    const height = imprintObj.height ?? 50;
-    const width = imprintObj.width ?? 150;
+    const height = imprintObj.height;
+    const width = imprintObj.width;
     const svgSource = `<svg xmlns='http://www.w3.org/2000/svg' width='${width}px' height='${height}px'>
             <foreignObject width='100%' height='100%'>
               <div xmlns='http://www.w3.org/1999/xhtml' style="${styles}">
@@ -70,17 +70,7 @@ export class HsPrintImprintService {
     } else {
       tmpStyle += 'text-align:center;';
     }
-    if (!textStyle.textSize) {
-      textStyle.textSize = '12px';
-    }
-    if (!textStyle.fontFamily) {
-      textStyle.fontFamily = 'Times New Roman';
-    }
-    if (textStyle.textColor) {
-      tmpStyle += `color: ${textStyle.textColor};`;
-    } else {
-      tmpStyle += `color:black;`;
-    }
+
     if (textStyle.bcColor) {
       tmpStyle += `background-color: ${textStyle.bcColor};`;
     }
