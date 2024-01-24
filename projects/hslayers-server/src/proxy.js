@@ -25,7 +25,6 @@ const cors_proxy = cors_anywhere.createServer({
 const GEONAMES_APIKEY = process.env.HS_GEONAMES_API_KEY || 'hslayersng';
 
 createServer((req, res) => {
-    console.log('🚀 ~ .createServer ~ req:', req.url, req.headers);
     try {
       if (req.url == '' || req.url == '/') {
         res.write('HSLayers server proxy<br />');
@@ -33,18 +32,9 @@ createServer((req, res) => {
         res.end();
       } else {
         req.url = decodeURIComponent(req.url);
+        req.url = encodeUrlPathAndParams(req.url);
         const [base, tld, pathAndQueryParams] = splitUrlAtTld(req.url);
-        console.log('🚀 ~ .createServer ~ base, tld, pathAndQueryParams:', base, tld, pathAndQueryParams);
-        const encodedPath = pathAndQueryParams.split('?')[0].split('/').map(segment => encodeURIComponent(segment))
         const params = parseQuerystring(pathAndQueryParams.split('?')[1]);
-        req.url =
-          base +
-          '.' +
-          tld +
-          encodedPath.join('/') +
-          (Object.keys(params).length == 0 ? '' : '?') +
-          encodeQuerystring(params);
-        console.log('🚀 ~ .createServer ~ req.url after process:', req.url);
         if (base.includes('api.geonames') && tld === 'org' && pathAndQueryParams.startsWith('searchJSON')) {
           if (
             typeof params.provider == 'undefined' ||
@@ -58,7 +48,6 @@ createServer((req, res) => {
         if (base.includes('api.openrouteservice') && tld == 'org') {
           req.headers.authorization = process.env.OPENROUTESERVICE_API_KEY;
         }
-
         cors_proxy.emit('request', req, res);
       }
     } catch (ex) {
@@ -92,7 +81,7 @@ function getIP() {
  * @param {string} url URL
  * @returns Array consisting of [domain, TLD+port, rest of the URL]
  */
-function splitUrlAtTld(url) {
+export const splitUrlAtTld = (url) => {
   // Regular expression to match the TLD with port (assuming it's a simple dot-based TLD)
   const tldWithPortRegex = /\.([a-zA-Z]{2,}|[0-9]{1,3})(?::\d+)?(?:\/|$)/;
 
@@ -107,7 +96,7 @@ function splitUrlAtTld(url) {
     const parts = url.split(tldWithPort);
 
     // Remove the leading dot from the TLD
-    const cleanedTLD = tldWithPort.slice(1);
+    const cleanedTLD = tldWithPort.slice(1).replace('/', '');
 
     return [
       parts[0], // Everything before the TLD with port
@@ -122,4 +111,23 @@ function splitUrlAtTld(url) {
       '',
     ];
   }
+}
+
+/**
+ * Takes a decoded URL, splits it into parts and encodes its path and search strings
+ * but leaves the host name untouched
+ * @param {string} url URL
+ * @returns partially encoded URL
+ */
+export const encodeUrlPathAndParams = (url) => {
+  const [base, tld, pathAndQueryParams] = splitUrlAtTld(url);
+  const encodedPath = pathAndQueryParams.split('?')[0].split('/').map(segment => encodeURIComponent(segment))
+  const params = parseQuerystring(pathAndQueryParams.split('?')[1]);
+  return base +
+    '.' +
+    tld +
+    '/' +
+    encodedPath.join('/') +
+    (Object.keys(params).length == 0 ? '' : '?') +
+    encodeQuerystring(params);
 }
