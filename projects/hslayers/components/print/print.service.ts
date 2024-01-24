@@ -100,7 +100,7 @@ export class HsPrintService {
           composition,
           tCanvas,
           print.titleObj.textStyle.posX,
-          print.titleObj.textStyle.posY ?? 'top',
+          print.titleObj.textStyle.posY,
         );
         ctx.drawImage(tCanvas, textPos[0], textPos[1]);
       }
@@ -122,8 +122,8 @@ export class HsPrintService {
         const legendPos = this.getChildPosition(
           composition,
           lCanvas,
-          print.legendObj.posX ?? 'right',
-          print.legendObj.posY ?? 'bottom',
+          print.legendObj.posX,
+          print.legendObj.posY,
         );
         ctx.drawImage(lCanvas, legendPos[0], legendPos[1]);
       }
@@ -139,8 +139,8 @@ export class HsPrintService {
         const imprintPos = this.getChildPosition(
           composition,
           iCanvas,
-          print.imprintObj.textStyle.posX ?? 'center',
-          print.imprintObj.textStyle.posY ?? 'bottom',
+          print.imprintObj.textStyle.posX,
+          print.imprintObj.textStyle.posY,
         );
         ctx.drawImage(iCanvas, imprintPos[0], imprintPos[1]);
       }

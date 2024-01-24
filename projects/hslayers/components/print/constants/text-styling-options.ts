@@ -36,7 +36,7 @@ export const TEXT_STYLING_OPTIONS = {
   textSizes: [
     '9px',
     '10px',
-    '13px',
+    '12px',
     '16px',
     '18px',
     '24px',
@@ -46,5 +46,7 @@ export const TEXT_STYLING_OPTIONS = {
     '46px',
     '48px',
     '72px',
+    '84px',
+    '96px',
   ],
 };
