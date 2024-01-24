@@ -19,7 +19,7 @@
   "main": "server.js",
   "type": "module",
   "engines": {
-    "node": "^14.17.0 || ^16.0.0 || >=18.0.0"
+    "node": "^16.0.0 || >=18.0.0"
   },
   "scripts": {
     "start": "node server.js",
@@ -29,17 +29,17 @@
     "hslayers-server": "./server.js"
   },
   "dependencies": {
-    "better-sqlite3": "^7.6.2",
+    "better-sqlite3": "^9.3.0",
     "connect-sqlite3": "^0.9.11",
     "cors": "^2.8.5",
     "cors-anywhere": "^0.4.4",
-    "dotenv": "^14.2.0",
+    "dotenv": "^16.4.0",
     "express": "^4.17.3",
     "express-session": "^1.17.2",
-    "got": "12.5.3",
+    "got": "^13.0.0",
     "http": "0.0.1-security",
     "http-proxy-middleware": "^2.0.1",
-    "passport": "^0.6.0",
+    "passport": "^0.7.0",
     "passport-oauth2": "^1.6.1",
     "passport-oauth2-middleware": "^1.0.3",
     "pug": "^3.0.2",
