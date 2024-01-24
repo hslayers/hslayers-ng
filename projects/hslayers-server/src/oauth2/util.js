@@ -1,4 +1,5 @@
 import 'dotenv/config';
+import { got } from 'got';
 
 export const addIncomingTimestamp = (req, res, next) => {
   req.incoming_timestamp = Date.now();
@@ -7,8 +8,7 @@ export const addIncomingTimestamp = (req, res, next) => {
 
 export const ensureUsername = async (access_token, profile) => {
   if (!profile['username']) {
-    const got = await import('got');
-    var response = await got.got.patch(`${process.env.LAYMAN_USER_PROFILE_URL}?adjust_username=true`, {
+    var response = await got.patch(`${process.env.LAYMAN_USER_PROFILE_URL}?adjust_username=true`, {
       responseType: 'json',
       headers: {
         'AuthorizationIssUrl': process.env.OAUTH2_AUTH_URL,
@@ -27,8 +27,7 @@ export const deleteUserSession = async (req) => {
     const user = req.session.passport.user;
 
     try {
-      const got = await import('got');
-      let response = await got.got.delete(process.env.LAYMAN_USER_PROFILE_URL, {
+      await got.delete(process.env.LAYMAN_USER_PROFILE_URL, {
         headers: getAuthenticationHeaders(user)
       });
 
@@ -47,7 +46,7 @@ const getAuthenticationHeaders = (user) => {
 };
 
 export const handleProxyRes = (proxyRes, req, res) => {
-  this.allowOrigin(proxyRes, req, res);
+  allowOrigin(proxyRes, req, res);
   res.statusMessage = proxyRes.statusMessage;
   res.status(proxyRes.statusCode);
 
@@ -82,6 +81,7 @@ export const handleProxyRes = (proxyRes, req, res) => {
   });
 };
 
+// eslint-disable-next-line no-unused-vars
 export const addAuthenticationHeaders = (proxyReq, req, res) => {
   if (req.session.passport && req.session.passport.user) {
     const user = req.session.passport.user;
@@ -93,6 +93,7 @@ export const addAuthenticationHeaders = (proxyReq, req, res) => {
   }
 };
 
+// eslint-disable-next-line no-unused-vars
 export const allowOrigin = (proxyRes, req, res) => {
   var whitelist = JSON.parse(process.env.CORS_WHITELIST);
   var origin = req.header('Origin');
