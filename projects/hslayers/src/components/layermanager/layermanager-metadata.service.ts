@@ -220,7 +220,7 @@ export class HsLayerManagerMetadataService {
     }
     this.setCapsExtent(
       this.hsAddDataUrlService.calcCombinedExtent(
-        layerObjs.map((lo) => this.getCapsExtent(lo)),
+        layerObjs.map((lo) => this.getCapsExtent(lo, layerCaps)),
       ),
       olLayer,
     );
@@ -279,7 +279,7 @@ export class HsLayerManagerMetadataService {
       });
     }
     this.collectLegend(layerObj, legends);
-    this.setCapsExtent(this.getCapsExtent(layerObj), olLayer);
+    this.setCapsExtent(this.getCapsExtent(layerObj, layerCaps), olLayer);
     return layerObj;
   }
 
@@ -331,14 +331,20 @@ export class HsLayerManagerMetadataService {
   /**
    * Helper used in to get usable extent from layers capabilities object
    */
-  private getCapsExtent(layerObj: any): Extent {
-    let extent = layerObj.EX_GeographicBoundingBox || layerObj.BoundingBox;
-    //If from BoundingBox picl one usable
-    extent = extent[0].crs
-      ? extent.find(
-          (e) => e.crs != 'CRS:84' && getProjection(layerObj.BoundingBox[0]),
-        )
-      : extent;
+  private getCapsExtent(layerObj: any, layerCaps: HsWmsLayer): Extent {
+    // Extent of selected layer or service in case its missing
+    let extent =
+      (layerObj.EX_GeographicBoundingBox || layerObj.BoundingBox) ??
+      (layerCaps.EX_GeographicBoundingBox || layerCaps.BoundingBox);
+    //If from BoundingBox pick one usable
+    extent = !extent
+      ? //In case extent could not be found
+        [-180, -90, 180, 90]
+      : extent[0].crs
+        ? extent.find(
+            (e) => e.crs != 'CRS:84' && getProjection(layerObj.BoundingBox[0]),
+          )
+        : extent;
     return transformExtent(
       //BoundingBox extent is obj with crs, extent, res props
       extent.extent ?? extent,
