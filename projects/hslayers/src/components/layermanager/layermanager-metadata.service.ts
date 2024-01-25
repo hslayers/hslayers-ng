@@ -332,7 +332,7 @@ export class HsLayerManagerMetadataService {
    * Helper used in to get usable extent from layers capabilities object
    */
   private getCapsExtent(layerObj: any, layerCaps: HsWmsLayer): Extent {
-    // Extent of selected layer or service in case its missing
+    // Extent of selected layer or service in case it's missing
     let extent =
       (layerObj.EX_GeographicBoundingBox || layerObj.BoundingBox) ??
       (layerCaps.EX_GeographicBoundingBox || layerCaps.BoundingBox);

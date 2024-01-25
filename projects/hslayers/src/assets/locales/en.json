@@ -314,7 +314,9 @@
     "on": "on",
     "off": "off",
     "Tile": "Tile",
-    "done": "Done"
+    "done": "Done",
+    "group": "group",
+    "separateLayers": "separate layers"
   },
   "COMPOSITIONS": {
     "addByAddress": "Add composition by address",

@@ -1,27 +1,40 @@
 <div [hidden]="!hsAddDataCommonService.showDetails || hsAddDataCommonService.loadingInfo">
   <div class="d-flex flex-column my-3 mb-2">
-    <div class="input-group"
+    <div class="input-group" *ngIf="data.group === true || type !== 'wms'"
       style="box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;">
       <span class="input-group-text control-label">{{'COMMON.title' | translateHs }}</span>
       <input class="form-control" name="baseTitle" [(ngModel)]="data.title" />
     </div>
 
-    <div class="d-flex flex-row justify-content-start align-items-baseline m-1 ">
-      {{'COMMON.addAs' | translateHs }}
-      <div class="btn-group ms-2 mt-2 ">
-        <button type="button" class="btn btn-sm btn-light btn-outline-secondary" (click)="data.base = true"
-          [ngClass]="{'active':data.base}">
-          {{'COMPOSITONKEYWORDS.Basemap' | translateHs }}
-        </button>
-        <button type="button" class="btn btn-sm btn-light btn-outline-secondary " (click)="data.base = false"
-          [ngClass]="{'active': !data.base}">
-          {{'COMMON.layer' | translateHs }}
-        </button>
+    <div class="hs-add-url-wms-addas d-flex flex-row justify-content-start align-items-baseline my-2">
+      <span class="control-label input-group-text">{{'COMMON.addAs' | translateHs }}</span>
+      <div class="d-flex flex-fill gap-2 justify-content-end align-items-center">
+        <div class="btn-group ">
+          <button type="button" class="btn btn-sm btn-outline-secondary" (click)="setBase(true)"
+            [ngClass]="{'active':data.base}">
+            {{'COMPOSITONKEYWORDS.Basemap' | translateHs }}
+          </button>
+          <button type="button" class="btn btn-sm btn-outline-secondary " (click)="setBase(false)"
+            [ngClass]="{'active': !data.base}">
+            {{'COMMON.layer' | translateHs }}
+          </button>
+        </div>
+        <div class="btn-group " *ngIf="type === 'wms'">
+          <button type="button" class="text-capitalize btn btn-sm btn-outline-secondary" (click)="data.group = true"
+            [ngClass]="{'active':data.group}">
+            {{'COMMON.group' | translateHs }}
+          </button>
+          <button type="button" class="text-capitalize btn btn-sm btn-outline-secondary " (click)="data.group = false"
+            [ngClass]="{'active': !data.group}" [disabled]="data.base === true">
+            {{'COMMON.separateLayers' | translateHs }}
+          </button>
+        </div>
       </div>
+
     </div>
   </div>
 
-  <button type="button" class="btn w-100 btn-outline-secondary dropdown-toggle dropdown-toggle-split"
+  <button type="button" class="btn w-100 btn-outline-secondary dropdown-toggle dropdown-toggle-split mb-2"
     (click)="advancedPanelVisible = !advancedPanelVisible">
     {{'COMMON.advancedOptions' | translateHs }}
   </button>
@@ -92,7 +105,6 @@
   <ng-container *ngIf="type === 'wms'">
     <hs-target-position [(addUnder)]="data.add_under"></hs-target-position>
   </ng-container>
-  <hr />
   <hs-layer-table [type]="type" [injectedService]="injectedService"> </hs-layer-table>
   <hs-url-add class="w-100" [injectedService]="injectedService" [services]="data.services" [layers]="data.layers">
   </hs-url-add>
