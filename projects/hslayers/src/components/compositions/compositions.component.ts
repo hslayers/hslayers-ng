@@ -40,7 +40,7 @@ export class HsCompositionsComponent
     private hsCompositionsService: HsCompositionsService,
     private hsCompositionsParserService: HsCompositionsParserService,
     public hsLayoutService: HsLayoutService,
-    private hsConfig: HsConfig,
+    public hsConfig: HsConfig,
     private hsCompositionsMapService: HsCompositionsMapService,
     private hsDialogContainerService: HsDialogContainerService,
     public hsCompositionsCatalogueService: HsCompositionsCatalogueService,

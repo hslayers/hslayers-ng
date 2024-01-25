@@ -2,7 +2,8 @@
     [hidden]="(isVisible$ | async) === false" *ngIf="{layman: hsCommonLaymanService.layman$ | async } as ctx">
     <div class="hs-compositions-header">
         <hs-panel-header name="composition_browser" [panelTabs]="'COMPOSITIONS'">
-            <button mainButton class="btn btn-sm btn-outline-primary border-0 align-items-center d-flex gap-2"
+            <button mainButton [disabled]="!hsConfig.panelsEnabled['saveMap']"
+                class="btn btn-sm btn-outline-primary border-0 align-items-center d-flex gap-2"
                 (click)="openSaveMapPanel()"> {{'PANEL_HEADER.SAVECOMPOSITION' | translateHs}}
                 <i class="glyphicon icon-save-floppy"></i>
             </button>
