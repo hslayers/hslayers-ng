@@ -1,7 +1,10 @@
 import {Injectable} from '@angular/core';
 
 import {HsLayerDescriptor} from 'hslayers-ng/types';
-import {HsLayerManagerService} from 'hslayers-ng/shared/layer-manager'
+import {
+  HsLayerManagerService,
+  HsLayerManagerVisiblityService,
+} from 'hslayers-ng/shared/layer-manager';
 import {HsLayerSelectorService} from 'hslayers-ng/shared/layer-manager';
 import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
 import {getCachedCapabilities} from 'hslayers-ng/common/extensions';
@@ -22,16 +25,17 @@ export class HsLayerEditorSublayerService {
 
   constructor(
     public HsLayerManagerService: HsLayerManagerService,
-    public HsLayerSelectorService: HsLayerSelectorService,
     private HsLayerUtilsService: HsLayerUtilsService,
+    private hsLayerSelectorService: HsLayerSelectorService,
+    private hsLayerManagerVisiblityService: HsLayerManagerVisiblityService,
   ) {
-    this.HsLayerSelectorService.layerSelected.subscribe((layer) => {
+    this.hsLayerSelectorService.layerSelected.subscribe((layer) => {
       this.resetSublayers(layer);
     });
   }
 
   resetSublayers(layer: HsLayerDescriptor) {
-    if (this.HsLayerManagerService.currentLayer) {
+    if (this.hsLayerSelectorService.currentLayer) {
       this.checkedSubLayers = layer.checkedSubLayers;
       this.checkedSubLayersTmp = layer.checkedSubLayersTmp;
 
@@ -41,25 +45,25 @@ export class HsLayerEditorSublayerService {
   }
   hasSubLayers(): boolean {
     const subLayers = getCachedCapabilities(
-      this.HsLayerManagerService.currentLayer.layer,
+      this.hsLayerSelectorService.currentLayer.layer,
     )?.Layer;
     return subLayers != undefined && subLayers.length > 0;
   }
 
   getSubLayers() {
-    if (this.HsLayerManagerService.currentLayer === null) {
+    if (this.hsLayerSelectorService.currentLayer === null) {
       return;
     }
     this.populateSubLayers();
 
     return (
-      getCachedCapabilities(this.HsLayerManagerService.currentLayer.layer)
+      getCachedCapabilities(this.hsLayerSelectorService.currentLayer.layer)
         ?.Layer || []
     );
   }
 
   populateSubLayers() {
-    const wrapper = this.HsLayerManagerService.currentLayer;
+    const wrapper = this.hsLayerSelectorService.currentLayer;
     const layer = wrapper.layer;
     if (this.populatedLayers.includes(wrapper.uid)) {
       return;
@@ -98,7 +102,7 @@ export class HsLayerEditorSublayerService {
       this.withChildrenTmp = clone(this.withChildren);
       wrapper.withChildrenTmp = this.withChildrenTmp;
 
-      if (!this.HsLayerManagerService.currentLayer.visible) {
+      if (!this.hsLayerSelectorService.currentLayer.visible) {
         for (const dict of [this.checkedSubLayersTmp, this.withChildrenTmp]) {
           Object.keys(dict).forEach((v) => (dict[v] = true));
         }
@@ -107,7 +111,7 @@ export class HsLayerEditorSublayerService {
   }
 
   subLayerSelected(): void {
-    const layer = this.HsLayerManagerService.currentLayer;
+    const layer = this.hsLayerSelectorService.currentLayer;
     const params = this.HsLayerUtilsService.getLayerParams(layer.layer);
     params.LAYERS = Object.keys(this.checkedSubLayers)
       .filter((key) => this.checkedSubLayers[key] && !this.withChildren[key])
@@ -116,11 +120,17 @@ export class HsLayerEditorSublayerService {
       params.LAYERS = `show:${params.LAYERS}`;
     }
     if (params.LAYERS == '' || params.LAYERS == 'show:') {
-      this.HsLayerManagerService.changeLayerVisibility(!layer.visible, layer);
+      this.hsLayerManagerVisiblityService.changeLayerVisibility(
+        !layer.visible,
+        layer,
+      );
       return;
     }
     if (layer.visible == false) {
-      this.HsLayerManagerService.changeLayerVisibility(!layer.visible, layer);
+      this.hsLayerManagerVisiblityService.changeLayerVisibility(
+        !layer.visible,
+        layer,
+      );
     }
     this.HsLayerUtilsService.updateLayerParams(layer.layer, params);
   }

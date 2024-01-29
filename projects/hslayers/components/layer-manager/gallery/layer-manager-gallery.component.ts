@@ -5,7 +5,11 @@ import {NgbDropdown, NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
 
 import {HsGuiOverlayBaseComponent} from 'hslayers-ng/common/panels';
 import {HsLayerDescriptor} from 'hslayers-ng/types';
-import {HsLayerManagerService} from 'hslayers-ng/shared/layer-manager';
+import {
+  HsLayerManagerService,
+  HsLayerManagerVisiblityService,
+  HsLayerSelectorService,
+} from 'hslayers-ng/shared/layer-manager';
 import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
 import {HsLayoutService} from 'hslayers-ng/shared/layout';
 import {TranslateCustomPipe} from 'hslayers-ng/shared/language';
@@ -26,7 +30,9 @@ export class HsLayerManagerGalleryComponent extends HsGuiOverlayBaseComponent {
   constructor(
     public hsLayoutService: HsLayoutService,
     public hsLayerManagerService: HsLayerManagerService,
+    private hsLayerSelectorService: HsLayerSelectorService,
     public hsLayerUtilsService: HsLayerUtilsService,
+    public hsLayerManagerVisiblityService: HsLayerManagerVisiblityService,
   ) {
     super(hsLayoutService);
   }
@@ -42,19 +48,22 @@ export class HsLayerManagerGalleryComponent extends HsGuiOverlayBaseComponent {
   toggleBasemap(layer?: HsLayerDescriptor): void {
     if (layer) {
       if (!layer.active) {
-        this.hsLayerManagerService.changeBaseLayerVisibility(true, layer);
+        this.hsLayerManagerVisiblityService.changeBaseLayerVisibility(
+          true,
+          layer,
+        );
         this.dropdown.close();
         this.hsLayerManagerService.menuExpanded = false;
-        const olLayer = this.hsLayerManagerService.currentLayer?.layer;
+        const olLayer = this.hsLayerSelectorService.currentLayer?.layer;
         if (!olLayer || getBase(olLayer)) {
-          this.hsLayerManagerService.currentLayer = null;
+          this.hsLayerSelectorService.currentLayer = null;
         }
       }
     } else {
       this.dropdown.close();
-      this.hsLayerManagerService.currentLayer = null;
+      this.hsLayerSelectorService.currentLayer = null;
 
-      this.hsLayerManagerService.changeBaseLayerVisibility(null, null);
+      this.hsLayerManagerVisiblityService.changeBaseLayerVisibility(null, null);
     }
   }
   expandMenu(layer: HsLayerDescriptor): void {

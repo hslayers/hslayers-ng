@@ -21,8 +21,12 @@ import {HsLayerEditorDimensionsComponent} from '../dimensions/layer-editor-dimen
 import {HsLayerEditorService} from './layer-editor.service';
 import {HsLayerEditorSublayerService} from './layer-editor-sub-layer.service';
 import {HsLayerEditorWidgetContainerService} from '../widgets/layer-editor-widget-container.service';
+import {
+  HsLayerManagerCopyLayerService,
+  HsLayerManagerService,
+} from 'hslayers-ng/shared/layer-manager';
 import {HsLayerManagerRemoveLayerDialogComponent} from '../dialogs/remove-layer-dialog.component';
-import {HsLayerManagerService} from 'hslayers-ng/shared/layer-manager';
+import {HsLayerManagerUtilsService} from 'hslayers-ng/shared/layer-manager';
 import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
 import {HsLayoutService} from 'hslayers-ng/shared/layout';
 import {HsLegendWidgetComponent} from '../widgets/legend-widget.component';
@@ -76,6 +80,8 @@ export class HsLayerEditorComponent {
     public HsDialogContainerService: HsDialogContainerService,
     public HsLanguageService: HsLanguageService,
     public hsWidgetContainerService: HsLayerEditorWidgetContainerService,
+    private hsLayerManagerUtilsService: HsLayerManagerUtilsService,
+    private hsLayerManagerCopyLayerService: HsLayerManagerCopyLayerService,
   ) {}
 
   createWidgets() {
@@ -117,7 +123,7 @@ export class HsLayerEditorComponent {
     );
     const confirmed = await dialog.waitResult();
     if (confirmed == 'yes') {
-      return this.HsLayerManagerService.saveGeoJson();
+      return this.hsLayerManagerUtilsService.saveGeoJson();
     }
   }
 
@@ -262,7 +268,7 @@ export class HsLayerEditorComponent {
     );
     const result = await dialog.waitResult();
     if (result.confirmed == 'yes') {
-      return this.HsLayerManagerService.copyLayer(result.layerTitle);
+      return this.hsLayerManagerCopyLayerService.copyLayer(result.layerTitle);
     }
   }
 }
