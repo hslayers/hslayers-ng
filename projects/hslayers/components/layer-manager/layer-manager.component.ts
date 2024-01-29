@@ -178,25 +178,12 @@ export class HsLayerManagerComponent
         }
       });
 
-    this.hsMapService.loaded().then((map) => {
-      this.hsLayerManagerService.changeResolutionHandler = map.getView().on(
-        'change:resolution',
-        this.hsUtilsService.debounce(
-          (e) => this.hsLayerManagerService.resolutionChangeDebounceCallback(),
-          200,
-          false,
-          this,
-        ),
-      );
-    });
-
     this.hsEventBusService.mapResets.pipe(takeUntil(this.end)).subscribe(() => {
       this.composition_id = null;
     });
   }
 
   ngOnDestroy(): void {
-    this.hsLayerManagerService.destroy();
     this.end.next();
     this.end.complete();
   }

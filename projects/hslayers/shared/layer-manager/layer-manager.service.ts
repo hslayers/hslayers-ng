@@ -9,9 +9,11 @@ import {
   Tile,
   Vector as VectorLayer,
 } from 'ol/layer';
+import {Map} from 'ol';
 import {Source} from 'ol/source';
 import {unByKey} from 'ol/Observable';
 
+import {EventsKey} from 'ol/events';
 import {HS_PRMS} from 'hslayers-ng/components/share';
 import {HsAddDataOwsService} from 'hslayers-ng/shared/add-data';
 import {HsBaseLayerDescriptor} from 'hslayers-ng/types';
@@ -115,9 +117,8 @@ export class HsLayerManagerService {
   zIndexValue = 0;
   lastProgressUpdate: number;
   layerEditorElement: any;
-  changeResolutionHandler;
-  addLayerHandler;
-  removeLayerHandler;
+
+  mapEventHandlers: EventsKey[];
   /**
    * Property for pointer to main map object
    */
@@ -164,14 +165,7 @@ export class HsLayerManagerService {
     );
 
     this.hsMapService.loaded().then(async (map) => {
-      map.getLayers().on('add', (e) => {
-        this.applyZIndex(e.element as Layer<Source>, true);
-        if (getShowInLayerManager(e.element) == false) {
-          return;
-        }
-        this.layerAdded(e as any, getFromBaseComposition(e.element));
-      });
-      map.getLayers().on('remove', (e) => this.layerRemoved(e as any));
+      this.setupMapEventHandlers(map);
 
       for (const lyr of map.getLayers().getArray()) {
         this.applyZIndex(lyr as Layer<Source>);
@@ -182,6 +176,7 @@ export class HsLayerManagerService {
           true,
         );
       }
+
       this.sortFoldersByZ();
       this.sortLayersByZ(this.data.layers);
       this.hsEventBusService.layerManagerUpdates.next(null);
@@ -191,14 +186,43 @@ export class HsLayerManagerService {
   }
 
   /**
-   * UnBind event listeners created when layermanager component is created
-   * Event handlers are stored in service so they are accessible but should be managed
-   * by lifecycle of component
+   * UnBind event listeners
    */
   destroy(): void {
-    unByKey(this.changeResolutionHandler);
-    unByKey(this.addLayerHandler);
-    unByKey(this.removeLayerHandler);
+    for (const handler of this.mapEventHandlers) {
+      unByKey(handler);
+    }
+  }
+
+  /**
+   * Setup map-event handlers and store their keys in an array
+   */
+  private setupMapEventHandlers(map: Map) {
+    const onLayerAddition = map.getLayers().on('add', (e) => {
+      this.applyZIndex(e.element as Layer<Source>, true);
+      if (getShowInLayerManager(e.element) == false) {
+        return;
+      }
+      this.layerAdded(e as any, getFromBaseComposition(e.element));
+    });
+    const onLayerRemove = map
+      .getLayers()
+      .on('remove', (e) => this.layerRemoved(e as any));
+
+    const onResolutionChange = map.getView().on(
+      'change:resolution',
+      this.hsUtilsService.debounce(
+        (e) => this.resolutionChangeDebounceCallback(),
+        200,
+        false,
+        this,
+      ),
+    );
+    this.mapEventHandlers = [
+      onLayerAddition,
+      onLayerRemove,
+      onResolutionChange,
+    ];
   }
 
   /**
