@@ -1,9 +1,7 @@
 import {DomSanitizer, SafeHtml} from '@angular/platform-browser';
 import {Injectable, NgZone} from '@angular/core';
 
-import {Cluster, ImageWMS, Source, TileArcGISRest, TileWMS} from 'ol/source';
 import {CollectionEvent} from 'ol/Collection';
-import {GeoJSON} from 'ol/format';
 import {
   Group,
   Image as ImageLayer,
@@ -11,7 +9,7 @@ import {
   Tile,
   Vector as VectorLayer,
 } from 'ol/layer';
-import {Vector as VectorSource} from 'ol/source';
+import {Source} from 'ol/source';
 import {unByKey} from 'ol/Observable';
 
 import {HS_PRMS} from 'hslayers-ng/components/share';
@@ -25,6 +23,8 @@ import {HsLanguageService} from 'hslayers-ng/shared/language';
 import {HsLayerDescriptor, HsLayerLoadProgress} from 'hslayers-ng/types';
 import {HsLayerEditorVectorLayerService} from './layer-editor-vector-layer.service';
 import {HsLayerManagerMetadataService} from './layer-manager-metadata.service';
+import {HsLayerManagerUtilsService} from './layer-manager-utils.service';
+import {HsLayerManagerVisiblityService} from './layer-manager-visiblity.service';
 import {HsLayerSelectorService} from './layer-selector.service';
 import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
 import {HsLayoutService} from 'hslayers-ng/shared/layout';
@@ -37,16 +37,14 @@ import {HsUtilsService} from 'hslayers-ng/shared/utils';
 import {
   SHOW_IN_LAYER_MANAGER,
   getAbstract,
-  getActive,
   getBase,
   getCachedCapabilities,
   getCluster,
-  getExclusive,
+  getFromBaseComposition,
   getFromComposition,
   getGreyscale,
   getLegends,
   getName,
-  getOrigLayers,
   getPath,
   getQueryCapabilities,
   getRemovable,
@@ -59,16 +57,13 @@ import {
   setName,
   setOrigLayers,
   setPath,
-  setSubLayers,
-  setTitle,
 } from 'hslayers-ng/common/extensions';
 
-class HsLayermanagerDataObject {
+export class HsLayermanagerDataObject {
   folders: any;
   layers: HsLayerDescriptor[];
   baselayers: HsBaseLayerDescriptor[];
   terrainlayers: any[];
-  baselayersVisible: boolean;
   baselayer?: string;
   box_layers?: Group[];
   filter: string;
@@ -106,11 +101,6 @@ class HsLayermanagerDataObject {
      * @public
      */
     this.terrainlayers = [];
-    /**
-     * Store if baselayers are visible (more precisely one of baselayers)
-     * @public
-     */
-    this.baselayersVisible = true;
     this.filter = '';
   }
 }
@@ -121,10 +111,7 @@ class HsLayermanagerDataObject {
 export class HsLayerManagerService {
   data = new HsLayermanagerDataObject();
   timer: any;
-  currentLayer: HsLayerDescriptor;
-  composition_id: string;
   menuExpanded = false;
-  currentResolution: number;
   zIndexValue = 0;
   lastProgressUpdate: number;
   layerEditorElement: any;
@@ -155,7 +142,11 @@ export class HsLayerManagerService {
     public hsUtilsService: HsUtilsService,
     public sanitizer: DomSanitizer,
     private zone: NgZone,
+    private hsLayerManagerUtilsService: HsLayerManagerUtilsService,
+    private hsLayerManagerVisiblityService: HsLayerManagerVisiblityService,
   ) {
+    //Keeps 'data' object intact and in one place while allowing to split method between more services
+    this.hsLayerManagerVisiblityService.data = this.data;
     this.hsEventBusService.layerManagerUpdates.subscribe((layer) => {
       this.refreshLists();
     });
@@ -173,6 +164,15 @@ export class HsLayerManagerService {
     );
 
     this.hsMapService.loaded().then(async (map) => {
+      map.getLayers().on('add', (e) => {
+        this.applyZIndex(e.element as Layer<Source>, true);
+        if (getShowInLayerManager(e.element) == false) {
+          return;
+        }
+        this.layerAdded(e as any, getFromBaseComposition(e.element));
+      });
+      map.getLayers().on('remove', (e) => this.layerRemoved(e as any));
+
       for (const lyr of map.getLayers().getArray()) {
         this.applyZIndex(lyr as Layer<Source>);
         await this.layerAdded(
@@ -188,6 +188,17 @@ export class HsLayerManagerService {
       this.toggleEditLayerByUrlParam();
       this.boxLayersInit();
     });
+  }
+
+  /**
+   * UnBind event listeners created when layermanager component is created
+   * Event handlers are stored in service so they are accessible but should be managed
+   * by lifecycle of component
+   */
+  destroy(): void {
+    unByKey(this.changeResolutionHandler);
+    unByKey(this.addLayerHandler);
+    unByKey(this.removeLayerHandler);
   }
 
   /**
@@ -207,9 +218,11 @@ export class HsLayerManagerService {
     suspendEvents?: boolean,
   ): Promise<void> {
     const layer = e.element;
-    this.checkLayerHealth(layer);
+    this.hsLayerManagerUtilsService.checkLayerHealth(layer);
     const showInLayerManager = getShowInLayerManager(layer) ?? true;
-    layer.on('change:visible', (e) => this.layerVisibilityChanged(e));
+    layer.on('change:visible', (e) =>
+      this.hsLayerManagerVisiblityService.layerVisibilityChanged(e),
+    );
     if (
       this.hsLayerUtilsService.isLayerVectorLayer(layer) &&
       getCluster(layer)
@@ -232,15 +245,16 @@ export class HsLayerManagerService {
       title: this.hsLayerUtilsService.getLayerTitle(layer),
       abstract: getAbstract(layer),
       layer,
-      grayed: !this.isLayerInResolutionInterval(layer),
+      grayed:
+        !this.hsLayerManagerVisiblityService.isLayerInResolutionInterval(layer),
       visible: layer.getVisible(),
       showInLayerManager,
       uid: this.hsUtilsService.generateUuid(),
       idString() {
         return 'layer' + (this.coded_path || '') + (this.uid || '');
       },
-      type: this.getLayerSourceType(layer),
-      source: this.getLayerSourceUrl(layer),
+      type: this.hsLayerManagerUtilsService.getLayerSourceType(layer),
+      source: this.hsLayerManagerUtilsService.getLayerSourceUrl(layer),
     };
     this.loadingEvents(layerDescriptor);
     layerDescriptor.trackBy = `${layerDescriptor.uid} ${layerDescriptor.position}`;
@@ -282,7 +296,10 @@ export class HsLayerManagerService {
         que.push(async (cb) => {
           try {
             await this.hsLayerManagerMetadata.fillMetadata(layerDescriptor);
-            layerDescriptor.grayed = !this.isLayerInResolutionInterval(layer);
+            layerDescriptor.grayed =
+              !this.hsLayerManagerVisiblityService.isLayerInResolutionInterval(
+                layer,
+              );
             cb();
           } catch (err) {
             cb(err);
@@ -292,9 +309,13 @@ export class HsLayerManagerService {
     } else {
       layerDescriptor.active = layer.getVisible();
       if (layerDescriptor.active) {
-        this.changeBaseLayerVisibility(true, layerDescriptor);
+        this.hsLayerManagerVisiblityService.changeBaseLayerVisibility(
+          true,
+          layerDescriptor,
+        );
       }
-      layerDescriptor.thumbnail = this.getImage(layer);
+      layerDescriptor.thumbnail =
+        this.hsLayerManagerUtilsService.getImage(layer);
       this.data.baselayers.push(<HsBaseLayerDescriptor>layerDescriptor);
       //Composition layers are already set up using ol.layer.className
       if (getGreyscale(layer) && !getFromComposition(layer)) {
@@ -318,105 +339,6 @@ export class HsLayerManagerService {
       this.hsEventBusService.layerAdditions.next(layerDescriptor);
       this.hsEventBusService.layerManagerUpdates.next(layer);
       this.hsEventBusService.compositionEdits.next();
-    }
-  }
-
-  /**
-   * Triage of layer source type and format.
-   * Only the commonly used values are listed here, it shall be probably extended in the future.
-   * @returns Short description of source type: 'WMS', 'XYZ', 'vector (GeoJSON)' etc.
-   */
-  getLayerSourceType(layer: Layer<Source>): string {
-    if (this.hsLayerUtilsService.isLayerKMLSource(layer)) {
-      return `vector (KML)`;
-    }
-    if (this.hsLayerUtilsService.isLayerGPXSource(layer)) {
-      return `vector (GPX)`;
-    }
-    if (this.hsLayerUtilsService.isLayerGeoJSONSource(layer)) {
-      return `vector (GeoJSON)`;
-    }
-    if (this.hsLayerUtilsService.isLayerTopoJSONSource(layer)) {
-      return `vector (TopoJSON)`;
-    }
-    if (this.hsLayerUtilsService.isLayerVectorLayer(layer)) {
-      return 'vector';
-    }
-    if (this.hsLayerUtilsService.isLayerWMTS(layer)) {
-      return 'WMTS';
-    }
-    if (this.hsLayerUtilsService.isLayerWMS(layer)) {
-      return 'WMS';
-    }
-    if (this.hsLayerUtilsService.isLayerXYZ(layer)) {
-      return 'XYZ';
-    }
-    if (this.hsLayerUtilsService.isLayerArcgis(layer)) {
-      return 'ArcGIS';
-    }
-
-    if (this.hsLayerUtilsService.isLayerIDW(layer)) {
-      return 'IDW';
-    }
-    this.hsLog.warn(
-      `Cannot decide a type of source of layer ${getTitle(layer)}`,
-    );
-    return 'unknown type';
-  }
-
-  /**
-   * Gets the URL provided in the layer's source, if it is not a data blob or undefined
-   * @returns URL provided in the layer's source or 'memory'
-   */
-  getLayerSourceUrl(layer: Layer<Source>): string {
-    const url = this.hsLayerUtilsService.getURL(layer)?.split('?')[0]; //better stripe out any URL params
-    if (!url || url.startsWith('data:')) {
-      return 'memory';
-    }
-    return url;
-  }
-
-  /**
-   * Function for adding baselayer thumbnail visible in basemap gallery.
-   * @param layer - Base layer added to map
-   */
-  getImage(layer: Layer<Source>): string {
-    const thumbnail = getThumbnail(layer);
-    if (thumbnail) {
-      if (thumbnail.length > 10) {
-        return thumbnail;
-      } else {
-        return this.hsConfig.assetsPath + 'img/' + thumbnail;
-      }
-    } else {
-      return this.hsConfig.assetsPath + 'img/default.png';
-    }
-  }
-
-  checkLayerHealth(layer: Layer<Source>): void {
-    if (this.isWms(layer)) {
-      if (this.hsLayerUtilsService.getLayerParams(layer).LAYERS == undefined) {
-        this.hsLog.warn('Layer', layer, 'is missing LAYERS parameter');
-      }
-    }
-  }
-
-  layerVisibilityChanged(e): void {
-    if (getBase(e.target) != true) {
-      for (const layer of this.data.layers) {
-        if (layer.layer == e.target) {
-          layer.visible = e.target.getVisible();
-          break;
-        }
-      }
-    } else {
-      for (const baseLayer of this.data.baselayers) {
-        if (baseLayer.layer == e.target) {
-          baseLayer.active = e.target.getVisible();
-        } else {
-          baseLayer.active = false;
-        }
-      }
     }
   }
 
@@ -654,118 +576,6 @@ export class HsLayerManagerService {
   }
 
   /**
-   * Change visibility of selected layer. If layer has exclusive setting, other layers from same group may be turned invisible
-   * @param visibility - Visibility layer should have
-   * @param layer - Selected layer - wrapped layer object (layer.layer expected)
-   */
-  changeLayerVisibility(visibility: boolean, layer: HsLayerDescriptor): void {
-    layer.layer.setVisible(visibility);
-    layer.visible = visibility;
-    layer.grayed = !this.isLayerInResolutionInterval(layer.layer);
-    //Set the other exclusive layers invisible - all or the ones with same path based on config
-    if (visibility && getExclusive(layer.layer) == true) {
-      for (const other_layer of this.data.layers) {
-        const pathExclusivity = this.hsConfig.pathExclusivity
-          ? getPath(other_layer.layer) == getPath(layer.layer)
-          : true;
-        if (
-          getExclusive(other_layer.layer) == true &&
-          other_layer != layer &&
-          pathExclusivity
-        ) {
-          other_layer.layer.setVisible(false);
-          other_layer.visible = false;
-        }
-      }
-    }
-    if (!visibility && this.hsUtilsService.instOf(layer.layer, VectorLayer)) {
-      this.hsEventBusService.LayerManagerLayerVisibilityChanges.next(layer);
-    }
-  }
-
-  /**
-   * Change visibility (on/off) of baselayers, only one baselayer may be visible
-   * @param $event - Info about the event change visibility event, used if visibility of only one layer is changed
-   * @param layer - Selected layer - wrapped layer object (layer.layer expected)
-   */
-  changeBaseLayerVisibility($event = null, layer = null): void {
-    if (layer === null || layer.layer != undefined) {
-      if (this.data.baselayersVisible == true) {
-        //*NOTE Currently breaking base layer visibility when loading from composition with custom base layer to
-        //other compositions without any base layer
-        //*TODO Rewrite this loop hell to more readable code
-        if ($event) {
-          //&& this.data.baselayer != layer.title
-          for (const baseLayer of this.data.baselayers) {
-            const isToggledLayer = baseLayer == layer;
-            if (baseLayer.layer) {
-              //Dont trigger change:visible event when isToggledLayer = false
-              baseLayer.layer.set('visible', isToggledLayer, !isToggledLayer);
-              baseLayer.visible = isToggledLayer;
-              baseLayer.active = isToggledLayer;
-              if (!isToggledLayer) {
-                baseLayer.galleryMiniMenu = false;
-              }
-            }
-          }
-        } else {
-          this.data.baselayersVisible = false;
-          for (const baseLayer of this.data.baselayers) {
-            baseLayer.layer.setVisible(false);
-            baseLayer.galleryMiniMenu = false;
-          }
-        }
-      } else {
-        if ($event) {
-          layer.active = true;
-          for (const baseLayer of this.data.baselayers) {
-            const isToggledLayer = baseLayer == layer;
-            if (isToggledLayer) {
-              baseLayer.layer.setVisible(true);
-            }
-            baseLayer.active = isToggledLayer;
-            baseLayer.visible = isToggledLayer;
-          }
-        } else {
-          for (const baseLayer of this.data.baselayers) {
-            if (baseLayer.visible == true) {
-              baseLayer.layer.setVisible(true);
-            }
-          }
-        }
-        this.data.baselayersVisible = true;
-      }
-    } else {
-      for (const baseLayer of this.data.baselayers) {
-        if (baseLayer.type != undefined && baseLayer.type == 'terrain') {
-          baseLayer.visible = baseLayer == layer;
-          baseLayer.active = baseLayer.visible;
-        }
-      }
-    }
-    this.hsEventBusService.LayerManagerBaseLayerVisibilityChanges.next(layer);
-  }
-
-  /**
-   * Change visibility (on/off) of baselayers, only one baselayer may be visible
-   * @param $event - Info about the event change visibility event, used if visibility of only one layer is changed
-   * @param layer - Selected layer - wrapped layer object (layer.layer expected)
-   */
-  changeTerrainLayerVisibility($event, layer): void {
-    for (let i = 0; i < this.data.terrainlayers.length; i++) {
-      if (
-        this.data.terrainlayers[i].type != undefined &&
-        this.data.terrainlayers[i].type == 'terrain'
-      ) {
-        this.data.terrainlayers[i].visible =
-          this.data.terrainlayers[i] == layer;
-        this.data.terrainlayers[i].active = this.data.terrainlayers[i].visible;
-      }
-    }
-    this.hsEventBusService.LayerManagerBaseLayerVisibilityChanges.next(layer);
-  }
-
-  /**
    * Remove all non-base layers that were added to the map by user.
    * Doesn't remove layers added through app config (In case we want it to be 'removable', it can be set to true in the config.)
    * (PRIVATE)
@@ -793,30 +603,6 @@ export class HsLayerManagerService {
     }
     this.hsDrawService.addedLayersRemoved = true;
     this.hsDrawService.fillDrawableLayers();
-  }
-
-  /**
-   * Show all layers of particular layer group (when groups are defined)
-   * @param theme - Group layer to activate
-   */
-  activateTheme(theme: Group): void {
-    let switchOn = true;
-    if (getActive(theme) == true) {
-      switchOn = false;
-    }
-    setActive(theme, switchOn);
-    let baseSwitched = false;
-    theme.setVisible(switchOn);
-    for (const layer of theme.get('layers')) {
-      if (getBase(layer) == true && !baseSwitched) {
-        this.changeBaseLayerVisibility(null, null);
-        baseSwitched = true;
-      } else if (getBase(layer) == true) {
-        return;
-      } else {
-        layer.setVisible(switchOn);
-      }
-    }
   }
 
   /**
@@ -947,29 +733,6 @@ export class HsLayerManagerService {
   }
 
   /**
-   * Checks if given layer is a WMS layer
-   */
-  isWms(layer: Layer<Source>): boolean {
-    return (
-      this.hsUtilsService.instOf(layer.getSource(), TileWMS) ||
-      this.hsUtilsService.instOf(layer.getSource(), ImageWMS) ||
-      this.hsUtilsService.instOf(layer.getSource(), TileArcGISRest)
-    );
-  }
-
-  /**
-   * Test if layer (WMS) resolution is within map resolution interval
-   * @param lyr - Selected layer
-   */
-  isLayerInResolutionInterval(lyr: Layer<Source>): boolean {
-    const cur_res = this.hsMapService.getMap().getView().getResolution();
-    this.currentResolution = cur_res;
-    return (
-      lyr.getMinResolution() <= cur_res && cur_res <= lyr.getMaxResolution()
-    );
-  }
-
-  /**
    * Toggles Additional information panel for current layer.
    * @param layer - Selected layer (HsLayerManagerService.currentLayer)
    * @param toToggle - Part of layer editor to be toggled
@@ -988,7 +751,7 @@ export class HsLayerManagerService {
     if (toToggle == 'sublayers' && layer.hasSublayers != true) {
       return;
     }
-    if (this.currentLayer != layer) {
+    if (this.hsLayerSelectorService.currentLayer != layer) {
       this.toggleCurrentLayer(layer);
       if (this.menuExpanded) {
         this.menuExpanded = false;
@@ -1007,10 +770,10 @@ export class HsLayerManagerService {
    * @param layer - Selected layer to edit or view - Wrapped layer object
    */
   toggleCurrentLayer(layer: HsLayerDescriptor): void | false {
-    if (this.currentLayer == layer) {
+    if (this.hsLayerSelectorService.currentLayer === layer) {
       layer.sublayers = false;
       layer.settings = false;
-      this.currentLayer = null;
+      this.hsLayerSelectorService.select(null);
       this.updateGetParam(undefined);
     } else {
       this.setCurrentLayer(layer);
@@ -1020,7 +783,6 @@ export class HsLayerManagerService {
 
   setCurrentLayer(layer: HsLayerDescriptor): boolean {
     try {
-      this.currentLayer = layer;
       this.updateGetParam(layer.title);
       if (!layer.checkedSubLayers) {
         layer.checkedSubLayers = {};
@@ -1077,23 +839,13 @@ export class HsLayerManagerService {
     );
   }
 
-  /**
-   * UnBind event listeners created when layermanager component is created
-   * Event handlers are stored in service so they are accessible but should be managed
-   * by lifecycle of component
-   */
-  destroy(): void {
-    unByKey(this.changeResolutionHandler);
-    unByKey(this.addLayerHandler);
-    unByKey(this.removeLayerHandler);
-  }
-
   resolutionChangeDebounceCallback(): void {
     setTimeout(() => {
       for (let i = 0; i < this.data.layers.length; i++) {
-        const tmp = !this.isLayerInResolutionInterval(
-          this.data.layers[i].layer,
-        );
+        const tmp =
+          !this.hsLayerManagerVisiblityService.isLayerInResolutionInterval(
+            this.data.layers[i].layer,
+          );
         if (this.data.layers[i].grayed != tmp) {
           this.data.layers[i].grayed = tmp;
         }
@@ -1185,139 +937,5 @@ export class HsLayerManagerService {
     } else {
       return '';
     }
-  }
-
-  expandFilter(layer: HsLayerDescriptor, value): void {
-    layer.expandFilter = value;
-    this.currentLayer = layer;
-    this.hsLayerSelectorService.select(layer);
-  }
-
-  expandInfo(layer: HsLayerDescriptor, value): void {
-    layer.expandInfo = value;
-  }
-
-  /**
-    Generates downloadable geoJSON for vector layer.
-    Features are also transformed into the EPSG:4326 projection
-  */
-  saveGeoJson(): void {
-    const geojsonParser = new GeoJSON();
-    const olLayer = this.currentLayer.layer;
-    const geojson = geojsonParser.writeFeatures(
-      (this.hsLayerUtilsService.isLayerClustered(olLayer)
-        ? (olLayer.getSource() as Cluster).getSource()
-        : (olLayer.getSource() as VectorSource)
-      ).getFeatures(),
-      {
-        dataProjection: 'EPSG:4326',
-        featureProjection: this.hsMapService.getCurrentProj(),
-      },
-    );
-    const file = new Blob([geojson], {type: 'application/json'});
-
-    const a = document.createElement('a'),
-      url = URL.createObjectURL(file);
-    a.href = url;
-    a.download = getTitle(this.currentLayer.layer).replace(/\s/g, '');
-    document.body.appendChild(a);
-    a.click();
-    setTimeout(() => {
-      document.body.removeChild(a);
-      window.URL.revokeObjectURL(url);
-    }, 0);
-  }
-
-  /**
-    Creates a copy of the currentLayer
-  */
-  async copyLayer(newTitle: string): Promise<void> {
-    const copyTitle = this.createCopyTitle(newTitle);
-    if (this.hsLayerUtilsService.isLayerVectorLayer(this.currentLayer.layer)) {
-      this.copyVectorLayer(copyTitle);
-    } else {
-      const url = this.hsLayerUtilsService.getURL(this.currentLayer.layer);
-      let name = getCachedCapabilities(this.currentLayer.layer)?.Name;
-      if (!name || typeof name === 'number') {
-        name = getName(this.currentLayer.layer);
-      }
-      const layerCopy = await this.hsAddDataOwsService.connectToOWS({
-        type: this.getLayerSourceType(this.currentLayer.layer).toLowerCase(),
-        uri: url,
-        layer: name,
-        getOnly: true,
-      });
-      if (layerCopy[0]) {
-        layerCopy[0].setProperties(this.currentLayer.layer.getProperties());
-        setTitle(layerCopy[0], copyTitle);
-        //Currently ticked sub-layers are stored in LAYERS
-        const subLayers = this.hsLayerUtilsService.getLayerParams(
-          this.currentLayer.layer,
-        )?.LAYERS;
-        if (subLayers) {
-          setSubLayers(layerCopy[0], subLayers);
-        }
-        this.hsLayerUtilsService.updateLayerParams(
-          layerCopy[0],
-          this.hsLayerUtilsService.getLayerParams(this.currentLayer.layer),
-        );
-        // We don't want the default styles to be set which add-data panel does.
-        // Otherwise they won't be cleared if the original layer has undefined STYLES
-        // Also we have to set LAYERS to currentLayer original values for composition saving
-        this.hsLayerUtilsService.updateLayerParams(layerCopy[0], {
-          STYLES: null,
-          //Object.assign will ignore it if origLayers is undefined.
-          LAYERS: getOrigLayers(this.currentLayer.layer),
-        });
-        this.hsMapService.getMap().addLayer(layerCopy[0]);
-      }
-    }
-  }
-
-  /**
-    Creates a copy of the currentLayer if it is a vector layer
-  */
-  copyVectorLayer(newTitle: string): void {
-    let features;
-    if (this.hsLayerUtilsService.isLayerClustered(this.currentLayer.layer)) {
-      features = (this.currentLayer.layer.getSource() as Cluster)
-        .getSource()
-        ?.getFeatures();
-    } else {
-      features = (
-        this.currentLayer.layer.getSource() as VectorSource
-      )?.getFeatures();
-    }
-
-    const copiedLayer = new VectorLayer({
-      properties: this.currentLayer.layer.getProperties(),
-      source: new VectorSource({
-        features,
-      }),
-      style: (this.currentLayer.layer as VectorLayer<VectorSource>).getStyle(),
-    });
-    setTitle(copiedLayer, newTitle);
-    setName(copiedLayer, getName(this.currentLayer.layer));
-    this.hsMapService.addLayer(copiedLayer);
-  }
-
-  /**
-    Creates a new title for the copied layer
-  */
-  createCopyTitle(newTitle: string): string {
-    const layerName = getName(this.currentLayer.layer);
-    let copyTitle = getTitle(this.currentLayer.layer);
-    let numb = 0;
-    if (newTitle && newTitle !== copyTitle) {
-      copyTitle = newTitle;
-    } else {
-      const layerCopies = this.hsMapService
-        .getLayersArray()
-        .filter((l) => getName(l) == layerName);
-      numb = layerCopies !== undefined ? layerCopies.length : 0;
-      copyTitle = copyTitle.replace(/\([0-9]\)/g, '').trimEnd();
-      copyTitle = copyTitle + ` (${numb})`;
-    }
-    return copyTitle;
   }
 }

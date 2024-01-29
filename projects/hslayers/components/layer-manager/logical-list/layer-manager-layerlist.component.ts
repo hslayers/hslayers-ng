@@ -6,7 +6,11 @@ import {HsDimensionTimeService} from 'hslayers-ng/shared/get-capabilities';
 import {HsEventBusService} from 'hslayers-ng/shared/event-bus';
 import {HsLayerDescriptor} from 'hslayers-ng/types';
 import {HsLayerListService} from './layer-manager-layerlist.service';
-import {HsLayerManagerService} from 'hslayers-ng/shared/layer-manager'
+import {
+  HsLayerManagerService,
+  HsLayerManagerVisiblityService,
+  HsLayerSelectorService,
+} from 'hslayers-ng/shared/layer-manager';
 import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
 import {
   getDimension,
@@ -30,10 +34,12 @@ export class HsLayerListComponent implements OnInit, OnDestroy {
   constructor(
     public hsConfig: HsConfig,
     public hsLayerManagerService: HsLayerManagerService,
+    public hsLayerSelectorService: HsLayerSelectorService,
     public hsDimensionTimeService: HsDimensionTimeService,
     public hsEventBusService: HsEventBusService,
     public hsLayerUtilsService: HsLayerUtilsService,
     public hsLayerListService: HsLayerListService,
+    public hsLayerManagerVisiblityService: HsLayerManagerVisiblityService,
   ) {
     this.layerManagerUpdatesSubscription =
       this.hsEventBusService.layerManagerUpdates.subscribe(() => {

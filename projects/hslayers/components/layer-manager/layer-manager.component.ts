@@ -19,7 +19,11 @@ import {HsLanguageService} from 'hslayers-ng/shared/language';
 import {HsLayerDescriptor} from 'hslayers-ng/types';
 import {HsLayerListService} from './logical-list/layer-manager-layerlist.service';
 import {HsLayerManagerRemoveAllDialogComponent} from './dialogs/remove-all-dialog.component';
-import {HsLayerManagerService} from 'hslayers-ng/shared/layer-manager';
+import {
+  HsLayerManagerService,
+  HsLayerManagerVisiblityService,
+  HsLayerSelectorService,
+} from 'hslayers-ng/shared/layer-manager';
 import {HsLayerSynchronizerService} from 'hslayers-ng/shared/save-map';
 import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
 import {HsLayoutService} from 'hslayers-ng/shared/layout';
@@ -31,8 +35,6 @@ import {HsUtilsService} from 'hslayers-ng/shared/utils';
 import {
   getActive,
   getAttribution,
-  getFromBaseComposition,
-  getShowInLayerManager,
   getThumbnail,
   getTitle,
 } from 'hslayers-ng/common/extensions';
@@ -57,6 +59,7 @@ export class HsLayerManagerComponent
   map: any;
   shiftDown = false;
   allLayersVisible = false;
+  composition_id: string;
   layerlistVisible: boolean;
   hovering: boolean;
   physicalLayerListEnabled = false;
@@ -131,13 +134,15 @@ export class HsLayerManagerComponent
     public hsLayerListService: HsLayerListService,
     public hsSidebarService: HsSidebarService,
     private HsRemoveLayerDialogService: HsRemoveLayerDialogService,
+    public hsLayerSelectorService: HsLayerSelectorService,
+    public hsLayerManagerVisiblityService: HsLayerManagerVisiblityService,
   ) {
     super(hsLayoutService);
     this.hsEventBusService.layerRemovals
       .pipe(takeUntil(this.end))
       .subscribe((layer) => {
         if (
-          this.hsLayerManagerService?.currentLayer?.layer == layer &&
+          this.hsLayerSelectorService?.currentLayer?.layer == layer &&
           this.hsUtilsService.runningInBrowser()
         ) {
           const layerNode = document.getElementsByClassName(
@@ -147,7 +152,7 @@ export class HsLayerManagerComponent
             this.layerEditorRef.nativeElement,
             layerNode,
           );
-          this.hsLayerManagerService.currentLayer = null;
+          this.hsLayerSelectorService.currentLayer = null;
         }
       });
 
@@ -156,11 +161,11 @@ export class HsLayerManagerComponent
       .subscribe((data) => {
         if (data.error == undefined) {
           if (data.data != undefined && data.data.id != undefined) {
-            this.hsLayerManagerService.composition_id = data.data.id;
+            this.composition_id = data.data.id;
           } else if (data.id != undefined) {
-            this.hsLayerManagerService.composition_id = data.id;
+            this.composition_id = data.id;
           } else {
-            this.hsLayerManagerService.composition_id = null;
+            this.composition_id = null;
           }
         }
       });
@@ -168,8 +173,8 @@ export class HsLayerManagerComponent
     this.hsEventBusService.compositionDeletes
       .pipe(takeUntil(this.end))
       .subscribe((composition) => {
-        if (composition.id == this.hsLayerManagerService.composition_id) {
-          this.hsLayerManagerService.composition_id = null;
+        if (composition.id == this.composition_id) {
+          this.composition_id = null;
         }
       });
 
@@ -183,29 +188,10 @@ export class HsLayerManagerComponent
           this,
         ),
       );
-
-      this.hsLayerManagerService.addLayerHandler = map
-        .getLayers()
-        .on('add', (e) => {
-          this.hsLayerManagerService.applyZIndex(
-            e.element as Layer<Source>,
-            true,
-          );
-          if (getShowInLayerManager(e.element) == false) {
-            return;
-          }
-          this.hsLayerManagerService.layerAdded(
-            e as any,
-            getFromBaseComposition(e.element),
-          );
-        });
-      this.hsLayerManagerService.removeLayerHandler = map
-        .getLayers()
-        .on('remove', (e) => this.hsLayerManagerService.layerRemoved(e as any));
     });
 
     this.hsEventBusService.mapResets.pipe(takeUntil(this.end)).subscribe(() => {
-      this.hsLayerManagerService.composition_id = null;
+      this.composition_id = null;
     });
   }
 
@@ -222,15 +208,24 @@ export class HsLayerManagerComponent
   }
 
   changeBaseLayerVisibility(e?, layer?: Layer<Source>) {
-    return this.hsLayerManagerService.changeBaseLayerVisibility(e, layer);
+    return this.hsLayerManagerVisiblityService.changeBaseLayerVisibility(
+      e,
+      layer,
+    );
   }
 
   changeTerrainLayerVisibility(e, layer: Layer<Source>) {
-    return this.hsLayerManagerService.changeTerrainLayerVisibility(e, layer);
+    return this.hsLayerManagerVisiblityService.changeTerrainLayerVisibility(
+      e,
+      layer,
+    );
   }
 
   changeLayerVisibility(toWhat: boolean, layer: HsLayerDescriptor) {
-    return this.hsLayerManagerService.changeLayerVisibility(toWhat, layer);
+    return this.hsLayerManagerVisiblityService.changeLayerVisibility(
+      toWhat,
+      layer,
+    );
   }
 
   setProp(layer: Layer<Source>, property, value): void {
@@ -238,7 +233,7 @@ export class HsLayerManagerComponent
   }
 
   activateTheme(e) {
-    return this.hsLayerManagerService.activateTheme(e);
+    return this.hsLayerManagerVisiblityService.activateTheme(e);
   }
 
   baselayerFilter = (item): boolean => {
@@ -253,7 +248,7 @@ export class HsLayerManagerComponent
   toggleVisibilityForAll(): void {
     this.allLayersVisible = !this.allLayersVisible;
     this.hsLayerManagerService.data.layers.forEach((l) => {
-      this.hsLayerManagerService.changeLayerVisibility(
+      this.hsLayerManagerVisiblityService.changeLayerVisibility(
         this.allLayersVisible,
         l,
       );
@@ -289,7 +284,9 @@ export class HsLayerManagerComponent
   removeAllLayers(): void {
     this.hsDialogContainerService.create(
       HsLayerManagerRemoveAllDialogComponent,
-      {},
+      {
+        composition_id: this.composition_id,
+      },
     );
   }
   /**
@@ -297,7 +294,7 @@ export class HsLayerManagerComponent
    * @param layer - Selected layer (HsLayerManagerService.currentLayer)
    */
   hasCopyright(layer: HsLayerDescriptor): boolean | undefined {
-    if (!this.hsLayerManagerService.currentLayer) {
+    if (!this.hsLayerSelectorService.currentLayer) {
       return;
     } else {
       return getAttribution(layer.layer)?.onlineResource != undefined;
@@ -318,7 +315,9 @@ export class HsLayerManagerComponent
    * @param layer - Selected layer
    */
   isLayerInResolutionInterval(layer: Layer<Source>): boolean {
-    return this.hsLayerManagerService.isLayerInResolutionInterval(layer);
+    return this.hsLayerManagerVisiblityService.isLayerInResolutionInterval(
+      layer,
+    );
   }
 
   /**

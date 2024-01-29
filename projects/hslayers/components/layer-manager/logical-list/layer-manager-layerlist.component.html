@@ -8,7 +8,7 @@
                 <div class="p-0" [ngClass]="getExclusive(layer.layer) ? 'exclusive' : ''">
                     <!-- TODO: Remove function call from template -->
                     <button type="button" class="btn btn-sm btn-light hs-lm-item-visibility"
-                        (click)="hsLayerManagerService.changeLayerVisibility(!layer.visible, layer);hsLayerListService.toggleSublayersVisibility(layer);$event.stopPropagation()"
+                        (click)="hsLayerManagerVisiblityService.changeLayerVisibility(!layer.visible, layer);hsLayerListService.toggleSublayersVisibility(layer);$event.stopPropagation()"
                         [ngClass]="layer.visible ? 'hs-checkmark' : 'hs-uncheckmark'"></button>
                 </div>
                 <ng-template #abstractTooltip>
@@ -25,7 +25,7 @@
                     (click)="hsLayerManagerService.toggleLayerEditor(layer,'sublayers', 'settings')">
                     <span class="me-1 icon-refresh icon-spin" [hidden]="layerLoaded(layer)"></span>
                     <span class="me-1"
-                        [ngClass]="{'icon-chevron-right':hsLayerManagerService.currentLayer === layer, 'icon-chevron-down': hsLayerManagerService.currentLayer !== layer}"
+                        [ngClass]="{'icon-chevron-right':hsLayerSelectorService.currentLayer === layer, 'icon-chevron-down': hsLayerSelectorService.currentLayer !== layer}"
                         [hidden]="!layerLoaded(layer)"></span>
                 </div>
 

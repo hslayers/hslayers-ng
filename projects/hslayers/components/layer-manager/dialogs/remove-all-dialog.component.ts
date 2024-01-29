@@ -25,7 +25,7 @@ export class HsLayerManagerRemoveAllDialogComponent
     this.HsLayerManagerService.removeAllLayers();
     if (reloadComposition) {
       this.HsEventBusService.compositionLoadStarts.next(
-        this.HsLayerManagerService.composition_id,
+        this.data.composition_id,
       );
     }
     this.close();
