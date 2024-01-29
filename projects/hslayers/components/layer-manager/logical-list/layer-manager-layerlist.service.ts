@@ -2,7 +2,10 @@ import {Injectable} from '@angular/core';
 
 import {HsLayerDescriptor} from 'hslayers-ng/types';
 import {HsLayerEditorSublayerService} from '../editor/layer-editor-sub-layer.service';
-import {HsLayerManagerService} from 'hslayers-ng/shared/layer-manager'
+import {
+  HsLayerManagerService,
+  HsLayerSelectorService,
+} from 'hslayers-ng/shared/layer-manager';
 import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
 import {getPath} from 'hslayers-ng/common/extensions';
 
@@ -14,6 +17,7 @@ export class HsLayerListService {
     public hsLayerManagerService: HsLayerManagerService,
     public hsLayerEditorSublayerService: HsLayerEditorSublayerService,
     public hsLayerUtilsService: HsLayerUtilsService,
+    private hsLayerSelectorService: HsLayerSelectorService,
   ) {}
 
   /**
@@ -22,11 +26,11 @@ export class HsLayerListService {
    */
   toggleSublayersVisibility(layer: HsLayerDescriptor): void {
     if (!layer.visible) {
-      if (this.hsLayerManagerService.currentLayer === layer) {
+      if (this.hsLayerSelectorService.currentLayer === layer) {
         if (this.hsLayerEditorSublayerService.hasSubLayers()) {
           this.changeSublayerVisibilityState(
             layer,
-            this.hsLayerManagerService.currentLayer.visible,
+            this.hsLayerSelectorService.currentLayer.visible,
           );
         }
       } else {

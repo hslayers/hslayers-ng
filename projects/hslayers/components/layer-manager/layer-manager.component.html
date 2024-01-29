@@ -54,7 +54,7 @@
                     </div>
                     <div class="p-0">
                         <button type="button" class="btn btn-sm hs-btn-baselayers" (click)="changeBaseLayerVisibility()"
-                            [ngClass]="hsLayerManagerService.data.baselayersVisible ? 'hs-checkmark' : 'hs-uncheckmark'"></button>
+                            [ngClass]="hsLayerManagerVisiblityService.baselayersVisible ? 'hs-checkmark' : 'hs-uncheckmark'"></button>
                     </div>
                 </div>
             </li>
@@ -65,7 +65,7 @@
                     <div class="p-0">
                         <button type="button" class="btn btn-sm btn-light hs-lm-item-visibility"
                             (click)="changeBaseLayerVisibility($event, layer);"
-                            [ngClass]="(hsLayerManagerService.data.baselayersVisible && layer.visible) ? 'hs-checkmark' : 'hs-uncheckmark'"></button>
+                            [ngClass]="(hsLayerManagerVisiblityService.baselayersVisible && layer.visible) ? 'hs-checkmark' : 'hs-uncheckmark'"></button>
                     </div>
                     <ng-template #abstractTooltip>
                         <span [innerHtml]="hsLayerManagerService.makeSafeAndTranslate('LAYERS', layer.abstract)"></span>
@@ -108,7 +108,7 @@
                     </div> -->
                     <div class="p-0">
                         <button type="button" class="btn btn-sm btn-light hs-lm-item-visibility"
-                            [ngClass]="(hsLayerManagerService.data.baselayersVisible && layer.visible) ? 'hs-checkmark' : 'hs-uncheckmark'"></button>
+                            [ngClass]="(hsLayerManagerVisiblityService.baselayersVisible && layer.visible) ? 'hs-checkmark' : 'hs-uncheckmark'"></button>
                     </div>
                     <ng-template #abstractTooltip>
                         <span [innerHtml]="hsLayerManagerService.makeSafeAndTranslate('LAYERS', layer.abstract)"></span>
@@ -163,8 +163,8 @@
             </label>
         </div> -->
         </ul>
-        <hs-layer-editor [current-layer]="hsLayerManagerService.currentLayer" #layerEditor
-            [hidden]="!hsLayerManagerService.currentLayer" class="hs-layerpanel w-100">
+        <hs-layer-editor [current-layer]="hsLayerSelectorService.currentLayer" #layerEditor
+            [hidden]="!hsLayerSelectorService.currentLayer" class="hs-layerpanel w-100">
         </hs-layer-editor>
     </div>
 </div>
