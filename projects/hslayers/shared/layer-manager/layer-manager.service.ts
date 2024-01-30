@@ -165,8 +165,6 @@ export class HsLayerManagerService {
     );
 
     this.hsMapService.loaded().then(async (map) => {
-      this.setupMapEventHandlers(map);
-
       for (const lyr of map.getLayers().getArray()) {
         this.applyZIndex(lyr as Layer<Source>);
         await this.layerAdded(
@@ -182,6 +180,8 @@ export class HsLayerManagerService {
       this.hsEventBusService.layerManagerUpdates.next(null);
       this.toggleEditLayerByUrlParam();
       this.boxLayersInit();
+
+      this.setupMapEventHandlers(map);
     });
   }
 
