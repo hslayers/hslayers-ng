@@ -1,0 +1,6 @@
+hslayers-server.db
+data/
+.env
+.env.*
+!.env.example
+.eslintrc.json
