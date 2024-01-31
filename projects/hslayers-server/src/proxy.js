@@ -21,6 +21,8 @@ const cors_proxy = cors_anywhere.createServer({
       secureOptions: 1 << 2,
     },
   },
+  // Remove X-Forwarded-* headers since some map servers (ArcGIS) use it to generate URLs in capabilities and 'xfwd' option does not guarantee that
+  removeHeaders: ['x-forwarded-for', 'x-forwarded-host', 'x-forwarded-site', 'x-forwarder-server']
 });
 const GEONAMES_APIKEY = process.env.HS_GEONAMES_API_KEY || 'hslayersng';
 
