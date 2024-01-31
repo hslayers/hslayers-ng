@@ -4,6 +4,8 @@ import yargs from 'yargs';
 import path from 'node:path';
 import { existsSync, mkdirSync } from 'node:fs';
 
+import packageJson from './package.json' assert { type: 'json'};
+
 let envExists = existsSync('.env');
 if (!envExists)
   console.warn('\x1b[33m%s\x1b[0m', 'No .env file found! You will need to create one to configure your services.');
@@ -48,3 +50,4 @@ if (argv.layman) {
   else
     import('./src/layman.js');
 }
+console.log('🧭 Starting HSLayers server version', packageJson.version, '...');
