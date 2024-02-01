@@ -17,7 +17,10 @@ import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {BehaviorSubject, Subject, of} from 'rxjs';
 import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
 
-import {HsAddDataVectorService} from 'hslayers-ng/shared/add-data';
+import {
+  HsAddDataVectorService,
+  HsAddDataVectorUtilsService,
+} from 'hslayers-ng/shared/add-data';
 import {HsCommonEndpointsService} from 'hslayers-ng/shared/endpoints';
 import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
 import {HsCompositionsCatalogueService} from 'hslayers-ng/components/compositions';
@@ -131,6 +134,7 @@ describe('compositions', () => {
     const mockedUtilsService: any = new HsUtilsServiceMock();
     const mockedConfig = new HsConfigMock();
     const mockedMapService: any = new HsMapServiceMock();
+    const mockedVectorUtilsService = new HsAddDataVectorUtilsService(null);
     const mockedCommonLaymanService = new hsCommonLaymanServiceMock();
     const mockedStylerService = jasmine.createSpyObj('HsStylerService', [
       'parseStyle',
@@ -192,6 +196,7 @@ describe('compositions', () => {
             mockedMapService,
             mockedStylerService,
             mockedUtilsService,
+            mockedVectorUtilsService,
           ),
         },
         {
