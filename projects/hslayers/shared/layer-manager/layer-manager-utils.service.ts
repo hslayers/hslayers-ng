@@ -84,17 +84,17 @@ export class HsLayerManagerUtilsService {
    * Only the commonly used values are listed here, it shall be probably extended in the future.
    * @returns Short description of source type: 'WMS', 'XYZ', 'vector (GeoJSON)' etc.
    */
-  getLayerSourceType(layer: Layer<Source>): string {
-    if (this.hsLayerUtilsService.isLayerKMLSource(layer)) {
+  async getLayerSourceType(layer: Layer<Source>): Promise<string> {
+    if (await this.hsLayerUtilsService.isLayerKMLSource(layer)) {
       return `vector (KML)`;
     }
-    if (this.hsLayerUtilsService.isLayerGPXSource(layer)) {
+    if (await this.hsLayerUtilsService.isLayerGPXSource(layer)) {
       return `vector (GPX)`;
     }
-    if (this.hsLayerUtilsService.isLayerGeoJSONSource(layer)) {
+    if (await this.hsLayerUtilsService.isLayerGeoJSONSource(layer)) {
       return `vector (GeoJSON)`;
     }
-    if (this.hsLayerUtilsService.isLayerTopoJSONSource(layer)) {
+    if (await this.hsLayerUtilsService.isLayerTopoJSONSource(layer)) {
       return `vector (TopoJSON)`;
     }
     if (this.hsLayerUtilsService.isLayerVectorLayer(layer)) {

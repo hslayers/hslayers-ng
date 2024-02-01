@@ -1,11 +1,8 @@
 import {Injectable} from '@angular/core';
 
-import {Feature} from 'ol';
-import {GPX, GeoJSON, KML} from 'ol/format';
 import {Layer, Vector as VectorLayer} from 'ol/layer';
-import {Projection, get as getProjection} from 'ol/proj';
 import {Source, Vector as VectorSource} from 'ol/source';
-import {PROJECTIONS as epsg4326Aliases} from 'ol/proj/epsg4326';
+import {get as getProjection} from 'ol/proj';
 
 import {HsAddDataCommonFileService} from '../common-file.service';
 import {HsAddDataService} from '../add-data.service';
@@ -27,6 +24,7 @@ import {
 } from 'hslayers-ng/common/layman';
 import {setDefinition} from 'hslayers-ng/common/extensions';
 
+import {HsAddDataVectorUtilsService} from './vector.utils.service';
 import {HsVectorLayerOptions} from 'hslayers-ng/types';
 import {VectorLayerDescriptor} from 'hslayers-ng/types';
 import {VectorSourceDescriptor} from 'hslayers-ng/types';
@@ -35,33 +33,6 @@ import {VectorSourceDescriptor} from 'hslayers-ng/types';
   providedIn: 'root',
 })
 export class HsAddDataVectorService {
-  readUploadedFileAsText = (inputFile: any) => {
-    const temporaryFileReader = new FileReader();
-    return new Promise((resolve, reject) => {
-      temporaryFileReader.onerror = () => {
-        temporaryFileReader.abort();
-        reject(new DOMException('Problem parsing input file.'));
-      };
-      temporaryFileReader.onload = () => {
-        resolve(temporaryFileReader.result);
-      };
-      temporaryFileReader.readAsText(inputFile);
-    });
-  };
-  readUploadedFileAsURL = (inputFile: any) => {
-    const temporaryFileReader = new FileReader();
-    return new Promise((resolve, reject) => {
-      temporaryFileReader.onerror = () => {
-        temporaryFileReader.abort();
-        reject(new DOMException('Problem parsing input file.'));
-      };
-      temporaryFileReader.onload = () => {
-        resolve(temporaryFileReader.result);
-      };
-      temporaryFileReader.readAsDataURL(inputFile);
-    });
-  };
-
   constructor(
     private hsAddDataCommonFileService: HsAddDataCommonFileService,
     private hsAddDataService: HsAddDataService,
@@ -71,6 +42,7 @@ export class HsAddDataVectorService {
     private hsMapService: HsMapService,
     private hsStylerService: HsStylerService,
     private hsUtilsService: HsUtilsService,
+    private hsAddDataVectorUtilsService: HsAddDataVectorUtilsService,
   ) {}
 
   /**
@@ -161,7 +133,7 @@ export class HsAddDataVectorService {
     }
 
     if (this.hsUtilsService.undefineEmptyString(type) === undefined) {
-      type = this.tryGuessTypeFromNameOrUrl(url);
+      type = this.hsAddDataVectorUtilsService.tryGuessTypeFromNameOrUrl(url);
     }
 
     let mapProjection;
@@ -357,7 +329,9 @@ export class HsAddDataVectorService {
     const layerDesc: UpsertLayerObject = {
       title: data.title,
       name: getLaymanFriendlyLayerName(data.name),
-      crs: this.getFeaturesProjection(getProjection(data.nativeSRS)).getCode(),
+      crs: this.hsAddDataVectorUtilsService
+        .getFeaturesProjection(getProjection(data.nativeSRS))
+        .getCode(),
       workspace: commonFileRef.endpoint.user,
       access_rights: data.access_rights,
       style,
@@ -457,185 +431,6 @@ export class HsAddDataVectorService {
     ) {
       this.hsMapService.fitExtent(extent);
       src.un('change', this.changeListener);
-    }
-  }
-
-  /**
-   * Tries to guess file type based on the file extension
-   * @param extension - Parsed file extension from uploaded file
-   */
-  tryGuessTypeFromNameOrUrl(extension: string): string {
-    if (extension !== undefined) {
-      if (extension.toLowerCase().endsWith('kml')) {
-        return 'kml';
-      }
-      if (extension.toLowerCase().endsWith('gpx')) {
-        return 'gpx';
-      }
-      if (
-        extension.toLowerCase().endsWith('geojson') ||
-        extension.toLowerCase().endsWith('json')
-      ) {
-        return 'geojson';
-      }
-    }
-  }
-
-  /**
-   * Create a object containing data from XML dataset
-   * @param file - File uploaded by the user
-   * @param type - Data type
-   */
-  async createVectorObjectFromXml(file: File, type: string): Promise<any> {
-    try {
-      const uploadedContent = await this.readUploadedFileAsURL(file);
-      const dataUrl = uploadedContent.toString();
-      const object = {
-        url: dataUrl,
-        name: file.name,
-        title: file.name,
-        type: type,
-      };
-      return object;
-    } catch (e) {
-      this.hsLog.warn('Uploaded file is not supported!');
-      return {error: 'couldNotUploadSelectedFile'};
-    }
-  }
-
-  /**
-   * Read uploaded file and extract the data as JSON object
-   * @param file - File uploaded by the user
-   * @returns JSON object with parsed data
-   */
-  async readUploadedFile(file: File): Promise<any> {
-    let uploadedData;
-    const fileType = this.tryGuessTypeFromNameOrUrl(file.name.toLowerCase());
-    switch (fileType) {
-      case 'kml':
-        uploadedData = await this.createVectorObjectFromXml(file, fileType);
-        break;
-      case 'gpx':
-        uploadedData = await this.convertUploadedData(file);
-        break;
-      default:
-        try {
-          const fileContents = await this.readUploadedFileAsText(file);
-          const fileToJSON = JSON.parse(<string>fileContents);
-          if (fileToJSON !== undefined) {
-            fileToJSON.name = file.name.split('.')[0];
-            uploadedData = this.createVectorObjectFromJson(fileToJSON);
-            return uploadedData;
-          }
-        } catch (e) {
-          this.hsLog.warn('Uploaded file is not supported!', e);
-          return {error: 'couldNotUploadSelectedFile'};
-        }
-    }
-    return uploadedData;
-  }
-
-  /**
-   * Returns layman supported projection
-   */
-  getFeaturesProjection(projection: Projection): Projection {
-    return epsg4326Aliases
-      .map((proj) => proj.getCode())
-      .some((code) => code === projection.getCode())
-      ? getProjection('EPSG:4326')
-      : this.hsLaymanService.supportedCRRList.indexOf(projection.getCode()) > -1
-        ? projection
-        : getProjection('EPSG:4326');
-    //Features in map CRS
-  }
-
-  /**
-   * Read features from uploaded file as objects
-   * @param json - Uploaded file parsed as json object
-   * @returns JSON object with file name and read features
-   */
-  createVectorObjectFromJson(json: any): any {
-    let features: Feature[] = [];
-    const format = new GeoJSON();
-    const projection = format.readProjection(json);
-    if (!projection) {
-      return {
-        error: 'ERROR.srsNotSupported',
-      };
-    }
-    if (json.features?.length > 0) {
-      //FIXME: Type-cast shall be automatically inferred after OL >8.2
-      features = format.readFeatures(json) as Feature[];
-      this.transformFeaturesIfNeeded(features, projection);
-    }
-    const object = {
-      name: json.name,
-      title: json.name,
-      srs: this.getFeaturesProjection(projection),
-      features: features, //Features in map crs
-      nativeFeatures: format.readFeatures(json), //Features in native CRS
-      nativeSRS: projection,
-    };
-    return object;
-  }
-
-  /**
-   * Transform features to other projection if needed
-   * @param features - Extracted features from uploaded file
-   * @param projection - Projection to which transform the features
-   */
-  transformFeaturesIfNeeded(features: Feature[], projection: Projection): void {
-    const mapProjection = this.hsMapService.getMap().getView().getProjection();
-    if (projection != mapProjection) {
-      projection = epsg4326Aliases
-        .map((proj) => proj.getCode())
-        .some((code) => code === projection.getCode())
-        ? getProjection('EPSG:4326')
-        : projection;
-      features.forEach((f) =>
-        //TODO: Make it parallel using workers or some library
-        f.getGeometry().transform(projection, mapProjection),
-      );
-    }
-  }
-
-  /**
-   * Convert uploaded KML or GPX files into GeoJSON format / parse loaded GeoJSON
-   * @param file - Uploaded KML, GPX or GeoJSON files
-   */
-  async convertUploadedData(file: File): Promise<any> {
-    let parser;
-    const uploadedData: any = {};
-    try {
-      const uploadedContent: any = await this.readUploadedFileAsText(file);
-      let fileType = this.tryGuessTypeFromNameOrUrl(file.name.toLowerCase());
-      switch (fileType) {
-        case 'kml':
-          parser = new KML();
-          uploadedData.features = parser.readFeatures(uploadedContent);
-          break;
-        case 'gpx':
-          parser = new GPX();
-          uploadedData.features = parser.readFeatures(uploadedContent);
-          fileType = 'json';
-          break;
-        default:
-      }
-      if (uploadedData?.features?.length > 0) {
-        this.transformFeaturesIfNeeded(
-          uploadedData.features,
-          parser.readProjection(uploadedContent),
-        );
-      }
-      uploadedData.nativeFeatures = parser.readFeatures(uploadedContent);
-      uploadedData.nativeSRS = parser.readProjection(uploadedContent);
-      uploadedData.title = file.name.split('.')[0].trim();
-      uploadedData.name = uploadedData.title;
-      uploadedData.type = fileType;
-      return uploadedData;
-    } catch (e) {
-      this.hsLog.warn('Uploaded file is not supported' + e);
-      return {error: 'couldNotUploadSelectedFile'};
     }
   }
 }

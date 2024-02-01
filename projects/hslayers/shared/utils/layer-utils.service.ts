@@ -14,7 +14,6 @@ import {
 } from 'ol/source';
 import {Feature, View} from 'ol';
 import {default as FeatureFormat} from 'ol/format/Feature';
-import {GPX, GeoJSON, KML, TopoJSON} from 'ol/format';
 import {Geometry} from 'ol/geom';
 import {Image as ImageLayer, Layer, Vector as VectorLayer} from 'ol/layer';
 import {METERS_PER_UNIT} from 'ol/proj';
@@ -247,7 +246,8 @@ export class HsLayerUtilsService {
    * @param layer - an OL vector layer
    * @returns true only if the GeoJSON format is explicitly specified in the source. False otherwise.
    */
-  isLayerGeoJSONSource(layer: Layer<Source>): boolean {
+  async isLayerGeoJSONSource(layer: Layer<Source>): Promise<boolean> {
+    const GeoJSON = (await import('ol/format/GeoJSON')).default;
     if (this.HsUtilsService.instOf(this.getLayerSourceFormat(layer), GeoJSON)) {
       return true;
     }
@@ -259,7 +259,8 @@ export class HsLayerUtilsService {
    * @param layer - an OL vector layer
    * @returns true only if the TopoJSON format is explicitly specified in the source. False otherwise.
    */
-  isLayerTopoJSONSource(layer: Layer<Source>): boolean {
+  async isLayerTopoJSONSource(layer: Layer<Source>): Promise<boolean> {
+    const TopoJSON = (await import('ol/format/TopoJSON')).default;
     if (
       this.HsUtilsService.instOf(this.getLayerSourceFormat(layer), TopoJSON)
     ) {
@@ -273,7 +274,8 @@ export class HsLayerUtilsService {
    * @param layer - an OL vector layer
    * @returns true only if the KML format is explicitly specified in the source. False otherwise.
    */
-  isLayerKMLSource(layer: Layer<Source>): boolean {
+  async isLayerKMLSource(layer: Layer<Source>): Promise<boolean> {
+    const KML = (await import('ol/format/KML')).default;
     if (this.HsUtilsService.instOf(this.getLayerSourceFormat(layer), KML)) {
       return true;
     }
@@ -285,7 +287,8 @@ export class HsLayerUtilsService {
    * @param layer - an OL vector layer
    * @returns true only if the GPX format is explicitly specified in the source. False otherwise.
    */
-  isLayerGPXSource(layer: Layer<Source>): boolean {
+  async isLayerGPXSource(layer: Layer<Source>): Promise<boolean> {
+    const GPX = (await import('ol/format/GPX')).default;
     if (this.HsUtilsService.instOf(this.getLayerSourceFormat(layer), GPX)) {
       return true;
     }
