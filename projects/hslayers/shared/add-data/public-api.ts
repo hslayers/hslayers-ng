@@ -16,3 +16,5 @@ export * from './catalogue/micka.service';
 export * from './catalogue/catalogue-map.service';
 
 export * from './vector/vector.service';
+export * from './vector/vector-upload.service';
+export * from './vector/vector.utils.service';

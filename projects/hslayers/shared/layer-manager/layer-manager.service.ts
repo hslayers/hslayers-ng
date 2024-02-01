@@ -277,7 +277,7 @@ export class HsLayerManagerService {
       idString() {
         return 'layer' + (this.coded_path || '') + (this.uid || '');
       },
-      type: this.hsLayerManagerUtilsService.getLayerSourceType(layer),
+      type: await this.hsLayerManagerUtilsService.getLayerSourceType(layer),
       source: this.hsLayerManagerUtilsService.getLayerSourceUrl(layer),
     };
     this.loadingEvents(layerDescriptor);

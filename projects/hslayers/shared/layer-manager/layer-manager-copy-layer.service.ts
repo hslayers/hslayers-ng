@@ -44,10 +44,12 @@ export class HsLayerManagerCopyLayerService {
       if (!name || typeof name === 'number') {
         name = getName(currentOlLayer);
       }
+      const layerType =
+        await this.hsLayerManagerUtilsService.getLayerSourceType(
+          currentOlLayer,
+        );
       const layerCopy = await this.hsAddDataOwsService.connectToOWS({
-        type: this.hsLayerManagerUtilsService
-          .getLayerSourceType(currentOlLayer)
-          .toLowerCase(),
+        type: layerType.toLowerCase(),
         uri: url,
         layer: name,
         getOnly: true,
