@@ -13,7 +13,10 @@ import {Cluster} from 'ol/source';
 import {GeoJSON} from 'ol/format';
 
 import {DEFAULT_VECTOR_LOAD_TYPE} from '../../enums/load-types.const';
-import {HsAddDataCommonFileService} from 'hslayers-ng/shared/add-data';
+import {
+  HsAddDataCommonFileService,
+  HsAddDataVectorUploadService,
+} from 'hslayers-ng/shared/add-data';
 import {HsAddDataVectorService} from 'hslayers-ng/shared/add-data';
 import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
 import {HsConfig} from 'hslayers-ng/config';
@@ -51,6 +54,7 @@ export class HsAddDataVectorFileComponent
 
   constructor(
     private hsAddDataVectorService: HsAddDataVectorService,
+    private hsAddDataVectorUploadService: HsAddDataVectorUploadService,
     public hsAddDataCommonFileService: HsAddDataCommonFileService,
     private hsCommonLaymanService: HsCommonLaymanService,
     private hsConfig: HsConfig,
@@ -151,9 +155,10 @@ export class HsAddDataVectorFileComponent
   async updateExistingLayer(): Promise<void> {
     let features = this.data.features.length > 0 ? this.data.features : [];
     if (this.fileType != 'geojson') {
-      const nonJson = await this.hsAddDataVectorService.convertUploadedData(
-        this.fileInput.nativeElement.files[0],
-      );
+      const nonJson =
+        await this.hsAddDataVectorUploadService.convertUploadedData(
+          this.fileInput.nativeElement.files[0],
+        );
       features = nonJson.features; //proper typing will get rid of this
     }
     this.hsLayerUtilsService.isLayerClustered(this.data.sourceLayer)
@@ -166,7 +171,7 @@ export class HsAddDataVectorFileComponent
   handleFileUpload(evt: HsUploadedFiles): void {
     Array.from(evt.fileList).forEach(async (f) => {
       const uploadedData =
-        await this.hsAddDataVectorService.readUploadedFile(f);
+        await this.hsAddDataVectorUploadService.readUploadedFile(f);
       if (uploadedData !== undefined && !uploadedData.error) {
         uploadedData.url !== undefined
           ? (this.data.base64url = uploadedData.url)
