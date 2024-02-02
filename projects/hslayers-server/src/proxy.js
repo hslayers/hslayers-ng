@@ -1,6 +1,6 @@
 import 'dotenv/config';
 import cors_anywhere from 'cors-anywhere';
-import { encode as encodeQuerystring, parse as parseQuerystring} from 'node:querystring';
+import { encode as encodeQuerystring, parse as parseQuerystring } from 'node:querystring';
 import { createServer } from 'node:http';
 import { networkInterfaces } from 'node:os';
 
@@ -27,38 +27,43 @@ const cors_proxy = cors_anywhere.createServer({
 const GEONAMES_APIKEY = process.env.HS_GEONAMES_API_KEY || 'hslayersng';
 
 createServer((req, res) => {
-    try {
-      if (req.url == '' || req.url == '/') {
-        res.write('HSLayers server proxy<br />');
-        res.write(`${getIP()}:${port}`);
-        res.end();
-      } else {
-        req.url = decodeURIComponent(req.url);
-        req.url = encodeUrlPathAndParams(req.url);
-        const [base, tld, pathAndQueryParams] = splitUrlAtTld(req.url);
-        const params = parseQuerystring(pathAndQueryParams.split('?')[1]);
-        if (base.includes('api.geonames') && tld === 'org' && pathAndQueryParams.startsWith('searchJSON')) {
-          if (
-            typeof params.provider == 'undefined' ||
-            params.provider == 'geonames'
-          ) {
-            req.url = `/http://api.geonames.org/searchJSON?name_startsWith=${encodeURIComponent(
-              params.name_startsWith
-            )}&username=${GEONAMES_APIKEY}`;
-          }
-        }
-        if (base.includes('api.openrouteservice') && tld == 'org') {
-          req.headers.authorization = process.env.OPENROUTESERVICE_API_KEY;
-        }
-        cors_proxy.emit('request', req, res);
-      }
-    } catch (ex) {
-      res.writeHead(500, { 'Content-Type': 'text/plain' });
-      res.write('Invalid request');
-      res.write(ex);
+  try {
+    if (req.url == '' || req.url == '/') {
+      res.write('HSLayers server proxy<br />');
+      res.write(`${getIP()}:${port}`);
       res.end();
+    } else {
+      //tinyurl requests are encoded on client + dont work well with encodeUrlPathAndParams
+      if (req.url.includes('http://tinyurl.com/api-create.php') || req.url.includes()) {
+        cors_proxy.emit('request', req, res);
+        return
+      }
+      req.url = decodeURIComponent(req.url);
+      req.url = encodeUrlPathAndParams(req.url);
+      const [base, tld, pathAndQueryParams] = splitUrlAtTld(req.url);
+      const params = parseQuerystring(pathAndQueryParams.split('?')[1]);
+      if (base.includes('api.geonames') && tld === 'org' && pathAndQueryParams.startsWith('searchJSON')) {
+        if (
+          typeof params.provider == 'undefined' ||
+          params.provider == 'geonames'
+        ) {
+          req.url = `/http://api.geonames.org/searchJSON?name_startsWith=${encodeURIComponent(
+            params.name_startsWith
+          )}&username=${GEONAMES_APIKEY}`;
+        }
+      }
+      if (base.includes('api.openrouteservice') && tld == 'org') {
+        req.headers.authorization = process.env.OPENROUTESERVICE_API_KEY;
+      }
+      cors_proxy.emit('request', req, res);
     }
-  })
+  } catch (ex) {
+    res.writeHead(500, { 'Content-Type': 'text/plain' });
+    res.write('Invalid request');
+    res.write(ex);
+    res.end();
+  }
+})
   .listen(port, host, () => {
     console.log('HSLayers proxy listening on ' + host + ':' + port);
   });
@@ -120,6 +125,7 @@ export const splitUrlAtTld = (url) => {
  * but leaves the host name untouched
  * @param {string} url URL
  * @returns partially encoded URL
+ * NOTE: doesnt really seem to work for urls where one of the params is another url
  */
 export const encodeUrlPathAndParams = (url) => {
   const [base, tld, pathAndQueryParams] = splitUrlAtTld(url);
