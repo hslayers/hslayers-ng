@@ -360,8 +360,7 @@ export class HsCompositionsService {
    */
   async parsePermalinkLayers(permalink: string): Promise<void> {
     await this.hsMapService.loaded();
-    const layersUrl = this.hsUtilsService.proxify(permalink);
-    const response: any = await lastValueFrom(this.http.get(layersUrl));
+    const response: any = await lastValueFrom(this.http.get(permalink));
     if (response.success == true) {
       const data: any = {};
       data.data = {};
