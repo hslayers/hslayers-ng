@@ -507,24 +507,20 @@ export class HsLayerManagerService {
     let curfolder = this.data.folders;
     const zIndex = lyr.getZIndex();
     for (let i = 0; i < parts.length; i++) {
-      let found = null;
-      for (const folder of curfolder.sub_folders) {
-        if (folder.name == parts[i]) {
-          found = folder;
-        }
-      }
-      if (found === null) {
+      const found = curfolder.sub_folders.find(
+        (folder) => folder.name === parts[i],
+      );
+      if (!found) {
         //TODO: Need to describe how hsl_path works here
+        const hsl_path = `${curfolder.hsl_path}${curfolder.hsl_path !== '' ? '/' : ''}${parts[i]}`;
+        const coded_path = `${curfolder.coded_path}${curfolder.sub_folders.length}-`;
         const new_folder = {
           sub_folders: [],
           indent: i,
           layers: [],
           name: parts[i],
-          hsl_path:
-            curfolder.hsl_path +
-            (curfolder.hsl_path != '' ? '/' : '') +
-            parts[i],
-          coded_path: curfolder.coded_path + curfolder.sub_folders.length + '-',
+          hsl_path,
+          coded_path,
           visible: true,
           zIndex: zIndex,
         };
@@ -543,7 +539,6 @@ export class HsLayerManagerService {
 
   /**
    * Remove layer from layer folder structure a clean empty folder
-   * @private
    * @param lyr - Layer to remove from layer folder
    */
   cleanFolders(lyr: Layer<Source>): void {

@@ -32,6 +32,7 @@ import {
   getActive,
   getAttribution,
   getFromBaseComposition,
+  getIgnorePathZIndex,
   getShowInLayerManager,
   getThumbnail,
   getTitle,
@@ -182,7 +183,9 @@ export class HsLayerManagerComponent
         .on('add', (e) => {
           this.hsLayerManagerService.applyZIndex(
             e.element as Layer<Source>,
-            true,
+            //z-index of composition layers should be the same as order of layers in composition.
+            //ignoring fodler structure
+            !getIgnorePathZIndex(e.element as Layer<Source>),
           );
           if (getShowInLayerManager(e.element) == false) {
             return;
