@@ -23,7 +23,8 @@
   },
   "scripts": {
     "start": "node server.js",
-    "test": "mocha"
+    "test": "mocha",
+    "test-ci": "mocha -R mocha-reporter-gha"
   },
   "bin": {
     "hslayers-server": "./server.js"
@@ -48,6 +49,7 @@
   "devDependencies": {
     "chai": "^5.0.0",
     "eslint-plugin-mocha": "^10.2.0",
-    "mocha": "^10.2.0"
+    "mocha": "^10.2.0",
+    "mocha-reporter-gha": "^1.1.1"
   }
 }
