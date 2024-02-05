@@ -16,6 +16,7 @@ import {HsConfig} from '../../config.service';
 import {HsEndpoint} from '../../common/endpoints/endpoint.interface';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLanguageService} from '../language/language.service';
+import {HsLayerManagerService} from '../layermanager/layermanager.service';
 import {HsLogService} from '../../common/log/log.service';
 import {HsMapCompositionDescriptor} from './models/composition-descriptor.model';
 import {HsShareUrlService} from '../permalink/share-url.service';
@@ -47,6 +48,7 @@ export class HsCompositionsService {
     private hsCompositionsMapService: HsCompositionsMapService,
     private hsEventBusService: HsEventBusService,
     private hsToastService: HsToastService,
+    private hsLayerManagerService: HsLayerManagerService,
   ) {
     this.hsEventBusService.compositionEdits.subscribe(() => {
       this.hsCompositionsParserService.composition_edited = true;
@@ -374,6 +376,7 @@ export class HsCompositionsService {
         this.hsMapService.addLayer(layers[i], DuplicateHandling.RemoveOriginal);
       }
       this.hsMapService.fitExtent(response.data.nativeExtent);
+      this.hsLayerManagerService.updateLayerListPositions();
     } else {
       this.$log.log('Error loading permalink layers');
     }
@@ -411,6 +414,7 @@ export class HsCompositionsService {
         this.hsMapService.addLayer(layers[i], DuplicateHandling.IgnoreNew);
       }
       localStorage.removeItem('hs_layers');
+      this.hsLayerManagerService.updateLayerListPositions();
     }
   }
 
