@@ -31,6 +31,7 @@ const GREYSCALE = 'greyscale';
 const HS_LAYMAN_SYNCHRONIZING = 'hsLaymanSynchronizing';
 const HS_QML = 'qml';
 const HS_SLD = 'sld';
+const IGNORE_PATH_ZINDEX = 'ignorePathZIndex';
 const INFO_FORMAT = 'info_format';
 const INLINE_LEGEND = 'inlineLegend';
 const LAYMAN_LAYER_DESCRIPTOR = 'laymanLayerDescriptor';
@@ -677,6 +678,21 @@ export function setSwipeSide(
   side: 'left' | 'right',
 ): void {
   layer.set(SWIPE_SIDE, side);
+}
+
+/**
+ * When set to true, prevents z-index to be set based on highest value of layer in
+ * the same layer (which is default). Used for layers from compositions (basic, permalik)
+ */
+export function setIgnorePathZIndex(
+  layer: Layer<Source>,
+  ignorePathZIndex: boolean,
+) {
+  layer.set(IGNORE_PATH_ZINDEX, ignorePathZIndex);
+}
+
+export function getIgnorePathZIndex(layer: Layer<Source>) {
+  return layer.get(IGNORE_PATH_ZINDEX);
 }
 
 export const HsLayerExt = {

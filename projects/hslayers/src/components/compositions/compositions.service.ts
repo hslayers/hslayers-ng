@@ -13,7 +13,6 @@ import {HsCompositionsMapService} from './compositions-map.service';
 import {HsCompositionsMickaService} from './endpoints/compositions-micka.service';
 import {HsCompositionsParserService} from './compositions-parser.service';
 import {HsConfig} from '../../config.service';
-import {HsCoreService} from '../core/core.service';
 import {HsEndpoint} from '../../common/endpoints/endpoint.interface';
 import {HsEventBusService} from '../core/event-bus.service';
 import {HsLanguageService} from '../language/language.service';
@@ -36,7 +35,6 @@ export class HsCompositionsService {
   constructor(
     private http: HttpClient,
     private hsMapService: HsMapService,
-    private hsCore: HsCoreService,
     private hsCompositionsParserService: HsCompositionsParserService,
     private hsConfig: HsConfig,
     private hsUtilsService: HsUtilsService,
