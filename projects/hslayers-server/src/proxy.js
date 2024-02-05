@@ -33,8 +33,8 @@ createServer((req, res) => {
       res.write(`${getIP()}:${port}`);
       res.end();
     } else {
-      //tinyurl requests are encoded on client + dont work well with encodeUrlPathAndParams
-      if (req.url.includes('http://tinyurl.com/api-create.php') || req.url.includes()) {
+      //tinyurl requests are encoded on client
+      if (req.url.includes('http://tinyurl.com/api-create.php')) {
         cors_proxy.emit('request', req, res);
         return
       }
@@ -125,12 +125,12 @@ export const splitUrlAtTld = (url) => {
  * but leaves the host name untouched
  * @param {string} url URL
  * @returns partially encoded URL
- * NOTE: doesnt really seem to work for urls where one of the params is another url
  */
 export const encodeUrlPathAndParams = (url) => {
   const [base, tld, pathAndQueryParams] = splitUrlAtTld(url);
-  const encodedPath = pathAndQueryParams.split('?')[0].split('/').map(segment => encodeURIComponent(segment))
-  const params = parseQuerystring(pathAndQueryParams.split('?')[1]);
+  const encodedPath = pathAndQueryParams.split('?')[0].split('/').map(segment => encodeURIComponent(segment));
+  const [, ...queryParams] = pathAndQueryParams.split('?');
+  const params = parseQuerystring(queryParams);
   return base +
     '.' +
     tld +
