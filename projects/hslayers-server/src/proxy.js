@@ -130,7 +130,7 @@ export const splitUrlAtTld = (url) => {
 export const encodeUrlPathAndParams = (url) => {
   const [base, tld, pathAndQueryParams] = splitUrlAtTld(url);
   const encodedPath = pathAndQueryParams.split('?')[0].split('/').map(segment => encodeURIComponent(segment));
-  const [, ...queryParams] = pathAndQueryParams.split('?');
+  const queryParams = pathAndQueryParams.split('?').slice(1).join('?');
   const params = parseQuerystring(queryParams);
   return base +
     '.' +
