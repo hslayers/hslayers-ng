@@ -1,3 +1,23 @@
+# 2.0.0 (not-yet-released)
+
+All CommonJS modules transformed to ES modules
+
+### Bug Fixes
+
+* Do not send X-Forwarded-* headers via proxy ([aaa4782](https://github.com/hslayers/hslayers-ng/commit/aaa4782a3ef517c4bd660ee1c5b8ef694363a500)), closes [#4635](https://github.com/hslayers/hslayers-ng/issues/4635)
+* Don't encode+decode tinyurl requests ([efc8b3c](https://github.com/hslayers/hslayers-ng/commit/efc8b3cae5f42fbc56832a71dcbb4ce7f4f2da7c))
+* Fix querystring parsing ([a47d81d](https://github.com/hslayers/hslayers-ng/commit/a47d81d6647ae8acfb1a2f8e2b65f79148de0f15))
+* Re-send also multiple search-params in URL ([5f7c6ec](https://github.com/hslayers/hslayers-ng/commit/5f7c6ec0d75d7247d126cc7db6fae23c3fe8ce41))
+
+
+### Features
+
+* Add more test cases ([c8d7fe4](https://github.com/hslayers/hslayers-ng/commit/c8d7fe4f97699816c0d00fc2eb843f2d4082b2ed))
+* Create tests ([7e32633](https://github.com/hslayers/hslayers-ng/commit/7e3263310313e09dd07c57466da0566f51765bbf))
+* Log hslayers-server version on startup ([c7706db](https://github.com/hslayers/hslayers-ng/commit/c7706db9da1d35098d3171e4e133fac647841849))
+
+### Package Updates
+
 # 1.5.3 (2023-11-10)
 
 ### Bug Fixes
