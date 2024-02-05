@@ -1,6 +1,9 @@
-name: Node CI
+name: Build & test hslayers, app & sensors
 
-on: [push]
+on:
+  push:
+    paths-ignore:
+      - 'projects/hslayers-server/**/*'
 
 jobs:
   build:
