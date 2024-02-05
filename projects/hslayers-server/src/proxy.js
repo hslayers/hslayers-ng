@@ -33,12 +33,13 @@ createServer((req, res) => {
       res.write(`${getIP()}:${port}`);
       res.end();
     } else {
-      //tinyurl requests are encoded on client
+      // tinyurl requests are encoded on client
       if (req.url.includes('http://tinyurl.com/api-create.php')) {
         cors_proxy.emit('request', req, res);
         return
       }
-      req.url = decodeURIComponent(req.url);
+      // Previously, decoding incoming URL was necessary, but all known clients now send non-encoded requests
+      //req.url = decodeURIComponent(req.url);
       req.url = encodeUrlPathAndParams(req.url);
       const [base, tld, pathAndQueryParams] = splitUrlAtTld(req.url);
       const params = parseQuerystring(pathAndQueryParams.split('?')[1]);
