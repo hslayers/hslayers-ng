@@ -26,7 +26,7 @@ const cors_proxy = cors_anywhere.createServer({
 });
 const GEONAMES_APIKEY = process.env.HS_GEONAMES_API_KEY || 'hslayersng';
 
-createServer((req, res) => {
+export const proxy = createServer((req, res) => {
   try {
     if (req.url == '' || req.url == '/') {
       res.write('HSLayers server proxy<br />');

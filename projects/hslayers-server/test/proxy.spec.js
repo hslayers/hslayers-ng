@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 
-import { splitUrlAtTld, encodeUrlPathAndParams } from '../src/proxy.js';
+import { proxy, splitUrlAtTld, encodeUrlPathAndParams } from '../src/proxy.js';
 
 describe('Proxy module', function() {
   describe('#splitUrlAtTld()', function() {
@@ -47,4 +47,9 @@ describe('Proxy module', function() {
 
     // Add more test cases as needed
   });
+
+  // Hang up server once all tests finish
+  after(function() {
+    proxy.close();
+  })
 });
