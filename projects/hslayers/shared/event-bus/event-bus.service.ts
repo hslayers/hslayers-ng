@@ -1,4 +1,4 @@
-import {BehaviorSubject, Subject} from 'rxjs';
+import {BehaviorSubject, ReplaySubject, Subject} from 'rxjs';
 import {Injectable} from '@angular/core';
 
 import {Feature, Map} from 'ol';
@@ -113,6 +113,7 @@ export class HsEventBusService {
     event: string;
     extent: number[];
   }> = new Subject();
+  mapEventHandlersSet: ReplaySubject<void> = new ReplaySubject();
   mapCenterSynchronizations: Subject<any> = new Subject();
   mapLibraryChanges: Subject<any> = new Subject();
   /**
