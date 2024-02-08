@@ -223,6 +223,7 @@ export class HsLayerManagerService {
       onLayerRemove,
       onResolutionChange,
     ];
+    this.hsEventBusService.mapEventHandlersSet.next();
   }
 
   /**
