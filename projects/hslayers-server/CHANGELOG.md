@@ -1,4 +1,4 @@
-# 2.0.0 (not-yet-released)
+# 2.0.0 (2024-02-12)
 
 All CommonJS modules transformed to ES modules
 
@@ -17,6 +17,11 @@ All CommonJS modules transformed to ES modules
 * Log hslayers-server version on startup ([c7706db](https://github.com/hslayers/hslayers-ng/commit/c7706db9da1d35098d3171e4e133fac647841849))
 
 ### Package Updates
+* `better-sqlite3` from 7.6.2 to 9.3.0
+* `dotenv` from 14.2.0 to 16.4.0
+* `follow-redirects` from 1.15.2 to 1.15.4
+* `got` from 12.5.3 to 13.0.0
+* `passport` from 0.6.0 to 0.7.0
 
 # 1.5.3 (2023-11-10)
 

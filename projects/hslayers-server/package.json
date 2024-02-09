@@ -19,7 +19,7 @@
   "main": "server.js",
   "type": "module",
   "engines": {
-    "node": "^16.0.0 || >=18.0.0"
+    "node": "^16.0.0 || ^18.0.0 || >=20.0.0"
   },
   "scripts": {
     "start": "node server.js",
