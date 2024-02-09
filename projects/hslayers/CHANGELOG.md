@@ -1,3 +1,22 @@
+# [13.2.0](https://github.com/hslayers/hslayers-ng/compare/13.1.0...13.2.0) (2024-02-12)
+
+
+### Bug Fixes
+
+* Construct basemap name from array ([45827d5](https://github.com/hslayers/hslayers-ng/commit/45827d53f5471846e4d2926fdc85fd079082adbd))
+* Disable 'Save current map' button when Save map panel is not enabled ([2668fe3](https://github.com/hslayers/hslayers-ng/commit/2668fe3e1cfd0c02f3abdb62decb81896ef17766))
+* Panel header tab change not reflected when done programmatically ([b3969e2](https://github.com/hslayers/hslayers-ng/commit/b3969e2f491326ca99ddecb8ebffbb98c51c270f))
+* **permalink:** Don't need to proxify /share requests ([bebdd7b](https://github.com/hslayers/hslayers-ng/commit/bebdd7b82fe391c2a3ea52d849fabfbf44adc21c))
+* Preserve composition layer order - in terms of z-index ([cf9d047](https://github.com/hslayers/hslayers-ng/commit/cf9d0473340068e467b3778e4099c7e33b2c8062))
+* **print:** Imprint not toggleable ([49d449c](https://github.com/hslayers/hslayers-ng/commit/49d449c140f622a164674b18fd42c4f64a88e4c4))
+* **sensors:** Use new panel-header API ([91bd9ff](https://github.com/hslayers/hslayers-ng/commit/91bd9ff672ba0dccc507d27debb212c2a92baf77))
+
+### Features
+
+* Option to add WMS layers as one group or separate layers ([87a7303](https://github.com/hslayers/hslayers-ng/commit/87a730309fa981e204d7a5b546c14af55660b69c))
+
+
+
 # [13.1.0](https://github.com/hslayers/hslayers-ng/compare/13.0.0...13.1.0) (2023-12-04)
 
 
