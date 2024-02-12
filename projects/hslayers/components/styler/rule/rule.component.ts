@@ -36,7 +36,7 @@ export class HsRuleComponent extends HsStylerPartBaseComponent {
     if (kind === Kinds.fill) {
       Object.assign(symbolizer, {
         outlineColor: '#ffffff',
-        opacity: 1,
+        fillOpacity: 1,
         outlineOpacity: 0.5,
         outlineWidth: 2,
       });

@@ -44,8 +44,4 @@ export class HsFillSymbolizerComponent extends HsStylerPartBaseComponent {
     this.menuRef.close();
     this.emitChange();
   }
-
-  opacityFix(): void {
-    this.symbolizer.fillOpacity = this.symbolizer.opacity;
-  }
 }
