@@ -11,7 +11,6 @@ import {
 } from 'geostyler-sld-parser';
 import {Feature, getUid} from 'ol';
 import {
-  FillSymbolizer,
   Filter,
   Style as GeoStylerStyle,
   Rule,
@@ -21,7 +20,6 @@ import {Geometry} from 'ol/geom';
 import {Icon, Style} from 'ol/style';
 import {Layer, Vector as VectorLayer} from 'ol/layer';
 import {OlStyleParser as OpenLayersParser} from 'geostyler-openlayers-parser';
-import {QGISStyleParser} from 'geostyler-qgis-parser';
 import {StyleFunction, StyleLike, createDefaultStyle} from 'ol/style/Style';
 
 import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
@@ -63,7 +61,6 @@ export class HsStylerService {
   onSet: Subject<VectorLayer<VectorSource>> = new Subject();
   layerTitle: string;
   styleObject: GeoStylerStyle;
-  qmlParser = new QGISStyleParser();
 
   sld: string;
   qml: string;
@@ -490,7 +487,10 @@ export class HsStylerService {
    * @returns
    */
   async qmlToJson(qml: string): Promise<GeoStylerStyle> {
-    const result = await this.qmlParser.readStyle(qml);
+    const {QGISStyleParser} = await import('geostyler-qgis-parser');
+    const qmlParser = new QGISStyleParser();
+
+    const result = await qmlParser.readStyle(qml);
     if (result.output) {
       return result.output;
     } else {
@@ -747,7 +747,10 @@ export class HsStylerService {
         await sldParser.readStyle(styleString);
         this.sld = styleString;
       } else if (styleFmt == 'qml') {
-        await this.qmlParser.readStyle(styleString);
+        const {QGISStyleParser} = await import('geostyler-qgis-parser');
+        const qmlParser = new QGISStyleParser();
+
+        await qmlParser.readStyle(styleString);
         this.qml = styleString;
       }
       this.resolveSldChange();
