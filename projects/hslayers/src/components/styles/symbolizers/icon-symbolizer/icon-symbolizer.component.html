@@ -34,7 +34,7 @@
   <div class="d-flex flex-row">
     <div class="p-1 w-25">{{'STYLER.size' | translateHs }}:</div>
     <div class="p-1 w-75">
-      <input type="range" class="w-100" step="0.2" min="0.1" max="10" name="hs-icon-symbolizer-size"
+      <input type="range" class="w-100" step="1" min="0.1" max="75" name="hs-icon-symbolizer-size"
         [(ngModel)]="symbolizer.size" (change)="emitChange()" />
     </div>
   </div>
@@ -43,7 +43,7 @@
     <div class="p-1 w-25 mt-2">{{'STYLER.anchorX' | translateHs }}:</div>
     <span class="badge bg-warning mt-2" [title]="'STYLER.warningAttribNotStoredNotVisualized' | translateHs  ">!</span>
     <div class="p-1 w-75">
-      <input type="range" class="w-100" step="0.05" min="-1.0" max="1.0" [name="hs-icon-symbolizer-offset-0"
+      <input type="range" class="w-100" step="0.05" min="-1.0" max="1.0" name="hs-icon-symbolizer-offset-0"
         [(ngModel)]="symbolizer.offset[0]" *ngIf="symbolizer.offset !== undefined" (change)="emitChange()" />
     </div>
   </div>

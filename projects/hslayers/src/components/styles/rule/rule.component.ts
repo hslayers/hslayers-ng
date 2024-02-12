@@ -22,22 +22,51 @@ export class HsRuleComponent extends HsStylerPartBaseComponent {
     super();
   }
   async addSymbolizer(kind: SymbolizerKind): Promise<void> {
-    const symbolizer = {kind, color: '#000'};
+    const symbolizer = {kind, color: '#000000'};
     if (kind === Kinds.text) {
-      Object.assign(symbolizer, {size: 12, offset: [0, 0]});
+      Object.assign(symbolizer, {
+        size: 12,
+        offset: [0, 0],
+        font: ['Arial'],
+        fontStyle: 'normal',
+        fontWeight: 'normal',
+        rotation: 0,
+      });
     }
     if (kind === Kinds.fill) {
-      Object.assign(symbolizer, {outlineColor: '#000'});
+      Object.assign(symbolizer, {
+        outlineColor: '#ffffff',
+        opacity: 1,
+        outlineOpacity: 0.5,
+        outlineWidth: 2,
+      });
     }
     if (kind == Kinds.icon) {
-      Object.assign(symbolizer, {offset: [0.5, 0.5]});
+      Object.assign(symbolizer, {
+        offset: [0.5, 0.5],
+        opacity: 1,
+        size: 20,
+        image: 'assets/img/icons/information78.svg',
+      });
     }
     if (kind == Kinds.mark) {
-      Object.assign(symbolizer, {wellKnownName: 'circle'});
+      Object.assign(symbolizer, {
+        wellKnownName: 'circle',
+        radius: 7,
+        fillOpacity: 1,
+        strokeColor: '#ffffff',
+        strokeOpacity: 0.25,
+        strokeWidth: 2,
+      });
     }
-    if (kind == Kinds.icon) {
-      Object.assign(symbolizer, {image: 'assets/img/icons/information78.svg'});
+    if (kind == Kinds.line) {
+      Object.assign(symbolizer, {
+        width: 2,
+        join: 'round',
+        cap: 'round',
+      });
     }
+
     this.rule.symbolizers.push(symbolizer);
     this.menuRef.close();
     this.emitChange();
