@@ -1,14 +1,14 @@
 <form class="form">
 
-  <hs-symbolizer-color-picker [symbolizer]="symbolizer" attribute="color" opacityAttribute="opacity"
-    [class.disabled]="symbolizer.graphicFill !== undefined" (changes)="opacityFix(); emitChange()"
+  <hs-symbolizer-color-picker [symbolizer]="symbolizer" attribute="color" opacityAttribute="fillOpacity"
+    [class.disabled]="symbolizer.graphicFill !== undefined" (changes)="emitChange()"
     [label]="'STYLER.fillColor' | translateHs">
     <span class="badge bg-warning mt-2" *ngIf="symbolizer.graphicFill !== undefined"
       [title]="'STYLER.warningFillNotVisualizedDueToGraphic' | translateHs  ">!</span>
   </hs-symbolizer-color-picker>
 
-  <hs-symbolizer-slider [symbolizer]="symbolizer" attribute="opacity" (changes)="opacityFix(); emitChange()" step="0.05"
-    min="0" max="1" [label]="'STYLER.opacity' | translateHs "></hs-symbolizer-slider>
+  <hs-symbolizer-slider [symbolizer]="symbolizer" attribute="fillOpacity" (changes)="emitChange()" step="0.05" min="0"
+    max="1" [label]="'STYLER.opacity' | translateHs "></hs-symbolizer-slider>
 
   <hs-symbolizer-color-picker [symbolizer]="symbolizer" attribute="outlineColor" opacityAttribute="outlineOpacity"
     (changes)="emitChange()" [label]="'STYLER.outlineColor' | translateHs ">
