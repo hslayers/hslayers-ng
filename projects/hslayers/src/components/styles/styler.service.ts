@@ -374,7 +374,6 @@ export class HsStylerService {
         this.styleObject = blankStyleObj;
       }
       this.fixSymbolizerBugs(this.styleObject);
-      this.geostylerWorkaround();
       /**
        * Save (update OL style) layer style
        * unsavedChange - synced layman layer with changes
@@ -400,24 +399,6 @@ export class HsStylerService {
               symb.wellKnownName =
                 symb.wellKnownName.toLowerCase() as WellKnownName;
             }
-          }
-        }
-      }
-    }
-  }
-
-  /**
-   * Tweak geostyler object attributes to mitigate
-   * some discrepancies between opacity and fillOpacity usage
-   */
-  geostylerWorkaround(): void {
-    if (this.styleObject.rules) {
-      for (const rule of this.styleObject.rules) {
-        if (rule.symbolizers) {
-          for (const symbol of rule.symbolizers.filter(
-            (symb) => symb.kind == 'Fill',
-          ) as FillSymbolizer[]) {
-            symbol.opacity = symbol.fillOpacity;
           }
         }
       }
