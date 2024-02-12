@@ -22,7 +22,25 @@ export class HsFillSymbolizerComponent extends HsStylerPartBaseComponent {
   kinds = Kinds;
 
   addSymbolizer(attribute: string, kind: SymbolizerKind): void {
-    this.symbolizer[attribute] = {kind};
+    const symbolizer = {kind, color: '#000000', opacity: 1};
+    if (kind == Kinds.icon) {
+      Object.assign(symbolizer, {
+        offset: [0.5, 0.5],
+        size: 20,
+        image: 'assets/img/icons/information78.svg',
+      });
+    }
+    if (kind == Kinds.mark) {
+      Object.assign(symbolizer, {
+        wellKnownName: 'circle',
+        radius: 7,
+        fillOpacity: 1,
+        strokeColor: '#ffffff',
+        strokeOpacity: 0.25,
+        strokeWidth: 2,
+      });
+    }
+    this.symbolizer[attribute] = symbolizer;
     this.menuRef.close();
     this.emitChange();
   }
