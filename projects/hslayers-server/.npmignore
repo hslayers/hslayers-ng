@@ -1,5 +1,6 @@
 hslayers-server.db
 data/
+test/
 .env
 .env.*
 !.env.example
