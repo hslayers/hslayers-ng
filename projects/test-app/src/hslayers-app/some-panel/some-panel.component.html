@@ -1,6 +1,6 @@
 <div *ngIf="isVisible$ | async" class="card hs-main-panel" [ngClass]="panelWidthClass">
   <!-- Empty string as a translationModule to overwrite default PANEL_HEADER to satisfy traslationOverrides definition
-  Another possiblity would be to define panelName using PANEL_HEADER obj in config -->
+  Another possibility would be to define panelName using PANEL_HEADER obj in config -->
   <hs-panel-header name="custom" [panelTabs]="'My Cool Panel'" [translationModule]="''">
   </hs-panel-header>
   <div class="card-body">

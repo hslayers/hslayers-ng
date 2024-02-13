@@ -230,8 +230,8 @@ export class HsSidebarService {
   addButton(button: HsButton) {
     this.buttons.pipe(take(1)).subscribe((cur) => {
       /**
-       * Dont add button for measure or search in case thier toolbar
-       * alternativs are active
+       * Don't add button for measure or search in case their toolbar
+       * alternatives are active
        */
       if (
         button.condition &&
