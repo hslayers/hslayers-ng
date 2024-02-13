@@ -37,44 +37,36 @@
                 (click)="setStylerVisible('title')" [disabled]="!print.titleObj.text">
                 {{'PRINT.titleStylingOptions' | translateHs }}
             </button>
-            @defer(on viewport(hsPrint)){
             <hs-print-text-styler *ngIf="getStylerVisible('title')" [textStyle]="print.titleObj.textStyle"
                 [objectName]="'title'">
                 <!-- TODO: Remove function call from template -->
             </hs-print-text-styler>
-            }
             <button type="button" [disabled]="!print.legendObj.include" (click)="setStylerVisible('legend')"
                 class="btn w-100 mb-2 btn-outline-secondary dropdown-toggle dropdown-toggle-split">
                 {{'PRINT.legendStylingOptions' | translateHs }}
             </button>
-            @defer(on viewport(hsPrint)){
 
             <hs-print-legend-styler *ngIf="getStylerVisible('legend') && print.legendObj.include"
                 [legendObj]="print.legendObj">
                 <!-- TODO: Remove function call from template -->
             </hs-print-legend-styler>
-            }
             <button [disabled]="!print.imprintObj.include" type="button" (click)="setStylerVisible('imprint')"
                 class="btn w-100 mb-2 btn-outline-secondary dropdown-toggle dropdown-toggle-split">
                 {{'PRINT.imprintStylingOptions' | translateHs }}
             </button>
-            @defer(on viewport(hsPrint)){
 
             <hs-print-imprint-styler *ngIf="getStylerVisible('imprint') && print.imprintObj.include"
                 [imprintObj]="print.imprintObj">
                 <!-- TODO: Remove function call from template -->
             </hs-print-imprint-styler>
-            }
             <button [disabled]="!print.scaleObj.include" type="button" (click)="setStylerVisible('scale')"
                 class="btn w-100 mb-2 btn-outline-secondary dropdown-toggle dropdown-toggle-split">
                 {{'PRINT.scaleStylingOptions' | translateHs }}
             </button>
-            @defer(on viewport(hsPrint)){
             <hs-print-scale-styler *ngIf="getStylerVisible('scale') && print.scaleObj.include"
                 [scaleObj]="print.scaleObj">
                 <!-- TODO: Remove function call from template -->
             </hs-print-scale-styler>
-            }
             <div class="mb-2 mt-2 d-flex justify-content-start" *ngIf="!isLoading()">
                 <button type="button" class="btn btn-primary me-2 w-50" (click)="printLayout(true)">{{'COMMON.print' |
                     translateHs }}</button>
