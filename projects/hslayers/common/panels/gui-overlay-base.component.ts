@@ -16,7 +16,7 @@ export class HsGuiOverlayBaseComponent implements HsPanelComponent, OnInit {
   isVisible$ = new Observable<boolean>();
 
   /**
-   * Control to make sure HsPanelBaseComponent ngOnInit was run eg.
+   * Control to make sure HsGuiOverlayBaseComponent ngOnInit was run eg.
    * was called from parent ngOnInit or when parents ngOnInit is not defined
    */
   private baseComponentInitRun = false;
