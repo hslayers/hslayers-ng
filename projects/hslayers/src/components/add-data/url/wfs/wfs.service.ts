@@ -482,7 +482,8 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
         removable: true,
         wfsUrl: url,
         ...options,
-        // extent: this.getLayerExtent(layer, options.crs),
+        extent: this.getLayerExtent(layer, options.crs),
+        cluster: layer.featureCount ? layer.featureCount > 5000 : true, //A lot of features or not set
       },
       source: new WfsSource(this.hsUtilsService, this.http, {
         data_version: this.data.version,
@@ -491,6 +492,10 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
         provided_url: url,
         layer_name: options.layerName,
         map_projection: this.hsMapService.getMap().getView().getProjection(),
+        layerExtent:
+          layer.featureCount > 5000 || !layer.featureCount //A lot of features or not set
+            ? this.getLayerExtent(layer, options.crs)
+            : undefined,
       }),
       renderOrder: null,
       //Used to determine whether its URL WFS service when saving to compositions

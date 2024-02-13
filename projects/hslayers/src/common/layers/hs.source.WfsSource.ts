@@ -1,11 +1,10 @@
 import {HttpClient} from '@angular/common/http';
-import {lastValueFrom} from 'rxjs';
 
-import {Geometry} from 'ol/geom';
 import {ObjectEvent} from 'ol/Object';
 import {Vector as VectorSource} from 'ol/source';
 import {WFS} from 'ol/format';
-import {bbox} from 'ol/loadingstrategy';
+import {bbox, tile} from 'ol/loadingstrategy';
+import {createXYZ} from 'ol/tilegrid';
 import {transformExtent} from 'ol/proj';
 
 import {HsUtilsService} from '../../components/utils/utils.service';
@@ -17,6 +16,7 @@ export type WfsOptions = {
   provided_url?: string;
   layer_name?: string;
   map_projection?: any;
+  layerExtent?: any;
 };
 
 /**
@@ -33,6 +33,7 @@ export class WfsSource extends VectorSource {
       provided_url,
       layer_name,
       map_projection,
+      layerExtent,
     }: WfsOptions,
   ) {
     super({
@@ -76,26 +77,28 @@ export class WfsSource extends VectorSource {
         ].join('?');
         url = hsUtilsService.proxify(url);
         this.dispatchEvent('featuresloadstart');
-        const response = await lastValueFrom(
-          http.get(url, {responseType: 'text'}),
-        );
-        if (response) {
-          const features = readFeatures(
-            response,
-            map_projection,
-            data_version,
-            responseFeatureCRS,
-          );
-          (this as VectorSource).addFeatures(features);
-          this.dispatchEvent(
-            new ObjectEvent('propertychange', 'loaded', false),
-          );
-          this.dispatchEvent('featuresloadend');
-        } else {
-          this.dispatchEvent('featuresloaderror');
-        }
+        http.get(url, {responseType: 'text'}).subscribe({
+          next: (response) => {
+            const features = readFeatures(
+              response,
+              map_projection,
+              data_version,
+              responseFeatureCRS,
+            );
+            (this as VectorSource).addFeatures(features);
+            this.dispatchEvent(
+              new ObjectEvent('propertychange', 'loaded', false),
+            );
+            this.dispatchEvent('featuresloadend');
+          },
+
+          error: (err: any) => {
+            this.dispatchEvent('featuresloaderror');
+            (this as VectorSource).removeLoadedExtent(extent);
+          },
+        });
       },
-      strategy: bbox,
+      strategy: layerExtent ? tile(createXYZ({extent: layerExtent})) : bbox,
     });
   }
 }
