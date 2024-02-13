@@ -1,21 +1,13 @@
-import {AsyncPipe, NgClass, NgIf} from '@angular/common';
 import {Component, OnInit} from '@angular/core';
-import {FormsModule} from '@angular/forms';
 
 import {HsLayoutService} from 'hslayers-ng/shared/layout';
 import {HsPanelBaseComponent} from 'hslayers-ng/common/panels';
-import {HsPanelHeaderComponent} from 'hslayers-ng/common/panels';
-import {HsPrintImprintStylerComponent} from './imprint-styler/imprint-styler.component';
 import {HsPrintLegendService} from './print-legend.service';
-import {HsPrintLegendStylerComponent} from './legend-styler/legend-styler.component';
 import {HsPrintScaleService} from './print-scale.service';
-import {HsPrintScaleStylerComponent} from './scale-styler/scale-styler.component';
 import {HsPrintService} from './print.service';
-import {HsPrintTextStylerComponent} from './text-styler/text-styler.component';
 import {HsUtilsService} from 'hslayers-ng/shared/utils';
 import {PrintModel} from './types/print-object.type';
 import {Styler} from './types/styler.type';
-import {TranslateCustomPipe} from 'hslayers-ng/shared/language';
 
 @Component({
   selector: 'hs-print',
