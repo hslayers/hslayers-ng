@@ -98,7 +98,7 @@ export class HsPanelConstructorService {
   }
 
   /**
-   * INTERNAL. You most likely want to use 'createPanelandButton' to create additional panel
+   * INTERNAL. You most likely want to use 'createPanelAndButton' to create additional panel
    * @param name - Name of panel used in panelsEnabled config
    * @param data - Extra misc data object to be stored in panel
    * @param buttonDefinition - HS Button definition object

@@ -69,7 +69,7 @@ export class HsSidebarComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Refresh buttons array. Remove disabled ones and add the that were enabled
+   * Refresh buttons array. Remove disabled ones and add the ones that were enabled
    */
   refreshButtons() {
     const disabledPanels = Object.entries(this.HsConfig.panelsEnabled).reduce(
@@ -106,7 +106,7 @@ export class HsSidebarComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Resolve wether search/measure buttons should be visible after config update.
+   * Resolve whether search/measure buttons should be visible after config update.
    */
   private resloveBtnWithCondition(panel: string) {
     return !(
