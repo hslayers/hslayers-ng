@@ -475,6 +475,10 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
    */
   getLayer(layer, options: LayerOptions): Layer<Source> {
     const url = this.hsWfsGetCapabilitiesService.service_url.split('?')[0];
+    const manyFeatures = layer.featureCount ? layer.featureCount > 5000 : true; //A lot of features or not set
+    const layerExtent = manyFeatures
+      ? this.getLayerExtent(layer, options.crs)
+      : undefined;
     const new_layer = new VectorLayer({
       properties: {
         name: options.layerName,
@@ -482,7 +486,8 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
         removable: true,
         wfsUrl: url,
         ...options,
-        // extent: this.getLayerExtent(layer, options.crs),
+        extent: layerExtent,
+        cluster: manyFeatures,
       },
       source: new WfsSource(this.hsUtilsService, this.http, {
         data_version: this.data.version,
@@ -491,6 +496,7 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
         provided_url: url,
         layer_name: options.layerName,
         map_projection: this.hsMapService.getMap().getView().getProjection(),
+        layerExtent: layerExtent,
       }),
       renderOrder: null,
       //Used to determine whether its URL WFS service when saving to compositions
