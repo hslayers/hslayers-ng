@@ -698,6 +698,9 @@ export class HsLayerManagerService {
    */
   loadingEvents(layer: HsLayerDescriptor): void {
     const olLayer = layer.layer;
+    if (getBase(olLayer) && this.hsConfig.componentsEnabled.basemapGallery) {
+      return;
+    }
     const source: any = olLayer.get('cluster')
       ? (olLayer.getSource() as Cluster).getSource()
       : olLayer.getSource();
