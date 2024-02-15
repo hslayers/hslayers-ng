@@ -61,7 +61,7 @@
                 <!-- TODO: Remove function call from template -->
             </hs-layer-manager-time-editor>
             <!-- *ngIf="layer.loadProgress?.loadTotal > 0" -->
-            <ngb-progressbar [value]="layer.loadProgress.percents" height="2px"
+            <ngb-progressbar [value]="layer.loadProgress.percents" height="2px" [animated]="true"
                 [ngClass]="{'loaded': layer.loadProgress?.loaded}"></ngb-progressbar>
 
         </li>
