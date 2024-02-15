@@ -7,8 +7,8 @@ export type HsLayerTimeDescriptor = {
 };
 
 export type HsLayerLoadProgress = {
-  loadCounter: number;
-  loadTotal: number;
+  total: number;
+  pending: number;
   loadError: number;
   percents: number;
   loaded: boolean;

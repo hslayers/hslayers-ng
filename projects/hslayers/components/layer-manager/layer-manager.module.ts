@@ -5,6 +5,7 @@ import {FormsModule} from '@angular/forms';
 import {
   NgbDatepickerModule,
   NgbDropdownModule,
+  NgbProgressbarModule,
   NgbTooltipModule,
 } from '@ng-bootstrap/ng-bootstrap';
 
@@ -69,6 +70,7 @@ import {TranslateCustomPipe} from 'hslayers-ng/shared/language';
     NgbDatepickerModule,
     NgbDropdownModule,
     NgbTooltipModule,
+    NgbProgressbarModule,
     DragDropModule,
     HsColormapPickerModule,
     HsWmsSourceWidgetComponent,

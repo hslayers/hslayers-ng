@@ -60,6 +60,10 @@
             <hs-layer-manager-time-editor [layer]="layer" class="d-flex" *ngIf="showLayerWmsT(layer)">
                 <!-- TODO: Remove function call from template -->
             </hs-layer-manager-time-editor>
+            <!-- *ngIf="layer.loadProgress?.loadTotal > 0" -->
+            <ngb-progressbar [value]="layer.loadProgress.percents" height="2px"
+                [ngClass]="{'loaded': layer.loadProgress?.loaded}"></ngb-progressbar>
+
         </li>
     </ul>
 </div>
