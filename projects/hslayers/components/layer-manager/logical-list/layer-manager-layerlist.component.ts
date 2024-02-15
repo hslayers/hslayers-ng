@@ -53,14 +53,6 @@ export class HsLayerListComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Test if selected layer is loaded in map
-   * @param layer - Selected layer
-   */
-  layerLoaded(layer: HsLayerDescriptor): boolean {
-    return this.hsLayerUtilsService.layerLoaded(layer);
-  }
-
-  /**
    * Test if selected layer is valid
    * @param layer - Selected layer
    * @returns true for invalid layer
