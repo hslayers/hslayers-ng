@@ -1,11 +1,15 @@
 import {Layer} from 'ol/layer';
 import {Source} from 'ol/source';
+import {Subject} from 'rxjs';
 
 export type HsLayerTimeDescriptor = {
   default: string;
   timePoints: Array<string>;
 };
-
+/**
+ * @param timer Loading progress timer which controls load events executions
+ * and tries to reset progress once the loading finished (no execution in 2000ms)
+ */
 export type HsLayerLoadProgress = {
   total: number;
   pending: number;
@@ -13,7 +17,7 @@ export type HsLayerLoadProgress = {
   percents: number;
   loaded: boolean;
   error?: boolean;
-  timer?: any;
+  timer?: Subject<number>;
 };
 
 export interface HsLayerDescriptor {
