@@ -28,3 +28,7 @@ i.hs-lm-queryable {
 .hs-sublayer-toggle {
     font-size: 0.75rem;
 }
+
+ngb-progressbar.loaded div.progress-bar {
+    background-color: var(--bs-secondary-bg-subtle);
+}
