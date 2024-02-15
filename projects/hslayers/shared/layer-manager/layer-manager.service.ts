@@ -60,6 +60,7 @@ import {
   setOrigLayers,
   setPath,
 } from 'hslayers-ng/common/extensions';
+import {Subject, buffer, bufferTime, debounceTime, pairwise} from 'rxjs';
 
 export class HsLayermanagerDataObject {
   folders: any;
@@ -639,19 +640,6 @@ export class HsLayerManagerService {
     return undefined;
   }
 
-  private loadStarted(
-    loadProgress: HsLayerLoadProgress,
-    olLayer: Layer<Source>,
-  ) {
-    loadProgress.total += 1;
-    this.changeLoadCounter(olLayer, loadProgress, 1);
-  }
-
-  private loadEnded(loadProgress: HsLayerLoadProgress, olLayer: Layer<Source>) {
-    loadProgress.error = false;
-    this.changeLoadCounter(olLayer, loadProgress, -1);
-  }
-
   private loadError(
     loadProgress: HsLayerLoadProgress,
     olLayer: Layer<Source>,
@@ -662,7 +650,7 @@ export class HsLayerManagerService {
   ) {
     this.changeLoadCounter(olLayer, loadProgress, -1);
     if (typeCallback) {
-      typeCallback(loadProgress, olLayer);
+      typeCallback.bind(this)(loadProgress, olLayer);
     }
   }
 
@@ -735,15 +723,16 @@ export class HsLayerManagerService {
       return;
     }
 
-    /**
-     * Assign event handlers for start, end and error events of {layerType}
-     * eg. tile => tileloadstart
-     */
+    this.createLoadingProgressTimer(loadProgress, olLayer);
+    const loadStart = this.subscribeToEventSubject(1, loadProgress, olLayer);
+    const loadEnd = this.subscribeToEventSubject(-1, loadProgress, olLayer);
+
     source.on(`${layerType}loadstart`, (event) => {
-      this.loadStarted(loadProgress, olLayer);
+      loadStart.next(true);
     });
     source.on(`${layerType}loadend`, (event) => {
-      this.loadEnded(loadProgress, olLayer);
+      loadEnd.next(true);
+      loadProgress.error = false;
     });
     source.on(`${layerType}loaderror`, (event) => {
       this.loadError(loadProgress, olLayer, this[`${layerType}LoadFailed`]);
@@ -765,6 +754,75 @@ export class HsLayerManagerService {
     }
   }
 
+  /**
+   * Creates loading progress timer which controls load events executions
+   * and tries to reset progress once the loading finished (no execution in 2000ms)
+   */
+  private createLoadingProgressTimer(
+    loadProgress: HsLayerLoadProgress,
+    olLayer: Layer<Source>,
+  ) {
+    loadProgress.timer = new Subject();
+    /**
+     * NOTE:
+     * pairwise is a hacky solution for a cases when pending numbers get out of sync
+     * eg. everything has been loaded but pending value is not null.
+     * Could not find the root cause of the problem
+     */
+    loadProgress.timer
+      .pipe(debounceTime(2000), pairwise())
+      .subscribe(([previous, current]) => {
+        if (
+          loadProgress.pending == 0 ||
+          (previous === current && current != 0)
+        ) {
+          this.zone.run(() => {
+            loadProgress.total = 0;
+            if (current != 0) {
+              loadProgress.pending = 0;
+            }
+            loadProgress.percents = 0;
+            this.hsEventBusService.layerLoads.next(olLayer);
+          });
+        }
+      });
+  }
+
+  /**
+   * Create an event subject which is used to cast value in an event callback.
+   * and
+   * Subscribe to an subject to allow debouncing of event callback method.
+   * Subscription increment or decrement pending parameter of loadProgress which feeds progress bar
+   */
+  private subscribeToEventSubject(
+    signMultiplier: 1 | -1,
+    loadProgress: HsLayerLoadProgress,
+    olLayer: Layer<Source>,
+  ): Subject<boolean> {
+    const subject: Subject<boolean> = new Subject();
+    subject
+      .pipe(
+        //Buffer emitions to an array until closing notifier emits.
+        buffer(
+          // In case 250ms seconds has passed without another emit => close buffer and emit value
+          subject.pipe(debounceTime(100)),
+        ),
+      )
+      .subscribe((loads) => {
+        loadProgress.total += signMultiplier == 1 ? loads.length : 0;
+        this.changeLoadCounter(
+          olLayer,
+          loadProgress,
+          loads.length * signMultiplier,
+        );
+      });
+    return subject;
+  }
+
+  /**
+   * Adjust layer progress counter object and calculate loading state (percentages)
+   * change is positive number in case of loadStart event and negative number in case of loadEnd/Error events
+   */
   private changeLoadCounter(
     layer: Layer<Source>,
     progress: HsLayerLoadProgress,
@@ -773,23 +831,6 @@ export class HsLayerManagerService {
     progress.pending += change;
     progress.pending = progress.pending < 0 ? 0 : progress.pending;
     progress.loaded = progress.pending === 0;
-    //No more tiles to load?
-    if (progress.loaded) {
-      // If in 2 seconds no new tiles are starting to to load
-      // we can assume that layer has finished loading
-      if (progress.timer) {
-        clearTimeout(progress.timer);
-      }
-      progress.timer = setTimeout(() => {
-        if (progress.pending == 0) {
-          this.zone.run(() => {
-            progress.total = 0;
-            this.hsEventBusService.layerLoads.next(layer);
-          });
-        }
-      }, 2000);
-    }
-
     let percents = 0;
     if (progress.total > 0) {
       percents = Math.round(
@@ -797,14 +838,11 @@ export class HsLayerManagerService {
       );
     }
     progress.percents = percents;
+    progress.timer.next(progress.pending);
     this.hsEventBusService.layerLoadings.next({layer, progress});
-    //Throttle updating UI a bit for many layers * many tiles
-    const delta = new Date().getTime() - this.lastProgressUpdate;
-    if (percents == 0 || delta > 1000) {
-      this.zone.run(() => {
-        this.lastProgressUpdate = new Date().getTime();
-      });
-    }
+    this.zone.run(() => {
+      this.lastProgressUpdate = new Date().getTime();
+    });
   }
 
   /**
