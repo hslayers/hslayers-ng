@@ -1,6 +1,7 @@
 import {DomSanitizer, SafeHtml} from '@angular/platform-browser';
 import {Injectable, NgZone} from '@angular/core';
 
+import {Cluster, Source} from 'ol/source';
 import {CollectionEvent} from 'ol/Collection';
 import {EventsKey} from 'ol/events';
 import {
@@ -11,7 +12,6 @@ import {
   Vector as VectorLayer,
 } from 'ol/layer';
 import {Map} from 'ol';
-import {Source} from 'ol/source';
 import {unByKey} from 'ol/Observable';
 
 import {HS_PRMS} from 'hslayers-ng/components/share';
@@ -38,6 +38,7 @@ import {HsUtilsService} from 'hslayers-ng/shared/utils';
 import {
   SHOW_IN_LAYER_MANAGER,
   getAbstract,
+  getActive,
   getBase,
   getCachedCapabilities,
   getCluster,
@@ -599,26 +600,154 @@ export class HsLayerManagerService {
   }
 
   /**
-   * Create events for checking if layer is being loaded or is loaded for ol.layer.Image or ol.layer.Tile
+   * Show all layers of particular layer group (when groups are defined)
+   * @param theme - Group layer to activate
+   */
+  activateTheme(theme: Group): void {
+    let switchOn = true;
+    if (getActive(theme) == true) {
+      switchOn = false;
+    }
+    setActive(theme, switchOn);
+    let baseSwitched = false;
+    theme.setVisible(switchOn);
+    for (const layer of theme.get('layers')) {
+      if (getBase(layer) == true && !baseSwitched) {
+        this.hsLayerManagerVisibilityService.changeBaseLayerVisibility(
+          null,
+          null,
+        );
+        baseSwitched = true;
+      } else if (getBase(layer) == true) {
+        return;
+      } else {
+        layer.setVisible(switchOn);
+      }
+    }
+  }
+
+  private determineLayerType(olLayer) {
+    if (this.hsUtilsService.instOf(olLayer, VectorLayer)) {
+      return 'features';
+    } else if (this.hsUtilsService.instOf(olLayer, ImageLayer)) {
+      return 'image';
+    } else if (this.hsUtilsService.instOf(olLayer, Tile)) {
+      return 'tile';
+    }
+    return undefined;
+  }
+
+  private loadStarted(
+    loadProgress: HsLayerLoadProgress,
+    olLayer: Layer<Source>,
+  ) {
+    loadProgress.total += 1;
+    this.changeLoadCounter(olLayer, loadProgress, 1);
+  }
+
+  private loadEnded(loadProgress: HsLayerLoadProgress, olLayer: Layer<Source>) {
+    loadProgress.error = false;
+    this.changeLoadCounter(olLayer, loadProgress, -1);
+  }
+
+  private loadError(
+    loadProgress: HsLayerLoadProgress,
+    olLayer: Layer<Source>,
+    typeCallback?: (
+      loadProgress: HsLayerLoadProgress,
+      olLayer: Layer<Source>,
+    ) => any,
+  ) {
+    this.changeLoadCounter(olLayer, loadProgress, -1);
+    if (typeCallback) {
+      typeCallback(loadProgress, olLayer);
+    }
+  }
+
+  private featuresLoadFailed(
+    loadProgress: HsLayerLoadProgress,
+    olLayer: Layer<Source>,
+  ) {
+    if (loadProgress) {
+      loadProgress.error = true;
+    }
+    this.hsToastService.createToastPopupMessage(
+      'LAYERS.featuresLoadError',
+      `${getTitle(
+        olLayer,
+      )}: ${this.hsLanguageService.getTranslationIgnoreNonExisting(
+        'ADDLAYERS.ERROR',
+        'someErrorHappened',
+        null,
+      )}`,
+      {},
+    );
+  }
+
+  private imageLoadFailed(
+    loadProgress: HsLayerLoadProgress,
+    olLayer: Layer<Source>,
+  ) {
+    loadProgress.loaded = true;
+    loadProgress.error = true;
+    this.hsEventBusService.layerLoads.next(olLayer);
+  }
+
+  private tileLoadFailed(
+    loadProgress: HsLayerLoadProgress,
+    olLayer: Layer<Source>,
+  ) {
+    this.changeLoadCounter(olLayer, loadProgress, -1);
+    loadProgress.loadError += 1;
+    if (loadProgress.loadError == loadProgress.total) {
+      loadProgress.error = true;
+    }
+  }
+
+  /**
+   * Create events for checking if layer is being loaded or is loaded
    * @param layer - Layer which is being added
    */
   loadingEvents(layer: HsLayerDescriptor): void {
     const olLayer = layer.layer;
-    const source: any = olLayer.getSource();
+    const source: any = olLayer.get('cluster')
+      ? (olLayer.getSource() as Cluster).getSource()
+      : olLayer.getSource();
     if (!source) {
       this.hsLog.error(`Layer ${getTitle(olLayer)} has no source`);
       return;
     }
-    const loadProgress = {
-      loadCounter: 0,
-      loadTotal: 0,
+    const loadProgress: HsLayerLoadProgress = {
+      pending: 0,
+      total: 0,
       loadError: 0,
       loaded: true,
       error: undefined,
       percents: 0,
     };
     layer.loadProgress = loadProgress;
-    if (this.hsUtilsService.instOf(olLayer, VectorLayer)) {
+
+    const layerType = this.determineLayerType(olLayer);
+
+    if (!layerType) {
+      return;
+    }
+
+    /**
+     * Assign event handlers for start, end and error events of {layerType}
+     * eg. tile => tileloadstart
+     */
+    source.on(`${layerType}loadstart`, (event) => {
+      this.loadStarted(loadProgress, olLayer);
+    });
+    source.on(`${layerType}loadend`, (event) => {
+      this.loadEnded(loadProgress, olLayer);
+    });
+    source.on(`${layerType}loaderror`, (event) => {
+      this.loadError(loadProgress, olLayer, this[`${layerType}LoadFailed`]);
+    });
+
+    if (layerType == 'features') {
       source.on('propertychange', (event) => {
         if (event.key == 'loaded') {
           if (event.oldValue == false) {
@@ -631,52 +760,6 @@ export class HsLayerManagerService {
           }
         }
       });
-      source.on('featuresloaderror', (evt) => {
-        if (layer.loadProgress) {
-          layer.loadProgress.error = true;
-        }
-        this.hsToastService.createToastPopupMessage(
-          'LAYERS.featuresLoadError',
-          `${
-            layer.title
-          }: ${this.hsLanguageService.getTranslationIgnoreNonExisting(
-            'ADDLAYERS.ERROR',
-            'someErrorHappened',
-            null,
-          )}`,
-          {},
-        );
-      });
-    } else if (this.hsUtilsService.instOf(olLayer, ImageLayer)) {
-      source.on('imageloadstart', (event) => {
-        loadProgress.loadTotal += 1;
-        this.changeLoadCounter(olLayer, loadProgress, 1);
-      });
-      source.on('imageloadend', (event) => {
-        loadProgress.error = false;
-        this.changeLoadCounter(olLayer, loadProgress, -1);
-      });
-      source.on('imageloaderror', (event) => {
-        loadProgress.loaded = true;
-        loadProgress.error = true;
-        this.hsEventBusService.layerLoads.next(olLayer);
-      });
-    } else if (this.hsUtilsService.instOf(olLayer, Tile)) {
-      source.on('tileloadstart', (event) => {
-        loadProgress.loadTotal += 1;
-        this.changeLoadCounter(olLayer, loadProgress, 1);
-      });
-      source.on('tileloadend', (event) => {
-        loadProgress.error = false;
-        this.changeLoadCounter(olLayer, loadProgress, -1);
-      });
-      source.on('tileloaderror', (event) => {
-        this.changeLoadCounter(olLayer, loadProgress, -1);
-        loadProgress.loadError += 1;
-        if (loadProgress.loadError == loadProgress.loadTotal) {
-          loadProgress.error = true;
-        }
-      });
     }
   }
 
@@ -685,40 +768,37 @@ export class HsLayerManagerService {
     progress: HsLayerLoadProgress,
     change: number,
   ): void {
-    progress.loadCounter += change;
+    progress.pending += change;
+    progress.pending = progress.pending < 0 ? 0 : progress.pending;
+    progress.loaded = progress.pending === 0;
     //No more tiles to load?
-    if (progress.loadCounter == 0) {
-      progress.loaded = true;
+    if (progress.loaded) {
       // If in 2 seconds no new tiles are starting to to load
       // we can assume that layer has finished loading
       if (progress.timer) {
         clearTimeout(progress.timer);
       }
       progress.timer = setTimeout(() => {
-        if (progress.loadCounter == 0) {
+        if (progress.pending == 0) {
           this.zone.run(() => {
-            progress.loadTotal = 0;
+            progress.total = 0;
             this.hsEventBusService.layerLoads.next(layer);
-            progress.percents = 100;
           });
         }
       }, 2000);
-    } else {
-      progress.loaded = progress.loadTotal > 0 ? false : true;
     }
 
-    let percents = 100.0;
-    if (progress.loadTotal > 0) {
+    let percents = 0;
+    if (progress.total > 0) {
       percents = Math.round(
-        ((progress.loadTotal - progress.loadCounter) / progress.loadTotal) *
-          100,
+        ((progress.total - progress.pending) / progress.total) * 100,
       );
     }
     progress.percents = percents;
     this.hsEventBusService.layerLoadings.next({layer, progress});
     //Throttle updating UI a bit for many layers * many tiles
     const delta = new Date().getTime() - this.lastProgressUpdate;
-    if (percents == 100 || delta > 1000) {
+    if (percents == 0 || delta > 1000) {
       this.zone.run(() => {
         this.lastProgressUpdate = new Date().getTime();
       });
