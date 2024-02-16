@@ -78,7 +78,8 @@ export class WfsSource extends VectorSource {
           hsUtilsService.paramsToURLWoEncode(params),
         ].join('?');
         url = hsUtilsService.proxify(url);
-        this.dispatchEvent('featuresloadstart');
+        //this.dispatchEvent('featuresloadstart');
+
         http.get(url, {responseType: 'text'}).subscribe({
           next: (response) => {
             const features = readFeatures(
