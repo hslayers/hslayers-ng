@@ -693,7 +693,7 @@ export class HsLayerManagerService {
   }
 
   /**
-   * Create events for checking if layer is being loaded or is loaded
+   * Create events for checking whether the layer is being loaded or is loaded
    * @param layer - Layer which is being added
    */
   loadingEvents(layer: HsLayerDescriptor): void {
@@ -756,8 +756,8 @@ export class HsLayerManagerService {
   }
 
   /**
-   * Creates loading progress timer which controls load events executions
-   * and tries to reset progress once the loading finished (no execution in 2000ms)
+   * Creates loading progress timer which controls the executions of load events callbacks
+   * and tries to reset progress once the loading has finished (no execution in 2000ms)
    */
   private createLoadingProgressTimer(
     loadProgress: HsLayerLoadProgress,
@@ -767,7 +767,7 @@ export class HsLayerManagerService {
     /**
      * NOTE:
      * pairwise is a hacky solution for a cases when pending numbers get out of sync
-     * eg. everything has been loaded but pending value is not null.
+     * eg. everything has been loaded but pending value is not 0.
      * Could not find the root cause of the problem
      */
     loadProgress.timer
@@ -793,7 +793,7 @@ export class HsLayerManagerService {
    * Create an event subject which is used to cast value in an event callback.
    * and
    * Subscribe to an subject to allow debouncing of event callback method.
-   * Subscription increment or decrement pending parameter of loadProgress which feeds progress bar
+   * Subscription increments or decrements pending parameter of loadProgress which is used to indicate progress in UI
    */
   private subscribeToEventSubject(
     signMultiplier: 1 | -1,
@@ -822,7 +822,7 @@ export class HsLayerManagerService {
 
   /**
    * Adjust layer progress counter object and calculate loading state (percentages)
-   * change is positive number in case of loadStart event and negative number in case of loadEnd/Error events
+   * change is positive number in case of loadStart and negative number in case of loadEnd/Error events
    */
   private changeLoadCounter(
     layer: Layer<Source>,
