@@ -648,6 +648,7 @@ export class HsLayerManagerService {
       olLayer: Layer<Source>,
     ) => any,
   ) {
+    loadProgress.loadError += 1;
     this.changeLoadCounter(olLayer, loadProgress, -1);
     if (typeCallback) {
       typeCallback.bind(this)(loadProgress, olLayer);
@@ -687,8 +688,6 @@ export class HsLayerManagerService {
     loadProgress: HsLayerLoadProgress,
     olLayer: Layer<Source>,
   ) {
-    this.changeLoadCounter(olLayer, loadProgress, -1);
-    loadProgress.loadError += 1;
     if (loadProgress.loadError == loadProgress.total) {
       loadProgress.error = true;
     }
@@ -832,7 +831,6 @@ export class HsLayerManagerService {
     change: number,
   ): void {
     progress.pending += change;
-    progress.pending = progress.pending < 0 ? 0 : progress.pending;
     progress.loaded = progress.pending === 0;
     let percents = 0;
     if (progress.total > 0) {
