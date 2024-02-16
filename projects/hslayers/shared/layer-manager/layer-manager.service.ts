@@ -838,7 +838,12 @@ export class HsLayerManagerService {
         ((progress.total - progress.pending) / progress.total) * 100,
       );
     }
-    progress.percents = percents;
+    /**
+     * Total is reseted only after 2 seconds of idle state.
+     * Panning sooner will make a progress bar UI animation to jump or 'backpaddle' unnecessarily.
+     * Using 0 instead of 100 (when loading ended) prevents that
+     */
+    progress.percents = percents === 100 ? 0 : percents;
     progress.timer.next(progress.pending);
     this.hsEventBusService.layerLoadings.next({layer, progress});
     this.zone.run(() => {
