@@ -24,7 +24,7 @@ import {
 } from 'hslayers-ng/common/layman';
 import {setDefinition} from 'hslayers-ng/common/extensions';
 
-import {HsAddDataVectorUtilsService} from './vector.utils.service';
+import {HsAddDataVectorUtilsService} from './vector-utils.service';
 import {HsVectorLayerOptions} from 'hslayers-ng/types';
 import {VectorLayerDescriptor} from 'hslayers-ng/types';
 import {VectorSourceDescriptor} from 'hslayers-ng/types';
