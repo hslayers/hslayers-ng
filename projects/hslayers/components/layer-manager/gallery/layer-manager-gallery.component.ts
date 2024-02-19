@@ -7,7 +7,7 @@ import {HsGuiOverlayBaseComponent} from 'hslayers-ng/common/panels';
 import {HsLayerDescriptor} from 'hslayers-ng/types';
 import {
   HsLayerManagerService,
-  HsLayerManagerVisiblityService,
+  HsLayerManagerVisibilityService,
   HsLayerSelectorService,
 } from 'hslayers-ng/shared/layer-manager';
 import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
@@ -32,7 +32,7 @@ export class HsLayerManagerGalleryComponent extends HsGuiOverlayBaseComponent {
     public hsLayerManagerService: HsLayerManagerService,
     private hsLayerSelectorService: HsLayerSelectorService,
     public hsLayerUtilsService: HsLayerUtilsService,
-    public hsLayerManagerVisiblityService: HsLayerManagerVisiblityService,
+    public hsLayerManagerVisibilityService: HsLayerManagerVisibilityService,
   ) {
     super(hsLayoutService);
   }
@@ -48,7 +48,7 @@ export class HsLayerManagerGalleryComponent extends HsGuiOverlayBaseComponent {
   toggleBasemap(layer?: HsLayerDescriptor): void {
     if (layer) {
       if (!layer.active) {
-        this.hsLayerManagerVisiblityService.changeBaseLayerVisibility(
+        this.hsLayerManagerVisibilityService.changeBaseLayerVisibility(
           true,
           layer,
         );
@@ -63,7 +63,10 @@ export class HsLayerManagerGalleryComponent extends HsGuiOverlayBaseComponent {
       this.dropdown.close();
       this.hsLayerSelectorService.currentLayer = null;
 
-      this.hsLayerManagerVisiblityService.changeBaseLayerVisibility(null, null);
+      this.hsLayerManagerVisibilityService.changeBaseLayerVisibility(
+        null,
+        null,
+      );
     }
   }
   expandMenu(layer: HsLayerDescriptor): void {

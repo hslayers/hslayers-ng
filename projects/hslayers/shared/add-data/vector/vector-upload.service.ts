@@ -7,7 +7,7 @@ import {PROJECTIONS as epsg4326Aliases} from 'ol/proj/epsg4326';
 import {HsLogService} from 'hslayers-ng/shared/log';
 import {HsMapService} from 'hslayers-ng/shared/map';
 
-import {HsAddDataVectorUtilsService} from './vector.utils.service';
+import {HsAddDataVectorUtilsService} from './vector-utils.service';
 
 @Injectable({
   providedIn: 'root',

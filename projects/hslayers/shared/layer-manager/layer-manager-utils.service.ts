@@ -1,11 +1,10 @@
 import {Injectable} from '@angular/core';
 import {Subject} from 'rxjs';
 
-import {Cluster, Source} from 'ol/source';
+import {Cluster, Source, Vector as VectorSource} from 'ol/source';
+import {GeoJSON} from 'ol/format';
 import {Layer} from 'ol/layer';
 
-import VectorSource from 'ol/source/Vector';
-import {GeoJSON} from 'ol/format';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsLayerDescriptor} from 'hslayers-ng/types';
 import {HsLayerSelectorService} from './layer-selector.service';
@@ -47,7 +46,7 @@ export class HsLayerManagerUtilsService {
   }
 
   /**
-    Generates downloadable geoJSON for vector layer.
+    Generates downloadable GeoJSON for vector layer.
     Features are also transformed into the EPSG:4326 projection
   */
   saveGeoJson(): void {

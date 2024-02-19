@@ -1,7 +1,7 @@
-import VectorLayer from 'ol/layer/Vector';
-import VectorSource from 'ol/source/Vector';
-import {Cluster} from 'ol/source';
 import {Injectable} from '@angular/core';
+
+import {Cluster, Vector as VectorSource} from 'ol/source';
+import {Vector as VectorLayer} from 'ol/layer';
 
 import {HsAddDataOwsService} from 'hslayers-ng/shared/add-data';
 import {HsLayerManagerUtilsService} from './layer-manager-utils.service';

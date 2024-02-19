@@ -42,9 +42,9 @@
             </div>
             <div (click)="toggleBasemap()">
                 <div style="height: 4.5em; width: 100%; background: white"
-                    [ngClass]="{'active': !hsLayerManagerVisiblityService.baselayersVisible}"></div>
+                    [ngClass]="{'active': !hsLayerManagerVisibilityService.baselayersVisible}"></div>
                 <a class="dropdown-item flex-grow-1 d-flex align-items-center text-truncate"
-                    [ngClass]="{'active': !hsLayerManagerVisiblityService.baselayersVisible}">{{'LAYERMANAGER.baseMapGallery.noBaseMap'
+                    [ngClass]="{'active': !hsLayerManagerVisibilityService.baselayersVisible}">{{'LAYERMANAGER.baseMapGallery.noBaseMap'
                     | translateHs }}</a>
             </div>
         </div>

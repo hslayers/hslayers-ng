@@ -7,7 +7,7 @@ import {
 } from './layer-editor-sub-layer.service';
 import {
   HsLayerManagerService,
-  HsLayerManagerVisiblityService,
+  HsLayerManagerVisibilityService,
 } from 'hslayers-ng/shared/layer-manager';
 
 @Component({
@@ -22,7 +22,7 @@ export class HsLayerEditorSubLayerCheckboxesComponent implements OnInit {
   withChildren: KeyBooleanDict;
   constructor(
     public HsLayerEditorSublayerService: HsLayerEditorSublayerService,
-    public hsLayerManagerVisiblityService: HsLayerManagerVisiblityService,
+    public hsLayerManagerVisibilityService: HsLayerManagerVisibilityService,
     public HsLayerManagerService: HsLayerManagerService,
     private hsConfig: HsConfig,
   ) {}
