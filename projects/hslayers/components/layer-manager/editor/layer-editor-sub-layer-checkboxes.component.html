@@ -23,7 +23,7 @@
                         [ngClass]="{'hs-checkmark':withChildren[subLayer.Name],'hs-uncheckmark':!withChildren[subLayer.Name]}"
                         [attr.for]="'hs-sublayers-' + subLayer.Name + '-' + app "></label>
                     <div (click)="toggleExpanded()" style="cursor:pointer"
-                        [ngClass]="{'grayed': hsLayerManagerVisiblityService.currentResolution >= subLayer.maxResolution}">
+                        [ngClass]="{'grayed': hsLayerManagerVisibilityService.currentResolution >= subLayer.maxResolution}">
                         {{subLayer.Title || subLayer.Name}}
                         <button type="button" class="btn btn-sm p-0" style="font-size: 0.6rem;">
                             <i [ngClass]="{'icon-chevron-down': expanded, 'icon-chevron-right': !expanded}"></i>
@@ -34,7 +34,7 @@
                     <label class="form-check-label m-0" [ngClass]="{
                             'hs-checkmark':checkedSubLayers[subLayer.Name],
                             'hs-uncheckmark':!checkedSubLayers[subLayer.Name], 
-                            'grayed': (hsLayerManagerVisiblityService.currentResolution > subLayer.maxResolution) }"
+                            'grayed': (hsLayerManagerVisibilityService.currentResolution > subLayer.maxResolution) }"
                         [attr.for]="'hs-sublayers-' + subLayer.Name + '-' + app ">{{subLayer.Title ||
                         subLayer.Name}}</label>
                 </div>

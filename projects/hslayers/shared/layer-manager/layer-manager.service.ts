@@ -2,6 +2,7 @@ import {DomSanitizer, SafeHtml} from '@angular/platform-browser';
 import {Injectable, NgZone} from '@angular/core';
 
 import {CollectionEvent} from 'ol/Collection';
+import {EventsKey} from 'ol/events';
 import {
   Group,
   Image as ImageLayer,
@@ -13,7 +14,6 @@ import {Map} from 'ol';
 import {Source} from 'ol/source';
 import {unByKey} from 'ol/Observable';
 
-import {EventsKey} from 'ol/events';
 import {HS_PRMS} from 'hslayers-ng/components/share';
 import {HsAddDataOwsService} from 'hslayers-ng/shared/add-data';
 import {HsBaseLayerDescriptor} from 'hslayers-ng/types';
@@ -26,7 +26,7 @@ import {HsLayerDescriptor, HsLayerLoadProgress} from 'hslayers-ng/types';
 import {HsLayerEditorVectorLayerService} from './layer-editor-vector-layer.service';
 import {HsLayerManagerMetadataService} from './layer-manager-metadata.service';
 import {HsLayerManagerUtilsService} from './layer-manager-utils.service';
-import {HsLayerManagerVisiblityService} from './layer-manager-visiblity.service';
+import {HsLayerManagerVisibilityService} from './layer-manager-visibility.service';
 import {HsLayerSelectorService} from './layer-selector.service';
 import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
 import {HsLayoutService} from 'hslayers-ng/shared/layout';
@@ -65,7 +65,7 @@ export class HsLayermanagerDataObject {
   folders: any;
   layers: HsLayerDescriptor[];
   baselayers: HsBaseLayerDescriptor[];
-  terrainlayers: any[];
+  terrainLayers: any[];
   baselayer?: string;
   box_layers?: Group[];
   filter: string;
@@ -102,7 +102,7 @@ export class HsLayermanagerDataObject {
      * List of all cesium terrain layers loaded in layer manager.
      * @public
      */
-    this.terrainlayers = [];
+    this.terrainLayers = [];
     this.filter = '';
   }
 }
@@ -144,10 +144,10 @@ export class HsLayerManagerService {
     public sanitizer: DomSanitizer,
     private zone: NgZone,
     private hsLayerManagerUtilsService: HsLayerManagerUtilsService,
-    private hsLayerManagerVisiblityService: HsLayerManagerVisiblityService,
+    private hsLayerManagerVisibilityService: HsLayerManagerVisibilityService,
   ) {
     //Keeps 'data' object intact and in one place while allowing to split method between more services
-    this.hsLayerManagerVisiblityService.data = this.data;
+    this.hsLayerManagerVisibilityService.data = this.data;
     this.hsEventBusService.layerManagerUpdates.subscribe((layer) => {
       this.refreshLists();
     });
@@ -246,7 +246,7 @@ export class HsLayerManagerService {
     this.hsLayerManagerUtilsService.checkLayerHealth(layer);
     const showInLayerManager = getShowInLayerManager(layer) ?? true;
     layer.on('change:visible', (e) =>
-      this.hsLayerManagerVisiblityService.layerVisibilityChanged(e),
+      this.hsLayerManagerVisibilityService.layerVisibilityChanged(e),
     );
     if (
       this.hsLayerUtilsService.isLayerVectorLayer(layer) &&
@@ -271,7 +271,7 @@ export class HsLayerManagerService {
       abstract: getAbstract(layer),
       layer,
       grayed:
-        !this.hsLayerManagerVisiblityService.isLayerInResolutionInterval(layer),
+        !this.hsLayerManagerVisibilityService.isLayerInResolutionInterval(layer),
       visible: layer.getVisible(),
       showInLayerManager,
       uid: this.hsUtilsService.generateUuid(),
@@ -322,7 +322,7 @@ export class HsLayerManagerService {
           try {
             await this.hsLayerManagerMetadata.fillMetadata(layerDescriptor);
             layerDescriptor.grayed =
-              !this.hsLayerManagerVisiblityService.isLayerInResolutionInterval(
+              !this.hsLayerManagerVisibilityService.isLayerInResolutionInterval(
                 layer,
               );
             cb();
@@ -334,7 +334,7 @@ export class HsLayerManagerService {
     } else {
       layerDescriptor.active = layer.getVisible();
       if (layerDescriptor.active) {
-        this.hsLayerManagerVisiblityService.changeBaseLayerVisibility(
+        this.hsLayerManagerVisibilityService.changeBaseLayerVisibility(
           true,
           layerDescriptor,
         );
@@ -386,14 +386,14 @@ export class HsLayerManagerService {
   }
 
   /**
-   * Executed when a content of data.baselayers or data.terrainlayers changes.
+   * Executed when a content of data.baselayers or data.terrainLayers changes.
    * Angular does not detect changes inside arrays unless triggered from the view.
    * But it does detect changes of class properties.
    * Hence the whole array is copied so an "immutable" change happens and Angular detects that.
    */
   refreshLists(): void {
     this.data.baselayers = Array.from(this.data.baselayers);
-    this.data.terrainlayers = Array.from(this.data.terrainlayers);
+    this.data.terrainLayers = Array.from(this.data.terrainLayers);
   }
 
   /**
@@ -868,7 +868,7 @@ export class HsLayerManagerService {
     setTimeout(() => {
       for (let i = 0; i < this.data.layers.length; i++) {
         const tmp =
-          !this.hsLayerManagerVisiblityService.isLayerInResolutionInterval(
+          !this.hsLayerManagerVisibilityService.isLayerInResolutionInterval(
             this.data.layers[i].layer,
           );
         if (this.data.layers[i].grayed != tmp) {

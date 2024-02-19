@@ -3,7 +3,7 @@ import {Injectable} from '@angular/core';
 import {HsLayerDescriptor} from 'hslayers-ng/types';
 import {
   HsLayerManagerService,
-  HsLayerManagerVisiblityService,
+  HsLayerManagerVisibilityService,
 } from 'hslayers-ng/shared/layer-manager';
 import {HsLayerSelectorService} from 'hslayers-ng/shared/layer-manager';
 import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
@@ -27,7 +27,7 @@ export class HsLayerEditorSublayerService {
     public HsLayerManagerService: HsLayerManagerService,
     private HsLayerUtilsService: HsLayerUtilsService,
     private hsLayerSelectorService: HsLayerSelectorService,
-    private hsLayerManagerVisiblityService: HsLayerManagerVisiblityService,
+    private hsLayerManagerVisibilityService: HsLayerManagerVisibilityService,
   ) {
     this.hsLayerSelectorService.layerSelected.subscribe((layer) => {
       this.resetSublayers(layer);
@@ -120,14 +120,14 @@ export class HsLayerEditorSublayerService {
       params.LAYERS = `show:${params.LAYERS}`;
     }
     if (params.LAYERS == '' || params.LAYERS == 'show:') {
-      this.hsLayerManagerVisiblityService.changeLayerVisibility(
+      this.hsLayerManagerVisibilityService.changeLayerVisibility(
         !layer.visible,
         layer,
       );
       return;
     }
     if (layer.visible == false) {
-      this.hsLayerManagerVisiblityService.changeLayerVisibility(
+      this.hsLayerManagerVisibilityService.changeLayerVisibility(
         !layer.visible,
         layer,
       );

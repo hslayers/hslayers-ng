@@ -21,7 +21,7 @@ import {HsLayerListService} from './logical-list/layer-manager-layerlist.service
 import {HsLayerManagerRemoveAllDialogComponent} from './dialogs/remove-all-dialog.component';
 import {
   HsLayerManagerService,
-  HsLayerManagerVisiblityService,
+  HsLayerManagerVisibilityService,
   HsLayerSelectorService,
 } from 'hslayers-ng/shared/layer-manager';
 import {HsLayerSynchronizerService} from 'hslayers-ng/shared/save-map';
@@ -135,7 +135,7 @@ export class HsLayerManagerComponent
     public hsSidebarService: HsSidebarService,
     private HsRemoveLayerDialogService: HsRemoveLayerDialogService,
     public hsLayerSelectorService: HsLayerSelectorService,
-    public hsLayerManagerVisiblityService: HsLayerManagerVisiblityService,
+    public hsLayerManagerVisibilityService: HsLayerManagerVisibilityService,
   ) {
     super(hsLayoutService);
     this.hsEventBusService.layerRemovals
@@ -195,21 +195,21 @@ export class HsLayerManagerComponent
   }
 
   changeBaseLayerVisibility(e?, layer?: Layer<Source>) {
-    return this.hsLayerManagerVisiblityService.changeBaseLayerVisibility(
+    return this.hsLayerManagerVisibilityService.changeBaseLayerVisibility(
       e,
       layer,
     );
   }
 
   changeTerrainLayerVisibility(e, layer: Layer<Source>) {
-    return this.hsLayerManagerVisiblityService.changeTerrainLayerVisibility(
+    return this.hsLayerManagerVisibilityService.changeTerrainLayerVisibility(
       e,
       layer,
     );
   }
 
   changeLayerVisibility(toWhat: boolean, layer: HsLayerDescriptor) {
-    return this.hsLayerManagerVisiblityService.changeLayerVisibility(
+    return this.hsLayerManagerVisibilityService.changeLayerVisibility(
       toWhat,
       layer,
     );
@@ -220,7 +220,7 @@ export class HsLayerManagerComponent
   }
 
   activateTheme(e) {
-    return this.hsLayerManagerVisiblityService.activateTheme(e);
+    return this.hsLayerManagerVisibilityService.activateTheme(e);
   }
 
   baselayerFilter = (item): boolean => {
@@ -235,7 +235,7 @@ export class HsLayerManagerComponent
   toggleVisibilityForAll(): void {
     this.allLayersVisible = !this.allLayersVisible;
     this.hsLayerManagerService.data.layers.forEach((l) => {
-      this.hsLayerManagerVisiblityService.changeLayerVisibility(
+      this.hsLayerManagerVisibilityService.changeLayerVisibility(
         this.allLayersVisible,
         l,
       );
@@ -302,7 +302,7 @@ export class HsLayerManagerComponent
    * @param layer - Selected layer
    */
   isLayerInResolutionInterval(layer: Layer<Source>): boolean {
-    return this.hsLayerManagerVisiblityService.isLayerInResolutionInterval(
+    return this.hsLayerManagerVisibilityService.isLayerInResolutionInterval(
       layer,
     );
   }

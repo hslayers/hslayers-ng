@@ -25,7 +25,7 @@ import {HsEventBusService} from 'hslayers-ng/shared/event-bus';
 import {HsLanguageService} from 'hslayers-ng/shared/language';
 import {
   HsLayerManagerService,
-  HsLayerManagerVisiblityService,
+  HsLayerManagerVisibilityService,
 } from 'hslayers-ng/shared/layer-manager';
 import {HsLayoutService} from 'hslayers-ng/shared/layout';
 import {HsLogService} from 'hslayers-ng/shared/log';
@@ -88,7 +88,7 @@ export class HsCompositionsParserService {
     private hsCommonLaymanService: HsCommonLaymanService,
     private hsLayerManagerService: HsLayerManagerService,
     private hsToastService: HsToastService,
-    private HsLayerManagerVisiblityService: HsLayerManagerVisiblityService,
+    private HsLayerManagerVisibilityService: HsLayerManagerVisibilityService,
   ) {
     /**
      * Composition opened -> request its descriptor
@@ -450,7 +450,7 @@ export class HsCompositionsParserService {
                   lyr,
                   true,
                 );
-              this.HsLayerManagerVisiblityService.changeBaseLayerVisibility(
+              this.HsLayerManagerVisibilityService.changeBaseLayerVisibility(
                 true,
                 layerDescriptor,
               );
