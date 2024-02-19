@@ -4,4 +4,4 @@ export * from './layer-editor-vector-layer.service';
 export * from './layer-manager-metadata.service';
 export * from './layer-manager-copy-layer.service';
 export * from './layer-manager-utils.service';
-export * from './layer-manager-visiblity.service';
+export * from './layer-manager-visibility.service';

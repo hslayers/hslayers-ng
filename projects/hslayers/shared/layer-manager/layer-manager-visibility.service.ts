@@ -20,7 +20,7 @@ import {
 @Injectable({
   providedIn: 'root',
 })
-export class HsLayerManagerVisiblityService {
+export class HsLayerManagerVisibilityService {
   /**
    * Store if baselayers are visible (more precisely one of baselayers)
    * @public
@@ -123,14 +123,14 @@ export class HsLayerManagerVisiblityService {
    * @param layer - Selected layer - wrapped layer object (layer.layer expected)
    */
   changeTerrainLayerVisibility($event, layer): void {
-    for (let i = 0; i < this.data.terrainlayers.length; i++) {
+    for (let i = 0; i < this.data.terrainLayers.length; i++) {
       if (
-        this.data.terrainlayers[i].type != undefined &&
-        this.data.terrainlayers[i].type == 'terrain'
+        this.data.terrainLayers[i].type != undefined &&
+        this.data.terrainLayers[i].type == 'terrain'
       ) {
-        this.data.terrainlayers[i].visible =
-          this.data.terrainlayers[i] == layer;
-        this.data.terrainlayers[i].active = this.data.terrainlayers[i].visible;
+        this.data.terrainLayers[i].visible =
+          this.data.terrainLayers[i] == layer;
+        this.data.terrainLayers[i].active = this.data.terrainLayers[i].visible;
       }
     }
     this.hsEventBusService.LayerManagerBaseLayerVisibilityChanges.next(layer);
