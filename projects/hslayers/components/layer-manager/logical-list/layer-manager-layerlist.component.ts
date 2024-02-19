@@ -8,7 +8,7 @@ import {HsLayerDescriptor} from 'hslayers-ng/types';
 import {HsLayerListService} from './layer-manager-layerlist.service';
 import {
   HsLayerManagerService,
-  HsLayerManagerVisiblityService,
+  HsLayerManagerVisibilityService,
   HsLayerSelectorService,
 } from 'hslayers-ng/shared/layer-manager';
 import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
@@ -39,7 +39,7 @@ export class HsLayerListComponent implements OnInit, OnDestroy {
     public hsEventBusService: HsEventBusService,
     public hsLayerUtilsService: HsLayerUtilsService,
     public hsLayerListService: HsLayerListService,
-    public hsLayerManagerVisiblityService: HsLayerManagerVisiblityService,
+    public hsLayerManagerVisibilityService: HsLayerManagerVisibilityService,
   ) {
     this.layerManagerUpdatesSubscription =
       this.hsEventBusService.layerManagerUpdates.subscribe(() => {

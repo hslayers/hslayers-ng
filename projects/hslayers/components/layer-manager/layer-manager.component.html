@@ -54,7 +54,7 @@
                     </div>
                     <div class="p-0">
                         <button type="button" class="btn btn-sm hs-btn-baselayers" (click)="changeBaseLayerVisibility()"
-                            [ngClass]="hsLayerManagerVisiblityService.baselayersVisible ? 'hs-checkmark' : 'hs-uncheckmark'"></button>
+                            [ngClass]="hsLayerManagerVisibilityService.baselayersVisible ? 'hs-checkmark' : 'hs-uncheckmark'"></button>
                     </div>
                 </div>
             </li>
@@ -65,7 +65,7 @@
                     <div class="p-0">
                         <button type="button" class="btn btn-sm btn-light hs-lm-item-visibility"
                             (click)="changeBaseLayerVisibility($event, layer);"
-                            [ngClass]="(hsLayerManagerVisiblityService.baselayersVisible && layer.visible) ? 'hs-checkmark' : 'hs-uncheckmark'"></button>
+                            [ngClass]="(hsLayerManagerVisibilityService.baselayersVisible && layer.visible) ? 'hs-checkmark' : 'hs-uncheckmark'"></button>
                     </div>
                     <ng-template #abstractTooltip>
                         <span [innerHtml]="hsLayerManagerService.makeSafeAndTranslate('LAYERS', layer.abstract)"></span>
@@ -87,7 +87,7 @@
             </li>
         </ul>
 
-        <ul class="list-group hs-lm-baselayerlist" [hidden]="!(hsLayerManagerService.data.terrainlayers.length > 0)">
+        <ul class="list-group hs-lm-baselayerlist" [hidden]="!(hsLayerManagerService.data.terrainLayers.length > 0)">
             <li class="list-group-item hs-lm-item hs-lm-header clearfix list-group-item-primary">
                 <div class="d-flex">
                     <div class="p-0 flex-grow-1 hs-lm-item-title">
@@ -97,7 +97,7 @@
                 </div>
             </li>
             <li class="list-group-item hs-lm-item"
-                *ngFor="let layer of hsLayerManagerService.data.terrainlayers | filter:baselayerFilter"
+                *ngFor="let layer of hsLayerManagerService.data.terrainLayers | filter:baselayerFilter"
                 (click)="changeTerrainLayerVisibility($event, layer)" (mouseenter)="hovering=true"
                 (mouseleave)="hovering=false" [ngClass]="{'hovering': (hovering && !layer.active)}">
                 <div class="d-flex ">
@@ -108,7 +108,7 @@
                     </div> -->
                     <div class="p-0">
                         <button type="button" class="btn btn-sm btn-light hs-lm-item-visibility"
-                            [ngClass]="(hsLayerManagerVisiblityService.baselayersVisible && layer.visible) ? 'hs-checkmark' : 'hs-uncheckmark'"></button>
+                            [ngClass]="(hsLayerManagerVisibilityService.baselayersVisible && layer.visible) ? 'hs-checkmark' : 'hs-uncheckmark'"></button>
                     </div>
                     <ng-template #abstractTooltip>
                         <span [innerHtml]="hsLayerManagerService.makeSafeAndTranslate('LAYERS', layer.abstract)"></span>
