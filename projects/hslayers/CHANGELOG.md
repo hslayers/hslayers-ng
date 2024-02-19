@@ -1,8 +1,20 @@
+## [13.2.1](https://github.com/hslayers/hslayers-ng/compare/13.2.0...13.2.1) (2024-02-19)
+
+
+### Bug Fixes
+
+* WFS services with high number of features not loading ([15008cd](https://github.com/hslayers/hslayers-ng/commit/15008cdb09144dde4a0435e5682178a09672d33a))
+
+### Other Changes
+* Remove Geostyler workaround for fill opacity ([062c75c](https://github.com/hslayers/hslayers-ng/commit/062c75c5f007d2e44d6786a3562ffced74c1f3a0))
+
+
 # [13.2.0](https://github.com/hslayers/hslayers-ng/compare/13.1.0...13.2.0) (2024-02-12)
 
 
 ### Bug Fixes
 
+* Symbolizer defaults ([cbe93c5](https://github.com/hslayers/hslayers-ng/commit/cbe93c52d3e42d3daa2047ac1dc4e71533a4c435))
 * Construct basemap name from array ([45827d5](https://github.com/hslayers/hslayers-ng/commit/45827d53f5471846e4d2926fdc85fd079082adbd))
 * Disable 'Save current map' button when Save map panel is not enabled ([2668fe3](https://github.com/hslayers/hslayers-ng/commit/2668fe3e1cfd0c02f3abdb62decb81896ef17766))
 * Panel header tab change not reflected when done programmatically ([b3969e2](https://github.com/hslayers/hslayers-ng/commit/b3969e2f491326ca99ddecb8ebffbb98c51c270f))
