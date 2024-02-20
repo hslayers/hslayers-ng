@@ -475,7 +475,7 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
    */
   getLayer(layer, options: LayerOptions): Layer<Source> {
     const url = this.hsWfsGetCapabilitiesService.service_url.split('?')[0];
-    const manyFeatures = layer.featureCount ? layer.featureCount > 5000 : true; //A lot of features or not set
+    const manyFeatures = layer.featureCount ? layer.featureCount > 5000 : true; //A lot of features or unknown number
     const layerExtent = manyFeatures
       ? this.getLayerExtent(layer, options.crs)
       : undefined;
