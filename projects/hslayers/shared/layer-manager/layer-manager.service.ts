@@ -59,7 +59,7 @@ import {
   setOrigLayers,
   setPath,
 } from 'hslayers-ng/common/extensions';
-import {Subject, buffer, bufferTime, debounceTime, pairwise} from 'rxjs';
+import {Subject, buffer, debounceTime, pairwise} from 'rxjs';
 
 export class HsLayermanagerDataObject {
   folders: any;
@@ -765,7 +765,7 @@ export class HsLayerManagerService {
     loadProgress.timer = new Subject();
     /**
      * NOTE:
-     * pairwise is a hacky solution for a cases when pending numbers get out of sync
+     * pairwise is a hacky solution for the cases when pending numbers get out of sync
      * eg. everything has been loaded but pending value is not 0.
      * Could not find the root cause of the problem
      */
@@ -804,7 +804,7 @@ export class HsLayerManagerService {
       .pipe(
         //Buffer emitions to an array until closing notifier emits.
         buffer(
-          // In case 250ms seconds has passed without another emit => close buffer and emit value
+          // In case 100ms has passed without another emit => close buffer and emit value
           subject.pipe(debounceTime(100)),
         ),
       )
@@ -837,7 +837,7 @@ export class HsLayerManagerService {
       );
     }
     /**
-     * Total is reseted only after 2 seconds of idle state.
+     * Total is reset only after 2 seconds of idle state.
      * Panning sooner will make a progress bar UI animation to jump or 'backpaddle' unnecessarily.
      * Using 0 instead of 100 (when loading ended) prevents that
      */
