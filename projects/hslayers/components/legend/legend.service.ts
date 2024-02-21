@@ -22,6 +22,7 @@ import {HsStylerService} from 'hslayers-ng/shared/styler';
 import {HsUtilsService} from 'hslayers-ng/shared/utils';
 import {InterpolatedSource} from 'hslayers-ng/common/layers';
 import {defaultStyle} from 'hslayers-ng/shared/styler';
+import {filter} from 'rxjs';
 import {
   getAutoLegend,
   getBase,
@@ -43,9 +44,11 @@ export class HsLegendService {
     public hsLayerSelectorService: HsLayerSelectorService,
     private sanitizer: DomSanitizer,
   ) {
-    this.hsLayerSelectorService.layerSelected.subscribe(async (layer) => {
-      await this.getLayerLegendDescriptor(layer.layer);
-    });
+    this.hsLayerSelectorService.layerSelected
+      .pipe(filter((layer) => !!layer))
+      .subscribe(async (layer) => {
+        await this.getLayerLegendDescriptor(layer.layer);
+      });
   }
 
   /**

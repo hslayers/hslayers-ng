@@ -1,4 +1,5 @@
 import {Injectable} from '@angular/core';
+import {filter} from 'rxjs';
 
 import {HsLayerDescriptor} from 'hslayers-ng/types';
 import {
@@ -29,9 +30,11 @@ export class HsLayerEditorSublayerService {
     private hsLayerSelectorService: HsLayerSelectorService,
     private hsLayerManagerVisibilityService: HsLayerManagerVisibilityService,
   ) {
-    this.hsLayerSelectorService.layerSelected.subscribe((layer) => {
-      this.resetSublayers(layer);
-    });
+    this.hsLayerSelectorService.layerSelected
+      .pipe(filter((layer) => !!layer))
+      .subscribe((layer) => {
+        this.resetSublayers(layer);
+      });
   }
 
   resetSublayers(layer: HsLayerDescriptor) {

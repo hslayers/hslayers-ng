@@ -1,4 +1,4 @@
-import {BehaviorSubject, Subject, takeUntil} from 'rxjs';
+import {BehaviorSubject, Subject, filter, takeUntil} from 'rxjs';
 import {Component, OnDestroy, OnInit, ViewRef} from '@angular/core';
 
 import {Layer} from 'ol/layer';
@@ -33,7 +33,10 @@ export class HsLayerEditorWidgetBaseComponent
     this.layerDescriptor.next(this.hsLayerSelectorService.currentLayer);
 
     this.hsLayerSelectorService.layerSelected
-      .pipe(takeUntil(this.ngBaseUnsubscribe))
+      .pipe(
+        takeUntil(this.ngBaseUnsubscribe),
+        filter((layer) => !!layer),
+      )
       .subscribe((layer) => {
         this.layerDescriptor.next(layer);
       });
