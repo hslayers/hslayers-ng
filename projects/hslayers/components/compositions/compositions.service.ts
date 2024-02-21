@@ -13,10 +13,10 @@ import {HsCompositionsMapService} from './compositions-map.service';
 import {HsCompositionsMickaService} from './endpoints/compositions-micka.service';
 import {HsCompositionsParserService} from 'hslayers-ng/shared/compositions';
 import {HsConfig} from 'hslayers-ng/config';
-import {HsCoreService} from 'hslayers-ng/shared/core';
 import {HsEndpoint} from 'hslayers-ng/types';
 import {HsEventBusService} from 'hslayers-ng/shared/event-bus';
 import {HsLanguageService} from 'hslayers-ng/shared/language';
+import {HsLayerManagerService} from 'hslayers-ng/shared/layer-manager';
 import {HsLogService} from 'hslayers-ng/shared/log';
 import {HsMapCompositionDescriptor} from 'hslayers-ng/types';
 import {HsShareUrlService} from 'hslayers-ng/components/share';
@@ -36,7 +36,6 @@ export class HsCompositionsService {
   constructor(
     private http: HttpClient,
     private hsMapService: HsMapService,
-    private hsCore: HsCoreService,
     private hsCompositionsParserService: HsCompositionsParserService,
     private hsConfig: HsConfig,
     private hsUtilsService: HsUtilsService,
@@ -49,6 +48,7 @@ export class HsCompositionsService {
     private hsCompositionsMapService: HsCompositionsMapService,
     private hsEventBusService: HsEventBusService,
     private hsToastService: HsToastService,
+    private hsLayerManagerService: HsLayerManagerService,
   ) {
     this.hsEventBusService.compositionEdits.subscribe(() => {
       this.hsCompositionsParserService.composition_edited = true;
@@ -377,6 +377,7 @@ export class HsCompositionsService {
         this.hsMapService.addLayer(layers[i], DuplicateHandling.RemoveOriginal);
       }
       this.hsMapService.fitExtent(response.data.nativeExtent);
+      this.hsLayerManagerService.updateLayerListPositions();
     } else {
       this.$log.log('Error loading permalink layers');
     }
@@ -414,6 +415,7 @@ export class HsCompositionsService {
         this.hsMapService.addLayer(layers[i], DuplicateHandling.IgnoreNew);
       }
       localStorage.removeItem('hs_layers');
+      this.hsLayerManagerService.updateLayerListPositions();
     }
   }
 

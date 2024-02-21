@@ -479,6 +479,7 @@ export class HsCompositionsParserService {
       this.hsLayoutService.setMainPanel('layerManager');
     }
     this.composition_edited = false;
+    this.hsLayerManagerService.updateLayerListPositions();
     this.hsEventBusService.compositionLoads.next(responseData);
   }
 
