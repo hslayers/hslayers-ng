@@ -39,6 +39,7 @@ import {
 import {
   getTitle,
   setFromBaseComposition,
+  setIgnorePathZIndex,
   setMetadata,
   setSwipeSide,
 } from 'hslayers-ng/common/extensions';
@@ -767,6 +768,7 @@ export class HsCompositionsParserService {
       resultLayer = await resultLayer; //createWMTSLayer returns Promise which needs to be resolved first
       setMetadata(resultLayer, lyr_def.metadata);
       setSwipeSide(resultLayer, lyr_def.swipeSide);
+      setIgnorePathZIndex(resultLayer, true);
     }
     return resultLayer;
   }
