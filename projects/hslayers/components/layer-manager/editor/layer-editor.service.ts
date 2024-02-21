@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 
 import {Layer} from 'ol/layer';
 import {Source} from 'ol/source';
-import {Subject} from 'rxjs';
+import {Subject, filter} from 'rxjs';
 import {WMSCapabilities} from 'ol/format';
 import {transformExtent} from 'ol/proj';
 
@@ -46,10 +46,12 @@ export class HsLayerEditorService {
     public HsLayerSelectorService: HsLayerSelectorService,
     public HsLayerManagerMetadataService: HsLayerManagerMetadataService,
   ) {
-    this.HsLayerSelectorService.layerSelected.subscribe(async (layer) => {
-      this.legendDescriptor =
-        await this.HsLegendService.getLayerLegendDescriptor(layer.layer);
-    });
+    this.HsLayerSelectorService.layerSelected
+      .pipe(filter((layer) => !!layer))
+      .subscribe(async (layer) => {
+        this.legendDescriptor =
+          await this.HsLegendService.getLayerLegendDescriptor(layer.layer);
+      });
   }
 
   /**
