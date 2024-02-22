@@ -1,5 +1,5 @@
 import {Injectable, NgZone} from '@angular/core';
-import {lastValueFrom} from 'rxjs';
+import {lastValueFrom, merge} from 'rxjs';
 
 import {Circle} from 'ol/geom';
 import {Cluster, Source, Vector as VectorSource} from 'ol/source';
@@ -126,7 +126,10 @@ export class HsDrawService extends HsDrawServiceParams {
         this.pendingLayers = pendingLayers;
       });
 
-      this.hsEventBusService.mapResets.subscribe(() => {
+      merge(
+        this.hsEventBusService.addedLayersRemoved,
+        this.hsEventBusService.mapResets,
+      ).subscribe(() => {
         this.addedLayersRemoved = true;
         this.fillDrawableLayers();
       });
