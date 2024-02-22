@@ -78,7 +78,6 @@ export class WfsSource extends VectorSource {
           hsUtilsService.paramsToURLWoEncode(params),
         ].join('?');
         url = hsUtilsService.proxify(url);
-        //this.dispatchEvent('featuresloadstart');
 
         http.get(url, {responseType: 'text'}).subscribe({
           next: (response) => {
@@ -89,9 +88,7 @@ export class WfsSource extends VectorSource {
               responseFeatureCRS,
             );
             (this as VectorSource).addFeatures(features);
-            this.dispatchEvent(
-              new ObjectEvent('propertychange', 'loaded', false),
-            );
+
             this.dispatchEvent('featuresloadend');
           },
 

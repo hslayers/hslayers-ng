@@ -15,14 +15,16 @@ import {
   Tile,
   Vector as VectorLayer,
 } from 'ol/layer';
-import {getBase, getTitle} from 'hslayers-ng/common/extensions';
+import {
+  getBase,
+  getShowInLayerManager,
+  getTitle,
+} from 'hslayers-ng/common/extensions';
 
 @Injectable({
   providedIn: 'root',
 })
 export class HsLayerManagerLoadingProgressService {
-  lastProgressUpdate: number;
-
   constructor(
     private hsConfig: HsConfig,
     private hsLog: HsLogService,
@@ -85,7 +87,6 @@ export class HsLayerManagerLoadingProgressService {
   ) {
     loadProgress.loaded = true;
     loadProgress.error = true;
-    this.hsEventBusService.layerLoads.next(olLayer);
   }
 
   private tileLoadFailed(
@@ -103,7 +104,11 @@ export class HsLayerManagerLoadingProgressService {
    */
   loadingEvents(layer: HsLayerDescriptor): void {
     const olLayer = layer.layer;
-    if (getBase(olLayer) && this.hsConfig.componentsEnabled.basemapGallery) {
+    const showInLM = getShowInLayerManager(olLayer);
+    if (
+      (getBase(olLayer) && this.hsConfig.componentsEnabled.basemapGallery) ||
+      !(showInLM === undefined || showInLM == true)
+    ) {
       return;
     }
     const source: any = olLayer.get('cluster')
@@ -133,31 +138,16 @@ export class HsLayerManagerLoadingProgressService {
     const loadStart = this.subscribeToEventSubject(1, loadProgress, olLayer);
     const loadEnd = this.subscribeToEventSubject(-1, loadProgress, olLayer);
 
-    source.on(`${layerType}loadstart`, (event) => {
+    source.on(`${layerType}loadstart`, (e) => {
       loadStart.next(true);
     });
-    source.on(`${layerType}loadend`, (event) => {
+    source.on(`${layerType}loadend`, (e) => {
       loadEnd.next(true);
       loadProgress.error = false;
     });
-    source.on(`${layerType}loaderror`, (event) => {
+    source.on(`${layerType}loaderror`, (e) => {
       this.loadError(loadProgress, olLayer, this[`${layerType}LoadFailed`]);
     });
-
-    if (layerType == 'features') {
-      source.on('propertychange', (event) => {
-        if (event.key == 'loaded') {
-          if (event.oldValue == false) {
-            this.hsEventBusService.layerLoads.next(olLayer);
-          } else {
-            this.hsEventBusService.layerLoadings.next({
-              layer: olLayer,
-              progress: loadProgress,
-            });
-          }
-        }
-      });
-    }
   }
 
   /**
@@ -188,7 +178,7 @@ export class HsLayerManagerLoadingProgressService {
               loadProgress.pending = 0;
             }
             loadProgress.percents = 0;
-            this.hsEventBusService.layerLoads.next(olLayer);
+            this.hsEventBusService.layerLoaded.next(olLayer);
           });
         }
       });
@@ -251,6 +241,8 @@ export class HsLayerManagerLoadingProgressService {
       progress.percents = percents === 100 ? 0 : percents;
     });
     progress.timer.next(progress.pending);
-    this.hsEventBusService.layerLoadings.next({layer, progress});
+    if (change > 0) {
+      this.hsEventBusService.layerLoading.next({layer, progress});
+    }
   }
 }

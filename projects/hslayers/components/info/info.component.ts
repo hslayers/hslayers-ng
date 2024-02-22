@@ -1,9 +1,8 @@
 import {Component, OnDestroy} from '@angular/core';
 
 import {Subject} from 'rxjs';
-import {takeUntil} from 'rxjs/operators';
+import {map, takeUntil} from 'rxjs/operators';
 
-import {HsConfig} from 'hslayers-ng/config';
 import {HsEventBusService} from 'hslayers-ng/shared/event-bus';
 import {HsGuiOverlayBaseComponent} from 'hslayers-ng/common/panels';
 import {HsLayoutService} from 'hslayers-ng/shared/layout';
@@ -31,12 +30,17 @@ export class HsInfoComponent
   info_image: string;
   composition_edited: boolean;
 
-  name = 'info';
   private end = new Subject<void>();
+
+  //Show layer loading only in case layermanager is not the main panel
+  showLayerLoading = this.hsLayoutService.mainpanel$.pipe(
+    takeUntil(this.end),
+    map((panel) => panel !== 'layerManager'),
+  );
+  name = 'info';
   constructor(
     private hsEventBusService: HsEventBusService,
     public hsLayoutService: HsLayoutService,
-    private hsConfig: HsConfig,
   ) {
     super(hsLayoutService);
     this.hsEventBusService.compositionLoads
@@ -54,7 +58,7 @@ export class HsInfoComponent
         this.composition_edited = false;
       });
 
-    this.hsEventBusService.layerLoadings
+    this.hsEventBusService.layerLoading
       .pipe(takeUntil(this.end))
       .subscribe(({layer, progress}) => {
         if (!this.layer_loading.includes(getTitle(layer))) {
@@ -63,7 +67,7 @@ export class HsInfoComponent
         }
       });
 
-    this.hsEventBusService.layerLoads
+    this.hsEventBusService.layerLoaded
       .pipe(takeUntil(this.end))
       .subscribe((layer) => {
         for (let i = 0; i < this.layer_loading.length; i++) {
