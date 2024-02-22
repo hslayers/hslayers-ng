@@ -19,7 +19,6 @@ import {HsAddDataOwsService} from 'hslayers-ng/shared/add-data';
 import {HsBaseLayerDescriptor} from 'hslayers-ng/types';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsDimensionTimeService} from 'hslayers-ng/shared/get-capabilities';
-import {HsDrawService} from 'hslayers-ng/shared/draw';
 import {HsEventBusService} from 'hslayers-ng/shared/event-bus';
 import {HsLanguageService} from 'hslayers-ng/shared/language';
 import {HsLayerDescriptor, HsLayerLoadProgress} from 'hslayers-ng/types';
@@ -49,7 +48,6 @@ import {
   getName,
   getPath,
   getQueryCapabilities,
-  getRemovable,
   getShowInLayerManager,
   getSubLayers,
   getThumbnail,
@@ -126,7 +124,6 @@ export class HsLayerManagerService {
   constructor(
     public hsConfig: HsConfig,
     public hsDimensionTimeService: HsDimensionTimeService,
-    public hsDrawService: HsDrawService,
     public hsEventBusService: HsEventBusService,
     public hsLanguageService: HsLanguageService,
     public hsLayerEditorVectorLayerService: HsLayerEditorVectorLayerService,
@@ -234,7 +231,6 @@ export class HsLayerManagerService {
    * Layers also get automatic watcher for changing visibility (to synchronize visibility in map and layer manager).
    * Position is calculated for each layer and for time layers time properties are created.
    * Each layer is also inserted in correct layer list and inserted into folder structure.
-   * @private
    * @param e - Event object emitted by OL add layer event
    * @param suspendEvents - If set to true, no new values for layerAdditions, layerManagerUpdates or compositionEdits observables will be emitted.
    */
@@ -271,7 +267,9 @@ export class HsLayerManagerService {
       abstract: getAbstract(layer),
       layer,
       grayed:
-        !this.hsLayerManagerVisibilityService.isLayerInResolutionInterval(layer),
+        !this.hsLayerManagerVisibilityService.isLayerInResolutionInterval(
+          layer,
+        ),
       visible: layer.getVisible(),
       showInLayerManager,
       uid: this.hsUtilsService.generateUuid(),
@@ -598,36 +596,6 @@ export class HsLayerManagerService {
         setActive(box, baseVisible ? baseVisible : visible);
       }
     }
-  }
-
-  /**
-   * Remove all non-base layers that were added to the map by user.
-   * Doesn't remove layers added through app config (In case we want it to be 'removable', it can be set to true in the config.)
-   * (PRIVATE)
-   * @private
-   */
-  removeAllLayers(): void {
-    const to_be_removed = [];
-    this.hsMapService
-      .getMap()
-      .getLayers()
-      .forEach((lyr: Layer<Source>) => {
-        if (getRemovable(lyr) == true) {
-          if (getBase(lyr) == undefined || getBase(lyr) == false) {
-            if (
-              getShowInLayerManager(lyr) == undefined ||
-              getShowInLayerManager(lyr) == true
-            ) {
-              to_be_removed.push(lyr);
-            }
-          }
-        }
-      });
-    while (to_be_removed.length > 0) {
-      this.hsMapService.getMap().removeLayer(to_be_removed.shift());
-    }
-    this.hsDrawService.addedLayersRemoved = true;
-    this.hsDrawService.fillDrawableLayers();
   }
 
   /**

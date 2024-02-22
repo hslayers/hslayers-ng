@@ -39,6 +39,10 @@ export class HsEventBusService {
   compositionEdits: Subject<void> = new Subject();
   layerRemovals: Subject<Layer<Source>> = new Subject();
   /**
+   * Fired when non-base layers that were added to the map by user were removed
+   */
+  addedLayersRemoved: Subject<void> = new Subject();
+  /**
    * Fires when new layer is added to the app.
    * Suppressed for layers defined in default_layers in HsConfig.
    */
