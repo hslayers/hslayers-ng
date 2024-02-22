@@ -19,7 +19,7 @@ import {HsMapCompositionDescriptor} from 'hslayers-ng/types';
  *              doSomethingWith(size);
  * })
  * @example
- * HsEventBusService.layerLoads.next();
+ * HsEventBusService.layerLoaded.next();
  */
 @Injectable({
   providedIn: 'root',
@@ -57,8 +57,8 @@ export class HsEventBusService {
    * Fires when layer finishes loading its features or tiles.
    * Usually triggered once, when all features are loaded, or after all features/tiles in given view/extent are loaded.
    */
-  layerLoads: Subject<Layer<Source>> = new Subject();
-  layerLoadings: Subject<{
+  layerLoaded: Subject<Layer<Source>> = new Subject();
+  layerLoading: Subject<{
     layer: Layer<Source>;
     progress: HsLayerLoadProgress;
   }> = new Subject();

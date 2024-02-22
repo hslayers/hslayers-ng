@@ -1,5 +1,6 @@
 <div class="hs-info-container" [hidden]="(isVisible$ | async) === false">
     <div class="hs-info-area p-1">
+        @if(showLayerLoading | async){
         <div style="display: flex;box-sizing: content-box"
             class="hs-info-layers justify-content-start align-items-center" [hidden]="!layer_loading.length">
             <div class="hs-info-composition-image">
@@ -10,7 +11,7 @@
                 <span *ngFor="let layer of layer_loading; trackBy: trackByFn">{{layer}} </span>
             </div>
         </div>
-
+        }
         <div class="hs-info-composition" style="max-width: max-content;"
             *ngIf="!compositionLoaded() && !composition_edited">
             <div class="hs-info-composition-container">
