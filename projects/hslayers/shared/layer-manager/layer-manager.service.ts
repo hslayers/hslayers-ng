@@ -200,7 +200,7 @@ export class HsLayerManagerService {
       this.applyZIndex(
         e.element as Layer<Source>,
         //z-index of composition layers should be the same as order of layers in composition.
-        //ignoring fodler structure
+        //ignoring folder structure
         !getIgnorePathZIndex(e.element as Layer<Source>),
       );
       if (getShowInLayerManager(e.element) == false) {

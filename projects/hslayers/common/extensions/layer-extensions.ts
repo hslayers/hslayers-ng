@@ -625,7 +625,7 @@ export function setSwipeSide(
 
 /**
  * When set to true, prevents z-index to be set based on highest value of layer in
- * the same layer (which is default). Used for layers from compositions (basic, permalik)
+ * the same layer (which is default). Used for layers from compositions (basic, permalink)
  */
 export function setIgnorePathZIndex(
   layer: Layer<Source>,
