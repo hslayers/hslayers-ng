@@ -35,7 +35,59 @@ export class HsLayerManagerLoadingProgressService {
     private hsEventBusService: HsEventBusService,
   ) {}
 
-  private determineLayerType(olLayer) {
+  /**
+   * Create events for checking whether the layer is being loaded or is loaded
+   * @param layer - Layer which is being added
+   */
+  loadingEvents(layer: HsLayerDescriptor): void {
+    const olLayer = layer.layer;
+    const showInLM = getShowInLayerManager(olLayer);
+    if (
+      (getBase(olLayer) && this.hsConfig.componentsEnabled.basemapGallery) ||
+      !(showInLM === undefined || showInLM == true)
+    ) {
+      return;
+    }
+    const source: any = olLayer.get('cluster')
+      ? (olLayer.getSource() as Cluster).getSource()
+      : olLayer.getSource();
+    if (!source) {
+      this.hsLog.error(`Layer ${getTitle(olLayer)} has no source`);
+      return;
+    }
+    const loadProgress: HsLayerLoadProgress = {
+      pending: 0,
+      total: 0,
+      loadError: 0,
+      loaded: true,
+      error: undefined,
+      percents: 0,
+    };
+    layer.loadProgress = loadProgress;
+
+    const layerType = this.determineLayerType(olLayer);
+
+    if (!layerType) {
+      return;
+    }
+
+    this.createLoadingProgressTimer(loadProgress, olLayer);
+    const loadStart = this.subscribeToEventSubject(1, loadProgress, olLayer);
+    const loadEnd = this.subscribeToEventSubject(-1, loadProgress, olLayer);
+
+    source.on(`${layerType}loadstart`, (e) => {
+      loadStart.next(true);
+    });
+    source.on(`${layerType}loadend`, (e) => {
+      loadEnd.next(true);
+      loadProgress.error = false;
+    });
+    source.on(`${layerType}loaderror`, (e) => {
+      this.loadError(loadProgress, olLayer, this[`${layerType}LoadFailed`]);
+    });
+  }
+
+  private determineLayerType(olLayer: Layer) {
     if (this.hsUtilsService.instOf(olLayer, VectorLayer)) {
       return 'features';
     } else if (this.hsUtilsService.instOf(olLayer, ImageLayer)) {
@@ -96,58 +148,6 @@ export class HsLayerManagerLoadingProgressService {
     if (loadProgress.loadError == loadProgress.total) {
       loadProgress.error = true;
     }
-  }
-
-  /**
-   * Create events for checking whether the layer is being loaded or is loaded
-   * @param layer - Layer which is being added
-   */
-  loadingEvents(layer: HsLayerDescriptor): void {
-    const olLayer = layer.layer;
-    const showInLM = getShowInLayerManager(olLayer);
-    if (
-      (getBase(olLayer) && this.hsConfig.componentsEnabled.basemapGallery) ||
-      !(showInLM === undefined || showInLM == true)
-    ) {
-      return;
-    }
-    const source: any = olLayer.get('cluster')
-      ? (olLayer.getSource() as Cluster).getSource()
-      : olLayer.getSource();
-    if (!source) {
-      this.hsLog.error(`Layer ${getTitle(olLayer)} has no source`);
-      return;
-    }
-    const loadProgress: HsLayerLoadProgress = {
-      pending: 0,
-      total: 0,
-      loadError: 0,
-      loaded: true,
-      error: undefined,
-      percents: 0,
-    };
-    layer.loadProgress = loadProgress;
-
-    const layerType = this.determineLayerType(olLayer);
-
-    if (!layerType) {
-      return;
-    }
-
-    this.createLoadingProgressTimer(loadProgress, olLayer);
-    const loadStart = this.subscribeToEventSubject(1, loadProgress, olLayer);
-    const loadEnd = this.subscribeToEventSubject(-1, loadProgress, olLayer);
-
-    source.on(`${layerType}loadstart`, (e) => {
-      loadStart.next(true);
-    });
-    source.on(`${layerType}loadend`, (e) => {
-      loadEnd.next(true);
-      loadProgress.error = false;
-    });
-    source.on(`${layerType}loaderror`, (e) => {
-      this.loadError(loadProgress, olLayer, this[`${layerType}LoadFailed`]);
-    });
   }
 
   /**

@@ -37,6 +37,7 @@ export type SparqlOptions = {
   /**
    * When set to 'virtuoso', the query will use Virtuoso's optimised "bif" functions instead of standardised GeoSPARQL functions.
    * When set to 'wikibase', the query will use Blazegraph & Wikibase SERVICE instead of standardised GeoSPARQL functions.
+   * When unset, the query will use standardised GeoSPARQL functions.
    * @default undefined
    */
   optimization?: 'virtuoso' | 'wikibase';
@@ -72,7 +73,6 @@ export class SparqlJson extends Vector {
   category_id = 0;
   legend_categories;
   loadCounter: number;
-  loadTotal: number;
   occupied_xy: {[coord: string]: boolean} = {};
   //What is it good for?
   styleAble: boolean;
@@ -120,6 +120,8 @@ export class SparqlJson extends Vector {
           geomAttribute = geomAttribute.slice(1);
         }
         this.set('loaded', false);
+        this.loadCounter += 1;
+        // No need to manually dispatch 'featuresloadstart' event as it is casted automatically when the loader is executed
         if (typeof clear_on_move !== 'undefined' && clear_on_move) {
           this.clear();
         }
@@ -134,8 +136,6 @@ export class SparqlJson extends Vector {
         if (console && typeof this.get('geoname') !== 'undefined') {
           console.log('Get ', this.get('geoname'));
         }
-        this.loadCounter += 1;
-        this.loadTotal += 1;
         const response = await fetch(url, {
           headers: {
             'Accept':
@@ -173,7 +173,6 @@ export class SparqlJson extends Vector {
             data.results.bindings.length
           );
         }*/
-        this.loadCounter -= 1;
         const objects = {};
         for (const item of data.results.bindings) {
           const id = item[idAttribute]?.value;
@@ -206,9 +205,9 @@ export class SparqlJson extends Vector {
         this.hasPoint = true;
         this.loadCounter -= 1;
         this.set('last_feature_count', Object.keys(objects).length);
+        this.dispatchEvent('featuresloadend');
         if (this.loadCounter == 0) {
           this.set('loaded', true);
-          this.dispatchEvent('featuresloadend');
         }
       },
       strategy:
@@ -225,7 +224,6 @@ export class SparqlJson extends Vector {
         },
     });
     this.loadCounter = 0;
-    this.loadTotal = 0;
     this.legend_categories = this.category_map;
   }
 
