@@ -183,7 +183,7 @@ export class HsCesiumLayersService {
     if (this.viewer.isDestroyed()) {
       return;
     }
-    if (this.hsConfig.default_layers !== undefined) {
+    if (this.hsConfig.default_layers) {
       for (const l of this.hsConfig.default_layers.filter((l) => l)) {
         this.processOlLayer(l);
       }
@@ -197,7 +197,7 @@ export class HsCesiumLayersService {
     const map = await this.hsMapService.loaded();
     map.getLayers().forEach((lyr: Layer<Source>) => {
       const cesiumLayer = this.findCesiumLayer(lyr);
-      if (cesiumLayer == undefined) {
+      if (!cesiumLayer) {
         this.processOlLayer(lyr);
       }
     });
@@ -407,26 +407,27 @@ export class HsCesiumLayersService {
       const cesium_layer = await this.convertOlToCesiumProvider(
         lyr as Layer<Source>,
       );
-      if (cesium_layer) {
-        if (this.HsUtilsService.instOf(cesium_layer, ImageryLayer)) {
-          this.linkOlLayerToCesiumLayer(
-            lyr as Layer<Source>,
-            cesium_layer as ImageryLayer,
+      if (!cesium_layer) {
+        return;
+      }
+      if (this.HsUtilsService.instOf(cesium_layer, ImageryLayer)) {
+        this.linkOlLayerToCesiumLayer(
+          lyr as Layer<Source>,
+          cesium_layer as ImageryLayer,
+        );
+        this.viewer.imageryLayers.add(<ImageryLayer>cesium_layer);
+      } else if (
+        (this.HsUtilsService.instOf(cesium_layer, GeoJsonDataSource) ||
+          this.HsUtilsService.instOf(cesium_layer, KmlDataSource)) &&
+        this.viewer.dataSources
+      ) {
+        this.viewer.dataSources.add(<DataSource>cesium_layer);
+        //TODO: Point clicked, Datasources extents, Composition extents shall be also synced
+        if (getTitle(lyr as Layer<Source>) != 'Point clicked') {
+          this.linkOlSourceToCesiumDatasource(
+            (lyr as VectorLayer<VectorSource>).getSource(),
+            cesium_layer,
           );
-          this.viewer.imageryLayers.add(<ImageryLayer>cesium_layer);
-        } else if (
-          (this.HsUtilsService.instOf(cesium_layer, GeoJsonDataSource) ||
-            this.HsUtilsService.instOf(cesium_layer, KmlDataSource)) &&
-          this.viewer.dataSources
-        ) {
-          this.viewer.dataSources.add(<DataSource>cesium_layer);
-          //TODO: Point clicked, Datasources extents, Composition extents shall be also synced
-          if (getTitle(lyr as Layer<Source>) != 'Point clicked') {
-            this.linkOlSourceToCesiumDatasource(
-              (lyr as VectorLayer<VectorSource>).getSource(),
-              cesium_layer,
-            );
-          }
         }
       }
     }
@@ -439,7 +440,7 @@ export class HsCesiumLayersService {
     if (this.HsUtilsService.instOf(layerSource, OSM)) {
       return new ImageryLayer(new OpenStreetMapImageryProvider({}), {
         show: olLayer.getVisible(),
-        minimumTerrainLevel: getMinimumTerrainLevel(olLayer) || 15,
+        minimumTerrainLevel: getMinimumTerrainLevel(olLayer) || 1,
       });
     } else if (this.HsUtilsService.instOf(layerSource, XYZ)) {
       return new ImageryLayer(
@@ -471,13 +472,10 @@ export class HsCesiumLayersService {
   async createVectorDataSource(
     ol_lyr: VectorLayer<VectorSource>,
   ): Promise<DataSource> {
-    if (
-      ol_lyr.getSource().getFormat() &&
-      this.HsUtilsService.instOf(ol_lyr.getSource().getFormat(), KML)
-    ) {
+    if (this.HsUtilsService.instOf(ol_lyr?.getSource()?.getFormat(), KML)) {
       if (this.HsUtilsService.isFunction(ol_lyr.getSource().getUrl())) {
         this.hsLog.warn(
-          'FeatureUrlFunction is currently not supported in synchronizing features from Ol layer to Cesium',
+          'FeatureUrlFunction is currently not supported in synchronizing features from OL layer to Cesium',
         );
         return;
       }
@@ -489,7 +487,7 @@ export class HsCesiumLayersService {
       });
     } else {
       const new_source = new GeoJsonDataSource(getTitle(ol_lyr));
-      //link to cesium layer will be set also for OL layers source object, when this function returns.
+      //link to Cesium layer will be set also for OL layers source object, when this function returns.
       this.ol2CsMappings.push({
         olObject: ol_lyr,
         csObject: new_source,
