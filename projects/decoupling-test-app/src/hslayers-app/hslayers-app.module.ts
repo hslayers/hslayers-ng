@@ -1,4 +1,6 @@
 import {BrowserModule} from '@angular/platform-browser';
+import {FormsModule} from '@angular/forms';
+import {HttpClientModule} from '@angular/common/http';
 import {NgModule} from '@angular/core';
 
 /* import {
@@ -8,10 +10,9 @@ import {NgModule} from '@angular/core';
 } from 'hslayers-ng/public-api'; */
 //import {HsMeasureModule} from 'hslayers-ng/components/measure/public-api';
 //import {HsDrawModule} from 'hslayers-ng/components/draw/public-api';
-import {FormsModule} from '@angular/forms';
-import {HslayersAppComponent} from './hslayers-app.component';
 import {HslayersModule} from 'hslayers-ng';
-import {HttpClientModule} from '@angular/common/http';
+
+import {HslayersAppComponent} from './hslayers-app.component';
 
 @NgModule({
   declarations: [HslayersAppComponent],

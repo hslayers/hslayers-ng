@@ -186,11 +186,11 @@ export class HsCesiumService {
         }
       });
 
-      this.HsLayermanagerService.data.terrainlayers = [];
+      this.HsLayermanagerService.data.terrainLayers = [];
       if (this.HsCesiumConfig.terrain_providers) {
         for (const provider of this.HsCesiumConfig.terrain_providers) {
           provider.type = 'terrain';
-          this.HsLayermanagerService.data.terrainlayers.push(provider);
+          this.HsLayermanagerService.data.terrainLayers.push(provider);
         }
       }
 
