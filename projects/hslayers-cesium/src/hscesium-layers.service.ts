@@ -494,9 +494,9 @@ export class HsCesiumLayersService {
         olObject: ol_lyr,
         csObject: new_source,
       });
-      ol_lyr.on('change:visible', (e) => {
-        const cesiumLayer = this.findCesiumLayer(e.target as Layer<Source>);
-        cesiumLayer.show = ol_lyr.getVisible();
+      new_source.show = ol_lyr.getVisible();
+      ol_lyr.on('change:visible', () => {
+        new_source.show = ol_lyr.getVisible();
       });
       return new_source;
     }
