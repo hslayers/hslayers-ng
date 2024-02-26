@@ -26,7 +26,9 @@ export class AppModule implements DoBootstrap {
         return;
       }
       const apps: HTMLElement[] = Array.from(
-        document.querySelectorAll('hslayers-cesium-app')
+        document.querySelectorAll(
+          'hslayers-cesium-app',
+        ) as NodeListOf<HTMLElement>,
       );
       for (const el of apps) {
         if (!el.dataset.init) {
