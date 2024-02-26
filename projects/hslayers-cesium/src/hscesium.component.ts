@@ -1,12 +1,13 @@
 import {AfterViewInit, Component} from '@angular/core';
 
 import {HS_PRMS, HsShareUrlService} from 'hslayers-ng/components/share';
-import {HsCesiumService} from './hscesium.service';
 import {HsCoreService} from 'hslayers-ng/services/core';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsMapService} from 'hslayers-ng/services/map';
 import {HsSidebarService} from 'hslayers-ng/services/sidebar';
+
+import {HsCesiumService} from './hscesium.service';
 
 @Component({
   selector: 'hs-cesium',
@@ -27,7 +28,7 @@ export class HslayersCesiumComponent implements AfterViewInit {
 
   ngAfterViewInit(): void {
     //Timeout needed because view container might not
-    //be resized yey and globe will be zoomed out in that case
+    //be resized yet and globe will be zoomed out in that case
     setTimeout(() => {
       this.HsCesiumService.init();
     }, 100);
