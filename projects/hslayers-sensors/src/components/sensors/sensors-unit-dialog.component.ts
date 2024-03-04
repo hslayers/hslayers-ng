@@ -1,6 +1,5 @@
 import {Component, ElementRef, OnDestroy, OnInit, ViewRef} from '@angular/core';
 
-import {HsConfig} from 'hslayers-ng/config';
 import {
   HsDialogComponent,
   HsDialogContainerService,
@@ -31,7 +30,6 @@ export class HsSensorsUnitDialogComponent
     private hsLayoutService: HsLayoutService,
     private hsDialogContainerService: HsDialogContainerService,
     private hsSensorsUnitDialogService: HsSensorsUnitDialogService,
-    private hsConfig: HsConfig,
     public elementRef: ElementRef,
   ) {}
 
