@@ -1,10 +1,6 @@
-import {
-  CUSTOM_ELEMENTS_SCHEMA,
-  NO_ERRORS_SCHEMA,
-  NgModule,
-} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
+import {NO_ERRORS_SCHEMA, NgModule} from '@angular/core';
 import {NgbDatepickerModule} from '@ng-bootstrap/ng-bootstrap';
 
 import {HsPanelHeaderComponent} from 'hslayers-ng/common/panels';
@@ -15,7 +11,7 @@ import {HsSensorsUnitDialogComponent} from './sensors-unit-dialog.component';
 import {HsSensorsUnitListItemComponent} from './sensors-unit-list-item.component';
 
 @NgModule({
-  schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
+  schemas: [NO_ERRORS_SCHEMA],
   declarations: [
     HsSensorsComponent,
     HsSensorsUnitDialogComponent,

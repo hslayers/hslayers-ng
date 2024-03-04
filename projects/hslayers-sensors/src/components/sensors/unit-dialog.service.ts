@@ -272,30 +272,6 @@ export class HsSensorsUnitDialogService {
     }, []);
   }
 
-  private getLayerSpecificEncoding() {
-    return {
-      'color': {
-        'field': 'sensor_name',
-        'legend': {
-          'title': this.hsLanguageService.getTranslation('SENSORS.sensors'),
-          'labelExpr': "split(datum.value, '_')[0]",
-        },
-        'type': 'nominal',
-        'sort': 'sensor_id',
-      },
-      'x': {
-        'axis': {
-          'title': 'Timestamp',
-          'labelOverlap': true,
-          'titleAnchor': 'middle',
-        },
-        'field': 'time_stamp',
-        'sort': false,
-        'type': 'temporal',
-      },
-    };
-  }
-
   /**
    * Create vega chart definition layer
    * @param multi Multiple sensor units comparison flag

@@ -1,7 +1,6 @@
 import {Component, OnInit, ViewRef} from '@angular/core';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsLayoutService} from 'hslayers-ng/shared/layout';
-import {HsMapService} from 'hslayers-ng/shared/map';
 import {HsPanelBaseComponent} from 'hslayers-ng/common/panels';
 
 import {HsSensorUnit} from './sensor-unit.class';
@@ -19,7 +18,6 @@ export class HsSensorsComponent extends HsPanelBaseComponent implements OnInit {
   name = 'sensors';
 
   constructor(
-    private hsMapService: HsMapService,
     private hsConfig: HsConfig,
     private hsSensorsService: HsSensorsService,
     public hsLayoutService: HsLayoutService,
@@ -29,6 +27,7 @@ export class HsSensorsComponent extends HsPanelBaseComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    super.ngOnInit();
     if (this.data.viewMode) {
       this.setViewMode(this.data.viewMode);
     }
