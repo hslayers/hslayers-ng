@@ -2,9 +2,9 @@ import dayjs from 'dayjs';
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {LangChangeEvent} from '@ngx-translate/core';
-import {Subject} from 'rxjs';
+import {Subject, take} from 'rxjs';
 
-import {HsConfig} from 'hslayers-ng/config/config.service';
+import {HsConfig} from 'hslayers-ng/config';
 import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
 import {HsEventBusService} from 'hslayers-ng/shared/event-bus';
 import {HsLanguageService} from 'hslayers-ng/shared/language';
@@ -12,8 +12,6 @@ import {HsLayoutService} from 'hslayers-ng/shared/layout';
 import {HsLogService} from 'hslayers-ng/shared/log';
 import {HsMapService} from 'hslayers-ng/shared/map';
 import {HsQueryVectorService} from 'hslayers-ng/shared/query';
-import {HsSidebarService} from 'hslayers-ng/shared/sidebar';
-import {HsStylerService} from 'hslayers-ng/shared/styler';
 import {HsUtilsService} from 'hslayers-ng/shared/utils';
 import {
   getUnitId,
@@ -50,9 +48,7 @@ export class HsSensorsService {
     private http: HttpClient,
     private hsEventBusService: HsEventBusService,
     private hsSensorsUnitDialogService: HsSensorsUnitDialogService,
-    private hsSidebarService: HsSidebarService,
     private hsLanguageService: HsLanguageService,
-    private hsStylerService: HsStylerService,
     private hsQueryVectorService: HsQueryVectorService,
     private hsLog: HsLogService,
   ) {
@@ -293,7 +289,11 @@ export class HsSensorsService {
    */
   getUnits() {
     if (this.layer === null) {
-      this.createLayer();
+      this.hsEventBusService.mapEventHandlersSet
+        .pipe(take(1))
+        .subscribe((_) => {
+          this.createLayer();
+        });
     }
     const url = this.hsUtilsService.proxify(
       `${this.endpoint.url}/${this.endpoint.liteApiPath}/rest/unit`,
