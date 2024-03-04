@@ -9,6 +9,10 @@ import {transform} from 'ol/proj';
 import {HsCesiumConfig} from 'hslayers-cesium/src/hscesium-config.service';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
+import {
+  HsOverlayConstructorService,
+  HsPanelConstructorService,
+} from 'hslayers-ng/services/panel-constructor';
 import {HslayersCesiumComponent} from 'hslayers-cesium/src/hscesium.component';
 
 @Component({
@@ -18,9 +22,11 @@ import {HslayersCesiumComponent} from 'hslayers-cesium/src/hscesium.component';
 })
 export class AppComponent implements OnInit {
   constructor(
-    public HsConfig: HsConfig,
-    private HsCesiumConfig: HsCesiumConfig,
-    private HsLayoutService: HsLayoutService,
+    public hsConfig: HsConfig,
+    private hsCesiumConfig: HsCesiumConfig,
+    private hsLayoutService: HsLayoutService,
+    private hsOverlayConstructorService: HsOverlayConstructorService,
+    private hsPanelConstructorService: HsPanelConstructorService,
   ) {
     const geojsonObject = {
       'type': 'FeatureCollection',
@@ -118,7 +124,7 @@ export class AppComponent implements OnInit {
       visible: false,
       opacity: 1,
     });
-    this.HsConfig.update({
+    this.hsConfig.update({
       datasources: [
         {
           title: 'Layman',
@@ -243,13 +249,22 @@ export class AppComponent implements OnInit {
         opticalMap,
       ],
     });
-    if (!this.HsCesiumConfig.cesiumBase) {
-      this.HsCesiumConfig.cesiumBase = '/assets/cesium/';
+    if (!this.hsCesiumConfig.cesiumBase) {
+      this.hsCesiumConfig.cesiumBase = '/assets/cesium/';
     }
   }
   title = 'hslayers-workspace';
 
   ngOnInit(): void {
-    this.HsLayoutService.addMapVisualizer(HslayersCesiumComponent);
+    /**
+     * Create panel components
+     */
+    this.hsPanelConstructorService.createActivePanels();
+
+    /**
+     * Create GUI overlay
+     */
+    this.hsOverlayConstructorService.createGuiOverlay();
+    this.hsLayoutService.addMapVisualizer(HslayersCesiumComponent);
   }
 }
