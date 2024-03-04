@@ -46,6 +46,7 @@ export class HslayersCesiumComponent implements AfterViewInit {
       description: 'Switch between 3D (Cesium) and 2D (OpenLayers)',
       icon: 'icon-globealt',
       click: () => this.toggleCesiumMap(),
+      order: -1,
     });
 
     this.HsEventBusService.layermanagerDimensionChanges.subscribe((data) =>

@@ -21,7 +21,9 @@ export class HsCesiumConfigObject {
   cesiumTime?: JulianDate;
   constructor() {}
 }
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class HsCesiumConfig extends HsCesiumConfigObject {
   /**
    * Triggered when cesiumConfig is updated using 'update' function of HsCesiumService.
