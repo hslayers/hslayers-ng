@@ -92,10 +92,13 @@ export class HsCatalogueListItemComponent implements OnInit {
     let availableTypes = this.whatToAdd.type;
 
     /**
-     * Layer is available as a WFS only
+     * Layer is available only as a WFS or its service
      */
-    if (this.whatToAdd.type === 'WFS') {
-      this.selectTypeAndAdd(this.whatToAdd.type, new MouseEvent('click'));
+    if (this.whatToAdd.type === 'WFS' || layer.type.includes('service')) {
+      this.selectTypeAndAdd(
+        this.whatToAdd.type as string,
+        new MouseEvent('click'),
+      );
     } else if (Array.isArray(availableTypes) || availableTypes == 'WMS') {
       availableTypes =
         availableTypes === 'WMS' ? [availableTypes] : availableTypes;
