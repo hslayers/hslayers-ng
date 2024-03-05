@@ -1,5 +1,5 @@
 <div class="card panel-default">
-    <div class="card-body" *ngIf="currentLayer">
+    <div class="card-body" *ngIf="currentLayer && layerNodeAvailable">
         <!-- Sublayers-->
         <div [hidden]="!currentLayer.sublayers" class="form-group">
             <div *ngFor="let subLayer of getSubLayers()">

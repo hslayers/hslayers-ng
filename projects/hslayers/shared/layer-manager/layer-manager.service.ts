@@ -679,12 +679,6 @@ export class HsLayerManagerService {
         layer.withChildren = {};
       }
       this.hsLayerSelectorService.select(layer);
-      if (this.hsUtilsService.runningInBrowser()) {
-        const layerNode = document.getElementById(layer.idString());
-        if (layerNode && this.layerEditorElement) {
-          this.hsUtilsService.insertAfter(this.layerEditorElement, layerNode);
-        }
-      }
       return false;
     } catch (ex) {
       this.hsLog.error(ex);

@@ -1,6 +1,5 @@
 import {Component, Input} from '@angular/core';
 
-import {Geometry} from 'ol/geom';
 import {Layer} from 'ol/layer';
 import {Source} from 'ol/source';
 import {Vector as VectorLayer} from 'ol/layer';
@@ -26,7 +25,7 @@ import {
 } from 'hslayers-ng/shared/layer-manager';
 import {HsLayerManagerRemoveLayerDialogComponent} from '../dialogs/remove-layer-dialog.component';
 import {HsLayerManagerUtilsService} from 'hslayers-ng/shared/layer-manager';
-import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
+import {HsLayerUtilsService, HsUtilsService} from 'hslayers-ng/shared/utils';
 import {HsLayoutService} from 'hslayers-ng/shared/layout';
 import {HsLegendWidgetComponent} from '../widgets/legend-widget.component';
 import {HsMapService} from 'hslayers-ng/shared/map';
@@ -51,16 +50,21 @@ import {
 })
 export class HsLayerEditorComponent {
   _currentLayer: HsLayerDescriptor;
-  @Input('current-layer') set currentLayer(value: HsLayerDescriptor) {
+  @Input({required: true}) set currentLayer(value: HsLayerDescriptor) {
     this._currentLayer = value;
     this.tmpTitle = undefined;
     this.layer_renamer_visible = false;
+
+    if (value) {
+      this.insertEditorElement();
+    }
   }
 
   get currentLayer(): HsLayerDescriptor {
     return this._currentLayer;
   }
 
+  layerNodeAvailable: boolean;
   layer_renamer_visible = false;
   getBase = getBase;
   getGreyscale = getGreyscale;
@@ -80,6 +84,7 @@ export class HsLayerEditorComponent {
     public hsWidgetContainerService: HsLayerEditorWidgetContainerService,
     private hsLayerManagerUtilsService: HsLayerManagerUtilsService,
     private hsLayerManagerCopyLayerService: HsLayerManagerCopyLayerService,
+    private hsUtilsService: HsUtilsService,
   ) {}
 
   createWidgets() {
@@ -97,6 +102,34 @@ export class HsLayerEditorComponent {
     ];
     for (const widgetClass of widgets) {
       this.hsWidgetContainerService.create(widgetClass, {});
+    }
+  }
+
+  private async awaitLayerNode(idString: string): Promise<boolean> {
+    let attempts = 0;
+    const maxAttempts = 10;
+
+    while (!document.getElementById(idString) && attempts < maxAttempts) {
+      await new Promise((r) => setTimeout(r, 200));
+      attempts++;
+    }
+    this.layerNodeAvailable = true;
+    return true;
+  }
+
+  /**
+   * Insert layer-editor element under the correct layer node
+   */
+  async insertEditorElement() {
+    const l = this.currentLayer;
+    const idString = this._currentLayer.idString();
+    await this.awaitLayerNode(idString);
+    const layerNode = document.getElementById(idString);
+    if (layerNode && this.HsLayerManagerService.layerEditorElement) {
+      this.hsUtilsService.insertAfter(
+        this.HsLayerManagerService.layerEditorElement,
+        layerNode,
+      );
     }
   }
 
