@@ -1,6 +1,6 @@
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
-import {Subject, lastValueFrom, takeUntil} from 'rxjs';
+import {Subject, finalize, lastValueFrom, takeUntil} from 'rxjs';
 
 import * as xml2Json from 'xml-js';
 import {Layer, Vector as VectorLayer} from 'ol/layer';
@@ -19,8 +19,10 @@ import {HsUrlTypeServiceModel} from 'hslayers-ng/types';
 import {HsUtilsService} from 'hslayers-ng/shared/utils';
 import {HsWfsGetCapabilitiesService} from 'hslayers-ng/shared/get-capabilities';
 import {LayerOptions} from 'hslayers-ng/types';
+import {Observable} from 'ol';
 import {UrlDataObject} from 'hslayers-ng/types';
 import {WfsSource} from './hs.source.WfsSource';
+import {getTitle, setCluster} from 'hslayers-ng/common/extensions';
 
 type WfsCapabilitiesLayer = {
   Abstract: string;
@@ -50,6 +52,8 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
 
   private requestCancelSubjects: Map<string, Subject<void>> = new Map();
   cancelUrlRequest: Subject<void> = new Subject();
+
+  catalogueLayerCount: Map<string, Observable>;
 
   constructor(
     private http: HttpClient,
@@ -216,15 +220,20 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
       this.data.srs =
         this.data.srss.find((srs) => srs.includes(fallbackProj)) ||
         this.data.srss[0];
-
       if (
-        !this.hsAddDataCommonService.layerToSelect &&
-        this.data.layers.length <= 10
+        this.data.layers.length <= 10 ||
+        this.hsAddDataCommonService.layerToSelect
       ) {
         try {
-          setTimeout(() => {
-            this.getFeatureCountForLayers(this.data.layers);
-          }, 0);
+          const layers = this.hsAddDataCommonService.layerToSelect
+            ? this.data.layers.filter(
+                (l) => l.Name === this.hsAddDataCommonService.layerToSelect,
+              )
+            : this.data.layers;
+          this.getFeatureCountForLayers(
+            layers,
+            this.hsAddDataCommonService.layerToSelect,
+          );
         } catch (e) {
           throw new Error(e);
         }
@@ -281,7 +290,10 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
   /**
    * Construct and send WFS service getFeature-hits request for a set of layers
    */
-  getFeatureCountForLayers(layers: HsWfsCapabilitiesLayer[]) {
+  getFeatureCountForLayers(
+    layers: HsWfsCapabilitiesLayer[],
+    selectedLayer?: string,
+  ) {
     for (const layer of layers) {
       layer.loading = true;
       const params = {
@@ -297,14 +309,18 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
         this.hsUtilsService.paramsToURLWoEncode(params),
       ].join('?');
 
-      this.parseFeatureCount(url, layer);
+      this.parseFeatureCount(url, layer, selectedLayer);
     }
   }
 
   /**
    * Parse layer feature count and set feature limits
    */
-  private parseFeatureCount(url: string, layer: HsWfsCapabilitiesLayer): void {
+  private parseFeatureCount(
+    url: string,
+    layer: HsWfsCapabilitiesLayer,
+    selectedLayer?: string,
+  ): void {
     // Create a unique subject for this request
     const cancelSubject = new Subject<void>();
 
@@ -313,7 +329,17 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
 
     this.http
       .get(this.hsUtilsService.proxify(url), {responseType: 'text'})
-      .pipe(takeUntil(this.cancelUrlRequest))
+      .pipe(
+        takeUntil(this.cancelUrlRequest),
+        finalize(() => {
+          if (selectedLayer) {
+            setCluster(
+              layer['olLayer'],
+              layer.featureCount ? layer.featureCount > 5000 : true,
+            );
+          }
+        }),
+      )
       .subscribe({
         next: (response: any) => {
           const oParser = new DOMParser();
@@ -475,7 +501,15 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
    */
   getLayer(layer, options: LayerOptions): Layer<Source> {
     const url = this.hsWfsGetCapabilitiesService.service_url.split('?')[0];
-    const manyFeatures = layer.featureCount ? layer.featureCount > 5000 : true; //A lot of features or unknown number
+    /**
+     * Do not cluster features for layer from catalogue now as unlikely
+     * we have a hits already. Will be set in parseFeatureCount once the request is completed
+     */
+    const manyFeatures = this.hsAddDataCommonService.layerToSelect
+      ? false
+      : layer.featureCount
+        ? layer.featureCount > 5000
+        : true; //A lot of features or unknown number
     const layerExtent = manyFeatures
       ? this.getLayerExtent(layer, options.crs)
       : undefined;
@@ -501,6 +535,9 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
       renderOrder: null,
       //Used to determine whether its URL WFS service when saving to compositions
     });
+    if (this.hsAddDataCommonService.layerToSelect) {
+      layer.olLayer = new_layer;
+    }
     return new_layer;
   }
 
