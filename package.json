@@ -128,7 +128,7 @@
     "karma-jasmine-html-reporter": "^2.0.0",
     "ng-packagr": "^17.2.0",
     "prettier": "^3.2.5",
-    "puppeteer": "^22.2.0",
+    "puppeteer": "^22.4.0",
     "sass": "^1.71.0",
     "ts-node": "^10.9.2",
     "typescript": "~5.3.3"
