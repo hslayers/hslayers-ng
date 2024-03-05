@@ -39,6 +39,7 @@ export * from './add-data/vector/vector-source-descriptor';
 export * from './add-data/vector/vector-layer-options.type';
 export * from './add-data/vector/vector-source-from-url';
 export * from './add-data/file/file.type';
+export * from './add-data/whatToAddDesriptor';
 
 export * from './compositions/composition-layer-options.type';
 export * from './compositions/user-data.type';
