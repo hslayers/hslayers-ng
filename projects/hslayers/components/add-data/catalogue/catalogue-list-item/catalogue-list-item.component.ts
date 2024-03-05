@@ -2,14 +2,17 @@
 import {Component, Input, OnInit} from '@angular/core';
 
 import {HsAddDataCatalogueService} from 'hslayers-ng/shared/add-data';
-import {HsAddDataLayerDescriptor} from 'hslayers-ng/types';
+import {
+  HsAddDataLayerDescriptor,
+  HsEndpoint,
+  WhatToAddDescriptor,
+} from 'hslayers-ng/types';
 import {HsCatalogueMetadataComponent} from '../catalogue-metadata/catalogue-metadata.component';
 import {HsCatalogueMetadataService} from '../catalogue-metadata/catalogue-metadata.service';
 import {HsCommonEndpointsService} from 'hslayers-ng/shared/endpoints';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsConfirmDialogComponent} from 'hslayers-ng/common/confirm';
 import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
-import {HsEndpoint} from 'hslayers-ng/types';
 import {HsLanguageService} from 'hslayers-ng/shared/language';
 import {HsLaymanBrowserService} from 'hslayers-ng/shared/add-data';
 import {HsLaymanService} from 'hslayers-ng/shared/save-map';
@@ -33,8 +36,8 @@ export class HsCatalogueListItemComponent implements OnInit {
   @Input() layer: HsAddDataLayerDescriptor;
   explanationsVisible: boolean;
   metadata;
-  selectedType: string; //do not rename to 'type', would clash in the template
   selectTypeToAddLayerVisible: boolean;
+  whatToAdd: WhatToAddDescriptor;
   whatToAddTypes: string[];
   loadingInfo = false;
 
@@ -67,47 +70,51 @@ export class HsCatalogueListItemComponent implements OnInit {
   toggleAddOptions(endpoint: HsEndpoint, layer: HsAddDataLayerDescriptor) {
     if (!this.selectTypeToAddLayerVisible) {
       this.loadingInfo = true;
-      this.addLayerToMap(endpoint, layer);
+      this.describeCatalogueLayer(endpoint, layer);
       return;
     }
     this.abortAdd();
   }
 
   /**
-   * Add selected layer to map (into layer manager) if possible (supported formats: WMS, WFS, Sparql, kml, geojson, json)
-   * @param endpoint - Datasource of selected layer
-   * @param layer - Metadata record of selected layer
+   * Get layer desriptor, show available options or add to map directly if only WFS available
    */
-  async addLayerToMap(
+  private async describeCatalogueLayer(
     endpoint: HsEndpoint,
     layer: HsAddDataLayerDescriptor,
-  ): Promise<void> {
-    const availableTypes = await this.hsAddDataCatalogueService.addLayerToMap(
-      endpoint,
-      layer,
-      this.selectedType,
-    );
+  ) {
+    this.whatToAdd =
+      await this.hsAddDataCatalogueService.describeCatalogueLayer(
+        endpoint,
+        layer,
+      );
     this.loadingInfo = false;
-    if (Array.isArray(availableTypes)) {
+    let availableTypes = this.whatToAdd.type;
+
+    /**
+     * Layer is available as a WFS only
+     */
+    if (this.whatToAdd.type === 'WFS') {
+      this.selectTypeAndAdd(this.whatToAdd.type, new MouseEvent('click'));
+    } else if (Array.isArray(availableTypes) || availableTypes == 'WMS') {
+      availableTypes =
+        availableTypes === 'WMS' ? [availableTypes] : availableTypes;
       /**
-       * Add third type allowing user to choose image source type
+       * Add another type allowing user to choose image source type
        */
       availableTypes.includes('WMS')
         ? availableTypes.splice(1, 0, 'WMTS')
         : availableTypes;
       this.whatToAddTypes = availableTypes;
-      this.selectTypeToAddLayerVisible = true;
-    } else {
-      this.selectTypeToAddLayerVisible = false;
-      this.selectedType = null;
     }
+
+    this.selectTypeToAddLayerVisible = Array.isArray(availableTypes);
     this.explanationsVisible = false;
   }
 
   abortAdd(): void {
-    this.selectTypeToAddLayerVisible = false;
+    this.selectTypeToAddLayerVisible = Array.isArray(this.whatToAddTypes);
     this.explanationsVisible = false;
-    this.selectedType = null;
   }
 
   /**
@@ -115,13 +122,28 @@ export class HsCatalogueListItemComponent implements OnInit {
    * @param type - One of 'WMS', 'WFS'
    * @param event - Mouse click event
    */
-  selectTypeAndAdd(type: string, event: MouseEvent): void {
+  async selectTypeAndAdd(type: string, event: MouseEvent): Promise<void> {
     event.preventDefault();
-    this.selectedType = type === 'WMS' || type === 'WMTS' ? 'WMS' : type;
-    this.addLayerToMap(this.layer.endpoint, {
-      ...this.layer,
-      useTiles: type === 'WMTS',
-    });
+    if (!this.whatToAdd) {
+      this.whatToAdd =
+        await this.hsAddDataCatalogueService.describeCatalogueLayer(
+          this.layer.endpoint,
+          this.layer,
+        );
+    }
+    if (!this.whatToAdd.type || this.whatToAdd.type === 'none') {
+      console.error('Could not get catalogue layer descriptor!');
+      return;
+    }
+    this.whatToAdd.type = type === 'WMS' || type === 'WMTS' ? 'WMS' : type;
+    this.hsAddDataCatalogueService.addLayerToMap(
+      this.layer.endpoint,
+      {
+        ...this.layer,
+        useTiles: type === 'WMTS',
+      },
+      this.whatToAdd as WhatToAddDescriptor<string>,
+    );
   }
 
   /**

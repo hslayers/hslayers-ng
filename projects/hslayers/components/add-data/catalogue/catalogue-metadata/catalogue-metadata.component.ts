@@ -2,7 +2,7 @@ import {Component, Input, OnInit, ViewRef} from '@angular/core';
 
 import {HsAddDataCatalogueMapService} from 'hslayers-ng/shared/add-data';
 import {HsAddDataCatalogueService} from 'hslayers-ng/shared/add-data';
-import {HsAddDataLayerDescriptor} from 'hslayers-ng/types';
+import {HsAddDataLayerDescriptor, WhatToAddDescriptor} from 'hslayers-ng/types';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsDialogComponent} from 'hslayers-ng/common/dialogs';
 import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
@@ -81,19 +81,21 @@ export class HsCatalogueMetadataComponent implements HsDialogComponent, OnInit {
    * @param layer - Description of a layer to be added
    * @param type - Type in which the layer shall be added (WMS, WFS, etc.)
    */
-  addLayerToMap(
+  async addLayerToMap(
     ds: HsEndpoint,
     layer: HsAddDataLayerDescriptor,
     type: string,
-  ): void {
-    type = type === 'WMS' || type === 'WMTS' ? 'WMS' : type;
+  ): Promise<void> {
+    const whatToAdd =
+      await this.hsAddDataCatalogueService.describeCatalogueLayer(ds, layer);
+    whatToAdd.type = type === 'WMS' || type === 'WMTS' ? 'WMS' : type;
     this.hsAddDataCatalogueService.addLayerToMap(
       ds,
       {
         ...layer,
         useTiles: type === 'WMTS',
       },
-      type,
+      whatToAdd as WhatToAddDescriptor<string>,
     );
     this.close();
   }
