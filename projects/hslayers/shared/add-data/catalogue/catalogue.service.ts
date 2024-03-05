@@ -20,23 +20,7 @@ import {HsLayoutService} from 'hslayers-ng/shared/layout';
 import {HsMapService} from 'hslayers-ng/shared/map';
 import {HsMickaBrowserService} from './micka.service';
 import {HsUtilsService} from 'hslayers-ng/shared/utils';
-
-//TODO: Find a better name and possibly turn it into a public interface
-type WhatToAddDescriptor = {
-  type: string;
-  dsType?: string;
-  layer?;
-  link?;
-  name?;
-  title?: string;
-  abstract?: string;
-  projection?;
-  extractStyles?;
-  editable?: boolean;
-  workspace?: string;
-  style?: string;
-  recordType?: string;
-};
+import {WhatToAddDescriptor} from 'hslayers-ng/types';
 
 class HsAddDataCatalogueParams {
   data: any = {
@@ -393,17 +377,15 @@ export class HsAddDataCatalogueService extends HsAddDataCatalogueParams {
   }
 
   /**
-   * Add selected layer to map (into layer manager) if possible
+   * Get catalogue layer descriptor
    * @param ds - Datasource of selected layer
    * @param layer - Metadata record of selected layer
-   * @param type - Type of layer (supported values: WMS, WFS, Sparql, kml, geojson, json)
    * @returns Type or array of types in which this layer can be added to map
    */
-  async addLayerToMap(
+  async describeCatalogueLayer(
     ds: HsEndpoint,
     layer: HsAddDataLayerDescriptor,
-    type?: string,
-  ): Promise<string[] | string | void> {
+  ): Promise<WhatToAddDescriptor> {
     let whatToAdd: WhatToAddDescriptor;
     if (ds.type == 'micka') {
       whatToAdd = await this.hsMickaBrowserService.describeWhatToAdd(ds, layer);
@@ -415,16 +397,20 @@ export class HsAddDataCatalogueService extends HsAddDataCatalogueParams {
     } else {
       whatToAdd = {type: 'none'};
     }
+    return whatToAdd;
+  }
 
-    if (!whatToAdd) {
-      return;
-    }
-    if (type) {
-      whatToAdd.type = type;
-    }
-    if (Array.isArray(whatToAdd.type)) {
-      return whatToAdd.type;
-    }
+  /**
+   * Add selected layer to map
+   * @param ds - Datasource of selected layer
+   * @param layer - Metadata record of selected layer
+   * @param whatToAdd - Catalogue layer descriptor. Among others holds the type of the layer (supported values: WMS, WFS, Sparql, kml, geojson, json)
+   */
+  async addLayerToMap(
+    ds: HsEndpoint,
+    layer: HsAddDataLayerDescriptor,
+    whatToAdd: WhatToAddDescriptor<string>,
+  ): Promise<void> {
     if (whatToAdd.type == 'WMS') {
       whatToAdd.link = Array.isArray(whatToAdd.link)
         ? whatToAdd.link.filter((link) => link.toLowerCase().includes('wms'))[0]
@@ -521,7 +507,6 @@ export class HsAddDataCatalogueService extends HsAddDataCatalogueParams {
     } else {
       this.hsLayoutService.setMainPanel('layerManager');
     }
-    return whatToAdd.type;
   }
 
   datasetSelect(id_selected: DatasetType): void {
