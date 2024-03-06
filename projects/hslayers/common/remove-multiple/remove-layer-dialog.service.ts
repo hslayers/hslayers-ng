@@ -30,8 +30,9 @@ export class HsRemoveLayerDialogService {
 
   /**
    * Removes selected drawing layer from both Layermanager and Layman
+   * @param layer Layer to be deleted - use when trying to delete layer other than hsDrawService.selectedLayer
    */
-  async removeLayer(): Promise<void> {
+  async removeLayer(layer?: Layer<Source>): Promise<void> {
     const dialog = this.hsDialogContainerService.create(
       HsRmLayerDialogComponent,
       {
@@ -39,13 +40,14 @@ export class HsRemoveLayerDialogService {
         message: 'DRAW.reallyDeleteThisLayer',
         note: this.getDeleteNote(),
         title: 'COMMON.confirmDelete',
+        items: layer ? [layer] : [this.hsDrawService.selectedLayer],
       },
     );
     const confirmed: HsRmLayerDialogResponse = await dialog.waitResult();
     if (confirmed.value == 'yes') {
       const fromMapOnly = confirmed.type === 'map';
       await this.completeLayerRemoval(
-        this.hsDrawService.selectedLayer,
+        layer ?? this.hsDrawService.selectedLayer,
         fromMapOnly,
       );
       this.hsDrawService.selectedLayer = null;
