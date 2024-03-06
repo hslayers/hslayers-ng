@@ -30,6 +30,7 @@ import {HsUploadComponent, HsUploadedFiles} from 'hslayers-ng/common/upload';
 import {HsUtilsService} from 'hslayers-ng/shared/utils';
 import {VectorFileDataType} from '../../common/advanced-options/advanced-options.component';
 import {accessRightsModel} from 'hslayers-ng/types';
+import {getShowInLayerManager} from 'hslayers-ng/common/extensions';
 
 @Component({
   selector: 'hs-file-vector',
@@ -257,7 +258,11 @@ export class HsAddDataVectorFileComponent
     if (type == 'existing') {
       this.data.vectorLayers = this.hsLayerManagerService.data.layers.filter(
         (layer) => {
-          return this.hsLayerUtilsService.isLayerVectorLayer(layer.layer);
+          const showInLM = getShowInLayerManager(layer.layer);
+          return (
+            this.hsLayerUtilsService.isLayerVectorLayer(layer.layer) &&
+            (showInLM || showInLM === undefined)
+          );
         },
       );
     }
