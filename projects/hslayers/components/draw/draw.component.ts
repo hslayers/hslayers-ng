@@ -2,17 +2,12 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 
 import {BehaviorSubject, Subject, takeUntil} from 'rxjs';
 
-import {HsConfig} from 'hslayers-ng/config';
 import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
 import {HsDrawLayerMetadataDialogComponent} from './draw-layer-metadata/draw-layer-metadata.component';
 
 import {HsDrawService} from 'hslayers-ng/shared/draw';
-import {HsLanguageService} from 'hslayers-ng/shared/language';
 import {HsLayoutService} from 'hslayers-ng/shared/layout';
 import {HsPanelBaseComponent} from 'hslayers-ng/common/panels';
-import {HsQueryBaseService} from 'hslayers-ng/shared/query';
-import {HsSidebarService} from 'hslayers-ng/shared/sidebar';
-import {HsUtilsService} from 'hslayers-ng/shared/utils';
 
 @Component({
   selector: 'hs-draw',
@@ -27,12 +22,7 @@ export class HsDrawComponent
   constructor(
     public HsDrawService: HsDrawService,
     public hsLayoutService: HsLayoutService,
-    public HsLanguageService: HsLanguageService,
-    public HsQueryBaseService: HsQueryBaseService,
-    public hsUtilsService: HsUtilsService,
-    public hsSidebarService: HsSidebarService,
     public HsDialogContainerService: HsDialogContainerService,
-    private hsConfig: HsConfig,
   ) {
     super(hsLayoutService);
   }
