@@ -1,5 +1,12 @@
 import {Component, OnInit} from '@angular/core';
 
+import {
+  Cartesian3,
+  Math as CesiumMath,
+  CzmlDataSource,
+  HeadingPitchRoll,
+  Transforms,
+} from 'cesium';
 import {GeoJSON} from 'ol/format';
 import {Image as ImageLayer, Tile, Vector as VectorLayer} from 'ol/layer';
 import {OSM, Vector as VectorSource, XYZ} from 'ol/source';
@@ -265,7 +272,7 @@ export class AppComponent implements OnInit {
   }
   title = 'hslayers-workspace';
 
-  ngOnInit(): void {
+  async ngOnInit() {
     /**
      * Create panel components
      */
@@ -276,5 +283,50 @@ export class AppComponent implements OnInit {
      */
     this.hsOverlayConstructorService.createGuiOverlay();
     this.hsLayoutService.addMapVisualizer(HslayersCesiumComponent);
+
+    /**
+     * Add glTF model
+     */
+    const czml = [
+      {
+        id: 'document',
+        name: 'CZML Model',
+        version: '1.0',
+      },
+    ];
+    const dataSource = new CzmlDataSource();
+    this.hsCesiumConfig.viewerLoaded.subscribe((viewer) => {
+      viewer.dataSources.add(dataSource);
+    });
+    dataSource.load(czml);
+    const czmlItem = this.generateCzmlItem();
+    dataSource.process(czmlItem);
+  }
+
+  private generateCzmlItem() {
+    const hpr = new HeadingPitchRoll(CesiumMath.PI_OVER_TWO, 0, 0); // Collada uses different axis definition than Cesium
+    const origin = Cartesian3.fromDegrees(
+      13.351798339078506,
+      49.726704604699599,
+    ); //wtf?
+    const uq = Transforms.headingPitchRollQuaternion(origin, hpr);
+    return {
+      'id': 123,
+      'name': '123',
+      'position': {
+        'cartographicDegrees': [
+          13.351859213774608,
+          49.726690079534904,
+          8.07 + 400,
+        ],
+      },
+      'orientation': {
+        'unitQuaternion': [uq.x, uq.y, uq.z, uq.w],
+      },
+      'model': {
+        'gltf': '../assets/US201.gltf',
+        'scale': 1.0,
+      },
+    };
   }
 }
