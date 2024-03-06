@@ -223,7 +223,7 @@ export class HsCesiumLayersService {
       ) {
         features.splice(features.indexOf(feature), 1);
       } else {
-        //console.log('New feadure', feature.getId())
+        //console.log('New feature', feature.getId())
       }
     });
     //console.log('start removing entities',(new Date()).getTime() - window.lasttime); window.lasttime = (new Date()).getTime();
@@ -239,7 +239,7 @@ export class HsCesiumLayersService {
       //console.log('Didn't find OL feature ', id);
       cesiumLayer.entities.removeById(id);
     }
-    //console.log('revoved. serializing',(new Date()).getTime() - window.lasttime); window.lasttime = (new Date()).getTime();
+    //console.log('removed. serializing',(new Date()).getTime() - window.lasttime); window.lasttime = (new Date()).getTime();
     const json: any = f.writeFeaturesObject(features);
     //console.log('done',(new Date()).getTime() - window.lasttime); window.lasttime = (new Date()).getTime();
     //cesiumLayer.entities.removeAll();
@@ -338,9 +338,14 @@ export class HsCesiumLayersService {
 
       const xa = coordinates[0];
       const ya = coordinates[1];
+      const za = coordinates[2];
 
       const newCoordinates = proj4(firstProjection, secondProjection, [xa, ya]);
-      return Cartesian3.fromDegrees(newCoordinates[0], newCoordinates[1], 0);
+      return Cartesian3.fromDegrees(
+        newCoordinates[0],
+        newCoordinates[1],
+        za ?? 0,
+      );
     };
     //console.log('loading to cesium',(new Date()).getTime() - window.lasttime); window.lasttime = (new Date()).getTime();
     const source = await tmp_source.load(
@@ -350,11 +355,15 @@ export class HsCesiumLayersService {
       },
     );
     const cesiumLayer = <DataSource>this.findCesiumLayer(ol_source);
+    console.log('🚀 ~ syncFeatures ~ cesiumLayer:', cesiumLayer);
+    //FIXME: the entities are present only when this console.log or the one inside loop occurs. Otherwise, they are empty 😮
+    console.log('🚀 ~ syncFeatures ~ source.entities.values:', source.entities);
     //console.log('loaded in temp.',(new Date()).getTime() - window.lasttime); window.lasttime = (new Date()).getTime();
     source.entities.values.forEach((entity) => {
+      //console.log('🚀 ~ source.entities.values.forEach ~ entity:', entity);
       try {
         if (cesiumLayer.entities.getById(entity.id) == undefined) {
-          //console.log('Adding', entity.id);
+          console.log('Adding', entity.id);
           cesiumLayer.entities.add(entity);
         }
       } catch (ex) {
@@ -423,6 +432,10 @@ export class HsCesiumLayersService {
           this.HsUtilsService.instOf(cesium_layer, KmlDataSource)) &&
         this.viewer.dataSources
       ) {
+        //TODO: there shall be a way how to set real 3D coordinates when the GeoJSON contains also z-coords
+        /*for (const entity of (cesium_layer as DataSource).entities.values) {
+          entity.polygon.perPositionHeight;
+        }*/
         this.viewer.dataSources.add(<DataSource>cesium_layer);
         //TODO: Point clicked, Datasources extents, Composition extents shall be also synced
         if (getTitle(lyr as Layer<Source>) != 'Point clicked') {

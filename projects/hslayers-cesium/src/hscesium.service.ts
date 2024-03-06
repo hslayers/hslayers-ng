@@ -72,17 +72,17 @@ export class HsCesiumService {
         'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiIzZDk3ZmM0Mi01ZGFjLTRmYjQtYmFkNC02NTUwOTFhZjNlZjMiLCJpZCI6MTE2MSwiaWF0IjoxNTI3MTYxOTc5fQ.tOVBzBJjR3mwO3osvDVB_RwxyLX7W-emymTOkfz6yGA';
       if (!this.HsCesiumConfig.cesiumBase) {
         this.hsLog.error(
-          'Please set HsCesiumConfig.get().cesiumBase to the directory where cesium assets will be copied to',
+          'Please set HsCesiumConfig.cesiumBase to the directory where Cesium assets will be copied to',
         );
       }
       (<any>window).CESIUM_BASE_URL = this.HsCesiumConfig.cesiumBase;
-      let terrain_provider =
+      let terrainProvider =
         this.HsCesiumConfig.terrain_provider ||
         (await createWorldTerrainAsync(
           this.HsCesiumConfig.createWorldTerrainOptions,
         ));
       if (this.HsCesiumConfig.newTerrainProviderOptions) {
-        terrain_provider = new CesiumTerrainProvider(
+        terrainProvider = new CesiumTerrainProvider(
           this.HsCesiumConfig.newTerrainProviderOptions,
         );
       }
@@ -118,7 +118,7 @@ export class HsCesiumService {
           infoBox: this.HsCesiumConfig.cesiumInfoBox
             ? this.HsCesiumConfig.cesiumInfoBox
             : false,
-          terrainProvider: terrain_provider,
+          terrainProvider: terrainProvider,
           baseLayer: this.HsCesiumConfig.imageryProvider
             ? new ImageryLayer(this.HsCesiumConfig.imageryProvider, {})
             : false,
@@ -150,7 +150,7 @@ export class HsCesiumService {
       viewer.scene.globe.shadows = this.getShadowMode();
       viewer.scene.globe.terrainExaggeration =
         this.HsCesiumConfig.terrainExaggeration || 1.0;
-      viewer.terrainProvider = terrain_provider;
+      viewer.terrainProvider = terrainProvider;
 
       if (this.HsCesiumConfig.cesiumTime) {
         viewer.clockViewModel.currentTime = this.HsCesiumConfig.cesiumTime;
