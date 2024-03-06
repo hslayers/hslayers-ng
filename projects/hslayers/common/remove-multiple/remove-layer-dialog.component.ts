@@ -17,6 +17,15 @@ export type HsRmLayerDialogResponse = {
 @Component({
   selector: 'hs-rm-layer-dialog',
   templateUrl: './remove-layer-dialog.component.html',
+  styles: `
+    .modal-title{
+      white-space: nowrap;
+      width: 100%;
+    }
+    .modal-title span {
+      max-width: 18ch;
+    }
+  `,
 })
 export class HsRmLayerDialogComponent implements HsDialogComponent, OnInit {
   dialogItem: HsDialogItem;
@@ -47,6 +56,7 @@ export class HsRmLayerDialogComponent implements HsDialogComponent, OnInit {
     this.isAuthenticated = this.commonLaymanService.isAuthenticated();
     if (!this.isAuthenticated) {
       this.deleteFrom = this.deleteFromOptions[0];
+      this.deleteAllowed = !this.data.multiple;
     }
     if (this.data.items) {
       for (const item of this.data.items) {
@@ -62,6 +72,15 @@ export class HsRmLayerDialogComponent implements HsDialogComponent, OnInit {
   no(): void {
     this.HsDialogContainerService.destroy(this);
     this.dialogItem.resolve({value: 'no'});
+  }
+
+  selectDeleteOption(option) {
+    this.deleteFrom = option;
+    /**
+     * If removing only one layer checkboxes are not avaialable thus we need
+     * to disable delete button
+     */
+    this.deleteAllowed = !this.data.multiple ? true : this.deleteAllowed;
   }
 
   checkToRemove(item): void {
