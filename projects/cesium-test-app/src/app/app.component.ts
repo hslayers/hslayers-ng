@@ -22,7 +22,16 @@ export class AppComponent implements OnInit {
     private HsCesiumConfig: HsCesiumConfig,
     private HsLayoutService: HsLayoutService,
   ) {
-    const geojsonObject = {
+    const polygon25d = new VectorLayer({
+      properties: {
+        title: '2.5D polygon surface',
+      },
+      source: new VectorSource({
+        url: '../assets/polygon2.5d.geojson',
+        format: new GeoJSON(),
+      }) as VectorSource, //FIXME: Type-cast shall be automatically inferred after OL >8.2
+    });
+    const geojsonObject2d = {
       'type': 'FeatureCollection',
       'crs': {
         'type': 'name',
@@ -237,9 +246,10 @@ export class AppComponent implements OnInit {
             path: 'User generated',
           },
           source: new VectorSource({
-            features: new GeoJSON().readFeatures(geojsonObject),
+            features: new GeoJSON().readFeatures(geojsonObject2d),
           }) as VectorSource, //FIXME: Type-cast shall be automatically inferred after OL >8.2
         }),
+        polygon25d,
         opticalMap,
       ],
     });

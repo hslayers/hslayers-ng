@@ -421,6 +421,10 @@ export class HsCesiumLayersService {
           this.HsUtilsService.instOf(cesium_layer, KmlDataSource)) &&
         this.viewer.dataSources
       ) {
+        //TODO: there shall be a way how to set real 3D coordinates when the GeoJSON contains also z-coords
+        /*for (const entity of (cesium_layer as DataSource).entities.values) {
+          entity.polygon.perPositionHeight;
+        }*/
         this.viewer.dataSources.add(<DataSource>cesium_layer);
         //TODO: Point clicked, Datasources extents, Composition extents shall be also synced
         if (getTitle(lyr as Layer<Source>) != 'Point clicked') {
