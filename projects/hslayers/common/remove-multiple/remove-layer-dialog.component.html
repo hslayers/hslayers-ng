@@ -10,17 +10,18 @@
                     [attr.aria-label]="'COMMON.close' | translateHs "></button>
             </div>
             <div class="modal-body" style="overflow-y:auto">
+                @if(data.items.length > 0){
                 <div class="d-flex flex-column mb-3"> <!-- pb-3 border-bottom -->
                     <p class="fw-bold h6">{{'LAYERS.removeLayer.deleteFrom' | translateHs }}: </p>
                     <div class="d-flex gap-3 justify-content-center px-5">
-                        <button *ngFor="let option of deleteFromOptions" type="button" [attr.data-cy]="option"
+                        <button *ngFor="let option of data.deleteFromOptions" type="button" [attr.data-cy]="option"
                             [hidden]="option === 'catalogue' && !this.isAuthenticated"
                             [ngClass]="{'active' : deleteFrom === option }" (click)="selectDeleteOption(option)"
                             class="btn btn-sm btn-outline-primary w-50">{{service.translate('LAYERS.removeLayer.' +
                             option)}}</button>
                     </div>
                 </div>
-                <p *ngIf="deleteFrom === 'catalogue'" class="h6 small">{{data.note | translateHs}}</p>
+                <p *ngIf="deleteFrom && deleteFrom !== 'map'" class="h6 small">{{data.note | translateHs}}</p>
                 <div *ngIf="deleteFrom && data.multiple">
                     <p class="fw-bold h6">{{data.message | translateHs}}</p>
 
@@ -39,10 +40,15 @@
                         </div>
                     </div>
                 </div>
+                }
+                @else {
+                <p class="fw-bold h6 text-center">{{'LAYERS.removeLayer.noLayersToDelete' | translateHs }} </p>
+                }
+
             </div>
             <div class="modal-footer">
                 <button type="button" [disabled]="!deleteAllowed" class="btn"
-                    [ngClass]="{'btn-primary': deleteFrom === 'map', 'btn-danger': deleteFrom === 'catalogue'}"
+                    [ngClass]="{'btn-primary': deleteFrom === 'map', 'btn-danger': deleteFrom !== 'map'}"
                     (click)="yes()" [title]="'COMMON.remove' | translateHs" data-dismiss="modal">{{'COMMON.remove' |
                     translateHs}}</button>
                 <button type="button" class="btn btn-secondary compositions-btn-cancel"
