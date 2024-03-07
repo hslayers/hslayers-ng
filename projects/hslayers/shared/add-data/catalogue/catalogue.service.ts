@@ -2,7 +2,7 @@ import {Injectable, NgZone} from '@angular/core';
 
 import {Feature} from 'ol';
 import {Geometry} from 'ol/geom';
-import {Observable, forkJoin} from 'rxjs';
+import {Observable, Subject, forkJoin} from 'rxjs';
 
 import {DatasetType} from 'hslayers-ng/types';
 import {HsAddDataCatalogueMapService} from './catalogue-map.service';
@@ -49,6 +49,7 @@ class HsAddDataCatalogueParams {
   matchedRecords: number;
   extentChangeSuppressed = false;
 
+  addDataCatalogueReloaded: Subject<void> = new Subject();
   constructor() {}
 }
 
@@ -142,6 +143,7 @@ export class HsAddDataCatalogueService extends HsAddDataCatalogueParams {
     this.queryCatalogs();
     // this.hsMickaFilterService.fillCodesets();
     this.calcExtentLayerVisibility();
+    this.addDataCatalogueReloaded.next();
   }
 
   /**

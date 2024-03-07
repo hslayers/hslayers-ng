@@ -580,7 +580,8 @@
     "dialogRemoveAll": {
       "dialogMessage": "Do you really want to remove all your layers?",
       "reloadComposition": "Reload composition",
-      "removeAllAdded": "Remove all added layers"
+      "removeAllAdded": "Remove all added layers",
+      "removeAllCatalogueLayers": "Remove all your catalogue layers"
     },
     "dialogRemoveLayer": {
       "dialogMessage": "Do You really want to remove the selected layer?"
@@ -667,8 +668,10 @@
     "newLayer": "New layer",
     "removeLayer": {
       "map": "Map",
-      "catalogue": "Map & Catalogue",
-      "deleteFrom": "Delete from"
+      "catalogue": "Catalogue",
+      "deleteFrom": "Delete from",
+      "mapcatalogue": "Map & Catalogue",
+      "noLayersToDelete": "No layers to delete"
     }
   },
   "LAYMAN": {
