@@ -1,6 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 
-import {HsAddDataCatalogueMapService} from 'hslayers-ng/shared/add-data';
+import {
+  HsAddDataCatalogueMapService,
+  HsAddDataService,
+} from 'hslayers-ng/shared/add-data';
 import {HsAddDataCatalogueService} from 'hslayers-ng/shared/add-data';
 import {HsAddDataLayerDescriptor} from 'hslayers-ng/types';
 import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
@@ -36,6 +39,7 @@ export class HsAddDataCatalogueComponent implements OnInit {
     public hsUtilsService: HsUtilsService,
     public hsLaymanService: HsLaymanService,
     public hsCommonLaymanService: HsCommonLaymanService,
+    private hsAddDataService: HsAddDataService,
   ) {
     this.advancedSearch = false;
   }
@@ -68,7 +72,14 @@ export class HsAddDataCatalogueComponent implements OnInit {
   }
 
   queryByFilter(): void {
-    this.hsAddDataCatalogueService.reloadData();
+    /**
+     * A bit tricky way how to force add-data hs-panel-header to refresh its template
+     * in order to show/hide buttons. Previously done by reloadData call.
+     * This achieves the same via datasetTypeSelected subscription in catalgoue service
+     */
+    this.hsAddDataService.datasetSelected.next(
+      this.hsAddDataService.datasetSelected.getValue(),
+    );
   }
 
   selectType(type: string): void {

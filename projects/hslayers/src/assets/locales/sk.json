@@ -580,7 +580,8 @@
     "dialogRemoveAll": {
       "dialogMessage": "Naozaj chcete odstrániť všetky vami pridané vrstvy?",
       "reloadComposition": "Obnoviť kompozíciu",
-      "removeAllAdded": "Odstrániť všetky pridané vrstvy"
+      "removeAllAdded": "Odstrániť všetky pridané vrstvy",
+      "removeAllCatalogueLayers": "Odstrániť všetky vaše vrstvy z katalógu"
     },
     "dialogRemoveLayer": {
       "dialogMessage": "Naozaj chcete odstrániť vybratú vrstvu?"
@@ -667,8 +668,10 @@
     "featuresLoadError": "Načítanie prvkov zlyhalo",
     "removeLayer": {
       "map": "Mapy",
-      "catalogue": "Mapy a Katalógu",
-      "deleteFrom": "Odstrániť z"
+      "catalogue": "Katalógu",
+      "deleteFrom": "Odstrániť z",
+      "mapcatalogue": "Mapy a Katalógu",
+      "noLayersToDelete": "Žiadne vrstvy na odstránenie"
     }
   },
   "LAYMAN": {

@@ -261,6 +261,7 @@ export class HsLayerManagerComponent
         .map((l) => {
           return l.layer;
         }),
+      ['map', 'mapcatalogue'],
     );
   }
 
