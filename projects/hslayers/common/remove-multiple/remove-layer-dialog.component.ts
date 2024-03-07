@@ -9,18 +9,24 @@ import {
   HsRemoveLayerDialogService,
   RemoveLayerWrapper,
 } from './remove-layer-dialog.service';
+import {Layer} from 'ol/layer';
 import {getName, getTitle} from 'hslayers-ng/common/extensions';
+
+export type HsRmLayerDialogeDeleteOptions =
+  | 'map'
+  | 'catalogue'
+  | 'mapcatalogue';
 
 export type HsRmLayerDialogResponse = {
   value: 'yes' | 'no';
-  type?: string;
+  type?: HsRmLayerDialogeDeleteOptions;
 };
 
 @Component({
   selector: 'hs-rm-layer-dialog',
   templateUrl: './remove-layer-dialog.component.html',
   styles: `
-    .modal-title{
+    .modal-title {
       white-space: nowrap;
       width: 100%;
     }
@@ -34,8 +40,7 @@ export class HsRmLayerDialogComponent implements HsDialogComponent, OnInit {
   _selectAll = false;
   isAuthenticated: boolean;
 
-  deleteFromOptions = ['map', 'catalogue'] as const;
-  deleteFrom: (typeof this.deleteFromOptions)[number];
+  deleteFrom: (typeof this.data)['deleteFromOptions'][number];
 
   deleteAllowed = false;
 
@@ -46,9 +51,13 @@ export class HsRmLayerDialogComponent implements HsDialogComponent, OnInit {
     private commonLaymanService: HsCommonLaymanService,
   ) {}
   viewRef: ViewRef;
+  /**
+   * @param deleteFromOptions - From where the layer should be deleted eg. map, catalogue map&catalogue
+   */
   data: {
     multiple: boolean;
     title: string;
+    deleteFromOptions?: HsRmLayerDialogeDeleteOptions[];
     message: string;
     note?: string;
     items?: RemoveLayerWrapper[];
@@ -56,8 +65,9 @@ export class HsRmLayerDialogComponent implements HsDialogComponent, OnInit {
 
   ngOnInit(): void {
     this.isAuthenticated = this.commonLaymanService.isAuthenticated();
-    if (!this.isAuthenticated) {
-      this.deleteFrom = this.deleteFromOptions[0];
+    this.data.deleteFromOptions ??= ['map', 'mapcatalogue'];
+    if (!this.isAuthenticated || this.data.deleteFromOptions.length === 1) {
+      this.deleteFrom = this.data.deleteFromOptions[0];
       this.deleteAllowed = !this.data.multiple;
     }
     if (this.data.items) {
@@ -103,7 +113,10 @@ export class HsRmLayerDialogComponent implements HsDialogComponent, OnInit {
   }
 
   getTitle(item: RemoveLayerWrapper): string {
-    let title = getTitle(item.layer) ?? getName(item.layer);
+    let title =
+      item.layer instanceof Layer
+        ? getTitle(item.layer) ?? getName(item.layer)
+        : item.layer;
     if (!title) {
       title = this.hsLanguageService.getTranslation(
         'COMMON.unknown',

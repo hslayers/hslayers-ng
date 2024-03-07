@@ -11,12 +11,13 @@ import {HsMapService} from 'hslayers-ng/shared/map';
 import {
   HsRmLayerDialogComponent,
   HsRmLayerDialogResponse,
+  HsRmLayerDialogeDeleteOptions,
 } from './remove-layer-dialog.component';
 import {HsToastService} from 'hslayers-ng/common/toast';
 import {getDefinition, getTitle} from 'hslayers-ng/common/extensions';
 
 export type RemoveLayerWrapper = {
-  layer: Layer<Source>;
+  layer: Layer<Source> | string;
   toRemove: boolean;
   displayTitle: string;
 };
@@ -48,8 +49,12 @@ export class HsRemoveLayerDialogService {
   /**
    * Removes selected drawing layer from both Layermanager and Layman
    * @param layer Layer to be deleted - use when trying to delete layer other than hsDrawService.selectedLayer
+   * @param deleteFromOptions From where the layer should be deleted defaults to map, map&catalogue
    */
-  async removeLayer(layer?: Layer<Source>): Promise<void> {
+  async removeLayer(
+    layer?: Layer<Source>,
+    deleteFromOptions?: HsRmLayerDialogeDeleteOptions[],
+  ): Promise<void> {
     const dialog = this.hsDialogContainerService.create(
       HsRmLayerDialogComponent,
       {
@@ -60,14 +65,14 @@ export class HsRemoveLayerDialogService {
         items: layer
           ? [this.wrapLayer(layer)]
           : [this.wrapLayer(this.hsDrawService.selectedLayer)],
+        deleteFromOptions,
       },
     );
     const confirmed: HsRmLayerDialogResponse = await dialog.waitResult();
     if (confirmed.value == 'yes') {
-      const fromMapOnly = confirmed.type === 'map';
       await this.completeLayerRemoval(
         layer ?? this.hsDrawService.selectedLayer,
-        fromMapOnly,
+        confirmed.type,
       );
       this.hsDrawService.selectedLayer = null;
       this.hsDrawService.fillDrawableLayers();
@@ -75,9 +80,31 @@ export class HsRemoveLayerDialogService {
   }
 
   /**
-   * Removes multiple selected layers from both Layermanager and Layman
+   * Overload for when delete options is 'catalogue'
+   * ['catalogue'] delete option is expected
    */
-  async removeMultipleLayers(layers?: Layer<Source>[]): Promise<void> {
+  async removeMultipleLayers(
+    layers: string[],
+    deleteFromOptions: ['catalogue'],
+  ): Promise<boolean>;
+
+  // Overload for other delete options with Layer<Source>[] type
+  async removeMultipleLayers(
+    layers: Layer<Source>[],
+    deleteFromOptions:
+      | Exclude<HsRmLayerDialogeDeleteOptions, 'catalogue'>[]
+      | ['map'],
+  ): Promise<boolean>;
+
+  /**
+   * Removes multiple selected layers from both Layermanager and Layman
+   * @param layer Layers to be deleted - use when trying to remove other than drawableLayers
+   * @param deleteFromOptions From where the layer should be deleted defaults to map, map&catalogue
+   */
+  async removeMultipleLayers(
+    layers: Layer<Source>[] | string[],
+    deleteFromOptions: HsRmLayerDialogeDeleteOptions[],
+  ): Promise<boolean> {
     const layersToRemove = layers ?? this.hsDrawService.drawableLayers ?? [];
     const items = layersToRemove.map((l) => this.wrapLayer(l));
 
@@ -89,30 +116,28 @@ export class HsRemoveLayerDialogService {
         note: this.getDeleteNote(true),
         title: 'COMMON.selectAndConfirmToDeleteMultiple',
         items: items,
+        deleteFromOptions,
       },
     );
     const confirmed: HsRmLayerDialogResponse = await dialog.waitResult();
     if (confirmed.value == 'yes') {
       this.hsToastService.createToastPopupMessage(
-        this.translate('LAYMAN.deleteLayersRequest'),
-        this.translate('LAYMAN.deletionInProgress'),
+        'LAYMAN.deleteLayersRequest',
+        'LAYMAN.deletionInProgress',
         {
           toastStyleClasses: 'bg-info text-white',
           serviceCalledFrom: 'HsDrawService',
-          disableLocalization: true,
           customDelay: 600000,
         },
       );
 
       const drawablesToRemove = items.filter((l) => l.toRemove);
-
-      const fromMapOnly = confirmed.type === 'map';
       /**
        * Remove checked layers, may be either - from layman and/or map
        */
       //}
       for (const l of drawablesToRemove) {
-        await this.completeLayerRemoval(l.layer, fromMapOnly);
+        await this.completeLayerRemoval(l.layer, confirmed.type);
       }
       this.hsToastService.removeByText(
         this.hsLanguageService.getTranslation(
@@ -123,28 +148,42 @@ export class HsRemoveLayerDialogService {
       this.hsDrawService.selectedLayer = null;
       this.hsDrawService.fillDrawableLayers();
     }
+    return confirmed.value == 'yes';
   }
 
   /**
    * Remove layer from map and layman if desirable and possible
    */
   private async completeLayerRemoval(
-    layerToRemove: Layer<Source>,
-    fromMapOnly: boolean,
+    layerToRemove: Layer<Source> | string,
+    deleteFrom: HsRmLayerDialogeDeleteOptions,
   ): Promise<void> {
-    const definition = getDefinition(layerToRemove);
-    if (
-      definition?.format?.toLowerCase().includes('wfs') &&
-      definition?.url &&
-      !fromMapOnly
-    ) {
+    if (deleteFrom !== 'map') {
+      await this.removeFromCatalogue(layerToRemove);
+    }
+    if (deleteFrom.includes('map')) {
+      this.hsMapService.getMap().removeLayer(layerToRemove as Layer<Source>);
+    }
+  }
+
+  private async removeFromCatalogue(layerToRemove: Layer<Source> | string) {
+    const isLayer = layerToRemove instanceof Layer;
+    if (isLayer) {
+      const definition = getDefinition(layerToRemove);
+      if (
+        definition?.format?.toLowerCase().includes('wfs') &&
+        definition?.url
+      ) {
+        await this.hsLaymanService.removeLayer(layerToRemove);
+      }
+    } else {
+      //Remove layer which is not in map from catalogue based on name
       await this.hsLaymanService.removeLayer(layerToRemove);
     }
-    if (getTitle(layerToRemove) == TMP_LAYER_TITLE) {
+    const title = isLayer ? getTitle(layerToRemove) : layerToRemove;
+    if (title == TMP_LAYER_TITLE) {
       this.hsDrawService.tmpDrawLayer = false;
     }
-
-    this.hsMapService.getMap().removeLayer(layerToRemove);
   }
 
   /**
