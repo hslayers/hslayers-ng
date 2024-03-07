@@ -49,7 +49,7 @@ class HsAddDataCatalogueParams {
   matchedRecords: number;
   extentChangeSuppressed = false;
 
-  addDataCatalogueReloaded: Subject<void> = new Subject();
+  addDataCatalogueLoaded: Subject<void> = new Subject();
   constructor() {}
 }
 
@@ -143,7 +143,6 @@ export class HsAddDataCatalogueService extends HsAddDataCatalogueParams {
     this.queryCatalogs();
     // this.hsMickaFilterService.fillCodesets();
     this.calcExtentLayerVisibility();
-    this.addDataCatalogueReloaded.next();
   }
 
   /**
@@ -253,6 +252,7 @@ export class HsAddDataCatalogueService extends HsAddDataCatalogueParams {
 
     this.catalogEntries.sort((a, b) => a.title.localeCompare(b.title));
     this.dataLoading = false;
+    this.addDataCatalogueLoaded.next();
   }
 
   filterDuplicates(endpoint: HsEndpoint): Array<any> {

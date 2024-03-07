@@ -40,7 +40,7 @@ export class HsAddDataComponent
   ) {
     super(hsLayoutService);
     this.layersAvailable =
-      this.hsAddDataCatalogueService.addDataCatalogueReloaded.pipe(
+      this.hsAddDataCatalogueService.addDataCatalogueLoaded.pipe(
         switchMap(() => {
           return of(this.hsAddDataCatalogueService.catalogEntries.length > 0);
         }),

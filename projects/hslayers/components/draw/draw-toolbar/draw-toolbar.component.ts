@@ -7,10 +7,7 @@ import {HsConfig} from 'hslayers-ng/config';
 
 import {HsDrawService} from 'hslayers-ng/shared/draw';
 import {HsGuiOverlayBaseComponent} from 'hslayers-ng/common/panels';
-import {HsLanguageService} from 'hslayers-ng/shared/language';
-import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
 import {HsLayoutService} from 'hslayers-ng/shared/layout';
-import {HsRemoveLayerDialogService} from 'hslayers-ng/common/remove-multiple';
 import {TranslateCustomPipe} from 'hslayers-ng/shared/language';
 import {getTitle} from 'hslayers-ng/common/extensions';
 
@@ -28,19 +25,12 @@ export class HsDrawToolbarComponent extends HsGuiOverlayBaseComponent {
   constructor(
     public HsDrawService: HsDrawService,
     public HsLayoutService: HsLayoutService,
-    public HsLayerUtilsService: HsLayerUtilsService,
     public HsConfig: HsConfig,
-    public HsLanguageService: HsLanguageService,
-    public HsRemoveLayerDialogService: HsRemoveLayerDialogService,
   ) {
     super(HsLayoutService);
   }
   selectionMenuToggled(): void {
     this.setType(this.HsDrawService.type);
-  }
-
-  translateString(module: string, text: string): string {
-    return this.HsLanguageService.getTranslationIgnoreNonExisting(module, text);
   }
 
   toggleDrawToolbar(): void {
