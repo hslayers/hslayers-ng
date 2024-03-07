@@ -536,11 +536,9 @@ export class HsDrawService extends HsDrawServiceParams {
         );
       }
     }
-    this.hasSomeDrawables =
-      this.drawableLayers.length > 0 || this.drawableLaymanLayers.length > 0;
-
-    this.moreThenOneDrawable =
-      this.drawableLayers?.length + this.drawableLaymanLayers?.length > 1;
+    this.drawableLayersAvailable = this.drawableLayers.length > 0 || this.drawableLaymanLayers.length > 0;
+    this.hasSomeDrawables = this.drawableLayers.length > 0 ;
+    this.moreThenOneDrawable = this.drawableLaymanLayers?.length > 1;
   }
 
   private selectedLayerNotAvailable(drawables) {

@@ -1,7 +1,6 @@
 import {Collection} from 'ol';
 import {DragBox, Draw, Modify, Snap} from 'ol/interaction';
 import {EventsKey} from 'ol/events';
-import {Geometry} from 'ol/geom';
 import {Layer} from 'ol/layer';
 import {Source} from 'ol/source';
 import {Subject} from 'rxjs';
@@ -14,7 +13,17 @@ export class HsDrawServiceParams {
    * Drawable layers available on Layman not currently added to map
    */
   drawableLaymanLayers: Array<any> = [];
+  /**
+   * Whether there are some available drawable layers either visible in map or on server
+   */
+  drawableLayersAvailable = false;
+  /**
+   * Whether there are some drawable layers in a map
+   */
   hasSomeDrawables = false;
+  /**
+   * Whether there are multiple drawable layers in a map
+   */
   moreThenOneDrawable = false;
   draw: Draw;
   modify: Modify;

@@ -1,13 +1,15 @@
 import {Component, OnInit, ViewRef} from '@angular/core';
-import {Layer} from 'ol/layer';
 
 import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
 import {HsDialogComponent} from 'hslayers-ng/common/dialogs';
 import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
 import {HsDialogItem} from 'hslayers-ng/common/dialogs';
 import {HsLanguageService} from 'hslayers-ng/shared/language';
-import {HsRemoveLayerDialogService} from './remove-layer-dialog.service';
-import {getTitle} from 'hslayers-ng/common/extensions';
+import {
+  HsRemoveLayerDialogService,
+  RemoveLayerWrapper,
+} from './remove-layer-dialog.service';
+import {getName, getTitle} from 'hslayers-ng/common/extensions';
 
 export type HsRmLayerDialogResponse = {
   value: 'yes' | 'no';
@@ -49,7 +51,7 @@ export class HsRmLayerDialogComponent implements HsDialogComponent, OnInit {
     title: string;
     message: string;
     note?: string;
-    items?: any[];
+    items?: RemoveLayerWrapper[];
   };
 
   ngOnInit(): void {
@@ -89,7 +91,7 @@ export class HsRmLayerDialogComponent implements HsDialogComponent, OnInit {
     } else {
       item.toRemove = true;
     }
-    this.deleteAllowed = this.data.items.find((i) => i.toRemove);
+    this.deleteAllowed = !!this.data.items.find((i) => i.toRemove);
   }
 
   toggleAll(): void {
@@ -97,11 +99,11 @@ export class HsRmLayerDialogComponent implements HsDialogComponent, OnInit {
     for (const item of this.data.items) {
       item.toRemove = this._selectAll;
     }
-    this.deleteAllowed = this.data.items.find((i) => i.toRemove);
+    this.deleteAllowed = !!this.data.items.find((i) => i.toRemove);
   }
 
-  getTitle(item): string {
-    let title = item instanceof Layer ? getTitle(item) : item.name;
+  getTitle(item: RemoveLayerWrapper): string {
+    let title = getTitle(item.layer) ?? getName(item.layer);
     if (!title) {
       title = this.hsLanguageService.getTranslation(
         'COMMON.unknown',
