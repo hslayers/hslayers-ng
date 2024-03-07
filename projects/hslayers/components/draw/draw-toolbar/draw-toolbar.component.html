@@ -9,7 +9,7 @@
         <div class="btn-group" ngbDropdown placement="bottom-left" display="dynamic">
             <button type="button" ngbDropdownToggle
                 class="btn btn-light rounded-0 btn-secondary dropdown-toggle hs-draw-layer-toggle d-flex align-items-center"
-                [hidden]="!(HsDrawService.hasSomeDrawables || HsDrawService.tmpDrawLayer)"
+                [hidden]="!(HsDrawService.drawableLayersAvailable || HsDrawService.tmpDrawLayer)"
                 (click)="controlLayerListAction(); HsDrawService.fillDrawableLayers() "
                 style="max-width: 125px; overflow: hidden; font-size: 0.9rem; z-index: 2;"
                 [ngClass]="HsDrawService.tmpDrawLayer ? 'btn-outline-danger' : 'btn-outline-primary'">
@@ -24,8 +24,7 @@
                         (click)="selectLayer(layer)">{{getTitle(layer) | translateHs : {module: 'LAYERS'}
                         }}</a>
                 </div>
-                <div class="d-flex align-items-center w-100 flex-column"
-                    *ngIf="HsDrawService.drawableLaymanLayers.length > 0">
+                <div class="d-flex align-items-center w-100 flex-column" *ngIf="HsDrawService.hasSomeDrawables">
                     <div class=" bg-primary w-100 text-light m-0 p-1">
                         <div class="d-flex justify-content-between">
                             {{'DRAW.serverLayers' | translateHs }}
@@ -58,7 +57,7 @@
             [title]="'DRAW.saveDrawingToLayer' | translateHs ">
             <i class="glyphicon icon-save-floppy"></i>
         </button>
-        <ng-container *ngIf="HsDrawService.hasSomeDrawables">
+        <ng-container *ngIf="HsDrawService.drawableLayers.length > 0">
             <ng-container *ngIf="HsDrawService.moreThenOneDrawable === true; else deleteButton">
                 <div class="btn-group">
                     <div ngbDropdown placement="bottom-right" display="dynamic" style="white-space: nowrap;"
