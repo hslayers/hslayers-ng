@@ -18,15 +18,15 @@
             <p class="m-0 text-danger">{{'DRAW.noSuitableLayer' | translateHs }}</p>
         </ng-template>
 
-        <div *ngIf="HsDrawService.hasSomeDrawables || HsDrawService.tmpDrawLayer; else noLayerAvailable"
+        <div *ngIf="HsDrawService.drawableLayersAvailable || HsDrawService.tmpDrawLayer; else noLayerAvailable"
             class="flex-row w-100 m-auto justify-content-center align-items-center text-primary py-3 py-md-0"
             style="display: flex;">
             <p class="m-0 p-0">{{'DRAW.drawingTo' | translateHs }}</p>
             <div ngbDropdown style="max-width: 50%;" placement="bottom">
                 <button type="button" class="btn btn-sm rounded-0 hs-toolbar-button d-flex align-items-center mw-100"
                     ngbDropdownToggle (click)="HsDrawService.fillDrawableLayers()"
-                    [ngClass]="{'btn-light btn-outline-danger border-0' : HsDrawService.tmpDrawLayer,'dropdown-toggle' : HsDrawService.hasSomeDrawables }"
-                    [disabled]="!HsDrawService.hasSomeDrawables">
+                    [ngClass]="{'btn-light btn-outline-danger border-0' : HsDrawService.tmpDrawLayer,'dropdown-toggle' : HsDrawService.drawableLayersAvailable }"
+                    [disabled]="!HsDrawService.drawableLayersAvailable">
                     <div class="text-truncate">{{HsDrawService.selectedLayerString()}}</div>
                 </button>
                 <div ngbDropdownMenu style="max-width: 15em;">
@@ -73,7 +73,7 @@
                     <div ngbDropdown placement="bottom-right" display="dynamic" style="white-space: nowrap;"
                         #removeLayersDropdown="ngbDropdown">
                         <button type="button" ngbDropdownToggle class="btn btn-light  btn-outline-danger btn-sm"
-                            [disabled]="!HsDrawService.hasSomeDrawables" style="border: none !important;">
+                            [disabled]="!HsDrawService.drawableLayersAvailable" style="border: none !important;">
                             <i class="glyphicon icon-trash"></i>
                         </button>
                         <div ngbDropdownMenu class="flex-column px-1 py-2">

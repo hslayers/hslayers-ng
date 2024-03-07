@@ -15,6 +15,12 @@ import {
 import {HsToastService} from 'hslayers-ng/common/toast';
 import {getDefinition, getTitle} from 'hslayers-ng/common/extensions';
 
+export type RemoveLayerWrapper = {
+  layer: Layer<Source>;
+  toRemove: boolean;
+  displayTitle: string;
+};
+
 @Injectable({
   providedIn: 'root',
 })
@@ -29,6 +35,17 @@ export class HsRemoveLayerDialogService {
   ) {}
 
   /**
+   * Create a remove layer wrapper
+   */
+  wrapLayer(layer: Layer<Source>): RemoveLayerWrapper {
+    return {
+      layer,
+      toRemove: false,
+      displayTitle: undefined,
+    };
+  }
+
+  /**
    * Removes selected drawing layer from both Layermanager and Layman
    * @param layer Layer to be deleted - use when trying to delete layer other than hsDrawService.selectedLayer
    */
@@ -40,7 +57,9 @@ export class HsRemoveLayerDialogService {
         message: 'DRAW.reallyDeleteThisLayer',
         note: this.getDeleteNote(),
         title: 'COMMON.confirmDelete',
-        items: layer ? [layer] : [this.hsDrawService.selectedLayer],
+        items: layer
+          ? [this.wrapLayer(layer)]
+          : [this.wrapLayer(this.hsDrawService.selectedLayer)],
       },
     );
     const confirmed: HsRmLayerDialogResponse = await dialog.waitResult();
@@ -58,11 +77,10 @@ export class HsRemoveLayerDialogService {
   /**
    * Removes multiple selected layers from both Layermanager and Layman
    */
-  async removeMultipleLayers(items?: Layer<Source>[]): Promise<void> {
-    items ??= [
-      ...(this.hsDrawService.drawableLayers ?? []),
-      ...(this.hsDrawService.drawableLaymanLayers ?? []),
-    ];
+  async removeMultipleLayers(layers?: Layer<Source>[]): Promise<void> {
+    const layersToRemove = layers ?? this.hsDrawService.drawableLayers ?? [];
+    const items = layersToRemove.map((l) => this.wrapLayer(l));
+
     const dialog = this.hsDialogContainerService.create(
       HsRmLayerDialogComponent,
       {
@@ -85,30 +103,16 @@ export class HsRemoveLayerDialogService {
           customDelay: 600000,
         },
       );
-      const drawableLaymanRm = this.hsDrawService.drawableLaymanLayers.filter(
-        (l) => l.toRemove,
-      );
 
-      const drawableRm = (
-        items as (Layer<Source> & {toRemove: boolean})[]
-      ).filter((l) => l.toRemove);
+      const drawablesToRemove = items.filter((l) => l.toRemove);
 
       const fromMapOnly = confirmed.type === 'map';
-      if (
-        drawableLaymanRm?.length ==
-          this.hsDrawService.drawableLaymanLayers?.length &&
-        this.hsDrawService.drawableLaymanLayers?.length != 0 &&
-        !fromMapOnly
-      ) {
-        await this.hsLaymanService.removeLayer();
-        for (const l of drawableRm) {
-          await this.completeLayerRemoval(l, fromMapOnly);
-        }
-      } else {
-        const toRemove = [...drawableRm, ...drawableLaymanRm];
-        for (const l of toRemove) {
-          await this.completeLayerRemoval(l, fromMapOnly);
-        }
+      /**
+       * Remove checked layers, may be either - from layman and/or map
+       */
+      //}
+      for (const l of drawablesToRemove) {
+        await this.completeLayerRemoval(l.layer, fromMapOnly);
       }
       this.hsToastService.removeByText(
         this.hsLanguageService.getTranslation(
@@ -121,27 +125,26 @@ export class HsRemoveLayerDialogService {
     }
   }
 
+  /**
+   * Remove layer from map and layman if desirable and possible
+   */
   private async completeLayerRemoval(
-    layerToRemove: any,
+    layerToRemove: Layer<Source>,
     fromMapOnly: boolean,
   ): Promise<void> {
-    let definition;
-    const isLayer = layerToRemove instanceof Layer;
-    if (isLayer) {
-      this.hsMapService.getMap().removeLayer(layerToRemove);
-      definition = getDefinition(layerToRemove);
-      if (getTitle(layerToRemove) == TMP_LAYER_TITLE) {
-        this.hsDrawService.tmpDrawLayer = false;
-      }
-    }
+    const definition = getDefinition(layerToRemove);
     if (
-      (definition?.format?.toLowerCase().includes('wfs') &&
-        definition?.url &&
-        !fromMapOnly) ||
-      !isLayer
+      definition?.format?.toLowerCase().includes('wfs') &&
+      definition?.url &&
+      !fromMapOnly
     ) {
-      await this.hsLaymanService.removeLayer(layerToRemove.name);
+      await this.hsLaymanService.removeLayer(layerToRemove);
     }
+    if (getTitle(layerToRemove) == TMP_LAYER_TITLE) {
+      this.hsDrawService.tmpDrawLayer = false;
+    }
+
+    this.hsMapService.getMap().removeLayer(layerToRemove);
   }
 
   /**
