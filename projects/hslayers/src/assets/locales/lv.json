@@ -634,7 +634,10 @@
   "LAYERS": {
     "existingLayer": "Eksistējošs slānis",
     "newLayer": "Jauns slānis",
-    "featuresLoadError": "Grafisko objektu ielāde neizdevās"
+    "featuresLoadError": "Grafisko objektu ielāde neizdevās",
+    "removeLayer": {
+      "mapcatalogue": "Map & Catalogue"
+    }
   },
   "LAYMAN": {
     "allLayersSuccessfullyRemoved": "Visi slāņi veiksmīgi noņemti",

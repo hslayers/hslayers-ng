@@ -25,15 +25,15 @@
       "hslayers-cesium": ["dist/hslayers-cesium"],
       "hslayers-cesium/*": [
         "projects/hslayers-cesium/*",
-        "projects/hslayers-cesium"
+        "projects/hslayers-cesium",
       ],
-      "cesium/*": ["node_modules/cesium/*"]
+      "cesium/*": ["node_modules/cesium/*"],
     },
-    "useDefineForClassFields": false
+    "useDefineForClassFields": false,
   },
   "angularCompilerOptions": {
     "enableResourceInlining": true,
     "fullTemplateTypeCheck": true,
-    "strictInjectionParameters": true
-  }
+    "strictInjectionParameters": true,
+  },
 }

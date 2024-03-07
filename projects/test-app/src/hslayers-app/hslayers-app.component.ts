@@ -341,7 +341,7 @@ export class HslayersAppComponent {
     });
     this.hsConfig.update({
       panelsEnabled: {
-        draw: false,
+        draw: true,
         mapSwipe: true,
         language: true,
       },

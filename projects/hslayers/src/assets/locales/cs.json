@@ -580,7 +580,8 @@
     "dialogRemoveAll": {
       "dialogMessage": "Opravdu chcete odstranit všechny vámi přidané vrstvy?",
       "reloadComposition": "Obnovit kompozici",
-      "removeAllAdded": "Odstranit všechny přidané vrstvy"
+      "removeAllAdded": "Odstranit všechny přidané vrstvy",
+      "removeAllCatalogueLayers": "Odstranit všechny vaše vrstvy z katalogu"
     },
     "dialogRemoveLayer": {
       "dialogMessage": "Opravdu chcete odstranit vybranou vrstvu?"
@@ -667,8 +668,10 @@
     "newLayer": "Nová vrstva",
     "removeLayer": {
       "map": "Mapy",
-      "catalogue": "Mapy a Katalogu",
-      "deleteFrom": "Smazat z"
+      "catalogue": "Katalogu",
+      "deleteFrom": "Smazat z",
+      "mapcatalogue": "Mapy a Katalogu",
+      "noLayersToDelete": "Žádné vrstvy k odstranění"
     }
   },
   "LAYMAN": {

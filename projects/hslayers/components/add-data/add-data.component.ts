@@ -1,17 +1,21 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {Subject, takeUntil} from 'rxjs';
+import {Observable, Subject, of, switchMap, takeUntil} from 'rxjs';
 
 import {AddDataUrlType} from 'hslayers-ng/types';
 import {DatasetType} from 'hslayers-ng/types';
-import {HsAddDataService} from 'hslayers-ng/shared/add-data';
+import {
+  HsAddDataCatalogueService,
+  HsAddDataService,
+} from 'hslayers-ng/shared/add-data';
 import {HsAddDataUrlService} from 'hslayers-ng/shared/add-data';
+import {HsConfirmDialogComponent} from 'hslayers-ng/common/confirm';
 import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
-import {HsEventBusService} from 'hslayers-ng/shared/event-bus';
 import {HsGetCapabilitiesErrorComponent} from './common/capabilities-error-dialog/capabilities-error-dialog.component';
+import {HsLaymanService} from 'hslayers-ng/shared/save-map';
 import {HsLayoutService} from 'hslayers-ng/shared/layout';
 import {HsPanelBaseComponent} from 'hslayers-ng/common/panels';
+import {HsRemoveLayerDialogService} from 'hslayers-ng/common/remove-multiple';
 import {HsShareUrlService} from 'hslayers-ng/components/share';
-import {HsSidebarService} from 'hslayers-ng/shared/sidebar';
 import {servicesSupportedByUrl} from 'hslayers-ng/types';
 
 @Component({
@@ -23,16 +27,24 @@ export class HsAddDataComponent
   implements OnInit, OnDestroy {
   private end = new Subject<void>();
 
+  layersAvailable: Observable<boolean>;
   constructor(
     public hsAddDataService: HsAddDataService,
     public hsShareUrlService: HsShareUrlService,
     public hsLayoutService: HsLayoutService,
-    public hsEventBusService: HsEventBusService,
     public hsAddDataUrlService: HsAddDataUrlService,
-    private hsSidebarService: HsSidebarService,
     private hsDialogContainerService: HsDialogContainerService,
+    public hsAddDataCatalogueService: HsAddDataCatalogueService,
+    private hsRemoveLayerDialogService: HsRemoveLayerDialogService,
+    private hsLaymanService: HsLaymanService,
   ) {
     super(hsLayoutService);
+    this.layersAvailable =
+      this.hsAddDataCatalogueService.addDataCatalogueReloaded.pipe(
+        switchMap(() => {
+          return of(this.hsAddDataCatalogueService.catalogEntries.length > 0);
+        }),
+      );
   }
   name = 'addData';
 
@@ -76,6 +88,43 @@ export class HsAddDataComponent
       this.hsLayoutService.setMainPanel('addData');
       this.selectDatasetType('url');
       this.hsAddDataUrlService.typeSelected = type;
+    }
+  }
+
+  /**
+   * Create remove-layer dialog which allows for single/multiple layer removal
+   */
+  async removeMultipleLayers() {
+    const confirmed =
+      await this.hsRemoveLayerDialogService.removeMultipleLayers(
+        this.hsAddDataCatalogueService.catalogEntries
+          .filter((layer) => layer.editable)
+          .map((l) => {
+            return l.name;
+          }),
+        ['catalogue'],
+      );
+    if (confirmed) {
+      this.hsAddDataCatalogueService.reloadData();
+    }
+  }
+
+  /**
+   * Remove all user's layers from Layman catalogue
+   */
+  async removeAllLayers() {
+    const dialog = this.hsDialogContainerService.create(
+      HsConfirmDialogComponent,
+      {
+        message: 'LAYERMANAGER.dialogRemoveAll.dialogMessage',
+        note: 'DRAW.deleteNotePlural',
+        title: 'LAYERMANAGER.dialogRemoveAll.removeAllCatalogueLayers',
+      },
+    );
+    const confirmed = await dialog.waitResult();
+    if (confirmed === 'yes') {
+      await this.hsLaymanService.removeLayer();
+      this.hsAddDataCatalogueService.reloadData();
     }
   }
 }
