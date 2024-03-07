@@ -29,6 +29,7 @@ import {HsLogService} from 'hslayers-ng/shared/log';
 import {HsMapService} from 'hslayers-ng/shared/map';
 import {HsQueryBaseService} from 'hslayers-ng/shared/query';
 import {HsQueryVectorService} from 'hslayers-ng/shared/query';
+import {HsRemoveLayerDialogService} from 'hslayers-ng/common/remove-multiple';
 import {HsToastService} from 'hslayers-ng/common/toast';
 import {HsUtilsService} from 'hslayers-ng/shared/utils';
 import {defaultStyle} from 'hslayers-ng/shared/styler';
@@ -80,6 +81,7 @@ export class HsDrawService extends HsDrawServiceParams {
     public hsCommonLaymanService: HsCommonLaymanService,
     public hsToastService: HsToastService,
     public hsAddDataOwsService: HsAddDataOwsService,
+    private hsRemoveLayerDialogService: HsRemoveLayerDialogService,
     private zone: NgZone,
   ) {
     super();
@@ -494,15 +496,12 @@ export class HsDrawService extends HsDrawServiceParams {
    * a list of available server possibilities.
    */
   async fillDrawableLayers(): Promise<void> {
-    let drawables = [];
     await this.hsMapService.loaded();
-    drawables = this.hsMapService
-      .getMap()
-      .getLayers()
-      .getArray()
+    const drawables = this.hsMapService
+      .getLayersArray()
       .filter((layer: Layer<Source>) =>
         this.hsLayerUtilsService.isLayerDrawable(layer),
-      );
+      ) as VectorLayer<VectorSource>[];
 
     if (drawables.length == 0 && !this.tmpDrawLayer) {
       this.type = null;
@@ -830,5 +829,31 @@ export class HsDrawService extends HsDrawServiceParams {
         );
       }
     });
+  }
+
+  /**
+   * Remove draw layer/layers
+   */
+  async layerRemoval(multi: boolean = false) {
+    let confirmed;
+    const a: ['map', 'mapcatalogue'] | ['map'] = this.hsCommonLaymanService
+      .layman?.authenticated
+      ? ['map', 'mapcatalogue']
+      : ['map'];
+    if (multi) {
+      confirmed = await this.hsRemoveLayerDialogService.removeMultipleLayers(
+        this.drawableLayers,
+        a,
+      );
+    } else {
+      confirmed = await this.hsRemoveLayerDialogService.removeLayer(
+        this.selectedLayer,
+        a,
+      );
+    }
+    if (confirmed) {
+      this.selectedLayer = null;
+      this.fillDrawableLayers();
+    }
   }
 }

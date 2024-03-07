@@ -7,7 +7,6 @@ import {HsDrawService} from 'hslayers-ng/shared/draw';
 import {HsLanguageService} from 'hslayers-ng/shared/language';
 import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
 import {HsLayoutService} from 'hslayers-ng/shared/layout';
-import {HsRemoveLayerDialogService} from 'hslayers-ng/common/remove-multiple';
 import {getTitle} from 'hslayers-ng/common/extensions';
 
 @Component({
@@ -32,7 +31,6 @@ export class DrawPanelComponent implements OnDestroy {
     public HsLayerUtilsService: HsLayerUtilsService,
     public hsLayoutService: HsLayoutService,
     public HsLanguageService: HsLanguageService,
-    public HsRemoveLayerDialogService: HsRemoveLayerDialogService,
   ) {}
   ngOnDestroy(): void {
     this.end.next();

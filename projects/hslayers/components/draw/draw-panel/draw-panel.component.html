@@ -79,11 +79,11 @@
                         <div ngbDropdownMenu class="flex-column px-1 py-2">
                             <div class="d-flex align-items-center w-100 flex-column">
                                 <a class="dropdown-item" *ngIf="HsDrawService.selectedLayer"
-                                    (click)="HsRemoveLayerDialogService.removeLayer(); removeLayersDropdown.close()">{{'COMMON.removeLayer'
+                                    (click)="HsDrawService.layerRemoval(); removeLayersDropdown.close()">{{'COMMON.removeLayer'
                                     |
                                     translateHs }}</a>
                                 <a class="dropdown-item"
-                                    (click)="HsRemoveLayerDialogService.removeMultipleLayers(); removeLayersDropdown.close()">{{'DRAW.removeMultipleLayers'
+                                    (click)="HsDrawService.layerRemoval(true); removeLayersDropdown.close()">{{'DRAW.removeMultipleLayers'
                                     | translateHs }}</a>
                             </div>
                         </div>
@@ -91,7 +91,7 @@
                 </ng-container>
                 <ng-template #deleteButton>
                     <button type="button" class="btn btn-light  btn-outline-danger btn-sm"
-                        (click)="HsRemoveLayerDialogService.removeLayer()" [title]="'COMMON.removeLayer' | translateHs "
+                        (click)="HsDrawService.layerRemoval()" [title]="'COMMON.removeLayer' | translateHs "
                         style="border: none !important;">
                         <i class="glyphicon icon-trash"></i>
                     </button>

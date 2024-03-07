@@ -8,7 +8,7 @@ import {Vector as VectorLayer} from 'ol/layer';
 import {Vector as VectorSource} from 'ol/source';
 
 export class HsDrawServiceParams {
-  drawableLayers: Array<any> = [];
+  drawableLayers: Array<Layer<Source>> = [];
   /**
    * Drawable layers available on Layman not currently added to map
    */

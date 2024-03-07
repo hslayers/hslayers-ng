@@ -3,8 +3,8 @@ import {Injectable} from '@angular/core';
 import {Layer} from 'ol/layer';
 import {Source} from 'ol/source';
 
+import {HsCommonLaymanService} from '../layman';
 import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
-import {HsDrawService, TMP_LAYER_TITLE} from 'hslayers-ng/shared/draw';
 import {HsLanguageService} from 'hslayers-ng/shared/language';
 import {HsLaymanService} from 'hslayers-ng/shared/save-map';
 import {HsMapService} from 'hslayers-ng/shared/map';
@@ -14,7 +14,7 @@ import {
   HsRmLayerDialogeDeleteOptions,
 } from './remove-layer-dialog.component';
 import {HsToastService} from 'hslayers-ng/common/toast';
-import {getDefinition, getTitle} from 'hslayers-ng/common/extensions';
+import {getDefinition} from 'hslayers-ng/common/extensions';
 
 export type RemoveLayerWrapper = {
   layer: Layer<Source> | string;
@@ -30,8 +30,8 @@ export class HsRemoveLayerDialogService {
     private hsMapService: HsMapService,
     private hsToastService: HsToastService,
     private hsLanguageService: HsLanguageService,
-    private hsDrawService: HsDrawService,
     private hsLaymanService: HsLaymanService,
+    private hsCommonLaymanService: HsCommonLaymanService,
     private hsDialogContainerService: HsDialogContainerService,
   ) {}
 
@@ -52,9 +52,9 @@ export class HsRemoveLayerDialogService {
    * @param deleteFromOptions From where the layer should be deleted defaults to map, map&catalogue
    */
   async removeLayer(
-    layer?: Layer<Source>,
+    layer: Layer<Source>,
     deleteFromOptions?: HsRmLayerDialogeDeleteOptions[],
-  ): Promise<void> {
+  ): Promise<boolean> {
     const dialog = this.hsDialogContainerService.create(
       HsRmLayerDialogComponent,
       {
@@ -62,21 +62,15 @@ export class HsRemoveLayerDialogService {
         message: 'DRAW.reallyDeleteThisLayer',
         note: this.getDeleteNote(),
         title: 'COMMON.confirmDelete',
-        items: layer
-          ? [this.wrapLayer(layer)]
-          : [this.wrapLayer(this.hsDrawService.selectedLayer)],
+        items: [this.wrapLayer(layer)],
         deleteFromOptions,
       },
     );
     const confirmed: HsRmLayerDialogResponse = await dialog.waitResult();
     if (confirmed.value == 'yes') {
-      await this.completeLayerRemoval(
-        layer ?? this.hsDrawService.selectedLayer,
-        confirmed.type,
-      );
-      this.hsDrawService.selectedLayer = null;
-      this.hsDrawService.fillDrawableLayers();
+      await this.completeLayerRemoval(layer, confirmed.type);
     }
+    return confirmed.value == 'yes';
   }
 
   /**
@@ -102,10 +96,9 @@ export class HsRemoveLayerDialogService {
    * @param deleteFromOptions From where the layer should be deleted defaults to map, map&catalogue
    */
   async removeMultipleLayers(
-    layers: Layer<Source>[] | string[],
-    deleteFromOptions: HsRmLayerDialogeDeleteOptions[],
+    layersToRemove: Layer<Source>[] | string[],
+    deleteFromOptions?: HsRmLayerDialogeDeleteOptions[],
   ): Promise<boolean> {
-    const layersToRemove = layers ?? this.hsDrawService.drawableLayers ?? [];
     const items = layersToRemove.map((l) => this.wrapLayer(l));
 
     const dialog = this.hsDialogContainerService.create(
@@ -145,8 +138,6 @@ export class HsRemoveLayerDialogService {
           undefined,
         ),
       );
-      this.hsDrawService.selectedLayer = null;
-      this.hsDrawService.fillDrawableLayers();
     }
     return confirmed.value == 'yes';
   }
@@ -180,10 +171,6 @@ export class HsRemoveLayerDialogService {
       //Remove layer which is not in map from catalogue based on name
       await this.hsLaymanService.removeLayer(layerToRemove);
     }
-    const title = isLayer ? getTitle(layerToRemove) : layerToRemove;
-    if (title == TMP_LAYER_TITLE) {
-      this.hsDrawService.tmpDrawLayer = false;
-    }
   }
 
   /**
@@ -194,7 +181,7 @@ export class HsRemoveLayerDialogService {
   }
 
   getDeleteNote(plural?: boolean): string {
-    return this.hsDrawService.isAuthenticated
+    return this.hsCommonLaymanService.isAuthenticated()
       ? plural
         ? 'DRAW.deleteNotePlural'
         : 'DRAW.deleteNote'

@@ -31,7 +31,7 @@ export class HsCommonLaymanService {
   ) {}
 
   isAuthenticated() {
-    return this.layman.authenticated;
+    return this.layman?.authenticated;
   }
 
   /**

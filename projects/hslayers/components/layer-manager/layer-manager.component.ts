@@ -1,5 +1,4 @@
 import {
-  AfterViewInit,
   Component,
   ElementRef,
   OnDestroy,
@@ -11,11 +10,11 @@ import {Layer} from 'ol/layer';
 import {Source} from 'ol/source';
 import {Subject, takeUntil} from 'rxjs';
 
+import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsCoreService} from 'hslayers-ng/shared/core';
 import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
 import {HsEventBusService} from 'hslayers-ng/shared/event-bus';
-import {HsLanguageService} from 'hslayers-ng/shared/language';
 import {HsLayerDescriptor} from 'hslayers-ng/types';
 import {HsLayerListService} from './logical-list/layer-manager-layerlist.service';
 import {HsLayerManagerRemoveAllDialogComponent} from './dialogs/remove-all-dialog.component';
@@ -24,13 +23,9 @@ import {
   HsLayerManagerVisibilityService,
   HsLayerSelectorService,
 } from 'hslayers-ng/shared/layer-manager';
-import {HsLayerSynchronizerService} from 'hslayers-ng/shared/save-map';
-import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
 import {HsLayoutService} from 'hslayers-ng/shared/layout';
-import {HsMapService} from 'hslayers-ng/shared/map';
 import {HsPanelBaseComponent} from 'hslayers-ng/common/panels';
 import {HsRemoveLayerDialogService} from 'hslayers-ng/common/remove-multiple';
-import {HsSidebarService} from 'hslayers-ng/shared/sidebar';
 import {HsUtilsService} from 'hslayers-ng/shared/utils';
 import {
   getActive,
@@ -122,20 +117,16 @@ export class HsLayerManagerComponent
   constructor(
     public hsCore: HsCoreService,
     public hsUtilsService: HsUtilsService,
-    public hsLayerUtilsService: HsLayerUtilsService,
-    public hsMapService: HsMapService,
     public hsLayerManagerService: HsLayerManagerService,
     public hsLayoutService: HsLayoutService,
-    public hsLayerSynchronizerService: HsLayerSynchronizerService,
     public hsEventBusService: HsEventBusService,
     public hsDialogContainerService: HsDialogContainerService,
-    public hsLanguageService: HsLanguageService,
     public hsConfig: HsConfig,
     public hsLayerListService: HsLayerListService,
-    public hsSidebarService: HsSidebarService,
     private HsRemoveLayerDialogService: HsRemoveLayerDialogService,
     public hsLayerSelectorService: HsLayerSelectorService,
     public hsLayerManagerVisibilityService: HsLayerManagerVisibilityService,
+    private hsCommonLaymanService: HsCommonLaymanService,
   ) {
     super(hsLayoutService);
     this.hsEventBusService.layerRemovals
@@ -261,7 +252,9 @@ export class HsLayerManagerComponent
         .map((l) => {
           return l.layer;
         }),
-      ['map', 'mapcatalogue'],
+      this.hsCommonLaymanService.layman?.authenticated
+        ? ['map', 'mapcatalogue']
+        : ['map'],
     );
   }
 
@@ -306,13 +299,5 @@ export class HsLayerManagerComponent
     return this.hsLayerManagerVisibilityService.isLayerInResolutionInterval(
       layer,
     );
-  }
-
-  /**
-   * Test if selected layer is loaded in map
-   * @param layer - Selected layer
-   */
-  layerLoaded(layer: HsLayerDescriptor): boolean {
-    return this.hsLayerUtilsService.layerLoaded(layer);
   }
 }
