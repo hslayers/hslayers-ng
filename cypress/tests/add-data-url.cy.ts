@@ -9,14 +9,17 @@ function checkIfLayerAdded(layerName) {
   );
 }
 
-function addLayerAndCheckIfAdded() {
+function addLayerAndCheckIfAdded(wms = false) {
   cy.wait(2000);
   cy.get('hs-layer-table table tr').should('have.length.above', 0);
 
   //it('Layer should be added', () => {
   cy.get('hs-layer-table table tr:first input[type="checkbox"]').click();
   cy.get('hs-layer-table table tr:first td:nth-child(2n) span').then(($td) => {
-    const layerName = $td.html();
+    const layerName = wms ? 'Test WMS layer name' : $td.html();
+    if (wms) {
+      cy.get('input[name="baseTitle"]').clear().type(layerName);
+    }
     cy.get('button[title="Add selected layers to the map"').click();
     checkIfLayerAdded(layerName);
   });
@@ -53,7 +56,7 @@ describe('Hslayers application', () => {
       'https://watlas.lesprojekt.cz/geoserver/filip_wms/ows',
     );
     cy.get(`hs-url-wms hs-common-url input + button`).click();
-    addLayerAndCheckIfAdded();
+    addLayerAndCheckIfAdded(true);
   });
 
   it('WMTS layer should be visible on map', () => {
