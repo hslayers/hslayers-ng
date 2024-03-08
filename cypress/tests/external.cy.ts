@@ -13,9 +13,9 @@ describe('Hslayers application', () => {
     }
   });
 
-  it('Should open info panel', () => {
+  it('Should open query panel', () => {
     cy.get('#poly1').click();
-    cy.get(`hs-panel-header[name="info"]`).should('be.visible');
+    cy.get(`hs-panel-header[name="query"]`).should('be.visible');
   });
 
   it('Should open popup', () => {
