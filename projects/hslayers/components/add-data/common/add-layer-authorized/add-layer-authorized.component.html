@@ -4,16 +4,12 @@
   <hs-add-to-map *ngIf="hsAddDataCommonFileService.isAuthenticated(); else login" [disabled]="!canAdd()" (add)="add()"
     [loading]="hsAddDataCommonFileService.loadingToLayman">
     <span
-      *ngIf="hsAddDataCommonFileService.loadingToLayman && hsAddDataCommonFileService.asyncLoading">&emsp;{{'COMMON.uploading'
-      |
-      translateHs }}</span>
-    <span
       *ngIf="hsAddDataCommonFileService.loadingToLayman && hsAddDataCommonFileService.readingData">&emsp;{{'COMMON.reading'
       |
       translateHs }}</span>
     <ngb-progressbar
       *ngIf="hsAddDataCommonFileService.loadingToLayman && (hsAddDataCommonFileService.asyncLoading || hsAddDataCommonFileService.readingData)"
-      showValue="true" class="rounded-0 mb-1" type="secondary" [max]="1" [value]="hsLaymanService.totalProgress">
+      [showValue]="true" class="rounded-0 mb-1" type="secondary" [max]="1" [value]="hsLaymanService.totalProgress">
     </ngb-progressbar>
   </hs-add-to-map>
 </div>
