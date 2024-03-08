@@ -48,18 +48,18 @@ li.hs-dr-item {
     word-wrap: break-word;
     border: 0;
     padding: 0.1em;
-    padding-top: 0.4em;
+    //padding-top: 0.4em;
     padding-left: 0.2em;
     /*border-bottom: 0;*/
+}
+
+.hs-lm-item>div {
+    align-items: center;
 }
 
 div ul.hs-lm-baselayerlist .hs-lm-item-title,
 div.hs-lm-item-title.hover {
     cursor: pointer;
-}
-
-.hs-layermanager-card .hs-lm-item-visibility {
-    margin-top: -0.42em;
 }
 
 div ul.hs-lm-baselayerlist .hs-lm-item-title:hover,
