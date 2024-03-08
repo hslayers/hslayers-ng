@@ -3,7 +3,7 @@ import {Injectable} from '@angular/core';
 import {Layer} from 'ol/layer';
 import {Source} from 'ol/source';
 
-import {HsCommonLaymanService} from '../layman';
+import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
 import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
 import {HsLanguageService} from 'hslayers-ng/shared/language';
 import {HsLaymanService} from 'hslayers-ng/shared/save-map';
