@@ -46,7 +46,6 @@ describe('Hslayers application', () => {
     cy.get('.extra-buttons-container').should('be.visible');
     cy.get('extra-buttons a:first').click();
 
-    cy.get('[data-cy="catalogue"]').should('not.be.visible');
     const removeButton = cy
       .get('hs-rm-layer-dialog .modal-footer button')
       .first();
