@@ -64,7 +64,8 @@ export class HslayersComponent implements AfterViewInit, OnInit, OnDestroy {
       this.hsConfig.setAppId(this.id);
     }
 
-    this.HsLayoutService.layoutElement = this.elementRef.nativeElement;
+    this.HsLayoutService.layoutElement =
+      this.elementRef.nativeElement.querySelector('.hs-layout');
 
     this.HsLayoutService.contentWrapper =
       this.elementRef.nativeElement.querySelector('.hs-content-wrapper');
