@@ -668,7 +668,7 @@
     "newLayer": "New layer",
     "removeLayer": {
       "map": "Map",
-      "catalogue": "Catalogue",
+      "catalogue": "Catalogue + Map (if possible)",
       "deleteFrom": "Delete from",
       "mapcatalogue": "Map & Catalogue",
       "noLayersToDelete": "No layers to delete"

@@ -9,16 +9,11 @@ import {
 } from 'hslayers-ng/types';
 import {HsCatalogueMetadataComponent} from '../catalogue-metadata/catalogue-metadata.component';
 import {HsCatalogueMetadataService} from '../catalogue-metadata/catalogue-metadata.service';
-import {HsCommonEndpointsService} from 'hslayers-ng/shared/endpoints';
-import {HsConfig} from 'hslayers-ng/config';
-import {HsConfirmDialogComponent} from 'hslayers-ng/common/confirm';
 import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
-import {HsLanguageService} from 'hslayers-ng/shared/language';
 import {HsLaymanBrowserService} from 'hslayers-ng/shared/add-data';
 import {HsLaymanService} from 'hslayers-ng/shared/save-map';
-import {HsLogService} from 'hslayers-ng/shared/log';
+import {HsRemoveLayerDialogService} from 'hslayers-ng/common/remove-multiple';
 import {HsSetPermissionsDialogComponent} from 'hslayers-ng/common/dialog-set-permissions';
-import {HsUtilsService} from 'hslayers-ng/shared/utils';
 
 @Component({
   selector: 'hs-catalogue-list-item',
@@ -46,16 +41,12 @@ export class HsCatalogueListItemComponent implements OnInit {
   //** Layers wfsWmsStatus is AVAILABLE  */
   layerAvailable: boolean;
   constructor(
-    public hsConfig: HsConfig, //used in template
-    public hsDatasourcesMetadataService: HsCatalogueMetadataService,
+    private hsDatasourcesMetadataService: HsCatalogueMetadataService,
     public hsAddDataCatalogueService: HsAddDataCatalogueService,
-    public hsDialogContainerService: HsDialogContainerService,
-    public hsLaymanBrowserService: HsLaymanBrowserService,
-    public hsLogService: HsLogService,
-    public hsLanguageService: HsLanguageService,
-    public hsLaymanService: HsLaymanService,
-    public hsUtilsService: HsUtilsService,
-    public hsCommonEndpointsService: HsCommonEndpointsService,
+    private hsDialogContainerService: HsDialogContainerService,
+    private hsLaymanBrowserService: HsLaymanBrowserService,
+    private hsLaymanService: HsLaymanService,
+    private hsRemoveLayerDialogService: HsRemoveLayerDialogService,
   ) {}
 
   ngOnInit() {
@@ -149,20 +140,6 @@ export class HsCatalogueListItemComponent implements OnInit {
     );
   }
 
-  /**
-   * Translate string value to the selected UI language
-   * @param module - Locales json key
-   * @param text - Locales json key value
-   * @returns Translated text
-   */
-  translateString(module: string, text: string): string {
-    return this.hsLanguageService.getTranslationIgnoreNonExisting(
-      module,
-      text,
-      undefined,
-    );
-  }
-
   toggleExplanations(): void {
     this.explanationsVisible = !this.explanationsVisible;
   }
@@ -229,23 +206,16 @@ export class HsCatalogueListItemComponent implements OnInit {
     if (!layer.editable) {
       return;
     }
-    const dialog = this.hsDialogContainerService.create(
-      HsConfirmDialogComponent,
-      {
-        message: 'DRAW.reallyDeleteThisLayer',
-        note: 'DRAW.deleteNote',
-        title: 'COMMON.confirmDelete',
-      },
+
+    const confirmed = await this.hsRemoveLayerDialogService.removeLayer(
+      layer.name,
+      ['catalogue'],
     );
-    const confirmed = await dialog.waitResult();
-    if (confirmed == 'yes') {
-      const success = await this.hsLaymanService.removeLayer(layer.name);
-      if (success) {
-        this.hsAddDataCatalogueService.catalogEntries =
-          this.hsAddDataCatalogueService.catalogEntries.filter((item) => {
-            return item.id != layer.id;
-          });
-      }
+    if (confirmed) {
+      this.hsAddDataCatalogueService.catalogEntries =
+        this.hsAddDataCatalogueService.catalogEntries.filter((item) => {
+          return item.id != layer.id;
+        });
     }
   }
 }
