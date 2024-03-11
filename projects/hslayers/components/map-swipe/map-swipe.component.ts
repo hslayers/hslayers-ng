@@ -14,7 +14,6 @@ import {
 import {HsLayoutService} from 'hslayers-ng/shared/layout';
 import {HsMapSwipeService, SwipeSide} from './map-swipe.service';
 import {HsPanelBaseComponent} from 'hslayers-ng/common/panels';
-import {HsSidebarService} from 'hslayers-ng/shared/sidebar';
 
 @Component({
   selector: 'hs-map-swipe',
@@ -34,7 +33,6 @@ export class HsMapSwipeComponent
   };
   constructor(
     public hsLayoutService: HsLayoutService,
-    private hsSidebarService: HsSidebarService,
     public hsMapSwipeService: HsMapSwipeService,
     private hsLayerShiftingService: HsLayerShiftingService,
   ) {

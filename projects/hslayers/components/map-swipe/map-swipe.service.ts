@@ -1,9 +1,9 @@
 import {Injectable, NgZone} from '@angular/core';
-import {first} from 'rxjs';
+import {buffer, filter, first, map} from 'rxjs';
 
 import {Layer} from 'ol/layer';
-import {Map} from 'ol';
 import {Source} from 'ol/source';
+import {Map as olMap} from 'ol';
 
 import {HsConfig} from 'hslayers-ng/config';
 import {HsEventBusService} from 'hslayers-ng/shared/event-bus';
@@ -17,7 +17,6 @@ import {HsLayoutService} from 'hslayers-ng/shared/layout';
 import {HsLogService} from 'hslayers-ng/shared/log';
 import {HsMapService} from 'hslayers-ng/shared/map';
 import {HsShareUrlService} from 'hslayers-ng/components/share';
-import {HsToastService} from 'hslayers-ng/common/toast';
 import {SwipeControl} from './swipe-control/swipe.control';
 import {
   getQueryFilter,
@@ -45,14 +44,13 @@ export class HsMapSwipeService {
   orientation: 'vertical' | 'horizontal';
   orientationVertical = true;
   constructor(
-    public hsMapService: HsMapService,
-    public hsConfig: HsConfig,
-    public hsToastService: HsToastService,
-    public hsLayerShiftingService: HsLayerShiftingService,
-    public hsEventBusService: HsEventBusService,
-    public hsLayerManagerService: HsLayerManagerService,
-    public hsShareUrlService: HsShareUrlService,
-    public hsLayoutService: HsLayoutService,
+    private hsMapService: HsMapService,
+    private hsConfig: HsConfig,
+    private hsLayerShiftingService: HsLayerShiftingService,
+    private hsEventBusService: HsEventBusService,
+    private hsLayerManagerService: HsLayerManagerService,
+    private hsShareUrlService: HsShareUrlService,
+    private hsLayoutService: HsLayoutService,
     private hsLayerEditorService: HsLayerEditorService,
     private hsLog: HsLogService,
     private zone: NgZone,
@@ -79,15 +77,20 @@ export class HsMapSwipeService {
         this.setInitialSwipeLayers();
       }
     });
-    /**
-     * FIXME: THIS SEEMS SKETCHY
-     * Doesnt seem probable this ever goes through
-     */
-    this.hsEventBusService.layerManagerUpdates.subscribe((layer) => {
-      if (this.hsLayoutService.panelEnabled('mapSwipe')) {
-        this.fillSwipeLayers(layer);
-      }
-    });
+
+    this.hsEventBusService.layerManagerUpdates
+      .pipe(
+        //Buffer layerManagerUpdates until mapSwipe panel is opened
+        buffer(
+          this.hsLayoutService.mainpanel$.pipe(filter((p) => p === 'mapSwipe')),
+        ),
+        //Do not accept empty array
+        filter((layers) => layers.length > 0),
+        map((layers) => this.removeDuplicateUpdates(layers as Layer<Source>[])),
+      )
+      .subscribe((filteredLayers) => {
+        this.fillSwipeLayers(filteredLayers);
+      });
 
     this.hsLayerEditorService.layerTitleChange.subscribe(({layer}) => {
       setTimeout(() => {
@@ -95,6 +98,17 @@ export class HsMapSwipeService {
         this.fillSwipeLayers(layer);
       }, 500);
     });
+  }
+
+  /**
+   * Remove duplicate layerManagerUpdates to get one update per layer
+   */
+  private removeDuplicateUpdates(layers: Layer<Source>[]): Layer<Source>[] {
+    const unique = new Map();
+    layers
+      .filter((l) => !!l)
+      .forEach((layer) => unique.set(layer['ol_uid'], layer));
+    return Array.from(unique.values());
   }
 
   /**
@@ -199,25 +213,28 @@ export class HsMapSwipeService {
 
   /**
    * Fill swipe control layers
-   * @param layer - layer issued from layerManagerUpdates event
+   * @param layer - layer or array of layers issued from layerManagerUpdates event
    */
-  fillSwipeLayers(layer: Layer<Source> | void): void {
+  fillSwipeLayers(input: Layer<Source> | Layer<Source>[] | void): void {
     this.hsLayerShiftingService.fillLayers();
-    if (!layer) {
+    if (!input) {
       return;
     }
-    const layerFound = this.hsLayerShiftingService.layersCopy.find(
-      (wrapper) => wrapper.layer == layer,
-    );
-    if (layerFound !== undefined) {
-      this.setLayerActive(layerFound);
-      this.wasMoved
-        ? this.moveSwipeLayer(layerFound)
-        : this.addSwipeLayer(layerFound);
-      this.checkForMissingLayers();
-    } else {
-      this.removeCompletely(layer);
-    }
+    const layers = Array.isArray(input) ? input : [input];
+    layers.forEach((l) => {
+      const layerFound = this.hsLayerShiftingService.layersCopy.find(
+        (wrapper) => wrapper.layer == l,
+      );
+      if (layerFound !== undefined) {
+        this.setLayerActive(layerFound);
+        this.wasMoved
+          ? this.moveSwipeLayer(layerFound)
+          : this.addSwipeLayer(layerFound);
+        this.checkForMissingLayers();
+      } else {
+        this.removeCompletely(l);
+      }
+    });
     this.sortLayers();
     this.wasMoved = false;
     this.movingSide = SwipeSide.Left;
@@ -258,7 +275,7 @@ export class HsMapSwipeService {
    */
   createQueryFilter(layerItem: LayerListItem): void {
     const existingFilter = getQueryFilter(layerItem.layer);
-    const filter = (map: Map, layer: Layer, pixel: number[]) => {
+    const filter = (map: olMap, layer: Layer, pixel: number[]) => {
       let swipeFilter: boolean;
       const swipeSide: 'left' | 'right' = getSwipeSide(layer);
       if (!this.swipeControlActive || !swipeSide) {
