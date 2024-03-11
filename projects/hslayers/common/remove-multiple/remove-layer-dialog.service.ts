@@ -14,7 +14,7 @@ import {
   HsRmLayerDialogeDeleteOptions,
 } from './remove-layer-dialog.component';
 import {HsToastService} from 'hslayers-ng/common/toast';
-import {getDefinition} from 'hslayers-ng/common/extensions';
+import {getDefinition, getName} from 'hslayers-ng/common/extensions';
 
 export type RemoveLayerWrapper = {
   layer: Layer<Source> | string;
@@ -38,7 +38,7 @@ export class HsRemoveLayerDialogService {
   /**
    * Create a remove layer wrapper
    */
-  wrapLayer(layer: Layer<Source>): RemoveLayerWrapper {
+  wrapLayer(layer: Layer<Source> | string): RemoveLayerWrapper {
     return {
       layer,
       toRemove: false,
@@ -52,7 +52,7 @@ export class HsRemoveLayerDialogService {
    * @param deleteFromOptions From where the layer should be deleted defaults to map, map&catalogue
    */
   async removeLayer(
-    layer: Layer<Source>,
+    layer: Layer<Source> | string,
     deleteFromOptions?: HsRmLayerDialogeDeleteOptions[],
   ): Promise<boolean> {
     const dialog = this.hsDialogContainerService.create(
@@ -68,7 +68,10 @@ export class HsRemoveLayerDialogService {
     );
     const confirmed: HsRmLayerDialogResponse = await dialog.waitResult();
     if (confirmed.value == 'yes') {
-      await this.completeLayerRemoval(layer, confirmed.type);
+      const mapLayers = confirmed.type.includes('catalogue')
+        ? this.hsMapService.getLayersArray()
+        : undefined;
+      await this.completeLayerRemoval(layer, confirmed.type, mapLayers);
     }
     return confirmed.value == 'yes';
   }
@@ -128,9 +131,11 @@ export class HsRemoveLayerDialogService {
       /**
        * Remove checked layers, may be either - from layman and/or map
        */
-      //}
+      const mapLayers = confirmed.type.includes('catalogue')
+        ? this.hsMapService.getLayersArray()
+        : undefined;
       for (const l of drawablesToRemove) {
-        await this.completeLayerRemoval(l.layer, confirmed.type);
+        await this.completeLayerRemoval(l.layer, confirmed.type, mapLayers);
       }
       this.hsToastService.removeByText(
         this.hsLanguageService.getTranslation(
@@ -148,12 +153,25 @@ export class HsRemoveLayerDialogService {
   private async completeLayerRemoval(
     layerToRemove: Layer<Source> | string,
     deleteFrom: HsRmLayerDialogeDeleteOptions,
+    mapLayers?: Layer<Source>[],
   ): Promise<void> {
     if (deleteFrom !== 'map') {
       await this.removeFromCatalogue(layerToRemove);
     }
     if (deleteFrom.includes('map')) {
       this.hsMapService.getMap().removeLayer(layerToRemove as Layer<Source>);
+    } else {
+      this.tryRemovingFromMap(layerToRemove as string, mapLayers);
+    }
+  }
+
+  /**
+   * Once layer is removed from catalogue try to find it in the map by name and remove it as well
+   */
+  private tryRemovingFromMap(layer: string, layers: Layer<Source>[]): void {
+    const lyr = layers.find((l) => getName(l) === layer);
+    if (lyr) {
+      this.hsMapService.getMap().removeLayer(lyr);
     }
   }
 

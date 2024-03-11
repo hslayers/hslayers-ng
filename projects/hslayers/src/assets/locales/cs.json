@@ -668,7 +668,7 @@
     "newLayer": "Nová vrstva",
     "removeLayer": {
       "map": "Mapy",
-      "catalogue": "Katalogu",
+      "catalogue": "Katalog + Mapa (pokud  možno)",
       "deleteFrom": "Smazat z",
       "mapcatalogue": "Mapy a Katalogu",
       "noLayersToDelete": "Žádné vrstvy k odstranění"

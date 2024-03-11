@@ -88,7 +88,7 @@
         <div class="d-flex">
             <ul class="ms-auto p-2 list-unstyled" [hidden]="!explanationsVisible">
                 <li class="text-secondary small" *ngFor="let type of whatToAddTypes">
-                    {{type}} &ndash; {{translateString('ADDDATA.CATALOGUE.DESC', type)}}
+                    {{type}} &ndash; {{type | translateHs : {module: 'ADDDATA.CATALOGUE.DESC' } }}
 
                 </li>
             </ul>
