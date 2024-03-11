@@ -11,6 +11,7 @@ import {
   Dimension,
   DimensionsList,
   Editor,
+  LayerSwipeSide,
   Metadata,
   accessRightsModel,
   popUp,
@@ -68,8 +69,6 @@ const WFS_URL = 'wfsUrl';
 const WORKSPACE = 'workspace';
 export const DOM_FEATURE_LINKS = 'domFeatureLinks';
 const WMS_ORIGINAL_EXTENT = 'wmsOriginalExtent';
-
-export type LayerSwipeSide = 'left' | 'right';
 
 export function getAccessRights(layer: Layer<Source>): accessRightsModel {
   return layer.get(ACCESS_RIGHTS);

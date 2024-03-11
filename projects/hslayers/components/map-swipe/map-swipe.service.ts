@@ -277,7 +277,7 @@ export class HsMapSwipeService {
     const existingFilter = getQueryFilter(layerItem.layer);
     const filter = (map: olMap, layer: Layer, pixel: number[]) => {
       let swipeFilter: boolean;
-      const swipeSide: 'left' | 'right' = getSwipeSide(layer);
+      const swipeSide = getSwipeSide(layer);
       if (!this.swipeControlActive || !swipeSide) {
         swipeFilter = true;
       } else {
