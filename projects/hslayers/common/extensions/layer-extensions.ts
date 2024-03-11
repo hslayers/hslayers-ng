@@ -69,6 +69,8 @@ const WORKSPACE = 'workspace';
 export const DOM_FEATURE_LINKS = 'domFeatureLinks';
 const WMS_ORIGINAL_EXTENT = 'wmsOriginalExtent';
 
+export type LayerSwipeSide = 'left' | 'right';
+
 export function getAccessRights(layer: Layer<Source>): accessRightsModel {
   return layer.get(ACCESS_RIGHTS);
 }
@@ -612,14 +614,11 @@ export function setWfsUrl(layer: Layer<Source>, url: string): void {
   layer.set(WFS_URL, url);
 }
 
-export function getSwipeSide(layer: Layer<Source>): 'left' | 'right' {
+export function getSwipeSide(layer: Layer<Source>): LayerSwipeSide {
   return layer.get(SWIPE_SIDE);
 }
 
-export function setSwipeSide(
-  layer: Layer<Source>,
-  side: 'left' | 'right',
-): void {
+export function setSwipeSide(layer: Layer<Source>, side: LayerSwipeSide): void {
   layer.set(SWIPE_SIDE, side);
 }
 

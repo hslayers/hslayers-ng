@@ -5,43 +5,91 @@ import {
   DimensionsList,
   Metadata,
 } from '../extensions/layer-extensions.type';
+import {LayerSwipeSide} from 'hslayers-ng/common/extensions';
 import {SerializedStyle} from './serialized-style.type';
+
+type Opacity = string | number;
+type legacyClassname = 'HSLayers.Layer.WMS' | 'HSLayers.Layer.WMTS';
+
+export type Classname =
+  | legacyClassname
+  | 'WMS'
+  | 'WMTS'
+  | 'Vector'
+  | 'XYZ'
+  | 'ArcGISRest'
+  | 'StaticImage';
+
+type legacyLayerProcolFormat =
+  | 'hs.format.externalWFS'
+  | 'ol.format.KML'
+  | 'ol.format.GeoJSON'
+  | 'ol.format.GPX'
+  | 'ol.format.Sparql';
+
+export type LayerProcolFormat =
+  | legacyLayerProcolFormat
+  | 'KML'
+  | 'GeoJSON'
+  | 'GPX'
+  | 'WFS'
+  | 'externalWFS'
+  | 'Sparql';
+
+/**
+ * Protocol in map composition scheme
+ * Definition for vector layers
+ * Layer without URL is not synchronized
+ */
+export type Definition = {url?: string; format: LayerProcolFormat};
+
+interface TheParamsSchema {
+  LAYERS?: string;
+  FORMAT?: string;
+  VERSION?: string;
+  STYLES?: string;
+}
 
 export type LayerJSON = {
   metadata?: Metadata;
   visibility?: boolean;
-  swipeSide?: string;
-  opacity?: number;
   base?: boolean;
-  title?: string;
-  name?: string;
+  opacity?: Opacity;
   path?: string;
+  title?: string;
+  className?: Classname;
+  singleTile?: boolean;
+  greyscale?: boolean;
+  displayInLayerSwitcher?: boolean;
+  wmsMaxScale?: number; //Deprecated
+  legends?: string | string[];
+  protocol?: Definition;
+  attributions?: Attribution;
+  features?: GeoJSONFeatureCollection | string;
+  maxResolution?: number;
+  minResolution?: number;
+  url?: string;
+  params?: TheParamsSchema;
+  ratio?: number;
+  projection?: string;
+  style?: SerializedStyle | string;
+  dimensions?: DimensionsList;
+  workspace?: string;
+};
+
+export type HslayersLayerJSON = LayerJSON & {
+  extent?: number[];
+  layer?: string;
+  subLayers?: string;
+  matrixSet?: string;
+  format?: string;
+  info_format?: string;
+  swipeSide?: LayerSwipeSide;
+  name?: string;
   maxExtent?: {
     left: number;
     bottom: number;
     right: number;
     top: number;
   };
-  maxResolution?: number;
-  minResolution?: number;
-  displayInLayerSwitcher?: boolean;
-  dimensions?: DimensionsList;
-  className?: string;
-  singleTile?: boolean;
-  extent?: number[];
-  legends?: string | string[];
-  projection?: string;
-  params?: any;
-  layer?: string;
-  subLayers?: string;
-  url?: string;
-  attributions?: Attribution;
-  matrixSet?: string;
-  format?: string;
-  info_format?: string;
-  protocol?: {url: string; format: string};
-  workspace?: string;
-  features?: GeoJSONFeatureCollection | string;
-  style?: SerializedStyle | string;
-  greyscale?: boolean;
 };

@@ -9,6 +9,12 @@ import {
   WMTS,
   XYZ,
 } from 'ol/source';
+import {
+  CurrentBaseLayer,
+  HslayersLayerJSON,
+  SerializedStyle,
+  compositionVersion,
+} from 'hslayers-ng/types';
 import {Feature, Map} from 'ol';
 import {GeoJSON} from 'ol/format';
 import {GeoJSONFeatureCollection} from 'ol/format/GeoJSON';
@@ -16,7 +22,6 @@ import {Geometry} from 'ol/geom';
 import {Image as ImageLayer, Tile, Vector as VectorLayer} from 'ol/layer';
 import {Injectable} from '@angular/core';
 import {Layer} from 'ol/layer';
-import {SerializedStyle} from 'hslayers-ng/types';
 import {Vector as VectorSource} from 'ol/source';
 import {transformExtent} from 'ol/proj';
 
@@ -72,7 +77,7 @@ export class HsSaveMapService {
    * Create JSON object, which stores information about composition, user, map state and map layers (including layer data)
    * @param map - Selected OL map object
    * @param compoData - Composition general metadata
-   * @param userData - Metadata about user
+   * @param userData - Metadata about user, organisation and point of contact
    * @param statusData - Metadata about permissions
    * @returns - JSON object with all required map composition's metadata
    */
@@ -102,22 +107,11 @@ export class HsSaveMapService {
         this.hsMapService.getCurrentProj(),
       ),
       extent: bbox,
-      user: <UserData>{
-        address: userData.address,
-        city: userData.city,
-        country: userData.country,
-        email: userData.email || 'none@none',
-        name: userData.name,
-        organization: userData.organization,
-        phone: userData.phone,
-        position: userData.position,
-        postalcode: userData.postalCode,
-        state: userData.state,
-      },
-      describedBy:
-        'https://raw.githubusercontent.com/hslayers/map-compositions/2.0.0/schema.json',
-      schema_version: '2.0.0',
-      groups: groups,
+      user: userData.user,
+      contact: userData.contact,
+      organization: userData.organization,
+      describedBy: `https://raw.githubusercontent.com/hslayers/map-compositions/${compositionVersion}/schema.json`,
+      schema_version: compositionVersion,
     };
 
     // Map properties
@@ -130,22 +124,12 @@ export class HsSaveMapService {
     }
     json.units = currentProj.getUnits();
 
-    //*NOTE: Does not exist on OL map anymore
-    // if (map.maxExtent) {
-    //   json.maxExtent = {};
-    //   json.maxExtent.left = map.maxExtent.left;
-    //   json.maxExtent.bottom = map.maxExtent.bottom;
-    //   json.maxExtent.right = map.maxExtent.right;
-    //   json.maxExtent.top = map.maxExtent.top;
-    // }
-
     //json.minResolution = map.minResolution;
     //json.maxResolution = map.maxResolution;
     //json.numZoomLevels = map.numZoomLevels;
 
     //json.resolutions = map.resolutions;
     //json.scales = map.scales;
-    //json.sphericalMercator = map.sphericalMercator;
 
     // Layers properties
     json.layers = this.layers2json(compoData.layers);
@@ -157,7 +141,7 @@ export class HsSaveMapService {
    * Get currently selected base layer from the OL map
    * @returns Object with currently selected base layer's title as attribute
    */
-  getCurrentBaseLayer() {
+  getCurrentBaseLayer(): CurrentBaseLayer {
     let current_base_layer = null;
     for (const lyr of this.hsMapService.getLayersArray()) {
       if (
@@ -207,21 +191,6 @@ export class HsSaveMapService {
       }
     });
     return json;
-  }
-
-  /**
-   * Converts map layer from Layer object to text in JSON notation.
-   *
-   * Syntactic sugar for layer2json() UNUSED?
-   *
-   * @param layer - Layer to be converted
-   * @param pretty - Whether to use pretty notation
-   * @returns Text in JSON notation representing the layer
-   */
-  layer2string(layer, pretty) {
-    const json = this.layer2json(layer);
-    const text = JSON.stringify(json, pretty);
-    return text;
   }
 
   /**
@@ -299,26 +268,11 @@ export class HsSaveMapService {
    * @param layer - Map layer that should be converted
    * @returns JSON object representing the layer
    */
-  layer2json(layer: Layer<Source>): LayerJSON {
-    const json: LayerJSON = {
+  layer2json(layer: Layer<Source>): HslayersLayerJSON {
+    const json: HslayersLayerJSON = {
       metadata: getMetadata(layer) || {},
     };
-
-    /*
-          Commented out because we cant reliably use instanceof.
-          utils.instOf is also not possible, because Layer is a base type
-
-          if (!layer instanceof Layer) {
-              return;
-          }
-          */
-
     // Common stuff
-
-    // type
-    //json.className = layer.CLASS_NAME;
-    //json.origClassName = layer.CLASS_NAME; // the original type
-
     // options
     json.visibility = layer.getVisible();
     json.swipeSide = getSwipeSide(layer);
@@ -379,13 +333,13 @@ export class HsSaveMapService {
         json.extent = (src as ImageStatic).getImageExtent();
       }
       if (this.hsLayerUtilsService.isLayerWMS(layer)) {
-        json.className = 'HSLayers.Layer.WMS';
+        json.className = 'WMS';
         json.singleTile = this.hsUtilsService.instOf(src, ImageWMS);
         if (getLegends(layer)) {
           json.legends = [];
           const legends = getLegends(layer);
           if (Array.isArray(legends)) {
-            json.legends = legends.map((l) => encodeURIComponent(l));
+            json.legends = legends;
           }
           if (typeof legends == 'string') {
             json.legends = [legends];
@@ -413,7 +367,7 @@ export class HsSaveMapService {
 
       if (this.hsUtilsService.instOf(src, WMTS)) {
         const wmts = src as WMTS;
-        json.className = 'HSLayers.Layer.WMTS';
+        json.className = 'WMTS';
         json.matrixSet = wmts.getMatrixSet();
         json.layer = wmts.getLayer();
         json.format = wmts.getFormat();
@@ -444,7 +398,7 @@ export class HsSaveMapService {
         if (getWfsUrl(layer)) {
           json.protocol = {
             url: getWfsUrl(layer),
-            format: 'hs.format.externalWFS',
+            format: 'externalWFS',
           };
         } else {
           try {

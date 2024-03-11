@@ -55,18 +55,7 @@ export class HsSaveMapManagerParams {
     access_rights: new FormControl<accessRightsModel>(this._access_rights),
   });
 
-  userData: UserData = {
-    email: '',
-    phone: '',
-    name: '',
-    address: '',
-    country: '',
-    postalCode: '',
-    city: '',
-    organization: '',
-    position: '',
-    state: '',
-  };
+  userData: UserData = {};
   panelOpened: Subject<any> = new Subject();
   saveMapResulted: Subject<StatusData | string> = new Subject();
   endpointSelected: BehaviorSubject<HsEndpoint> = new BehaviorSubject(null);
@@ -286,17 +275,17 @@ export class HsSaveMapManagerService extends HsSaveMapManagerParams {
     if (user && user.success == true) {
       // set the values
       if (user.userInfo) {
-        this.userData.email = user.userInfo.email;
-        this.userData.phone = user.userInfo.phone;
-        this.userData.name =
+        this.userData.contact.email = user.userInfo.email;
+        this.userData.contact.phone = user.userInfo.phone;
+        this.userData.contact.person =
           user.userInfo.firstName + ' ' + user.userInfo.lastName;
       }
       if (user.userInfo && user.userInfo.org) {
-        this.userData.address = user.userInfo.org.street;
-        this.userData.country = user.userInfo.org.state;
-        this.userData.postalCode = user.userInfo.org.zip;
-        this.userData.city = user.userInfo.org.city;
-        this.userData.organization = user.userInfo.org.name;
+        this.userData.organization.address = user.userInfo.org.street;
+        this.userData.organization.country = user.userInfo.org.state;
+        this.userData.organization.postalCode = user.userInfo.org.zip;
+        this.userData.organization.city = user.userInfo.org.city;
+        this.userData.organization.name = user.userInfo.org.name;
       }
     }
   }

@@ -148,13 +148,12 @@ export class HsDrawService extends HsDrawServiceParams {
         //When metadata dialog window opened. Layer is being added
         if (this.selectedLayer && this.tmpDrawLayer) {
           setWorkspace(this.selectedLayer, endpoint?.user);
-          const definition = {
-            format: this.isAuthenticated ? 'hs.format.WFS' : null,
+          setDefinition(this.selectedLayer, {
+            format: this.isAuthenticated ? 'WFS' : null,
             url: this.isAuthenticated
               ? this.hsCommonLaymanService.layman?.url + '/wfs'
               : null,
-          };
-          setDefinition(this.selectedLayer, definition);
+          });
         }
       });
     });
@@ -216,7 +215,7 @@ export class HsDrawService extends HsDrawServiceParams {
     setEditor(drawLayer, {editable: true});
     setPath(drawLayer, this.hsConfig.defaultDrawLayerPath || 'User generated');
     setDefinition(drawLayer, {
-      format: this.isAuthenticated ? 'hs.format.WFS' : null,
+      format: this.isAuthenticated ? 'WFS' : null,
       url: this.isAuthenticated ? layman.url + '/wfs' : null,
     });
     setWorkspace(drawLayer, layman?.user);
