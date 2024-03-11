@@ -668,7 +668,7 @@
     "featuresLoadError": "Načítanie prvkov zlyhalo",
     "removeLayer": {
       "map": "Mapy",
-      "catalogue": "Katalógu",
+      "catalogue": "Katalóg + Mapa (ak to bude možné)",
       "deleteFrom": "Odstrániť z",
       "mapcatalogue": "Mapy a Katalógu",
       "noLayersToDelete": "Žiadne vrstvy na odstránenie"
