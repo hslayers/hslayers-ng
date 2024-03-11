@@ -15,7 +15,7 @@ import {getName, getTitle} from 'hslayers-ng/common/extensions';
 /**
  * Both catalogue and mapcatalogue will remove layer from  map as well.
  * Difference is with layer 'form' - string vs Layer<Source> (see service removeMultipleLayers overloads)
- * String - layman layer descriptor. Not all layers are guaranted to be in map (mroe likely not)
+ * string - Name param from Layman layer descriptor. Not all layers are guaranteed to be in map
  * Layer<Source> - OL layer. Layers already in map
  */
 export type HsRmLayerDialogeDeleteOptions =
