@@ -5,7 +5,7 @@ import {
   DimensionsList,
   Metadata,
 } from '../extensions/layer-extensions.type';
-import {LayerSwipeSide} from 'hslayers-ng/common/extensions';
+import {LayerSwipeSide} from '../map-swipe.type';
 import {SerializedStyle} from './serialized-style.type';
 
 type Opacity = string | number;
