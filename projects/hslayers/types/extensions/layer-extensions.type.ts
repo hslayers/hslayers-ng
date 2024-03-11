@@ -11,10 +11,6 @@ export type Attribution = {
    */
   locked?: boolean;
 };
-export type Definition = {
-  format?: string;
-  url?: string;
-};
 export type Editor = {
   editable?: boolean;
   /**
