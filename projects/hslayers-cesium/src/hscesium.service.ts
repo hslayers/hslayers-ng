@@ -15,7 +15,7 @@ import {
   WebMercatorProjection,
   createWorldTerrainAsync,
 } from 'cesium';
-import {Subject} from 'rxjs';
+import {Subject, takeUntil} from 'rxjs';
 
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsLayerManagerService} from 'hslayers-ng/services/layer-manager';
@@ -41,6 +41,9 @@ export class HsCesiumService {
   viewer: any;
   cesiumPositionClicked: Subject<any> = new Subject();
 
+  private end: Subject<void>;
+  private windowListeners = new Map<string, any>();
+
   constructor(
     public HsMapService: HsMapService,
     public HsLayermanagerService: HsLayerManagerService,
@@ -62,10 +65,13 @@ export class HsCesiumService {
    * @public
    */
   async init() {
+    this.end = new Subject();
     this.checkForBingKey();
-    this.HsCesiumConfig.cesiumConfigChanges.subscribe(() => {
-      this.checkForBingKey();
-    });
+    this.HsCesiumConfig.cesiumConfigChanges
+      .pipe(takeUntil(this.end))
+      .subscribe(() => {
+        this.checkForBingKey();
+      });
     try {
       Ion.defaultAccessToken =
         this.HsCesiumConfig.cesiumAccessToken ||
@@ -158,19 +164,21 @@ export class HsCesiumService {
 
       this.viewer = viewer;
 
-      window.addEventListener('blur', () => {
+      const blur = window.addEventListener('blur', () => {
         if (this.viewer.isDestroyed()) {
           return;
         }
         this.viewer.targetFrameRate = 5;
       });
+      this.windowListeners.set('blur', blur);
 
-      window.addEventListener('focus', () => {
+      const focus = window.addEventListener('focus', () => {
         if (this.viewer.isDestroyed()) {
           return;
         }
         this.viewer.targetFrameRate = 30;
       });
+      this.windowListeners.set('focus', focus);
 
       this.viewer.camera.moveEnd.addEventListener((e) => {
         if (!this.HsMapService.visible) {
@@ -194,27 +202,33 @@ export class HsCesiumService {
         }
       }
 
-      this.HsEventBusService.mapExtentChanges.subscribe(() => {
-        const view = this.HsMapService.getMap().getView();
-        if (this.HsMapService.visible) {
-          this.HsCesiumCameraService.setExtentEqualToOlExtent(view);
-        }
-      });
-
-      this.HsEventBusService.zoomTo.subscribe((data) => {
-        this.viewer.camera.setView({
-          destination: Cartesian3.fromDegrees(
-            data.coordinate[0],
-            data.coordinate[1],
-            15000.0,
-          ),
+      this.HsEventBusService.mapExtentChanges
+        .pipe(takeUntil(this.end))
+        .subscribe(() => {
+          const view = this.HsMapService.getMap().getView();
+          if (this.HsMapService.visible) {
+            this.HsCesiumCameraService.setExtentEqualToOlExtent(view);
+          }
         });
-      });
+
+      this.HsEventBusService.zoomTo
+        .pipe(takeUntil(this.end))
+        .subscribe((data) => {
+          this.viewer.camera.setView({
+            destination: Cartesian3.fromDegrees(
+              data.coordinate[0],
+              data.coordinate[1],
+              15000.0,
+            ),
+          });
+        });
       this.HsCesiumConfig.viewerLoaded.next(this.viewer);
 
-      this.HsCesiumPicker.cesiumPositionClicked.subscribe((position) => {
-        this.cesiumPositionClicked.next(position);
-      });
+      this.HsCesiumPicker.cesiumPositionClicked
+        .pipe(takeUntil(this.end))
+        .subscribe((position) => {
+          this.cesiumPositionClicked.next(position);
+        });
 
       //Remove overlays registered when init was called last time (when switching between 2d/3d)
       for (const p of this.hsOverlayConstructorService.panels) {
@@ -231,6 +245,18 @@ export class HsCesiumService {
     } catch (ex) {
       this.hsLog.error(ex);
     }
+  }
+
+  cesiumDisabled() {
+    this.viewer.destroy();
+
+    this.windowListeners.forEach((value, key) => {
+      window.removeEventListener(key, value);
+    });
+    this.windowListeners.clear();
+
+    this.end.next();
+    this.end.complete();
   }
 
   private getShadowMode(): any {
