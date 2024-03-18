@@ -10,7 +10,7 @@ export type ArcGISRestResponseLayer = {
   type: string; //FIXME: unused
 };
 
-export type ArcGISResResponseLayerExtent = {
+export type ArcGISRestResponseLayerExtent = {
   spatialReference?: any;
   xmin: number;
   ymin: number;

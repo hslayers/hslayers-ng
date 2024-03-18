@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 
-import {AddDataFileType, filesSupported} from 'hslayers-ng/types';
+import {AddDataFileType, FILES_SUPPORTED} from 'hslayers-ng/types';
 import {AddDataFileValues} from './file-type-values';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsLanguageService} from 'hslayers-ng/shared/language';
@@ -19,7 +19,7 @@ export class HsAddDataFileComponent {
   ) {
     if (Array.isArray(this.hsConfig.uploadTypes)) {
       this.types = this.hsConfig.uploadTypes
-        .filter((type) => filesSupported.includes(type))
+        .filter((type) => FILES_SUPPORTED.includes(type))
         .map((type) => AddDataFileValues.find((v) => v.id == type));
     } else {
       this.types = AddDataFileValues;

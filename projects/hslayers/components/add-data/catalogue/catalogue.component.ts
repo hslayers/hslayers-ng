@@ -72,10 +72,10 @@ export class HsAddDataCatalogueComponent implements OnInit {
   }
 
   queryByFilter(): void {
-    /**
+    /*
      * A bit tricky way how to force add-data hs-panel-header to refresh its template
      * in order to show/hide buttons. Previously done by reloadData call.
-     * This achieves the same via datasetTypeSelected subscription in catalgoue service
+     * This achieves the same via datasetTypeSelected subscription in catalogue service
      */
     this.hsAddDataService.datasetSelected.next(
       this.hsAddDataService.datasetSelected.getValue(),

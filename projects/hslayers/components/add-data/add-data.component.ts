@@ -16,7 +16,7 @@ import {HsLayoutService} from 'hslayers-ng/shared/layout';
 import {HsPanelBaseComponent} from 'hslayers-ng/common/panels';
 import {HsRemoveLayerDialogService} from 'hslayers-ng/common/remove-multiple';
 import {HsShareUrlService} from 'hslayers-ng/components/share';
-import {servicesSupportedByUrl} from 'hslayers-ng/types';
+import {SERVICES_SUPPORTED_BY_URL} from 'hslayers-ng/types';
 
 @Component({
   selector: 'hs-add-data',
@@ -60,7 +60,7 @@ export class HsAddDataComponent
   ngOnInit(): void {
     this.selectDatasetType('catalogue');
 
-    servicesSupportedByUrl.forEach((type) =>
+    SERVICES_SUPPORTED_BY_URL.forEach((type) =>
       this.connectServiceFromUrlParam(type as AddDataUrlType),
     );
 

@@ -1,7 +1,7 @@
 import {CommonModule} from '@angular/common';
 import {Component, OnInit, ViewRef} from '@angular/core';
 
-import {HsAddDataLayerDescriptor, accessRightsModel} from 'hslayers-ng/types';
+import {AccessRightsModel, HsAddDataLayerDescriptor} from 'hslayers-ng/types';
 import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
 import {
   HsDialogComponent,
@@ -26,14 +26,14 @@ export class HsSetPermissionsDialogComponent
 {
   dialogItem: HsDialogItem;
   viewRef: ViewRef;
-  currentAccessRights: accessRightsModel = {
+  currentAccessRights: AccessRightsModel = {
     'access_rights.write': 'private',
     'access_rights.read': 'EVERYONE',
   };
   /**
-   * @param onPermissionSaved Callback method as service instance and method name.
-   * Pass service as property to not polute the component
-   * and because compoent is cosntructed dynamically via dialog service (no input)
+   * @param onPermissionSaved - Callback method as service instance and method name.
+   * Pass service as property to not pollute the component
+   * and because component is constructed dynamically via dialog service (no input)
    */
   data: {
     recordType: string;
@@ -53,7 +53,7 @@ export class HsSetPermissionsDialogComponent
   ) {}
 
   ngOnInit(): void {
-    //Can set permission for Layman endpoint only
+    // Can set permission for Layman endpoint only
     this.endpoint = this.hsCommonLaymanService.layman;
     if (!this.data.selectedRecord?.access_rights || !this.endpoint) {
       this.close();

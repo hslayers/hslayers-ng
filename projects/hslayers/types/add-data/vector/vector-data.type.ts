@@ -3,12 +3,12 @@ import {Source} from 'ol/source';
 import {Vector as VectorLayer} from 'ol/layer';
 import {Vector as VectorSource} from 'ol/source';
 
+import {AccessRightsModel} from '../../access-rights.model';
 import {HsLayerDescriptor} from '../../layer-manager/layer-descriptor.interface';
-import {accessRightsModel} from '../../access-rights.model';
 
 export type VectorDataObject = {
   abstract?: string;
-  access_rights?: accessRightsModel;
+  access_rights?: AccessRightsModel;
   addUnder?: Layer<Source>;
   base64url?: string;
   extract_styles?: boolean;

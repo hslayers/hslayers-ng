@@ -11,7 +11,7 @@ import {HsCatalogueMetadataComponent} from '../catalogue-metadata/catalogue-meta
 import {HsCatalogueMetadataService} from '../catalogue-metadata/catalogue-metadata.service';
 import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
 import {HsLaymanBrowserService} from 'hslayers-ng/shared/add-data';
-import {HsLaymanService} from 'hslayers-ng/shared/save-map';
+import {HsLogService} from 'hslayers-ng/shared/log';
 import {HsRemoveLayerDialogService} from 'hslayers-ng/common/remove-multiple';
 import {HsSetPermissionsDialogComponent} from 'hslayers-ng/common/dialog-set-permissions';
 
@@ -45,7 +45,7 @@ export class HsCatalogueListItemComponent implements OnInit {
     public hsAddDataCatalogueService: HsAddDataCatalogueService,
     private hsDialogContainerService: HsDialogContainerService,
     private hsLaymanBrowserService: HsLaymanBrowserService,
-    private hsLaymanService: HsLaymanService,
+    private hsLog: HsLogService,
     private hsRemoveLayerDialogService: HsRemoveLayerDialogService,
   ) {}
 
@@ -68,7 +68,7 @@ export class HsCatalogueListItemComponent implements OnInit {
   }
 
   /**
-   * Get layer desriptor, show available options or add to map directly if only WFS available
+   * Get layer descriptor, show available options or add to map directly if only WFS available
    */
   private async describeCatalogueLayer(
     endpoint: HsEndpoint,
@@ -116,7 +116,7 @@ export class HsCatalogueListItemComponent implements OnInit {
    * @param type - One of 'WMS', 'WFS'
    * @param event - Mouse click event
    */
-  async selectTypeAndAdd(type: string, event: MouseEvent): Promise<void> {
+  async selectTypeAndAdd(type: string, event: MouseEvent) {
     event.preventDefault();
     if (!this.whatToAdd) {
       this.whatToAdd =
@@ -126,7 +126,7 @@ export class HsCatalogueListItemComponent implements OnInit {
         );
     }
     if (!this.whatToAdd.type || this.whatToAdd.type === 'none') {
-      console.error('Could not get catalogue layer descriptor!');
+      this.hsLog.error('Could not get catalogue layer descriptor!');
       return;
     }
     this.whatToAdd.type = type === 'WMS' || type === 'WMTS' ? 'WMS' : type;

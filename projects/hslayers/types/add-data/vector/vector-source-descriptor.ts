@@ -1,4 +1,4 @@
-import Feature from 'ol/Feature';
+import {Feature} from 'ol';
 import {Geometry} from 'ol/geom';
 import {Vector as VectorSource} from 'ol/source';
 
@@ -34,8 +34,8 @@ export class VectorSourceDescriptor {
   constructor() {}
 
   /**
-   * Construction method which relpaces constructor method in order to allow async.
-   * Should be called after common class initaton new VectorSourceDescriptor()
+   * Construction method which replaces constructor method in order to allow async.
+   * Should be called after common class initiation new VectorSourceDescriptor()
    */
   async init(
     type: string,
@@ -102,7 +102,7 @@ export class VectorSourceDescriptor {
           features = format.readFeatures(options.features, {
             dataProjection: srs,
             featureProjection: this.mapProjection,
-          }) as Feature[];
+          }) as Feature[]; //FIXME: Type-cast shall be automatically inferred after OL >8.2
         }
         this.sourceParams = {
           srs,

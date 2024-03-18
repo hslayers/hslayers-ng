@@ -1,7 +1,7 @@
 import {Vector as VectorSource} from 'ol/source';
 
+import {AccessRightsModel} from '../../access-rights.model';
 import {HsVectorLayerOptions} from './vector-layer-options.type';
-import {accessRightsModel} from '../../access-rights.model';
 
 export class VectorLayerDescriptor {
   mapProjection;
@@ -18,7 +18,7 @@ export class VectorLayerDescriptor {
     path: string;
     visible: boolean;
     workspace: string;
-    access_rights: accessRightsModel;
+    access_rights: AccessRightsModel;
     queryCapabilities: boolean;
     sld: string;
     qml: string;

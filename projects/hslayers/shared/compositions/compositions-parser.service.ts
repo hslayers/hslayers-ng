@@ -35,6 +35,7 @@ import {
   HslayersLayerJSON,
   LaymanCompositionDescriptor,
 } from 'hslayers-ng/types';
+import {SERVICES_SUPPORTED_BY_URL} from 'hslayers-ng/types';
 import {
   getLaymanFriendlyLayerName,
   isLaymanUrl,
@@ -47,7 +48,6 @@ import {
   setSwipeSide,
 } from 'hslayers-ng/common/extensions';
 import {parseExtent, transformExtentValue} from 'hslayers-ng/common/utils';
-import {servicesSupportedByUrl} from 'hslayers-ng/types';
 
 @Injectable({
   providedIn: 'root',
@@ -117,7 +117,7 @@ export class HsCompositionsParserService {
             .pipe(
               catchError((e) => {
                 fromLayman
-                  ? console.error('Could not composition metadata')
+                  ? $log.error('Could not get composition metadata')
                   : undefined;
                 return of(e);
               }),
@@ -132,7 +132,7 @@ export class HsCompositionsParserService {
    * @public
    * Load selected composition from server, parse it and add layers to map.
    * Optionally (based on app config) may open layer manager panel
-   * @param url - Url of selected composition
+   * @param url - URL of selected composition
    * @param overwrite - Whether overwrite current composition in map -
    * remove all layers from maps which originate from composition (if not pasted, it counts as "true")
    * @param callback - Optional function which should be called when composition is successfully loaded
@@ -213,11 +213,11 @@ export class HsCompositionsParserService {
       properties */
       const loaded = await this.loadCompositionObject(
         response.data || response,
-        overwrite && !pre_parse, //For CSW comps we need to wait for dialog to resolve before removing existing layers
+        overwrite && !pre_parse, // For CSW comps we need to wait for dialog to resolve before removing existing layers
         response.title,
         response.extent,
       );
-      //Don't trigger compositionLoads when loading basemapComposition
+      // Don't trigger compositionLoads when loading basemapComposition
       if (loaded && !response.basemapComposition) {
         this.finalizeCompositionLoading(response);
       }
@@ -237,7 +237,7 @@ export class HsCompositionsParserService {
       return;
     }
     for (const link of layer.online) {
-      const type = servicesSupportedByUrl.find((type) =>
+      const type = SERVICES_SUPPORTED_BY_URL.find((type) =>
         link.protocolUri.toLowerCase().includes(type),
       );
       if (type) {
@@ -413,7 +413,7 @@ export class HsCompositionsParserService {
       }
     }
 
-    //CSW serviceType compositions
+    // CSW serviceType compositions
     const layers = await this.jsonToLayers(obj);
 
     const confirmed = obj.services
@@ -686,7 +686,7 @@ export class HsCompositionsParserService {
       if (layer == undefined) {
         if (
           !lyr_def.protocol ||
-          lyr_def.protocol.format != 'hs.format.externalWFS' || //bakcwards compatblity
+          lyr_def.protocol.format != 'hs.format.externalWFS' || //backwards compatibility
           lyr_def.protocol.format != 'externalWFS'
         ) {
           this.$log.warn(
@@ -717,19 +717,19 @@ export class HsCompositionsParserService {
   }
 
   /**
-   * Select correct layer parser for input data based on layer "className" property (ArcGISRest, WNS, WFS)
+   * Select correct layer parser for input data based on layer "className" property (ArcGISRest, WMS, WFS)
    * @param lyr_def - Layer to be created (encapsulated in layer definition object)
    * Parser function to create layer (using config_parsers service)
    */
   async jsonToLayer(lyr_def: HslayersLayerJSON): Promise<any> {
     let resultLayer;
     switch (lyr_def.className) {
-      case 'HSLayers.Layer.WMS': //backwards compatiblity
+      case 'HSLayers.Layer.WMS': //backwards compatibility
       case 'WMS':
         resultLayer =
           this.hsCompositionsLayerParserService.createWmsLayer(lyr_def);
         break;
-      case 'HSLayers.Layer.WMTS': //backwards compatiblity
+      case 'HSLayers.Layer.WMTS': //backwards compatibility
       case 'WMTS':
         resultLayer =
           this.hsCompositionsLayerParserService.createWMTSLayer(lyr_def);

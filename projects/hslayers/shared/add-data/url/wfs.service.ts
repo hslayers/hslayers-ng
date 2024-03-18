@@ -19,7 +19,6 @@ import {HsUrlTypeServiceModel} from 'hslayers-ng/types';
 import {HsUtilsService} from 'hslayers-ng/shared/utils';
 import {HsWfsGetCapabilitiesService} from 'hslayers-ng/shared/get-capabilities';
 import {LayerOptions} from 'hslayers-ng/types';
-import {Observable} from 'ol';
 import {UrlDataObject} from 'hslayers-ng/types';
 import {WfsSource} from './hs.source.WfsSource';
 import {setCluster} from 'hslayers-ng/common/extensions';
@@ -52,8 +51,6 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
 
   private requestCancelSubjects: Map<string, Subject<void>> = new Map();
   cancelUrlRequest: Subject<void> = new Subject();
-
-  catalogueLayerCount: Map<string, Observable>;
 
   constructor(
     private http: HttpClient,

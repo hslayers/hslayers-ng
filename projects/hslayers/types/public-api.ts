@@ -9,8 +9,8 @@ export * from './map-swipe.type';
 export * from './layer-manager/layer-descriptor.interface';
 export * from './layer-manager/base-layer-descriptor.interface';
 
-export * from './get-capabilitites/capabilities-response-wrapper';
-export * from './get-capabilitites/wms-get-capabilities-response.interface';
+export * from './get-capabilities/capabilities-response-wrapper';
+export * from './get-capabilities/wms-get-capabilities-response.interface';
 
 export * from './layman/status-state.type';
 export * from './layman/layman-layer-descriptor.interface';
@@ -29,7 +29,7 @@ export * from './add-data/url.type';
 export * from './add-data/models/url-type-service.model';
 export * from './add-data/services-supported.const';
 export * from './add-data/recursive-options.type';
-export * from './add-data/argis-response-type';
+export * from './add-data/arcgis-response-type';
 export * from './add-data/file/file-descriptor.type';
 export * from './add-data/file/file-data-object.type';
 export * from './add-data/file/file-form-data.type';
@@ -40,7 +40,7 @@ export * from './add-data/vector/vector-source-descriptor';
 export * from './add-data/vector/vector-layer-options.type';
 export * from './add-data/vector/vector-source-from-url';
 export * from './add-data/file/file.type';
-export * from './add-data/whatToAddDesriptor';
+export * from './add-data/whatToAddDescriptor';
 
 export * from './compositions/composition-layer-options.type';
 export * from './compositions/user-data.type';

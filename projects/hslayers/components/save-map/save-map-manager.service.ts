@@ -3,6 +3,7 @@ import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 
+import {AccessRightsModel} from 'hslayers-ng/types';
 import {CompoData} from 'hslayers-ng/types';
 import {HsCompositionsParserService} from 'hslayers-ng/shared/compositions';
 import {HsConfig} from 'hslayers-ng/config';
@@ -20,7 +21,6 @@ import {LaymanCompositionDescriptor} from 'hslayers-ng/types';
 import {MapComposition} from 'hslayers-ng/types';
 import {StatusData} from 'hslayers-ng/types';
 import {UserData} from 'hslayers-ng/types';
-import {accessRightsModel} from 'hslayers-ng/types';
 
 export class HsSaveMapManagerParams {
   statusData: StatusData = {
@@ -33,7 +33,7 @@ export class HsSaveMapManagerParams {
 
   currentComposition = undefined;
 
-  _access_rights: accessRightsModel = {
+  _access_rights: AccessRightsModel = {
     'access_rights.write': 'private',
     'access_rights.read': 'EVERYONE',
   };
@@ -52,7 +52,7 @@ export class HsSaveMapManagerParams {
 
     id: new FormControl(''),
     thumbnail: new FormControl(undefined),
-    access_rights: new FormControl<accessRightsModel>(this._access_rights),
+    access_rights: new FormControl<AccessRightsModel>(this._access_rights),
   });
 
   userData: UserData = {};

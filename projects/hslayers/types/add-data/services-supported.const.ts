@@ -1,4 +1,4 @@
-export const servicesSupportedByUrl = [
+export const SERVICES_SUPPORTED_BY_URL = [
   'wms',
   'wfs',
   'wmts',

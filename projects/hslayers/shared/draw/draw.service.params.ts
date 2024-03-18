@@ -24,7 +24,7 @@ export class HsDrawServiceParams {
   /**
    * Whether there are multiple drawable layers in a map
    */
-  moreThenOneDrawable = false;
+  moreThanOneDrawable = false;
   draw: Draw;
   modify: Modify;
 

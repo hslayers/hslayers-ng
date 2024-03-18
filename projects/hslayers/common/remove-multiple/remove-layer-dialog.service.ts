@@ -10,8 +10,8 @@ import {HsLaymanService} from 'hslayers-ng/shared/save-map';
 import {HsMapService} from 'hslayers-ng/shared/map';
 import {
   HsRmLayerDialogComponent,
+  HsRmLayerDialogDeleteOptions,
   HsRmLayerDialogResponse,
-  HsRmLayerDialogeDeleteOptions,
 } from './remove-layer-dialog.component';
 import {HsToastService} from 'hslayers-ng/common/toast';
 import {getDefinition, getName} from 'hslayers-ng/common/extensions';
@@ -48,12 +48,12 @@ export class HsRemoveLayerDialogService {
 
   /**
    * Removes selected drawing layer from both Layermanager and Layman
-   * @param layer Layer to be deleted - use when trying to delete layer other than hsDrawService.selectedLayer
-   * @param deleteFromOptions From where the layer should be deleted defaults to map, map&catalogue
+   * @param layer - Layer to be deleted - use when trying to delete layer other than hsDrawService.selectedLayer
+   * @param deleteFromOptions - From where the layer should be deleted, defaults to map, map&catalogue
    */
   async removeLayer(
     layer: Layer<Source> | string,
-    deleteFromOptions?: HsRmLayerDialogeDeleteOptions[],
+    deleteFromOptions?: HsRmLayerDialogDeleteOptions[],
   ): Promise<boolean> {
     const dialog = this.hsDialogContainerService.create(
       HsRmLayerDialogComponent,
@@ -89,18 +89,18 @@ export class HsRemoveLayerDialogService {
   async removeMultipleLayers(
     layers: Layer<Source>[],
     deleteFromOptions:
-      | Exclude<HsRmLayerDialogeDeleteOptions, 'catalogue'>[]
+      | Exclude<HsRmLayerDialogDeleteOptions, 'catalogue'>[]
       | ['map'],
   ): Promise<boolean>;
 
   /**
    * Removes multiple selected layers from both Layermanager and Layman
-   * @param layer Layers to be deleted - use when trying to remove other than drawableLayers
-   * @param deleteFromOptions From where the layer should be deleted defaults to map, map&catalogue
+   * @param layer - Layers to be deleted - use when trying to remove other than drawableLayers
+   * @param deleteFromOptions - From where the layer should be deleted defaults to map, map&catalogue
    */
   async removeMultipleLayers(
     layersToRemove: Layer<Source>[] | string[],
-    deleteFromOptions?: HsRmLayerDialogeDeleteOptions[],
+    deleteFromOptions?: HsRmLayerDialogDeleteOptions[],
   ): Promise<boolean> {
     const items = layersToRemove.map((l) => this.wrapLayer(l));
 
@@ -148,11 +148,11 @@ export class HsRemoveLayerDialogService {
   }
 
   /**
-   * Remove layer from map and layman if desirable and possible
+   * Remove layer from map and Layman if desirable and possible
    */
   private async completeLayerRemoval(
     layerToRemove: Layer<Source> | string,
-    deleteFrom: HsRmLayerDialogeDeleteOptions,
+    deleteFrom: HsRmLayerDialogDeleteOptions,
     mapLayers?: Layer<Source>[],
   ): Promise<void> {
     if (deleteFrom !== 'map') {
@@ -189,13 +189,6 @@ export class HsRemoveLayerDialogService {
       //Remove layer which is not in map from catalogue based on name
       await this.hsLaymanService.removeLayer(layerToRemove);
     }
-  }
-
-  /**
-   * Syntactic sugar for translating
-   */
-  translate(key: string, params?: any): string {
-    return this.hsLanguageService.getTranslation(key, params);
   }
 
   getDeleteNote(plural?: boolean): string {

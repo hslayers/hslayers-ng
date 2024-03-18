@@ -1,6 +1,6 @@
 import {HslayersLayerJSON} from './layer-json.type';
 
-export const compositionVersion = '3.0.0';
+export const COMPOSITION_VERSION = '3.0.0' as const;
 
 export interface TheUserSchema {
   email?: string;

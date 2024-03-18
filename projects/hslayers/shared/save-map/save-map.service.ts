@@ -9,12 +9,6 @@ import {
   WMTS,
   XYZ,
 } from 'ol/source';
-import {
-  CurrentBaseLayer,
-  HslayersLayerJSON,
-  SerializedStyle,
-  compositionVersion,
-} from 'hslayers-ng/types';
 import {Feature, Map} from 'ol';
 import {GeoJSON} from 'ol/format';
 import {GeoJSONFeatureCollection} from 'ol/format/GeoJSON';
@@ -26,6 +20,12 @@ import {Vector as VectorSource} from 'ol/source';
 import {transformExtent} from 'ol/proj';
 
 import {BoundingBoxObject} from 'hslayers-ng/types';
+import {
+  COMPOSITION_VERSION,
+  CurrentBaseLayer,
+  HslayersLayerJSON,
+  SerializedStyle,
+} from 'hslayers-ng/types';
 import {CompoData} from 'hslayers-ng/types';
 import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
 import {HsLogService} from 'hslayers-ng/shared/log';
@@ -110,8 +110,8 @@ export class HsSaveMapService {
       user: userData.user,
       contact: userData.contact,
       organization: userData.organization,
-      describedBy: `https://raw.githubusercontent.com/hslayers/map-compositions/${compositionVersion}/schema.json`,
-      schema_version: compositionVersion,
+      describedBy: `https://raw.githubusercontent.com/hslayers/map-compositions/${COMPOSITION_VERSION}/schema.json`,
+      schema_version: COMPOSITION_VERSION,
     };
 
     // Map properties

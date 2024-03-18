@@ -8,8 +8,8 @@ import {Tile as TileSource} from 'ol/source';
 import {transformExtent} from 'ol/proj';
 
 import {
-  ArcGISResResponseLayerExtent,
   ArcGISRestResponseLayer,
+  ArcGISRestResponseLayerExtent,
 } from 'hslayers-ng/types';
 import {CapabilitiesResponseWrapper} from 'hslayers-ng/types';
 import {DuplicateHandling, HsMapService} from 'hslayers-ng/shared/map';
@@ -457,7 +457,7 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
    * Transforms provided extent to a map projection
    */
   private transformLayerExtent(
-    extent: ArcGISResResponseLayerExtent,
+    extent: ArcGISRestResponseLayerExtent,
     data: UrlDataObject,
   ): number[] {
     return transformExtent(

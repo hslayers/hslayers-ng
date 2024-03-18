@@ -195,7 +195,7 @@ export class HsAddDataCatalogueService extends HsAddDataCatalogueParams {
     );
     let sumLimits = 0;
     this.endpoints.forEach((ep) => {
-      /**Calculated limit or 1 if its smaller */
+      /* Calculated limit or 1 if it's smaller */
       ep.datasourcePaging.limit = Math.max(
         Math.round(
           (ep.datasourcePaging.matched / this.matchedRecords) *
@@ -205,7 +205,8 @@ export class HsAddDataCatalogueService extends HsAddDataCatalogueParams {
       );
       sumLimits += ep.datasourcePaging.limit;
     });
-    /**Proportion of page limit for one of the datasources was 0 after rounding
+    /*
+     * Proportion of page limit for one of the datasources was 0 after rounding
      * For the first few pages we need to adjust limit of the other datasource
      */
     if (sumLimits > this.recordsPerPage) {
@@ -219,7 +220,7 @@ export class HsAddDataCatalogueService extends HsAddDataCatalogueParams {
         return maxItem;
       }, null);
 
-      /** Adjust the limit fo epWithMany */
+      /* Adjust the limit fo epWithMany */
       this.endpoints.find((ep) => ep != epWithFew).datasourcePaging.limit -= 1;
       sumLimits -= 1;
     }
