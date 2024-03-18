@@ -336,9 +336,14 @@ export class HsCesiumLayersService {
 
       const xa = coordinates[0];
       const ya = coordinates[1];
+      const za = coordinates[2];
 
       const newCoordinates = proj4(firstProjection, secondProjection, [xa, ya]);
-      return Cartesian3.fromDegrees(newCoordinates[0], newCoordinates[1], 0);
+      return Cartesian3.fromDegrees(
+        newCoordinates[0],
+        newCoordinates[1],
+        za ?? 0,
+      );
     };
     //console.log('loading to cesium',(new Date()).getTime() - window.lasttime); window.lasttime = (new Date()).getTime();
     const source = await tmp_source.load(
