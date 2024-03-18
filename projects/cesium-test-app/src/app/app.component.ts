@@ -190,8 +190,8 @@ export class AppComponent implements OnInit {
       ],
       popUpDisplay: 'hover',
       default_view: new View({
-        center: transform([17.474129, 52.574], 'EPSG:4326', 'EPSG:3857'), //Latitude longitude    to Spherical Mercator
-        zoom: 4,
+        center: transform([13.3812203, 49.7452543], 'EPSG:4326', 'EPSG:3857'), //Latitude longitude    to Spherical Mercator
+        zoom: 12,
       }),
       default_layers: [
         new Tile({
@@ -220,11 +220,11 @@ export class AppComponent implements OnInit {
               },
             },
             sld: `<?xml version="1.0" encoding="ISO-8859-1"?>
-            <StyledLayerDescriptor version="1.0.0" 
-                xsi:schemaLocation="http://www.opengis.net/sld StyledLayerDescriptor.xsd" 
-                xmlns="http://www.opengis.net/sld" 
-                xmlns:ogc="http://www.opengis.net/ogc" 
-                xmlns:xlink="http://www.w3.org/1999/xlink" 
+            <StyledLayerDescriptor version="1.0.0"
+                xsi:schemaLocation="http://www.opengis.net/sld StyledLayerDescriptor.xsd"
+                xmlns="http://www.opengis.net/sld"
+                xmlns:ogc="http://www.opengis.net/ogc"
+                xmlns:xlink="http://www.w3.org/1999/xlink"
                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
               <NamedLayer>
                 <Name>Simple point with stroke</Name>
