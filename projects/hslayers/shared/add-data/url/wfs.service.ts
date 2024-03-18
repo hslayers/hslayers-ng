@@ -1,6 +1,6 @@
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
-import {Subject, finalize, lastValueFrom, takeUntil} from 'rxjs';
+import {Subject, finalize, takeUntil} from 'rxjs';
 
 import * as xml2Json from 'xml-js';
 import {Layer, Vector as VectorLayer} from 'ol/layer';
@@ -22,7 +22,7 @@ import {LayerOptions} from 'hslayers-ng/types';
 import {Observable} from 'ol';
 import {UrlDataObject} from 'hslayers-ng/types';
 import {WfsSource} from './hs.source.WfsSource';
-import {getTitle, setCluster} from 'hslayers-ng/common/extensions';
+import {setCluster} from 'hslayers-ng/common/extensions';
 
 type WfsCapabilitiesLayer = {
   Abstract: string;
