@@ -1,10 +1,10 @@
 import {Component, Input, OnInit, ViewRef} from '@angular/core';
 
+import {AccessRightsModel} from 'hslayers-ng/types';
 import {HsDialogComponent} from 'hslayers-ng/common/dialogs';
 import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
 import {HsDrawService} from 'hslayers-ng/shared/draw';
 import {HsMapService} from 'hslayers-ng/shared/map';
-import {accessRightsModel} from 'hslayers-ng/types';
 import {
   awaitLayerSync,
   getLaymanFriendlyLayerName,
@@ -38,7 +38,7 @@ export class HsDrawLayerMetadataDialogComponent
   folderVisible = false;
   type: string;
   endpoint: any;
-  access_rights: accessRightsModel = {
+  access_rights: AccessRightsModel = {
     'access_rights.write': 'private',
     'access_rights.read': 'EVERYONE',
   };

@@ -12,6 +12,7 @@ import {Subject, takeUntil} from 'rxjs';
 import {Cluster} from 'ol/source';
 import {GeoJSON} from 'ol/format';
 
+import {AccessRightsModel} from 'hslayers-ng/types';
 import {DEFAULT_VECTOR_LOAD_TYPE} from '../../enums/load-types.const';
 import {
   HsAddDataCommonFileService,
@@ -29,7 +30,6 @@ import {HsToastService} from 'hslayers-ng/common/toast';
 import {HsUploadComponent, HsUploadedFiles} from 'hslayers-ng/common/upload';
 import {HsUtilsService} from 'hslayers-ng/shared/utils';
 import {VectorFileDataType} from '../../common/advanced-options/advanced-options.component';
-import {accessRightsModel} from 'hslayers-ng/types';
 import {getShowInLayerManager} from 'hslayers-ng/common/extensions';
 
 @Component({
@@ -47,7 +47,7 @@ export class HsAddDataVectorFileComponent
   uploadType = 'new';
   data: VectorFileDataType;
   fileInput: ElementRef;
-  access_rights: accessRightsModel = {
+  access_rights: AccessRightsModel = {
     'access_rights.write': 'private',
     'access_rights.read': 'EVERYONE',
   };

@@ -375,7 +375,7 @@ export class HsCompositionsLayerParserService {
       const title = lyr_def.title || 'Layer';
       let layer;
       switch (format) {
-        case 'ol.format.KML': //backwards compatiblity
+        case 'ol.format.KML': //backwards compatibility
         case 'KML':
           layer = await this.HsAddDataVectorService.createVectorLayer(
             'kml',
@@ -387,7 +387,7 @@ export class HsCompositionsLayerParserService {
             Object.assign(options, {extractStyles}),
           );
           break;
-        case 'ol.format.GeoJSON': //backwards compatiblity
+        case 'ol.format.GeoJSON': //backwards compatibility
         case 'GeoJSON':
           layer = await this.HsAddDataVectorService.createVectorLayer(
             'geojson',
@@ -399,7 +399,7 @@ export class HsCompositionsLayerParserService {
             options,
           );
           break;
-        case 'hs.format.WFS': //backwards compatiblity
+        case 'hs.format.WFS': //backwards compatibility
         case 'WFS':
           layer = await this.HsAddDataVectorService.createVectorLayer(
             'wfs',
@@ -412,7 +412,7 @@ export class HsCompositionsLayerParserService {
             options,
           );
           break;
-        case 'hs.format.Sparql': //backwards compatiblity
+        case 'hs.format.Sparql': //backwards compatibility
         case 'Sparql':
           layer = await this.createSparqlLayer(lyr_def);
           break;

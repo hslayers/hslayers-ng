@@ -6,6 +6,7 @@ import {Group, Layer} from 'ol/layer';
 import {Source} from 'ol/source';
 
 import {
+  AccessRightsModel,
   Attribution,
   Definition,
   Dimension,
@@ -13,7 +14,6 @@ import {
   Editor,
   LayerSwipeSide,
   Metadata,
-  accessRightsModel,
   popUp,
 } from 'hslayers-ng/types';
 import {DOMFeatureLink} from 'hslayers-ng/types';
@@ -70,13 +70,13 @@ const WORKSPACE = 'workspace';
 export const DOM_FEATURE_LINKS = 'domFeatureLinks';
 const WMS_ORIGINAL_EXTENT = 'wmsOriginalExtent';
 
-export function getAccessRights(layer: Layer<Source>): accessRightsModel {
+export function getAccessRights(layer: Layer<Source>): AccessRightsModel {
   return layer.get(ACCESS_RIGHTS);
 }
 
 export function setAccessRights(
   layer: Layer<Source>,
-  access_rights: accessRightsModel,
+  access_rights: AccessRightsModel,
 ): void {
   layer.set(ACCESS_RIGHTS, access_rights);
 }

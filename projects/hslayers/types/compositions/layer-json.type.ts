@@ -9,10 +9,10 @@ import {LayerSwipeSide} from '../map-swipe.type';
 import {SerializedStyle} from './serialized-style.type';
 
 type Opacity = string | number;
-type legacyClassname = 'HSLayers.Layer.WMS' | 'HSLayers.Layer.WMTS';
+type LegacyClassname = 'HSLayers.Layer.WMS' | 'HSLayers.Layer.WMTS';
 
 export type Classname =
-  | legacyClassname
+  | LegacyClassname
   | 'WMS'
   | 'WMTS'
   | 'Vector'
@@ -20,15 +20,15 @@ export type Classname =
   | 'ArcGISRest'
   | 'StaticImage';
 
-type legacyLayerProcolFormat =
+type LegacyLayerProtocolFormat =
   | 'hs.format.externalWFS'
   | 'ol.format.KML'
   | 'ol.format.GeoJSON'
   | 'ol.format.GPX'
   | 'ol.format.Sparql';
 
-export type LayerProcolFormat =
-  | legacyLayerProcolFormat
+export type LayerProtocolFormat =
+  | LegacyLayerProtocolFormat
   | 'KML'
   | 'GeoJSON'
   | 'GPX'
@@ -41,7 +41,7 @@ export type LayerProcolFormat =
  * Definition for vector layers
  * Layer without URL is not synchronized
  */
-export type Definition = {url?: string; format: LayerProcolFormat};
+export type Definition = {url?: string; format: LayerProtocolFormat};
 
 interface TheParamsSchema {
   LAYERS?: string;

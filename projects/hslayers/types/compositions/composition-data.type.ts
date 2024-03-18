@@ -1,7 +1,7 @@
 import {Layer} from 'ol/layer';
 
+import {AccessRightsModel} from '../access-rights.model';
 import {BoundingBoxObject} from '../bounding-box-object.type';
-import {accessRightsModel} from '../access-rights.model';
 
 export type CompoData = {
   name?: string;
@@ -11,6 +11,6 @@ export type CompoData = {
   id?: string;
   thumbnail?: any;
   bbox?: BoundingBoxObject;
-  access_rights?: accessRightsModel;
+  access_rights?: AccessRightsModel;
   workspace?: string;
 };

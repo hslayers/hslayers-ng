@@ -2,12 +2,12 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 
 import {Observable, Subject, map, startWith, takeUntil} from 'rxjs';
 
+import {AccessRightsModel} from 'hslayers-ng/types';
 import {HsEndpoint} from 'hslayers-ng/types';
 import {HsLayoutService} from 'hslayers-ng/shared/layout';
 import {HsSaveMapManagerService} from '../save-map-manager.service';
 import {HsUtilsService} from 'hslayers-ng/shared/utils';
 import {StatusData} from 'hslayers-ng/types';
-import {accessRightsModel} from 'hslayers-ng/types';
 
 @Component({
   selector: 'hs-save-map-form',
@@ -85,7 +85,7 @@ export class HsSaveMapAdvancedFormComponent implements OnDestroy, OnInit {
   /**
    * Manually set access rights on form as component itself is not compatible with reactive forms
    */
-  setAccessRights(data: accessRightsModel) {
+  setAccessRights(data: AccessRightsModel) {
     this.hsSaveMapManagerService.compoData.patchValue({
       access_rights: data,
     });

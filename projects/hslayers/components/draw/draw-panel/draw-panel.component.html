@@ -69,7 +69,7 @@
                 <i class="glyphicon icon-save-floppy"></i>
             </button>
             <ng-container *ngIf="HsDrawService.hasSomeDrawables">
-                <ng-container *ngIf="HsDrawService.moreThenOneDrawable === true; else deleteButton">
+                <ng-container *ngIf="HsDrawService.moreThanOneDrawable === true; else deleteButton">
                     <div ngbDropdown placement="bottom-right" display="dynamic" style="white-space: nowrap;"
                         #removeLayersDropdown="ngbDropdown">
                         <button type="button" ngbDropdownToggle class="btn btn-light  btn-outline-danger btn-sm"
@@ -79,11 +79,11 @@
                         <div ngbDropdownMenu class="flex-column px-1 py-2">
                             <div class="d-flex align-items-center w-100 flex-column">
                                 <a class="dropdown-item" *ngIf="HsDrawService.selectedLayer"
-                                    (click)="HsDrawService.layerRemoval(); removeLayersDropdown.close()">{{'COMMON.removeLayer'
+                                    (click)="HsDrawService.removeLayer(); removeLayersDropdown.close()">{{'COMMON.removeLayer'
                                     |
                                     translateHs }}</a>
                                 <a class="dropdown-item"
-                                    (click)="HsDrawService.layerRemoval(true); removeLayersDropdown.close()">{{'DRAW.removeMultipleLayers'
+                                    (click)="HsDrawService.removeMultipleLayers(); removeLayersDropdown.close()">{{'DRAW.removeMultipleLayers'
                                     | translateHs }}</a>
                             </div>
                         </div>
@@ -91,7 +91,7 @@
                 </ng-container>
                 <ng-template #deleteButton>
                     <button type="button" class="btn btn-light  btn-outline-danger btn-sm"
-                        (click)="HsDrawService.layerRemoval()" [title]="'COMMON.removeLayer' | translateHs "
+                        (click)="HsDrawService.removeLayer()" [title]="'COMMON.removeLayer' | translateHs "
                         style="border: none !important;">
                         <i class="glyphicon icon-trash"></i>
                     </button>

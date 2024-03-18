@@ -78,7 +78,7 @@ export class HsAddDataVectorService {
           srs,
           options,
         );
-        /* 
+        /*
         Set definition property with protocol inside 
         so layer synchronizer knows whether to sync
         */
@@ -106,7 +106,7 @@ export class HsAddDataVectorService {
 
   /**
    * Load non-wms OWS data and create layer
-   * @param type - Type of data to load (supports Kml, Geojson, Wfs and Sparql)
+   * @param type - Type of data to load (supports KML, GeoJSON, WFS and SPARQL)
    * @param url - Url of data/service localization
    * @param name -
    * @param title - Title of new layer
@@ -350,7 +350,7 @@ export class HsAddDataVectorService {
    */
   async checkForLayerInLayman(
     data: VectorDataObject,
-    repetive?: boolean,
+    repetitive?: boolean,
   ): Promise<OverwriteResponse> {
     let upsertReq: PostPatchLayerResponse;
     const commonFileRef = this.hsAddDataCommonFileService;
@@ -364,7 +364,7 @@ export class HsAddDataVectorService {
       const result =
         await this.hsAddDataCommonFileService.loadOverwriteLayerDialog(
           data,
-          repetive,
+          repetitive,
         );
       switch (result) {
         case OverwriteResponse.overwrite:

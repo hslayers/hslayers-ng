@@ -3,6 +3,7 @@
   <!-- TODO: Remove function call from template -->
   <hs-add-to-map *ngIf="hsAddDataCommonFileService.isAuthenticated(); else login" [disabled]="!canAdd()" (add)="add()"
     [loading]="hsAddDataCommonFileService.loadingToLayman">
+        <!-- TODO: Remove function call from template -->
     <span
       *ngIf="hsAddDataCommonFileService.loadingToLayman && hsAddDataCommonFileService.readingData">&emsp;{{'COMMON.reading'
       |
@@ -16,7 +17,6 @@
 
 <ng-template #login>
   <div class="alert alert-warning d-flex align-items-center mt-2 justify-content-between">
-    <!-- TODO: Remove function call from template -->
     <p class="m-0"> {{'ADDLAYERS.SHP.loginRequired' | translateHs }}</p>
     <hs-layman-current-user></hs-layman-current-user>
   </div>
