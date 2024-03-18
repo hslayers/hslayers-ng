@@ -1,7 +1,7 @@
-import {accessRightsModel} from 'hslayers-ng/types';
+import {AccessRightsModel} from 'hslayers-ng/types';
 
 export type GetLayersResponse = {
-  access_rights: accessRightsModel;
+  access_rights: AccessRightsModel;
   bounding_box: number[];
   name: string;
   title: string;

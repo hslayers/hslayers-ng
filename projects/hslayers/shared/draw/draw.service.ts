@@ -537,7 +537,7 @@ export class HsDrawService extends HsDrawServiceParams {
     this.drawableLayersAvailable =
       this.drawableLayers.length > 0 || this.drawableLaymanLayers.length > 0;
     this.hasSomeDrawables = this.drawableLayers.length > 0;
-    this.moreThenOneDrawable = this.drawableLayers?.length > 1;
+    this.moreThanOneDrawable = this.drawableLayers?.length > 1;
   }
 
   private selectedLayerNotAvailable(drawables) {
@@ -831,9 +831,23 @@ export class HsDrawService extends HsDrawServiceParams {
   }
 
   /**
+   * Remove one draw layer
+   */
+  async removeLayer() {
+    await this.layerRemoval(false);
+  }
+
+  /**
+   * Remove multiple draw layers
+   */
+  async removeMultipleLayers() {
+    await this.layerRemoval(true);
+  }
+
+  /**
    * Remove draw layer/layers
    */
-  async layerRemoval(multi: boolean = false) {
+  private async layerRemoval(multi: boolean = false) {
     let confirmed;
     const a: ['map', 'mapcatalogue'] | ['map'] = this.hsCommonLaymanService
       .layman?.authenticated

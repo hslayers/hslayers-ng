@@ -1,5 +1,7 @@
 import {Component, OnInit, ViewRef} from '@angular/core';
 
+import {Layer} from 'ol/layer';
+
 import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
 import {HsDialogComponent} from 'hslayers-ng/common/dialogs';
 import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
@@ -9,7 +11,6 @@ import {
   HsRemoveLayerDialogService,
   RemoveLayerWrapper,
 } from './remove-layer-dialog.service';
-import {Layer} from 'ol/layer';
 import {getName, getTitle} from 'hslayers-ng/common/extensions';
 
 /**
@@ -18,14 +19,11 @@ import {getName, getTitle} from 'hslayers-ng/common/extensions';
  * string - Name param from Layman layer descriptor. Not all layers are guaranteed to be in map
  * Layer<Source> - OL layer. Layers already in map
  */
-export type HsRmLayerDialogeDeleteOptions =
-  | 'map'
-  | 'catalogue'
-  | 'mapcatalogue';
+export type HsRmLayerDialogDeleteOptions = 'map' | 'catalogue' | 'mapcatalogue';
 
 export type HsRmLayerDialogResponse = {
   value: 'yes' | 'no';
-  type?: HsRmLayerDialogeDeleteOptions;
+  type?: HsRmLayerDialogDeleteOptions;
 };
 
 @Component({
@@ -63,7 +61,7 @@ export class HsRmLayerDialogComponent implements HsDialogComponent, OnInit {
   data: {
     multiple: boolean;
     title: string;
-    deleteFromOptions?: HsRmLayerDialogeDeleteOptions[];
+    deleteFromOptions?: HsRmLayerDialogDeleteOptions[];
     message: string;
     note?: string;
     items?: RemoveLayerWrapper[];
@@ -95,7 +93,7 @@ export class HsRmLayerDialogComponent implements HsDialogComponent, OnInit {
   selectDeleteOption(option) {
     this.deleteFrom = option;
     /**
-     * If removing only one layer checkboxes are not avaialable thus we need
+     * If removing only one layer checkboxes are not available thus we need
      * to disable delete button
      */
     this.deleteAllowed = !this.data.multiple ? true : this.deleteAllowed;

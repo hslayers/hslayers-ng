@@ -23,6 +23,7 @@ import {Vector as VectorLayer} from 'ol/layer';
 import {Vector as VectorSource} from 'ol/source';
 
 import {AboutLayman} from 'hslayers-ng/types';
+import {AccessRightsModel} from 'hslayers-ng/types';
 import {AsyncUpload} from 'hslayers-ng/types';
 import {CompoData} from 'hslayers-ng/types';
 import {
@@ -53,7 +54,6 @@ import {
 import {PostPatchLayerResponse} from 'hslayers-ng/common/layman';
 import {UpsertLayerObject} from 'hslayers-ng/types';
 import {WfsSyncParams} from 'hslayers-ng/types';
-import {accessRightsModel} from 'hslayers-ng/types';
 import {
   getAccessRights,
   getLaymanLayerDescriptor,
@@ -144,7 +144,7 @@ export class HsLaymanService implements HsSaverService {
   async updateCompositionAccessRights(
     compName: string,
     endpoint: HsEndpoint,
-    access_rights: accessRightsModel,
+    access_rights: AccessRightsModel,
   ): Promise<any> {
     const rights = this.parseAccessRightsForLayman(endpoint, access_rights);
     const formdata = new FormData();
@@ -215,7 +215,7 @@ export class HsLaymanService implements HsSaverService {
    */
   parseAccessRightsForLayman(
     endpoint: HsEndpoint,
-    access_rights: accessRightsModel,
+    access_rights: AccessRightsModel,
   ): {
     write: string;
     read: string;

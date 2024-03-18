@@ -3,7 +3,7 @@ import {Geometry} from 'ol/geom';
 import {Style} from 'ol/style';
 import {StyleFunction} from 'ol/style/Style';
 
-import {accessRightsModel} from '../../access-rights.model';
+import {AccessRightsModel} from '../../access-rights.model';
 
 export type HsVectorLayerOptions = {
   opacity?: number;
@@ -17,7 +17,7 @@ export type HsVectorLayerOptions = {
   extractStyles?: boolean;
   features?: Feature<Geometry>[];
   workspace?: string;
-  access_rights?: accessRightsModel;
+  access_rights?: AccessRightsModel;
   query?: string;
   queryCapabilities?: boolean;
   sld?: string;

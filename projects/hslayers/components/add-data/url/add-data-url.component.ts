@@ -12,7 +12,7 @@ import {HsLanguageService} from 'hslayers-ng/shared/language';
 import {HsLayoutService} from 'hslayers-ng/shared/layout';
 import {HsLogService} from 'hslayers-ng/shared/log';
 import {HsShareUrlService} from 'hslayers-ng/components/share';
-import {servicesSupportedByUrl} from 'hslayers-ng/types';
+import {SERVICES_SUPPORTED_BY_URL} from 'hslayers-ng/types';
 
 @Component({
   selector: 'hs-add-data-url',
@@ -37,7 +37,7 @@ export class HsAddDataUrlComponent implements OnInit, OnDestroy {
   ngOnInit() {
     if (Array.isArray(this.hsConfig.connectTypes)) {
       this.types = this.hsConfig.connectTypes
-        .filter((type) => servicesSupportedByUrl.includes(type))
+        .filter((type) => SERVICES_SUPPORTED_BY_URL.includes(type))
         .map((type) => AddDataUrlValues.find((v) => v.id == type));
     } else {
       this.types = AddDataUrlValues;

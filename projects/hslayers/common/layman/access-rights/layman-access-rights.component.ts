@@ -3,12 +3,12 @@ import {HttpClient} from '@angular/common/http';
 
 import {lastValueFrom, map} from 'rxjs';
 
+import {AccessRightsModel} from 'hslayers-ng/types';
 import {HsCommonLaymanService} from '../layman.service';
 import {HsEndpoint} from 'hslayers-ng/types';
 import {HsLanguageService} from 'hslayers-ng/shared/language';
 import {HsLogService} from 'hslayers-ng/shared/log';
 import {LaymanUser} from '../types/layman-user.type';
-import {accessRightsModel} from 'hslayers-ng/types';
 
 enum GrantingOptions {
   PERUSER = 'per_user',
@@ -19,9 +19,9 @@ enum GrantingOptions {
   templateUrl: './layman-access-rights.component.html',
 })
 export class HsCommonLaymanAccessRightsComponent implements OnInit {
-  @Input() access_rights: accessRightsModel;
+  @Input() access_rights: AccessRightsModel;
 
-  @Output() access_rights_changed = new EventEmitter<accessRightsModel>();
+  @Output() access_rights_changed = new EventEmitter<AccessRightsModel>();
 
   grantingOptions = GrantingOptions;
   currentOption: string = GrantingOptions.EVERYONE;

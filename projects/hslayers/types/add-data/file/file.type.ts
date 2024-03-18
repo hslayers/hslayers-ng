@@ -1,4 +1,4 @@
-export const filesSupported = [
+export const FILES_SUPPORTED = [
   'kml',
   'gpx',
   'geojson',
@@ -6,5 +6,5 @@ export const filesSupported = [
   'raster',
   'raster-ts',
 ] as const;
-export type AddDataFileType = (typeof filesSupported)[number];
+export type AddDataFileType = (typeof FILES_SUPPORTED)[number];
 //https://stackoverflow.com/questions/40863488/how-can-i-iterate-over-a-custom-literal-type-in-typescript
