@@ -6,7 +6,6 @@ import {Geometry} from 'ol/geom';
 import {ObjectEvent} from 'ol/Object';
 import {Vector as VectorLayer} from 'ol/layer';
 import {Vector as VectorSource} from 'ol/source';
-import {WFS} from 'ol/format';
 
 import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
 import {HsEndpoint} from 'hslayers-ng/types';
@@ -200,6 +199,7 @@ export class HsLayerSynchronizerService {
         setHsLaymanSynchronizing(layer, false);
         if (featureString) {
           source.loading = true;
+          const {default: WFS} = await import('ol/format/WFS');
           const format = new WFS();
           featureString = featureString.replace(
             /urn:x-ogc:def:crs:EPSG:3857/gm,

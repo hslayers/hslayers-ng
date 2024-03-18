@@ -1,5 +1,4 @@
 import Feature from 'ol/Feature';
-import {GPX, GeoJSON, KML} from 'ol/format';
 import {Geometry} from 'ol/geom';
 import {Vector as VectorSource} from 'ol/source';
 
@@ -32,7 +31,13 @@ export class VectorSourceDescriptor {
     | typeof SparqlJson
     | typeof VectorSource;
 
-  constructor(
+  constructor() {}
+
+  /**
+   * Construction method which relpaces constructor method in order to allow async.
+   * Should be called after common class initaton new VectorSourceDescriptor()
+   */
+  async init(
     type: string,
     url: string,
     srs,
@@ -46,25 +51,28 @@ export class VectorSourceDescriptor {
       srs,
     };
 
-    switch (type ? type.toLowerCase() : '') {
-      case 'kml':
+    const handlers = {
+      'kml': async () => {
+        const {default: KML} = await import('ol/format/KML');
         this.sourceParams.url = url;
         this.sourceParams.format = new KML({
           extractStyles: options.extractStyles,
         });
         this.sourceClass = VectorSourceFromUrl;
-        break;
-      case 'geojson':
+      },
+      'geojson': async () => {
+        const {default: GeoJSON} = await import('ol/format/GeoJSON');
         this.sourceParams.url = url;
         this.sourceParams.format = new GeoJSON();
         this.sourceClass = VectorSourceFromUrl;
-        break;
-      case 'gpx':
+      },
+      'gpx': async () => {
+        const {default: GPX} = await import('ol/format/GPX');
         this.sourceParams.url = url;
         this.sourceParams.format = new GPX();
         this.sourceClass = VectorSourceFromUrl;
-        break;
-      case 'sparql':
+      },
+      'sparql': async () => {
         this.sourceParams = {
           geomAttribute: options.geomAttribute ?? '?geom',
           idAttribute: options.idAttribute,
@@ -81,11 +89,12 @@ export class VectorSourceDescriptor {
           maxResolution: 38,
         };
         this.sourceClass = SparqlJson;
-        break;
-      case 'wfs':
+      },
+      'wfs': async () => {
         this.sourceClass = VectorSource;
-        break;
-      default:
+      },
+      'default': async () => {
+        const {default: GeoJSON} = await import('ol/format/GeoJSON');
         this.sourceClass = VectorSource;
         const format = new GeoJSON();
         let features = options.features || [];
@@ -93,13 +102,17 @@ export class VectorSourceDescriptor {
           features = format.readFeatures(options.features, {
             dataProjection: srs,
             featureProjection: this.mapProjection,
-          }) as Feature[]; //FIXME: Type-cast shall be automatically inferred after OL >8.2
+          }) as Feature[];
         }
         this.sourceParams = {
           srs,
           options,
           features,
         };
-    }
+      },
+    };
+
+    const handler = handlers[type?.toLowerCase()] || handlers['default'];
+    await handler.call(this);
   }
 }

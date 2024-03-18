@@ -14,7 +14,7 @@ import {
 } from 'rxjs';
 
 import {Feature} from 'ol';
-import {GeoJSON, WFS} from 'ol/format';
+import {GeoJSON} from 'ol/format';
 import {GeoJSONFeatureCollection} from 'ol/format/GeoJSON';
 import {Geometry} from 'ol/geom';
 import {Layer} from 'ol/layer';
@@ -679,6 +679,7 @@ export class HsLaymanService implements HsSaverService {
     try {
       const srsName = this.hsMapService.getCurrentProj().getCode();
       const featureType = getLayerName(layer);
+      const {default: WFS} = await import('ol/format/WFS');
       const wfsFormat = new WFS();
       const options = {
         featureNS: 'http://' + ep.user,

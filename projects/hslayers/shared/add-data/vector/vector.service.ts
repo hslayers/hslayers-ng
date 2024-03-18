@@ -155,13 +155,8 @@ export class HsAddDataVectorService {
       mapProjection,
     );
 
-    const sourceDescriptor = new VectorSourceDescriptor(
-      type,
-      url,
-      srs,
-      options,
-      mapProjection,
-    );
+    const sourceDescriptor = new VectorSourceDescriptor();
+    await sourceDescriptor.init(type, url, srs, options, mapProjection);
 
     const src =
       sourceDescriptor.sourceClass == VectorSource ||

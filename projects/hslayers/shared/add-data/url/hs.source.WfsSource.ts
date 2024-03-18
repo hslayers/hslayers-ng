@@ -1,10 +1,7 @@
 import {HttpClient} from '@angular/common/http';
-import {lastValueFrom} from 'rxjs';
 
 import {Extent} from 'ol/extent';
-import {ObjectEvent} from 'ol/Object';
 import {Vector as VectorSource} from 'ol/source';
-import {WFS} from 'ol/format';
 import {bbox, tile} from 'ol/loadingstrategy';
 import {createXYZ} from 'ol/tilegrid';
 import {transformExtent} from 'ol/proj';
@@ -80,8 +77,8 @@ export class WfsSource extends VectorSource {
         url = hsUtilsService.proxify(url);
 
         http.get(url, {responseType: 'text'}).subscribe({
-          next: (response) => {
-            const features = readFeatures(
+          next: async (response) => {
+            const features = await readFeatures(
               response,
               map_projection,
               data_version,
@@ -103,7 +100,8 @@ export class WfsSource extends VectorSource {
   }
 }
 
-function readFeatures(doc, map_projection, data_version, srs) {
+async function readFeatures(doc, map_projection, data_version, srs) {
+  const {default: WFS} = await import('ol/format/WFS');
   const wfs = new WFS({version: data_version});
   const features = wfs.readFeatures(doc, {
     dataProjection: srs,
@@ -111,4 +109,5 @@ function readFeatures(doc, map_projection, data_version, srs) {
   });
   return features;
 }
+
 export default WfsSource;
