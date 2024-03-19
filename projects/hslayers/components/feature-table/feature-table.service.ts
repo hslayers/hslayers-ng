@@ -5,9 +5,9 @@ import {Feature} from 'ol';
 import {Geometry} from 'ol/geom';
 import {Layer, Vector as VectorLayer} from 'ol/layer';
 
-import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
-import {HsQueryVectorService} from 'hslayers-ng/shared/query';
-import {HsUtilsService} from 'hslayers-ng/shared/utils';
+import {HsLayerUtilsService} from 'hslayers-ng/services/utils';
+import {HsQueryVectorService} from 'hslayers-ng/services/query';
+import {HsUtilsService} from 'hslayers-ng/services/utils';
 import {
   getBase,
   getShowInLayerManager,

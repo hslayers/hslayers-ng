@@ -8,7 +8,7 @@ import {HsPrintImprintStylerComponent} from './imprint-styler/imprint-styler.com
 import {HsPrintLegendStylerComponent} from './legend-styler/legend-styler.component';
 import {HsPrintScaleStylerComponent} from './scale-styler/scale-styler.component';
 import {HsPrintTextStylerComponent} from './text-styler/text-styler.component';
-import {TranslateCustomPipe} from 'hslayers-ng/shared/language';
+import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 
 @NgModule({
   imports: [

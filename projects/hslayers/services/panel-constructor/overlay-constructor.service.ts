@@ -2,9 +2,9 @@ import {HsQueryPopupService} from 'hslayers-ng/common/query-popup';
 import {Injectable} from '@angular/core';
 
 import {HsConfig} from 'hslayers-ng/config';
-import {HsOverlayContainerService} from 'hslayers-ng/shared/panels';
-import {HsPanelContainerService} from 'hslayers-ng/shared/panels';
-import {HsToolbarPanelContainerService} from 'hslayers-ng/shared/panels';
+import {HsOverlayContainerService} from 'hslayers-ng/services/panels';
+import {HsPanelContainerService} from 'hslayers-ng/services/panels';
+import {HsToolbarPanelContainerService} from 'hslayers-ng/services/panels';
 
 @Injectable({
   providedIn: 'root',

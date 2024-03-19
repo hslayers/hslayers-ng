@@ -7,13 +7,13 @@ import {transformExtent} from 'ol/proj';
 
 import {HS_PRMS, HS_PRMS_BACKWARDS, HS_PRMS_REGENERATED} from './get-params';
 import {HsConfig} from 'hslayers-ng/config';
-import {HsCoreService} from 'hslayers-ng/shared/core';
-import {HsEventBusService} from 'hslayers-ng/shared/event-bus';
-import {HsLanguageService} from 'hslayers-ng/shared/language';
-import {HsLayoutService} from 'hslayers-ng/shared/layout';
-import {HsMapService} from 'hslayers-ng/shared/map';
-import {HsSaveMapService} from 'hslayers-ng/shared/save-map';
-import {HsUtilsService} from 'hslayers-ng/shared/utils';
+import {HsCoreService} from 'hslayers-ng/services/core';
+import {HsEventBusService} from 'hslayers-ng/services/event-bus';
+import {HsLanguageService} from 'hslayers-ng/services/language';
+import {HsLayoutService} from 'hslayers-ng/services/layout';
+import {HsMapService} from 'hslayers-ng/services/map';
+import {HsSaveMapService} from 'hslayers-ng/services/save-map';
+import {HsUtilsService} from 'hslayers-ng/services/utils';
 import {MapComposition} from 'hslayers-ng/types';
 import {getShowInLayerManager, getTitle} from 'hslayers-ng/common/extensions';
 

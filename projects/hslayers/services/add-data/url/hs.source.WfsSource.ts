@@ -6,7 +6,7 @@ import {bbox, tile} from 'ol/loadingstrategy';
 import {createXYZ} from 'ol/tilegrid';
 import {transformExtent} from 'ol/proj';
 
-import {HsUtilsService} from 'hslayers-ng/shared/utils';
+import {HsUtilsService} from 'hslayers-ng/services/utils';
 
 export type WfsOptions = {
   data_version?: string;

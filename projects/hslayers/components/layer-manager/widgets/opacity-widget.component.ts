@@ -1,8 +1,8 @@
 import {Component} from '@angular/core';
 
-import {HsEventBusService} from 'hslayers-ng/shared/event-bus';
+import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsLayerEditorWidgetBaseComponent} from './layer-editor-widget-base.component';
-import {HsLayerSelectorService} from 'hslayers-ng/shared/layer-manager';
+import {HsLayerSelectorService} from 'hslayers-ng/services/layer-manager';
 
 @Component({
   selector: 'hs-opacity-widget',

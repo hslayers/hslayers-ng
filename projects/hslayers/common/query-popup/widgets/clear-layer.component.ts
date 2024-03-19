@@ -5,8 +5,8 @@ import {Source} from 'ol/source';
 
 import {HsConfirmDialogComponent} from 'hslayers-ng/common/confirm';
 import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
-import {HsLanguageService} from 'hslayers-ng/shared/language';
-import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
+import {HsLanguageService} from 'hslayers-ng/services/language';
+import {HsLayerUtilsService} from 'hslayers-ng/services/utils';
 import {HsQueryPopupServiceModel} from '..//query-popup.service.model';
 import {HsQueryPopupWidgetBaseComponent} from '..//query-popup-widget-base.component';
 import {getTitle} from 'hslayers-ng/common/extensions';

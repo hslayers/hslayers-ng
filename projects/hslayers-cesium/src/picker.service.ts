@@ -13,8 +13,8 @@ import {
 } from 'cesium';
 import {Feature} from 'ol';
 import {HsConfig} from 'hslayers-ng/config';
-import {HsMapService} from 'hslayers-ng/shared/map';
-import {HsUtilsService} from 'hslayers-ng/shared/utils';
+import {HsMapService} from 'hslayers-ng/services/map';
+import {HsUtilsService} from 'hslayers-ng/services/utils';
 
 import {HsCesiumQueryPopupService} from './query-popup.service';
 

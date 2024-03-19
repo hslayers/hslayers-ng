@@ -10,16 +10,16 @@ import {
 import {Subject, delay, takeUntil} from 'rxjs';
 
 import {HsConfig, HsConfigObject} from 'hslayers-ng/config';
-import {HsEventBusService} from 'hslayers-ng/shared/event-bus';
-import {HsExternalService} from 'hslayers-ng/shared/external';
-import {HsLayoutService} from 'hslayers-ng/shared/layout';
-import {HsLogService} from 'hslayers-ng/shared/log';
+import {HsEventBusService} from 'hslayers-ng/services/event-bus';
+import {HsExternalService} from 'hslayers-ng/services/external';
+import {HsLayoutService} from 'hslayers-ng/services/layout';
+import {HsLogService} from 'hslayers-ng/services/log';
 import {HsMapHostDirective} from './map-host.directive';
 import {
   HsOverlayContainerService,
   HsPanelContainerService,
-} from 'hslayers-ng/shared/panels';
-import {HsUtilsService} from 'hslayers-ng/shared/utils';
+} from 'hslayers-ng/services/panels';
+import {HsUtilsService} from 'hslayers-ng/services/utils';
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector

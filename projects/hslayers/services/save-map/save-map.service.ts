@@ -27,11 +27,11 @@ import {
   SerializedStyle,
 } from 'hslayers-ng/types';
 import {CompoData} from 'hslayers-ng/types';
-import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
-import {HsLogService} from 'hslayers-ng/shared/log';
-import {HsMapService} from 'hslayers-ng/shared/map';
-import {HsShareThumbnailService} from 'hslayers-ng/shared/share';
-import {HsUtilsService} from 'hslayers-ng/shared/utils';
+import {HsLayerUtilsService} from 'hslayers-ng/services/utils';
+import {HsLogService} from 'hslayers-ng/services/log';
+import {HsMapService} from 'hslayers-ng/services/map';
+import {HsShareThumbnailService} from 'hslayers-ng/services/share';
+import {HsUtilsService} from 'hslayers-ng/services/utils';
 import {LayerJSON} from 'hslayers-ng/types';
 import {MapComposition} from 'hslayers-ng/types';
 import {SerializedImage} from 'hslayers-ng/types';

@@ -2,7 +2,7 @@ import {BehaviorSubject, Observable, Subject, delay, map, skip} from 'rxjs';
 import {ElementRef, Injectable, Type, ViewContainerRef} from '@angular/core';
 
 import {HsConfig} from 'hslayers-ng/config';
-import {HsLogService} from 'hslayers-ng/shared/log';
+import {HsLogService} from 'hslayers-ng/services/log';
 
 export class HsLayoutParams {
   /**

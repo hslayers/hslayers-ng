@@ -4,13 +4,13 @@ import {takeUntil} from 'rxjs/operators';
 
 import {Dimension} from 'hslayers-ng/types';
 import {HsDimensionDescriptor} from 'hslayers-ng/common/dimensions';
-import {HsDimensionService} from 'hslayers-ng/shared/get-capabilities';
-import {HsDimensionTimeService} from 'hslayers-ng/shared/get-capabilities';
-import {HsEventBusService} from 'hslayers-ng/shared/event-bus';
+import {HsDimensionService} from 'hslayers-ng/services/get-capabilities';
+import {HsDimensionTimeService} from 'hslayers-ng/services/get-capabilities';
+import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsLayerEditorWidgetBaseComponent} from '../widgets/layer-editor-widget-base.component';
-import {HsLayerSelectorService} from 'hslayers-ng/shared/layer-manager';
-import {HsMapService} from 'hslayers-ng/shared/map';
-import {HsUtilsService} from 'hslayers-ng/shared/utils';
+import {HsLayerSelectorService} from 'hslayers-ng/services/layer-manager';
+import {HsMapService} from 'hslayers-ng/services/map';
+import {HsUtilsService} from 'hslayers-ng/services/utils';
 import {getDimensions} from 'hslayers-ng/common/extensions';
 
 @Component({

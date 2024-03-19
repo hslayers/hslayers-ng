@@ -5,10 +5,10 @@ import {Feature} from 'ol';
 import {Vector as VectorSource} from 'ol/source';
 
 import {HsConfig} from 'hslayers-ng/config';
-import {HsLanguageService} from 'hslayers-ng/shared/language';
+import {HsLanguageService} from 'hslayers-ng/services/language';
 import {HsLayerEditorWidgetBaseComponent} from './layer-editor-widget-base.component';
-import {HsLayerSelectorService} from 'hslayers-ng/shared/layer-manager';
-import {HsLayerUtilsService, HsUtilsService} from 'hslayers-ng/shared/utils';
+import {HsLayerSelectorService} from 'hslayers-ng/services/layer-manager';
+import {HsLayerUtilsService, HsUtilsService} from 'hslayers-ng/services/utils';
 import {InterpolatedSource} from 'hslayers-ng/common/layers';
 
 @Component({

@@ -8,7 +8,7 @@ import {
 import {
   HsLayerManagerService,
   HsLayerManagerVisibilityService,
-} from 'hslayers-ng/shared/layer-manager';
+} from 'hslayers-ng/services/layer-manager';
 
 @Component({
   selector: 'hs-layer-editor-sub-layer-checkbox',

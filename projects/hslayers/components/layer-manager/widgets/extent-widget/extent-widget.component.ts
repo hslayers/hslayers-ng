@@ -2,8 +2,8 @@ import {Component} from '@angular/core';
 import {Observable, map} from 'rxjs';
 
 import {HsLayerEditorWidgetBaseComponent} from '../layer-editor-widget-base.component';
-import {HsLayerSelectorService} from 'hslayers-ng/shared/layer-manager';
-import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
+import {HsLayerSelectorService} from 'hslayers-ng/services/layer-manager';
+import {HsLayerUtilsService} from 'hslayers-ng/services/utils';
 import {
   getWmsOriginalExtent,
   setWmsOriginalExtent,

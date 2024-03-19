@@ -6,18 +6,18 @@ import {HttpClientTestingModule} from '@angular/common/http/testing';
 
 import {HsConfig} from 'hslayers-ng/config';
 import {HsConfigMock} from './config.service.mock';
-import {HsLayerShiftingService} from 'hslayers-ng/shared/layer-shifting';
-import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
-import {HsLayoutService} from 'hslayers-ng/shared/layout';
+import {HsLayerShiftingService} from 'hslayers-ng/services/layer-shifting';
+import {HsLayerUtilsService} from 'hslayers-ng/services/utils';
+import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsLayoutServiceMock} from './layout.service.mock';
 import {HsMapSwipeComponent} from 'hslayers-ng/components/map-swipe';
 import {HsMapSwipeService} from 'hslayers-ng/components/map-swipe';
 import {HsPanelHeaderComponent} from 'hslayers-ng/common/panels';
 import {HsPanelHelpersModule} from 'hslayers-ng/common/panels';
-import {HsSidebarService} from 'hslayers-ng/shared/sidebar';
-import {HsUtilsService} from 'hslayers-ng/shared/utils';
+import {HsSidebarService} from 'hslayers-ng/services/sidebar';
+import {HsUtilsService} from 'hslayers-ng/services/utils';
 import {HsUtilsServiceMock} from './utils.service.mock';
-import {TranslateCustomPipe} from 'hslayers-ng/shared/language';
+import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 import {mockLayerUtilsService} from './layer-utils.service.mock';
 
 function mockHsLayerShiftingService() {

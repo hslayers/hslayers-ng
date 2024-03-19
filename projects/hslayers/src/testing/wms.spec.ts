@@ -11,19 +11,19 @@ import {HttpClient, HttpClientModule} from '@angular/common/http';
 import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
 import {lastValueFrom} from 'rxjs';
 
-import {HsCommonEndpointsService} from 'hslayers-ng/shared/endpoints';
+import {HsCommonEndpointsService} from 'hslayers-ng/services/endpoints';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsConfigMock} from './config.service.mock';
 import {HsLanguageModule} from 'hslayers-ng/components/language';
-import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
-import {HsMapService} from 'hslayers-ng/shared/map';
+import {HsLayerUtilsService} from 'hslayers-ng/services/utils';
+import {HsMapService} from 'hslayers-ng/services/map';
 import {HsMapServiceMock} from './map.service.mock';
 import {HsPanelHelpersModule} from 'hslayers-ng/common/panels';
 import {HsUrlWmsComponent} from 'hslayers-ng//components/add-data';
-import {HsUrlWmsService} from 'hslayers-ng/shared/add-data';
-import {HsUtilsService} from 'hslayers-ng/shared/utils';
+import {HsUrlWmsService} from 'hslayers-ng/services/add-data';
+import {HsUtilsService} from 'hslayers-ng/services/utils';
 import {HsUtilsServiceMock} from './utils.service.mock';
-import {HsWmsGetCapabilitiesService} from 'hslayers-ng/shared/get-capabilities';
+import {HsWmsGetCapabilitiesService} from 'hslayers-ng/services/get-capabilities';
 import {mockLayerUtilsService} from './layer-utils.service.mock';
 import {testingServiceEndpoints} from './data/service-endpoints';
 

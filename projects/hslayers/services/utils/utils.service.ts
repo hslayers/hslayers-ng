@@ -10,7 +10,7 @@ import {lastValueFrom} from 'rxjs';
 
 import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
 import {HsConfig} from 'hslayers-ng/config';
-import {HsLogService} from 'hslayers-ng/shared/log';
+import {HsLogService} from 'hslayers-ng/services/log';
 
 export type Measurement = {
   size: number;

@@ -4,10 +4,10 @@ import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 
 import {HsConfig} from 'hslayers-ng/config';
-import {HsDimensionTimeService} from 'hslayers-ng/shared/get-capabilities';
-import {HsEventBusService} from 'hslayers-ng/shared/event-bus';
+import {HsDimensionTimeService} from 'hslayers-ng/services/get-capabilities';
+import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsLayerDescriptor} from 'hslayers-ng/types';
-import {HsLayoutService} from 'hslayers-ng/shared/layout';
+import {HsLayoutService} from 'hslayers-ng/services/layout';
 
 @Component({
   selector: 'hs-layer-manager-time-editor',

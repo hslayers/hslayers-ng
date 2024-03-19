@@ -2,16 +2,16 @@ import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {Subscription} from 'rxjs';
 
 import {HsConfig} from 'hslayers-ng/config';
-import {HsDimensionTimeService} from 'hslayers-ng/shared/get-capabilities';
-import {HsEventBusService} from 'hslayers-ng/shared/event-bus';
+import {HsDimensionTimeService} from 'hslayers-ng/services/get-capabilities';
+import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsLayerDescriptor} from 'hslayers-ng/types';
 import {HsLayerListService} from './layer-manager-layerlist.service';
 import {
   HsLayerManagerService,
   HsLayerManagerVisibilityService,
   HsLayerSelectorService,
-} from 'hslayers-ng/shared/layer-manager';
-import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
+} from 'hslayers-ng/services/layer-manager';
+import {HsLayerUtilsService} from 'hslayers-ng/services/utils';
 import {
   getDimension,
   getExclusive,

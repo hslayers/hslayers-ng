@@ -5,8 +5,8 @@ import {HsLayerEditorSublayerService} from '../editor/layer-editor-sub-layer.ser
 import {
   HsLayerManagerService,
   HsLayerSelectorService,
-} from 'hslayers-ng/shared/layer-manager';
-import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
+} from 'hslayers-ng/services/layer-manager';
+import {HsLayerUtilsService} from 'hslayers-ng/services/utils';
 import {getPath} from 'hslayers-ng/common/extensions';
 
 @Injectable({

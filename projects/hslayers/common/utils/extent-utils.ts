@@ -3,7 +3,7 @@ import {Geometry} from 'ol/geom';
 import {fromExtent as polygonFromExtent} from 'ol/geom/Polygon';
 import {transform} from 'ol/proj';
 
-import {generateUuid} from 'hslayers-ng/shared/utils';
+import {generateUuid} from 'hslayers-ng/services/utils';
 
 /**
  * @param record - Record of one dataset from Get Records response

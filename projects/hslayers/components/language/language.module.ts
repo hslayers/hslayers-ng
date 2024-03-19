@@ -10,10 +10,10 @@ import {
 
 import {HsConfig} from 'hslayers-ng/config';
 import {HsLanguageComponent} from './language.component';
-import {HsLogService} from 'hslayers-ng/shared/log';
+import {HsLogService} from 'hslayers-ng/services/log';
 import {HsPanelHeaderComponent} from 'hslayers-ng/common/panels';
 import {HsPanelHelpersModule} from 'hslayers-ng/common/panels';
-import {WebpackTranslateLoader} from 'hslayers-ng/shared/language';
+import {WebpackTranslateLoader} from 'hslayers-ng/services/language';
 
 export function getWebpackTranslateLoader(
   hsConfig: HsConfig,

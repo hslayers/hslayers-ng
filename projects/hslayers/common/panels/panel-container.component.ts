@@ -12,7 +12,7 @@ import {ReplaySubject, Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 
 import {HsConfig} from 'hslayers-ng/config';
-import {HsLogService} from 'hslayers-ng/shared/log';
+import {HsLogService} from 'hslayers-ng/services/log';
 import {HsPanelComponent} from './panel-component.interface';
 import {HsPanelContainerServiceInterface} from './panel-container.service.interface';
 import {HsPanelHostDirective} from './panel-host.directive';

@@ -2,10 +2,10 @@ import {Component, OnDestroy} from '@angular/core';
 
 import {Subscription} from 'rxjs';
 
-import {HsCoreService} from 'hslayers-ng/shared/core';
-import {HsEventBusService} from 'hslayers-ng/shared/event-bus';
+import {HsCoreService} from 'hslayers-ng/services/core';
+import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsGuiOverlayBaseComponent} from 'hslayers-ng/common/panels';
-import {HsToolbarPanelContainerService} from 'hslayers-ng/shared/panels';
+import {HsToolbarPanelContainerService} from 'hslayers-ng/services/panels';
 
 @Component({
   selector: 'hs-toolbar',

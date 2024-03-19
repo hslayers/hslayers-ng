@@ -5,7 +5,7 @@ import {
   HsDialogContainerService,
   HsDialogItem,
 } from 'hslayers-ng/common/dialogs';
-import {TranslateCustomPipe} from 'hslayers-ng/shared/language';
+import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 
 @Component({
   selector: 'hs-confirm-dialog',

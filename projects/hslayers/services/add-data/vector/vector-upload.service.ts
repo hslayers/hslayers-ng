@@ -4,8 +4,8 @@ import {Feature} from 'ol';
 import {Projection, get as getProjection} from 'ol/proj';
 import {PROJECTIONS as epsg4326Aliases} from 'ol/proj/epsg4326';
 
-import {HsLogService} from 'hslayers-ng/shared/log';
-import {HsMapService} from 'hslayers-ng/shared/map';
+import {HsLogService} from 'hslayers-ng/services/log';
+import {HsMapService} from 'hslayers-ng/services/map';
 
 import {HsAddDataVectorUtilsService} from './vector-utils.service';
 

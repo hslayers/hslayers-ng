@@ -17,13 +17,13 @@ import {
 } from 'cesium';
 import {Subject} from 'rxjs';
 
-import {HsEventBusService} from 'hslayers-ng/shared/event-bus';
-import {HsLayerManagerService} from 'hslayers-ng/shared/layer-manager';
-import {HsLayoutService} from 'hslayers-ng/shared/layout';
-import {HsLogService} from 'hslayers-ng/shared/log';
-import {HsMapService} from 'hslayers-ng/shared/map';
+import {HsEventBusService} from 'hslayers-ng/services/event-bus';
+import {HsLayerManagerService} from 'hslayers-ng/services/layer-manager';
+import {HsLayoutService} from 'hslayers-ng/services/layout';
+import {HsLogService} from 'hslayers-ng/services/log';
+import {HsMapService} from 'hslayers-ng/services/map';
 import {HsQueryPopupComponent} from 'hslayers-ng/common/query-popup';
-import {HsUtilsService} from 'hslayers-ng/shared/utils';
+import {HsUtilsService} from 'hslayers-ng/services/utils';
 
 import {HsCesiumCameraService} from './hscesium-camera.service';
 import {HsCesiumConfig} from './hscesium-config.service';
@@ -31,7 +31,7 @@ import {HsCesiumLayersService} from './hscesium-layers.service';
 import {HsCesiumPickerService} from './picker.service';
 import {HsCesiumQueryPopupService} from './query-popup.service';
 import {HsCesiumTimeService} from './hscesium-time.service';
-import {HsOverlayConstructorService} from 'hslayers-ng/shared/panel-constructor';
+import {HsOverlayConstructorService} from 'hslayers-ng/services/panel-constructor';
 
 @Injectable({
   providedIn: 'root',

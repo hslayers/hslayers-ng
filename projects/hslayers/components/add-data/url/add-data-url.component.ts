@@ -3,14 +3,14 @@ import {Subject} from 'rxjs';
 
 import {AddDataUrlType} from 'hslayers-ng/types';
 import {AddDataUrlValues} from './add-data-url-values';
-import {HsAddDataCommonService} from 'hslayers-ng/shared/add-data';
-import {HsAddDataOwsService} from 'hslayers-ng/shared/add-data';
-import {HsAddDataUrlService} from 'hslayers-ng/shared/add-data';
+import {HsAddDataCommonService} from 'hslayers-ng/services/add-data';
+import {HsAddDataOwsService} from 'hslayers-ng/services/add-data';
+import {HsAddDataUrlService} from 'hslayers-ng/services/add-data';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
-import {HsLanguageService} from 'hslayers-ng/shared/language';
-import {HsLayoutService} from 'hslayers-ng/shared/layout';
-import {HsLogService} from 'hslayers-ng/shared/log';
+import {HsLanguageService} from 'hslayers-ng/services/language';
+import {HsLayoutService} from 'hslayers-ng/services/layout';
+import {HsLogService} from 'hslayers-ng/services/log';
 import {HsShareUrlService} from 'hslayers-ng/components/share';
 import {SERVICES_SUPPORTED_BY_URL} from 'hslayers-ng/types';
 

@@ -4,8 +4,8 @@ import {Layer} from 'ol/layer';
 import {Source} from 'ol/source';
 
 import {HsLayerDescriptor} from 'hslayers-ng/types';
-import {HsLayerManagerService} from 'hslayers-ng/shared/layer-manager';
-import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
+import {HsLayerManagerService} from 'hslayers-ng/services/layer-manager';
+import {HsLayerUtilsService} from 'hslayers-ng/services/utils';
 
 @Component({
   selector: 'hs-target-position',

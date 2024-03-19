@@ -6,7 +6,7 @@ import {HsAddDataCommonModule} from '../../common/common.module';
 import {HsCommonUrlModule} from '../../common/url/url.module';
 import {HsLayerTableComponent} from 'hslayers-ng/common/layer-table';
 import {HsUrlWfsComponent} from './wfs.component';
-import {TranslateCustomPipe} from 'hslayers-ng/shared/language';
+import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

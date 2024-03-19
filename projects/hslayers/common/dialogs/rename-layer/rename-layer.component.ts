@@ -1,7 +1,7 @@
 import {Component, OnInit, ViewRef} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 
-import {TranslateCustomPipe} from 'hslayers-ng/shared/language';
+import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 
 import {HsDialogComponent} from '../dialog-component.interface';
 import {HsDialogContainerService} from '../dialog-container.service';

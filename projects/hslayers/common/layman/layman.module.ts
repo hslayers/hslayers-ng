@@ -6,7 +6,7 @@ import {FilterPipe} from 'hslayers-ng/common/pipes';
 import {HsCommonLaymanAccessRightsComponent} from './access-rights/layman-access-rights.component';
 import {HsLaymanCurrentUserComponent} from './layman-current-user.component';
 import {HsLaymanLoginComponent} from './layman-login.component';
-import {TranslateCustomPipe} from 'hslayers-ng/shared/language';
+import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

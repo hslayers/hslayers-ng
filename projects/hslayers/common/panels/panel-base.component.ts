@@ -2,7 +2,7 @@ import {Component, DestroyRef, OnInit, ViewRef, inject} from '@angular/core';
 import {Observable, map} from 'rxjs';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 
-import {HsLayoutService} from 'hslayers-ng/shared/layout';
+import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsPanelComponent} from './panel-component.interface';
 
 @Component({

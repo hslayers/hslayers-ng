@@ -7,10 +7,10 @@ import {Source} from 'ol/source';
 import {transform} from 'ol/proj';
 
 import {AddDataUrlType} from 'hslayers-ng/types';
-import {HsLanguageService} from 'hslayers-ng/shared/language';
-import {HsLayoutService} from 'hslayers-ng/shared/layout';
-import {HsLogService} from 'hslayers-ng/shared/log';
-import {HsMapService} from 'hslayers-ng/shared/map';
+import {HsLanguageService} from 'hslayers-ng/services/language';
+import {HsLayoutService} from 'hslayers-ng/services/layout';
+import {HsLogService} from 'hslayers-ng/services/log';
+import {HsMapService} from 'hslayers-ng/services/map';
 import {HsToastService} from 'hslayers-ng/common/toast';
 import {UrlDataObject} from 'hslayers-ng/types';
 

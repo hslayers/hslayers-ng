@@ -9,14 +9,14 @@ import {Vector as VectorSource} from 'ol/source';
 import {transform} from 'ol/proj';
 import {unByKey} from 'ol/Observable';
 
-import {HsCommonEndpointsService} from 'hslayers-ng/shared/endpoints';
-import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
-import {HsLayoutService} from 'hslayers-ng/shared/layout';
-import {HsLogService} from 'hslayers-ng/shared/log';
+import {HsCommonEndpointsService} from 'hslayers-ng/services/endpoints';
+import {HsLayerUtilsService} from 'hslayers-ng/services/utils';
+import {HsLayoutService} from 'hslayers-ng/services/layout';
+import {HsLogService} from 'hslayers-ng/services/log';
 import {HsMapCompositionDescriptor} from 'hslayers-ng/types';
-import {HsMapService} from 'hslayers-ng/shared/map';
-import {HsSaveMapService} from 'hslayers-ng/shared/save-map';
-import {HsUtilsService} from 'hslayers-ng/shared/utils';
+import {HsMapService} from 'hslayers-ng/services/map';
+import {HsSaveMapService} from 'hslayers-ng/services/save-map';
+import {HsUtilsService} from 'hslayers-ng/services/utils';
 import {getHighlighted, setHighlighted} from 'hslayers-ng/common/extensions';
 
 @Injectable({

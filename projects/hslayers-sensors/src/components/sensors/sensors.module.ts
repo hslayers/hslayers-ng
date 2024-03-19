@@ -4,7 +4,7 @@ import {NO_ERRORS_SCHEMA, NgModule} from '@angular/core';
 import {NgbDatepickerModule} from '@ng-bootstrap/ng-bootstrap';
 
 import {HsPanelHeaderComponent} from 'hslayers-ng/common/panels';
-import {TranslateCustomPipe} from 'hslayers-ng/shared/language';
+import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 
 import {HsSensorsComponent} from './sensors.component';
 import {HsSensorsUnitDialogComponent} from './sensors-unit-dialog.component';

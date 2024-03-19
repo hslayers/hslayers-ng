@@ -4,7 +4,7 @@ import {FormsModule} from '@angular/forms';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 import {HsPanelHelpersModule} from 'hslayers-ng/common/panels';
-import {TranslateCustomPipe} from 'hslayers-ng/shared/language';
+import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 
 import {HsPanelHeaderComponent} from 'hslayers-ng/common/panels';
 import {SomeComponent} from './some-panel.component';

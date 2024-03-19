@@ -1,9 +1,9 @@
 import {Component, Input, OnInit} from '@angular/core';
 
 import {FileDataObject} from 'hslayers-ng/types';
-import {HsAddDataCommonFileService} from 'hslayers-ng/shared/add-data';
+import {HsAddDataCommonFileService} from 'hslayers-ng/services/add-data';
 import {HsFileService} from '../../file/file.service';
-import {HsLaymanService} from 'hslayers-ng/shared/save-map';
+import {HsLaymanService} from 'hslayers-ng/services/save-map';
 import {HsUploadedFiles} from 'hslayers-ng/common/upload';
 
 @Component({

@@ -13,7 +13,7 @@ import {
 
 //import en from '../../src/assets/locales/en.json';
 import {HsConfig} from 'hslayers-ng/config';
-import {HsLogService} from 'hslayers-ng/shared/log';
+import {HsLogService} from 'hslayers-ng/services/log';
 
 export class WebpackTranslateLoader implements TranslateLoader {
   loaded = {};

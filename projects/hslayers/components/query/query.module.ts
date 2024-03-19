@@ -12,7 +12,7 @@ import {HsQueryComponent} from './query.component';
 import {HsQueryDefaultInfoPanelBodyComponent} from './default-info-panel-body/default-info-panel-body.component';
 import {HsQueryFeatureComponent} from './feature/feature.component';
 import {HsQueryFeatureListComponent} from './feature-list/feature-list.component';
-import {TranslateCustomPipe} from 'hslayers-ng/shared/language';
+import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

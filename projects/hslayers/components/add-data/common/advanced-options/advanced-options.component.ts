@@ -1,7 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 
 import {FileDataObject} from 'hslayers-ng/types';
-import {HsAddDataVectorService} from 'hslayers-ng/shared/add-data';
+import {HsAddDataVectorService} from 'hslayers-ng/services/add-data';
 import {IntersectWithTooltip} from 'hslayers-ng/types';
 import {VectorDataObject} from 'hslayers-ng/types';
 
