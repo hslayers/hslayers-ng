@@ -6,10 +6,8 @@ import {HsConfig} from 'hslayers-ng/config';
 import {HsCoreService} from 'hslayers-ng/shared/core';
 import {HsLanguageService} from 'hslayers-ng/shared/language';
 import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
-import {HsLayoutService} from 'hslayers-ng/shared/layout';
 import {HsMapService} from 'hslayers-ng/shared/map';
 import {HsPanelBaseComponent} from 'hslayers-ng/common/panels';
-import {HsSidebarService} from 'hslayers-ng/shared/sidebar';
 import {HsTripPlannerService, Waypoint} from './trip-planner.service';
 import {HsUtilsService} from 'hslayers-ng/shared/utils';
 import {setHighlighted} from 'hslayers-ng/common/extensions';
@@ -30,13 +28,11 @@ export class HsTripPlannerComponent
     public HsCoreService: HsCoreService,
     public HsTripPlannerService: HsTripPlannerService,
     public HsConfig: HsConfig,
-    hsLayoutService: HsLayoutService,
     public HsUtilsService: HsUtilsService,
     public HsLayerUtilsService: HsLayerUtilsService,
     public hsLanguageService: HsLanguageService,
-    public hsSidebarService: HsSidebarService,
   ) {
-    super(hsLayoutService);
+    super();
   }
   async ngOnInit(): Promise<void> {
     super.ngOnInit();

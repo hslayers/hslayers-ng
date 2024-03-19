@@ -7,7 +7,6 @@ import {Subject} from 'rxjs';
 import {debounceTime, takeUntil} from 'rxjs/operators';
 
 import {HsDrawService} from 'hslayers-ng/shared/draw';
-import {HsLayoutService} from 'hslayers-ng/shared/layout';
 import {HsLogService} from 'hslayers-ng/shared/log';
 import {HsMapService} from 'hslayers-ng/shared/map';
 import {HsPanelBaseComponent} from 'hslayers-ng/common/panels';
@@ -33,12 +32,11 @@ export class HsQueryComponent
   constructor(
     public hsQueryBaseService: HsQueryBaseService,
     private hsMapService: HsMapService,
-    public hsLayoutService: HsLayoutService,
     private hsLog: HsLogService,
     private hsQueryVectorService: HsQueryVectorService,
     private hsDrawService: HsDrawService,
   ) {
-    super(hsLayoutService);
+    super();
   }
   async ngOnInit() {
     super.ngOnInit();

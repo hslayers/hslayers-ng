@@ -6,7 +6,6 @@ import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
 import {HsDrawLayerMetadataDialogComponent} from './draw-layer-metadata/draw-layer-metadata.component';
 
 import {HsDrawService} from 'hslayers-ng/shared/draw';
-import {HsLayoutService} from 'hslayers-ng/shared/layout';
 import {HsPanelBaseComponent} from 'hslayers-ng/common/panels';
 
 @Component({
@@ -22,10 +21,9 @@ export class HsDrawComponent
   private end = new Subject<void>();
   constructor(
     public HsDrawService: HsDrawService,
-    public hsLayoutService: HsLayoutService,
     public HsDialogContainerService: HsDialogContainerService,
   ) {
-    super(hsLayoutService);
+    super();
   }
 
   ngOnDestroy(): void {

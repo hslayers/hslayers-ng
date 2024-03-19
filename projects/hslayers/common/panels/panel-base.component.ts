@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewRef} from '@angular/core';
+import {Component, DestroyRef, OnInit, ViewRef, inject} from '@angular/core';
 import {Observable, map} from 'rxjs';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 
@@ -22,9 +22,11 @@ export class HsPanelBaseComponent implements HsPanelComponent, OnInit {
    * was called from parent ngOnInit or when parents ngOnInit is not defined
    */
   private baseComponentInitRun = false;
-
-  constructor(public hsLayoutService: HsLayoutService) {
+  hsLayoutService = inject(HsLayoutService);
+  destroyRef = inject(DestroyRef);
+  constructor() {
     this.isVisible$ = this.hsLayoutService.mainpanel$.pipe(
+      takeUntilDestroyed(),
       map((which) => {
         return this.name === which;
       }),
@@ -46,7 +48,7 @@ export class HsPanelBaseComponent implements HsPanelComponent, OnInit {
     this.baseComponentInitRun = true;
     this.panelWidthClass = this.getPanelWidthClass();
     this.hsLayoutService.hsConfig.configChanges
-      //.pipe(takeUntilDestroyed())
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(() => {
         this.panelWidthClass = this.getPanelWidthClass();
       });

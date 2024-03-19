@@ -11,7 +11,6 @@ import {
   HsLayerSelectorService,
 } from 'hslayers-ng/shared/layer-manager';
 import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
-import {HsLayoutService} from 'hslayers-ng/shared/layout';
 import {TranslateCustomPipe} from 'hslayers-ng/shared/language';
 import {getBase, getGreyscale} from 'hslayers-ng/common/extensions';
 
@@ -28,13 +27,12 @@ export class HsLayerManagerGalleryComponent extends HsGuiOverlayBaseComponent {
   @ViewChild('galleryDropdown', {static: false}) dropdown: NgbDropdown;
   name = 'basemapGallery';
   constructor(
-    public hsLayoutService: HsLayoutService,
     public hsLayerManagerService: HsLayerManagerService,
     private hsLayerSelectorService: HsLayerSelectorService,
     public hsLayerUtilsService: HsLayerUtilsService,
     public hsLayerManagerVisibilityService: HsLayerManagerVisibilityService,
   ) {
-    super(hsLayoutService);
+    super();
   }
 
   toggleMiniMenu(layer: HsLayerDescriptor): void {

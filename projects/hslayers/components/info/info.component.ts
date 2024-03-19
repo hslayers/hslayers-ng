@@ -5,7 +5,6 @@ import {map, takeUntil} from 'rxjs/operators';
 
 import {HsEventBusService} from 'hslayers-ng/shared/event-bus';
 import {HsGuiOverlayBaseComponent} from 'hslayers-ng/common/panels';
-import {HsLayoutService} from 'hslayers-ng/shared/layout';
 import {getTitle} from 'hslayers-ng/common/extensions';
 
 @Component({
@@ -38,11 +37,8 @@ export class HsInfoComponent
     map((panel) => panel !== 'layerManager'),
   );
   name = 'info';
-  constructor(
-    private hsEventBusService: HsEventBusService,
-    public hsLayoutService: HsLayoutService,
-  ) {
-    super(hsLayoutService);
+  constructor(private hsEventBusService: HsEventBusService) {
+    super();
     this.hsEventBusService.compositionLoads
       .pipe(takeUntil(this.end))
       .subscribe((data) => {

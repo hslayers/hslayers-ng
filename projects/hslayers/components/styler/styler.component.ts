@@ -12,7 +12,6 @@ import {Vector as VectorSource} from 'ol/source';
 import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
 import {HsEventBusService} from 'hslayers-ng/shared/event-bus';
 import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
-import {HsLayoutService} from 'hslayers-ng/shared/layout';
 import {HsPanelBaseComponent} from 'hslayers-ng/common/panels';
 import {HsSaveMapService} from 'hslayers-ng/shared/save-map';
 import {HsStylerEditDialogComponent} from './edit-dialog/edit-dialog.component';
@@ -36,7 +35,6 @@ export class HsStylerComponent
   colormaps = Object.keys(colorScales);
   constructor(
     public hsStylerService: HsStylerService,
-    public hsLayoutService: HsLayoutService,
     public hsEventBusService: HsEventBusService,
     public sanitizer: DomSanitizer,
     public hsLayerUtilsService: HsLayerUtilsService,
@@ -44,7 +42,7 @@ export class HsStylerComponent
     public hsSaveMapService: HsSaveMapService,
     public hsDialogContainerService: HsDialogContainerService,
   ) {
-    super(hsLayoutService);
+    super();
     this.hsEventBusService.layerSelectedFromUrl
       .pipe(takeUntil(this.end))
       .subscribe((layer: Layer<Source>) => {

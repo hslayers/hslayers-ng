@@ -1,10 +1,9 @@
 import {Component, OnInit} from '@angular/core';
+import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 
 import {HsConfig} from 'hslayers-ng/config';
 import {HsLanguageService} from 'hslayers-ng/shared/language';
-import {HsLayoutService} from 'hslayers-ng/shared/layout';
 import {HsPanelBaseComponent} from 'hslayers-ng/common/panels';
-import {HsSidebarService} from 'hslayers-ng/shared/sidebar';
 
 @Component({
   selector: 'hs-language',
@@ -19,12 +18,10 @@ export class HsLanguageComponent
   constructor(
     private hsLanguageService: HsLanguageService,
     private hsConfig: HsConfig,
-    hsLayoutService: HsLayoutService,
-    private hsSidebarService: HsSidebarService,
   ) {
-    super(hsLayoutService);
+    super();
 
-    this.hsConfig.configChanges.subscribe(() => {
+    this.hsConfig.configChanges.pipe(takeUntilDestroyed()).subscribe(() => {
       if (this.hsConfig.additionalLanguages) {
         this.available_languages =
           this.hsLanguageService.listAvailableLanguages();

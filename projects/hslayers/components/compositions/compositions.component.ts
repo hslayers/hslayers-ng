@@ -10,7 +10,6 @@ import {HsCompositionsService} from './compositions.service';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
 import {HsLanguageService} from 'hslayers-ng/shared/language';
-import {HsLayoutService} from 'hslayers-ng/shared/layout';
 import {HsMapCompositionDescriptor} from 'hslayers-ng/types';
 import {HsPanelBaseComponent} from 'hslayers-ng/common/panels';
 
@@ -38,14 +37,13 @@ export class HsCompositionsComponent
     public hsConfig: HsConfig,
     private hsCompositionsService: HsCompositionsService,
     private hsCompositionsParserService: HsCompositionsParserService,
-    public hsLayoutService: HsLayoutService,
     private hsCompositionsMapService: HsCompositionsMapService,
     private hsDialogContainerService: HsDialogContainerService,
     public hsCompositionsCatalogueService: HsCompositionsCatalogueService,
     private hsLanguageService: HsLanguageService,
     public hsCommonLaymanService: HsCommonLaymanService,
   ) {
-    super(hsLayoutService);
+    super();
   }
 
   ngOnInit(): void {

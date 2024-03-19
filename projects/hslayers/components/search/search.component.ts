@@ -5,9 +5,7 @@ import {Subscription} from 'rxjs';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsEventBusService} from 'hslayers-ng/shared/event-bus';
 import {HsLanguageService} from 'hslayers-ng/shared/language';
-import {HsLayoutService} from 'hslayers-ng/shared/layout';
 import {HsPanelBaseComponent} from 'hslayers-ng/common/panels';
-import {HsSidebarService} from 'hslayers-ng/shared/sidebar';
 
 @Component({
   selector: 'hs-search',
@@ -26,11 +24,9 @@ export class HsSearchComponent
   constructor(
     private hsEventBusService: HsEventBusService,
     private hsConfig: HsConfig,
-    public hsLayoutService: HsLayoutService,
     public hsLanguageService: HsLanguageService,
-    public hsSidebarService: HsSidebarService,
   ) {
-    super(hsLayoutService);
+    super();
     this.searchResultsReceivedSubscription =
       this.hsEventBusService.searchResultsReceived.subscribe(() => {
         this.clearVisible = true;

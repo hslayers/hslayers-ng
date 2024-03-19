@@ -1,6 +1,5 @@
 import {Component, OnInit, ViewRef} from '@angular/core';
 import {HsConfig} from 'hslayers-ng/config';
-import {HsLayoutService} from 'hslayers-ng/shared/layout';
 import {HsPanelBaseComponent} from 'hslayers-ng/common/panels';
 
 import {HsSensorUnit} from './sensor-unit.class';
@@ -20,10 +19,9 @@ export class HsSensorsComponent extends HsPanelBaseComponent implements OnInit {
   constructor(
     private hsConfig: HsConfig,
     private hsSensorsService: HsSensorsService,
-    public hsLayoutService: HsLayoutService,
     public hsSensorsUnitDialogService: HsSensorsUnitDialogService,
   ) {
-    super(hsLayoutService);
+    super();
   }
 
   ngOnInit(): void {

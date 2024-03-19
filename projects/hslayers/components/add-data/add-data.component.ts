@@ -12,7 +12,6 @@ import {HsConfirmDialogComponent} from 'hslayers-ng/common/confirm';
 import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
 import {HsGetCapabilitiesErrorComponent} from './common/capabilities-error-dialog/capabilities-error-dialog.component';
 import {HsLaymanService} from 'hslayers-ng/shared/save-map';
-import {HsLayoutService} from 'hslayers-ng/shared/layout';
 import {HsPanelBaseComponent} from 'hslayers-ng/common/panels';
 import {HsRemoveLayerDialogService} from 'hslayers-ng/common/remove-multiple';
 import {HsShareUrlService} from 'hslayers-ng/components/share';
@@ -31,14 +30,13 @@ export class HsAddDataComponent
   constructor(
     public hsAddDataService: HsAddDataService,
     public hsShareUrlService: HsShareUrlService,
-    public hsLayoutService: HsLayoutService,
     public hsAddDataUrlService: HsAddDataUrlService,
     private hsDialogContainerService: HsDialogContainerService,
     public hsAddDataCatalogueService: HsAddDataCatalogueService,
     private hsRemoveLayerDialogService: HsRemoveLayerDialogService,
     private hsLaymanService: HsLaymanService,
   ) {
-    super(hsLayoutService);
+    super();
     this.layersAvailable =
       this.hsAddDataCatalogueService.addDataCatalogueLoaded.pipe(
         switchMap(() => {

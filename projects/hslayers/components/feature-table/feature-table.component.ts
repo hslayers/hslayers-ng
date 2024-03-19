@@ -5,7 +5,6 @@ import {Vector as VectorSource} from 'ol/source';
 
 import {HsConfig} from 'hslayers-ng/config';
 import {HsFeatureTableService} from './feature-table.service';
-import {HsLayoutService} from 'hslayers-ng/shared/layout';
 import {HsMapService} from 'hslayers-ng/shared/map';
 import {HsPanelBaseComponent} from 'hslayers-ng/common/panels';
 import {HsSidebarService} from 'hslayers-ng/shared/sidebar';
@@ -23,10 +22,9 @@ export class HsFeatureTableComponent
     private hsFeatureTableService: HsFeatureTableService,
     private hsConfig: HsConfig,
     private hsMapService: HsMapService,
-    public hsLayoutService: HsLayoutService,
     private hsSidebarService: HsSidebarService,
   ) {
-    super(hsLayoutService);
+    super();
   }
 
   ngOnInit(): void {
