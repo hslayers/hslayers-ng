@@ -9,9 +9,9 @@ import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
 
 import {HsConfig} from 'hslayers-ng/config';
 import {HsConfigMock} from './config.service.mock';
-import {HsEventBusService} from 'hslayers-ng/shared/event-bus';
+import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsEventBusServiceMock} from './event-bus.service.mock';
-import {HsLayoutService} from 'hslayers-ng/shared/layout';
+import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsLayoutServiceMock} from './layout.service.mock';
 import {HsPanelHeaderComponent} from 'hslayers-ng/common/panels';
 import {HsPanelHelpersModule} from 'hslayers-ng/common/panels';
@@ -24,10 +24,10 @@ import {HsPrintScaleService} from 'hslayers-ng/components/print';
 import {HsPrintScaleStylerComponent} from 'hslayers-ng/components/print';
 import {HsPrintService} from 'hslayers-ng/components/print';
 import {HsPrintTextStylerComponent} from 'hslayers-ng/components/print';
-import {HsSidebarService} from 'hslayers-ng/shared/sidebar';
-import {HsUtilsService} from 'hslayers-ng/shared/utils';
+import {HsSidebarService} from 'hslayers-ng/services/sidebar';
+import {HsUtilsService} from 'hslayers-ng/services/utils';
 import {HsUtilsServiceMock} from './utils.service.mock';
-import {TranslateCustomPipe} from 'hslayers-ng/shared/language';
+import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 import {mockHsPrintScaleService} from './print-scale.service.mock';
 import {mockHsPrintService} from './print.service.mock';
 

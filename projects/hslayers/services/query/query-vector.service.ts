@@ -16,11 +16,11 @@ import {click} from 'ol/events/condition';
 import {toLonLat} from 'ol/proj';
 
 import {HsConfig} from 'hslayers-ng/config';
-import {HsEventBusService} from 'hslayers-ng/shared/event-bus';
-import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
-import {HsMapService} from 'hslayers-ng/shared/map';
+import {HsEventBusService} from 'hslayers-ng/services/event-bus';
+import {HsLayerUtilsService} from 'hslayers-ng/services/utils';
+import {HsMapService} from 'hslayers-ng/services/map';
 import {HsQueryBaseService} from './query-base.service';
-import {HsUtilsService} from 'hslayers-ng/shared/utils';
+import {HsUtilsService} from 'hslayers-ng/services/utils';
 import {StyleLike, createDefaultStyle} from 'ol/style/Style';
 import {getFeatures} from 'hslayers-ng/common/extensions';
 import {

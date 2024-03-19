@@ -11,11 +11,11 @@ import {transform} from 'ol/proj';
 import {unByKey} from 'ol/Observable';
 
 import {HsConfig} from 'hslayers-ng/config';
-import {HsEventBusService} from 'hslayers-ng/shared/event-bus';
-import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
-import {HsMapService} from 'hslayers-ng/shared/map';
-import {HsStylerService} from 'hslayers-ng/shared/styler';
-import {HsUtilsService} from 'hslayers-ng/shared/utils';
+import {HsEventBusService} from 'hslayers-ng/services/event-bus';
+import {HsLayerUtilsService} from 'hslayers-ng/services/utils';
+import {HsMapService} from 'hslayers-ng/services/map';
+import {HsStylerService} from 'hslayers-ng/services/styler';
+import {HsUtilsService} from 'hslayers-ng/services/utils';
 import {setShowInLayerManager, setTitle} from 'hslayers-ng/common/extensions';
 
 @Injectable({

@@ -5,7 +5,7 @@ import {NgModule} from '@angular/core';
 import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
 
 import {HsPagerComponent} from './pager.component';
-import {TranslateCustomPipe} from 'hslayers-ng/shared/language';
+import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 
 @NgModule({
   declarations: [HsPagerComponent],

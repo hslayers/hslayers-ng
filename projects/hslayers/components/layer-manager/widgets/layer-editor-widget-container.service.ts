@@ -1,4 +1,4 @@
-import {HsPanelContainerService} from 'hslayers-ng/shared/panels';
+import {HsPanelContainerService} from 'hslayers-ng/services/panels';
 import {Injectable} from '@angular/core';
 
 @Injectable({

@@ -11,7 +11,7 @@ import {HsPanelHeaderComponent} from 'hslayers-ng/common/panels';
 import {HsPanelHelpersModule} from 'hslayers-ng/common/panels';
 import {HsQueryPopupComponent} from './query-popup.component';
 import {HsQueryPopupWidgetBaseComponent} from './query-popup-widget-base.component';
-import {TranslateCustomPipe} from 'hslayers-ng/shared/language';
+import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

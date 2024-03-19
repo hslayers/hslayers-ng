@@ -6,9 +6,9 @@ import {Injectable} from '@angular/core';
 import {Vector as VectorLayer} from 'ol/layer';
 import {Vector as VectorSource} from 'ol/source';
 
-import {HsEventBusService} from 'hslayers-ng/shared/event-bus';
-import {HsMapService} from 'hslayers-ng/shared/map';
-import {HsUtilsService, Measurement} from 'hslayers-ng/shared/utils';
+import {HsEventBusService} from 'hslayers-ng/services/event-bus';
+import {HsMapService} from 'hslayers-ng/services/map';
+import {HsUtilsService, Measurement} from 'hslayers-ng/services/utils';
 import {setTitle} from 'hslayers-ng/common/extensions';
 
 @Injectable({

@@ -3,7 +3,7 @@ import {Component, Input} from '@angular/core';
 
 import {transform} from 'ol/proj';
 
-import {HsMapService} from 'hslayers-ng/shared/map';
+import {HsMapService} from 'hslayers-ng/services/map';
 
 @Component({
   selector: 'hs-widgets-recursive-dd',

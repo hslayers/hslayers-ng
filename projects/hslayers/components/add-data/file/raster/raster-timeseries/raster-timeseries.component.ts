@@ -14,7 +14,7 @@ import {takeUntil} from 'rxjs/operators';
 
 import {FileDataObject} from 'hslayers-ng/types';
 import {FileDescriptor} from 'hslayers-ng/types';
-import {HsAddDataCommonFileService} from 'hslayers-ng/shared/add-data';
+import {HsAddDataCommonFileService} from 'hslayers-ng/services/add-data';
 import {HsToastService} from 'hslayers-ng/common/toast';
 
 @Component({

@@ -2,9 +2,9 @@ import {HsConfig} from 'hslayers-ng/config';
 import {Injectable, Type} from '@angular/core';
 
 import {HsButton} from 'hslayers-ng/types';
-import {HsPanelContainerService} from 'hslayers-ng/shared/panels';
-import {HsSidebarService} from 'hslayers-ng/shared/sidebar';
-import {HsUtilsService} from 'hslayers-ng/shared/utils';
+import {HsPanelContainerService} from 'hslayers-ng/services/panels';
+import {HsSidebarService} from 'hslayers-ng/services/sidebar';
+import {HsUtilsService} from 'hslayers-ng/services/utils';
 import {skip} from 'rxjs';
 
 @Injectable({

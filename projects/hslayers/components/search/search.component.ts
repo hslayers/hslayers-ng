@@ -3,8 +3,8 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Subscription} from 'rxjs';
 
 import {HsConfig} from 'hslayers-ng/config';
-import {HsEventBusService} from 'hslayers-ng/shared/event-bus';
-import {HsLanguageService} from 'hslayers-ng/shared/language';
+import {HsEventBusService} from 'hslayers-ng/services/event-bus';
+import {HsLanguageService} from 'hslayers-ng/services/language';
 import {HsPanelBaseComponent} from 'hslayers-ng/common/panels';
 
 @Component({

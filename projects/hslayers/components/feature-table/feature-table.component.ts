@@ -5,9 +5,9 @@ import {Vector as VectorSource} from 'ol/source';
 
 import {HsConfig} from 'hslayers-ng/config';
 import {HsFeatureTableService} from './feature-table.service';
-import {HsMapService} from 'hslayers-ng/shared/map';
+import {HsMapService} from 'hslayers-ng/services/map';
 import {HsPanelBaseComponent} from 'hslayers-ng/common/panels';
-import {HsSidebarService} from 'hslayers-ng/shared/sidebar';
+import {HsSidebarService} from 'hslayers-ng/services/sidebar';
 
 @Component({
   selector: 'hs-feature-table',

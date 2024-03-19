@@ -1,8 +1,8 @@
 import {Component, Input} from '@angular/core';
 import {Vector as VectorSource} from 'ol/source';
 
-import {HsLayerSelectorService} from 'hslayers-ng/shared/layer-manager';
-import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
+import {HsLayerSelectorService} from 'hslayers-ng/services/layer-manager';
+import {HsLayerUtilsService} from 'hslayers-ng/services/utils';
 import {HsStylerPartBaseComponent} from '../style-part-base.component';
 
 @Component({

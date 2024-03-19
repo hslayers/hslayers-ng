@@ -15,10 +15,10 @@ import {takeUntil} from 'rxjs/operators';
 import {AddDataFileType} from 'hslayers-ng/types';
 import {FileDataObject} from 'hslayers-ng/types';
 import {FileDescriptor} from 'hslayers-ng/types';
-import {HsAddDataCommonFileService} from 'hslayers-ng/shared/add-data';
-import {HsAddDataCommonService} from 'hslayers-ng/shared/add-data';
+import {HsAddDataCommonFileService} from 'hslayers-ng/services/add-data';
+import {HsAddDataCommonService} from 'hslayers-ng/services/add-data';
 import {HsConfig} from 'hslayers-ng/config';
-import {HsLayoutService} from 'hslayers-ng/shared/layout';
+import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsUploadComponent} from 'hslayers-ng/common/upload';
 
 @Component({

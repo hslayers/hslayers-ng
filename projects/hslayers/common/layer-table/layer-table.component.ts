@@ -3,18 +3,18 @@ import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 
 import {AddDataUrlType} from 'hslayers-ng/types';
-import {HsAddDataCommonService} from 'hslayers-ng/shared/add-data';
-import {HsAddDataService} from 'hslayers-ng/shared/add-data';
-import {HsAddDataUrlService} from 'hslayers-ng/shared/add-data';
+import {HsAddDataCommonService} from 'hslayers-ng/services/add-data';
+import {HsAddDataService} from 'hslayers-ng/services/add-data';
+import {HsAddDataUrlService} from 'hslayers-ng/services/add-data';
 import {
   HsLanguageService,
   TranslateCustomPipe,
-} from 'hslayers-ng/shared/language';
-import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
+} from 'hslayers-ng/services/language';
+import {HsLayerUtilsService} from 'hslayers-ng/services/utils';
 import {HsNestedLayersTableComponent} from './nested-layers-table/nested-layers-table.component';
 import {HsUrlTypeServiceModel, Service} from 'hslayers-ng/types';
-import {HsUrlWmsService} from 'hslayers-ng/shared/add-data';
-import {HsUtilsService} from 'hslayers-ng/shared/utils';
+import {HsUrlWmsService} from 'hslayers-ng/services/add-data';
+import {HsUtilsService} from 'hslayers-ng/services/utils';
 import {TrackByPropertyPipe} from 'hslayers-ng/common/pipes';
 
 @Component({

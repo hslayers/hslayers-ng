@@ -32,7 +32,7 @@ import {HsSymbolizerComponent} from './symbolizers/symbolizer.component';
 import {HsSymbolizerListItemComponent} from './symbolizers/symbolizer-list-item/symbolizer-list-item.component';
 import {HsTextSymbolizerComponent} from './symbolizers/text-symbolizer/text-symbolizer.component';
 import {HsUploadModule} from 'hslayers-ng/common/upload';
-import {TranslateCustomPipe} from 'hslayers-ng/shared/language';
+import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

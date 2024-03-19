@@ -11,28 +11,28 @@ import {Image as ImageLayer} from 'ol/layer';
 import {ImageWMS} from 'ol/source';
 import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
 
-import {HsAddDataOwsService} from 'hslayers-ng/shared/add-data';
+import {HsAddDataOwsService} from 'hslayers-ng/services/add-data';
 import {
   HsArcgisGetCapabilitiesService,
   HsWfsGetCapabilitiesService,
   HsWmsGetCapabilitiesService,
   HsWmtsGetCapabilitiesService,
-} from 'hslayers-ng/shared/get-capabilities';
+} from 'hslayers-ng/services/get-capabilities';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsConfigMock} from './config.service.mock';
-import {HsDrawService} from 'hslayers-ng/shared/draw';
+import {HsDrawService} from 'hslayers-ng/services/draw';
 import {HsLanguageModule} from 'hslayers-ng/components/language';
 import {HsLayerListComponent} from 'hslayers-ng/components/layer-manager';
 import {HsLayerListService} from 'hslayers-ng/components/layer-manager';
-import {HsLayerManagerService} from 'hslayers-ng/shared/layer-manager';
-import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
-import {HsLayoutService} from 'hslayers-ng/shared/layout';
+import {HsLayerManagerService} from 'hslayers-ng/services/layer-manager';
+import {HsLayerUtilsService} from 'hslayers-ng/services/utils';
+import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsLayoutServiceMock} from './layout.service.mock';
-import {HsMapService} from 'hslayers-ng/shared/map';
+import {HsMapService} from 'hslayers-ng/services/map';
 import {HsMapServiceMock} from './map.service.mock';
 import {HsPanelHelpersModule} from 'hslayers-ng/common/panels';
 import {HsShareUrlService} from 'hslayers-ng/components/share';
-import {HsUtilsService} from 'hslayers-ng/shared/utils';
+import {HsUtilsService} from 'hslayers-ng/services/utils';
 import {HsUtilsServiceMock} from './utils.service.mock';
 
 import {mockHsLayerListService} from './layer-manager-layerlist.service.mock';

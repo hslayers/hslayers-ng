@@ -2,12 +2,12 @@ import {Injectable} from '@angular/core';
 
 import {from, takeUntil} from 'rxjs';
 
-import {HsMapService} from 'hslayers-ng/shared/map';
+import {HsMapService} from 'hslayers-ng/services/map';
 import {HsPrintImprintService} from './print-imprint.service';
 import {HsPrintLegendService} from './print-legend.service';
 import {HsPrintScaleService} from './print-scale.service';
 import {HsPrintTitleService} from './print-title.service';
-import {HsShareThumbnailService} from 'hslayers-ng/shared/share';
+import {HsShareThumbnailService} from 'hslayers-ng/services/share';
 import {PrintModel} from './types/print-object.type';
 import {xPos, yPos} from './types/xy-positions.type';
 

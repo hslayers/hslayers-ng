@@ -9,9 +9,9 @@ import {
 import {Layer} from 'ol/layer';
 import {Source} from 'ol/source';
 
-import {HsMapService} from 'hslayers-ng/shared/map';
-import {HsSaveMapService} from 'hslayers-ng/shared/save-map';
-import {HsUtilsService} from 'hslayers-ng/shared/utils';
+import {HsMapService} from 'hslayers-ng/services/map';
+import {HsSaveMapService} from 'hslayers-ng/services/save-map';
+import {HsUtilsService} from 'hslayers-ng/services/utils';
 import {getShowInLayerManager, getTitle} from 'hslayers-ng/common/extensions';
 
 export type saveMapLayer = {

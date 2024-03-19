@@ -15,22 +15,22 @@ import {Source} from 'ol/source';
 import {transformExtent} from 'ol/proj';
 
 import {CswLayersDialogComponent} from 'hslayers-ng/common/dialog-csw-layers';
-import {DuplicateHandling, HsMapService} from 'hslayers-ng/shared/map';
+import {DuplicateHandling, HsMapService} from 'hslayers-ng/services/map';
 import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
 import {HsCompositionsLayerParserService} from './layer-parser.service';
 import {HsCompositionsWarningDialogComponent} from 'hslayers-ng/common/dialogs';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
-import {HsEventBusService} from 'hslayers-ng/shared/event-bus';
-import {HsLanguageService} from 'hslayers-ng/shared/language';
+import {HsEventBusService} from 'hslayers-ng/services/event-bus';
+import {HsLanguageService} from 'hslayers-ng/services/language';
 import {
   HsLayerManagerService,
   HsLayerManagerVisibilityService,
-} from 'hslayers-ng/shared/layer-manager';
-import {HsLayoutService} from 'hslayers-ng/shared/layout';
-import {HsLogService} from 'hslayers-ng/shared/log';
+} from 'hslayers-ng/services/layer-manager';
+import {HsLayoutService} from 'hslayers-ng/services/layout';
+import {HsLogService} from 'hslayers-ng/services/log';
 import {HsToastService} from 'hslayers-ng/common/toast';
-import {HsUtilsService, generateUuid} from 'hslayers-ng/shared/utils';
+import {HsUtilsService, generateUuid} from 'hslayers-ng/services/utils';
 import {
   HslayersLayerJSON,
   LaymanCompositionDescriptor,

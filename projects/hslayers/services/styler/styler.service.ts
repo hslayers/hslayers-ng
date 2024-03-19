@@ -26,16 +26,16 @@ import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsConfirmDialogComponent} from 'hslayers-ng/common/confirm';
 import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
-import {HsEventBusService} from 'hslayers-ng/shared/event-bus';
-import {HsLanguageService} from 'hslayers-ng/shared/language';
-import {HsLayerSynchronizerService} from 'hslayers-ng/shared/save-map';
-import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
-import {HsLogService} from 'hslayers-ng/shared/log';
-import {HsMapService} from 'hslayers-ng/shared/map';
-import {HsQueryVectorService} from 'hslayers-ng/shared/query';
-import {HsSaveMapService} from 'hslayers-ng/shared/save-map';
+import {HsEventBusService} from 'hslayers-ng/services/event-bus';
+import {HsLanguageService} from 'hslayers-ng/services/language';
+import {HsLayerSynchronizerService} from 'hslayers-ng/services/save-map';
+import {HsLayerUtilsService} from 'hslayers-ng/services/utils';
+import {HsLogService} from 'hslayers-ng/services/log';
+import {HsMapService} from 'hslayers-ng/services/map';
+import {HsQueryVectorService} from 'hslayers-ng/services/query';
+import {HsSaveMapService} from 'hslayers-ng/services/save-map';
 import {HsToastService} from 'hslayers-ng/common/toast';
-import {HsUtilsService} from 'hslayers-ng/shared/utils';
+import {HsUtilsService} from 'hslayers-ng/services/utils';
 import {
   awaitLayerSync,
   getLaymanFriendlyLayerName,

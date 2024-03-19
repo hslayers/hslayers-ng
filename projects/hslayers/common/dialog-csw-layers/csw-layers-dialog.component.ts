@@ -1,17 +1,17 @@
 import {CommonModule} from '@angular/common';
 import {Component, Input, OnInit, ViewRef} from '@angular/core';
 
-import {HsAddDataOwsService} from 'hslayers-ng/shared/add-data';
-import {HsAddDataUrlService} from 'hslayers-ng/shared/add-data';
+import {HsAddDataOwsService} from 'hslayers-ng/services/add-data';
+import {HsAddDataUrlService} from 'hslayers-ng/services/add-data';
 import {HsDialogComponent} from 'hslayers-ng/common/dialogs';
 import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
 import {HsDialogItem} from 'hslayers-ng/common/dialogs';
 import {HsLayerTableComponent} from 'hslayers-ng/common/layer-table';
-import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
-import {HsMapService} from 'hslayers-ng/shared/map';
-import {HsUtilsService} from 'hslayers-ng/shared/utils';
+import {HsLayerUtilsService} from 'hslayers-ng/services/utils';
+import {HsMapService} from 'hslayers-ng/services/map';
+import {HsUtilsService} from 'hslayers-ng/services/utils';
 import {NgbAccordionModule} from '@ng-bootstrap/ng-bootstrap';
-import {TranslateCustomPipe} from 'hslayers-ng/shared/language';
+import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 import {
   setFromComposition,
   setPath,

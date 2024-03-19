@@ -5,7 +5,7 @@ import {BehaviorSubject, Subject, takeUntil} from 'rxjs';
 import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
 import {HsDrawLayerMetadataDialogComponent} from './draw-layer-metadata/draw-layer-metadata.component';
 
-import {HsDrawService} from 'hslayers-ng/shared/draw';
+import {HsDrawService} from 'hslayers-ng/services/draw';
 import {HsPanelBaseComponent} from 'hslayers-ng/common/panels';
 
 @Component({

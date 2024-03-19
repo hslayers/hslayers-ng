@@ -3,7 +3,7 @@ import {Component, OnDestroy} from '@angular/core';
 import {Subject} from 'rxjs';
 import {map, takeUntil} from 'rxjs/operators';
 
-import {HsEventBusService} from 'hslayers-ng/shared/event-bus';
+import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsGuiOverlayBaseComponent} from 'hslayers-ng/common/panels';
 import {getTitle} from 'hslayers-ng/common/extensions';
 

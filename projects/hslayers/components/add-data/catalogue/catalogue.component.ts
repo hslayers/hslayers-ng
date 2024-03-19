@@ -3,16 +3,16 @@ import {Component, OnInit} from '@angular/core';
 import {
   HsAddDataCatalogueMapService,
   HsAddDataService,
-} from 'hslayers-ng/shared/add-data';
-import {HsAddDataCatalogueService} from 'hslayers-ng/shared/add-data';
+} from 'hslayers-ng/services/add-data';
+import {HsAddDataCatalogueService} from 'hslayers-ng/services/add-data';
 import {HsAddDataLayerDescriptor} from 'hslayers-ng/types';
 import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
 import {HsConfig} from 'hslayers-ng/config';
-import {HsCoreService} from 'hslayers-ng/shared/core';
-import {HsLanguageService} from 'hslayers-ng/shared/language';
-import {HsLaymanService} from 'hslayers-ng/shared/save-map';
-import {HsLayoutService} from 'hslayers-ng/shared/layout';
-import {HsUtilsService} from 'hslayers-ng/shared/utils';
+import {HsCoreService} from 'hslayers-ng/services/core';
+import {HsLanguageService} from 'hslayers-ng/services/language';
+import {HsLaymanService} from 'hslayers-ng/services/save-map';
+import {HsLayoutService} from 'hslayers-ng/services/layout';
+import {HsUtilsService} from 'hslayers-ng/services/utils';
 
 // import {HsDragDropLayerService} from './drag-drop-layer.service';
 

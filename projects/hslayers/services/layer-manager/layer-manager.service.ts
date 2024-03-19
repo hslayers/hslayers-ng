@@ -9,12 +9,12 @@ import {Source} from 'ol/source';
 import {unByKey} from 'ol/Observable';
 
 import {HS_PRMS} from 'hslayers-ng/components/share';
-import {HsAddDataOwsService} from 'hslayers-ng/shared/add-data';
+import {HsAddDataOwsService} from 'hslayers-ng/services/add-data';
 import {HsBaseLayerDescriptor} from 'hslayers-ng/types';
 import {HsConfig} from 'hslayers-ng/config';
-import {HsDimensionTimeService} from 'hslayers-ng/shared/get-capabilities';
-import {HsEventBusService} from 'hslayers-ng/shared/event-bus';
-import {HsLanguageService} from 'hslayers-ng/shared/language';
+import {HsDimensionTimeService} from 'hslayers-ng/services/get-capabilities';
+import {HsEventBusService} from 'hslayers-ng/services/event-bus';
+import {HsLanguageService} from 'hslayers-ng/services/language';
 import {HsLayerDescriptor} from 'hslayers-ng/types';
 import {HsLayerEditorVectorLayerService} from './layer-editor-vector-layer.service';
 import {HsLayerManagerLoadingProgressService} from './layer-manager-loading-progress.service';
@@ -22,14 +22,14 @@ import {HsLayerManagerMetadataService} from './layer-manager-metadata.service';
 import {HsLayerManagerUtilsService} from './layer-manager-utils.service';
 import {HsLayerManagerVisibilityService} from './layer-manager-visibility.service';
 import {HsLayerSelectorService} from './layer-selector.service';
-import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
-import {HsLayoutService} from 'hslayers-ng/shared/layout';
-import {HsLogService} from 'hslayers-ng/shared/log';
-import {HsMapService} from 'hslayers-ng/shared/map';
-import {HsQueuesService} from 'hslayers-ng/shared/queues';
+import {HsLayerUtilsService} from 'hslayers-ng/services/utils';
+import {HsLayoutService} from 'hslayers-ng/services/layout';
+import {HsLogService} from 'hslayers-ng/services/log';
+import {HsMapService} from 'hslayers-ng/services/map';
+import {HsQueuesService} from 'hslayers-ng/services/queues';
 import {HsShareUrlService} from 'hslayers-ng/components/share';
 import {HsToastService} from 'hslayers-ng/common/toast';
-import {HsUtilsService} from 'hslayers-ng/shared/utils';
+import {HsUtilsService} from 'hslayers-ng/services/utils';
 import {
   SHOW_IN_LAYER_MANAGER,
   getAbstract,

@@ -4,7 +4,7 @@ import {ColorEvent} from 'ngx-color';
 import {FillSymbolizer, MarkSymbolizer, TextSymbolizer} from 'geostyler-style';
 
 import {HsColorPickerService} from './color-picker.service';
-import {HsLogService} from 'hslayers-ng/shared/log';
+import {HsLogService} from 'hslayers-ng/services/log';
 import {HsStylerPartBaseComponent} from '../../style-part-base.component';
 
 @Component({

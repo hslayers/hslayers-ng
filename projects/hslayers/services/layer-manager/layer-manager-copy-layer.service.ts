@@ -3,11 +3,11 @@ import {Injectable} from '@angular/core';
 import {Cluster, Vector as VectorSource} from 'ol/source';
 import {Vector as VectorLayer} from 'ol/layer';
 
-import {HsAddDataOwsService} from 'hslayers-ng/shared/add-data';
+import {HsAddDataOwsService} from 'hslayers-ng/services/add-data';
 import {HsLayerManagerUtilsService} from './layer-manager-utils.service';
 import {HsLayerSelectorService} from './layer-selector.service';
-import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
-import {HsMapService} from 'hslayers-ng/shared/map';
+import {HsLayerUtilsService} from 'hslayers-ng/services/utils';
+import {HsMapService} from 'hslayers-ng/services/map';
 import {
   getCachedCapabilities,
   getName,

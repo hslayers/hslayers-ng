@@ -17,8 +17,8 @@ import {
   HsWmsGetCapabilitiesService,
   HsWmtsGetCapabilitiesService,
   IGetCapabilities,
-} from 'hslayers-ng/shared/get-capabilities';
-import {HsLogService} from 'hslayers-ng/shared/log';
+} from 'hslayers-ng/services/get-capabilities';
+import {HsLogService} from 'hslayers-ng/services/log';
 
 import {AddDataUrlType} from 'hslayers-ng/types';
 import {HsHistoryListService} from 'hslayers-ng/common/history-list';

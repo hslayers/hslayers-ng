@@ -15,13 +15,13 @@ import {
 } from 'ol/source';
 import {Style} from 'ol/style';
 
-import {HsLayerSelectorService} from 'hslayers-ng/shared/layer-manager';
-import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
+import {HsLayerSelectorService} from 'hslayers-ng/services/layer-manager';
+import {HsLayerUtilsService} from 'hslayers-ng/services/utils';
 import {HsLegendDescriptor} from './legend-descriptor.interface';
-import {HsStylerService} from 'hslayers-ng/shared/styler';
-import {HsUtilsService} from 'hslayers-ng/shared/utils';
+import {HsStylerService} from 'hslayers-ng/services/styler';
+import {HsUtilsService} from 'hslayers-ng/services/utils';
 import {InterpolatedSource} from 'hslayers-ng/common/layers';
-import {defaultStyle} from 'hslayers-ng/shared/styler';
+import {defaultStyle} from 'hslayers-ng/services/styler';
 import {filter} from 'rxjs';
 import {
   getAutoLegend,

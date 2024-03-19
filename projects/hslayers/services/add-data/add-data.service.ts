@@ -5,11 +5,11 @@ import {Layer} from 'ol/layer';
 import {Source} from 'ol/source';
 
 import {DatasetType} from 'hslayers-ng/types';
-import {HsCommonEndpointsService} from 'hslayers-ng/shared/endpoints';
+import {HsCommonEndpointsService} from 'hslayers-ng/services/endpoints';
 import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
 import {HsConfig} from 'hslayers-ng/config';
-import {HsMapService} from 'hslayers-ng/shared/map';
-import {HsUtilsService} from 'hslayers-ng/shared/utils';
+import {HsMapService} from 'hslayers-ng/services/map';
+import {HsUtilsService} from 'hslayers-ng/services/utils';
 import {getBase} from 'hslayers-ng/common/extensions';
 
 @Injectable({

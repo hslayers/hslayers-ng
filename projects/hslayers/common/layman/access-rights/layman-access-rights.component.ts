@@ -6,8 +6,8 @@ import {lastValueFrom, map} from 'rxjs';
 import {AccessRightsModel} from 'hslayers-ng/types';
 import {HsCommonLaymanService} from '../layman.service';
 import {HsEndpoint} from 'hslayers-ng/types';
-import {HsLanguageService} from 'hslayers-ng/shared/language';
-import {HsLogService} from 'hslayers-ng/shared/log';
+import {HsLanguageService} from 'hslayers-ng/services/language';
+import {HsLogService} from 'hslayers-ng/services/log';
 import {LaymanUser} from '../types/layman-user.type';
 
 enum GrantingOptions {

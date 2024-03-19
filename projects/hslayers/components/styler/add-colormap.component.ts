@@ -3,9 +3,9 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Vector as VectorLayer} from 'ol/layer';
 import {Vector as VectorSource} from 'ol/source';
 
-import {HsLanguageService} from 'hslayers-ng/shared/language';
-import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
-import {HsStylerService} from 'hslayers-ng/shared/styler';
+import {HsLanguageService} from 'hslayers-ng/services/language';
+import {HsLayerUtilsService} from 'hslayers-ng/services/utils';
+import {HsStylerService} from 'hslayers-ng/services/styler';
 
 @Component({
   selector: 'hs-add-colormap',

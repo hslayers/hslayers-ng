@@ -10,7 +10,7 @@ import {Subject} from 'rxjs';
 import {
   HsLayerShiftingService,
   LayerListItem,
-} from 'hslayers-ng/shared/layer-shifting';
+} from 'hslayers-ng/services/layer-shifting';
 import {HsMapSwipeService, SwipeSide} from './map-swipe.service';
 import {HsPanelBaseComponent} from 'hslayers-ng/common/panels';
 

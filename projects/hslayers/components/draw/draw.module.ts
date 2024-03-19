@@ -14,7 +14,7 @@ import {HsPanelHelpersModule} from 'hslayers-ng/common/panels';
 import {HsQueryModule} from 'hslayers-ng/components/query';
 import {HsRmLayerDialogModule} from 'hslayers-ng/common/remove-multiple';
 import {HsStylerModule} from 'hslayers-ng/components/styler';
-import {TranslateCustomPipe} from 'hslayers-ng/shared/language';
+import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

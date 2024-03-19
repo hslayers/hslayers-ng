@@ -13,11 +13,11 @@ import {ColorEvent} from 'ngx-color';
 
 import {ColorSketchModule} from 'ngx-color/sketch';
 import {HsColorPickerService} from 'hslayers-ng/components/styler';
-import {HsLanguageService} from 'hslayers-ng/shared/language';
+import {HsLanguageService} from 'hslayers-ng/services/language';
 import {POSITION_OPTIONS} from '../constants/position-options';
 import {TEXT_STYLING_OPTIONS} from '../constants/text-styling-options';
 import {TextStyle} from '../types/text-style.type';
-import {TranslateCustomPipe} from 'hslayers-ng/shared/language';
+import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 
 export enum ColorPickers {
   Fill = 'fill',

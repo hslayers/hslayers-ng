@@ -6,7 +6,7 @@ import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
 import {HsPanelHelpersModule} from 'hslayers-ng/common/panels';
 import {HsTripPlannerComponent} from './trip-planner.component';
 import {HsTripPlannerLayerSelectorComponent} from './layer-selector.component';
-import {TranslateCustomPipe} from 'hslayers-ng/shared/language';
+import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

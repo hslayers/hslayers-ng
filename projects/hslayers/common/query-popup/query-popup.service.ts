@@ -4,13 +4,13 @@ import {Feature, Map, Overlay} from 'ol';
 import {Geometry} from 'ol/geom';
 
 import {HsConfig} from 'hslayers-ng/config';
-import {HsMapService} from 'hslayers-ng/shared/map';
-import {HsQueryBaseService} from 'hslayers-ng/shared/query';
+import {HsMapService} from 'hslayers-ng/services/map';
+import {HsQueryBaseService} from 'hslayers-ng/services/query';
 import {HsQueryPopupBaseService} from './query-popup-base.service';
 import {HsQueryPopupServiceModel} from './query-popup.service.model';
 import {HsQueryPopupWidgetContainerService} from './query-popup-widget-container.service';
-import {HsQueryVectorService} from 'hslayers-ng/shared/query';
-import {HsUtilsService} from 'hslayers-ng/shared/utils';
+import {HsQueryVectorService} from 'hslayers-ng/services/query';
+import {HsUtilsService} from 'hslayers-ng/services/utils';
 
 @Injectable({
   providedIn: 'root',

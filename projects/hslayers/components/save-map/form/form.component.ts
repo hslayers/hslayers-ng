@@ -4,9 +4,9 @@ import {Observable, Subject, map, startWith, takeUntil} from 'rxjs';
 
 import {AccessRightsModel} from 'hslayers-ng/types';
 import {HsEndpoint} from 'hslayers-ng/types';
-import {HsLayoutService} from 'hslayers-ng/shared/layout';
+import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsSaveMapManagerService} from '../save-map-manager.service';
-import {HsUtilsService} from 'hslayers-ng/shared/utils';
+import {HsUtilsService} from 'hslayers-ng/services/utils';
 import {StatusData} from 'hslayers-ng/types';
 
 @Component({

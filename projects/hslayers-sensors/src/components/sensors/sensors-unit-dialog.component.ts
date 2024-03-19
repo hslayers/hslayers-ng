@@ -4,7 +4,7 @@ import {
   HsDialogComponent,
   HsDialogContainerService,
 } from 'hslayers-ng/common/dialogs';
-import {HsLayoutService} from 'hslayers-ng/shared/layout';
+import {HsLayoutService} from 'hslayers-ng/services/layout';
 
 import {Aggregates, HsSensorsUnitDialogService} from './unit-dialog.service';
 import {CustomInterval, Interval} from './types/interval.type';

@@ -12,16 +12,16 @@ import {
   ArcGISRestResponseLayerExtent,
 } from 'hslayers-ng/types';
 import {CapabilitiesResponseWrapper} from 'hslayers-ng/types';
-import {DuplicateHandling, HsMapService} from 'hslayers-ng/shared/map';
+import {DuplicateHandling, HsMapService} from 'hslayers-ng/services/map';
 import {HsAddDataCommonService} from '../common.service';
 import {HsAddDataUrlService} from './add-data-url.service';
-import {HsArcgisGetCapabilitiesService} from 'hslayers-ng/shared/get-capabilities';
-import {HsLanguageService} from 'hslayers-ng/shared/language';
-import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
-import {HsLayoutService} from 'hslayers-ng/shared/layout';
+import {HsArcgisGetCapabilitiesService} from 'hslayers-ng/services/get-capabilities';
+import {HsLanguageService} from 'hslayers-ng/services/language';
+import {HsLayerUtilsService} from 'hslayers-ng/services/utils';
+import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsToastService} from 'hslayers-ng/common/toast';
 import {HsUrlTypeServiceModel, Service} from 'hslayers-ng/types';
-import {HsUtilsService} from 'hslayers-ng/shared/utils';
+import {HsUtilsService} from 'hslayers-ng/services/utils';
 import {LayerOptions} from 'hslayers-ng/types';
 import {UrlDataObject} from 'hslayers-ng/types';
 import {addAnchors, getPreferredFormat} from 'hslayers-ng/common/utils';

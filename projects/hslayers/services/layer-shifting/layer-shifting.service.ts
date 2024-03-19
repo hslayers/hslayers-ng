@@ -3,10 +3,10 @@ import {Injectable} from '@angular/core';
 import {Layer} from 'ol/layer';
 import {Source} from 'ol/source';
 
-import {HsEventBusService} from 'hslayers-ng/shared/event-bus';
-import {HsLayerManagerService} from 'hslayers-ng/shared/layer-manager';
-import {HsMapService} from 'hslayers-ng/shared/map';
-import {HsUtilsService} from 'hslayers-ng/shared/utils';
+import {HsEventBusService} from 'hslayers-ng/services/event-bus';
+import {HsLayerManagerService} from 'hslayers-ng/services/layer-manager';
+import {HsMapService} from 'hslayers-ng/services/map';
+import {HsUtilsService} from 'hslayers-ng/services/utils';
 import {getBase} from 'hslayers-ng/common/extensions';
 
 export class LayerListItem {

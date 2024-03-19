@@ -1,8 +1,8 @@
 import {Component, Input} from '@angular/core';
 
 import {FileDataObject} from 'hslayers-ng/types';
-import {HsAddDataCommonFileService} from 'hslayers-ng/shared/add-data';
-import {HsLaymanService} from 'hslayers-ng/shared/save-map';
+import {HsAddDataCommonFileService} from 'hslayers-ng/services/add-data';
+import {HsLaymanService} from 'hslayers-ng/services/save-map';
 
 @Component({
   selector: 'hs-add-layer-authorized',

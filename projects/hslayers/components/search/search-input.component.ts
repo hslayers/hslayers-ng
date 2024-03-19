@@ -4,7 +4,7 @@ import {Subscription} from 'rxjs';
 
 import {HS_PRMS} from 'hslayers-ng/components/share';
 import {HsConfig} from 'hslayers-ng/config';
-import {HsEventBusService} from 'hslayers-ng/shared/event-bus';
+import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsSearchService} from './search.service';
 import {HsShareUrlService} from 'hslayers-ng/components/share';
 

@@ -9,9 +9,9 @@ import {HsClusterWidgetComponent} from '../widgets/cluster-widget.component';
 import {HsConfirmDialogComponent} from 'hslayers-ng/common/confirm';
 import {HsCopyLayerDialogComponent} from '../dialogs/copy-layer-dialog.component';
 import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
-import {HsDimensionTimeService} from 'hslayers-ng/shared/get-capabilities';
-import {HsDrawService} from 'hslayers-ng/shared/draw';
-import {HsEventBusService} from 'hslayers-ng/shared/event-bus';
+import {HsDimensionTimeService} from 'hslayers-ng/services/get-capabilities';
+import {HsDrawService} from 'hslayers-ng/services/draw';
+import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsExtentWidgetComponent} from '../widgets/extent-widget/extent-widget.component';
 import {HsIdwWidgetComponent} from '../widgets/idw-widget.component';
 import {HsLayerDescriptor} from 'hslayers-ng/types';
@@ -22,17 +22,17 @@ import {HsLayerEditorWidgetContainerService} from '../widgets/layer-editor-widge
 import {
   HsLayerManagerCopyLayerService,
   HsLayerManagerService,
-} from 'hslayers-ng/shared/layer-manager';
+} from 'hslayers-ng/services/layer-manager';
 import {HsLayerManagerRemoveLayerDialogComponent} from '../dialogs/remove-layer-dialog.component';
-import {HsLayerManagerUtilsService} from 'hslayers-ng/shared/layer-manager';
-import {HsLayerUtilsService, HsUtilsService} from 'hslayers-ng/shared/utils';
-import {HsLayoutService} from 'hslayers-ng/shared/layout';
+import {HsLayerManagerUtilsService} from 'hslayers-ng/services/layer-manager';
+import {HsLayerUtilsService, HsUtilsService} from 'hslayers-ng/services/utils';
+import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsLegendWidgetComponent} from '../widgets/legend-widget.component';
-import {HsMapService} from 'hslayers-ng/shared/map';
+import {HsMapService} from 'hslayers-ng/services/map';
 import {HsMetadataWidgetComponent} from '../widgets/metadata-widget.component';
 import {HsOpacityWidgetComponent} from '../widgets/opacity-widget.component';
 import {HsScaleWidgetComponent} from '../widgets/scale-widget.component';
-import {HsStylerService} from 'hslayers-ng/shared/styler';
+import {HsStylerService} from 'hslayers-ng/services/styler';
 import {HsTypeWidgetComponent} from '../widgets/type-widget.component';
 import {HsWmsSourceWidgetComponent} from '../widgets/wms-source-widget/wms-source-widget.component';
 import {

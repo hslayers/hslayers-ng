@@ -8,9 +8,9 @@ import {Layer} from 'ol/layer';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsLayerDescriptor} from 'hslayers-ng/types';
 import {HsLayerSelectorService} from './layer-selector.service';
-import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
-import {HsLogService} from 'hslayers-ng/shared/log';
-import {HsMapService} from 'hslayers-ng/shared/map';
+import {HsLayerUtilsService} from 'hslayers-ng/services/utils';
+import {HsLogService} from 'hslayers-ng/services/log';
+import {HsMapService} from 'hslayers-ng/services/map';
 import {getThumbnail, getTitle} from 'hslayers-ng/common/extensions';
 
 @Injectable({

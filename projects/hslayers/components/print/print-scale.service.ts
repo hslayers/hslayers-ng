@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 
 import {Control, ScaleLine} from 'ol/control';
 
-import {HsMapService} from 'hslayers-ng/shared/map';
+import {HsMapService} from 'hslayers-ng/services/map';
 import {HsPrintLegendService} from './print-legend.service';
 import {
   SCALE_BAR_CLASSES,

@@ -1,6 +1,6 @@
 import {Component, Input} from '@angular/core';
 
-import {HsLanguageService} from 'hslayers-ng/shared/language';
+import {HsLanguageService} from 'hslayers-ng/services/language';
 
 @Component({
   selector: 'hs-layer-manager-folder',

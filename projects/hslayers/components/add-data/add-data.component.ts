@@ -6,12 +6,12 @@ import {DatasetType} from 'hslayers-ng/types';
 import {
   HsAddDataCatalogueService,
   HsAddDataService,
-} from 'hslayers-ng/shared/add-data';
-import {HsAddDataUrlService} from 'hslayers-ng/shared/add-data';
+} from 'hslayers-ng/services/add-data';
+import {HsAddDataUrlService} from 'hslayers-ng/services/add-data';
 import {HsConfirmDialogComponent} from 'hslayers-ng/common/confirm';
 import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
 import {HsGetCapabilitiesErrorComponent} from './common/capabilities-error-dialog/capabilities-error-dialog.component';
-import {HsLaymanService} from 'hslayers-ng/shared/save-map';
+import {HsLaymanService} from 'hslayers-ng/services/save-map';
 import {HsPanelBaseComponent} from 'hslayers-ng/common/panels';
 import {HsRemoveLayerDialogService} from 'hslayers-ng/common/remove-multiple';
 import {HsShareUrlService} from 'hslayers-ng/components/share';

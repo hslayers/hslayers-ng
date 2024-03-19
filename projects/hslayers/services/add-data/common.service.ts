@@ -4,9 +4,9 @@ import {Subject} from 'rxjs';
 
 import {HsAddDataService} from './add-data.service';
 import {HsAddDataUrlService} from './url/add-data-url.service';
-import {HsDimensionService} from 'hslayers-ng/shared/get-capabilities';
-import {HsEventBusService} from 'hslayers-ng/shared/event-bus';
-import {HsMapService} from 'hslayers-ng/shared/map';
+import {HsDimensionService} from 'hslayers-ng/services/get-capabilities';
+import {HsEventBusService} from 'hslayers-ng/services/event-bus';
+import {HsMapService} from 'hslayers-ng/services/map';
 import {HsToastService} from 'hslayers-ng/common/toast';
 
 @Injectable({providedIn: 'root'})

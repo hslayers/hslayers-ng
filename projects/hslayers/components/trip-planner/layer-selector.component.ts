@@ -3,7 +3,7 @@ import {Component, Input} from '@angular/core';
 import {Vector as VectorLayer} from 'ol/layer';
 import {Vector as VectorSource} from 'ol/source';
 
-import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
+import {HsLayerUtilsService} from 'hslayers-ng/services/utils';
 import {HsTripPlannerService} from './trip-planner.service';
 
 @Component({

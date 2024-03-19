@@ -5,9 +5,9 @@ import {lastValueFrom, takeUntil} from 'rxjs';
 
 import {CapabilitiesResponseWrapper} from 'hslayers-ng/types';
 import {HsCapabilityCacheService} from './capability-cache.service';
-import {HsEventBusService} from 'hslayers-ng/shared/event-bus';
-import {HsMapService} from 'hslayers-ng/shared/map';
-import {HsUtilsService} from 'hslayers-ng/shared/utils';
+import {HsEventBusService} from 'hslayers-ng/services/event-bus';
+import {HsMapService} from 'hslayers-ng/services/map';
+import {HsUtilsService} from 'hslayers-ng/services/utils';
 import {IGetCapabilities} from './get-capabilities.interface';
 
 @Injectable({providedIn: 'root'})

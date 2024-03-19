@@ -6,12 +6,12 @@ import Popup from 'ol-popup';
 import {Subject} from 'rxjs';
 import {debounceTime, takeUntil} from 'rxjs/operators';
 
-import {HsDrawService} from 'hslayers-ng/shared/draw';
-import {HsLogService} from 'hslayers-ng/shared/log';
-import {HsMapService} from 'hslayers-ng/shared/map';
+import {HsDrawService} from 'hslayers-ng/services/draw';
+import {HsLogService} from 'hslayers-ng/services/log';
+import {HsMapService} from 'hslayers-ng/services/map';
 import {HsPanelBaseComponent} from 'hslayers-ng/common/panels';
-import {HsQueryBaseService} from 'hslayers-ng/shared/query';
-import {HsQueryVectorService} from 'hslayers-ng/shared/query';
+import {HsQueryBaseService} from 'hslayers-ng/services/query';
+import {HsQueryVectorService} from 'hslayers-ng/services/query';
 
 @Component({
   selector: 'hs-query',

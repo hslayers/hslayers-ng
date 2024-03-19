@@ -8,19 +8,19 @@ import {Tile} from 'ol/layer';
 import {Vector as VectorLayer} from 'ol/layer';
 
 import {HsConfig} from 'hslayers-ng/config';
-import {HsEventBusService} from 'hslayers-ng/shared/event-bus';
-import {HsLayoutService} from 'hslayers-ng/shared/layout';
+import {HsEventBusService} from 'hslayers-ng/services/event-bus';
+import {HsLayoutService} from 'hslayers-ng/services/layout';
 /**
  * Dynamic panels
  */
-//import {HsPanelConstructorService} from 'hslayers-ng/shared/panel-constructor';
+//import {HsPanelConstructorService} from 'hslayers-ng/services/panel-constructor';
 /**
  * Dynamic overlays
  */
-//import {HsOverlayConstructorService} from 'hslayers-ng/shared/panel-constructor';
+//import {HsOverlayConstructorService} from 'hslayers-ng/services/panel-constructor';
 import {HsLayerManagerComponent} from 'hslayers-ng/components/layer-manager';
-import {HsPanelContainerService} from 'hslayers-ng/shared/panels';
-import {HsSidebarService} from 'hslayers-ng/shared/sidebar';
+import {HsPanelContainerService} from 'hslayers-ng/services/panels';
+import {HsSidebarService} from 'hslayers-ng/services/sidebar';
 
 @Component({
   selector: 'hslayers-app',

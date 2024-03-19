@@ -16,21 +16,21 @@ import {Vector as VectorSource} from 'ol/source';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsConfigMock} from './config.service.mock';
 import {HsDownloadModule} from 'hslayers-ng/common/download';
-import {HsEventBusService} from 'hslayers-ng/shared/event-bus';
+import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsEventBusServiceMock} from './event-bus.service.mock';
-import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
-import {HsLayoutService} from 'hslayers-ng/shared/layout';
+import {HsLayerUtilsService} from 'hslayers-ng/services/utils';
+import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsLayoutServiceMock} from './layout.service.mock';
-import {HsMapService} from 'hslayers-ng/shared/map';
+import {HsMapService} from 'hslayers-ng/services/map';
 import {HsMapServiceMock} from './map.service.mock';
-import {HsQueryVectorService} from 'hslayers-ng/shared/query';
-import {HsSaveMapService} from 'hslayers-ng/shared/save-map';
+import {HsQueryVectorService} from 'hslayers-ng/services/query';
+import {HsSaveMapService} from 'hslayers-ng/services/save-map';
 import {HsSaveMapServiceMock} from './save-map.service.mock';
 import {HsStylerComponent} from 'hslayers-ng/components/styler';
-import {HsStylerService} from 'hslayers-ng/shared/styler';
-import {HsUtilsService} from 'hslayers-ng/shared/utils';
+import {HsStylerService} from 'hslayers-ng/services/styler';
+import {HsUtilsService} from 'hslayers-ng/services/utils';
 import {HsUtilsServiceMock} from './utils.service.mock';
-import {TranslateCustomPipe} from 'hslayers-ng/shared/language';
+import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 
 class emptyMock {
   constructor() {}

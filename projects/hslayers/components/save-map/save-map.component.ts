@@ -3,14 +3,14 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 
-import {HsCommonEndpointsService} from 'hslayers-ng/shared/endpoints';
+import {HsCommonEndpointsService} from 'hslayers-ng/services/endpoints';
 import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsEndpoint} from 'hslayers-ng/types';
 import {HsPanelBaseComponent} from 'hslayers-ng/common/panels';
 import {HsSaveMapDialogSpawnerService} from './dialog-spawner.service';
 import {HsSaveMapManagerService} from './save-map-manager.service';
-import {HsSaveMapService} from 'hslayers-ng/shared/save-map';
+import {HsSaveMapService} from 'hslayers-ng/services/save-map';
 
 @Component({
   selector: 'hs-save-map',

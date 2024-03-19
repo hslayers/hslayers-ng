@@ -13,14 +13,14 @@ import {
   DOM_FEATURE_LINKS,
   getDomFeatureLinks,
 } from 'hslayers-ng/common/extensions';
-import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
-import {HsLayoutService} from 'hslayers-ng/shared/layout';
-import {HsLogService} from 'hslayers-ng/shared/log';
-import {HsMapService} from 'hslayers-ng/shared/map';
-import {HsQueryBaseService} from 'hslayers-ng/shared/query';
+import {HsLayerUtilsService} from 'hslayers-ng/services/utils';
+import {HsLayoutService} from 'hslayers-ng/services/layout';
+import {HsLogService} from 'hslayers-ng/services/log';
+import {HsMapService} from 'hslayers-ng/services/map';
+import {HsQueryBaseService} from 'hslayers-ng/services/query';
 import {HsQueryPopupService} from 'hslayers-ng/common/query-popup';
-import {HsQueryVectorService} from 'hslayers-ng/shared/query';
-import {HsUtilsService} from 'hslayers-ng/shared/utils';
+import {HsQueryVectorService} from 'hslayers-ng/services/query';
+import {HsUtilsService} from 'hslayers-ng/services/utils';
 
 export type FeatureDomEventLink = {
   handles: EventListenerOrEventListenerObject[];

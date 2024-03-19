@@ -8,13 +8,13 @@ import {ImageWMS, Source, TileWMS, WMTS} from 'ol/source';
 import {WMSGetFeatureInfo} from 'ol/format';
 import {lastValueFrom} from 'rxjs';
 
-import {HsLanguageService} from 'hslayers-ng/shared/language';
-import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
-import {HsLogService} from 'hslayers-ng/shared/log';
-import {HsMapService} from 'hslayers-ng/shared/map';
-import {HsQueryBaseService} from 'hslayers-ng/shared/query';
+import {HsLanguageService} from 'hslayers-ng/services/language';
+import {HsLayerUtilsService} from 'hslayers-ng/services/utils';
+import {HsLogService} from 'hslayers-ng/services/log';
+import {HsMapService} from 'hslayers-ng/services/map';
+import {HsQueryBaseService} from 'hslayers-ng/services/query';
 import {HsQueryWmtsService} from './query-wmts.service';
-import {HsUtilsService, instOf} from 'hslayers-ng/shared/utils';
+import {HsUtilsService, instOf} from 'hslayers-ng/services/utils';
 import {
   getBase,
   getFeatureInfoLang,

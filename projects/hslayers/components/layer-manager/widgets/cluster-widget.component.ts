@@ -5,7 +5,7 @@ import {Cluster} from 'ol/source';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsLayerEditorService} from '../editor/layer-editor.service';
 import {HsLayerEditorWidgetBaseComponent} from './layer-editor-widget-base.component';
-import {HsLayerSelectorService} from 'hslayers-ng/shared/layer-manager';
+import {HsLayerSelectorService} from 'hslayers-ng/services/layer-manager';
 
 @Component({
   selector: 'hs-cluster-widget',

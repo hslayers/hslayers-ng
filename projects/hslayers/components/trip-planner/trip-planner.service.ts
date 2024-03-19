@@ -12,14 +12,14 @@ import {Source, Vector as VectorSource} from 'ol/source';
 import {transform} from 'ol/proj';
 
 import {HsConfig} from 'hslayers-ng/config';
-import {HsEventBusService} from 'hslayers-ng/shared/event-bus';
-import {HsLanguageService} from 'hslayers-ng/shared/language';
-import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
-import {HsLayoutService} from 'hslayers-ng/shared/layout';
-import {HsMapService} from 'hslayers-ng/shared/map';
+import {HsEventBusService} from 'hslayers-ng/services/event-bus';
+import {HsLanguageService} from 'hslayers-ng/services/language';
+import {HsLayerUtilsService} from 'hslayers-ng/services/utils';
+import {HsLayoutService} from 'hslayers-ng/services/layout';
+import {HsMapService} from 'hslayers-ng/services/map';
 import {HsShareUrlService} from 'hslayers-ng/components/share';
 import {HsToastService} from 'hslayers-ng/common/toast';
-import {HsUtilsService} from 'hslayers-ng/shared/utils';
+import {HsUtilsService} from 'hslayers-ng/services/utils';
 import {getHighlighted} from 'hslayers-ng/common/extensions';
 import {getTitle, setTitle} from 'hslayers-ng/common/extensions';
 

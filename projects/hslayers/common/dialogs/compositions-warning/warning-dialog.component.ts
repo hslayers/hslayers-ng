@@ -2,7 +2,7 @@ import {Component, ViewRef} from '@angular/core';
 
 import {HsDialogComponent} from '../dialog-component.interface';
 import {HsDialogContainerService} from '../dialog-container.service';
-import {TranslateCustomPipe} from 'hslayers-ng/shared/language';
+import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 @Component({
   selector: 'hs-compositions-warning-dialog',
   templateUrl: './warning-dialog.component.html',

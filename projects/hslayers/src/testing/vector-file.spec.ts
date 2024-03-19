@@ -14,21 +14,21 @@ import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
 import {Subject} from 'rxjs';
 
 import {HsAddDataVectorFileComponent} from 'hslayers-ng/components/add-data';
-import {HsAddDataVectorService} from 'hslayers-ng/shared/add-data';
-import {HsCommonEndpointsService} from 'hslayers-ng/shared/endpoints';
+import {HsAddDataVectorService} from 'hslayers-ng/services/add-data';
+import {HsCommonEndpointsService} from 'hslayers-ng/services/endpoints';
 import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsConfigMock} from './config.service.mock';
 import {HsEndpoint} from 'hslayers-ng/types';
-import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
-import {HsLayoutService} from 'hslayers-ng/shared/layout';
+import {HsLayerUtilsService} from 'hslayers-ng/services/utils';
+import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsLayoutServiceMock} from './layout.service.mock';
-import {HsMapService} from 'hslayers-ng/shared/map';
+import {HsMapService} from 'hslayers-ng/services/map';
 import {HsMapServiceMock} from './map.service.mock';
 import {HsUploadComponent} from 'hslayers-ng/common/upload';
-import {HsUtilsService} from 'hslayers-ng/shared/utils';
+import {HsUtilsService} from 'hslayers-ng/services/utils';
 import {HsUtilsServiceMock} from './utils.service.mock';
-import {TranslateCustomPipe} from 'hslayers-ng/shared/language';
+import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 import {getTitle} from 'hslayers-ng/common/extensions';
 import {mockLayerUtilsService} from './layer-utils.service.mock';
 

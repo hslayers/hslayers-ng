@@ -3,10 +3,10 @@ import {Subject} from 'rxjs';
 
 import {Circle, Fill, Stroke, Style} from 'ol/style';
 
-import {HsDrawService} from 'hslayers-ng/shared/draw';
-import {HsLanguageService} from 'hslayers-ng/shared/language';
-import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
-import {HsLayoutService} from 'hslayers-ng/shared/layout';
+import {HsDrawService} from 'hslayers-ng/services/draw';
+import {HsLanguageService} from 'hslayers-ng/services/language';
+import {HsLayerUtilsService} from 'hslayers-ng/services/utils';
+import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {getTitle} from 'hslayers-ng/common/extensions';
 
 @Component({

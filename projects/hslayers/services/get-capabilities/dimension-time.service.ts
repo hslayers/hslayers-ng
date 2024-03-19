@@ -5,8 +5,8 @@ import {ImageWMS, Source, TileWMS} from 'ol/source';
 import {Layer} from 'ol/layer';
 
 import {HsLayerDescriptor} from 'hslayers-ng/types';
-import {HsLogService} from 'hslayers-ng/shared/log';
-import {HsUtilsService} from 'hslayers-ng/shared/utils';
+import {HsLogService} from 'hslayers-ng/services/log';
+import {HsUtilsService} from 'hslayers-ng/services/utils';
 import {HsWmsLayer} from 'hslayers-ng/types';
 import {
   getDimensions,

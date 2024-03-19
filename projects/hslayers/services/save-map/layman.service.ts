@@ -30,16 +30,16 @@ import {
   DeleteAllLayersResponse,
   DeleteSingleLayerResponse,
 } from 'hslayers-ng/common/layman';
-import {HsCommonEndpointsService} from 'hslayers-ng/shared/endpoints';
+import {HsCommonEndpointsService} from 'hslayers-ng/services/endpoints';
 import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
 import {HsEndpoint} from 'hslayers-ng/types';
-import {HsLanguageService} from 'hslayers-ng/shared/language';
+import {HsLanguageService} from 'hslayers-ng/services/language';
 import {HsLaymanLayerDescriptor} from 'hslayers-ng/types';
-import {HsLogService} from 'hslayers-ng/shared/log';
-import {HsMapService} from 'hslayers-ng/shared/map';
+import {HsLogService} from 'hslayers-ng/services/log';
+import {HsMapService} from 'hslayers-ng/services/map';
 import {HsSaverService} from './saver-service.interface';
 import {HsToastService} from 'hslayers-ng/common/toast';
-import {HsUtilsService} from 'hslayers-ng/shared/utils';
+import {HsUtilsService} from 'hslayers-ng/services/utils';
 import {MapComposition} from 'hslayers-ng/types';
 import {
   PREFER_RESUMABLE_SIZE_LIMIT,

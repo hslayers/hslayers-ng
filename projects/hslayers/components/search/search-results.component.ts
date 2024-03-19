@@ -3,7 +3,7 @@ import {Feature} from 'ol';
 import {Geometry} from 'ol/geom';
 import {Subject, takeUntil} from 'rxjs';
 
-import {HsEventBusService} from 'hslayers-ng/shared/event-bus';
+import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsSearchService} from './search.service';
 import {setHighlighted} from 'hslayers-ng/common/extensions';
 

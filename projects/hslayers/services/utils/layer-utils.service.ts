@@ -20,7 +20,7 @@ import {METERS_PER_UNIT} from 'ol/proj';
 import {Tile as TileLayer} from 'ol/layer';
 import {isEmpty} from 'ol/extent';
 
-import {HsLanguageService} from 'hslayers-ng/shared/language';
+import {HsLanguageService} from 'hslayers-ng/services/language';
 import {HsLayerDescriptor} from 'hslayers-ng/types';
 import {HsUtilsService} from './utils.service';
 import {HsWmsLayer} from 'hslayers-ng/types';

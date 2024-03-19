@@ -16,9 +16,9 @@ import {
 import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
 import {takeUntil, tap} from 'rxjs/operators';
 
-import {HsLanguageService} from 'hslayers-ng/shared/language';
-import {HsLayoutService} from 'hslayers-ng/shared/layout';
-import {TranslateCustomPipe} from 'hslayers-ng/shared/language';
+import {HsLanguageService} from 'hslayers-ng/services/language';
+import {HsLayoutService} from 'hslayers-ng/services/layout';
+import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 
 export function toArray(panels: string) {
   return panels.split(',');

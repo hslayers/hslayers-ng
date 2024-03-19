@@ -3,7 +3,7 @@ import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 
 import {HsGeolocationComponent} from './geolocation.component';
-import {TranslateCustomPipe} from 'hslayers-ng/shared/language';
+import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 import {HsPanelHelpersModule} from 'hslayers-ng/common/panels';
 
 @NgModule({

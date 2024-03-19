@@ -5,23 +5,23 @@ import Feature from 'ol/Feature';
 import {Geometry} from 'ol/geom';
 import {Observable, Subject, lastValueFrom} from 'rxjs';
 
-import {DuplicateHandling, HsMapService} from 'hslayers-ng/shared/map';
+import {DuplicateHandling, HsMapService} from 'hslayers-ng/services/map';
 import {HS_PRMS} from 'hslayers-ng/components/share';
-import {HsCommonEndpointsService} from 'hslayers-ng/shared/endpoints';
+import {HsCommonEndpointsService} from 'hslayers-ng/services/endpoints';
 import {HsCompositionsLaymanService} from './endpoints/compositions-layman.service';
 import {HsCompositionsMapService} from './compositions-map.service';
 import {HsCompositionsMickaService} from './endpoints/compositions-micka.service';
-import {HsCompositionsParserService} from 'hslayers-ng/shared/compositions';
+import {HsCompositionsParserService} from 'hslayers-ng/services/compositions';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsEndpoint} from 'hslayers-ng/types';
-import {HsEventBusService} from 'hslayers-ng/shared/event-bus';
-import {HsLanguageService} from 'hslayers-ng/shared/language';
-import {HsLayerManagerService} from 'hslayers-ng/shared/layer-manager';
-import {HsLogService} from 'hslayers-ng/shared/log';
+import {HsEventBusService} from 'hslayers-ng/services/event-bus';
+import {HsLanguageService} from 'hslayers-ng/services/language';
+import {HsLayerManagerService} from 'hslayers-ng/services/layer-manager';
+import {HsLogService} from 'hslayers-ng/services/log';
 import {HsMapCompositionDescriptor} from 'hslayers-ng/types';
 import {HsShareUrlService} from 'hslayers-ng/components/share';
 import {HsToastService} from 'hslayers-ng/common/toast';
-import {HsUtilsService} from 'hslayers-ng/shared/utils';
+import {HsUtilsService} from 'hslayers-ng/services/utils';
 
 @Injectable({
   providedIn: 'root',

@@ -5,11 +5,11 @@ import {Subject} from 'rxjs';
 import {HsAddDataOwsService} from './url/add-data-ows.service';
 import {HsAddDataService} from './add-data.service';
 import {HsAddDataUrlService} from './url/add-data-url.service';
-import {HsCommonEndpointsService} from 'hslayers-ng/shared/endpoints';
-import {HsLanguageService} from 'hslayers-ng/shared/language';
-import {HsLaymanService} from 'hslayers-ng/shared/save-map';
-import {HsLogService} from 'hslayers-ng/shared/log';
-import {HsUtilsService} from 'hslayers-ng/shared/utils';
+import {HsCommonEndpointsService} from 'hslayers-ng/services/endpoints';
+import {HsLanguageService} from 'hslayers-ng/services/language';
+import {HsLaymanService} from 'hslayers-ng/services/save-map';
+import {HsLogService} from 'hslayers-ng/services/log';
+import {HsUtilsService} from 'hslayers-ng/services/utils';
 
 import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
 import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';

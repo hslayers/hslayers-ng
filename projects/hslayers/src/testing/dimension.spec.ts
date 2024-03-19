@@ -5,11 +5,11 @@ import {
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import {TestBed} from '@angular/core/testing';
 
-import {HsDimensionTimeService} from 'hslayers-ng//shared/get-capabilities';
-import {HsEventBusService} from 'hslayers-ng/shared/event-bus';
+import {HsDimensionTimeService} from 'hslayers-ng//services/get-capabilities';
+import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsEventBusServiceMock} from './event-bus.service.mock';
-import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
-import {HsUtilsService} from 'hslayers-ng/shared/utils';
+import {HsLayerUtilsService} from 'hslayers-ng/services/utils';
+import {HsUtilsService} from 'hslayers-ng/services/utils';
 import {HsUtilsServiceMock} from './utils.service.mock';
 import {mockLayerUtilsService} from './layer-utils.service.mock';
 

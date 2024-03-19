@@ -10,16 +10,16 @@ import {HsAddDataLayerDescriptor} from 'hslayers-ng/types';
 import {HsAddDataOwsService} from '../url/add-data-ows.service';
 import {HsAddDataService} from '../add-data.service';
 import {HsAddDataVectorService} from '../vector/vector.service';
-import {HsCommonEndpointsService} from 'hslayers-ng/shared/endpoints';
+import {HsCommonEndpointsService} from 'hslayers-ng/services/endpoints';
 import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsEndpoint} from 'hslayers-ng/types';
-import {HsEventBusService} from 'hslayers-ng/shared/event-bus';
+import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsLaymanBrowserService} from './layman.service';
-import {HsLayoutService} from 'hslayers-ng/shared/layout';
-import {HsMapService} from 'hslayers-ng/shared/map';
+import {HsLayoutService} from 'hslayers-ng/services/layout';
+import {HsMapService} from 'hslayers-ng/services/map';
 import {HsMickaBrowserService} from './micka.service';
-import {HsUtilsService} from 'hslayers-ng/shared/utils';
+import {HsUtilsService} from 'hslayers-ng/services/utils';
 import {WhatToAddDescriptor} from 'hslayers-ng/types';
 
 class HsAddDataCatalogueParams {

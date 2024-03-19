@@ -4,7 +4,7 @@ import {HsPanelBaseComponent} from 'hslayers-ng/common/panels';
 import {HsPrintLegendService} from './print-legend.service';
 import {HsPrintScaleService} from './print-scale.service';
 import {HsPrintService} from './print.service';
-import {HsUtilsService} from 'hslayers-ng/shared/utils';
+import {HsUtilsService} from 'hslayers-ng/services/utils';
 import {PrintModel} from './types/print-object.type';
 import {Styler} from './types/styler.type';
 

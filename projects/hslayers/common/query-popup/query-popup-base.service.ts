@@ -4,11 +4,11 @@ import {ReplaySubject} from 'rxjs';
 import {Feature} from 'ol';
 import {Geometry} from 'ol/geom';
 
-import {HsMapService} from 'hslayers-ng/shared/map';
+import {HsMapService} from 'hslayers-ng/services/map';
 import {HsPanelItem} from 'hslayers-ng/common/panels';
 import {HsQueryPopupData} from './popup-data';
 import {HsQueryPopupWidgetContainerService} from './query-popup-widget-container.service';
-import {HsUtilsService} from 'hslayers-ng/shared/utils';
+import {HsUtilsService} from 'hslayers-ng/services/utils';
 import {getPopUp, getTitle} from 'hslayers-ng/common/extensions';
 
 @Injectable({

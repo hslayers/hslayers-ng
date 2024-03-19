@@ -4,12 +4,12 @@ import {Observable, Subject, Subscription} from 'rxjs';
 import {Vector as VectorLayer} from 'ol/layer';
 import {Vector as VectorSource} from 'ol/source';
 
-import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
+import {HsLayerUtilsService} from 'hslayers-ng/services/utils';
 import {HsLegendDescriptor} from 'hslayers-ng/components/legend';
 import {HsLegendLayerStaticService} from 'hslayers-ng/components/legend';
 import {HsLegendService} from 'hslayers-ng/components/legend';
-import {HsMapService} from 'hslayers-ng/shared/map';
-import {HsShareThumbnailService} from 'hslayers-ng/shared/share';
+import {HsMapService} from 'hslayers-ng/services/map';
+import {HsShareThumbnailService} from 'hslayers-ng/services/share';
 import {LegendObj} from './types/legend-object.type';
 import {SparqlJson} from 'hslayers-ng/common/layers';
 

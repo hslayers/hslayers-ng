@@ -2,10 +2,10 @@ import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {lastValueFrom, takeUntil} from 'rxjs';
 
-import {HsAddDataUrlService} from 'hslayers-ng/shared/add-data';
-import {HsEventBusService} from 'hslayers-ng/shared/event-bus';
-import {HsLanguageService} from 'hslayers-ng/shared/language';
-import {HsLogService} from 'hslayers-ng/shared/log';
+import {HsAddDataUrlService} from 'hslayers-ng/services/add-data';
+import {HsEventBusService} from 'hslayers-ng/services/event-bus';
+import {HsLanguageService} from 'hslayers-ng/services/language';
+import {HsLogService} from 'hslayers-ng/services/log';
 import {UrlDataObject} from 'hslayers-ng/types';
 
 @Injectable({providedIn: 'root'})
