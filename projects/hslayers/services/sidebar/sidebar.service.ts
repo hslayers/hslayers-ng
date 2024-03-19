@@ -247,7 +247,7 @@ export class HsSidebarService {
    * Function to set if a button is important and always visible
    * or only when the sidebar buttons are expanded
    */
-  setButtonImportancy(
+  setButtonImportance(
     buttons: HsButton[],
     panelName: string,
     state: boolean,
