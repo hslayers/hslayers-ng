@@ -2,7 +2,6 @@ import {Component, OnInit} from '@angular/core';
 
 import {HsGeolocationService} from './geolocation.service';
 import {HsGuiOverlayBaseComponent} from 'hslayers-ng/common/panels';
-import {HsLayoutService} from 'hslayers-ng/shared/layout';
 @Component({
   selector: 'hs-geolocation',
   templateUrl: './geolocation.component.html',
@@ -15,11 +14,8 @@ export class HsGeolocationComponent
 
   name = 'geolocationButton';
 
-  constructor(
-    private hsGeolocationService: HsGeolocationService,
-    public HsLayoutService: HsLayoutService,
-  ) {
-    super(HsLayoutService);
+  constructor(private hsGeolocationService: HsGeolocationService) {
+    super();
   }
   ngOnInit(): void {
     this.collapsed = true;
@@ -27,8 +23,8 @@ export class HsGeolocationComponent
   }
   isVisible(): boolean {
     return (
-      this.HsLayoutService.componentEnabled('geolocationButton') &&
-      this.HsLayoutService.componentEnabled('guiOverlay')
+      this.hsLayoutService.componentEnabled('geolocationButton') &&
+      this.hsLayoutService.componentEnabled('guiOverlay')
     );
   }
 

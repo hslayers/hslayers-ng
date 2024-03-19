@@ -7,12 +7,11 @@ import {HsCommonEndpointsService} from 'hslayers-ng/shared/endpoints';
 import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsEndpoint} from 'hslayers-ng/types';
-import {HsLayoutService} from 'hslayers-ng/shared/layout';
 import {HsPanelBaseComponent} from 'hslayers-ng/common/panels';
 import {HsSaveMapDialogSpawnerService} from './dialog-spawner.service';
 import {HsSaveMapManagerService} from './save-map-manager.service';
 import {HsSaveMapService} from 'hslayers-ng/shared/save-map';
-import {HsSidebarService} from 'hslayers-ng/shared/sidebar';
+
 @Component({
   selector: 'hs-save-map',
   templateUrl: './save-map.component.html',
@@ -27,18 +26,15 @@ export class HsSaveMapComponent
   name = 'saveMap';
   private end = new Subject<void>();
   constructor(
-    //Used in template
     private hsConfig: HsConfig,
     private hsSaveMapManagerService: HsSaveMapManagerService,
-    hsLayoutService: HsLayoutService,
     private hsCommonLaymanService: HsCommonLaymanService,
     private hsCommonEndpointsService: HsCommonEndpointsService,
     //Running in background and watching observables
     private hsSaveMapDialogSpawnerService: HsSaveMapDialogSpawnerService,
-    private hsSidebarService: HsSidebarService,
     private hsSaveMapService: HsSaveMapService,
   ) {
-    super(hsLayoutService);
+    super();
   }
   ngOnInit() {
     super.ngOnInit();

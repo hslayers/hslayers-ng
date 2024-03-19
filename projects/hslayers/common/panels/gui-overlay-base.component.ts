@@ -1,5 +1,5 @@
-import {Component, OnInit, ViewRef} from '@angular/core';
-import {Observable, map, of} from 'rxjs';
+import {Component, DestroyRef, OnInit, ViewRef, inject} from '@angular/core';
+import {Observable, of} from 'rxjs';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 
 import {HsLayoutService} from 'hslayers-ng/shared/layout';
@@ -20,8 +20,10 @@ export class HsGuiOverlayBaseComponent implements HsPanelComponent, OnInit {
    * was called from parent ngOnInit or when parents ngOnInit is not defined
    */
   private baseComponentInitRun = false;
+  hsLayoutService = inject(HsLayoutService);
+  destroyRef = inject(DestroyRef);
 
-  constructor(public hsLayoutService: HsLayoutService) {
+  constructor() {
     setTimeout(() => {
       if (!this.baseComponentInitRun) {
         console.warn(
@@ -38,7 +40,7 @@ export class HsGuiOverlayBaseComponent implements HsPanelComponent, OnInit {
     this.baseComponentInitRun = true;
     this.isVisible$ = this.componentEnabled();
     this.hsLayoutService.hsConfig.configChanges
-      //.pipe(takeUntilDestroyed())
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(() => {
         this.isVisible$ = this.componentEnabled();
       });

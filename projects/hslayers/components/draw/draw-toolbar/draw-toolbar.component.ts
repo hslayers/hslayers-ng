@@ -7,7 +7,6 @@ import {HsConfig} from 'hslayers-ng/config';
 
 import {HsDrawService} from 'hslayers-ng/shared/draw';
 import {HsGuiOverlayBaseComponent} from 'hslayers-ng/common/panels';
-import {HsLayoutService} from 'hslayers-ng/shared/layout';
 import {TranslateCustomPipe} from 'hslayers-ng/shared/language';
 import {getTitle} from 'hslayers-ng/common/extensions';
 
@@ -24,10 +23,9 @@ export class HsDrawToolbarComponent extends HsGuiOverlayBaseComponent {
   getTitle = getTitle;
   constructor(
     public HsDrawService: HsDrawService,
-    public HsLayoutService: HsLayoutService,
     public HsConfig: HsConfig,
   ) {
-    super(HsLayoutService);
+    super();
   }
   selectionMenuToggled(): void {
     this.setType(this.HsDrawService.type);
@@ -36,11 +34,11 @@ export class HsDrawToolbarComponent extends HsGuiOverlayBaseComponent {
   toggleDrawToolbar(): void {
     this.HsDrawService.highlightDrawButton = false;
     if (
-      this.HsLayoutService.layoutElement.clientWidth > 767 &&
-      this.HsLayoutService.layoutElement.clientWidth < 870 &&
+      this.hsLayoutService.layoutElement.clientWidth > 767 &&
+      this.hsLayoutService.layoutElement.clientWidth < 870 &&
       !this.drawToolbarExpanded
     ) {
-      this.HsLayoutService.sidebarExpanded = false;
+      this.hsLayoutService.sidebarExpanded = false;
     }
     this.drawToolbarExpanded = !this.drawToolbarExpanded;
     if (!this.drawToolbarExpanded) {
