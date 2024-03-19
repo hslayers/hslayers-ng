@@ -5,9 +5,9 @@ import {Source} from 'ol/source';
 
 import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
 import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
-import {HsLanguageService} from 'hslayers-ng/shared/language';
-import {HsLaymanService} from 'hslayers-ng/shared/save-map';
-import {HsMapService} from 'hslayers-ng/shared/map';
+import {HsLanguageService} from 'hslayers-ng/services/language';
+import {HsLaymanService} from 'hslayers-ng/services/save-map';
+import {HsMapService} from 'hslayers-ng/services/map';
 import {
   HsRmLayerDialogComponent,
   HsRmLayerDialogDeleteOptions,

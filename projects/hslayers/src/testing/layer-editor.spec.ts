@@ -11,32 +11,32 @@ import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
 import {Cluster, Vector as VectorSource} from 'ol/source';
 import {Vector as VectorLayer} from 'ol/layer';
 
-import {HsAddDataOwsService} from 'hslayers-ng/shared/add-data';
+import {HsAddDataOwsService} from 'hslayers-ng/services/add-data';
 import {
   HsArcgisGetCapabilitiesService,
   HsWfsGetCapabilitiesService,
   HsWmsGetCapabilitiesService,
   HsWmtsGetCapabilitiesService,
-} from 'hslayers-ng/shared/get-capabilities';
+} from 'hslayers-ng/services/get-capabilities';
 import {HsClusterWidgetComponent} from 'hslayers-ng/components/layer-manager';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsConfigMock} from './config.service.mock';
-import {HsDrawService} from 'hslayers-ng/shared/draw';
+import {HsDrawService} from 'hslayers-ng/services/draw';
 import {HsLanguageModule} from 'hslayers-ng/components/language';
 import {HsLayerEditorComponent} from 'hslayers-ng/components/layer-manager';
 import {HsLayerEditorService} from 'hslayers-ng/components/layer-manager';
 import {HsLayerEditorSublayerService} from 'hslayers-ng/components/layer-manager';
-import {HsLayerEditorVectorLayerService} from 'hslayers-ng/shared/layer-manager';
-import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
-import {HsLayoutService} from 'hslayers-ng/shared/layout';
+import {HsLayerEditorVectorLayerService} from 'hslayers-ng/services/layer-manager';
+import {HsLayerUtilsService} from 'hslayers-ng/services/utils';
+import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsLayoutServiceMock} from './layout.service.mock';
-import {HsMapService} from 'hslayers-ng/shared/map';
+import {HsMapService} from 'hslayers-ng/services/map';
 import {HsMapServiceMock} from './map.service.mock';
 import {HsPanelHelpersModule} from 'hslayers-ng/common/panels';
 import {HsShareUrlService} from 'hslayers-ng/components/share';
-import {HsStylerService} from 'hslayers-ng/shared/styler';
+import {HsStylerService} from 'hslayers-ng/services/styler';
 import {HsStylerServiceMock} from './styler.service.mock';
-import {HsUtilsService} from 'hslayers-ng/shared/utils';
+import {HsUtilsService} from 'hslayers-ng/services/utils';
 import {HsUtilsServiceMock} from './utils.service.mock';
 import {getCluster} from 'hslayers-ng/common/extensions';
 import {mockLayerUtilsService} from './layer-utils.service.mock';

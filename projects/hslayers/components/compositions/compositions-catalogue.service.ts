@@ -2,17 +2,17 @@ import {Injectable, NgZone} from '@angular/core';
 
 import {Observable, forkJoin} from 'rxjs';
 
-import {HsCommonEndpointsService} from 'hslayers-ng/shared/endpoints';
+import {HsCommonEndpointsService} from 'hslayers-ng/services/endpoints';
 import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
 import {HsCompositionsInfoDialogComponent} from './dialogs/info-dialog.component';
 import {HsCompositionsService} from './compositions.service';
 import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
 import {HsEndpoint} from 'hslayers-ng/types';
-import {HsEventBusService} from 'hslayers-ng/shared/event-bus';
-import {HsLayoutService} from 'hslayers-ng/shared/layout';
+import {HsEventBusService} from 'hslayers-ng/services/event-bus';
+import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsMapCompositionDescriptor} from 'hslayers-ng/types';
-import {HsMapService} from 'hslayers-ng/shared/map';
-import {HsUtilsService} from 'hslayers-ng/shared/utils';
+import {HsMapService} from 'hslayers-ng/services/map';
+import {HsUtilsService} from 'hslayers-ng/services/utils';
 import {
   INSPIRETHEMES,
   KEYWORDS,

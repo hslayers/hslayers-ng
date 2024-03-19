@@ -3,12 +3,12 @@ import {of} from 'rxjs';
 
 import {HsConfig} from 'hslayers-ng/config';
 import {HsConfigMock} from './config.service.mock';
-import {HsEventBusService} from 'hslayers-ng/shared/event-bus';
+import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsEventBusServiceMock} from './event-bus.service.mock';
 import {HsLayerEditorService} from 'hslayers-ng/components/layer-manager';
-import {HsLayerManagerService} from 'hslayers-ng/shared/layer-manager';
-import {HsLayerShiftingService} from 'hslayers-ng/shared/layer-shifting';
-import {HsMapService} from 'hslayers-ng/shared/map';
+import {HsLayerManagerService} from 'hslayers-ng/services/layer-manager';
+import {HsLayerShiftingService} from 'hslayers-ng/services/layer-shifting';
+import {HsMapService} from 'hslayers-ng/services/map';
 import {HsMapServiceMock} from './map.service.mock';
 import {HsMapSwipeService} from 'hslayers-ng/components/map-swipe';
 import {HsShareUrlService} from 'hslayers-ng/components/share';

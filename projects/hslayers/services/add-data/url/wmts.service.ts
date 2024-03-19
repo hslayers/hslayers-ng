@@ -8,8 +8,8 @@ import {WMTSCapabilities} from 'ol/format';
 import {transformExtent} from 'ol/proj';
 
 import {CapabilitiesResponseWrapper} from 'hslayers-ng/types';
-import {HsLayoutService} from 'hslayers-ng/shared/layout';
-import {HsMapService} from 'hslayers-ng/shared/map';
+import {HsLayoutService} from 'hslayers-ng/services/layout';
+import {HsMapService} from 'hslayers-ng/services/map';
 
 import {HsAddDataCommonService} from '../common.service';
 import {HsAddDataUrlService} from './add-data-url.service';

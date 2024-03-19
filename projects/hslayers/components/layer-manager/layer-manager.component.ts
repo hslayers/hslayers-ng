@@ -12,9 +12,9 @@ import {Subject, takeUntil} from 'rxjs';
 
 import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
 import {HsConfig} from 'hslayers-ng/config';
-import {HsCoreService} from 'hslayers-ng/shared/core';
+import {HsCoreService} from 'hslayers-ng/services/core';
 import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
-import {HsEventBusService} from 'hslayers-ng/shared/event-bus';
+import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsLayerDescriptor} from 'hslayers-ng/types';
 import {HsLayerListService} from './logical-list/layer-manager-layerlist.service';
 import {HsLayerManagerRemoveAllDialogComponent} from './dialogs/remove-all-dialog.component';
@@ -22,10 +22,10 @@ import {
   HsLayerManagerService,
   HsLayerManagerVisibilityService,
   HsLayerSelectorService,
-} from 'hslayers-ng/shared/layer-manager';
+} from 'hslayers-ng/services/layer-manager';
 import {HsPanelBaseComponent} from 'hslayers-ng/common/panels';
 import {HsRemoveLayerDialogService} from 'hslayers-ng/common/remove-multiple';
-import {HsUtilsService} from 'hslayers-ng/shared/utils';
+import {HsUtilsService} from 'hslayers-ng/services/utils';
 import {
   getActive,
   getAttribution,

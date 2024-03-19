@@ -1,8 +1,8 @@
 import {Component} from '@angular/core';
 
-import {HsLanguageService} from 'hslayers-ng/shared/language';
+import {HsLanguageService} from 'hslayers-ng/services/language';
 import {HsLayerEditorWidgetBaseComponent} from './layer-editor-widget-base.component';
-import {HsLayerSelectorService} from 'hslayers-ng/shared/layer-manager';
+import {HsLayerSelectorService} from 'hslayers-ng/services/layer-manager';
 
 @Component({
   selector: 'hs-type-widget',

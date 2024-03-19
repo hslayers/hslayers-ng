@@ -3,12 +3,12 @@ import {Injectable, NgZone} from '@angular/core';
 import {Subject, buffer, debounceTime, pairwise} from 'rxjs';
 
 import {HsConfig} from 'hslayers-ng/config';
-import {HsEventBusService} from 'hslayers-ng/shared/event-bus';
-import {HsLanguageService} from 'hslayers-ng/shared/language';
+import {HsEventBusService} from 'hslayers-ng/services/event-bus';
+import {HsLanguageService} from 'hslayers-ng/services/language';
 import {HsLayerDescriptor, HsLayerLoadProgress} from 'hslayers-ng/types';
-import {HsLogService} from 'hslayers-ng/shared/log';
+import {HsLogService} from 'hslayers-ng/services/log';
 import {HsToastService} from 'hslayers-ng/common/toast';
-import {HsUtilsService} from 'hslayers-ng/shared/utils';
+import {HsUtilsService} from 'hslayers-ng/services/utils';
 import {
   Image as ImageLayer,
   Layer,

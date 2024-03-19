@@ -13,7 +13,7 @@ import {HsLaymanModule} from 'hslayers-ng/common/layman';
 import {HsNewLayerFormComponent} from './new-layer-form/new-layer-form.component';
 import {HsPositionComponent} from './target-position/target-position.component';
 import {HsSaveToLaymanComponent} from './save-to-layman/save-to-layman.component';
-import {TranslateCustomPipe} from 'hslayers-ng/shared/language';
+import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

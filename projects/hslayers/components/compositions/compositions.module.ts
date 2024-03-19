@@ -16,7 +16,7 @@ import {HsLaymanModule} from 'hslayers-ng/common/layman';
 import {HsPagerModule} from 'hslayers-ng/common/pager';
 import {HsPanelHeaderComponent} from 'hslayers-ng/common/panels';
 import {HsPanelHelpersModule} from 'hslayers-ng/common/panels';
-import {TranslateCustomPipe} from 'hslayers-ng/shared/language';
+import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

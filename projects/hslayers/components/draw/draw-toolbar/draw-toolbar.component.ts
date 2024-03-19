@@ -5,9 +5,9 @@ import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
 
 import {HsConfig} from 'hslayers-ng/config';
 
-import {HsDrawService} from 'hslayers-ng/shared/draw';
+import {HsDrawService} from 'hslayers-ng/services/draw';
 import {HsGuiOverlayBaseComponent} from 'hslayers-ng/common/panels';
-import {TranslateCustomPipe} from 'hslayers-ng/shared/language';
+import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 import {getTitle} from 'hslayers-ng/common/extensions';
 
 @Component({

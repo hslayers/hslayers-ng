@@ -9,9 +9,9 @@ import {
   HsLayerManagerService,
   HsLayerManagerVisibilityService,
   HsLayerSelectorService,
-} from 'hslayers-ng/shared/layer-manager';
-import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
-import {TranslateCustomPipe} from 'hslayers-ng/shared/language';
+} from 'hslayers-ng/services/layer-manager';
+import {HsLayerUtilsService} from 'hslayers-ng/services/utils';
+import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 import {getBase, getGreyscale} from 'hslayers-ng/common/extensions';
 
 @Component({

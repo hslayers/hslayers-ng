@@ -8,7 +8,7 @@ import {HsSearchComponent} from './search.component';
 import {HsSearchInputComponent} from './search-input.component';
 import {HsSearchResultsComponent} from './search-results.component';
 import {HsSearchToolbarComponent} from './search-toolbar.component';
-import {TranslateCustomPipe} from 'hslayers-ng/shared/language';
+import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 import {limitToPipe} from './limitTo.pipe';
 
 @NgModule({

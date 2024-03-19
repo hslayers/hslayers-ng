@@ -6,7 +6,7 @@ import {HsDialogComponent} from '../dialog-component.interface';
 import {HsDialogContainerService} from '../dialog-container.service';
 import {HsDialogItem} from '../dialog-item';
 import {HsRenameLayerDialogComponent} from '../rename-layer/rename-layer.component';
-import {TranslateCustomPipe} from 'hslayers-ng/shared/language';
+import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 import {VectorDataObject} from 'hslayers-ng/types';
 
 @Component({

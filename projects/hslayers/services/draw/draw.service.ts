@@ -12,27 +12,27 @@ import {fromCircle} from 'ol/geom/Polygon';
 import {platformModifierKeyOnly} from 'ol/events/condition';
 import {unByKey} from 'ol/Observable';
 
-import {HsAddDataOwsService} from 'hslayers-ng/shared/add-data';
-import {HsAddDataVectorService} from 'hslayers-ng/shared/add-data';
+import {HsAddDataOwsService} from 'hslayers-ng/services/add-data';
+import {HsAddDataVectorService} from 'hslayers-ng/services/add-data';
 import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsConfirmDialogComponent} from 'hslayers-ng/common/confirm';
 import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
 import {HsDrawServiceParams} from './draw.service.params';
-import {HsEventBusService} from 'hslayers-ng/shared/event-bus';
-import {HsLanguageService} from 'hslayers-ng/shared/language';
-import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
-import {HsLaymanBrowserService} from 'hslayers-ng/shared/add-data';
-import {HsLaymanService} from 'hslayers-ng/shared/save-map';
-import {HsLayoutService} from 'hslayers-ng/shared/layout';
-import {HsLogService} from 'hslayers-ng/shared/log';
-import {HsMapService} from 'hslayers-ng/shared/map';
-import {HsQueryBaseService} from 'hslayers-ng/shared/query';
-import {HsQueryVectorService} from 'hslayers-ng/shared/query';
+import {HsEventBusService} from 'hslayers-ng/services/event-bus';
+import {HsLanguageService} from 'hslayers-ng/services/language';
+import {HsLayerUtilsService} from 'hslayers-ng/services/utils';
+import {HsLaymanBrowserService} from 'hslayers-ng/services/add-data';
+import {HsLaymanService} from 'hslayers-ng/services/save-map';
+import {HsLayoutService} from 'hslayers-ng/services/layout';
+import {HsLogService} from 'hslayers-ng/services/log';
+import {HsMapService} from 'hslayers-ng/services/map';
+import {HsQueryBaseService} from 'hslayers-ng/services/query';
+import {HsQueryVectorService} from 'hslayers-ng/services/query';
 import {HsRemoveLayerDialogService} from 'hslayers-ng/common/remove-multiple';
 import {HsToastService} from 'hslayers-ng/common/toast';
-import {HsUtilsService} from 'hslayers-ng/shared/utils';
-import {defaultStyle} from 'hslayers-ng/shared/styler';
+import {HsUtilsService} from 'hslayers-ng/services/utils';
+import {defaultStyle} from 'hslayers-ng/services/styler';
 import {
   getEditor,
   getName,

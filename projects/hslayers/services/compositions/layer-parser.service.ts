@@ -21,13 +21,13 @@ import {
 } from 'ol/source';
 import {Options as TileOptions} from 'ol/layer/BaseTile';
 
-import {HsAddDataOwsService} from 'hslayers-ng/shared/add-data';
-import {HsAddDataVectorService} from 'hslayers-ng/shared/add-data';
+import {HsAddDataOwsService} from 'hslayers-ng/services/add-data';
+import {HsAddDataVectorService} from 'hslayers-ng/services/add-data';
 import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
-import {HsLanguageService} from 'hslayers-ng/shared/language';
-import {HsLogService} from 'hslayers-ng/shared/log';
-import {HsMapService} from 'hslayers-ng/shared/map';
-import {HsStylerService} from 'hslayers-ng/shared/styler';
+import {HsLanguageService} from 'hslayers-ng/services/language';
+import {HsLogService} from 'hslayers-ng/services/log';
+import {HsMapService} from 'hslayers-ng/services/map';
+import {HsStylerService} from 'hslayers-ng/services/styler';
 import {HsToastService} from 'hslayers-ng/common/toast';
 import {HsVectorLayerOptions} from 'hslayers-ng/types';
 import {SparqlJson} from 'hslayers-ng/common/layers';

@@ -9,7 +9,7 @@ import {HsPanelHelpersModule} from 'hslayers-ng/common/panels';
 import {HsSaveMapAdvancedFormComponent} from './form/form.component';
 import {HsSaveMapComponent} from './save-map.component';
 import {HsSaveMapResultDialogComponent} from './dialog-result/dialog-result.component';
-import {TranslateCustomPipe} from 'hslayers-ng/shared/language';
+import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

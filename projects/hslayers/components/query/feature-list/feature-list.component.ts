@@ -6,8 +6,8 @@ import {Geometry} from 'ol/geom';
 import {HsConfirmDialogComponent} from 'hslayers-ng/common/confirm';
 import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
 import {HsFeatureCommonService} from '../feature-common.service';
-import {HsQueryBaseService} from 'hslayers-ng/shared/query';
-import {HsQueryVectorService} from 'hslayers-ng/shared/query';
+import {HsQueryBaseService} from 'hslayers-ng/services/query';
+import {HsQueryVectorService} from 'hslayers-ng/services/query';
 import {exportFormats} from '../feature-common.service';
 import {getTitle} from 'hslayers-ng/common/extensions';
 

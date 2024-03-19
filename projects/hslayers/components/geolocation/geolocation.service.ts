@@ -7,10 +7,10 @@ import {Rotate} from 'ol/control';
 import {Vector} from 'ol/source';
 import {Vector as VectorLayer} from 'ol/layer';
 
-import {HsLayoutService} from 'hslayers-ng/shared/layout';
-import {HsLogService} from 'hslayers-ng/shared/log';
-import {HsMapService} from 'hslayers-ng/shared/map';
-import {HsUtilsService} from 'hslayers-ng/shared/utils';
+import {HsLayoutService} from 'hslayers-ng/services/layout';
+import {HsLogService} from 'hslayers-ng/services/log';
+import {HsMapService} from 'hslayers-ng/services/map';
+import {HsUtilsService} from 'hslayers-ng/services/utils';
 import {
   setRemovable,
   setShowInLayerManager,

@@ -6,16 +6,16 @@ import {Source} from 'ol/source';
 import {Map as olMap} from 'ol';
 
 import {HsConfig} from 'hslayers-ng/config';
-import {HsEventBusService} from 'hslayers-ng/shared/event-bus';
+import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsLayerEditorService} from 'hslayers-ng/components/layer-manager';
-import {HsLayerManagerService} from 'hslayers-ng/shared/layer-manager';
+import {HsLayerManagerService} from 'hslayers-ng/services/layer-manager';
 import {
   HsLayerShiftingService,
   LayerListItem,
-} from 'hslayers-ng/shared/layer-shifting';
-import {HsLayoutService} from 'hslayers-ng/shared/layout';
-import {HsLogService} from 'hslayers-ng/shared/log';
-import {HsMapService} from 'hslayers-ng/shared/map';
+} from 'hslayers-ng/services/layer-shifting';
+import {HsLayoutService} from 'hslayers-ng/services/layout';
+import {HsLogService} from 'hslayers-ng/services/log';
+import {HsMapService} from 'hslayers-ng/services/map';
 import {HsShareUrlService} from 'hslayers-ng/components/share';
 import {SwipeControl} from './swipe-control/swipe.control';
 import {

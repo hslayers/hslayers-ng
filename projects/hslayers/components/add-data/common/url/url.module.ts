@@ -11,7 +11,7 @@ import {HsLayerTableComponent} from 'hslayers-ng/common/layer-table';
 import {HsUrlAddComponent} from './add/add.component';
 import {HsUrlDetailsComponent} from './details/details.component';
 import {HsUrlProgressComponent} from './progress/progress.component';
-import {TranslateCustomPipe} from 'hslayers-ng/shared/language';
+import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

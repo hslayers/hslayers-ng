@@ -1,9 +1,9 @@
 import {Component} from '@angular/core';
 
-import {HsAddDataCommonService} from 'hslayers-ng/shared/add-data';
-import {HsAddDataOwsService} from 'hslayers-ng/shared/add-data';
-import {HsUrlWfsService} from 'hslayers-ng/shared/add-data';
-import {HsUtilsService} from 'hslayers-ng/shared/utils';
+import {HsAddDataCommonService} from 'hslayers-ng/services/add-data';
+import {HsAddDataOwsService} from 'hslayers-ng/services/add-data';
+import {HsUrlWfsService} from 'hslayers-ng/services/add-data';
+import {HsUtilsService} from 'hslayers-ng/services/utils';
 
 @Component({
   selector: 'hs-url-wfs',

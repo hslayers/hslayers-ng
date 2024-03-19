@@ -3,7 +3,7 @@ import {Injectable} from '@angular/core';
 import {Projection, get as getProjection} from 'ol/proj';
 import {PROJECTIONS as epsg4326Aliases} from 'ol/proj/epsg4326';
 
-import {HsLaymanService} from 'hslayers-ng/shared/save-map';
+import {HsLaymanService} from 'hslayers-ng/services/save-map';
 
 @Injectable({
   providedIn: 'root',

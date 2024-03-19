@@ -5,9 +5,9 @@ import {Cluster, Source, Vector as VectorSource} from 'ol/source';
 import {Layer, Vector as VectorLayer} from 'ol/layer';
 
 import {HsConfig} from 'hslayers-ng/config';
-import {HsMapService} from 'hslayers-ng/shared/map';
-import {HsStylerService} from 'hslayers-ng/shared/styler';
-import {HsUtilsService} from 'hslayers-ng/shared/utils';
+import {HsMapService} from 'hslayers-ng/services/map';
+import {HsStylerService} from 'hslayers-ng/services/styler';
+import {HsUtilsService} from 'hslayers-ng/services/utils';
 
 @Injectable({
   providedIn: 'root',

@@ -10,24 +10,24 @@ import {
   CapabilitiesResponseWrapper,
   MetadataUrl,
 } from 'hslayers-ng/types';
-import {HsAddDataUrlService} from 'hslayers-ng/shared/add-data';
+import {HsAddDataUrlService} from 'hslayers-ng/services/add-data';
 import {
   HsArcgisGetCapabilitiesService,
   HsDimensionTimeService,
   HsWfsGetCapabilitiesService,
   HsWmsGetCapabilitiesService,
   HsWmtsGetCapabilitiesService,
-} from 'hslayers-ng/shared/get-capabilities';
+} from 'hslayers-ng/services/get-capabilities';
 import {
   HsLayerDescriptor,
   HsWmsLayer,
   WMSGetCapabilitiesResponse,
   WmsDimension,
 } from 'hslayers-ng/types';
-import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
-import {HsLogService} from 'hslayers-ng/shared/log';
-import {HsMapService} from 'hslayers-ng/shared/map';
-import {HsUrlWmsService} from 'hslayers-ng/shared/add-data';
+import {HsLayerUtilsService} from 'hslayers-ng/services/utils';
+import {HsLogService} from 'hslayers-ng/services/log';
+import {HsMapService} from 'hslayers-ng/services/map';
+import {HsUrlWmsService} from 'hslayers-ng/services/add-data';
 import {
   getAttribution,
   getCachedCapabilities,

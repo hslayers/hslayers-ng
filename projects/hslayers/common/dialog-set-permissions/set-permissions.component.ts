@@ -10,9 +10,9 @@ import {
 } from 'hslayers-ng/common/dialogs';
 import {HsEndpoint} from 'hslayers-ng/types';
 import {HsLaymanModule} from 'hslayers-ng/common/layman';
-import {HsLaymanService} from 'hslayers-ng/shared/save-map';
+import {HsLaymanService} from 'hslayers-ng/services/save-map';
 import {PostPatchLayerResponse} from 'hslayers-ng/common/layman';
-import {TranslateCustomPipe} from 'hslayers-ng/shared/language';
+import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 import {UpsertLayerObject} from 'hslayers-ng/types';
 
 @Component({

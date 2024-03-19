@@ -2,10 +2,10 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 
 import {Subject, takeUntil} from 'rxjs';
 
-import {HsEventBusService} from 'hslayers-ng/shared/event-bus';
+import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsMeasureService} from './measure.service';
 import {HsPanelBaseComponent} from 'hslayers-ng/common/panels';
-import {HsUtilsService} from 'hslayers-ng/shared/utils';
+import {HsUtilsService} from 'hslayers-ng/services/utils';
 
 @Component({
   selector: 'hs-measure',

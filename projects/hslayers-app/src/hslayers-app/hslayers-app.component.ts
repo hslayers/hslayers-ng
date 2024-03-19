@@ -23,8 +23,8 @@ import {View} from 'ol';
 import {register as projRegister} from 'ol/proj/proj4';
 
 import {HsConfig} from 'hslayers-ng/config';
-import {HsOverlayConstructorService} from 'hslayers-ng/shared/panel-constructor';
-import {HsPanelConstructorService} from 'hslayers-ng/shared/panel-constructor';
+import {HsOverlayConstructorService} from 'hslayers-ng/services/panel-constructor';
+import {HsPanelConstructorService} from 'hslayers-ng/services/panel-constructor';
 import {InterpolatedSource} from 'hslayers-ng/common/layers';
 import {SparqlJson} from 'hslayers-ng/common/layers';
 

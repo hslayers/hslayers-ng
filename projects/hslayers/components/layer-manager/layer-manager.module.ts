@@ -35,7 +35,7 @@ import {HsPanelHelpersModule} from 'hslayers-ng/common/panels';
 import {HsScaleWidgetComponent} from './widgets/scale-widget.component';
 import {HsTypeWidgetComponent} from './widgets/type-widget.component';
 import {HsWmsSourceWidgetComponent} from './widgets/wms-source-widget/wms-source-widget.component';
-import {TranslateCustomPipe} from 'hslayers-ng/shared/language';
+import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

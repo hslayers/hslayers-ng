@@ -6,10 +6,10 @@ import {Geometry} from 'ol/geom';
 import {Layer} from 'ol/layer';
 import {Source, Vector as VectorSource} from 'ol/source';
 
-import {HsLanguageService} from 'hslayers-ng/shared/language';
-import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
-import {HsMapService} from 'hslayers-ng/shared/map';
-import {HsQueryVectorService} from 'hslayers-ng/shared/query';
+import {HsLanguageService} from 'hslayers-ng/services/language';
+import {HsLayerUtilsService} from 'hslayers-ng/services/utils';
+import {HsMapService} from 'hslayers-ng/services/map';
+import {HsQueryVectorService} from 'hslayers-ng/services/query';
 import {HsToastService} from 'hslayers-ng/common/toast';
 import {getTitle} from 'hslayers-ng/common/extensions';
 

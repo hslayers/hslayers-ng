@@ -17,18 +17,18 @@ import {DEFAULT_VECTOR_LOAD_TYPE} from '../../enums/load-types.const';
 import {
   HsAddDataCommonFileService,
   HsAddDataVectorUploadService,
-} from 'hslayers-ng/shared/add-data';
-import {HsAddDataVectorService} from 'hslayers-ng/shared/add-data';
+} from 'hslayers-ng/services/add-data';
+import {HsAddDataVectorService} from 'hslayers-ng/services/add-data';
 import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
 import {HsConfig} from 'hslayers-ng/config';
-import {HsLanguageService} from 'hslayers-ng/shared/language';
-import {HsLayerManagerService} from 'hslayers-ng/shared/layer-manager';
-import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
-import {HsLayoutService} from 'hslayers-ng/shared/layout';
-import {HsMapService} from 'hslayers-ng/shared/map';
+import {HsLanguageService} from 'hslayers-ng/services/language';
+import {HsLayerManagerService} from 'hslayers-ng/services/layer-manager';
+import {HsLayerUtilsService} from 'hslayers-ng/services/utils';
+import {HsLayoutService} from 'hslayers-ng/services/layout';
+import {HsMapService} from 'hslayers-ng/services/map';
 import {HsToastService} from 'hslayers-ng/common/toast';
 import {HsUploadComponent, HsUploadedFiles} from 'hslayers-ng/common/upload';
-import {HsUtilsService} from 'hslayers-ng/shared/utils';
+import {HsUtilsService} from 'hslayers-ng/services/utils';
 import {VectorFileDataType} from '../../common/advanced-options/advanced-options.component';
 import {getShowInLayerManager} from 'hslayers-ng/common/extensions';
 

@@ -3,10 +3,10 @@ import {Injectable} from '@angular/core';
 
 import {HsButton} from 'hslayers-ng/types';
 import {HsConfig} from 'hslayers-ng/config';
-import {HsCoreService} from 'hslayers-ng/shared/core';
-import {HsLanguageService} from 'hslayers-ng/shared/language';
-import {HsLayoutService} from 'hslayers-ng/shared/layout';
-import {HsUtilsService} from 'hslayers-ng/shared/utils';
+import {HsCoreService} from 'hslayers-ng/services/core';
+import {HsLanguageService} from 'hslayers-ng/services/language';
+import {HsLayoutService} from 'hslayers-ng/services/layout';
+import {HsUtilsService} from 'hslayers-ng/services/utils';
 
 @Injectable({
   providedIn: 'root',

@@ -6,9 +6,9 @@ import dayjs from 'dayjs';
 import objectSupport from 'dayjs/plugin/objectSupport';
 import {default as vegaEmbed} from 'vega-embed';
 
-import {HsLanguageService} from 'hslayers-ng/shared/language';
-import {HsLogService} from 'hslayers-ng/shared/log';
-import {HsUtilsService} from 'hslayers-ng/shared/utils';
+import {HsLanguageService} from 'hslayers-ng/services/language';
+import {HsLogService} from 'hslayers-ng/services/log';
+import {HsUtilsService} from 'hslayers-ng/services/utils';
 
 import {Aggregate} from './types/aggregate.type';
 import {CustomInterval, Interval} from './types/interval.type';

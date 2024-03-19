@@ -6,7 +6,7 @@ import {HsConfig} from 'hslayers-ng/config';
 import {HsDynamicTextComponent} from './widgets/dynamic-text.component';
 import {HsFeatureInfoComponent} from './widgets/feature-info.component';
 import {HsLayerNameComponent} from './widgets/layer-name.component';
-import {HsPanelContainerService} from 'hslayers-ng/shared/panels';
+import {HsPanelContainerService} from 'hslayers-ng/services/panels';
 import {HsPanelItem} from 'hslayers-ng/common/panels';
 import {WidgetItem} from 'hslayers-ng/types';
 

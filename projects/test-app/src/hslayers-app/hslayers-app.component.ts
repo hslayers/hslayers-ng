@@ -12,14 +12,14 @@ import {catchError, lastValueFrom, takeUntil} from 'rxjs';
 import {transformExtent} from 'ol/proj';
 
 import {HsConfig} from 'hslayers-ng/config';
-import {HsEventBusService} from 'hslayers-ng/shared/event-bus';
-import {HsLayoutService} from 'hslayers-ng/shared/layout';
+import {HsEventBusService} from 'hslayers-ng/services/event-bus';
+import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {
   HsOverlayConstructorService,
   HsPanelConstructorService,
-} from 'hslayers-ng/shared/panel-constructor';
-import {HsSidebarService} from 'hslayers-ng/shared/sidebar';
-import {HsUtilsService} from 'hslayers-ng/shared/utils';
+} from 'hslayers-ng/services/panel-constructor';
+import {HsSidebarService} from 'hslayers-ng/services/sidebar';
+import {HsUtilsService} from 'hslayers-ng/services/utils';
 import {InterpolatedSource} from 'hslayers-ng/common/layers';
 import {SPOI} from 'hslayers-ng/common/layers';
 import {SomeComponent} from './some-panel/some-panel.component';
