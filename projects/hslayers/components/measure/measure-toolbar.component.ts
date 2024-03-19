@@ -2,15 +2,14 @@ import {Component} from '@angular/core';
 import {of} from 'rxjs';
 
 import {HsGuiOverlayBaseComponent} from 'hslayers-ng/common/panels';
-import {HsLayoutService} from 'hslayers-ng/shared/layout';
 
 @Component({
   selector: 'hs-measure-toolbar',
   templateUrl: './measure-toolbar.component.html',
 })
 export class HsMeasureToolbarComponent extends HsGuiOverlayBaseComponent {
-  constructor(public hsLayoutService: HsLayoutService) {
-    super(hsLayoutService);
+  constructor() {
+    super();
   }
   name = 'measureToolbar';
 

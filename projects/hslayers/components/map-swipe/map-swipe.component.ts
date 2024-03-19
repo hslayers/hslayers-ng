@@ -11,7 +11,6 @@ import {
   HsLayerShiftingService,
   LayerListItem,
 } from 'hslayers-ng/shared/layer-shifting';
-import {HsLayoutService} from 'hslayers-ng/shared/layout';
 import {HsMapSwipeService, SwipeSide} from './map-swipe.service';
 import {HsPanelBaseComponent} from 'hslayers-ng/common/panels';
 
@@ -32,11 +31,10 @@ export class HsMapSwipeComponent
     right: true,
   };
   constructor(
-    public hsLayoutService: HsLayoutService,
     public hsMapSwipeService: HsMapSwipeService,
     private hsLayerShiftingService: HsLayerShiftingService,
   ) {
-    super(hsLayoutService);
+    super();
   }
 
   name = 'mapSwipe';

@@ -23,7 +23,6 @@ import {
   HsLayerManagerVisibilityService,
   HsLayerSelectorService,
 } from 'hslayers-ng/shared/layer-manager';
-import {HsLayoutService} from 'hslayers-ng/shared/layout';
 import {HsPanelBaseComponent} from 'hslayers-ng/common/panels';
 import {HsRemoveLayerDialogService} from 'hslayers-ng/common/remove-multiple';
 import {HsUtilsService} from 'hslayers-ng/shared/utils';
@@ -118,7 +117,6 @@ export class HsLayerManagerComponent
     public hsCore: HsCoreService,
     public hsUtilsService: HsUtilsService,
     public hsLayerManagerService: HsLayerManagerService,
-    public hsLayoutService: HsLayoutService,
     public hsEventBusService: HsEventBusService,
     public hsDialogContainerService: HsDialogContainerService,
     public hsConfig: HsConfig,
@@ -128,7 +126,7 @@ export class HsLayerManagerComponent
     public hsLayerManagerVisibilityService: HsLayerManagerVisibilityService,
     private hsCommonLaymanService: HsCommonLaymanService,
   ) {
-    super(hsLayoutService);
+    super();
     this.hsEventBusService.layerRemovals
       .pipe(takeUntil(this.end))
       .subscribe((layer) => {

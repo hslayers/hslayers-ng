@@ -8,13 +8,11 @@ import {Source} from 'ol/source';
 
 import {HsLanguageService} from 'hslayers-ng/shared/language';
 import {HsLayerUtilsService} from 'hslayers-ng/shared/utils';
-import {HsLayoutService} from 'hslayers-ng/shared/layout';
 import {HsLegendDescriptor} from './legend-descriptor.interface';
 import {HsLegendService} from './legend.service';
 import {HsMapService} from 'hslayers-ng/shared/map';
 import {HsPanelBaseComponent} from 'hslayers-ng/common/panels';
 import {HsQueuesService} from 'hslayers-ng/shared/queues';
-import {HsSidebarService} from 'hslayers-ng/shared/sidebar';
 import {HsUtilsService} from 'hslayers-ng/shared/utils';
 import {InterpolatedSource} from 'hslayers-ng/common/layers';
 
@@ -36,11 +34,9 @@ export class HsLegendComponent
     public hsLayerUtilsService: HsLayerUtilsService,
     public hsUtilsService: HsUtilsService,
     public hsQueuesService: HsQueuesService,
-    hsLayoutService: HsLayoutService,
     public hsLanguageService: HsLanguageService,
-    public hsSidebarService: HsSidebarService,
   ) {
-    super(hsLayoutService);
+    super();
   }
   ngOnDestroy(): void {
     this.end.next();

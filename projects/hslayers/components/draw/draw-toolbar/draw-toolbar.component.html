@@ -1,5 +1,5 @@
 <div class="btn-group" [hidden]="(isVisible$ | async) === false"
-    *ngIf="{position: HsLayoutService.sidebarPosition | async} as sidebar">
+    *ngIf="{position: hsLayoutService.sidebarPosition | async} as sidebar">
     <button class="btn rounded-0 btn-light hs-toolbar-button"
         [ngClass]="HsDrawService.highlightDrawButton ? 'btn-outline-danger' : 'btn-outline-secondary'"
         (click)="toggleDrawToolbar()">

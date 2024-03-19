@@ -3,10 +3,8 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Subject, takeUntil} from 'rxjs';
 
 import {HsEventBusService} from 'hslayers-ng/shared/event-bus';
-import {HsLayoutService} from 'hslayers-ng/shared/layout';
 import {HsMeasureService} from './measure.service';
 import {HsPanelBaseComponent} from 'hslayers-ng/common/panels';
-import {HsSidebarService} from 'hslayers-ng/shared/sidebar';
 import {HsUtilsService} from 'hslayers-ng/shared/utils';
 
 @Component({
@@ -22,12 +20,10 @@ export class HsMeasureComponent
   private end = new Subject<void>();
   constructor(
     private hsEventBusService: HsEventBusService,
-    public hsLayoutService: HsLayoutService,
     public hsMeasureService: HsMeasureService,
     private hsUtilsService: HsUtilsService,
-    private hsSidebarService: HsSidebarService,
   ) {
-    super(hsLayoutService);
+    super();
   }
   ngOnDestroy(): void {
     this.end.next();

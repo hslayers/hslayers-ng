@@ -5,7 +5,6 @@ import {Subscription} from 'rxjs';
 import {HsCoreService} from 'hslayers-ng/shared/core';
 import {HsEventBusService} from 'hslayers-ng/shared/event-bus';
 import {HsGuiOverlayBaseComponent} from 'hslayers-ng/common/panels';
-import {HsLayoutService} from 'hslayers-ng/shared/layout';
 import {HsToolbarPanelContainerService} from 'hslayers-ng/shared/panels';
 
 @Component({
@@ -22,11 +21,10 @@ export class HsToolbarComponent
   mapResetsSubscription: Subscription;
   constructor(
     public HsEventBusService: HsEventBusService,
-    public HsLayoutService: HsLayoutService,
     public HsCoreService: HsCoreService,
     public HsToolbarPanelContainerService: HsToolbarPanelContainerService,
   ) {
-    super(HsLayoutService);
+    super();
     this.mapResetsSubscription = this.HsEventBusService.mapResets.subscribe(
       () => {
         setTimeout(() => {

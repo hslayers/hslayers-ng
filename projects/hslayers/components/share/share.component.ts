@@ -3,7 +3,6 @@ import {Component, OnInit} from '@angular/core';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsCoreService} from 'hslayers-ng/shared/core';
 import {HsLanguageService} from 'hslayers-ng/shared/language';
-import {HsLayoutService} from 'hslayers-ng/shared/layout';
 import {HsPanelBaseComponent} from 'hslayers-ng/common/panels';
 import {HsShareService} from './share.service';
 import {HsShareUrlService} from './share-url.service';
@@ -20,11 +19,10 @@ export class HsShareComponent extends HsPanelBaseComponent implements OnInit {
     public HsShareService: HsShareService,
     public HsShareUrlService: HsShareUrlService,
     public HsCore: HsCoreService,
-    public HsLayoutService: HsLayoutService,
     public hsLanguageService: HsLanguageService,
     private hsConfig: HsConfig,
   ) {
-    super(HsLayoutService);
+    super();
   }
 
   /**
