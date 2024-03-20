@@ -345,11 +345,6 @@ export class HsLayoutService extends HsLayoutParams {
     }
   }
 
-  mdToolbarHeight() {
-    const ELEM = this.contentWrapper.querySelector('.md-app-toolbar');
-    return ELEM ? ELEM.clientHeight : 0;
-  }
-
   addMapVisualizer(visualizerComponent: Type<unknown>): void {
     this.mapSpaceRef.subscribe((viewContainerRef) => {
       if (viewContainerRef) {
