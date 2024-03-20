@@ -2,14 +2,14 @@
 <kml xmlns="http://www.opengis.net/kml/2.2">
 <Document id="root_doc">
 <Schema name="polygon2.5d" id="polygon2.5d">
-  <SimpleField name="height" type="int"></SimpleField>
+  <SimpleField name="extrudedHeight" type="int"></SimpleField>
 </Schema>
 <Folder><name>polygon2.5d</name>
   <Placemark>
   <name>Polygon with height higher than its Z-coords</name>
   <Style><LineStyle><color>ff0000ff</color></LineStyle><PolyStyle><fill>0</fill></PolyStyle></Style>
   <ExtendedData><SchemaData schemaUrl="#polygon2.5d">
-    <SimpleData name="height">800</SimpleData>
+    <SimpleData name="extrudedHeight">800</SimpleData>
   </SchemaData></ExtendedData>
     <Polygon><outerBoundaryIs><LinearRing><coordinates>13.365,49.74,350 13.363,49.735,400 13.37,49.735,450 13.373,49.74,500 13.372,49.74,650 13.368,49.738,700 13.365,49.74,350</coordinates></LinearRing></outerBoundaryIs></Polygon>
   </Placemark>

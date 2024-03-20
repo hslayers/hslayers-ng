@@ -4,9 +4,11 @@ import dayjs from 'dayjs';
 import {
   Cartesian3,
   CesiumTerrainProvider,
+  ConstantProperty,
   DataSource,
   GeoJsonDataSource,
   GetFeatureInfoFormat,
+  HeightReference,
   ImageryLayer,
   KmlDataSource,
   OpenStreetMapImageryProvider,
@@ -205,7 +207,7 @@ export class HsCesiumLayersService {
     });
   }
 
-  serializeVectorLayerToGeoJson(ol_source: VectorSource): any {
+  serializeVectorLayerToGeoJson(ol_source: VectorSource) {
     const f = new GeoJSON();
     const cesiumLayer = <DataSource>this.findCesiumLayer(ol_source);
     //console.log('start serialize',(new Date()).getTime() - window.lasttime); window.lasttime = (new Date()).getTime();
@@ -355,15 +357,19 @@ export class HsCesiumLayersService {
       },
     );
     const cesiumLayer = <DataSource>this.findCesiumLayer(ol_source);
-    console.log('🚀 ~ syncFeatures ~ cesiumLayer:', cesiumLayer);
-    //FIXME: the entities are present only when this console.log or the one inside loop occurs. Otherwise, they are empty 😮
-    console.log('🚀 ~ syncFeatures ~ source.entities.values:', source.entities);
     //console.log('loaded in temp.',(new Date()).getTime() - window.lasttime); window.lasttime = (new Date()).getTime();
     source.entities.values.forEach((entity) => {
-      //console.log('🚀 ~ source.entities.values.forEach ~ entity:', entity);
+      if (entity.properties.hasProperty('extrudedHeight')) {
+        entity.polygon.extrudedHeight = entity.properties.getValue(
+          this.viewer.clock.currentTime,
+        ).extrudedHeight;
+        entity.polygon.extrudedHeightReference = new ConstantProperty(
+          HeightReference.RELATIVE_TO_GROUND,
+        );
+      }
       try {
         if (cesiumLayer.entities.getById(entity.id) == undefined) {
-          console.log('Adding', entity.id);
+          //console.log('Adding', entity.id);
           cesiumLayer.entities.add(entity);
         }
       } catch (ex) {
@@ -432,10 +438,6 @@ export class HsCesiumLayersService {
           this.HsUtilsService.instOf(cesium_layer, KmlDataSource)) &&
         this.viewer.dataSources
       ) {
-        //TODO: there shall be a way how to set real 3D coordinates when the GeoJSON contains also z-coords
-        /*for (const entity of (cesium_layer as DataSource).entities.values) {
-          entity.polygon.perPositionHeight;
-        }*/
         this.viewer.dataSources.add(<DataSource>cesium_layer);
         //TODO: Point clicked, Datasources extents, Composition extents shall be also synced
         if (getTitle(lyr as Layer<Source>) != 'Point clicked') {
