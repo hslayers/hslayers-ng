@@ -484,35 +484,34 @@ export class HsCesiumLayersService {
     }
   }
 
-  async createVectorDataSource(
-    ol_lyr: VectorLayer<VectorSource>,
-  ): Promise<DataSource> {
+  async createVectorDataSource(ol_lyr: VectorLayer<VectorSource>) {
+    let new_source: DataSource;
+    if (this.HsUtilsService.isFunction(ol_lyr.getSource().getUrl())) {
+      this.hsLog.warn(
+        'FeatureUrlFunction is currently not supported in synchronizing features from OL layer to Cesium',
+      );
+      return;
+    }
     if (this.HsUtilsService.instOf(ol_lyr?.getSource()?.getFormat(), KML)) {
-      if (this.HsUtilsService.isFunction(ol_lyr.getSource().getUrl())) {
-        this.hsLog.warn(
-          'FeatureUrlFunction is currently not supported in synchronizing features from OL layer to Cesium',
-        );
-        return;
-      }
-      const url: string = <string>ol_lyr.getSource().getUrl();
-      return await KmlDataSource.load(url, {
+      const url = <string>ol_lyr.getSource().getUrl();
+      new_source = await KmlDataSource.load(url, {
         camera: this.viewer.scene.camera,
         canvas: this.viewer.scene.canvas,
         clampToGround: ol_lyr.getSource().get('clampToGround') || true,
       });
     } else {
-      const new_source = new GeoJsonDataSource(getTitle(ol_lyr));
-      //link to Cesium layer will be set also for OL layers source object, when this function returns.
-      this.ol2CsMappings.push({
-        olObject: ol_lyr,
-        csObject: new_source,
-      });
-      new_source.show = ol_lyr.getVisible();
-      ol_lyr.on('change:visible', () => {
-        new_source.show = ol_lyr.getVisible();
-      });
-      return new_source;
+      new_source = new GeoJsonDataSource(getTitle(ol_lyr));
     }
+    //link to Cesium layer will be set also for OL layers source object, when this function returns.
+    this.ol2CsMappings.push({
+      olObject: ol_lyr,
+      csObject: new_source,
+    });
+    new_source.show = ol_lyr.getVisible();
+    ol_lyr.on('change:visible', () => {
+      new_source.show = ol_lyr.getVisible();
+    });
+    return new_source;
   }
 
   createTileProvider(ol_lyr): ImageryLayer {
