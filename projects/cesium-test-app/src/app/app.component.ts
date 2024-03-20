@@ -7,7 +7,7 @@ import {
   HeadingPitchRoll,
   Transforms,
 } from 'cesium';
-import {GeoJSON} from 'ol/format';
+import {GeoJSON, KML} from 'ol/format';
 import {Image as ImageLayer, Tile, Vector as VectorLayer} from 'ol/layer';
 import {OSM, Vector as VectorSource, XYZ} from 'ol/source';
 import {View} from 'ol';
@@ -42,6 +42,15 @@ export class AppComponent implements OnInit {
       source: new VectorSource({
         url: '../assets/polygon2.5d.geojson',
         format: new GeoJSON(),
+      }) as VectorSource, //FIXME: Type-cast shall be automatically inferred after OL >8.2
+    });
+    const polygon25dKml = new VectorLayer({
+      properties: {
+        title: '2.5D polygon surface as KML',
+      },
+      source: new VectorSource({
+        url: '../assets/polygon2.5d.kml',
+        format: new KML(),
       }) as VectorSource, //FIXME: Type-cast shall be automatically inferred after OL >8.2
     });
     const geojsonObject2d = {
@@ -203,8 +212,8 @@ export class AppComponent implements OnInit {
       ],
       popUpDisplay: 'hover',
       default_view: new View({
-        center: transform([17.474129, 52.574], 'EPSG:4326', 'EPSG:3857'), //Latitude longitude    to Spherical Mercator
-        zoom: 4,
+        center: transform([13.3, 49.7], 'EPSG:4326', 'EPSG:3857'), //Latitude longitude    to Spherical Mercator
+        zoom: 12,
       }),
       default_layers: [
         new Tile({
@@ -263,6 +272,7 @@ export class AppComponent implements OnInit {
           }) as VectorSource, //FIXME: Type-cast shall be automatically inferred after OL >8.2
         }),
         polygon25d,
+        polygon25dKml,
         opticalMap,
       ],
     });
