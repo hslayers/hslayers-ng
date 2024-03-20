@@ -1025,7 +1025,8 @@
     "sldParsingErrorMessage": "There was an error parsing provided SLD style. Default style used."
   },
   "TOOLBAR": {
-    "measureLinesAndPolygon": "Measure lines and polygon"
+    "measureLinesAndPolygon": "Measure lines and polygon",
+    "toggle3d": "Switch between 3D (Cesium) and 2D (OpenLayers) view"
   },
   "TRIP_PLANNER": {
     "clearWaypoints": "Clear waypoints",

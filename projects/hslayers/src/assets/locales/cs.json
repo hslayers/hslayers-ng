@@ -1025,7 +1025,8 @@
     "sldParsingErrorMessage": "Při zpracování poskytnutého stylu SLD došlo k chybě. Byl použit výchozí styl."
   },
   "TOOLBAR": {
-    "measureLinesAndPolygon": "Měřit linie a polygony"
+    "measureLinesAndPolygon": "Měřit linie a polygony",
+    "toggle3d": "Přepnout mezi 3D (Cesium) a 2D (OpenLayers) pohledem"
   },
   "TRIP_PLANNER": {
     "clearWaypoints": "Vyčistit body trasy",

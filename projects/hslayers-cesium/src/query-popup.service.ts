@@ -28,12 +28,12 @@ export class HsCesiumQueryPopupService
     );
   }
 
-  registerPopup(nativeElement: any) {
+  registerPopup(nativeElement) {
     nativeElement.style.position = 'absolute';
     this.hoverPopup = nativeElement;
   }
 
-  showPopup(e: any): void {
+  showPopup(e): void {
     this.hoverPopup.style.left = e.pixel.x + 4 + 'px';
     this.hoverPopup.style.top = e.pixel.y + 4 + 'px';
   }

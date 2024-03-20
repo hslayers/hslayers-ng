@@ -1,0 +1,7 @@
+<div class="nav-item" [hidden]="(isVisible$ | async) === false">
+    <button class="btn rounded-0 hs-toolbar-button btn-3d-toggle"
+        [ngClass]="{'btn-3d-active': hsCesiumService.visible}"
+        [title]="'TOOLBAR.toggle3d' | translateHs" (click)="hsCesiumService.toggleCesiumMap();loseFocus($event.target)">
+        <i class="icon-globealt"></i>
+    </button>
+</div>

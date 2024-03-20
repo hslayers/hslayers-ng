@@ -6,15 +6,21 @@ import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsMapService} from 'hslayers-ng/services/map';
 import {HsSidebarService} from 'hslayers-ng/services/sidebar';
+import {HsToolbarPanelContainerService} from 'hslayers-ng/services/panels';
 
 import {HsCesiumService} from './hscesium.service';
+import {HsToggleViewComponent} from './toggle-view/toggle-view.component';
 
 @Component({
   selector: 'hs-cesium',
   templateUrl: './hscesium.component.html',
+  styles: `
+  .hs-cesium-container {
+    height: 100%; margin: 0; padding: 0; overflow: hidden; position: absolute; left: 0; top: 0; width: 100%;  
+    margin-right: 0;
+  }`,
 })
 export class HslayersCesiumComponent implements AfterViewInit {
-  visible = true;
   app = 'default';
   constructor(
     public HsCesiumService: HsCesiumService,
@@ -22,6 +28,7 @@ export class HslayersCesiumComponent implements AfterViewInit {
     public HsCoreService: HsCoreService,
     public HsMapService: HsMapService,
     public HsSidebarService: HsSidebarService,
+    private hsToolbarPanelContainerService: HsToolbarPanelContainerService,
     public HsEventBusService: HsEventBusService,
     public HsLayoutService: HsLayoutService,
   ) {}
@@ -41,13 +48,7 @@ export class HslayersCesiumComponent implements AfterViewInit {
       this.HsShareUrlService.updateCustomParams({view: '2d'});
     }
 
-    this.HsSidebarService.addButton({
-      title: '3D/2D',
-      description: 'Switch between 3D (Cesium) and 2D (OpenLayers)',
-      icon: 'icon-globealt',
-      click: () => this.toggleCesiumMap(),
-      order: -1,
-    });
+    this.hsToolbarPanelContainerService.create(HsToggleViewComponent, {});
 
     this.HsEventBusService.layermanagerDimensionChanges.subscribe((data) =>
       this.HsCesiumService.dimensionChanged(data.layer, data.dimension),
@@ -57,25 +58,5 @@ export class HslayersCesiumComponent implements AfterViewInit {
       this.HsCesiumService.resize(size),
     );
     this.HsCesiumService.resize();
-  }
-
-  /**
-   * Toggles between Cesium and OL maps by setting HsMapService.visible property which is monitored by ngIf.
-   */
-  toggleCesiumMap() {
-    this.HsMapService.visible = !this.HsMapService.visible;
-    this.visible = !this.HsMapService.visible;
-    this.HsShareUrlService.updateCustomParams({
-      view: this.HsMapService.visible ? '2d' : '3d',
-    });
-    if (this.HsMapService.visible) {
-      this.HsCesiumService.cesiumDisabled();
-      this.HsCoreService.updateMapSize();
-    } else {
-      this.HsCesiumService.init();
-    }
-    this.HsEventBusService.mapLibraryChanges.next(
-      this.visible ? 'cesium' : 'ol',
-    );
   }
 }

@@ -17,12 +17,15 @@ import {
 } from 'cesium';
 import {Subject, takeUntil} from 'rxjs';
 
+import {HsCoreService} from 'hslayers-ng/services/core';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsLayerManagerService} from 'hslayers-ng/services/layer-manager';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsLogService} from 'hslayers-ng/services/log';
 import {HsMapService} from 'hslayers-ng/services/map';
+import {HsOverlayConstructorService} from 'hslayers-ng/services/panel-constructor';
 import {HsQueryPopupComponent} from 'hslayers-ng/common/query-popup';
+import {HsShareUrlService} from 'hslayers-ng/components/share';
 import {HsUtilsService} from 'hslayers-ng/services/utils';
 
 import {HsCesiumCameraService} from './hscesium-camera.service';
@@ -31,7 +34,6 @@ import {HsCesiumLayersService} from './hscesium-layers.service';
 import {HsCesiumPickerService} from './picker.service';
 import {HsCesiumQueryPopupService} from './query-popup.service';
 import {HsCesiumTimeService} from './hscesium-time.service';
-import {HsOverlayConstructorService} from 'hslayers-ng/services/panel-constructor';
 
 @Injectable({
   providedIn: 'root',
@@ -39,6 +41,7 @@ import {HsOverlayConstructorService} from 'hslayers-ng/services/panel-constructo
 export class HsCesiumService {
   BING_KEY = 'Ak5NFHBx3tuU85MOX4Lo-d2JP0W8amS1IHVveZm4TIY9fmINbSycLR8rVX9yZG82';
   viewer: any;
+  visible = true;
   cesiumPositionClicked: Subject<any> = new Subject();
 
   private end: Subject<void>;
@@ -57,7 +60,9 @@ export class HsCesiumService {
     public HsCesiumConfig: HsCesiumConfig,
     private HsCesiumPicker: HsCesiumPickerService,
     private hsCesiumQueryPopupService: HsCesiumQueryPopupService,
+    private hsCoreService: HsCoreService,
     private hsOverlayConstructorService: HsOverlayConstructorService,
+    private hsShareUrlService: HsShareUrlService,
   ) {}
 
   /**
@@ -331,6 +336,26 @@ export class HsCesiumService {
       viewer: this.viewer,
       service: this,
     });
+  }
+
+  /**
+   * Toggles between Cesium and OL maps by setting HsMapService.visible property which is monitored by ngIf.
+   */
+  toggleCesiumMap() {
+    this.HsMapService.visible = !this.HsMapService.visible;
+    this.visible = !this.HsMapService.visible;
+    this.hsShareUrlService.updateCustomParams({
+      view: this.HsMapService.visible ? '2d' : '3d',
+    });
+    if (this.HsMapService.visible) {
+      this.cesiumDisabled();
+      this.hsCoreService.updateMapSize();
+    } else {
+      this.init();
+    }
+    this.HsEventBusService.mapLibraryChanges.next(
+      this.visible ? 'cesium' : 'ol',
+    );
   }
 }
 

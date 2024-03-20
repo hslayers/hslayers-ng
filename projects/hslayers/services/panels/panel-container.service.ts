@@ -21,7 +21,7 @@ export class HsPanelContainerService
    * in case of race conditions existing where panels are created before the
    * container component is even added to the DOM.
    * @param component - PanelComponent class
-   * @param data-  Extra data to give the new panel
+   * @param data - Extra data to give the new panel
    * @param panelObserver - ReplaySubject to which you need to add the panel components. This is used when panels in this service are used only sometimes (for particular layers)
    */
   create(

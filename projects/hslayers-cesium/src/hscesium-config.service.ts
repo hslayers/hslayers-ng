@@ -6,8 +6,8 @@ export class HsCesiumConfigObject {
   cesiumDebugShowFramesPerSecond?: boolean;
   cesiumShadows?: number;
   cesiumBase?: string;
-  createWorldTerrainOptions?: any;
-  terrain_provider?: any;
+  createWorldTerrainOptions?;
+  terrain_provider?;
   cesiumTimeline?: boolean;
   cesiumAnimation?: boolean;
   creditContainer?: Element | string;
@@ -15,7 +15,7 @@ export class HsCesiumConfigObject {
   imageryProvider?: ImageryProvider;
   terrainExaggeration?: number;
   cesiumBingKey?: string;
-  newTerrainProviderOptions?: any;
+  newTerrainProviderOptions?;
   terrain_providers?: any[];
   cesiumAccessToken?: string;
   cesiumTime?: JulianDate;
