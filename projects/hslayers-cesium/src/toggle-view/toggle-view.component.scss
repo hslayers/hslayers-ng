@@ -1,0 +1,10 @@
+.btn-3d-toggle {
+  color: var(--bs-secondary);
+  background-color: var(--bs-light);
+  border-color: var(--bs-secondary);
+
+  &.btn-3d-active, &:hover, &:active, &:focus {
+    color: var(--bs-light);
+    background-color: var(--bs-secondary);
+  }
+}
