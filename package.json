@@ -131,7 +131,7 @@
     "puppeteer": "^22.6.0",
     "sass": "^1.72.0",
     "ts-node": "^10.9.2",
-    "typescript": "~5.3.3"
+    "typescript": "~5.4.3"
   },
   "config": {
     "commitizen": {
