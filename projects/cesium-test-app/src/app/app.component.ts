@@ -42,7 +42,7 @@ export class AppComponent implements OnInit {
       source: new VectorSource({
         url: '../assets/polygon2.5d.geojson',
         format: new GeoJSON(),
-      }) as VectorSource, //FIXME: Type-cast shall be automatically inferred after OL >8.2
+      }),
     });
     const polygon25dKml = new VectorLayer({
       properties: {
@@ -51,7 +51,7 @@ export class AppComponent implements OnInit {
       source: new VectorSource({
         url: '../assets/polygon2.5d.kml',
         format: new KML(),
-      }) as VectorSource, //FIXME: Type-cast shall be automatically inferred after OL >8.2
+      }),
     });
     const geojsonObject2d = {
       'type': 'FeatureCollection',
@@ -269,7 +269,7 @@ export class AppComponent implements OnInit {
           },
           source: new VectorSource({
             features: new GeoJSON().readFeatures(geojsonObject2d),
-          }) as VectorSource, //FIXME: Type-cast shall be automatically inferred after OL >8.2
+          }),
         }),
         polygon25d,
         polygon25dKml,

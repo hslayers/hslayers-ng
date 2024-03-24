@@ -418,11 +418,10 @@ export class HsCompositionsLayerParserService {
           break;
         default:
           const features = lyr_def.features
-            ? (new GeoJSON().readFeatures(lyr_def.features, {
+            ? new GeoJSON().readFeatures(lyr_def.features, {
                 dataProjection: 'EPSG:4326',
                 featureProjection: this.hsMapService.getCurrentProj(),
-                //FIXME: Type-cast shall be automatically inferred after OL >8.2
-              }) as Feature[])
+              })
             : undefined;
           layer = await this.HsAddDataVectorService.createVectorLayer(
             '',

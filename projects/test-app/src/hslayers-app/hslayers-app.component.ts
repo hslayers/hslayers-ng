@@ -311,7 +311,7 @@ export class HslayersAppComponent {
       },
       source: new VectorSource({
         features: new GeoJSON().readFeatures(geojsonObject),
-      }) as VectorSource, //FIXME: Type-cast shall be automatically inferred after OL >8.2
+      }),
     });
     const opticalMap = new Tile({
       source: new XYZ({
@@ -566,7 +566,7 @@ export class HslayersAppComponent {
           },
           source: new VectorSource({
             features: new GeoJSON().readFeatures(geojsonObject),
-          }) as VectorSource, //FIXME: Type-cast shall be automatically inferred after OL >8.2
+          }),
         }),
         new VectorLayer({
           visible: true,
@@ -596,7 +596,7 @@ export class HslayersAppComponent {
           },
           source: new VectorSource({
             features: new GeoJSON().readFeatures(geojsonObject),
-          }) as VectorSource, //FIXME: Type-cast shall be automatically inferred after OL >8.2
+          }),
         }),
         polygons,
         points,
