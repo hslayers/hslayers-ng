@@ -102,7 +102,7 @@ export class VectorSourceDescriptor {
           features = format.readFeatures(options.features, {
             dataProjection: srs,
             featureProjection: this.mapProjection,
-          }) as Feature[]; //FIXME: Type-cast shall be automatically inferred after OL >8.2
+          });
         }
         this.sourceParams = {
           srs,

@@ -320,10 +320,7 @@ export class HsTripPlannerService {
    * @param wp - Waypoint object, with lat, lon and routes array
    */
   waypointAdded(wp: Waypoint): void {
-    //FIXME: Type-cast shall be automatically inferred after OL >8.2
-    const feature = this.waypointSource.getFeatureById(
-      wp.featureId,
-    ) as Feature<Point>;
+    const feature = this.waypointSource.getFeatureById(wp.featureId);
     this.movable_features.push(feature);
     feature.getGeometry().on('change', (e) => {
       this.removeRoutesForWaypoint(wp);
@@ -379,8 +376,7 @@ export class HsTripPlannerService {
   waypointRemoved(wp: Waypoint): void {
     try {
       this.waypointSource.removeFeature(
-        //FIXME: Type-cast shall be automatically inferred after OL >8.2
-        this.waypointSource.getFeatureById(wp.featureId) as Feature<Point>,
+        this.waypointSource.getFeatureById(wp.featureId),
       );
     } catch (ex) {
       throw ex;
@@ -479,8 +475,7 @@ export class HsTripPlannerService {
         }
         wpt.loading = false;
         const format = new GeoJSON();
-        //FIXME: Type-cast shall be automatically inferred after OL >8.2
-        const features = format.readFeatures(response) as Feature[];
+        const features = format.readFeatures(response);
         features[0]
           .getGeometry()
           .transform('EPSG:4326', this.HsMapService.getCurrentProj());
