@@ -162,8 +162,7 @@ export class HsAddDataVectorUploadService {
       };
     }
     if (json.features?.length > 0) {
-      //FIXME: Type-cast shall be automatically inferred after OL >8.2
-      features = format.readFeatures(json) as Feature[];
+      features = format.readFeatures(json);
       this.transformFeaturesIfNeeded(features, projection);
     }
     const object = {

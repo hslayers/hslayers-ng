@@ -27,7 +27,7 @@ export class HsUiExtensionsRecursiveDdComponent {
   /**
    *
    *
-   * FIXME: duplcity with HsAddDataCatalogueMapService
+   * FIXME: duplicity with HsAddDataCatalogueMapService
    * however it would be necessary to move many services to shared in case this is imported from
    * components/add-data
    *

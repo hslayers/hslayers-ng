@@ -145,8 +145,7 @@ export class HsAddDataCatalogueMapService {
     if (composition.featureId !== undefined) {
       const found = this.extentLayer
         .getSource()
-        //FIXME: Type-cast shall be automatically inferred after OL >8.2
-        .getFeatureById(composition.featureId) as Feature;
+        .getFeatureById(composition.featureId);
       if (found) {
         setHighlighted(found, state);
       }
