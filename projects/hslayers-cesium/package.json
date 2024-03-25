@@ -29,7 +29,7 @@
     "@ngx-translate/core": "^15.0.0",
     "@ngx-translate/http-loader": "^8.0.0",
     "cesium": "^1.104.0",
-    "hslayers-ng": "^14.0.0"
+    "hslayers-ng": "^14.0.0-next.0"
   },
   "dependencies": {
     "tslib": "^2.0.0"
