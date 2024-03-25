@@ -73,7 +73,15 @@ Use HsConfig service injected in your component to set applications layers, look
         zoom: 4,
       })
     })
-```        
+```
+
+## Back-end
+HSLayers-NG can be used as a client-only single-page-application without any need for additional server components. But incorporating at least some unlocks some great features of HSLayers-NG. Here is the list of recommended server-side components:
+
++ **[hslayers-server](./projects/hslayers-server)** - a simple [cors-anywhere](https://www.npmjs.com/package/cors-anywhere) based proxy server which can be used to overcome [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS) restrictions, fill API keys for services such as [Geonames](https://www.geonames.org/) used for search and other tasks. Copying and modifying the .env file to preserve secrets and not expose them for everyone and all kinds of requests will be necessary.
++ [Layman](https://github.com/LayerManager/layman) - geospatial data catalogue, map composition catalogue
++ [Micka](https://github.com/hsrs-cz/Micka) - metadata catalogue
+
 ### Proxy
 We provide a Node.js based server application [hslayers-server](https://www.npmjs.com/package/hslayers-server) for proxy based on [cors-anywhere](https://github.com/Rob--W/cors-anywhere) that you can install by:
 ```
@@ -91,6 +99,10 @@ which specifies the proxy url, eg.
         : '/proxy/'
 ```
 This will check if the hslayers-ng based application is running in development mode i.e. on http://localhost:4200 and use proxy server address http://localhost:8085 in that case OR in production with the same domain but different directory for proxy application. You can configure the proxy URL to your setup (ports, domains, paths) of course. 
+
+## Integration
+HSLayers-NG can be integrated into larger systems.
+See [crx-hslayers](https://github.com/hslayers/crx-hslayers) for an actively maintained widget for Wagtail/CodeRed CMS. Check [hub4everybody.com](https://hub4everybody.com/) to see, what you can achieve with this integration.
 
 # Library development 
 
