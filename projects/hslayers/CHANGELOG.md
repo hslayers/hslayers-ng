@@ -1,3 +1,136 @@
+# [14.0.0-next.0](https://github.com/hslayers/hslayers-ng/compare/13.1.0...14.0.0-next.0) (2024-03-25)
+
+### BREAKING CHANGES
+
+* Introducing [secondary entry points](https://github.com/ng-packagr/ng-packagr/blob/ab2401f64ce6d89201626f14c2b7363a67d9e00e/docs/secondary-entrypoints.md), for better dead-code elimination. Individual logical components and services are now exported individually instead of one uniform export. This change shall significantly reduce the amount of data necessary to transfer at first load of any hslayers application, thus improving startup time and overall performance. However it requires a developer to change all imports from hslayers-ng library. E.g. what was before
+```
+import {HsEventBusService} from 'hslayers-ng';
+```
+becomes
+```
+import {HsEventBusService} from 'hslayers-ng/services/event-bus';
+```
+
+or analogously
+```
+import {HsConfig} from 'hslayers-ng';
+```
+becomes
+```
+import {HsConfig} from 'hslayers-ng/config';
+```
+
+* panelsEnabled options renamed
+* query component (info panel) renamed to "query", info component (compositionLoadingProgress) renamed to "info" and configuration moved from panels to components
+
+
+### Bug Fixes
+
+* Add missing standalone directive import ([52458bf](https://github.com/hslayers/hslayers-ng/commit/52458bfa95eb0bad283af979be4cea4fde9d008e))
+* **add-data:** Add-to-map should be hidden when trying to load raster without login ([9604451](https://github.com/hslayers/hslayers-ng/commit/96044518c6e2083e0afc85e5bc15f59b9d35273f))
+* **add-data:** Both TiledWMS and ImageWMS should be available for WMS layers ([09ca83e](https://github.com/hslayers/hslayers-ng/commit/09ca83e62e78386950f0511b03b7857d1ced4c1f))
+* **add-data:** Clustering of catalogue WFS layers ([29d161b](https://github.com/hslayers/hslayers-ng/commit/29d161beee45f8733e0e38a71dc737e1e9d002d7))
+* **add-data:** Don't allow loading of features into internal layers ([b9e9aa6](https://github.com/hslayers/hslayers-ng/commit/b9e9aa63caf3b75ea772c84518e72144ace09b43))
+* **add-data:** Doubled 'Uploading layer' label when loading shp ([780ec18](https://github.com/hslayers/hslayers-ng/commit/780ec18aa100f4682f2d0843c45eba17f93423ef))
+* **cesium:** Add missing Injectable, add GUI essentials ([abb710f](https://github.com/hslayers/hslayers-ng/commit/abb710fdb9417a67ff3fe56e469a89381e59646d))
+* **cesium:** Do not duplicate listeners on cesium toggle ([6e76387](https://github.com/hslayers/hslayers-ng/commit/6e76387e43e6a3539689894e8ba60cab2e427107))
+* **cesium:** Make OSM layer visible from zoom=1 ([483e3cb](https://github.com/hslayers/hslayers-ng/commit/483e3cbcbd0268bcab7b82c69260d81964758c73)), closes [#4750](https://github.com/hslayers/hslayers-ng/issues/4750)
+* **cesium:** Reflect terrainLayers rename ([f853201](https://github.com/hslayers/hslayers-ng/commit/f853201f09437e11c9f8d3daf7cbf61248b87c84))
+* **cesium:** Set layer visibility on Cesium init ([d48ea9f](https://github.com/hslayers/hslayers-ng/commit/d48ea9f07193408a5843055748d8f61367b3bec8)), closes [#4048](https://github.com/hslayers/hslayers-ng/issues/4048)
+* **cesium:** Sync also layers with KML source ([4ee9c2b](https://github.com/hslayers/hslayers-ng/commit/4ee9c2b2a47fad168d569359ec05de41e9084cac))
+* Close tag in add-data - merge mistake ([73d5201](https://github.com/hslayers/hslayers-ng/commit/73d520159912c216bcae3183dbc91441edf855a1))
+* Construct basemap name from array ([45827d5](https://github.com/hslayers/hslayers-ng/commit/45827d53f5471846e4d2926fdc85fd079082adbd))
+* Correctly identify hs-layout element during ngOnInit ([2f35873](https://github.com/hslayers/hslayers-ng/commit/2f35873f724029312eb65b8a9f11a1a4118d4cfc))
+* Dialog container component ([9454232](https://github.com/hslayers/hslayers-ng/commit/9454232911fbaa65af23c5bb208b2324505f42fc))
+* Disable 'Save current map' button when Save map panel is not enabled ([20de4a7](https://github.com/hslayers/hslayers-ng/commit/20de4a74cba2a344433e8513aaab6bd24f2e55dc))
+* Do not reset layerLoadingProgress.pending to 0 ([bcb73f6](https://github.com/hslayers/hslayers-ng/commit/bcb73f6785356ced9dc8de952524ded4fe14b54b))
+* Don't react to current layer deselection ([e807321](https://github.com/hslayers/hslayers-ng/commit/e807321eb2b7fece7619885ad81710b1bee96cb4))
+* Import layer table into modules ([0f5b7ea](https://github.com/hslayers/hslayers-ng/commit/0f5b7ea582c406586cc6a29963a76c1d6f827c31))
+* **layer-editor:** Wrong position of layer-editor after styler is closed ([7110b1e](https://github.com/hslayers/hslayers-ng/commit/7110b1e97182ea295e50c8c4bf62508f5f762996))
+* **layermanager:** Basemap in panel loading progress ([6a14b36](https://github.com/hslayers/hslayers-ng/commit/6a14b36df8096b441d7f7ac6252b999c665be7e6))
+* **layerManager:** Layer list item alignment ([0194d65](https://github.com/hslayers/hslayers-ng/commit/0194d652966cee7942864ff2503eb6f6915e90fa))
+* **map-swipe:** Resolve layerManagerUpdates in batch once map-swipe is enabled ([9163f91](https://github.com/hslayers/hslayers-ng/commit/9163f91ed03b03635c219bd3b215f75a11de220b)), closes [#4768](https://github.com/hslayers/hslayers-ng/issues/4768)
+* Minisidebar visibility ([7eca3dd](https://github.com/hslayers/hslayers-ng/commit/7eca3dd6e54f0ee5b5cb3b0112adcdcadb138f7b))
+* Panel header tab change not reflected when done programmatically ([b3969e2](https://github.com/hslayers/hslayers-ng/commit/b3969e2f491326ca99ddecb8ebffbb98c51c270f))
+* Panel-header viewChild value race condition ([252b306](https://github.com/hslayers/hslayers-ng/commit/252b306e322636635c16aff35fe6966bb936b555))
+* prebuild ([2ee1249](https://github.com/hslayers/hslayers-ng/commit/2ee124978d49908f1eeebba4a92515491805e8e4))
+* Preserve composition layer order - in terms of z-index ([f402e90](https://github.com/hslayers/hslayers-ng/commit/f402e90a523069d0df341a0d985086a1f94b2a8e)), closes [#4679](https://github.com/hslayers/hslayers-ng/issues/4679)
+* **print:** Imprint not toggle-able ([41ada28](https://github.com/hslayers/hslayers-ng/commit/41ada287a8aa5bcd3f9a40a4a2f6bc40d88c6f9b))
+* Register popUp on map ([e7cfc39](https://github.com/hslayers/hslayers-ng/commit/e7cfc39e865ec54b9e7df18204addc7da2cfdfce))
+* **remove-layer-dialog:** Removing single layer ([840f8c5](https://github.com/hslayers/hslayers-ng/commit/840f8c552764f4f6258045a6d91b097882f820e9))
+* **remove-layer:** Removing single layer from catalogue would delete all catalogue layers ([6c094f2](https://github.com/hslayers/hslayers-ng/commit/6c094f29df1e73b98511b967d22fc711f95138b7))
+* **sensors:** Adjust to changes ([884be40](https://github.com/hslayers/hslayers-ng/commit/884be40bc5ea0a50fe002ae7515dcf03a6241cd0))
+* **sensors:** Use new panel-header API ([91bd9ff](https://github.com/hslayers/hslayers-ng/commit/91bd9ff672ba0dccc507d27debb212c2a92baf77))
+* **sensors:** v14 sensor updates ([6864c3f](https://github.com/hslayers/hslayers-ng/commit/6864c3f57df1d276925eafd32a273b40a0f51286))
+* Set group property in details component to not interfere with loading of service without layer ([1a5a394](https://github.com/hslayers/hslayers-ng/commit/1a5a3946fb26e30f96da268c138cb764b6086d7a))
+* Set permissions success callback ([297ea26](https://github.com/hslayers/hslayers-ng/commit/297ea2639779f4d7b41dddf0ad635acb1fe520ef))
+* Set permissions success callback ([2dbdd92](https://github.com/hslayers/hslayers-ng/commit/2dbdd922b37c76cdfcec8b13fec19f95a6c9ce11))
+* Shared imports ([571f8c7](https://github.com/hslayers/hslayers-ng/commit/571f8c7aac418d7e0f06eeca24e9832f411468a4))
+* **sparql:** Remove duplicate loadCounter ([aac00d6](https://github.com/hslayers/hslayers-ng/commit/aac00d6e7b3ff1a8189f3ba08a610c9b58e82045))
+* Style and test-app imports ([426bb9a](https://github.com/hslayers/hslayers-ng/commit/426bb9aba525a313c67819bbfe8de1fc7947f391))
+* **styler:** Extend custom types with OL's PatternDescriptor ([23a72c6](https://github.com/hslayers/hslayers-ng/commit/23a72c6719c72d7bd32ee8fd5825af5b92fb4ac5))
+* **styler:** Symbolizer defaults ([9038574](https://github.com/hslayers/hslayers-ng/commit/9038574d712d383ffa9cda83d36fa596cb84edd1))
+* suspendEvents for init layers ([9881750](https://github.com/hslayers/hslayers-ng/commit/988175093c49148dd8db1b2a3fa14912b200819b))
+* **types:** Layer swipe side type export/import ([88691e7](https://github.com/hslayers/hslayers-ng/commit/88691e7aab2fb9c513245616f5bef9a2900cbab8))
+* WFS services with high number of features not loading ([2b19507](https://github.com/hslayers/hslayers-ng/commit/2b195076301bb161b4d95b3e8074b8dcbf06cd0b))
+* WMS metadata extent parsing ([5dbec30](https://github.com/hslayers/hslayers-ng/commit/5dbec30cde605ff8c7c96da9f37587299babf050))
+
+
+### Code Refactoring
+
+* Align panel, component, folder and config names for panel components ([842e238](https://github.com/hslayers/hslayers-ng/commit/842e238e95a3477a51ca4e772041524f3499a6a0))
+* GUI components visibility ([e315647](https://github.com/hslayers/hslayers-ng/commit/e315647c4440b97038a9b322377385fee25ab85e))
+
+
+### Features
+
+* Add map eventhandlerset event ([84f1311](https://github.com/hslayers/hslayers-ng/commit/84f1311e42bdd2564604035cb80241c4f19648c4))
+* Add missing ng-package files ([88bfb06](https://github.com/hslayers/hslayers-ng/commit/88bfb064af2f1b4b3e7b507730741d33b0a2faa0))
+* **add-data:** Remove catalogue layers via panel-header buttons ([24f8387](https://github.com/hslayers/hslayers-ng/commit/24f83870fdabbeb3cae80465781b3c7d88799092))
+* **cesium-test-app:** Add glTF model ([9fedd67](https://github.com/hslayers/hslayers-ng/commit/9fedd671f2116d483a8571d70f7beef1cd83730e))
+* **cesium-test-app:** Add KML source example ([470df77](https://github.com/hslayers/hslayers-ng/commit/470df77f88c07778ef438d8cdf203b5ad58ae0d8))
+* **cesium:** Allow display 3D GeoJSON ([79db24b](https://github.com/hslayers/hslayers-ng/commit/79db24b088d1d1edf2cd759ec1e9677ae5d24fc4)), closes [#4757](https://github.com/hslayers/hslayers-ng/issues/4757)
+* **cesium:** Allow extrude GeoJSON and KML sources to height ([76ad049](https://github.com/hslayers/hslayers-ng/commit/76ad049b903a38617c46eb09d634e46f0c2d1f79))
+* **cesium:** Move 3D view toggle to toolbar ([6351f4d](https://github.com/hslayers/hslayers-ng/commit/6351f4da6adbad509cc485ef17fa30be00aa9f8f))
+* **compositions:** Use map composition schema as a type ([2bae98a](https://github.com/hslayers/hslayers-ng/commit/2bae98ad3c173346ab7bfd42c9712b38db42a973))
+* Option to add WMS layers as one group or separate layers ([ea65154](https://github.com/hslayers/hslayers-ng/commit/ea651542fb0d9c294f492c6a36907f735064b2e8))
+
+
+### Performance Improvements
+
+* **decoupling:** Split panel chunks into smaller parts ([b1e6e55](https://github.com/hslayers/hslayers-ng/commit/b1e6e55c5177c3d2201e1cf89b15fe0c7c0600ac))
+
+
+## [13.2.1](https://github.com/hslayers/hslayers-ng/compare/13.2.0...13.2.1) (2024-02-19)
+
+
+### Bug Fixes
+
+* WFS services with high number of features not loading ([15008cd](https://github.com/hslayers/hslayers-ng/commit/15008cdb09144dde4a0435e5682178a09672d33a))
+
+### Other Changes
+* Remove Geostyler workaround for fill opacity ([062c75c](https://github.com/hslayers/hslayers-ng/commit/062c75c5f007d2e44d6786a3562ffced74c1f3a0))
+
+
+# [13.2.0](https://github.com/hslayers/hslayers-ng/compare/13.1.0...13.2.0) (2024-02-12)
+
+
+### Bug Fixes
+
+* Symbolizer defaults ([cbe93c5](https://github.com/hslayers/hslayers-ng/commit/cbe93c52d3e42d3daa2047ac1dc4e71533a4c435))
+* Construct basemap name from array ([45827d5](https://github.com/hslayers/hslayers-ng/commit/45827d53f5471846e4d2926fdc85fd079082adbd))
+* Disable 'Save current map' button when Save map panel is not enabled ([2668fe3](https://github.com/hslayers/hslayers-ng/commit/2668fe3e1cfd0c02f3abdb62decb81896ef17766))
+* Panel header tab change not reflected when done programmatically ([b3969e2](https://github.com/hslayers/hslayers-ng/commit/b3969e2f491326ca99ddecb8ebffbb98c51c270f))
+* **permalink:** Don't need to proxify /share requests ([bebdd7b](https://github.com/hslayers/hslayers-ng/commit/bebdd7b82fe391c2a3ea52d849fabfbf44adc21c))
+* Preserve composition layer order - in terms of z-index ([cf9d047](https://github.com/hslayers/hslayers-ng/commit/cf9d0473340068e467b3778e4099c7e33b2c8062))
+* **print:** Imprint not toggleable ([49d449c](https://github.com/hslayers/hslayers-ng/commit/49d449c140f622a164674b18fd42c4f64a88e4c4))
+* **sensors:** Use new panel-header API ([91bd9ff](https://github.com/hslayers/hslayers-ng/commit/91bd9ff672ba0dccc507d27debb212c2a92baf77))
+
+### Features
+
+* Option to add WMS layers as one group or separate layers ([87a7303](https://github.com/hslayers/hslayers-ng/commit/87a730309fa981e204d7a5b546c14af55660b69c))
+
+
 # [13.1.0](https://github.com/hslayers/hslayers-ng/compare/13.0.0...13.1.0) (2023-12-04)
 
 

@@ -1,6 +1,6 @@
 {
   "name": "hslayers-ng-app",
-  "version": "13.1.0",
+  "version": "14.0.0-next.0",
   "description": "A bundle of HSLayers-NG library + Angular + OL",
   "main": "src/main.ts",
   "directories": {
