@@ -106,7 +106,7 @@
     "@frsource/cypress-plugin-visual-regression-diff": "^3.2.14",
     "@types/jasmine": "^5.1.4",
     "@types/jasminewd2": "~2.0.12",
-    "@typescript-eslint/eslint-plugin": "^7.4.0",
+    "@typescript-eslint/eslint-plugin": "^7.5.0",
     "@typescript-eslint/parser": "^7.4.0",
     "cypress": "~13.7.1",
     "cypress-real-events": "^1.12.0",
