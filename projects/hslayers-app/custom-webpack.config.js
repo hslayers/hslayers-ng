@@ -8,4 +8,7 @@ module.exports = {
       exclude: ['vendor.js'],
     })
   ],
+  output: {
+    publicPath: 'auto',
+  }
 };
