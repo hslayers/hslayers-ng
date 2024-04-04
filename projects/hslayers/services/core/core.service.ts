@@ -91,7 +91,7 @@ export class HsCoreService {
       this.HsMapService.map.updateSize();
       if (
         window.innerWidth < this.hsConfig.mobileBreakpoint ||
-        this.HsLayoutService.mainpanel != ''
+        this.HsLayoutService.mainpanel
       ) {
         this.HsLayoutService.sidebarLabels = false;
       } else {
