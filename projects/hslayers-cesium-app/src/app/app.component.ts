@@ -32,7 +32,7 @@ import {HsLayoutService} from 'hslayers-ng/services/layout';
   styleUrls: [],
 })
 export class AppComponent implements OnInit {
-  id;
+  id = '';
   constructor(
     public HsConfig: HsConfig,
     private HsCesiumConfig: HsCesiumConfig,
