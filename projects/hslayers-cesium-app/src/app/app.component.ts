@@ -25,6 +25,10 @@ import {View} from 'ol';
 import {HsCesiumConfig, HslayersCesiumComponent} from 'hslayers-cesium';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
+import {
+  HsOverlayConstructorService,
+  HsPanelConstructorService,
+} from 'hslayers-ng/services/panel-constructor';
 
 @Component({
   selector: 'hslayers-cesium-app',
@@ -34,10 +38,12 @@ import {HsLayoutService} from 'hslayers-ng/services/layout';
 export class AppComponent implements OnInit {
   id = '';
   constructor(
-    public HsConfig: HsConfig,
-    private HsCesiumConfig: HsCesiumConfig,
-    private HsLayoutService: HsLayoutService,
     private elementRef: ElementRef,
+    public hsConfig: HsConfig,
+    private hsCesiumConfig: HsCesiumConfig,
+    private hsLayoutService: HsLayoutService,
+    private hsOverlayConstructorService: HsOverlayConstructorService,
+    private hsPanelConstructorService: HsPanelConstructorService,
   ) {
     const w: any = window;
     w.ol = {
@@ -78,27 +84,32 @@ export class AppComponent implements OnInit {
     let globFunctions = 'hslayersNgConfig' + this.id;
     if (w[globFunctions]) {
       const cfg = eval(`w.${globFunctions}(w.ol)`);
-      this.HsConfig.update(cfg);
+      this.hsConfig.update(cfg);
     }
 
     globFunctions = 'hslayersCesiumConfig' + this.id;
     if (w[globFunctions]) {
       const cfg = eval(`w.${globFunctions}(w.ol)`);
-      this.HsCesiumConfig.update(cfg);
+      this.hsCesiumConfig.update(cfg);
     }
 
-    if (!this.HsCesiumConfig.cesiumBase) {
-      this.HsCesiumConfig.cesiumBase =
+    if (!this.hsCesiumConfig.cesiumBase) {
+      this.hsCesiumConfig.cesiumBase =
         'node_modules/hslayers-cesium-app/assets/cesium/';
     }
   }
   title = 'hslayers-workspace';
 
   ngOnInit(): void {
-    this.HsLayoutService.mapSpaceRef.subscribe((viewContainerRef) => {
-      if (viewContainerRef) {
-        viewContainerRef.createComponent(HslayersCesiumComponent);
-      }
-    });
+    /**
+     * Create panel components
+     */
+    this.hsPanelConstructorService.createActivePanels();
+
+    /**
+     * Create GUI overlay
+     */
+    this.hsOverlayConstructorService.createGuiOverlay();
+    this.hsLayoutService.addMapVisualizer(HslayersCesiumComponent);
   }
 }
