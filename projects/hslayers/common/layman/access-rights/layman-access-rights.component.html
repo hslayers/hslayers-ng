@@ -2,7 +2,7 @@
 <ng-template #accessRightsTpl let-accessRights="access_rights" let-right="right" let-grantedTo="grantedTo">
     <div class="form-group d-flex justify-content-between">
         <label class="pt-2" style="margin-bottom: 0;">
-            {{getRightTranslation(right)}}
+            {{ right+'AccessRights' | translateHs : {module: 'SAVECOMPOSITION'} }}
         </label>
         <div class="btn-group">
             <button type="button" class="btn btn-light hs-toolbar-button  btn-outline-secondary"

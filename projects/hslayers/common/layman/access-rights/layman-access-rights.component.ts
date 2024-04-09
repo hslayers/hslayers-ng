@@ -129,24 +129,6 @@ export class HsCommonLaymanAccessRightsComponent implements OnInit {
   }
 
   /**
-   * Get a translation based on the value of the right
-   * @param right - Value of the access right
-   */
-  getRightTranslation(right: string): string {
-    if (right == 'read') {
-      return this.hsLanguageService.getTranslation(
-        'SAVECOMPOSITION.readAccessRights',
-        undefined,
-      );
-    } else if (right == 'write') {
-      return this.hsLanguageService.getTranslation(
-        'SAVECOMPOSITION.writeAccessRights',
-        undefined,
-      );
-    }
-  }
-
-  /**
    * Change access granting options (everyone or per_user)
    * @param option - Access granting option
    */
