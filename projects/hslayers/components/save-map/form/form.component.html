@@ -23,7 +23,7 @@
             [alt]="'SAVECOMPOSITION.compositionThumbnail' | translateHs " width="256" height="256">
     </label>
 
-    <hs-layman-access-rights *ngIf="endpoint?.type.includes('layman')"
+    <hs-layman-access-rights *ngIf="endpoint?.type.includes('layman')" [collapsed]="true"
         [(access_rights)]="hsSaveMapManagerService._access_rights" (access_rights_changed)="setAccessRights($event)">
     </hs-layman-access-rights>
 
