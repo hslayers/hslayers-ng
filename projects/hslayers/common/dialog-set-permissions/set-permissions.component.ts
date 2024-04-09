@@ -26,7 +26,7 @@ export class HsSetPermissionsDialogComponent
 {
   dialogItem: HsDialogItem;
   viewRef: ViewRef;
-  currentAccessRights: AccessRightsModel = {
+  access_rights: AccessRightsModel = {
     'access_rights.write': 'private',
     'access_rights.read': 'EVERYONE',
   };
@@ -76,9 +76,9 @@ export class HsSetPermissionsDialogComponent
     if (write.includes('EVERYONE')) {
       write = write.filter((r) => r != currentUser);
     }
-    this.currentAccessRights['access_rights.read'] =
+    this.access_rights['access_rights.read'] =
       read.length == 1 && read[0] == currentUser ? 'private' : read.join(',');
-    this.currentAccessRights['access_rights.write'] =
+    this.access_rights['access_rights.write'] =
       write.length == 1 && write[0] == currentUser
         ? 'private'
         : write.join(',');
@@ -104,7 +104,7 @@ export class HsSetPermissionsDialogComponent
           name: this.data.selectedRecord.name,
           title: this.data.selectedRecord.title,
           workspace: this.endpoint.user,
-          access_rights: this.currentAccessRights,
+          access_rights: this.access_rights,
         };
         response = await this.hsLaymanService.makeUpsertLayerRequest(
           this.endpoint,
@@ -124,7 +124,7 @@ export class HsSetPermissionsDialogComponent
         await this.hsLaymanService.updateCompositionAccessRights(
           this.data.selectedRecord.name,
           this.endpoint,
-          this.currentAccessRights,
+          this.access_rights,
         );
         if (response?.error) {
           this.state = 'error';
