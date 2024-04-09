@@ -221,7 +221,12 @@ $list-group-item-padding-x: 1.25rem;
 
   .hs-save-map-users-list {
     overflow-y: auto;
-    max-height: 10rem;
+    height: min-content;
+    max-height: 50vh;
+
+    &.collapsed {
+      max-height: 10rem;
+    }
   }
 
   .hs-layerpanel {

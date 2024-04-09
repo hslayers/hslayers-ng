@@ -7,19 +7,19 @@
         <div class="btn-group">
             <button type="button" class="btn btn-light hs-toolbar-button  btn-outline-secondary"
                 [disabled]="right !== 'read' && access_rights['access_rights.read'] === 'private'"
-                (click)="accessRightsChanged('access_rights.' + right,grantedTo)"
+                (click)="accessRightsChanged(right,grantedTo)"
                 [ngClass]="{'active':access_rights['access_rights.'+ right] === grantedTo}">
                 {{'SAVECOMPOSITION.public' | translateHs }}
             </button>
             <button type="button" class="btn btn-light hs-toolbar-button  btn-outline-secondary"
-                (click)="accessRightsChanged('access_rights.' + right,'private')"
+                (click)="accessRightsChanged(right,'private')"
                 [ngClass]="{'active':access_rights['access_rights.' + right] === 'private'}">
                 {{'SAVECOMPOSITION.private' | translateHs }}
             </button>
         </div>
     </div>
 </ng-template>
-<ul class="nav nav-tabs justify-content-end my-2 py-1">
+<ul class="nav nav-tabs justify-content-end my-2 mb-3">
     <li class="nav-item" (click)="changeGrantingOptions(grantingOptions.EVERYONE)">
         <a [ngClass]="{'active': currentOption === grantingOptions.EVERYONE}" class="nav-link "
             aria-current="page">{{'SAVECOMPOSITION.everyone' | translateHs }}</a>
@@ -30,30 +30,35 @@
     </li>
 </ul>
 <ng-container *ngIf="currentOption === grantingOptions.EVERYONE; else perUserTpl">
-    <ng-container
-        *ngTemplateOutlet="accessRightsTpl;context:{accessRights: access_rights, right: 'read', grantedTo: 'EVERYONE'}">
-    </ng-container>
-    <ng-container
-        *ngTemplateOutlet="accessRightsTpl;context:{accessRights: access_rights, right: 'write', grantedTo: 'EVERYONE'}">
+    <ng-container *ngFor="let type of rightsOptions">
+        <ng-container
+            *ngTemplateOutlet="accessRightsTpl;context:{accessRights: access_rights, right: type, grantedTo: 'EVERYONE'}">
+        </ng-container>
     </ng-container>
 </ng-container>
 
 <ng-template #perUserTpl>
-    <div><input type="search" class="form-control hs-save-map-filter" [placeholder]="'COMMON.filter' | translateHs "
-            [(ngModel)]="userSearch" [ngModelOptions]="{standalone: true}" (input)="refreshList()">
-    </div>
-    <div class="hs-save-map-users-list p-1 my-1">
+    <section class="d-flex">
+        <div>
+            <input type="search" class="form-control hs-save-map-filter" [placeholder]="'COMMON.filter' | translateHs "
+                [(ngModel)]="userSearch" name="rights-per-user-filter" (input)="refreshList()">
+        </div>
+        <div class="d-flex justify-content-end gap-5 w-50 align-self-end">
+            <button *ngFor="let type of rightsOptions" type="button" class="btn btn-primary btn-sm"
+                style="white-space: nowrap;" (click)="toggleRightsForAllUsers(type)">{{'SAVECOMPOSITION.form.toggleAll'
+                | translateHs
+                }}</button>
+        </div>
+    </section>
+    <div class="hs-save-map-users-list p-1 my-1" [class.collapsed]="collapsed">
         <div class="d-flex flex-row justify-content-between align-items-start p-1"
+            [class.bg-primary-subtle]="user.username === this.endpoint.user"
             *ngFor="let user of allUsers | filter: userFilter">
             <span class="w-50">{{user.hslDisplayName}}</span>
-            <label style="cursor: pointer;"><input class="me-2" type="checkbox" name="rightToRead"
-                    [(ngModel)]="user.read"
-                    (change)="accessRightsChanged('access_rights.read', user.username, $event)">{{'SAVECOMPOSITION.form.read'
-                | translateHs }}</label>
-            <label style="cursor: pointer;"><input class="me-2" type="checkbox" name="rightToWrite"
-                    [(ngModel)]="user.write"
-                    (change)="accessRightsChanged('access_rights.write', user.username, $event)">{{'SAVECOMPOSITION.form.write'
-                | translateHs }}</label>
+            <label *ngFor="let type of rightsOptions" style="cursor: pointer;"><input class="me-2" type="checkbox"
+                    [name]="'rightTo'+type" [disabled]="user.username === this.endpoint.user" [(ngModel)]="user[type]"
+                    (change)="accessRightsChanged(type, user.username, $event)">{{ type | translateHs : {module:
+                'SAVECOMPOSITION.form'} }}</label>
         </div>
     </div>
 </ng-template>

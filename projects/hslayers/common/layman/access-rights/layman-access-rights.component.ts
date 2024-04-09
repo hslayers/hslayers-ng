@@ -6,7 +6,6 @@ import {lastValueFrom, map} from 'rxjs';
 import {AccessRightsModel} from 'hslayers-ng/types';
 import {HsCommonLaymanService} from '../layman.service';
 import {HsEndpoint} from 'hslayers-ng/types';
-import {HsLanguageService} from 'hslayers-ng/services/language';
 import {HsLogService} from 'hslayers-ng/services/log';
 import {LaymanUser} from '../types/layman-user.type';
 
@@ -14,22 +13,27 @@ enum GrantingOptions {
   PERUSER = 'per_user',
   EVERYONE = 'everyone',
 }
+
+export type AccessRightsType = 'read' | 'write';
+
 @Component({
   selector: 'hs-layman-access-rights',
   templateUrl: './layman-access-rights.component.html',
 })
 export class HsCommonLaymanAccessRightsComponent implements OnInit {
   @Input() access_rights: AccessRightsModel;
+  @Input() collapsed: boolean = false;
 
   @Output() access_rights_changed = new EventEmitter<AccessRightsModel>();
 
   grantingOptions = GrantingOptions;
   currentOption: string = GrantingOptions.EVERYONE;
+  rightsOptions: AccessRightsType[] = ['read', 'write'];
+
   allUsers: LaymanUser[] = [];
   userSearch: string;
   endpoint: HsEndpoint;
   constructor(
-    private hsLanguageService: HsLanguageService,
     private hsCommonLaymanService: HsCommonLaymanService,
     private $http: HttpClient,
     private hsLog: HsLogService,
@@ -41,23 +45,40 @@ export class HsCommonLaymanAccessRightsComponent implements OnInit {
     if (readAccess.length > 1 || writeAccess.length > 1) {
       this.currentOption = GrantingOptions.PERUSER;
       await this.getAllUsers();
-      this.tickFoundUsers(readAccess, 'read');
-      this.tickFoundUsers(writeAccess, 'write');
     }
   }
 
   /**
-   * Tick found user checkboxes in UI that have access rights
+   * Toggles access rights for all users
    * @param users - Username list that have access rights
    * @param type - Access right type (read or write)
    */
-  tickFoundUsers(users: string[], type: string): void {
-    users.forEach((user) => {
-      const found = this.allUsers.find((u) => u.username == user);
-      if (found) {
-        found[type] = true;
+  toggleRightsForAllUsers(type: AccessRightsType): void {
+    /**
+     * Value to be set.
+     * Negative of value of bigger part of the users
+     */
+    const value =
+      this.allUsers.length / 2 >= this.allUsers.filter((u) => u[type]).length;
+
+    this.allUsers.forEach((user) => {
+      //Value for current user cannot be wont be changed
+      user[type] = user.username === this.endpoint.user ? user[type] : value;
+      //In case write permission is being added make sure read is granted as well
+      //when read perrmission is being taken away, make sure write is taken as well
+      if ((type === 'write' && value) || (type === 'read' && !value)) {
+        const t = type === 'write' ? 'read' : 'write';
+        user[t] = value;
+        this.access_rights[`access_rights.${t}`] = value
+          ? 'EVERYONE'
+          : 'private';
       }
     });
+    //Update access_rights model
+    this.access_rights[`access_rights.${type}`] = value
+      ? 'EVERYONE'
+      : 'private';
+    this.access_rights_changed.emit(this.access_rights);
   }
 
   /**
@@ -66,11 +87,15 @@ export class HsCommonLaymanAccessRightsComponent implements OnInit {
    * @param value - Access rights value (private or EVERYONE)
    * @param event - Checkbox change event
    */
-  accessRightsChanged(type: string, value: string, event?: any): void {
+  accessRightsChanged(
+    type: AccessRightsType,
+    value: string,
+    event?: any,
+  ): void {
     if (this.currentOption == this.grantingOptions.PERUSER) {
       this.rightsChangedPerUser(type, value, event);
     } else {
-      this.access_rights[type] = value;
+      this.access_rights[`access_rights.${type}`] = value;
       if (
         this.access_rights['access_rights.read'] == 'private' &&
         this.access_rights['access_rights.write'] != 'private'
@@ -91,21 +116,34 @@ export class HsCommonLaymanAccessRightsComponent implements OnInit {
    * @param value - Access rights value (username for user)
    * @param event - Checkbox change event
    */
-  rightsChangedPerUser(type: string, value: string, event?: any): void {
-    if (event.target.checked && type == 'access_rights.write') {
-      this.access_rights['access_rights.read'] = this.access_rights[
-        'access_rights.read'
-      ].concat(',' + value);
-      this.findLaymanUser(value).read = event.target.checked;
-    } else if (!event.target.checked && type == 'access_rights.read') {
-      this.removeUserRights('access_rights.write', value);
-      this.findLaymanUser(value).write = event.target.checked;
+  rightsChangedPerUser(
+    type: AccessRightsType,
+    username: LaymanUser['username'],
+    event?: any,
+  ): void {
+    const value = event.target.checked;
+    const user = this.findLaymanUser(username);
+    if ((type === 'write' && value) || (type === 'read' && !value)) {
+      const t = type === 'write' ? 'read' : 'write';
+      user[t] = value;
+      this.setAcessRightsFromUsers(t);
     }
-    event.target.checked
-      ? (this.access_rights[type] = this.access_rights[type].concat(
-          ',' + value,
-        ))
-      : this.removeUserRights(type, value);
+    this.setAcessRightsFromUsers(type);
+  }
+
+  /**
+   * Based on [type] property of users update access_rights value
+   */
+  setAcessRightsFromUsers(type: AccessRightsType): void {
+    this.access_rights[`access_rights.${type}`] = this.allUsers
+      .reduce((acc, curr) => {
+        if (curr[type]) {
+          acc.push(curr.username);
+        }
+        return acc;
+      }, [] as string[])
+      .join(',');
+    this.access_rights_changed.emit(this.access_rights);
   }
 
   /**
@@ -117,32 +155,39 @@ export class HsCommonLaymanAccessRightsComponent implements OnInit {
   }
 
   /**
-   * Remove user rights by filtering username from access_rights
-   * @param type - Access rights type (access_rights.read or access_rights.write)
-   * @param username - User username provided
-   */
-  removeUserRights(type: string, username: string): void {
-    this.access_rights[type] = this.access_rights[type]
-      .split(',')
-      .filter((u: string) => u != username)
-      .join(',');
-  }
-
-  /**
    * Change access granting options (everyone or per_user)
    * @param option - Access granting option
    */
   async changeGrantingOptions(option: 'per_user' | 'everyone'): Promise<void> {
     if (option == this.grantingOptions.PERUSER) {
       await this.getAllUsers();
-      this.access_rights['access_rights.read'] = this.endpoint.user;
-      this.access_rights['access_rights.write'] = this.endpoint.user;
     } else {
+      //In case some users has access rights use EVERYONE, private otherwise
+      //READ
+      const rights = this.allUsers.reduce(
+        (acc, curr) => {
+          acc.read += curr['read'] ? 1 : 0;
+          acc.write += curr['write'] ? 1 : 0;
+          return acc;
+        },
+        {read: 0, write: 0},
+      );
       this.allUsers = [];
-      this.access_rights['access_rights.read'] = 'EVERYONE';
-      this.access_rights['access_rights.write'] = 'private';
+
+      this.access_rights['access_rights.read'] =
+        rights.read > 1 ? 'EVERYONE' : 'private';
+
+      this.access_rights['access_rights.write'] =
+        rights.write > 1 ? 'EVERYONE' : 'private';
     }
     this.currentOption = option;
+  }
+
+  /**
+   * Check whether user has access rights.
+   */
+  userHasAccess(user: string, rights: string[]): boolean {
+    return rights.includes(user) || rights.includes('EVERYONE');
   }
 
   /**
@@ -151,27 +196,36 @@ export class HsCommonLaymanAccessRightsComponent implements OnInit {
   async getAllUsers(): Promise<void> {
     if (this.endpoint?.authenticated) {
       const url = `${this.endpoint.url}/rest/users`;
+
+      const read = this.access_rights['access_rights.read'].split(',');
+      const write = this.access_rights['access_rights.write'].split(',');
+
       try {
         this.allUsers = await lastValueFrom(
           this.$http.get<LaymanUser[]>(url, {withCredentials: true}).pipe(
             map((res: any[]) => {
-              return res
-                .filter((user) => user.username != this.endpoint.user)
-                .map((user) => {
-                  const laymanUser: LaymanUser = {
-                    username: user.username,
-                    screenName: user.screen_name,
-                    givenName: user.given_name,
-                    familyName: user.family_name,
-                    middleName: user.middle_name,
-                    name: user.name,
-                  };
-                  laymanUser.hslDisplayName = this.getUserName(laymanUser);
-                  return laymanUser;
-                });
+              return res.map((user) => {
+                const isCurrentUser = user.username === this.endpoint.user;
+                const laymanUser: LaymanUser = {
+                  username: user.username,
+                  screenName: user.screen_name,
+                  givenName: user.given_name,
+                  familyName: user.family_name,
+                  middleName: user.middle_name,
+                  name: user.name,
+                  read:
+                    isCurrentUser || this.userHasAccess(user.username, read),
+                  write:
+                    isCurrentUser || this.userHasAccess(user.username, write),
+                };
+                laymanUser.hslDisplayName = this.getUserName(laymanUser);
+                return laymanUser;
+              });
             }),
           ),
         );
+        this.setAcessRightsFromUsers('read');
+        this.setAcessRightsFromUsers('write');
       } catch (e) {
         this.hsLog.error(e);
       }
