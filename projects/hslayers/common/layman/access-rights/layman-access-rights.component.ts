@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 
-import {lastValueFrom, map, of, switchMap} from 'rxjs';
+import {catchError, lastValueFrom, map, of, shareReplay, switchMap} from 'rxjs';
 
 import {AccessRightsModel} from 'hslayers-ng/types';
 import {HsCommonLaymanService} from '../layman.service';
@@ -14,6 +14,11 @@ enum GrantingOptions {
   EVERYONE = 'everyone',
 }
 
+enum AccessRights {
+  READ = 'access_rights.read',
+  WRITE = 'access_rights.write',
+}
+
 export type AccessRightsType = 'read' | 'write';
 
 @Component({
@@ -22,6 +27,7 @@ export type AccessRightsType = 'read' | 'write';
 })
 export class HsCommonLaymanAccessRightsComponent implements OnInit {
   @Input() access_rights: AccessRightsModel;
+  defaultAccessRights: AccessRightsModel;
   @Input() collapsed: boolean = false;
 
   @Output() access_rights_changed = new EventEmitter<AccessRightsModel>();
@@ -40,8 +46,9 @@ export class HsCommonLaymanAccessRightsComponent implements OnInit {
   ) {}
   async ngOnInit(): Promise<void> {
     this.endpoint = this.hsCommonLaymanService.layman;
-    const readAccess = this.access_rights['access_rights.read'].split(',');
-    const writeAccess = this.access_rights['access_rights.write'].split(',');
+    this.defaultAccessRights = JSON.parse(JSON.stringify(this.access_rights));
+    const readAccess = this.access_rights[AccessRights.READ].split(',');
+    const writeAccess = this.access_rights[AccessRights.WRITE].split(',');
     if (readAccess.length > 1 || writeAccess.length > 1) {
       this.currentOption = GrantingOptions.PERUSER;
       await this.getAllUsers();
@@ -62,13 +69,14 @@ export class HsCommonLaymanAccessRightsComponent implements OnInit {
       this.allUsers.length / 2 >= this.allUsers.filter((u) => u[type]).length;
 
     this.allUsers.forEach((user) => {
+      const isCurrentUser = user.username === this.endpoint.user;
       //Value for current user cannot be wont be changed
-      user[type] = user.username === this.endpoint.user ? user[type] : value;
+      user[type] = isCurrentUser ? user[type] : value;
       //In case write permission is being added make sure read is granted as well
       //when read perrmission is being taken away, make sure write is taken as well
       if ((type === 'write' && value) || (type === 'read' && !value)) {
         const t = type === 'write' ? 'read' : 'write';
-        user[t] = value;
+        user[t] = isCurrentUser ? user[t] : value;
         this.access_rights[`access_rights.${t}`] = value
           ? 'EVERYONE'
           : 'private';
@@ -97,10 +105,10 @@ export class HsCommonLaymanAccessRightsComponent implements OnInit {
     } else {
       this.access_rights[`access_rights.${type}`] = value;
       if (
-        this.access_rights['access_rights.read'] == 'private' &&
-        this.access_rights['access_rights.write'] != 'private'
+        this.access_rights[AccessRights.READ] == 'private' &&
+        this.access_rights[AccessRights.WRITE] != 'private'
       ) {
-        this.access_rights['access_rights.write'] = 'private';
+        this.access_rights[AccessRights.WRITE] = 'private';
       }
     }
     /**
@@ -172,10 +180,10 @@ export class HsCommonLaymanAccessRightsComponent implements OnInit {
         },
         {read: 0, write: 0},
       );
-      this.access_rights['access_rights.read'] =
+      this.access_rights[AccessRights.READ] =
         rights.read > 1 ? 'EVERYONE' : 'private';
 
-      this.access_rights['access_rights.write'] =
+      this.access_rights[AccessRights.WRITE] =
         rights.write > 1 ? 'EVERYONE' : 'private';
     }
     this.currentOption = option;
@@ -191,37 +199,40 @@ export class HsCommonLaymanAccessRightsComponent implements OnInit {
   /**
    * Get all registered users from Layman's endpoint service
    */
-  async getAllUsers(): Promise<void> {
+  async getAllUsers(access_rights?: AccessRightsModel): Promise<void> {
     if (this.endpoint?.authenticated) {
       const url = `${this.endpoint.url}/rest/users`;
 
-      const read = this.access_rights['access_rights.read'].split(',');
-      const write = this.access_rights['access_rights.write'].split(',');
+      access_rights ??= this.access_rights;
+      const read = access_rights[AccessRights.READ].split(',');
+      const write = access_rights[AccessRights.WRITE].split(',');
 
       try {
         this.allUsers = await lastValueFrom(
           of(this.allUsers).pipe(
             switchMap((users) =>
               users.length === 0
-                ? this.$http.get<LaymanUser[]>(url, {withCredentials: true})
+                ? this.$http
+                    .get<LaymanUser[]>(url, {withCredentials: true})
+                    .pipe(
+                      catchError((error) => {
+                        console.warn('Could not get users list', error);
+                        return of([]);
+                      }),
+                    )
                 : of(users),
             ),
-            map((res: any[]) => {
+            map((res: LaymanUser[]) => {
               return res.map((user) => {
                 const isCurrentUser = user.username === this.endpoint.user;
                 const laymanUser: LaymanUser = {
-                  username: user.username,
-                  screenName: user.screen_name,
-                  givenName: user.given_name,
-                  familyName: user.family_name,
-                  middleName: user.middle_name,
-                  name: user.name,
+                  ...user,
                   read:
                     isCurrentUser || this.userHasAccess(user.username, read),
                   write:
                     isCurrentUser || this.userHasAccess(user.username, write),
                 };
-                laymanUser.hslDisplayName = this.getUserName(laymanUser);
+                laymanUser.hslDisplayName ??= this.getUserName(laymanUser);
                 return laymanUser;
               });
             }),
@@ -242,9 +253,9 @@ export class HsCommonLaymanAccessRightsComponent implements OnInit {
   userFilter = (item: LaymanUser): boolean => {
     const r = new RegExp(this.userSearch, 'i');
     return (
-      r.test(item.givenName) ||
-      r.test(item.familyName) ||
-      r.test(item.screenName)
+      r.test(item.given_name) ||
+      r.test(item.family_name) ||
+      r.test(item.screen_name)
     );
   };
 
@@ -256,14 +267,46 @@ export class HsCommonLaymanAccessRightsComponent implements OnInit {
   }
 
   /**
+   * Reset to the state before user manipulation
+   */
+  resetToDefault(): void {
+    //Reassing default access rights
+    this.access_rights[AccessRights.READ] =
+      this.defaultAccessRights[AccessRights.READ];
+    this.access_rights[AccessRights.WRITE] =
+      this.defaultAccessRights[AccessRights.WRITE];
+
+    this.currentOption = GrantingOptions.EVERYONE;
+    const read = this.defaultAccessRights[AccessRights.READ].split(',');
+    const write = this.defaultAccessRights[AccessRights.WRITE].split(',');
+
+    //username to alias (EVERYONE,private) mappings
+    this.access_rights[AccessRights.READ] =
+      read.length == 1 && read[0] == this.endpoint.user
+        ? 'private'
+        : this.access_rights[AccessRights.READ];
+    this.access_rights[AccessRights.WRITE] =
+      write.length == 1 && write[0] == this.endpoint.user
+        ? 'private'
+        : this.access_rights[AccessRights.WRITE];
+
+    //Switch to user view if more entries exist
+    if (read.length > 1 || write.length > 1) {
+      this.currentOption = GrantingOptions.PERUSER;
+      this.getAllUsers();
+    }
+    this.access_rights_changed.emit(this.access_rights);
+  }
+
+  /**
    * Refresh user list, when searching for specific user
    * @param user - Provided Layman's service user
    */
   getUserName(user: any): string {
-    if (user.givenName && user.familyName) {
-      return user.givenName + ' ' + user.familyName;
-    } else if (user.screenName) {
-      return user.screenName;
+    if (user.given_name && user.family_name) {
+      return user.given_name + ' ' + user.family_name;
+    } else if (user.screen_name) {
+      return user.screen_name;
     } else {
       return user.username;
     }
