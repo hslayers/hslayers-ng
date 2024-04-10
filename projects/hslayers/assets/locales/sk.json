@@ -859,7 +859,8 @@
     "writeAccessRights": "Právo zápisu",
     "everyone": "Každý",
     "perUser": "Vybraný užívateľ",
-    "compositionThumbnail": "Náhľad kompozície"
+    "compositionThumbnail": "Náhľad kompozície",
+    "perRole": "Vybrané role"
   },
   "SENSORS": {
     "1D": "1D",
