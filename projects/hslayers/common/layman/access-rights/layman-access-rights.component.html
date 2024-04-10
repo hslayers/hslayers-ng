@@ -20,6 +20,11 @@
     </div>
 </ng-template>
 <ul class="nav nav-tabs justify-content-end my-2 mb-3">
+    <button (click)="resetToDefault()" class="btn btn-light btn-sm position-absolute text-secondary" type="button"
+        style="left: 0;
+    transform: translateX(50%);" [title]="'COMMON.resetToDefault' | translateHs">
+        <i class="icon-fatredo"></i>
+    </button>
     <li class="nav-item" (click)="changeGrantingOptions(grantingOptions.EVERYONE)">
         <a [ngClass]="{'active': currentOption === grantingOptions.EVERYONE}" class="nav-link "
             aria-current="page">{{'SAVECOMPOSITION.everyone' | translateHs }}</a>

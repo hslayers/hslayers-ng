@@ -1,4 +1,3 @@
-- cache get roles request
 - reset to default
 - add PER_ROLE tab
 - when going from EVERYONE tab to PER_ROLE rights should be pre-filled based on existing settings 
