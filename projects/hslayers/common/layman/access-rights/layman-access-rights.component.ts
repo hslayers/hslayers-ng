@@ -1,7 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-
-import {catchError, lastValueFrom, map, of, shareReplay, switchMap} from 'rxjs';
+import {catchError, lastValueFrom, map, of, switchMap} from 'rxjs';
 
 import {AccessRightsModel} from 'hslayers-ng/types';
 import {HsCommonLaymanService} from '../layman.service';
@@ -10,8 +9,9 @@ import {HsLogService} from 'hslayers-ng/services/log';
 import {LaymanUser} from '../types/layman-user.type';
 
 enum GrantingOptions {
-  PERUSER = 'per_user',
+  PERUSER = 'perUser',
   EVERYONE = 'everyone',
+  PERROLE = 'perRole',
 }
 
 enum AccessRights {
@@ -32,7 +32,11 @@ export class HsCommonLaymanAccessRightsComponent implements OnInit {
 
   @Output() access_rights_changed = new EventEmitter<AccessRightsModel>();
 
-  grantingOptions = GrantingOptions;
+  grantingOptions: GrantingOptions[] = [
+    GrantingOptions.EVERYONE,
+    GrantingOptions.PERUSER,
+    GrantingOptions.PERROLE,
+  ];
   currentOption: string = GrantingOptions.EVERYONE;
   rightsOptions: AccessRightsType[] = ['read', 'write'];
 
@@ -46,6 +50,12 @@ export class HsCommonLaymanAccessRightsComponent implements OnInit {
   ) {}
   async ngOnInit(): Promise<void> {
     this.endpoint = this.hsCommonLaymanService.layman;
+    /**
+     * Access rights per role can be assigned only when connected with Wagtail CMS
+     */
+    if (!this.endpoint.type.includes('wagtail')) {
+      this.grantingOptions.pop();
+    }
     this.defaultAccessRights = JSON.parse(JSON.stringify(this.access_rights));
     const readAccess = this.access_rights[AccessRights.READ].split(',');
     const writeAccess = this.access_rights[AccessRights.WRITE].split(',');
@@ -100,7 +110,7 @@ export class HsCommonLaymanAccessRightsComponent implements OnInit {
     value: string,
     event?: any,
   ): void {
-    if (this.currentOption == this.grantingOptions.PERUSER) {
+    if (this.currentOption == GrantingOptions.PERUSER) {
       this.rightsChangedPerUser(type, value, event);
     } else {
       this.access_rights[`access_rights.${type}`] = value;
@@ -163,11 +173,11 @@ export class HsCommonLaymanAccessRightsComponent implements OnInit {
   }
 
   /**
-   * Change access granting options (everyone or per_user)
+   * Change access granting options (everyone or perUser)
    * @param option - Access granting option
    */
-  async changeGrantingOptions(option: 'per_user' | 'everyone'): Promise<void> {
-    if (option == this.grantingOptions.PERUSER) {
+  async changeGrantingOptions(option: GrantingOptions): Promise<void> {
+    if (option == GrantingOptions.PERUSER) {
       await this.getAllUsers();
     } else {
       //In case some users has access rights use EVERYONE, private otherwise

@@ -881,7 +881,8 @@
     "writeAccessRights": "Write access rights",
     "perUser": "Per user",
     "everyone": "Everyone",
-    "compositionThumbnail": "Composition thumbnail"
+    "compositionThumbnail": "Composition thumbnail",
+    "perRole": "Per role"
   },
   "SENSORS": {
     "1D": "1D",
