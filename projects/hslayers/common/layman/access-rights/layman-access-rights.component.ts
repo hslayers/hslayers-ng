@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 
-import {lastValueFrom, map} from 'rxjs';
+import {lastValueFrom, map, of, switchMap} from 'rxjs';
 
 import {AccessRightsModel} from 'hslayers-ng/types';
 import {HsCommonLaymanService} from '../layman.service';
@@ -172,8 +172,6 @@ export class HsCommonLaymanAccessRightsComponent implements OnInit {
         },
         {read: 0, write: 0},
       );
-      this.allUsers = [];
-
       this.access_rights['access_rights.read'] =
         rights.read > 1 ? 'EVERYONE' : 'private';
 
@@ -202,7 +200,12 @@ export class HsCommonLaymanAccessRightsComponent implements OnInit {
 
       try {
         this.allUsers = await lastValueFrom(
-          this.$http.get<LaymanUser[]>(url, {withCredentials: true}).pipe(
+          of(this.allUsers).pipe(
+            switchMap((users) =>
+              users.length === 0
+                ? this.$http.get<LaymanUser[]>(url, {withCredentials: true})
+                : of(users),
+            ),
             map((res: any[]) => {
               return res.map((user) => {
                 const isCurrentUser = user.username === this.endpoint.user;
