@@ -21,6 +21,7 @@ import {
   Vector as VectorLayer,
 } from 'ol/layer';
 import {View} from 'ol';
+import {register as projRegister} from 'ol/proj/proj4';
 
 import {HsCesiumConfig, HslayersCesiumComponent} from 'hslayers-cesium';
 import {HsConfig} from 'hslayers-ng/config';
@@ -29,6 +30,8 @@ import {
   HsOverlayConstructorService,
   HsPanelConstructorService,
 } from 'hslayers-ng/services/panel-constructor';
+import {InterpolatedSource} from 'hslayers-ng/common/layers';
+import {SparqlJson} from 'hslayers-ng/common/layers';
 
 @Component({
   selector: 'hslayers-cesium-app',
@@ -63,6 +66,8 @@ export class AppComponent implements OnInit {
         BingMaps,
         ImageWMS,
         ImageArcGISRest,
+        SparqlJson,
+        InterpolatedSource,
       },
       format: {
         GeoJSON,
@@ -76,6 +81,7 @@ export class AppComponent implements OnInit {
       },
       View,
       proj,
+      projRegister,
     };
 
     if (this.elementRef.nativeElement.id) {
