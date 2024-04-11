@@ -106,29 +106,15 @@ export class HsCesiumService {
         this.hsLog.error('Please set HsConfig.default_view');
       }
 
-      //TODO: research if this must be used or ignored
-      const bing = BingMapsImageryProvider.fromUrl('//dev.virtualearth.net', {
-        key: this.BING_KEY,
-        mapStyle: BingMapsStyle.AERIAL,
-      });
-
       const viewer = new Viewer(
         this.HsLayoutService.contentWrapper.querySelector(
           '.hs-cesium-container',
         ),
         {
-          timeline: this.HsCesiumConfig.cesiumTimeline
-            ? this.HsCesiumConfig.cesiumTimeline
-            : false,
-          animation: this.HsCesiumConfig.cesiumAnimation
-            ? this.HsCesiumConfig.cesiumAnimation
-            : false,
-          creditContainer: this.HsCesiumConfig.creditContainer
-            ? this.HsCesiumConfig.creditContainer
-            : undefined,
-          infoBox: this.HsCesiumConfig.cesiumInfoBox
-            ? this.HsCesiumConfig.cesiumInfoBox
-            : false,
+          timeline: this.HsCesiumConfig.cesiumTimeline ?? false,
+          animation: this.HsCesiumConfig.cesiumAnimation ?? false,
+          creditContainer: this.HsCesiumConfig.creditContainer ?? undefined,
+          infoBox: this.HsCesiumConfig.cesiumInfoBox ?? false,
           terrainProvider: terrainProvider,
           baseLayer: this.HsCesiumConfig.imageryProvider
             ? new ImageryLayer(this.HsCesiumConfig.imageryProvider, {})
@@ -153,10 +139,8 @@ export class HsCesiumService {
         },
       );
 
-      viewer.scene.debugShowFramesPerSecond = this.HsCesiumConfig
-        .cesiumDebugShowFramesPerSecond
-        ? this.HsCesiumConfig.cesiumDebugShowFramesPerSecond
-        : false;
+      viewer.scene.debugShowFramesPerSecond =
+        this.HsCesiumConfig.cesiumDebugShowFramesPerSecond ?? false;
       viewer.scene.globe.enableLighting = this.getShadowMode();
       viewer.scene.globe.shadows = this.getShadowMode();
       viewer.scene.globe.terrainExaggeration =
@@ -207,15 +191,9 @@ export class HsCesiumService {
         }
       }
 
-      this.HsEventBusService.mapExtentChanges
-        .pipe(takeUntil(this.end))
-        .subscribe(() => {
-          const view = this.HsMapService.getMap().getView();
-          if (this.HsMapService.visible) {
-            this.HsCesiumCameraService.setExtentEqualToOlExtent(view);
-          }
-        });
-
+      /**
+       * UNUSED:No trigger found in HSL or HSL-Cesium
+       */
       this.HsEventBusService.zoomTo
         .pipe(takeUntil(this.end))
         .subscribe((data) => {
@@ -302,7 +280,11 @@ export class HsCesiumService {
     this.HsCesiumLayersService.removeLayersWithOldParams();
   }
 
-  resize(size?) {
+  /**
+   * Resize cesium container
+   * @param size Size of OL map container
+   */
+  resize(size: {height: number; width: number}) {
     if (size == undefined) {
       return;
     }
@@ -351,7 +333,15 @@ export class HsCesiumService {
       this.cesiumDisabled();
       this.hsCoreService.updateMapSize();
     } else {
+      const view = this.HsMapService.getMap().getView();
+      if (this.HsMapService.visible) {
+        this.HsCesiumCameraService.setExtentEqualToOlExtent(view);
+      }
       this.init();
+      this.resize({
+        width: this.HsMapService.mapElement.offsetWidth,
+        height: this.HsMapService.mapElement.offsetHeight,
+      });
     }
     this.HsEventBusService.mapLibraryChanges.next(
       this.visible ? 'cesium' : 'ol',
