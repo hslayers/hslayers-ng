@@ -1,3 +1,15 @@
+# [14.0.0-next.1](https://github.com/hslayers/hslayers-ng/compare/14.0.0-next.0...14.0.0-next.1) (2024-04-11)
+
+
+### Bug Fixes
+
+* **apps:** Set publicPath automatically ([17c3474](https://github.com/hslayers/hslayers-ng/commit/17c3474f7e8ad7dea05f4e120c6eece701fc2f96))
+* **cesium-app:** add missing imports ([48415c9](https://github.com/hslayers/hslayers-ng/commit/48415c92fcc19acf749926323adf28202283f40d))
+* **cesium-app:** globFunctions lookup ([eef3c46](https://github.com/hslayers/hslayers-ng/commit/eef3c46a0aee5f2fb30a34d211eceaa0c49996e7))
+* **sidebar:** Show sidebar labels if no mainpanel is selected ([bdff168](https://github.com/hslayers/hslayers-ng/commit/bdff168954b5bcfecc47cb838b1a55b893c929f2))
+
+
+
 # [14.0.0-next.0](https://github.com/hslayers/hslayers-ng/compare/13.1.0...14.0.0-next.0) (2024-03-25)
 
 ### BREAKING CHANGES
