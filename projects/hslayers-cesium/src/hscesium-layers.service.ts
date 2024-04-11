@@ -136,11 +136,6 @@ export class HsCesiumLayersService {
     };
   }
 
-  /**
-   * @param version -
-   * @param srs -
-   * @param crs -
-   */
   getProjectFromVersion(version, srs, crs) {
     if (version == '1.1.1') {
       return srs;

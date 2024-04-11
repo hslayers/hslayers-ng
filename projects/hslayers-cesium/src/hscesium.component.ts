@@ -1,4 +1,4 @@
-import {AfterViewInit, Component} from '@angular/core';
+import {AfterViewInit, Component, DestroyRef} from '@angular/core';
 
 import {HS_PRMS, HsShareUrlService} from 'hslayers-ng/components/share';
 import {HsCoreService} from 'hslayers-ng/services/core';
@@ -10,15 +10,25 @@ import {HsToolbarPanelContainerService} from 'hslayers-ng/services/panels';
 
 import {HsCesiumService} from './hscesium.service';
 import {HsToggleViewComponent} from './toggle-view/toggle-view.component';
+import {filter} from 'rxjs';
+import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'hs-cesium',
   templateUrl: './hscesium.component.html',
   styles: `
-  .hs-cesium-container {
-    height: 100%; margin: 0; padding: 0; overflow: hidden; position: absolute; left: 0; top: 0; width: 100%;  
-    margin-right: 0;
-  }`,
+    .hs-cesium-container {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      margin-right: 0;
+    }
+  `,
 })
 export class HslayersCesiumComponent implements AfterViewInit {
   app = 'default';
@@ -31,6 +41,7 @@ export class HslayersCesiumComponent implements AfterViewInit {
     private hsToolbarPanelContainerService: HsToolbarPanelContainerService,
     public HsEventBusService: HsEventBusService,
     public HsLayoutService: HsLayoutService,
+    private DestroyRef: DestroyRef,
   ) {}
 
   ngAfterViewInit(): void {
@@ -54,9 +65,14 @@ export class HslayersCesiumComponent implements AfterViewInit {
       this.HsCesiumService.dimensionChanged(data.layer, data.dimension),
     );
 
-    this.HsEventBusService.sizeChanges.subscribe((size) =>
-      this.HsCesiumService.resize(size),
-    );
-    this.HsCesiumService.resize();
+    this.HsEventBusService.sizeChanges
+      .pipe(
+        takeUntilDestroyed(this.DestroyRef),
+        /**
+         * Resize immidiatelly only in case cesium is visible
+         */
+        filter((size) => this.HsCesiumService.visible),
+      )
+      .subscribe((size) => this.HsCesiumService.resize(size));
   }
 }
