@@ -5,7 +5,7 @@ import {Source} from 'ol/source';
 
 import {HsConfig} from 'hslayers-ng/config';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
-import {HsLayerDescriptor} from 'hslayers-ng/types';
+import {HsLayerDescriptor, HsTerrainLayerDescriptor} from 'hslayers-ng/types';
 import {HsLayermanagerDataObject} from './layer-manager.service';
 import {HsMapService} from 'hslayers-ng/services/map';
 import {HsUtilsService} from 'hslayers-ng/services/utils';
@@ -122,15 +122,11 @@ export class HsLayerManagerVisibilityService {
    * @param $event - Info about the event change visibility event, used if visibility of only one layer is changed
    * @param layer - Selected layer - wrapped layer object (layer.layer expected)
    */
-  changeTerrainLayerVisibility($event, layer): void {
-    for (let i = 0; i < this.data.terrainLayers.length; i++) {
-      if (
-        this.data.terrainLayers[i].type != undefined &&
-        this.data.terrainLayers[i].type == 'terrain'
-      ) {
-        this.data.terrainLayers[i].visible =
-          this.data.terrainLayers[i] == layer;
-        this.data.terrainLayers[i].active = this.data.terrainLayers[i].visible;
+  changeTerrainLayerVisibility($event, layer: HsTerrainLayerDescriptor): void {
+    for (const terrainLayer of this.data.terrainLayers) {
+      if (terrainLayer.type == 'terrain') {
+        terrainLayer.visible = terrainLayer == layer;
+        terrainLayer.active = terrainLayer.visible;
       }
     }
     this.hsEventBusService.LayerManagerBaseLayerVisibilityChanges.next(layer);
@@ -152,7 +148,7 @@ export class HsLayerManagerVisibilityService {
           for (const baseLayer of this.data.baselayers) {
             const isToggledLayer = baseLayer == layer;
             if (baseLayer.layer) {
-              //Dont trigger change:visible event when isToggledLayer = false
+              //Don't trigger change:visible event when isToggledLayer = false
               baseLayer.layer.set('visible', isToggledLayer, !isToggledLayer);
               baseLayer.visible = isToggledLayer;
               baseLayer.active = isToggledLayer;
