@@ -32,36 +32,46 @@
     </li>
     }
 </ul>
-<ng-container *ngIf="currentOption === 'everyone'; else perUserTpl">
-    <ng-container *ngFor="let type of rightsOptions">
-        <ng-container
-            *ngTemplateOutlet="accessRightsTpl;context:{accessRights: access_rights, right: type, grantedTo: 'EVERYONE'}">
-        </ng-container>
+@if(currentOption === 'everyone') {
+<ng-container *ngFor="let type of rightsOptions">
+    <ng-container
+        *ngTemplateOutlet="accessRightsTpl;context:{accessRights: access_rights, right: type, grantedTo: 'EVERYONE'}">
     </ng-container>
 </ng-container>
-
-<ng-template #perUserTpl>
-    <section class="d-flex">
-        <div>
-            <input type="search" class="form-control hs-save-map-filter" [placeholder]="'COMMON.filter' | translateHs "
-                [(ngModel)]="userSearch" name="rights-per-user-filter" (input)="refreshList()">
-        </div>
-        <div class="d-flex justify-content-end gap-5 w-50 align-self-end">
-            <button *ngFor="let type of rightsOptions" type="button" class="btn btn-primary btn-sm"
-                style="white-space: nowrap;" (click)="toggleRightsForAllUsers(type)">{{'SAVECOMPOSITION.form.toggleAll'
-                | translateHs
-                }}</button>
-        </div>
-    </section>
-    <div class="hs-save-map-users-list p-1 my-1" [class.collapsed]="collapsed">
-        <div class="d-flex flex-row justify-content-between align-items-start p-1"
-            [class.bg-primary-subtle]="user.username === this.endpoint.user"
-            *ngFor="let user of allUsers | filter: userFilter">
-            <span class="w-50">{{user.hslDisplayName}}</span>
-            <label *ngFor="let type of rightsOptions" style="cursor: pointer;"><input class="me-2" type="checkbox"
-                    [name]="'rightTo'+type" [disabled]="user.username === this.endpoint.user" [(ngModel)]="user[type]"
-                    (change)="accessRightsChanged(type, user.username, $event)">{{ type | translateHs : {module:
-                'SAVECOMPOSITION.form'} }}</label>
-        </div>
+}
+@else if (currentOption === 'perUser'){
+<section class="d-flex">
+    <div>
+        <input type="search" class="form-control hs-save-map-filter" [placeholder]="'COMMON.filter' | translateHs "
+            [(ngModel)]="userSearch" name="rights-per-user-filter" (input)="refreshList()">
     </div>
-</ng-template>
+    <div class="d-flex justify-content-end gap-5 w-50 align-self-end">
+        <button *ngFor="let type of rightsOptions" type="button" class="btn btn-primary btn-sm"
+            style="white-space: nowrap;" (click)="toggleRightsForAllUsers(type)">{{'SAVECOMPOSITION.form.toggleAll'
+            | translateHs
+            }}</button>
+    </div>
+</section>
+<div class="hs-save-map-users-list p-1 my-1" [class.collapsed]="collapsed">
+    <div class="d-flex flex-row justify-content-between align-items-start p-1"
+        [class.bg-primary-subtle]="user.username === this.endpoint.user"
+        *ngFor="let user of allUsers | filter: userFilter">
+        <span class="w-50">{{user.hslDisplayName}}</span>
+        <label *ngFor="let type of rightsOptions" style="cursor: pointer;"><input class="me-2" type="checkbox"
+                [name]="'rightTo'+type" [disabled]="user.username === this.endpoint.user" [(ngModel)]="user[type]"
+                (change)="accessRightsChanged(type, user.username, $event)">{{ type | translateHs : {module:
+            'SAVECOMPOSITION.form'} }}</label>
+    </div>
+</div>
+}
+@else {
+<div class="hs-save-map-users-list p-1 my-1" [class.collapsed]="collapsed">
+    <div class="d-flex flex-row justify-content-between align-items-start p-1" *ngFor="let role of allRoles">
+        <span class="w-50">{{role.name}}</span>
+        <label *ngFor="let type of rightsOptions" style="cursor: pointer;"><input class="me-2" type="checkbox"
+                (change)="accessRightsChanged(type, role.name, $event)" [name]="'rightTo'+type"
+                [(ngModel)]="role[type]">{{ type | translateHs : {module:
+            'SAVECOMPOSITION.form'} }}</label>
+    </div>
+</div>
+}
