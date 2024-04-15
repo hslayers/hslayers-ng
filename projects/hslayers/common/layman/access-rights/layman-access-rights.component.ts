@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {catchError, lastValueFrom, map, of, switchMap} from 'rxjs';
+import {Observable, catchError, lastValueFrom, map, of, switchMap} from 'rxjs';
 
 import {AccessRightsModel} from 'hslayers-ng/types';
 import {HsCommonLaymanService} from '../layman.service';
@@ -18,6 +18,14 @@ enum AccessRights {
   READ = 'access_rights.read',
   WRITE = 'access_rights.write',
 }
+
+type AcessRightsActor = GrantingOptions.PERROLE | GrantingOptions.PERUSER;
+
+type LaymanRole = {
+  name: string;
+  read: boolean;
+  write: boolean;
+};
 
 export type AccessRightsType = 'read' | 'write';
 
@@ -41,6 +49,8 @@ export class HsCommonLaymanAccessRightsComponent implements OnInit {
   rightsOptions: AccessRightsType[] = ['read', 'write'];
 
   allUsers: LaymanUser[] = [];
+  allRoles: LaymanRole[] = [];
+
   userSearch: string;
   endpoint: HsEndpoint;
   constructor(
@@ -50,18 +60,19 @@ export class HsCommonLaymanAccessRightsComponent implements OnInit {
   ) {}
   async ngOnInit(): Promise<void> {
     this.endpoint = this.hsCommonLaymanService.layman;
-    /**
-     * Access rights per role can be assigned only when connected with Wagtail CMS
-     */
-    if (!this.endpoint.type.includes('wagtail')) {
-      this.grantingOptions.pop();
-    }
     this.defaultAccessRights = JSON.parse(JSON.stringify(this.access_rights));
     const readAccess = this.access_rights[AccessRights.READ].split(',');
     const writeAccess = this.access_rights[AccessRights.WRITE].split(',');
     if (readAccess.length > 1 || writeAccess.length > 1) {
-      this.currentOption = GrantingOptions.PERUSER;
-      await this.getAllUsers();
+      //Uppercase entry = role permissions
+      this.currentOption = [...readAccess, ...writeAccess].find(
+        (item) => item === item.toUpperCase(),
+      )
+        ? GrantingOptions.PERROLE
+        : GrantingOptions.PERUSER;
+      this.currentOption === GrantingOptions.PERUSER
+        ? this.getAllUsers()
+        : this.getRoles();
     }
   }
 
@@ -79,8 +90,8 @@ export class HsCommonLaymanAccessRightsComponent implements OnInit {
       this.allUsers.length / 2 >= this.allUsers.filter((u) => u[type]).length;
 
     this.allUsers.forEach((user) => {
-      const isCurrentUser = user.username === this.endpoint.user;
-      //Value for current user cannot be wont be changed
+      const isCurrentUser = user.name === this.endpoint.user;
+      //Value for current user be wont be changed
       user[type] = isCurrentUser ? user[type] : value;
       //In case write permission is being added make sure read is granted as well
       //when read perrmission is being taken away, make sure write is taken as well
@@ -102,7 +113,7 @@ export class HsCommonLaymanAccessRightsComponent implements OnInit {
   /**
    * Change access rights for everyone
    * @param type - Access rights type (access_rights.read or access_rights.write)
-   * @param value - Access rights value (private or EVERYONE)
+   * @param value - Access rights value (private, EVERYONE, users name or user role)
    * @param event - Checkbox change event
    */
   accessRightsChanged(
@@ -111,7 +122,9 @@ export class HsCommonLaymanAccessRightsComponent implements OnInit {
     event?: any,
   ): void {
     if (this.currentOption == GrantingOptions.PERUSER) {
-      this.rightsChangedPerUser(type, value, event);
+      this.rightsChangedPerActor(type, value, GrantingOptions.PERUSER, event);
+    } else if (this.currentOption == GrantingOptions.PERROLE) {
+      this.rightsChangedPerActor(type, value, GrantingOptions.PERROLE, event);
     } else {
       this.access_rights[`access_rights.${type}`] = value;
       if (
@@ -134,29 +147,41 @@ export class HsCommonLaymanAccessRightsComponent implements OnInit {
    * @param value - Access rights value (username for user)
    * @param event - Checkbox change event
    */
-  rightsChangedPerUser(
+  rightsChangedPerActor(
     type: AccessRightsType,
-    username: LaymanUser['username'],
+    name: LaymanUser['name'] | LaymanRole['name'],
+    actor: AcessRightsActor,
     event?: any,
   ): void {
     const value = event.target.checked;
-    const user = this.findLaymanUser(username);
+    const user = this.findLaymanActor(name, actor);
     if ((type === 'write' && value) || (type === 'read' && !value)) {
       const t = type === 'write' ? 'read' : 'write';
       user[t] = value;
-      this.setAcessRightsFromUsers(t);
+      this.setAcessRightsFromActor(t, actor);
     }
-    this.setAcessRightsFromUsers(type);
+    this.setAcessRightsFromActor(type, actor);
   }
 
   /**
-   * Based on [type] property of users update access_rights value
+   * Based on [type] property of users/roles update access_rights value
    */
-  setAcessRightsFromUsers(type: AccessRightsType): void {
-    this.access_rights[`access_rights.${type}`] = this.allUsers
+  setAcessRightsFromActor(
+    type: AccessRightsType,
+    actor: AcessRightsActor,
+  ): void {
+    const source =
+      actor === GrantingOptions.PERUSER
+        ? this.allUsers
+        : [
+            ...this.allRoles,
+            //Add current user as he has got to retain both read and write rights
+            {name: this.endpoint.user, read: true, write: true},
+          ];
+    this.access_rights[`access_rights.${type}`] = source
       .reduce((acc, curr) => {
         if (curr[type]) {
-          acc.push(curr.username);
+          acc.push(curr['name']);
         }
         return acc;
       }, [] as string[])
@@ -165,11 +190,18 @@ export class HsCommonLaymanAccessRightsComponent implements OnInit {
   }
 
   /**
-   * Find user by username from all Layman users
-   * @param username - User username provided
+   * Find user by name from all Layman users
+   * @param name - User name provided
    */
-  findLaymanUser(username: string): LaymanUser {
-    return this.allUsers.find((u) => u.username == username);
+  findLaymanActor<T extends GrantingOptions>(
+    name: string,
+    actor: T,
+  ): T extends GrantingOptions.PERUSER ? LaymanUser : LaymanRole {
+    const source =
+      actor === GrantingOptions.PERUSER ? this.allUsers : this.allRoles;
+    return source.find(
+      (u: any) => u.name === name,
+    ) as T extends GrantingOptions.PERUSER ? LaymanUser : LaymanRole;
   }
 
   /**
@@ -179,10 +211,16 @@ export class HsCommonLaymanAccessRightsComponent implements OnInit {
   async changeGrantingOptions(option: GrantingOptions): Promise<void> {
     if (option == GrantingOptions.PERUSER) {
       await this.getAllUsers();
+    } else if (option == GrantingOptions.PERROLE) {
+      await this.getRoles();
     } else {
-      //In case some users has access rights use EVERYONE, private otherwise
+      //In case some users/roles has access rights use EVERYONE, private otherwise
       //READ
-      const rights = this.allUsers.reduce(
+      const actor =
+        this.currentOption == GrantingOptions.PERROLE
+          ? this.allRoles
+          : this.allUsers;
+      const rights = actor.reduce(
         (acc, curr) => {
           acc.read += curr['read'] ? 1 : 0;
           acc.write += curr['write'] ? 1 : 0;
@@ -200,10 +238,101 @@ export class HsCommonLaymanAccessRightsComponent implements OnInit {
   }
 
   /**
-   * Check whether user has access rights.
+   * Determine whether the role has an acces or not
    */
-  userHasAccess(user: string, rights: string[]): boolean {
-    return rights.includes(user) || rights.includes('EVERYONE');
+  roleHasAccess(
+    role: string,
+    rights: string[],
+    type: AccessRightsType,
+  ): boolean {
+    //Switching from users table
+    if (this.currentOption === GrantingOptions.PERUSER) {
+      //Users with the role
+      const usersWithRole = this.allUsers.filter((u) => u.role === role);
+      //Users of that role with access
+      const usersWithRoleAndAccess = usersWithRole.filter((u) => u[type]);
+      return (
+        //True in case more than half of the users from the role has access
+        (usersWithRoleAndAccess.length !== 0 &&
+          usersWithRoleAndAccess.length >= usersWithRole.length / 2) ||
+        //Or all users has access
+        this.allUsers.filter((u) => u[type]).length === this.allUsers.length
+      );
+    }
+    //Switching from 'everyone' tab or opening role tab first
+    return rights.includes(role) || rights.includes('EVERYONE');
+  }
+
+  /**
+   * Get user roles
+   */
+  async getRoles(access_rights?: AccessRightsModel): Promise<void> {
+    if (this.endpoint?.authenticated) {
+      const url = `${this.endpoint.url}/rest/roles`;
+
+      access_rights ??= this.access_rights;
+      const read = access_rights[AccessRights.READ].split(',');
+      const write = access_rights[AccessRights.WRITE].split(',');
+
+      this.allRoles = await lastValueFrom(
+        of(this.allRoles).pipe(
+          switchMap((roles) =>
+            roles.length === 0
+              ? this.$http.get<string[]>(url, {withCredentials: true}).pipe(
+                  catchError((error) => {
+                    console.warn('Could not get roles  list', error);
+                    return of([]);
+                  }),
+                )
+              : of(roles.map((r) => r.name)),
+          ),
+          map((roles: string[]) => {
+            return roles
+              .filter((r) => r !== 'EVERYONE')
+              .map((r) => {
+                return {
+                  name: r,
+                  read: this.roleHasAccess(r, read, 'read'),
+                  write: this.roleHasAccess(r, write, 'write'),
+                };
+              });
+          }),
+        ),
+      );
+      this.setAcessRightsFromActor('read', GrantingOptions.PERROLE);
+      this.setAcessRightsFromActor('write', GrantingOptions.PERROLE);
+    }
+  }
+
+  /**
+   * Get users from Layman or Wagtail depnding on endpoin type.
+   * Main difference is that Wagtail response includes user roles
+   */
+  private fetchUsers(): Observable<LaymanUser[]> {
+    const url = this.endpoint.type.includes('wagtail')
+      ? '/get-users'
+      : `${this.endpoint.url}/rest/users`;
+    return this.$http.get<LaymanUser[]>(url, {withCredentials: true}).pipe(
+      catchError((error) => {
+        console.warn('Could not get users list', error);
+        return of([]);
+      }),
+    );
+  }
+
+  /**
+   * Check whether user has access rights.
+   * actor meaning user or role
+   */
+  userHasAccess(
+    user: LaymanUser,
+    rights: string[],
+    type: AccessRightsType,
+  ): boolean {
+    if (this.currentOption === GrantingOptions.PERROLE) {
+      return this.allRoles.every((r) => r[type]) || rights.includes(user.role);
+    }
+    return rights.includes(user.name) || rights.includes('EVERYONE');
   }
 
   /**
@@ -211,8 +340,6 @@ export class HsCommonLaymanAccessRightsComponent implements OnInit {
    */
   async getAllUsers(access_rights?: AccessRightsModel): Promise<void> {
     if (this.endpoint?.authenticated) {
-      const url = `${this.endpoint.url}/rest/users`;
-
       access_rights ??= this.access_rights;
       const read = access_rights[AccessRights.READ].split(',');
       const write = access_rights[AccessRights.WRITE].split(',');
@@ -221,35 +348,30 @@ export class HsCommonLaymanAccessRightsComponent implements OnInit {
         this.allUsers = await lastValueFrom(
           of(this.allUsers).pipe(
             switchMap((users) =>
-              users.length === 0
-                ? this.$http
-                    .get<LaymanUser[]>(url, {withCredentials: true})
-                    .pipe(
-                      catchError((error) => {
-                        console.warn('Could not get users list', error);
-                        return of([]);
-                      }),
-                    )
-                : of(users),
+              users.length === 0 ? this.fetchUsers() : of(users),
             ),
             map((res: LaymanUser[]) => {
               return res.map((user) => {
                 const isCurrentUser = user.username === this.endpoint.user;
                 const laymanUser: LaymanUser = {
                   ...user,
-                  read:
-                    isCurrentUser || this.userHasAccess(user.username, read),
-                  write:
-                    isCurrentUser || this.userHasAccess(user.username, write),
+                  name: user.username,
+                  role: user.username.length > 5 ? 'MODERATORS' : 'EDITORS',
                 };
-                laymanUser.hslDisplayName ??= this.getUserName(laymanUser);
+                //Assign rights after obj initiation to have acess to mocked role
+                laymanUser.read =
+                  isCurrentUser || this.userHasAccess(laymanUser, read, 'read');
+                laymanUser.write =
+                  isCurrentUser ||
+                  this.userHasAccess(laymanUser, write, 'write');
+                laymanUser.hslDisplayName ??= this.getDisplayName(laymanUser);
                 return laymanUser;
               });
             }),
           ),
         );
-        this.setAcessRightsFromUsers('read');
-        this.setAcessRightsFromUsers('write');
+        this.setAcessRightsFromActor('read', GrantingOptions.PERUSER);
+        this.setAcessRightsFromActor('write', GrantingOptions.PERUSER);
       } catch (e) {
         this.hsLog.error(e);
       }
@@ -290,7 +412,7 @@ export class HsCommonLaymanAccessRightsComponent implements OnInit {
     const read = this.defaultAccessRights[AccessRights.READ].split(',');
     const write = this.defaultAccessRights[AccessRights.WRITE].split(',');
 
-    //username to alias (EVERYONE,private) mappings
+    //name to alias (EVERYONE,private) mappings
     this.access_rights[AccessRights.READ] =
       read.length == 1 && read[0] == this.endpoint.user
         ? 'private'
@@ -312,7 +434,7 @@ export class HsCommonLaymanAccessRightsComponent implements OnInit {
    * Refresh user list, when searching for specific user
    * @param user - Provided Layman's service user
    */
-  getUserName(user: any): string {
+  getDisplayName(user: any): string {
     if (user.given_name && user.family_name) {
       return user.given_name + ' ' + user.family_name;
     } else if (user.screen_name) {

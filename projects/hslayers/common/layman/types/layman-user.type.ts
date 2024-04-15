@@ -5,10 +5,11 @@
  * @param given_name - Given name of the user.
  * @param family_name - Family name of the user
  * @param middle_name - Middle name of the user
- * @param name - Whole name of the user (given_name + middle_name + family_name).
+ * @param name - Whole name of the user (given_name + middle_name + family_name). FIXME: overriden by username to align param naming with roles
  * @param hslDisplayName - (Optional) Carefully selected word from other user properties, that is used in Hslayers templates
  * @param read - (Optional) Layman read rights status
  * @param write - (Optional) Layman write rights status
+ * @param role -(Optional) When in combiantion with layman proxy, user - role mapping is obtained as well
  */
 export type LaymanUser = {
   username: string;
@@ -20,4 +21,5 @@ export type LaymanUser = {
   hslDisplayName?: string;
   read?: boolean;
   write?: boolean;
+  role?: string;
 };
