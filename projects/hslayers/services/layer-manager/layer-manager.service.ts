@@ -28,6 +28,7 @@ import {HsLogService} from 'hslayers-ng/services/log';
 import {HsMapService} from 'hslayers-ng/services/map';
 import {HsQueuesService} from 'hslayers-ng/services/queues';
 import {HsShareUrlService} from 'hslayers-ng/services/share';
+import {HsTerrainLayerDescriptor} from 'hslayers-ng/types';
 import {HsToastService} from 'hslayers-ng/common/toast';
 import {HsUtilsService} from 'hslayers-ng/services/utils';
 import {
@@ -60,7 +61,7 @@ export class HsLayermanagerDataObject {
   folders: any;
   layers: HsLayerDescriptor[];
   baselayers: HsBaseLayerDescriptor[];
-  terrainLayers: any[];
+  terrainLayers: HsTerrainLayerDescriptor[];
   baselayer?: string;
   box_layers?: Group[];
   filter: string;

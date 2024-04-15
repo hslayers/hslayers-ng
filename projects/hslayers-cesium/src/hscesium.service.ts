@@ -57,7 +57,7 @@ export class HsCesiumService {
     public HsCesiumTimeService: HsCesiumTimeService,
     public HsEventBusService: HsEventBusService,
     public HsUtilsService: HsUtilsService,
-    public HsCesiumConfig: HsCesiumConfig,
+    public hsCesiumConfig: HsCesiumConfig,
     private HsCesiumPicker: HsCesiumPickerService,
     private hsCesiumQueryPopupService: HsCesiumQueryPopupService,
     private HslayersService: HslayersService,
@@ -72,29 +72,29 @@ export class HsCesiumService {
   async init() {
     this.end = new Subject();
     this.checkForBingKey();
-    this.HsCesiumConfig.cesiumConfigChanges
+    this.hsCesiumConfig.cesiumConfigChanges
       .pipe(takeUntil(this.end))
       .subscribe(() => {
         this.checkForBingKey();
       });
     try {
       Ion.defaultAccessToken =
-        this.HsCesiumConfig.cesiumAccessToken ||
+        this.hsCesiumConfig.cesiumAccessToken ||
         'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiIzZDk3ZmM0Mi01ZGFjLTRmYjQtYmFkNC02NTUwOTFhZjNlZjMiLCJpZCI6MTE2MSwiaWF0IjoxNTI3MTYxOTc5fQ.tOVBzBJjR3mwO3osvDVB_RwxyLX7W-emymTOkfz6yGA';
-      if (!this.HsCesiumConfig.cesiumBase) {
+      if (!this.hsCesiumConfig.cesiumBase) {
         this.hsLog.error(
           'Please set HsCesiumConfig.cesiumBase to the directory where Cesium assets will be copied to',
         );
       }
-      (<any>window).CESIUM_BASE_URL = this.HsCesiumConfig.cesiumBase;
+      (<any>window).CESIUM_BASE_URL = this.hsCesiumConfig.cesiumBase;
       let terrainProvider =
-        this.HsCesiumConfig.terrain_provider ||
+        this.hsCesiumConfig.terrainProvider ||
         (await createWorldTerrainAsync(
-          this.HsCesiumConfig.createWorldTerrainOptions,
+          this.hsCesiumConfig.createWorldTerrainOptions,
         ));
-      if (this.HsCesiumConfig.newTerrainProviderOptions) {
+      if (this.hsCesiumConfig.newTerrainProviderOptions) {
         terrainProvider = new CesiumTerrainProvider(
-          this.HsCesiumConfig.newTerrainProviderOptions,
+          this.hsCesiumConfig.newTerrainProviderOptions,
         );
       }
 
@@ -111,13 +111,13 @@ export class HsCesiumService {
           '.hs-cesium-container',
         ),
         {
-          timeline: this.HsCesiumConfig.cesiumTimeline ?? false,
-          animation: this.HsCesiumConfig.cesiumAnimation ?? false,
-          creditContainer: this.HsCesiumConfig.creditContainer ?? undefined,
-          infoBox: this.HsCesiumConfig.cesiumInfoBox ?? false,
+          timeline: this.hsCesiumConfig.cesiumTimeline ?? false,
+          animation: this.hsCesiumConfig.cesiumAnimation ?? false,
+          creditContainer: this.hsCesiumConfig.creditContainer ?? undefined,
+          infoBox: this.hsCesiumConfig.cesiumInfoBox ?? false,
           terrainProvider: terrainProvider,
-          baseLayer: this.HsCesiumConfig.imageryProvider
-            ? new ImageryLayer(this.HsCesiumConfig.imageryProvider, {})
+          baseLayer: this.hsCesiumConfig.imageryProvider
+            ? new ImageryLayer(this.hsCesiumConfig.imageryProvider, {})
             : false,
           // Use high-res stars downloaded from https://github.com/AnalyticalGraphicsInc/cesium-assets
           skyBox: new SkyBox({
@@ -133,22 +133,22 @@ export class HsCesiumService {
           // Show Columbus View map with Web Mercator projection
           sceneMode: SceneMode.SCENE3D,
           mapProjection: new WebMercatorProjection(),
-          shadows: this.getShadowMode(),
+          shadows: !!this.getShadowMode(),
           scene3DOnly: true,
           sceneModePicker: false,
         },
       );
 
       viewer.scene.debugShowFramesPerSecond =
-        this.HsCesiumConfig.cesiumDebugShowFramesPerSecond ?? false;
-      viewer.scene.globe.enableLighting = this.getShadowMode();
+        this.hsCesiumConfig.cesiumDebugShowFramesPerSecond ?? false;
+      viewer.scene.globe.enableLighting = !!this.getShadowMode();
       viewer.scene.globe.shadows = this.getShadowMode();
       viewer.scene.globe.terrainExaggeration =
-        this.HsCesiumConfig.terrainExaggeration || 1.0;
+        this.hsCesiumConfig.terrainExaggeration || 1.0;
       viewer.terrainProvider = terrainProvider;
 
-      if (this.HsCesiumConfig.cesiumTime) {
-        viewer.clockViewModel.currentTime = this.HsCesiumConfig.cesiumTime;
+      if (this.hsCesiumConfig.cesiumTime) {
+        viewer.clockViewModel.currentTime = this.hsCesiumConfig.cesiumTime;
       }
 
       this.viewer = viewer;
@@ -184,8 +184,8 @@ export class HsCesiumService {
       });
 
       this.HsLayermanagerService.data.terrainLayers = [];
-      if (this.HsCesiumConfig.terrain_providers) {
-        for (const provider of this.HsCesiumConfig.terrain_providers) {
+      if (this.hsCesiumConfig.terrainLayers) {
+        for (const provider of this.hsCesiumConfig.terrainLayers) {
           provider.type = 'terrain';
           this.HsLayermanagerService.data.terrainLayers.push(provider);
         }
@@ -205,7 +205,7 @@ export class HsCesiumService {
             ),
           });
         });
-      this.HsCesiumConfig.viewerLoaded.next(this.viewer);
+      this.hsCesiumConfig.viewerLoaded.next(this.viewer);
 
       this.HsCesiumPicker.cesiumPositionClicked
         .pipe(takeUntil(this.end))
@@ -242,16 +242,18 @@ export class HsCesiumService {
     this.end.complete();
   }
 
-  private getShadowMode(): any {
-    return this.HsCesiumConfig.cesiumShadows == undefined
+  private getShadowMode() {
+    return this.hsCesiumConfig.cesiumShadows == undefined
       ? ShadowMode.DISABLED
-      : this.HsCesiumConfig.cesiumShadows;
+      : this.hsCesiumConfig.cesiumShadows;
   }
+
   checkForBingKey(): void {
-    if (this.HsCesiumConfig.cesiumBingKey) {
-      this.BING_KEY = this.HsCesiumConfig.cesiumBingKey;
+    if (this.hsCesiumConfig.cesiumBingKey) {
+      this.BING_KEY = this.hsCesiumConfig.cesiumBingKey;
     }
   }
+
   getCameraCenterInLngLat() {
     return this.HsCesiumCameraService.getCameraCenterInLngLat();
   }
@@ -282,7 +284,7 @@ export class HsCesiumService {
 
   /**
    * Resize cesium container
-   * @param size Size of OL map container
+   * @param size - Size of OL map container
    */
   resize(size: {height: number; width: number}) {
     if (size == undefined) {

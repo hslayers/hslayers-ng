@@ -44,6 +44,7 @@
                 (input)="filterLayerTitles()">
         </div>
 
+        <!-- BASEMAP LAYERS -->
         <ul *ngIf="!hsLayoutService.componentEnabled('basemapGallery')" class="list-group hs-lm-baselayerlist">
             <!-- TODO: Remove function call from template -->
             <li class="list-group-item hs-lm-item hs-lm-header clearfix list-group-item-primary">
@@ -71,7 +72,7 @@
                         <span [innerHtml]="hsLayerManagerService.makeSafeAndTranslate('LAYERS', layer.abstract)"></span>
                     </ng-template>
                     <div class="align-items-center p-0 flex-grow-1 hs-lm-item-title" style="cursor:context-menu"
-                        [ngClass]="{'fw-bold': layer.active, 'text-muted' : layer.grayed}"
+                        [ngClass]="{'fw-bold': layer.active, 'text-muted': layer.grayed}"
                         [ngbTooltip]="layer.abstract ? abstractTooltip : ''" [closeDelay]="layerTooltipDelay">
                         {{layer.title | translateHs : {module: 'LAYERS'} }}
                     </div>
@@ -87,6 +88,7 @@
             </li>
         </ul>
 
+        <!-- TERRAIN LAYERS -->
         <ul class="list-group hs-lm-baselayerlist" [hidden]="!(hsLayerManagerService.data.terrainLayers.length > 0)">
             <li class="list-group-item hs-lm-item hs-lm-header clearfix list-group-item-primary">
                 <div class="d-flex">
@@ -96,32 +98,28 @@
                     </div>
                 </div>
             </li>
-            <li class="list-group-item hs-lm-item"
-                *ngFor="let layer of hsLayerManagerService.data.terrainLayers | filter:baselayerFilter"
-                (click)="changeTerrainLayerVisibility($event, layer)" (mouseenter)="hovering=true"
-                (mouseleave)="hovering=false" [ngClass]="{'hovering': (hovering && !layer.active)}">
+            <li class="list-group-item hs-lm-item my-2 my-md-0"
+                *ngFor="let layer of hsLayerManagerService.data.terrainLayers | filter:baselayerFilter" 
+                [ngClass]="{'hs-lm-deactivated-layer': !layer.active}">
                 <div class="d-flex ">
-                    <!-- <div class="p-0" ng-show="layer.active || hovering"
-                        ng-style="hovering && !layer.active && {'opacity':'0.5'}">
-                        <button class="btn btn-sm btn-link hs-lm-baseitem-visibility"><i
-                                class="icon-globe"></i></button>
-                    </div> -->
                     <div class="p-0">
                         <button type="button" class="btn btn-sm btn-light hs-lm-item-visibility"
+                            (click)="changeTerrainLayerVisibility($event, layer)"
                             [ngClass]="(hsLayerManagerVisibilityService.baselayersVisible && layer.visible) ? 'hs-checkmark' : 'hs-uncheckmark'"></button>
                     </div>
                     <ng-template #abstractTooltip>
                         <span [innerHtml]="hsLayerManagerService.makeSafeAndTranslate('LAYERS', layer.abstract)"></span>
                     </ng-template>
-                    <div class="align-items-center p-0 flex-grow-1 hs-lm-item-title"
+                    <div class="align-items-center p-0 flex-grow-1 hs-lm-item-title" style="cursor:context-menu"
                         [ngClass]="{'fw-bold': layer.active, 'text-muted': layer.grayed}"
                         [ngbTooltip]="layer.abstract ? abstractTooltip : ''" [closeDelay]="layerTooltipDelay">
-                        <!-- TODO: Remove function call from template -->
                         {{layer.title | translateHs : {module: 'LAYERS'} }}
                     </div>
                 </div>
             </li>
         </ul>
+
+        <!-- THEMATIC LAYERS -->
         <ul class="list-group hs-lm-mapcontentlist">
             <!-- TODO: Remove function call from template -->
             <li *ngIf="!hsLayoutService.componentEnabled('basemapGallery')"
