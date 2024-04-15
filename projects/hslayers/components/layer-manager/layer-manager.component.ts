@@ -15,7 +15,7 @@ import {HsConfig} from 'hslayers-ng/config';
 import {HslayersService} from 'hslayers-ng/core';
 import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
-import {HsLayerDescriptor} from 'hslayers-ng/types';
+import {HsLayerDescriptor, HsTerrainLayerDescriptor} from 'hslayers-ng/types';
 import {HsLayerListService} from './logical-list/layer-manager-layerlist.service';
 import {HsLayerManagerRemoveAllDialogComponent} from './dialogs/remove-all-dialog.component';
 import {
@@ -190,7 +190,7 @@ export class HsLayerManagerComponent
     );
   }
 
-  changeTerrainLayerVisibility(e, layer: Layer<Source>) {
+  changeTerrainLayerVisibility(e, layer: HsTerrainLayerDescriptor) {
     return this.hsLayerManagerVisibilityService.changeTerrainLayerVisibility(
       e,
       layer,
