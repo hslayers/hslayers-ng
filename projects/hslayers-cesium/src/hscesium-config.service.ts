@@ -1,21 +1,13 @@
 import {Injectable} from '@angular/core';
 import {ReplaySubject, Subject} from 'rxjs';
 
-import {
-  CesiumTerrainProvider,
-  ImageryProvider,
-  JulianDate,
-  TerrainProvider,
-  Viewer,
-} from 'cesium';
 import {HsTerrainLayerDescriptor} from 'hslayers-ng/types';
+import {ImageryProvider, JulianDate, Viewer} from 'cesium';
 
 export class HsCesiumConfigObject {
   cesiumDebugShowFramesPerSecond?: boolean;
   cesiumShadows?: number;
   cesiumBase?: string;
-  createWorldTerrainOptions?;
-  terrainProvider?: TerrainProvider;
   cesiumTimeline?: boolean;
   cesiumAnimation?: boolean;
   creditContainer?: Element | string;
@@ -23,7 +15,6 @@ export class HsCesiumConfigObject {
   imageryProvider?: ImageryProvider;
   terrainExaggeration?: number;
   cesiumBingKey?: string;
-  newTerrainProviderOptions?: CesiumTerrainProvider.ConstructorOptions;
   terrainLayers?: HsTerrainLayerDescriptor[];
   cesiumAccessToken?: string;
   cesiumTime?: JulianDate;
