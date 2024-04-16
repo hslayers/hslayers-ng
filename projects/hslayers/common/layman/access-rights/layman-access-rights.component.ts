@@ -405,7 +405,7 @@ export class HsCommonLaymanAccessRightsComponent implements OnInit {
                 const laymanUser: LaymanUser = {
                   ...user,
                   name: user.username,
-                  role: [],
+                  role: user.role || [],
                 };
                 //Assign rights after obj initiation to have acess to mocked role
                 laymanUser.read =
