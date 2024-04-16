@@ -1,23 +1,26 @@
 import {Injectable} from '@angular/core';
 import {ReplaySubject, Subject} from 'rxjs';
 
+import {GeocoderService, ImageryProvider, JulianDate, Viewer} from 'cesium';
 import {HsTerrainLayerDescriptor} from 'hslayers-ng/types';
-import {ImageryProvider, JulianDate, Viewer} from 'cesium';
 
 export class HsCesiumConfigObject {
-  cesiumDebugShowFramesPerSecond?: boolean;
-  cesiumShadows?: number;
-  cesiumBase?: string;
-  cesiumTimeline?: boolean;
+  cesiumAccessToken?: string;
   cesiumAnimation?: boolean;
-  creditContainer?: Element | string;
+  cesiumBase?: string;
+  cesiumBaseLayerPicker?: boolean;
+  cesiumBingKey?: string;
+  cesiumDebugShowFramesPerSecond?: boolean;
+  cesiumFullscreenButton?: boolean;
+  cesiumGeocoder?: boolean | Array<GeocoderService>;
   cesiumInfoBox?: boolean;
+  cesiumShadows?: number;
+  cesiumTime?: JulianDate;
+  cesiumTimeline?: boolean;
+  creditContainer?: Element | string;
   imageryProvider?: ImageryProvider;
   terrainExaggeration?: number;
-  cesiumBingKey?: string;
   terrainLayers?: HsTerrainLayerDescriptor[];
-  cesiumAccessToken?: string;
-  cesiumTime?: JulianDate;
   constructor() {}
 }
 @Injectable({
