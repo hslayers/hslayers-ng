@@ -10,12 +10,16 @@ import {Layer} from 'ol/layer';
 import {Source} from 'ol/source';
 import {Subject, takeUntil} from 'rxjs';
 
+import {
+  HsBaseLayerDescriptor,
+  HsLayerDescriptor,
+  HsTerrainLayerDescriptor,
+} from 'hslayers-ng/types';
 import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
 import {HsConfig} from 'hslayers-ng/config';
 import {HslayersService} from 'hslayers-ng/core';
 import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
-import {HsLayerDescriptor, HsTerrainLayerDescriptor} from 'hslayers-ng/types';
 import {HsLayerListService} from './logical-list/layer-manager-layerlist.service';
 import {HsLayerManagerRemoveAllDialogComponent} from './dialogs/remove-all-dialog.component';
 import {
@@ -183,7 +187,7 @@ export class HsLayerManagerComponent
     super.ngOnInit();
   }
 
-  changeBaseLayerVisibility(e?, layer?: Layer<Source>) {
+  changeBaseLayerVisibility(e?, layer?: HsBaseLayerDescriptor) {
     return this.hsLayerManagerVisibilityService.changeBaseLayerVisibility(
       e,
       layer,

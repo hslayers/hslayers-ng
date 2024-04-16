@@ -1,7 +1,10 @@
+import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
+import {lastValueFrom} from 'rxjs';
 
 import dayjs from 'dayjs';
 import {
+  ArcGISTiledElevationTerrainProvider,
   Cartesian3,
   CesiumTerrainProvider,
   ConstantProperty,
@@ -48,6 +51,7 @@ import {
 } from 'hslayers-ng/services/utils';
 import {HsLogService} from 'hslayers-ng/services/log';
 import {HsMapService} from 'hslayers-ng/services/map';
+import {HsTerrainLayerDescriptor} from 'hslayers-ng/types';
 import {
   getDimensions,
   getMinimumTerrainLevel,
@@ -81,6 +85,7 @@ export class HsCesiumLayersService {
     public HsEventBusService: HsEventBusService,
     public hsCesiumConfig: HsCesiumConfig,
     private HsLayerUtilsService: HsLayerUtilsService,
+    private httpClient: HttpClient,
   ) {
     this.hsCesiumConfig.viewerLoaded.subscribe((viewer) => {
       this.viewer = viewer;
@@ -148,20 +153,48 @@ export class HsCesiumLayersService {
   async setupEvents() {
     this.HsEventBusService.LayerManagerBaseLayerVisibilityChanges.subscribe(
       async (data) => {
-        if (data && data.type && data.type == 'terrain') {
-          if (
-            data.url ==
-            'https://assets.agi.com/stk-terrain/v1/tilesets/world/tiles'
-          ) {
-            const terrain_provider = await createWorldTerrainAsync(
-              this.hsCesiumConfig.createWorldTerrainOptions,
+        if (data?.type != 'terrain') {
+          return;
+        }
+        data = <HsTerrainLayerDescriptor>data;
+        if (
+          data.url ==
+          'https://assets.agi.com/stk-terrain/v1/tilesets/world/tiles'
+        ) {
+          const terrainProvider = await createWorldTerrainAsync(
+            this.hsCesiumConfig.createWorldTerrainOptions,
+          );
+          this.viewer.terrainProvider = terrainProvider;
+          return;
+        }
+        if (data.url.includes('ImageServer')) {
+          let serviceCapabilitiesUrl = data.url;
+          if (!data.url.endsWith('json')) {
+            serviceCapabilitiesUrl += '?f=json';
+          }
+          try {
+            const serviceDescriptionJson = await lastValueFrom(
+              this.httpClient.get<any>(serviceCapabilitiesUrl),
             );
-            this.viewer.terrainProvider = terrain_provider;
-          } else {
+            if (
+              serviceDescriptionJson?.serviceDataType ==
+              'esriImageServiceDataTypeElevation'
+            ) {
+              this.viewer.terrainProvider =
+                await ArcGISTiledElevationTerrainProvider.fromUrl(data.url);
+            }
+          } catch {
+            this.hsLog.warn(
+              `Requested URL ${serviceCapabilitiesUrl} does not return expected response. Cannot create ArcGISTiledElevationTerrain. Trying CesiumTerrainProvider...`,
+            );
             this.viewer.terrainProvider = await CesiumTerrainProvider.fromUrl(
               data.url,
             );
           }
+        } else {
+          this.viewer.terrainProvider = await CesiumTerrainProvider.fromUrl(
+            data.url,
+          );
         }
       },
     );
@@ -354,6 +387,7 @@ export class HsCesiumLayersService {
     const cesiumLayer = <DataSource>this.findCesiumLayer(ol_source);
     //console.log('loaded in temp.',(new Date()).getTime() - window.lasttime); window.lasttime = (new Date()).getTime();
     source.entities.values.forEach((entity) => {
+      //TODO: calculate the extrudedHeight from height + mean terrain elevation
       if (entity.properties.hasProperty('extrudedHeight')) {
         entity.polygon.extrudedHeight = entity.properties.getValue(
           this.viewer.clock.currentTime,
