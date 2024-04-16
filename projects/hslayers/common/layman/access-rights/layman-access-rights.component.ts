@@ -61,8 +61,17 @@ export class HsCommonLaymanAccessRightsComponent implements OnInit {
   async ngOnInit(): Promise<void> {
     this.endpoint = this.hsCommonLaymanService.layman;
     this.defaultAccessRights = JSON.parse(JSON.stringify(this.access_rights));
+    this.setUpAccessRights();
+  }
+
+  /**
+   * Sets up acccess rights based on access_rights input or reset to defaultAccessRights
+   */
+  setUpAccessRights() {
+    this.currentOption = GrantingOptions.EVERYONE;
     const readAccess = this.access_rights[AccessRights.READ].split(',');
     const writeAccess = this.access_rights[AccessRights.WRITE].split(',');
+    /** Bigger than 1 because of current user + others/role */
     if (readAccess.length > 1 || writeAccess.length > 1) {
       //Uppercase entry = role permissions
       this.currentOption = [...readAccess, ...writeAccess].find(
@@ -401,33 +410,14 @@ export class HsCommonLaymanAccessRightsComponent implements OnInit {
   /**
    * Reset to the state before user manipulation
    */
-  resetToDefault(): void {
+  async resetToDefault(): Promise<void> {
     //Reassing default access rights
     this.access_rights[AccessRights.READ] =
       this.defaultAccessRights[AccessRights.READ];
     this.access_rights[AccessRights.WRITE] =
       this.defaultAccessRights[AccessRights.WRITE];
 
-    this.currentOption = GrantingOptions.EVERYONE;
-    const read = this.defaultAccessRights[AccessRights.READ].split(',');
-    const write = this.defaultAccessRights[AccessRights.WRITE].split(',');
-
-    //name to alias (EVERYONE,private) mappings
-    this.access_rights[AccessRights.READ] =
-      read.length == 1 && read[0] == this.endpoint.user
-        ? 'private'
-        : this.access_rights[AccessRights.READ];
-    this.access_rights[AccessRights.WRITE] =
-      write.length == 1 && write[0] == this.endpoint.user
-        ? 'private'
-        : this.access_rights[AccessRights.WRITE];
-
-    //Switch to user view if more entries exist
-    if (read.length > 1 || write.length > 1) {
-      this.currentOption = GrantingOptions.PERUSER;
-      this.getAllUsers();
-    }
-    this.access_rights_changed.emit(this.access_rights);
+    this.setUpAccessRights();
   }
 
   /**
