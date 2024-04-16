@@ -140,9 +140,9 @@ export class HsLayerManagerVisibilityService {
   changeBaseLayerVisibility($event = null, layer = null): void {
     if (layer === null || layer.layer != undefined) {
       if (this.baselayersVisible == true) {
-        //*NOTE Currently breaking base layer visibility when loading from composition with custom base layer to
+        //*NOTE: Currently breaking base layer visibility when loading from composition with custom base layer to
         //other compositions without any base layer
-        //*TODO Rewrite this loop hell to more readable code
+        //*TODO: Rewrite this loop hell to more readable code
         if ($event) {
           //&& this.data.baselayer != layer.title
           for (const baseLayer of this.data.baselayers) {

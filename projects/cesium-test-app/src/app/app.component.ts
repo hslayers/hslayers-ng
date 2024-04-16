@@ -279,6 +279,25 @@ export class AppComponent implements OnInit {
     if (!this.hsCesiumConfig.cesiumBase) {
       this.hsCesiumConfig.cesiumBase = '/assets/cesium/';
     }
+    this.hsCesiumConfig.update({
+      terrainLayers: [
+        {
+          title: 'Local surface model',
+          url: '/proxy/http://gis.lesprojekt.cz/cts/tilesets/rostenice_dmp1g/',
+          active: true,
+        },
+        {
+          title: 'EU-DEM',
+          url: 'https://assets.agi.com/stk-terrain/v1/tilesets/world/tiles',
+          active: false,
+        },
+        {
+          title: 'Esri WorldElevation',
+          url: 'https://services.arcgisonline.com/arcgis/rest/services/WorldElevation3D/Terrain3D/ImageServer',
+          active: false,
+        },
+      ],
+    });
   }
   title = 'hslayers-workspace';
 
