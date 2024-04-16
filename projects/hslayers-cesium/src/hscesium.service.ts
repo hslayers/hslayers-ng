@@ -127,7 +127,10 @@ export class HsCesiumService {
           animation: this.hsCesiumConfig.cesiumAnimation ?? false,
           creditContainer: this.hsCesiumConfig.creditContainer ?? undefined,
           infoBox: this.hsCesiumConfig.cesiumInfoBox ?? false,
+          fullscreenButton: this.hsCesiumConfig.cesiumFullscreenButton ?? true,
+          geocoder: this.hsCesiumConfig.cesiumGeocoder ?? false,
           terrainProvider: terrainProvider,
+          baseLayerPicker: this.hsCesiumConfig.cesiumBaseLayerPicker ?? false,
           baseLayer: this.hsCesiumConfig.imageryProvider
             ? new ImageryLayer(this.hsCesiumConfig.imageryProvider, {})
             : false,

@@ -153,7 +153,7 @@ export class HsCesiumLayersService {
   async setupEvents() {
     this.HsEventBusService.LayerManagerBaseLayerVisibilityChanges.subscribe(
       async (data) => {
-        if (data?.type != 'terrain') {
+        if (this.viewer.isDestroyed() || data?.type != 'terrain') {
           return;
         }
         data = <HsTerrainLayerDescriptor>data;
