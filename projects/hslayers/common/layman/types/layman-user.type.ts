@@ -21,5 +21,5 @@ export type LaymanUser = {
   hslDisplayName?: string;
   read?: boolean;
   write?: boolean;
-  role?: string;
+  role?: string[];
 };

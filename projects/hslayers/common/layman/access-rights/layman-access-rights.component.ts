@@ -8,13 +8,13 @@ import {HsEndpoint} from 'hslayers-ng/types';
 import {HsLogService} from 'hslayers-ng/services/log';
 import {LaymanUser} from '../types/layman-user.type';
 
-enum GrantingOptions {
+export enum GrantingOptions {
   PERUSER = 'perUser',
   EVERYONE = 'everyone',
   PERROLE = 'perRole',
 }
 
-enum AccessRights {
+export enum AccessRights {
   READ = 'access_rights.read',
   WRITE = 'access_rights.write',
 }
@@ -25,6 +25,20 @@ type LaymanRole = {
   name: string;
   read: boolean;
   write: boolean;
+};
+
+type WagtailUser = {
+  username: string;
+  roles: [
+    {
+      id: number;
+      name: string;
+    },
+    {
+      id: number;
+      name: string;
+    },
+  ];
 };
 
 export type AccessRightsType = 'read' | 'write';
@@ -248,6 +262,7 @@ export class HsCommonLaymanAccessRightsComponent implements OnInit {
 
   /**
    * Determine whether the role has an acces or not
+   * Inaccurate for USER to ROLE as ser roles might overlap
    */
   roleHasAccess(
     role: string,
@@ -257,7 +272,7 @@ export class HsCommonLaymanAccessRightsComponent implements OnInit {
     //Switching from users table
     if (this.currentOption === GrantingOptions.PERUSER) {
       //Users with the role
-      const usersWithRole = this.allUsers.filter((u) => u.role === role);
+      const usersWithRole = this.allUsers.filter((u) => u.role.includes(role));
       //Users of that role with access
       const usersWithRoleAndAccess = usersWithRole.filter((u) => u[type]);
       return (
@@ -314,24 +329,46 @@ export class HsCommonLaymanAccessRightsComponent implements OnInit {
   }
 
   /**
+   * Check whether user list includes wagtail user list
+   */
+  private isWagtailUserArray(users: any[]): users is WagtailUser[] {
+    return users.length > 0 && 'roles' in users[0];
+  }
+
+  /**
    * Get users from Layman or Wagtail depnding on endpoin type.
    * Main difference is that Wagtail response includes user roles
    */
-  private fetchUsers(): Observable<LaymanUser[]> {
+  fetchUsers(): Observable<LaymanUser[]> {
     const url = this.endpoint.type.includes('wagtail')
       ? '/get-users'
       : `${this.endpoint.url}/rest/users`;
-    return this.$http.get<LaymanUser[]>(url, {withCredentials: true}).pipe(
-      catchError((error) => {
-        console.warn('Could not get users list', error);
-        return of([]);
-      }),
-    );
+    return this.$http
+      .get<LaymanUser[] | WagtailUser[]>(url, {withCredentials: true})
+      .pipe(
+        map((users) => {
+          if (this.isWagtailUserArray(users)) {
+            return users.map((u) => ({
+              username: u.username,
+              screen_name: u.username,
+              given_name: u.username,
+              family_name: u.username,
+              middle_name: u.username,
+              name: u.username,
+              role: u.roles.map((r) => r.name.toUpperCase()),
+            }));
+          }
+          return users; // Already LaymanUser[], so no transformation needed
+        }),
+        catchError((error) => {
+          console.warn('Could not get users list', error);
+          return of([]);
+        }),
+      );
   }
 
   /**
    * Check whether user has access rights.
-   * actor meaning user or role
    */
   userHasAccess(
     user: LaymanUser,
@@ -339,7 +376,10 @@ export class HsCommonLaymanAccessRightsComponent implements OnInit {
     type: AccessRightsType,
   ): boolean {
     if (this.currentOption === GrantingOptions.PERROLE) {
-      return this.allRoles.every((r) => r[type]) || rights.includes(user.role);
+      return (
+        this.allRoles.every((r) => r[type]) ||
+        user.role?.some((r) => rights.includes(r))
+      );
     }
     return rights.includes(user.name) || rights.includes('EVERYONE');
   }
@@ -365,7 +405,7 @@ export class HsCommonLaymanAccessRightsComponent implements OnInit {
                 const laymanUser: LaymanUser = {
                   ...user,
                   name: user.username,
-                  role: user.username.length > 5 ? 'MODERATORS' : 'EDITORS',
+                  role: [],
                 };
                 //Assign rights after obj initiation to have acess to mocked role
                 laymanUser.read =
