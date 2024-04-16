@@ -157,54 +157,59 @@ export class HsCesiumLayersService {
           return;
         }
         data = <HsTerrainLayerDescriptor>data;
-        if (
-          data.url ==
-          'https://assets.agi.com/stk-terrain/v1/tilesets/world/tiles'
-        ) {
-          const terrainProvider = await createWorldTerrainAsync(
-            this.hsCesiumConfig.createWorldTerrainOptions,
-          );
-          this.viewer.terrainProvider = terrainProvider;
-          return;
-        }
-        if (data.url.includes('ImageServer')) {
-          let serviceCapabilitiesUrl = data.url;
-          if (!data.url.endsWith('json')) {
-            serviceCapabilitiesUrl += '?f=json';
-          }
-          try {
-            const serviceDescriptionJson = await lastValueFrom(
-              this.httpClient.get<any>(serviceCapabilitiesUrl),
-            );
-            if (
-              serviceDescriptionJson?.serviceDataType ==
-              'esriImageServiceDataTypeElevation'
-            ) {
-              this.viewer.terrainProvider =
-                await ArcGISTiledElevationTerrainProvider.fromUrl(data.url);
-            }
-          } catch {
-            this.hsLog.warn(
-              `Requested URL ${serviceCapabilitiesUrl} does not return expected response. Cannot create ArcGISTiledElevationTerrain. Trying CesiumTerrainProvider...`,
-            );
-            this.viewer.terrainProvider = await CesiumTerrainProvider.fromUrl(
-              data.url,
-            );
-          }
-        } else {
-          this.viewer.terrainProvider = await CesiumTerrainProvider.fromUrl(
-            data.url,
-          );
-        }
+        this.viewer.terrainProvider = await this.createTerrainProviderFromUrl(
+          data.url,
+        );
       },
     );
-
     this.repopulateLayers();
     const map = await this.hsMapService.loaded();
     map.getLayers().on('add', (e) => {
       const lyr = e.element;
       this.processOlLayer(lyr as Layer);
     });
+  }
+
+  /**
+   * From provided URL it guess a format of terrain provider and tries to create one
+   * @param url - URL of the terrain provider
+   * @returns TerrainProvider instance
+   */
+  async createTerrainProviderFromUrl(
+    url: string,
+    options?: CesiumTerrainProvider.ConstructorOptions,
+  ) {
+    if (url == 'https://assets.agi.com/stk-terrain/v1/tilesets/world/tiles') {
+      const terrainProvider = await createWorldTerrainAsync(options);
+      return terrainProvider;
+    }
+    if (url.includes('ImageServer')) {
+      let serviceCapabilitiesUrl = url;
+      if (!url.endsWith('json')) {
+        serviceCapabilitiesUrl += '?f=json';
+      }
+      try {
+        const serviceDescriptionJson = await lastValueFrom(
+          this.httpClient.get<any>(serviceCapabilitiesUrl),
+        );
+        if (
+          serviceDescriptionJson?.serviceDataType ==
+          'esriImageServiceDataTypeElevation'
+        ) {
+          return await ArcGISTiledElevationTerrainProvider.fromUrl(
+            url,
+            options,
+          );
+        }
+      } catch {
+        this.hsLog.warn(
+          `Requested URL ${serviceCapabilitiesUrl} does not return expected response. Cannot create ArcGISTiledElevationTerrain. Trying CesiumTerrainProvider...`,
+        );
+        return await CesiumTerrainProvider.fromUrl(url, options);
+      }
+    } else {
+      return await CesiumTerrainProvider.fromUrl(url, options);
+    }
   }
 
   /**

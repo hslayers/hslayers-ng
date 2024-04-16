@@ -284,7 +284,7 @@ export class AppComponent implements OnInit {
         {
           title: 'Local surface model',
           url: '/proxy/http://gis.lesprojekt.cz/cts/tilesets/rostenice_dmp1g/',
-          active: true,
+          active: false,
         },
         {
           title: 'EU-DEM',
@@ -294,7 +294,7 @@ export class AppComponent implements OnInit {
         {
           title: 'Esri WorldElevation',
           url: 'https://services.arcgisonline.com/arcgis/rest/services/WorldElevation3D/Terrain3D/ImageServer',
-          active: false,
+          active: true,
         },
       ],
     });

@@ -1,16 +1,14 @@
 import {Injectable} from '@angular/core';
 
 import {
-  BingMapsImageryProvider,
-  BingMapsStyle,
   Camera,
   Cartesian3,
-  CesiumTerrainProvider,
   ImageryLayer,
   Ion,
   SceneMode,
   ShadowMode,
   SkyBox,
+  TerrainProvider,
   Viewer,
   WebMercatorProjection,
   createWorldTerrainAsync,
@@ -87,15 +85,29 @@ export class HsCesiumService {
         );
       }
       (<any>window).CESIUM_BASE_URL = this.hsCesiumConfig.cesiumBase;
-      let terrainProvider =
-        this.hsCesiumConfig.terrainProvider ||
-        (await createWorldTerrainAsync(
-          this.hsCesiumConfig.createWorldTerrainOptions,
-        ));
-      if (this.hsCesiumConfig.newTerrainProviderOptions) {
-        terrainProvider = new CesiumTerrainProvider(
-          this.hsCesiumConfig.newTerrainProviderOptions,
+      let terrainProvider: TerrainProvider;
+      if (this.hsCesiumConfig.terrainLayers?.length > 0) {
+        let activeLayer = this.hsCesiumConfig.terrainLayers.find(
+          (layer) => layer.active,
         );
+        if (!activeLayer) {
+          this.hsCesiumConfig.terrainLayers[0].active = true;
+          activeLayer = this.hsCesiumConfig.terrainLayers[0];
+        }
+        terrainProvider =
+          await this.HsCesiumLayersService.createTerrainProviderFromUrl(
+            activeLayer.url,
+            activeLayer.options,
+          );
+      } else {
+        terrainProvider = await createWorldTerrainAsync();
+        this.hsCesiumConfig.terrainLayers = [
+          {
+            title: 'Cesium World Terrain',
+            url: 'https://assets.agi.com/stk-terrain/v1/tilesets/world/tiles',
+            active: true,
+          },
+        ];
       }
 
       const defaultViewport = this.HsCesiumCameraService.getDefaultViewport();
