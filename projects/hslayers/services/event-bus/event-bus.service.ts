@@ -7,8 +7,13 @@ import {Layer} from 'ol/layer';
 import {Select} from 'ol/interaction';
 import {Source} from 'ol/source';
 
+import {
+  HsBaseLayerDescriptor,
+  HsLayerDescriptor,
+  HsLayerLoadProgress,
+  HsTerrainLayerDescriptor,
+} from 'hslayers-ng/types';
 import {HsDimensionDescriptor} from 'hslayers-ng/common/dimensions';
-import {HsLayerDescriptor, HsLayerLoadProgress} from 'hslayers-ng/types';
 import {HsMapCompositionDescriptor} from 'hslayers-ng/types';
 
 /**
@@ -47,7 +52,12 @@ export class HsEventBusService {
    * Suppressed for layers defined in default_layers in HsConfig.
    */
   layerAdditions: Subject<HsLayerDescriptor> = new Subject();
-  LayerManagerBaseLayerVisibilityChanges: Subject<any> = new Subject();
+  /**
+   * Fires when base layer or terrain layer changes visibility
+   */
+  LayerManagerBaseLayerVisibilityChanges: Subject<
+    HsLayerDescriptor | HsBaseLayerDescriptor | HsTerrainLayerDescriptor
+  > = new Subject();
   LayerManagerLayerVisibilityChanges: Subject<any> = new Subject();
   /**
    * Fires when layer is added or removed in LayerManager or its z-index changes or its title changes via rename.
