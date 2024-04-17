@@ -88,10 +88,10 @@ export class HsCesiumService {
       let terrainProvider: TerrainProvider;
       if (this.hsCesiumConfig.terrainLayers?.length > 0) {
         let activeLayer = this.hsCesiumConfig.terrainLayers.find(
-          (layer) => layer.active,
+          (layer) => layer.visible,
         );
         if (!activeLayer) {
-          this.hsCesiumConfig.terrainLayers[0].active = true;
+          this.hsCesiumConfig.terrainLayers[0].visible = true;
           activeLayer = this.hsCesiumConfig.terrainLayers[0];
         }
         terrainProvider =
@@ -105,7 +105,7 @@ export class HsCesiumService {
           {
             title: 'Cesium World Terrain',
             url: 'https://assets.agi.com/stk-terrain/v1/tilesets/world/tiles',
-            active: true,
+            visible: true,
           },
         ];
       }
