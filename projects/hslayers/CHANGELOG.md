@@ -1,3 +1,25 @@
+# [14.0.0-next.2](https://github.com/hslayers/hslayers-ng/compare/14.0.0-next.1...14.0.0-next.2) (2024-04-17)
+
+### BREAKING CHANGES
+
+* **cesium:** Changed config parametres in hslayersCesiumConfig.
+  * Removed: terrain_provider, createWorldTerrainOptions, newTerrainProviderOptions,
+  * Renamed: terrain_providers to terrainLayers with extended structure,
+  * Added: cesiumGeocoder, cesiumFullscreenButton, cesiumBaseLayerPicker.
+
+See an [updated wiki page](https://github.com/hslayers/hslayers-ng/wiki/Cesium-config-parameters) for current values.
+
+### Features
+
+* **cesium:** Add support for ArcGISTiledElevationTerrain ([77f1dac](https://github.com/hslayers/hslayers-ng/commit/77f1dac25204d3a50037fa4cd97446c1ffbea0e7))
+
+
+### Performance Improvements
+
+* **cesium:** Reduce usage of some unnecessary sync callbacks ([c2490b0](https://github.com/hslayers/hslayers-ng/commit/c2490b017f3a3df39b684b6ab5b45cc4d01ac900))
+
+
+
 # [14.0.0-next.1](https://github.com/hslayers/hslayers-ng/compare/14.0.0-next.0...14.0.0-next.1) (2024-04-11)
 
 
