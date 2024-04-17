@@ -35,7 +35,7 @@ export class HsLayerManagerVisibilityService {
     private hsEventBusService: HsEventBusService,
   ) {}
 
-  layerVisibilityChanged(e): void {
+  layerVisibilityChanged(e) {
     if (getBase(e.target) != true) {
       for (const layer of this.data.layers) {
         if (layer.layer == e.target) {
@@ -58,7 +58,7 @@ export class HsLayerManagerVisibilityService {
    * Test if layer (WMS) resolution is within map resolution interval
    * @param lyr - Selected layer
    */
-  isLayerInResolutionInterval(lyr: Layer<Source>): boolean {
+  isLayerInResolutionInterval(lyr: Layer<Source>) {
     const cur_res = this.hsMapService.getMap().getView().getResolution();
     this.currentResolution = cur_res;
     return (
@@ -71,7 +71,7 @@ export class HsLayerManagerVisibilityService {
    * @param visibility - Visibility layer should have
    * @param layer - Selected layer - wrapped layer object (layer.layer expected)
    */
-  changeLayerVisibility(visibility: boolean, layer: HsLayerDescriptor): void {
+  changeLayerVisibility(visibility: boolean, layer: HsLayerDescriptor) {
     layer.layer.setVisible(visibility);
     layer.visible = visibility;
     layer.grayed = !this.isLayerInResolutionInterval(layer.layer);
@@ -100,7 +100,7 @@ export class HsLayerManagerVisibilityService {
    * Show all layers of particular layer group (when groups are defined)
    * @param theme - Group layer to activate
    */
-  activateTheme(theme: Group): void {
+  activateTheme(theme: Group) {
     const switchOn = getActive(theme) ? false : true;
     setActive(theme, switchOn);
     let baseSwitched = false;
@@ -122,7 +122,7 @@ export class HsLayerManagerVisibilityService {
    * @param $event - Info about the event change visibility event, used if visibility of only one layer is changed
    * @param layer - Selected layer - wrapped layer object (layer.layer expected)
    */
-  changeTerrainLayerVisibility($event, layer: HsTerrainLayerDescriptor): void {
+  changeTerrainLayerVisibility($event, layer: HsTerrainLayerDescriptor) {
     for (const terrainLayer of this.data.terrainLayers) {
       if (terrainLayer.type == 'terrain') {
         terrainLayer.visible = terrainLayer == layer;
@@ -137,60 +137,42 @@ export class HsLayerManagerVisibilityService {
    * @param $event - Info about the event change visibility event, used if visibility of only one layer is changed
    * @param layer - Selected layer - wrapped layer object (layer.layer expected)
    */
-  changeBaseLayerVisibility($event = null, layer = null): void {
-    if (layer === null || layer.layer != undefined) {
-      if (this.baselayersVisible == true) {
-        //*NOTE: Currently breaking base layer visibility when loading from composition with custom base layer to
-        //other compositions without any base layer
-        //*TODO: Rewrite this loop hell to more readable code
-        if ($event) {
-          //&& this.data.baselayer != layer.title
-          for (const baseLayer of this.data.baselayers) {
-            const isToggledLayer = baseLayer == layer;
-            if (baseLayer.layer) {
-              //Don't trigger change:visible event when isToggledLayer = false
-              baseLayer.layer.set('visible', isToggledLayer, !isToggledLayer);
-              baseLayer.visible = isToggledLayer;
-              baseLayer.active = isToggledLayer;
-              if (!isToggledLayer) {
-                baseLayer.galleryMiniMenu = false;
-              }
-            }
-          }
-        } else {
-          this.baselayersVisible = false;
-          for (const baseLayer of this.data.baselayers) {
-            baseLayer.layer.setVisible(false);
-            baseLayer.galleryMiniMenu = false;
-          }
-        }
+  changeBaseLayerVisibility($event = null, layer = null) {
+    if (layer !== null && layer.layer === undefined) {
+      return;
+    }
+    //*NOTE: Currently breaking base layer visibility when loading from composition with custom base layer to
+    //other compositions without any base layer
+    for (const baseLayer of this.data.baselayers) {
+      if (!baseLayer.layer) {
+        continue;
+      }
+      const isToggledLayer = baseLayer == layer;
+      if (this.baselayersVisible) {
+        baseLayer.galleryMiniMenu = isToggledLayer;
+      }
+      if ($event) {
+        baseLayer.visible = isToggledLayer;
+        baseLayer.active = isToggledLayer;
+        // Don't trigger change:visible event when isToggledLayer = false
+        baseLayer.layer.set('visible', isToggledLayer, !isToggledLayer);
       } else {
-        if ($event) {
-          layer.active = true;
-          for (const baseLayer of this.data.baselayers) {
-            const isToggledLayer = baseLayer == layer;
-            if (isToggledLayer) {
-              baseLayer.layer.setVisible(true);
-            }
-            baseLayer.active = isToggledLayer;
-            baseLayer.visible = isToggledLayer;
-          }
+        if (this.baselayersVisible) {
+          baseLayer.layer.setVisible(false);
         } else {
-          for (const baseLayer of this.data.baselayers) {
-            if (baseLayer.visible == true) {
-              baseLayer.layer.setVisible(true);
-            }
+          if (baseLayer.visible) {
+            baseLayer.layer.setVisible(true);
           }
         }
-        this.baselayersVisible = true;
       }
+    }
+    if ($event) {
+      if (this.baselayersVisible) {
+        layer.active = true;
+      }
+      this.baselayersVisible = true;
     } else {
-      for (const baseLayer of this.data.baselayers) {
-        if (baseLayer.type != undefined && baseLayer.type == 'terrain') {
-          baseLayer.visible = baseLayer == layer;
-          baseLayer.active = baseLayer.visible;
-        }
-      }
+      this.baselayersVisible = !this.baselayersVisible;
     }
     this.hsEventBusService.LayerManagerBaseLayerVisibilityChanges.next(layer);
   }
