@@ -56,7 +56,8 @@ export interface HsLayerDescriptor {
   source?: string;
   time?: HsLayerTimeDescriptor;
   /**
-   * OL source class of this layer, in case of 'vector' also with format (e.g. 'vector (KML)')
+   * OL source class of this layer, in case of 'vector' also with format (e.g. 'vector (KML)').
+   * Or other short name of layer type if not an OL source ('terrain', 'IDW').
    */
   type?: string;
   greyscale?: boolean;
