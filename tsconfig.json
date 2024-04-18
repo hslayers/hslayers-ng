@@ -19,21 +19,21 @@
       "@angular/*": ["node_modules/@angular/*"],
       "rxjs/*": ["node_modules/rxjs/*"],
       "ol/*": ["node_modules/ol/*"],
-      "hslayers-ng": ["projects/hslayers/src/public-api.ts"],
+      "hslayers-ng": ["projects/hslayers/core/public-api.ts"],
       "hslayers-ng/*": ["projects/hslayers/*"],
       "@ngx-translate/*": ["node_modules/@ngx-translate/*"],
       "hslayers-cesium": ["dist/hslayers-cesium"],
       "hslayers-cesium/*": [
         "projects/hslayers-cesium/*",
-        "projects/hslayers-cesium",
+        "projects/hslayers-cesium"
       ],
-      "cesium/*": ["node_modules/cesium/*"],
+      "cesium/*": ["node_modules/cesium/*"]
     },
-    "useDefineForClassFields": false,
+    "useDefineForClassFields": false
   },
   "angularCompilerOptions": {
     "enableResourceInlining": true,
     "fullTemplateTypeCheck": true,
-    "strictInjectionParameters": true,
-  },
+    "strictInjectionParameters": true
+  }
 }

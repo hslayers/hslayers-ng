@@ -3,6 +3,6 @@
   "output": "../../docs/hslayers",
   "name": "HSLayers-NG documentation",
   "theme": "material",
-  "customFavicon": "./src/assets/img/hslayers-ng-favicon_32x32.jpg",
-  "customLogo": "./src/assets/img/hslayers-ng-logo.png"
+  "customFavicon": ".assets/img/hslayers-ng-favicon_32x32.jpg",
+  "customLogo": ".assets/img/hslayers-ng-logo.png"
 }

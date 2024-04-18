@@ -5,7 +5,7 @@ import {Subject, Subscription, debounceTime, takeUntil} from 'rxjs';
 import {HS_PRMS} from 'hslayers-ng/components/share';
 import {HsButton} from 'hslayers-ng/types';
 import {HsConfig} from 'hslayers-ng/config';
-import {HsCoreService} from 'hslayers-ng/services/core';
+import {HsCoreService} from 'hslayers-ng/core';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsShareUrlService} from 'hslayers-ng/components/share';

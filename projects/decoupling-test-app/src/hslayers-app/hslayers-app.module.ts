@@ -10,7 +10,7 @@ import {NgModule} from '@angular/core';
 } from 'hslayers-ng/public-api'; */
 //import {HsMeasureModule} from 'hslayers-ng/components/measure/public-api';
 //import {HsDrawModule} from 'hslayers-ng/components/draw/public-api';
-import {HslayersModule} from 'hslayers-ng';
+import {HslayersModule} from 'hslayers-ng/core';
 
 import {HslayersAppComponent} from './hslayers-app.component';
 

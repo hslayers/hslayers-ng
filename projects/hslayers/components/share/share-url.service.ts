@@ -7,7 +7,7 @@ import {transformExtent} from 'ol/proj';
 
 import {HS_PRMS, HS_PRMS_BACKWARDS, HS_PRMS_REGENERATED} from './get-params';
 import {HsConfig} from 'hslayers-ng/config';
-import {HsCoreService} from 'hslayers-ng/services/core';
+import {HsCoreService} from 'hslayers-ng/core';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsLanguageService} from 'hslayers-ng/services/language';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
