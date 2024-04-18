@@ -5,7 +5,7 @@ import {
 } from '@angular/core';
 import {CommonModule} from '@angular/common';
 
-import {HslayersModule} from 'hslayers-ng';
+import {HslayersModule} from 'hslayers-ng/core';
 
 import {HsCesiumCameraService} from './hscesium-camera.service';
 import {HsCesiumConfig} from './hscesium-config.service';

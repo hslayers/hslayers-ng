@@ -3,7 +3,7 @@ import {Observable, Subject, delay, map, startWith, takeUntil} from 'rxjs';
 
 import {HsButton} from 'hslayers-ng/types';
 import {HsConfig} from 'hslayers-ng/config';
-import {HsCoreService} from 'hslayers-ng/services/core';
+import {HsCoreService} from 'hslayers-ng/core';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsSidebarService} from 'hslayers-ng/services/sidebar';
 

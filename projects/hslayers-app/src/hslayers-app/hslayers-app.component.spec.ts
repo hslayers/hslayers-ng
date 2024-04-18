@@ -1,5 +1,5 @@
-import {HsConfig} from '../../../hslayers/src/config.service';
-import {HsConfigMock} from '../../../hslayers/src/config.service.mock';
+import {HsConfig} from '../../../hslayers/config/config.service';
+import {HsConfigMock} from '../../../hslayers/test/config.service.mock';
 import {HslayersAppComponent} from './hslayers-app.component';
 import {TestBed, waitForAsync} from '@angular/core/testing';
 describe('AppComponent', () => {

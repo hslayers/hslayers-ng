@@ -739,7 +739,7 @@ $list-group-item-padding-x: 1.25rem;
     overflow-y: auto;
   }
 
-  @import "../src/hslayers.component.scss";
+  @import "../core/hslayers.component.scss";
   @import "../components/layer-manager/layer-manager.component.scss";
   @import "../components/layer-manager/logical-list/layerlist.component.scss";
   @import "../components/layer-manager/gallery/layer-manager-gallery.component.scss";

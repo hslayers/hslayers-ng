@@ -4,8 +4,8 @@ import {NgModule} from '@angular/core';
 
 import {HsDialogContainerComponent} from 'hslayers-ng/common/dialogs';
 import {HsLayoutHostDirective} from './layout.directive';
+import {HsMapComponent} from './map/map.component';
 import {HsMapHostDirective} from './map-host.directive';
-import {HsMapModule} from 'hslayers-ng/components/map';
 import {HsPanelHelpersModule} from 'hslayers-ng/common/panels';
 import {HsSidebarModule} from 'hslayers-ng/components/sidebar';
 import {HsToastModule} from 'hslayers-ng/common/toast';
@@ -16,7 +16,7 @@ import {HslayersComponent} from './hslayers.component';
   imports: [
     HttpClientModule,
     CommonModule,
-    HsMapModule,
+    HsMapComponent,
     HsSidebarModule,
     HsPanelHelpersModule,
     HsToastModule,

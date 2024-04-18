@@ -2,7 +2,6 @@ import {Component, OnDestroy} from '@angular/core';
 
 import {Subscription} from 'rxjs';
 
-import {HsCoreService} from 'hslayers-ng/services/core';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsGuiOverlayBaseComponent} from 'hslayers-ng/common/panels';
 import {HsToolbarPanelContainerService} from 'hslayers-ng/services/panels';
@@ -21,7 +20,6 @@ export class HsToolbarComponent
   mapResetsSubscription: Subscription;
   constructor(
     public HsEventBusService: HsEventBusService,
-    public HsCoreService: HsCoreService,
     public HsToolbarPanelContainerService: HsToolbarPanelContainerService,
   ) {
     super();

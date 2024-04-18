@@ -1,7 +1,6 @@
 import {AfterViewInit, Component, DestroyRef} from '@angular/core';
 
 import {HS_PRMS, HsShareUrlService} from 'hslayers-ng/components/share';
-import {HsCoreService} from 'hslayers-ng/services/core';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsMapService} from 'hslayers-ng/services/map';
@@ -35,7 +34,6 @@ export class HslayersCesiumComponent implements AfterViewInit {
   constructor(
     public HsCesiumService: HsCesiumService,
     public HsShareUrlService: HsShareUrlService,
-    public HsCoreService: HsCoreService,
     public HsMapService: HsMapService,
     public HsSidebarService: HsSidebarService,
     private hsToolbarPanelContainerService: HsToolbarPanelContainerService,
