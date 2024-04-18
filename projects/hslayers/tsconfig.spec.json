@@ -2,18 +2,10 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "outDir": "../../out-tsc/spec",
-    "types": [
-      "jasmine",
-      "node"
-    ],
+    "types": ["jasmine", "node"],
     "typeRoots": ["../../node_modules/@types"],
     "resolveJsonModule": true
   },
-  "files": [
-    "test/test.ts"
-  ],
-  "include": [
-    "**/*.spec.ts",
-    "**/*.d.ts"
-  ]
+  "files": ["test/test.ts"],
+  "include": ["test/**/*.spec.ts", "test/**/*.d.ts"]
 }
