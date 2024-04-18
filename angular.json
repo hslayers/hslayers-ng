@@ -26,7 +26,7 @@
             "assets": [
               {
                 "glob": "**/*",
-                "input": "projects/hslayers/src/assets",
+                "input": "projects/hslayers/assets",
                 "output": "./assets"
               },
               {
@@ -41,7 +41,7 @@
               }
             ],
             "styles": [
-              "projects/hslayers/src/css/hslayers-bootstrap.scss"
+              "projects/hslayers/css/hslayers-bootstrap.scss"
             ],
             "scripts": [],
             "customWebpackConfig": {
@@ -183,7 +183,7 @@
             "assets": [
               {
                 "glob": "**/*",
-                "input": "projects/hslayers/src/assets",
+                "input": "projects/hslayers/assets",
                 "output": "./assets"
               },
               {
@@ -203,7 +203,7 @@
               }
             ],
             "styles": [
-              "projects/hslayers/src/css/hslayers-bootstrap.scss"
+              "projects/hslayers/css/hslayers-bootstrap.scss"
             ],
             "scripts": [],
             "customWebpackConfig": {
@@ -332,7 +332,7 @@
             "assets": [
               {
                 "glob": "**/*",
-                "input": "projects/hslayers/src/assets",
+                "input": "projects/hslayers/assets",
                 "output": "./assets"
               },
               {
@@ -352,7 +352,7 @@
               }
             ],
             "styles": [
-              "projects/hslayers/src/css/hslayers-bootstrap.scss"
+              "projects/hslayers/css/hslayers-bootstrap.scss"
             ],
             "scripts": [],
             "customWebpackConfig": {
@@ -446,7 +446,7 @@
               },
               {
                 "glob": "**/*",
-                "input": "projects/hslayers/src/assets",
+                "input": "projects/hslayers/assets",
                 "output": "./assets"
               },
               {
@@ -490,7 +490,7 @@
             ],
             "styles": [
               "node_modules/cesium/Build/Cesium/Widgets/widgets.css",
-              "projects/hslayers/src/css/hslayers-bootstrap.scss"
+              "projects/hslayers/css/hslayers-bootstrap.scss"
             ],
             "scripts": [],
             "customWebpackConfig": {
@@ -606,7 +606,7 @@
               },
               {
                 "glob": "**/*",
-                "input": "projects/hslayers/src/assets",
+                "input": "projects/hslayers/assets",
                 "output": "./assets"
               },
               {
@@ -637,7 +637,7 @@
             ],
             "styles": [
               "node_modules/cesium/Build/Cesium/Widgets/widgets.css",
-              "projects/hslayers/src/css/hslayers-bootstrap.scss"
+              "projects/hslayers/css/hslayers-bootstrap.scss"
             ],
             "scripts": [],
             "customWebpackConfig": {
