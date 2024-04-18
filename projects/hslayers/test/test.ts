@@ -8,7 +8,7 @@ import {
 } from '@angular/platform-browser-dynamic/testing';
 import {getTestBed} from '@angular/core/testing';
 
-import {patchConsoleToFailOnError} from '../src/testing-utils';
+import {patchConsoleToFailOnError} from './testing-utils';
 
 // First, initialize the Angular testing environment.
 getTestBed().initTestEnvironment(
