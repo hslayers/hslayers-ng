@@ -1,10 +1,11 @@
+import {Injectable} from '@angular/core';
+
 import {HsConfig} from 'hslayers-ng/config';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsLogService} from 'hslayers-ng/services/log';
 import {HsMapService} from 'hslayers-ng/services/map';
 import {HsUtilsService} from 'hslayers-ng/services/utils';
-import {Injectable} from '@angular/core';
 
 import {HsLanguageService} from 'hslayers-ng/services/language';
 

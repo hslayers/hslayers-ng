@@ -17,7 +17,7 @@ import {
 } from 'cesium';
 import {Subject, takeUntil} from 'rxjs';
 
-import {HsCoreService} from 'hslayers-ng/services/core';
+import {HsCoreService} from 'hslayers-ng/core';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsLayerManagerService} from 'hslayers-ng/services/layer-manager';
 import {HsLayoutService} from 'hslayers-ng/services/layout';

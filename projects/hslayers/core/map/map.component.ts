@@ -6,20 +6,24 @@ import {
   OnDestroy,
   ViewChild,
 } from '@angular/core';
+import {CommonModule} from '@angular/common';
 
 import {Subscription} from 'rxjs';
 import {transform} from 'ol/proj';
 
 import {HS_PRMS} from 'hslayers-ng/components/share';
 import {HsConfig} from 'hslayers-ng/config';
-import {HsCoreService} from 'hslayers-ng/services/core';
+import {HsCoreService} from '../core.service';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
+import {HsMapDirective} from './map.directive';
 import {HsMapService} from 'hslayers-ng/services/map';
 import {HsShareUrlService} from 'hslayers-ng/components/share';
 
 @Component({
   selector: 'hs-map',
   templateUrl: './map.component.html',
+  standalone: true,
+  imports: [CommonModule, HsMapDirective],
 })
 export class HsMapComponent implements AfterViewInit, OnDestroy {
   @ViewChild('map') map: ElementRef;

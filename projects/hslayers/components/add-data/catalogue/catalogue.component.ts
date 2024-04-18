@@ -8,7 +8,6 @@ import {HsAddDataCatalogueService} from 'hslayers-ng/services/add-data';
 import {HsAddDataLayerDescriptor} from 'hslayers-ng/types';
 import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
 import {HsConfig} from 'hslayers-ng/config';
-import {HsCoreService} from 'hslayers-ng/services/core';
 import {HsLanguageService} from 'hslayers-ng/services/language';
 import {HsLaymanService} from 'hslayers-ng/services/save-map';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
@@ -32,7 +31,6 @@ export class HsAddDataCatalogueComponent implements OnInit {
   constructor(
     public hsLanguageService: HsLanguageService,
     public hsConfig: HsConfig,
-    public hsCore: HsCoreService,
     public hsAddDataCatalogueService: HsAddDataCatalogueService,
     public hsAddDataCatalogueMapService: HsAddDataCatalogueMapService,
     public hsLayoutService: HsLayoutService,

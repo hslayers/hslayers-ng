@@ -9,7 +9,7 @@ import {HsLayerUtilsService} from 'hslayers-ng/services/utils';
 import {
   HsMapHostDirective,
   HslayersComponent,
-} from 'hslayers-ng/src/public-api';
+} from 'hslayers-ng/core/public-api';
 import {HsUtilsService} from 'hslayers-ng/services/utils';
 import {HsUtilsServiceMock} from './utils.service.mock';
 import {TranslateTestingModule} from 'hslayers-ng/components/language';

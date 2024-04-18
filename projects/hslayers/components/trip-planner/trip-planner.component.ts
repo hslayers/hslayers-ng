@@ -1,9 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 
-import {Feature} from 'ol';
-
 import {HsConfig} from 'hslayers-ng/config';
-import {HsCoreService} from 'hslayers-ng/services/core';
 import {HsLanguageService} from 'hslayers-ng/services/language';
 import {HsLayerUtilsService} from 'hslayers-ng/services/utils';
 import {HsMapService} from 'hslayers-ng/services/map';
@@ -25,7 +22,6 @@ export class HsTripPlannerComponent
 
   constructor(
     public HsMapService: HsMapService,
-    public HsCoreService: HsCoreService,
     public HsTripPlannerService: HsTripPlannerService,
     public HsConfig: HsConfig,
     public HsUtilsService: HsUtilsService,
