@@ -712,7 +712,7 @@
     "hslayers": {
       "projectType": "library",
       "root": "projects/hslayers",
-      "sourceRoot": "projects/hslayers/src",
+      "sourceRoot": "projects/hslayers",
       "prefix": "lib",
       "architect": {
         "build": {
