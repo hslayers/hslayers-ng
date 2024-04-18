@@ -3,6 +3,6 @@
   "output": "../../docs/hslayers-sensors",
   "name": "HSLayers-NG Sensors module documentation",
   "theme": "material",
-  "customFavicon": "../../projects/hslayers/src/assets/img/hslayers-ng-favicon_32x32.jpg",
-  "customLogo": "../../projects/hslayers/src/assets/img/hslayers-ng-logo.png"
+  "customFavicon": "../../projects/hslayers/assets/img/hslayers-ng-favicon_32x32.jpg",
+  "customLogo": "../../projects/hslayers/assets/img/hslayers-ng-logo.png"
 }
