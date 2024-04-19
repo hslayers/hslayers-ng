@@ -17,7 +17,7 @@ import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsMapDirective} from './map.directive';
 import {HsMapService} from 'hslayers-ng/services/map';
-import {HslayersService} from '../core.service';
+import {HslayersService} from '../hslayers.service';
 
 @Component({
   selector: 'hs-map',
