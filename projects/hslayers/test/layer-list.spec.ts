@@ -31,7 +31,7 @@ import {HsLayoutServiceMock} from './layout.service.mock';
 import {HsMapService} from 'hslayers-ng/services/map';
 import {HsMapServiceMock} from './map.service.mock';
 import {HsPanelHelpersModule} from 'hslayers-ng/common/panels';
-import {HsShareUrlService} from 'hslayers-ng/components/share';
+import {HsShareUrlService} from 'hslayers-ng/services/share';
 import {HsUtilsService} from 'hslayers-ng/services/utils';
 import {HsUtilsServiceMock} from './utils.service.mock';
 

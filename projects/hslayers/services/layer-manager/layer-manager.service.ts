@@ -8,7 +8,7 @@ import {Map} from 'ol';
 import {Source} from 'ol/source';
 import {unByKey} from 'ol/Observable';
 
-import {HS_PRMS} from 'hslayers-ng/components/share';
+import {HS_PRMS} from 'hslayers-ng/services/share';
 import {HsAddDataOwsService} from 'hslayers-ng/services/add-data';
 import {HsBaseLayerDescriptor} from 'hslayers-ng/types';
 import {HsConfig} from 'hslayers-ng/config';
@@ -27,7 +27,7 @@ import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsLogService} from 'hslayers-ng/services/log';
 import {HsMapService} from 'hslayers-ng/services/map';
 import {HsQueuesService} from 'hslayers-ng/services/queues';
-import {HsShareUrlService} from 'hslayers-ng/components/share';
+import {HsShareUrlService} from 'hslayers-ng/services/share';
 import {HsToastService} from 'hslayers-ng/common/toast';
 import {HsUtilsService} from 'hslayers-ng/services/utils';
 import {

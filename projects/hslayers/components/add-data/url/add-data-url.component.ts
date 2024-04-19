@@ -11,7 +11,7 @@ import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
 import {HsLanguageService} from 'hslayers-ng/services/language';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsLogService} from 'hslayers-ng/services/log';
-import {HsShareUrlService} from 'hslayers-ng/components/share';
+import {HsShareUrlService} from 'hslayers-ng/services/share';
 import {SERVICES_SUPPORTED_BY_URL} from 'hslayers-ng/types';
 
 @Component({

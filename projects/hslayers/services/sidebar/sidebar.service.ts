@@ -3,7 +3,7 @@ import {Injectable} from '@angular/core';
 
 import {HsButton} from 'hslayers-ng/types';
 import {HsConfig} from 'hslayers-ng/config';
-import {HsCoreService} from 'hslayers-ng/core';
+import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsLanguageService} from 'hslayers-ng/services/language';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsUtilsService} from 'hslayers-ng/services/utils';
@@ -176,7 +176,7 @@ export class HsSidebarService {
     public HsLayoutService: HsLayoutService,
     public hsConfig: HsConfig,
     public HsLanguageService: HsLanguageService,
-    public HsCoreService: HsCoreService,
+    public HsEventBusService: HsEventBusService,
     public HsUtilsService: HsUtilsService,
   ) {
     this.buttons = this.buttonsSubject.asObservable();
@@ -187,7 +187,7 @@ export class HsSidebarService {
       into account sidebar width changing animation. 
       */
       setTimeout(() => {
-        this.HsCoreService.updateMapSize();
+        this.HsEventBusService.updateMapSize.next();
       }, 550);
     });
   }

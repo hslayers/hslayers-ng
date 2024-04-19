@@ -11,13 +11,13 @@ import {CommonModule} from '@angular/common';
 import {Subscription} from 'rxjs';
 import {transform} from 'ol/proj';
 
-import {HS_PRMS} from 'hslayers-ng/components/share';
+import {HS_PRMS, HsShareUrlService} from 'hslayers-ng/services/share';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsCoreService} from '../core.service';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
+import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsMapDirective} from './map.directive';
 import {HsMapService} from 'hslayers-ng/services/map';
-import {HsShareUrlService} from 'hslayers-ng/components/share';
 
 @Component({
   selector: 'hs-map',
@@ -31,10 +31,11 @@ export class HsMapComponent implements AfterViewInit, OnDestroy {
   unregisterMapSyncCenterHandlerSubscription: Subscription;
   constructor(
     public HsMapService: HsMapService,
-    public HsShareUrlService: HsShareUrlService,
     public HsCoreService: HsCoreService,
     public HsConfig: HsConfig,
     public HsEventBusService: HsEventBusService,
+    private HsLayoutService: HsLayoutService,
+    private HsShareUrlService: HsShareUrlService,
     private zone: NgZone,
   ) {
     this.unregisterMapSyncCenterHandlerSubscription =
@@ -57,27 +58,18 @@ export class HsMapComponent implements AfterViewInit, OnDestroy {
     if (visibleLayersParam) {
       this.HsMapService.visibleLayersInUrl = visibleLayersParam.split(';');
     }
+
     this.zone.runOutsideAngular(() =>
       this.HsMapService.init(this.map.nativeElement),
     );
-    const pos = this.HsShareUrlService.getParamValues([
-      HS_PRMS.x,
-      HS_PRMS.y,
-      HS_PRMS.zoom,
-    ]);
-    if (!Object.keys(pos).some((k) => pos[k] == undefined || pos[k] == 'NaN')) {
-      this.HsMapService.moveToAndZoom(
-        parseFloat(pos[HS_PRMS.x]),
-        parseFloat(pos[HS_PRMS.y]),
-        parseInt(pos[HS_PRMS.zoom]),
-      );
-    }
+
     if (
       this.HsShareUrlService.getParamValue(HS_PRMS.pureMap) ||
       this.HsConfig.pureMap == true
     ) {
-      this.HsCoreService.setPuremapApp(true);
+      this.HsLayoutService.puremapApp = true;
     }
+
     this.HsMapService.getMap().updateSize();
   }
 

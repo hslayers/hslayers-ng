@@ -11,7 +11,7 @@ import {HsLayerShiftingService} from 'hslayers-ng/services/layer-shifting';
 import {HsMapService} from 'hslayers-ng/services/map';
 import {HsMapServiceMock} from './map.service.mock';
 import {HsMapSwipeService} from 'hslayers-ng/components/map-swipe';
-import {HsShareUrlService} from 'hslayers-ng/components/share';
+import {HsShareUrlService} from 'hslayers-ng/services/share';
 import {HsToastService} from 'hslayers-ng/common/toast';
 
 class HsToastServiceMock {

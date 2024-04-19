@@ -2,13 +2,12 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 
 import {Subject, Subscription, debounceTime, takeUntil} from 'rxjs';
 
-import {HS_PRMS} from 'hslayers-ng/components/share';
+import {HS_PRMS} from 'hslayers-ng/services/share';
 import {HsButton} from 'hslayers-ng/types';
 import {HsConfig} from 'hslayers-ng/config';
-import {HsCoreService} from 'hslayers-ng/core';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
-import {HsShareUrlService} from 'hslayers-ng/components/share';
+import {HsShareUrlService} from 'hslayers-ng/services/share';
 import {HsSidebarService} from 'hslayers-ng/services/sidebar';
 
 @Component({
@@ -24,7 +23,6 @@ export class HsSidebarComponent implements OnInit, OnDestroy {
   sidebarPosition: string;
   constructor(
     public HsLayoutService: HsLayoutService,
-    public HsCoreService: HsCoreService,
     public HsSidebarService: HsSidebarService,
     public HsShareUrlService: HsShareUrlService,
     public HsConfig: HsConfig,
@@ -133,7 +131,7 @@ export class HsSidebarComponent implements OnInit, OnDestroy {
       !this.HsLayoutService.sidebarExpanded;
     this.HsLayoutService.updPanelSpaceWidth();
     setTimeout(() => {
-      this.HsCoreService.updateMapSize();
+      this.HsEventBusService.updateMapSize.next();
     }, 110);
   }
 }

@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 
 import {HsAddDataVectorService} from 'hslayers-ng/services/add-data';
 import {HsMapService} from 'hslayers-ng/services/map';
-import {HsShareUrlService} from 'hslayers-ng/components/share';
+import {HsShareUrlService} from 'hslayers-ng/services/share';
 
 @Injectable({
   providedIn: 'root',

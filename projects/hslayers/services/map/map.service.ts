@@ -48,6 +48,7 @@ import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsLogService} from 'hslayers-ng/services/log';
 import {HsQueuesService} from 'hslayers-ng/services/queues';
 import {HsUtilsService} from 'hslayers-ng/services/utils';
+import {filter} from 'rxjs';
 import {
   getDimensions,
   getEnableProxy,
@@ -114,7 +115,19 @@ export class HsMapService {
     private hsQueuesService: HsQueuesService,
     private hsCommonLaymanService: HsCommonLaymanService,
     private rendererFactory: RendererFactory2,
-  ) {}
+  ) {
+    /**
+     * Set pure map
+     */
+    this.hsLayoutService._puremapApp
+      .pipe(filter((v) => v))
+      .subscribe((value) => {
+        this.hsConfig.componentsEnabled.guiOverlay = false;
+        this.removeAllInteractions();
+        this.removeAllControls();
+        this.hsLayoutService.updSidebarVisible(false);
+      });
+  }
 
   /**
    * Returns the associated layer for feature.

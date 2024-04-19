@@ -2,11 +2,11 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 
 import {Subscription} from 'rxjs';
 
-import {HS_PRMS} from 'hslayers-ng/components/share';
+import {HS_PRMS} from 'hslayers-ng/services/share';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsSearchService} from './search.service';
-import {HsShareUrlService} from 'hslayers-ng/components/share';
+import {HsShareUrlService} from 'hslayers-ng/services/share';
 
 /**
  * Add search input template to page

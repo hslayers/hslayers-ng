@@ -14,7 +14,7 @@ import {HsGetCapabilitiesErrorComponent} from './common/capabilities-error-dialo
 import {HsLaymanService} from 'hslayers-ng/services/save-map';
 import {HsPanelBaseComponent} from 'hslayers-ng/common/panels';
 import {HsRemoveLayerDialogService} from 'hslayers-ng/common/remove-multiple';
-import {HsShareUrlService} from 'hslayers-ng/components/share';
+import {HsShareUrlService} from 'hslayers-ng/services/share';
 import {SERVICES_SUPPORTED_BY_URL} from 'hslayers-ng/types';
 
 @Component({

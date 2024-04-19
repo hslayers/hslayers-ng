@@ -96,7 +96,7 @@ export class HsSaveMapService {
     if (groups.guest == undefined) {
       groups.guest = 'r';
     }
-    const bbox = this.getBboxFromObject(compoData.bbox);
+    const bbox = this.hsUtilsService.getBboxFromObject(compoData.bbox);
     const json: MapComposition = {
       abstract: compoData.abstract,
       title: compoData.name,
@@ -156,24 +156,6 @@ export class HsSaveMapService {
       }
     }
     return current_base_layer;
-  }
-
-  /**
-   * Get bounding box from object \{east: value, south: value, west: value, north: value\}
-   * @param bbox - Bounding box
-   * @returns Returns bounding box as number array
-   */
-  getBboxFromObject(bbox: number[] | BoundingBoxObject): number[] {
-    if (bbox && !Array.isArray(bbox)) {
-      return [
-        parseFloat(bbox.east),
-        parseFloat(bbox.south),
-        parseFloat(bbox.west),
-        parseFloat(bbox.north),
-      ];
-    } else {
-      return bbox as number[];
-    }
   }
 
   /**

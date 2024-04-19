@@ -5,7 +5,7 @@ import {HsCoreService} from 'hslayers-ng/core';
 import {HsLanguageService} from 'hslayers-ng/services/language';
 import {HsPanelBaseComponent} from 'hslayers-ng/common/panels';
 import {HsShareService} from './share.service';
-import {HsShareUrlService} from './share-url.service';
+import {HsShareUrlService} from 'hslayers-ng/services/share';
 
 @Component({
   selector: 'hs-share',

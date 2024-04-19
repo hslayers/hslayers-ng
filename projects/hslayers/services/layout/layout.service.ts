@@ -5,6 +5,7 @@ import {HsConfig} from 'hslayers-ng/config';
 import {HsLogService} from 'hslayers-ng/services/log';
 
 export class HsLayoutParams {
+  _puremapApp: BehaviorSubject<boolean>;
   /**
    * Storage of default main panel.
    * This panel is opened during initialization of app and also when other panel than default is closed.
@@ -93,6 +94,17 @@ export class HsLayoutService extends HsLayoutParams {
   mapSpaceRef: BehaviorSubject<ViewContainerRef> = new BehaviorSubject(
     undefined,
   );
+  _puremapApp = new BehaviorSubject<boolean>(false);
+  /**
+   * Whether app is running in puremapApp mode
+   */
+  get puremapApp() {
+    return this._puremapApp.getValue();
+  }
+
+  set puremapApp(val: boolean) {
+    this._puremapApp.next(val);
+  }
 
   panelSpaceWidth = new BehaviorSubject<number>(425);
 
