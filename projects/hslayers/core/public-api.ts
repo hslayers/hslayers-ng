@@ -3,7 +3,8 @@
  */
 export * from './hslayers.component';
 export * from './hslayers.module';
-export * from './map-host.directive';
 export * from './layout.directive';
-export * from './core.service';
+export * from './hslayers.service';
+export * from './map-host.directive';
 export * from './map/map.component';
+export * from './map/map.directive';

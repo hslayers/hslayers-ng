@@ -1,4 +1,4 @@
-import {HS_PRMS, HS_PRMS_BACKWARDS} from 'hslayers-ng/components/share';
+import {HS_PRMS, HS_PRMS_BACKWARDS} from 'hslayers-ng/services/share';
 
 export class HsShareUrlServiceMock {
   constructor() {}
