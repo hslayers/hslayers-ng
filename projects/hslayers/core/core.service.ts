@@ -15,7 +15,6 @@ import {HsLanguageService} from 'hslayers-ng/services/language';
 export class HsCoreService {
   embeddedEnabled = true;
   config: any;
-  _puremapApp = false;
   initCalled: boolean;
   missingLRFunctionsWarned: any;
 
@@ -115,23 +114,5 @@ export class HsCoreService {
   resetMap(): void {
     this.HsMapService.reset();
     this.HsEventBusService.mapResets.next();
-  }
-
-  /**
-   * Whether app is running in puremapApp mode
-   * @public
-   */
-  get puremapApp() {
-    return this._puremapApp;
-  }
-
-  setPuremapApp(value) {
-    this._puremapApp = value;
-    if (value) {
-      this.hsConfig.componentsEnabled.guiOverlay = false;
-      this.HsMapService.removeAllInteractions();
-      this.HsMapService.removeAllControls();
-      this.HsLayoutService.updSidebarVisible(false);
-    }
   }
 }

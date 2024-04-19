@@ -7,12 +7,10 @@ import {transformExtent} from 'ol/proj';
 
 import {HS_PRMS, HS_PRMS_BACKWARDS, HS_PRMS_REGENERATED} from './get-params';
 import {HsConfig} from 'hslayers-ng/config';
-import {HsCoreService} from 'hslayers-ng/core';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsLanguageService} from 'hslayers-ng/services/language';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsMapService} from 'hslayers-ng/services/map';
-import {HsSaveMapService} from 'hslayers-ng/services/save-map';
 import {HsUtilsService} from 'hslayers-ng/services/utils';
 import {MapComposition} from 'hslayers-ng/types';
 import {getShowInLayerManager, getTitle} from 'hslayers-ng/common/extensions';
@@ -39,9 +37,7 @@ export class HsShareUrlService {
 
   constructor(
     public hsMapService: HsMapService,
-    public HsCore: HsCoreService,
     public HsUtilsService: HsUtilsService,
-    public HsSaveMapService: HsSaveMapService,
     public hsConfig: HsConfig,
     public HsLanguageService: HsLanguageService,
     public HsLayoutService: HsLayoutService,
@@ -98,7 +94,23 @@ export class HsShareUrlService {
         const view = this.getParamValue(HS_PRMS.view);
         // this.hsMapService.visible = !(view == '3d');
       }
+
+      this.panToUrlCoords();
     });
+  }
+
+  /**
+   * Update map view with values from URL
+   */
+  private panToUrlCoords() {
+    const pos = this.getParamValues([HS_PRMS.x, HS_PRMS.y, HS_PRMS.zoom]);
+    if (!Object.keys(pos).some((k) => pos[k] == undefined || pos[k] == 'NaN')) {
+      this.hsMapService.moveToAndZoom(
+        parseFloat(pos[HS_PRMS.x]),
+        parseFloat(pos[HS_PRMS.y]),
+        parseInt(pos[HS_PRMS.zoom]),
+      );
+    }
   }
 
   private keepTrackOfGetParams() {
@@ -141,7 +153,7 @@ export class HsShareUrlService {
    */
   async updatePermalinkComposition(data?: MapComposition): Promise<any> {
     const status_url = this.endpointUrl();
-    const bbox = this.HsSaveMapService.getBboxFromObject(
+    const bbox = this.HsUtilsService.getBboxFromObject(
       this.hsMapService.describeExtent(),
     );
     this.data = data ?? {
@@ -183,12 +195,12 @@ export class HsShareUrlService {
       .filter((lyr) => lyr.getVisible())
       .map((lyr) => getTitle(lyr));
 
-    const addedLayers = externalLayers.filter(
-      (lyr) => !this.hsConfig.default_layers?.includes(lyr),
-    );
     this.updateViewParamsInUrl();
     //This might become useful, but url size is limited, so we are not using it
-    const addedLayersJson = this.HsSaveMapService.layers2json(addedLayers);
+    // const addedLayers = externalLayers.filter(
+    //   (lyr) => !this.hsConfig.default_layers?.includes(lyr),
+    // );
+    // const addedLayersJson = this.HsSaveMapService.layers2json(addedLayers);
 
     const pnlMain = this.HsLayoutService.mainpanel;
     this.push(HS_PRMS.panel, pnlMain == 'share' ? 'layerManager' : pnlMain);
@@ -197,7 +209,7 @@ export class HsShareUrlService {
       this.push(HS_PRMS.lang, this.HsLanguageService.language);
     }
     this.push(HS_PRMS.visibleLayers, visibleLayers.join(';'));
-    if (this.HsCore.puremapApp) {
+    if (this.HsLayoutService.puremapApp) {
       this.push(HS_PRMS.pureMap, 'true');
     }
     for (const [key, value] of Object.entries(this.customParams)) {

@@ -22,7 +22,7 @@ import {HsLayoutServiceMock} from './layout.service.mock';
 import {HsMapComponent} from 'hslayers-ng/components/map';
 import {HsMapDirective} from 'hslayers-ng/components/map';
 import {HsMapService} from 'hslayers-ng/services/map';
-import {HsShareUrlService} from 'hslayers-ng/components/share';
+import {HsShareUrlService} from 'hslayers-ng/services/share';
 import {HsShareUrlServiceMock} from './share-url.service.mock';
 import {HsUtilsService} from 'hslayers-ng/services/utils';
 import {HsUtilsServiceMock} from './utils.service.mock';

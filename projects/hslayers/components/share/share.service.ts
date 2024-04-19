@@ -13,8 +13,10 @@ import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsLogService} from 'hslayers-ng/services/log';
 import {HsMapService} from 'hslayers-ng/services/map';
 import {HsSaveMapService} from 'hslayers-ng/services/save-map';
-import {HsShareThumbnailService} from 'hslayers-ng/services/share';
-import {HsShareUrlService} from './share-url.service';
+import {
+  HsShareThumbnailService,
+  HsShareUrlService,
+} from 'hslayers-ng/services/share';
 import {HsToastService} from 'hslayers-ng/common/toast';
 import {HsUtilsService} from 'hslayers-ng/services/utils';
 import {MapComposition} from 'hslayers-ng/types';
