@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 
 import {HsConfig} from 'hslayers-ng/config';
-import {HsCoreService} from 'hslayers-ng/core';
+import {HslayersService} from 'hslayers-ng/core';
 import {HsLanguageService} from 'hslayers-ng/services/language';
 import {HsPanelBaseComponent} from 'hslayers-ng/common/panels';
 import {HsShareService} from './share.service';
@@ -18,7 +18,7 @@ export class HsShareComponent extends HsPanelBaseComponent implements OnInit {
   constructor(
     public HsShareService: HsShareService,
     public HsShareUrlService: HsShareUrlService,
-    public HsCore: HsCoreService,
+    public HsCore: HslayersService,
     public hsLanguageService: HsLanguageService,
     private hsConfig: HsConfig,
   ) {

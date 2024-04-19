@@ -17,7 +17,7 @@ import {
 } from 'cesium';
 import {Subject, takeUntil} from 'rxjs';
 
-import {HsCoreService} from 'hslayers-ng/core';
+import {HslayersService} from 'hslayers-ng/core';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsLayerManagerService} from 'hslayers-ng/services/layer-manager';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
@@ -60,7 +60,7 @@ export class HsCesiumService {
     public HsCesiumConfig: HsCesiumConfig,
     private HsCesiumPicker: HsCesiumPickerService,
     private hsCesiumQueryPopupService: HsCesiumQueryPopupService,
-    private hsCoreService: HsCoreService,
+    private HslayersService: HslayersService,
     private hsOverlayConstructorService: HsOverlayConstructorService,
     private hsShareUrlService: HsShareUrlService,
   ) {}
@@ -331,7 +331,7 @@ export class HsCesiumService {
     });
     if (this.HsMapService.visible) {
       this.cesiumDisabled();
-      this.hsCoreService.updateMapSize();
+      this.HslayersService.updateMapSize();
     } else {
       const view = this.HsMapService.getMap().getView();
       if (this.HsMapService.visible) {

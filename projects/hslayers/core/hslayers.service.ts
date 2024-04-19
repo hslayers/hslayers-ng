@@ -12,7 +12,7 @@ import {HsLanguageService} from 'hslayers-ng/services/language';
 @Injectable({
   providedIn: 'root',
 })
-export class HsCoreService {
+export class HslayersService {
   embeddedEnabled = true;
   config: any;
   initCalled: boolean;

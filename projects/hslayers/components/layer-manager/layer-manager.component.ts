@@ -12,7 +12,7 @@ import {Subject, takeUntil} from 'rxjs';
 
 import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
 import {HsConfig} from 'hslayers-ng/config';
-import {HsCoreService} from 'hslayers-ng/core';
+import {HslayersService} from 'hslayers-ng/core';
 import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsLayerDescriptor} from 'hslayers-ng/types';
@@ -114,7 +114,7 @@ export class HsLayerManagerComponent
 
   private end = new Subject<void>();
   constructor(
-    public hsCore: HsCoreService,
+    public hsCore: HslayersService,
     public hsUtilsService: HsUtilsService,
     public hsLayerManagerService: HsLayerManagerService,
     public hsEventBusService: HsEventBusService,
