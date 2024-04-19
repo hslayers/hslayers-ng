@@ -3,7 +3,7 @@ import {Observable, Subject, delay, map, startWith, takeUntil} from 'rxjs';
 
 import {HsButton} from 'hslayers-ng/types';
 import {HsConfig} from 'hslayers-ng/config';
-import {HsCoreService} from 'hslayers-ng/core';
+import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsSidebarService} from 'hslayers-ng/services/sidebar';
 
@@ -18,10 +18,10 @@ export class HsMiniSidebarComponent implements OnInit, OnDestroy {
   isVisible: Observable<boolean>;
 
   constructor(
-    public HsCoreService: HsCoreService,
     public HsSidebarService: HsSidebarService,
     public HsLayoutService: HsLayoutService,
     public HsConfig: HsConfig,
+    private HsEventBusService: HsEventBusService,
   ) {}
 
   ngOnInit() {
@@ -63,7 +63,7 @@ export class HsMiniSidebarComponent implements OnInit, OnDestroy {
     this.HsLayoutService.sidebarExpanded =
       !this.HsLayoutService.sidebarExpanded;
     setTimeout(() => {
-      this.HsCoreService.updateMapSize();
+      this.HsEventBusService.updateMapSize.next();
     }, 110);
   }
 }
