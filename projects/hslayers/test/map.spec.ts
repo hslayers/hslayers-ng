@@ -14,7 +14,7 @@ import {Vector as VectorSource} from 'ol/source';
 import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsConfigMock} from './config.service.mock';
-import {HsCoreService} from 'hslayers-ng/core';
+import {HslayersService} from 'hslayers-ng/core';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsLanguageService} from 'hslayers-ng/services/language';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
@@ -66,7 +66,7 @@ describe('HsMapService', () => {
       declarations: [HsMapComponent, HsMapDirective],
       providers: [
         {provide: HsShareUrlService, useValue: new HsShareUrlServiceMock()},
-        {provide: HsCoreService, useValue: new emptyMock()},
+        {provide: HslayersService, useValue: new emptyMock()},
         HsMapService,
         {
           provide: HsLayoutService,

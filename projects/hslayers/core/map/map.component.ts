@@ -13,11 +13,11 @@ import {transform} from 'ol/proj';
 
 import {HS_PRMS, HsShareUrlService} from 'hslayers-ng/services/share';
 import {HsConfig} from 'hslayers-ng/config';
-import {HsCoreService} from '../core.service';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsMapDirective} from './map.directive';
 import {HsMapService} from 'hslayers-ng/services/map';
+import {HslayersService} from '../core.service';
 
 @Component({
   selector: 'hs-map',
@@ -31,7 +31,7 @@ export class HsMapComponent implements AfterViewInit, OnDestroy {
   unregisterMapSyncCenterHandlerSubscription: Subscription;
   constructor(
     public HsMapService: HsMapService,
-    public HsCoreService: HsCoreService,
+    public HslayersService: HslayersService,
     public HsConfig: HsConfig,
     public HsEventBusService: HsEventBusService,
     private HsLayoutService: HsLayoutService,
