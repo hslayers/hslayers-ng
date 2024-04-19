@@ -16,6 +16,7 @@ export class HsLayoutServiceMock {
    * for convenience of not having to pass it into super everywhere thus
    * it needs to be that way it tests as well
    */
+  _puremapApp = new BehaviorSubject(false);
   constructor(public hsConfig: HsConfig) {}
 
   componentEnabled() {

@@ -14,18 +14,18 @@ import {Vector as VectorSource} from 'ol/source';
 import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsConfigMock} from './config.service.mock';
-import {HslayersService} from 'hslayers-ng/core';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsLanguageService} from 'hslayers-ng/services/language';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsLayoutServiceMock} from './layout.service.mock';
-import {HsMapComponent} from 'hslayers-ng/components/map';
-import {HsMapDirective} from 'hslayers-ng/components/map';
+import {HsMapComponent} from 'hslayers-ng/core';
+import {HsMapDirective} from 'hslayers-ng/core';
 import {HsMapService} from 'hslayers-ng/services/map';
 import {HsShareUrlService} from 'hslayers-ng/services/share';
 import {HsShareUrlServiceMock} from './share-url.service.mock';
 import {HsUtilsService} from 'hslayers-ng/services/utils';
 import {HsUtilsServiceMock} from './utils.service.mock';
+import {HslayersService} from 'hslayers-ng/core';
 
 class emptyMock {
   constructor() {}
@@ -62,8 +62,7 @@ describe('HsMapService', () => {
 
     TestBed.configureTestingModule({
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      imports: [CommonModule],
-      declarations: [HsMapComponent, HsMapDirective],
+      imports: [CommonModule, HsMapComponent, HsMapDirective],
       providers: [
         {provide: HsShareUrlService, useValue: new HsShareUrlServiceMock()},
         {provide: HslayersService, useValue: new emptyMock()},
