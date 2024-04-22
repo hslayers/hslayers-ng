@@ -15,7 +15,6 @@ import {
 } from 'cesium';
 import {Subject, takeUntil} from 'rxjs';
 
-import {HslayersService} from 'hslayers-ng/core';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsLayerManagerService} from 'hslayers-ng/services/layer-manager';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
@@ -23,8 +22,9 @@ import {HsLogService} from 'hslayers-ng/services/log';
 import {HsMapService} from 'hslayers-ng/services/map';
 import {HsOverlayConstructorService} from 'hslayers-ng/services/panel-constructor';
 import {HsQueryPopupComponent} from 'hslayers-ng/common/query-popup';
-import {HsShareUrlService} from 'hslayers-ng/components/share';
+import {HsShareUrlService} from 'hslayers-ng/services/share';
 import {HsUtilsService} from 'hslayers-ng/services/utils';
+import {HslayersService} from 'hslayers-ng/core';
 
 import {HsCesiumCameraService} from './hscesium-camera.service';
 import {HsCesiumConfig} from './hscesium-config.service';
@@ -94,6 +94,7 @@ export class HsCesiumService {
           this.hsCesiumConfig.terrainLayers[0].visible = true;
           activeLayer = this.hsCesiumConfig.terrainLayers[0];
         }
+        activeLayer.active = true;
         terrainProvider =
           await this.HsCesiumLayersService.createTerrainProviderFromUrl(
             activeLayer.url,

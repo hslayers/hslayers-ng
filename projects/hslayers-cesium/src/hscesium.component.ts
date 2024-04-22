@@ -1,6 +1,6 @@
 import {AfterViewInit, Component, DestroyRef} from '@angular/core';
 
-import {HS_PRMS, HsShareUrlService} from 'hslayers-ng/components/share';
+import {HS_PRMS, HsShareUrlService} from 'hslayers-ng/services/share';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsMapService} from 'hslayers-ng/services/map';
