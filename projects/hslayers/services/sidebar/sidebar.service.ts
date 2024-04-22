@@ -187,7 +187,7 @@ export class HsSidebarService {
       into account sidebar width changing animation. 
       */
       setTimeout(() => {
-        this.HsEventBusService.updateMapSize.next();
+        this.HsEventBusService.mapSizeUpdates.next();
       }, 550);
     });
   }

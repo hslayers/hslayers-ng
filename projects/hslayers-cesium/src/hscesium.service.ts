@@ -331,7 +331,7 @@ export class HsCesiumService {
     });
     if (this.HsMapService.visible) {
       this.cesiumDisabled();
-      this.HslayersService.updateMapSize();
+      this.HslayersService.mapSizeUpdates();
     } else {
       const view = this.HsMapService.getMap().getView();
       if (this.HsMapService.visible) {

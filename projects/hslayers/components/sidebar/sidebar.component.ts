@@ -131,7 +131,7 @@ export class HsSidebarComponent implements OnInit, OnDestroy {
       !this.HsLayoutService.sidebarExpanded;
     this.HsLayoutService.updPanelSpaceWidth();
     setTimeout(() => {
-      this.HsEventBusService.updateMapSize.next();
+      this.HsEventBusService.mapSizeUpdates.next();
     }, 110);
   }
 }

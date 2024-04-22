@@ -149,7 +149,7 @@ export class HsEventBusService {
   layerSelectedFromUrl: BehaviorSubject<Layer<Source>> = new BehaviorSubject(
     null,
   );
-  updateMapSize: Subject<void> = new Subject();
+  mapSizeUpdates: Subject<void> = new Subject();
   /**
    * Cancels any external URL data request from datasources panel
    */
