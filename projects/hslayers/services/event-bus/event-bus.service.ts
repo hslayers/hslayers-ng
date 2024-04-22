@@ -113,8 +113,8 @@ export class HsEventBusService {
    * replaces 'measure.drawEnd'
    */
   measurementEnds: Subject<void> = new Subject();
-  cesiumLoads: Subject<any> = new Subject();
-  cesiumResizes: Subject<any> = new Subject();
+  cesiumLoads: Subject<{viewer; service}> = new Subject();
+  cesiumResizes: Subject<{viewer; service}> = new Subject();
   zoomTo: Subject<any> = new Subject();
   /**
    * Fires when map extent change (move, zoom, resize).
@@ -128,12 +128,12 @@ export class HsEventBusService {
     extent: number[];
   }> = new Subject();
   mapEventHandlersSet: ReplaySubject<void> = new ReplaySubject();
-  mapCenterSynchronizations: Subject<any> = new Subject();
-  mapLibraryChanges: Subject<any> = new Subject();
+  mapCenterSynchronizations: Subject<{center; viewport}> = new Subject();
+  mapLibraryChanges: Subject<'cesium' | 'ol'> = new Subject();
   /**
    * replaces 'cesium.time_layers_changed'
    */
-  cesiumTimeLayerChanges: Subject<any> = new Subject();
+  cesiumTimeLayerChanges: Subject<Array<{name; time}>> = new Subject();
   layoutResizes: Subject<void> = new Subject();
   /**
    * replaces 'map.loaded'
@@ -143,7 +143,7 @@ export class HsEventBusService {
    * replaces 'search.resultsReceived'
    */
   searchResultsReceived: Subject<void> = new Subject();
-  searchZoomTo: Subject<any> = new Subject();
+  searchZoomTo: Subject<{coordinate; zoom}> = new Subject();
   clearSearchResults: Subject<void> = new Subject();
   /**
    * replaces 'query.dataUpdated'

@@ -660,7 +660,8 @@
     },
     "toggleAllLayerVisibility": "Přepnout viditelnost všech vrstev",
     "User generated": "Uživatelský",
-    "basemapThumbnail": "Náhled podkladové mapy"
+    "basemapThumbnail": "Náhled podkladové mapy",
+    "terrainOnlyIn3d": "Terény jsou dostupné jen ve 3D zobrazení"
   },
   "LAYERS": {
     "existingLayer": "Existující vrstva",

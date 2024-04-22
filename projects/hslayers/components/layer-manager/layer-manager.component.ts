@@ -17,7 +17,6 @@ import {
 } from 'hslayers-ng/types';
 import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
 import {HsConfig} from 'hslayers-ng/config';
-import {HslayersService} from 'hslayers-ng/core';
 import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsLayerListService} from './logical-list/layer-manager-layerlist.service';
@@ -30,6 +29,7 @@ import {
 import {HsPanelBaseComponent} from 'hslayers-ng/common/panels';
 import {HsRemoveLayerDialogService} from 'hslayers-ng/common/remove-multiple';
 import {HsUtilsService} from 'hslayers-ng/services/utils';
+import {HslayersService} from 'hslayers-ng/core';
 import {
   getActive,
   getAttribution,
@@ -61,6 +61,7 @@ export class HsLayerManagerComponent
   layerlistVisible: boolean;
   hovering: boolean;
   physicalLayerListEnabled = false;
+  isCesiumActive = false;
   icons = [
     'bag1.svg',
     'banking4.svg',
@@ -184,6 +185,12 @@ export class HsLayerManagerComponent
   ngOnInit(): void {
     this.layerTooltipDelay = this.hsConfig.layerTooltipDelay;
     this.layerlistVisible = true;
+    this.hsEventBusService.cesiumLoads.subscribe(
+      () => (this.isCesiumActive = true),
+    );
+    this.hsEventBusService.mapLibraryChanges.subscribe(
+      (lib) => (this.isCesiumActive = lib == 'cesium' ? true : false),
+    );
     super.ngOnInit();
   }
 
