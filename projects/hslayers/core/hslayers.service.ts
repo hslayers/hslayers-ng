@@ -49,14 +49,14 @@ export class HslayersService {
       this.HsMapService.loaded().then(() => {
         this.initSizeListeners();
         setTimeout(() => {
-          this.updateMapSize();
+          this.mapSizeUpdates();
         }, 750);
         this.initCalled = true;
       });
     });
 
-    this.HsEventBusService.updateMapSize.subscribe(() => {
-      this.updateMapSize();
+    this.HsEventBusService.mapSizeUpdates.subscribe(() => {
+      this.mapSizeUpdates();
     });
   }
 
@@ -68,7 +68,7 @@ export class HslayersService {
     window.addEventListener('resize', () => {
       this.HsUtilsService.debounce(
         function () {
-          this.updateMapSize();
+          this.mapSizeUpdates();
           this.HsEventBusService.layoutResizes.next();
         },
         300,
@@ -82,7 +82,7 @@ export class HslayersService {
    * Update map size.
    * @public
    */
-  updateMapSize(): void {
+  mapSizeUpdates(): void {
     const map = this.HsMapService.mapElement;
     if (map === null) {
       return;

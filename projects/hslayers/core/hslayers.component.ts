@@ -176,7 +176,7 @@ export class HslayersComponent implements AfterViewInit, OnInit, OnDestroy {
       panelSpaceWrapper.classList.toggle('expanded');
     }
     setTimeout(() => {
-      this.HsEventBusService.updateMapSize.next();
+      this.HsEventBusService.mapSizeUpdates.next();
     }, 500);
   }
 }

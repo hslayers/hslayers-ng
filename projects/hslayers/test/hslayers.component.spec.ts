@@ -6,10 +6,7 @@ import {CustomTranslationService} from 'hslayers-ng/services/language';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsConfigMock} from './config.service.mock';
 import {HsLayerUtilsService} from 'hslayers-ng/services/utils';
-import {
-  HsMapHostDirective,
-  HslayersComponent,
-} from 'hslayers-ng/core/public-api';
+import {HsMapHostDirective, HslayersComponent} from 'hslayers-ng/core';
 import {HsUtilsService} from 'hslayers-ng/services/utils';
 import {HsUtilsServiceMock} from './utils.service.mock';
 import {TranslateTestingModule} from 'hslayers-ng/components/language';
