@@ -113,18 +113,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "hslayers-app:build"
+            "buildTarget": "hslayers-app:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "hslayers-app:build:production"
+              "buildTarget": "hslayers-app:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "hslayers-app:build"
+            "buildTarget": "hslayers-app:build"
           }
         },
         "test": {
@@ -242,18 +242,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "test-app:build"
+            "buildTarget": "test-app:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "test-app:build:production"
+              "buildTarget": "test-app:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "test-app:build"
+            "buildTarget": "test-app:build"
           }
         },
         "test": {
@@ -385,18 +385,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "decoupling-test-app:build"
+            "buildTarget": "decoupling-test-app:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "decoupling-test-app:build:production"
+              "buildTarget": "decoupling-test-app:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "decoupling-test-app:build"
+            "buildTarget": "decoupling-test-app:build"
           }
         },
         "test": {
@@ -529,18 +529,18 @@
         "serve": {
           "builder": "@angular-builders/custom-webpack:dev-server",
           "options": {
-            "browserTarget": "hslayers-cesium-app:build"
+            "buildTarget": "hslayers-cesium-app:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "hslayers-cesium-app:build:production"
+              "buildTarget": "hslayers-cesium-app:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "hslayers-cesium-app:build"
+            "buildTarget": "hslayers-cesium-app:build"
           }
         },
         "test": {
@@ -676,18 +676,18 @@
         "serve": {
           "builder": "@angular-builders/custom-webpack:dev-server",
           "options": {
-            "browserTarget": "cesium-test-app:build"
+            "buildTarget": "cesium-test-app:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "cesium-test-app:build:production"
+              "buildTarget": "cesium-test-app:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "cesium-test-app:build"
+            "buildTarget": "cesium-test-app:build"
           }
         },
         "test": {
