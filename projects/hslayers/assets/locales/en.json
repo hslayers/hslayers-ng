@@ -660,7 +660,8 @@
     },
     "toggleAllLayerVisibility": "Toggle visibility of all layers",
     "User generated": "User generated",
-    "basemapThumbnail": "Basemap thumbnail"
+    "basemapThumbnail": "Basemap thumbnail",
+    "terrainOnlyIn3d": "Terrains are only available in 3D view"
   },
   "LAYERS": {
     "existingLayer": "Existing layer",

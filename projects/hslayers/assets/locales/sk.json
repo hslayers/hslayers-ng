@@ -660,7 +660,8 @@
     },
     "toggleAllLayerVisibility": "Prepnúť viditeľnosť všetkých vrstiev",
     "User generated": "Užívateľské",
-    "basemapThumbnail": "Náhľad podkladovej mapy"
+    "basemapThumbnail": "Náhľad podkladovej mapy",
+    "terrainOnlyIn3d": "Terény sú k dispozícii len v zobrazení 3D"
   },
   "LAYERS": {
     "existingLayer": "Existujúca vrstva",
