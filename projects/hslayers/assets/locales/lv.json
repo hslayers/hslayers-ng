@@ -629,7 +629,8 @@
     },
     "toggleAllLayerVisibility": "Pārslēgt visu slāņu redzamību",
     "User generated": "Lietotāja ģenerēti",
-    "basemapThumbnail": "Pamatkartes sīktēls"
+    "basemapThumbnail": "Pamatkartes sīktēls",
+    "terrainOnlyIn3d": "Reljefi ir pieejami tikai 3D skatā"
   },
   "LAYERS": {
     "existingLayer": "Eksistējošs slānis",
