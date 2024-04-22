@@ -11,7 +11,7 @@ import {
   tick,
 } from '@angular/core/testing';
 import {FilterPipe} from 'hslayers-ng/common/pipes';
-import {HsCommonLaymanService} from 'hslayers-ng/common/layman/layman.service';
+import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
 import {
   HttpClientTestingModule,
   HttpTestingController,
