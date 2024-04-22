@@ -40,7 +40,7 @@ export class AppComponent implements OnInit {
         title: '2.5D polygon surface',
       },
       source: new VectorSource({
-        url: '../assets/polygon2.5d.geojson',
+        url: 'assets/polygon2.5d.geojson',
         format: new GeoJSON(),
       }),
     });
