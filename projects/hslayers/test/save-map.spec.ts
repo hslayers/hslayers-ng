@@ -53,7 +53,7 @@ class HsEventBusServiceMock {
   mainPanelChanges: Subject<any> = new Subject();
   olMapLoads: Subject<Map> = new Subject();
   layoutResizes: Subject<any> = new Subject();
-  updateMapSize: Subject<any> = new Subject();
+  mapSizeUpdates: Subject<any> = new Subject();
 }
 
 class CommonEndpointsServiceMock {
