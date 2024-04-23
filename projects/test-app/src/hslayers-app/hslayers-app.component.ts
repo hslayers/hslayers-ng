@@ -346,7 +346,7 @@ export class HslayersAppComponent {
         language: true,
       },
       componentsEnabled: {
-        basemapGallery: true,
+        basemapGallery: false,
         mapSwipe: false,
       },
       sidebarPosition: 'right',

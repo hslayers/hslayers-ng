@@ -39,9 +39,8 @@
                 </a>
             </div>
         </div>
-        <div><input type="text" class="form-control hs-filter" [placeholder]="'COMMON.filter' | translateHs"
-                [(ngModel)]="hsLayerManagerService.data.filter" [ngModelOptions]="{standalone: true}"
-                (input)="filterLayerTitles()">
+        <div><input #filterInput type="text" class="form-control hs-filter"
+                [placeholder]="'COMMON.filter' | translateHs" name="hs-layermanager-layer-filter">
         </div>
 
         <!-- BASEMAP LAYERS -->
@@ -59,8 +58,7 @@
                     </div>
                 </div>
             </li>
-            <li class="list-group-item hs-lm-item my-2 my-md-0"
-                *ngFor="let layer of hsLayerManagerService.data.baselayers | filter:baselayerFilter"
+            <li class="list-group-item hs-lm-item my-2 my-md-0" *ngFor="let layer of filteredBaselayers$ | async"
                 [ngClass]="{'hs-lm-deactivated-layer': !layer.visible || !layer.active}" [id]="layer.idString()">
                 <div class="d-flex">
                     <div class="p-0">
@@ -102,8 +100,7 @@
                         </div>
                     </div>
                 </li>
-                <li class="list-group-item hs-lm-item my-2 my-md-0"
-                    *ngFor="let layer of hsLayerManagerService.data.terrainLayers | filter:baselayerFilter"
+                <li class="list-group-item hs-lm-item my-2 my-md-0" *ngFor="let layer of filteredTerrainlayers$ | async"
                     [ngClass]="{'hs-lm-deactivated-layer': !layer.active}">
                     <div class="d-flex ">
                         <div class="p-0">
