@@ -21,7 +21,6 @@ import {HsLayerEditorSubLayerCheckboxesComponent} from './editor/layer-editor-su
 import {HsLayerEditorWidgetBaseComponent} from './widgets/layer-editor-widget-base.component';
 import {HsLayerListComponent} from './logical-list/layer-manager-layerlist.component';
 import {HsLayerManagerComponent} from './layer-manager.component';
-import {HsLayerManagerFolderComponent} from './logical-list/layer-manager-folder.component';
 import {HsLayerManagerRemoveAllDialogComponent} from './dialogs/remove-all-dialog.component';
 import {HsLayerManagerRemoveLayerDialogComponent} from './dialogs/remove-layer-dialog.component';
 import {HsLayerManagerTimeEditorComponent} from './dimensions/layer-manager-time-editor.component';
@@ -44,7 +43,6 @@ import {TranslateCustomPipe} from 'hslayers-ng/services/language';
     HsLayerEditorDimensionsComponent,
     HsLayerEditorSubLayerCheckboxesComponent,
     HsLayerEditorComponent,
-    HsLayerManagerFolderComponent,
     HsLayerListComponent,
     HsLayerManagerRemoveAllDialogComponent,
     HsCopyLayerDialogComponent,
@@ -82,7 +80,6 @@ import {TranslateCustomPipe} from 'hslayers-ng/services/language';
     HsLayerEditorDimensionsComponent,
     HsLayerEditorSubLayerCheckboxesComponent,
     HsLayerEditorComponent,
-    HsLayerManagerFolderComponent,
     HsLayerListComponent,
     HsLayerManagerRemoveAllDialogComponent,
     HsCopyLayerDialogComponent,
