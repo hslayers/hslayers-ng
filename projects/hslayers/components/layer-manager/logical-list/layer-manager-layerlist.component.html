@@ -1,7 +1,7 @@
 <div class="list-group-item hs-lm-list pb-1" *ngIf="folder.layers.length>0">
     <ul class="list-group row">
         <!-- TODO: Remove function call from template -->
-        <li *ngFor="let layer of folder.layers | filter:layerFilter" [id]="layer.idString()"
+        <li *ngFor="let layer of filteredLayers | async " [id]="layer.idString()"
             class="list-group-item hs-lm-item my-2 my-md-0" [attr.data-test]="layer.title"
             [ngClass]="{'hs-lm-detail-activated':'currentLayer == layer', 'grayed': layer.grayed === true}">
             <div class="d-flex">

@@ -1,5 +1,6 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
-import {Subscription} from 'rxjs';
+import {Component, Input, OnInit} from '@angular/core';
+import {Observable, map, of} from 'rxjs';
+import {combineLatestWith} from 'rxjs/operators';
 
 import {HsConfig} from 'hslayers-ng/config';
 import {HsDimensionTimeService} from 'hslayers-ng/services/get-capabilities';
@@ -23,15 +24,14 @@ import {
   selector: 'hs-layer-manager-layer-list',
   templateUrl: './layer-manager-layerlist.component.html',
 })
-export class HsLayerListComponent implements OnDestroy {
+export class HsLayerListComponent implements OnInit {
   @Input() folder: HsLayermanagerFolder;
   /**
    * List of layers which belong to folder hierarchy level of directive instance
    */
-  filtered_layers: Array<HsLayerDescriptor> = [];
+  filteredLayers: Observable<HsLayerDescriptor[]>;
   getHsLaymanSynchronizing = getHsLaymanSynchronizing;
   getExclusive = getExclusive;
-  layerManagerUpdatesSubscription: Subscription;
   constructor(
     public hsConfig: HsConfig,
     public hsLayerManagerService: HsLayerManagerService,
@@ -41,16 +41,13 @@ export class HsLayerListComponent implements OnDestroy {
     public hsLayerUtilsService: HsLayerUtilsService,
     public hsLayerListService: HsLayerListService,
     public hsLayerManagerVisibilityService: HsLayerManagerVisibilityService,
-  ) {
-    this.layerManagerUpdatesSubscription =
-      this.hsEventBusService.layerManagerUpdates.subscribe(() => {
-        this.hsLayerManagerService.updateLayerListPositions();
-        //this.updateLayers();
-      });
-  }
+  ) {}
 
-  ngOnDestroy(): void {
-    this.layerManagerUpdatesSubscription.unsubscribe();
+  ngOnInit() {
+    this.filteredLayers = this.hsLayerManagerService.data.filter.pipe(
+      combineLatestWith(of(this.folder.layers)),
+      map(([filter, layers]) => this.filterLayers(layers, filter)),
+    );
   }
 
   /**
@@ -62,10 +59,15 @@ export class HsLayerListComponent implements OnDestroy {
     return this.hsLayerUtilsService.layerInvalid(layer);
   }
 
-  layerFilter = (item: HsLayerDescriptor): boolean => {
-    const r = new RegExp(this.hsLayerManagerService.data.filter, 'i');
-    return r.test(item.title) && item.showInLayerManager;
-  };
+  filterLayers(
+    layers: HsLayerDescriptor[],
+    filter: string,
+  ): HsLayerDescriptor[] {
+    const regex = new RegExp(filter, 'i');
+    return layers.filter(
+      (layer) => regex.test(layer.title) && layer.showInLayerManager,
+    );
+  }
 
   showLayerWmsT(layer: HsLayerDescriptor): boolean {
     return (
