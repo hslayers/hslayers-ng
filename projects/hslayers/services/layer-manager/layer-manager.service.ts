@@ -4,7 +4,7 @@ import {Injectable} from '@angular/core';
 import {CollectionEvent} from 'ol/Collection';
 import {EventsKey} from 'ol/events';
 import {Group, Layer} from 'ol/layer';
-import {Map} from 'ol';
+import {Map as OlMap} from 'ol';
 import {Source} from 'ol/source';
 import {unByKey} from 'ol/Observable';
 
@@ -57,8 +57,15 @@ import {
   setPath,
 } from 'hslayers-ng/common/extensions';
 
+export type HsLayermanagerFolder = {
+  layers: HsLayerDescriptor[];
+  zIndex: number;
+  visible?: boolean;
+};
+
 export class HsLayermanagerDataObject {
-  folders: any;
+  // Folders object for structure of layers.
+  folders: Map<string, HsLayermanagerFolder>;
   layers: HsLayerDescriptor[];
   baselayers: HsBaseLayerDescriptor[];
   terrainLayers: HsTerrainLayerDescriptor[];
@@ -66,24 +73,7 @@ export class HsLayermanagerDataObject {
   box_layers?: Group[];
   filter: string;
   constructor() {
-    /**
-     * Folders object for structure of layers. Each level contain 5 properties:
-     * hsl_path \{String\}: Worded path to folder position in folders hierarchy.
-     * coded_path \{String\}: Path encoded in numbers
-     * layers \{Array\}: List of layers for current folder
-     * sub_folders \{Array\}: List of subfolders for current folder
-     * indent \{Number\}: Hierarchy level for current folder
-     * name \{String\}: Optional - only from indent 1, base folder is not named
-     * @public
-     */
-    this.folders = {
-      //TODO: need to describe how hsl_path works here
-      hsl_path: '',
-      coded_path: '0-',
-      layers: [],
-      sub_folders: [],
-      indent: 0,
-    };
+    this.folders = new Map();
     /**
      * List of all layers (baselayers are excluded) loaded in LayerManager.
      * @public
@@ -191,7 +181,7 @@ export class HsLayerManagerService {
   /**
    * Setup map-event handlers and store their keys in an array
    */
-  private setupMapEventHandlers(map: Map) {
+  private setupMapEventHandlers(map: OlMap) {
     const onLayerAddition = map.getLayers().on('add', (e) => {
       this.applyZIndex(
         e.element as Layer<Source>,
@@ -292,14 +282,14 @@ export class HsLayerManagerService {
         layerDescriptor.showInLayerManager =
           getShowInLayerManager(layer) ?? true;
         if (layerDescriptor.showInLayerManager) {
-          this.populateFolders(layer);
+          this.populateFolders(layerDescriptor);
         }
       }
     });
 
     if (getBase(layer) !== true) {
       if (showInLayerManager) {
-        this.populateFolders(layer);
+        this.populateFolders(layerDescriptor);
       }
       layerDescriptor.legends = getLegends(layer);
       this.data.layers.push(layerDescriptor);
@@ -435,8 +425,9 @@ export class HsLayerManagerService {
    * Place layer into layer manager folder structure based on path property hsl-path of layer
    * @param lyr - Layer to add into folder structure
    */
-  populateFolders(lyr: Layer<Source>): void {
-    let path = getPath(lyr);
+  populateFolders(lyr: HsLayerDescriptor): void {
+    const olLayer = lyr.layer;
+    let path = getPath(olLayer);
     if (
       !path ||
       path == 'Other' ||
@@ -445,89 +436,52 @@ export class HsLayerManagerService {
         ['other']?.toLowerCase() === path.toLowerCase()
     ) {
       path = 'other';
-      setPath(lyr, path);
+      setPath(olLayer, path);
     }
-    const parts = path.split('/');
-    let curfolder = this.data.folders;
-    const zIndex = lyr.getZIndex();
-    for (let i = 0; i < parts.length; i++) {
-      const found = curfolder.sub_folders.find(
-        (folder) => folder.name === parts[i],
-      );
-      if (!found) {
-        const hsl_path = `${curfolder.hsl_path}${curfolder.hsl_path !== '' ? '/' : ''}${parts[i]}`;
-        const coded_path = `${curfolder.coded_path}${curfolder.sub_folders.length}-`;
-        //TODO: Need to describe how hsl_path works here
-        const new_folder = {
-          sub_folders: [],
-          indent: i,
-          layers: [],
-          name: parts[i],
-          hsl_path,
-          coded_path,
-          visible: true,
-          zIndex: zIndex,
-        };
-        curfolder.sub_folders.push(new_folder);
-        curfolder = new_folder;
-      } else {
-        curfolder = found;
-      }
+    const zIndex = olLayer.getZIndex();
+
+    if (!this.data.folders.has(path)) {
+      this.data.folders.set(path, {
+        layers: [lyr],
+        zIndex: zIndex,
+        visible: true,
+      });
+      return;
     }
-    curfolder.zIndex = curfolder.zIndex < zIndex ? zIndex : curfolder.zIndex;
-    curfolder.layers.push(lyr);
-    // if (this.data.folders.layers.indexOf(lyr) > -1) {
-    //   this.data.folders.layers.splice(this.data.folders.layers.indexOf(lyr), 1);
-    // }
+    const folder = this.data.folders.get(path);
+    folder.layers.push(lyr);
+    folder.zIndex = folder.zIndex < zIndex ? zIndex : folder.zIndex;
   }
 
   /**
-   * Remove layer from layer folder structure a clean empty folder
-   * @private
+   * Remove layer from layer folder and clean empty folder
    * @param lyr - Layer to remove from layer folder
    */
-  cleanFolders(lyr: Layer<Source>): void {
-    if (getShowInLayerManager(lyr) == false) {
+  cleanFolders(lyr: HsLayerDescriptor): void {
+    const olLayer = lyr.layer;
+    if (getShowInLayerManager(olLayer) == false) {
       return;
     }
-    if (getPath(lyr) != undefined && getPath(lyr) !== 'undefined') {
-      const path = getPath(lyr);
-      const parts = path.split('/');
-      let curfolder = this.data.folders;
-      for (let i = 0; i < parts.length; i++) {
-        for (const folder of curfolder.sub_folders) {
-          if (folder.name == parts[i]) {
-            curfolder = folder;
-          }
-        }
-      }
-      curfolder.layers.splice(curfolder.layers.indexOf(lyr), 1);
-      for (let i = parts.length; i > 0; i--) {
-        if (curfolder.layers.length == 0 && curfolder.sub_folders.length == 0) {
-          let newfolder = this.data.folders;
-          if (i > 1) {
-            for (let j = 0; j < i - 1; j++) {
-              for (const folder of newfolder.sub_folders) {
-                if (folder.name == parts[j]) {
-                  newfolder = folder;
-                }
-              }
-            }
-          }
-          const ixToRemove = newfolder.sub_folders.indexOf(curfolder);
-          if (ixToRemove > -1) {
-            newfolder.sub_folders.splice(ixToRemove, 1);
-          }
-          curfolder = newfolder;
-        } else {
-          break;
-        }
-      }
-    } else {
-      const ixToRemove = this.data.folders.layers.indexOf(lyr);
-      if (ixToRemove > -1) {
-        this.data.folders.layers.splice(ixToRemove, 1);
-      }
+
+    const path = getPath(olLayer);
+    if (!path) {
+      console.warn(
+        `Unexpected. Layer $${getTitle(olLayer)} has no title defined`,
+      );
+      return;
+    }
+
+    const folder = this.data.folders.get(path);
+    if (!path) {
+      console.warn(
+        `Unexpected. Layer $${getTitle(olLayer)} belongs to path ${path} but it could not be found`,
+      );
+      return;
+    }
+
+    folder.layers.splice(folder.layers.indexOf(lyr), 1);
+    if (folder.layers.length === 0) {
+      this.data.folders.delete(path);
     }
   }
 
@@ -538,7 +492,7 @@ export class HsLayerManagerService {
    * @param e - Events emitted by ol.Collection instances are instances of this type.
    */
   layerRemoved(e: CollectionEvent<Layer>): void {
-    this.cleanFolders(e.element);
+    this.cleanFolders(this.getLayerDescriptorForOlLayer(e.element));
     for (let i = 0; i < this.data.layers.length; i++) {
       if (this.data.layers[i].layer == e.element) {
         this.data.layers.splice(i, 1);
@@ -717,10 +671,12 @@ export class HsLayerManagerService {
   }
 
   sortFoldersByZ(): void {
-    this.data.folders.sub_folders.sort(
-      (a, b) =>
-        (a.zIndex < b.zIndex ? -1 : a.zIndex > b.zIndex ? 1 : 0) *
-        (this.hsConfig.reverseLayerList ?? true ? -1 : 1),
+    this.data.folders = new Map(
+      [...this.data.folders.entries()].sort(
+        (a, b) =>
+          (a[1].zIndex < b[1].zIndex ? -1 : a[1].zIndex > b[1].zIndex ? 1 : 0) *
+          (this.hsConfig.reverseLayerList ?? true ? -1 : 1),
+      ),
     );
   }
 

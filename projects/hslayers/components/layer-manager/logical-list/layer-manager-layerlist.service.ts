@@ -7,7 +7,6 @@ import {
   HsLayerSelectorService,
 } from 'hslayers-ng/services/layer-manager';
 import {HsLayerUtilsService} from 'hslayers-ng/services/utils';
-import {getPath} from 'hslayers-ng/common/extensions';
 
 @Injectable({
   providedIn: 'root',
@@ -48,24 +47,6 @@ export class HsLayerListService {
         });
       }
     }
-  }
-
-  /**
-   * Filters layers, and returns only the ones belonging to folder hierarchy level of directive
-   * @returns Filtered HsLayerManagerService layers
-   */
-  filterLayers(folder): Array<HsLayerDescriptor> {
-    const tmp = [];
-    for (const layer of this.hsLayerManagerService.data.layers) {
-      if (
-        getPath(layer.layer) == folder.hsl_path ||
-        ((getPath(layer.layer) == undefined || getPath(layer.layer) == '') &&
-          folder.hsl_path == '')
-      ) {
-        tmp.push(layer);
-      }
-    }
-    return tmp;
   }
 
   private changeSublayerVisibilityState(layer: HsLayerDescriptor, state): void {
