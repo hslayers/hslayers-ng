@@ -139,7 +139,8 @@
                 <span class="align-middle" style="line-height: 2em;">{{ 'LAYERMANAGER.mapContent' | translateHs}}</span>
             </li>
             <ul class="list-group hs-lm-layerlist mb-1"
-                *ngFor="let entry of hsLayerManagerService.data.folders | keyvalue" [hidden]="physicalLayerListEnabled">
+                *ngFor="let entry of hsLayerManagerService.data.folders | keyvalue : keepOrder"
+                [hidden]="physicalLayerListEnabled">
                 <li class="list-group-item hs-lm-layerlist-header list-group-item-primary"
                     *ngIf="hsLayerManagerService.data.folders.size > 1"
                     (click)="entry.value.visible = !entry.value.visible">
