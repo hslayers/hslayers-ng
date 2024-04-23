@@ -1,4 +1,5 @@
 import {
+  AfterViewInit,
   Component,
   ElementRef,
   OnDestroy,
@@ -7,12 +8,25 @@ import {
 } from '@angular/core';
 
 import {Layer} from 'ol/layer';
+import {Observable, Subject, fromEvent, of, throwError, timer} from 'rxjs';
 import {Source} from 'ol/source';
-import {Subject, takeUntil} from 'rxjs';
+import {
+  catchError,
+  debounce,
+  debounceTime,
+  distinctUntilChanged,
+  filter,
+  map,
+  retry,
+  share,
+  startWith,
+  switchMap,
+  take,
+  takeUntil,
+} from 'rxjs/operators';
 
 import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
 import {HsConfig} from 'hslayers-ng/config';
-import {HslayersService} from 'hslayers-ng/core';
 import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsLayerDescriptor} from 'hslayers-ng/types';
@@ -26,6 +40,7 @@ import {
 import {HsPanelBaseComponent} from 'hslayers-ng/common/panels';
 import {HsRemoveLayerDialogService} from 'hslayers-ng/common/remove-multiple';
 import {HsUtilsService} from 'hslayers-ng/services/utils';
+import {HslayersService} from 'hslayers-ng/core';
 import {
   getActive,
   getAttribution,
@@ -39,7 +54,7 @@ import {
 })
 export class HsLayerManagerComponent
   extends HsPanelBaseComponent
-  implements OnInit, OnDestroy {
+  implements OnInit, OnDestroy, AfterViewInit {
   layerEditorRef: ElementRef;
   @ViewChild('layerEditor', {static: false, read: ElementRef}) set content(
     content: ElementRef,
@@ -50,6 +65,11 @@ export class HsLayerManagerComponent
       this.hsLayerManagerService.layerEditorElement = content.nativeElement;
     }
   }
+  @ViewChild('filterInput', {static: false}) filterInput: ElementRef;
+
+  filteredBaselayers$: Observable<HsLayerDescriptor[]>;
+  filteredTerrainlayers$: Observable<HsLayerDescriptor[]>;
+
   map: any;
   shiftDown = false;
   allLayersVisible = false;
@@ -172,6 +192,75 @@ export class HsLayerManagerComponent
     });
   }
 
+  ngAfterViewInit() {
+    /**
+     * Define string filter declared in service
+     */
+    this.hsLayerManagerService.data.filter = this.isVisible$.pipe(
+      /**
+       * Component is constructed despite not being visible (mainPanel) on app init
+       * Thus we cannot keep constructing this stream until layermanager is actually visible
+       * (input is available)
+       */
+      filter((visible) => !!visible),
+      //Make sure filterInput is created
+      debounceTime(0),
+      //Take only the first successfull emission
+      take(1),
+      //Switch to 'input' event of filterInput
+      switchMap(() =>
+        fromEvent(this.filterInput.nativeElement, 'input').pipe(
+          //Extract event value (or use '' as default) and add index to to result value
+          map((event: any, index) => [event.target.value as string, index]),
+          //Init with empty string and no debounce
+          startWith(['', 0]),
+          //Use index to determine timer value. No debounce on init
+          debounce(([_, index]: [string, number]) =>
+            timer(index === 0 ? 0 : 300),
+          ),
+          //Return only fitler string
+          map(([value, _]) => value),
+          distinctUntilChanged(),
+        ),
+      ),
+      //Share result instead of executing separately for each subscriber
+      share(),
+    );
+
+    this.filteredBaselayers$ = this.createFilteredLayerObservable('baselayers');
+    //TODO: This should not be necessary for all hsl app
+    this.filteredTerrainlayers$ =
+      this.createFilteredLayerObservable('terrainLayers');
+  }
+
+  /**
+   * Create observable with error handling for selected layer type
+   */
+  createFilteredLayerObservable(type: 'baselayers' | 'terrainLayers') {
+    return this.hsLayerManagerService.data.filter.pipe(
+      switchMap((filter) => {
+        if (this.hsLayerManagerService.data[type].length === 0) {
+          // If the length is 0, throw an error to trigger the retry logic
+          return throwError(() => new Error(`No ${type} found`));
+        }
+        // Otherwise, proceed with filtering the layers
+        return of(filter);
+      }),
+      map((filter) => {
+        return this.filterLayers(filter, type);
+      }),
+      retry({count: 3, delay: 50}),
+      catchError((err) => {
+        if (err.message === `No ${type} found`) {
+          return of([]);
+        }
+        // Handle the error or complete the stream if too many retries
+        console.error(`Error filtering ${type}`, err);
+        return of([]); // return an empty array or alternative value
+      }),
+    );
+  }
+
   ngOnDestroy(): void {
     this.end.next();
     this.end.complete();
@@ -212,13 +301,14 @@ export class HsLayerManagerComponent
     return this.hsLayerManagerVisibilityService.activateTheme(e);
   }
 
-  baselayerFilter = (item): boolean => {
-    const r = new RegExp(this.hsLayerManagerService.data.filter, 'i');
-    return r.test(item.title);
-  };
-
-  filterLayerTitles(): void {
-    this.hsEventBusService.layerManagerUpdates.next();
+  filterLayers(
+    filter: string,
+    type: 'baselayers' | 'terrainLayers',
+  ): HsLayerDescriptor[] {
+    const r = new RegExp(filter, 'i');
+    return this.hsLayerManagerService.data[type].filter(
+      (layer) => r.test(layer.title) && layer.showInLayerManager,
+    );
   }
 
   toggleVisibilityForAll(): void {

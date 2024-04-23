@@ -30,6 +30,7 @@ import {HsQueuesService} from 'hslayers-ng/services/queues';
 import {HsShareUrlService} from 'hslayers-ng/services/share';
 import {HsToastService} from 'hslayers-ng/common/toast';
 import {HsUtilsService} from 'hslayers-ng/services/utils';
+import {Observable} from 'rxjs';
 import {
   SHOW_IN_LAYER_MANAGER,
   getAbstract,
@@ -70,7 +71,10 @@ export class HsLayermanagerDataObject {
   terrainLayers: any[];
   baselayer?: string;
   box_layers?: Group[];
-  filter: string;
+  /**
+   * Defined from component to allow reactivity
+   */
+  filter: Observable<string>;
   constructor() {
     this.folders = new Map();
     /**
@@ -88,7 +92,6 @@ export class HsLayermanagerDataObject {
      * @public
      */
     this.terrainLayers = [];
-    this.filter = '';
   }
 }
 
