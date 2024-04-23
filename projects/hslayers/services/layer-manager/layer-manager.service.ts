@@ -106,10 +106,6 @@ export class HsLayerManagerService {
   layerEditorElement: any;
 
   mapEventHandlers: EventsKey[];
-  /**
-   * Property for pointer to main map object
-   */
-
   constructor(
     public hsConfig: HsConfig,
     public hsDimensionTimeService: HsDimensionTimeService,
@@ -672,6 +668,9 @@ export class HsLayerManagerService {
     }, 0);
   }
 
+  /**
+   * Sorts folders by z-index.
+   */
   sortFoldersByZ(): void {
     this.data.folders = new Map(
       [...this.data.folders.entries()].sort(
