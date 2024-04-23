@@ -215,6 +215,13 @@ export class HsLayerManagerComponent
     });
   }
 
+  /**
+   * Used in template to preserve order of data.folders map entries
+   */
+  keepOrder = (a, b) => {
+    return 0; // This will keep the order as is in the Map
+  };
+
   ngAfterViewInit() {
     /**
      * Define string filter declared in service
