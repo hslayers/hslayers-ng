@@ -83,7 +83,7 @@
     "share-api-polyfill": "^1.1.1",
     "tslib": "^2.6.2",
     "vega": "5.25.0",
-    "vega-embed": "6.24.0",
+    "vega-embed": "6.25.0",
     "vega-lite": "~5.18.0",
     "xml-js": "^1.6.11",
     "zone.js": "~0.14.4"
