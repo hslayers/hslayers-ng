@@ -1,14 +1,37 @@
 import {
+  AfterViewInit,
   Component,
   ElementRef,
   OnDestroy,
   OnInit,
   ViewChild,
 } from '@angular/core';
-import {Observable, Subject, map, merge, of, startWith, takeUntil} from 'rxjs';
 
 import {Layer} from 'ol/layer';
+import {
+  Observable,
+  Subject,
+  fromEvent,
+  merge,
+  of,
+  throwError,
+  timer,
+} from 'rxjs';
 import {Source} from 'ol/source';
+import {
+  catchError,
+  debounce,
+  debounceTime,
+  distinctUntilChanged,
+  filter,
+  map,
+  retry,
+  share,
+  startWith,
+  switchMap,
+  take,
+  takeUntil,
+} from 'rxjs/operators';
 
 import {
   HsBaseLayerDescriptor,
@@ -43,7 +66,7 @@ import {
 })
 export class HsLayerManagerComponent
   extends HsPanelBaseComponent
-  implements OnInit, OnDestroy
+  implements OnInit, OnDestroy, AfterViewInit
 {
   layerEditorRef: ElementRef;
   @ViewChild('layerEditor', {static: false, read: ElementRef}) set content(
@@ -55,6 +78,11 @@ export class HsLayerManagerComponent
       this.hsLayerManagerService.layerEditorElement = content.nativeElement;
     }
   }
+  @ViewChild('filterInput', {static: false}) filterInput: ElementRef;
+
+  filteredBaselayers$: Observable<HsBaseLayerDescriptor[]>;
+  filteredTerrainlayers$: Observable<HsTerrainLayerDescriptor[]>;
+
   map: any;
   shiftDown = false;
   allLayersVisible = false;
@@ -187,6 +215,97 @@ export class HsLayerManagerComponent
     });
   }
 
+  ngAfterViewInit() {
+    /**
+     * Define string filter declared in service
+     */
+    this.hsLayerManagerService.data.filter = this.isVisible$.pipe(
+      /**
+       * Component is constructed despite not being visible (mainPanel) on app init
+       * Thus we cannot keep constructing this stream until layermanager is actually visible
+       * (input is available)
+       */
+      filter((visible) => !!visible),
+      //Make sure filterInput is created
+      debounceTime(0),
+      //Take only the first successfull emission
+      take(1),
+      //Switch to 'input' event of filterInput
+      switchMap(() =>
+        fromEvent(this.filterInput.nativeElement, 'input').pipe(
+          //Extract event value (or use '' as default) and add index to to result value
+          map((event: any, index) => [event.target.value as string, index]),
+          //Init with empty string and no debounce
+          startWith(['', 0]),
+          //Use index to determine timer value. No debounce on init
+          debounce(([_, index]: [string, number]) =>
+            timer(index === 0 ? 0 : 300),
+          ),
+          //Return only fitler string
+          map(([value, _]) => value),
+          distinctUntilChanged(),
+        ),
+      ),
+      //Share result instead of executing separately for each subscriber
+      share(),
+    );
+
+    this.filteredBaselayers$ = this.createFilteredLayerObservable('baselayers');
+    //TODO: This should not be necessary for all hsl app
+    this.filteredTerrainlayers$ =
+      this.createFilteredLayerObservable('terrainLayers');
+  }
+
+  /**
+   * Create observable with error handling for selected layer type
+   */
+  // Overload signatures
+  createFilteredLayerObservable(
+    type: 'baselayers',
+  ): Observable<HsBaseLayerDescriptor[]>;
+  createFilteredLayerObservable(
+    type: 'terrainLayers',
+  ): Observable<HsTerrainLayerDescriptor[]>;
+
+  //Implementation
+  createFilteredLayerObservable(
+    type: 'baselayers' | 'terrainLayers',
+  ): Observable<HsBaseLayerDescriptor[] | HsTerrainLayerDescriptor[]> {
+    return this.hsLayerManagerService.data.filter.pipe(
+      switchMap((filter) => {
+        if (this.hsLayerManagerService.data[type].length === 0) {
+          return throwError(() => new Error(`No ${type} found`));
+        }
+        return of(filter);
+      }),
+      map((filter) => this.filterLayers(filter, type)),
+      retry({count: 3, delay: 50}),
+      catchError((err) => this.handleFilterLayerError(err, type)),
+    );
+  }
+
+  private handleFilterLayerError<T extends 'baselayers' | 'terrainLayers'>(
+    err: any,
+    type: T,
+  ): Observable<HsBaseLayerDescriptor[] | HsTerrainLayerDescriptor[]> {
+    console.error(`Error filtering ${type}`, err);
+    if (err.message === `No ${type} found`) {
+      return this.emptyResult(type);
+    }
+    return this.emptyResult(type);
+  }
+
+  /**
+   * Return emtpy layers result as a result of error while filtering
+   */
+  private emptyResult<T extends 'baselayers' | 'terrainLayers'>(
+    type: T,
+  ): Observable<HsBaseLayerDescriptor[] | HsTerrainLayerDescriptor[]> {
+    return type === 'baselayers'
+      ? of([] as HsBaseLayerDescriptor[])
+      : of([] as HsTerrainLayerDescriptor[]);
+  }
+
   ngOnDestroy(): void {
     this.end.next();
     this.end.complete();
@@ -227,13 +346,22 @@ export class HsLayerManagerComponent
     return this.hsLayerManagerVisibilityService.activateTheme(e);
   }
 
-  baselayerFilter = (item): boolean => {
-    const r = new RegExp(this.hsLayerManagerService.data.filter, 'i');
-    return r.test(item.title);
-  };
-
-  filterLayerTitles(): void {
-    this.hsEventBusService.layerManagerUpdates.next();
+  filterLayers(
+    filter: string,
+    type: 'baselayers' | 'terrainLayers',
+  ): HsBaseLayerDescriptor[] | HsTerrainLayerDescriptor[] {
+    const r = new RegExp(filter, 'i');
+    if (type === 'baselayers') {
+      // Filter and cast to HsBaseLayerDescriptor[]
+      return this.hsLayerManagerService.data.baselayers.filter(
+        (layer) => r.test(layer.title) && layer.showInLayerManager,
+      ) as HsBaseLayerDescriptor[];
+    } else {
+      // Filter and cast to HsTerrainLayerDescriptor[]
+      return this.hsLayerManagerService.data.terrainLayers.filter((layer) =>
+        r.test(layer.title),
+      ) as HsTerrainLayerDescriptor[];
+    }
   }
 
   toggleVisibilityForAll(): void {

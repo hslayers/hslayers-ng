@@ -8,4 +8,6 @@ export type HsTerrainLayerDescriptor = {
    */
   options?;
   type?: 'terrain';
+  abstract?: string;
+  grayed?: boolean;
 };
