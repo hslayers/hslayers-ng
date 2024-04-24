@@ -51,7 +51,7 @@ export class HsGuiOverlayBaseComponent implements HsPanelComponent, OnInit {
   }
 
   /**
-   * Determine component visiblity
+   * Determine component visibility
    */
   componentEnabled(): Observable<boolean> {
     return of(
