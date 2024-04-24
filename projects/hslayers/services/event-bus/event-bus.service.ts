@@ -113,7 +113,10 @@ export class HsEventBusService {
    * replaces 'measure.drawEnd'
    */
   measurementEnds: Subject<void> = new Subject();
-  cesiumLoads: Subject<{viewer; service}> = new Subject();
+  cesiumLoads: BehaviorSubject<{viewer; service}> = new BehaviorSubject({
+    viewer: null,
+    service: null,
+  });
   cesiumResizes: Subject<{viewer; service}> = new Subject();
   zoomTo: Subject<any> = new Subject();
   /**
