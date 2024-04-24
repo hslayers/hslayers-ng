@@ -5,10 +5,10 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
+import {Observable, Subject, map, merge, of, takeUntil} from 'rxjs';
 
 import {Layer} from 'ol/layer';
 import {Source} from 'ol/source';
-import {Subject, takeUntil} from 'rxjs';
 
 import {
   HsBaseLayerDescriptor,
@@ -43,7 +43,8 @@ import {
 })
 export class HsLayerManagerComponent
   extends HsPanelBaseComponent
-  implements OnInit, OnDestroy {
+  implements OnInit, OnDestroy
+{
   layerEditorRef: ElementRef;
   @ViewChild('layerEditor', {static: false, read: ElementRef}) set content(
     content: ElementRef,
@@ -61,7 +62,7 @@ export class HsLayerManagerComponent
   layerlistVisible: boolean;
   hovering: boolean;
   physicalLayerListEnabled = false;
-  isCesiumActive = false;
+  cesiumActive$ = new Observable<boolean>();
   icons = [
     'bag1.svg',
     'banking4.svg',
@@ -132,6 +133,16 @@ export class HsLayerManagerComponent
     private hsCommonLaymanService: HsCommonLaymanService,
   ) {
     super();
+    this.cesiumActive$ = of(false);
+    this.cesiumActive$ = merge(
+      this.hsEventBusService.cesiumLoads.pipe(
+        map(({service}) => service !== null),
+      ),
+      this.hsEventBusService.mapLibraryChanges.pipe(
+        map((lib) => lib === 'cesium'),
+      ),
+    );
+
     this.hsEventBusService.layerRemovals
       .pipe(takeUntil(this.end))
       .subscribe((layer) => {
@@ -185,12 +196,6 @@ export class HsLayerManagerComponent
   ngOnInit(): void {
     this.layerTooltipDelay = this.hsConfig.layerTooltipDelay;
     this.layerlistVisible = true;
-    this.hsEventBusService.cesiumLoads.subscribe(
-      () => (this.isCesiumActive = true),
-    );
-    this.hsEventBusService.mapLibraryChanges.subscribe(
-      (lib) => (this.isCesiumActive = lib == 'cesium' ? true : false),
-    );
     super.ngOnInit();
   }
 
