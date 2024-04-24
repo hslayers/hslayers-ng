@@ -90,9 +90,9 @@
 
         <!-- TERRAIN LAYERS -->
         <ul class="list-group hs-lm-baselayerlist" [hidden]="!(hsLayerManagerService.data.terrainLayers.length > 0)">
-            <li class="list-group-item hs-lm-item hs-lm-header clearfix" [ngClass]="isCesiumActive ? 'list-group-item-primary' : 'list-group-item-dark'">
+            <li class="list-group-item hs-lm-item hs-lm-header clearfix" [ngClass]="(cesiumActive$ | async) ? 'list-group-item-primary' : 'list-group-item-dark'">
                 <div class="d-flex">
-                    <div class="p-0 flex-grow-1 hs-lm-item-title" [ngClass]="{'text-muted': !isCesiumActive}">
+                    <div class="p-0 flex-grow-1 hs-lm-item-title" [ngClass]="{'text-muted': (cesiumActive$ | async) === false}">
                         <span class="align-middle" style="line-height: 2em;">{{ 'LAYERMANAGER.terrains' |
                             translateHs}}</span>
                     </div>
@@ -103,7 +103,7 @@
                 [ngClass]="{'hs-lm-deactivated-layer': !layer.active}">
                 <div class="d-flex ">
                     <div class="p-0">
-                        @if (isCesiumActive) {
+                        @if (cesiumActive$ | async) {
                             <button type="button" class="btn btn-sm btn-light hs-lm-item-visibility"
                                 (click)="changeTerrainLayerVisibility($event, layer)"
                                 [ngClass]="(hsLayerManagerVisibilityService.baselayersVisible && layer.visible) ? 'hs-checkmark' : 'hs-uncheckmark'"></button>
