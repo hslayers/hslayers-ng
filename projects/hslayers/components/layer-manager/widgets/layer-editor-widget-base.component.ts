@@ -22,14 +22,28 @@ export class HsLayerEditorWidgetBaseComponent
   olLayer: Layer;
   isVisible$ = new BehaviorSubject<boolean>(true);
 
+  baseComponentInitRun = false;
+
   private ngBaseUnsubscribe = new Subject<void>();
   constructor(public hsLayerSelectorService: HsLayerSelectorService) {
     this.layerDescriptor.subscribe((descriptor) => {
       this.olLayer = descriptor?.layer;
     });
+
+    setTimeout(() => {
+      if (!this.baseComponentInitRun) {
+        console.warn(
+          `${
+            this.name || this.constructor.name
+          } implements ngOnInit lifecycle hook without calling HsLayerEditorWidgetBaseComponent ngOnInit. 
+          Make sure it is executed by calling super.ngOnInit() from component's ngOnInit manually`,
+        );
+      }
+    }, 3000);
   }
 
   ngOnInit() {
+    this.baseComponentInitRun = true;
     this.layerDescriptor.next(this.hsLayerSelectorService.currentLayer);
 
     this.hsLayerSelectorService.layerSelected
