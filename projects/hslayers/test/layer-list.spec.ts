@@ -37,6 +37,7 @@ import {HsUtilsServiceMock} from './utils.service.mock';
 
 import {mockHsLayerListService} from './layer-manager-layerlist.service.mock';
 import {mockLayerUtilsService} from './layer-utils.service.mock';
+import {of} from 'rxjs';
 import {wmsGetCapabilitiesResponse} from './data/wms-capabilities';
 
 class emptyMock {
@@ -84,7 +85,6 @@ describe('layermanager-layer-list', () => {
       ],
       declarations: [HsLayerListComponent],
       providers: [
-        HsLayerManagerService,
         {provide: HsLayerListService, useValue: mockHsLayerListService()},
         {provide: HsArcgisGetCapabilitiesService, useValue: new emptyMock()},
         {provide: HsWmtsGetCapabilitiesService, useValue: new emptyMock()},
@@ -129,8 +129,12 @@ describe('layermanager-layer-list', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(HsLayerListComponent);
     hsConfig = TestBed.inject(HsConfig);
+
+    const hsLayerManagerService = TestBed.inject(HsLayerManagerService);
+    hsLayerManagerService.data.filter = of('');
+
     component = fixture.componentInstance;
-    component.folder = {layers: []};
+    component.folder = {layers: [], zIndex: 0};
     fixture.detectChanges();
     hsConfig.reverseLayerList = true;
   });
