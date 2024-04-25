@@ -89,41 +89,49 @@
         </ul>
 
         <!-- TERRAIN LAYERS -->
-        <ul class="list-group hs-lm-baselayerlist" [hidden]="!(hsLayerManagerService.data.terrainLayers.length > 0)">
-            <li class="list-group-item hs-lm-item hs-lm-header clearfix" [ngClass]="(cesiumActive$ | async) ? 'list-group-item-primary' : 'list-group-item-dark'">
-                <div class="d-flex">
-                    <div class="p-0 flex-grow-1 hs-lm-item-title" [ngClass]="{'text-muted': (cesiumActive$ | async) === false}">
-                        <span class="align-middle" style="line-height: 2em;">{{ 'LAYERMANAGER.terrains' |
-                            translateHs}}</span>
+        <ng-container *ngIf="{active: cesiumActive$ | async} as cesium">
+            <ul class="list-group hs-lm-baselayerlist"
+                [hidden]="!(hsLayerManagerService.data.terrainLayers.length > 0)">
+                <li class="list-group-item hs-lm-item hs-lm-header clearfix"
+                    [ngClass]="cesium.active ? 'list-group-item-primary' : 'list-group-item-dark'">
+                    <div class="d-flex">
+                        <div class="p-0 flex-grow-1 hs-lm-item-title"
+                            [ngClass]="{'text-muted': cesium.active === false}">
+                            <span class="align-middle" style="line-height: 2em;">{{ 'LAYERMANAGER.terrains' |
+                                translateHs}}</span>
+                        </div>
                     </div>
-                </div>
-            </li>
-            <li class="list-group-item hs-lm-item my-2 my-md-0"
-                *ngFor="let layer of hsLayerManagerService.data.terrainLayers | filter:baselayerFilter" 
-                [ngClass]="{'hs-lm-deactivated-layer': !layer.active}">
-                <div class="d-flex ">
-                    <div class="p-0">
-                        @if (cesiumActive$ | async) {
+                </li>
+                <li class="list-group-item hs-lm-item my-2 my-md-0"
+                    *ngFor="let layer of hsLayerManagerService.data.terrainLayers | filter:baselayerFilter"
+                    [ngClass]="{'hs-lm-deactivated-layer': !layer.active}">
+                    <div class="d-flex ">
+                        <div class="p-0">
+                            @if (cesium.active) {
                             <button type="button" class="btn btn-sm btn-light hs-lm-item-visibility"
                                 (click)="changeTerrainLayerVisibility($event, layer)"
                                 [ngClass]="(hsLayerManagerVisibilityService.baselayersVisible && layer.visible) ? 'hs-checkmark' : 'hs-uncheckmark'"></button>
-                        } @else {
+                            } @else {
                             <span class="btn btn-sm text-muted">
-                                <i class="glyphicon icon-globealt" [title]="'LAYERMANAGER.terrainOnlyIn3d' | translateHs"></i>
+                                <i class="glyphicon icon-globealt"
+                                    [title]="'LAYERMANAGER.terrainOnlyIn3d' | translateHs"></i>
                             </span>
-                        }
+                            }
+                        </div>
+                        <ng-template #abstractTooltip>
+                            <span
+                                [innerHtml]="hsLayerManagerService.makeSafeAndTranslate('LAYERS', layer.abstract)"></span>
+                        </ng-template>
+                        <div class="align-items-center p-0 flex-grow-1 hs-lm-item-title" style="cursor:context-menu"
+                            [ngClass]="{'fw-bold': layer.active, 'text-muted': layer.grayed}"
+                            [ngbTooltip]="layer.abstract ? abstractTooltip : ''" [closeDelay]="layerTooltipDelay">
+                            {{layer.title | translateHs : {module: 'LAYERS'} }}
+                        </div>
                     </div>
-                    <ng-template #abstractTooltip>
-                        <span [innerHtml]="hsLayerManagerService.makeSafeAndTranslate('LAYERS', layer.abstract)"></span>
-                    </ng-template>
-                    <div class="align-items-center p-0 flex-grow-1 hs-lm-item-title" style="cursor:context-menu"
-                        [ngClass]="{'fw-bold': layer.active, 'text-muted': layer.grayed}"
-                        [ngbTooltip]="layer.abstract ? abstractTooltip : ''" [closeDelay]="layerTooltipDelay">
-                        {{layer.title | translateHs : {module: 'LAYERS'} }}
-                    </div>
-                </div>
-            </li>
-        </ul>
+                </li>
+            </ul>
+        </ng-container>
+
 
         <!-- THEMATIC LAYERS -->
         <ul class="list-group hs-lm-mapcontentlist">
