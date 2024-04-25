@@ -34,6 +34,7 @@ import {HsPanelHelpersModule} from 'hslayers-ng/common/panels';
 import {HsScaleWidgetComponent} from './widgets/scale-widget.component';
 import {HsTypeWidgetComponent} from './widgets/type-widget.component';
 import {HsWmsSourceWidgetComponent} from './widgets/wms-source-widget/wms-source-widget.component';
+import {LayerFolderWidgetComponent} from './widgets/layer-folder-widget/layer-folder-widget.component';
 import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 
 @NgModule({
@@ -72,6 +73,7 @@ import {TranslateCustomPipe} from 'hslayers-ng/services/language';
     DragDropModule,
     HsColormapPickerModule,
     HsWmsSourceWidgetComponent,
+    LayerFolderWidgetComponent,
     HsPanelHeaderComponent,
     FilterPipe,
   ],

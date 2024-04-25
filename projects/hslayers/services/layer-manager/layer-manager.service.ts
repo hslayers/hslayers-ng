@@ -1,5 +1,6 @@
+import {BehaviorSubject, Observable, scan, share, startWith, tap} from 'rxjs';
 import {DomSanitizer, SafeHtml} from '@angular/platform-browser';
-import {Injectable} from '@angular/core';
+import {Injectable, Signal} from '@angular/core';
 
 import {CollectionEvent} from 'ol/Collection';
 import {EventsKey} from 'ol/events';
@@ -16,13 +17,9 @@ import {HsDimensionTimeService} from 'hslayers-ng/services/get-capabilities';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsLanguageService} from 'hslayers-ng/services/language';
 import {HsLayerDescriptor} from 'hslayers-ng/types';
-import {HsLayerEditorVectorLayerService} from './layer-editor-vector-layer.service';
-import {HsLayerManagerLoadingProgressService} from './layer-manager-loading-progress.service';
-import {HsLayerManagerMetadataService} from './layer-manager-metadata.service';
-import {HsLayerManagerUtilsService} from './layer-manager-utils.service';
-import {HsLayerManagerVisibilityService} from './layer-manager-visibility.service';
 import {HsLayerSelectorService} from './layer-selector.service';
 import {HsLayerUtilsService} from 'hslayers-ng/services/utils';
+import {HsLayermanagerFolder} from 'hslayers-ng/types';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsLogService} from 'hslayers-ng/services/log';
 import {HsMapService} from 'hslayers-ng/services/map';
@@ -31,7 +28,6 @@ import {HsShareUrlService} from 'hslayers-ng/services/share';
 import {HsTerrainLayerDescriptor} from 'hslayers-ng/types';
 import {HsToastService} from 'hslayers-ng/common/toast';
 import {HsUtilsService} from 'hslayers-ng/services/utils';
-import {Observable} from 'rxjs';
 import {
   SHOW_IN_LAYER_MANAGER,
   getAbstract,
@@ -55,18 +51,20 @@ import {
   setGreyscale,
   setName,
   setOrigLayers,
-  setPath,
 } from 'hslayers-ng/common/extensions';
 
-export type HsLayermanagerFolder = {
-  layers: HsLayerDescriptor[];
-  zIndex: number;
-  visible?: boolean;
-};
+import {HsLayerEditorVectorLayerService} from './layer-editor-vector-layer.service';
+import {HsLayerManagerFolderService} from './layer-manager-folder.service';
+import {HsLayerManagerLoadingProgressService} from './layer-manager-loading-progress.service';
+import {HsLayerManagerMetadataService} from './layer-manager-metadata.service';
+import {HsLayerManagerUtilsService} from './layer-manager-utils.service';
+import {HsLayerManagerVisibilityService} from './layer-manager-visibility.service';
+import {toSignal} from '@angular/core/rxjs-interop';
 
 export class HsLayermanagerDataObject {
   // Folders object for structure of layers.
-  folders: Map<string, HsLayermanagerFolder>;
+  folders: Signal<Map<string, HsLayermanagerFolder>>;
+  folders$: Observable<Map<string, HsLayermanagerFolder>>;
   layers: HsLayerDescriptor[];
   baselayers: HsBaseLayerDescriptor[];
   terrainLayers: HsTerrainLayerDescriptor[];
@@ -77,7 +75,6 @@ export class HsLayermanagerDataObject {
    */
   filter: Observable<string>;
   constructor() {
-    this.folders = new Map();
     /**
      * List of all layers (baselayers are excluded) loaded in LayerManager.
      * @public
@@ -127,10 +124,23 @@ export class HsLayerManagerService {
     public sanitizer: DomSanitizer,
     private hsLayerManagerUtilsService: HsLayerManagerUtilsService,
     private hsLayerManagerVisibilityService: HsLayerManagerVisibilityService,
+    private folderService: HsLayerManagerFolderService,
     private hsLoadingProgressService: HsLayerManagerLoadingProgressService,
   ) {
     //Keeps 'data' object intact and in one place while allowing to split method between more services
     this.hsLayerManagerVisibilityService.data = this.data;
+    this.folderService.data = this.data;
+
+    // Handle the state accumulation via the reducer
+    this.data.folders$ = this.folderService.folderAction$.pipe(
+      scan(
+        (acc, value) => this.folderService.foldersReducer(acc, value),
+        new Map<string, HsLayermanagerFolder>(),
+      ),
+      share(),
+    );
+    this.data.folders = toSignal(this.data.folders$);
+
     this.hsEventBusService.layerManagerUpdates.subscribe((layer) => {
       this.refreshLists();
     });
@@ -158,7 +168,7 @@ export class HsLayerManagerService {
         );
       }
 
-      this.sortFoldersByZ();
+      this.folderService.folderAction$.next(this.folderService.sortByZ());
       this.sortLayersByZ(this.data.layers);
       this.hsEventBusService.layerManagerUpdates.next(null);
       this.toggleEditLayerByUrlParam();
@@ -281,14 +291,18 @@ export class HsLayerManagerService {
         layerDescriptor.showInLayerManager =
           getShowInLayerManager(layer) ?? true;
         if (layerDescriptor.showInLayerManager) {
-          this.populateFolders(layerDescriptor);
+          this.folderService.folderAction$.next(
+            this.folderService.addLayer(layerDescriptor),
+          );
         }
       }
     });
 
     if (getBase(layer) !== true) {
       if (showInLayerManager) {
-        this.populateFolders(layerDescriptor);
+        this.folderService.folderAction$.next(
+          this.folderService.addLayer(layerDescriptor),
+        );
       }
       layerDescriptor.legends = getLegends(layer);
       this.data.layers.push(layerDescriptor);
@@ -348,7 +362,7 @@ export class HsLayerManagerService {
     //   this.data.baselayer = this.HsLayerUtilsService.getLayerTitle(layer);
     // }
 
-    this.sortFoldersByZ();
+    this.folderService.folderAction$.next(this.folderService.sortByZ());
     if (!suspendEvents) {
       this.hsEventBusService.layerAdditions.next(layerDescriptor);
       this.hsEventBusService.layerManagerUpdates.next(layer);
@@ -421,77 +435,17 @@ export class HsLayerManagerService {
   }
 
   /**
-   * Place layer into layer manager folder structure based on path property hsl-path of layer
-   * @param lyr - Layer to add into folder structure
-   */
-  populateFolders(lyr: HsLayerDescriptor): void {
-    const olLayer = lyr.layer;
-    let path = getPath(olLayer);
-    if (
-      !path ||
-      path == 'Other' ||
-      this.hsLanguageService
-        .getTranslation('LAYERMANAGER')
-        ['other']?.toLowerCase() === path.toLowerCase()
-    ) {
-      path = 'other';
-      setPath(olLayer, path);
-    }
-    const zIndex = olLayer.getZIndex();
-
-    if (!this.data.folders.has(path)) {
-      this.data.folders.set(path, {
-        layers: [lyr],
-        zIndex: zIndex,
-        visible: true,
-      });
-      return;
-    }
-    const folder = this.data.folders.get(path);
-    folder.layers.push(lyr);
-    folder.zIndex = folder.zIndex < zIndex ? zIndex : folder.zIndex;
-  }
-
-  /**
-   * Remove layer from layer folder and clean empty folder
-   * @param lyr - Layer to remove from layer folder
-   */
-  cleanFolders(lyr: HsLayerDescriptor): void {
-    const olLayer = lyr.layer;
-    if (getShowInLayerManager(olLayer) == false) {
-      return;
-    }
-
-    const path = getPath(olLayer);
-    if (!path) {
-      console.warn(
-        `Unexpected. Layer $${getTitle(olLayer)} has no title defined`,
-      );
-      return;
-    }
-
-    const folder = this.data.folders.get(path);
-    if (!path) {
-      console.warn(
-        `Unexpected. Layer $${getTitle(olLayer)} belongs to path ${path} but it could not be found`,
-      );
-      return;
-    }
-
-    folder.layers.splice(folder.layers.indexOf(lyr), 1);
-    if (folder.layers.length === 0) {
-      this.data.folders.delete(path);
-    }
-  }
-
-  /**
    * Callback function for removing layer. Clean layers variables
    * (PRIVATE)
    * @private
    * @param e - Events emitted by ol.Collection instances are instances of this type.
    */
   layerRemoved(e: CollectionEvent<Layer>): void {
-    this.cleanFolders(this.getLayerDescriptorForOlLayer(e.element));
+    this.folderService.folderAction$.next(
+      this.folderService.removeLayer(
+        this.getLayerDescriptorForOlLayer(e.element),
+      ),
+    );
     for (let i = 0; i < this.data.layers.length; i++) {
       if (this.data.layers[i].layer == e.element) {
         this.data.layers.splice(i, 1);
@@ -667,19 +621,6 @@ export class HsLayerManagerService {
       layer.layer.getSource().changed();
       layer.galleryMiniMenu = false;
     }, 0);
-  }
-
-  /**
-   * Sorts folders by z-index.
-   */
-  sortFoldersByZ(): void {
-    this.data.folders = new Map(
-      [...this.data.folders.entries()].sort(
-        (a, b) =>
-          (a[1].zIndex < b[1].zIndex ? -1 : a[1].zIndex > b[1].zIndex ? 1 : 0) *
-          (this.hsConfig.reverseLayerList ?? true ? -1 : 1),
-      ),
-    );
   }
 
   resolutionChangeDebounceCallback(): void {
