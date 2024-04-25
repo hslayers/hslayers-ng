@@ -9,6 +9,7 @@ export * from './map-swipe.type';
 export * from './layer-manager/base-layer-descriptor.interface';
 export * from './layer-manager/layer-descriptor.interface';
 export * from './layer-manager/terrain-layer-descriptor.type';
+export * from './layer-manager/folder.type';
 
 export * from './get-capabilities/capabilities-response-wrapper';
 export * from './get-capabilities/wms-get-capabilities-response.interface';
