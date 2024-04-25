@@ -35,6 +35,7 @@ import {HsScaleWidgetComponent} from '../widgets/scale-widget.component';
 import {HsStylerService} from 'hslayers-ng/services/styler';
 import {HsTypeWidgetComponent} from '../widgets/type-widget.component';
 import {HsWmsSourceWidgetComponent} from '../widgets/wms-source-widget/wms-source-widget.component';
+import {LayerFolderWidgetComponent} from '../widgets/layer-folder-widget/layer-folder-widget.component';
 import {
   getBase,
   getCachedCapabilities,
@@ -96,6 +97,7 @@ export class HsLayerEditorComponent {
       HsScaleWidgetComponent,
       HsLegendWidgetComponent,
       HsLayerEditorDimensionsComponent,
+      LayerFolderWidgetComponent,
       HsOpacityWidgetComponent,
       HsIdwWidgetComponent,
       HsWmsSourceWidgetComponent,

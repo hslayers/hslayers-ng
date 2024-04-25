@@ -1,17 +1,16 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Observable, map, of} from 'rxjs';
-import {combineLatestWith} from 'rxjs/operators';
+import {combineLatestWith, filter, startWith} from 'rxjs/operators';
 
 import {HsConfig} from 'hslayers-ng/config';
 import {HsDimensionTimeService} from 'hslayers-ng/services/get-capabilities';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
-import {HsLayerDescriptor} from 'hslayers-ng/types';
+import {HsLayerDescriptor, HsLayermanagerFolder} from 'hslayers-ng/types';
 import {HsLayerListService} from './layer-manager-layerlist.service';
 import {
   HsLayerManagerService,
   HsLayerManagerVisibilityService,
   HsLayerSelectorService,
-  HsLayermanagerFolder,
 } from 'hslayers-ng/services/layer-manager';
 import {HsLayerUtilsService} from 'hslayers-ng/services/utils';
 import {
@@ -19,13 +18,14 @@ import {
   getExclusive,
   getHsLaymanSynchronizing,
 } from 'hslayers-ng/common/extensions';
+import {toObservable} from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'hs-layer-manager-layer-list',
   templateUrl: './layer-manager-layerlist.component.html',
 })
-export class HsLayerListComponent implements OnInit {
-  @Input() folder: HsLayermanagerFolder;
+export class HsLayerListComponent {
+  @Input() folder: string;
   /**
    * List of layers which belong to folder hierarchy level of directive instance
    */
@@ -41,12 +41,19 @@ export class HsLayerListComponent implements OnInit {
     public hsLayerUtilsService: HsLayerUtilsService,
     public hsLayerListService: HsLayerListService,
     public hsLayerManagerVisibilityService: HsLayerManagerVisibilityService,
-  ) {}
-
-  ngOnInit() {
+  ) {
     this.filteredLayers = this.hsLayerManagerService.data.filter.pipe(
-      combineLatestWith(of(this.folder.layers)),
-      map(([filter, layers]) => this.filterLayers(layers, filter)),
+      startWith(''),
+      combineLatestWith(
+        toObservable(this.hsLayerManagerService.data.folders).pipe(
+          map((folders) => {
+            return folders.get(this.folder);
+          }),
+          startWith({layers: [], zIndex: 0}),
+        ),
+      ),
+      filter(([_, folder]) => !!folder),
+      map(([filter, folder]) => this.filterLayers(folder, filter)),
     );
   }
 
@@ -60,11 +67,11 @@ export class HsLayerListComponent implements OnInit {
   }
 
   filterLayers(
-    layers: HsLayerDescriptor[],
+    folder: HsLayermanagerFolder,
     filter: string,
   ): HsLayerDescriptor[] {
     const regex = new RegExp(filter, 'i');
-    return layers.filter(
+    return folder.layers.filter(
       (layer) => regex.test(layer.title) && layer.showInLayerManager,
     );
   }

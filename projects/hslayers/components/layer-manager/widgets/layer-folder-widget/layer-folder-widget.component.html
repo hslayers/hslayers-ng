@@ -1,0 +1,18 @@
+<div *ngIf="isEnabled | async" class="pb-1 border-bottom">
+    <div>
+        <p style="text-align: center; font-weight: bold">
+            {{ "COMMON.folder" | translateHs }}
+        </p>
+        <label for="hs-move-to-folder-input" class="form-label">Move to:</label>
+        <div class="input-group mb-3">
+            <input [formControl]="pathControl" class="form-control" list="pathsAvailable" id="hs-move-to-folder-input"
+                placeholder="Type to search or define..." aria-describedby="hs-move-to-folder-btn">
+            <button class="btn btn-outline-secondary" type="button" id="hs-move-to-folder-btn"
+                (click)="moveLayerToNewFolder()" [disabled]="!pathControl.valid">Move</button>
+        </div>
+        <datalist id="pathsAvailable">
+            @for(folder of availableFolders | async; track $index)
+            { <option [value]="folder"> }
+        </datalist>
+    </div>
+</div>
