@@ -5,7 +5,7 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import {Observable, Subject, map, merge, of, takeUntil} from 'rxjs';
+import {Observable, Subject, map, merge, of, startWith, takeUntil} from 'rxjs';
 
 import {Layer} from 'ol/layer';
 import {Source} from 'ol/source';
@@ -62,7 +62,7 @@ export class HsLayerManagerComponent
   layerlistVisible: boolean;
   hovering: boolean;
   physicalLayerListEnabled = false;
-  cesiumActive$ = new Observable<boolean>();
+  cesiumActive$: Observable<boolean>;
   icons = [
     'bag1.svg',
     'banking4.svg',
@@ -133,7 +133,6 @@ export class HsLayerManagerComponent
     private hsCommonLaymanService: HsCommonLaymanService,
   ) {
     super();
-    this.cesiumActive$ = of(false);
     this.cesiumActive$ = merge(
       this.hsEventBusService.cesiumLoads.pipe(
         map(({service}) => service !== null),
@@ -141,7 +140,7 @@ export class HsLayerManagerComponent
       this.hsEventBusService.mapLibraryChanges.pipe(
         map((lib) => lib === 'cesium'),
       ),
-    );
+    ).pipe(startWith(false));
 
     this.hsEventBusService.layerRemovals
       .pipe(takeUntil(this.end))
