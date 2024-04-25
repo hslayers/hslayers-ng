@@ -139,10 +139,10 @@
                 <span class="align-middle" style="line-height: 2em;">{{ 'LAYERMANAGER.mapContent' | translateHs}}</span>
             </li>
             <ul class="list-group hs-lm-layerlist mb-1"
-                *ngFor="let entry of hsLayerManagerService.data.folders | keyvalue : keepOrder"
+                *ngFor="let entry of hsLayerManagerService.data.folders() | keyvalue : keepOrder"
                 [hidden]="physicalLayerListEnabled">
                 <li class="list-group-item hs-lm-layerlist-header list-group-item-primary"
-                    *ngIf="hsLayerManagerService.data.folders.size > 1"
+                    *ngIf="hsLayerManagerService.data.folders().size > 1"
                     (click)="entry.value.visible = !entry.value.visible">
                     <span>{{entry.key | translateHs : {module: 'LAYERMANAGER'} }}&nbsp;</span>
                     <span class="glyphicon"
@@ -150,7 +150,7 @@
                 </li>
                 <div [hidden]="!entry.value.visible">
                     <li>
-                        <hs-layer-manager-layer-list [folder]="entry.value"></hs-layer-manager-layer-list>
+                        <hs-layer-manager-layer-list [folder]="entry.key"></hs-layer-manager-layer-list>
                     </li>
                 </div>
             </ul>
@@ -172,5 +172,5 @@
         <hs-layer-editor [currentLayer]="hsLayerSelectorService.currentLayer" #layerEditor
             [hidden]="!hsLayerSelectorService.currentLayer" class="hs-layerpanel w-100">
         </hs-layer-editor>
+        </ div>
     </div>
-</div>

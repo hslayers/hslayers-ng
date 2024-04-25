@@ -1,4 +1,4 @@
-<div class="list-group-item hs-lm-list pb-1" *ngIf="folder.layers.length>0">
+<div class="list-group-item hs-lm-list pb-1" *ngIf="(filteredLayers | async ).length>0">
     <ul class="list-group row">
         <!-- TODO: Remove function call from template -->
         <li *ngFor="let layer of filteredLayers | async " [id]="layer.idString()"
