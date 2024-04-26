@@ -98,7 +98,7 @@
     "@angular-eslint/schematics": "^17.3.0",
     "@angular-eslint/template-parser": "^17.3.0",
     "@angular/cli": "^17.3.5",
-    "@angular/compiler-cli": "^17.3.5",
+    "@angular/compiler-cli": "^17.3.6",
     "@commitlint/cli": "^19.3.0",
     "@commitlint/config-conventional": "^19.2.2",
     "@compodoc/compodoc": "^1.1.24",
