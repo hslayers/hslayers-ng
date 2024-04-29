@@ -613,7 +613,9 @@
       "changeLayerType": "Naozaj chcete zmeniť typ vrstvy?",
       "layerTypeChangeNote": "Zmena môže ovplyvniť rýchlosť načítania",
       "confirmLayerTypeChange": "Potvrďte zmenu typu vrstvy",
-      "styleLayer": "Upraviť štýl vrstvy"
+      "styleLayer": "Upraviť štýl vrstvy",
+      "selectOption": "Vyberte možnosť",
+      "typeFolderName": "Zadajte názov novej zložky"
     },
     "layerList": {
       "layerIsQueryable": "Táto vrstva je dotazovateľná",
@@ -661,7 +663,11 @@
     "toggleAllLayerVisibility": "Prepnúť viditeľnosť všetkých vrstiev",
     "User generated": "Užívateľské",
     "basemapThumbnail": "Náhľad podkladovej mapy",
-    "terrainOnlyIn3d": "Terény sú k dispozícii len v zobrazení 3D"
+    "terrainOnlyIn3d": "Terény sú k dispozícii len v zobrazení 3D",
+    "move": "Presunúť",
+    "moveTo": "Presunúť do",
+    "typeOrSelect": "Zadajte alebo vyberte možnosť...",
+    "newFolder": "<Nová zložka>"
   },
   "LAYERS": {
     "existingLayer": "Existujúca vrstva",

@@ -1,6 +1,18 @@
-import {AsyncPipe, KeyValuePipe, NgIf} from '@angular/common';
-import {Component, ElementRef, OnInit, ViewChild, inject} from '@angular/core';
+import {AsyncPipe, NgIf} from '@angular/common';
+import {
+  Component,
+  ElementRef,
+  OnInit,
+  Signal,
+  ViewChild,
+  computed,
+  inject,
+} from '@angular/core';
 import {FormControl, ReactiveFormsModule, Validators} from '@angular/forms';
+import {
+  HsLanguageService,
+  TranslateCustomPipe,
+} from 'hslayers-ng/services/language';
 import {HsLayerEditorWidgetBaseComponent} from '../layer-editor-widget-base.component';
 import {
   HsLayerManagerFolderService,
@@ -8,7 +20,6 @@ import {
   HsLayerSelectorService,
 } from 'hslayers-ng/services/layer-manager';
 import {Observable, map} from 'rxjs';
-import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 import {getPath, setPath} from 'hslayers-ng/common/extensions';
 
 @Component({
@@ -16,13 +27,13 @@ import {getPath, setPath} from 'hslayers-ng/common/extensions';
   standalone: true,
   imports: [NgIf, AsyncPipe, TranslateCustomPipe, ReactiveFormsModule],
   templateUrl: './layer-folder-widget.component.html',
-  styleUrl: './layer-folder-widget.component.css',
 })
 export class LayerFolderWidgetComponent
   extends HsLayerEditorWidgetBaseComponent
   implements OnInit {
   hsLayermanagerService = inject(HsLayerManagerService);
   folderService = inject(HsLayerManagerFolderService);
+  languageService = inject(HsLanguageService);
   @ViewChild('pathInput', {static: false}) pathInput: ElementRef;
 
   isEnabled: Observable<boolean>;
@@ -31,7 +42,9 @@ export class LayerFolderWidgetComponent
     Validators.required,
     Validators.minLength(1),
   ]);
-  availableFolders: Observable<string[]>;
+  availableFolders: Signal<string[]>;
+  inputPlaceholder: 'selectOption' | 'typeFolderName' = 'selectOption';
+
   constructor(hsLayerSelectorService: HsLayerSelectorService) {
     super(hsLayerSelectorService);
 
@@ -44,13 +57,21 @@ export class LayerFolderWidgetComponent
 
   ngOnInit(): void {
     super.ngOnInit();
-    this.availableFolders = this.hsLayermanagerService.data.folders$.pipe(
-      map((foldersMap) => {
-        return [...foldersMap.entries()].reduce((acc, [key, value]) => {
-          return key !== getPath(this.olLayer) ? [...acc, key] : acc;
-        }, []);
-      }),
-    );
+    this.availableFolders = computed(() => {
+      const folders = this.hsLayermanagerService.data.folders();
+      return [...folders.entries()].reduce((acc, [key, value]) => {
+        return key !== getPath(this.olLayer) ? [...acc, key] : acc;
+      }, []);
+    });
+
+    this.pathControl.valueChanges.subscribe((val) => {
+      if (
+        val == this.languageService.getTranslation('LAYERMANAGER.newFolder')
+      ) {
+        this.pathControl.setValue('');
+        this.inputPlaceholder = 'typeFolderName';
+      }
+    });
   }
 
   /**
@@ -68,6 +89,11 @@ export class LayerFolderWidgetComponent
         this.folderService.addLayer(this.hsLayerSelectorService.currentLayer),
       );
       this.folderService.folderAction$.next(this.folderService.sortByZ());
+      this.hsLayermanagerService.toggleLayerEditor(
+        this.hsLayerSelectorService.currentLayer,
+        'settings',
+        'sublayers',
+      );
     }
   }
 }
