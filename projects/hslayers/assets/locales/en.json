@@ -613,7 +613,9 @@
       "changeLayerType": "Do you really want to change layer type?",
       "layerTypeChangeNote": "Change might affect loading performance",
       "confirmLayerTypeChange": "Confirm layer type change",
-      "styleLayer": "Style layer"
+      "styleLayer": "Style layer",
+      "selectOption": "Select an option",
+      "typeFolderName": "Type new folder name"
     },
     "layerList": {
       "layerIsQueryable": "This layer is queryable",
@@ -661,7 +663,11 @@
     "toggleAllLayerVisibility": "Toggle visibility of all layers",
     "User generated": "User generated",
     "basemapThumbnail": "Basemap thumbnail",
-    "terrainOnlyIn3d": "Terrains are only available in 3D view"
+    "terrainOnlyIn3d": "Terrains are only available in 3D view",
+    "move": "Move",
+    "moveTo": "Move to",
+    "typeOrSelect": "Type or select an option...",
+    "newFolder": "<New folder>"
   },
   "LAYERS": {
     "existingLayer": "Existing layer",

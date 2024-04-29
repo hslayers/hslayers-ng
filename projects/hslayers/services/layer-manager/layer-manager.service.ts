@@ -132,14 +132,15 @@ export class HsLayerManagerService {
     this.folderService.data = this.data;
 
     // Handle the state accumulation via the reducer
-    this.data.folders$ = this.folderService.folderAction$.pipe(
-      scan(
-        (acc, value) => this.folderService.foldersReducer(acc, value),
-        new Map<string, HsLayermanagerFolder>(),
+    this.data.folders = toSignal(
+      this.folderService.folderAction$.pipe(
+        scan(
+          (acc, value) => this.folderService.foldersReducer(acc, value),
+          new Map<string, HsLayermanagerFolder>(),
+        ),
+        share(),
       ),
-      share(),
     );
-    this.data.folders = toSignal(this.data.folders$);
 
     this.hsEventBusService.layerManagerUpdates.subscribe((layer) => {
       this.refreshLists();
