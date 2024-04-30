@@ -117,7 +117,7 @@ export class HsQueryVectorService {
           return true;
         }
       },
-      style: this.hsConfig.query?.style || style || createDefaultStyle,
+      style: style || this.hsConfig.query?.style || createDefaultStyle,
     });
 
     await this.hsMapService.loaded();
