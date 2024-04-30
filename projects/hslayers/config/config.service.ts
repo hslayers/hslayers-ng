@@ -9,6 +9,7 @@ import {AddDataFileType} from 'hslayers-ng/types';
 import {AddDataUrlType} from 'hslayers-ng/types';
 import {HsEndpoint} from 'hslayers-ng/types';
 import {QueryPopupWidgetsType} from 'hslayers-ng/types';
+import {StyleLike} from 'ol/style/Style';
 import {WidgetItem} from 'hslayers-ng/types';
 
 export type SymbolizerIcon = {
@@ -125,7 +126,7 @@ export class HsConfigObject {
   additionalLanguages?: {
     [key: string]: string;
   };
-  query?: {multi: boolean};
+  query?: {multi?: boolean; style?: StyleLike};
   queryPoint?: string;
   popUpDisplay?: 'none' | 'click' | 'hover';
   /**
