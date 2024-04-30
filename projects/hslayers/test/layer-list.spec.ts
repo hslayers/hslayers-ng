@@ -2,8 +2,13 @@ import {
   BrowserDynamicTestingModule,
   platformBrowserDynamicTesting,
 } from '@angular/platform-browser-dynamic/testing';
-import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
-import {ComponentFixture, TestBed} from '@angular/core/testing';
+import {CUSTOM_ELEMENTS_SCHEMA, signal} from '@angular/core';
+import {
+  ComponentFixture,
+  TestBed,
+  fakeAsync,
+  tick,
+} from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
 
@@ -20,9 +25,10 @@ import {
 } from 'hslayers-ng/services/get-capabilities';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsConfigMock} from './config.service.mock';
-import {HsDrawService} from 'hslayers-ng/services/draw';
-import {HsLanguageModule} from 'hslayers-ng/components/language';
-import {HsLayerListComponent} from 'hslayers-ng/components/layer-manager';
+import {
+  HsLayerDescriptor,
+  HsLayerListComponent,
+} from 'hslayers-ng/components/layer-manager';
 import {HsLayerListService} from 'hslayers-ng/components/layer-manager';
 import {HsLayerManagerService} from 'hslayers-ng/services/layer-manager';
 import {HsLayerUtilsService} from 'hslayers-ng/services/utils';
@@ -35,32 +41,83 @@ import {HsShareUrlService} from 'hslayers-ng/services/share';
 import {HsUtilsService} from 'hslayers-ng/services/utils';
 import {HsUtilsServiceMock} from './utils.service.mock';
 
+import {
+  BehaviorSubject,
+  debounce,
+  debounceTime,
+  filter,
+  of,
+  pipe,
+  share,
+  switchMap,
+  tap,
+  timeout,
+} from 'rxjs';
+import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 import {mockHsLayerListService} from './layer-manager-layerlist.service.mock';
 import {mockLayerUtilsService} from './layer-utils.service.mock';
-import {of} from 'rxjs';
 import {wmsGetCapabilitiesResponse} from './data/wms-capabilities';
 
 class emptyMock {
   constructor() {}
 }
 
+const HsLayerManagerServiceMock: jasmine.SpyObj<HsLayerManagerService> = {
+  ...jasmine.createSpyObj('HsLayerManagerService', [
+    'sortLayersByZ',
+    'layerAdded',
+  ]),
+};
+const params = {'LAYERS': 'BSS', 'TILED': true};
+
+const layer: HsLayerDescriptor = {
+  layer: new ImageLayer({
+    properties: {title: 'test', path: 'Other'},
+    source: new ImageWMS({
+      url: 'http://geoservices.brgm.fr/geologie',
+      params,
+      crossOrigin: 'anonymous',
+    }),
+  }),
+  showInLayerManager: true,
+};
+
+const layer2: HsLayerDescriptor = {
+  layer: new ImageLayer({
+    properties: {title: 'another layer name', path: 'Other'},
+    source: new ImageWMS({
+      url: 'http://geoservices.brgm.fr/geologie',
+      params,
+      crossOrigin: 'anonymous',
+    }),
+  }),
+  showInLayerManager: true,
+};
+
+const layerFilter = new BehaviorSubject('');
+
+HsLayerManagerServiceMock.data = {
+  filter: layerFilter.pipe(
+    switchMap((d) => {
+      return of(d);
+    }),
+    share(),
+  ),
+  baselayers: [],
+  terrainLayers: [],
+  layers: [],
+  folders: signal(new Map([['other', {layers: [layer, layer2], zIndex: 0}]])),
+};
+
 const layerUtilsMock = mockLayerUtilsService();
+
 describe('layermanager-layer-list', () => {
   let component: HsLayerListComponent;
   let fixture: ComponentFixture<HsLayerListComponent>;
-  const params = {'LAYERS': 'BSS', 'TILED': true};
-  let subLayerContainerLayer;
   layerUtilsMock.getLayerParams.and.returnValue(params);
   let hsConfig: HsConfig;
+
   beforeAll(() => {
-    subLayerContainerLayer = new ImageLayer({
-      properties: {title: 'test'},
-      source: new ImageWMS({
-        url: 'http://geoservices.brgm.fr/geologie',
-        params,
-        crossOrigin: 'anonymous',
-      }),
-    });
     TestBed.resetTestEnvironment();
     TestBed.initTestEnvironment(
       BrowserDynamicTestingModule,
@@ -80,7 +137,7 @@ describe('layermanager-layer-list', () => {
         HsPanelHelpersModule,
         FormsModule,
         NgbDropdownModule,
-        HsLanguageModule,
+        TranslateCustomPipe,
         HttpClientTestingModule,
       ],
       declarations: [HsLayerListComponent],
@@ -116,11 +173,11 @@ describe('layermanager-layer-list', () => {
           },
         },
         {provide: HsConfig, useValue: mockedConfig},
-        {provide: HsDrawService, useValue: new emptyMock()},
         {
           provide: HsLayoutService,
           useValue: new HsLayoutServiceMock(mockedConfig),
         },
+        {provide: HsLayerManagerService, useValue: HsLayerManagerServiceMock},
       ],
     });
     //bed.compileComponents();
@@ -130,26 +187,39 @@ describe('layermanager-layer-list', () => {
     fixture = TestBed.createComponent(HsLayerListComponent);
     hsConfig = TestBed.inject(HsConfig);
 
-    const hsLayerManagerService = TestBed.inject(HsLayerManagerService);
-    hsLayerManagerService.data.filter = of('');
-
     component = fixture.componentInstance;
-    component.folder = {layers: [], zIndex: 0};
-    fixture.detectChanges();
+    component.folder = 'other';
+
     hsConfig.reverseLayerList = true;
+    fixture.detectChanges();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should list sublayers', () => {
-    component['hsLayerManagerService'].layerAdded(
-      {
-        element: subLayerContainerLayer,
-      },
-      true,
-    );
-    expect(component).toBeTruthy();
+  it('should list layers', (done) => {
+    component.filteredLayers
+      .pipe(filter((l) => l.length !== 0))
+      .subscribe((l) => {
+        expect(l.length).toBe(2);
+        done();
+      });
   });
+
+  it('should filter out one layer', fakeAsync((done) => {
+    layerFilter.next('another');
+    tick(1500);
+    component['hsLayerManagerService'].data.filter
+      .pipe(
+        filter((f) => f !== ''),
+        switchMap(() => {
+          return component.filteredLayers;
+        }),
+      )
+      .subscribe((l) => {
+        expect(l.length).toBe(1);
+        done();
+      });
+  }));
 });

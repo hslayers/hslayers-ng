@@ -1,5 +1,5 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {Observable, map, of} from 'rxjs';
+import {Component, Input} from '@angular/core';
+import {Observable, map} from 'rxjs';
 import {combineLatestWith, filter, startWith} from 'rxjs/operators';
 
 import {HsConfig} from 'hslayers-ng/config';
@@ -25,7 +25,7 @@ import {toObservable} from '@angular/core/rxjs-interop';
   templateUrl: './layer-manager-layerlist.component.html',
 })
 export class HsLayerListComponent {
-  @Input() folder: string;
+  @Input({required: true}) folder: string;
   /**
    * List of layers which belong to folder hierarchy level of directive instance
    */
