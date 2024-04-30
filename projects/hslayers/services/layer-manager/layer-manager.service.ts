@@ -64,7 +64,6 @@ import {toSignal} from '@angular/core/rxjs-interop';
 export class HsLayermanagerDataObject {
   // Folders object for structure of layers.
   folders: Signal<Map<string, HsLayermanagerFolder>>;
-  folders$: Observable<Map<string, HsLayermanagerFolder>>;
   layers: HsLayerDescriptor[];
   baselayers: HsBaseLayerDescriptor[];
   terrainLayers: HsTerrainLayerDescriptor[];
