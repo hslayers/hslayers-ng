@@ -127,7 +127,12 @@ export class HsConfigObject {
     [key: string]: string;
   };
   query?: {multi?: boolean; style?: StyleLike};
-  queryPoint?: string;
+  /**
+   * Configures visibility of clicked point feature.
+   *   - `'hidden'` - Hides clicked point feature at all times
+   *   - `'notWithin'` - Hides clicked point feature in case it would overlap with other features
+   */
+  queryPoint?: 'notWithin' | 'hidden';
   popUpDisplay?: 'none' | 'click' | 'hover';
   /**
    * Configures query popup widgets, the order in which they are generated, and visibility
