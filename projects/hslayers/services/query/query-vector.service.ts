@@ -86,7 +86,7 @@ export class HsQueryVectorService {
   /**
    * Set new selector for the app
    */
-  setNewSelector(style?: StyleLike | null): void {
+  async setNewSelector(style?: StyleLike | null): Promise<void> {
     const selector = new Select({
       condition: click,
       multi: this.hsConfig.query?.multi ? this.hsConfig.query.multi : false,
@@ -102,12 +102,15 @@ export class HsQueryVectorService {
       },
       style: style === undefined ? createDefaultStyle : style,
     });
+
+    await this.hsMapService.loaded();
+    const map = this.hsMapService.getMap();
+
+    map.removeInteraction(this.selector);
+    map.addInteraction(selector);
+
     this.selector = selector;
     this.hsQueryBaseService.vectorSelectorCreated.next(selector);
-
-    this.hsEventBusService.olMapLoads.subscribe((map) => {
-      map.addInteraction(selector);
-    });
 
     selector.getFeatures().on('add', (e) => {
       this.hsEventBusService.vectorQueryFeatureSelection.next({
