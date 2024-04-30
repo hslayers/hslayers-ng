@@ -11,7 +11,7 @@ import {FeatureLike} from 'ol/Feature';
 import {GeoJSON, WKT} from 'ol/format';
 import {Geometry, LineString, Polygon} from 'ol/geom';
 import {Select} from 'ol/interaction';
-import {Subject} from 'rxjs';
+import {Subject, debounceTime} from 'rxjs';
 import {click} from 'ol/events/condition';
 import {toLonLat} from 'ol/proj';
 
@@ -53,6 +53,7 @@ type FeatureDescription = {
 export class HsQueryVectorService {
   featureRemovals: Subject<Feature<Geometry>> = new Subject();
   selector: Select = null;
+  private setSelectorTrigger = new Subject<void>();
   constructor(
     private hsQueryBaseService: HsQueryBaseService,
     private hsMapService: HsMapService,
@@ -69,7 +70,14 @@ export class HsQueryVectorService {
       }
       this.createFeatureAttributeList();
     });
-    this.setNewSelector();
+
+    // Trigger the selector immediately on init
+    this.triggerSetSelector();
+    // Setup subscription with debounce
+    this.setSelectorTrigger.pipe(debounceTime(500)).subscribe(() => {
+      this.setNewSelector();
+    });
+
     this.hsEventBusService.vectorQueryFeatureSelection.subscribe((e) => {
       if (e?.feature) {
         const layer = this.hsMapService.getLayerForFeature(e.feature);
@@ -81,6 +89,15 @@ export class HsQueryVectorService {
         }
       }
     });
+    this.hsConfig.configChanges.subscribe((_) => {
+      if (this.hsConfig.query) {
+        this.triggerSetSelector();
+      }
+    });
+  }
+
+  private triggerSetSelector(): void {
+    this.setSelectorTrigger.next();
   }
 
   /**
@@ -100,7 +117,7 @@ export class HsQueryVectorService {
           return true;
         }
       },
-      style: style === undefined ? createDefaultStyle : style,
+      style: this.hsConfig.query?.style || style || createDefaultStyle,
     });
 
     await this.hsMapService.loaded();
