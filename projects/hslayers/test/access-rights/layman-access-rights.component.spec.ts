@@ -171,7 +171,7 @@ describe('HsCommonLaymanAccessRightsComponent', () => {
     expect(component).toBeTruthy();
 
     // Expect an HTTP GET request to be made to the Layman URL
-    const req = httpMock.expectOne(`/get-users`);
+    const req = httpMock.expectOne(`/users`);
     expect(req.request.method).toBe('GET');
     // Simulate a successful response with mockUsers
     req.flush(mockedUsersFromWagtail);
@@ -198,7 +198,7 @@ describe('HsCommonLaymanAccessRightsComponent', () => {
 
     component.changeGrantingOptions(GrantingOptions.PERUSER);
     // Expect an HTTP GET request to be made to the Layman URL
-    const userReq = httpMock.expectOne('/get-users');
+    const userReq = httpMock.expectOne('/users');
     expect(userReq.request.method).toBe('GET');
     // Simulate a successful response with mockUsers
     userReq.flush(mockedUsersFromWagtail);
@@ -235,7 +235,7 @@ describe('HsCommonLaymanAccessRightsComponent', () => {
     component.endpoint = commonLaymanMock.layman;
 
     // Expect an HTTP GET request to be made to the Layman URL
-    const userReq = httpMock.expectOne('/get-users');
+    const userReq = httpMock.expectOne('/users');
     expect(userReq.request.method).toBe('GET');
     // Simulate a successful response with mockUsers
     userReq.flush(mockedUsersFromWagtail);

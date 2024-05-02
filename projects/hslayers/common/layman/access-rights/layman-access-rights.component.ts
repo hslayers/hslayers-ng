@@ -341,7 +341,7 @@ export class HsCommonLaymanAccessRightsComponent implements OnInit {
    */
   fetchUsers(): Observable<LaymanUser[]> {
     const url = this.endpoint.type.includes('wagtail')
-      ? '/get-users'
+      ? '/users'
       : `${this.endpoint.url}/rest/users`;
     return this.$http
       .get<LaymanUser[] | WagtailUser[]>(url, {withCredentials: true})
