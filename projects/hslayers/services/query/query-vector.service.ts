@@ -1,17 +1,15 @@
 import {DomSanitizer, SafeHtml} from '@angular/platform-browser';
 import {Injectable} from '@angular/core';
+import {Subject, debounceTime} from 'rxjs';
 
 import * as extent from 'ol/extent';
 import {Cluster, Vector as VectorSource} from 'ol/source';
-// eslint-disable-next-line import/named
 import {Coordinate} from 'ol/coordinate';
 import {Feature, Map} from 'ol';
-// eslint-disable-next-line import/named
 import {FeatureLike} from 'ol/Feature';
 import {GeoJSON, WKT} from 'ol/format';
 import {Geometry, LineString, Polygon} from 'ol/geom';
 import {Select} from 'ol/interaction';
-import {Subject, debounceTime} from 'rxjs';
 import {click} from 'ol/events/condition';
 import {toLonLat} from 'ol/proj';
 
@@ -71,12 +69,12 @@ export class HsQueryVectorService {
       this.createFeatureAttributeList();
     });
 
-    // Trigger the selector immediately on init
-    this.triggerSetSelector();
     // Setup subscription with debounce
     this.setSelectorTrigger.pipe(debounceTime(500)).subscribe(() => {
       this.setNewSelector();
     });
+    // Trigger the selector immediately on init
+    this.triggerSetSelector();
 
     this.hsEventBusService.vectorQueryFeatureSelection.subscribe((e) => {
       if (e?.feature) {
