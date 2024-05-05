@@ -19,6 +19,7 @@ import {HsLayerEditorComponent} from './editor/layer-editor.component';
 import {HsLayerEditorDimensionsComponent} from './dimensions/layer-editor-dimensions.component';
 import {HsLayerEditorSubLayerCheckboxesComponent} from './editor/layer-editor-sub-layer-checkboxes.component';
 import {HsLayerEditorWidgetBaseComponent} from './widgets/layer-editor-widget-base.component';
+import {HsLayerFolderWidgetComponent} from './widgets/layer-folder-widget/layer-folder-widget.component';
 import {HsLayerListComponent} from './logical-list/layer-manager-layerlist.component';
 import {HsLayerManagerComponent} from './layer-manager.component';
 import {HsLayerManagerRemoveAllDialogComponent} from './dialogs/remove-all-dialog.component';
@@ -34,7 +35,6 @@ import {HsPanelHelpersModule} from 'hslayers-ng/common/panels';
 import {HsScaleWidgetComponent} from './widgets/scale-widget.component';
 import {HsTypeWidgetComponent} from './widgets/type-widget.component';
 import {HsWmsSourceWidgetComponent} from './widgets/wms-source-widget/wms-source-widget.component';
-import {LayerFolderWidgetComponent} from './widgets/layer-folder-widget/layer-folder-widget.component';
 import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 
 @NgModule({
@@ -73,7 +73,7 @@ import {TranslateCustomPipe} from 'hslayers-ng/services/language';
     DragDropModule,
     HsColormapPickerModule,
     HsWmsSourceWidgetComponent,
-    LayerFolderWidgetComponent,
+    HsLayerFolderWidgetComponent,
     HsPanelHeaderComponent,
     FilterPipe,
   ],

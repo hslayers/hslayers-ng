@@ -28,7 +28,7 @@ import {getPath, setPath} from 'hslayers-ng/common/extensions';
   imports: [NgIf, AsyncPipe, TranslateCustomPipe, ReactiveFormsModule],
   templateUrl: './layer-folder-widget.component.html',
 })
-export class LayerFolderWidgetComponent
+export class HsLayerFolderWidgetComponent
   extends HsLayerEditorWidgetBaseComponent
   implements OnInit {
   hsLayermanagerService = inject(HsLayerManagerService);

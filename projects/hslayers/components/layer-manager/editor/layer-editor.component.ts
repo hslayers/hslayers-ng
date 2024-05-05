@@ -19,6 +19,7 @@ import {HsLayerEditorDimensionsComponent} from '../dimensions/layer-editor-dimen
 import {HsLayerEditorService} from './layer-editor.service';
 import {HsLayerEditorSublayerService} from './layer-editor-sub-layer.service';
 import {HsLayerEditorWidgetContainerService} from '../widgets/layer-editor-widget-container.service';
+import {HsLayerFolderWidgetComponent} from '../widgets/layer-folder-widget/layer-folder-widget.component';
 import {
   HsLayerManagerCopyLayerService,
   HsLayerManagerService,
@@ -35,7 +36,6 @@ import {HsScaleWidgetComponent} from '../widgets/scale-widget.component';
 import {HsStylerService} from 'hslayers-ng/services/styler';
 import {HsTypeWidgetComponent} from '../widgets/type-widget.component';
 import {HsWmsSourceWidgetComponent} from '../widgets/wms-source-widget/wms-source-widget.component';
-import {LayerFolderWidgetComponent} from '../widgets/layer-folder-widget/layer-folder-widget.component';
 import {
   getBase,
   getCachedCapabilities,
@@ -97,7 +97,7 @@ export class HsLayerEditorComponent {
       HsScaleWidgetComponent,
       HsLegendWidgetComponent,
       HsLayerEditorDimensionsComponent,
-      LayerFolderWidgetComponent,
+      HsLayerFolderWidgetComponent,
       HsOpacityWidgetComponent,
       HsIdwWidgetComponent,
       HsWmsSourceWidgetComponent,
