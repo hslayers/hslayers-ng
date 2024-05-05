@@ -235,7 +235,7 @@ export class HsLayerManagerComponent
       filter((visible) => !!visible),
       //Make sure filterInput is created
       debounceTime(0),
-      //Take only the first successfull emission
+      //Take only the first successful emission
       take(1),
       //Switch to 'input' event of filterInput
       switchMap(() =>
@@ -303,7 +303,7 @@ export class HsLayerManagerComponent
   }
 
   /**
-   * Return emtpy layers result as a result of error while filtering
+   * Return empty layers result as a result of error while filtering
    */
   private emptyResult<T extends 'baselayers' | 'terrainLayers'>(
     type: T,
