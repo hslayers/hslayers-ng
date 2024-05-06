@@ -615,7 +615,9 @@
       "confirmLayerTypeChange": "Confirm layer type change",
       "styleLayer": "Style layer",
       "selectOption": "Select an option",
-      "typeFolderName": "Type new folder name"
+      "typeFolderName": "Type new folder name",
+      "pickOrCreate": "Pick or create new folder",
+      "moveToNewFolder": "Move layer to folder"
     },
     "layerList": {
       "layerIsQueryable": "This layer is queryable",

@@ -1,99 +1,77 @@
 import {AsyncPipe, NgIf} from '@angular/common';
-import {
-  Component,
-  ElementRef,
-  OnInit,
-  Signal,
-  ViewChild,
-  computed,
-  inject,
-} from '@angular/core';
-import {FormControl, ReactiveFormsModule, Validators} from '@angular/forms';
-import {
-  HsLanguageService,
-  TranslateCustomPipe,
-} from 'hslayers-ng/services/language';
-import {HsLayerEditorWidgetBaseComponent} from '../layer-editor-widget-base.component';
+import {ChangeDetectionStrategy, Component, inject} from '@angular/core';
+import {Observable, map} from 'rxjs';
+import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
+
+import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
 import {
   HsLayerManagerFolderService,
   HsLayerManagerService,
   HsLayerSelectorService,
 } from 'hslayers-ng/services/layer-manager';
-import {Observable, map} from 'rxjs';
-import {getPath, setPath} from 'hslayers-ng/common/extensions';
+import {TranslateCustomPipe} from 'hslayers-ng/services/language';
+import {setPath} from 'hslayers-ng/common/extensions';
+
+import {HsLayerEditorWidgetBaseComponent} from '../layer-editor-widget-base.component';
+import {LayerFolderWidgetDialogComponent} from './layer-folder-dialog/layer-folder-dialog.component';
 
 @Component({
   selector: 'hs-layer-folder-widget',
   standalone: true,
-  imports: [NgIf, AsyncPipe, TranslateCustomPipe, ReactiveFormsModule],
+  imports: [NgIf, AsyncPipe, TranslateCustomPipe],
   templateUrl: './layer-folder-widget.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class HsLayerFolderWidgetComponent
-  extends HsLayerEditorWidgetBaseComponent
-  implements OnInit {
-  hsLayermanagerService = inject(HsLayerManagerService);
-  folderService = inject(HsLayerManagerFolderService);
-  languageService = inject(HsLanguageService);
-  @ViewChild('pathInput', {static: false}) pathInput: ElementRef;
-
+export class HsLayerFolderWidgetComponent extends HsLayerEditorWidgetBaseComponent {
   isEnabled: Observable<boolean>;
 
-  pathControl = new FormControl('', [
-    Validators.required,
-    Validators.minLength(1),
-  ]);
-  availableFolders: Signal<string[]>;
-  inputPlaceholder: 'selectOption' | 'typeFolderName' = 'selectOption';
+  hsDialogContainerService = inject(HsDialogContainerService);
+  hsLayermanagerService = inject(HsLayerManagerService);
+  folderService = inject(HsLayerManagerFolderService);
 
   constructor(hsLayerSelectorService: HsLayerSelectorService) {
     super(hsLayerSelectorService);
 
     this.isEnabled = this.layerDescriptor.pipe(
+      takeUntilDestroyed(),
       map((layer) => {
         return !!layer.layer;
       }),
     );
   }
 
-  ngOnInit(): void {
-    super.ngOnInit();
-    this.availableFolders = computed(() => {
-      const folders = this.hsLayermanagerService.data.folders();
-      return [...folders.entries()].reduce((acc, [key, value]) => {
-        return key !== getPath(this.olLayer) ? [...acc, key] : acc;
-      }, []);
-    });
-
-    this.pathControl.valueChanges.subscribe((val) => {
-      if (
-        val == this.languageService.getTranslation('LAYERMANAGER.newFolder')
-      ) {
-        this.pathControl.setValue('');
-        this.inputPlaceholder = 'typeFolderName';
-      }
-    });
+  /**
+   * Creates new layer folder dialog
+   */
+  async createDialog() {
+    const dialog = this.hsDialogContainerService.create(
+      LayerFolderWidgetDialogComponent,
+      {
+        layer: this.olLayer,
+      },
+    );
+    const confirmed = await dialog.waitResult();
+    if (confirmed.value) {
+      this.moveLayerToNewFolder(confirmed.value);
+    }
   }
 
   /**
    * Move layer to the selected folder
    */
-  moveLayerToNewFolder() {
-    if (this.pathControl.valid) {
-      this.folderService.folderAction$.next(
-        this.folderService.removeLayer(
-          this.hsLayerSelectorService.currentLayer,
-        ),
-      );
-      setPath(this.olLayer, this.pathControl.value);
-      this.folderService.folderAction$.next(
-        this.folderService.addLayer(this.hsLayerSelectorService.currentLayer),
-      );
-      this.folderService.folderAction$.next(this.folderService.sortByZ());
-      this.hsLayermanagerService.toggleLayerEditor(
-        this.hsLayerSelectorService.currentLayer,
-        'settings',
-        'sublayers',
-      );
-    }
+  moveLayerToNewFolder(folder: string) {
+    this.folderService.folderAction$.next(
+      this.folderService.removeLayer(this.hsLayerSelectorService.currentLayer),
+    );
+    setPath(this.olLayer, folder);
+    this.folderService.folderAction$.next(
+      this.folderService.addLayer(this.hsLayerSelectorService.currentLayer),
+    );
+    this.folderService.folderAction$.next(this.folderService.sortByZ());
+    this.hsLayermanagerService.toggleLayerEditor(
+      this.hsLayerSelectorService.currentLayer,
+      'settings',
+      'sublayers',
+    );
   }
 }

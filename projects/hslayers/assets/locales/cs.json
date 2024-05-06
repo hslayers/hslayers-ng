@@ -615,7 +615,9 @@
       "confirmLayerTypeChange": "Potvrďte změnu typu vrstvy",
       "styleLayer": "Upravit styl vrstvy",
       "selectOption": "Vyberte možnost",
-      "typeFolderName": "Zadejte název nové složky"
+      "typeFolderName": "Zadejte název nové složky",
+      "pickOrCreate": "Vyberte nebo vytvořte novou složku",
+      "moveToNewFolder": "Přesunout vrstvu do složky"
     },
     "layerList": {
       "layerIsQueryable": "Tato vrstva je dotazovatelná",
