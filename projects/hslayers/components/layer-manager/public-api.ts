@@ -23,3 +23,4 @@ export * from './widgets/metadata-widget.component';
 export * from './widgets/opacity-widget.component';
 export * from './widgets/scale-widget.component';
 export * from './widgets/type-widget.component';
+export * from './widgets/layer-folder-widget/layer-folder-widget.component';
