@@ -79,7 +79,7 @@ export class HsCommonLaymanAccessRightsComponent implements OnInit {
   }
 
   /**
-   * Sets up acccess rights based on access_rights input or reset to defaultAccessRights
+   * Sets up access rights based on access_rights input or reset to defaultAccessRights
    */
   setUpAccessRights() {
     this.currentOption = GrantingOptions.EVERYONE;
@@ -114,10 +114,10 @@ export class HsCommonLaymanAccessRightsComponent implements OnInit {
 
     this.allUsers.forEach((user) => {
       const isCurrentUser = user.name === this.endpoint.user;
-      //Value for current user be wont be changed
+      //Value for current user won't be changed
       user[type] = isCurrentUser ? user[type] : value;
       //In case write permission is being added make sure read is granted as well
-      //when read perrmission is being taken away, make sure write is taken as well
+      //when read permission is being taken away, make sure write is taken as well
       if ((type === 'write' && value) || (type === 'read' && !value)) {
         const t = type === 'write' ? 'read' : 'write';
         user[t] = isCurrentUser ? user[t] : value;
@@ -261,8 +261,8 @@ export class HsCommonLaymanAccessRightsComponent implements OnInit {
   }
 
   /**
-   * Determine whether the role has an acces or not
-   * Inaccurate for USER to ROLE as ser roles might overlap
+   * Determine whether the role has an access or not
+   * Inaccurate for USER to ROLE as roles might overlap
    */
   roleHasAccess(
     role: string,
@@ -329,7 +329,7 @@ export class HsCommonLaymanAccessRightsComponent implements OnInit {
   }
 
   /**
-   * Check whether user list includes wagtail user list
+   * Check whether user list includes Wagtail user list
    */
   private isWagtailUserArray(
     users: LaymanUser[] | WagtailUser[],
@@ -338,7 +338,7 @@ export class HsCommonLaymanAccessRightsComponent implements OnInit {
   }
 
   /**
-   * Get users from Layman or Wagtail depnding on endpoin type.
+   * Get users from Layman or Wagtail depending on the endpoint type.
    * Main difference is that Wagtail response includes user roles
    */
   fetchUsers(): Observable<LaymanUser[]> {
@@ -409,7 +409,7 @@ export class HsCommonLaymanAccessRightsComponent implements OnInit {
                   name: user.username,
                   role: user.role || [],
                 };
-                //Assign rights after obj initiation to have acess to roles
+                //Assign rights after obj initiation to have access to roles
                 laymanUser.read =
                   isCurrentUser || this.userHasAccess(laymanUser, read, 'read');
                 laymanUser.write =
