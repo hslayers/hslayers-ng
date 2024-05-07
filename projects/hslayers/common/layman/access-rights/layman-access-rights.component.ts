@@ -331,7 +331,9 @@ export class HsCommonLaymanAccessRightsComponent implements OnInit {
   /**
    * Check whether user list includes wagtail user list
    */
-  private isWagtailUserArray(users: any[]): users is WagtailUser[] {
+  private isWagtailUserArray(
+    users: LaymanUser[] | WagtailUser[],
+  ): users is WagtailUser[] {
     return users.length > 0 && 'roles' in users[0];
   }
 
@@ -407,7 +409,7 @@ export class HsCommonLaymanAccessRightsComponent implements OnInit {
                   name: user.username,
                   role: user.role || [],
                 };
-                //Assign rights after obj initiation to have acess to mocked role
+                //Assign rights after obj initiation to have acess to roles
                 laymanUser.read =
                   isCurrentUser || this.userHasAccess(laymanUser, read, 'read');
                 laymanUser.write =
