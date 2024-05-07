@@ -165,7 +165,7 @@ describe('HsCommonLaymanAccessRightsComponent', () => {
     expect(component.allUsers[1].write).toBeFalsy();
   }));
 
-  it('should create and initialize with default state - per user from wagtail', fakeAsync(() => {
+  it('should create and initialize with default state - per user from Wagtail', fakeAsync(() => {
     component.access_rights = perUserAccessRights;
     fixture.detectChanges();
     expect(component).toBeTruthy();
