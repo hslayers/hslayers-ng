@@ -150,6 +150,9 @@ export class AppComponent implements OnInit {
       opacity: 1,
     });
     this.hsConfig.update({
+      componentsEnabled: {
+        basemapGallery: true,
+      },
       datasources: [
         {
           title: 'Layman',

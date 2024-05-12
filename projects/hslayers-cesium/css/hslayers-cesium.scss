@@ -1,0 +1,27 @@
+$bs-btn-bg: white;
+$bs-btn-color: #6c757d;
+$bs-border-radius: 0.375rem;
+$bs-btn-border-color: transparent;
+
+.hs-cesium-container .cesium-viewer-toolbar {
+    position: absolute;
+    display: block;
+    top: 0.7em;
+    right: calc(15px + 1rem + 1rem + 2px);
+}
+
+.hs-cesium-container .cesium-button {
+    opacity: 0.9;
+    color: $bs-btn-color;
+    fill: $bs-btn-color;
+    background-color: $bs-btn-bg;
+    border-radius: $bs-border-radius;
+    border-color: $bs-btn-border-color;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+.hs-cesium-container .cesium-button:hover {
+    background-color: $bs-btn-color;
+    color: $bs-btn-bg;
+    fill: $bs-btn-bg;
+}

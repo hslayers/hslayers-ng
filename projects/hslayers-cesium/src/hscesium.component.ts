@@ -15,19 +15,7 @@ import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 @Component({
   selector: 'hs-cesium',
   templateUrl: './hscesium.component.html',
-  styles: `
-    .hs-cesium-container {
-      height: 100%;
-      margin: 0;
-      padding: 0;
-      overflow: hidden;
-      position: absolute;
-      left: 0;
-      top: 0;
-      width: 100%;
-      margin-right: 0;
-    }
-  `,
+  styleUrl: './hscesium.component.scss',
 })
 export class HslayersCesiumComponent implements AfterViewInit {
   app = 'default';
