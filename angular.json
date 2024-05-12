@@ -637,7 +637,8 @@
             ],
             "styles": [
               "node_modules/cesium/Build/Cesium/Widgets/widgets.css",
-              "projects/hslayers/css/hslayers-bootstrap.scss"
+              "projects/hslayers/css/hslayers-bootstrap.scss",
+              "projects/hslayers-cesium/css/hslayers-cesium.scss"
             ],
             "scripts": [],
             "customWebpackConfig": {
