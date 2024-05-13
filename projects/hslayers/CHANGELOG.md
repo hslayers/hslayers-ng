@@ -1,3 +1,47 @@
+# [14.0.0-next.3](https://github.com/hslayers/hslayers-ng/compare/14.0.0-next.2...14.0.0-next.3) (2024-05-13)
+
+
+### Bug Fixes
+
+* **access-rights:** Do not make unnecessary get users requests ([eaed003](https://github.com/hslayers/hslayers-ng/commit/eaed00333c3176e39c170fd47269b6dfe3470d60))
+* **access-rights:** Do not override roles ([1ed1461](https://github.com/hslayers/hslayers-ng/commit/1ed1461bd58835d82fd1afb46c51d8a368a1aba1))
+* **cesium-test-app:** 2.5D geojson url source path ([05e8a01](https://github.com/hslayers/hslayers-ng/commit/05e8a01df5f76add53b98536067f324bcb457816))
+* **cesium:** Align style of cesium buttons ([5c199a5](https://github.com/hslayers/hslayers-ng/commit/5c199a51f963a0702c1c1a4a5dc5b8a102731016))
+* **cesium:** Set active property of visible terrain layer at init ([2cff0c7](https://github.com/hslayers/hslayers-ng/commit/2cff0c7ebdd1c59468b890e25a3c933b930b442c))
+* **query:** Add the highest priority to the function arg instead of the config value when creating new selector ([a91862d](https://github.com/hslayers/hslayers-ng/commit/a91862da3c354894cce9855ece497c1901c3ba1f))
+* **query:** Set new selector ([325fcbe](https://github.com/hslayers/hslayers-ng/commit/325fcbe54e8fdd98db1fbcf2f04d5fab1dc0e4a6))
+* **query:** Trigger selector after subscription is ready ([f83e37b](https://github.com/hslayers/hslayers-ng/commit/f83e37b191d3b2664ffeee539a0b7aee8f57c3f1))
+* **test-app:** Assign panelWidth via ngOnInit() ([308369f](https://github.com/hslayers/hslayers-ng/commit/308369f19b0e98dbbab13346a24f7fec7104c1c6))
+* **test:** Change location of access-rights test files based on new lib structure ([7c9ba08](https://github.com/hslayers/hslayers-ng/commit/7c9ba08001c0d063650ef41d992bd3a3246a6d7e))
+
+
+### Code Refactoring
+
+* Move css and assets out of the src folder ([9f38f37](https://github.com/hslayers/hslayers-ng/commit/9f38f370a8d57c675377b1c7b0e8ec425b244dd5))
+* refactor!: Rename core service to hslayers service ([9dd58fa](https://github.com/hslayers/hslayers-ng/commit/9dd58faf35dafe08288dfca4844a225a3675dad4))
+* refactor!: Expose hslayers library via secondary entry points only ([1bac393](https://github.com/hslayers/hslayers-ng/commit/1bac3939b84462d23f46ebd2b3bd5b605f61c98e))
+* refactor!: Rename src to core and move core service out of the services ([c67b0f8](https://github.com/hslayers/hslayers-ng/commit/c67b0f89a694e4cae0e4d21d5d8c3be74b8ea9e2))
+
+
+### Features
+
+* **access-rights:** Allow access rights to be reset to the initial value ([377c977](https://github.com/hslayers/hslayers-ng/commit/377c9778fcc19160d88d56f5bb1ca080c46587a2))
+* **access-rights:** Per role tab ([83d0ed5](https://github.com/hslayers/hslayers-ng/commit/83d0ed5dcdd6817a832ad660784ffb2a2c594a79))
+* **cesium:** Disable terrains in LM when 2D view active ([a99f8d2](https://github.com/hslayers/hslayers-ng/commit/a99f8d2a50904c13846ed33024514912b4f3f9d0))
+* **config:** Add style property to query config allowing to set default style for selected features ([b4e9049](https://github.com/hslayers/hslayers-ng/commit/b4e904946951dc41e70871f75c3291b46057fe57))
+* **layer-editor:** Add warning about missing base widget execution of ngOnInit lifecycle method ([9d42b0b](https://github.com/hslayers/hslayers-ng/commit/9d42b0b61f8a864b30e8e0f2b5662be0c6438b5e))
+* **layer-manager:** Folder widget &  folders reactivity ([ba8faff](https://github.com/hslayers/hslayers-ng/commit/ba8faffc3fe95d7ffbd47c50a32f684bc496e547))
+
+
+### BREAKING CHANGES
+
+* The core service has been renamed to hslayers service.
+* hslayers module is no longer exported via main entry point hslayers-ng, use hslayers-ng/core instead
+* src folder has been renamed to core, update your imports accordingly
+* Changed CSS and ASSETS location, update your import paths
+
+
+
 # [14.0.0-next.2](https://github.com/hslayers/hslayers-ng/compare/14.0.0-next.1...14.0.0-next.2) (2024-04-17)
 
 ### BREAKING CHANGES
