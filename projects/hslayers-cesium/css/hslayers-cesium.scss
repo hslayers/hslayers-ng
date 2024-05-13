@@ -5,7 +5,9 @@ $bs-btn-border-color: transparent;
 
 .hs-cesium-container .cesium-viewer-toolbar {
     position: absolute;
-    display: block;
+    display: flex;
+    gap: 0.25rem;
+    margin-right: 0.25em;
     top: 0.7em;
     right: calc(15px + 1rem + 1rem + 2px);
 }
