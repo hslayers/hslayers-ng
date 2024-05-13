@@ -159,8 +159,8 @@ export class HsCesiumService {
         this.hsCesiumConfig.cesiumDebugShowFramesPerSecond ?? false;
       viewer.scene.globe.enableLighting = !!this.getShadowMode();
       viewer.scene.globe.shadows = this.getShadowMode();
-      viewer.scene.globe.terrainExaggeration =
-        this.hsCesiumConfig.terrainExaggeration || 1.0;
+      viewer.scene.verticalExaggeration =
+        this.hsCesiumConfig.verticalExaggeration || 1.0;
       viewer.terrainProvider = terrainProvider;
 
       if (this.hsCesiumConfig.cesiumTime) {

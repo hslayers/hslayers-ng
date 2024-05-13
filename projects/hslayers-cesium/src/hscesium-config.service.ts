@@ -19,7 +19,7 @@ export class HsCesiumConfigObject {
   cesiumTimeline?: boolean;
   creditContainer?: Element | string;
   imageryProvider?: ImageryProvider;
-  terrainExaggeration?: number;
+  verticalExaggeration?: number;
   terrainLayers?: HsTerrainLayerDescriptor[];
   constructor() {}
 }
