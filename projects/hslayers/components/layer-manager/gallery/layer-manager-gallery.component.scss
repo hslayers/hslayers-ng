@@ -108,10 +108,15 @@
   background-color: var(--ol-background-color);
   color: var(--ol-subtle-foreground-color);
   box-shadow: rgb(0 0 0 / 24%) 0px 3px 8px;
+  height: 32px;
 
   &:hover {
     background-color: $secondary !important;
     color: var(--ol-background-color) !important;
+  }
+
+  i {
+    vertical-align: bottom;
   }
 }
 
