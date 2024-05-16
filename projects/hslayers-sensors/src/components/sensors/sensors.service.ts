@@ -1,8 +1,8 @@
 import dayjs from 'dayjs';
 import {HttpClient} from '@angular/common/http';
-import {Injectable} from '@angular/core';
+import {Inject, Injectable, Optional, inject} from '@angular/core';
 import {LangChangeEvent} from '@ngx-translate/core';
-import {Subject, take} from 'rxjs';
+import {Subject, concatMap, map, take} from 'rxjs';
 
 import {HsConfig} from 'hslayers-ng/config';
 import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
@@ -10,8 +10,6 @@ import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsLanguageService} from 'hslayers-ng/services/language';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsLogService} from 'hslayers-ng/services/log';
-import {HsMapService} from 'hslayers-ng/services/map';
-import {HsQueryVectorService} from 'hslayers-ng/services/query';
 import {HsUtilsService} from 'hslayers-ng/services/utils';
 import {
   getUnitId,
@@ -23,6 +21,7 @@ import {Vector as VectorLayer} from 'ol/layer';
 import {Vector as VectorSource} from 'ol/source';
 import {WKT} from 'ol/format';
 
+import {HsMapService} from 'hslayers-ng/services/map';
 import {HsSensorUnit} from './sensor-unit.class';
 import {HsSensorsUnitDialogComponent} from './sensors-unit-dialog.component';
 import {HsSensorsUnitDialogService} from './unit-dialog.service';
@@ -39,52 +38,77 @@ export class HsSensorsService {
   endpoint: SensLogEndpoint;
   visualizedAttribute = new Subject<{attribute: string}>();
 
+  /**
+   * Available when showing only single sensor unit selected by unit_id url param
+   */
+  unitInUrl: number;
+
+  hsMapService;
+
   constructor(
     private hsUtilsService: HsUtilsService,
     private hsConfig: HsConfig,
-    private hsMapService: HsMapService,
     private hsLayoutService: HsLayoutService,
     private hsDialogContainerService: HsDialogContainerService,
     private http: HttpClient,
     private hsEventBusService: HsEventBusService,
     private hsSensorsUnitDialogService: HsSensorsUnitDialogService,
     private hsLanguageService: HsLanguageService,
-    private hsQueryVectorService: HsQueryVectorService,
     private hsLog: HsLogService,
+    @Optional() @Inject('MAPSERVICE_DISABLED') mapServiceDisabled: boolean,
+    @Optional() @Inject('HsQueryVectorService') hsQueryVectorService,
   ) {
-    this.hsMapService.loaded().then(() => {
-      this.hsConfig.configChanges.subscribe(() => {
-        if (this.hsConfig.senslog != this.endpoint) {
-          this.setEndpoint();
-          this.getUnits();
-        }
-      });
-      this.setEndpoint();
+    const urlParams = new URLSearchParams(location.search);
+    this.unitInUrl = parseInt(urlParams.get('unit_id'));
 
-      this.hsEventBusService.vectorQueryFeatureSelection.subscribe((event) => {
-        this.hsUtilsService.debounce(
-          () => {
-            if (
-              this.hsMapService.getLayerForFeature(event.feature) == this.layer
-            ) {
-              this.hsLayoutService.setMainPanel('sensors');
-              this.units.forEach(
-                (unit: HsSensorUnit) => (unit.expanded = false),
-              );
-              this.selectUnit(
-                this.units.filter(
-                  (unit: HsSensorUnit) =>
-                    unit.unit_id == getUnitId(event.feature),
-                )[0],
-              );
-            }
+    /**
+     * Injection token used to enable lighter version of hslayers-sensors output
+     * (without map to mainly display chart for sensors of one unit)
+     * Needs to be provided in consumer application module providers array
+     * @example  providers: [{provide: 'MAPSERVICE_DISABLED', useValue: true}],
+     */
+    if (!mapServiceDisabled) {
+      this.hsMapService = inject(HsMapService);
+    }
+
+    (this.hsMapService ? this.hsMapService.loaded() : Promise.resolve()).then(
+      () => {
+        this.hsConfig.configChanges.subscribe(() => {
+          if (this.hsConfig.senslog != this.endpoint) {
+            this.setEndpoint();
+          }
+        });
+        this.setEndpoint();
+
+        this.hsEventBusService.vectorQueryFeatureSelection.subscribe(
+          (event) => {
+            this.hsUtilsService.debounce(
+              () => {
+                if (
+                  this.hsMapService.getLayerForFeature(event.feature) ==
+                  this.layer
+                ) {
+                  this.hsLayoutService.setMainPanel('sensors');
+                  this.units.forEach(
+                    (unit: HsSensorUnit) => (unit.expanded = false),
+                  );
+                  this.selectUnit(
+                    this.units.filter(
+                      (unit: HsSensorUnit) =>
+                        unit.unit_id == getUnitId(event.feature),
+                    )[0],
+                  );
+                }
+              },
+              150,
+              false,
+              this,
+            )();
           },
-          150,
-          false,
-          this,
-        )();
-      });
-    });
+        );
+      },
+    );
+
     const translator = this.hsLanguageService.getTranslator();
     translator.onLangChange.subscribe((event: LangChangeEvent) => {
       this.units.forEach((unit) => {
@@ -145,6 +169,10 @@ export class HsSensorsService {
         this.endpoint.senslog1Path = 'senslog1';
       }
       this.hsSensorsUnitDialogService.endpoint = this.endpoint;
+
+      if (this.units.length == 0) {
+        this.getUnits();
+      }
     }
   }
 
@@ -247,9 +275,11 @@ export class HsSensorsService {
 
     unit.feature?.set('selected', true);
     this.hsMapService
-      .getMap()
-      .getView()
-      .fit(unit.feature.getGeometry(), {maxZoom: 16});
+      ? this.hsMapService
+          .getMap()
+          .getView()
+          .fit(unit.feature.getGeometry(), {maxZoom: 16})
+      : null;
   }
 
   /**
@@ -281,7 +311,7 @@ export class HsSensorsService {
       },
       source: new VectorSource({}),
     });
-    this.hsMapService.getMap().addLayer(this.layer);
+    this.hsMapService ? this.hsMapService.getMap().addLayer(this.layer) : null;
   }
 
   /**
@@ -304,32 +334,51 @@ export class HsSensorsService {
           user_id: this.endpoint.user_id.toString(),
         },
       })
+      .pipe(
+        map((response: []) => {
+          return this.unitInUrl
+            ? response.filter((s) => s['unit_id'] == this.unitInUrl)
+            : response;
+        }),
+        // Wait for the mapEventHandlersSet to make sure this.layer exists
+        concatMap((filteredResponse) =>
+          this.hsEventBusService.mapEventHandlersSet.pipe(
+            map(() => filteredResponse),
+          ),
+        ),
+      )
       .subscribe({
         next: (response) => {
           this.units = response;
-          this.layer.getSource().clear();
-          const features = this.units
-            .filter(
-              (unit: HsSensorUnit) =>
-                unit.unit_position && unit.unit_position.asWKT,
-            )
-            .map((unit: HsSensorUnit) => {
-              const format = new WKT();
-              const feature = format.readFeature(unit.unit_position.asWKT, {
-                dataProjection: 'EPSG:4326',
-                featureProjection: 'EPSG:3857',
+          /**
+           * Assuming there is no getMap method implemented in custom lightweight mapService class
+           */
+          if (this.hsMapService) {
+            this.layer.getSource().clear();
+            const features = this.units
+              .filter(
+                (unit: HsSensorUnit) =>
+                  unit.unit_position && unit.unit_position.asWKT,
+              )
+              .map((unit: HsSensorUnit) => {
+                const format = new WKT();
+                const feature = format.readFeature(unit.unit_position.asWKT, {
+                  dataProjection: 'EPSG:4326',
+                  featureProjection: 'EPSG:3857',
+                });
+                setFeatureName(feature, unit.description);
+                setUnitId(feature, unit.unit_id);
+                unit.feature = feature;
+                return feature;
               });
-              setFeatureName(feature, unit.description);
-              setUnitId(feature, unit.unit_id);
-              unit.feature = feature;
-              return feature;
-            });
-          this.layer.getSource().addFeatures(features);
-
+            this.layer.getSource().addFeatures(features);
+          }
           this.units.forEach((unit: HsSensorUnit) => {
-            unit.sensors.sort((a, b) => {
-              return b.sensor_id - a.sensor_id;
-            });
+            unit.sensors = unit.sensors
+              .filter((s) => !(s['phenomenon_name'] as string).includes('TODO'))
+              .sort((a, b) => {
+                return b.sensor_id - a.sensor_id;
+              });
 
             unit.sensorTypes = unit.sensors.map((s) => {
               s.sensor_id = `${unit.unit_id}_${s.sensor_id}`;
@@ -345,15 +394,18 @@ export class HsSensorsService {
               unit.sensorTypes,
               'name',
             );
-            unit.sensorTypes.map(
-              (sensorType) =>
-                (sensorType.sensors = unit.sensors.filter(
-                  (s) => s.sensor_type == sensorType.name,
-                )),
-            );
+            unit.sensorTypes.map((sensorType) => {
+              sensorType.sensors = unit.sensors.filter(
+                (s) => s.sensor_type == sensorType.name,
+              );
+              sensorType.expanded = !!this.unitInUrl;
+            });
           });
 
           this.fillLastObservations();
+          if (this.unitInUrl) {
+            this.selectUnit(this.units[0]);
+          }
           setInterval(() => this.fillLastObservations(), 60000);
         },
         error: (e) => {
@@ -411,21 +463,23 @@ export class HsSensorsService {
              */
             const reading = sensorValues[sensor.sensor_id];
             if (reading) {
-              sensor.lastObservationValue = reading.value;
-              const feature = this.layer
-                .getSource()
-                .getFeatures()
-                .find((f) => getUnitId(f) == unit.unit_id);
-              if (feature) {
-                feature.set(sensor.sensor_name_translated, reading.value);
-                feature.set(
-                  sensor.sensor_name_translated + ' at ',
-                  reading.timestamp,
-                );
-              } else {
-                this.hsLog.log(`No feature exists for unit ${unit.unit_id}`);
-              }
               sensor.lastObservationTimestamp = reading.timestamp;
+              sensor.lastObservationValue = reading.value;
+              if (this.hsMapService) {
+                const feature = this.layer
+                  .getSource()
+                  .getFeatures()
+                  .find((f) => getUnitId(f) == unit.unit_id);
+                if (feature) {
+                  feature.set(sensor.sensor_name_translated, reading.value);
+                  feature.set(
+                    sensor.sensor_name_translated + ' at ',
+                    reading.timestamp,
+                  );
+                } else {
+                  this.hsLog.log(`No feature exists for unit ${unit.unit_id}`);
+                }
+              }
             }
           });
         });

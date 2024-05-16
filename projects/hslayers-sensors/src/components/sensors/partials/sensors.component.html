@@ -1,12 +1,13 @@
 <div class="card panel-default hs-main-panel" *ngIf="isVisible$ | async" [ngClass]="panelWidthClass">
-    <hs-panel-header name="sensors" [panelTabs]="'SENSORS'"></hs-panel-header>
+    <hs-panel-header *ngIf="!hsSensorsService.unitInUrl" name="sensors" [panelTabs]="'SENSORS'"></hs-panel-header>
     <div class="card-body">
-        <p><input type="text" class="form-control" [placeholder]="'COMMON.filter' | translateHs "
-                [(ngModel)]="query.description"></p>
+        <p [hidden]="hsSensorsService.unitInUrl"> <input type="text" class="form-control"
+                [placeholder]="'COMMON.filter' | translateHs " [(ngModel)]="query.description"></p>
         <div class="container">
             <div class="row" style="width: 662;">
                 <div class="col-9">
                     <button type="button" class="btn btn-sm" (click)="toggleComparisonAllowed()"
+                        [hidden]="hsSensorsService.unitInUrl"
                         [ngClass]="hsSensorsUnitDialogService.comparisonAllowed  ? 'hs-checkmark' : 'hs-uncheckmark'">
                         <span class="ps-2">{{'SENSORS.comparison' | translateHs }}</span>
                     </button>
