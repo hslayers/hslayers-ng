@@ -1,5 +1,4 @@
 import {Component, OnInit, ViewRef} from '@angular/core';
-import {HsConfig} from 'hslayers-ng/config';
 import {HsPanelBaseComponent} from 'hslayers-ng/common/panels';
 
 import {HsSensorUnit} from './sensor-unit.class';
@@ -17,8 +16,7 @@ export class HsSensorsComponent extends HsPanelBaseComponent implements OnInit {
   name = 'sensors';
 
   constructor(
-    private hsConfig: HsConfig,
-    private hsSensorsService: HsSensorsService,
+    public hsSensorsService: HsSensorsService,
     public hsSensorsUnitDialogService: HsSensorsUnitDialogService,
   ) {
     super();
@@ -28,9 +26,6 @@ export class HsSensorsComponent extends HsPanelBaseComponent implements OnInit {
     super.ngOnInit();
     if (this.data.viewMode) {
       this.setViewMode(this.data.viewMode);
-    }
-    if (this.hsConfig.senslog) {
-      this.hsSensorsService.getUnits();
     }
   }
 
