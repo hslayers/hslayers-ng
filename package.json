@@ -47,7 +47,7 @@
     "@angular/compiler": "^17.3.8",
     "@angular/core": "^17.3.8",
     "@angular/forms": "^17.3.8",
-    "@angular/localize": "^17.3.8",
+    "@angular/localize": "^17.3.9",
     "@angular/platform-browser": "^17.3.8",
     "@angular/platform-browser-dynamic": "^17.3.8",
     "@ng-bootstrap/ng-bootstrap": "^16.0.0",
