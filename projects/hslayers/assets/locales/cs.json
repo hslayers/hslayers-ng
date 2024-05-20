@@ -910,7 +910,8 @@
     "sensorUnit": "Senzorová jednotka",
     "comparison": "Porovnat senzory mezi jednotkami",
     "noSensorsSelected": "Není vybrán žádný senzor",
-    "multipleUnits": "Více jednotek"
+    "multipleUnits": "Více jednotek",
+    "noUnitsFound": "Nebyly nalezeny žádné senzorové jednotky!"
   },
   "SIDEBAR": {
     "additionalPanels": "Další panely",

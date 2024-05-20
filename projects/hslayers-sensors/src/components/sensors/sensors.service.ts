@@ -194,6 +194,9 @@ export class HsSensorsService {
    * @param unit - Unit selected
    */
   selectUnit(unit: HsSensorUnit): void {
+    if (!unit) {
+      return;
+    }
     /**
      * Multiple units allowed
      */
@@ -234,8 +237,7 @@ export class HsSensorsService {
         u.expanded = false;
         u.sensors.forEach((s) => (s.checked = false));
       });
-      this.hsSensorsUnitDialogService.sensorsSelected = [];
-      this.hsSensorsUnitDialogService.sensorIdsSelected = [];
+      this.hsSensorsUnitDialogService.sensorsSelected.clear();
 
       this.hsSensorsUnitDialogService.unit = [unit];
     }
