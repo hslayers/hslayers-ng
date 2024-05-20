@@ -401,7 +401,8 @@ export class HsSensorsService {
               sensorType.sensors = unit.sensors.filter(
                 (s) => s.sensor_type == sensorType.name,
               );
-              sensorType.expanded = !!this.unitInUrl;
+              sensorType.expanded =
+                unit.sensorTypes.length > 7 ? !this.unitInUrl : false;
             });
           });
 
