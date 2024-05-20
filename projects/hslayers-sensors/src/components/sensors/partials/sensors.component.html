@@ -33,6 +33,8 @@
                 </div>
             </div>
         </div>
+        @if (hsSensorsService.units.length > 0) {
+
         <ul class="list-group">
             <li *ngFor="let unit of filterQuery(query)" class="list-group-item">
                 <!-- TODO: Remove function call from template -->
@@ -40,5 +42,11 @@
                 </hs-sensor-unit-list-item>
             </li>
         </ul>
+        }
+        @else {
+        <div class="alert alert-warning m-2 text-center" role="alert">
+            {{'SENSORS.noUnitsFound' | translateHs}}
+        </div>
+        }
     </div>
 </div>

@@ -27,8 +27,7 @@ export class Aggregates {
 export class HsSensorsUnitDialogService {
   unit: HsSensorUnit[] = [];
   unitDialogVisible: boolean;
-  sensorsSelected = [];
-  sensorIdsSelected = [];
+  sensorsSelected = new Map<string, any>();
   endpoint: SensLogEndpoint;
   observations: any;
   sensorById = {};
@@ -71,8 +70,7 @@ export class HsSensorsUnitDialogService {
    */
   selectSensor(sensor: any) {
     this.sensorsSelected.forEach((s) => (s.checked = false));
-    this.sensorsSelected = [sensor];
-    this.sensorIdsSelected = [sensor.sensor_id];
+    this.sensorsSelected = new Map([sensor.sensor_id, sensor]);
   }
 
   /**
@@ -81,14 +79,9 @@ export class HsSensorsUnitDialogService {
    */
   toggleSensor(sensor) {
     if (sensor.checked) {
-      this.sensorsSelected.push(sensor);
-      this.sensorIdsSelected.push(sensor.sensor_id);
+      this.sensorsSelected.set(sensor.sensor_id, sensor);
     } else {
-      this.sensorsSelected.splice(this.sensorsSelected.indexOf(sensor), 1);
-      this.sensorIdsSelected.splice(
-        this.sensorIdsSelected.indexOf(sensor.sensor_id),
-        1,
-      );
+      this.sensorsSelected.delete(sensor.sensor_id);
     }
   }
 
@@ -243,8 +236,8 @@ export class HsSensorsUnitDialogService {
   }
 
   private getSensorDescriptor(unit) {
-    let sensorDesc = unit.sensors.filter(
-      (s) => this.sensorIdsSelected.indexOf(s.sensor_id) > -1,
+    let sensorDesc = unit.sensors.filter((s) =>
+      this.sensorsSelected.has(s.sensor_id),
     );
     if (sensorDesc.length > 0 && !this.comparisonAllowed) {
       sensorDesc = sensorDesc[0];
@@ -256,7 +249,7 @@ export class HsSensorsUnitDialogService {
     return this.observations.reduce((acc, val) => {
       return acc.concat(
         val.sensors
-          .filter((s) => this.sensorIdsSelected.includes(s.sensor_id))
+          .filter((s) => this.sensorsSelected.has(s.sensor_id))
           .map((s) => {
             const time = dayjs(val.time_stamp);
             s.sensor_name = `${this.translate(
@@ -387,9 +380,7 @@ export class HsSensorsUnitDialogService {
           'tooltip': null,
         },
       },
-      'width':
-        this.dialogElement.nativeElement.querySelector('.hs-chartplace')
-          .parentElement.offsetWidth - 40,
+      'width': this.dialogElement.nativeElement.offsetWidth * 0.9,
       'autosize': {
         'type': 'fit',
         'contains': 'padding',
@@ -454,7 +445,6 @@ export class HsSensorsUnitDialogService {
     else {
       const sensorDesc = this.getSensorDescriptor(unit);
       observations = this.getObservations();
-
       this.aggregations[unit.description] = this.calculateAggregates(
         unit,
         observations,
@@ -490,9 +480,21 @@ export class HsSensorsUnitDialogService {
    * Calculate aggregates for selected unit
    */
   private calculateAggregates(unit: any, observations: any): Aggregate[] {
+    // Create a map of sensor IDs to their observations
+    // Create a map of sensor IDs to their observations
+    const observationMap = new Map<number, number[]>();
+    observations.forEach((obs: {sensor_id: number; value: number}) => {
+      if (!observationMap.has(obs.sensor_id)) {
+        observationMap.set(obs.sensor_id, []);
+      }
+      observationMap.get(obs.sensor_id).push(obs.value);
+    });
+
     const aggregates: Aggregate[] = unit.sensors
-      .filter((s) => this.sensorIdsSelected.indexOf(s.sensor_id) > -1)
+      .filter((s) => this.sensorsSelected.has(s.sensor_id))
       .map((sensor): Aggregate => {
+        const observationsForSensor =
+          observationMap.get(sensor.sensor_id) || [];
         const tmp: Aggregate = {
           min: 0,
           max: 0,
@@ -500,24 +502,22 @@ export class HsSensorsUnitDialogService {
           sensor_id: sensor.sensor_id,
           sensor_name: sensor.sensor_name_translated,
         };
-        const filteredObs = observations
-          .filter((obs) => obs.sensor_id == sensor.sensor_id)
-          .map((obs) => {
-            return {value: obs.value, time: obs.time_stamp};
-          });
-        tmp.max = Math.max(
-          ...filteredObs.map((o) => {
-            return o.value;
-          }),
-        );
-        tmp.min = Math.min(
-          ...filteredObs.map((o) => {
-            return o.value;
-          }),
-        );
-        tmp.avg =
-          filteredObs.reduce((p, c) => p + c.value, 0) / filteredObs.length;
-        tmp.avg = Math.round(tmp.avg * Math.pow(10, 2)) / Math.pow(10, 2);
+        if (observationsForSensor.length === 0) {
+          return tmp;
+        }
+        let sum = 0;
+
+        observationsForSensor.forEach((value) => {
+          if (value < tmp.min) {
+            tmp.min = value;
+          }
+          if (value > tmp.max) {
+            tmp.max = value;
+          }
+          sum += value;
+        });
+
+        tmp.avg = Math.round((sum / observationsForSensor.length) * 100) / 100;
         return tmp;
       });
     return aggregates;

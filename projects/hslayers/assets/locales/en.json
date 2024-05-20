@@ -910,7 +910,8 @@
     "sensorUnit": "Sensor unit",
     "comparison": "Compare Across Sensor Units",
     "noSensorsSelected": "No sensor selected",
-    "multipleUnits": "Multiple units"
+    "multipleUnits": "Multiple units",
+    "noUnitsFound": "No sensor units found!"
   },
   "SIDEBAR": {
     "additionalPanels": "Additional panels",

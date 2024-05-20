@@ -879,7 +879,8 @@
     "sensorUnit": "Senzorová jednotka",
     "comparison": "Porovnať senzory medzi jednotkami",
     "noSensorsSelected": "Nie je vybratý žiadny senzor",
-    "multipleUnits": "Viacero jednotiek"
+    "multipleUnits": "Viacero jednotiek",
+    "noUnitsFound": "Nenašli sa žiadne senzorové jednotky!"
   },
   "SIDEBAR": {
     "additionalPanels": "Ďalšie panely",
