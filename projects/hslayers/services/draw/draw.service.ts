@@ -106,17 +106,19 @@ export class HsDrawService extends HsDrawServiceParams {
         if (this.onSelected) {
           this.onSelected(e);
         }
-        this.modify.setActive(true);
       });
 
       this.selectedFeatures.on('remove', (e) => {
-        if (this.selectedFeatures.length == 0) {
+        if (this.selectedFeatures.getLength() == 0) {
           this.modify.setActive(false);
         }
       });
 
       this.hsEventBusService.vectorQueryFeatureSelection.subscribe((event) => {
         this.selectedFeatures.push(event.feature);
+        if (getEditor(event.selector.getLayer(event.feature)).editable) {
+          this.modify.setActive(true);
+        }
       });
 
       this.hsEventBusService.vectorQueryFeatureDeselection.subscribe(
@@ -168,8 +170,11 @@ export class HsDrawService extends HsDrawServiceParams {
       const title = getTitle(this.selectedLayer);
       return title == TMP_LAYER_TITLE
         ? this.translate('DRAW.unsavedDrawing')
-        : this.hsLayerUtilsService.translateTitle(title) ||
-            getName(this.selectedLayer);
+        : this.hsLanguageService.getTranslationIgnoreNonExisting(
+            'LAYERS',
+            title,
+            undefined,
+          ) || getName(this.selectedLayer);
     } else {
       return this.translate('DRAW.Select layer');
     }
@@ -182,8 +187,11 @@ export class HsDrawService extends HsDrawServiceParams {
     if (this.snapLayer) {
       const title = getTitle(this.snapLayer);
       return (
-        this.hsLayerUtilsService.translateTitle(title) ||
-        getName(this.snapLayer)
+        this.hsLanguageService.getTranslationIgnoreNonExisting(
+          'LAYERS',
+          title,
+          undefined,
+        ) || getName(this.snapLayer)
       );
     }
   }
