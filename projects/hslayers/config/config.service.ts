@@ -60,6 +60,27 @@ export class HsConfigObject {
     user_id: number;
     group: string;
     user: string;
+    /**
+     * Whitelist object defining which units and which unit sensors
+     * should be listed. Each key is a `unit_id`, and the value is an array
+     * of `sensor_id`s to be included for that unit.
+     * If the value is `all`, all sensors for that unit will be included.
+     *
+     * Example:
+     * ```
+     * {
+     *   default: [1,2,3],
+     *   1305167: [530040, 560030],
+     *   1405167: 'all'
+     * }
+     *```
+     * The `default` property defines a common set of sensor IDs that should be included for all units,
+     * unless overridden by a specific unit's configuration.
+     */
+    filter?: {
+      default?: number[];
+      [unit_id: number]: number[] | 'all';
+    };
     liteApiPath?: string;
     mapLogApiPath?: string;
     senslog1Path?: string;

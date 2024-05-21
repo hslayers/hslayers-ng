@@ -14,6 +14,7 @@ import {Aggregate} from './types/aggregate.type';
 import {CustomInterval, Interval} from './types/interval.type';
 import {HsSensorUnit} from './sensor-unit.class';
 import {SensLogEndpoint} from './types/senslog-endpoint.type';
+import {SenslogSensor} from './types/senslog-sensor.type';
 
 dayjs.extend(objectSupport);
 
@@ -235,12 +236,14 @@ export class HsSensorsUnitDialogService {
     });
   }
 
-  private getSensorDescriptor(unit) {
-    let sensorDesc = unit.sensors.filter((s) =>
-      this.sensorsSelected.has(s.sensor_id),
+  private getSensorDescriptor(
+    unit: HsSensorUnit,
+  ): SenslogSensor | SenslogSensor[] {
+    const sensorDesc = unit.sensors.filter((s) =>
+      this.sensorsSelected.has(s.sensor_id as string),
     );
     if (sensorDesc.length > 0 && !this.comparisonAllowed) {
-      sensorDesc = sensorDesc[0];
+      return sensorDesc[0] as SenslogSensor;
     }
     return sensorDesc;
   }
@@ -249,7 +252,9 @@ export class HsSensorsUnitDialogService {
     return this.observations.reduce((acc, val) => {
       return acc.concat(
         val.sensors
-          .filter((s) => this.sensorsSelected.has(s.sensor_id))
+          .filter((s: SenslogSensor) =>
+            this.sensorsSelected.has(s.sensor_id as string),
+          )
           .map((s) => {
             const time = dayjs(val.time_stamp);
             s.sensor_name = `${this.sensorById[s.sensor_id].sensor_name}_${val.unit_id}`;
@@ -409,7 +414,7 @@ export class HsSensorsUnitDialogService {
    * varying count of sensors. This nested list is flattened to simple
    * array of objects with {sensor_id, timestamp, value, sensor_name}
    */
-  createChart(unit) {
+  createChart(unit: HsSensorUnit | HsSensorUnit[]) {
     unit = Array.isArray(unit) ? (unit.length > 1 ? unit : unit[0]) : unit;
 
     let observations;
@@ -422,7 +427,9 @@ export class HsSensorsUnitDialogService {
       observations = this.getObservations();
 
       unit.forEach((u) => {
-        const sensorDesc = this.getSensorDescriptor(u);
+        //Can only be an array (emtpy or not) but multiple units are passed only in case comparisonAllowed
+        //thus -> SenslogSensor[]
+        const sensorDesc = this.getSensorDescriptor(u) as SenslogSensor[];
         if (sensorDesc.length > 0) {
           layer.push(this.createChartLayer(sensorDesc, true));
         }
@@ -476,11 +483,14 @@ export class HsSensorsUnitDialogService {
    * @param observations - Observations selected
    * Calculate aggregates for selected unit
    */
-  private calculateAggregates(unit: any, observations: any): Aggregate[] {
+  private calculateAggregates(
+    unit: HsSensorUnit,
+    observations: any,
+  ): Aggregate[] {
     // Create a map of sensor IDs to their observations
     // Create a map of sensor IDs to their observations
-    const observationMap = new Map<number, number[]>();
-    observations.forEach((obs: {sensor_id: number; value: number}) => {
+    const observationMap = new Map<string, number[]>();
+    observations.forEach((obs: {sensor_id: string; value: number}) => {
       if (!observationMap.has(obs.sensor_id)) {
         observationMap.set(obs.sensor_id, []);
       }
@@ -488,10 +498,10 @@ export class HsSensorsUnitDialogService {
     });
 
     const aggregates: Aggregate[] = unit.sensors
-      .filter((s) => this.sensorsSelected.has(s.sensor_id))
+      .filter((s) => this.sensorsSelected.has(s.sensor_id as string))
       .map((sensor): Aggregate => {
         const observationsForSensor =
-          observationMap.get(sensor.sensor_id) || [];
+          observationMap.get(sensor.sensor_id as string) || [];
         const tmp: Aggregate = {
           min: 0,
           max: 0,
