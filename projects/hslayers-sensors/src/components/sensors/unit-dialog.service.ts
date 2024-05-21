@@ -252,10 +252,7 @@ export class HsSensorsUnitDialogService {
           .filter((s) => this.sensorsSelected.has(s.sensor_id))
           .map((s) => {
             const time = dayjs(val.time_stamp);
-            s.sensor_name = `${this.translate(
-              this.sensorById[s.sensor_id].sensor_name_translated,
-              'SENSORNAMES',
-            )}_${val.unit_id}`;
+            s.sensor_name = `${this.sensorById[s.sensor_id].sensor_name}_${val.unit_id}`;
             s.time = time.format('DD.MM.YYYY HH:mm');
             s.unit_id = val.unit_id;
             s.time_stamp = time.toDate();
@@ -500,7 +497,7 @@ export class HsSensorsUnitDialogService {
           max: 0,
           avg: 0,
           sensor_id: sensor.sensor_id,
-          sensor_name: sensor.sensor_name_translated,
+          sensor_name: sensor.sensor_name,
         };
         if (observationsForSensor.length === 0) {
           return tmp;
