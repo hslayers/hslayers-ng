@@ -14,7 +14,7 @@
           <div *ngFor="let icon of hsConfig.symbolizerIcons" [ngClass]="{'bg-primary': data.selectedIcon === icon}"
             class="p-1" (click)="iconSelected(icon)">
             <!-- TODO: Remove function call from template -->
-            <img [src]="icon.url" />
+            <img [src]="icon.url" style="max-width: 50px; max-height:50px" />
           </div>
         </div>
       </div>
