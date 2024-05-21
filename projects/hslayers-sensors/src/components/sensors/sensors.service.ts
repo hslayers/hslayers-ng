@@ -1,13 +1,11 @@
 import dayjs from 'dayjs';
 import {HttpClient} from '@angular/common/http';
 import {Inject, Injectable, Optional, inject} from '@angular/core';
-import {LangChangeEvent} from '@ngx-translate/core';
 import {Subject, concatMap, map, take} from 'rxjs';
 
 import {HsConfig} from 'hslayers-ng/config';
 import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
-import {HsLanguageService} from 'hslayers-ng/services/language';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsLogService} from 'hslayers-ng/services/log';
 import {HsUtilsService} from 'hslayers-ng/services/utils';
@@ -53,7 +51,6 @@ export class HsSensorsService {
     private http: HttpClient,
     private hsEventBusService: HsEventBusService,
     private hsSensorsUnitDialogService: HsSensorsUnitDialogService,
-    private hsLanguageService: HsLanguageService,
     private hsLog: HsLogService,
     @Optional() @Inject('MAPSERVICE_DISABLED') mapServiceDisabled: boolean,
     @Optional() @Inject('HsQueryVectorService') hsQueryVectorService,
@@ -108,32 +105,6 @@ export class HsSensorsService {
         );
       },
     );
-
-    const translator = this.hsLanguageService.getTranslator();
-    translator.onLangChange.subscribe((event: LangChangeEvent) => {
-      this.units.forEach((unit) => {
-        this.setSensorTranslations(unit);
-      });
-    });
-  }
-
-  /**
-   * Update senor name and phenomenon translations
-   * @param unit - Sensor unit
-   */
-  private setSensorTranslations(unit) {
-    for (const sensor of unit.sensors) {
-      sensor.sensor_name_translated =
-        this.hsLanguageService.getTranslationIgnoreNonExisting(
-          'SENSORS.SENSORNAMES',
-          sensor.sensor_name,
-        );
-      sensor.phenomenon_name_translated =
-        this.hsLanguageService.getTranslationIgnoreNonExisting(
-          'SENSORS.PHENOMENON',
-          sensor.phenomenon_name,
-        );
-    }
   }
 
   /**
@@ -391,7 +362,6 @@ export class HsSensorsService {
               return {name: s.sensor_type};
             });
 
-            this.setSensorTranslations(unit);
             unit.sensorTypes = this.hsUtilsService.removeDuplicates(
               unit.sensorTypes,
               'name',
@@ -474,11 +444,8 @@ export class HsSensorsService {
                   .getFeatures()
                   .find((f) => getUnitId(f) == unit.unit_id);
                 if (feature) {
-                  feature.set(sensor.sensor_name_translated, reading.value);
-                  feature.set(
-                    sensor.sensor_name_translated + ' at ',
-                    reading.timestamp,
-                  );
+                  feature.set(sensor.sensor_name, reading.value);
+                  feature.set(sensor.sensor_name + ' at ', reading.timestamp);
                 } else {
                   this.hsLog.log(`No feature exists for unit ${unit.unit_id}`);
                 }
