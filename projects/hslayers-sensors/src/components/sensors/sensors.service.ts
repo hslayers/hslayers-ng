@@ -25,6 +25,8 @@ import {HsSensorUnit} from './sensor-unit.class';
 import {HsSensorsUnitDialogComponent} from './sensors-unit-dialog.component';
 import {HsSensorsUnitDialogService} from './unit-dialog.service';
 import {SensLogEndpoint} from './types/senslog-endpoint.type';
+import {SenslogResponse} from './types/senslog-response.type';
+import {SenslogSensor} from './types/senslog-sensor.type';
 import {sensorUnitStyle} from './partials/sensor-unit';
 
 const VISUALIZED_ATTR = 'Visualized attribute';
@@ -32,7 +34,7 @@ const VISUALIZED_ATTR = 'Visualized attribute';
   providedIn: 'root',
 })
 export class HsSensorsService {
-  units: any = [];
+  units: HsSensorUnit[] = [];
   layer = null;
   endpoint: SensLogEndpoint;
   visualizedAttribute = new Subject<{attribute: string}>();
@@ -111,7 +113,7 @@ export class HsSensorsService {
   /**
    * Deselect sensor unit and refresh sensors state
    */
-  deselectUnit(unit) {
+  deselectUnit(unit: HsSensorUnit) {
     this.hsSensorsUnitDialogService.unit =
       this.hsSensorsUnitDialogService.unit.filter(
         (u) => u.unit_id !== unit.unit_id,
@@ -152,7 +154,7 @@ export class HsSensorsService {
    * Select sensor from available sensors
    * @param sensor - Sensor selected
    */
-  selectSensor(sensor): void {
+  selectSensor(sensor: SenslogSensor): void {
     this.hsSensorsUnitDialogService.selectSensor(sensor);
     for (const feature of this.layer.getSource().getFeatures()) {
       feature.set(VISUALIZED_ATTR, sensor.sensor_name);
@@ -309,10 +311,30 @@ export class HsSensorsService {
         },
       })
       .pipe(
-        map((response: []) => {
-          return this.unitInUrl
-            ? response.filter((s) => s['unit_id'] == this.unitInUrl)
-            : response;
+        map((response: SenslogResponse[]) => {
+          const filter = this.hsConfig.senslog.filter;
+
+          return this.unitInUrl || filter
+            ? response.filter((s) => {
+                // If there is an unit_id GET param, give it a priority and get only the selected unit
+                if (this.unitInUrl) {
+                  return s['unit_id'] == this.unitInUrl;
+                }
+
+                // If config filter exists, take only whitelisted units
+                if (filter) {
+                  const unitFilter = filter[s['unit_id']];
+                  const defaultFilter = filter.default;
+
+                  // Include unit if specific unit filter is defined or if default filter includes sensors for all units
+                  return (
+                    unitFilter !== undefined || defaultFilter !== undefined
+                  );
+                }
+
+                return false;
+              })
+            : response; // Return the whole response otherwise
         }),
         // Wait for the mapEventHandlersSet to make sure this.layer exists
         concatMap((filteredResponse) =>
@@ -349,16 +371,17 @@ export class HsSensorsService {
           }
           this.units.forEach((unit: HsSensorUnit) => {
             unit.sensors = unit.sensors
-              .filter((s) => !(s['phenomenon_name'] as string).includes('TODO'))
+              .filter((s) => this.sensorAllowed(s, unit))
               .sort((a, b) => {
-                return b.sensor_id - a.sensor_id;
+                return (b.sensor_id as number) - (a.sensor_id as number);
               });
 
             unit.sensorTypes = unit.sensors.map((s) => {
+              // Changing the type of sensor_id from number to string, not ideal
               s.sensor_id = `${unit.unit_id}_${s.sensor_id}`;
-              this.hsSensorsUnitDialogService.sensorById[s.sensor_id] = s;
               s.unit_id = unit.unit_id;
               s.unit_description = unit.description;
+              this.hsSensorsUnitDialogService.sensorById[s.sensor_id] = s;
 
               return {name: s.sensor_type};
             });
@@ -371,8 +394,9 @@ export class HsSensorsService {
               sensorType.sensors = unit.sensors.filter(
                 (s) => s.sensor_type == sensorType.name,
               );
-              sensorType.expanded =
-                unit.sensorTypes.length > 7 ? !this.unitInUrl : false;
+              sensorType.expanded = this.unitInUrl
+                ? unit.sensorTypes.length <= 7
+                : false;
             });
           });
 
@@ -389,15 +413,33 @@ export class HsSensorsService {
   }
 
   /**
+   * Determine wether the sensor should be visible or not based on filter
+   */
+  private sensorAllowed(s: SenslogSensor, u: HsSensorUnit): boolean {
+    const filter = this.hsConfig.senslog.filter;
+
+    if (filter) {
+      const sensor_filter = filter[u.unit_id] || filter.default;
+      return (
+        sensor_filter === 'all' ||
+        (Array.isArray(sensor_filter) &&
+          sensor_filter.includes(s.sensor_id as number))
+      );
+    }
+
+    return !(s.phenomenon_name as string).includes('TODO');
+  }
+
+  /**
    * Filter sensors based on the query value
    * @param sensors -
    * @param query -
    */
-  filterquery(sensors, query) {
-    return sensors.filter(
-      (s) =>
+  filterquery(units: HsSensorUnit[], query) {
+    return units.filter(
+      (u) =>
         query.description == '' ||
-        s.description.toLowerCase().indexOf(query.description.toLowerCase()) >
+        u.description.toLowerCase().indexOf(query.description.toLowerCase()) >
           -1,
     );
   }
