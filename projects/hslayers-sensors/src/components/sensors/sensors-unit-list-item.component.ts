@@ -6,6 +6,7 @@ import {HsSensorUnit} from './sensor-unit.class';
 import {HsSensorsService} from './sensors.service';
 import {HsSensorsUnitDialogComponent} from './sensors-unit-dialog.component';
 import {HsSensorsUnitDialogService} from './unit-dialog.service';
+import {SenslogSensor} from './types/senslog-sensor.type';
 
 @Component({
   selector: 'hs-sensor-unit-list-item',
@@ -35,27 +36,17 @@ export class HsSensorsUnitListItemComponent {
    * When sensor is clicked, create a dialog window for
    * displaying charts or reopen already existing one.
    */
-  sensorClicked(sensor): void {
+  sensorClicked(sensor: SenslogSensor): void {
     this.hsSensorsUnitDialogService.resetAggregations();
     this.hsSensorsUnitDialogService.unit = [this.unit];
     this.generateDialog();
   }
-
-  /**
-   * Get data translation to local
-   * @param text - Text to translate
-   * @param module - Locales json object where to look for the translation
-   */
-  getTranslation(text: string, module?: string): string {
-    return this.hsSensorsUnitDialogService.translate(text, module);
-  }
-
   /**
    * @param sensor - Clicked to be toggled
    * When sensor is toggled, create a dialog window for
    * displaying charts or reopen already existing one.
    */
-  sensorToggleSelected(sensor): void {
+  sensorToggleSelected(sensor: SenslogSensor): void {
     sensor.checked = !sensor.checked;
     if (this.hsSensorsUnitDialogService.comparisonAllowed) {
       //If the opened sensor belongs to unit that's not included add it

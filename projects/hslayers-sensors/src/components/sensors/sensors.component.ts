@@ -50,7 +50,7 @@ export class HsSensorsComponent extends HsPanelBaseComponent implements OnInit {
   /**
    * Set data view mode
    */
-  setViewMode(viewMode): void {
+  setViewMode(viewMode: string): void {
     this.viewMode = viewMode;
   }
 

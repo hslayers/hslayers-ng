@@ -48,7 +48,7 @@
                                 [ngClass]="{'btn-primary': getCurrentInterval() === interval}"
                                 (click)="timeButtonClicked(interval)" *ngFor="let interval of getIntervals()"
                                 [attr.aria-label]="'SENSORS.oneHour' | translateHs ">
-                                {{interval.name | translateHs : {module: 'SENSORS.SENSORNAMES'} }}
+                                {{interval.name | translateHs : {module: 'SENSORS'} }}
                                 &emsp;<span class="hs-loader" [hidden]="!interval.loading"></span></button>
                         </div>
                     </div>
