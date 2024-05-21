@@ -1,7 +1,6 @@
 import {ChangeDetectionStrategy, Component, Input, OnInit} from '@angular/core';
 
 import {HsLayerDescriptor} from 'hslayers-ng/types';
-import {HsLayerUtilsService} from 'hslayers-ng/services/utils';
 import {HsQueryPopupWidgetBaseComponent} from '../query-popup-widget-base.component';
 
 @Component({
@@ -20,20 +19,11 @@ export class HsLayerNameComponent
     layerDescriptor: HsLayerDescriptor;
   };
 
-  constructor(private hsLayerUtilsService: HsLayerUtilsService) {
+  constructor() {
     super();
   }
 
   ngOnInit(): void {
     this.layerDescriptor = this.data.layerDescriptor;
-  }
-
-  /**
-   * Get title translation
-   * @param title - Title to translate
-   * @returns Translated title
-   */
-  translateTitle(title: string): string {
-    return this.hsLayerUtilsService.translateTitle(title);
   }
 }

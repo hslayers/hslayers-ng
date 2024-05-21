@@ -800,7 +800,7 @@
     },
     "reallyDelete": "Naozaj zmazať tento prvok?",
     "reallyDeleteAllFeaturesFrom": "Naozaj odstrániť všetky prvky z vrstvy {0}?",
-    "reallyDeleteAllSelectedLayers": "Naozaj odstrániť všetky vybrané prvky?",
+    "reallyDeleteAllSelectedLayers": "Naozaj chcete odstrániť všetky odstrániteľné vybrané  funkcie?",
     "untitledFeature": "Prvok bez názvu"
   },
   "SAVECOMPOSITION": {

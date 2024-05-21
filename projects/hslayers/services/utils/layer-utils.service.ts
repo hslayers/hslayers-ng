@@ -20,7 +20,6 @@ import {METERS_PER_UNIT} from 'ol/proj';
 import {Tile as TileLayer} from 'ol/layer';
 import {isEmpty} from 'ol/extent';
 
-import {HsLanguageService} from 'hslayers-ng/services/language';
 import {HsLayerDescriptor} from 'hslayers-ng/types';
 import {HsUtilsService} from './utils.service';
 import {HsWmsLayer} from 'hslayers-ng/types';
@@ -38,7 +37,6 @@ import {
 export class HsLayerUtilsService {
   constructor(
     public HsUtilsService: HsUtilsService,
-    public HsLanguageService: HsLanguageService,
     private zone: NgZone,
   ) {}
 
@@ -450,14 +448,6 @@ export class HsLayerUtilsService {
       this.HsUtilsService.instOf(layer.getSource(), Cluster)
       ? true
       : false;
-  }
-
-  translateTitle(title: string): string {
-    return this.HsLanguageService.getTranslationIgnoreNonExisting(
-      'LAYERS',
-      title,
-      undefined,
-    );
   }
 
   /**

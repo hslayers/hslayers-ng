@@ -42,6 +42,8 @@ export class HsFeatureCommonService {
       map.getLayers().on('change:length', () => {
         this.updateLayerList();
       });
+
+      this.updateLayerList();
     });
   }
 

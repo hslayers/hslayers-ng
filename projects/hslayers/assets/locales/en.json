@@ -803,7 +803,7 @@
     "confirmClear": "Confirm clear",
     "confirmDelete": "Confirm delete",
     "coordinates": "Coordinates",
-    "deleteAllSelected": "Delete all selected features",
+    "deleteAllSelected": "Delete all selected removable features",
     "downloadAs": "Download as",
     "feature": {
       "attributeName": "Attribute name",
@@ -831,7 +831,7 @@
     },
     "reallyDelete": "Really delete this feature?",
     "reallyDeleteAllFeaturesFrom": "Really delete all features from layer {0}?",
-    "reallyDeleteAllSelectedLayers": "Really delete all selected features?",
+    "reallyDeleteAllSelectedLayers": "Do you really want to delete all selected removable features?",
     "untitledFeature": "Untitled feature"
   },
   "SAVECOMPOSITION": {

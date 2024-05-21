@@ -2,9 +2,9 @@
     <div class="input-group m-1">
         <span class="input-group-text">{{attribute.name}}</span>
         <input class="form-control" *ngIf="!isObject" [(ngModel)]="attribute.value" (change)="change()"
-            [readonly]="readonly" [ngModelOptions]="{standalone: true}">
+            [readonly]="readonly" name="hs-query-attribute-row-input">
         <textarea class="form-control" *ngIf="isObject" name="attributeValue" [(ngModel)]="tmpObjectValue"
-            [readonly]="readonly" (change)="change()" [ngModelOptions]="{standalone: true}">
+            [readonly]="readonly" (change)="change()" name="hs-query-attribute-row-textarea">
             </textarea>
     </div>
 </div>

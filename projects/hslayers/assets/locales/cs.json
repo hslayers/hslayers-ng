@@ -831,7 +831,7 @@
     },
     "reallyDelete": "Opravdu smazat tento prvek?",
     "reallyDeleteAllFeaturesFrom": "Opravdu odstranit všechny prvky z vrstvy {0}?",
-    "reallyDeleteAllSelectedLayers": "Opravdu odstranit všechny vybrané prvky?",
+    "reallyDeleteAllSelectedLayers": "Opravdu chcete odstranit všechny odstranitelné vybrané  prvky?",
     "untitledFeature": "Prvek bez názvu"
   },
   "SAVECOMPOSITION": {

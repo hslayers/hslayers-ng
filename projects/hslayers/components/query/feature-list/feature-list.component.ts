@@ -127,7 +127,9 @@ export class HsQueryFeatureListComponent {
     );
     const confirmed = await dialog.waitResult();
     if (confirmed == 'yes') {
-      for (const feature of this.hsQueryBaseService.features) {
+      for (const feature of this.hsQueryBaseService.features.filter((f) =>
+        this.hsQueryVectorService.isFeatureRemovable(f.feature),
+      )) {
         //Give HsQueryVectorService.featureRemovals time to splice QueryBase.data.features
         setTimeout(() => {
           this.hsQueryVectorService.removeFeature(feature.feature);
