@@ -1,14 +1,23 @@
-import {Component, ElementRef, OnDestroy, OnInit, ViewRef} from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  OnDestroy,
+  OnInit,
+  ViewRef,
+} from '@angular/core';
+import {Subject, combineLatest, takeUntil} from 'rxjs';
 
 import {
   HsDialogComponent,
   HsDialogContainerService,
 } from 'hslayers-ng/common/dialogs';
+import {HsLanguageService} from 'hslayers-ng/services/language';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
 
 import {Aggregates, HsSensorsUnitDialogService} from './unit-dialog.service';
 import {CustomInterval, Interval} from './types/interval.type';
-import {Subject, combineLatest, takeUntil} from 'rxjs';
+import {LangChangeEvent} from '@ngx-translate/core';
 
 @Component({
   selector: 'hs-sensor-unit',
@@ -30,6 +39,8 @@ export class HsSensorsUnitDialogComponent
     private hsLayoutService: HsLayoutService,
     private hsDialogContainerService: HsDialogContainerService,
     private hsSensorsUnitDialogService: HsSensorsUnitDialogService,
+    private hsLanguageService: HsLanguageService,
+    private cdr: ChangeDetectorRef,
     public elementRef: ElementRef,
   ) {}
 
@@ -47,6 +58,11 @@ export class HsSensorsUnitDialogComponent
       .subscribe(([panelSpace, sidebar]) => {
         this.calculateDialogStyle(panelSpace, sidebar == 'bottom');
       });
+
+    const translator = this.hsLanguageService.getTranslator();
+    translator.onLangChange.subscribe((event: LangChangeEvent) => {
+      this.cdr.detectChanges();
+    });
   }
 
   /**
@@ -68,14 +84,6 @@ export class HsSensorsUnitDialogComponent
    */
   getCurrentInterval() {
     return this.hsSensorsUnitDialogService.currentInterval;
-  }
-
-  /**
-   * Get translations to local
-   * @param text - Text to translate
-   */
-  getTranslation(text: string): string {
-    return this.hsSensorsUnitDialogService.translate(text, 'SENSORNAMES');
   }
 
   /**

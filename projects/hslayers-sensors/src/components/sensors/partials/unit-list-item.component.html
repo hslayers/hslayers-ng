@@ -3,8 +3,8 @@
     <ul class="list-group" [hidden]="!(expanded || unit.expanded)">
         <div *ngFor="let sensorType of unit.sensorTypes" class="list-group-item p-1">
             <a (click)="sensorType.expanded = !sensorType.expanded" class="hs-sensor-type"
-                style="line-height: 2em;">{{getTranslation(sensorType.name,
-                'SENSORNAMES')}}</a><!-- TODO: Remove function call from template -->
+                style="line-height: 2em;">{{sensorType.name | translateHs : {module: 'SENSORS.SENSORNAMES'} }}
+            </a>
             <ul class="list-group" [hidden]="!sensorType.expanded">
                 <li *ngFor="let sensor of sensorType.sensors" class="list-group-item p-1">
                     <div class="d-flex ">
@@ -14,10 +14,11 @@
                         </div>
                         <div class="align-items-center p-0 flex-grow-1 hs-lm-item-title">
                             <a *ngIf="viewMode === 'sensornames'" class="hs-sensor" (click)="sensorClicked(sensor)">
-                                <b>{{sensor.sensor_name_translated}}</b></a>
+                                <b>{{sensor.sensor_name | translateHs : {module: 'SENSORS.SENSORNAMES'} }}</b></a>
 
                             <a *ngIf="viewMode === 'sensors'" class="hs-sensor" (click)="sensorClicked(sensor)">
-                                <b>{{sensor.sensor_name_translated}}</b><span class="ms-1">{{'SENSORS.measure' |
+                                <b>{{sensor.sensor_name | translateHs : {module: 'SENSORS.SENSORNAMES'} }}</b><span
+                                    class="ms-1">{{'SENSORS.measure' |
                                     translateHs }}</span> {{sensor.phenomenon_name}}</a>
                             <a *ngIf="viewMode === 'phenomena'" class="hs-sensor" (click)="sensorClicked(sensor)">
                                 {{sensor.phenomenon_name_translated}}</a>
