@@ -4,7 +4,7 @@ import {Observable, Subject, Subscription} from 'rxjs';
 import {Vector as VectorLayer} from 'ol/layer';
 import {Vector as VectorSource} from 'ol/source';
 
-import {HsLayerUtilsService} from 'hslayers-ng/services/utils';
+import {HsLanguageService} from 'hslayers-ng/services/language';
 import {HsLegendDescriptor} from 'hslayers-ng/components/legend';
 import {HsLegendLayerStaticService} from 'hslayers-ng/components/legend';
 import {HsLegendService} from 'hslayers-ng/components/legend';
@@ -28,7 +28,7 @@ export class HsPrintLegendService extends PrintLegendParams {
     private hsMapService: HsMapService,
     private hsLegendService: HsLegendService,
     private hsLegendLayerStaticService: HsLegendLayerStaticService,
-    private hsLayerUtilsService: HsLayerUtilsService,
+    private hsLanguageService: HsLanguageService,
     private hsShareThumbnailService: HsShareThumbnailService,
   ) {
     super();
@@ -148,7 +148,11 @@ export class HsPrintLegendService extends PrintLegendParams {
             for (const sublayer of desc.subLayerLegends) {
               const wmsSvg = await this.legendImageToSvg(
                 sublayer,
-                this.hsLayerUtilsService.translateTitle(desc.title),
+                this.hsLanguageService.getTranslationIgnoreNonExisting(
+                  'LAYERS',
+                  desc.title,
+                  undefined,
+                ),
               );
               if (wmsSvg) {
                 svgSources.push(wmsSvg);
@@ -198,7 +202,11 @@ export class HsPrintLegendService extends PrintLegendParams {
       }
       svgSource = this.legendToSvg(
         legendSource,
-        this.hsLayerUtilsService.translateTitle(desc.title),
+        this.hsLanguageService.getTranslationIgnoreNonExisting(
+          'LAYERS',
+          desc.title,
+          undefined,
+        ),
       );
     } else {
       for (const category of (desc.lyr.getSource() as SparqlJson)
@@ -220,13 +228,21 @@ export class HsPrintLegendService extends PrintLegendParams {
       case 'image':
         svgSource = await this.legendImageToSvg(
           layerLegend.lastLegendImage,
-          this.hsLayerUtilsService.translateTitle(desc.title),
+          this.hsLanguageService.getTranslationIgnoreNonExisting(
+            'LAYERS',
+            desc.title,
+            undefined,
+          ),
         );
         break;
       case 'svg':
         svgSource = this.legendToSvg(
           layerLegend.lastLegendImage,
-          this.hsLayerUtilsService.translateTitle(desc.title),
+          this.hsLanguageService.getTranslationIgnoreNonExisting(
+            'LAYERS',
+            desc.title,
+            undefined,
+          ),
         );
         break;
       default:

@@ -1,19 +1,23 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {Component, DestroyRef, Input, OnInit} from '@angular/core';
+import {Observable, map} from 'rxjs';
 
 import {Feature} from 'ol';
 import {Geometry} from 'ol/geom';
+import {Layer} from 'ol/layer';
 
 import {HsFeatureCommonService} from '../feature-common.service';
+import {HsLayerUtilsService} from 'hslayers-ng/services/utils';
 import {HsMapService} from 'hslayers-ng/services/map';
 import {HsQueryVectorService} from 'hslayers-ng/services/query';
 import {exportFormats} from '../feature-common.service';
 import {getTitle} from 'hslayers-ng/common/extensions';
+import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'hs-query-feature',
   templateUrl: './feature.component.html',
 })
-export class HsQueryFeatureComponent implements OnDestroy, OnInit {
+export class HsQueryFeatureComponent implements OnInit {
   @Input() feature;
 
   attributeName = '';
@@ -33,31 +37,33 @@ export class HsQueryFeatureComponent implements OnDestroy, OnInit {
   selectedLayer = null;
   editType: 'move' | 'copy';
   getTitle = getTitle;
-  availableLayers = [];
-  availableLayersSubscription: any;
+  availableLayers: Observable<Layer[]>;
+
+  readonly: boolean;
 
   constructor(
     private hsMapService: HsMapService,
     private hsQueryVectorService: HsQueryVectorService,
     private hsFeatureCommonService: HsFeatureCommonService,
+    private hsLayerUtilsService: HsLayerUtilsService,
+    private DestroyRef: DestroyRef,
   ) {}
 
   ngOnInit(): void {
-    this.availableLayersSubscription =
-      this.hsFeatureCommonService.availableLayer$.subscribe((layers) => {
+    this.availableLayers = this.hsFeatureCommonService.availableLayer$.pipe(
+      takeUntilDestroyed(this.DestroyRef),
+      map((layers) => {
         if (!this.olFeature()) {
           //Feature from WMS getFeatureInfo
-          return;
+          return [];
         }
         const featureLayer = this.hsMapService.getLayerForFeature(
           this.olFeature(),
         );
-        this.availableLayers = layers.filter((layer) => layer != featureLayer);
-      });
-  }
-
-  ngOnDestroy(): void {
-    this.availableLayersSubscription?.unsubscribe();
+        this.readonly = !this.hsLayerUtilsService.isLayerEditable(featureLayer);
+        return layers.filter((layer) => layer != featureLayer);
+      }),
+    );
   }
 
   /**

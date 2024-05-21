@@ -5,7 +5,7 @@
                 {{feature.layer}}</strong></div>
     </div>
     <hs-query-attribute-row *ngFor="let attribute of feature.attributes" [template]="feature.hstemplate"
-        [feature]="feature" [attribute]="attribute" [readonly]="false">
+        [feature]="feature" [attribute]="attribute" [readonly]="readonly">
     </hs-query-attribute-row>
     <hs-query-attribute-row *ngFor="let stat of feature.stats" [feature]="feature" [attribute]="stat" [readonly]="true">
     </hs-query-attribute-row>
@@ -38,7 +38,7 @@
                 [(ngModel)]="selectedLayer" name="selectedLayer">
                 <option [ngValue]="null" [disabled]="true" selected hidden> {{'ADDLAYERS.Vector.chooseLayer' |
                     translateHs }}</option>
-                <option *ngFor="let layer of availableLayers" [ngValue]="layer">
+                <option *ngFor="let layer of availableLayers | async" [ngValue]="layer">
                     {{getTitle(layer) | translateHs : {module: 'LAYERS'} }}</option>
             </select>
             <button class="btn btn-primary btn-sm" (click)="moveOrCopyFeature()" [disabled]="!selectedLayer"><i
@@ -49,8 +49,8 @@
 <div class="justify-content-end" style="padding-left: 10px" *ngIf="olFeature() !== undefined">
     <div class="mx-1 mb-2 text-end">
         <div class="btn-group">
-            <button class="btn btn-secondary btn-sm" (click)="newAttribVisible = !newAttribVisible"><i
-                    class="icon-calcplus"></i></button>
+            <button [disabled]="readonly" class="btn btn-secondary btn-sm"
+                (click)="newAttribVisible = !newAttribVisible"><i class="icon-calcplus"></i></button>
             <button class="btn btn-secondary btn-sm" (click)="zoomToFeature()"><i class="icon-search"></i></button>
             <div class="btn-group" ngbDropdown placement="bottom" display="dynamic">
                 <button ngbDropdownToggle class="btn btn-secondary btn-sm" type="button" (click)="toggleEditMenu()"><i

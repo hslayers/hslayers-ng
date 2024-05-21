@@ -787,7 +787,7 @@
     },
     "reallyDelete": "Vai tiešām vēlaties dzēst šo objektu?",
     "reallyDeleteAllFeaturesFrom": "Vai tiešām vēlaties izdzēst visus objektus no slāņa {0}?",
-    "reallyDeleteAllSelectedLayers": "Vai tiešām dzēst visus atlasītos grafiskos objektus?",
+    "reallyDeleteAllSelectedLayers": "Vai tiešām vēlaties dzēst visas atlasītās noņemamās funkcijas?",
     "untitledFeature": "Objekts bez nosaukuma"
   },
   "SAVECOMPOSITION": {
