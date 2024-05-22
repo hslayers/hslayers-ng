@@ -1,4 +1,4 @@
-import {Collection} from 'ol';
+import {Collection, Feature} from 'ol';
 import {DragBox, Draw, Modify, Snap} from 'ol/interaction';
 import {EventsKey} from 'ol/events';
 import {Layer} from 'ol/layer';
@@ -36,12 +36,12 @@ export class HsDrawServiceParams {
   snap: Snap;
   snapActive = false;
   snapSource: VectorSource;
-  snapLayer: VectorLayer<VectorSource>;
+  snapLayer: VectorLayer<Feature>;
   /**
    * String of type GeometryType
    */
   type: 'Point' | 'Polygon' | 'LineString' | 'Circle';
-  selectedLayer: VectorLayer<VectorSource>;
+  selectedLayer: VectorLayer<Feature>;
   tmpDrawLayer: any;
   source: VectorSource;
   drawActive = false;

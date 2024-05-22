@@ -277,7 +277,7 @@ export class HsQueryVectorService {
     if (layer == undefined) {
       return;
     } else if (this.hsUtilsService.instOf(layer.getSource(), Cluster)) {
-      return (layer.getSource() as Cluster).getSource();
+      return (layer.getSource() as Cluster<Feature>).getSource();
     } else {
       return layer.getSource();
     }

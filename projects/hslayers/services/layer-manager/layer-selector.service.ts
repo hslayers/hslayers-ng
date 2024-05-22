@@ -17,7 +17,7 @@ export class HsLayerSelectorService {
    * Multi-casts new HsLayerManagerService.currentLayer to observers listening to the layerSelected subject.
    * @param hsLayer - Selected layer (HsLayerManagerService.currentLayer)
    */
-  select(hsLayer: HsLayerDescriptor): void {
+  select(hsLayer: HsLayerDescriptor) {
     this.currentLayer = hsLayer;
     this.layerSelected.next(hsLayer);
   }

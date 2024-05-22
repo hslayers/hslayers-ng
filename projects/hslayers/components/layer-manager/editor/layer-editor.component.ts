@@ -1,9 +1,9 @@
 import {Component, Input} from '@angular/core';
 
+import {Feature} from 'ol';
 import {Layer} from 'ol/layer';
 import {Source} from 'ol/source';
 import {Vector as VectorLayer} from 'ol/layer';
-import {Vector as VectorSource} from 'ol/source';
 
 import {HsClusterWidgetComponent} from '../widgets/cluster-widget.component';
 import {HsConfirmDialogComponent} from 'hslayers-ng/common/confirm';
@@ -139,7 +139,7 @@ export class HsLayerEditorComponent {
    * Confirm saving a vector layer content as a GeoJSON
    * @returns an empty promise
    */
-  async createSaveDialog(): Promise<void> {
+  async createSaveDialog() {
     const dialog = this.HsDialogContainerService.create(
       HsConfirmDialogComponent,
       {
@@ -153,7 +153,7 @@ export class HsLayerEditorComponent {
     }
   }
 
-  layerIsWmsT(): boolean {
+  layerIsWmsT() {
     return this.HsDimensionTimeService.layerIsWmsT(this.currentLayer);
   }
 
@@ -170,16 +170,16 @@ export class HsLayerEditorComponent {
   /**
    * Display styler panel for selected layer, so user can change its style
    */
-  styleLayer(): void {
+  styleLayer() {
     const layer = this.olLayer();
-    this.HsStylerService.layer = layer as VectorLayer<VectorSource>;
+    this.HsStylerService.layer = layer as VectorLayer<Feature>;
     this.HsLayoutService.setMainPanel('styler');
   }
 
   /**
    * Toggle layer rename control on panel (through layer rename variable)
    */
-  toggleLayerRename(): void {
+  toggleLayerRename() {
     this.tmpTitle = undefined;
     this.layer_renamer_visible = !this.layer_renamer_visible;
   }

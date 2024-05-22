@@ -1,5 +1,6 @@
 import {Injectable} from '@angular/core';
 
+import {Feature} from 'ol';
 import {Layer, Vector as VectorLayer} from 'ol/layer';
 import {Source, Vector as VectorSource} from 'ol/source';
 import {get as getProjection} from 'ol/proj';
@@ -66,7 +67,7 @@ export class HsAddDataVectorService {
     srs: string,
     options: HsVectorLayerOptions,
     addUnder?: Layer<Source>,
-  ): Promise<VectorLayer<VectorSource>> {
+  ): Promise<VectorLayer<Feature>> {
     return new Promise(async (resolve, reject) => {
       try {
         const lyr = await this.createVectorLayer(
@@ -123,7 +124,7 @@ export class HsAddDataVectorService {
     abstract: string,
     srs: string,
     options: HsVectorLayerOptions = {},
-  ): Promise<VectorLayer<VectorSource>> {
+  ) {
     if (
       type?.toLowerCase() != 'sparql' &&
       type?.toLowerCase() != 'wfs' &&
@@ -177,7 +178,7 @@ export class HsAddDataVectorService {
    * Fit map view to layer's extent
    * @param lyr - Provided layer
    */
-  fitExtent(lyr: VectorLayer<VectorSource>): void {
+  fitExtent(lyr: VectorLayer<Feature>) {
     const src = lyr.getSource();
     if (src.getFeatures().length > 0) {
       this.tryFit(src.getExtent(), src);
@@ -189,7 +190,7 @@ export class HsAddDataVectorService {
   /**
    * Set catalogue as active HSLayers panel
    */
-  setPanelToCatalogue(): void {
+  setPanelToCatalogue() {
     this.hsAddDataService.selectType('catalogue');
   }
 
@@ -243,14 +244,12 @@ export class HsAddDataVectorService {
    * @param data - Layer data object provided
    * @returns Created layer and layer adding state (true, if complete, false otherwise)
    */
-  async addNewLayer(
-    data: VectorDataObject,
-  ): Promise<{layer: VectorLayer<VectorSource>; complete: boolean}> {
+  async addNewLayer(data: VectorDataObject) {
     if (!this.hsAddDataCommonFileService.endpoint) {
       this.hsAddDataCommonFileService.pickEndpoint();
     }
     const addLayerRes: {
-      layer: VectorLayer<VectorSource>;
+      layer: VectorLayer<Feature>;
       complete: boolean;
     } = {layer: null, complete: true};
     if (data.saveToLayman && data.saveAvailable) {
@@ -293,10 +292,7 @@ export class HsAddDataVectorService {
    * Get layer style from Layman endpoint before creating layer to ensure all params and values used
    * are in sync with what's on Layman e.g. to prevent inconsistencies caused by attribute names laundering
    */
-  async setLaymanLayerStyle(
-    layerName: string,
-    data: VectorDataObject,
-  ): Promise<void> {
+  async setLaymanLayerStyle(layerName: string, data: VectorDataObject) {
     const descriptor = await this.hsAddDataCommonFileService.describeNewLayer(
       this.hsAddDataCommonFileService.endpoint,
       layerName,
@@ -403,7 +399,7 @@ export class HsAddDataVectorService {
    * @param url - Upload source url
    * @returns True, if data are in KML format, false otherwise
    */
-  isKml(fileType: string, url: string): boolean {
+  isKml(fileType: string, url: string) {
     if (fileType == 'kml' || url?.endsWith('kml')) {
       return true;
     } else {
@@ -416,7 +412,7 @@ export class HsAddDataVectorService {
    * @param extent - Extent provided
    * @param src - Layer source provided
    */
-  tryFit(extent, src: Source): void {
+  tryFit(extent, src: Source) {
     if (
       !isNaN(extent[0]) &&
       !isNaN(extent[1]) &&

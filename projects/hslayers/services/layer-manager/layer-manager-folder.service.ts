@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {Subject, scan} from 'rxjs';
+import {Subject} from 'rxjs';
 
 import {HsConfig} from 'hslayers-ng/config';
 import {HsLanguageService} from 'hslayers-ng/services/language';

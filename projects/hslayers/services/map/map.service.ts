@@ -64,8 +64,8 @@ export enum DuplicateHandling {
 }
 
 type VectorAndSource = {
-  source: VectorSource | Cluster;
-  layer: VectorLayer<VectorSource>;
+  source: VectorSource | Cluster<Feature>;
+  layer: VectorLayer<Feature>;
 };
 
 const proj4 = projx.default ?? projx;
@@ -136,9 +136,7 @@ export class HsMapService {
    * @param feature - Feature selected
    * @returns VectorLayer
    */
-  getLayerForFeature(
-    feature: Feature<Geometry>,
-  ): VectorLayer<VectorSource> | VectorLayer<Cluster> {
+  getLayerForFeature(feature: Feature<Geometry>): VectorLayer<Feature> {
     if (typeof feature.getId() == 'undefined') {
       feature.setId(this.hsUtilsService.generateUuid());
     }
@@ -179,7 +177,7 @@ export class HsMapService {
   refineLayerSearch(
     array: VectorAndSource[],
     feature: Feature<Geometry>,
-  ): VectorLayer<VectorSource> {
+  ): VectorLayer<Feature> {
     array = array.filter((entry) => entry.layer.getVisible());
     if (array.length > 1) {
       return array.find(
@@ -254,7 +252,7 @@ export class HsMapService {
       }
     } else {
       const layersToLookFor: {
-        source: VectorSource | Cluster;
+        source: VectorSource | Cluster<Feature>;
         layer: any;
       }[] = [];
       this.getVectorLayers(layersToLookFor);

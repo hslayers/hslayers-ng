@@ -56,9 +56,9 @@ import {parseStyle} from './backwards-compatibility';
   providedIn: 'root',
 })
 export class HsStylerService {
-  layer: VectorLayer<VectorSource> = null;
+  layer: VectorLayer<Feature> = null;
   layerBeingMonitored: boolean;
-  onSet: Subject<VectorLayer<VectorSource>> = new Subject();
+  onSet: Subject<VectorLayer<Feature>> = new Subject();
   layerTitle: string;
   styleObject: GeoStylerStyle;
 
@@ -129,15 +129,13 @@ export class HsStylerService {
         .filter((layer) =>
           this.hsLayerUtilsService.isLayerVectorLayer(layer),
         )) {
-        this.initLayerStyle(layer as VectorLayer<VectorSource>);
+        this.initLayerStyle(layer as VectorLayer<Feature>);
       }
       this.hsEventBusService.layerAdditions.subscribe((layerDescriptor) => {
         if (
           this.hsLayerUtilsService.isLayerVectorLayer(layerDescriptor.layer)
         ) {
-          this.initLayerStyle(
-            layerDescriptor.layer as VectorLayer<VectorSource>,
-          );
+          this.initLayerStyle(layerDescriptor.layer as VectorLayer<Feature>);
         }
       });
     });
@@ -158,7 +156,7 @@ export class HsStylerService {
    * @returns Source of the input layer or source of its cluster's source
    */
   getLayerSource(
-    layer: VectorLayer<VectorSource>,
+    layer: VectorLayer<Feature>,
     isClustered: boolean,
   ): VectorSource {
     if (!layer) {
@@ -166,7 +164,7 @@ export class HsStylerService {
     }
     let src: VectorSource;
     if (isClustered) {
-      src = (layer.getSource() as Cluster).getSource();
+      src = (layer.getSource() as Cluster<Feature>).getSource();
     } else {
       src = layer.getSource();
     }
@@ -177,7 +175,7 @@ export class HsStylerService {
    * Style clustered layer features using cluster style or individual feature style.
    * @param layer - Any vector layer
    */
-  async styleClusteredLayer(layer: VectorLayer<VectorSource>): Promise<void> {
+  async styleClusteredLayer(layer: VectorLayer<Feature>): Promise<void> {
     await this.fill(layer);
     //Check if layer already has SLD style for clusters
     if (
@@ -224,7 +222,7 @@ export class HsStylerService {
    * Upload style created by createDefaultStyle method to layman thus syncing style of
    * vector layer added without SLD by rewriting its default value
    */
-  private trySyncingStyleToLayman(layer: VectorLayer<VectorSource>) {
+  private trySyncingStyleToLayman(layer: VectorLayer<Feature>) {
     if (this.hsLayerSynchronizerService.syncedLayers.includes(layer)) {
       awaitLayerSync(layer).then(() => {
         setSld(
@@ -245,7 +243,7 @@ export class HsStylerService {
    *
    * @param layer - OL layer to fill the missing style info
    */
-  async initLayerStyle(layer: VectorLayer<VectorSource>): Promise<void> {
+  async initLayerStyle(layer: VectorLayer<Feature>): Promise<void> {
     if (!this.isVectorLayer(layer)) {
       return;
     }
@@ -347,7 +345,7 @@ export class HsStylerService {
    * Prepare current layers style for editing by converting
    * SLD attribute string to JSON and reading layers title
    */
-  async fill(layer: VectorLayer<VectorSource>): Promise<void> {
+  async fill(layer: VectorLayer<Feature>): Promise<void> {
     const blankStyleObj = {name: 'untitled style', rules: []};
     try {
       if (!layer) {

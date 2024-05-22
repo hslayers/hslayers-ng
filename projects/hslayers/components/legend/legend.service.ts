@@ -7,17 +7,13 @@ import {Style as GeoStylerStyle} from 'geostyler-style';
 import {Image as ImageLayer, Layer, Vector as VectorLayer} from 'ol/layer';
 import {OlStyleParser} from 'geostyler-openlayers-parser';
 import {SldStyleParser as SLDParser} from 'geostyler-sld-parser';
-import {
-  Source,
-  ImageStatic as Static,
-  Vector as VectorSource,
-  XYZ,
-} from 'ol/source';
+import {Source, ImageStatic as Static, XYZ} from 'ol/source';
 import {Style} from 'ol/style';
 
 import {HsLayerSelectorService} from 'hslayers-ng/services/layer-manager';
 import {HsLayerUtilsService} from 'hslayers-ng/services/utils';
 import {HsLegendDescriptor} from './legend-descriptor.interface';
+import {HsLogService} from 'hslayers-ng/services/log';
 import {HsStylerService} from 'hslayers-ng/services/styler';
 import {HsUtilsService} from 'hslayers-ng/services/utils';
 import {InterpolatedSource} from 'hslayers-ng/common/layers';
@@ -42,6 +38,7 @@ export class HsLegendService {
     public hsStylerService: HsStylerService,
     private hsLayerUtilsService: HsLayerUtilsService,
     public hsLayerSelectorService: HsLayerSelectorService,
+    private hsLog: HsLogService,
     private sanitizer: DomSanitizer,
   ) {
     this.hsLayerSelectorService.layerSelected
@@ -75,7 +72,7 @@ export class HsLegendService {
    * @returns Image as SVG string
    */
   async getVectorLayerLegendSvg(
-    currentLayer: VectorLayer<VectorSource>,
+    currentLayer: VectorLayer<Feature>,
   ): Promise<string> {
     try {
       if (currentLayer === undefined) {
@@ -94,18 +91,25 @@ export class HsLegendService {
         if (typeof layerStyle == 'function') {
           layerStyle = <Style | Style[]>layerStyle(new Feature(), 1);
         }
-        const symbolizers = new OlStyleParser().getSymbolizersFromOlStyle(
-          Array.isArray(layerStyle) ? layerStyle : [layerStyle],
-        );
-        sldObject = {
-          name: '',
-          rules: [
-            {
-              name: '',
-              symbolizers,
-            },
-          ],
-        };
+        try {
+          layerStyle = layerStyle as Style | Style[];
+          const symbolizers = new OlStyleParser().getSymbolizersFromOlStyle(
+            Array.isArray(layerStyle) ? layerStyle : [layerStyle],
+          );
+          sldObject = {
+            name: '',
+            rules: [
+              {
+                name: '',
+                symbolizers,
+              },
+            ],
+          };
+        } catch {
+          this.hsLog.warn(
+            'FlatStyle and FlatStyleLike styles are not yet supported by Geostyler',
+          );
+        }
       } else {
         sldObject = (await parser.readStyle(sld)).output;
       }
@@ -195,7 +199,7 @@ export class HsLegendService {
 
   async setSvg(layer: Layer<Source>): Promise<SafeHtml> {
     return this.sanitizer.bypassSecurityTrustHtml(
-      await this.getVectorLayerLegendSvg(layer as VectorLayer<VectorSource>),
+      await this.getVectorLayerLegendSvg(layer as VectorLayer<Feature>),
     );
   }
 

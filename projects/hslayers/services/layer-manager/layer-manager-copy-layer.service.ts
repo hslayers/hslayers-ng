@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 
 import {Cluster, Vector as VectorSource} from 'ol/source';
+import {Feature} from 'ol';
 import {Vector as VectorLayer} from 'ol/layer';
 
 import {HsAddDataOwsService} from 'hslayers-ng/services/add-data';
@@ -87,7 +88,7 @@ export class HsLayerManagerCopyLayerService {
     let features;
     const currentOlLayer = this.hsLayerSelectorService.currentLayer.layer;
     if (this.hsLayerUtilsService.isLayerClustered(currentOlLayer)) {
-      features = (currentOlLayer.getSource() as Cluster)
+      features = (currentOlLayer.getSource() as Cluster<Feature>)
         .getSource()
         ?.getFeatures();
     } else {
@@ -99,7 +100,7 @@ export class HsLayerManagerCopyLayerService {
       source: new VectorSource({
         features,
       }),
-      style: (currentOlLayer as VectorLayer<VectorSource>).getStyle(),
+      style: (currentOlLayer as VectorLayer<Feature>).getStyle(),
     });
     setTitle(copiedLayer, newTitle);
     setName(copiedLayer, getName(currentOlLayer));

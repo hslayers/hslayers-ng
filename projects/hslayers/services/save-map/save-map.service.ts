@@ -19,7 +19,6 @@ import {Layer} from 'ol/layer';
 import {Vector as VectorSource} from 'ol/source';
 import {transformExtent} from 'ol/proj';
 
-import {BoundingBoxObject} from 'hslayers-ng/types';
 import {
   COMPOSITION_VERSION,
   CurrentBaseLayer,
@@ -362,7 +361,7 @@ export class HsSaveMapService {
     if (this.hsUtilsService.instOf(layer, VectorLayer)) {
       let src = layer.getSource();
       if (this.hsLayerUtilsService.isLayerClustered(layer)) {
-        src = (src as Cluster).getSource();
+        src = (src as Cluster<Feature>).getSource();
       }
       json.name = getName(layer);
       json.className = 'Vector';

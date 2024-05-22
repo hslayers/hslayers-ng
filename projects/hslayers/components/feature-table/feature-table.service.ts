@@ -88,7 +88,7 @@ export class HsFeatureTableService {
     const source: VectorSource = this.hsLayerUtilsService.isLayerClustered(
       layer,
     )
-      ? (layer.getSource() as Cluster).getSource()
+      ? (layer.getSource() as Cluster<Feature>).getSource()
       : (layer.getSource() as VectorSource);
     this.features = source
       .getFeatures()

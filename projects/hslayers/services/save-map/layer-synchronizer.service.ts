@@ -8,7 +8,6 @@ import {Vector as VectorLayer} from 'ol/layer';
 import {Vector as VectorSource} from 'ol/source';
 
 import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
-import {HsEndpoint} from 'hslayers-ng/types';
 import {HsLanguageService} from 'hslayers-ng/services/language';
 import {HsLaymanService} from './layman.service';
 import {HsLogService} from 'hslayers-ng/services/log';
@@ -32,7 +31,7 @@ import {
 export class HsLayerSynchronizerService {
   debounceInterval = 1000;
   crs: string;
-  syncedLayers: VectorLayer<VectorSource>[] = [];
+  syncedLayers: VectorLayer<Feature>[] = [];
   constructor(
     private hsUtilsService: HsUtilsService,
     private hsLaymanService: HsLaymanService,
@@ -46,7 +45,7 @@ export class HsLayerSynchronizerService {
       const layerAdded = (e) => this.addLayer(e.element);
       map.getLayers().on('add', layerAdded);
       map.getLayers().on('remove', (e) => {
-        this.removeLayer(e.element as VectorLayer<VectorSource>);
+        this.removeLayer(e.element as VectorLayer<Feature>);
       });
       map.getLayers().forEach((lyr) => {
         layerAdded({
@@ -76,7 +75,7 @@ export class HsLayerSynchronizerService {
    * Start synchronizing layer to database
    * @param layer - Layer to add
    */
-  addLayer(layer: VectorLayer<VectorSource>): void {
+  addLayer(layer: VectorLayer<Feature>): void {
     if (this.isLayerSynchronizable(layer)) {
       this.syncedLayers.push(layer);
       this.startMonitoringIfNeeded(layer);
@@ -88,7 +87,7 @@ export class HsLayerSynchronizerService {
    * @param layer - Layer to check
    * @returns True if the layer can be synchronized, false otherwise
    */
-  isLayerSynchronizable(layer: VectorLayer<VectorSource>): boolean {
+  isLayerSynchronizable(layer: VectorLayer<Feature>): boolean {
     const definition = getDefinition(layer);
     return (
       this.hsUtilsService.instOf(layer.getSource(), VectorSource) &&
@@ -104,7 +103,7 @@ export class HsLayerSynchronizerService {
    * Used for tasks which require layer presence on server
    */
   async layerExistsOnLayman(
-    layer: VectorLayer<VectorSource>,
+    layer: VectorLayer<Feature>,
     maxRetryCount = 5,
     retryCount = 0,
     desc = undefined,
@@ -135,9 +134,7 @@ export class HsLayerSynchronizerService {
    * VectorSources change events. Initially also get features from server
    * @param layer - Layer to add
    */
-  async startMonitoringIfNeeded(
-    layer: VectorLayer<VectorSource>,
-  ): Promise<void> {
+  async startMonitoringIfNeeded(layer: VectorLayer<Feature>) {
     const layerSource = layer.getSource();
     await this.pull(layer, layerSource);
     layer.on('propertychange', (e) => {
@@ -170,7 +167,7 @@ export class HsLayerSynchronizerService {
    * Find Layman's endpoint description for WFS layer
    * @param layer - Layer to add
    */
-  findLaymanForWfsLayer(layer: VectorLayer<VectorSource>): HsEndpoint {
+  findLaymanForWfsLayer(layer: VectorLayer<Feature>) {
     const definitionUrl = getDefinition(layer).url;
     const laymanEp = this.hsCommonLaymanService?.layman;
     if (!laymanEp || !definitionUrl) {
@@ -185,10 +182,7 @@ export class HsLayerSynchronizerService {
    * @param layer - Layer to get Layman friendly name for
    * @param source - OL VectorSource to store features in
    */
-  async pull(
-    layer: VectorLayer<VectorSource>,
-    source: VectorSource,
-  ): Promise<void> {
+  async pull(layer: VectorLayer<Feature>, source: VectorSource) {
     try {
       setEventsSuspended(layer, (getEventsSuspended(layer) || 0) + 1);
       const laymanEndpoint = this.findLaymanForWfsLayer(layer);
@@ -283,7 +277,7 @@ export class HsLayerSynchronizerService {
     add: Feature<Geometry>[],
     upd: Feature<Geometry>[],
     del: Feature<Geometry>[],
-    layer: VectorLayer<VectorSource>,
+    layer: VectorLayer<Feature>,
   ): void {
     if ((getEventsSuspended(layer) || 0) > 0) {
       return;
@@ -343,7 +337,7 @@ export class HsLayerSynchronizerService {
    * Stop synchronizing layer to database
    * @param layer - Layer to remove from synched layers list
    */
-  removeLayer(layer: VectorLayer<VectorSource>): void {
+  removeLayer(layer: VectorLayer<Feature>) {
     for (let i = 0; i < this.syncedLayers.length; i++) {
       if (this.syncedLayers[i] == layer) {
         this.syncedLayers.splice(i, 1);

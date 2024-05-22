@@ -22,6 +22,7 @@ import {
   WebMercatorTilingScheme,
   createWorldTerrainAsync,
 } from 'cesium';
+import {Feature} from 'ol';
 import {GeoJSON, KML} from 'ol/format';
 import {
   Group,
@@ -476,7 +477,7 @@ export class HsCesiumLayersService {
         //TODO: Point clicked, Datasources extents, Composition extents shall be also synced
         if (getTitle(lyr as Layer<Source>) != 'Point clicked') {
           this.linkOlSourceToCesiumDatasource(
-            (lyr as VectorLayer<VectorSource>).getSource(),
+            (lyr as VectorLayer<Feature>).getSource(),
             cesium_layer,
           );
         }
@@ -508,7 +509,7 @@ export class HsCesiumLayersService {
       return this.createSingleImageProvider(olLayer as ImageLayer<ImageSource>);
     } else if (this.HsUtilsService.instOf(olLayer, VectorLayer)) {
       const dataSource = await this.createVectorDataSource(
-        olLayer as VectorLayer<VectorSource>,
+        olLayer as VectorLayer<Feature>,
       );
       return dataSource;
     } else {
@@ -520,7 +521,7 @@ export class HsCesiumLayersService {
     }
   }
 
-  async createVectorDataSource(ol_lyr: VectorLayer<VectorSource>) {
+  async createVectorDataSource(ol_lyr: VectorLayer<Feature>) {
     let new_source: DataSource;
     if (this.HsUtilsService.isFunction(ol_lyr.getSource().getUrl())) {
       this.hsLog.warn(

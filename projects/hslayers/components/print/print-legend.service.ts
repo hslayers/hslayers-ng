@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
-
 import {Observable, Subject, Subscription} from 'rxjs';
+
+import {Feature} from 'ol';
 import {Vector as VectorLayer} from 'ol/layer';
-import {Vector as VectorSource} from 'ol/source';
 
 import {HsLanguageService} from 'hslayers-ng/services/language';
 import {HsLegendDescriptor} from 'hslayers-ng/components/legend';
@@ -195,7 +195,7 @@ export class HsPrintLegendService extends PrintLegendParams {
     }
     if (desc.autoLegend) {
       const legendSource = await this.hsLegendService.getVectorLayerLegendSvg(
-        desc.lyr as VectorLayer<VectorSource>,
+        desc.lyr as VectorLayer<Feature>,
       );
       if (!legendSource) {
         return;

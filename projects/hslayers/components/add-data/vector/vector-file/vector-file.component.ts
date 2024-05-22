@@ -10,6 +10,7 @@ import {
 import {Subject, takeUntil} from 'rxjs';
 
 import {Cluster} from 'ol/source';
+import {Feature} from 'ol';
 import {GeoJSON} from 'ol/format';
 
 import {AccessRightsModel} from 'hslayers-ng/types';
@@ -163,7 +164,7 @@ export class HsAddDataVectorFileComponent
       features = nonJson.features; //proper typing will get rid of this
     }
     this.hsLayerUtilsService.isLayerClustered(this.data.sourceLayer)
-      ? (this.data.sourceLayer.getSource() as Cluster)
+      ? (this.data.sourceLayer.getSource() as Cluster<Feature>)
           .getSource()
           .addFeatures(features)
       : this.data.sourceLayer.getSource().addFeatures(features);
