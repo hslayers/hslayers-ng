@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {Subject} from 'rxjs';
 
 import {Cluster, Source, Vector as VectorSource} from 'ol/source';
+import {Feature} from 'ol';
 import {GeoJSON} from 'ol/format';
 import {Layer} from 'ol/layer';
 
@@ -54,7 +55,7 @@ export class HsLayerManagerUtilsService {
     const olLayer = this.hsLayerSelectorService.currentLayer.layer;
     const geojson = geojsonParser.writeFeatures(
       (this.hsLayerUtilsService.isLayerClustered(olLayer)
-        ? (olLayer.getSource() as Cluster).getSource()
+        ? (olLayer.getSource() as Cluster<Feature>).getSource()
         : (olLayer.getSource() as VectorSource)
       ).getFeatures(),
       {

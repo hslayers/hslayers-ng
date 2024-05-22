@@ -5,8 +5,8 @@ import {Circle} from 'ol/geom';
 import {Cluster, Source, Vector as VectorSource} from 'ol/source';
 import {DragBox, Draw, Modify, Snap} from 'ol/interaction';
 import {DrawEvent} from 'ol/interaction/Draw';
-// eslint-disable-next-line import/named
 import {EventsKey} from 'ol/events';
+import {Feature} from 'ol';
 import {Layer, Vector as VectorLayer} from 'ol/layer';
 import {fromCircle} from 'ol/geom/Polygon';
 import {platformModifierKeyOnly} from 'ol/events/condition';
@@ -211,7 +211,7 @@ export class HsDrawService extends HsDrawServiceParams {
       tmpTitle = `${this.translate('DRAW.drawLayer')} ${i++}`;
     }
     const layman = this.hsCommonLaymanService.layman;
-    const drawLayer = new VectorLayer({
+    const drawLayer = new VectorLayer<Feature>({
       //TODO: Also name should be set, but take care in case a layer with that name already exists in layman
       source: tmpSource,
       visible: true,
@@ -270,7 +270,7 @@ export class HsDrawService extends HsDrawServiceParams {
       this.source = this.hsLayerUtilsService.isLayerClustered(
         this.selectedLayer,
       )
-        ? (this.selectedLayer.getSource() as Cluster).getSource() //Is it clustered vector layer?
+        ? (this.selectedLayer.getSource() as Cluster<Feature>).getSource() //Is it clustered vector layer?
         : this.selectedLayer.getSource();
     }
     return true;
@@ -360,7 +360,7 @@ export class HsDrawService extends HsDrawServiceParams {
    * Add draw layer to the map and repopulate list of drawables.
    * @param layer -
    */
-  addDrawLayer(layer: VectorLayer<VectorSource>): void {
+  addDrawLayer(layer: VectorLayer<Feature>) {
     this.hsMapService.getMap().addLayer(layer);
     this.fillDrawableLayers();
   }
@@ -369,14 +369,14 @@ export class HsDrawService extends HsDrawServiceParams {
    * @param changeStyle - controller callback function
    * Update draw style without necessity to reactivate drawing interaction
    */
-  updateStyle(changeStyle): void {
+  updateStyle(changeStyle) {
     if (this.draw) {
       this.currentStyle = changeStyle();
       this.draw.getOverlay().setStyle(this.currentStyle);
     }
   }
 
-  onDrawEnd(e): void {
+  onDrawEnd(e) {
     if (!getEditor(this.selectedLayer)) {
       return;
     }
@@ -435,7 +435,7 @@ export class HsDrawService extends HsDrawServiceParams {
       return;
     }
     this.source = this.hsLayerUtilsService.isLayerClustered(this.selectedLayer)
-      ? (this.selectedLayer.getSource() as Cluster).getSource()
+      ? (this.selectedLayer.getSource() as Cluster<Feature>).getSource()
       : this.selectedLayer.getSource();
 
     this.drawingLayerChanges.next({
@@ -508,7 +508,7 @@ export class HsDrawService extends HsDrawServiceParams {
       .getLayersArray()
       .filter((layer: Layer<Source>) =>
         this.hsLayerUtilsService.isLayerDrawable(layer),
-      ) as VectorLayer<VectorSource>[];
+      ) as VectorLayer<Feature>[];
 
     if (drawables.length == 0 && !this.tmpDrawLayer) {
       this.type = null;
@@ -764,10 +764,10 @@ export class HsDrawService extends HsDrawServiceParams {
   /**
    * Changes layer source of snap interaction
    */
-  changeSnapSource(layer: VectorLayer<VectorSource>): void {
+  changeSnapSource(layer: VectorLayer<Feature>): void {
     //isLayerClustered
     const snapSourceToBeUsed = this.hsLayerUtilsService.isLayerClustered(layer)
-      ? (layer.getSource() as Cluster).getSource()
+      ? (layer.getSource() as Cluster<Feature>).getSource()
       : layer.getSource();
     this.snapLayer = layer;
     this.toggleSnapping(snapSourceToBeUsed);

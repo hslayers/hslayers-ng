@@ -1,6 +1,14 @@
-import {Cluster, Source} from 'ol/source';
 import {Injectable, NgZone} from '@angular/core';
 import {Subject, buffer, debounceTime, pairwise} from 'rxjs';
+
+import {Cluster, Source} from 'ol/source';
+import {Feature} from 'ol';
+import {
+  Image as ImageLayer,
+  Layer,
+  Tile,
+  Vector as VectorLayer,
+} from 'ol/layer';
 
 import {HsConfig} from 'hslayers-ng/config';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
@@ -9,12 +17,6 @@ import {HsLayerDescriptor, HsLayerLoadProgress} from 'hslayers-ng/types';
 import {HsLogService} from 'hslayers-ng/services/log';
 import {HsToastService} from 'hslayers-ng/common/toast';
 import {HsUtilsService} from 'hslayers-ng/services/utils';
-import {
-  Image as ImageLayer,
-  Layer,
-  Tile,
-  Vector as VectorLayer,
-} from 'ol/layer';
 import {
   getBase,
   getShowInLayerManager,
@@ -49,7 +51,7 @@ export class HsLayerManagerLoadingProgressService {
       return;
     }
     const source: any = olLayer.get('cluster')
-      ? (olLayer.getSource() as Cluster).getSource()
+      ? (olLayer.getSource() as Cluster<Feature>).getSource()
       : olLayer.getSource();
     if (!source) {
       this.hsLog.error(`Layer ${getTitle(olLayer)} has no source`);

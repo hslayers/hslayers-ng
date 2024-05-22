@@ -23,7 +23,7 @@ import {getHighlighted, setHighlighted} from 'hslayers-ng/common/extensions';
   providedIn: 'root',
 })
 export class HsAddDataCatalogueMapService {
-  extentLayer: VectorLayer<VectorSource>;
+  extentLayer: VectorLayer<Feature>;
   pointerMoveListener: EventsKey;
 
   constructor(
