@@ -41,6 +41,7 @@ export class HsSensorsUnitListItemComponent {
     this.hsSensorsUnitDialogService.unit = [this.unit];
     this.generateDialog();
   }
+
   /**
    * @param sensor - Clicked to be toggled
    * When sensor is toggled, create a dialog window for
@@ -74,11 +75,12 @@ export class HsSensorsUnitListItemComponent {
     if (!this.hsSensorsUnitDialogService.unitDialogVisible) {
       this.hsDialogContainerService.create(HsSensorsUnitDialogComponent, {});
     } else {
-      this.hsSensorsUnitDialogService.createChart(
+      this.hsSensorsUnitDialogService.createChart$.next([
         single
           ? this.hsSensorsUnitDialogService.unit[0]
           : this.hsSensorsUnitDialogService.unit,
-      );
+        this.hsSensorsUnitDialogService.sensorsSelected.size === 0,
+      ]);
     }
   }
 }

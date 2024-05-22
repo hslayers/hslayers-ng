@@ -41,9 +41,10 @@ export class HsSensorsComponent extends HsPanelBaseComponent implements OnInit {
           (u) => u.unit_id != this.hsSensorsUnitDialogService.unit[0].unit_id,
         )
         .forEach((u) => this.hsSensorsService.deselectUnit(u));
-      this.hsSensorsUnitDialogService.createChart(
+      this.hsSensorsUnitDialogService.createChart$.next([
         this.hsSensorsUnitDialogService.unit,
-      );
+        false,
+      ]);
     }
   }
 

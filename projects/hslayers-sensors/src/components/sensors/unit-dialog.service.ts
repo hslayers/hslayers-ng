@@ -1,4 +1,12 @@
-import {BehaviorSubject} from 'rxjs';
+import {
+  BehaviorSubject,
+  Observable,
+  Subject,
+  debounce,
+  switchMap,
+  tap,
+  timer,
+} from 'rxjs';
 import {ElementRef, Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 
@@ -15,6 +23,7 @@ import {CustomInterval, Interval} from './types/interval.type';
 import {HsSensorUnit} from './sensor-unit.class';
 import {SensLogEndpoint} from './types/senslog-endpoint.type';
 import {SenslogSensor} from './types/senslog-sensor.type';
+import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 
 dayjs.extend(objectSupport);
 
@@ -47,6 +56,9 @@ export class HsSensorsUnitDialogService {
   timeFormat: 'HH:mm:ss' | 'HH:mm:ssZ';
   useTimeZone = new BehaviorSubject<boolean>(false);
 
+  createChart$ = new Subject<[HsSensorUnit | HsSensorUnit[], boolean]>();
+  loading = new BehaviorSubject(false);
+
   /**
    * Controls whether it's possible to compare sensors in between
    * different sensor units
@@ -63,6 +75,35 @@ export class HsSensorsUnitDialogService {
     this.useTimeZone.subscribe((value) => {
       this.timeFormat = value ? 'HH:mm:ssZ' : 'HH:mm:ss';
     });
+
+    this.createChart$
+      .pipe(
+        takeUntilDestroyed(),
+        tap(() => {
+          this.loading.next(true);
+        }),
+        switchMap(([unit, empty]) =>
+          empty ? this.createEmtpyChart() : this.createChart(unit),
+        ),
+        debounce((chartData) => {
+          return timer(chartData.encoding.text ? 0 : 300);
+        }),
+      )
+      .subscribe((chartData) => {
+        try {
+          vegaEmbed(
+            this.dialogElement.nativeElement.querySelector('.hs-chartplace'),
+            chartData,
+            {
+              renderer: 'canvas',
+            },
+          ).then(() => {
+            this.loading.next(false);
+          });
+        } catch (ex) {
+          this.hsLogService.warn('Could not create vega chart:', ex);
+        }
+      });
   }
 
   /**
@@ -373,7 +414,7 @@ export class HsSensorsUnitDialogService {
       : [`${sensorDesc.sensor_name}_${sensorDesc.unit_id}'`];
   }
 
-  getCommonChartDefinitionPart(observations) {
+  getCommonChartDefinitionPart(observations: any[]) {
     //See https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/flat for flattening array
     return {
       '$schema': 'https://vega.github.io/schema/vega-lite/v5.json',
@@ -387,9 +428,14 @@ export class HsSensorsUnitDialogService {
         'type': 'fit',
         'contains': 'padding',
       },
-      'data': {
-        'name': 'data-062c25e80e0ff23df3803082d5c6f7e7',
-      },
+      'data':
+        observations.length > 0
+          ? {
+              'name': 'data-062c25e80e0ff23df3803082d5c6f7e7',
+            }
+          : {
+              'values': [{'x': 0, 'y': 0}],
+            },
       'datasets': {
         'data-062c25e80e0ff23df3803082d5c6f7e7': observations,
       },
@@ -400,7 +446,10 @@ export class HsSensorsUnitDialogService {
           'type': 'interval',
         },
       },
-      'encoding': this.getCommonEncoding(),
+      'encoding':
+        observations.length > 0
+          ? this.getCommonEncoding()
+          : this.getEmptyEncoding(),
     } as any;
   }
 
@@ -414,61 +463,100 @@ export class HsSensorsUnitDialogService {
    * varying count of sensors. This nested list is flattened to simple
    * array of objects with {sensor_id, timestamp, value, sensor_name}
    */
-  createChart(unit: HsSensorUnit | HsSensorUnit[]) {
-    unit = Array.isArray(unit) ? (unit.length > 1 ? unit : unit[0]) : unit;
+  private createChart(unit: HsSensorUnit | HsSensorUnit[]): Observable<any> {
+    return new Observable<any>((observer) => {
+      unit = Array.isArray(unit) ? (unit.length > 1 ? unit : unit[0]) : unit;
 
-    let observations;
-    let chartData = {};
-    //Layered multi unit sensor view
-    if (Array.isArray(unit)) {
-      chartData['resolve'] = {'legend': {'color': 'independent'}};
-      //Array holding every chart layer object
-      const layer = [];
-      observations = this.getObservations();
+      let observations;
+      let chartData = {};
+      //Layered multi unit sensor view
+      if (Array.isArray(unit)) {
+        chartData['resolve'] = {'legend': {'color': 'independent'}};
+        //Array holding every chart layer object
+        const layer = [];
+        observations = this.getObservations();
 
-      unit.forEach((u) => {
-        //Can only be an array (emtpy or not) but multiple units are passed only in case comparisonAllowed
-        //thus -> SenslogSensor[]
-        const sensorDesc = this.getSensorDescriptor(u) as SenslogSensor[];
-        if (sensorDesc.length > 0) {
-          layer.push(this.createChartLayer(sensorDesc, true));
-        }
-        this.aggregations[u.description] = this.calculateAggregates(
-          u,
+        unit.forEach((u) => {
+          //Can only be an array (emtpy or not) but multiple units are passed only in case comparisonAllowed
+          //thus -> SenslogSensor[]
+          const sensorDesc = this.getSensorDescriptor(u) as SenslogSensor[];
+          if (sensorDesc.length > 0) {
+            layer.push(this.createChartLayer(sensorDesc, true));
+          }
+          this.aggregations[u.description] = this.calculateAggregates(
+            u,
+            observations,
+          );
+        });
+
+        chartData = {
+          ...chartData,
+          ...this.getCommonChartDefinitionPart(observations),
+          layer,
+        };
+      }
+      //Simple single unit
+      else {
+        const sensorDesc = this.getSensorDescriptor(unit);
+        observations = this.getObservations();
+        this.aggregations[unit.description] = this.calculateAggregates(
+          unit,
           observations,
         );
-      });
+        observations.sort((a, b) => a.time_stamp - b.time_stamp);
+        //Combine common and layer dependent chart definition
+        chartData = {
+          ...this.getCommonChartDefinitionPart(observations),
+          ...this.createChartLayer(sensorDesc),
+        };
+      }
+      observer.next(chartData);
+      observer.complete();
+    });
+  }
 
-      chartData = {
-        ...chartData,
-        ...this.getCommonChartDefinitionPart(observations),
-        layer,
+  /**
+   * Creates empty vega chart
+   */
+  private createEmtpyChart(): Observable<any> {
+    return new Observable<any>((observer) => {
+      const chartData = {
+        ...this.getCommonChartDefinitionPart([]),
+        ...{
+          'mark': {
+            'type': 'text',
+            'align': 'center',
+            'baseline': 'middle',
+            'fontSize': 24,
+            'dx': 0,
+            'dy': 0,
+          },
+        },
       };
-    }
-    //Simple single unit
-    else {
-      const sensorDesc = this.getSensorDescriptor(unit);
-      observations = this.getObservations();
-      this.aggregations[unit.description] = this.calculateAggregates(
-        unit,
-        observations,
-      );
-      observations.sort((a, b) => a.time_stamp - b.time_stamp);
-      //Combine common and layer dependent chart definition
-      chartData = {
-        ...this.getCommonChartDefinitionPart(observations),
-        ...this.createChartLayer(sensorDesc),
-      };
-    }
+      observer.next(chartData);
+      observer.complete();
+    });
+  }
 
-    try {
-      vegaEmbed(
-        this.dialogElement.nativeElement.querySelector('.hs-chartplace'),
-        chartData,
-      );
-    } catch (ex) {
-      this.hsLogService.warn('Could not create vega chart:', ex);
-    }
+  /**
+   * Encoding for empty chart placeholder
+   */
+  private getEmptyEncoding() {
+    return {
+      'text': {
+        'value': 'No sensor selected',
+      },
+      'x': {
+        'field': 'x',
+        'type': 'quantitative',
+        'axis': null,
+      },
+      'y': {
+        'field': 'y',
+        'type': 'quantitative',
+        'axis': null,
+      },
+    };
   }
 
   /**
