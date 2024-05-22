@@ -56,7 +56,7 @@ export class HsSensorsUnitDialogService {
   timeFormat: 'HH:mm:ss' | 'HH:mm:ssZ';
   useTimeZone = new BehaviorSubject<boolean>(false);
 
-  createChart$ = new Subject<[HsSensorUnit | HsSensorUnit[], boolean]>();
+  createChart$ = new Subject<HsSensorUnit | HsSensorUnit[]>();
   loading = new BehaviorSubject(false);
 
   /**
@@ -82,8 +82,10 @@ export class HsSensorsUnitDialogService {
         tap(() => {
           this.loading.next(true);
         }),
-        switchMap(([unit, empty]) =>
-          empty ? this.createEmtpyChart() : this.createChart(unit),
+        switchMap((unit) =>
+          this.sensorsSelected.size === 0
+            ? this.createEmtpyChart()
+            : this.createChart(unit),
         ),
         debounce((chartData) => {
           return timer(chartData.encoding.text ? 0 : 300);

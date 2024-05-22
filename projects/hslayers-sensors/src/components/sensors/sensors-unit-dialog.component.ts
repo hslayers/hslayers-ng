@@ -117,10 +117,9 @@ export class HsSensorsUnitDialogComponent
       );
     });
     Promise.all(promises).then((_) => {
-      this.hsSensorsUnitDialogService.createChart$.next([
+      this.hsSensorsUnitDialogService.createChart$.next(
         this.hsSensorsUnitDialogService.unit,
-        false,
-      ]);
+      );
     });
   }
 
