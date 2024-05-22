@@ -4,10 +4,10 @@ import {DomSanitizer} from '@angular/platform-browser';
 import {Subject, takeUntil} from 'rxjs';
 
 import colorScales from 'colormap/colorScale';
+import {Feature} from 'ol';
 import {Layer} from 'ol/layer';
 import {Source} from 'ol/source';
 import {Vector as VectorLayer} from 'ol/layer';
-import {Vector as VectorSource} from 'ol/source';
 
 import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
@@ -47,7 +47,7 @@ export class HsStylerComponent
       .pipe(takeUntil(this.end))
       .subscribe((layer: Layer<Source>) => {
         if (layer !== null && this.hsUtilsService.instOf(layer, VectorLayer)) {
-          this.hsStylerService.fill(layer as VectorLayer<VectorSource>);
+          this.hsStylerService.fill(layer as VectorLayer<Feature>);
         }
       });
     this.hsLayoutService.mainpanel$
@@ -59,12 +59,12 @@ export class HsStylerComponent
       });
   }
 
-  ngOnDestroy(): void {
+  ngOnDestroy() {
     this.end.next();
     this.end.complete();
   }
 
-  async close(): Promise<void> {
+  async close() {
     if (this.hsStylerService.unsavedChange) {
       const dialog = this.hsDialogContainerService.create(
         HsStylerEditDialogComponent,
@@ -80,11 +80,11 @@ export class HsStylerComponent
     this.hsLayoutService.setMainPanel('layerManager');
   }
 
-  uploadSld(): void {
+  uploadSld() {
     this.uploaderVisible = !this.uploaderVisible;
   }
 
-  async clear(): Promise<void> {
+  async clear() {
     await this.hsStylerService.reset();
   }
 
@@ -97,7 +97,7 @@ export class HsStylerComponent
     this.hsStylerService.save();
   }
 
-  handleFileUpload(evt: HsUploadedFiles): void {
+  handleFileUpload(evt: HsUploadedFiles) {
     const files = Array.from(evt.fileList);
     const promises = files.map((file) => {
       return new Promise((resolve) => {

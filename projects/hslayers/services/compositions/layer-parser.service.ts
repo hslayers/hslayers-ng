@@ -16,7 +16,6 @@ import {
   Source,
   Tile as TileSource,
   TileWMS,
-  Vector as VectorSource,
   XYZ,
 } from 'ol/source';
 import {Options as TileOptions} from 'ol/layer/BaseTile';
@@ -283,7 +282,7 @@ export class HsCompositionsLayerParserService {
    * @public
    * @param lyr_def - Layer definition object
    */
-  async createSparqlLayer(lyr_def): Promise<VectorLayer<VectorSource>> {
+  async createSparqlLayer(lyr_def): Promise<VectorLayer<Feature>> {
     const url = decodeURIComponent(lyr_def.protocol.url);
     const definition: any = {};
     definition.url = url;
@@ -333,7 +332,7 @@ export class HsCompositionsLayerParserService {
    * @param lyr_def - Layer definition object
    * @returns Either valid vector layer or function for creation of other supported vector file types)
    */
-  async createVectorLayer(lyr_def): Promise<VectorLayer<VectorSource>> {
+  async createVectorLayer(lyr_def): Promise<VectorLayer<Feature>> {
     try {
       let format = '';
       if (lyr_def.protocol) {

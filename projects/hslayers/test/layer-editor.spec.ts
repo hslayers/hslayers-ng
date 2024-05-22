@@ -9,6 +9,7 @@ import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
 
 import {Cluster, Vector as VectorSource} from 'ol/source';
+import {Feature} from 'ol';
 import {Vector as VectorLayer} from 'ol/layer';
 
 import {HsAddDataOwsService} from 'hslayers-ng/services/add-data';
@@ -141,15 +142,21 @@ describe('layermanager editor', () => {
   it('clusterization', () => {
     clusterWidgetComponent.cluster = true;
     expect(getCluster(layerForCluster)).toBe(true);
-    expect((layerForCluster.getSource() as Cluster).getSource).toBeDefined();
+    expect(
+      (layerForCluster.getSource() as Cluster<Feature>).getSource,
+    ).toBeDefined();
 
     clusterWidgetComponent.distance.value = 15;
     clusterWidgetComponent.changeDistance();
-    expect((layerForCluster.getSource() as Cluster).getDistance()).toBe(15);
+    expect(
+      (layerForCluster.getSource() as Cluster<Feature>).getDistance(),
+    ).toBe(15);
 
     //Turn clusterization off
     clusterWidgetComponent.cluster = false;
     expect(getCluster(layerForCluster)).toBe(false);
-    expect((layerForCluster.getSource() as Cluster).getSource).toBeUndefined();
+    expect(
+      (layerForCluster.getSource() as Cluster<Feature>).getSource,
+    ).toBeUndefined();
   });
 });

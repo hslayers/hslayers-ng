@@ -1,7 +1,7 @@
+import RenderFeature from 'ol/render/Feature';
 import {Feature} from 'ol';
 import {Geometry} from 'ol/geom';
 import {Vector as VectorLayer} from 'ol/layer';
-import {Vector as VectorSource} from 'ol/source';
 
 import {HsEndpoint} from '../endpoint.interface';
 
@@ -19,5 +19,5 @@ export type WfsSyncParams = {
   /** Array of features to delete */
   del: Feature<Geometry>[];
   /** OpenLayers layer which has to have a title attribute */
-  layer: VectorLayer<VectorSource>;
+  layer: VectorLayer<Feature>;
 };

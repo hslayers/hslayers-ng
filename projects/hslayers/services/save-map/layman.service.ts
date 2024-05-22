@@ -20,7 +20,6 @@ import {Geometry} from 'ol/geom';
 import {Layer} from 'ol/layer';
 import {Source} from 'ol/source';
 import {Vector as VectorLayer} from 'ol/layer';
-import {Vector as VectorSource} from 'ol/source';
 
 import {AboutLayman} from 'hslayers-ng/types';
 import {AccessRightsModel} from 'hslayers-ng/types';
@@ -551,7 +550,7 @@ export class HsLaymanService implements HsSaverService {
    */
   public async upsertLayer(
     endpoint: HsEndpoint,
-    layer: VectorLayer<VectorSource>,
+    layer: VectorLayer<Feature>,
     withFeatures: boolean,
   ): Promise<void> {
     if (layer.getSource().loading) {
@@ -721,7 +720,7 @@ export class HsLaymanService implements HsSaverService {
    * @param endpoint - Layman's endpoint description
    */
   private cacheLaymanDescriptor(
-    layer: VectorLayer<VectorSource>,
+    layer: VectorLayer<Feature>,
     desc: HsLaymanLayerDescriptor,
     endpoint: HsEndpoint,
   ): void {
@@ -739,7 +738,7 @@ export class HsLaymanService implements HsSaverService {
    */
   async makeGetLayerRequest(
     ep: HsEndpoint,
-    layer: VectorLayer<VectorSource>,
+    layer: VectorLayer<Feature>,
   ): Promise<string> {
     /* Clone because endpoint.user can change while the request is processed
     and then description might get cached even if anonymous user was set before.

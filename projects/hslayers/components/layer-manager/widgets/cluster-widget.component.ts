@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 
 import {Cluster} from 'ol/source';
+import {Feature} from 'ol';
 
 import {HsConfig} from 'hslayers-ng/config';
 import {HsLayerEditorService} from '../editor/layer-editor.service';
@@ -71,7 +72,7 @@ export class HsClusterWidgetComponent
       return;
     }
     const layer = this.olLayer;
-    const src = layer.getSource() as Cluster;
+    const src = layer.getSource() as Cluster<Feature>;
     if (src.setDistance == undefined) {
       return;
     }

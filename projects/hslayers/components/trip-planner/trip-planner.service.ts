@@ -54,14 +54,14 @@ export class HsTripPlannerService {
   movable_features = new Collection<Feature<Geometry>>();
   modify: Modify;
   waypointSource: VectorSource<Feature<Point>>;
-  waypointLayer: VectorLayer<VectorSource<Feature<Point>>>;
+  waypointLayer: VectorLayer<Feature<Point>>;
   routeSource: VectorSource;
-  routeLayer: VectorLayer<VectorSource>;
+  routeLayer: VectorLayer<Feature>;
   timer: any;
-  vectorLayers: {layer: VectorLayer<VectorSource>; title: string}[];
+  vectorLayers: {layer: VectorLayer<Feature>; title: string}[];
   selectedLayerWrapper: {
-    route?: {layer: VectorLayer<VectorSource>; title: string};
-    waypoints?: {layer: VectorLayer<VectorSource>; title: string};
+    route?: {layer: VectorLayer<Feature>; title: string};
+    waypoints?: {layer: VectorLayer<Feature>; title: string};
   } = {};
 
   constructor(
@@ -158,7 +158,7 @@ export class HsTripPlannerService {
           .filter((layer: Layer<Source>) =>
             this.HsLayerUtilsService.isLayerDrawable(layer),
           )
-          .map((layer: VectorLayer<VectorSource>) => {
+          .map((layer: VectorLayer<Feature>) => {
             return {layer, title: getTitle(layer)};
           }),
       ];
@@ -215,7 +215,7 @@ export class HsTripPlannerService {
    * @param usage - route or waypoints
    */
   async selectLayer(
-    layer: {layer: VectorLayer<VectorSource>; title: string},
+    layer: {layer: VectorLayer<Feature>; title: string},
     usage: 'route' | 'waypoints',
   ): Promise<void> {
     if (usage == 'route') {
@@ -226,9 +226,7 @@ export class HsTripPlannerService {
       this.selectedLayerWrapper.route = layer;
     }
     if (usage == 'waypoints') {
-      this.waypointLayer = layer.layer as VectorLayer<
-        VectorSource<Feature<Point>>
-      >;
+      this.waypointLayer = layer.layer as VectorLayer<Feature<Point>>;
       if (this.waypointLayer) {
         this.waypointSource = this.waypointLayer.getSource();
       }
