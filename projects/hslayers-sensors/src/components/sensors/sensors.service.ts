@@ -183,10 +183,9 @@ export class HsSensorsService {
       ) {
         this.deselectUnit(unit);
         if (this.hsSensorsUnitDialogService.unit.length > 0) {
-          this.hsSensorsUnitDialogService.createChart$.next([
+          this.hsSensorsUnitDialogService.createChart$.next(
             this.hsSensorsUnitDialogService.unit,
-            false,
-          ]);
+          );
         } else {
           this.closeSensorDialog();
         }
@@ -244,12 +243,11 @@ export class HsSensorsService {
     /**
      * Create EMPTY chart placeholder. No sensors are selected
      */
-    this.hsSensorsUnitDialogService.createChart$.next([
+    this.hsSensorsUnitDialogService.createChart$.next(
       this.hsSensorsUnitDialogService.comparisonAllowed
         ? this.hsSensorsUnitDialogService.unit
         : unit,
-      true,
-    ]);
+    );
 
     unit.feature?.set('selected', true);
     this.hsMapService

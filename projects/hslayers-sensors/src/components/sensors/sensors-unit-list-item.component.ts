@@ -75,12 +75,11 @@ export class HsSensorsUnitListItemComponent {
     if (!this.hsSensorsUnitDialogService.unitDialogVisible) {
       this.hsDialogContainerService.create(HsSensorsUnitDialogComponent, {});
     } else {
-      this.hsSensorsUnitDialogService.createChart$.next([
+      this.hsSensorsUnitDialogService.createChart$.next(
         single
           ? this.hsSensorsUnitDialogService.unit[0]
           : this.hsSensorsUnitDialogService.unit,
-        this.hsSensorsUnitDialogService.sensorsSelected.size === 0,
-      ]);
+      );
     }
   }
 }
