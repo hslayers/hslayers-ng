@@ -24,7 +24,6 @@ export function mockLayerUtilsService() {
     'getLayerName',
     'isLayerDrawable',
     'isLayerClustered',
-    'translateTitle',
     'layerLoaded',
     'layerInvalid',
     'hasNestedLayers',

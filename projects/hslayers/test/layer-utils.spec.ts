@@ -15,7 +15,6 @@ import {HsMapServiceMock} from './map.service.mock';
 import {HsUtilsService} from 'hslayers-ng/services/utils';
 import {HsUtilsServiceMock} from './utils.service.mock';
 import {
-  getTitle,
   setCluster,
   setEditor,
   setName,
@@ -224,13 +223,5 @@ describe('HsLayerUtilsService', () => {
     expect(isLayerDrawable).toBe(false);
     isLayerDrawable = hsLayerUtils.isLayerDrawable(tileWMSLayer);
     expect(isLayerDrawable).toBe(false);
-  });
-  it('try to translate the layer title', () => {
-    setTitle(vectorLayer, 'vectorLayer');
-    mockedLanguageService.getTranslationIgnoreNonExisting
-      .withArgs('LAYERS', 'vectorLayer', undefined)
-      .and.returnValue('vectorLayer');
-    const layerTitle = hsLayerUtils.translateTitle(getTitle(vectorLayer));
-    expect(layerTitle).toEqual('vectorLayer');
   });
 });
