@@ -22,6 +22,21 @@ import {LangChangeEvent} from '@ngx-translate/core';
 @Component({
   selector: 'hs-sensor-unit',
   templateUrl: './partials/unit-dialog.component.html',
+  styles: `
+    @keyframes fadein {
+      0% {
+        opacity: 0;
+      }
+
+      100% {
+        opacity: 1;
+      }
+    }
+    .fadein {
+      animation: fadein 1s ease-out;
+      animation-fill-mode: forwards;
+    }
+  `,
 })
 export class HsSensorsUnitDialogComponent
   implements HsDialogComponent, OnInit, OnDestroy {
@@ -38,11 +53,13 @@ export class HsSensorsUnitDialogComponent
   constructor(
     private hsLayoutService: HsLayoutService,
     private hsDialogContainerService: HsDialogContainerService,
-    private hsSensorsUnitDialogService: HsSensorsUnitDialogService,
+    public hsSensorsUnitDialogService: HsSensorsUnitDialogService,
     private hsLanguageService: HsLanguageService,
     private cdr: ChangeDetectorRef,
     public elementRef: ElementRef,
-  ) {}
+  ) {
+    this.hsSensorsUnitDialogService.dialogElement = this.elementRef;
+  }
 
   ngOnInit(): void {
     this.hsSensorsUnitDialogService.unitDialogVisible = true;
@@ -100,9 +117,10 @@ export class HsSensorsUnitDialogComponent
       );
     });
     Promise.all(promises).then((_) => {
-      this.hsSensorsUnitDialogService.createChart(
+      this.hsSensorsUnitDialogService.createChart$.next([
         this.hsSensorsUnitDialogService.unit,
-      );
+        false,
+      ]);
     });
   }
 
