@@ -7,7 +7,7 @@ import {
   tap,
   timer,
 } from 'rxjs';
-import {ElementRef, Injectable} from '@angular/core';
+import {ElementRef, Injectable, signal} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 
 import dayjs from 'dayjs';
@@ -37,7 +37,7 @@ export class Aggregates {
 export class HsSensorsUnitDialogService {
   unit: HsSensorUnit[] = [];
   unitDialogVisible: boolean;
-  sensorsSelected = new Map<string, any>();
+  sensorsSelected = signal(new Map<string, SenslogSensor>());
   endpoint: SensLogEndpoint;
   observations: any;
   sensorById = {};
@@ -83,7 +83,7 @@ export class HsSensorsUnitDialogService {
           this.loading.next(true);
         }),
         switchMap((unit) =>
-          this.sensorsSelected.size === 0
+          this.sensorsSelected().size === 0
             ? this.createEmtpyChart()
             : this.createChart(unit),
         ),
@@ -112,20 +112,30 @@ export class HsSensorsUnitDialogService {
    * Select sensor from the list
    * @param sensor - Sensor selected
    */
-  selectSensor(sensor: any) {
-    this.sensorsSelected.forEach((s) => (s.checked = false));
-    this.sensorsSelected = new Map([sensor.sensor_id, sensor]);
+  selectSensor(sensor: SenslogSensor) {
+    this.sensorsSelected().forEach((s) => (s.checked = false));
+    this.sensorsSelected.update((val) => {
+      val.clear();
+      val.set(sensor.sensor_id as string, sensor);
+      return new Map(val);
+    });
   }
 
   /**
    * Toggle selected sensor
    * @param sensor - Sensor selected
    */
-  toggleSensor(sensor) {
+  toggleSensor(sensor: SenslogSensor) {
     if (sensor.checked) {
-      this.sensorsSelected.set(sensor.sensor_id, sensor);
+      this.sensorsSelected.update((val) => {
+        val.set(sensor.sensor_id as string, sensor);
+        return new Map(val);
+      });
     } else {
-      this.sensorsSelected.delete(sensor.sensor_id);
+      this.sensorsSelected.update((val) => {
+        val.delete(sensor.sensor_id as string);
+        return new Map(val);
+      });
     }
   }
 
@@ -283,7 +293,7 @@ export class HsSensorsUnitDialogService {
     unit: HsSensorUnit,
   ): SenslogSensor | SenslogSensor[] {
     const sensorDesc = unit.sensors.filter((s) =>
-      this.sensorsSelected.has(s.sensor_id as string),
+      this.sensorsSelected().has(s.sensor_id as string),
     );
     if (sensorDesc.length > 0 && !this.comparisonAllowed) {
       return sensorDesc[0] as SenslogSensor;
@@ -296,7 +306,7 @@ export class HsSensorsUnitDialogService {
       return acc.concat(
         val.sensors
           .filter((s: SenslogSensor) =>
-            this.sensorsSelected.has(s.sensor_id as string),
+            this.sensorsSelected().has(s.sensor_id as string),
           )
           .map((s) => {
             const time = dayjs(val.time_stamp);
@@ -586,7 +596,7 @@ export class HsSensorsUnitDialogService {
     });
 
     const aggregates: Aggregate[] = unit.sensors
-      .filter((s) => this.sensorsSelected.has(s.sensor_id as string))
+      .filter((s) => this.sensorsSelected().has(s.sensor_id as string))
       .map((sensor): Aggregate => {
         const observationsForSensor =
           observationMap.get(sensor.sensor_id as string) || [];

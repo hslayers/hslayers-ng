@@ -211,7 +211,7 @@ export class HsSensorsService {
         u.expanded = false;
         u.sensors.forEach((s) => (s.checked = false));
       });
-      this.hsSensorsUnitDialogService.sensorsSelected.clear();
+      this.hsSensorsUnitDialogService.sensorsSelected.set(new Map());
 
       this.hsSensorsUnitDialogService.unit = [unit];
     }
