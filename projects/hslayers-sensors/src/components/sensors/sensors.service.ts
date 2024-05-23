@@ -54,7 +54,9 @@ export class HsSensorsService {
     private hsEventBusService: HsEventBusService,
     private hsSensorsUnitDialogService: HsSensorsUnitDialogService,
     private hsLog: HsLogService,
-    @Optional() @Inject('MAPSERVICE_DISABLED') mapServiceDisabled: boolean,
+    @Optional()
+    @Inject('MAPSERVICE_DISABLED')
+    public mapServiceDisabled: boolean,
     @Optional() @Inject('HsQueryVectorService') hsQueryVectorService,
   ) {
     const urlParams = new URLSearchParams(location.search);
