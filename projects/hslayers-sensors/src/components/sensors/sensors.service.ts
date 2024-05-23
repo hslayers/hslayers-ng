@@ -17,6 +17,7 @@ import {
   setUnitId,
 } from 'hslayers-ng/common/extensions';
 
+import {Feature} from 'ol';
 import {Vector as VectorLayer} from 'ol/layer';
 import {Vector as VectorSource} from 'ol/source';
 import {WKT} from 'ol/format';
@@ -299,7 +300,7 @@ export class HsSensorsService {
    * Create layer for displaying sensor data
    */
   createLayer() {
-    this.layer = new VectorLayer<VectorSource>({
+    this.layer = new VectorLayer<Feature>({
       properties: {
         path: 'Sensors',
         title: 'Sensor units',
