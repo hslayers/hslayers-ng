@@ -12,3 +12,5 @@ export * from './components/sensors/unit-dialog.service';
 export * from './components/sensors/types/aggregate.type';
 export * from './components/sensors/types/interval.type';
 export * from './components/sensors/types/senslog-endpoint.type';
+export * from './components/sensors/types/senslog-response.type';
+export * from './components/sensors/types/senslog-sensor.type';
