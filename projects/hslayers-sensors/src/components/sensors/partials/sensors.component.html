@@ -1,5 +1,6 @@
 <div class="card panel-default hs-main-panel" *ngIf="isVisible$ | async" [ngClass]="panelWidthClass">
-    <hs-panel-header *ngIf="!hsSensorsService.unitInUrl" name="sensors" [panelTabs]="'SENSORS'"></hs-panel-header>
+    <hs-panel-header *ngIf="!hsSensorsService.unitInUrl && !hsSensorsService.mapServiceDisabled" name="sensors"
+        [panelTabs]="'SENSORS'"></hs-panel-header>
     <div class="card-body">
         <p [hidden]="hsSensorsService.unitInUrl"> <input type="text" class="form-control"
                 [placeholder]="'COMMON.filter' | translateHs " [(ngModel)]="query.description"></p>
