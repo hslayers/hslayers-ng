@@ -10,17 +10,17 @@
                 <button type="button" class="btn-close" (click)="close()" data-dismiss="modal"
                     [attr.aria-label]="'COMMON.close' | translateHs "></button>
             </div>
-            <div class="modal-body" style="max-height: 300px; overflow-y: auto">
+            <div class="modal-body py-0" style="max-height: 300px; overflow-y: auto">
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-12 position-relative">
                             @if(hsSensorsUnitDialogService.loading | async ){
-                            <div style="z-index: 10;background: white;font-size: 1.5rem;"
+                            <div style="z-index: 10;background: white;font-size: 1.5rem; width:calc(100% - 1rem)"
                                 class="fadein align-items-center d-flex flex-column-reverse h-100 justify-content-center position-absolute w-100">
                                 <span class="ms-2 hs-loader hs-loader-dark"></span>
                             </div>
                             }
-                            <div class="hs-chartplace" style="min-width: 400px; min-height: 50px; max-width: 65vw;">
+                            <div class="hs-chartplace" style="min-height: 50px; max-width: 65vw;">
                             </div>
                         </div>
                     </div>
@@ -50,7 +50,7 @@
                     <div class="m-1 d-flex align-items-center">
                         <div class="btn-group" role="group">
                             <!-- TODO: Remove function call from template -->
-                            <button type="button" class="btn btn-"
+                            <button type="button" class="btn btn-sm"
                                 [ngClass]="{'btn-primary': getCurrentInterval() === interval}"
                                 (click)="timeButtonClicked(interval)" *ngFor="let interval of getIntervals()"
                                 [attr.aria-label]="'SENSORS.oneHour' | translateHs ">
@@ -65,7 +65,7 @@
                                 <input type="text" style="width: 6em;" ngbDatepicker
                                     [placeholder]="'COMMON.from' | translateHs" #d="ngbDatepicker"
                                     [(ngModel)]="customInterval.fromTime" (dateSelect)="customIntervalChanged()" />
-                                <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button"><i
+                                <button class="btn btn-sm  btn-outline-secondary" (click)="d.toggle()" type="button"><i
                                         class="icon-calendarthree"></i></button>
                             </div>
                         </div>
@@ -74,7 +74,7 @@
                                 <input type="text" style="width: 6em;" ngbDatepicker
                                     [placeholder]="'COMMON.until' | translateHs" #d2="ngbDatepicker"
                                     [(ngModel)]="customInterval.toTime" (dateSelect)="customIntervalChanged()" />
-                                <button class="btn btn-outline-secondary" (click)="d2.toggle()" type="button"><i
+                                <button class="btn btn-sm btn-outline-secondary" (click)="d2.toggle()" type="button"><i
                                         class="icon-calendarthree"></i></button>
                             </div>
                         </div>
