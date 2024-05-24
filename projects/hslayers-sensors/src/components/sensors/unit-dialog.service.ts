@@ -594,7 +594,6 @@ export class HsSensorsUnitDialogService {
     observations: any,
   ): Aggregate[] {
     // Create a map of sensor IDs to their observations
-    // Create a map of sensor IDs to their observations
     const observationMap = new Map<string, number[]>();
     observations.forEach((obs: {sensor_id: string; value: number}) => {
       if (!observationMap.has(obs.sensor_id)) {
@@ -609,7 +608,7 @@ export class HsSensorsUnitDialogService {
         const observationsForSensor =
           observationMap.get(sensor.sensor_id as string) || [];
         const tmp: Aggregate = {
-          min: 0,
+          min: undefined,
           max: 0,
           avg: 0,
           sensor_id: sensor.sensor_id,
@@ -621,7 +620,7 @@ export class HsSensorsUnitDialogService {
         let sum = 0;
 
         observationsForSensor.forEach((value) => {
-          if (value < tmp.min) {
+          if (value < tmp.min || !tmp.min) {
             tmp.min = value;
           }
           if (value > tmp.max) {
