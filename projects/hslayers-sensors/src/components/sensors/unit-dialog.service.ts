@@ -20,6 +20,7 @@ import {HsUtilsService} from 'hslayers-ng/services/utils';
 
 import {Aggregate} from './types/aggregate.type';
 import {CustomInterval, Interval} from './types/interval.type';
+import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsSensorUnit} from './sensor-unit.class';
 import {SensLogEndpoint} from './types/senslog-endpoint.type';
 import {SenslogSensor} from './types/senslog-sensor.type';
@@ -70,6 +71,7 @@ export class HsSensorsUnitDialogService {
     private hsUtilsService: HsUtilsService,
     private hsLogService: HsLogService,
     private hsLanguageService: HsLanguageService,
+    private hsLayoutService: HsLayoutService,
   ) {
     this.currentInterval = this.intervals[2];
     this.useTimeZone.subscribe((value) => {
@@ -351,6 +353,12 @@ export class HsSensorsUnitDialogService {
               ? sensorDesc[0]?.unit_description
               : this.hsLanguageService.getTranslation('SENSORS.sensors'),
             'labelExpr': "split(datum.value, '_')[0]",
+            'orient': this.hsLayoutService.layoutElement.classList.contains(
+              'hs-mobile-view',
+            )
+              ? 'bottom'
+              : 'right',
+            'direction': 'vertical',
           },
           'type': 'nominal',
           'sort': 'sensor_id',
