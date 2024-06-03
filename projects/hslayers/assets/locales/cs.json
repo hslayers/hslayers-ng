@@ -1042,6 +1042,7 @@
   "TRIP_PLANNER": {
     "clearWaypoints": "Vyčistit body trasy",
     "missingAuth": "Přístup k navigační službě nepovolen",
+    "noRoutablePoint": "Nebyl nalezen směrovatelný bod trasy",
     "removeWaypoint": "Odebrat bod trasy",
     "routerLayer": "Vrstva s trasou",
     "serviceDown": "Navigační služba zdá se nefunguje. Je nám líto!",
