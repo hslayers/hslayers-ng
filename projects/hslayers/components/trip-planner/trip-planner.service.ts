@@ -447,16 +447,23 @@ export class HsTripPlannerService {
                   undefined,
                 );
                 if (e.status == 404) {
-                  title = this.HsLanguageService.getTranslation(
-                    'TRIP_PLANNER.missingAuth',
-                    undefined,
-                  );
+                  if (e.error?.error?.code == 2010) {
+                    title = this.HsLanguageService.getTranslation(
+                      'TRIP_PLANNER.noRoutablePoint',
+                      undefined,
+                    );
+                  } else {
+                    title = this.HsLanguageService.getTranslation(
+                      'TRIP_PLANNER.missingAuth',
+                      undefined,
+                    );
+                  }
                 }
                 this.HsToastService.createToastPopupMessage(
                   title,
                   this.HsLanguageService.getTranslationIgnoreNonExisting(
                     'ERRORMESSAGES',
-                    e.message,
+                    e.error?.error?.message ?? e.message,
                     {url},
                   ),
                   {
