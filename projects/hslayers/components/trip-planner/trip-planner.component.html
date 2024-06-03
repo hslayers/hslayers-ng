@@ -8,6 +8,7 @@
     <hs-trip-planner-layer-selector usage="waypoints" [label]="'TRIP_PLANNER.waypointLayer' | translateHs"
       [selectedWrapper]="HsTripPlannerService.selectedLayerWrapper.waypoints">
     </hs-trip-planner-layer-selector>
+    <hs-trip-planner-profile-selector [selectedProfile]="HsTripPlannerService.selectedProfile"></hs-trip-planner-profile-selector>
 
     <div *ngFor="let waypoint of HsTripPlannerService.waypoints" class="d-flex flex-row">
       <div class="p-1 flex-grow-1">

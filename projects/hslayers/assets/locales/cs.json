@@ -1042,7 +1042,18 @@
   "TRIP_PLANNER": {
     "clearWaypoints": "Vyčistit body trasy",
     "missingAuth": "Přístup k navigační službě nepovolen",
-    "noRoutablePoint": "Nebyl nalezen směrovatelný bod trasy",
+    "noRoutablePoint": "Trasa mezi zadanými body nebyla nalezena",
+    "profiles": {
+      "driving-car": "automobil osobní",
+      "driving-hgv": "automobil nákladní",
+      "cycling-regular": "jízdní kolo běžné",
+      "cycling-road": "jízdní kolo silniční",
+      "cycling-mountain": "jízdní kolo horské",
+      "cycling-electric": "jízdní elektrokolo",
+      "foot-walking": "pěší - běžná chůze",
+      "foot-hiking": "pěší - turistika",
+      "wheelchair": "invalidní vozík"
+    },
     "removeWaypoint": "Odebrat bod trasy",
     "routerLayer": "Vrstva s trasou",
     "serviceDown": "Navigační služba zdá se nefunguje. Je nám líto!",
@@ -1050,6 +1061,7 @@
     "travelRoute": "Trasa výletu",
     "waypointDrawingHint": "Klikněte prosím do mapy pro přidání bodů trasy",
     "waypointLayer": "Vrstva s body trasy",
-    "waypoints": "Body trasy"
+    "waypoints": "Body trasy",
+    "selectProfile": "Vyberte způsob dopravy"
   }
 }
