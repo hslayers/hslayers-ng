@@ -20,6 +20,7 @@ import {HsMapService} from 'hslayers-ng/services/map';
 import {HsShareUrlService} from 'hslayers-ng/services/share';
 import {HsToastService} from 'hslayers-ng/common/toast';
 import {HsUtilsService} from 'hslayers-ng/services/utils';
+import {RouteProfile, profiles} from './ors-profiles.const';
 import {getHighlighted} from 'hslayers-ng/common/extensions';
 import {getTitle, setTitle} from 'hslayers-ng/common/extensions';
 
@@ -51,6 +52,7 @@ export class HsTripPlannerService {
   waypointRouteStyle;
   waypoints: Waypoint[] = [];
   trip: any = {};
+  orsProfiles = profiles;
   movable_features = new Collection<Feature<Geometry>>();
   modify: Modify;
   waypointSource: VectorSource<Feature<Point>>;
@@ -63,6 +65,7 @@ export class HsTripPlannerService {
     route?: {layer: VectorLayer<Feature>; title: string};
     waypoints?: {layer: VectorLayer<Feature>; title: string};
   } = {};
+  selectedProfile: RouteProfile = profiles[0];
 
   constructor(
     public HsMapService: HsMapService,
@@ -259,6 +262,14 @@ export class HsTripPlannerService {
     }
   }
 
+  async selectProfile(profile: RouteProfile): Promise<void> {
+    this.selectedProfile = profile;
+    for (const wp of this.waypoints) {
+      this.removeRoutesForWaypoint(wp);
+    }
+    await this.calculateRoutes();
+  }
+
   getTextOnFeature(feature: Feature<Geometry>): string {
     let tmp = '';
     const wp: Waypoint = getWaypoint(feature);
@@ -429,7 +440,7 @@ export class HsTripPlannerService {
         const wpt = this.waypoints[i + 1];
         wpt.loading = true;
         const url = this.HsUtilsService.proxify(
-          'https://api.openrouteservice.org/v2/directions/driving-car/geojson',
+          `https://api.openrouteservice.org/v2/directions/${this.selectedProfile}/geojson`,
         );
         const response = await lastValueFrom(
           this.$http

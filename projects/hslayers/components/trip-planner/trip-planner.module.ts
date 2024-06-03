@@ -9,11 +9,16 @@ import {
 } from 'hslayers-ng/common/panels';
 import {HsTripPlannerComponent} from './trip-planner.component';
 import {HsTripPlannerLayerSelectorComponent} from './layer-selector.component';
+import {HsTripPlannerProfileSelectorComponent} from './route-profile-selector.component';
 import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  declarations: [HsTripPlannerComponent, HsTripPlannerLayerSelectorComponent],
+  declarations: [
+    HsTripPlannerComponent,
+    HsTripPlannerLayerSelectorComponent,
+    HsTripPlannerProfileSelectorComponent,
+  ],
   imports: [
     FormsModule,
     CommonModule,
@@ -22,6 +27,10 @@ import {TranslateCustomPipe} from 'hslayers-ng/services/language';
     HsPanelHeaderComponent,
     NgbDropdownModule,
   ],
-  exports: [HsTripPlannerComponent, HsTripPlannerLayerSelectorComponent],
+  exports: [
+    HsTripPlannerComponent,
+    HsTripPlannerLayerSelectorComponent,
+    HsTripPlannerProfileSelectorComponent,
+  ],
 })
 export class HsTripPlannerModule {}
