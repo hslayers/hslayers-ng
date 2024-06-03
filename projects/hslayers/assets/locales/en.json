@@ -1042,6 +1042,7 @@
   "TRIP_PLANNER": {
     "clearWaypoints": "Clear waypoints",
     "missingAuth": "Routing service not authorized",
+    "noRoutablePoint": "No routable point found",
     "removeWaypoint": "Remove waypoint",
     "routerLayer": "Route layer",
     "serviceDown": "Navigation service seems to be down. We are sorry!",
