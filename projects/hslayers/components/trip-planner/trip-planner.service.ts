@@ -80,7 +80,7 @@ export class HsTripPlannerService {
       features: this.movable_features,
     });
 
-    this.HsEventBusService.mapClicked.subscribe((coordinates) => {
+    this.HsEventBusService.mapClicked.subscribe(({coordinates}) => {
       if (this.HsLayoutService.mainpanel != 'tripPlanner') {
         return;
       }
