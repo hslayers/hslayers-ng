@@ -3,10 +3,8 @@ import {Injectable, NgZone} from '@angular/core';
 import {Subject} from 'rxjs';
 
 import {Circle as CircleStyle, Fill, Stroke, Style} from 'ol/style';
-// eslint-disable-next-line import/named
 import {Coordinate, createStringXY, toStringHDMS} from 'ol/coordinate';
 import {Feature, Map} from 'ol';
-// eslint-disable-next-line import/named
 import {FeatureLike} from 'ol/Feature';
 import {Geometry, Point} from 'ol/geom';
 import {Select} from 'ol/interaction';

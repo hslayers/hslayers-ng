@@ -359,6 +359,7 @@ export class HslayersAppComponent {
         draw: true,
         mapSwipe: true,
         language: true,
+        tripPlanner: true,
       },
       componentsEnabled: {
         basemapGallery: true,

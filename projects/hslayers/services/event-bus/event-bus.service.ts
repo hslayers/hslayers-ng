@@ -1,13 +1,14 @@
 import {BehaviorSubject, ReplaySubject, Subject} from 'rxjs';
 import {Injectable} from '@angular/core';
 
-import {Feature, Map} from 'ol';
+import {Feature, Map, MapBrowserEvent} from 'ol';
 import {Geometry} from 'ol/geom';
 import {Layer} from 'ol/layer';
 import {Select} from 'ol/interaction';
 import {Source} from 'ol/source';
 
 import {
+  ClickedCoordinates,
   HsBaseLayerDescriptor,
   HsLayerDescriptor,
   HsLayerLoadProgress,
@@ -155,7 +156,8 @@ export class HsEventBusService {
   /**
    * replaces 'mapClicked'
    */
-  mapClicked: Subject<any> = new Subject();
+  mapClicked: Subject<MapBrowserEvent<any> & ClickedCoordinates> =
+    new Subject();
   /**
    * Fires when layerSelected parameter is found in the URL
    */
