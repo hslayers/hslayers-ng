@@ -219,6 +219,7 @@ export class HslayersAppComponent {
         swipeSide: 'left',
         cluster: false,
         inlineLegend: true,
+        autoLegend: false,
         editor: {
           editable: true,
           defaultAttributes: {
@@ -264,6 +265,20 @@ export class HslayersAppComponent {
       },
       source: new VectorSource({features}),
     });
+    /* A completely fake legend just for the sake of testing */
+    const pointLegend = [
+      {color: 'rgba(58, 168, 55, 0.85)', name: 'implemented status'},
+      {color: 'rgba(174, 203, 6, 0.85)', name: 'planned status'},
+      {color: 'rgba(6, 89, 155, 0.85)', name: 'idea status'},
+      {color: 'rgba(239, 135, 3, 0.85)', name: 'INTERREG status'},
+      {color: 'rgba(155, 155, 155, 0.85)', name: 'unknown status'},
+      {
+        path: 'https://pluschange.plan4all.eu/maps/nbs/assets/icons/wet_valley.svg',
+        name: 'wet valleys',
+        height: 32,
+      },
+    ];
+    points.getSource().set('legendCategories', pointLegend);
     const polygonSld = `<?xml version="1.0" encoding="ISO-8859-1"?>
               <StyledLayerDescriptor version="1.0.0" 
                   xsi:schemaLocation="http://www.opengis.net/sld StyledLayerDescriptor.xsd" 

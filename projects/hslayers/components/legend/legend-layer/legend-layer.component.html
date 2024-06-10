@@ -1,15 +1,41 @@
 <div>
-    <hs-legend-vector-layer *ngIf="layer.type === 'vector' && layer.autoLegend" [svg]="layer.svg">
-    </hs-legend-vector-layer>
-    <div *ngIf="layer.type === 'wms'">
-        <img *ngFor="let sublayer of layer.subLayerLegends" [src]="sublayer"
-            onerror=" this.parentNode.removeChild(this); "
-            onload="if(this.height<6) { this.parentNode.removeChild(this); }">
-    </div>
-    <div *ngIf="layer.type === 'vector'">
-        <p *ngFor="let category of legendCategories"><span
-                [ngStyle]="{'background-color': category.color}">&nbsp;&nbsp;&nbsp;</span>&nbsp;{{category.name}}
-        </p>
-    </div>
-    <hs-legend-layer-static *ngIf="layer.type === 'static'" [layer]="layer"></hs-legend-layer-static>
+  @switch (layer.type) {
+    @case ("static") {
+      <hs-legend-layer-static [layer]="layer"></hs-legend-layer-static>
+    }
+    @case ("wms") {
+      <div>
+        @for (sublayer of layer.subLayerLegends; track $index) {
+          <img
+            [src]="sublayer"
+            onerror="this.parentNode.removeChild(this);"
+            onload="if(this.height<6) {this.parentNode.removeChild(this);}"
+          />
+        }
+      </div>
+    }
+    @case ("vector") {
+      @if (layer.autoLegend) {
+        <hs-legend-vector-layer [svg]="layer.svg"> </hs-legend-vector-layer>
+      }
+      @if (hasLegendCategories()) {
+        <div>
+          @for (category of legendCategories; track category.name) {
+            <p>
+              @if (category.color) {
+                <span [ngStyle]="{ 'background-color': category.color }"
+                  >&nbsp;&nbsp;&nbsp;</span>
+              } @else if (category.path) {
+                <img
+                  [src]="category.path"
+                  [height]="category.height || defaultIconHeight"
+                />
+              }
+              &emsp;{{ category.name }}
+            </p>
+          }
+        </div>
+      }
+    }
+  }
 </div>
