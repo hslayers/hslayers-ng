@@ -1,7 +1,6 @@
-import {Component, Input, OnDestroy} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {SafeHtml} from '@angular/platform-browser';
-
-import {Subject, takeUntil} from 'rxjs';
+import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 
 import {HsLegendService} from '../legend.service';
 import {HsStylerService} from 'hslayers-ng/services/styler';
@@ -11,27 +10,23 @@ import {HsUtilsService} from 'hslayers-ng/services/utils';
   selector: 'hs-legend-layer-directive',
   templateUrl: './legend-layer.component.html',
 })
-export class HsLegendLayerComponent implements OnDestroy {
+export class HsLegendLayerComponent {
   @Input() layer: any;
 
-  svg: SafeHtml;
-  private end = new Subject<void>();
+  //svg: SafeHtml;
+  legendCategories;
   constructor(
     public hsUtilsService: HsUtilsService,
     public hsLegendService: HsLegendService,
     public hsStylerService: HsStylerService,
   ) {
     this.hsStylerService.onSet
-      .pipe(takeUntil(this.end))
+      .pipe(takeUntilDestroyed())
       .subscribe(async (layer) => {
         if (this.layer.lyr == layer) {
           this.layer.svg = await this.hsLegendService.setSvg(layer);
         }
       });
-  }
-
-  ngOnDestroy(): void {
-    this.end.next();
-    this.end.complete();
+    this.legendCategories = this.layer.lyr.getSource()?.get('legendCategories');
   }
 }
