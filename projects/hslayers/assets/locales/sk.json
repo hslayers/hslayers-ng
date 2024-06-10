@@ -1005,7 +1005,8 @@
     "sldParsingErrorMessage": "Pri spracovaní poskytnutého štýlu SLD došlo k chybe. Bol použitý predvolený štýl."
   },
   "TOOLBAR": {
-    "measureLinesAndPolygon": "Merať línie a polygóny"
+    "measureLinesAndPolygon": "Merať línie a polygóny",
+    "toggle3d": "Prepnúť medzi 3D (Cesium) a 2D (OpenLayers) zobrazením"
   },
   "TRIP_PLANNER": {
     "clearWaypoints": "Vyčistiť body trasy",
@@ -1017,7 +1018,20 @@
     "travelRoute": "Trasa výletu",
     "waypointDrawingHint": "Kliknite prosím do mapy pre pridanie bodov trasy",
     "waypointLayer": "Vrstva s bodmi trasy",
-    "waypoints": "Body trasy"
+    "waypoints": "Body trasy",
+    "noRoutablePoint": "Nenašla sa žiadna trasa medzi zadanými bodmi",
+    "profiles": {
+      "cycling-electric": "elektrobicykel",
+      "cycling-mountain": "bicykel hroský",
+      "cycling-regular": "bicykel",
+      "cycling-road": "bicykel cestný",
+      "driving-car": "automobil osobný",
+      "driving-hgv": "automobil nakladný",
+      "foot-hiking": "turistická chôdza",
+      "foot-walking": "chôdza",
+      "wheelchair": "invalidný vozík"
+    },
+    "selectProfile": "Vyberte spôsob dopravy"
   },
   "PRINT": {
     "backgroundColor": "farba pozadia",
