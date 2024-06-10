@@ -209,8 +209,7 @@ export class HsPrintLegendService extends PrintLegendParams {
         ),
       );
     } else {
-      for (const category of (desc.lyr.getSource() as SparqlJson)
-        .legend_categories) {
+      for (const category of desc.lyr.getSource().get('legendCategories')) {
         svgSource = this.sparqlJsonToSvg(category, desc.title);
       }
     }

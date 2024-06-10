@@ -71,7 +71,6 @@ export type SparqlOptions = {
 export class SparqlJson extends Vector {
   category_map = {};
   category_id = 0;
-  legend_categories;
   loadCounter: number;
   occupied_xy: {[coord: string]: boolean} = {};
   //What is it good for?
@@ -224,7 +223,7 @@ export class SparqlJson extends Vector {
         },
     });
     this.loadCounter = 0;
-    this.legend_categories = this.category_map;
+    this.set('legendCategories', this.category_map);
   }
 
   /**
@@ -411,7 +410,7 @@ export class SparqlJson extends Vector {
         0.7,
       );
     }
-    src.legend_categories = categoryMap;
+    src.set('legendCategories', categoryMap);
     for (let i = 0; i < features.length; i++) {
       if (features[i].category_id) {
         features[i].color = this.rainbow(
