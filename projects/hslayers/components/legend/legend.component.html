@@ -8,13 +8,12 @@
             <p style="text-align: center">{{'LEGEND.noLegendExists' | translateHs }}</p>
         </span>
         <ul class="list-group">
-            <li *ngFor="let layer of filterDescriptors() | filter:legendFilter" class="list-group-item"
+            <li *ngFor="let layer of this.layerDescriptors | filter:legendFilter" class="list-group-item"
                 [hidden]="!hsLegendService.legendValid(layer)"><!-- TODO: Remove function call from template -->
                 <div>
                     {{layer.title | translateHs : {module: 'LAYERS'} }}
-                    <hs-legend-layer-directive [layer]="layer"></hs-legend-layer-directive>
+                    <hs-legend-layer [layer]="layer"></hs-legend-layer>
                 </div>
-
             </li>
         </ul>
         <div class="row justify-content-center">

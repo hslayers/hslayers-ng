@@ -1,5 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 
+import {HsLegendDescriptor} from '../legend-descriptor.interface';
 import {HsLegendLayerStaticService} from './legend-layer-static.service';
 import {LayerLegend} from './types/layer-legend.type';
 import {getLegends} from 'hslayers-ng/common/extensions';
@@ -9,7 +10,7 @@ import {getLegends} from 'hslayers-ng/common/extensions';
   templateUrl: './legend-layer-static.component.html',
 })
 export class HsLegendLayerStaticComponent implements OnInit {
-  @Input() layer: any;
+  @Input() layer: HsLegendDescriptor;
   layerLegend: LayerLegend = {};
 
   constructor(private hsLegendLayerStaticService: HsLegendLayerStaticService) {}

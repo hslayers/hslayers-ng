@@ -8,9 +8,9 @@ import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
 
-import Feature from 'ol/Feature';
-import Point from 'ol/geom/Point';
 import {Circle, Fill, Stroke, Style} from 'ol/style';
+import {Feature} from 'ol';
+import {Point} from 'ol/geom';
 import {Vector as VectorLayer} from 'ol/layer';
 import {Vector as VectorSource} from 'ol/source';
 
@@ -210,7 +210,7 @@ describe('HsLegendLayerComponent', () => {
         radius: 5,
       }),
     });
-    component.layer.lyr.setStyle(customStyle);
+    (component.layer.lyr as VectorLayer<Feature>).setStyle(customStyle);
     fixture.detectChanges();
     const svg = await service.getVectorLayerLegendSvg(layer);
     expect(getCluster(component.layer.lyr)).toBeFalse();

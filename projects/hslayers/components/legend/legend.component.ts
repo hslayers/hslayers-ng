@@ -92,10 +92,6 @@ export class HsLegendComponent
     this.buildLegendsForLayers(this.hsMapService.getMap());
   }
 
-  filterDescriptors(): any[] {
-    return this.layerDescriptors;
-  }
-
   legendFilter = (item): boolean => {
     const r = new RegExp(this.titleSearch, 'i');
     return r.test(item.title);

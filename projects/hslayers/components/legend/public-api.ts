@@ -1,3 +1,4 @@
+export * from './legend-custom-category.type';
 export * from './legend-descriptor.interface';
 export * from './legend-layer-static/legend-layer-static.component';
 export * from './legend-layer-static/legend-layer-static.service';
