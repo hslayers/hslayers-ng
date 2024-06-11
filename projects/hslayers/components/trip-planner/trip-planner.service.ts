@@ -35,7 +35,7 @@ export type Waypoint = {
   loading: boolean;
 };
 
-const WAYPOINT = 'wp';
+const WAYPOINT = 'wp' as const;
 
 export function setWaypoint(feature: Feature<Geometry>, wp: Waypoint): void {
   feature.set(WAYPOINT, wp);

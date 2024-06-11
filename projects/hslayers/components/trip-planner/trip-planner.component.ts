@@ -17,25 +17,24 @@ export class HsTripPlannerComponent
   extends HsPanelBaseComponent
   implements OnInit
 {
-  timer: any;
   name = 'tripPlanner';
 
   constructor(
-    public HsMapService: HsMapService,
-    public HsTripPlannerService: HsTripPlannerService,
-    public HsConfig: HsConfig,
-    public HsUtilsService: HsUtilsService,
-    public HsLayerUtilsService: HsLayerUtilsService,
+    public hsConfig: HsConfig,
     public hsLanguageService: HsLanguageService,
+    public hsLayerUtilsService: HsLayerUtilsService,
+    public hsMapService: HsMapService,
+    public hsTripPlannerService: HsTripPlannerService,
+    public hsUtilsService: HsUtilsService,
   ) {
     super();
   }
   async ngOnInit(): Promise<void> {
     super.ngOnInit();
-    if (this.HsConfig.default_layers === undefined) {
-      this.HsConfig.default_layers = [];
+    if (this.hsConfig.default_layers === undefined) {
+      this.hsConfig.default_layers = [];
     } else {
-      this.HsConfig.default_layers.push(this.HsTripPlannerService.routeLayer);
+      this.hsConfig.default_layers.push(this.hsTripPlannerService.routeLayer);
     }
   }
 
@@ -45,7 +44,7 @@ export class HsTripPlannerComponent
    * @returns Distance
    */
   formatDistance(wp: Waypoint): string {
-    return this.HsTripPlannerService.formatDistance(wp);
+    return this.hsTripPlannerService.formatDistance(wp);
   }
 
   /**
@@ -54,7 +53,7 @@ export class HsTripPlannerComponent
    */
   totalDistance(): string {
     let tmp = 0;
-    this.HsTripPlannerService.waypoints.forEach((wp: Waypoint) => {
+    this.hsTripPlannerService.waypoints.forEach((wp: Waypoint) => {
       if (wp.routes.from) {
         tmp += wp.routes.from.get('summary').distance / 1000.0;
       }
@@ -67,7 +66,7 @@ export class HsTripPlannerComponent
    */
   toggleEdit(waypoint: Waypoint): void {
     waypoint.editMode = !waypoint.editMode;
-    const src = this.HsTripPlannerService.waypointLayer.getSource();
+    const src = this.hsTripPlannerService.waypointLayer.getSource();
     setHighlighted(src.getFeatureById(waypoint.featureId), waypoint.editMode);
   }
 }
