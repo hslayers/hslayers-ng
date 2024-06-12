@@ -1,3 +1,33 @@
+# [14.0.0-next.4](https://github.com/hslayers/hslayers-ng/compare/14.0.0-next.3...14.0.0-next.4) (2024-06-12)
+
+
+### Bug Fixes
+
+* Modification and removal of features in uneditable layer ([1ba816a](https://github.com/hslayers/hslayers-ng/commit/1ba816aaa514d6230b5a9127f1e86010877e90c4))
+* **sensors:** aggregations- minimum ([020b180](https://github.com/hslayers/hslayers-ng/commit/020b180d80959713827ca6fc8dcf1aac71f735a7))
+* **styler:** Set max dimensions for custom icon in select dialog ([feb7753](https://github.com/hslayers/hslayers-ng/commit/feb775361dbdeaf1ba5c3871a14cdd9893683aa9))
+* **test-app:** Unify file names ([f7ecdd0](https://github.com/hslayers/hslayers-ng/commit/f7ecdd0bb4eae34f52dfe5e95218e3ea32c82894))
+* **trip-planner:** Define structure of mapClicked event ([76541fa](https://github.com/hslayers/hslayers-ng/commit/76541fa5f3361c92746a2c6330436c04fcbf9c4d))
+* **trip-planner:** Fix panel header ([917d3bc](https://github.com/hslayers/hslayers-ng/commit/917d3bcf1021023891245074d4468d47c6f16105))
+
+
+### Features
+
+* **legend:** Allow to display custom icons in legend ([607fd47](https://github.com/hslayers/hslayers-ng/commit/607fd4746f698ca5763202f15fd9daaef935e1cd))
+* **legend:** Expose legendCategories property on source ([03e862d](https://github.com/hslayers/hslayers-ng/commit/03e862d80375dbe5e31832d6c9ae3e2694ab75bc))
+* **sensors:** Add chart loading indicator ([448420e](https://github.com/hslayers/hslayers-ng/commit/448420e434d049cf04ac0f18b409d7e70fdb1082))
+* **sensors:** Unit and sensors filtering via config ([810612d](https://github.com/hslayers/hslayers-ng/commit/810612d20953f065345c76df889a646785807360))
+* **trip-planner:** Allow to select different route profile ([3963e7f](https://github.com/hslayers/hslayers-ng/commit/3963e7f4e8312a262e29127a1ddefbc8a3fb13b5))
+* **trip-planner:** Enhance error messages ([85e9fe5](https://github.com/hslayers/hslayers-ng/commit/85e9fe51f858ef5b33e2ddfc4965b8492fa40aba))
+
+
+### Performance Improvements
+
+* **sensors:** Debounce vega embed executions ([102eaa2](https://github.com/hslayers/hslayers-ng/commit/102eaa248d023621c9ff452f57beca108bf36bc1))
+* **sensors:** Reduce data volume sent to vega embed ([1ef9955](https://github.com/hslayers/hslayers-ng/commit/1ef9955c2349fa1c03746032f367f3f948d9543c))
+
+
+
 # [14.0.0-next.3](https://github.com/hslayers/hslayers-ng/compare/14.0.0-next.2...14.0.0-next.3) (2024-05-13)
 
 
