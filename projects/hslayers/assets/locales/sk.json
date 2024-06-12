@@ -1022,7 +1022,7 @@
     "noRoutablePoint": "Nenašla sa žiadna trasa medzi zadanými bodmi",
     "profiles": {
       "cycling-electric": "elektrobicykel",
-      "cycling-mountain": "bicykel hroský",
+      "cycling-mountain": "bicykel horský",
       "cycling-regular": "bicykel",
       "cycling-road": "bicykel cestný",
       "driving-car": "automobil osobný",
