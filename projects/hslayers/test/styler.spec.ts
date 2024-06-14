@@ -5,7 +5,8 @@ import {
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
-import {HttpClientTestingModule} from '@angular/common/http/testing';
+import {provideHttpClient, withInterceptorsFromDi} from '@angular/common/http';
+import {provideHttpClientTesting} from '@angular/common/http/testing';
 
 import {Feature} from 'ol';
 import {Point, Polygon} from 'ol/geom';
@@ -84,13 +85,8 @@ describe('HsStyler', () => {
     });
     TestBed.configureTestingModule({
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      imports: [
-        FormsModule,
-        HttpClientTestingModule,
-        TranslateCustomPipe,
-        HsDownloadModule,
-      ],
       declarations: [HsStylerComponent],
+      imports: [FormsModule, TranslateCustomPipe, HsDownloadModule],
       providers: [
         HsStylerService,
         {provide: HsLayerUtilsService, useValue: new HsLayerUtilsServiceMock()},
@@ -104,6 +100,8 @@ describe('HsStyler', () => {
         {provide: HsQueryVectorService, useValue: new emptyMock()},
         {provide: HsEventBusService, useValue: new HsEventBusServiceMock()},
         {provide: HsConfig, useValue: mockedConfig},
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
       ],
     }); //.compileComponents();
     fixture = TestBed.createComponent(HsStylerComponent);

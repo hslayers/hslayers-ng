@@ -1,6 +1,6 @@
 import {CommonModule} from '@angular/common';
-import {HttpClientModule} from '@angular/common/http';
 import {NgModule} from '@angular/core';
+import {provideHttpClient, withInterceptorsFromDi} from '@angular/common/http';
 
 import {HsDialogContainerComponent} from 'hslayers-ng/common/dialogs';
 import {HsLayoutHostDirective} from './layout.directive';
@@ -14,7 +14,6 @@ import {HslayersComponent} from './hslayers.component';
 @NgModule({
   declarations: [HsMapHostDirective, HslayersComponent, HsLayoutHostDirective],
   imports: [
-    HttpClientModule,
     CommonModule,
     HsMapComponent,
     HsSidebarModule,
@@ -23,5 +22,6 @@ import {HslayersComponent} from './hslayers.component';
     HsDialogContainerComponent,
   ],
   exports: [HslayersComponent],
+  providers: [provideHttpClient(withInterceptorsFromDi())],
 })
 export class HslayersModule {}

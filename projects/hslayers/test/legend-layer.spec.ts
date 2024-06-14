@@ -6,7 +6,8 @@ import {
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
-import {HttpClientTestingModule} from '@angular/common/http/testing';
+import {provideHttpClient, withInterceptorsFromDi} from '@angular/common/http';
+import {provideHttpClientTesting} from '@angular/common/http/testing';
 
 import {Circle, Fill, Stroke, Style} from 'ol/style';
 import {Feature} from 'ol';
@@ -54,18 +55,13 @@ describe('HsLegendLayerComponent', () => {
 
     TestBed.configureTestingModule({
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      imports: [
-        HsPanelHelpersModule,
-        HttpClientTestingModule,
-        FormsModule,
-        TranslateCustomPipe,
-      ],
       declarations: [
         HsLegendComponent,
         HsLegendLayerComponent,
         HsLegendLayerVectorComponent,
         HsLegendLayerStaticComponent,
       ],
+      imports: [HsPanelHelpersModule, FormsModule, TranslateCustomPipe],
       providers: [
         HsLegendService,
         {provide: HsConfig, useValue: mockedConfig},
@@ -76,6 +72,8 @@ describe('HsLegendLayerComponent', () => {
           provide: HsLayoutService,
           useValue: new HsLayoutServiceMock(mockedConfig),
         },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
       ],
     }).compileComponents();
   });

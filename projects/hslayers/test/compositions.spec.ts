@@ -12,7 +12,8 @@ import {
   tick,
 } from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
-import {HttpClientTestingModule} from '@angular/common/http/testing';
+import {provideHttpClient, withInterceptorsFromDi} from '@angular/common/http';
+import {provideHttpClientTesting} from '@angular/common/http/testing';
 
 import {BehaviorSubject, Subject, of} from 'rxjs';
 import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
@@ -142,9 +143,9 @@ describe('compositions', () => {
 
     const bed = TestBed.configureTestingModule({
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
+      declarations: [HsCompositionsComponent],
       imports: [
         CommonModule,
-        HttpClientTestingModule,
         HsPanelHelpersModule,
         FormsModule,
         TranslateCustomPipe,
@@ -152,7 +153,6 @@ describe('compositions', () => {
         NgbDropdownModule,
         HsPanelHeaderComponent,
       ],
-      declarations: [HsCompositionsComponent],
       providers: [
         HsCompositionsService,
         HsCompositionsCatalogueService,
@@ -210,6 +210,8 @@ describe('compositions', () => {
           provide: HsCommonLaymanService,
           useValue: mockedCommonLaymanService,
         },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
       ],
     });
     hsConfig = TestBed.inject(HsConfig);

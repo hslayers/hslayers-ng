@@ -1,8 +1,13 @@
-import {BehaviorSubject, of, scan, share, startWith, switchMap} from 'rxjs';
+import {EnvironmentInjector, runInInjectionContext} from '@angular/core';
 import {TestBed} from '@angular/core/testing';
+import {of, scan, share} from 'rxjs';
+import {provideHttpClient, withInterceptorsFromDi} from '@angular/common/http';
+import {provideHttpClientTesting} from '@angular/common/http/testing';
+import {toSignal} from '@angular/core/rxjs-interop';
 
 import ImageLayer from 'ol/layer/Image';
-import {EnvironmentInjector, runInInjectionContext} from '@angular/core';
+import {ImageWMS} from 'ol/source';
+
 import {HsConfig} from 'hslayers-ng/config';
 import {HsConfigMock} from '../config.service.mock';
 import {HsLayerDescriptor, HsLayermanagerFolder} from 'hslayers-ng/types';
@@ -10,9 +15,6 @@ import {
   HsLayerManagerFolderService,
   HsLayerManagerService,
 } from 'hslayers-ng/services/layer-manager';
-import {HttpClientTestingModule} from '@angular/common/http/testing';
-import {ImageWMS} from 'ol/source';
-import {toSignal} from '@angular/core/rxjs-interop';
 
 const HsLayerManagerServiceMock = {
   ...jasmine.createSpyObj('HsLayerManagerService', ['sortLayersByZ']),
@@ -58,10 +60,12 @@ fdescribe('HsLayerManagerFolderService', () => {
   let hsConfig: HsConfig;
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
+      imports: [],
       providers: [
         {provide: HsConfig, useValue: new HsConfigMock()},
         {provide: HsLayerManagerService, useValue: HsLayerManagerServiceMock},
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
       ],
     });
     hsConfig = TestBed.inject(HsConfig);

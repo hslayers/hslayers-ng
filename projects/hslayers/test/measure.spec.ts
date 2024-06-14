@@ -5,7 +5,8 @@ import {
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
-import {HttpClientTestingModule} from '@angular/common/http/testing';
+import {provideHttpClient, withInterceptorsFromDi} from '@angular/common/http';
+import {provideHttpClientTesting} from '@angular/common/http/testing';
 
 import {HsConfig} from 'hslayers-ng/config';
 import {HsConfigMock} from './config.service.mock';
@@ -40,8 +41,8 @@ describe('HsMeasure', () => {
 
     TestBed.configureTestingModule({
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      imports: [FormsModule, TranslateCustomPipe, HttpClientTestingModule],
       declarations: [HsMeasureComponent],
+      imports: [FormsModule, TranslateCustomPipe],
       providers: [
         HsMeasureService,
         {
@@ -51,6 +52,8 @@ describe('HsMeasure', () => {
         {provide: HsMapService, useValue: new HsMapServiceMock()},
         {provide: HsUtilsService, useValue: new HsUtilsServiceMock()},
         {provide: HsConfig, useValue: mockedConfig},
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
       ],
     }); //.compileComponents();
     fixture = TestBed.createComponent(HsMeasureComponent);

@@ -2,7 +2,8 @@ import {CommonModule} from '@angular/common';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {DragDropModule} from '@angular/cdk/drag-drop';
 import {FormsModule} from '@angular/forms';
-import {HttpClientTestingModule} from '@angular/common/http/testing';
+import {provideHttpClient, withInterceptorsFromDi} from '@angular/common/http';
+import {provideHttpClientTesting} from '@angular/common/http/testing';
 
 import {HsConfig} from 'hslayers-ng/config';
 import {HsConfigMock} from './config.service.mock';
@@ -46,7 +47,6 @@ describe('HsMapSwipeComponent', () => {
         HsPanelHelpersModule,
         HsPanelHeaderComponent,
         TranslateCustomPipe,
-        HttpClientTestingModule,
         FormsModule,
         DragDropModule,
         CommonModule,
@@ -73,6 +73,8 @@ describe('HsMapSwipeComponent', () => {
           provide: HsLayerShiftingService,
           useValue: mockHsLayerShiftingService(),
         },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
       ],
     }).compileComponents();
   });

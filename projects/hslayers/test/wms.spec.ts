@@ -6,7 +6,11 @@ import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
-import {HttpClient, HttpClientModule} from '@angular/common/http';
+import {
+  HttpClient,
+  provideHttpClient,
+  withInterceptorsFromDi,
+} from '@angular/common/http';
 
 import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
 import {lastValueFrom} from 'rxjs';
@@ -57,15 +61,14 @@ describe('add-data-url', () => {
 
     TestBed.configureTestingModule({
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
+      declarations: [HsUrlWmsComponent],
       imports: [
         CommonModule,
         HsPanelHelpersModule,
-        HttpClientModule,
         FormsModule,
         HsLanguageModule,
         NgbDropdownModule,
       ],
-      declarations: [HsUrlWmsComponent],
       providers: [
         HsUrlWmsService,
         {
@@ -82,6 +85,7 @@ describe('add-data-url', () => {
         },
         {provide: HsMapService, useValue: new HsMapServiceMock()},
         {provide: HsLayerUtilsService, useValue: mockLayerUtilsService()},
+        provideHttpClient(withInterceptorsFromDi()),
       ],
     });
     hsWmsGetCapabilitiesService = TestBed.inject(HsWmsGetCapabilitiesService);

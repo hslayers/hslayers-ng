@@ -1,8 +1,3 @@
-import {
-  AccessRights,
-  GrantingOptions,
-  HsCommonLaymanAccessRightsComponent,
-} from 'hslayers-ng/common/layman/access-rights/layman-access-rights.component';
 import {CommonModule} from '@angular/common';
 import {
   ComponentFixture,
@@ -10,13 +5,20 @@ import {
   fakeAsync,
   tick,
 } from '@angular/core/testing';
-import {FilterPipe} from 'hslayers-ng/common/pipes';
-import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
 import {
-  HttpClientTestingModule,
   HttpTestingController,
+  provideHttpClientTesting,
 } from '@angular/common/http/testing';
 import {NO_ERRORS_SCHEMA} from '@angular/core';
+import {provideHttpClient, withInterceptorsFromDi} from '@angular/common/http';
+
+import {
+  AccessRights,
+  GrantingOptions,
+  HsCommonLaymanAccessRightsComponent,
+} from 'hslayers-ng/common/layman/access-rights/layman-access-rights.component';
+import {FilterPipe} from 'hslayers-ng/common/pipes';
+import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
 import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 
 const mockUsersFromLayman = [
@@ -112,13 +114,12 @@ describe('HsCommonLaymanAccessRightsComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [HsCommonLaymanAccessRightsComponent],
-      imports: [
-        HttpClientTestingModule,
-        CommonModule,
-        TranslateCustomPipe,
-        FilterPipe,
-      ],
       schemas: [NO_ERRORS_SCHEMA],
+      imports: [CommonModule, TranslateCustomPipe, FilterPipe],
+      providers: [
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
+      ],
     }).compileComponents();
   });
 
