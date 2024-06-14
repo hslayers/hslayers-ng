@@ -8,7 +8,8 @@ import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
-import {HttpClientTestingModule} from '@angular/common/http/testing';
+import {provideHttpClient, withInterceptorsFromDi} from '@angular/common/http';
+import {provideHttpClientTesting} from '@angular/common/http/testing';
 
 import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
 import {Subject} from 'rxjs';
@@ -67,14 +68,13 @@ describe('add-layers-vector', () => {
     const mockedUtilsService: any = new HsUtilsServiceMock();
     const bed = TestBed.configureTestingModule({
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
+      declarations: [HsAddDataVectorFileComponent, HsUploadComponent],
       imports: [
         CommonModule,
-        HttpClientTestingModule,
         FormsModule,
         NgbDropdownModule,
         TranslateCustomPipe,
       ],
-      declarations: [HsAddDataVectorFileComponent, HsUploadComponent],
       providers: [
         HsAddDataVectorService,
         {provide: HsMapService, useValue: mockedMapService},
@@ -93,6 +93,8 @@ describe('add-layers-vector', () => {
           provide: HsCommonEndpointsService,
           useValue: new CommonEndpointsServiceMock(),
         },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
       ],
     }).compileComponents();
   });

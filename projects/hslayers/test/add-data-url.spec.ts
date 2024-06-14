@@ -6,7 +6,11 @@ import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
-import {HttpClient, HttpClientModule} from '@angular/common/http';
+import {
+  HttpClient,
+  provideHttpClient,
+  withInterceptorsFromDi,
+} from '@angular/common/http';
 import {lastValueFrom} from 'rxjs';
 
 import {HsAddDataUrlComponent} from 'hslayers-ng/components/add-data';
@@ -57,7 +61,6 @@ describe('HsAddDataUrlComponent', () => {
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
       declarations: [HsAddDataUrlComponent],
       imports: [
-        HttpClientModule,
         CommonModule,
         FormsModule,
         HsLanguageModule,
@@ -77,6 +80,7 @@ describe('HsAddDataUrlComponent', () => {
           useValue: new HsLayoutServiceMock(mockedConfig),
         },
         {provide: HsLayerUtilsService, useValue: mockLayerUtilsService()},
+        provideHttpClient(withInterceptorsFromDi()),
       ],
     });
     hsWmsGetCapabilitiesService = TestBed.inject(HsWmsGetCapabilitiesService);

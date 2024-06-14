@@ -1,7 +1,7 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {FormsModule} from '@angular/forms';
-import {HttpClientModule} from '@angular/common/http';
 import {NgModule} from '@angular/core';
+import {provideHttpClient, withInterceptorsFromDi} from '@angular/common/http';
 
 /* import {
   HsGeolocationModule,
@@ -16,8 +16,8 @@ import {HslayersAppComponent} from './hslayers-app.component';
 
 @NgModule({
   declarations: [HslayersAppComponent],
-  imports: [HttpClientModule, BrowserModule, FormsModule, HslayersModule],
-  providers: [],
+  imports: [BrowserModule, FormsModule, HslayersModule],
+  providers: [provideHttpClient(withInterceptorsFromDi())],
   bootstrap: [HslayersAppComponent],
 })
 export class AppModule {}

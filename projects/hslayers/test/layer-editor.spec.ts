@@ -5,8 +5,9 @@ import {
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
-import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
+import {provideHttpClient, withInterceptorsFromDi} from '@angular/common/http';
+import {provideHttpClientTesting} from '@angular/common/http/testing';
 
 import {Cluster, Vector as VectorSource} from 'ol/source';
 import {Feature} from 'ol';
@@ -75,14 +76,13 @@ describe('layermanager editor', () => {
 
     const bed = TestBed.configureTestingModule({
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
+      declarations: [HsLayerEditorComponent, HsClusterWidgetComponent],
       imports: [
         HsPanelHelpersModule,
         FormsModule,
         NgbDropdownModule,
         HsLanguageModule,
-        HttpClientTestingModule,
       ],
-      declarations: [HsLayerEditorComponent, HsClusterWidgetComponent],
       providers: [
         HsLayerEditorSublayerService,
         HsLayerEditorService,
@@ -111,6 +111,8 @@ describe('layermanager editor', () => {
           provide: HsLayoutService,
           useValue: new HsLayoutServiceMock(mockedConfig),
         },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
       ],
     });
     //bed.compileComponents();

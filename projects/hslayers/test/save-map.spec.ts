@@ -5,8 +5,9 @@ import {
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
-import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {Subject} from 'rxjs';
+import {provideHttpClient, withInterceptorsFromDi} from '@angular/common/http';
+import {provideHttpClientTesting} from '@angular/common/http/testing';
 
 import {Map} from 'ol';
 import {Vector as VectorLayer} from 'ol/layer';
@@ -82,13 +83,8 @@ describe('HsSaveMap', () => {
 
     TestBed.configureTestingModule({
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      imports: [
-        FormsModule,
-        HttpClientTestingModule,
-        HttpClientTestingModule,
-        TranslateCustomPipe,
-      ],
       declarations: [HsSaveMapComponent],
+      imports: [FormsModule, TranslateCustomPipe],
       providers: [
         HsLaymanService,
         {
@@ -122,6 +118,8 @@ describe('HsSaveMap', () => {
         {provide: HsMapService, useValue: new HsMapServiceMock()},
         {provide: HsUtilsService, useValue: new HsUtilsServiceMock()},
         {provide: HsLayerUtilsService, useValue: mockLayerUtilsService()},
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
       ],
     }); //.compileComponents();
     fixture = TestBed.createComponent(HsSaveMapComponent);

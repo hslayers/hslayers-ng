@@ -1,6 +1,7 @@
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
-import {HttpClientTestingModule} from '@angular/common/http/testing';
+import {provideHttpClient, withInterceptorsFromDi} from '@angular/common/http';
+import {provideHttpClientTesting} from '@angular/common/http/testing';
 
 import {CustomTranslationService} from 'hslayers-ng/services/language';
 import {HsConfig} from 'hslayers-ng/config';
@@ -20,12 +21,14 @@ describe('HslayersComponent', () => {
     TestBed.configureTestingModule({
       declarations: [HslayersComponent, HsMapHostDirective],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      imports: [TranslateTestingModule, HttpClientTestingModule],
+      imports: [TranslateTestingModule],
       providers: [
         {provide: HsConfig, useValue: new HsConfigMock()},
         {provide: HsUtilsService, useValue: new HsUtilsServiceMock()},
         {provide: HsLayerUtilsService, useValue: mockLayerUtilsService},
         CustomTranslationService,
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
       ],
     }).compileComponents();
   }));
