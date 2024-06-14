@@ -3,12 +3,12 @@ import {
   platformBrowserDynamicTesting,
 } from '@angular/platform-browser-dynamic/testing';
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
-import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {TestBed} from '@angular/core/testing';
+import {provideHttpClient, withInterceptorsFromDi} from '@angular/common/http';
+import {provideHttpClientTesting} from '@angular/common/http/testing';
 
 import {Feature} from 'ol';
-import {LineString, Polygon} from 'ol/geom';
-import {Point} from 'ol/geom';
+import {LineString, Point, Polygon} from 'ol/geom';
 import {Vector as VectorLayer} from 'ol/layer';
 
 import {HsConfig} from 'hslayers-ng/config';
@@ -37,6 +37,7 @@ describe('HsUtilsService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
+      imports: [],
       providers: [
         HsUtilsService,
         HsConfig,
@@ -44,10 +45,10 @@ describe('HsUtilsService', () => {
           provide: HsLayerUtilsService,
           useValue: mockLayerUtilsService(),
         },
-
         {provide: HsLogService, userValue: new EmptyMock()},
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
       ],
-      imports: [HttpClientTestingModule],
     });
     hsUtilsService = TestBed.inject(HsUtilsService);
     hsConfig = TestBed.inject(HsConfig);

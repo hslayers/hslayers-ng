@@ -5,7 +5,8 @@ import {
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
-import {HttpClientTestingModule} from '@angular/common/http/testing';
+import {provideHttpClient, withInterceptorsFromDi} from '@angular/common/http';
+import {provideHttpClientTesting} from '@angular/common/http/testing';
 
 import {BehaviorSubject, of} from 'rxjs';
 import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
@@ -19,7 +20,6 @@ import {HsCommonEndpointsService} from 'hslayers-ng/services/endpoints';
 import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsConfigMock} from './config.service.mock';
-
 import {HsDrawService} from 'hslayers-ng/services/draw';
 import {HsLanguageService} from 'hslayers-ng/services/language';
 import {HsLayerUtilsService} from 'hslayers-ng/services/utils';
@@ -90,13 +90,8 @@ describe('HsDrawPanel', () => {
 
     TestBed.configureTestingModule({
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      imports: [
-        FormsModule,
-        TranslateCustomPipe,
-        NgbDropdownModule,
-        HttpClientTestingModule,
-      ],
       declarations: [DrawPanelComponent],
+      imports: [FormsModule, TranslateCustomPipe, NgbDropdownModule],
       providers: [
         HsDrawService,
         HsLanguageService,
@@ -129,6 +124,8 @@ describe('HsDrawPanel', () => {
             layman$: new BehaviorSubject(undefined),
           },
         },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
       ],
     }); //.compileComponents();
     fixture = TestBed.createComponent(DrawPanelComponent);

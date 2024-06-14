@@ -1,3 +1,4 @@
+import {BehaviorSubject, filter, of, share, switchMap} from 'rxjs';
 import {
   BrowserDynamicTestingModule,
   platformBrowserDynamicTesting,
@@ -10,11 +11,12 @@ import {
   tick,
 } from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
-import {HttpClientTestingModule} from '@angular/common/http/testing';
+import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
+import {provideHttpClient, withInterceptorsFromDi} from '@angular/common/http';
+import {provideHttpClientTesting} from '@angular/common/http/testing';
 
 import {Image as ImageLayer} from 'ol/layer';
 import {ImageWMS} from 'ol/source';
-import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
 
 import {HsAddDataOwsService} from 'hslayers-ng/services/add-data';
 import {
@@ -40,19 +42,6 @@ import {HsPanelHelpersModule} from 'hslayers-ng/common/panels';
 import {HsShareUrlService} from 'hslayers-ng/services/share';
 import {HsUtilsService} from 'hslayers-ng/services/utils';
 import {HsUtilsServiceMock} from './utils.service.mock';
-
-import {
-  BehaviorSubject,
-  debounce,
-  debounceTime,
-  filter,
-  of,
-  pipe,
-  share,
-  switchMap,
-  tap,
-  timeout,
-} from 'rxjs';
 import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 import {mockHsLayerListService} from './layer-manager-layerlist.service.mock';
 import {mockLayerUtilsService} from './layer-utils.service.mock';
@@ -133,14 +122,13 @@ describe('layermanager-layer-list', () => {
 
     const bed = TestBed.configureTestingModule({
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
+      declarations: [HsLayerListComponent],
       imports: [
         HsPanelHelpersModule,
         FormsModule,
         NgbDropdownModule,
         TranslateCustomPipe,
-        HttpClientTestingModule,
       ],
-      declarations: [HsLayerListComponent],
       providers: [
         {provide: HsLayerListService, useValue: mockHsLayerListService()},
         {provide: HsArcgisGetCapabilitiesService, useValue: new emptyMock()},
@@ -178,6 +166,8 @@ describe('layermanager-layer-list', () => {
           useValue: new HsLayoutServiceMock(mockedConfig),
         },
         {provide: HsLayerManagerService, useValue: HsLayerManagerServiceMock},
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
       ],
     });
     //bed.compileComponents();

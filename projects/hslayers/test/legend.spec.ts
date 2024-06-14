@@ -10,7 +10,8 @@ import {
   tick,
 } from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
-import {HttpClientTestingModule} from '@angular/common/http/testing';
+import {provideHttpClient, withInterceptorsFromDi} from '@angular/common/http';
+import {provideHttpClientTesting} from '@angular/common/http/testing';
 
 import {Tile as TileLayer} from 'ol/layer';
 import {TileWMS} from 'ol/source';
@@ -53,18 +54,17 @@ describe('HsLegendComponent', () => {
 
     const bed = TestBed.configureTestingModule({
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      imports: [
-        HsPanelHelpersModule,
-        HsPanelHeaderComponent,
-        TranslateCustomPipe,
-        HttpClientTestingModule,
-        FormsModule,
-      ],
       declarations: [
         HsLegendComponent,
         HsLegendLayerComponent,
         HsLegendLayerVectorComponent,
         HsLegendLayerStaticComponent,
+      ],
+      imports: [
+        HsPanelHelpersModule,
+        HsPanelHeaderComponent,
+        TranslateCustomPipe,
+        FormsModule,
       ],
       providers: [
         {provide: HsConfig, useValue: mockedConfig},
@@ -75,6 +75,8 @@ describe('HsLegendComponent', () => {
           provide: HsLayoutService,
           useValue: new HsLayoutServiceMock(mockedConfig),
         },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
       ],
     });
     //bed.compileComponents();

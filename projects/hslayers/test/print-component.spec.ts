@@ -2,7 +2,8 @@ import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
-import {HttpClientTestingModule} from '@angular/common/http/testing';
+import {provideHttpClient, withInterceptorsFromDi} from '@angular/common/http';
+import {provideHttpClientTesting} from '@angular/common/http/testing';
 
 import {ColorSketchModule} from 'ngx-color/sketch';
 import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
@@ -53,7 +54,6 @@ describe('HsPrintComponent', () => {
         TranslateCustomPipe,
         ColorSketchModule,
         NgbDropdownModule,
-        HttpClientTestingModule,
       ],
       providers: [
         {
@@ -81,6 +81,8 @@ describe('HsPrintComponent', () => {
         {provide: HsUtilsService, useValue: new HsUtilsServiceMock()},
         {provide: HsConfig, useValue: mockedConfig},
         {provide: HsEventBusService, useValue: new HsEventBusServiceMock()},
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
       ],
     }).compileComponents();
   });
