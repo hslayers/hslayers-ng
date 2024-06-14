@@ -1,11 +1,4 @@
-import {
-  AsyncPipe,
-  CommonModule,
-  NgClass,
-  NgForOf,
-  NgIf,
-  NgStyle,
-} from '@angular/common';
+import {AsyncPipe, NgClass, NgForOf, NgIf, NgStyle} from '@angular/common';
 import {Component, Input} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 

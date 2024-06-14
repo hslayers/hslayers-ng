@@ -3,7 +3,6 @@ import {Inject, Injectable, PLATFORM_ID} from '@angular/core';
 import {isPlatformBrowser} from '@angular/common';
 
 import {LineString, Polygon} from 'ol/geom';
-// eslint-disable-next-line import/named
 import {ProjectionLike, transform} from 'ol/proj';
 import {getArea, getDistance} from 'ol/sphere';
 import {lastValueFrom} from 'rxjs';

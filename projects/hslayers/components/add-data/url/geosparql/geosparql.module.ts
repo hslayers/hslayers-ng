@@ -5,8 +5,8 @@ import {NgModule} from '@angular/core';
 import {HsAddDataCommonModule} from '../../common/common.module';
 import {HsAddToMapButtonComponent} from 'hslayers-ng/common/add-to-map';
 import {HsCommonUrlModule} from '../../common/url/url.module';
-import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 import {HsUrlGeoSparqlComponent} from './geosparql.component';
+import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 
 @NgModule({
   imports: [

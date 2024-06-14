@@ -1,10 +1,7 @@
 import {Component, Input} from '@angular/core';
 
 import {HsAddDataUrlService} from 'hslayers-ng/services/add-data';
-import {
-  HsUrlTypeServiceModel,
-  Service,
-} from 'hslayers-ng/types';
+import {HsUrlTypeServiceModel, Service} from 'hslayers-ng/types';
 
 @Component({
   selector: 'hs-url-add',
