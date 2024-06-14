@@ -7,7 +7,7 @@ import {
   ViewRef,
 } from '@angular/core';
 
-import {BehaviorSubject, Subscription} from 'rxjs';
+import {BehaviorSubject} from 'rxjs';
 
 import {HsConfig} from 'hslayers-ng/config';
 import {HsDialogComponent} from 'hslayers-ng/common/dialogs';

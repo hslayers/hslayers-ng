@@ -1,5 +1,6 @@
 import {Component, DestroyRef, Input, OnInit} from '@angular/core';
 import {Observable, map} from 'rxjs';
+import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 
 import {Feature} from 'ol';
 import {Geometry} from 'ol/geom';
@@ -11,7 +12,6 @@ import {HsMapService} from 'hslayers-ng/services/map';
 import {HsQueryVectorService} from 'hslayers-ng/services/query';
 import {exportFormats} from '../feature-common.service';
 import {getTitle} from 'hslayers-ng/common/extensions';
-import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'hs-query-feature',

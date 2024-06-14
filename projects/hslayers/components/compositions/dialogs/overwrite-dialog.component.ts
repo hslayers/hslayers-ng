@@ -1,4 +1,5 @@
 import {Component, ViewRef} from '@angular/core';
+
 import {HsCompositionsParserService} from 'hslayers-ng/services/compositions';
 import {HsCompositionsService} from '../compositions.service';
 import {HsDialogComponent} from 'hslayers-ng/common/dialogs';

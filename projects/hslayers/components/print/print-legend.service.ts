@@ -11,7 +11,6 @@ import {HsLegendService} from 'hslayers-ng/components/legend';
 import {HsMapService} from 'hslayers-ng/services/map';
 import {HsShareThumbnailService} from 'hslayers-ng/services/share';
 import {LegendObj} from './types/legend-object.type';
-import {SparqlJson} from 'hslayers-ng/common/layers';
 
 export class PrintLegendParams {
   legendWidth: number;

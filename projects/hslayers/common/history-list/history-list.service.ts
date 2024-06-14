@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import {CookieService} from 'ngx-cookie-service';
 import {Injectable} from '@angular/core';
 
@@ -48,7 +47,7 @@ export class HsHistoryListService {
       this.items[forWhat].history.push(url);
       this.CookieService.set(
         `last${forWhat}Sources`,
-        JSON.stringify(this.items[forWhat].history)
+        JSON.stringify(this.items[forWhat].history),
       );
     }
   }

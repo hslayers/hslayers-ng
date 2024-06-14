@@ -1,5 +1,6 @@
 import {Pipe, PipeTransform} from '@angular/core';
-const featureLimit = 20;
+
+const featureLimit = 20 as const;
 
 @Pipe({name: 'featureFilter'})
 export class HsFeatureFilterPipe implements PipeTransform {

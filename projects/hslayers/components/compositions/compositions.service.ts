@@ -1,7 +1,7 @@
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 
-import Feature from 'ol/Feature';
+import {Feature} from 'ol';
 import {Geometry} from 'ol/geom';
 import {Observable, Subject, lastValueFrom} from 'rxjs';
 

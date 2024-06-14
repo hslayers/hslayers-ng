@@ -1,6 +1,7 @@
-import {BehaviorSubject, Observable, scan, share, startWith, tap} from 'rxjs';
 import {DomSanitizer, SafeHtml} from '@angular/platform-browser';
 import {Injectable, Signal} from '@angular/core';
+import {Observable, scan, share} from 'rxjs';
+import {toSignal} from '@angular/core/rxjs-interop';
 
 import {CollectionEvent} from 'ol/Collection';
 import {EventsKey} from 'ol/events';
@@ -59,7 +60,6 @@ import {HsLayerManagerLoadingProgressService} from './layer-manager-loading-prog
 import {HsLayerManagerMetadataService} from './layer-manager-metadata.service';
 import {HsLayerManagerUtilsService} from './layer-manager-utils.service';
 import {HsLayerManagerVisibilityService} from './layer-manager-visibility.service';
-import {toSignal} from '@angular/core/rxjs-interop';
 
 export class HsLayermanagerDataObject {
   // Folders object for structure of layers.

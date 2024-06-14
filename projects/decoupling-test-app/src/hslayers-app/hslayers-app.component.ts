@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 
-import Feature from 'ol/Feature';
+import {Feature} from 'ol';
 import {GeoJSON} from 'ol/format';
 import {OSM, Vector as VectorSource, XYZ} from 'ol/source';
 import {Point} from 'ol/geom';

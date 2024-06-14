@@ -1,5 +1,4 @@
-import {Component, OnInit} from '@angular/core';
-import {Input} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {Observable, map} from 'rxjs';
 
 import {HsCommonLaymanService} from './layman.service';
