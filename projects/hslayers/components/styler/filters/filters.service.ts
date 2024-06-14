@@ -1,5 +1,6 @@
-import {FilterType} from './filter.type';
 import {Injectable} from '@angular/core';
+
+import {FilterType} from './filter.type';
 
 @Injectable({
   providedIn: 'root',

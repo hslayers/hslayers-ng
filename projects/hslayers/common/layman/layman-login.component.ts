@@ -1,6 +1,5 @@
-import {Component, OnDestroy, OnInit, ViewRef} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit, ViewRef} from '@angular/core';
 import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
-import {Input} from '@angular/core';
 
 import {Subscription} from 'rxjs';
 

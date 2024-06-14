@@ -4,7 +4,6 @@ import {
   Component,
   DestroyRef,
   ElementRef,
-  Input,
   OnInit,
   QueryList,
   Signal,
@@ -18,6 +17,9 @@ import {AsyncPipe, NgIf} from '@angular/common';
 import {FormControl, ReactiveFormsModule, Validators} from '@angular/forms';
 import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
 import {Observable, debounceTime, filter, fromEvent} from 'rxjs';
+import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
+
+import {Layer} from 'ol/layer';
 
 import {
   HsLanguageService,
@@ -33,9 +35,7 @@ import {
   HsLayerManagerFolderService,
   HsLayerManagerService,
 } from 'hslayers-ng/services/layer-manager';
-import {Layer} from 'ol/layer';
 import {getPath} from 'hslayers-ng/common/extensions';
-import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'hs-layer-folder-widget-dialog',
