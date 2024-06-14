@@ -43,7 +43,7 @@
     "geostyler-style": "^8.0.0",
     "jszip": "^3.7.1",
     "ngx-color": "^9.0.0",
-    "ngx-cookie-service": "^17.0.0",
+    "ngx-cookie-service": "^18.0.0",
     "ol": "^9.2.2",
     "ol-ext": "^4.0.0",
     "ol-popup": "^5.0.0",
