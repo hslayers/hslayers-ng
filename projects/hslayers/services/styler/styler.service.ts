@@ -344,8 +344,13 @@ export class HsStylerService {
   /**
    * Prepare current layers style for editing by converting
    * SLD attribute string to JSON and reading layers title
+   * @param styleWithPriority Used to prioritize certain style type. For example when
+   * loading style from a file
    */
-  async fill(layer: VectorLayer<Feature>): Promise<void> {
+  async fill(
+    layer: VectorLayer<Feature>,
+    styleWithPriority?: 'sld' | 'qml',
+  ): Promise<void> {
     const blankStyleObj = {name: 'untitled style', rules: []};
     try {
       if (!layer) {
@@ -358,7 +363,10 @@ export class HsStylerService {
       this.layerTitle = getTitle(layer);
       const {sld, qml} = this.unsavedChange
         ? this.changesStore.get(getUid(layer))
-        : {sld: getSld(layer), qml: getQml(layer)};
+        : {
+            sld: styleWithPriority === 'qml' ? undefined : getSld(layer),
+            qml: styleWithPriority === 'sld' ? undefined : getQml(layer),
+          };
       if (sld != undefined) {
         this.styleObject = await this.sldToJson(sld);
         this.sldVersion = this.guessSldVersion(sld);
@@ -749,10 +757,10 @@ export class HsStylerService {
         const qmlParser = new QGISStyleParser();
 
         await qmlParser.readStyle(styleString);
-        this.qml = styleString;
+        this.qml = styleString.replace(/base64:/g, 'data:image/png;base64,');
       }
       this.resolveSldChange();
-      this.fill(this.layer);
+      this.fill(this.layer, styleFmt);
     } catch (err) {
       this.hsLogService.warn('SLD could not be parsed', err);
     }
