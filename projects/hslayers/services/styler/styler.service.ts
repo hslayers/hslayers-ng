@@ -284,6 +284,16 @@ export class HsStylerService {
         await this.styleClusteredLayer(layer);
       }
       this.trySyncingStyleToLayman(layer);
+    } else if (style && !sld && !qml) {
+      /**
+       * OL StyleLike definition
+       * TODO: what here? I feel like conversion from OL Style to Geostyler/SLD is not available
+       */
+      console.log(
+        `OL layer StyleLike style definition for layer ${getTitle(layer)}`,
+      );
+    } else {
+      console.error(`Unexpected style definition for layer ${getTitle(layer)}`);
     }
     this.sld = sld;
     this.qml = qml;
@@ -349,16 +359,22 @@ export class HsStylerService {
       const {sld, qml} = this.unsavedChange
         ? this.changesStore.get(getUid(layer))
         : {
-            sld: styleWithPriority === 'qml' ? undefined : getSld(layer),
-            qml: styleWithPriority === 'sld' ? undefined : getQml(layer),
+            sld: getSld(layer),
+            qml: getQml(layer),
           };
-      if (sld != undefined) {
+      //If SLD available and QML is not prioritised, use it
+      if (sld != undefined && styleWithPriority !== 'qml') {
         this.styleObject = await this.sldToJson(sld);
         this.sldVersion = this.guessSldVersion(sld);
-      } else if (qml != undefined) {
+      } else if (qml != undefined && styleWithPriority !== 'sld') {
         this.styleObject = await this.qmlToJson(qml);
         //Note: https://github.com/hslayers/hslayers-ng/issues/3431
       } else {
+        if (styleWithPriority) {
+          console.warn(
+            'Prioritised style not parsed, unexpected blank style usage!',
+          );
+        }
         this.styleObject = blankStyleObj;
       }
       this.fixSymbolizerBugs(this.styleObject);
@@ -595,6 +611,7 @@ export class HsStylerService {
     await this.save();
   }
 
+  //Unused?
   encodeTob64(str: string): string {
     return btoa(
       encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, (match, p1) => {
@@ -603,6 +620,7 @@ export class HsStylerService {
     );
   }
 
+  //Unused?
   decodeToUnicode(str: string): string {
     return decodeURIComponent(
       Array.prototype.map
@@ -742,7 +760,10 @@ export class HsStylerService {
         const qmlParser = new QGISStyleParser();
 
         await qmlParser.readStyle(styleString);
-        this.qml = styleString.replace(/base64:/g, 'data:image/png;base64,');
+        this.qml = styleString.replace(
+          /base64:/g,
+          'data:image/svg+xml;base64,',
+        );
       }
       this.resolveSldChange();
       this.fill(this.layer, styleFmt);
