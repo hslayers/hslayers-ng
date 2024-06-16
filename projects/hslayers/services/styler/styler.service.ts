@@ -50,7 +50,6 @@ import {
   setSld,
 } from 'hslayers-ng/common/extensions';
 import {getHighlighted} from 'hslayers-ng/common/extensions';
-import {parseStyle} from './backwards-compatibility';
 
 @Injectable({
   providedIn: 'root',
@@ -250,10 +249,16 @@ export class HsStylerService {
     let sld = getSld(layer);
     const qml = getQml(layer);
     const style = layer.getStyle();
+    /**
+     * No style has been detected (no SLD, QML nor OL style obj<StyleLike>)
+     */
     if ((!style || style == createDefaultStyle) && !sld && !qml) {
       sld = defaultStyle;
       setSld(layer, defaultStyle);
     }
+    /**
+     * SLD or QML style definition AND style def is undeinfed of default (eg. no custom StyleLike definition)
+     */
     if ((sld || qml) && (!style || style == createDefaultStyle)) {
       const parsedStyle = await this.parseStyle(sld ?? qml);
       if (parsedStyle.sld !== sld) {
@@ -279,19 +284,6 @@ export class HsStylerService {
         await this.styleClusteredLayer(layer);
       }
       this.trySyncingStyleToLayman(layer);
-    } else if (
-      style &&
-      !sld &&
-      !qml &&
-      !this.hsUtilsService.isFunction(style) &&
-      !Array.isArray(style)
-    ) {
-      //Backwards compatibility with custom style JSON
-      const customJson = this.hsSaveMapService.serializeStyle(style as Style);
-      const sld = (await this.parseStyle(customJson)).sld;
-      if (sld) {
-        setSld(layer, sld);
-      }
     }
     this.sld = sld;
     this.qml = qml;
@@ -319,13 +311,6 @@ export class HsStylerService {
       return {sld: sld, style: olStyle};
     } else if (styleType == 'qml') {
       return {qml: style, style: await this.qmlToOlStyle(style)};
-    } else if (
-      typeof style == 'object' &&
-      !this.hsUtilsService.instOf(style, Style)
-    ) {
-      const newLocal = await parseStyle(style);
-      //Backwards compatibility with style encoded in custom JSON object
-      return newLocal;
     } else {
       return {style};
     }
