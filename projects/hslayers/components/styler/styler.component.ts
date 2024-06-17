@@ -46,7 +46,10 @@ export class HsStylerComponent
     this.hsEventBusService.layerSelectedFromUrl
       .pipe(takeUntil(this.end))
       .subscribe((layer: Layer<Source>) => {
-        if (layer !== null && this.hsUtilsService.instOf(layer, VectorLayer)) {
+        if (
+          layer !== null &&
+          this.hsLayerUtilsService.isLayerVectorLayer(layer, false)
+        ) {
           this.hsStylerService.fill(layer as VectorLayer<Feature>);
         }
       });

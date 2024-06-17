@@ -3,20 +3,15 @@ import {Subject, buffer, debounceTime, pairwise} from 'rxjs';
 
 import {Cluster, Source} from 'ol/source';
 import {Feature} from 'ol';
-import {
-  Image as ImageLayer,
-  Layer,
-  Tile,
-  Vector as VectorLayer,
-} from 'ol/layer';
+import {Image as ImageLayer, Layer, Tile} from 'ol/layer';
 
 import {HsConfig} from 'hslayers-ng/config';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsLanguageService} from 'hslayers-ng/services/language';
 import {HsLayerDescriptor, HsLayerLoadProgress} from 'hslayers-ng/types';
+import {HsLayerUtilsService, HsUtilsService} from 'hslayers-ng/services/utils';
 import {HsLogService} from 'hslayers-ng/services/log';
 import {HsToastService} from 'hslayers-ng/common/toast';
-import {HsUtilsService} from 'hslayers-ng/services/utils';
 import {
   getBase,
   getShowInLayerManager,
@@ -32,6 +27,7 @@ export class HsLayerManagerLoadingProgressService {
     private hsLog: HsLogService,
     private zone: NgZone,
     private hsUtilsService: HsUtilsService,
+    private hsLayerUtilsService: HsLayerUtilsService,
     private hsToastService: HsToastService,
     private hsLanguageService: HsLanguageService,
     private hsEventBusService: HsEventBusService,
@@ -90,7 +86,7 @@ export class HsLayerManagerLoadingProgressService {
   }
 
   private determineLayerType(olLayer: Layer) {
-    if (this.hsUtilsService.instOf(olLayer, VectorLayer)) {
+    if (this.hsLayerUtilsService.isLayerVectorLayer(olLayer, false)) {
       return 'features';
     } else if (this.hsUtilsService.instOf(olLayer, ImageLayer)) {
       return 'image';

@@ -23,6 +23,7 @@ import {isEmpty} from 'ol/extent';
 import {HsLayerDescriptor} from 'hslayers-ng/types';
 import {HsUtilsService} from './utils.service';
 import {HsWmsLayer} from 'hslayers-ng/types';
+import {VectorImage} from 'ol/layer';
 import {
   getCluster,
   getEditor,
@@ -85,15 +86,7 @@ export class HsLayerUtilsService {
     if (typeof layer == 'undefined') {
       return false;
     }
-    if (
-      this.HsUtilsService.instOf(
-        layer,
-        VectorLayer,
-      ) /*&& layer.getSource().styleAble*/
-    ) {
-      return true;
-    }
-    return false;
+    return this.isLayerVectorLayer(layer, false);
   }
 
   /**
@@ -220,19 +213,30 @@ export class HsLayerUtilsService {
   /**
    * Test if layer is Vector layer
    * @param layer - Selected layer
+   * @param includingClusters - Whether to treat clusters as Vectors or not, Defaults to true
    * @returns True for Vector layer
    */
-  isLayerVectorLayer(layer: BaseLayer): boolean {
+  isLayerVectorLayer(layer: BaseLayer, includingClusters = true): boolean {
     if (
-      this.HsUtilsService.instOf(layer, VectorLayer) &&
-      (this.HsUtilsService.instOf(
-        (layer as VectorLayer<Feature>).getSource(),
-        Cluster,
-      ) ||
-        this.HsUtilsService.instOf(
-          (layer as VectorLayer<Feature>).getSource(),
-          VectorSource,
-        ))
+      (this.HsUtilsService.instOf(layer, VectorLayer) ||
+        this.HsUtilsService.instOf(layer, VectorImage)) &&
+      /**
+       * This part is not entirely corect as we cast both VectorLayer and VectorImage
+       * as VectorLayer but the differences are not relevant for the sake of the check
+       */
+      includingClusters
+        ? this.HsUtilsService.instOf(
+            (layer as VectorLayer<Feature>).getSource(),
+            Cluster,
+          ) ||
+          this.HsUtilsService.instOf(
+            (layer as VectorLayer<Feature>).getSource(),
+            VectorSource,
+          )
+        : this.HsUtilsService.instOf(
+            (layer as VectorLayer<Feature>).getSource(),
+            VectorSource,
+          )
     ) {
       return true;
     }
@@ -429,7 +433,7 @@ export class HsLayerUtilsService {
    */
   isLayerDrawable(layer: Layer<Source>): boolean {
     return (
-      this.HsUtilsService.instOf(layer, VectorLayer) &&
+      this.isLayerVectorLayer(layer, false) &&
       layer.getVisible() &&
       this.isLayerInManager(layer) &&
       this.hasLayerTitle(layer) &&
