@@ -14,7 +14,7 @@
     "skipLibCheck": true,
     "importHelpers": true,
     "target": "ES2022",
-    "lib": ["es2019", "dom"],
+    "lib": ["es2023", "dom"],
     "paths": {
       "@angular/*": ["node_modules/@angular/*"],
       "rxjs/*": ["node_modules/rxjs/*"],

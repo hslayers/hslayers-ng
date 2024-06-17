@@ -12,7 +12,7 @@
     "allowSyntheticDefaultImports": true,
     "resolveJsonModule": true,
     "esModuleInterop": true,
-    "lib": ["dom", "es2019"],
+    "lib": ["dom", "ES2023"],
     "paths": {
       "hslayers-ng": ["./dist/hslayers"],
       "hslayers-ng/*": ["./dist/hslayers/*"]
