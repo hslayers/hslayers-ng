@@ -358,7 +358,7 @@ export class HsSaveMapService {
     }
 
     // Vector
-    if (this.hsUtilsService.instOf(layer, VectorLayer)) {
+    if (this.hsLayerUtilsService.isLayerVectorLayer(layer)) {
       let src = layer.getSource();
       if (this.hsLayerUtilsService.isLayerClustered(layer)) {
         src = (src as Cluster<Feature>).getSource();
