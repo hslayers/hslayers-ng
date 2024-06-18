@@ -1,6 +1,6 @@
 {
   "name": "hslayers-cesium",
-  "version": "14.0.0-next.5",
+  "version": "14.0.0",
   "description": "HSLayers-NG 3D mapping library",
   "author": "Plan4all",
   "keywords": [
@@ -29,7 +29,7 @@
     "@ngx-translate/core": "^15.0.0",
     "@ngx-translate/http-loader": "^8.0.0",
     "cesium": "^1.116.0",
-    "hslayers-ng": "^14.0.0-next.5"
+    "hslayers-ng": "^14.0.0"
   },
   "dependencies": {
     "tslib": "^2.0.0"

@@ -1,6 +1,6 @@
 {
   "name": "hslayers-cesium-app",
-  "version": "14.0.0-next.5",
+  "version": "14.0.0",
   "description": "A bundle of HSLayers-NG library + Angular + OL which includes Cesium for 3D maps",
   "main": "src/main.ts",
   "directories": {
