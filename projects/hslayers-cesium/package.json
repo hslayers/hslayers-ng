@@ -1,6 +1,6 @@
 {
   "name": "hslayers-cesium",
-  "version": "14.0.0-next.4",
+  "version": "14.0.0-next.5",
   "description": "HSLayers-NG 3D mapping library",
   "author": "Plan4all",
   "keywords": [
@@ -22,14 +22,14 @@
   "license": "MIT",
   "scripts": {},
   "peerDependencies": {
-    "@angular/common": "^17.0.0",
-    "@angular/core": "^17.0.0",
-    "@angular/forms": "^17.0.0",
-    "@angular/localize": "^17.0.0",
+    "@angular/common": "^18.0.0",
+    "@angular/core": "^18.0.0",
+    "@angular/forms": "^18.0.0",
+    "@angular/localize": "^18.0.0",
     "@ngx-translate/core": "^15.0.0",
     "@ngx-translate/http-loader": "^8.0.0",
-    "cesium": "^1.104.0",
-    "hslayers-ng": "^14.0.0-next.0"
+    "cesium": "^1.116.0",
+    "hslayers-ng": "^14.0.0-next.5"
   },
   "dependencies": {
     "tslib": "^2.0.0"
