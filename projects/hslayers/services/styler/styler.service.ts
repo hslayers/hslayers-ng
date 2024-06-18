@@ -377,7 +377,7 @@ export class HsStylerService {
         }
         this.styleObject = blankStyleObj;
       }
-      this.fixSymbolizerBugs(this.styleObject);
+      await this.fixSymbolizerBugs(this.styleObject);
       /**
        * Save (update OL style) layer style
        * unsavedChange - synced layman layer with changes
@@ -394,7 +394,36 @@ export class HsStylerService {
     }
   }
 
-  private fixSymbolizerBugs(styleObject: GeoStylerStyle) {
+  /**
+   * Create serialized canvas element with SVG icon drawn on it.
+   *
+   * Used for perf optimization instead of expensive SVG icons while icon.color is not
+   * supported on Geostyler or we implement better VectorImage layer type support.
+   *
+   * NOTE: It's not possible to use HTMLCanvasElement directly, even though OL icon accepts it
+   * as Geostyler uses structuredCopy before processing.
+   */
+  private base64SvgToCanvas(base64Svg): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      img.src = base64Svg;
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        canvas.width = img.width;
+        canvas.height = img.height;
+        const context = canvas.getContext('2d');
+        context.drawImage(img, 0, 0);
+        const dataUrl = canvas.toDataURL();
+        resolve(dataUrl);
+      };
+      img.onerror = (error) => {
+        console.error('Error loading SVG:', error);
+        reject(error);
+      };
+    });
+  }
+
+  private async fixSymbolizerBugs(styleObject: GeoStylerStyle): Promise<void> {
     if (styleObject.rules) {
       for (const rule of styleObject.rules) {
         if (rule?.symbolizers) {
@@ -402,6 +431,14 @@ export class HsStylerService {
             if (symb.kind == 'Mark' && symb.wellKnownName !== undefined) {
               symb.wellKnownName =
                 symb.wellKnownName.toLowerCase() as WellKnownName;
+            }
+            if (
+              symb.kind == 'Icon' &&
+              typeof symb.image === 'string' &&
+              symb.image.includes('base64')
+            ) {
+              const canvasIcon = await this.base64SvgToCanvas(symb.image);
+              symb.image = canvasIcon ? canvasIcon : symb.image;
             }
           }
         }
@@ -415,7 +452,7 @@ export class HsStylerService {
   async sldToOlStyle(sld: string): Promise<StyleLike> {
     try {
       const sldObject = await this.sldToJson(sld);
-      this.fixSymbolizerBugs(sldObject);
+      await this.fixSymbolizerBugs(sldObject);
       return await this.geoStylerStyleToOlStyle(sldObject);
     } catch (ex) {
       this.hsLogService.error(ex);
@@ -428,7 +465,7 @@ export class HsStylerService {
   async qmlToOlStyle(qml: string): Promise<StyleLike> {
     try {
       const styleObject = await this.qmlToJson(qml);
-      this.fixSymbolizerBugs(styleObject);
+      await this.fixSymbolizerBugs(styleObject);
       return await this.geoStylerStyleToOlStyle(styleObject);
     } catch (ex) {
       this.hsLogService.error(ex);
