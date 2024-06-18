@@ -1,3 +1,12 @@
+# [14.0.0-next.5](https://github.com/hslayers/hslayers-ng/compare/14.0.0-next.4...14.0.0-next.5) (2024-06-18)
+
+
+### Bug Fixes
+
+* **build:** Dedupe package-lock ([b1f1d1a](https://github.com/hslayers/hslayers-ng/commit/b1f1d1ae3d99c3f49cefc1110105b3519daa27ce))
+
+
+
 # [14.0.0-next.4](https://github.com/hslayers/hslayers-ng/compare/14.0.0-next.3...14.0.0-next.4) (2024-06-12)
 
 
