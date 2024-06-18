@@ -966,7 +966,6 @@
     "toggleScaleDenominators": "Pārslēgt mēroga saucējus",
     "transform": "Transformēt",
     "unknownSymbolizer": "Nezināms simbolizētājs",
-    "uploadSld": "Augšupielādēt stilu kā SLD failu",
     "warningAttribNotStoredNotVisualized": "Atribūts pašlaik nav pareizi vizualizēts un nav saglabāts SLD",
     "warningAttribNotStoredVisualized": "Atribūts ir vizualizēts, bet nav saglabāts SLD",
     "warningAttribStoredNotVisualized": "Atribūts saglabāts SLD, bet pašlaik tas nav pareizi vizualizēts",
@@ -984,7 +983,8 @@
     "line": "Līnija",
     "text": "Teksts",
     "mark": "Marķieris",
-    "icon": "Ikona"
+    "icon": "Ikona",
+    "uploadStyleFile": "Augšupielādēt stilu kā SLD/QML failu"
   },
   "TOOLBAR": {
     "measureLinesAndPolygon": "Izmērīt līnijas un daudzstūrus"

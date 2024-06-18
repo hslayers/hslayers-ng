@@ -1012,7 +1012,6 @@
     "toggleScaleDenominators": "Přepnout rozsah měřítka",
     "transform": "Transformace",
     "unknownSymbolizer": "Neznámá symbolika",
-    "uploadSld": "Nahrajte styl jako soubor SLD",
     "warningAttribNotStoredNotVisualized": "Atribut není aktuálně zobrazen správně a není uložen v SLD",
     "warningAttribNotStoredVisualized": "Atribut je vizualizován, ale není uložen v SLD",
     "warningAttribStoredNotVisualized": "Atribut uložený v SLD, ale aktuálně není zobrazen správně",
@@ -1033,7 +1032,8 @@
     "unsavedChanges": "Máte neuložené změny stylu. Aby se změny zachovaly, ujistěte se před odchodem, že jste je uložili",
     "reallyResetStyleToDefault": "Opravdu chcete použít výchozí styl?",
     "sldParsingError": "Chyba při zpracování stylu",
-    "sldParsingErrorMessage": "Při zpracování poskytnutého stylu SLD došlo k chybě. Byl použit výchozí styl."
+    "sldParsingErrorMessage": "Při zpracování poskytnutého stylu SLD došlo k chybě. Byl použit výchozí styl.",
+    "uploadStyleFile": "Nahrajte styl jako soubor SLD/QML"
   },
   "TOOLBAR": {
     "measureLinesAndPolygon": "Měřit linie a polygony",

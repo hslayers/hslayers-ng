@@ -7,12 +7,11 @@
     <extra-buttons>
       <a class="dropdown-item" download="style.sld" [hsDownload]="hsStylerService.sld" mimeType="text/plain"
         [href]="downloadData" (downloadPrepared)="downloadData = $event">
-        <i class="icon-download"></i>
-        {{'STYLER.downloadSld' | translateHs}}
+        <i class="icon-download"></i>{{'STYLER.downloadSld' | translateHs}}
       </a>
 
       <a class="dropdown-item" (click)="uploadSld()" [ngClass]="uploaderVisible ? 'text-primary opacity-100' : ''">
-        <i class="icon-upload"></i>{{'STYLER.uploadSld' | translateHs}}
+        <i class="icon-upload"></i>{{'STYLER.uploadStyleFile' | translateHs}}
       </a>
     </extra-buttons>
   </hs-panel-header>
