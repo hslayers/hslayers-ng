@@ -795,12 +795,19 @@ export class HsStylerService {
       } else if (styleFmt == 'qml') {
         const {QGISStyleParser} = await import('geostyler-qgis-parser');
         const qmlParser = new QGISStyleParser();
-
         await qmlParser.readStyle(styleString);
-        this.qml = styleString.replace(
-          /base64:/g,
-          'data:image/svg+xml;base64,',
-        );
+
+        /**
+         * Parse QML string:
+         * Look for prop elements with source attribute
+         * and prepend its content to v while switching : with ,
+         */
+        const regex =
+          /<prop([^>]*source="(data:[^"]*)"[^>]*v="base64:([^"]*)")/g;
+
+        this.qml = styleString.replace(regex, (match, p1, p2, p3) => {
+          return match.replace(`v="base64:${p3}"`, `v="${p2}base64,${p3}"`);
+        });
       }
       this.resolveSldChange();
       this.fill(this.layer, styleFmt);
