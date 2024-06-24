@@ -131,33 +131,42 @@ export class HsLayerManagerFolderService {
     state: Map<string, HsLayermanagerFolder>,
     lyr: HsLayerDescriptor,
   ): Map<string, HsLayermanagerFolder> {
-    const newState = new Map(state);
-    const olLayer = lyr.layer;
-    if (getShowInLayerManager(olLayer) == false) {
-      return newState;
-    }
+    try {
+      const newState = new Map(state);
+      const olLayer = lyr.layer;
+      if (getShowInLayerManager(olLayer) == false) {
+        return newState;
+      }
 
-    const path = getPath(olLayer);
-    if (!path) {
-      console.warn(
-        `Unexpected. Layer $${getTitle(olLayer)} has no path defined`,
+      const path = getPath(olLayer);
+      if (!path) {
+        console.warn(
+          `Unexpected. Layer $${getTitle(olLayer)} has no path defined`,
+        );
+        return newState;
+      }
+
+      const folder = newState.get(path);
+      if (!folder) {
+        console.warn(
+          `Unexpected. Layer $${getTitle(olLayer)} belongs to path ${path} but it could not be found`,
+        );
+        return newState;
+      }
+
+      folder.layers.splice(folder.layers.indexOf(lyr), 1);
+      if (folder.layers.length === 0) {
+        newState.delete(path);
+      }
+      return newState;
+    } catch (error) {
+      console.error(
+        getTitle(lyr.layer)
+          ? `There was an error while cleaning folders after ${getTitle(lyr.layer)} was removed`
+          : 'There was an attempt to clean folders without valid layer param provided',
+        error,
       );
-      return newState;
     }
-
-    const folder = newState.get(path);
-    if (!folder) {
-      console.warn(
-        `Unexpected. Layer $${getTitle(olLayer)} belongs to path ${path} but it could not be found`,
-      );
-      return newState;
-    }
-
-    folder.layers.splice(folder.layers.indexOf(lyr), 1);
-    if (folder.layers.length === 0) {
-      newState.delete(path);
-    }
-    return newState;
   }
 
   /**
