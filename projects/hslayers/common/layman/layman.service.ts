@@ -1,13 +1,14 @@
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 
-import {BehaviorSubject, Subject, lastValueFrom} from 'rxjs';
+import {BehaviorSubject, Subject, lastValueFrom, map} from 'rxjs';
 
 import {CurrentUserResponse} from './types/current-user-response.type';
 import {HsEndpoint} from 'hslayers-ng/types';
 import {HsLanguageService} from 'hslayers-ng/services/language';
 import {HsLogService} from 'hslayers-ng/services/log';
 import {HsToastService} from 'hslayers-ng/common/toast';
+import {parseBase64Style} from './parse-base64-style';
 
 @Injectable({
   providedIn: 'root',
@@ -131,11 +132,13 @@ export class HsCommonLaymanService {
   async getStyleFromUrl(styleUrl: string): Promise<string> {
     try {
       return await lastValueFrom(
-        this.$http.get(styleUrl, {
-          headers: new HttpHeaders().set('Content-Type', 'text'),
-          responseType: 'text',
-          withCredentials: true,
-        }),
+        this.$http
+          .get(styleUrl, {
+            headers: new HttpHeaders().set('Content-Type', 'text'),
+            responseType: 'text',
+            withCredentials: true,
+          })
+          .pipe(map((response) => parseBase64Style(response))),
       );
     } catch (ex) {
       this.hsLog.error(ex);

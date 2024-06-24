@@ -22,7 +22,10 @@ import {Layer, Vector as VectorLayer} from 'ol/layer';
 import {OlStyleParser as OpenLayersParser} from 'geostyler-openlayers-parser';
 import {StyleFunction, StyleLike, createDefaultStyle} from 'ol/style/Style';
 
-import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
+import {
+  HsCommonLaymanService,
+  parseBase64Style,
+} from 'hslayers-ng/common/layman';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsConfirmDialogComponent} from 'hslayers-ng/common/confirm';
 import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
@@ -797,17 +800,7 @@ export class HsStylerService {
         const qmlParser = new QGISStyleParser();
         await qmlParser.readStyle(styleString);
 
-        /**
-         * Parse QML string:
-         * Look for prop elements with source attribute
-         * and prepend its content to v while switching : with ,
-         */
-        const regex =
-          /<prop([^>]*source="(data:[^"]*)"[^>]*v="base64:([^"]*)")/g;
-
-        this.qml = styleString.replace(regex, (match, p1, p2, p3) => {
-          return match.replace(`v="base64:${p3}"`, `v="${p2}base64,${p3}"`);
-        });
+        this.qml = parseBase64Style(styleString);
       }
       this.resolveSldChange();
       this.fill(this.layer, styleFmt);
