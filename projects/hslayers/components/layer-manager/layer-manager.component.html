@@ -138,9 +138,9 @@
                 style="margin-bottom: 0.2em;">
                 <span class="align-middle" style="line-height: 2em;">{{ 'LAYERMANAGER.mapContent' | translateHs}}</span>
             </li>
+            @if(!physicalLayerListEnabled){
             <ul class="list-group hs-lm-layerlist mb-1"
-                *ngFor="let entry of hsLayerManagerService.data.folders() | keyvalue : keepOrder"
-                [hidden]="physicalLayerListEnabled">
+                *ngFor="let entry of hsLayerManagerService.data.folders() | keyvalue : keepOrder">
                 <li class="list-group-item hs-lm-layerlist-header list-group-item-primary"
                     *ngIf="hsLayerManagerService.data.folders().size > 1"
                     (click)="entry.value.visible = !entry.value.visible">
@@ -154,11 +154,15 @@
                     </li>
                 </div>
             </ul>
-            <ul class="list-group hs-lm-layerlist mb-1" [hidden]="!physicalLayerListEnabled">
+            }
+            @else {
+
+            <ul class="list-group hs-lm-layerlist mb-1">
                 <li>
                     <hs-layermanager-physical-layer-list></hs-layermanager-physical-layer-list>
                 </li>
             </ul>
+            }
             <!--
         <div class="btn-group" data-toggle="buttons">
             <label class="btn btn-secondary active">

@@ -4,7 +4,10 @@ import {Layer} from 'ol/layer';
 import {Source} from 'ol/source';
 
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
-import {HsLayerManagerService} from 'hslayers-ng/services/layer-manager';
+import {
+  HsLayerManagerFolderService,
+  HsLayerManagerService,
+} from 'hslayers-ng/services/layer-manager';
 import {HsMapService} from 'hslayers-ng/services/map';
 import {HsUtilsService} from 'hslayers-ng/services/utils';
 import {getBase} from 'hslayers-ng/common/extensions';
@@ -22,10 +25,11 @@ export class LayerListItem {
 export class HsLayerShiftingService {
   layersCopy: LayerListItem[] = [];
   constructor(
-    public hsMapService: HsMapService,
-    public hsLayerManagerService: HsLayerManagerService,
-    public hsUtilsService: HsUtilsService,
-    public hsEventBusService: HsEventBusService,
+    private hsMapService: HsMapService,
+    private hsLayerManagerService: HsLayerManagerService,
+    private hsUtilsService: HsUtilsService,
+    private hsEventBusService: HsEventBusService,
+    private hsFolderService: HsLayerManagerFolderService,
   ) {}
 
   /**
@@ -109,6 +113,9 @@ export class HsLayerShiftingService {
       }
       providedLayer.setZIndex(preferredZIndex);
       this.hsEventBusService.layerManagerUpdates.next(providedLayer);
+      this.hsFolderService.folderAction$.next(
+        this.hsFolderService.updateFoldersZIndex(),
+      );
     }
   }
 

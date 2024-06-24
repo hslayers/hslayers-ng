@@ -16,6 +16,7 @@ enum FolderActionTypes {
   ADD_LAYER = 'ADD_LAYER',
   REMOVE_LAYER = 'REMOVE_LAYER',
   SORT_BY_Z = 'SORT_BY_Z',
+  UPDATE_Z = 'UPDATE_Z',
 }
 // Action Interfaces
 interface AddLayerAction {
@@ -32,8 +33,15 @@ interface SortFoldersByZAction {
   type: FolderActionTypes.SORT_BY_Z;
   lyr: HsLayerDescriptor;
 }
-
-type FolderAction = AddLayerAction | RemoveLayerAction | SortFoldersByZAction;
+interface UpdateFoldersZIndex {
+  type: FolderActionTypes.UPDATE_Z;
+  lyr: HsLayerDescriptor;
+}
+type FolderAction =
+  | AddLayerAction
+  | RemoveLayerAction
+  | SortFoldersByZAction
+  | UpdateFoldersZIndex;
 
 @Injectable({
   providedIn: 'root',
@@ -59,6 +67,8 @@ export class HsLayerManagerFolderService {
         return this.cleanFolders(state, action.lyr);
       case FolderActionTypes.SORT_BY_Z:
         return this.sortFoldersByZ(state);
+      case FolderActionTypes.UPDATE_Z:
+        return this.updateFoldersZ(state);
       default:
         return state;
     }
@@ -76,6 +86,13 @@ export class HsLayerManagerFolderService {
     return {
       type: FolderActionTypes.REMOVE_LAYER,
       lyr: lyr,
+    };
+  }
+
+  updateFoldersZIndex(): UpdateFoldersZIndex {
+    return {
+      type: FolderActionTypes.UPDATE_Z,
+      lyr: undefined,
     };
   }
 
@@ -167,6 +184,21 @@ export class HsLayerManagerFolderService {
         error,
       );
     }
+  }
+
+  /**
+   * Update zIndex of folders and sort them
+   * @param lyr Layer that has changed.
+   */
+  private updateFoldersZ(state: Map<string, HsLayermanagerFolder>) {
+    const newState = new Map(state);
+
+    for (const key of newState.keys()) {
+      const folderChanged = newState.get(key);
+      const zIndexes = folderChanged.layers.map((l) => l.layer.getZIndex());
+      folderChanged.zIndex = Math.max(...zIndexes);
+    }
+    return this.sortFoldersByZ(newState);
   }
 
   /**
