@@ -436,16 +436,21 @@ export class HsLayerManagerService {
 
   /**
    * Callback function for removing layer. Clean layers variables
-   * (PRIVATE)
-   * @private
    * @param e - Events emitted by ol.Collection instances are instances of this type.
    */
   layerRemoved(e: CollectionEvent<Layer>): void {
-    this.folderService.folderAction$.next(
-      this.folderService.removeLayer(
-        this.getLayerDescriptorForOlLayer(e.element),
-      ),
-    );
+    const showInLayerManager = getShowInLayerManager(e.element);
+    /**
+     * Layers outside the folder structure eg. base and those not shown in LM
+     * should not trigger folder update
+     */
+    if (showInLayerManager !== false && !getBase(e.element)) {
+      this.folderService.folderAction$.next(
+        this.folderService.removeLayer(
+          this.getLayerDescriptorForOlLayer(e.element),
+        ),
+      );
+    }
     for (let i = 0; i < this.data.layers.length; i++) {
       if (this.data.layers[i].layer == e.element) {
         this.data.layers.splice(i, 1);
@@ -462,7 +467,7 @@ export class HsLayerManagerService {
     );
     this.hsEventBusService.layerManagerUpdates.next(e.element);
     this.hsEventBusService.layerRemovals.next(e.element);
-    if (getShowInLayerManager(e.element) !== false) {
+    if (showInLayerManager !== false) {
       this.hsEventBusService.compositionEdits.next();
     }
     const layers = this.hsMapService.getMap().getLayers().getArray();
