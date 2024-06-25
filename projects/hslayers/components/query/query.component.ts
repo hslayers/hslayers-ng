@@ -12,6 +12,7 @@ import {HsMapService} from 'hslayers-ng/services/map';
 import {HsPanelBaseComponent} from 'hslayers-ng/common/panels';
 import {HsQueryBaseService} from 'hslayers-ng/services/query';
 import {HsQueryVectorService} from 'hslayers-ng/services/query';
+import {HsQueryWmsService} from './query-wms.service';
 
 @Component({
   selector: 'hs-query',
@@ -35,6 +36,7 @@ export class HsQueryComponent
     private hsLog: HsLogService,
     private hsQueryVectorService: HsQueryVectorService,
     private hsDrawService: HsDrawService,
+    private hsQueryWmsService: HsQueryWmsService,
   ) {
     super();
   }
