@@ -292,11 +292,13 @@ export class HsStylerService {
        * OL StyleLike definition
        * TODO: what here? I feel like conversion from OL Style to Geostyler/SLD is not available
        */
-      console.log(
+      this.hsLogService.log(
         `OL layer StyleLike style definition for layer ${getTitle(layer)}`,
       );
     } else {
-      console.error(`Unexpected style definition for layer ${getTitle(layer)}`);
+      this.hsLogService.error(
+        `Unexpected style definition for layer ${getTitle(layer)}`,
+      );
     }
     this.sld = sld;
     this.qml = qml;
