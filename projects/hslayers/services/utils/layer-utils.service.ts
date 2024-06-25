@@ -221,7 +221,7 @@ export class HsLayerUtilsService {
       (this.HsUtilsService.instOf(layer, VectorLayer) ||
         this.HsUtilsService.instOf(layer, VectorImage)) &&
       /**
-       * This part is not entirely corect as we cast both VectorLayer and VectorImage
+       * This part is not entirely correct as we cast both VectorLayer and VectorImage
        * as VectorLayer but the differences are not relevant for the sake of the check
        */
       includingClusters

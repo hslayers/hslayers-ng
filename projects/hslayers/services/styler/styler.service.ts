@@ -252,15 +252,15 @@ export class HsStylerService {
     let sld = getSld(layer);
     const qml = getQml(layer);
     const style = layer.getStyle();
-    /**
+    /*
      * No style has been detected (no SLD, QML nor OL style obj<StyleLike>)
      */
     if ((!style || style == createDefaultStyle) && !sld && !qml) {
       sld = defaultStyle;
       setSld(layer, defaultStyle);
     }
-    /**
-     * SLD or QML style definition AND style def is undeinfed of default (eg. no custom StyleLike definition)
+    /*
+     * SLD or QML style definition AND style def is undefined or default (eg. no custom StyleLike definition)
      */
     if ((sld || qml) && (!style || style == createDefaultStyle)) {
       const parsedStyle = await this.parseStyle(sld ?? qml);
@@ -288,7 +288,7 @@ export class HsStylerService {
       }
       this.trySyncingStyleToLayman(layer);
     } else if (style && !sld && !qml) {
-      /**
+      /*
        * OL StyleLike definition
        * TODO: what here? I feel like conversion from OL Style to Geostyler/SLD is not available
        */
