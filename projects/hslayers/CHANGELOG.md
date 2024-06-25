@@ -1,3 +1,12 @@
+## [14.0.1](https://github.com/hslayers/hslayers-ng/compare/14.0.0...14.0.1) (2024-06-25)
+
+
+### Bug Fixes
+
+* **query:** Ensure hsQueryWmsService is always available in the component ([32af332](https://github.com/hslayers/hslayers-ng/commit/32af3327f731946378d1361a1322aabf211c143d))
+
+
+
 # [14.0.0](https://github.com/hslayers/hslayers-ng/compare/14.0.0-next.5...14.0.0) (2024-06-18)
 
 
