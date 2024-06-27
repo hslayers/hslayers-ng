@@ -22,7 +22,10 @@ import {Layer, Vector as VectorLayer} from 'ol/layer';
 import {OlStyleParser as OpenLayersParser} from 'geostyler-openlayers-parser';
 import {StyleFunction, StyleLike, createDefaultStyle} from 'ol/style/Style';
 
-import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
+import {
+  HsCommonLaymanService,
+  parseBase64Style,
+} from 'hslayers-ng/common/layman';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsConfirmDialogComponent} from 'hslayers-ng/common/confirm';
 import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
@@ -50,7 +53,6 @@ import {
   setSld,
 } from 'hslayers-ng/common/extensions';
 import {getHighlighted} from 'hslayers-ng/common/extensions';
-import {parseStyle} from './backwards-compatibility';
 
 @Injectable({
   providedIn: 'root',
@@ -250,10 +252,16 @@ export class HsStylerService {
     let sld = getSld(layer);
     const qml = getQml(layer);
     const style = layer.getStyle();
+    /*
+     * No style has been detected (no SLD, QML nor OL style obj<StyleLike>)
+     */
     if ((!style || style == createDefaultStyle) && !sld && !qml) {
       sld = defaultStyle;
       setSld(layer, defaultStyle);
     }
+    /*
+     * SLD or QML style definition AND style def is undefined or default (eg. no custom StyleLike definition)
+     */
     if ((sld || qml) && (!style || style == createDefaultStyle)) {
       const parsedStyle = await this.parseStyle(sld ?? qml);
       if (parsedStyle.sld !== sld) {
@@ -279,19 +287,18 @@ export class HsStylerService {
         await this.styleClusteredLayer(layer);
       }
       this.trySyncingStyleToLayman(layer);
-    } else if (
-      style &&
-      !sld &&
-      !qml &&
-      !this.hsUtilsService.isFunction(style) &&
-      !Array.isArray(style)
-    ) {
-      //Backwards compatibility with custom style JSON
-      const customJson = this.hsSaveMapService.serializeStyle(style as Style);
-      const sld = (await this.parseStyle(customJson)).sld;
-      if (sld) {
-        setSld(layer, sld);
-      }
+    } else if (style && !sld && !qml) {
+      /*
+       * OL StyleLike definition
+       * TODO: what here? I feel like conversion from OL Style to Geostyler/SLD is not available
+       */
+      this.hsLogService.log(
+        `OL layer StyleLike style definition for layer ${getTitle(layer)}`,
+      );
+    } else {
+      this.hsLogService.error(
+        `Unexpected style definition for layer ${getTitle(layer)}`,
+      );
     }
     this.sld = sld;
     this.qml = qml;
@@ -319,13 +326,6 @@ export class HsStylerService {
       return {sld: sld, style: olStyle};
     } else if (styleType == 'qml') {
       return {qml: style, style: await this.qmlToOlStyle(style)};
-    } else if (
-      typeof style == 'object' &&
-      !this.hsUtilsService.instOf(style, Style)
-    ) {
-      const newLocal = await parseStyle(style);
-      //Backwards compatibility with style encoded in custom JSON object
-      return newLocal;
     } else {
       return {style};
     }
@@ -344,8 +344,13 @@ export class HsStylerService {
   /**
    * Prepare current layers style for editing by converting
    * SLD attribute string to JSON and reading layers title
+   * @param styleWithPriority Used to prioritize certain style type. For example when
+   * loading style from a file
    */
-  async fill(layer: VectorLayer<Feature>): Promise<void> {
+  async fill(
+    layer: VectorLayer<Feature>,
+    styleWithPriority?: 'sld' | 'qml',
+  ): Promise<void> {
     const blankStyleObj = {name: 'untitled style', rules: []};
     try {
       if (!layer) {
@@ -358,17 +363,26 @@ export class HsStylerService {
       this.layerTitle = getTitle(layer);
       const {sld, qml} = this.unsavedChange
         ? this.changesStore.get(getUid(layer))
-        : {sld: getSld(layer), qml: getQml(layer)};
-      if (sld != undefined) {
+        : {
+            sld: getSld(layer),
+            qml: getQml(layer),
+          };
+      //If SLD available and QML is not prioritised, use it
+      if (sld != undefined && styleWithPriority !== 'qml') {
         this.styleObject = await this.sldToJson(sld);
         this.sldVersion = this.guessSldVersion(sld);
-      } else if (qml != undefined) {
+      } else if (qml != undefined && styleWithPriority !== 'sld') {
         this.styleObject = await this.qmlToJson(qml);
         //Note: https://github.com/hslayers/hslayers-ng/issues/3431
       } else {
+        if (styleWithPriority) {
+          console.warn(
+            'Prioritised style not parsed, unexpected blank style usage!',
+          );
+        }
         this.styleObject = blankStyleObj;
       }
-      this.fixSymbolizerBugs(this.styleObject);
+      await this.fixSymbolizerBugs(this.styleObject);
       /**
        * Save (update OL style) layer style
        * unsavedChange - synced layman layer with changes
@@ -385,7 +399,36 @@ export class HsStylerService {
     }
   }
 
-  private fixSymbolizerBugs(styleObject: GeoStylerStyle) {
+  /**
+   * Create serialized canvas element with SVG icon drawn on it.
+   *
+   * Used for perf optimization instead of expensive SVG icons while icon.color is not
+   * supported on Geostyler or we implement better VectorImage layer type support.
+   *
+   * NOTE: It's not possible to use HTMLCanvasElement directly, even though OL icon accepts it
+   * as Geostyler uses structuredCopy before processing.
+   */
+  private base64SvgToCanvas(base64Svg): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      img.src = base64Svg;
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        canvas.width = img.width;
+        canvas.height = img.height;
+        const context = canvas.getContext('2d');
+        context.drawImage(img, 0, 0);
+        const dataUrl = canvas.toDataURL();
+        resolve(dataUrl);
+      };
+      img.onerror = (error) => {
+        console.error('Error loading SVG:', error);
+        reject(error);
+      };
+    });
+  }
+
+  private async fixSymbolizerBugs(styleObject: GeoStylerStyle): Promise<void> {
     if (styleObject.rules) {
       for (const rule of styleObject.rules) {
         if (rule?.symbolizers) {
@@ -393,6 +436,14 @@ export class HsStylerService {
             if (symb.kind == 'Mark' && symb.wellKnownName !== undefined) {
               symb.wellKnownName =
                 symb.wellKnownName.toLowerCase() as WellKnownName;
+            }
+            if (
+              symb.kind == 'Icon' &&
+              typeof symb.image === 'string' &&
+              symb.image.includes('base64')
+            ) {
+              const canvasIcon = await this.base64SvgToCanvas(symb.image);
+              symb.image = canvasIcon ? canvasIcon : symb.image;
             }
           }
         }
@@ -406,7 +457,7 @@ export class HsStylerService {
   async sldToOlStyle(sld: string): Promise<StyleLike> {
     try {
       const sldObject = await this.sldToJson(sld);
-      this.fixSymbolizerBugs(sldObject);
+      await this.fixSymbolizerBugs(sldObject);
       return await this.geoStylerStyleToOlStyle(sldObject);
     } catch (ex) {
       this.hsLogService.error(ex);
@@ -419,7 +470,7 @@ export class HsStylerService {
   async qmlToOlStyle(qml: string): Promise<StyleLike> {
     try {
       const styleObject = await this.qmlToJson(qml);
-      this.fixSymbolizerBugs(styleObject);
+      await this.fixSymbolizerBugs(styleObject);
       return await this.geoStylerStyleToOlStyle(styleObject);
     } catch (ex) {
       this.hsLogService.error(ex);
@@ -602,6 +653,7 @@ export class HsStylerService {
     await this.save();
   }
 
+  //Unused?
   encodeTob64(str: string): string {
     return btoa(
       encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, (match, p1) => {
@@ -610,6 +662,7 @@ export class HsStylerService {
     );
   }
 
+  //Unused?
   decodeToUnicode(str: string): string {
     return decodeURIComponent(
       Array.prototype.map
@@ -747,12 +800,12 @@ export class HsStylerService {
       } else if (styleFmt == 'qml') {
         const {QGISStyleParser} = await import('geostyler-qgis-parser');
         const qmlParser = new QGISStyleParser();
-
         await qmlParser.readStyle(styleString);
-        this.qml = styleString;
+
+        this.qml = parseBase64Style(styleString);
       }
       this.resolveSldChange();
-      this.fill(this.layer);
+      this.fill(this.layer, styleFmt);
     } catch (err) {
       this.hsLogService.warn('SLD could not be parsed', err);
     }

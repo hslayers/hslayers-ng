@@ -1015,7 +1015,6 @@
     "toggleScaleDenominators": "Toggle scale denominators",
     "transform": "Transform",
     "unknownSymbolizer": "Unknown symbolizer",
-    "uploadSld": "Upload style as SLD file",
     "warningAttribNotStoredNotVisualized": "Attribute currently not visualized correctly and not stored in SLD",
     "warningAttribNotStoredVisualized": "Attribute visualized, but not stored in SLD",
     "warningAttribStoredNotVisualized": "Attribute stored in SLD, but currently is not visualized correctly",
@@ -1033,7 +1032,8 @@
     "fill": "Fill",
     "reallyResetStyleToDefault": "Do you really want to apply default style?",
     "sldParsingError": "Style parsing error",
-    "sldParsingErrorMessage": "There was an error parsing provided SLD style. Default style used."
+    "sldParsingErrorMessage": "There was an error parsing provided SLD style. Default style used.",
+    "uploadStyleFile": "Upload style as SLD/QML file"
   },
   "TOOLBAR": {
     "measureLinesAndPolygon": "Measure lines and polygon",

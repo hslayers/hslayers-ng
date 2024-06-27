@@ -981,7 +981,6 @@
     "toggleScaleDenominators": "Prepnúť rozsah mierky",
     "transform": "Transformácia",
     "unknownSymbolizer": "Neznáma symboliku",
-    "uploadSld": "Nahrajte štýl ako súbor SLD",
     "warningAttribNotStoredNotVisualized": "Atribút momentálne nie je zorazený správne a nie je uložený v SLD",
     "warningAttribNotStoredVisualized": "Atribút je vizualizovaný, ale nie je uložený v SLD",
     "warningAttribStoredNotVisualized": "Atribút uložený v SLD, ale aktuálne nie je zobrazený správne",
@@ -1002,7 +1001,8 @@
     "untitledRule": "Pravidlo bez názvu",
     "reallyResetStyleToDefault": "Naozaj chcete aplikovať predvolený štýl?",
     "sldParsingError": "Chyba pri spracovaní štýlu",
-    "sldParsingErrorMessage": "Pri spracovaní poskytnutého štýlu SLD došlo k chybe. Bol použitý predvolený štýl."
+    "sldParsingErrorMessage": "Pri spracovaní poskytnutého štýlu SLD došlo k chybe. Bol použitý predvolený štýl.",
+    "uploadStyleFile": "Nahrajte štýl ako súbor SLD/QML"
   },
   "TOOLBAR": {
     "measureLinesAndPolygon": "Merať línie a polygóny",

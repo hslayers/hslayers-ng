@@ -3,11 +3,10 @@ import {Injectable} from '@angular/core';
 import {Cluster, Source, Vector as VectorSource} from 'ol/source';
 import {Feature} from 'ol';
 import {Geometry} from 'ol/geom';
-import {Layer, Vector as VectorLayer} from 'ol/layer';
+import {Layer} from 'ol/layer';
 
 import {HsLayerUtilsService} from 'hslayers-ng/services/utils';
 import {HsQueryVectorService} from 'hslayers-ng/services/query';
-import {HsUtilsService} from 'hslayers-ng/services/utils';
 import {
   getBase,
   getShowInLayerManager,
@@ -42,7 +41,6 @@ export class HsFeatureTableService {
    */
   features: FeatureDescriptor[] = [];
   constructor(
-    private hsUtilsService: HsUtilsService,
     private hsLayerUtilsService: HsLayerUtilsService,
     private hsQueryVectorService: HsQueryVectorService,
   ) {}
@@ -56,7 +54,7 @@ export class HsFeatureTableService {
   addLayer(layer: Layer<Source>): any {
     if (
       !getBase(layer) &&
-      this.hsUtilsService.instOf(layer, VectorLayer) &&
+      this.hsLayerUtilsService.isLayerVectorLayer(layer, false) &&
       (getShowInLayerManager(layer) === undefined ||
         getShowInLayerManager(layer) == true)
     ) {

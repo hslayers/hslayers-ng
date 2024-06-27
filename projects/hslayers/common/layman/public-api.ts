@@ -10,3 +10,4 @@ export * from './types/delete-layer-response.type';
 export * from './types/layman-user.type';
 export * from './layman-utils';
 export * from './transliteration-map';
+export * from './parse-base64-style';

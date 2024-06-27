@@ -247,7 +247,7 @@ export class HsLegendService {
         visible: layer.getVisible(),
       };
     } else if (
-      this.hsUtilsService.instOf(layer, VectorLayer) &&
+      this.hsLayerUtilsService.isLayerVectorLayer(layer, false) &&
       (getShowInLayerManager(layer) === undefined ||
         getShowInLayerManager(layer) == true)
     ) {
