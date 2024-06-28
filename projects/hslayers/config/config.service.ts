@@ -85,6 +85,11 @@ export class HsConfigObject {
     mapLogApiPath?: string;
     senslog1Path?: string;
     senslog2Path?: string;
+    /**
+     * Directory path in which objects defining vega view timeFormatLocale attribute are located.
+     * Used to localize time unit of vega charts for non default languages/specific changes
+     */
+    timeFormatConfigPath?: string;
   };
   proxyPrefix?: string;
   defaultDrawLayerPath?: string;
