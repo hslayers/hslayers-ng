@@ -12,7 +12,7 @@
                             <button type="button" class="btn btn-sm" (click)="sensorToggleSelected(sensor)"
                                 [ngClass]="sensor.checked  ? 'hs-checkmark' : 'hs-uncheckmark'"></button>
                         </div>
-                        <div class="align-items-center p-0 flex-grow-1 hs-lm-item-title">
+                        <div class="d-flex align-items-center p-0 flex-grow-1 hs-lm-item-title">
                             <a *ngIf="viewMode === 'sensornames'" class="hs-sensor" (click)="sensorClicked(sensor)">
                                 <b>{{sensor.sensor_name | translateHs : {module: 'SENSORS.SENSORNAMES'} }}</b></a>
 
