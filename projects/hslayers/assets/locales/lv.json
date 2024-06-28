@@ -865,7 +865,11 @@
     "sensorUnit": "Sensoru vienība",
     "comparison": "Salīdzināt sensorus starp mērītāju grupām",
     "noSensorsSelected": "Nav atlasīts neviens sensors",
-    "multipleUnits": "Vairākas vienības"
+    "multipleUnits": "Vairākas vienības",
+    "month": "Mēnesis",
+    "time": "Laiks",
+    "day": "Diena",
+    "date": "Datums"
   },
   "SIDEBAR": {
     "additionalPanels": "Papildu paneļi",

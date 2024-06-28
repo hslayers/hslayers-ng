@@ -897,7 +897,7 @@
     "1D": "1D",
     "1H": "1H",
     "1M": "1M",
-    "1W": "1W",
+    "1W": "1T",
     "6M": "6M",
     "at": "v",
     "avg": "Prům.",
@@ -911,7 +911,11 @@
     "comparison": "Porovnat senzory mezi jednotkami",
     "noSensorsSelected": "Není vybrán žádný senzor",
     "multipleUnits": "Více jednotek",
-    "noUnitsFound": "Nebyly nalezeny žádné senzorové jednotky!"
+    "noUnitsFound": "Nebyly nalezeny žádné senzorové jednotky!",
+    "month": "Měsíc",
+    "time": "Čas",
+    "day": "Den",
+    "date": "Datum"
   },
   "SIDEBAR": {
     "additionalPanels": "Další panely",

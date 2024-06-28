@@ -911,7 +911,11 @@
     "comparison": "Compare Across Sensor Units",
     "noSensorsSelected": "No sensor selected",
     "multipleUnits": "Multiple units",
-    "noUnitsFound": "No sensor units found!"
+    "noUnitsFound": "No sensor units found!",
+    "month": "Month",
+    "time": "Time",
+    "day": "Day",
+    "date": "Date"
   },
   "SIDEBAR": {
     "additionalPanels": "Additional panels",
