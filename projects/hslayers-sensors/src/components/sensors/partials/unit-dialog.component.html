@@ -34,10 +34,10 @@
                     </tr>
                     <ng-container *ngFor="let unit of getUnitAggregations() | keyvalue">
                         <tr>
-                            <th>{{unit.key}}</th>
+                            <th class="py-1">{{unit.key}}</th>
                         </tr>
                         <tr *ngFor="let aggr of unit.value">
-                            <td>{{aggr.sensor_name | translateHs : {module:'SENSORS.SENSORNAMES'} }}
+                            <td class="ps-2">{{aggr.sensor_name | translateHs : {module:'SENSORS.SENSORNAMES'} }}
                                 <span class="text-black-50">
                                     - {{aggr.sensor_name}}
                                 </span>
