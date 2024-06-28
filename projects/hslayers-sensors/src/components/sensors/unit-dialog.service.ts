@@ -3,6 +3,7 @@ import {
   Observable,
   Subject,
   debounce,
+  lastValueFrom,
   switchMap,
   tap,
   timer,
@@ -20,6 +21,7 @@ import {HsUtilsService} from 'hslayers-ng/services/utils';
 
 import {Aggregate} from './types/aggregate.type';
 import {CustomInterval, Interval} from './types/interval.type';
+import {HsConfig} from 'hslayers-ng/config';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsSensorUnit} from './sensor-unit.class';
 import {SensLogEndpoint} from './types/senslog-endpoint.type';
@@ -47,14 +49,15 @@ export class HsSensorsUnitDialogService {
 
   currentInterval: Interval;
   intervals: Interval[] = [
-    {name: '1H', amount: 1, unit: 'hours'},
-    {name: '1D', amount: 1, unit: 'days'},
-    {name: '1W', amount: 1, unit: 'weeks'},
-    {name: '1M', amount: 1, unit: 'months'},
-    {name: '6M', amount: 6, unit: 'months'},
+    {name: '1H', amount: 1, unit: 'hours', timeFormat: '%H:%M'},
+    {name: '1D', amount: 1, unit: 'days', timeFormat: '%H:%M'},
+    {name: '1W', amount: 1, unit: 'weeks', timeFormat: '%a %-d'},
+    {name: '1M', amount: 1, unit: 'months', timeFormat: '%a %-d'},
+    {name: '6M', amount: 6, unit: 'months', timeFormat: '%-d %-b'},
   ];
 
   timeFormat: 'HH:mm:ss' | 'HH:mm:ssZ';
+  timeFormatConfigCache: Map<string, any> = new Map();
   useTimeZone = new BehaviorSubject<boolean>(false);
 
   createChart$ = new Subject<HsSensorUnit | HsSensorUnit[]>();
@@ -68,6 +71,7 @@ export class HsSensorsUnitDialogService {
 
   constructor(
     private http: HttpClient,
+    private hsConfig: HsConfig,
     private hsUtilsService: HsUtilsService,
     private hsLogService: HsLogService,
     private hsLanguageService: HsLanguageService,
@@ -93,13 +97,14 @@ export class HsSensorsUnitDialogService {
           return timer(chartData.encoding.text ? 0 : 300);
         }),
       )
-      .subscribe((chartData) => {
+      .subscribe(async (chartData) => {
         try {
           vegaEmbed(
             this.dialogElement.nativeElement.querySelector('.hs-chartplace'),
             chartData,
             {
               renderer: 'canvas',
+              timeFormatLocale: await this.localizedTimeFormatConfig(),
             },
           ).then(() => {
             this.loading.next(false);
@@ -374,10 +379,15 @@ export class HsSensorsUnitDialogService {
           'scale': {'zero': false, 'nice': 5},
         },
         'tooltip': [
-          {'field': 'value', 'title': 'Value'},
+          {
+            'field': 'value',
+            'title': this.hsLanguageService.getTranslation('COMMON.value'),
+          },
           {
             'field': 'time_stamp',
-            'title': 'Timestamp',
+            'title': this.translate(
+              this.currentInterval.unit === 'months' ? 'date' : 'time',
+            ),
             'timeUnit':
               this.currentInterval.unit === 'months'
                 ? 'monthdate'
@@ -415,9 +425,12 @@ export class HsSensorsUnitDialogService {
     return {
       'x': {
         'axis': {
-          'title': 'Timestamp',
+          'title': this.translate(
+            'monthsweeks'.includes(this.currentInterval.unit) ? 'date' : 'time',
+          ),
           'labelOverlap': true,
           'titleAnchor': 'middle',
+          'format': this.currentInterval.timeFormat,
         },
         'field': 'time_stamp',
         'sort': false,
@@ -430,6 +443,45 @@ export class HsSensorsUnitDialogService {
     return Array.isArray(sensorDesc)
       ? sensorDesc.map((sd) => `${sd.sensor_name}_${sd.unit_id}`)
       : [`${sensorDesc.sensor_name}_${sensorDesc.unit_id}'`];
+  }
+
+  /**
+   * Get time format config allowing to localize time units of charts
+   * Returns :
+   *  - undefined for default (eng) localization
+   *  - pre-defined config for CS localization if no override
+   *  - otherwise it tries to fetch config from configured `timeFormatConfigPath`
+   */
+  private async localizedTimeFormatConfig() {
+    const currentLang = this.hsLanguageService.getCurrentLanguageCode();
+    const configPath = this.hsConfig.senslog.timeFormatConfigPath;
+
+    // Check if the configuration for the current language is already cached
+    if (this.timeFormatConfigCache[currentLang]) {
+      return this.timeFormatConfigCache[currentLang];
+    }
+
+    let config = undefined;
+
+    if (currentLang === 'cs' && !configPath) {
+      config = (await import('./time-format-config/cs.json')).default;
+    } else if (configPath) {
+      try {
+        config = await lastValueFrom(
+          this.http.get(`${configPath}/${currentLang}.json`),
+        );
+      } catch (error) {
+        // If the file is not found, log the error and use default settings
+        console.warn(
+          `No custom configuration found for language: ${currentLang}, using default settings.`,
+        );
+      }
+    }
+
+    // Cache the fetched configuration
+    this.timeFormatConfigCache[currentLang] = config;
+
+    return config;
   }
 
   getCommonChartDefinitionPart(observations: any[]) {
@@ -562,7 +614,7 @@ export class HsSensorsUnitDialogService {
   private getEmptyEncoding() {
     return {
       'text': {
-        'value': 'No sensor selected',
+        'value': this.translate('noSensorsSelected'),
       },
       'x': {
         'field': 'x',

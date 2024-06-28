@@ -1,0 +1,55 @@
+{
+    "dateTime": "%A, %e %B %Y %H:%M:%S",
+    "date": "%-d.%-m.%Y",
+    "time": "%H:%M:%S",
+    "periods": [
+        "",
+        ""
+    ],
+    "days": [
+        "Neděle",
+        "Pondělí",
+        "Úterý",
+        "Středa",
+        "Čtvrtek",
+        "Pátek",
+        "Sobota"
+    ],
+    "shortDays": [
+        "Ne",
+        "Po",
+        "Út",
+        "St",
+        "Čt",
+        "Pá",
+        "So"
+    ],
+    "months": [
+        "Leden",
+        "Únor",
+        "Březen",
+        "Duben",
+        "Květen",
+        "Červen",
+        "Červenec",
+        "Srpen",
+        "Září",
+        "Říjen",
+        "Listopad",
+        "Prosinec"
+    ],
+    "shortMonths": [
+        "Led",
+        "Úno",
+        "Bře",
+        "Dub",
+        "Kvě",
+        "Čer",
+        "Čvc",
+        "Srp",
+        "Zář",
+        "Říj",
+        "Lis",
+        "Pro"
+    ]
+}

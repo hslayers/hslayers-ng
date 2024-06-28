@@ -44,6 +44,7 @@ export class HsSensorsUnitDialogComponent
     name: 'Custom',
     fromTime: new Date(),
     toTime: new Date(),
+    timeFormat: '%H:%M',
   };
   dialogStyle;
   private end = new Subject<void>();
