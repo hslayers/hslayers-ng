@@ -317,7 +317,10 @@ export class HsSensorsUnitDialogService {
           )
           .map((s) => {
             const time = dayjs(val.time_stamp);
-            s.sensor_name = `${this.sensorById[s.sensor_id].sensor_name}_${val.unit_id}`;
+            const sensorName = this.getSensorNameTranslation(
+              this.sensorById[s.sensor_id].sensor_name,
+            );
+            s.sensor_name = `${sensorName}_${val.unit_id}`;
             s.time_stamp = time.toDate();
             return s;
           }),
@@ -664,7 +667,7 @@ export class HsSensorsUnitDialogService {
           max: 0,
           avg: 0,
           sensor_id: sensor.sensor_id,
-          sensor_name: sensor.sensor_name,
+          sensor_name: this.getSensorNameTranslation(sensor.sensor_name),
         };
         if (observationsForSensor.length === 0) {
           return tmp;
@@ -685,6 +688,13 @@ export class HsSensorsUnitDialogService {
         return tmp;
       });
     return aggregates;
+  }
+
+  /**
+   * Translates sensor_name.
+   */
+  private getSensorNameTranslation(name: string): string {
+    return this.hsLanguageService.getTranslation(`SENSORS.SENSORNAMES.${name}`);
   }
 
   /**

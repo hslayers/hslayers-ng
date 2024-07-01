@@ -37,10 +37,7 @@
                             <th class="py-1">{{unit.key}}</th>
                         </tr>
                         <tr *ngFor="let aggr of unit.value">
-                            <td class="ps-2">{{aggr.sensor_name | translateHs : {module:'SENSORS.SENSORNAMES'} }}
-                                <span class="text-black-50">
-                                    - {{aggr.sensor_name}}
-                                </span>
+                            <td class="ps-2">{{aggr.sensor_name}}
                             </td>
                             <td>{{aggr.min}}</td>
                             <td>{{aggr.max}}</td>
