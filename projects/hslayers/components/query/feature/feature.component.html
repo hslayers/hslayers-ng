@@ -39,7 +39,7 @@
                 <option [ngValue]="null" [disabled]="true" selected hidden> {{'ADDLAYERS.Vector.chooseLayer' |
                     translateHs }}</option>
                 <option *ngFor="let layer of availableLayers | async" [ngValue]="layer">
-                    {{getTitle(layer) | translateHs : {module: 'LAYERS'} }}</option>
+                    {{getTitle(layer) | translateHs : 'LAYERS' }}</option>
             </select>
             <button class="btn btn-primary btn-sm" (click)="moveOrCopyFeature()" [disabled]="!selectedLayer"><i
                     class="icon-save-floppy"></i></button>

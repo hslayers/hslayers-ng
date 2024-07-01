@@ -18,7 +18,7 @@
                     (click)="hsLayerManagerService.toggleLayerEditor(layer,'sublayers', 'settings')"
                     style="word-break:break-word;" [ngClass]="{'hover': layer.hasSublayers === true}"
                     [ngbTooltip]="layer.abstract ? abstractTooltip : ''" [closeDelay]="hsConfig.layerTooltipDelay || 0">
-                    {{layer.title | translateHs : {module: 'LAYERS'} }}
+                    {{layer.title | translateHs : 'LAYERS' }}
                 </div>
                 <div class="hs-sublayer-toggle p-0 me-1 ms-1 info_btn" *ngIf="layer.hasSublayers"
                     style="flex-grow: 100; align-self: center;"

@@ -34,10 +34,11 @@
                     </tr>
                     <ng-container *ngFor="let unit of getUnitAggregations() | keyvalue">
                         <tr>
-                            <th>{{unit.key}}</th>
+                            <th class="py-1">{{unit.key}}</th>
                         </tr>
                         <tr *ngFor="let aggr of unit.value">
-                            <td>{{aggr.sensor_name}}</td>
+                            <td class="ps-2">{{aggr.sensor_name}}
+                            </td>
                             <td>{{aggr.min}}</td>
                             <td>{{aggr.max}}</td>
                             <td>{{aggr.avg}}</td>
@@ -52,9 +53,8 @@
                             <!-- TODO: Remove function call from template -->
                             <button type="button" class="btn btn-sm"
                                 [ngClass]="{'btn-primary': getCurrentInterval() === interval}"
-                                (click)="timeButtonClicked(interval)" *ngFor="let interval of getIntervals()"
-                                [attr.aria-label]="'SENSORS.oneHour' | translateHs ">
-                                {{interval.name | translateHs : {module: 'SENSORS'} }}
+                                (click)="timeButtonClicked(interval)" *ngFor="let interval of getIntervals()">
+                                {{interval.name | translateHs : 'SENSORS' }}
                                 &emsp;<span class="hs-loader" [hidden]="!interval.loading"></span></button>
                         </div>
                     </div>
@@ -71,15 +71,14 @@
                         </div>
                         <div class="m-1">
                             <div class="input-group flex-nowrap">
-                                <input type="text" style="width: 6em;" ngbDatepicker
-                                    [placeholder]="'COMMON.until' | translateHs" #d2="ngbDatepicker"
+                                <input type="text" style="width: 6em;text-transform:capitalize" ngbDatepicker
+                                    [placeholder]="'COMMON.to' | translateHs" #d2="ngbDatepicker"
                                     [(ngModel)]="customInterval.toTime" (dateSelect)="customIntervalChanged()" />
                                 <button class="btn btn-sm btn-outline-secondary" (click)="d2.toggle()" type="button"><i
                                         class="icon-calendarthree"></i></button>
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>

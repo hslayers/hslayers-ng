@@ -231,11 +231,8 @@ export class HsSensorsService {
     }
     //Set interval for selected sensor unit
     if (this.hsSensorsUnitDialogService.currentInterval == undefined) {
-      this.hsSensorsUnitDialogService.currentInterval = {
-        amount: 1,
-        unit: 'days',
-        name: '1D',
-      };
+      this.hsSensorsUnitDialogService.currentInterval =
+        this.hsSensorsUnitDialogService.intervals.find((i) => i.name === '1D');
     }
     //Get observations for selected unit
     this.hsSensorsUnitDialogService.getObservationHistory(

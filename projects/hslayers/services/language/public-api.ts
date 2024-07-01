@@ -1,5 +1,5 @@
 export {HsLanguageService} from './language.service';
-export {TranslateCustomPipe, equals} from './translate-custom.pipe';
+export {TranslateCustomPipe} from './translate-custom.pipe';
 export {
   WebpackTranslateLoader,
   CustomTranslationService,

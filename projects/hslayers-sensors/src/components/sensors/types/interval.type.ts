@@ -3,6 +3,7 @@ export type Interval = {
   amount?: number;
   unit?: 'hours' | 'days' | 'weeks' | 'months';
   loading?: boolean;
+  timeFormat: string;
 };
 
 export type CustomInterval = Interval & {
