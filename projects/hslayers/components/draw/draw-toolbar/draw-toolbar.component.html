@@ -108,7 +108,7 @@
                         [disabled]="!HsDrawService.selectedLayer"
                         (click)="HsDrawService.selectAllFeatures(); selectionTypeDropdown.close()" data-toggle="tooltip"
                         [title]="'STYLER.selection' | translateHs ">
-                        {{HsDrawService.toggleSelectionString | translateHs : {module:'DRAW'} }}
+                        {{HsDrawService.toggleSelectionString | translateHs : 'DRAW'}}
                     </button>
                 </div>
             </div>

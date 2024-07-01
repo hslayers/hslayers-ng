@@ -5,7 +5,7 @@
     </button>
     <div ngbDropdownMenu>
       <button ngbDropdownItem *ngFor="let filter of filterOptions" (click)="emitClick(filter); menu.close()">
-        {{ filter | translateHs : {module:'STYLER'} }}
+        {{ filter | translateHs : 'STYLER' }}
       </button>
     </div>
   </div>
@@ -15,7 +15,7 @@
   <div class="btn-group w-100 py-2 px-1">
     <button class="btn btn-sm btn-outline-primary hs-add-filter-tab w-25 rounded-0" *ngFor="let filter of filterOptions"
       [class.text-bg-primary]="filter === activeTab" (click)="emitClick(filter)">
-      {{ filter | translateHs : {module:'STYLER'} }}
+      {{ filter | translateHs : 'STYLER' }}
     </button>
   </div>
 </ng-template>
