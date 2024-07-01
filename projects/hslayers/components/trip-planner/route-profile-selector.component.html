@@ -3,18 +3,17 @@
   <div ngbDropdown placement="bottom" style="max-width: 50%">
     <button type="button" ngbDropdownToggle
       class="btn btn-sm rounded-0 hs-toolbar-button d-flex align-items-center mw-100" aria-haspopup="true"
-      (click)="profilesExpanded = !profilesExpanded"
-      [attr.aria-expanded]="profilesExpanded">
+      (click)="profilesExpanded = !profilesExpanded" [attr.aria-expanded]="profilesExpanded">
       <div class="text-truncate" *ngIf="selectedProfile !== undefined">
-        {{selectedProfile | translateHs : {module: 'TRIP_PLANNER.profiles'} }}
+        {{selectedProfile | translateHs : 'TRIP_PLANNER.profiles' }}
       </div>
     </button>
     <div ngbDropdownMenu [ngClass]="{'show': profilesExpanded}" style="transform: translateX(25%); width: 15em">
       <div class="d-flex align-items-center w-100 flex-column">
         <a class="dropdown-item text-truncate" *ngFor="let profile of hsTripPlannerService.orsProfiles"
-          data-toggle="tooltip" [title]="profile | translateHs : {module: 'TRIP_PLANNER.profiles'}"
+          data-toggle="tooltip" [title]="profile | translateHs : 'TRIP_PLANNER.profiles'"
           (click)="hsTripPlannerService.selectProfile(profile); profilesExpanded = false">{{profile |
-          translateHs : {module: 'TRIP_PLANNER.profiles'} }}</a>
+          translateHs : 'TRIP_PLANNER.profiles' }}</a>
       </div>
     </div>
   </div>

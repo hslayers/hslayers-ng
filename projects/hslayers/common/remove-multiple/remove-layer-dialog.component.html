@@ -18,7 +18,7 @@
                             [hidden]="option === 'catalogue' && !this.isAuthenticated"
                             [ngClass]="{'active' : deleteFrom === option, 'w-auto' : option === 'catalogue' }"
                             (click)="selectDeleteOption(option)" class="btn btn-sm btn-outline-primary w-50">{{option |
-                            translateHs: {module: 'LAYERS.removeLayer'} }}</button>
+                            translateHs: 'LAYERS.removeLayer' }}</button>
                     </div>
                 </div>
                 <p *ngIf="deleteFrom && deleteFrom !== 'map'" class="h6 small">{{data.note | translateHs}}</p>

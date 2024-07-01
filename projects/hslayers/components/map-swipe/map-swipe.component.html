@@ -4,7 +4,7 @@
     <button type="button" class="btn btn-sm hs-lm-item-visibility m-0 p-0"
       (click)="changeLayerVisibility(layer);$event.stopPropagation()"
       [ngClass]="layer.visible ? 'hs-checkmark' : 'hs-uncheckmark'"></button>
-    <p class="m-0 ps-1">{{layer.title | translateHs : {module: 'LAYERS'} }}</p>
+    <p class="m-0 ps-1">{{layer.title | translateHs : 'LAYERS' }}</p>
   </div>
 </ng-template>
 <!-- List placeholder template -->

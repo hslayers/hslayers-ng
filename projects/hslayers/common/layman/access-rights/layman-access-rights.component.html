@@ -2,7 +2,7 @@
 <ng-template #accessRightsTpl let-accessRights="access_rights" let-right="right" let-grantedTo="grantedTo">
     <div class="form-group d-flex justify-content-between">
         <label class="pt-2" style="margin-bottom: 0;">
-            {{ right+'AccessRights' | translateHs : {module: 'SAVECOMPOSITION'} }}
+            {{ right+'AccessRights' | translateHs : 'SAVECOMPOSITION' }}
         </label>
         <div class="btn-group">
             <button type="button" class="btn btn-light hs-toolbar-button  btn-outline-secondary"
@@ -28,7 +28,7 @@
     @for (option of grantingOptions; track $index) {
     <li class="nav-item" (click)="changeGrantingOptions(option)">
         <a [ngClass]="{'active': currentOption === option}" class="nav-link " aria-current="page">{{option | translateHs
-            : {module: 'SAVECOMPOSITION'} }}</a>
+            : 'SAVECOMPOSITION' }}</a>
     </li>
     }
 </ul>

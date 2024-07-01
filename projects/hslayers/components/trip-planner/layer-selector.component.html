@@ -11,15 +11,15 @@
       " aria-haspopup="true" (click)="layersExpanded = !layersExpanded; HsTripPlannerService.fillVectorLayers() "
       [attr.aria-expanded]="layersExpanded">
       <div class="text-truncate" *ngIf="selectedWrapper !== undefined">
-        {{selectedWrapper.title | translateHs : {module: 'LAYERS'} }}
+        {{selectedWrapper.title | translateHs : 'LAYERS' }}
       </div>
     </button>
     <div ngbDropdownMenu [ngClass]="{'show': layersExpanded}" style="transform: translateX(25%); width: 15em">
       <div class="d-flex align-items-center w-100 flex-column">
         <a class="dropdown-item text-truncate" *ngFor="let layer of HsTripPlannerService.vectorLayers"
-          data-toggle="tooltip" [title]="layer.title | translateHs : {module: 'LAYERS'}"
+          data-toggle="tooltip" [title]="layer.title | translateHs : 'LAYERS'"
           (click)="HsTripPlannerService.selectLayer(layer, usage); layersExpanded = false">{{layer.title |
-          translateHs : {module: 'LAYERS'} }}</a>
+          translateHs : 'LAYERS' }}</a>
       </div>
     </div>
   </div>

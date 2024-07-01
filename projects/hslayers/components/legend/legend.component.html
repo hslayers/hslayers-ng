@@ -11,7 +11,7 @@
             <li *ngFor="let layer of this.layerDescriptors | filter:legendFilter" class="list-group-item"
                 [hidden]="!hsLegendService.legendValid(layer)"><!-- TODO: Remove function call from template -->
                 <div>
-                    {{layer.title | translateHs : {module: 'LAYERS'} }}
+                    {{layer.title | translateHs : 'LAYERS' }}
                     <hs-legend-layer [layer]="layer"></hs-legend-layer>
                 </div>
             </li>

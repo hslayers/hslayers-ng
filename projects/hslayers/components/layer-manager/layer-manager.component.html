@@ -72,7 +72,7 @@
                     <div class="align-items-center p-0 flex-grow-1 hs-lm-item-title" style="cursor:context-menu"
                         [ngClass]="{'fw-bold': layer.active, 'text-muted': layer.grayed}"
                         [ngbTooltip]="layer.abstract ? abstractTooltip : ''" [closeDelay]="layerTooltipDelay">
-                        {{layer.title | translateHs : {module: 'LAYERS'} }}
+                        {{layer.title | translateHs : 'LAYERS' }}
                     </div>
                     <div class="ps-1 info_btn" style="cursor: pointer;">
                         <span class="icon-settingsthree-gears text-secondary"
@@ -122,7 +122,7 @@
                         <div class="align-items-center p-0 flex-grow-1 hs-lm-item-title" style="cursor:context-menu"
                             [ngClass]="{'fw-bold': layer.active, 'text-muted': layer.grayed}"
                             [ngbTooltip]="layer.abstract ? abstractTooltip : ''" [closeDelay]="layerTooltipDelay">
-                            {{layer.title | translateHs : {module: 'LAYERS'} }}
+                            {{layer.title | translateHs : 'LAYERS' }}
                         </div>
                     </div>
                 </li>
@@ -144,7 +144,7 @@
                 <li class="list-group-item hs-lm-layerlist-header list-group-item-primary"
                     *ngIf="hsLayerManagerService.data.folders().size > 1"
                     (click)="entry.value.visible = !entry.value.visible">
-                    <span>{{entry.key | translateHs : {module: 'LAYERMANAGER'} }}&nbsp;</span>
+                    <span>{{entry.key | translateHs : 'LAYERMANAGER' }}&nbsp;</span>
                     <span class="glyphicon"
                         [ngClass]="entry.value.visible ? 'icon-chevron-right' : 'icon-chevron-down'"></span>
                 </li>
