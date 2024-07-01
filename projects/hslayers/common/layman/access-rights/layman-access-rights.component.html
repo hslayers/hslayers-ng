@@ -59,8 +59,7 @@
         <span class="w-50">{{user.hslDisplayName}}</span>
         <label *ngFor="let type of rightsOptions" style="cursor: pointer;"><input class="me-2" type="checkbox"
                 [name]="'rightTo'+type" [disabled]="user.username === this.endpoint.user" [(ngModel)]="user[type]"
-                (change)="accessRightsChanged(type, user.username, $event)">{{ type | translateHs : {module:
-            'SAVECOMPOSITION.form'} }}</label>
+                (change)="accessRightsChanged(type, user.username, $event)">{{ type | translateHs :'SAVECOMPOSITION.form' }}</label>
     </div>
 </div>
 }
@@ -70,8 +69,7 @@
         <span class="w-50">{{role.name}}</span>
         <label *ngFor="let type of rightsOptions" style="cursor: pointer;"><input class="me-2" type="checkbox"
                 (change)="accessRightsChanged(type, role.name, $event)" [name]="'rightTo'+type"
-                [(ngModel)]="role[type]">{{ type | translateHs : {module:
-            'SAVECOMPOSITION.form'} }}</label>
+                [(ngModel)]="role[type]">{{ type | translateHs :'SAVECOMPOSITION.form' }}</label>
     </div>
 </div>
 }

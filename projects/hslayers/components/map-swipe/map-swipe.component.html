@@ -26,7 +26,7 @@
         <button *ngFor="let swipeOption of swipeOptions" class="btn btn-sm  text-truncate h-100" type="button"
           (click)="setOrientation()" [disabled]="!hsMapSwipeService.swipeControlActive"
           [ngClass]="hsMapSwipeService.orientation === swipeOption ? 'btn-primary' : 'btn-secondary'">
-          {{swipeOption | translateHs : {module:'MAP_SWIPE'} }}
+          {{swipeOption | translateHs :'MAP_SWIPE' }}
         </button>
       </div>
       <div class="btn-group">

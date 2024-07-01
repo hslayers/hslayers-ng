@@ -36,8 +36,7 @@
                         (change)="onChecklistChange($event.target.checked, layer)" class="form-check-input mt-0"
                         name="hs-stclayer-{{i}}" [checked]="layer.checked">
                     <label for="hs-stclayer-{{i}}" [title]="layer.title | translateHs : 'LAYERS'"
-                        class="form-check-label mw-100 text-truncate">{{layer.title | translateHs : {module:
-                        'LAYERS'} }}</label>
+                        class="form-check-label mw-100 text-truncate">{{layer.title | translateHs : 'LAYERS' }}</label>
                 </div>
             </li>
             <li class="list-group-item" style="padding: 3px">

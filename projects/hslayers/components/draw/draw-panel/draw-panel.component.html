@@ -169,8 +169,7 @@
                         <div class="d-flex align-items-center w-100 flex-column">
                             <a class="dropdown-item text-truncate" *ngFor="let layer of HsDrawService.drawableLayers"
                                 data-toggle="tooltip" [title]="getTitle(layer) | translateHs : 'LAYERS' "
-                                (click)="changeSnapSource(layer)">{{getTitle(layer) | translateHs : {module:
-                                'LAYERS'} }}</a><!-- TODO: Remove function call from template -->
+                                (click)="changeSnapSource(layer)">{{getTitle(layer) | translateHs :'LAYERS' }}</a><!-- TODO: Remove function call from template -->
                         </div>
                     </div>
                 </div>
