@@ -1,6 +1,6 @@
 <div class="btn-group w-100" *ngIf="isEnabled | async">
     <button *ngFor="let o of options" (click)="changeLayerType()" [ngClass]="{'btn-primary active': o === currentType}"
         class="btn btn-outline-primary" style="min-width: 7rem;">
-        {{o | translateHs : {module: 'COMMON'} }}
+        {{o | translateHs : 'COMMON' }}
     </button>
 </div>

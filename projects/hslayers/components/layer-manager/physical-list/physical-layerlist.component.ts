@@ -1,5 +1,10 @@
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
 
 import {Subscription} from 'rxjs';
 
@@ -10,6 +15,7 @@ import {HsLayerShiftingService} from 'hslayers-ng/services/layer-shifting';
   selector: 'hs-layermanager-physical-layer-list',
   templateUrl: './physical-layerlist.component.html',
   styleUrls: ['./physical-layerlist.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HsLayerPhysicalListComponent implements OnDestroy, OnInit {
   layerManagerUpdatesSubscription: Subscription;

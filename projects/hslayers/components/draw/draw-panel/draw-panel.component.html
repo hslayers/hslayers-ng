@@ -35,8 +35,8 @@
                         <label class=" bg-primary w-100 text-light m-0 p-1">{{'DRAW.activeLayers' |
                             translateHs }}</label>
                         <a class="dropdown-item text-truncate" *ngFor="let layer of HsDrawService.drawableLayers"
-                            data-toggle="tooltip" [title]="getTitle(layer) | translateHs : {module: 'LAYERS'} "
-                            (click)="selectLayer(layer)">{{getTitle(layer) | translateHs : {module: 'LAYERS'}
+                            data-toggle="tooltip" [title]="getTitle(layer) | translateHs : 'LAYERS' "
+                            (click)="selectLayer(layer)">{{getTitle(layer) | translateHs : 'LAYERS'
                             }}</a><!-- TODO: Remove function call from template -->
                     </div>
                     <div class="d-flex align-items-center w-100 flex-column"
@@ -58,8 +58,8 @@
                             </div>
                         </div>
                         <a class="dropdown-item text-truncate" *ngFor="let layer of HsDrawService.drawableLaymanLayers"
-                            data-toggle="tooltip" [title]="layer.title | translateHs : {module: 'LAYERS'} "
-                            (click)="selectLayer(layer)">{{layer.title | translateHs : {module: 'LAYERS'} }}</a>
+                            data-toggle="tooltip" [title]="layer.title | translateHs : 'LAYERS' "
+                            (click)="selectLayer(layer)">{{layer.title | translateHs : 'LAYERS' }}</a>
                     </div>
                 </div>
             </div>
@@ -168,7 +168,7 @@
                     <div ngbDropdownMenu style="max-width: 150%;">
                         <div class="d-flex align-items-center w-100 flex-column">
                             <a class="dropdown-item text-truncate" *ngFor="let layer of HsDrawService.drawableLayers"
-                                data-toggle="tooltip" [title]="getTitle(layer) | translateHs : {module: 'LAYERS'} "
+                                data-toggle="tooltip" [title]="getTitle(layer) | translateHs : 'LAYERS' "
                                 (click)="changeSnapSource(layer)">{{getTitle(layer) | translateHs : {module:
                                 'LAYERS'} }}</a><!-- TODO: Remove function call from template -->
                         </div>

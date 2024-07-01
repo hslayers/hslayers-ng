@@ -57,7 +57,7 @@
                             <button type="button" class="btn btn-sm"
                                 [ngClass]="{'btn-primary': getCurrentInterval() === interval}"
                                 (click)="timeButtonClicked(interval)" *ngFor="let interval of getIntervals()">
-                                {{interval.name | translateHs : {module: 'SENSORS'} }}
+                                {{interval.name | translateHs : 'SENSORS' }}
                                 &emsp;<span class="hs-loader" [hidden]="!interval.loading"></span></button>
                         </div>
                     </div>

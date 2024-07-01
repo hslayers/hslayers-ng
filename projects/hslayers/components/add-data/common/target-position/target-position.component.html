@@ -6,7 +6,7 @@
             <option [ngValue]="null" selected>{{'ADDLAYERS.none' | translateHs }}</option>
             <option [ngValue]="layer.layer"
                 *ngFor="let layer of hsLayerManagerService.data.layers | filter: layerInManager">
-                {{layer.title | translateHs : {module: 'LAYERS'} }}</option>
+                {{layer.title | translateHs : 'LAYERS' }}</option>
         </select>
     </div>
 </div>
