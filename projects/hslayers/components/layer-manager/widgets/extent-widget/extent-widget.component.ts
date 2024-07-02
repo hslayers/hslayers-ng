@@ -52,5 +52,9 @@ export class HsExtentWidgetComponent extends HsLayerEditorWidgetBaseComponent {
     this.olLayer.setExtent(
       this.ignoreExtent ? undefined : getWmsOriginalExtent(this.olLayer),
     );
+    const params = this.hsLayerUtilsService.getLayerParams(this.olLayer);
+    this.olLayer
+      .getSource()
+      ['updateParams']({...params, ignoreExtent: this.ignoreExtent});
   }
 }
