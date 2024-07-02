@@ -35,6 +35,7 @@ import {
   setCacheCapabilities,
   setLegends,
   setMetadata,
+  setWmsOriginalExtent,
 } from 'hslayers-ng/common/extensions';
 
 @Injectable({
@@ -224,7 +225,7 @@ export class HsLayerManagerMetadataService {
         delete layerSubObject.Layer;
       }
     }
-    this.setCapsExtent(
+    this.setWmsCapsExtent(
       this.hsAddDataUrlService.calcCombinedExtent(
         layerObjs.map((lo) => this.getCapsExtent(lo, layerCaps)),
       ),
@@ -285,7 +286,7 @@ export class HsLayerManagerMetadataService {
       });
     }
     this.collectLegend(layerObj, legends);
-    this.setCapsExtent(this.getCapsExtent(layerObj, layerCaps), olLayer);
+    this.setWmsCapsExtent(this.getCapsExtent(layerObj, layerCaps), olLayer);
     return layerObj;
   }
 
@@ -325,12 +326,25 @@ export class HsLayerManagerMetadataService {
     }
   }
 
+  private setExtentAndOriginalExtent(extent: Extent, layer: Layer<Source>) {
+    setWmsOriginalExtent(layer, extent);
+    layer.setExtent(undefined);
+  }
+
   /**
    * Set layer extent using capabilities layer object
    */
-  private setCapsExtent(extent: Extent, layer: Layer<Source>): void {
+  private setWmsCapsExtent(extent: Extent, layer: Layer<Source>): void {
     if (extent !== null) {
-      layer.setExtent(extent);
+      /**
+       * In case ignoreExtent is present and active extent should
+       * not be set to the layer directly but to a extent cache 'WmsOriginalExtent'.
+       * Possible when layer comes from composition
+       */
+      const params = this.HsLayerUtilsService.getLayerParams(layer);
+      params.ignoreExtent
+        ? this.setExtentAndOriginalExtent(extent, layer)
+        : layer.setExtent(extent);
     }
   }
 
