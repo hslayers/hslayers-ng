@@ -465,7 +465,11 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
       removable: true,
       abstract: layer.Abstract,
       metadata,
-      extent: this.getLayerExtent(layer, options.crs),
+      extent: this.HsLayerUtilsService.bufferExtent(
+        //Full world in case of layers added via URL panel.
+        this.getLayerExtent(layer, options.crs),
+        this.hsMapService.getCurrentProj(),
+      ),
       path: options.path,
       dimensions: dimensions,
       legends: legends,
