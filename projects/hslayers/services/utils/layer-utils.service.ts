@@ -12,13 +12,13 @@ import {
   WMTS,
   XYZ,
 } from 'ol/source';
+import {Extent, isEmpty} from 'ol/extent';
 import {Feature, View} from 'ol';
 import {default as FeatureFormat} from 'ol/format/Feature';
 import {Geometry} from 'ol/geom';
 import {Image as ImageLayer, Layer, Vector as VectorLayer} from 'ol/layer';
-import {METERS_PER_UNIT} from 'ol/proj';
+import {METERS_PER_UNIT, Projection, transform, transformExtent} from 'ol/proj';
 import {Tile as TileLayer} from 'ol/layer';
-import {isEmpty} from 'ol/extent';
 
 import {HsLayerDescriptor} from 'hslayers-ng/types';
 import {HsUtilsService} from './utils.service';
@@ -493,5 +493,46 @@ export class HsLayerUtilsService {
           }, //Check if number
         )
       : [];
+  }
+
+  /**
+   * Buffer extent by `BUFFER_FACTOR`
+   * NOTE: Not using OL because we want to extend witdh and height independently
+   */
+  bufferExtent(extent: Extent, currentMapProj: Projection) {
+    const BUFFER_FACTOR = 0.1;
+
+    const inMeters = currentMapProj.getUnits() === 'm';
+    const bounds = transform([180, 90], 'EPSG:4326', currentMapProj);
+
+    //Transform into projection suitable for area manipulation* if necessary
+    const transformed = inMeters
+      ? extent
+      : transformExtent(extent, currentMapProj, 'EPSG:4087');
+
+    //Calculate buffer values
+    const extentWidth = Math.abs(extent[2] - extent[0]);
+    const extentHeight = Math.abs(extent[3] - extent[1]);
+    const bufferWidth = extentWidth * BUFFER_FACTOR;
+    const bufferHeight = extentHeight * BUFFER_FACTOR;
+
+    //Buffer extent and transform back to currentMapProj
+    const extended = transformExtent(
+      [
+        transformed[0] - bufferWidth,
+        transformed[1] - bufferHeight,
+        transformed[2] + bufferWidth,
+        transformed[3] + bufferHeight,
+      ],
+      inMeters ? currentMapProj : 'EPSG:4087',
+      currentMapProj,
+    );
+    return [
+      // Apply safeguards to ensure the extent does not go out of bounds
+      Math.max(extended[0], bounds[1] * -1),
+      Math.max(extended[1], bounds[0] * -1),
+      Math.min(extended[2], bounds[1]),
+      Math.min(extended[3], bounds[0]),
+    ];
   }
 }
