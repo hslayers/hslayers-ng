@@ -6,10 +6,12 @@ import {Layer} from 'ol/layer';
 import {
   Observable,
   catchError,
+  filter,
   lastValueFrom,
   of,
   shareReplay,
   switchMap,
+  take,
 } from 'rxjs';
 import {Source} from 'ol/source';
 import {transformExtent} from 'ol/proj';
@@ -426,6 +428,33 @@ export class HsCompositionsParserService {
       : true;
 
     if (confirmed) {
+      /**
+       * If possible register layerAdditions subscribtion for a current_base_layer
+       * visiblity toggle.
+       */
+      if (obj.current_base_layer && !obj.basemapComposition) {
+        this.hsEventBusService.layerAdditions
+          .pipe(
+            filter((l) => {
+              if (!l) {
+                return false;
+              }
+              const title = getTitle(l.layer);
+              return (
+                title === obj.current_base_layer.title ||
+                title === obj.current_base_layer
+              );
+            }),
+            take(1),
+          )
+          .subscribe((currentBaseLayer) => {
+            this.HsLayerManagerVisibilityService.changeBaseLayerVisibility(
+              true,
+              currentBaseLayer,
+            );
+          });
+      }
+
       if (layers?.length > 0) {
         layers.forEach((lyr) => {
           // To suspend layerAdded events
@@ -440,26 +469,33 @@ export class HsCompositionsParserService {
         this.hsLayerManagerService.updateLayerListPositions();
       }
 
-      if (obj.current_base_layer) {
-        this.hsMapService
-          .getMap()
-          .getLayers()
-          .forEach((lyr: Layer<Source>) => {
-            if (
-              getTitle(lyr) == obj.current_base_layer.title ||
-              getTitle(lyr) == obj.current_base_layer
-            ) {
-              const layerDescriptor =
-                this.hsLayerManagerService.getLayerDescriptorForOlLayer(
-                  lyr,
+      /**
+       * basemapComposition doesnt trigger layerAdded events thus we need to
+       * make sure layeDescriptors are ready in a bit of a dirty way
+       */
+      if (obj.current_base_layer && obj.basemapComposition) {
+        setTimeout(() => {
+          this.hsMapService
+            .getMap()
+            .getLayers()
+            .forEach((lyr: Layer<Source>) => {
+              const title = getTitle(lyr);
+              if (
+                title === obj.current_base_layer.title ||
+                title === obj.current_base_layer
+              ) {
+                const layerDescriptor =
+                  this.hsLayerManagerService.getLayerDescriptorForOlLayer(
+                    lyr,
+                    true,
+                  );
+                this.HsLayerManagerVisibilityService.changeBaseLayerVisibility(
                   true,
+                  layerDescriptor,
                 );
-              this.HsLayerManagerVisibilityService.changeBaseLayerVisibility(
-                true,
-                layerDescriptor,
-              );
-            }
-          });
+              }
+            });
+        }, 250);
       }
 
       return true;
