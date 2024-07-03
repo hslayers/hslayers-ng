@@ -246,11 +246,10 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
     }
   }
 
-  getLayerExtent(serviceLayer: any, crs: string): number[] {
-    //Get called without valid serviceLayer as part of micka dataset loading pipeline
-    if (!serviceLayer) {
-      return;
-    }
+  /**
+   * Get extent for a single layer
+   */
+  private getSingleLayerExtent(serviceLayer: any, crs: string) {
     let boundingbox = serviceLayer.BoundingBox;
     if (
       crs !== undefined &&
@@ -290,6 +289,32 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
         this.hsMapService.getCurrentProj(),
       )
     );
+  }
+
+  /**
+   * Get extent for a WMS layer.
+   * URL: Single or multiple layer in params.LAYERS
+   * CATALOGUE - layer obj
+   */
+  getLayerExtent(serviceLayer: any, crs: string): number[] {
+    //Get called without valid serviceLayer as part of micka dataset loading pipeline
+    if (!serviceLayer) {
+      return;
+    }
+    if (typeof serviceLayer === 'string') {
+      //Single
+      const layers = serviceLayer.split(',');
+      if (layers.length === 1) {
+        serviceLayer = this.data.layers.find((l) => l.Name === serviceLayer);
+      }
+      //Group
+      else {
+        return this.hsAddDataUrlService.calcCombinedExtent(
+          layers.map((l) => this.getSingleLayerExtent(l, crs)),
+        );
+      }
+    }
+    return this.getSingleLayerExtent(serviceLayer, crs);
   }
 
   /**
@@ -466,10 +491,14 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
       abstract: layer.Abstract,
       metadata,
       extent: this.HsLayerUtilsService.bufferExtent(
-        //Full world in case of layers added via URL panel.
-        this.getLayerExtent(layer, options.crs),
+        this.getLayerExtent(
+          //Layer object or layer/s string for WMS from URL
+          Object.keys(layer).length > 0 ? layer : sourceOptions.params.LAYERS,
+          options.crs,
+        ),
         this.hsMapService.getCurrentProj(),
       ),
+      capsExtentSet: true,
       path: options.path,
       dimensions: dimensions,
       legends: legends,
