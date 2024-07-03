@@ -425,13 +425,7 @@ export class HsLayerManagerService {
     base = false,
   ): HsLayerDescriptor {
     const layers = base ? 'baselayers' : 'layers';
-    const tmp = (this.data[layers] as Array<any>).filter(
-      (l) => l.layer == layer,
-    );
-    if (tmp.length > 0) {
-      return tmp[0];
-    }
-    return;
+    return (this.data[layers] as Array<any>).find((l) => l.layer == layer);
   }
 
   /**
