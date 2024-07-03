@@ -498,6 +498,10 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
         ),
         this.hsMapService.getCurrentProj(),
       ),
+      /**
+       * Control preventing duplicated extent parsing
+       * during capability attributes parsing
+       */
       capsExtentSet: true,
       path: options.path,
       dimensions: dimensions,
