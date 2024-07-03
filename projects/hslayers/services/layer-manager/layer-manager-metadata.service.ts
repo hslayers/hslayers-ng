@@ -226,8 +226,11 @@ export class HsLayerManagerMetadataService {
       }
     }
     this.setWmsCapsExtent(
-      this.hsAddDataUrlService.calcCombinedExtent(
-        layerObjs.map((lo) => this.getCapsExtent(lo, layerCaps)),
+      this.HsLayerUtilsService.bufferExtent(
+        this.hsAddDataUrlService.calcCombinedExtent(
+          layerObjs.map((lo) => this.getCapsExtent(lo, layerCaps)),
+        ),
+        this.hsMapService.getCurrentProj(),
       ),
       olLayer,
     );
@@ -286,7 +289,14 @@ export class HsLayerManagerMetadataService {
       });
     }
     this.collectLegend(layerObj, legends);
-    this.setWmsCapsExtent(this.getCapsExtent(layerObj, layerCaps), olLayer);
+
+    this.setWmsCapsExtent(
+      this.HsLayerUtilsService.bufferExtent(
+        this.getCapsExtent(layerObj, layerCaps),
+        this.hsMapService.getCurrentProj(),
+      ),
+      olLayer,
+    );
     return layerObj;
   }
 
