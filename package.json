@@ -86,7 +86,7 @@
     "vega-embed": "6.25.0",
     "vega-lite": "~5.19.0",
     "xml-js": "^1.6.11",
-    "zone.js": "~0.14.7"
+    "zone.js": "~0.14.8"
   },
   "devDependencies": {
     "@angular-builders/custom-webpack": "^18.0.0",
