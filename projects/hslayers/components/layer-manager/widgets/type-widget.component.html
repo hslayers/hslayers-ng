@@ -1,21 +1,20 @@
 <div class="form-group">
-  <small class="text-secondary" *ngIf="(layerDescriptor | async)">
-    {{
-    HsLanguageService.getTranslationIgnoreNonExisting(
-    "LAYERMANAGER.layerEditor",
-    (layerDescriptor | async).type,
-    undefined
-    )
-    }}<!-- TODO: Remove function call from template -->
+  <small class="text-secondary" *ngIf="layerDescriptor | async as descriptor">
+    {{ descriptor.type | translateHs: { module: "LAYERMANAGER.layerEditor" } }}
     {{ "LAYERMANAGER.layerEditor.layerFrom" | translateHs }}
-    <span class="text-truncate mw-100 d-block">
-      {{
-      HsLanguageService.getTranslationIgnoreNonExisting(
-      "LAYERMANAGER.layerEditor",
-      (layerDescriptor | async).source,
-      undefined
-      )
-      }}<!-- TODO: Remove function call from template -->
-    </span>
+    <div class="mw-100 d-flex align-items-center justify-content-between">
+      <span class="text-truncate">
+        {{
+        descriptor.source
+        | translateHs: { module: "LAYERMANAGER.layerEditor" }
+        }}
+      </span>
+      @if (descriptor.source !== "memory") {
+      <button class="btn btn-sm text-secondary" data-toggle="tooltip"
+        [title]="'COMMON.copyToClipboardFailure' | translateHs" (click)="copyToClipBoard()">
+        <i [class.icon-check]="showCheck" [class.icon-copy]="!showCheck"></i>
+      </button>
+      }
+    </div>
   </small>
 </div>

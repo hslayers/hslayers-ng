@@ -184,6 +184,7 @@
     "context": "Kontext",
     "continue": "Pokračovat",
     "copyLayer": "Kopírovat vrstvu",
+    "copyToClipboard": "Zkopírovat do schránky",
     "data": "Data",
     "dataset": "Datová sada",
     "date": "Datum",
@@ -316,7 +317,8 @@
     "Tile": "Dlaždice",
     "done": "Hotovo",
     "group": "skupina",
-    "separateLayers": "samostatné vrstvy"
+    "separateLayers": "samostatné vrstvy",
+    "copyToClipboardFailure": "Nevar kopēt. Jūsu pārlūkprogramma neatbalsta nepieciešamās funkcijas"
   },
   "COMPOSITIONS": {
     "addByAddress": "Přidat kompozici z adresy",
@@ -752,9 +754,6 @@
     "edit": "Upravit"
   },
   "PERMALINK": {
-    "directiveMd": {
-      "copyToClipboard": "Zkopírovat do schránky"
-    },
     "embed": "vložení",
     "embedCode": "Vložit kód",
     "linkFor": "Odkaz pro",

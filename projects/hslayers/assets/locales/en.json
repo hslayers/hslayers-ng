@@ -184,6 +184,7 @@
     "context": "Context",
     "continue": "Continue",
     "copyLayer": "Copy layer",
+    "copyToClipboard": "Copy to clipboard",
     "data": "Data",
     "dataset": "Dataset",
     "date": "Date",
@@ -316,7 +317,8 @@
     "Tile": "Tile",
     "done": "Done",
     "group": "group",
-    "separateLayers": "separate layers"
+    "separateLayers": "separate layers",
+    "copyToClipboardFailure": "Could not copy. Clipboard API not supported in your browser."
   },
   "COMPOSITIONS": {
     "addByAddress": "Add composition by address",
@@ -752,9 +754,6 @@
     "edit": "Edit"
   },
   "PERMALINK": {
-    "directiveMd": {
-      "copyToClipboard": "Copy to clipboard"
-    },
     "embed": "embed",
     "embedCode": "Embed code",
     "linkFor": "Link for",
