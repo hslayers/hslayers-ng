@@ -171,6 +171,7 @@
     "context": "Konteksts",
     "continue": "turpināt",
     "copyLayer": "Kopēt slāni",
+    "copyToClipboard": "Kopēt starpliktuvē",
     "data": "Dati",
     "dataset": "Datu kopa",
     "date": "Datums",
@@ -293,7 +294,8 @@
     "reorder": "Pārkārtot",
     "off": "izslēgts",
     "on": "ieslēgts",
-    "done": "Gatavs"
+    "done": "Gatavs",
+    "copyToClipboardFailure": "Nevar kopēt. Jūsu pārlūkprogramma neatbalsta nepieciešamās funkcijas."
   },
   "COMPOSITIONS": {
     "addByAddress": "Pievienot kompozīciju pēc adreses",
@@ -708,9 +710,6 @@
     "edit": "Rediģēt"
   },
   "PERMALINK": {
-    "directiveMd": {
-      "copyToClipboard": "Kopēt starpliktuvē"
-    },
     "embed": "Fiksētās",
     "embedCode": "Fiksēt kodu",
     "linkFor": "Saite priekš",
