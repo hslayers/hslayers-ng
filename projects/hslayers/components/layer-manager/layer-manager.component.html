@@ -74,9 +74,9 @@
                         [ngbTooltip]="layer.abstract ? abstractTooltip : ''" [closeDelay]="layerTooltipDelay">
                         {{layer.title | translateHs : 'LAYERS' }}
                     </div>
-                    <div class="ps-1 info_btn" style="cursor: pointer;">
-                        <span class="icon-settingsthree-gears text-secondary"
-                            (click)="hsLayerManagerService.toggleLayerEditor(layer,'settings','sublayers')"
+                    <div class="ps-1 info_btn text-secondary dropdown-toggle" style="cursor: pointer;" 
+                    (click)="hsLayerManagerService.toggleLayerEditor(layer,'settings','sublayers')">
+                        <span class="icon-settingsthree-gears"
                             [title]="'COMMON.info' | translateHs" data-toggle="tooltip" data-container="body"
                             data-placement="auto"></span>
                     </div>
