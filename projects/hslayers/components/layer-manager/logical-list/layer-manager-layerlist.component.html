@@ -48,9 +48,8 @@
                         [title]="'LAYERMANAGER.layerList.layerIsQueryable' | translateHs  "
                         (click)="$event.stopPropagation()"></i>
                 </div>
-                <div class="ps-1 info_btn me-1">
-                    <span class="icon-settingsthree-gears text-secondary"
-                        (click)="hsLayerManagerService.toggleLayerEditor(layer,'settings','sublayers')"
+                <div class="ps-1 info_btn me-1 text-secondary dropdown-toggle" (click)="hsLayerManagerService.toggleLayerEditor(layer,'settings','sublayers')"> 
+                    <span class="icon-settingsthree-gears"
                         [title]="'COMMON.info' | translateHs  " data-toggle="tooltip" data-container="body"
                         data-placement="auto"></span>
                 </div>
