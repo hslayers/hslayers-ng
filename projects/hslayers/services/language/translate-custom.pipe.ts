@@ -38,7 +38,7 @@ export class TranslateCustomPipe
       return query;
     }
     /**
-     * Module parsing with temporal backwards compatiblity for {module: <modulename>} arg
+     * Module parsing with temporal backwards compatibility for {module: <modulename>} arg
      * and new string annotation
      */
     const module = args[0]
