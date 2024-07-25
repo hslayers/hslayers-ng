@@ -1,4 +1,4 @@
-import {Component, inject, signal} from '@angular/core';
+import {Component} from '@angular/core';
 
 import {HsLayerEditorWidgetBaseComponent} from './layer-editor-widget-base.component';
 import {HsLayerSelectorService} from 'hslayers-ng/services/layer-manager';
@@ -9,11 +9,12 @@ import {HsToastService} from 'hslayers-ng/common/toast';
   templateUrl: './type-widget.component.html',
 })
 export class HsTypeWidgetComponent extends HsLayerEditorWidgetBaseComponent {
-  hsToastService = inject(HsToastService);
-
   showCheck = false;
 
-  constructor(hsLayerSelectorService: HsLayerSelectorService) {
+  constructor(
+    hsLayerSelectorService: HsLayerSelectorService,
+    private hsToastService: HsToastService,
+  ) {
     super(hsLayerSelectorService);
   }
   name = 'type-widget';

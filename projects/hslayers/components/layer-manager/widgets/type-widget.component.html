@@ -10,8 +10,8 @@
         }}
       </span>
       @if (descriptor.source !== "memory") {
-      <button class="btn btn-sm text-secondary" data-toggle="tooltip"
-        [title]="'COMMON.copyToClipboardFailure' | translateHs" (click)="copyToClipBoard()">
+      <button class="btn btn-sm text-secondary" data-toggle="tooltip" [title]="'COMMON.copyToClipboard' | translateHs"
+        (click)="copyToClipBoard()">
         <i [class.icon-check]="showCheck" [class.icon-copy]="!showCheck"></i>
       </button>
       }

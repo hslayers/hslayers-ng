@@ -318,7 +318,7 @@
     "done": "Hotovo",
     "group": "skupina",
     "separateLayers": "samostatné vrstvy",
-    "copyToClipboardFailure": "Nevar kopēt. Jūsu pārlūkprogramma neatbalsta nepieciešamās funkcijas"
+    "copyToClipboardFailure": "Nelze zkopírovat. Váš prohlížeč nepodporuje potřebné funkce."
   },
   "COMPOSITIONS": {
     "addByAddress": "Přidat kompozici z adresy",
