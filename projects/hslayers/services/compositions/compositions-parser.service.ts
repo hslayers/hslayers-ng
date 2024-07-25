@@ -429,7 +429,7 @@ export class HsCompositionsParserService {
 
     if (confirmed) {
       /**
-       * If possible register layerAdditions subscribtion for a current_base_layer
+       * If possible register layerAdditions subscription for a current_base_layer
        * visiblity toggle.
        */
       if (obj.current_base_layer && !obj.basemapComposition) {
@@ -470,8 +470,8 @@ export class HsCompositionsParserService {
       }
 
       /**
-       * basemapComposition doesnt trigger layerAdded events thus we need to
-       * make sure layeDescriptors are ready in a bit of a dirty way
+       * basemapComposition doesn't trigger layerAdded events, thus we need to
+       * make sure layerDescriptors are ready in a bit of a dirty way
        */
       if (obj.current_base_layer && obj.basemapComposition) {
         setTimeout(() => {
