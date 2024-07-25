@@ -295,7 +295,9 @@
     "off": "izslēgts",
     "on": "ieslēgts",
     "done": "Gatavs",
-    "copyToClipboardFailure": "Nevar kopēt. Jūsu pārlūkprogramma neatbalsta nepieciešamās funkcijas."
+    "copyToClipboardFailure": "Nevar kopēt. Jūsu pārlūkprogramma neatbalsta nepieciešamās funkcijas.",
+    "base": "Pamatkarte",
+    "thematic": "Tematiskā karte"
   },
   "COMPOSITIONS": {
     "addByAddress": "Pievienot kompozīciju pēc adreses",

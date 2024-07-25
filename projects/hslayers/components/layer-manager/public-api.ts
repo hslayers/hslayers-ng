@@ -24,3 +24,4 @@ export * from './widgets/opacity-widget.component';
 export * from './widgets/scale-widget.component';
 export * from './widgets/type-widget.component';
 export * from './widgets/layer-folder-widget/layer-folder-widget.component';
+export * from './widgets/layer-type-switcher-widget/layer-type-switcher-widget.component';

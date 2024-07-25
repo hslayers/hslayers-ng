@@ -36,6 +36,7 @@ import {HsScaleWidgetComponent} from '../widgets/scale-widget.component';
 import {HsStylerService} from 'hslayers-ng/services/styler';
 import {HsTypeWidgetComponent} from '../widgets/type-widget.component';
 import {HsWmsSourceWidgetComponent} from '../widgets/wms-source-widget/wms-source-widget.component';
+import {LayerTypeSwitcherWidgetComponent} from '../widgets/layer-type-switcher-widget/layer-type-switcher-widget.component';
 import {
   getBase,
   getCachedCapabilities,
@@ -101,6 +102,7 @@ export class HsLayerEditorComponent {
       HsOpacityWidgetComponent,
       HsIdwWidgetComponent,
       HsWmsSourceWidgetComponent,
+      LayerTypeSwitcherWidgetComponent,
     ];
     for (const widgetClass of widgets) {
       this.hsWidgetContainerService.create(widgetClass, {});
