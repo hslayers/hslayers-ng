@@ -151,9 +151,7 @@ export class HsLayerManagerVisibilityService {
         continue;
       }
       const isToggledLayer = baseLayer == layer;
-      if (this.baselayersVisible) {
-        baseLayer.galleryMiniMenu = isToggledLayer;
-      }
+      baseLayer.galleryMiniMenu = false;
       if ($event) {
         baseLayer.visible = isToggledLayer;
         baseLayer.active = isToggledLayer;
