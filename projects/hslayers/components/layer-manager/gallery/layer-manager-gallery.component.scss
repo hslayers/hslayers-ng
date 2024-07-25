@@ -13,95 +13,105 @@
   .dropdown-toggle::after {
     display: none;
   }
-}
 
-.basemapGallery .galleryDropdown {
-  max-height: 41em;
-  // height: 50vh;
+  .galleryDropdown {
+    max-height: 41em;
+    // height: 50vh;
 
-  flex-direction: column;
-  flex-wrap: wrap-reverse;
-  column-gap: 0.25rem;
+    flex-direction: column;
+    flex-wrap: wrap-reverse;
+    column-gap: 0.25rem;
 
-  &.show {
-    display: flex;
+    &.show {
+      display: flex;
+    }
+
+    &>div {
+      flex-grow: 1;
+      flex-shrink: 0;
+      flex-basis: 8em;
+
+      display: flex;
+      flex-direction: column;
+      background-color: white;
+      width: 11em;
+      max-height: 8em;
+    }
+
+    a.dropdown-item {
+      white-space: pre-line;
+      overflow-wrap: anywhere;
+    }
+
+    img {
+      height: 4.5em;
+    }
   }
+
+
+  .dropdown-item:not(.active) {
+    background: hsla(0, 0%, 80%, 0.51);
+  }
+
+  .dropdown-item.active {
+    color: hsla(0, 0%, 100%, 89%) !important;
+  }
+
+  img.active,
+  div.active {
+    border: 0.1rem solid hsl(211, 100%, 50%);
+  }
+
+  .hs-miniMenu {
+    width: 100%;
+    height: 100%;
+    background-color: hsla(212, 20%, 40%, 0.94);
+    border: 0.1rem solid hsl(211, 100%, 50%);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: hsl(0, 0%, 100%);
+    cursor: auto;
+    right: 0;
+    transition: all 0.4s ease, right 0ms;
+
+    &>div {
+      display: flex;
+      flex-direction: row;
+      align-items: baseline;
+      cursor: pointer;
+    }
+
+    &>div,
+    &>label {
+      background-color: hsla(0, 2%, 75%, 0.644);
+      color: hsl(0, 0%, 100%);
+    }
+
+    &.expanded {
+      width: 30em;
+      height: auto;
+      z-index: 4;
+      padding-top: 2em;
+      padding-bottom: 2em;
+      border-radius: 0.25rem;
+    }
+
+    &>label {
+      cursor: pointer;
+      text-align: right;
+    }
+
+    p {
+      cursor: pointer;
+      font-size: 1rem;
+    }
+
+  }
+
 }
 
-.basemapGallery .galleryDropdown>div {
-  flex-grow: 1;
-  flex-shrink: 0;
-  flex-basis: 8em;
-
-  display: flex;
-  flex-direction: column;
-  background-color: white;
-  width: 11em;
-  max-height: 8em;
-}
-
-.basemapGallery .galleryDropdown img {
-  height: 4.5em;
-}
-
-.basemapGallery .dropdown-item:not(.active) {
-  background: hsla(0, 0%, 80%, 0.51);
-}
-
-.basemapGallery .dropdown-item.active {
-  color: hsla(0, 0%, 100%, 89%) !important;
-}
-
-.basemapGallery img.active,
-.basemapGallery div.active {
-  border: 0.1rem solid hsl(211, 100%, 50%);
-}
-
-.basemapGallery .hs-miniMenu {
-  width: 100%;
-  height: 100%;
-  background-color: hsla(212, 20%, 40%, 0.94);
-  border: 0.1rem solid hsl(211, 100%, 50%);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  color: hsl(0, 0%, 100%);
-  cursor: auto;
-  right: 0;
-  transition: all 0.4s ease, right 0ms;
-}
-
-.basemapGallery .hs-miniMenu>div {
-  display: flex;
-  flex-direction: row;
-  align-items: baseline;
-  background-color: hsla(0, 2%, 75%, 0.644);
-  cursor: pointer;
-}
-
-.basemapGallery .hs-miniMenu p {
-  cursor: pointer;
-  font-size: 1rem;
-}
-
-.basemapGallery .hs-miniMenu.expanded {
-  width: 30em;
-  height: auto;
-  z-index: 4;
-  padding-top: 2em;
-  padding-bottom: 2em;
-  border-radius: 0.25rem;
-}
-
-.basemapGallery .hs-miniMenu>label {
-  cursor: pointer;
-  text-align: right;
-}
-
-.basemapGallery .hs-miniMenu.expanded hs-layer-editor label {
-  color: hsl(0, 0%, 100%);
-}
 
 .galleryButton {
   opacity: 0.9 !important;
@@ -120,10 +130,6 @@
   }
 }
 
-.basemapGallery .galleryDropdown a.dropdown-item {
-  white-space: pre-line;
-  overflow-wrap: anywhere;
-}
 
 &.hs-mobile-view {
   .basemapGallery .galleryDropdown img {
