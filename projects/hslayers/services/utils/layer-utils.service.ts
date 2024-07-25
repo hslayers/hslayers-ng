@@ -501,7 +501,7 @@ export class HsLayerUtilsService {
 
   /**
    * Buffer extent by `BUFFER_FACTOR`
-   * NOTE: Not using OL because we want to extend witdh and height independently
+   * NOTE: Not using OL because we want to extend width and height independently
    */
   bufferExtent(extent: Extent, currentMapProj: Projection) {
     const BUFFER_FACTOR = 0.1;
