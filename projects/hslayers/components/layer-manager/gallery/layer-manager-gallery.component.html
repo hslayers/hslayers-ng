@@ -8,13 +8,16 @@
         <div ngbDropdownMenu class="p-0 galleryDropdown bg-light rounded">
             <div *ngFor="let layer of hsLayerManagerService.data.baselayers" [attr.data-cy]="layer.title"
                 (click)="toggleBasemap(layer);" [ngStyle]="{'position':'relative'}" class="m-0 ">
+                <!-- Mini menu toggle -->
                 <div style="position:absolute;top:5px; right:5px;z-index:5"
                     [ngClass]="layer.galleryMiniMenu ? 'text-white' : 'text-primary'" *ngIf="layer.active"
                     (click)="$event.preventDefault();toggleMiniMenu(layer)">
                     <span class="glyphicon icon-menu icon-small"></span>
                 </div>
-                <div class="hs-miniMenu" [hidden]="!(layer.galleryMiniMenu === true && layer.active)"
-                    [ngStyle]="{'position':'absolute'}" [ngClass]="{'expanded': hsLayerManagerService.menuExpanded}">
+                <!-- Mini menu -->
+                @if(layer.galleryMiniMenu && layer.active){
+
+                <div class="hs-miniMenu position-absolute" [ngClass]="{'expanded': hsLayerManagerService.menuExpanded}">
                     <!-- TODO: Remove function call from template -->
                     <div class="ps-1 w-100" *ngIf="!hsLayerManagerService.menuExpanded"
                         (click)="hsLayerManagerService.setGreyscale(layer)">
@@ -23,8 +26,7 @@
                         <p class="ms-1 mb-0">
                             {{'LAYERMANAGER.baseMapGallery.greyscale' | translateHs }}</p>
                     </div>
-                    <label [attr.id]="layer?.idString()" class="ps-2 mb-0 w-100"
-                        [ngStyle]="{'background-color':'rgba(192, 189, 189, 0.644)'}" (click)="expandMenu(layer)">
+                    <label [attr.id]="layer?.idString()" class="ps-2 mb-0 w-100" (click)="expandMenu(layer)">
                         <ng-container *ngIf="hsLayerManagerService.menuExpanded;else more">
                             {{'COMMON.less' | translateHs }}
                         </ng-container>
@@ -33,6 +35,7 @@
                         </ng-template>
                     </label>
                 </div>
+                }
 
                 <img [ngClass]="{'active': layer.active}" [src]="layer.thumbnail"
                     [alt]="'LAYERMANAGER.basemapThumbnail' | translateHs " style="width:100%">
