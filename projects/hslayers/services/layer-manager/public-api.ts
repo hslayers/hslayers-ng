@@ -6,3 +6,4 @@ export * from './layer-manager-copy-layer.service';
 export * from './layer-manager-utils.service';
 export * from './layer-manager-visibility.service';
 export * from './layer-manager-folder.service';
+export * from './layer-manager-loading-progress.service';

@@ -318,7 +318,9 @@
     "done": "Hotovo",
     "group": "skupina",
     "separateLayers": "samostatné vrstvy",
-    "copyToClipboardFailure": "Nelze zkopírovat. Váš prohlížeč nepodporuje potřebné funkce."
+    "copyToClipboardFailure": "Nelze zkopírovat. Váš prohlížeč nepodporuje potřebné funkce.",
+    "base": "Podkladová mapa",
+    "thematic": "Tematická mapa"
   },
   "COMPOSITIONS": {
     "addByAddress": "Přidat kompozici z adresy",

@@ -41,6 +41,8 @@ export class HsLayerManagerLoadingProgressService {
     const olLayer = layer.layer;
     const showInLM = getShowInLayerManager(olLayer);
     if (
+      //Make sure listeners are registered only once
+      layer.loadProgress ||
       (getBase(olLayer) && this.hsConfig.componentsEnabled.basemapGallery) ||
       !(showInLM === undefined || showInLM == true)
     ) {

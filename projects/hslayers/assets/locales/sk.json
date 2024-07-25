@@ -318,7 +318,9 @@
     "done": "Hotovo",
     "group": "skupina",
     "separateLayers": "samostatné vrstvy",
-    "copyToClipboardFailure": "Nie je možné kopírovať. \nVáš prehliadač nepodporuje potrebné funkcie."
+    "copyToClipboardFailure": "Nie je možné kopírovať. \nVáš prehliadač nepodporuje potrebné funkcie.",
+    "base": "Podkladová mapa",
+    "thematic": "Tematická mapa"
   },
   "COMPOSITIONS": {
     "addByAddress": "Pridať kompozíciu z adresy",

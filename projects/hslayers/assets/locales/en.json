@@ -318,7 +318,9 @@
     "done": "Done",
     "group": "group",
     "separateLayers": "separate layers",
-    "copyToClipboardFailure": "Could not copy. Clipboard API not supported in your browser."
+    "copyToClipboardFailure": "Could not copy. Clipboard API not supported in your browser.",
+    "base": "Basemap",
+    "thematic": "Thematic map"
   },
   "COMPOSITIONS": {
     "addByAddress": "Add composition by address",
