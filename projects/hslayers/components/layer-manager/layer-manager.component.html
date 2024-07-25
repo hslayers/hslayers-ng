@@ -74,11 +74,10 @@
                         [ngbTooltip]="layer.abstract ? abstractTooltip : ''" [closeDelay]="layerTooltipDelay">
                         {{layer.title | translateHs : 'LAYERS' }}
                     </div>
-                    <div class="ps-1 info_btn text-secondary dropdown-toggle" style="cursor: pointer;" 
-                    (click)="hsLayerManagerService.toggleLayerEditor(layer,'settings','sublayers')">
-                        <span class="icon-settingsthree-gears"
-                            [title]="'COMMON.info' | translateHs" data-toggle="tooltip" data-container="body"
-                            data-placement="auto"></span>
+                    <div class="ps-1 info_btn text-secondary dropdown-toggle" style="cursor: pointer;"
+                        (click)="hsLayerManagerService.toggleLayerEditor(layer,'settings','sublayers')">
+                        <span class="icon-settingsthree-gears" [title]="'COMMON.info' | translateHs"
+                            data-toggle="tooltip" data-container="body" data-placement="auto"></span>
                     </div>
                 </div>
                 <ngb-progressbar [value]="layer.loadProgress.percents" height="2px" [animated]="true"
@@ -173,8 +172,8 @@
             </label>
         </div> -->
         </ul>
-        <hs-layer-editor [currentLayer]="hsLayerSelectorService.currentLayer" #layerEditor
-            [hidden]="!hsLayerSelectorService.currentLayer" class="hs-layerpanel w-100">
-        </hs-layer-editor>
-        </ div>
     </div>
+</div>
+@if(hsLayerSelectorService.currentLayer){
+<hs-layer-editor [currentLayer]="hsLayerSelectorService.currentLayer" #layerEditor class="hs-layerpanel w-100" />
+}
