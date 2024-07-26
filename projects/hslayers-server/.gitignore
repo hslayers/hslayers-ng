@@ -3,3 +3,4 @@ data/
 .env
 .env.*
 !.env.example
+hslayers-server.db-journal
