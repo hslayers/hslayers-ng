@@ -178,11 +178,12 @@ export class HsLayerManagerFolderService {
       return newState;
     } catch (error) {
       console.error(
-        getTitle(lyr.layer)
+        lyr?.layer && getTitle(lyr.layer)
           ? `There was an error while cleaning folders after ${getTitle(lyr.layer)} was removed`
           : 'There was an attempt to clean folders without valid layer param provided',
         error,
       );
+      return state;
     }
   }
 
