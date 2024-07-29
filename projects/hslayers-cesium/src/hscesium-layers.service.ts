@@ -41,7 +41,6 @@ import {
   Vector as VectorSource,
   XYZ,
 } from 'ol/source';
-import {default as proj4} from 'proj4';
 
 import {HsConfig} from 'hslayers-ng/config';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
@@ -62,6 +61,7 @@ import {
 import {HsCesiumConfig} from './hscesium-config.service';
 import {OlCesiumObjectMapItem} from './ol-cesium-object-map-item.class';
 import {ParamCacheMapItem} from './param-cache-map-item.class';
+import {transform} from 'ol/proj';
 
 function MyProxy({proxy, maxResolution, HsUtilsService, projection}) {
   this.proxy = proxy;
@@ -376,7 +376,11 @@ export class HsCesiumLayersService {
       const ya = coordinates[1];
       const za = coordinates[2];
 
-      const newCoordinates = proj4(firstProjection, secondProjection, [xa, ya]);
+      const newCoordinates = transform(
+        [xa, ya],
+        firstProjection,
+        secondProjection,
+      );
       return Cartesian3.fromDegrees(
         newCoordinates[0],
         newCoordinates[1],
