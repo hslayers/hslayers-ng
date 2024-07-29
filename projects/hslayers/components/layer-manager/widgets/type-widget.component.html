@@ -1,12 +1,12 @@
 <div class="form-group">
   <small class="text-secondary" *ngIf="layerDescriptor | async as descriptor">
-    {{ descriptor.type | translateHs: { module: "LAYERMANAGER.layerEditor" } }}
+    {{ descriptor.type | translateHs: "LAYERMANAGER.layerEditor" }}
     {{ "LAYERMANAGER.layerEditor.layerFrom" | translateHs }}
     <div class="mw-100 d-flex align-items-center justify-content-between">
       <span class="text-truncate">
         {{
         descriptor.source
-        | translateHs: { module: "LAYERMANAGER.layerEditor" }
+        | translateHs: "LAYERMANAGER.layerEditor"
         }}
       </span>
       @if (descriptor.source !== "memory") {
