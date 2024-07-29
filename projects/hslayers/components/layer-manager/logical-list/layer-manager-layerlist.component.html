@@ -15,14 +15,14 @@
                     <span [innerHtml]="hsLayerManagerService.makeSafeAndTranslate('LAYERS', layer.abstract)"></span>
                 </ng-template>
                 <div class="align-items-center p-0 hs-lm-item-title flex-grow-1"
-                    (click)="hsLayerManagerService.toggleLayerEditor(layer,'sublayers', 'settings')"
-                    style="word-break:break-word;" [ngClass]="{'hover': layer.hasSublayers === true}"
+                    (click)="hsLayerManagerService.toggleLayerEditor(layer,'sublayers')" style="word-break:break-word;"
+                    [ngClass]="{'hover': layer.hasSublayers === true}"
                     [ngbTooltip]="layer.abstract ? abstractTooltip : ''" [closeDelay]="hsConfig.layerTooltipDelay || 0">
                     {{layer.title | translateHs : 'LAYERS' }}
                 </div>
                 <div class="hs-sublayer-toggle p-0 me-1 ms-1 info_btn" *ngIf="layer.hasSublayers"
                     style="flex-grow: 100; align-self: center;"
-                    (click)="hsLayerManagerService.toggleLayerEditor(layer,'sublayers', 'settings')">
+                    (click)="hsLayerManagerService.toggleLayerEditor(layer,'sublayers')">
                     <span class="me-1"
                         [ngClass]="hsLayerSelectorService.currentLayer === layer && hsLayerSelectorService.currentLayer.sublayers ? 'icon-chevron-right' : 'icon-chevron-down'"></span>
                 </div>
@@ -49,7 +49,7 @@
                         (click)="$event.stopPropagation()"></i>
                 </div>
                 <div class="ps-1 info_btn me-1 text-secondary dropdown-toggle"
-                    (click)="hsLayerManagerService.toggleLayerEditor(layer,'settings','sublayers')">
+                    (click)="hsLayerManagerService.toggleLayerEditor(layer,'settings')">
                     <span class="icon-settingsthree-gears" [title]="'COMMON.info' | translateHs  " data-toggle="tooltip"
                         data-container="body" data-placement="auto"></span>
                 </div>

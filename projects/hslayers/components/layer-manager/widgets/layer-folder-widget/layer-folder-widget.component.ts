@@ -71,7 +71,6 @@ export class HsLayerFolderWidgetComponent extends HsLayerEditorWidgetBaseCompone
     this.hsLayermanagerService.toggleLayerEditor(
       this.hsLayerSelectorService.currentLayer,
       'settings',
-      'sublayers',
     );
   }
 }
