@@ -1,3 +1,30 @@
+# [14.1.0](https://github.com/hslayers/hslayers-ng/compare/14.0.1...14.1.0) (2024-07-29)
+
+
+### Bug Fixes
+
+* **add-data:** WMS layer extent parsing ([ba201a1](https://github.com/hslayers/hslayers-ng/commit/ba201a1a0f27e4d74b13d56e662d169e7b54aea9))
+* **compositions:** Composition current base map visiblity ([e2f0696](https://github.com/hslayers/hslayers-ng/commit/e2f0696a7510e509e70233a54436f9314545b81c))
+* **layermanager:** Layer editor not visible with mainpanel other than LM ([1a25042](https://github.com/hslayers/hslayers-ng/commit/1a250420a1597938a3d1cf901b813a4d5660d924))
+* **layermanager:** Close gallery mini menu on base visibility toggle ([44499a8](https://github.com/hslayers/hslayers-ng/commit/44499a889427e5df0a9fb9703d48a93ce03d6ed2))
+* **layermanager:** Do not update folders on removal of all layers. ([045fbbe](https://github.com/hslayers/hslayers-ng/commit/045fbbe3c224f9a772583486189517aadde7ab1c))
+* **layermanager:** Safer clean folders catch block ([dcf45c8](https://github.com/hslayers/hslayers-ng/commit/dcf45c882f1b1f07866f656005bf47442aa4613e))
+* **perf:** Base64 encoded SVG icons ([0ae4537](https://github.com/hslayers/hslayers-ng/commit/0ae45376c9700e79de95c0f14dc52076f7c4e0e0))
+* **styler:** File style load ([e98b28b](https://github.com/hslayers/hslayers-ng/commit/e98b28b49827f168efac73b8e0a56b2882a64cd3))
+* **styler:** Load style from  QML file for layman layer ([084ce66](https://github.com/hslayers/hslayers-ng/commit/084ce66772404bd6740053402c15808cfe796053))
+* **styler:** Parse QML styles loaded via URL ([2e07f3c](https://github.com/hslayers/hslayers-ng/commit/2e07f3c0c7a47619edba71775e16ab6a9fdc33a4))
+
+
+### Features
+
+* **compositions:** Store and parse ignoreExtent control in/from composition - fow WMS layers ([6b030ac](https://github.com/hslayers/hslayers-ng/commit/6b030ac96a1ca33f17eff37f997afc5b8192994d))
+* **config:** Add new Senslog config param - timeFormatConfigPath ([e46e04d](https://github.com/hslayers/hslayers-ng/commit/e46e04d8d835086e500e45d4e0c855db8a68251d))
+* **layermanager:** Add copy button to URL ([6a58830](https://github.com/hslayers/hslayers-ng/commit/6a588300346d538cd2cfdea030bc044d536b99b7))
+* **layermanager:** Layer type switcher widget ([fbaffe1](https://github.com/hslayers/hslayers-ng/commit/fbaffe1f79e1672aaace6b9f4536181c4b37b72e))
+* **utils:** Extent buffer ([0f44b5c](https://github.com/hslayers/hslayers-ng/commit/0f44b5c8bb2d543486d9ce879579d35205b7e568))
+
+
+
 ## [14.0.1](https://github.com/hslayers/hslayers-ng/compare/14.0.0...14.0.1) (2024-06-25)
 
 
