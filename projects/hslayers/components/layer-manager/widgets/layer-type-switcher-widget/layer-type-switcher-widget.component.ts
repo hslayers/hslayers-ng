@@ -135,11 +135,7 @@ export class LayerTypeSwitcherWidgetComponent extends HsLayerEditorWidgetBaseCom
       this.loadingProgressSerice.loadingEvents(currentLayer);
     }
 
-    this.hsLayermanagerService.toggleLayerEditor(
-      currentLayer,
-      'settings',
-      'sublayers',
-    );
+    this.hsLayermanagerService.toggleLayerEditor(currentLayer, 'settings');
 
     this.hsEventBusService.layerManagerUpdates.next(this.olLayer);
     this.hsEventBusService.compositionEdits.next();

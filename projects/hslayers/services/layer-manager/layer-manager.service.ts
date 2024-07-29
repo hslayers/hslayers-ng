@@ -533,14 +533,14 @@ export class HsLayerManagerService {
    * Toggles Additional information panel for current layer.
    * @param layer - Selected layer (HsLayerManagerService.currentLayer)
    * @param toToggle - Part of layer editor to be toggled
-   * @param control - Part of layer editor to be controlled for state.
-   * Determines whether only toggled part or whole layereditor would be closed
    */
   toggleLayerEditor(
     layer: HsLayerDescriptor,
-    toToggle: string,
-    control: string,
+    toToggle: 'sublayers' | 'settings',
   ): void {
+    //  Part of layer editor to be controlled for state.
+    //  Determines whether only toggled part or whole layereditor would be closed
+    const control = toToggle === 'settings' ? 'sublayers' : 'settings';
     if (!getCachedCapabilities(layer.layer)) {
       this.hsLayerManagerMetadata.fillMetadata(layer);
     }
@@ -650,7 +650,7 @@ export class HsLayerManagerService {
           (layer) => layer.title == layerTitle,
         );
         if (layerFound !== undefined) {
-          this.toggleLayerEditor(layerFound, 'settings', 'sublayers');
+          this.toggleLayerEditor(layerFound, 'settings');
           this.hsEventBusService.layerSelectedFromUrl.next(layerFound.layer);
         }
       }, 500);

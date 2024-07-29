@@ -68,11 +68,7 @@ export class HsLayerManagerGalleryComponent extends HsGuiOverlayBaseComponent {
     }
   }
   expandMenu(layer: HsLayerDescriptor): void {
-    this.hsLayerManagerService.toggleLayerEditor(
-      layer,
-      'settings',
-      'sublayers',
-    );
+    this.hsLayerManagerService.toggleLayerEditor(layer, 'settings');
     this.hsLayerManagerService.menuExpanded =
       !this.hsLayerManagerService.menuExpanded;
   }
