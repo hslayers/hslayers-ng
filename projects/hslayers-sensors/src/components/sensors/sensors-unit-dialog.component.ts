@@ -4,9 +4,10 @@ import {
   ElementRef,
   OnDestroy,
   OnInit,
+  Signal,
   ViewRef,
 } from '@angular/core';
-import {Subject, combineLatest, takeUntil} from 'rxjs';
+import {Subject, combineLatest, map, startWith, takeUntil} from 'rxjs';
 
 import {
   HsDialogComponent,
@@ -18,6 +19,7 @@ import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {Aggregates, HsSensorsUnitDialogService} from './unit-dialog.service';
 import {CustomInterval, Interval} from './types/interval.type';
 import {LangChangeEvent} from '@ngx-translate/core';
+import {takeUntilDestroyed, toSignal} from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'hs-sensor-unit',
@@ -46,7 +48,27 @@ export class HsSensorsUnitDialogComponent
     toTime: new Date(),
     timeFormat: '%H:%M',
   };
-  dialogStyle;
+
+  dialogStyle = toSignal(
+    combineLatest([
+      this.hsLayoutService.panelSpaceWidth,
+      this.hsLayoutService.sidebarPosition,
+    ]).pipe(
+      takeUntilDestroyed(),
+      map(([panelSpace, sidebar]) => {
+        return this.calculateDialogStyle(panelSpace, sidebar == 'bottom');
+      }),
+      startWith({
+        'left': '320px',
+        'width': 'calc(100% - 320px)',
+        'bottom': '0',
+        'height': 'auto',
+        'background-color': 'transparent',
+        'pointer-events': 'none',
+      }),
+    ),
+  );
+
   private end = new Subject<void>();
   viewRef: ViewRef;
   data: any;
@@ -67,15 +89,6 @@ export class HsSensorsUnitDialogComponent
     this.hsSensorsUnitDialogService.dialogElement = this.elementRef;
 
     this.timeButtonClicked(this.hsSensorsUnitDialogService.intervals[2], false);
-
-    combineLatest([
-      this.hsLayoutService.panelSpaceWidth,
-      this.hsLayoutService.sidebarPosition,
-    ])
-      .pipe(takeUntil(this.end))
-      .subscribe(([panelSpace, sidebar]) => {
-        this.calculateDialogStyle(panelSpace, sidebar == 'bottom');
-      });
 
     const translator = this.hsLanguageService.getTranslator();
     translator.onLangChange.subscribe((event: LangChangeEvent) => {
@@ -150,11 +163,11 @@ export class HsSensorsUnitDialogComponent
     this.intervalChangeHandler();
   }
 
-  calculateDialogStyle(panelSpaceWidth: number, sidebarAtBot: boolean) {
+  calculateDialogStyle(panelSpaceWidth: number, sidebarAtBot: boolean): any {
     const padding = 20;
     const widthWithoutPanelSpace =
       'calc(100% - ' + (panelSpaceWidth + padding) + 'px)';
-    this.dialogStyle = {
+    return {
       'visibility': this.hsSensorsUnitDialogService.unitDialogVisible
         ? 'visible'
         : 'hidden',

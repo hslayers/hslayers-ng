@@ -8,7 +8,7 @@ import {
   tap,
   timer,
 } from 'rxjs';
-import {ElementRef, Injectable, signal} from '@angular/core';
+import {ElementRef, Inject, Injectable, Optional, signal} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 
 import dayjs from 'dayjs';
@@ -76,6 +76,9 @@ export class HsSensorsUnitDialogService {
     private hsLogService: HsLogService,
     private hsLanguageService: HsLanguageService,
     private hsLayoutService: HsLayoutService,
+    @Optional()
+    @Inject('MAPSERVICE_DISABLED')
+    public mapServiceDisabled: boolean,
   ) {
     this.currentInterval = this.intervals[2];
     this.useTimeZone.subscribe((value) => {
@@ -489,6 +492,9 @@ export class HsSensorsUnitDialogService {
 
   getCommonChartDefinitionPart(observations: any[]) {
     //See https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/flat for flattening array
+    const width = !this.mapServiceDisabled
+      ? document.querySelector('.hs-ol-map').clientWidth
+      : this.dialogElement.nativeElement.offsetWidth;
     return {
       '$schema': 'https://vega.github.io/schema/vega-lite/v5.json',
       'config': {
@@ -496,7 +502,7 @@ export class HsSensorsUnitDialogService {
           'tooltip': null,
         },
       },
-      'width': this.dialogElement.nativeElement.offsetWidth * 0.9,
+      'width': width > 0 ? width * 0.9 : 500,
       'autosize': {
         'type': 'fit',
         'contains': 'padding',
