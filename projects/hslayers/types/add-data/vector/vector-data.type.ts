@@ -1,6 +1,6 @@
 import {Feature} from 'ol';
 import {Layer} from 'ol/layer';
-import {Source} from 'ol/source';
+import {Source, Vector as VectorSource} from 'ol/source';
 import {Vector as VectorLayer} from 'ol/layer';
 
 import {AccessRightsModel} from '../../access-rights.model';
@@ -24,7 +24,7 @@ export type VectorDataObject = {
   saveAvailable?: boolean;
   saveToLayman?: boolean;
   showDetails?: boolean;
-  sourceLayer?: VectorLayer<Feature>;
+  sourceLayer?: VectorLayer<VectorSource<Feature>>;
   srs?: string;
   nativeSRS?: string;
   serializedStyle?: string | {content: string};

@@ -211,7 +211,8 @@ export class HsDrawService extends HsDrawServiceParams {
       tmpTitle = `${this.translate('DRAW.drawLayer')} ${i++}`;
     }
     const layman = this.hsCommonLaymanService.layman;
-    const drawLayer = new VectorLayer<Feature>({
+    const drawLayer = new VectorLayer<VectorSource<Feature>>();
+    ({
       //TODO: Also name should be set, but take care in case a layer with that name already exists in layman
       source: tmpSource,
       visible: true,
@@ -360,7 +361,7 @@ export class HsDrawService extends HsDrawServiceParams {
    * Add draw layer to the map and repopulate list of drawables.
    * @param layer -
    */
-  addDrawLayer(layer: VectorLayer<Feature>) {
+  addDrawLayer(layer: VectorLayer<VectorSource<Feature>>) {
     this.hsMapService.getMap().addLayer(layer);
     this.fillDrawableLayers();
   }
@@ -508,7 +509,7 @@ export class HsDrawService extends HsDrawServiceParams {
       .getLayersArray()
       .filter((layer: Layer<Source>) =>
         this.hsLayerUtilsService.isLayerDrawable(layer),
-      ) as VectorLayer<Feature>[];
+      ) as VectorLayer<VectorSource<Feature>>[];
 
     if (drawables.length == 0 && !this.tmpDrawLayer) {
       this.type = null;
@@ -764,7 +765,7 @@ export class HsDrawService extends HsDrawServiceParams {
   /**
    * Changes layer source of snap interaction
    */
-  changeSnapSource(layer: VectorLayer<Feature>): void {
+  changeSnapSource(layer: VectorLayer<VectorSource<Feature>>): void {
     //isLayerClustered
     const snapSourceToBeUsed = this.hsLayerUtilsService.isLayerClustered(layer)
       ? (layer.getSource() as Cluster<Feature>).getSource()

@@ -4,8 +4,8 @@ import {EventsKey} from 'ol/events';
 import {Feature} from 'ol';
 import {Fill, Stroke, Style} from 'ol/style';
 import {Geometry} from 'ol/geom';
-import {Vector} from 'ol/source';
 import {Vector as VectorLayer} from 'ol/layer';
+import {Vector as VectorSource} from 'ol/source';
 import {unByKey} from 'ol/Observable';
 
 import {HsCommonEndpointsService} from 'hslayers-ng/services/endpoints';
@@ -21,7 +21,7 @@ import {getHighlighted, setHighlighted} from 'hslayers-ng/common/extensions';
   providedIn: 'root',
 })
 export class HsCompositionsMapService {
-  extentLayer: VectorLayer<Feature>;
+  extentLayer: VectorLayer<VectorSource<Feature>>;
   pointerMoveListener: EventsKey;
 
   constructor(
@@ -81,14 +81,14 @@ export class HsCompositionsMapService {
   /**
    * Create new extent layer
    */
-  createNewExtentLayer(): VectorLayer<Feature> {
+  createNewExtentLayer(): VectorLayer<VectorSource<Feature>> {
     return new VectorLayer({
       properties: {
         title: 'Composition extents',
         showInLayerManager: false,
         removable: false,
       },
-      source: new Vector(),
+      source: new VectorSource(),
       style: function (feature, resolution) {
         return [
           new Style({

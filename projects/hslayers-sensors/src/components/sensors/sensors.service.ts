@@ -272,7 +272,7 @@ export class HsSensorsService {
    * Create layer for displaying sensor data
    */
   createLayer() {
-    this.layer = new VectorLayer<Feature>({
+    this.layer = new VectorLayer<VectorSource<Feature>>({
       properties: {
         path: 'Sensors',
         title: 'Sensor units',

@@ -100,7 +100,7 @@ export class HsLayerManagerCopyLayerService {
       source: new VectorSource({
         features,
       }),
-      style: (currentOlLayer as VectorLayer<Feature>).getStyle(),
+      style: (currentOlLayer as VectorLayer<VectorSource<Feature>>).getStyle(),
     });
     setTitle(copiedLayer, newTitle);
     setName(copiedLayer, getName(currentOlLayer));

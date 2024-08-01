@@ -7,17 +7,21 @@ import {get as getProjection} from 'ol/proj';
 
 import {HsAddDataCommonFileService} from '../common-file.service';
 import {HsAddDataService} from '../add-data.service';
-import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
+import {
+  HsCommonLaymanService,
+  PostPatchLayerResponse,
+} from 'hslayers-ng/common/layman';
 import {HsLaymanService} from 'hslayers-ng/services/save-map';
 import {HsLogService} from 'hslayers-ng/services/log';
 import {HsMapService} from 'hslayers-ng/services/map';
 import {HsStylerService} from 'hslayers-ng/services/styler';
 import {HsUtilsService} from 'hslayers-ng/services/utils';
-import {OverwriteResponse} from 'hslayers-ng/types';
-import {PostPatchLayerResponse} from 'hslayers-ng/common/layman';
+import {
+  OverwriteResponse,
+  UpsertLayerObject,
+  VectorDataObject,
+} from 'hslayers-ng/types';
 import {SparqlJson} from 'hslayers-ng/common/layers';
-import {UpsertLayerObject} from 'hslayers-ng/types';
-import {VectorDataObject} from 'hslayers-ng/types';
 
 import {
   awaitLayerSync,
@@ -67,7 +71,7 @@ export class HsAddDataVectorService {
     srs: string,
     options: HsVectorLayerOptions,
     addUnder?: Layer<Source>,
-  ): Promise<VectorLayer<Feature>> {
+  ): Promise<VectorLayer<VectorSource<Feature>>> {
     return new Promise(async (resolve, reject) => {
       try {
         const lyr = await this.createVectorLayer(
@@ -178,7 +182,7 @@ export class HsAddDataVectorService {
    * Fit map view to layer's extent
    * @param lyr - Provided layer
    */
-  fitExtent(lyr: VectorLayer<Feature>) {
+  fitExtent(lyr: VectorLayer<VectorSource<Feature>>) {
     const src = lyr.getSource();
     if (src.getFeatures().length > 0) {
       this.tryFit(src.getExtent(), src);
@@ -249,7 +253,7 @@ export class HsAddDataVectorService {
       this.hsAddDataCommonFileService.pickEndpoint();
     }
     const addLayerRes: {
-      layer: VectorLayer<Feature>;
+      layer: VectorLayer<VectorSource<Feature>>;
       complete: boolean;
     } = {layer: null, complete: true};
     if (data.saveToLayman && data.saveAvailable) {

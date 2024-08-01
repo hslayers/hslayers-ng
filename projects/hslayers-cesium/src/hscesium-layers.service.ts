@@ -481,7 +481,7 @@ export class HsCesiumLayersService {
         //TODO: Point clicked, Datasources extents, Composition extents shall be also synced
         if (getTitle(lyr as Layer<Source>) != 'Point clicked') {
           this.linkOlSourceToCesiumDatasource(
-            (lyr as VectorLayer<Feature>).getSource(),
+            (lyr as VectorLayer<VectorSource<Feature>>).getSource(),
             cesium_layer,
           );
         }
@@ -513,7 +513,7 @@ export class HsCesiumLayersService {
       return this.createSingleImageProvider(olLayer as ImageLayer<ImageSource>);
     } else if (this.HsUtilsService.instOf(olLayer, VectorLayer)) {
       const dataSource = await this.createVectorDataSource(
-        olLayer as VectorLayer<Feature>,
+        olLayer as VectorLayer<VectorSource<Feature>>,
       );
       return dataSource;
     } else {
@@ -525,7 +525,7 @@ export class HsCesiumLayersService {
     }
   }
 
-  async createVectorDataSource(ol_lyr: VectorLayer<Feature>) {
+  async createVectorDataSource(ol_lyr: VectorLayer<VectorSource<Feature>>) {
     let new_source: DataSource;
     if (this.HsUtilsService.isFunction(ol_lyr.getSource().getUrl())) {
       this.hsLog.warn(

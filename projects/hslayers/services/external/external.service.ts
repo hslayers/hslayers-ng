@@ -80,9 +80,9 @@ export class HsExternalService {
       return;
     }
     if (getDomFeatureLinks(layer)) {
-      this.processLinks(layer as VectorLayer<Feature>);
+      this.processLinks(layer as VectorLayer<VectorSource<Feature>>);
     }
-    (layer as VectorLayer<Feature>).on('propertychange', (e) => {
+    (layer as VectorLayer<VectorSource<Feature>>).on('propertychange', (e) => {
       this.hsUtilsService.debounce(this.layerPropChanged(e), 100, false, this);
     });
   }
@@ -93,7 +93,7 @@ export class HsExternalService {
     }
   }
 
-  private processLinks(layer: VectorLayer<Feature>) {
+  private processLinks(layer: VectorLayer<VectorSource<Feature>>) {
     const source: VectorSource = this.hsLayerUtilsService.isLayerClustered(
       layer,
     )

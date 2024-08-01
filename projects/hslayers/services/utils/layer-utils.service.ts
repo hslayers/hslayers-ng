@@ -207,7 +207,9 @@ export class HsLayerUtilsService {
     if (!this.isLayerVectorLayer(layer)) {
       return;
     }
-    return (layer as VectorLayer<Feature>).getSource()?.getFormat();
+    return (layer as VectorLayer<VectorSource<Feature>>)
+      .getSource()
+      ?.getFormat();
   }
 
   /**
@@ -226,15 +228,15 @@ export class HsLayerUtilsService {
        */
       includingClusters
         ? this.HsUtilsService.instOf(
-            (layer as VectorLayer<Feature>).getSource(),
+            (layer as VectorLayer<VectorSource<Feature>>).getSource(),
             Cluster,
           ) ||
           this.HsUtilsService.instOf(
-            (layer as VectorLayer<Feature>).getSource(),
+            (layer as VectorLayer<VectorSource<Feature>>).getSource(),
             VectorSource,
           )
         : this.HsUtilsService.instOf(
-            (layer as VectorLayer<Feature>).getSource(),
+            (layer as VectorLayer<VectorSource<Feature>>).getSource(),
             VectorSource,
           )
     ) {
@@ -394,7 +396,7 @@ export class HsLayerUtilsService {
    */
   highlightFeatures(
     featuresUnder: Feature<Geometry>[],
-    layer: VectorLayer<Feature>,
+    layer: VectorLayer<VectorSource<Feature>>,
     list: {featureId?: string; highlighted?: boolean}[],
   ): void {
     const highlightedFeatures = list

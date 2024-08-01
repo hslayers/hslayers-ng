@@ -36,12 +36,12 @@ export class HsDrawServiceParams {
   snap: Snap;
   snapActive = false;
   snapSource: VectorSource;
-  snapLayer: VectorLayer<Feature>;
+  snapLayer: VectorLayer<VectorSource<Feature>>;
   /**
    * String of type GeometryType
    */
   type: 'Point' | 'Polygon' | 'LineString' | 'Circle';
-  selectedLayer: VectorLayer<Feature>;
+  selectedLayer: VectorLayer<VectorSource<Feature>>;
   tmpDrawLayer: any;
   source: VectorSource;
   drawActive = false;

@@ -24,7 +24,7 @@ import {setShowInLayerManager, setTitle} from 'hslayers-ng/common/extensions';
 export class HsSearchService {
   formatWKT = new WKT();
   canceler: Subject<any> = new Subject();
-  searchResultsLayer: VectorLayer<Feature>;
+  searchResultsLayer: VectorLayer<VectorSource<Feature>>;
   pointerMoveEventKey;
   providers = {};
 

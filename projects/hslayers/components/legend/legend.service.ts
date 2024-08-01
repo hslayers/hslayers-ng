@@ -7,7 +7,12 @@ import {Style as GeoStylerStyle} from 'geostyler-style';
 import {Image as ImageLayer, Layer, Vector as VectorLayer} from 'ol/layer';
 import {OlStyleParser} from 'geostyler-openlayers-parser';
 import {SldStyleParser as SLDParser} from 'geostyler-sld-parser';
-import {Source, ImageStatic as Static, XYZ} from 'ol/source';
+import {
+  Source,
+  ImageStatic as Static,
+  Vector as VectorSource,
+  XYZ,
+} from 'ol/source';
 import {Style} from 'ol/style';
 
 import {HsLayerSelectorService} from 'hslayers-ng/services/layer-manager';
@@ -72,7 +77,7 @@ export class HsLegendService {
    * @returns Image as SVG string
    */
   async getVectorLayerLegendSvg(
-    currentLayer: VectorLayer<Feature>,
+    currentLayer: VectorLayer<VectorSource<Feature>>,
   ): Promise<string> {
     try {
       if (currentLayer === undefined) {
@@ -199,7 +204,9 @@ export class HsLegendService {
 
   async setSvg(layer: Layer<Source>): Promise<SafeHtml> {
     return this.sanitizer.bypassSecurityTrustHtml(
-      await this.getVectorLayerLegendSvg(layer as VectorLayer<Feature>),
+      await this.getVectorLayerLegendSvg(
+        layer as VectorLayer<VectorSource<Feature>>,
+      ),
     );
   }
 
