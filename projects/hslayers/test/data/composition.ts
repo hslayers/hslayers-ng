@@ -19,10 +19,8 @@ export const compositionJson = {
       'maxResolution': null,
       'minResolution': 0,
       'projection': 'epsg:4326',
-      'style': {
-        'fill': 'rgba(255, 255, 255, 0.2)',
-        'stroke': {'color': '#ffcc33', 'width': 2},
-      },
+      'style':
+        '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><StyledLayerDescriptor version="1.0.0" xsi:schemaLocation="http://www.opengis.net/sld StyledLayerDescriptor.xsd" xmlns="http://www.opengis.net/sld" xmlns:ogc="http://www.opengis.net/ogc" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:se="http://www.opengis.net/se"><NamedLayer><Name/><UserStyle><Name/><Title/><FeatureTypeStyle><Rule><PointSymbolizer><Graphic><Mark><WellKnownName>circle</WellKnownName><Fill><CssParameter name="fill">#ffffff</CssParameter><CssParameter name="fill-opacity">0.2</CssParameter></Fill><Stroke><CssParameter name="stroke">#ffcc33</CssParameter><CssParameter name="stroke-width">0.9</CssParameter><CssParameter name="stroke-opacity">1</CssParameter></Stroke></Mark><Size>14</Size></Graphic></PointSymbolizer></Rule></FeatureTypeStyle></UserStyle></NamedLayer></StyledLayerDescriptor>',
     },
     {
       'metadata': {},
@@ -46,10 +44,8 @@ export const compositionJson = {
       'maxResolution': null,
       'minResolution': 0,
       'projection': 'epsg:4326',
-      'style': {
-        'fill': 'rgba(255, 255, 255, 0.2)',
-        'stroke': {'color': '#ffcc33', 'width': 2},
-      },
+      'style':
+        '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><StyledLayerDescriptor version="1.0.0" xsi:schemaLocation="http://www.opengis.net/sld StyledLayerDescriptor.xsd" xmlns="http://www.opengis.net/sld" xmlns:ogc="http://www.opengis.net/ogc" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:se="http://www.opengis.net/se"><NamedLayer><Name/><UserStyle><Name/><Title/><FeatureTypeStyle><Rule><PointSymbolizer><Graphic><Mark><WellKnownName>circle</WellKnownName><Fill><CssParameter name="fill">#ffffff</CssParameter><CssParameter name="fill-opacity">0.2</CssParameter></Fill><Stroke><CssParameter name="stroke">#ffcc33</CssParameter><CssParameter name="stroke-width">0.9</CssParameter><CssParameter name="stroke-opacity">1</CssParameter></Stroke></Mark><Size>14</Size></Graphic></PointSymbolizer></Rule></FeatureTypeStyle></UserStyle></NamedLayer></StyledLayerDescriptor>',
     },
     {
       'metadata': {},

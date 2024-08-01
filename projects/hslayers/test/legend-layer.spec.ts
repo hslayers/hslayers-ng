@@ -89,6 +89,7 @@ describe('HsLegendLayerComponent', () => {
   it('should create', () => {
     expect(parentComponent).toBeTruthy();
   });
+
   it('should generate vector layer', async () => {
     const count = 20;
     const features = new Array(count);
@@ -123,6 +124,7 @@ describe('HsLegendLayerComponent', () => {
     expect(parentComponent.layerDescriptors.length).toBeDefined();
     expect(parentComponent.layerDescriptors[0].title).toBe('Bookmarks');
   });
+
   it('should create layer feature style and geometry type', async function () {
     const count = 20;
     const features = new Array(count);
@@ -160,6 +162,7 @@ describe('HsLegendLayerComponent', () => {
     const svg = await service.getVectorLayerLegendSvg(layer);
     expect(svg).toBeDefined();
   });
+
   it('should turn off clustered features and change layer style', async function () {
     const count = 20;
     const features = new Array(count);
@@ -208,7 +211,9 @@ describe('HsLegendLayerComponent', () => {
         radius: 5,
       }),
     });
-    (component.layer.lyr as VectorLayer<VectorSource<Feature>>;).setStyle(customStyle);
+    (component.layer.lyr as VectorLayer<VectorSource<Feature>>).setStyle(
+      customStyle,
+    );
     fixture.detectChanges();
     const svg = await service.getVectorLayerLegendSvg(layer);
     expect(getCluster(component.layer.lyr)).toBeFalse();
