@@ -32,7 +32,6 @@ import {HsUtilsService} from 'hslayers-ng/services/utils';
 import {HsUtilsServiceMock} from './utils.service.mock';
 import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 import {getCluster, setCluster} from 'hslayers-ng/common/extensions';
-import {mockLayerUtilsService} from './layer-utils.service.mock';
 
 describe('HsLegendLayerComponent', () => {
   beforeAll(() => {
@@ -66,7 +65,7 @@ describe('HsLegendLayerComponent', () => {
         HsLegendService,
         {provide: HsConfig, useValue: mockedConfig},
         {provide: HsUtilsService, useValue: new HsUtilsServiceMock()},
-        {provide: HsLayerUtilsService, useValue: mockLayerUtilsService()},
+        HsLayerUtilsService,
         {provide: HsMapService, useValue: new HsMapServiceMock()},
         {
           provide: HsLayoutService,
