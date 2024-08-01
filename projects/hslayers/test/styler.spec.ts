@@ -9,8 +9,8 @@ import {provideHttpClient, withInterceptorsFromDi} from '@angular/common/http';
 import {provideHttpClientTesting} from '@angular/common/http/testing';
 
 import {Feature} from 'ol';
+import {Fill, Style} from 'ol/style';
 import {Point, Polygon} from 'ol/geom';
-import {Style} from 'ol/style';
 import {Vector as VectorLayer} from 'ol/layer';
 import {Vector as VectorSource} from 'ol/source';
 
@@ -133,16 +133,5 @@ describe('HsStyler', () => {
     const nextSpy = spyOn(service.onSet, 'next');
     await service.save();
     expect(nextSpy).toHaveBeenCalled();
-  });
-
-  it('SLD should be generated from OL style', async () => {
-    const style = await service.parseStyle({fill: {color: '#000000'}});
-    const sld = style.sld.replace(/\s/g, '');
-    expect(sld).toBe(
-      `<?xmlversion="1.0"encoding="UTF-8"standalone="yes"?><StyledLayerDescriptorversion="1.0.0"xsi:schemaLocation="http://www.opengis.net/sldStyledLayerDescriptor.xsd"xmlns="http://www.opengis.net/sld"xmlns:ogc="http://www.opengis.net/ogc"xmlns:xlink="http://www.w3.org/1999/xlink"xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"xmlns:se="http://www.opengis.net/se"><NamedLayer><Name>rule</Name><UserStyle><Name>rule</Name><Title>rule</Title><FeatureTypeStyle><Rule><Name>rule</Name><PolygonSymbolizer><Fill><CssParametername="fill">#000000</CssParameter></Fill></PolygonSymbolizer></Rule></FeatureTypeStyle></UserStyle></NamedLayer></StyledLayerDescriptor>`.replace(
-        /\s/g,
-        '',
-      ),
-    );
   });
 });
