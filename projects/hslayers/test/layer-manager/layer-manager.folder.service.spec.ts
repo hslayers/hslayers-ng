@@ -55,7 +55,7 @@ const layer2: HsLayerDescriptor = {
   showInLayerManager: true,
 };
 
-fdescribe('HsLayerManagerFolderService', () => {
+describe('HsLayerManagerFolderService', () => {
   let service: HsLayerManagerFolderService;
   let hsConfig: HsConfig;
   beforeEach(() => {
@@ -107,7 +107,7 @@ fdescribe('HsLayerManagerFolderService', () => {
     );
   });
 
-  fit('should remain in the original order after reorder', () => {
+  it('should remain in the original order after reorder', () => {
     hsConfig.reverseLayerList = false;
     service.folderAction$.next(service.sortByZ());
     expect(Array.from(service.data.folders().keys())[0]).toEqual('other');
