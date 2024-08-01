@@ -25,7 +25,7 @@ export class HsMeasureService {
    */
   sketches: Feature<Geometry>[] = [];
   lastMeasurementId: number;
-  measureVector: VectorLayer<Feature>;
+  measureVector: VectorLayer<VectorSource<Feature>>;
   measuringActivated = false;
   constructor(
     public hsMapService: HsMapService,

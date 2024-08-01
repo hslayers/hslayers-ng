@@ -3,7 +3,7 @@ import {Subject} from 'rxjs';
 
 import {Feature, View} from 'ol';
 import {Group, Layer, Vector as VectorLayer} from 'ol/layer';
-import {Source} from 'ol/source';
+import {Source, Vector as VectorSource} from 'ol/source';
 
 import {AddDataFileType} from 'hslayers-ng/types';
 import {AddDataUrlType} from 'hslayers-ng/types';
@@ -172,7 +172,7 @@ export class HsConfigObject {
   zoomWithModifierKeyOnly?: boolean;
   pureMap?: boolean;
   translationOverrides?: any;
-  layersInFeatureTable?: VectorLayer<Feature>[];
+  layersInFeatureTable?: VectorLayer<VectorSource<Feature>>[];
   open_lm_after_comp_loaded?: boolean;
   draggable_windows?: boolean;
   connectTypes?: AddDataUrlType[];

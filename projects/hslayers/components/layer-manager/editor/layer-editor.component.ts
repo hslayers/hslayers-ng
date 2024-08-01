@@ -2,7 +2,7 @@ import {Component, Input} from '@angular/core';
 
 import {Feature} from 'ol';
 import {Layer} from 'ol/layer';
-import {Source} from 'ol/source';
+import {Source, Vector as VectorSource} from 'ol/source';
 import {Vector as VectorLayer} from 'ol/layer';
 
 import {HsClusterWidgetComponent} from '../widgets/cluster-widget.component';
@@ -174,7 +174,7 @@ export class HsLayerEditorComponent {
    */
   styleLayer() {
     const layer = this.olLayer();
-    this.HsStylerService.layer = layer as VectorLayer<Feature>;
+    this.HsStylerService.layer = layer as VectorLayer<VectorSource<Feature>>;
     this.HsLayoutService.setMainPanel('styler');
   }
 

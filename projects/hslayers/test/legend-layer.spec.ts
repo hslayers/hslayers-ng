@@ -208,7 +208,7 @@ describe('HsLegendLayerComponent', () => {
         radius: 5,
       }),
     });
-    (component.layer.lyr as VectorLayer<Feature>).setStyle(customStyle);
+    (component.layer.lyr as VectorLayer<VectorSource<Feature>>;).setStyle(customStyle);
     fixture.detectChanges();
     const svg = await service.getVectorLayerLegendSvg(layer);
     expect(getCluster(component.layer.lyr)).toBeFalse();

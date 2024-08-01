@@ -6,7 +6,8 @@ import {Subject, takeUntil} from 'rxjs';
 import colorScales from 'colormap/colorScale';
 import {Feature} from 'ol';
 import {Layer} from 'ol/layer';
-import {Source} from 'ol/source';
+import {Source, Vector as VectorSource} from 'ol/source';
+
 import {Vector as VectorLayer} from 'ol/layer';
 
 import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
@@ -50,7 +51,9 @@ export class HsStylerComponent
           layer !== null &&
           this.hsLayerUtilsService.isLayerVectorLayer(layer, false)
         ) {
-          this.hsStylerService.fill(layer as VectorLayer<Feature>);
+          this.hsStylerService.fill(
+            layer as VectorLayer<VectorSource<Feature>>,
+          );
         }
       });
     this.hsLayoutService.mainpanel$

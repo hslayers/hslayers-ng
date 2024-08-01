@@ -58,9 +58,9 @@ import {getHighlighted} from 'hslayers-ng/common/extensions';
   providedIn: 'root',
 })
 export class HsStylerService {
-  layer: VectorLayer<Feature> = null;
+  layer: VectorLayer<VectorSource<Feature>> = null;
   layerBeingMonitored: boolean;
-  onSet: Subject<VectorLayer<Feature>> = new Subject();
+  onSet: Subject<VectorLayer<VectorSource<Feature>>> = new Subject();
   layerTitle: string;
   styleObject: GeoStylerStyle;
 
@@ -131,13 +131,15 @@ export class HsStylerService {
         .filter((layer) =>
           this.hsLayerUtilsService.isLayerVectorLayer(layer),
         )) {
-        this.initLayerStyle(layer as VectorLayer<Feature>);
+        this.initLayerStyle(layer as VectorLayer<VectorSource<Feature>>);
       }
       this.hsEventBusService.layerAdditions.subscribe((layerDescriptor) => {
         if (
           this.hsLayerUtilsService.isLayerVectorLayer(layerDescriptor.layer)
         ) {
-          this.initLayerStyle(layerDescriptor.layer as VectorLayer<Feature>);
+          this.initLayerStyle(
+            layerDescriptor.layer as VectorLayer<VectorSource<Feature>>,
+          );
         }
       });
     });
@@ -158,7 +160,7 @@ export class HsStylerService {
    * @returns Source of the input layer or source of its cluster's source
    */
   getLayerSource(
-    layer: VectorLayer<Feature>,
+    layer: VectorLayer<VectorSource<Feature>>,
     isClustered: boolean,
   ): VectorSource {
     if (!layer) {
@@ -177,7 +179,9 @@ export class HsStylerService {
    * Style clustered layer features using cluster style or individual feature style.
    * @param layer - Any vector layer
    */
-  async styleClusteredLayer(layer: VectorLayer<Feature>): Promise<void> {
+  async styleClusteredLayer(
+    layer: VectorLayer<VectorSource<Feature>>,
+  ): Promise<void> {
     await this.fill(layer);
     //Check if layer already has SLD style for clusters
     if (
@@ -224,7 +228,7 @@ export class HsStylerService {
    * Upload style created by createDefaultStyle method to layman thus syncing style of
    * vector layer added without SLD by rewriting its default value
    */
-  private trySyncingStyleToLayman(layer: VectorLayer<Feature>) {
+  private trySyncingStyleToLayman(layer: VectorLayer<VectorSource<Feature>>) {
     if (this.hsLayerSynchronizerService.syncedLayers.includes(layer)) {
       awaitLayerSync(layer).then(() => {
         setSld(
@@ -245,7 +249,9 @@ export class HsStylerService {
    *
    * @param layer - OL layer to fill the missing style info
    */
-  async initLayerStyle(layer: VectorLayer<Feature>): Promise<void> {
+  async initLayerStyle(
+    layer: VectorLayer<VectorSource<Feature>>,
+  ): Promise<void> {
     if (!this.isVectorLayer(layer)) {
       return;
     }
@@ -348,7 +354,7 @@ export class HsStylerService {
    * loading style from a file
    */
   async fill(
-    layer: VectorLayer<Feature>,
+    layer: VectorLayer<VectorSource<Feature>>,
     styleWithPriority?: 'sld' | 'qml',
   ): Promise<void> {
     const blankStyleObj = {name: 'untitled style', rules: []};

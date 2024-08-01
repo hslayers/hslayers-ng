@@ -21,8 +21,8 @@ import {HsShareUrlService} from 'hslayers-ng/services/share';
 import {HsToastService} from 'hslayers-ng/common/toast';
 import {HsUtilsService} from 'hslayers-ng/services/utils';
 import {RouteProfile, profiles} from './ors-profiles.const';
-import {getHighlighted} from 'hslayers-ng/common/extensions';
-import {getTitle, setTitle} from 'hslayers-ng/common/extensions';
+import {getHighlighted, setTitle} from 'hslayers-ng/common/extensions';
+import {getTitle} from 'hslayers-ng/common/extensions';
 
 export type Waypoint = {
   name: string;
@@ -56,14 +56,14 @@ export class HsTripPlannerService {
   movable_features = new Collection<Feature<Geometry>>();
   modify: Modify;
   waypointSource: VectorSource<Feature<Point>>;
-  waypointLayer: VectorLayer<Feature<Point>>;
+  waypointLayer: VectorLayer<VectorSource<Feature<Point>>>;
   routeSource: VectorSource;
-  routeLayer: VectorLayer<Feature>;
+  routeLayer: VectorLayer<VectorSource<Feature>>;
   timer: any;
-  vectorLayers: {layer: VectorLayer<Feature>; title: string}[];
+  vectorLayers: {layer: VectorLayer<VectorSource<Feature>>; title: string}[];
   selectedLayerWrapper: {
-    route?: {layer: VectorLayer<Feature>; title: string};
-    waypoints?: {layer: VectorLayer<Feature>; title: string};
+    route?: {layer: VectorLayer<VectorSource<Feature>>; title: string};
+    waypoints?: {layer: VectorLayer<VectorSource<Feature>>; title: string};
   } = {};
   selectedProfile: RouteProfile = profiles[0];
 
@@ -161,7 +161,7 @@ export class HsTripPlannerService {
           .filter((layer: Layer<Source>) =>
             this.HsLayerUtilsService.isLayerDrawable(layer),
           )
-          .map((layer: VectorLayer<Feature>) => {
+          .map((layer: VectorLayer<VectorSource<Feature>>) => {
             return {layer, title: getTitle(layer)};
           }),
       ];
@@ -218,7 +218,7 @@ export class HsTripPlannerService {
    * @param usage - route or waypoints
    */
   async selectLayer(
-    layer: {layer: VectorLayer<Feature>; title: string},
+    layer: {layer: VectorLayer<VectorSource<Feature>>; title: string},
     usage: 'route' | 'waypoints',
   ): Promise<void> {
     if (usage == 'route') {
@@ -229,7 +229,9 @@ export class HsTripPlannerService {
       this.selectedLayerWrapper.route = layer;
     }
     if (usage == 'waypoints') {
-      this.waypointLayer = layer.layer as VectorLayer<Feature<Point>>;
+      this.waypointLayer = layer.layer as VectorLayer<
+        VectorSource<Feature<Point>>
+      >;
       if (this.waypointLayer) {
         this.waypointSource = this.waypointLayer.getSource();
       }

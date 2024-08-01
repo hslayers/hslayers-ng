@@ -42,10 +42,12 @@ export class HsLayerEditorVectorLayerService {
         layer.setSource(this.createClusteredSource(layer, distance));
         if (generateStyle) {
           await this.hsStylerService.styleClusteredLayer(
-            layer as VectorLayer<Feature>,
+            layer as VectorLayer<VectorSource<Feature>>,
           );
         }
-        this.updateFeatureTableLayers(layer as VectorLayer<Feature>);
+        this.updateFeatureTableLayers(
+          layer as VectorLayer<VectorSource<Feature>>,
+        );
       }
     } else if (this.hsUtilsService.instOf(layer.getSource(), Cluster)) {
       layer.setSource((layer.getSource() as Cluster<Feature>).getSource());
@@ -78,7 +80,7 @@ export class HsLayerEditorVectorLayerService {
     });
   }
 
-  updateFeatureTableLayers(layer: VectorLayer<Feature>) {
+  updateFeatureTableLayers(layer: VectorLayer<VectorSource<Feature>>) {
     const currentLayerIndex = this.hsConfig.layersInFeatureTable?.findIndex(
       (l) => l == layer,
     );

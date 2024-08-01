@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 
 import {Feature} from 'ol';
 import {Vector as VectorLayer} from 'ol/layer';
+import {Vector as VectorSource} from 'ol/source';
 
 import {HsConfig} from 'hslayers-ng/config';
 import {HsFeatureTableService} from './feature-table.service';
@@ -15,8 +16,9 @@ import {HsSidebarService} from 'hslayers-ng/services/sidebar';
 })
 export class HsFeatureTableComponent
   extends HsPanelBaseComponent
-  implements OnInit {
-  layers: VectorLayer<Feature>[] = [];
+  implements OnInit
+{
+  layers: VectorLayer<VectorSource<Feature>>[] = [];
   name = 'feature-table';
   constructor(
     private hsFeatureTableService: HsFeatureTableService,
@@ -48,7 +50,7 @@ export class HsFeatureTableComponent
    * Add layer to feature description table
    * @param layer - Layer to add
    */
-  addLayerToTable(layer: VectorLayer<Feature>): void {
+  addLayerToTable(layer: VectorLayer<VectorSource<Feature>>): void {
     const layerDescriptor = this.hsFeatureTableService.addLayer(layer);
     if (layerDescriptor) {
       this.layers.push(layerDescriptor);

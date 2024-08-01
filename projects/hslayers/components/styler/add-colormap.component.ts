@@ -2,6 +2,7 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 
 import {Feature} from 'ol';
 import {Vector as VectorLayer} from 'ol/layer';
+import {Vector as VectorSource} from 'ol/source';
 
 import {HsLanguageService} from 'hslayers-ng/services/language';
 import {HsLayerUtilsService} from 'hslayers-ng/services/utils';
@@ -13,7 +14,7 @@ import {HsStylerService} from 'hslayers-ng/services/styler';
 })
 export class HsAddColormapComponent implements OnInit {
   name = 'add-colormap';
-  @Input() layer: VectorLayer<Feature>;
+  @Input() layer: VectorLayer<VectorSource<Feature>>;
   weightAttribute: string;
   attributes: string[];
   colorMap: string;
