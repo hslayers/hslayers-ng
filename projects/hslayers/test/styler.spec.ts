@@ -8,8 +8,8 @@ import {FormsModule} from '@angular/forms';
 import {provideHttpClient, withInterceptorsFromDi} from '@angular/common/http';
 import {provideHttpClientTesting} from '@angular/common/http/testing';
 
+import {Circle, Fill, Stroke, Style} from 'ol/style';
 import {Feature} from 'ol';
-import {Fill, Style} from 'ol/style';
 import {Point, Polygon} from 'ol/geom';
 import {Vector as VectorLayer} from 'ol/layer';
 import {Vector as VectorSource} from 'ol/source';
@@ -133,5 +133,25 @@ describe('HsStyler', () => {
     const nextSpy = spyOn(service.onSet, 'next');
     await service.save();
     expect(nextSpy).toHaveBeenCalled();
+  });
+
+  it('SLD should be generated from OL style', async () => {
+    const style = new Style({
+      image: new Circle({
+        fill: new Fill({
+          color: 'rgba(0, 157, 87, 0.5)',
+        }),
+        stroke: new Stroke({
+          color: 'rgb(0, 157, 87)',
+          width: 2,
+        }),
+        radius: 5,
+      }),
+    });
+
+    const sld = await service.olStyleToSld(style);
+    expect(sld).toBe(
+      `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><StyledLayerDescriptor version="1.0.0" xsi:schemaLocation="http://www.opengis.net/sld StyledLayerDescriptor.xsd" xmlns="http://www.opengis.net/sld" xmlns:ogc="http://www.opengis.net/ogc" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:se="http://www.opengis.net/se"><NamedLayer><Name>OL Style</Name><UserStyle><Name>OL Style</Name><Title>OL Style</Title><FeatureTypeStyle><Rule><Name>OL Style Rule 0</Name><PointSymbolizer><Graphic><Mark><WellKnownName>circle</WellKnownName><Fill><CssParameter name="fill">#009d57</CssParameter><CssParameter name="fill-opacity">0.5</CssParameter></Fill><Stroke><CssParameter name="stroke">rgb(0, 157, 87)</CssParameter><CssParameter name="stroke-width">2</CssParameter></Stroke></Mark><Size>10</Size></Graphic></PointSymbolizer></Rule></FeatureTypeStyle></UserStyle></NamedLayer></StyledLayerDescriptor>`,
+    );
   });
 });
