@@ -296,11 +296,12 @@ export class HsStylerService {
     } else if (style && !sld && !qml) {
       /*
        * OL StyleLike definition
-       * TODO: what here? I feel like conversion from OL Style to Geostyler/SLD is not available
        */
       this.hsLogService.log(
         `OL layer StyleLike style definition for layer ${getTitle(layer)}`,
       );
+      sld = await this.olStyleToSld(style as StyleLike);
+      setSld(layer, sld);
     } else {
       this.hsLogService.error(
         `Unexpected style definition for layer ${getTitle(layer)}`,
@@ -311,7 +312,7 @@ export class HsStylerService {
   }
 
   /**
-   * Parse style encoded as custom JSON or SLD and return OL style object.
+   * Parse style encoded as SLD or QML and return OL style object.
    * This function is used to support backwards compatibility with custom format.
    * @param style -
    * @returns OL style object
@@ -454,6 +455,27 @@ export class HsStylerService {
           }
         }
       }
+    }
+  }
+
+  /**
+   * Converts OL style into SLD
+   */
+  async olStyleToSld(style: StyleLike): Promise<string> {
+    try {
+      const {OlStyleParser} = await import('geostyler-openlayers-parser');
+      const parser = new OlStyleParser();
+
+      const {output: geoStylerStyle} = await parser.readStyle(style);
+      const sldParser = new SLDParser({sldVersion: '1.0.0'});
+      const {output: sld} = await sldParser.writeStyle(geoStylerStyle);
+      return sld;
+    } catch (error) {
+      this.hsLogService.error(
+        'There was an error converting OL style to SLD',
+        error,
+      );
+      return defaultStyle;
     }
   }
 
