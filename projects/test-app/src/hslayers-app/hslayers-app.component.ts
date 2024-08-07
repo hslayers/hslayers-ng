@@ -22,8 +22,10 @@ import {HsSidebarService} from 'hslayers-ng/services/sidebar';
 import {HsUtilsService} from 'hslayers-ng/services/utils';
 import {InterpolatedSource} from 'hslayers-ng/common/layers';
 import {SPOI} from 'hslayers-ng/common/layers';
-import {SomeComponent} from './some-panel/some-panel.component';
 import {SparqlJson} from 'hslayers-ng/common/layers';
+
+import {PopupWidgetComponent} from './popup-widget.component';
+import {SomeComponent} from './some-panel/some-panel.component';
 
 @Component({
   selector: 'hslayers-app',
@@ -378,7 +380,15 @@ export class HslayersAppComponent {
         print: 500,
       },
       open_lm_after_comp_loaded: false,
-      queryPopupWidgets: ['layer-name', 'feature-info', 'clear-layer'],
+      queryPopupWidgets: [
+        'analysis',
+        'layer-name',
+        'feature-info',
+        'clear-layer',
+      ],
+      customQueryPopupWidgets: [
+        {name: 'analysis', component: PopupWidgetComponent},
+      ],
       datasources: [
         {
           title: 'Layman',
