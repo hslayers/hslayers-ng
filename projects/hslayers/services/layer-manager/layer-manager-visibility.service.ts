@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 
-import {Group, Layer} from 'ol/layer';
+import {Layer} from 'ol/layer';
 import {Source} from 'ol/source';
 
 import {HsConfig} from 'hslayers-ng/config';
@@ -9,13 +9,7 @@ import {HsLayerDescriptor, HsTerrainLayerDescriptor} from 'hslayers-ng/types';
 import {HsLayerUtilsService} from 'hslayers-ng/services/utils';
 import {HsLayermanagerDataObject} from './layer-manager.service';
 import {HsMapService} from 'hslayers-ng/services/map';
-import {
-  getActive,
-  getBase,
-  getExclusive,
-  getPath,
-  setActive,
-} from 'hslayers-ng/common/extensions';
+import {getBase, getExclusive, getPath} from 'hslayers-ng/common/extensions';
 
 @Injectable({
   providedIn: 'root',
@@ -96,27 +90,6 @@ export class HsLayerManagerVisibilityService {
       this.hsLayerUtilsService.isLayerVectorLayer(layer.layer, false)
     ) {
       this.hsEventBusService.LayerManagerLayerVisibilityChanges.next(layer);
-    }
-  }
-
-  /**
-   * Show all layers of particular layer group (when groups are defined)
-   * @param theme - Group layer to activate
-   */
-  activateTheme(theme: Group) {
-    const switchOn = getActive(theme) ? false : true;
-    setActive(theme, switchOn);
-    let baseSwitched = false;
-    theme.setVisible(switchOn);
-    for (const layer of theme.get('layers')) {
-      if (getBase(layer) == true && !baseSwitched) {
-        this.changeBaseLayerVisibility(null, null);
-        baseSwitched = true;
-      } else if (getBase(layer) == true) {
-        return;
-      } else {
-        layer.setVisible(switchOn);
-      }
     }
   }
 

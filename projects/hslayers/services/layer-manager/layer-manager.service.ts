@@ -5,7 +5,7 @@ import {toSignal} from '@angular/core/rxjs-interop';
 
 import {CollectionEvent} from 'ol/Collection';
 import {EventsKey} from 'ol/events';
-import {Group, Layer} from 'ol/layer';
+import {Layer} from 'ol/layer';
 import {Map as OlMap} from 'ol';
 import {Source} from 'ol/source';
 import {unByKey} from 'ol/Observable';
@@ -32,7 +32,6 @@ import {HsUtilsService} from 'hslayers-ng/services/utils';
 import {
   SHOW_IN_LAYER_MANAGER,
   getAbstract,
-  getActive,
   getBase,
   getCachedCapabilities,
   getCluster,
@@ -46,9 +45,7 @@ import {
   getQueryCapabilities,
   getShowInLayerManager,
   getSubLayers,
-  getThumbnail,
   getTitle,
-  setActive,
   setGreyscale,
   setName,
   setOrigLayers,
@@ -68,7 +65,6 @@ export class HsLayermanagerDataObject {
   baselayers: HsBaseLayerDescriptor[];
   terrainLayers: HsTerrainLayerDescriptor[];
   baselayer?: string;
-  box_layers?: Group[];
   /**
    * Defined from component to allow reactivity
    */
@@ -172,7 +168,6 @@ export class HsLayerManagerService {
       this.sortLayersByZ(this.data.layers);
       this.hsEventBusService.layerManagerUpdates.next(null);
       this.toggleEditLayerByUrlParam();
-      this.boxLayersInit();
 
       this.setupMapEventHandlers(map);
     });
@@ -474,57 +469,6 @@ export class HsLayerManagerService {
     for (let i = 0; i < arrayToSearch.length; i++) {
       if (arrayToSearch[i] == layer) {
         arrayToSearch.splice(i, 1);
-      }
-    }
-  }
-
-  /**
-   * Initialize box layers and their starting active state
-   * (PRIVATE)
-   * @private
-   */
-  private boxLayersInit(): void {
-    if (this.hsConfig.box_layers != undefined) {
-      this.data.box_layers = this.hsConfig.box_layers;
-      for (const box of this.data.box_layers) {
-        let visible = false;
-        let baseVisible = false;
-        for (const layer of box.get('layers').getArray()) {
-          if (layer.get('visible') == true && getBase(layer) == true) {
-            baseVisible = true;
-          } else if (layer.get('visible') == true) {
-            visible = true;
-          }
-        }
-        (box as any).thumbnail = getThumbnail(box);
-        setActive(box, baseVisible ? baseVisible : visible);
-      }
-    }
-  }
-
-  /**
-   * Show all layers of particular layer group (when groups are defined)
-   * @param theme - Group layer to activate
-   */
-  activateTheme(theme: Group): void {
-    let switchOn = true;
-    if (getActive(theme) == true) {
-      switchOn = false;
-    }
-    setActive(theme, switchOn);
-    let baseSwitched = false;
-    theme.setVisible(switchOn);
-    for (const layer of theme.get('layers')) {
-      if (getBase(layer) == true && !baseSwitched) {
-        this.hsLayerManagerVisibilityService.changeBaseLayerVisibility(
-          null,
-          null,
-        );
-        baseSwitched = true;
-      } else if (getBase(layer) == true) {
-        return;
-      } else {
-        layer.setVisible(switchOn);
       }
     }
   }

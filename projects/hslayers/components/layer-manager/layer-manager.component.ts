@@ -349,10 +349,6 @@ export class HsLayerManagerComponent
     layer.set(property, value);
   }
 
-  activateTheme(e) {
-    return this.hsLayerManagerVisibilityService.activateTheme(e);
-  }
-
   filterLayers(
     filter: string,
     type: 'baselayers' | 'terrainLayers',
@@ -428,15 +424,6 @@ export class HsLayerManagerComponent
     } else {
       return getAttribution(layer.layer)?.onlineResource != undefined;
     }
-  }
-
-  /**
-   * Test if box layers are loaded
-   */
-  hasBoxImages(): boolean {
-    return this.hsLayerManagerService.data.box_layers?.some(
-      (layer) => getThumbnail(layer) !== undefined,
-    );
   }
 
   /**

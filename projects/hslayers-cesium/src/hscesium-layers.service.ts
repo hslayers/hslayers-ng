@@ -215,7 +215,7 @@ export class HsCesiumLayersService {
 
   /**
    * @public
-   * Add all layers from app HsConfig (box_layers and default_layers) to the map. Only layers specified in visible_layers parameter will get instantly visible.
+   * Add all layers from app HsConfig - default_layers to the map. Only layers specified in visible_layers parameter will get instantly visible.
    */
   async repopulateLayers() {
     if (this.viewer.isDestroyed()) {
@@ -223,11 +223,6 @@ export class HsCesiumLayersService {
     }
     if (this.hsConfig.default_layers) {
       for (const l of this.hsConfig.default_layers.filter((l) => l)) {
-        this.processOlLayer(l);
-      }
-    }
-    if (this.hsConfig.box_layers) {
-      for (const l of this.hsConfig.box_layers.filter((l) => l)) {
         this.processOlLayer(l);
       }
     }
