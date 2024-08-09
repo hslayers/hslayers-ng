@@ -8,7 +8,7 @@
         </div>
         <div class="text-truncate">
           <div class="hs-info-composition-title">{{'COMMON.loading' | translateHs }}: </div>
-          @for (layer of layer_loading; track trackByFn($index, layer)) {
+          @for (layer of layer_loading; track $index) {
             <span>{{layer}} </span>
           }
         </div>
