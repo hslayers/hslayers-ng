@@ -1,30 +1,34 @@
-<div class="card hs-main-panel overflow-hidden h-100" style="margin-top: 0 !important;" *ngIf="isVisible$ | async"
-    [ngClass]="panelWidthClass">
-    <ng-container *ngIf="{selected: hsAddDataService.datasetTypeSelected | async} as dataset">
-        <hs-panel-header name="addData" [panelTabs]="'catalogue,url,file'"
-            [selectedTab$]="hsAddDataService.datasetSelected">
-            @if(dataset.selected === 'catalogue' && hsAddDataCatalogueService.data.onlyMine){
-            <extra-buttons>
-                <ng-container *ngIf="{enabled: layersAvailable | async} as removal">
-                    <a class="dropdown-item" (click)="removeMultipleLayers()" [class.disabled]="!removal.enabled">
-                        <i class="icon-trash"></i>&nbsp;{{'DRAW.removeMultipleLayers' | translateHs }}
-                    </a>
-                    <a class="dropdown-item" (click)="removeAllLayers()" [class.disabled]="!removal.enabled">
-                        <i class="icon-trash"></i>&nbsp;{{'LAYERMANAGER.removeAllLayers' | translateHs }}
-                    </a>
-                </ng-container>
-
-            </extra-buttons>
-            }
-        </hs-panel-header>
-        <div class="card-body" style="overflow-y: auto;">
-            <hs-add-data-url *ngIf="dataset.selected === 'url' || dataset.selected === 'OWS'">
-            </hs-add-data-url>
-            <hs-add-data-file *ngIf="dataset.selected === 'file'">
-            </hs-add-data-file>
-            <hs-add-data-catalogue class="h-100 d-block" *ngIf="dataset.selected === 'catalogue'">
-            </hs-add-data-catalogue>
-        </div>
-    </ng-container>
-
+@if (isVisible$ | async) {
+<div class="card hs-main-panel overflow-hidden h-100" style="margin-top: 0 !important;" [ngClass]="panelWidthClass">
+  @if ({selected: hsAddDataService.datasetTypeSelected | async}; as dataset) {
+  <hs-panel-header name="addData" [panelTabs]="'catalogue,url,file'" [selectedTab$]="hsAddDataService.datasetSelected">
+    @if(dataset.selected === 'catalogue' && hsAddDataCatalogueService.data.onlyMine){
+    <extra-buttons>
+      @if ({enabled: layersAvailable | async}; as removal) {
+      <a class="dropdown-item" (click)="removeMultipleLayers()" [class.disabled]="!removal.enabled">
+        <i class="icon-trash"></i>&nbsp;{{'DRAW.removeMultipleLayers' | translateHs }}
+      </a>
+      <a class="dropdown-item" (click)="removeAllLayers()" [class.disabled]="!removal.enabled">
+        <i class="icon-trash"></i>&nbsp;{{'LAYERMANAGER.removeAllLayers' | translateHs }}
+      </a>
+      }
+    </extra-buttons>
+    }
+  </hs-panel-header>
+  <div class="card-body" style="overflow-y: auto;">
+    @if (dataset.selected === 'url' || dataset.selected === 'OWS') {
+    <hs-add-data-url>
+    </hs-add-data-url>
+    }
+    @if (dataset.selected === 'file') {
+    <hs-add-data-file>
+    </hs-add-data-file>
+    }
+    @if (dataset.selected === 'catalogue') {
+    <hs-add-data-catalogue class="h-100 d-block">
+    </hs-add-data-catalogue>
+    }
+  </div>
+  }
 </div>
+}

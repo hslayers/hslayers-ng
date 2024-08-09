@@ -1,86 +1,98 @@
-<div class="card hs-main-panel" *ngIf="isVisible$ | async" [ngClass]="panelWidthClass" #hsPrint>
+@if (isVisible$ | async) {
+  <div class="card hs-main-panel" [ngClass]="panelWidthClass" #hsPrint>
     <hs-panel-header name="print" [panelTabs]="'PRINT'">
-        <button mainButton class="btn btn-sm btn-outline-primary border-0" (click)="setToDefault()"
-            [title]="'COMMON.resetToDefault' | translateHs "> {{'COMMON.reset' | translateHs}}
-            <i class="glyphicon icon-fatredo"></i>
-        </button>
+      <button mainButton class="btn btn-sm btn-outline-primary border-0" (click)="setToDefault()"
+        [title]="'COMMON.resetToDefault' | translateHs "> {{'COMMON.reset' | translateHs}}
+        <i class="glyphicon icon-fatredo"></i>
+      </button>
     </hs-panel-header>
     <div class="card-body">
-        <div class="card-body">
-            <div class="form-floating mb-2">
-                <input type="text" class="form-control" id="print-title" [(ngModel)]="print.titleObj.text"
-                    [placeholder]="'COMMON.title' | translateHs " />
-                <label for="print-title" class="control-label">{{'COMMON.title' | translateHs
-                    }}</label>
+      <div class="card-body">
+        <div class="form-floating mb-2">
+          <input type="text" class="form-control" id="print-title" [(ngModel)]="print.titleObj.text"
+            [placeholder]="'COMMON.title' | translateHs " />
+          <label for="print-title" class="control-label">{{'COMMON.title' | translateHs
+          }}</label>
+        </div>
+        <div class="d-flex justify-content-around mb-2">
+          <div class="form-check border-0">
+            <input type="checkbox" class="form-check-input" [(ngModel)]="print.legendObj.include"
+              name="includeLegend" id="includeLegend">
+            <label class="form-check-label pt-1" for="includeLegend" style="cursor:pointer">{{'COMMON.legend' |
+            translateHs }}</label>
+          </div>
+          <div class="form-check border-0">
+            <input type="checkbox" class="form-check-input" [(ngModel)]="print.imprintObj.include"
+              name="includeImprint" id="includeImprint">
+            <label class="form-check-label pt-1" for="includeImprint" style="cursor:pointer">{{'PRINT.imprint' |
+            translateHs }}</label>
+          </div>
+          <div class="form-check border-0">
+            <input type="checkbox" class="form-check-input" [(ngModel)]="print.scaleObj.include"
+              name="includeScale" id="includeScale">
+            <label class="form-check-label pt-1" for="includeScale" style="cursor:pointer">{{'COMMON.scale' |
+            translateHs }}</label>
+          </div>
+        </div>
+        <button type="button" class="btn w-100 mb-2 btn-outline-secondary dropdown-toggle dropdown-toggle-split"
+          (click)="setStylerVisible('title')" [disabled]="!print.titleObj.text">
+          {{'PRINT.titleStylingOptions' | translateHs }}
+        </button>
+        @if (getStylerVisible('title')) {
+          <hs-print-text-styler [textStyle]="print.titleObj.textStyle"
+            [objectName]="'title'">
+            <!-- TODO: Remove function call from template -->
+          </hs-print-text-styler>
+        }
+        <button type="button" [disabled]="!print.legendObj.include" (click)="setStylerVisible('legend')"
+          class="btn w-100 mb-2 btn-outline-secondary dropdown-toggle dropdown-toggle-split">
+          {{'PRINT.legendStylingOptions' | translateHs }}
+        </button>
+        @if (getStylerVisible('legend') && print.legendObj.include) {
+          <hs-print-legend-styler
+            [legendObj]="print.legendObj">
+            <!-- TODO: Remove function call from template -->
+          </hs-print-legend-styler>
+        }
+        <button [disabled]="!print.imprintObj.include" type="button" (click)="setStylerVisible('imprint')"
+          class="btn w-100 mb-2 btn-outline-secondary dropdown-toggle dropdown-toggle-split">
+          {{'PRINT.imprintStylingOptions' | translateHs }}
+        </button>
+        @if (getStylerVisible('imprint') && print.imprintObj.include) {
+          <hs-print-imprint-styler
+            [imprintObj]="print.imprintObj">
+            <!-- TODO: Remove function call from template -->
+          </hs-print-imprint-styler>
+        }
+        <button [disabled]="!print.scaleObj.include" type="button" (click)="setStylerVisible('scale')"
+          class="btn w-100 mb-2 btn-outline-secondary dropdown-toggle dropdown-toggle-split">
+          {{'PRINT.scaleStylingOptions' | translateHs }}
+        </button>
+        @if (getStylerVisible('scale') && print.scaleObj.include) {
+          <hs-print-scale-styler
+            [scaleObj]="print.scaleObj">
+            <!-- TODO: Remove function call from template -->
+          </hs-print-scale-styler>
+        }
+        @if (!isLoading()) {
+          <div class="mb-2 mt-2 d-flex justify-content-start">
+            <button type="button" class="btn btn-primary me-2 w-50" (click)="printLayout(true)">{{'COMMON.print' |
+            translateHs }}</button>
+            <button type="button" class="btn btn-secondary w-50" (click)="printLayout(false)">{{'COMMON.preview' |
+            translateHs }}</button>
+            <button class="btn btn-secondary ms-2" (click)="download()" data-toggle="tooltip"
+              [title]="'COMMON.downloadAsPng' | translateHs"><i class="icon-download"></i></button>
             </div>
-            <div class="d-flex justify-content-around mb-2">
-                <div class="form-check border-0">
-                    <input type="checkbox" class="form-check-input" [(ngModel)]="print.legendObj.include"
-                        name="includeLegend" id="includeLegend">
-                    <label class="form-check-label pt-1" for="includeLegend" style="cursor:pointer">{{'COMMON.legend' |
-                        translateHs }}</label>
-                </div>
-                <div class="form-check border-0">
-                    <input type="checkbox" class="form-check-input" [(ngModel)]="print.imprintObj.include"
-                        name="includeImprint" id="includeImprint">
-                    <label class="form-check-label pt-1" for="includeImprint" style="cursor:pointer">{{'PRINT.imprint' |
-                        translateHs }}</label>
-                </div>
-                <div class="form-check border-0">
-                    <input type="checkbox" class="form-check-input" [(ngModel)]="print.scaleObj.include"
-                        name="includeScale" id="includeScale">
-                    <label class="form-check-label pt-1" for="includeScale" style="cursor:pointer">{{'COMMON.scale' |
-                        translateHs }}</label>
-                </div>
-            </div>
-            <button type="button" class="btn w-100 mb-2 btn-outline-secondary dropdown-toggle dropdown-toggle-split"
-                (click)="setStylerVisible('title')" [disabled]="!print.titleObj.text">
-                {{'PRINT.titleStylingOptions' | translateHs }}
-            </button>
-            <hs-print-text-styler *ngIf="getStylerVisible('title')" [textStyle]="print.titleObj.textStyle"
-                [objectName]="'title'">
-                <!-- TODO: Remove function call from template -->
-            </hs-print-text-styler>
-            <button type="button" [disabled]="!print.legendObj.include" (click)="setStylerVisible('legend')"
-                class="btn w-100 mb-2 btn-outline-secondary dropdown-toggle dropdown-toggle-split">
-                {{'PRINT.legendStylingOptions' | translateHs }}
-            </button>
-
-            <hs-print-legend-styler *ngIf="getStylerVisible('legend') && print.legendObj.include"
-                [legendObj]="print.legendObj">
-                <!-- TODO: Remove function call from template -->
-            </hs-print-legend-styler>
-            <button [disabled]="!print.imprintObj.include" type="button" (click)="setStylerVisible('imprint')"
-                class="btn w-100 mb-2 btn-outline-secondary dropdown-toggle dropdown-toggle-split">
-                {{'PRINT.imprintStylingOptions' | translateHs }}
-            </button>
-
-            <hs-print-imprint-styler *ngIf="getStylerVisible('imprint') && print.imprintObj.include"
-                [imprintObj]="print.imprintObj">
-                <!-- TODO: Remove function call from template -->
-            </hs-print-imprint-styler>
-            <button [disabled]="!print.scaleObj.include" type="button" (click)="setStylerVisible('scale')"
-                class="btn w-100 mb-2 btn-outline-secondary dropdown-toggle dropdown-toggle-split">
-                {{'PRINT.scaleStylingOptions' | translateHs }}
-            </button>
-            <hs-print-scale-styler *ngIf="getStylerVisible('scale') && print.scaleObj.include"
-                [scaleObj]="print.scaleObj">
-                <!-- TODO: Remove function call from template -->
-            </hs-print-scale-styler>
-            <div class="mb-2 mt-2 d-flex justify-content-start" *ngIf="!isLoading()">
-                <button type="button" class="btn btn-primary me-2 w-50" (click)="printLayout(true)">{{'COMMON.print' |
-                    translateHs }}</button>
-                <button type="button" class="btn btn-secondary w-50" (click)="printLayout(false)">{{'COMMON.preview' |
-                    translateHs }}</button>
-                <button class="btn btn-secondary ms-2" (click)="download()" data-toggle="tooltip"
-                    [title]="'COMMON.downloadAsPng' | translateHs"><i class="icon-download"></i></button>
-            </div>
-            <div class="d-flex justify-content-center btn-group w-75 m-auto" *ngIf="isLoading()">
-                <button class="btn btn-primary w-75">{{'ADDDATA.CATALOGUE.loading' | translateHs
-                    }}...<span class="hs-loader ms-2"></span></button>
+          }
+          @if (isLoading()) {
+            <div class="d-flex justify-content-center btn-group w-75 m-auto">
+              <button class="btn btn-primary w-75">{{'ADDDATA.CATALOGUE.loading' | translateHs
+                }}...<span class="hs-loader ms-2"></span></button>
                 <button class="btn btn-secondary" (click)="cancelLoading()">&#10006;
                 </button>
-            </div>
+              </div>
+            }
+          </div>
         </div>
-    </div>
-</div>
+      </div>
+    }

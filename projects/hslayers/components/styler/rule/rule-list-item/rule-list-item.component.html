@@ -21,7 +21,7 @@
   </div>
 </li>
 
-<ng-container *ngIf="ruleVisible">
+@if (ruleVisible) {
   <hs-rule [rule]="rule" (changes)="hsStylerService.save(); generateLegend()" (mousedown)="$event.stopPropagation()">
   </hs-rule>
-</ng-container>
+}

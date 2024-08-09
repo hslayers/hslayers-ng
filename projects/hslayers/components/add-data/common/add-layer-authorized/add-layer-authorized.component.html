@@ -1,24 +1,25 @@
 <div class="w-100 mt-2" style="display: inline-block;" data-toggle="tooltip" data-placement="top"
   [title]="hsAddDataCommonFileService.getToolTipText(data)">
   <!-- TODO: Remove function call from template -->
-  <hs-add-to-map *ngIf="hsAddDataCommonFileService.isAuthenticated(); else login" [disabled]="!canAdd()" (add)="add()"
-    [loading]="hsAddDataCommonFileService.loadingToLayman">
-        <!-- TODO: Remove function call from template -->
-    <span
-      *ngIf="hsAddDataCommonFileService.loadingToLayman && hsAddDataCommonFileService.readingData">&emsp;{{'COMMON.reading'
+  @if (hsAddDataCommonFileService.isAuthenticated()) {
+  <hs-add-to-map [disabled]="!canAdd()" (add)="add()" [loading]="hsAddDataCommonFileService.loadingToLayman">
+    <!-- TODO: Remove function call from template -->
+    @if (hsAddDataCommonFileService.loadingToLayman && hsAddDataCommonFileService.readingData) {
+    <span>&emsp;{{'COMMON.reading'
       |
       translateHs }}</span>
-    <ngb-progressbar
-      *ngIf="hsAddDataCommonFileService.loadingToLayman && (hsAddDataCommonFileService.asyncLoading || hsAddDataCommonFileService.readingData)"
-      [showValue]="true" class="rounded-0 mb-1" type="secondary" [max]="1" [value]="hsLaymanService.totalProgress">
+    }
+    @if (hsAddDataCommonFileService.loadingToLayman && (hsAddDataCommonFileService.asyncLoading ||
+    hsAddDataCommonFileService.readingData)) {
+    <ngb-progressbar [showValue]="true" class="rounded-0 mb-1" type="secondary" [max]="1"
+      [value]="hsLaymanService.totalProgress">
     </ngb-progressbar>
+    }
   </hs-add-to-map>
-</div>
-
-<ng-template #login>
+  } @else {
   <div class="alert alert-warning d-flex align-items-center mt-2 justify-content-between">
     <p class="m-0"> {{'ADDLAYERS.SHP.loginRequired' | translateHs }}</p>
     <hs-layman-current-user></hs-layman-current-user>
   </div>
-
-</ng-template>
+  }
+</div>

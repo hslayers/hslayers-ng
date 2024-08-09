@@ -1,23 +1,29 @@
-<div *ngIf="(hsQueryBaseService.features.length > 0) || (hsQueryBaseService.coordinates.length > 0)"
+@if ((hsQueryBaseService.features.length > 0) || (hsQueryBaseService.coordinates.length > 0)) {
+  <div
     class="card hs-main-panel">
     <div class="card-body">
-        <div ngbDropdown [hidden]="!(hsQueryBaseService.featureInfoHtmls.length > 0)">
-            <button ngbDropdownToggle class="btn btn-light w-100 rounded-0">
-                {{'QUERY.featureInfo' | translateHs }}
-            </button>
-            <div ngbDropdownMenu class="position-relative w-100"
-                *ngFor="let html of hsQueryBaseService.featureInfoHtmls" [innerHtml]="html"></div>
-        </div>
-        <hs-query-feature-list></hs-query-feature-list>
-        <table class="table table-striped" style="table-layout:fixed"
-            [hidden]="!(hsQueryBaseService.attributes.length > 0)">
-            <tbody>
-                <tr *ngFor="let attribute of hsQueryBaseService.attributes">
-                    <td class="first-col">{{attribute.name}}</td>
-                    <td class="second-col" [innerHtml]="attribute.value"></td>
-                </tr>
-            </tbody>
-        </table>
+      <div ngbDropdown [hidden]="!(hsQueryBaseService.featureInfoHtmls.length > 0)">
+        <button ngbDropdownToggle class="btn btn-light w-100 rounded-0">
+          {{'QUERY.featureInfo' | translateHs }}
+        </button>
+        @for (html of hsQueryBaseService.featureInfoHtmls; track html) {
+          <div ngbDropdownMenu class="position-relative w-100"
+          [innerHtml]="html"></div>
+        }
+      </div>
+      <hs-query-feature-list></hs-query-feature-list>
+      <table class="table table-striped" style="table-layout:fixed"
+        [hidden]="!(hsQueryBaseService.attributes.length > 0)">
+        <tbody>
+          @for (attribute of hsQueryBaseService.attributes; track attribute) {
+            <tr>
+              <td class="first-col">{{attribute.name}}</td>
+              <td class="second-col" [innerHtml]="attribute.value"></td>
+            </tr>
+          }
+        </tbody>
+      </table>
     </div>
     <iframe id="invisible_popup" style="display:block; z-index:12122;left:-10000px; position:absolute"></iframe>
-</div>
+  </div>
+}

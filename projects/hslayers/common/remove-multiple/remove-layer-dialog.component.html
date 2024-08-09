@@ -1,61 +1,69 @@
 <div class="modal in" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title d-flex">
-                    {{data.title | translateHs}} <span class="text-truncate d-inline-block" *ngIf="!data.multiple">:
-                        {{data.items[0].displayTitle}}</span>
-                </h4>
-                <button type="button" (click)="no()" class="btn-close" data-dismiss="modal"
-                    [attr.aria-label]="'COMMON.close' | translateHs "></button>
-            </div>
-            <div class="modal-body" style="overflow-y:auto">
-                @if(data.items.length > 0){
-                <div class="d-flex flex-column mb-3"> <!-- pb-3 border-bottom -->
-                    <p class="fw-bold h6">{{'LAYERS.removeLayer.deleteFrom' | translateHs }}: </p>
-                    <div class="d-flex gap-3 justify-content-center px-5">
-                        <button *ngFor="let option of data.deleteFromOptions" type="button" [attr.data-cy]="option"
-                            [hidden]="option === 'catalogue' && !this.isAuthenticated"
-                            [ngClass]="{'active' : deleteFrom === option, 'w-auto' : option === 'catalogue' }"
-                            (click)="selectDeleteOption(option)" class="btn btn-sm btn-outline-primary w-50">{{option |
-                            translateHs: 'LAYERS.removeLayer' }}</button>
-                    </div>
-                </div>
-                <p *ngIf="deleteFrom && deleteFrom !== 'map'" class="h6 small">{{data.note | translateHs}}</p>
-                <div *ngIf="deleteFrom && data.multiple">
-                    <p class="fw-bold h6">{{data.message | translateHs}}</p>
-
-                    <div style="max-height: 65vh;" *ngIf="data.items?.length > 0">
-                        <div class="d-flex w-100 justify-content-center">
-                            <button type="button" class="mt-1 btn btn-primary"
-                                (click)="toggleAll()">{{'SAVECOMPOSITION.form.toggleAll' |
-                                translateHs }}</button>
-                        </div>
-                        <div class="d-flex align-items-center" style="word-break:break-all"
-                            *ngFor="let item of data.items">
-                            <button type="button" class="btn btn-sm m-0 p-0"
-                                (click)="checkToRemove(item);$event.stopPropagation()"
-                                [ngClass]="item.toRemove ? 'hs-checkmark' : 'hs-uncheckmark'"></button>
-                            <p class="m-0 ps-1">{{item.displayTitle}}</p>
-                        </div>
-                    </div>
-                </div>
-                }
-                @else {
-                <p class="fw-bold h6 text-center">{{'LAYERS.removeLayer.noLayersToDelete' | translateHs }} </p>
-                }
-
-            </div>
-            <div class="modal-footer">
-                <button type="button" [disabled]="!deleteAllowed" class="btn"
-                    [ngClass]="{'btn-primary': deleteFrom === 'map', 'btn-danger': deleteFrom !== 'map'}"
-                    (click)="yes()" [title]="'COMMON.remove' | translateHs" data-dismiss="modal">{{'COMMON.remove' |
-                    translateHs}}</button>
-                <button type="button" class="btn btn-secondary compositions-btn-cancel"
-                    [title]="'COMMON.back' | translateHs" (click)="no()" data-dismiss="modal">{{'COMMON.back' |
-                    translateHs
-                    }}</button>
-            </div>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title d-flex">
+          {{data.title | translateHs}} @if (!data.multiple) {
+          <span class="text-truncate d-inline-block">:
+            {{data.items[0].displayTitle}}</span>
+          }
+        </h4>
+        <button type="button" (click)="no()" class="btn-close" data-dismiss="modal"
+          [attr.aria-label]="'COMMON.close' | translateHs "></button>
+      </div>
+      <div class="modal-body" style="overflow-y:auto">
+        @if(data.items.length > 0){
+        <div class="d-flex flex-column mb-3"> <!-- pb-3 border-bottom -->
+          <p class="fw-bold h6">{{'LAYERS.removeLayer.deleteFrom' | translateHs }}: </p>
+          <div class="d-flex gap-3 justify-content-center px-5">
+            @for (option of data.deleteFromOptions; track option) {
+            <button type="button" [attr.data-cy]="option" [hidden]="option === 'catalogue' && !this.isAuthenticated"
+              [ngClass]="{'active' : deleteFrom === option, 'w-auto' : option === 'catalogue' }"
+              (click)="selectDeleteOption(option)" class="btn btn-sm btn-outline-primary w-50">{{option |
+              translateHs: 'LAYERS.removeLayer' }}</button>
+            }
+          </div>
         </div>
+        @if (deleteFrom && deleteFrom !== 'map') {
+        <p class="h6 small">{{data.note | translateHs}}</p>
+        }
+        @if (deleteFrom && data.multiple) {
+        <div>
+          <p class="fw-bold h6">{{data.message | translateHs}}</p>
+          @if (data.items?.length > 0) {
+          <div style="max-height: 65vh;">
+            <div class="d-flex w-100 justify-content-center">
+              <button type="button" class="mt-1 btn btn-primary"
+                (click)="toggleAll()">{{'SAVECOMPOSITION.form.toggleAll' |
+                translateHs }}</button>
+            </div>
+            @for (item of data.items; track item) {
+            <div class="d-flex align-items-center" style="word-break:break-all">
+              <button type="button" class="btn btn-sm m-0 p-0" (click)="checkToRemove(item);$event.stopPropagation()"
+                [ngClass]="item.toRemove ? 'hs-checkmark' : 'hs-uncheckmark'"></button>
+              <p class="m-0 ps-1">{{item.displayTitle}}</p>
+            </div>
+            }
+          </div>
+          }
+        </div>
+        }
+        }
+        @else {
+        <p class="fw-bold h6 text-center">{{'LAYERS.removeLayer.noLayersToDelete' | translateHs }} </p>
+        }
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" [disabled]="!deleteAllowed" class="btn"
+          [ngClass]="{'btn-primary': deleteFrom === 'map', 'btn-danger': deleteFrom !== 'map'}" (click)="yes()"
+          [title]="'COMMON.remove' | translateHs" data-dismiss="modal">{{'COMMON.remove' |
+          translateHs}}</button>
+        <button type="button" class="btn btn-secondary compositions-btn-cancel" [title]="'COMMON.back' | translateHs"
+          (click)="no()" data-dismiss="modal">{{'COMMON.back' |
+          translateHs
+          }}</button>
+      </div>
     </div>
+  </div>
 </div>

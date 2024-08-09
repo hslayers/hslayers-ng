@@ -1,36 +1,45 @@
 <div>
-    <a (click)="unitClicked()" class="hs-sensor-unit">{{unit.description}}</a>
-    <ul class="list-group" [hidden]="!(expanded || unit.expanded)">
-        <div *ngFor="let sensorType of unit.sensorTypes" class="list-group-item p-1">
-            <a (click)="sensorType.expanded = !sensorType.expanded" class="hs-sensor-type"
-                style="line-height: 2em;">{{sensorType.name | translateHs : 'SENSORS.SENSORNAMES' }}
-            </a>
-            <ul class="list-group" [hidden]="!sensorType.expanded">
-                <li *ngFor="let sensor of sensorType.sensors" class="list-group-item p-1">
-                    <div class="d-flex ">
-                        <div class="p-0">
-                            <button type="button" class="btn btn-sm" (click)="sensorToggleSelected(sensor)"
-                                [ngClass]="sensor.checked  ? 'hs-checkmark' : 'hs-uncheckmark'"></button>
-                        </div>
-                        <div class="d-flex align-items-center p-0 flex-grow-1 hs-lm-item-title">
-                            <a *ngIf="viewMode === 'sensornames'" class="hs-sensor" (click)="sensorClicked(sensor)">
-                                <b>{{sensor.sensor_name | translateHs : 'SENSORS.SENSORNAMES' }}</b></a>
-
-                            <a *ngIf="viewMode === 'sensors'" class="hs-sensor" (click)="sensorClicked(sensor)">
-                                <b>{{sensor.sensor_name | translateHs : 'SENSORS.SENSORNAMES' }}</b><span
-                                    class="ms-1">{{'SENSORS.measure' |
-                                    translateHs }}</span> {{sensor.phenomenon_name}}</a>
-                            <a *ngIf="viewMode === 'phenomena'" class="hs-sensor" (click)="sensorClicked(sensor)">
-                                {{sensor.phenomenon_name_translated}}</a>
-                        </div>
-                        <div class="p-0">
-                            <span class="badge bg-dark rounded-pill">{{sensor.lastObservationValue}} {{sensor.uom}}
-                                <br><small>{{'SENSORS.at' | translateHs }}
-                                    {{sensor.lastObservationTimestamp}}</small></span>
-                        </div>
-                    </div>
-                </li>
-            </ul>
+  <a (click)="unitClicked()" class="hs-sensor-unit">{{unit.description}}</a>
+  <ul class="list-group" [hidden]="!(expanded || unit.expanded)">
+    @for (sensorType of unit.sensorTypes; track sensorType) {
+      <div class="list-group-item p-1">
+        <a (click)="sensorType.expanded = !sensorType.expanded" class="hs-sensor-type"
+          style="line-height: 2em;">{{sensorType.name | translateHs : 'SENSORS.SENSORNAMES' }}
+        </a>
+        <ul class="list-group" [hidden]="!sensorType.expanded">
+          @for (sensor of sensorType.sensors; track sensor) {
+            <li class="list-group-item p-1">
+              <div class="d-flex ">
+                <div class="p-0">
+                  <button type="button" class="btn btn-sm" (click)="sensorToggleSelected(sensor)"
+                  [ngClass]="sensor.checked  ? 'hs-checkmark' : 'hs-uncheckmark'"></button>
+                </div>
+                <div class="d-flex align-items-center p-0 flex-grow-1 hs-lm-item-title">
+                  @if (viewMode === 'sensornames') {
+                    <a class="hs-sensor" (click)="sensorClicked(sensor)">
+                      <b>{{sensor.sensor_name | translateHs : 'SENSORS.SENSORNAMES' }}</b></a>
+                    }
+                    @if (viewMode === 'sensors') {
+                      <a class="hs-sensor" (click)="sensorClicked(sensor)">
+                        <b>{{sensor.sensor_name | translateHs : 'SENSORS.SENSORNAMES' }}</b><span
+                        class="ms-1">{{'SENSORS.measure' |
+                      translateHs }}</span> {{sensor.phenomenon_name}}</a>
+                    }
+                    @if (viewMode === 'phenomena') {
+                      <a class="hs-sensor" (click)="sensorClicked(sensor)">
+                      {{sensor.phenomenon_name_translated}}</a>
+                    }
+                  </div>
+                  <div class="p-0">
+                    <span class="badge bg-dark rounded-pill">{{sensor.lastObservationValue}} {{sensor.uom}}
+                      <br><small>{{'SENSORS.at' | translateHs }}
+                    {{sensor.lastObservationTimestamp}}</small></span>
+                  </div>
+                </div>
+              </li>
+            }
+          </ul>
         </div>
+      }
     </ul>
-</div>
+  </div>

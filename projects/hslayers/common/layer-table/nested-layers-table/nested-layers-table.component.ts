@@ -1,4 +1,3 @@
-import {CommonModule} from '@angular/common';
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 
@@ -13,7 +12,6 @@ import {WmsLayerHighlightDirective} from '../wms-layer-highlight.directive';
   standalone: true,
   imports: [
     FormsModule,
-    CommonModule,
     TranslateCustomPipe,
     TrackByPropertyPipe,
     WmsLayerHighlightDirective,

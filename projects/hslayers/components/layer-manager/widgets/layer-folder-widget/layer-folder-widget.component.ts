@@ -1,4 +1,4 @@
-import {AsyncPipe, NgIf} from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import {ChangeDetectionStrategy, Component, inject} from '@angular/core';
 import {Observable, map} from 'rxjs';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
@@ -18,7 +18,7 @@ import {LayerFolderWidgetDialogComponent} from './layer-folder-dialog/layer-fold
 @Component({
   selector: 'hs-layer-folder-widget',
   standalone: true,
-  imports: [NgIf, AsyncPipe, TranslateCustomPipe],
+  imports: [AsyncPipe, TranslateCustomPipe],
   templateUrl: './layer-folder-widget.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

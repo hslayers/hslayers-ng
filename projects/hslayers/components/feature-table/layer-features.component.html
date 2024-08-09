@@ -1,46 +1,60 @@
 <h3 class="mt-1" style="text-align: center">{{layer.title | translateHs : 'LAYERS' }}</h3>
 <div class="form-group mt-1 mb-1">
-    <div class="input-group" style="margin-bottom: 4px">
-        <input type="text" class="form-control hs-filter" [placeholder]="'COMMON.filter' | translateHs  "
-            [(ngModel)]="searchedFeatures" name="FeatureName">
-    </div>
+  <div class="input-group" style="margin-bottom: 4px">
+    <input type="text" class="form-control hs-filter" [placeholder]="'COMMON.filter' | translateHs  "
+      [(ngModel)]="searchedFeatures" name="FeatureName">
+  </div>
 </div>
-<table style="width:100%;" *ngFor="let feature of hsFeatureTableService.features | featureFilter: searchedFeatures">
+@for (feature of hsFeatureTableService.features | featureFilter: searchedFeatures; track feature) {
+  <table style="width:100%;">
     <thead>
-        <tr style="text-align: center; background-color: rgba(0,0,0,0.05);">
-            <th colspan="2">{{translate(feature.name)}}<!-- TODO: Remove function call from template -->
-                <a style="float: center;" (click)="sortFeaturesBy(feature.name)"
-                    [title]="'FEATURE_TABLE.sortFeaturesByValue' | translateHs  ">^</a>
-            </th>
-        </tr>
+      <tr style="text-align: center; background-color: rgba(0,0,0,0.05);">
+        <th colspan="2">{{translate(feature.name)}}<!-- TODO: Remove function call from template -->
+          <a style="float: center;" (click)="sortFeaturesBy(feature.name)"
+          [title]="'FEATURE_TABLE.sortFeaturesByValue' | translateHs  ">^</a>
+        </th>
+      </tr>
     </thead>
     <tbody>
-        <tr *ngFor="let attr of feature.attributes" rowspan="3">
-            <th class="tdbreak" style="background-color: rgba(0,0,0,0.03);">
-                {{translate(attr.name)}}<a style="float: right;" (click)="sortFeaturesBy(attr.name)"
-                    [title]="'FEATURE_TABLE.sortFeaturesByValue' | translateHs  ">^</a><!-- TODO: Remove function call from template -->
-            </th>
-            <td class="tdbreak" style="min-width: 200px; max-width: 200px;">
-                <span *ngIf="!attr.sanitizedValue && !attr.value?.operations">
-                    <i>{{attr.value}}</i>
-                </span>
-                <i><span *ngIf="!!attr.sanitizedValue" [innerHTML]="attr.sanitizedValue"></span></i>
-                <div *ngIf="attr.value?.operations">
-                    <a *ngFor="let operation of attr.value.operations" (click)="executeOperation(operation)"><span>
-                            <i> {{translate(operation.customActionName) ||
-                                translate(operation.action)}};</i></span></a><!-- TODO: Remove function call from template -->
+      @for (attr of feature.attributes; track attr) {
+        <tr rowspan="3">
+          <th class="tdbreak" style="background-color: rgba(0,0,0,0.03);">
+            {{translate(attr.name)}}<a style="float: right;" (click)="sortFeaturesBy(attr.name)"
+          [title]="'FEATURE_TABLE.sortFeaturesByValue' | translateHs  ">^</a><!-- TODO: Remove function call from template -->
+        </th>
+        <td class="tdbreak" style="min-width: 200px; max-width: 200px;">
+          @if (!attr.sanitizedValue && !attr.value?.operations) {
+            <span>
+              <i>{{attr.value}}</i>
+            </span>
+          }
+          <i>@if (!!attr.sanitizedValue) {
+            <span [innerHTML]="attr.sanitizedValue"></span>
+          }</i>
+          @if (attr.value?.operations) {
+            <div>
+              @for (operation of attr.value.operations; track operation) {
+                <a (click)="executeOperation(operation)"><span>
+                  <i> {{translate(operation.customActionName) ||
+                  translate(operation.action)}};</i></span></a>
+                  }<!-- TODO: Remove function call from template -->
                 </div>
+              }
             </td>
-        </tr>
-        <tr [hidden]="!showFeatureStats" class="tdbreak" *ngFor="let stat of feature.stats">
+          </tr>
+        }
+        @for (stat of feature.stats; track stat) {
+          <tr [hidden]="!showFeatureStats" class="tdbreak">
             <th class="tdbreak" style="background-color: rgba(0,0,0,0.03);">
-                {{translate(stat.name)}}</th><!-- TODO: Remove function call from template -->
+            {{translate(stat.name)}}</th><!-- TODO: Remove function call from template -->
             <td class="tdbreak" style="min-width: 200px; max-width: 200px;"><span><i>{{stat.value}}</i></span></td>
-        </tr>
-    </tbody>
-</table>
-<p class="p-2">
+          </tr>
+        }
+      </tbody>
+    </table>
+  }
+  <p class="p-2">
     <small><a (click)="showFeatureStats = !showFeatureStats">{{'FEATURE_TABLE.showFeatureStats' | translateHs
-            }}</a></small>
-</p>
-<hr />
+    }}</a></small>
+  </p>
+  <hr />

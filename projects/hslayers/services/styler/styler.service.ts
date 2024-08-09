@@ -297,9 +297,6 @@ export class HsStylerService {
       /*
        * OL StyleLike definition
        */
-      this.hsLogService.log(
-        `OL layer StyleLike style definition for layer ${getTitle(layer)}`,
-      );
       sld = await this.olStyleToSld(style as StyleLike);
       setSld(layer, sld);
     } else {

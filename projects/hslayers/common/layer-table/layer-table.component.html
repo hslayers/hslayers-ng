@@ -1,132 +1,158 @@
 <div>
-    <ng-container *ngIf="type === 'wms'; else simpleTable">
-        <table class="table table-sm table-striped table-bordered hs-url-table">
-            <thead class="bg-secondary text-light">
-                <th style="width:1.5em">&nbsp;</th>
-                <th>{{'COMMON.title' | translateHs }}</th>
-                <!-- <th style="width:30%">{{'COMMON.name' | translateHs }}</th> -->
-                <th>{{'COMMON.abstract' | translateHs }}</th>
-            </thead>
-            <tbody *ngFor="let layer of data.layers | slice:0:limitShown; trackBy:( 'Name' | trackByProperty )">
-                <tr>
-                    <td [attr.rowspan]="layer.Style?.length ? 3 : 2" [ngClass]="{'align-middle': !layer.Layer}">
-                        <input type="checkbox" class="checkbox-lg" [(ngModel)]="layer.checked" name="layer"
-                            style="cursor: pointer;" (change)="searchForChecked(layer)" />
-                    </td>
-                    <td hsWmsLayerHighlight style="max-width: 25.375em" class="text-truncate"
-                        [title]="'Title: ' + layer.Title  + '\nName: ' + layer.Name"
-                        (click)="hsUrlWmsService.expandTableRow($event)"><span>{{layer.Title}}</span></td>
-                    <!-- <td style="max-width: 13.75em" class="text-truncate" [title]="layer.Name">{{layer.Name}}</td> -->
-                    <td hsWmsLayerHighlight style="max-width: 10.875em; width:30%" class="text-truncate"
-                        [title]="layer.Abstract" (click)="hsUrlWmsService.expandTableRow($event)">
-                        {{layer.Abstract}}</td>
-                </tr>
-                <tr *ngIf="layer.Style?.length > 1 && layer.checked">
-                    <td colspan="3">
-                        <div class="d-flex align-items-baseline px-2 w-100">
-                            <div class="d-flex align-items-baseline" style="flex-grow: 1;">
-                                <label class="control-label">{{'COMMON.style' | translateHs }}:</label>
-                                <select class="form-control form-select-sm form-select"
-                                    [(ngModel)]="layer.styleSelected" [ngModelOptions]="{standalone: true}">
-                                    <option *ngFor="let style of layer.Style" [ngValue]="style">{{style.Name}}
-                                    </option>
-                                </select>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-                <tr [hidden]="!layer.Layer">
-                    <td colspan="3" style="padding-left: 1em">
-                        <hs-nested-layers-table style="display: block;" [layers]="layer.Layer"
-                            (layerChecked)="searchForChecked($event)">
-                        </hs-nested-layers-table>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </ng-container>
-    <ng-template #simpleTable>
-        <table class="table table-sm table-striped table-bordered">
-            <thead>
-                <th class="border-0" style="width:1em">&nbsp;</th>
-                <div class="d-flex justify-content-between">
-                    <th class="border-0">{{'COMMON.name' | translateHs}}</th>
-                    <button *ngIf="type === 'arcgis' && data.serviceExpanded" type="button"
-                        class="btn btn-sm px-2 border-0 d-flex" (click)="collapseServices()"
-                        [title]="'COMMON.back' | translateHs">
-                        <i class="glyphicon icon-chevron-left text-black-50"></i>
-                        <span class="text-black-50 fw-bold">{{'COMMON.back' | translateHs}}</span>
-                    </button>
-                </div>
-            </thead>
-            <tbody *ngFor="let service of data.services; trackBy:( 'id' | trackByProperty )">
-                <tr>
-                    <td>
-                        <input class="checkbox-lg" type="checkbox" name="service"
-                            (change)="changed('services',$event,service)" style="cursor: pointer;"
-                            [(ngModel)]="service.checked" />
-                    </td>
-                    <td (click)="expandService(service)" data-toggle="tooltip"
-                        [title]="'ADDDATA.requestServiceLayers' | translateHs " style="cursor: pointer;">
-                        {{service.name}}
-                        <span style="font-size: x-small;"><i class="icon-chevron-right"></i></span>
-                    </td>
-                </tr>
-            </tbody>
-            <tbody *ngFor="let layer of data.layers; trackBy:( data.table.trackBy | trackByProperty )">
-                <tr>
-                    <td><input class="checkbox-lg" type="checkbox" name="layer" style="cursor: pointer;"
-                            (change)="changed('layers', $event, layer)" [(ngModel)]="layer.checked" /></td>
-                    <td hsWmsLayerHighlight (click)="hsUrlWmsService.expandTableRow($event)"
-                        class="text-truncate position-relative" style="max-width: 45ch;">
-                        <span>{{layer[data.table.nameProperty]}}</span>
-                        <span class="hs-loader hs-loader-dark position-absolute end-0 bottom-0 me-3"
-                            [hidden]="!layer.loading"></span>
-                        <span style="transform: translateY(50%);" *ngIf="layer.featureCount === -9999"
-                            [title]="'ADDLAYERS.WFS.featureCountError' | translateHs"
-                            class="align-items-center bottom-50 d-flex end-0 h-75 me-3 p-2 position-absolute rounded-1 text-bg-warning">i</span>
-                        <div *ngIf="layer.checked && type === 'wmts'"
-                            class="d-flex flex-row justify-content-end align-items-baseline mt-1">
-                            {{'COMMON.addAs' | translateHs }}
-                            <div class="btn-group ms-2">
-                                <button type="button" class="btn btn-sm btn-light  btn-outline-secondary"
-                                    (click)="layer.base = true" [ngClass]="{'active':layer.base}">
-                                    {{'COMPOSITONKEYWORDS.Basemap' | translateHs }}
-                                </button>
-                                <button type="button" class="btn btn-sm btn-light  btn-outline-secondary"
-                                    (click)="layer.base = false" [ngClass]="{'active': !layer.base}">
-                                    {{'COMMON.layer' | translateHs }}
-                                </button>
-                            </div>
-                        </div>
-                        <div class="alert alert-primary d-flex m-1" role="alert"
-                            *ngIf="layer.featureCount > 1000 && layer.checked && type === 'wfs'">
-                            <div class="w-100">
-                                <p class="mb-0" style="white-space: normal" [hidden]="!layer.limitFeatureCount">
-                                    {{'ADDLAYERS.WFS.selectedLayerContains' |
-                                    translateHs }}
-                                    {{layer.featureCount}} {{'ADDLAYERS.WFS.loadingToManyAtOnce' | translateHs }}
-                                </p>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </ng-template>
-    <ng-container *ngIf="type === 'wms'">
-        <div *ngIf="reachedLimit()" class="d-flex justify-content-around align-items-center m-3"><span>
-                {{getLimitTextTranslation()}}</span>
-            <div class="btn-group ms-2">
-                <button type="button" class="btn btn-sm btn-light  btn-outline-secondary"
-                    (click)="limitShown = limitShown + 100">
-                    {{'ADDDATA.CATALOGUE.showNext100' | translateHs }}
-                </button>
-                <button type="button" class="btn btn-sm btn-light  btn-outline-secondary"
-                    (click)="limitShown = data.layers.length">
-                    {{'ADDDATA.CATALOGUE.showAll' | translateHs }}
-                </button>
+  @if (type === "wms") {
+  <table class="table table-sm table-striped table-bordered hs-url-table">
+    <thead class="bg-secondary text-light">
+      <th style="width: 1.5em">&nbsp;</th>
+      <th>{{ "COMMON.title" | translateHs }}</th>
+      <!-- <th style="width:30%">{{'COMMON.name' | translateHs }}</th> -->
+      <th>{{ "COMMON.abstract" | translateHs }}</th>
+    </thead>
+    @for (
+    layer of data.layers | slice: 0 : limitShown;
+    track layer.Name
+    ) {
+    <tbody>
+      <tr>
+        <td [attr.rowspan]="layer.Style?.length ? 3 : 2" [ngClass]="{ 'align-middle': !layer.Layer }">
+          <input type="checkbox" class="checkbox-lg" [(ngModel)]="layer.checked" name="layer" style="cursor: pointer"
+            (change)="searchForChecked(layer)" />
+        </td>
+        <td hsWmsLayerHighlight style="max-width: 25.375em" class="text-truncate"
+          [title]="'Title: ' + layer.Title + '\nName: ' + layer.Name" (click)="hsUrlWmsService.expandTableRow($event)">
+          <span>{{ layer.Title }}</span>
+        </td>
+        <!-- <td style="max-width: 13.75em" class="text-truncate" [title]="layer.Name">{{layer.Name}}</td> -->
+        <td hsWmsLayerHighlight style="max-width: 10.875em; width: 30%" class="text-truncate" [title]="layer.Abstract"
+          (click)="hsUrlWmsService.expandTableRow($event)">
+          {{ layer.Abstract }}
+        </td>
+      </tr>
+      @if (layer.Style?.length > 1 && layer.checked) {
+      <tr>
+        <td colspan="3">
+          <div class="d-flex align-items-baseline px-2 w-100">
+            <div class="d-flex align-items-baseline" style="flex-grow: 1">
+              <label class="control-label">{{ "COMMON.style" | translateHs }}:</label>
+              <select class="form-control form-select-sm form-select" [(ngModel)]="layer.styleSelected"
+                [ngModelOptions]="{ standalone: true }">
+                @for (style of layer.Style; track $index) {
+                <option [ngValue]="style">{{ style.Name }}</option>
+                }
+              </select>
             </div>
-        </div>
-    </ng-container>
+          </div>
+        </td>
+      </tr>
+      }
+      <tr [hidden]="!layer.Layer">
+        <td colspan="3" style="padding-left: 1em">
+          <hs-nested-layers-table style="display: block" [layers]="layer.Layer"
+            (layerChecked)="searchForChecked($event)">
+          </hs-nested-layers-table>
+        </td>
+      </tr>
+    </tbody>
+    }
+  </table>
+  } @else {
+  <table class="table table-sm table-striped table-bordered">
+    <thead>
+      <th class="border-0" style="width: 1em">&nbsp;</th>
+      <div class="d-flex justify-content-between">
+        <th class="border-0">{{ "COMMON.name" | translateHs }}</th>
+        @if (type === "arcgis" && data.serviceExpanded) {
+        <button type="button" class="btn btn-sm px-2 border-0 d-flex" (click)="collapseServices()"
+          [title]="'COMMON.back' | translateHs">
+          <i class="glyphicon icon-chevron-left text-black-50"></i>
+          <span class="text-black-50 fw-bold">{{
+            "COMMON.back" | translateHs
+            }}</span>
+        </button>
+        }
+      </div>
+    </thead>
+    @for (
+    service of data.services;
+    track service.id
+    ) {
+    <tbody>
+      <tr>
+        <td>
+          <input class="checkbox-lg" type="checkbox" name="service" (change)="changed('services', $event, service)"
+            style="cursor: pointer" [(ngModel)]="service.checked" />
+        </td>
+        <td (click)="expandService(service)" data-toggle="tooltip"
+          [title]="'ADDDATA.requestServiceLayers' | translateHs" style="cursor: pointer">
+          {{ service.name }}
+          <span style="font-size: x-small"><i class="icon-chevron-right"></i></span>
+        </td>
+      </tr>
+    </tbody>
+    }
+    @for (
+    layer of data.layers;
+    track layer[data.table.trackBy]
+    ) {
+    <tbody>
+      <tr>
+        <td>
+          <input class="checkbox-lg" type="checkbox" name="layer" style="cursor: pointer"
+            (change)="changed('layers', $event, layer)" [(ngModel)]="layer.checked" />
+        </td>
+        <td hsWmsLayerHighlight (click)="hsUrlWmsService.expandTableRow($event)" class="text-truncate position-relative"
+          style="max-width: 45ch">
+          <span>{{ layer[data.table.nameProperty] }}</span>
+          <span class="hs-loader hs-loader-dark position-absolute end-0 bottom-0 me-3" [hidden]="!layer.loading"></span>
+          @if (layer.featureCount === -9999) {
+          <span style="transform: translateY(50%)" [title]="'ADDLAYERS.WFS.featureCountError' | translateHs"
+            class="align-items-center bottom-50 d-flex end-0 h-75 me-3 p-2 position-absolute rounded-1 text-bg-warning">i</span>
+          }
+          @if (layer.checked && type === "wmts") {
+          <div class="d-flex flex-row justify-content-end align-items-baseline mt-1">
+            {{ "COMMON.addAs" | translateHs }}
+            <div class="btn-group ms-2">
+              <button type="button" class="btn btn-sm btn-light btn-outline-secondary" (click)="layer.base = true"
+                [ngClass]="{ active: layer.base }">
+                {{ "COMPOSITONKEYWORDS.Basemap" | translateHs }}
+              </button>
+              <button type="button" class="btn btn-sm btn-light btn-outline-secondary" (click)="layer.base = false"
+                [ngClass]="{ active: !layer.base }">
+                {{ "COMMON.layer" | translateHs }}
+              </button>
+            </div>
+          </div>
+          }
+          @if (
+          layer.featureCount > 1000 && layer.checked && type === "wfs"
+          ) {
+          <div class="alert alert-primary d-flex m-1" role="alert">
+            <div class="w-100">
+              <p class="mb-0" style="white-space: normal" [hidden]="!layer.limitFeatureCount">
+                {{ "ADDLAYERS.WFS.selectedLayerContains" | translateHs }}
+                {{ layer.featureCount }}
+                {{ "ADDLAYERS.WFS.loadingToManyAtOnce" | translateHs }}
+              </p>
+            </div>
+          </div>
+          }
+        </td>
+      </tr>
+    </tbody>
+    }
+  </table>
+  }
+  @if (type === "wms" && reachedLimit()) {
+  <div class="d-flex justify-content-around align-items-center m-3">
+    <span> {{ getLimitTextTranslation() }}</span>
+    <div class="btn-group ms-2">
+      <button type="button" class="btn btn-sm btn-light btn-outline-secondary" (click)="limitShown = limitShown + 100">
+        {{ "ADDDATA.CATALOGUE.showNext100" | translateHs }}
+      </button>
+      <button type="button" class="btn btn-sm btn-light btn-outline-secondary"
+        (click)="limitShown = data.layers.length">
+        {{ "ADDDATA.CATALOGUE.showAll" | translateHs }}
+      </button>
+    </div>
+  </div>
+  }
 </div>

@@ -1,11 +1,13 @@
-<ngb-toast *ngFor="let toast of hsToastService.toasts" [header]="toast.header" [class]="toast.classname"
-  style="overflow: hidden;"
+@for (toast of hsToastService.toasts; track toast) {
+<ngb-toast [header]="toast.header" [class]="toast.classname" style="overflow: hidden;"
   [ngStyle]="{'max-height': toast.details.length > 0 ? 'toast.details.length + 8' + 'rem' : '8rem'}"
-  [autohide]="toast.autohide" [delay]="toast.delay || 5000"
-  (hidden)="hsToastService.remove(toast)">{{toast.textOrTpl}}
-  <ng-container *ngIf="toast.details?.length > 0">
-    <ul *ngFor="let detail of toast.details" class="mt-2">
-      <li>{{detail}}</li>
-    </ul>
-  </ng-container>
+  [autohide]="toast.autohide" [delay]="toast.delay || 5000" (hidden)="hsToastService.remove(toast)">{{toast.textOrTpl}}
+  @if (toast.details?.length > 0) {
+  @for (detail of toast.details; track detail) {
+  <ul class="mt-2">
+    <li>{{detail}}</li>
+  </ul>
+  }
+  }
 </ngb-toast>
+}

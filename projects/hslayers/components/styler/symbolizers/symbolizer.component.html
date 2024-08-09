@@ -1,14 +1,24 @@
 <div class="card m-0">
   <form class="form">
-    <hs-fill-symbolizer [symbolizer]="symbolizer" (changes)="emitChange()" *ngIf="symbolizer.kind === kinds.fill">
-    </hs-fill-symbolizer>
-    <hs-line-symbolizer [symbolizer]="symbolizer" (changes)="emitChange()" *ngIf="symbolizer.kind === kinds.line">
-    </hs-line-symbolizer>
-    <hs-mark-symbolizer [symbolizer]="symbolizer" (changes)="emitChange()" *ngIf="symbolizer.kind === kinds.mark">
-    </hs-mark-symbolizer>
-    <hs-icon-symbolizer [symbolizer]="symbolizer" (changes)="emitChange()" *ngIf="symbolizer.kind === kinds.icon">
-    </hs-icon-symbolizer>
-    <hs-text-symbolizer [symbolizer]="symbolizer" (changes)="emitChange()" *ngIf="symbolizer.kind === kinds.text">
-    </hs-text-symbolizer>
+    @if (symbolizer.kind === kinds.fill) {
+      <hs-fill-symbolizer [symbolizer]="symbolizer" (changes)="emitChange()">
+      </hs-fill-symbolizer>
+    }
+    @if (symbolizer.kind === kinds.line) {
+      <hs-line-symbolizer [symbolizer]="symbolizer" (changes)="emitChange()">
+      </hs-line-symbolizer>
+    }
+    @if (symbolizer.kind === kinds.mark) {
+      <hs-mark-symbolizer [symbolizer]="symbolizer" (changes)="emitChange()">
+      </hs-mark-symbolizer>
+    }
+    @if (symbolizer.kind === kinds.icon) {
+      <hs-icon-symbolizer [symbolizer]="symbolizer" (changes)="emitChange()">
+      </hs-icon-symbolizer>
+    }
+    @if (symbolizer.kind === kinds.text) {
+      <hs-text-symbolizer [symbolizer]="symbolizer" (changes)="emitChange()">
+      </hs-text-symbolizer>
+    }
   </form>
 </div>

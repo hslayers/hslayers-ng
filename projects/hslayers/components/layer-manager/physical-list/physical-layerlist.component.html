@@ -1,18 +1,19 @@
-<div
-  class="list-group-item hs-lm-list pb-1"
-  *ngIf="layerShiftingAppRef.layersCopy.length !== 0"
->
-  <div cdkDropList class="list-group row ps-1" (cdkDropListDropped)="drop($event)" [cdkDropListData]="layerShiftingAppRef.layersCopy">
-    @for (layer of layerShiftingAppRef.layersCopy; track $index) {
-      <div class="list-group-item hs-lm-item p-2"  [ngClass]="{ activeLayer: layer.active }" cdkDrag>
-        <div
-          class="d-flex align-items-center justify-content-between p-0 hs-lm-item-title flex-grow-1"
-          style="word-break: break-all; cursor: move"
-        >
-          <p class="m-0">{{ layer.title | translateHs: "LAYERS" }}</p>
-          <i class="icon-move text-secondary me-1"></i>
+@if (layerShiftingAppRef.layersCopy.length !== 0) {
+  <div
+    class="list-group-item hs-lm-list pb-1"
+    >
+    <div cdkDropList class="list-group row ps-1" (cdkDropListDropped)="drop($event)" [cdkDropListData]="layerShiftingAppRef.layersCopy">
+      @for (layer of layerShiftingAppRef.layersCopy; track $index) {
+        <div class="list-group-item hs-lm-item p-2"  [ngClass]="{ activeLayer: layer.active }" cdkDrag>
+          <div
+            class="d-flex align-items-center justify-content-between p-0 hs-lm-item-title flex-grow-1"
+            style="word-break: break-all; cursor: move"
+            >
+            <p class="m-0">{{ layer.title | translateHs: "LAYERS" }}</p>
+            <i class="icon-move text-secondary me-1"></i>
+          </div>
         </div>
-      </div>
-    }
+      }
+    </div>
   </div>
-</div> 
+}

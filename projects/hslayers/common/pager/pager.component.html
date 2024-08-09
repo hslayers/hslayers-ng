@@ -1,21 +1,26 @@
-<div class="card-footer bg-white" *ngIf="resultsVisible()"> <!-- TODO: Remove function call from template -->
+@if (resultsVisible()) {
+<div class="card-footer bg-white"> <!-- TODO: Remove function call from template -->
   <ul class="pagination d-flex justify-content-center m-1 align-items-center">
     <li class="page-item">
       <a class="page-link" (click)="getPreviousRecords()" [ngClass]="{'disabled': pagerService.listStart === 0 }"><span
           aria-hidden="true">&laquo;</span></a>
     </li>
-    <li class="page-item" *ngIf="pagerService.listNext !== pagerService.matchedRecords">
+    @if (pagerService.listNext !== pagerService.matchedRecords) {
+    <li class="page-item">
       <span class="page-link">
         {{'COMMON.results' | translateHs }}
         {{pagerService.listStart + 1}} -
         {{pagerService.listNext}}</span>
     </li>
-    <li class="page-item" *ngIf="pagerService.listNext === pagerService.matchedRecords">
+    }
+    @if (pagerService.listNext === pagerService.matchedRecords) {
+    <li class="page-item">
       <span class="page-link">
         {{'COMMON.results' | translateHs }}
         {{pagerService.listStart + 1}} -
         {{pagerService.matchedRecords}}</span>
     </li>
+    }
     <li class="page-item">
       <!-- TODO: Remove function call from template -->
       <a class="page-link" data-cy="hs-pager-next-page" (click)="getNextRecords()"
@@ -34,9 +39,11 @@
         </button>
       </div>
       <div ngbDropdownMenu class="dropdown-menu">
-        <a class="dropdown-item" *ngFor="let perPage of recordsPerPageArray"
-          (click)="changeRecordsPerPage(perPage)">{{perPage}}</a>
+        @for (perPage of recordsPerPageArray; track perPage) {
+        <a class="dropdown-item" (click)="changeRecordsPerPage(perPage)">{{perPage}}</a>
+        }
       </div>
     </li>
   </ul>
 </div>
+}

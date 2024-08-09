@@ -18,8 +18,12 @@
       </div>
     </div>
   </div>
-  <hs-filters (changes)="emitChange()" *ngIf="filtersVisible" [rule]="rule"></hs-filters>
-  <hs-scale-denominator (changes)="emitChange()" *ngIf="scalesVisible" [rule]="rule"></hs-scale-denominator>
+  @if (filtersVisible) {
+    <hs-filters (changes)="emitChange()" [rule]="rule"></hs-filters>
+  }
+  @if (scalesVisible) {
+    <hs-scale-denominator (changes)="emitChange()" [rule]="rule"></hs-scale-denominator>
+  }
   <div class="d-flex flex-row justify-content-end">
     <div class="p-1 flex-grow-1">{{'STYLER.symbolizers' | translateHs }}:</div>
     <div class="p-1">
@@ -48,14 +52,14 @@
       </div>
     </div>
   </div>
-  <ng-container *ngIf="rule.symbolizers.length > 0">
+  @if (rule.symbolizers.length > 0) {
     <ul class="list-group hs-styler-content-list align-items-end" cdkDropList (cdkDropListDropped)="drop($event)"
       [cdkDropListData]="rule.symbolizers">
-      <ng-container *ngFor="let symbolizer of rule.symbolizers">
+      @for (symbolizer of rule.symbolizers; track symbolizer) {
         <hs-symbolizer-list-item style="width: 98%" cdkDrag [rule]="rule" [symbolizer]="symbolizer"
           (changes)="emitChange()">
         </hs-symbolizer-list-item>
-      </ng-container>
+      }
     </ul>
-  </ng-container>
+  }
 </div>

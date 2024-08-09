@@ -6,10 +6,12 @@
         <ng-container *ngTemplateOutlet="colorMapRow;context:{cm: _colorMap}"></ng-container>
     </div>
     <section [hidden]="!menuVisible" [style.height]="height" class="hs-colorMap-picker-menu position-absolute">
+        @for (cm of colorMaps | keyvalue; track $index) {
         <div class="hs-colorMap-picker-item d-flex justify-content-between py-1 cursor-pointer"
-            [class.active]="colorMap === cm.key" *ngFor="let cm of colorMaps | keyvalue" (click)="select(cm)">
+            [class.active]="colorMap === cm.key" (click)="select(cm)">
             <ng-container *ngTemplateOutlet="colorMapRow;context:{cm:cm}"></ng-container>
         </div>
+        }
     </section>
 </div>
 <ng-template #colorMapRow let-cm="cm">

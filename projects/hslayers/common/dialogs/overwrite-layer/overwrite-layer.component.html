@@ -1,26 +1,28 @@
 <div class="modal in hs-layer-overwrite-dialog" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">{{'ADDDATA.dialogOverWrite.overwriteExistingLayer' | translateHs}}</h4>
-                <button type="button" (click)="close()" class="btn-close" data-dismiss="modal"
-                    [attr.aria-label]="'COMMON.close' | translateHs ">
-                </button>
-            </div>
-            <div class="modal-body" style="overflow-y:auto">
-                <p class="fw-bold h6">{{'ADDDATA.dialogOverWrite.doYouWishToOverwrite' | translateHs }}
-                    {{data.dataObj.name}}?</p>
-                <p *ngIf="data.repetive" class="h6 small">{{'ADDDATA.dialogOverWrite.noteForRepetiveDialog' |
-                    translateHs}}</p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary compositions-btn-overwrite" (click)="overwrite()"
-                    data-dismiss="modal">{{'SAVECOMPOSITION.form.overwrite' | translateHs }}</button>
-                <button type="button" class="btn btn-secondary compositions-btn-cancel" (click)="renameAndAdd()"
-                    data-dismiss="modal">{{'COMMON.renameLayer' | translateHs }}</button>
-                <button type="button" class="btn btn-secondary compositions-btn-cancel" (click)="close()"
-                    data-dismiss="modal">{{'COMMON.cancel' | translateHs }}</button>
-            </div>
-        </div>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">{{'ADDDATA.dialogOverWrite.overwriteExistingLayer' | translateHs}}</h4>
+        <button type="button" (click)="close()" class="btn-close" data-dismiss="modal"
+          [attr.aria-label]="'COMMON.close' | translateHs ">
+        </button>
+      </div>
+      <div class="modal-body" style="overflow-y:auto">
+        <p class="fw-bold h6">{{'ADDDATA.dialogOverWrite.doYouWishToOverwrite' | translateHs }}
+          {{data.dataObj.name}}?</p>
+        @if (data.repetive) {
+        <p class="h6 small">{{'ADDDATA.dialogOverWrite.noteForRepetiveDialog' |
+          translateHs}}</p>
+        }
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary compositions-btn-overwrite" (click)="overwrite()"
+          data-dismiss="modal">{{'SAVECOMPOSITION.form.overwrite' | translateHs }}</button>
+        <button type="button" class="btn btn-secondary compositions-btn-cancel" (click)="renameAndAdd()"
+          data-dismiss="modal">{{'COMMON.renameLayer' | translateHs }}</button>
+        <button type="button" class="btn btn-secondary compositions-btn-cancel" (click)="close()"
+          data-dismiss="modal">{{'COMMON.cancel' | translateHs }}</button>
+      </div>
     </div>
+  </div>
 </div>

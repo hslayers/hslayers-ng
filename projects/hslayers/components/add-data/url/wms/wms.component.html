@@ -1,6 +1,8 @@
 <form class="form-horizontal" name="frmConnectWms" role="form">
-    <hs-common-url type="wms" [(url)]="hsAddDataCommonService.url" (connect)="hsAddDataOwsService.connect()">
-    </hs-common-url>
-    <hs-url-progress *ngIf="hsAddDataCommonService.loadingInfo"></hs-url-progress>
-    <hs-url-details [injectedService]="hsUrlWmsService" type="wms"></hs-url-details>
+  <hs-common-url type="wms" [(url)]="hsAddDataCommonService.url" (connect)="hsAddDataOwsService.connect()">
+  </hs-common-url>
+  @if (hsAddDataCommonService.loadingInfo) {
+    <hs-url-progress></hs-url-progress>
+  }
+  <hs-url-details [injectedService]="hsUrlWmsService" type="wms"></hs-url-details>
 </form>

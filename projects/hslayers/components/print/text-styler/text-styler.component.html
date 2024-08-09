@@ -3,37 +3,47 @@
   <div class="p-1 w-100">
     <input class="form-control form-select-sm" (click)="setColorPickerVisible('fill')"
       [ngStyle]="getColorPickerStyle('fill')" [ngModelOptions]="{standalone: true}" [(ngModel)]="textStyle.textColor" />
-    <color-sketch *ngIf="fillPickerVisible" (onChangeComplete)="onPick($event, 'fill')" width="320px">
+    @if (fillPickerVisible) {
+      <color-sketch (onChangeComplete)="onPick($event, 'fill')" width="320px">
     </color-sketch>
-  </div>
+  }
 </div>
-<div class="d-flex flex-row" *ngIf="objectName === 'imprint'">
-  <div class="p-1 w-50 mt-1">{{'PRINT.backgroundColor' | translateHs }}:</div>
-  <div class="p-1 w-100">
-    <input class="form-control form-select-sm" (click)="setColorPickerVisible('background')"
-      [ngStyle]="getColorPickerStyle('background')" [ngModelOptions]="{standalone: true}"
-      [(ngModel)]="textStyle.bcColor" /><!-- TODO: Remove function call from template -->
-    <color-sketch *ngIf="bcPickerVisible" (onChangeComplete)="onPick($event, 'background')" width="320px">
-    </color-sketch>
-  </div>
 </div>
+@if (objectName === 'imprint') {
+  <div class="d-flex flex-row">
+    <div class="p-1 w-50 mt-1">{{'PRINT.backgroundColor' | translateHs }}:</div>
+    <div class="p-1 w-100">
+      <input class="form-control form-select-sm" (click)="setColorPickerVisible('background')"
+        [ngStyle]="getColorPickerStyle('background')" [ngModelOptions]="{standalone: true}"
+        [(ngModel)]="textStyle.bcColor" /><!-- TODO: Remove function call from template -->
+        @if (bcPickerVisible) {
+          <color-sketch (onChangeComplete)="onPick($event, 'background')" width="320px">
+        </color-sketch>
+      }
+    </div>
+  </div>
+}
 <div class="d-flex flex-row">
   <div class="p-1 w-50 mt-1">{{'STYLER.textSize' | translateHs }}:</div>
   <div class="p-1 w-100">
     <select class="form-control form-select-sm form-select" [(ngModel)]="textStyle.textSize"
       [ngModelOptions]="{standalone: true}" style="flex-grow: 1;">
-      <option *ngFor="let size of stylingOptions.textSizes">{{size}}
+    @for (size of stylingOptions.textSizes; track size) {
+      <option>{{size}}
       </option>
-    </select>
-  </div>
+    }
+  </select>
+</div>
 </div>
 <div class="d-flex flex-row">
   <div class="p-1 w-50 mt-1">{{'STYLER.font' | translateHs }}:</div>
   <div class="p-1 w-100">
     <select class="form-control form-select-sm form-select" [(ngModel)]="textStyle.fontFamily"
       [ngModelOptions]="{standalone: true}">
-      <option *ngFor="let font of stylingOptions.fonts">{{font}}
-      </option>
+      @for (font of stylingOptions.fonts; track font) {
+        <option>{{font}}
+        </option>
+      }
     </select>
   </div>
 </div>
@@ -42,31 +52,39 @@
   <div class="p-1 w-100">
     <select class="form-control form-select-sm form-select" [(ngModel)]="textStyle.fontStyle"
       [ngModelOptions]="{standalone: true}">
-      <option [ngValue]="fontStyle" *ngFor="let fontStyle of stylingOptions.fontStyles">
-        {{getTranslation('PRINT',fontStyle)}}<!-- TODO: Remove function call from template -->
-      </option>
+      @for (fontStyle of stylingOptions.fontStyles; track fontStyle) {
+        <option [ngValue]="fontStyle">
+          {{getTranslation('PRINT',fontStyle)}}<!-- TODO: Remove function call from template -->
+        </option>
+      }
     </select>
   </div>
 </div>
-<div class="d-flex flex-row" *ngIf="objectName === 'title'">
-  <div class="p-1 w-50 mt-1">{{'PRINT.textDraw' | translateHs }}:</div>
-  <div class="p-1 w-100">
-    <select class="form-control form-select-sm form-select" [(ngModel)]="textStyle.textDraw"
-      [ngModelOptions]="{standalone: true}">
-      <option [ngValue]="textDraw" *ngFor="let textDraw of stylingOptions.textDrawTypes">
-        {{getTranslation('COMMON',textDraw)}}<!-- TODO: Remove function call from template -->
-      </option>
-    </select>
+@if (objectName === 'title') {
+  <div class="d-flex flex-row">
+    <div class="p-1 w-50 mt-1">{{'PRINT.textDraw' | translateHs }}:</div>
+    <div class="p-1 w-100">
+      <select class="form-control form-select-sm form-select" [(ngModel)]="textStyle.textDraw"
+        [ngModelOptions]="{standalone: true}">
+        @for (textDraw of stylingOptions.textDrawTypes; track textDraw) {
+          <option [ngValue]="textDraw">
+            {{getTranslation('COMMON',textDraw)}}<!-- TODO: Remove function call from template -->
+          </option>
+        }
+      </select>
+    </div>
   </div>
-</div>
+}
 <div class="d-flex flex-row">
   <div class="p-1 w-50 mt-1">{{'PRINT.textPosition' | translateHs }} X:</div>
   <div class="p-1 w-100">
     <select class="form-control form-select-sm form-select" [(ngModel)]="textStyle.posX"
       [ngModelOptions]="{standalone: true}">
-      <option [ngValue]="positionX" *ngFor="let positionX of positionOptions.positionsX">
-        {{getTranslation('PRINT',positionX)}}<!-- TODO: Remove function call from template -->
-      </option>
+      @for (positionX of positionOptions.positionsX; track positionX) {
+        <option [ngValue]="positionX">
+          {{getTranslation('PRINT',positionX)}}<!-- TODO: Remove function call from template -->
+        </option>
+      }
     </select>
   </div>
 </div>
@@ -76,9 +94,11 @@
   <div class="p-1 w-100">
     <select class="form-control form-select-sm form-select" [(ngModel)]="textStyle.posY"
       [ngModelOptions]="{standalone: true}">
-      <option [ngValue]="positionY" *ngFor="let positionY of positionOptions.positionsY">
-        {{getTranslation('PRINT',positionY)}}<!-- TODO: Remove function call from template -->
-      </option>
+      @for (positionY of positionOptions.positionsY; track positionY) {
+        <option [ngValue]="positionY">
+          {{getTranslation('PRINT',positionY)}}<!-- TODO: Remove function call from template -->
+        </option>
+      }
     </select>
   </div>
 </div>

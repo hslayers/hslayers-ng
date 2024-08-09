@@ -1,7 +1,13 @@
-<dd *ngIf="!isIterable()">{{value}}</dd><!-- TODO: Remove function call from template -->
-<dl *ngFor="let item of entries">
-    <dt>{{item.key || item[0]}}</dt>
-    <hs-widgets-recursive-dd [value]="item.value || item[1]"></hs-widgets-recursive-dd>
-    <button *ngIf="item.key==='bbox'" (click)="zoomTo(value)" class='btn btn-secondary' i18n>Zoom
-        to</button>
+@if (!isIterable()) {
+<dd>{{value}}</dd>
+}<!-- TODO: Remove function call from template -->
+@for (item of entries; track item) {
+<dl>
+  <dt>{{item.key || item[0]}}</dt>
+  <hs-widgets-recursive-dd [value]="item.value || item[1]"></hs-widgets-recursive-dd>
+  @if (item.key==='bbox') {
+  <button (click)="zoomTo(value)" class='btn btn-secondary' i18n>Zoom
+    to</button>
+  }
 </dl>
+}

@@ -1,11 +1,12 @@
-<div *ngIf="isEnabled | async" class="pb-1 border-bottom">
+@if (isEnabled | async) {
+  <div class="pb-1 border-bottom">
     <p style="text-align: center; font-weight: bold">
-        {{ "COMMON.folder" | translateHs }}
+      {{ "COMMON.folder" | translateHs }}
     </p>
     <div class="d-flex justify-content-between align-items-center">
-        <button type="button" class="btn btn-outline-primary flex-fill" (click)="createDialog()">
-            {{'LAYERMANAGER.layerEditor.moveToNewFolder' | translateHs}}
-        </button>
+      <button type="button" class="btn btn-outline-primary flex-fill" (click)="createDialog()">
+        {{'LAYERMANAGER.layerEditor.moveToNewFolder' | translateHs}}
+      </button>
     </div>
-
-</div>
+  </div>
+}

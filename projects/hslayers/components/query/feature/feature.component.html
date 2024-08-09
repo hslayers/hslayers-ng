@@ -1,80 +1,96 @@
 <div class="container-fluid">
-    <div class="row">
-        <div class="col-12 m-2"><strong>{{feature.name}} <span *ngIf="feature.layer">{{'QUERY.feature.inLayer' |
-                    translateHs }}</span>
-                {{feature.layer}}</strong></div>
-    </div>
-    <hs-query-attribute-row *ngFor="let attribute of feature.attributes" [template]="feature.hstemplate"
-        [feature]="feature" [attribute]="attribute" [readonly]="readonly">
-    </hs-query-attribute-row>
-    <hs-query-attribute-row *ngFor="let stat of feature.stats" [feature]="feature" [attribute]="stat" [readonly]="true">
-    </hs-query-attribute-row>
-
-    <div class="bg-light p-2 my-3" *ngIf="newAttribVisible">
-        <div class="form-floating mb-3">
-            <input class="form-control" [placeholder]="attributeName" [(ngModel)]="attributeName"
-                name="hs-add-feature-attribute-name">
-            <label for="hs-add-feature-attribute-name">{{'QUERY.feature.attributeName' | translateHs }}</label>
-        </div>
-        <div class="form-floating mb-3" [hidden]="!(attributeName && newAttribVisible)">
-            <input class="form-control" [placeholder]="attributeValue" [(ngModel)]="attributeValue"
-                name="hs-add-feature-attribute-value">
-            <label for="hs-add-feature-attribute-value">{{'QUERY.feature.attributeValue' | translateHs }}</label>
-        </div>
-        <div class="row justify-content-end" [hidden]="!(attributeName && attributeValue && newAttribVisible)">
-            <button class="btn btn-primary btn-sm w-auto d-flex gap-2 mx-2"
-                (click)="saveNewAttribute(attributeName,attributeValue)">{{'COMMON.save'
-                | translateHs}}<i class="icon-save-floppy"></i></button>
-        </div>
-    </div>
-
-
-
-    <div [hidden]="!editType" class="row p-2 ">
-        <div class="d-flex w-100 input-group input-group-sm align-items-baseline">
-            <label for="selectedLayer" class="px-2">{{translateString('QUERY.feature',editType+'Feature')}}
-                {{'COMMON.into' | translateHs }}:</label>
-            <select class="form-control text-truncate" [title]="'ADDLAYERS.Vector.chooseLayer' | translateHs  "
-                [(ngModel)]="selectedLayer" name="selectedLayer">
-                <option [ngValue]="null" [disabled]="true" selected hidden> {{'ADDLAYERS.Vector.chooseLayer' |
-                    translateHs }}</option>
-                <option *ngFor="let layer of availableLayers | async" [ngValue]="layer">
-                    {{getTitle(layer) | translateHs : 'LAYERS' }}</option>
-            </select>
-            <button class="btn btn-primary btn-sm" (click)="moveOrCopyFeature()" [disabled]="!selectedLayer"><i
-                    class="icon-save-floppy"></i></button>
-        </div>
-    </div>
+  <div class="row">
+    <div class="col-12 m-2"><strong>{{feature.name}} @if (feature.layer) {
+      <span>{{'QUERY.feature.inLayer' |
+      translateHs }}</span>
+    }
+  {{feature.layer}}</strong></div>
 </div>
-<div class="justify-content-end" style="padding-left: 10px" *ngIf="olFeature() !== undefined">
+@for (attribute of feature.attributes; track attribute) {
+  <hs-query-attribute-row [template]="feature.hstemplate"
+    [feature]="feature" [attribute]="attribute" [readonly]="readonly">
+  </hs-query-attribute-row>
+}
+@for (stat of feature.stats; track stat) {
+  <hs-query-attribute-row [feature]="feature" [attribute]="stat" [readonly]="true">
+  </hs-query-attribute-row>
+}
+
+@if (newAttribVisible) {
+  <div class="bg-light p-2 my-3">
+    <div class="form-floating mb-3">
+      <input class="form-control" [placeholder]="attributeName" [(ngModel)]="attributeName"
+        name="hs-add-feature-attribute-name">
+      <label for="hs-add-feature-attribute-name">{{'QUERY.feature.attributeName' | translateHs }}</label>
+    </div>
+    <div class="form-floating mb-3" [hidden]="!(attributeName && newAttribVisible)">
+      <input class="form-control" [placeholder]="attributeValue" [(ngModel)]="attributeValue"
+        name="hs-add-feature-attribute-value">
+      <label for="hs-add-feature-attribute-value">{{'QUERY.feature.attributeValue' | translateHs }}</label>
+    </div>
+    <div class="row justify-content-end" [hidden]="!(attributeName && attributeValue && newAttribVisible)">
+      <button class="btn btn-primary btn-sm w-auto d-flex gap-2 mx-2"
+        (click)="saveNewAttribute(attributeName,attributeValue)">{{'COMMON.save'
+        | translateHs}}<i class="icon-save-floppy"></i></button>
+      </div>
+    </div>
+  }
+
+
+
+  <div [hidden]="!editType" class="row p-2 ">
+    <div class="d-flex w-100 input-group input-group-sm align-items-baseline">
+      <label for="selectedLayer" class="px-2">{{translateString('QUERY.feature',editType+'Feature')}}
+      {{'COMMON.into' | translateHs }}:</label>
+      <select class="form-control text-truncate" [title]="'ADDLAYERS.Vector.chooseLayer' | translateHs  "
+        [(ngModel)]="selectedLayer" name="selectedLayer">
+        <option [ngValue]="null" [disabled]="true" selected hidden> {{'ADDLAYERS.Vector.chooseLayer' |
+        translateHs }}</option>
+        @for (layer of availableLayers | async; track layer) {
+          <option [ngValue]="layer">
+          {{getTitle(layer) | translateHs : 'LAYERS' }}</option>
+        }
+      </select>
+      <button class="btn btn-primary btn-sm" (click)="moveOrCopyFeature()" [disabled]="!selectedLayer"><i
+      class="icon-save-floppy"></i></button>
+    </div>
+  </div>
+</div>
+@if (olFeature() !== undefined) {
+  <div class="justify-content-end" style="padding-left: 10px">
     <div class="mx-1 mb-2 text-end">
-        <div class="btn-group">
-            <button [disabled]="readonly" class="btn btn-secondary btn-sm"
-                (click)="newAttribVisible = !newAttribVisible"><i class="icon-calcplus"></i></button>
-            <button class="btn btn-secondary btn-sm" (click)="zoomToFeature()"><i class="icon-search"></i></button>
-            <div class="btn-group" ngbDropdown placement="bottom" display="dynamic">
-                <button ngbDropdownToggle class="btn btn-secondary btn-sm" type="button" (click)="toggleEditMenu()"><i
-                        class="icon-settingsthree-gears"></i></button>
-                <div ngbDropdownMenu [ngClass]="{'show': editMenuVisible}">
-                    <a class="dropdown-item" (click)="editTypeSelected('copy')">{{'QUERY.feature.copyFeature' |
-                        translateHs }}</a>
-                    <a class="dropdown-item" (click)="editTypeSelected('move')">{{'QUERY.feature.moveFeature' |
-                        translateHs }}</a>
-                </div>
+      <div class="btn-group">
+        <button [disabled]="readonly" class="btn btn-secondary btn-sm"
+          (click)="newAttribVisible = !newAttribVisible"><i class="icon-calcplus"></i></button>
+          <button class="btn btn-secondary btn-sm" (click)="zoomToFeature()"><i class="icon-search"></i></button>
+          <div class="btn-group" ngbDropdown placement="bottom" display="dynamic">
+            <button ngbDropdownToggle class="btn btn-secondary btn-sm" type="button" (click)="toggleEditMenu()"><i
+            class="icon-settingsthree-gears"></i></button>
+            <div ngbDropdownMenu [ngClass]="{'show': editMenuVisible}">
+              <a class="dropdown-item" (click)="editTypeSelected('copy')">{{'QUERY.feature.copyFeature' |
+              translateHs }}</a>
+              <a class="dropdown-item" (click)="editTypeSelected('move')">{{'QUERY.feature.moveFeature' |
+              translateHs }}</a>
             </div>
-            <div class="btn-group" ngbDropdown placement="bottom" display="dynamic">
-                <button ngbDropdownToggle class="btn btn-secondary btn-sm rounded-0" type="button"
-                    (click)="toggleExportMenu()" [title]="'QUERY.downloadAs' | translateHs  "><i
-                        class="icon-download"></i></button>
-                <div ngbDropdownMenu [ngClass]="{'show': exportMenuVisible}">
-                    <a class="dropdown-item" [download]="format.name + '_file.' + format.ext"
-                        [hsDownload]="format.serializedData" [mimeType]="format.mimeType" [href]="format.downloadData"
-                        (downloadPrepared)="format.downloadData = $event"
-                        *ngFor="let format of exportFormats">{{format.name}}</a>
-                </div>
+          </div>
+          <div class="btn-group" ngbDropdown placement="bottom" display="dynamic">
+            <button ngbDropdownToggle class="btn btn-secondary btn-sm rounded-0" type="button"
+              (click)="toggleExportMenu()" [title]="'QUERY.downloadAs' | translateHs  "><i
+            class="icon-download"></i></button>
+            <div ngbDropdownMenu [ngClass]="{'show': exportMenuVisible}">
+              @for (format of exportFormats; track format) {
+                <a class="dropdown-item" [download]="format.name + '_file.' + format.ext"
+                  [hsDownload]="format.serializedData" [mimeType]="format.mimeType" [href]="format.downloadData"
+                  (downloadPrepared)="format.downloadData = $event"
+                >{{format.name}}</a>
+              }
             </div>
-            <button class="btn btn-danger btn-sm" (click)="removeFeature()" *ngIf="isFeatureRemovable()"><i
-                    class="icon-trash"></i></button>
+          </div>
+          @if (isFeatureRemovable()) {
+            <button class="btn btn-danger btn-sm" (click)="removeFeature()"><i
+            class="icon-trash"></i></button>
+          }
         </div>
+      </div>
     </div>
-</div>
+  }

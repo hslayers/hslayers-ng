@@ -1,7 +1,8 @@
 <div class="d-flex justify-content-center">
-  <a class="text-danger" (click)="clearLayer(layerDescriptor.layer)" *ngIf="isLayerEditable(layerDescriptor.layer)"
-    data-toggle="tooltip"
+  @if (isLayerEditable(layerDescriptor.layer)) {
+  <a class="text-danger" (click)="clearLayer(layerDescriptor.layer)" data-toggle="tooltip"
     [title]="'QUERY.featurePopup.clearLayer'| translateHs"><!-- TODO: Remove function call from template -->
     {{'QUERY.featurePopup.clearLayer' | translateHs }}
   </a>
+  }
 </div>

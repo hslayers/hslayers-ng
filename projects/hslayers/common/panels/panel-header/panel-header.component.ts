@@ -1,4 +1,4 @@
-import {AsyncPipe, NgClass, NgForOf, NgIf} from '@angular/common';
+import {AsyncPipe, NgClass} from '@angular/common';
 
 import {BehaviorSubject, Subject} from 'rxjs';
 import {
@@ -28,14 +28,7 @@ export function toArray(panels: string) {
   selector: 'hs-panel-header',
   standalone: true,
   templateUrl: './panel-header.component.html',
-  imports: [
-    TranslateCustomPipe,
-    NgbDropdownModule,
-    NgForOf,
-    NgClass,
-    AsyncPipe,
-    NgIf,
-  ],
+  imports: [TranslateCustomPipe, NgbDropdownModule, NgClass, AsyncPipe],
   changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrl: './panel-header.component.scss',
 })

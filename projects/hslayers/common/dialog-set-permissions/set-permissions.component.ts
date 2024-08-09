@@ -1,4 +1,3 @@
-import {CommonModule} from '@angular/common';
 import {Component, OnInit, ViewRef} from '@angular/core';
 
 import {AccessRightsModel, HsAddDataLayerDescriptor} from 'hslayers-ng/types';
@@ -19,7 +18,7 @@ import {UpsertLayerObject} from 'hslayers-ng/types';
   selector: 'hs-set-permissions-dialog',
   templateUrl: './set-permissions.component.html',
   standalone: true,
-  imports: [CommonModule, TranslateCustomPipe, HsLaymanModule],
+  imports: [TranslateCustomPipe, HsLaymanModule],
 })
 export class HsSetPermissionsDialogComponent
   implements HsDialogComponent, OnInit

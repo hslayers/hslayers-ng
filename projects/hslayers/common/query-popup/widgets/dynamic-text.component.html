@@ -1,3 +1,3 @@
-<ng-container *ngFor="let feature of layerDescriptor.features">
-    <div [innerHtml]="generateContent(feature)"></div><!-- TODO: Remove function call from template -->
-</ng-container>
+@for (feature of layerDescriptor.features; track feature) {
+<div [innerHtml]="generateContent(feature)"></div><!-- TODO: Remove function call from template -->
+}

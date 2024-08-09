@@ -1,18 +1,20 @@
 <form class="form">
   <hs-symbolizer-color-picker [symbolizer]="symbolizer" attribute="color" opacityAttribute="opacity"
-    (changes)="emitChange()" [label]="'STYLER.color' | translateHs  "></hs-symbolizer-color-picker>
+  (changes)="emitChange()" [label]="'STYLER.color' | translateHs  "></hs-symbolizer-color-picker>
 
   <hs-symbolizer-slider [symbolizer]="symbolizer" attribute="opacity" (changes)="emitChange()" step="0.05" min="0"
-    max="1" [label]="'STYLER.opacity' | translateHs  "></hs-symbolizer-slider>
+  max="1" [label]="'STYLER.opacity' | translateHs  "></hs-symbolizer-slider>
 
   <hs-symbolizer-slider [symbolizer]="symbolizer" attribute="width" (changes)="emitChange()" step="0.1" min="0" max="20"
-    [label]="'STYLER.width' | translateHs  "></hs-symbolizer-slider>
+  [label]="'STYLER.width' | translateHs  "></hs-symbolizer-slider>
 
   <div class="d-flex flex-row flex-wrap">
     <div class="p-1 flex-grow-1 mt-2">{{'STYLER.dashPattern' | translateHs }}:</div>
-    <input class="form-control me-1 form-select-sm" style="width: 3em"
-      *ngFor="let dash of symbolizer.dasharray; let i = index" [ngModelOptions]="{standalone: true}"
-      [(ngModel)]="symbolizer.dasharray[i]" (change)="emitChange()" />
+    @for (dash of symbolizer.dasharray; track dash; let i = $index) {
+      <input class="form-control me-1 form-select-sm" style="width: 3em"
+        [ngModelOptions]="{standalone: true}"
+        [(ngModel)]="symbolizer.dasharray[i]" (change)="emitChange()" />
+    }
     <div class="btn-group" role="group" [attr.aria-label]="'STYLER.dashPattern' | translateHs  ">
       <button class="btn btn-outline-primary btn-sm" (click)="addDashItem()">
         <span class="icon-plus"></span>
@@ -32,36 +34,40 @@
     <div class="p-1 w-75">
       <select class="form-control form-select-sm form-select" [(ngModel)]="symbolizer.cap" (change)="emitChange()"
         [ngModelOptions]="{standalone: true}">
-        <option *ngFor="let cap of caps">{{cap}}</option>
+        @for (cap of caps; track cap) {
+          <option>{{cap}}</option>
+        }
       </select>
     </div>
   </div>
 
   <hs-symbolizer-slider [symbolizer]="symbolizer" attribute="gapWidth" (changes)="emitChange()" step="1" min="0"
     max="10" [label]="'STYLER.gapWidth' | translateHs  "
-    [warning]="'STYLER.warningAttribNotStoredNotVisualized' | translateHs  "></hs-symbolizer-slider>
+  [warning]="'STYLER.warningAttribNotStoredNotVisualized' | translateHs  "></hs-symbolizer-slider>
 
   <div class="d-flex flex-row">
     <div class="p-1 w-25 mt-2">{{'STYLER.join' | translateHs }}:</div>
     <div class="p-1 w-75">
       <select class="form-control form-select-sm form-select" [(ngModel)]="symbolizer.join" (change)="emitChange()"
         [ngModelOptions]="{standalone: true}">
-        <option *ngFor="let join of joins">{{join}}</option>
+        @for (join of joins; track join) {
+          <option>{{join}}</option>
+        }
       </select>
     </div>
   </div>
 
   <hs-symbolizer-slider [symbolizer]="symbolizer" attribute="miterLimit" (changes)="emitChange()" step="1" min="0"
     max="90" [label]="'STYLER.miterLimit' | translateHs  "
-    [warning]="'STYLER.warningAttribNotStoredNotVisualized' | translateHs  "></hs-symbolizer-slider>
+  [warning]="'STYLER.warningAttribNotStoredNotVisualized' | translateHs  "></hs-symbolizer-slider>
 
   <hs-symbolizer-slider [symbolizer]="symbolizer" attribute="perpendicularOffset" (changes)="emitChange()" step="1"
     min="0" max="20" [label]="'STYLER.perpendicularOffset' | translateHs  "
-    [warning]="'STYLER.warningAttribStoredNotVisualized' | translateHs  "></hs-symbolizer-slider>
+  [warning]="'STYLER.warningAttribStoredNotVisualized' | translateHs  "></hs-symbolizer-slider>
 
   <hs-symbolizer-slider [symbolizer]="symbolizer" attribute="roundLimit" (changes)="emitChange()" step="1" min="0"
     max="90" [label]="'STYLER.roundLimit' | translateHs  "
-    [warning]="'STYLER.warningAttribNotStoredNotVisualized' | translateHs  "></hs-symbolizer-slider>
+  [warning]="'STYLER.warningAttribNotStoredNotVisualized' | translateHs  "></hs-symbolizer-slider>
 
   <hs-symbolizer-slider [symbolizer]="symbolizer" attribute="spacing" (changes)="emitChange()" step="1" min="0" max="20"
     [label]="'STYLER.spacing' | translateHs  " [warning]="'STYLER.warningAttribNotStoredNotVisualized' | translateHs  ">
@@ -87,23 +93,29 @@
             </button>
           </div>
         </div>
-        <button class="btn btn-outline-danger btn-sm" *ngIf="symbolizer.graphicFill !== undefined"
-          (click)="symbolizer.graphicFill = undefined">
-          <span class="icon-trash"></span>
-        </button>
+        @if (symbolizer.graphicFill !== undefined) {
+          <button class="btn btn-outline-danger btn-sm"
+            (click)="symbolizer.graphicFill = undefined">
+            <span class="icon-trash"></span>
+          </button>
+        }
       </div>
     </div>
   </div>
 
-  <hs-mark-symbolizer (remove)="symbolizer.graphicFill = undefined" [symbolizer]="symbolizer.graphicFill"
-    (changes)="emitChange()" *ngIf="symbolizer.graphicFill && symbolizer.graphicFill.kind === kinds.mark"
-    [submenu]="true">
-  </hs-mark-symbolizer>
+  @if (symbolizer.graphicFill && symbolizer.graphicFill.kind === kinds.mark) {
+    <hs-mark-symbolizer (remove)="symbolizer.graphicFill = undefined" [symbolizer]="symbolizer.graphicFill"
+      (changes)="emitChange()"
+      [submenu]="true">
+    </hs-mark-symbolizer>
+  }
 
-  <hs-icon-symbolizer (remove)="symbolizer.graphicFill = undefined" [symbolizer]="symbolizer.graphicFill"
-    (changes)="emitChange()" *ngIf="symbolizer.graphicFill && symbolizer.graphicFill.kind === kinds.icon"
-    [submenu]="true">
-  </hs-icon-symbolizer>
+  @if (symbolizer.graphicFill && symbolizer.graphicFill.kind === kinds.icon) {
+    <hs-icon-symbolizer (remove)="symbolizer.graphicFill = undefined" [symbolizer]="symbolizer.graphicFill"
+      (changes)="emitChange()"
+      [submenu]="true">
+    </hs-icon-symbolizer>
+  }
 
   <div class="d-flex flex-row justify-content-end">
     <div class="p-1 flex-grow-1 mt-2">
@@ -125,22 +137,28 @@
             </button>
           </div>
         </div>
-        <button class="btn btn-outline-danger btn-sm" *ngIf="symbolizer.graphicStroke !== undefined"
-          (click)="symbolizer.graphicStroke = undefined">
-          <span class="icon-trash"></span>
-        </button>
+        @if (symbolizer.graphicStroke !== undefined) {
+          <button class="btn btn-outline-danger btn-sm"
+            (click)="symbolizer.graphicStroke = undefined">
+            <span class="icon-trash"></span>
+          </button>
+        }
       </div>
     </div>
   </div>
 
-  <hs-mark-symbolizer (remove)="symbolizer.graphicStroke = undefined" [symbolizer]="symbolizer.graphicStroke"
-    (changes)="emitChange()" [submenu]="true"
-    *ngIf="symbolizer.graphicStroke && symbolizer.graphicStroke.kind === kinds.mark">
-  </hs-mark-symbolizer>
+  @if (symbolizer.graphicStroke && symbolizer.graphicStroke.kind === kinds.mark) {
+    <hs-mark-symbolizer (remove)="symbolizer.graphicStroke = undefined" [symbolizer]="symbolizer.graphicStroke"
+      (changes)="emitChange()" [submenu]="true"
+      >
+    </hs-mark-symbolizer>
+  }
 
-  <hs-icon-symbolizer (remove)="symbolizer.graphicStroke = undefined" [symbolizer]="symbolizer.graphicStroke"
-    (changes)="emitChange()" [submenu]="true"
-    *ngIf="symbolizer.graphicStroke && symbolizer.graphicStroke.kind === kinds.icon">
-  </hs-icon-symbolizer>
+  @if (symbolizer.graphicStroke && symbolizer.graphicStroke.kind === kinds.icon) {
+    <hs-icon-symbolizer (remove)="symbolizer.graphicStroke = undefined" [symbolizer]="symbolizer.graphicStroke"
+      (changes)="emitChange()" [submenu]="true"
+      >
+    </hs-icon-symbolizer>
+  }
 
 </form>

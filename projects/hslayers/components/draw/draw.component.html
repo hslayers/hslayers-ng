@@ -1,31 +1,40 @@
-<div class="card hs-main-panel" *ngIf="isVisible$ | async" [ngClass]="panelWidthClass">
+@if (isVisible$ | async) {
+  <div class="card hs-main-panel" [ngClass]="panelWidthClass">
     <hs-panel-header name="draw" [selectedTab$]="selectedOption" [panelTabs]="'draw,edit'">
-        <button mainButton class="btn btn-sm" style="cursor: help" data-toggle="tooltip"
-            [title]="'DRAW.drawInfo' | translateHs ">
-            <i class="icon-question-sign"></i>
-        </button>
+      <button mainButton class="btn btn-sm" style="cursor: help" data-toggle="tooltip"
+        [title]="'DRAW.drawInfo' | translateHs ">
+        <i class="icon-question-sign"></i>
+      </button>
     </hs-panel-header>
     <!-- draw panel -->
-    <ng-container *ngIf="{option: selectedOption | async} as selected">
-        <hs-draw-panel *ngIf="selected.option === 'draw'" class="pt-1"></hs-draw-panel>
-        <hs-draw-edit class="my-4 d-flex flex-column align-items-center" *ngIf="selected.option === 'edit'">
+    @if ({option: selectedOption | async}; as selected) {
+      @if (selected.option === 'draw') {
+        <hs-draw-panel class="pt-1"></hs-draw-panel>
+      }
+      @if (selected.option === 'edit') {
+        <hs-draw-edit class="my-4 d-flex flex-column align-items-center">
         </hs-draw-edit>
-    </ng-container>
-
-    <div *ngIf="HsDrawService.pendingLayers.length > 0" class="m-auto w-100 p-3">
+      }
+    }
+    @if (HsDrawService.pendingLayers.length > 0) {
+      <div class="m-auto w-100 p-3">
         <div class="alert alert-warning text-justify">
-            <ol>
-                <li *ngFor="let layer of HsDrawService.pendingLayers">
-                    {{'DRAW.loadingLayer' | translateHs }} <strong>{{layer}}</strong>
-                </li>
-            </ol>
-            {{'DRAW.longerLoading' | translateHs }}
-            <div class="d-flex justify-content-center pt-3">
-                <span class="hs-loader hs-loader-dark"></span>
-            </div>
+          <ol>
+            @for (layer of HsDrawService.pendingLayers; track layer) {
+              <li>
+                {{'DRAW.loadingLayer' | translateHs }} <strong>{{layer}}</strong>
+              </li>
+            }
+          </ol>
+          {{'DRAW.longerLoading' | translateHs }}
+          <div class="d-flex justify-content-center pt-3">
+            <span class="hs-loader hs-loader-dark"></span>
+          </div>
         </div>
-    </div>
+      </div>
+    }
     <div class="mh-75 pt-2">
-        <hs-query-feature-list></hs-query-feature-list>
+      <hs-query-feature-list></hs-query-feature-list>
     </div>
-</div>
+  </div>
+}

@@ -5,13 +5,16 @@
     <label for="folder" class="capabilities_label control-label">{{'ADDLAYERS.folderName' | translateHs
       }}</label>
   </div>
-  <div class="form-group" *ngIf="isKml">
+  @if (isKml) {
+  <div class="form-group">
     <input type="checkbox" name="extractStyles" [(ngModel)]="data.extract_styles" />
     <label class="capabilities_label control-label ms-1">{{'ADDLAYERS.VECTOR.extractStyles' |
       translateHs }}</label>
   </div>
+  }
   <hs-target-position [(addUnder)]="data.addUnder"></hs-target-position>
-  <div class="d-flex flex-row justify-content-between align-items-baseline mb-1 ps-4" *ngIf="data.loadAsType">
+  @if (data.loadAsType) {
+  <div class="d-flex flex-row justify-content-between align-items-baseline mb-1 ps-4">
     {{'ADDDATA.loadAs' | translateHs }}
     <div class="btn-group ms-2">
       <button type="button" class="btn btn-light btn-outline-secondary" (click)="data.loadAsType = 'wms'"
@@ -24,4 +27,5 @@
       </button>
     </div>
   </div>
+  }
 </div>

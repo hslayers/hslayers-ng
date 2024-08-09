@@ -1,4 +1,3 @@
-import {CommonModule} from '@angular/common';
 import {Component, Input, OnInit, ViewRef} from '@angular/core';
 
 import {HsAddDataOwsService} from 'hslayers-ng/services/add-data';
@@ -24,12 +23,7 @@ import {
   templateUrl: './csw-layers-dialog.component.html',
   styleUrls: ['./csw-layers-dialog.component.scss'],
   standalone: true,
-  imports: [
-    TranslateCustomPipe,
-    CommonModule,
-    NgbAccordionModule,
-    HsLayerTableComponent,
-  ],
+  imports: [TranslateCustomPipe, NgbAccordionModule, HsLayerTableComponent],
 })
 export class CswLayersDialogComponent implements OnInit, HsDialogComponent {
   dialogItem: HsDialogItem;
