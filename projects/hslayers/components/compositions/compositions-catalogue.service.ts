@@ -268,13 +268,14 @@ export class HsCompositionsCatalogueService {
       this.listNext = this.matchedRecords;
     }
   }
+
   /**
    *  Filters compositions from responseArray with the same id in already loaded compositionEntries array
    * @param endpoint -
    */
   filterDuplicates(endpoint: HsEndpoint): HsMapCompositionDescriptor[] {
     if (!this.arrayContainsData(endpoint.compositions)) {
-      return;
+      return this.compositionEntries;
     }
     const filteredCompositions = endpoint.compositions.filter(
       (record) =>
