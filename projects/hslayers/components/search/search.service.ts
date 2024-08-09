@@ -26,7 +26,7 @@ export class HsSearchService {
   canceler: Subject<any> = new Subject();
   searchResultsLayer: VectorLayer<VectorSource<Feature>>;
   pointerMoveEventKey;
-  providers = {};
+  providers: {[key: string]: any} = {};
 
   constructor(
     private http: HttpClient,
