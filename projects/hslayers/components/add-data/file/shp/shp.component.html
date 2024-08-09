@@ -17,7 +17,7 @@
           {{'ADDLAYERS.filesSelected' | translateHs }}</p>
       </div>
       <div class="d-flex flex-column mw-75">
-        @for (file of data.files; track file) {
+        @for (file of data.files; track file.name) {
         <p>{{file.name}}</p>
         }
       </div>

@@ -94,11 +94,11 @@
                     </button>
                     <ul ngbDropdownMenu aria-labelledby="keywords" class="ps-2"
                       style="overflow-y: auto; max-height: 10rem; min-width: 15rem">
-                      @for (keyword of hsCompositionsCatalogueService.data.keywords; track keyword; let index = $index) {
+                      @for (keyword of hsCompositionsCatalogueService.data.keywords; track keyword;) {
                         <li
                           class="p-1 p-md-0">
                           <label style="cursor: pointer;"><input class="me-2" type="checkbox"
-                            [(ngModel)]="keyword.selected" name="keyword[index]"
+                            [(ngModel)]="keyword.selected" name="keyword[$index]"
                             (change)="loadFilteredCompositions()">{{translateString('COMPOSITONKEYWORDS',
                           keyword.name)}}</label>
                         </li>
