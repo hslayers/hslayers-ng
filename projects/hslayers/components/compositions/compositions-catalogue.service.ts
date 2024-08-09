@@ -259,11 +259,9 @@ export class HsCompositionsCatalogueService {
    */
   createCompositionList(): void {
     for (const endpoint of this.endpoints) {
-      this.arrayContainsData(this.compositionEntries)
+      this.compositionEntries = this.arrayContainsData(this.compositionEntries)
         ? this.filterDuplicates(endpoint)
-        : (this.compositionEntries = this.compositionEntries.concat(
-            endpoint.compositions,
-          ));
+        : this.compositionEntries.concat(endpoint.compositions);
     }
     this.dataLoading = false;
     if (this.matchedRecords < this.recordsPerPage) {
@@ -274,7 +272,7 @@ export class HsCompositionsCatalogueService {
    *  Filters compositions from responseArray with the same id in already loaded compositionEntries array
    * @param endpoint -
    */
-  filterDuplicates(endpoint: HsEndpoint): void {
+  filterDuplicates(endpoint: HsEndpoint): HsMapCompositionDescriptor[] {
     if (!this.arrayContainsData(endpoint.compositions)) {
       return;
     }
@@ -289,8 +287,7 @@ export class HsCompositionsCatalogueService {
     );
     this.matchedRecords -=
       endpoint.compositions.length - filteredCompositions.length;
-    this.compositionEntries =
-      this.compositionEntries.concat(filteredCompositions);
+    return this.compositionEntries.concat(filteredCompositions);
   }
   /**
    * Clears all list counters regarding paging
