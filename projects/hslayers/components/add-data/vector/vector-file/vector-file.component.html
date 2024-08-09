@@ -4,37 +4,40 @@
       [acceptedFormats]="acceptedFormats">
     </hs-file-upload>
   </div>
-  <div *ngIf="data.showDetails">
-    <div class="border-bottom d-flex flex-row justify-content-between">
-      <p class="align-self-center m-0">
-        {{hsLanguageService.getTranslationIgnoreNonExisting('ADDLAYERS.Vector','addingFiles',{featuresCount:data.featureCount})}}
-      </p>
-      <ul class="nav nav-tabs justify-content-end">
-        <li class="nav-item">
-          <a class="nav-link text-secondary" [ngClass]="{'active': uploadType === 'new'}"
+  @if (data.showDetails) {
+    <div>
+      <div class="border-bottom d-flex flex-row justify-content-between">
+        <p class="align-self-center m-0">
+          {{hsLanguageService.getTranslationIgnoreNonExisting('ADDLAYERS.Vector','addingFiles',{featuresCount:data.featureCount})}}
+        </p>
+        <ul class="nav nav-tabs justify-content-end">
+          <li class="nav-item">
+            <a class="nav-link text-secondary" [ngClass]="{'active': uploadType === 'new'}"
             (click)="setUploadType('new')">{{'LAYERS.newLayer' | translateHs }}</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link text-secondary" [ngClass]="{'active': uploadType === 'existing'}"
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-secondary" [ngClass]="{'active': uploadType === 'existing'}"
             (click)="setUploadType('existing')">{{'LAYERS.existingLayer' | translateHs }}</a>
-        </li>
-      </ul>
-    </div>
-    <div [hidden]="uploadType === 'new'">
-      <div class="form-group my-3">
-        <label class="capabilities_label control-label">{{'LAYERS.existingLayer' | translateHs }}</label>
-        <select class="hsl-custom-select" name="sourceLayer" [(ngModel)]="data.sourceLayer" style="flex-grow: 1;">
-          <option [ngValue]="null" [disabled]="true" selected hidden> {{'ADDLAYERS.Vector.chooseLayer' |
-            translateHs }}</option>
-          <option *ngFor="let lyr of data.vectorLayers" [ngValue]="lyr.layer">{{ lyr.title }} </option>
-        </select>
+          </li>
+        </ul>
       </div>
-    </div>
-    <div [hidden]="uploadType === 'existing'">
-      <hs-new-layer-form [data]="data"></hs-new-layer-form>
-    </div>
-
-    <hs-add-to-map class="w-100 mt-2" [disabled]="uploadType === 'new' ? !data.title : !data.sourceLayer" (add)="add()"
+      <div [hidden]="uploadType === 'new'">
+        <div class="form-group my-3">
+          <label class="capabilities_label control-label">{{'LAYERS.existingLayer' | translateHs }}</label>
+          <select class="hsl-custom-select" name="sourceLayer" [(ngModel)]="data.sourceLayer" style="flex-grow: 1;">
+            <option [ngValue]="null" [disabled]="true" selected hidden> {{'ADDLAYERS.Vector.chooseLayer' |
+            translateHs }}</option>
+            @for (lyr of data.vectorLayers; track lyr) {
+              <option [ngValue]="lyr.layer">{{ lyr.title }} </option>
+            }
+          </select>
+        </div>
+      </div>
+      <div [hidden]="uploadType === 'existing'">
+        <hs-new-layer-form [data]="data"></hs-new-layer-form>
+      </div>
+      <hs-add-to-map class="w-100 mt-2" [disabled]="uploadType === 'new' ? !data.title : !data.sourceLayer" (add)="add()"
       [loading]="hsAddDataCommonFileService.loadingToLayman"></hs-add-to-map>
-  </div>
+    </div>
+  }
 </form>

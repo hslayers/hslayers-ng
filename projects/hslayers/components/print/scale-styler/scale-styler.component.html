@@ -3,39 +3,49 @@
   <div class="p-1 w-100">
     <select class="form-control form-select-sm form-select" [(ngModel)]="scaleObj.scaleType"
       [ngModelOptions]="{standalone: true}" style="flex-grow: 1;" (ngModelChange)="scaleObjChanged()">
-      <option [ngValue]="scaleType" *ngFor="let scaleType of stylingOptions.scaleType">
-        {{getTranslation('PRINT',scaleType)}}<!-- TODO: Remove function call from template -->
-      </option>
+      @for (scaleType of stylingOptions.scaleType; track scaleType) {
+        <option [ngValue]="scaleType">
+          {{getTranslation('PRINT',scaleType)}}<!-- TODO: Remove function call from template -->
+        </option>
+      }
     </select>
   </div>
 </div>
-<div class="d-flex flex-row" *ngIf="scaleObj.scaleType === 'scalebar'">
-  <div class="p-1 w-50 mt-1">{{'PRINT.scaleBarText' | translateHs }}:</div>
-  <div class="p-1 w-100">
-    <input type="checkbox" class="form-check-input" [(ngModel)]="scaleObj.scaleBarText"
-      (ngModelChange)="scaleObjChanged()" />
+@if (scaleObj.scaleType === 'scalebar') {
+  <div class="d-flex flex-row">
+    <div class="p-1 w-50 mt-1">{{'PRINT.scaleBarText' | translateHs }}:</div>
+    <div class="p-1 w-100">
+      <input type="checkbox" class="form-check-input" [(ngModel)]="scaleObj.scaleBarText"
+        (ngModelChange)="scaleObjChanged()" />
+    </div>
   </div>
-</div>
+}
 <div class="d-flex flex-row">
   <div class="p-1 w-50 mt-1">{{'PRINT.scaleUnits' | translateHs }}:</div>
   <div class="p-1 w-100">
     <select class="form-control form-select-sm form-select" [(ngModel)]="scaleObj.scaleUnits"
       (ngModelChange)="scaleObjChanged()" [ngModelOptions]="{standalone: true}" style="flex-grow: 1;">
-      <option [ngValue]="scaleUnits.value" *ngFor="let scaleUnits of stylingOptions.scaleUnits">
-        {{getTranslation('PRINT',scaleUnits.name)}}<!-- TODO: Remove function call from template -->
-      </option>
+      @for (scaleUnits of stylingOptions.scaleUnits; track scaleUnits) {
+        <option [ngValue]="scaleUnits.value">
+          {{getTranslation('PRINT',scaleUnits.name)}}<!-- TODO: Remove function call from template -->
+        </option>
+      }
     </select>
   </div>
 </div>
-<div class="d-flex flex-row" *ngIf="scaleObj.scaleType === 'scalebar'">
-  <div class="p-1 w-50 mt-1">{{'PRINT.scaleSteps' | translateHs }}:</div>
-  <div class="p-1 w-100">
-    <select class="form-control form-select-sm form-select" [(ngModel)]="scaleObj.scaleBarSteps"
-      (ngModelChange)="scaleObjChanged()" [ngModelOptions]="{standalone: true}" style="flex-grow: 1;">
-      <option [ngValue]="scaleBarSteps" *ngFor="let scaleBarSteps of stylingOptions.scaleBarSteps">{{scaleBarSteps}}
-        {{'COMMON.steps' |
-        translateHs }}
-      </option>
-    </select>
+@if (scaleObj.scaleType === 'scalebar') {
+  <div class="d-flex flex-row">
+    <div class="p-1 w-50 mt-1">{{'PRINT.scaleSteps' | translateHs }}:</div>
+    <div class="p-1 w-100">
+      <select class="form-control form-select-sm form-select" [(ngModel)]="scaleObj.scaleBarSteps"
+        (ngModelChange)="scaleObjChanged()" [ngModelOptions]="{standalone: true}" style="flex-grow: 1;">
+        @for (scaleBarSteps of stylingOptions.scaleBarSteps; track scaleBarSteps) {
+          <option [ngValue]="scaleBarSteps">{{scaleBarSteps}}
+            {{'COMMON.steps' |
+            translateHs }}
+          </option>
+        }
+      </select>
+    </div>
   </div>
-</div>
+}

@@ -1,55 +1,63 @@
-<div class="basemapGallery" style="z-index: 101;" *ngIf="isVisible$ | async">
+@if (isVisible$ | async) {
+  <div class="basemapGallery" style="z-index: 101;">
     <div ngbDropdown placement="bottom-right" class="btn-group btn-group-sm" role="group"
-        [attr.data-cy]="'basemap-gallery'" #galleryDropdown="ngbDropdown">
-        <button ngbDropdownToggle type="button" class="btn rounded galleryButton pt-0 pb-0" style="font-size: 1rem"
-            aria-haspopup="true">
-            <i class="glyphicon icon-th-large x-large p-0" style="line-height: inherit;"></i>
-        </button>
-        <div ngbDropdownMenu class="p-0 galleryDropdown bg-light rounded">
-            <div *ngFor="let layer of hsLayerManagerService.data.baselayers" [attr.data-cy]="layer.title"
-                (click)="toggleBasemap(layer);" [ngStyle]="{'position':'relative'}" class="m-0 ">
-                <!-- Mini menu toggle -->
-                <div style="position:absolute;top:5px; right:5px;z-index:5"
-                    [ngClass]="layer.galleryMiniMenu ? 'text-white' : 'text-primary'" *ngIf="layer.active"
-                    (click)="$event.preventDefault();toggleMiniMenu(layer)">
-                    <span class="glyphicon icon-menu icon-small"></span>
-                </div>
-                <!-- Mini menu -->
-                @if(layer.galleryMiniMenu && layer.active){
-
-                <div class="hs-miniMenu position-absolute" [ngClass]="{'expanded': hsLayerManagerService.menuExpanded}">
-                    <!-- TODO: Remove function call from template -->
-                    <div class="ps-1 w-100" *ngIf="!hsLayerManagerService.menuExpanded"
-                        (click)="hsLayerManagerService.setGreyscale(layer)">
-                        <label class="form-check-label m-0"
-                            [ngClass]="getGreyscale(layer.layer) ? 'hs-checkmark' : 'hs-uncheckmark'"></label>
-                        <p class="ms-1 mb-0">
-                            {{'LAYERMANAGER.baseMapGallery.greyscale' | translateHs }}</p>
-                    </div>
-                    <label [attr.id]="layer?.idString()" class="ps-2 mb-0 w-100" (click)="expandMenu(layer)">
-                        <ng-container *ngIf="hsLayerManagerService.menuExpanded;else more">
-                            {{'COMMON.less' | translateHs }}
-                        </ng-container>
-                        <ng-template #more>
-                            {{'COMMON.more' | translateHs }}
-                        </ng-template>
-                    </label>
-                </div>
+      [attr.data-cy]="'basemap-gallery'" #galleryDropdown="ngbDropdown">
+      <button ngbDropdownToggle type="button" class="btn rounded galleryButton pt-0 pb-0" style="font-size: 1rem"
+        aria-haspopup="true">
+        <i class="glyphicon icon-th-large x-large p-0" style="line-height: inherit;"></i>
+      </button>
+      <div ngbDropdownMenu class="p-0 galleryDropdown bg-light rounded">
+        @for (layer of hsLayerManagerService.data.baselayers; track layer) {
+          <div [attr.data-cy]="layer.title"
+            (click)="toggleBasemap(layer);" [ngStyle]="{'position':'relative'}" class="m-0 ">
+            <!-- Mini menu toggle -->
+            @if (layer.active) {
+              <div style="position:absolute;top:5px; right:5px;z-index:5"
+                [ngClass]="layer.galleryMiniMenu ? 'text-white' : 'text-primary'"
+                (click)="$event.preventDefault();toggleMiniMenu(layer)">
+                <span class="glyphicon icon-menu icon-small"></span>
+              </div>
+            }
+            <!-- Mini menu -->
+            @if(layer.galleryMiniMenu && layer.active){
+              <div class="hs-miniMenu position-absolute" [ngClass]="{'expanded': hsLayerManagerService.menuExpanded}">
+                <!-- TODO: Remove function call from template -->
+                @if (!hsLayerManagerService.menuExpanded) {
+                  <div class="ps-1 w-100"
+                    (click)="hsLayerManagerService.setGreyscale(layer)">
+                    <label class="form-check-label m-0"
+                    [ngClass]="getGreyscale(layer.layer) ? 'hs-checkmark' : 'hs-uncheckmark'"></label>
+                    <p class="ms-1 mb-0">
+                    {{'LAYERMANAGER.baseMapGallery.greyscale' | translateHs }}</p>
+                  </div>
                 }
-
-                <img [ngClass]="{'active': layer.active}" [src]="layer.thumbnail"
-                    [alt]="'LAYERMANAGER.basemapThumbnail' | translateHs " style="width:100%">
-                <a class="dropdown-item flex-grow-1 d-flex align-items-center text-truncate"
-                    [ngClass]="{'active': layer.active}">{{layer.title | translateHs : 'LAYERS'
-                    }}</a>
-            </div>
-            <div (click)="toggleBasemap()">
-                <div style="height: 4.5em; width: 100%; background: white"
-                    [ngClass]="{'active': !hsLayerManagerVisibilityService.baselayersVisible}"></div>
-                <a class="dropdown-item flex-grow-1 d-flex align-items-center text-truncate"
-                    [ngClass]="{'active': !hsLayerManagerVisibilityService.baselayersVisible}">{{'LAYERMANAGER.baseMapGallery.noBaseMap'
-                    | translateHs }}</a>
-            </div>
+                <label [attr.id]="layer?.idString()" class="ps-2 mb-0 w-100" (click)="expandMenu(layer)">
+                  @if (hsLayerManagerService.menuExpanded) {
+                    {{'COMMON.less' | translateHs }}
+                  } @else {
+                    {{'COMMON.more' | translateHs }}
+                  }
+                  <ng-template #more>
+                    {{'COMMON.more' | translateHs }}
+                  </ng-template>
+                </label>
+              </div>
+            }
+            <img [ngClass]="{'active': layer.active}" [src]="layer.thumbnail"
+              [alt]="'LAYERMANAGER.basemapThumbnail' | translateHs " style="width:100%">
+            <a class="dropdown-item flex-grow-1 d-flex align-items-center text-truncate"
+              [ngClass]="{'active': layer.active}">{{layer.title | translateHs : 'LAYERS'
+            }}</a>
+          </div>
+        }
+        <div (click)="toggleBasemap()">
+          <div style="height: 4.5em; width: 100%; background: white"
+          [ngClass]="{'active': !hsLayerManagerVisibilityService.baselayersVisible}"></div>
+          <a class="dropdown-item flex-grow-1 d-flex align-items-center text-truncate"
+            [ngClass]="{'active': !hsLayerManagerVisibilityService.baselayersVisible}">{{'LAYERMANAGER.baseMapGallery.noBaseMap'
+          | translateHs }}</a>
         </div>
+      </div>
     </div>
-</div>
+  </div>
+}

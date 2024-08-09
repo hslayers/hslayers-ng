@@ -1,18 +1,26 @@
 <div>
-  <div *ngIf="hsFiltersService.isLogOp(filter)" class="card m-2"><!-- TODO: Remove function call from template -->
-    <div class="d-flex flex-row card-header p-0">
-      <div class="p-2">{{hsFiltersService.humanReadableLogOp(filter[0])}}</div>
-      <!-- TODO: Remove function call from template -->
-      <hs-add-filter-button (clicks)="hsFiltersService.add($event.type, true, filter)"></hs-add-filter-button>
-      <button class="btn btn-outline-danger btn-sm m-1" [title]="'STYLER.removeFilter' | translateHs"
-        (click)="remove()">
-        <span class="icon-trash"></span>
-      </button>
+  @if (hsFiltersService.isLogOp(filter)) {
+    <div class="card m-2"><!-- TODO: Remove function call from template -->
+      <div class="d-flex flex-row card-header p-0">
+        <div class="p-2">{{hsFiltersService.humanReadableLogOp(filter[0])}}</div>
+        <!-- TODO: Remove function call from template -->
+        <hs-add-filter-button (clicks)="hsFiltersService.add($event.type, true, filter)"></hs-add-filter-button>
+        <button class="btn btn-outline-danger btn-sm m-1" [title]="'STYLER.removeFilter' | translateHs"
+          (click)="remove()">
+          <span class="icon-trash"></span>
+        </button>
+      </div>
+      @for (item of filter; track item; let i = $index) {
+        <div class="d-flex flex-row">
+          @if (i>0) {
+            <hs-filter [filter]="item" [parent]="filter"></hs-filter>
+          }
+        </div>
+      }
     </div>
-    <div class="d-flex flex-row" *ngFor="let item of filter; let i = index">
-      <hs-filter *ngIf="i>0" [filter]="item" [parent]="filter"></hs-filter>
-    </div>
+  }
+  @if (filter.length > 1 && !(hsFiltersService.isLogOp(filter))) {
+    <hs-comparison-filter [filter]="filter"
+    (changes)="emitChange()" [parent]="parent"></hs-comparison-filter>
+    }<!-- TODO: Remove function call from template -->
   </div>
-  <hs-comparison-filter *ngIf="filter.length > 1 && !(hsFiltersService.isLogOp(filter))" [filter]="filter"
-    (changes)="emitChange()" [parent]="parent"></hs-comparison-filter><!-- TODO: Remove function call from template -->
-</div>

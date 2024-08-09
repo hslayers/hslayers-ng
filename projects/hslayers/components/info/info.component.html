@@ -1,47 +1,53 @@
 <div class="hs-info-container" [hidden]="(isVisible$ | async) === false">
-    <div class="hs-info-area p-1">
-        @if(showLayerLoading | async){
-        <div style="display: flex;box-sizing: content-box"
-            class="hs-info-layers justify-content-start align-items-center" [hidden]="!layer_loading.length">
-            <div class="hs-info-composition-image">
-                <span class="icon-refresh icon-spin"></span>
-            </div>
-            <div class="text-truncate">
-                <div class="hs-info-composition-title">{{'COMMON.loading' | translateHs }}: </div>
-                <span *ngFor="let layer of layer_loading; trackBy: trackByFn">{{layer}} </span>
-            </div>
+  <div class="hs-info-area p-1">
+    @if(showLayerLoading | async){
+      <div style="display: flex;box-sizing: content-box"
+        class="hs-info-layers justify-content-start align-items-center" [hidden]="!layer_loading.length">
+        <div class="hs-info-composition-image">
+          <span class="icon-refresh icon-spin"></span>
         </div>
-        }
-        <div class="hs-info-composition" style="max-width: max-content;"
-            *ngIf="!compositionLoaded() && !composition_edited">
-            <div class="hs-info-composition-container">
-                <div class="hs-info-composition-title" [title]="'INFOCOMPONENT.viewComposeAndAnalyse' | translateHs ">
-                    {{'INFOCOMPONENT.newMap' | translateHs }}</div>
-            </div>
+        <div class="text-truncate">
+          <div class="hs-info-composition-title">{{'COMMON.loading' | translateHs }}: </div>
+          @for (layer of layer_loading; track trackByFn($index, layer)) {
+            <span>{{layer}} </span>
+          }
         </div>
-
-        <div class="hs-info-composition-edited" [hidden]="!composition_edited">
-            <span>{{'INFOCOMPONENT.youHaveUnsavedChanges' | translateHs }}</span>
+      </div>
+    }
+    @if (!compositionLoaded() && !composition_edited) {
+      <div class="hs-info-composition" style="max-width: max-content;"
+        >
+        <div class="hs-info-composition-container">
+          <div class="hs-info-composition-title" [title]="'INFOCOMPONENT.viewComposeAndAnalyse' | translateHs ">
+          {{'INFOCOMPONENT.newMap' | translateHs }}</div>
         </div>
+      </div>
+    }
 
-        <div class="hs-info-composition" *ngIf="compositionLoaded()">
-            <div class="hs-info-composition-container">
-                <div class="hs-info-composition-title-container">
-                    <div class="hs-info-composition-title">{{ 'COMMON.composition' | translateHs}}</div>
-                    <span class="text-truncate">: {{composition_title}}</span>
-                </div>
-                <div class="hs-info-composition-abstract text-truncate">{{composition_abstract}}</div>
-            </div>
-        </div>
-
-        <update-title [title]="composition_title"></update-title>
-        <update-meta property="og:title" [content]="composition_title"></update-meta>
-        <update-meta property="twitter:title" [content]="composition_title"></update-meta>
-        <update-meta itemprop="title" [content]="composition_title"></update-meta>
-
-        <update-meta name="description" [content]="composition_abstract"></update-meta>
-        <update-meta property="og:description" [content]="composition_abstract"></update-meta>
-        <update-meta property="twitter:description" [content]="composition_abstract"></update-meta>
-        <update-meta itemprop="description" [content]="composition_abstract"></update-meta>
+    <div class="hs-info-composition-edited" [hidden]="!composition_edited">
+      <span>{{'INFOCOMPONENT.youHaveUnsavedChanges' | translateHs }}</span>
     </div>
+
+    @if (compositionLoaded()) {
+      <div class="hs-info-composition">
+        <div class="hs-info-composition-container">
+          <div class="hs-info-composition-title-container">
+            <div class="hs-info-composition-title">{{ 'COMMON.composition' | translateHs}}</div>
+            <span class="text-truncate">: {{composition_title}}</span>
+          </div>
+          <div class="hs-info-composition-abstract text-truncate">{{composition_abstract}}</div>
+        </div>
+      </div>
+    }
+
+    <update-title [title]="composition_title"></update-title>
+    <update-meta property="og:title" [content]="composition_title"></update-meta>
+    <update-meta property="twitter:title" [content]="composition_title"></update-meta>
+    <update-meta itemprop="title" [content]="composition_title"></update-meta>
+
+    <update-meta name="description" [content]="composition_abstract"></update-meta>
+    <update-meta property="og:description" [content]="composition_abstract"></update-meta>
+    <update-meta property="twitter:description" [content]="composition_abstract"></update-meta>
+    <update-meta itemprop="description" [content]="composition_abstract"></update-meta>
+  </div>
 </div>

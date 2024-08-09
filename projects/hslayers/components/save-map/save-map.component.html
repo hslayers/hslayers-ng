@@ -1,26 +1,32 @@
-<div class="card panel-default hs-main-panel mainpanel hs-stc-mainpanel" *ngIf="isVisible$ | async"
+@if (isVisible$ | async) {
+  <div class="card panel-default hs-main-panel mainpanel hs-stc-mainpanel"
     [ngClass]="panelWidthClass">
     <hs-panel-header name="saveMap" [panelTabs]="'SAVECOMPOSITION'">
     </hs-panel-header>
     <div class="card-body">
-        <div class="form-group">
-            <div class="input-group">
-                <span class="input-group-text control-label">{{'COMMON.saveTo' | translateHs }}</span>
-                <select class="form-control form-select" [(ngModel)]="endpoint" (change)="selectEndpoint(endpoint)"
-                    name="endpoint">
-                    <option *ngFor="let e of endpoints" [ngValue]="e">{{e.title}}</option>
-                </select>
-            </div>
+      <div class="form-group">
+        <div class="input-group">
+          <span class="input-group-text control-label">{{'COMMON.saveTo' | translateHs }}</span>
+          <select class="form-control form-select" [(ngModel)]="endpoint" (change)="selectEndpoint(endpoint)"
+            name="endpoint">
+            @for (e of endpoints; track e) {
+              <option [ngValue]="e">{{e.title}}</option>
+            }
+          </select>
         </div>
-        <hs-layman-current-user class="d-block pb-5" *ngIf="endpoint?.type === 'layman'" [endpoint]="endpoint">
+      </div>
+      @if (endpoint?.type === 'layman') {
+        <hs-layman-current-user class="d-block pb-5" [endpoint]="endpoint">
         </hs-layman-current-user>
-        <hs-save-map-form *ngIf="isAuthenticated || !endpoint?.type.includes('layman'); else notAuthorized">
+      }
+      @if (isAuthenticated || !endpoint?.type.includes('layman')) {
+        <hs-save-map-form>
         </hs-save-map-form>
-
-    </div>
-</div>
-
-<ng-template #notAuthorized>
-    <div class="alert alert-info text-gray">
+      } @else {
+        <div class="alert alert-info text-gray">
         {{'SAVECOMPOSITION.panelMd.youAreNotAuthorized' | translateHs }} </div>
-</ng-template>
+      }
+    </div>
+  </div>
+}
+

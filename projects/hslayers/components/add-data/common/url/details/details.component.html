@@ -1,10 +1,12 @@
 <div [hidden]="!hsAddDataCommonService.showDetails || hsAddDataCommonService.loadingInfo">
   <div class="d-flex flex-column my-3 mb-2">
-    <div class="input-group" *ngIf="data.group === true || type !== 'wms'"
+    @if (data.group === true || type !== 'wms') {
+    <div class="input-group"
       style="box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;">
       <span class="input-group-text control-label">{{'COMMON.title' | translateHs }}</span>
       <input class="form-control" name="baseTitle" [(ngModel)]="data.title" />
     </div>
+    }
 
     <div class="hs-add-url-wms-addas d-flex flex-row justify-content-start align-items-baseline my-2">
       <span class="control-label input-group-text">{{'COMMON.addAs' | translateHs }}</span>
@@ -19,7 +21,8 @@
             {{'COMMON.layer' | translateHs }}
           </button>
         </div>
-        <div class="btn-group " *ngIf="type === 'wms'">
+        @if (type === 'wms') {
+        <div class="btn-group ">
           <button type="button" class="text-capitalize btn btn-sm btn-outline-secondary" (click)="data.group = true"
             [ngClass]="{'active':data.group}">
             {{'COMMON.group' | translateHs }}
@@ -29,6 +32,7 @@
             {{'COMMON.separateLayers' | translateHs }}
           </button>
         </div>
+        }
       </div>
 
     </div>
@@ -38,73 +42,76 @@
     (click)="advancedPanelVisible = !advancedPanelVisible">
     {{'COMMON.advancedOptions' | translateHs }}
   </button>
-  <ng-container *ngIf="advancedPanelVisible">
-    <div class="form-group mt-1" [hidden]="type === 'arcgis' && !data.get_map_url?.includes('image')">
-      <div class="input-group">
-        <span class="input-group-text control-label">{{'ADDLAYERS.imageFormat' | translateHs }}</span>
-        <select class="form-control form-select" name="imageFormat" [(ngModel)]="data.image_format">
-          <option *ngFor="let format of data.image_formats">{{format}}</option>
-        </select>
-      </div>
+  @if (advancedPanelVisible) {
+  <div class="form-group mt-1" [hidden]="type === 'arcgis' && !data.get_map_url?.includes('image')">
+    <div class="input-group">
+      <span class="input-group-text control-label">{{'ADDLAYERS.imageFormat' | translateHs }}</span>
+      <select class="form-control form-select" name="imageFormat" [(ngModel)]="data.image_format">
+        @for (format of data.image_formats; track format) {
+        <option>{{format}}</option>
+        }
+      </select>
     </div>
+  </div>
+  <div class="form-group">
+    <div class="input-group">
+      <span class="input-group-text control-label">{{'ADDLAYERS.queryFormat' | translateHs }}</span>
+      <select class="form-control form-select" name="queryFormat" [(ngModel)]="data.query_format">
+        @for (format of data.query_formats; track format) {
+        <option>{{format}}</option>
+        }
+      </select>
+    </div>
+  </div>
+  <div class="form-group" [hidden]="!data.srs || data.srs.toUpperCase() === data.map_projection">
+    <div class="input-group">
+      <span class="input-group-text control-label">{{'ADDLAYERS.srs' | translateHs }}</span>
+      <select class="form-control form-select form-select" name="srs" [(ngModel)]="data.srs" (change)="srsChanged()">
+        @for (epsg of data.srss | slice:0:50; track $index) {
+        <option [ngValue]="epsg">{{epsg | epsg}}</option>
+        }
+      </select>
+    </div>
+  </div>
+  <div class="form-group" [hidden]="data.base === true">
+    <div class="input-group">
+      <span class="input-group-text control-label">{{'ADDLAYERS.folderName' | translateHs }}</span>
+      <input class="form-control" name="folderName" [(ngModel)]="data.folder_name" />
+    </div>
+  </div>
+  @if (type === 'wms' || type === 'arcgis') {
+  <p class="col-sm-12 alert alert-danger" [hidden]="!data.use_resampling">
+    {{'ADDLAYERS.mapAndLayerProjection' | translateHs }}
+  </p>
+  }
+  <div class="form-group">
+    <div class="capabilities_input d-flex flex-column">
+      @if (type === 'wms') {
+      <label class="capabilities_label control-label"> <input type="checkbox" class="me-1 checkbox-lg" name="useTiles"
+          [(ngModel)]="data.use_tiles" />
+        {{'ADDLAYERS.useTiles' | translateHs }}
+      </label>
+      }
+    </div>
+  </div>
+  @if (type === 'wms' || type === 'arcgis') {
+  <p class="col-sm-12 alert alert-warning" [hidden]="data.use_tiles">
+    {{'ADDLAYERS.considerUsingTiles' | translateHs }}
+  </p>
+  }
+  @if (type === 'wms') {
+  <div class="form-group">
+    <div class="input-group">
+      <span class="input-group-text control-label">{{'ADDLAYERS.tileSize' | translateHs }}</span>
+      <input class="form-control" name="tileSize" [(ngModel)]="data.tile_size" />
+    </div>
+  </div>
+  }
+  }
 
-    <div class="form-group">
-      <div class="input-group">
-        <span class="input-group-text control-label">{{'ADDLAYERS.queryFormat' | translateHs }}</span>
-        <select class="form-control form-select" name="queryFormat" [(ngModel)]="data.query_format">
-          <option *ngFor="let format of data.query_formats">{{format}}</option>
-        </select>
-      </div>
-    </div>
-
-    <div class="form-group" [hidden]="!data.srs || data.srs.toUpperCase() === data.map_projection">
-      <div class="input-group">
-        <span class="input-group-text control-label">{{'ADDLAYERS.srs' | translateHs }}</span>
-        <select class="form-control form-select form-select" name="srs" [(ngModel)]="data.srs" (change)="srsChanged()">
-          <option *ngFor="let i of data.srss | slice:0:50" [ngValue]="i">{{i | epsg}}</option>
-        </select>
-      </div>
-    </div>
-
-    <div class="form-group" [hidden]="data.base === true">
-      <div class="input-group">
-        <span class="input-group-text control-label">{{'ADDLAYERS.folderName' | translateHs }}</span>
-        <input class="form-control" name="folderName" [(ngModel)]="data.folder_name" />
-      </div>
-    </div>
-    <ng-container *ngIf="type === 'wms' || type === 'arcgis'">
-      <p class="col-sm-12 alert alert-danger" [hidden]="!data.use_resampling">
-        {{'ADDLAYERS.mapAndLayerProjection' | translateHs }}
-      </p>
-    </ng-container>
-    <div class="form-group">
-      <div class="capabilities_input d-flex flex-column">
-        <ng-container *ngIf="type === 'wms'">
-          <label class="capabilities_label control-label"> <input type="checkbox" class="me-1 checkbox-lg"
-              name="useTiles" [(ngModel)]="data.use_tiles" />
-            {{'ADDLAYERS.useTiles' | translateHs }}
-          </label>
-        </ng-container>
-      </div>
-    </div>
-    <ng-container *ngIf="type === 'wms' || type === 'arcgis'">
-      <p class="col-sm-12 alert alert-warning" [hidden]="data.use_tiles">
-        {{'ADDLAYERS.considerUsingTiles' | translateHs }}
-      </p>
-    </ng-container>
-    <ng-container *ngIf="type === 'wms'">
-      <div class="form-group">
-        <div class="input-group">
-          <span class="input-group-text control-label">{{'ADDLAYERS.tileSize' | translateHs }}</span>
-          <input class="form-control" name="tileSize" [(ngModel)]="data.tile_size" />
-        </div>
-      </div>
-    </ng-container>
-  </ng-container>
-
-  <ng-container *ngIf="type === 'wms'">
-    <hs-target-position [(addUnder)]="data.add_under"></hs-target-position>
-  </ng-container>
+  @if (type === 'wms') {
+  <hs-target-position [(addUnder)]="data.add_under"></hs-target-position>
+  }
   <hs-layer-table [type]="type" [injectedService]="injectedService"> </hs-layer-table>
   <hs-url-add class="w-100" [injectedService]="injectedService" [services]="data.services" [layers]="data.layers">
   </hs-url-add>

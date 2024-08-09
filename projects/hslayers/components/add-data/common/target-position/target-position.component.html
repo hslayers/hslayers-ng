@@ -1,12 +1,12 @@
 <div class="form-group">
-    <div class="input-group">
-        <span class="input-group-text control-label">{{'ADDLAYERS.under' | translateHs }}</span>
-        <select class="form-control form-select" [(ngModel)]="addUnder" (ngModelChange)="updateChanges()"
-            name="addUnder">
-            <option [ngValue]="null" selected>{{'ADDLAYERS.none' | translateHs }}</option>
-            <option [ngValue]="layer.layer"
-                *ngFor="let layer of hsLayerManagerService.data.layers | filter: layerInManager">
-                {{layer.title | translateHs : 'LAYERS' }}</option>
-        </select>
-    </div>
+  <div class="input-group">
+    <span class="input-group-text control-label">{{'ADDLAYERS.under' | translateHs }}</span>
+    <select class="form-control form-select" [(ngModel)]="addUnder" (ngModelChange)="updateChanges()" name="addUnder">
+      <option [ngValue]="null" selected>{{'ADDLAYERS.none' | translateHs }}</option>
+      @for (layer of hsLayerManagerService.data.layers | filter: layerInManager; track layer) {
+      <option [ngValue]="layer.layer">
+        {{layer.title | translateHs : 'LAYERS' }}</option>
+      }
+    </select>
+  </div>
 </div>

@@ -1,53 +1,58 @@
-<div class="card panel-default hs-main-panel" *ngIf="isVisible$ | async" [ngClass]="panelWidthClass">
-    <hs-panel-header *ngIf="!hsSensorsService.unitInUrl && !hsSensorsService.mapServiceDisabled" name="sensors"
-        [panelTabs]="'SENSORS'"></hs-panel-header>
+@if (isVisible$ | async) {
+  <div class="card panel-default hs-main-panel" [ngClass]="panelWidthClass">
+    @if (!hsSensorsService.unitInUrl && !hsSensorsService.mapServiceDisabled) {
+      <hs-panel-header name="sensors"
+      [panelTabs]="'SENSORS'"></hs-panel-header>
+    }
     <div class="card-body">
-        <p [hidden]="hsSensorsService.unitInUrl"> <input type="text" class="form-control"
-                [placeholder]="'COMMON.filter' | translateHs " [(ngModel)]="query.description"></p>
-        <div class="container">
-            <div class="row" style="width: 662;">
-                <div class="col-9">
-                    <button type="button" class="btn btn-sm" (click)="toggleComparisonAllowed()"
-                        [hidden]="hsSensorsService.unitInUrl"
-                        [ngClass]="hsSensorsUnitDialogService.comparisonAllowed  ? 'hs-checkmark' : 'hs-uncheckmark'">
-                        <span class="ps-2">{{'SENSORS.comparison' | translateHs }}</span>
-                    </button>
-                    <ul class="nav flex-column flex-sm-row" role="tablist">
-                        <!--<li class="nav-item">
-                            <a class="nav-link" ng-class="{'btn-primary': viewMode == 'sensors'}" 
-                                aria-controls="context" role="tab" data-toggle="tab" ng-click="setViewMode('sensors')"
-                                    >{{'SENSORS.sensors' | translateHs }}
-                            </a>
-                        </li>
-                        <li>
-                            <a class="nav-link" ng-class="{'btn-primary': viewMode == 'phenomena'}" 
-                                aria-controls="context" role="tab" data-toggle="tab" ng-click="setViewMode('phenomena')"
-                                >{{'SENSORS.phenomena' | translateHs }}
-                            </a>
-                        </li>-->
-                    </ul><!-- Tab panes -->
-                </div>
-                <div class="col-3 text-end">
-                    <!-- <button type="button" class="btn btn-sm" (click)="toggleExpansion()"><i
-                            [ngClass]="{'icon-calcminus': viewExpanded, 'icon-calcplus':!viewExpanded}"></i>
-                    </button> -->
-                </div>
-            </div>
-        </div>
-        @if (hsSensorsService.units.length > 0) {
-
-        <ul class="list-group">
-            <li *ngFor="let unit of filterQuery(query)" class="list-group-item">
-                <!-- TODO: Remove function call from template -->
-                <hs-sensor-unit-list-item [unit]="unit" [expanded]="viewExpanded" [view-mode]="viewMode">
-                </hs-sensor-unit-list-item>
+      <p [hidden]="hsSensorsService.unitInUrl"> <input type="text" class="form-control"
+      [placeholder]="'COMMON.filter' | translateHs " [(ngModel)]="query.description"></p>
+      <div class="container">
+        <div class="row" style="width: 662;">
+          <div class="col-9">
+            <button type="button" class="btn btn-sm" (click)="toggleComparisonAllowed()"
+              [hidden]="hsSensorsService.unitInUrl"
+              [ngClass]="hsSensorsUnitDialogService.comparisonAllowed  ? 'hs-checkmark' : 'hs-uncheckmark'">
+              <span class="ps-2">{{'SENSORS.comparison' | translateHs }}</span>
+            </button>
+            <ul class="nav flex-column flex-sm-row" role="tablist">
+              <!--<li class="nav-item">
+              <a class="nav-link" ng-class="{'btn-primary': viewMode == 'sensors'}"
+                aria-controls="context" role="tab" data-toggle="tab" ng-click="setViewMode('sensors')"
+                >{{'SENSORS.sensors' | translateHs }}
+              </a>
             </li>
-        </ul>
-        }
-        @else {
-        <div class="alert alert-warning m-2 text-center" role="alert">
-            {{'SENSORS.noUnitsFound' | translateHs}}
+            <li>
+              <a class="nav-link" ng-class="{'btn-primary': viewMode == 'phenomena'}"
+                aria-controls="context" role="tab" data-toggle="tab" ng-click="setViewMode('phenomena')"
+                >{{'SENSORS.phenomena' | translateHs }}
+              </a>
+            </li>-->
+          </ul><!-- Tab panes -->
         </div>
-        }
+        <div class="col-3 text-end">
+          <!-- <button type="button" class="btn btn-sm" (click)="toggleExpansion()"><i
+        [ngClass]="{'icon-calcminus': viewExpanded, 'icon-calcplus':!viewExpanded}"></i>
+      </button> -->
     </div>
+  </div>
 </div>
+@if (hsSensorsService.units.length > 0) {
+  <ul class="list-group">
+    @for (unit of filterQuery(query); track unit) {
+      <li class="list-group-item">
+        <!-- TODO: Remove function call from template -->
+        <hs-sensor-unit-list-item [unit]="unit" [expanded]="viewExpanded" [view-mode]="viewMode">
+        </hs-sensor-unit-list-item>
+      </li>
+    }
+  </ul>
+}
+@else {
+<div class="alert alert-warning m-2 text-center" role="alert">
+  {{'SENSORS.noUnitsFound' | translateHs}}
+</div>
+}
+</div>
+</div>
+}

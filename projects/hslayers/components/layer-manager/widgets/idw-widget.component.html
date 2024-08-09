@@ -1,37 +1,37 @@
-<div class="form-group" *ngIf="(layerDescriptor | async).type === 'IDW'">
-  <div class="form-inline">
-    <label class="control-label" style="width: 100%; justify-content: left">{{
+@if ((layerDescriptor | async).type === 'IDW') {
+  <div class="form-group">
+    <div class="form-inline">
+      <label class="control-label" style="width: 100%; justify-content: left">{{
       "LAYERMANAGER.layerEditor.interpolatedAttribute" | translateHs }}:</label>
-
-    <select class="form-control form-select" style="width: 100%" [(ngModel)]="weightAttribute"
-      name="hs-idw-widget-interpolated-attribute" (change)="setWeight()">
-      <option [ngValue]="attr" *ngFor="let attr of attributes">
-        {{attr}}
-      </option>
-    </select>
-  </div>
-
-  <hs-colormap-picker (change)="setColorMap()" [height]="'30vh'" [(ngModel)]="colorMap"
+      <select class="form-control form-select" style="width: 100%" [(ngModel)]="weightAttribute"
+        name="hs-idw-widget-interpolated-attribute" (change)="setWeight()">
+        @for (attr of attributes; track attr) {
+          <option [ngValue]="attr">
+            {{attr}}
+          </option>
+        }
+      </select>
+    </div>
+    <hs-colormap-picker (change)="setColorMap()" [height]="'30vh'" [(ngModel)]="colorMap"
     [colorMaps]="colorMaps"></hs-colormap-picker>
-  <div class="form-check">
-    <label class="form-check-label" [for]="'hs-idw-widget-reversed' + hsConfig.id">
-      {{ "COMMON.reversed" | translateHs }}
-    </label>
-    <input class="form-check-input" type="checkbox" (change)="setColorMap()" [(ngModel)]="reversed"
-      [id]="'hs-idw-widget-reversed' + hsConfig.id">
-  </div>
-
-  <div class="row g-3 pt-3">
-    <div class="col-md-6">
-      <label class="form-label" for="hsIdwMin">{{
+    <div class="form-check">
+      <label class="form-check-label" [for]="'hs-idw-widget-reversed' + hsConfig.id">
+        {{ "COMMON.reversed" | translateHs }}
+      </label>
+      <input class="form-check-input" type="checkbox" (change)="setColorMap()" [(ngModel)]="reversed"
+        [id]="'hs-idw-widget-reversed' + hsConfig.id">
+    </div>
+    <div class="row g-3 pt-3">
+      <div class="col-md-6">
+        <label class="form-label" for="hsIdwMin">{{
         "LAYERMANAGER.layerEditor.min" | translateHs }}:</label>
-      <input class="form-control inline" (change)="setBounds()" [(ngModel)]="min" name="hsIdwMin" id="hsIdwMin" />
-
-    </div>
-    <div class="col-md-6">
-      <label class="form-label" for="hsIdwMax">{{
+        <input class="form-control inline" (change)="setBounds()" [(ngModel)]="min" name="hsIdwMin" id="hsIdwMin" />
+      </div>
+      <div class="col-md-6">
+        <label class="form-label" for="hsIdwMax">{{
         "LAYERMANAGER.layerEditor.max" | translateHs }}:</label>
-      <input class="form-control" (change)="setBounds()" [(ngModel)]="max" name="hsIdwMax" for="hsIdwMax" />
+        <input class="form-control" (change)="setBounds()" [(ngModel)]="max" name="hsIdwMax" for="hsIdwMax" />
+      </div>
     </div>
   </div>
-</div>
+}

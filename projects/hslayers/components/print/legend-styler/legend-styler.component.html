@@ -3,18 +3,22 @@
   <div class="p-1 w-100">
     <input class="form-control form-select-sm" (click)="fillPickerVisible = !fillPickerVisible"
       [ngStyle]="getColorPickerStyle()" [ngModelOptions]="{standalone: true}" [(ngModel)]="legendObj.bcColor" />
-    <color-sketch *ngIf="fillPickerVisible" (onChangeComplete)="onPick($event)" width="320px">
+    @if (fillPickerVisible) {
+      <color-sketch (onChangeComplete)="onPick($event)" width="320px">
     </color-sketch>
-  </div>
+  }
+</div>
 </div>
 <div class="d-flex flex-row">
   <div class="p-1 w-50 mt-1">{{'COMMON.width' | translateHs }}</div>
   <div class="p-1 w-100">
     <select class="form-control form-select-sm form-select" [(ngModel)]="legendObj.width"
       [ngModelOptions]="{standalone: true}">
-      <option [ngValue]="width" *ngFor="let width of legendWidths">
-        {{width}}px
-      </option>
+      @for (width of legendWidths; track width) {
+        <option [ngValue]="width">
+          {{width}}px
+        </option>
+      }
     </select>
   </div>
 </div>
@@ -23,9 +27,11 @@
   <div class="p-1 w-100">
     <select class="form-control form-select-sm form-select" [(ngModel)]="legendObj.posX"
       [ngModelOptions]="{standalone: true}">
-      <option [ngValue]="positionX" *ngFor="let positionX of positionOptions.positionsX">
-        {{getTranslation('PRINT',positionX)}}<!-- TODO: Remove function call from template -->
-      </option>
+      @for (positionX of positionOptions.positionsX; track positionX) {
+        <option [ngValue]="positionX">
+          {{getTranslation('PRINT',positionX)}}<!-- TODO: Remove function call from template -->
+        </option>
+      }
     </select>
   </div>
 </div>
@@ -34,9 +40,11 @@
   <div class="p-1 w-100">
     <select class="form-control form-select-sm form-select" [(ngModel)]="legendObj.posY"
       [ngModelOptions]="{standalone: true}">
-      <option [ngValue]="positionY" *ngFor="let positionY of positionOptions.positionsY">
-        {{getTranslation('PRINT',positionY)}}<!-- TODO: Remove function call from template -->
-      </option>
+      @for (positionY of positionOptions.positionsY; track positionY) {
+        <option [ngValue]="positionY">
+          {{getTranslation('PRINT',positionY)}}<!-- TODO: Remove function call from template -->
+        </option>
+      }
     </select>
   </div>
 </div>

@@ -1,28 +1,30 @@
-<ng-container *ngIf="data.type !== 'shp' && !data.type.includes('raster') ">
-  <div class="d-flex flex-row justify-content-between align-items-baseline mb-1 ps-4">
-    <div>
-      {{'ADDDATA.saveToCatalogue' | translateHs }}
-      <a class="btn btn-sm border-0" (click)="$event.stopPropagation();toggleDescVisibility()"
-        [title]="'ADDDATA.saveToDbExplanation' | translateHs ">
-        <i class="icon-info-sign text-primary"></i>
-      </a>
-    </div>
-    <div class="btn-group ms-2">
-      <button type="button" class="btn btn-light  btn-outline-secondary" (click)="setSaveToLayman(true)"
-        [ngClass]="{'active':data.saveToLayman}">
-        {{'COMMON.yes' | translateHs }}
-      </button>
-      <button type="button" class="btn btn-light  btn-outline-secondary" (click)="setSaveToLayman(false)"
-        [ngClass]="{'active': !data.saveToLayman}">
-        {{'COMMON.no' | translateHs }}
-      </button>
-    </div>
+@if (data.type !== 'shp' && !data.type.includes('raster') ) {
+<div class="d-flex flex-row justify-content-between align-items-baseline mb-1 ps-4">
+  <div>
+    {{'ADDDATA.saveToCatalogue' | translateHs }}
+    <a class="btn btn-sm border-0" (click)="$event.stopPropagation();toggleDescVisibility()"
+      [title]="'ADDDATA.saveToDbExplanation' | translateHs ">
+      <i class="icon-info-sign text-primary"></i>
+    </a>
   </div>
-  <div class="mb-1 ps-4 fst-italic text-secondary" [hidden]="!descriptionVisible">
-    {{'ADDDATA.saveToDbExplanation' | translateHs }}
+  <div class="btn-group ms-2">
+    <button type="button" class="btn btn-light  btn-outline-secondary" (click)="setSaveToLayman(true)"
+      [ngClass]="{'active':data.saveToLayman}">
+      {{'COMMON.yes' | translateHs }}
+    </button>
+    <button type="button" class="btn btn-light  btn-outline-secondary" (click)="setSaveToLayman(false)"
+      [ngClass]="{'active': !data.saveToLayman}">
+      {{'COMMON.no' | translateHs }}
+    </button>
   </div>
-</ng-container>
+</div>
+<div class="mb-1 ps-4 fst-italic text-secondary" [hidden]="!descriptionVisible">
+  {{'ADDDATA.saveToDbExplanation' | translateHs }}
+</div>
+}
 <div class="ps-4 mt-3">
-  <hs-layman-access-rights *ngIf="data.saveToLayman" [(access_rights)]="data.access_rights">
+  @if (data.saveToLayman) {
+  <hs-layman-access-rights [(access_rights)]="data.access_rights">
   </hs-layman-access-rights>
+  }
 </div>

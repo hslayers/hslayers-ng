@@ -13,7 +13,7 @@ import {
   computed,
   inject,
 } from '@angular/core';
-import {AsyncPipe, NgIf} from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import {FormControl, ReactiveFormsModule, Validators} from '@angular/forms';
 import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
 import {Observable, debounceTime, filter, fromEvent} from 'rxjs';
@@ -41,12 +41,11 @@ import {getPath} from 'hslayers-ng/common/extensions';
   selector: 'hs-layer-folder-widget-dialog',
   standalone: true,
   imports: [
-    NgIf,
     AsyncPipe,
     TranslateCustomPipe,
     ReactiveFormsModule,
-    NgbDropdownModule,
-  ],
+    NgbDropdownModule
+],
   templateUrl: './layer-folder-dialog.component.html',
   styles: `
     .hs-folder-widget-dialog-list * {

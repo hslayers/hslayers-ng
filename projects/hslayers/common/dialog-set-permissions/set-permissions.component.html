@@ -11,23 +11,31 @@
         <hs-layman-access-rights [(access_rights)]="access_rights">
         </hs-layman-access-rights>
         <div class="modal-footer pe-0">
-          <ng-container [ngSwitch]="state">
-            <button *ngSwitchCase="'idle'" type="button" class="btn btn-primary" (click)="savePermissions()"
-              data-dismiss="modal">{{'COMMON.save'
-              | translateHs }}</button>
-            <button *ngSwitchCase="'loading'" type="button" class="btn btn-outline-primary disabled">{{'COMMON.saving'
-              | translateHs }}<span class="pe-2 hs-loader hs-loader-dark"></span></button>
-            <button *ngSwitchCase="'success'" (click)="close()" type="button"
-              class="btn btn-success align-items-center d-flex justify-content-around gap-2">{{'COMMON.done' |
-              translateHs }}
-              <i class="icon-check"></i>
-            </button>
-            <button *ngSwitchCase="'error'" type="button" class="btn btn-outline-danger">{{'COMMON.somethingWentWrong'
-              | translateHs }}<span class="pe-2 hs-loader hs-loader-dark"></span></button>
-          </ng-container>
-          <button *ngIf="state !== 'success'" type="button" class="btn btn-secondary" (click)="close()"
-            data-dismiss="modal">{{'COMMON.cancel' |
+          @switch (state) {
+          @case ('idle') {
+          <button type="button" class="btn btn-primary" (click)="savePermissions()" data-dismiss="modal">{{'COMMON.save'
+            | translateHs }}</button>
+          }
+          @case ('loading') {
+          <button type="button" class="btn btn-outline-primary disabled">{{'COMMON.saving'
+            | translateHs }}<span class="pe-2 hs-loader hs-loader-dark"></span></button>
+          }
+          @case ('success') {
+          <button (click)="close()" type="button"
+            class="btn btn-success align-items-center d-flex justify-content-around gap-2">{{'COMMON.done' |
+            translateHs }}
+            <i class="icon-check"></i>
+          </button>
+          }
+          @case ('error') {
+          <button type="button" class="btn btn-outline-danger">{{'COMMON.somethingWentWrong'
+            | translateHs }}<span class="pe-2 hs-loader hs-loader-dark"></span></button>
+          }
+          }
+          @if (state !== 'success') {
+          <button type="button" class="btn btn-secondary" (click)="close()" data-dismiss="modal">{{'COMMON.cancel' |
             translateHs }}</button>
+          }
         </div>
       </div>
     </div>

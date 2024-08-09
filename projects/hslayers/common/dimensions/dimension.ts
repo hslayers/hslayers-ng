@@ -4,7 +4,7 @@ export class HsDimensionDescriptor {
   public type: string;
   public value: any;
   public modelValue: any;
-  public label?: string;
+  public label: string;
   public values?: Array<any>;
   public format: string;
   public modelTimeValue: {hour: any; minute: any};

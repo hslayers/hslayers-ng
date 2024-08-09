@@ -1,61 +1,68 @@
-<form class="form" *ngIf="isVisible | async" [formGroup]="hsSaveMapManagerService.compoData"
+@if (isVisible | async) {
+  <form class="form" [formGroup]="hsSaveMapManagerService.compoData"
     (ngSubmit)="initiateSave(true)" #compoForm="ngForm">
     <div class="form-floating mb-2">
-        <input type="text" class="form-control" formControlName="name"
-            [class.is-invalid]="hsSaveMapManagerService.compoData.controls.name.invalid  && compoForm.submitted"
-            name="hs-save-map-name" [placeholder]="'COMMON.name' | translateHs  ">
-        <label for="hs-save-map-name">{{'COMMON.name' | translateHs }} *</label>
+      <input type="text" class="form-control" formControlName="name"
+        [class.is-invalid]="hsSaveMapManagerService.compoData.controls.name.invalid  && compoForm.submitted"
+        name="hs-save-map-name" [placeholder]="'COMMON.name' | translateHs  ">
+      <label for="hs-save-map-name">{{'COMMON.name' | translateHs }} *</label>
     </div>
     <div class="form-floating mb-2">
-        <textarea formControlName="abstract" class="form-control" name="hs-save-map-abstract"
-            [class.is-invalid]="hsSaveMapManagerService.compoData.controls.abstract.invalid  && compoForm.submitted"
-            [placeholder]="'COMMON.abstract' | translateHs  "></textarea>
-        <label for="hs-save-map-abstract">{{'COMMON.abstract' | translateHs }} *</label>
+      <textarea formControlName="abstract" class="form-control" name="hs-save-map-abstract"
+        [class.is-invalid]="hsSaveMapManagerService.compoData.controls.abstract.invalid  && compoForm.submitted"
+      [placeholder]="'COMMON.abstract' | translateHs  "></textarea>
+      <label for="hs-save-map-abstract">{{'COMMON.abstract' | translateHs }} *</label>
     </div>
-
     <div class="form-floating mb-2">
-        <input type="text" class="form-control" name="hs-save-map-keywords"
-            [placeholder]="'COMMON.keywords' | translateHs">
-        <label for="hs-save-map-keywords">{{'COMMON.keywords' | translateHs }}</label>
+      <input type="text" class="form-control" name="hs-save-map-keywords"
+        [placeholder]="'COMMON.keywords' | translateHs">
+      <label for="hs-save-map-keywords">{{'COMMON.keywords' | translateHs }}</label>
     </div>
     <label class="form-group">{{'COMMON.thumbnail' | translateHs }}
-        <img #compositionThumbnail class="hs-stc-thumbnail img-thumbnail"
-            [alt]="'SAVECOMPOSITION.compositionThumbnail' | translateHs " width="256" height="256">
+      <img #compositionThumbnail class="hs-stc-thumbnail img-thumbnail"
+        [alt]="'SAVECOMPOSITION.compositionThumbnail' | translateHs " width="256" height="256">
     </label>
-
-    <hs-layman-access-rights *ngIf="endpoint?.type.includes('layman')" [collapsed]="true"
+    @if (endpoint?.type.includes('layman')) {
+      <hs-layman-access-rights [collapsed]="true"
         [(access_rights)]="hsSaveMapManagerService._access_rights" (access_rights_changed)="setAccessRights($event)">
-    </hs-layman-access-rights>
-
+      </hs-layman-access-rights>
+    }
     <div class="mb-2 d-flex justify-content-center">
-        <button type="button" class="btn btn-secondary me-2 w-50" id="stc-advanced-options"
-            (click)="setExtraFormTo('advancedOptions')">{{'COMMON.advancedOptions' | translateHs }}</button>
+      <button type="button" class="btn btn-secondary me-2 w-50" id="stc-advanced-options"
+      (click)="setExtraFormTo('advancedOptions')">{{'COMMON.advancedOptions' | translateHs }}</button>
     </div>
     <hs-save-map-advanced-options [thumbnail]="compositionThumbnail"
-        [hidden]="extraFormOpened !== 'advancedOptions'"></hs-save-map-advanced-options>
-
-    <div class="modal-footer w-100 pt-3" *ngIf="{canBeOverwritten: canOverwrite() && overwrite} as composition">
-        <div *ngIf="composition.canBeOverwritten" class="alert alert-info text-gray m-2">
+    [hidden]="extraFormOpened !== 'advancedOptions'"></hs-save-map-advanced-options>
+    @if ({canBeOverwritten: canOverwrite() && overwrite}; as composition) {
+      <div class="modal-footer w-100 pt-3">
+        @if (composition.canBeOverwritten) {
+          <div class="alert alert-info text-gray m-2">
             {{'SAVECOMPOSITION.saveOrOverwrite' | translateHs }}
-        </div>
+          </div>
+        }
         <div class="d-flex justify-content-end w-100" [class.justify-content-between]="composition.canBeOverwritten">
-            <button *ngIf="composition.canBeOverwritten" type="button" class="btn btn-danger position-relative"
-                id="stc-save" (click)="initiateSave(false)">{{'SAVECOMPOSITION.form.overwrite' | translateHs }}
-                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary"
-                    [title]="'SAVECOMPOSITION.form.overwrite' | translateHs">
-                    i
-                </span>
+          @if (composition.canBeOverwritten) {
+            <button type="button" class="btn btn-danger position-relative"
+              id="stc-save" (click)="initiateSave(false)">{{'SAVECOMPOSITION.form.overwrite' | translateHs }}
+              <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary"
+                [title]="'SAVECOMPOSITION.form.overwrite' | translateHs">
+                i
+              </span>
             </button>
-
-            <div class="d-flex justify-content-end gap-2">
-                <button type="submit" class="btn btn-primary" id="stc-saveas" [hidden]="!(isAllowed())">
-                    <!-- TODO: Remove function call from template -->{{'COMMON.save' | translateHs }}
-                    <span *ngIf="composition.canBeOverwritten">{{'COMMON.asNew' | translateHs }}</span>
-                </button>
-                <a type="button" class="btn btn-secondary" (click)="saveCompoJson()"
-                    id="stc-download">{{'COMMON.download' |
-                    translateHs}}</a>
-            </div>
+          }
+          <div class="d-flex justify-content-end gap-2">
+            <button type="submit" class="btn btn-primary" id="stc-saveas" [hidden]="!(isAllowed())">
+              <!-- TODO: Remove function call from template -->{{'COMMON.save' | translateHs }}
+              @if (composition.canBeOverwritten) {
+                <span>{{'COMMON.asNew' | translateHs }}</span>
+              }
+            </button>
+            <a type="button" class="btn btn-secondary" (click)="saveCompoJson()"
+              id="stc-download">{{'COMMON.download' |
+            translateHs}}</a>
+          </div>
         </div>
-    </div>
-</form>
+      </div>
+    }
+  </form>
+}

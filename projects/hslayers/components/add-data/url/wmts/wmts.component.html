@@ -1,23 +1,27 @@
 <form class="form-horizontal" name="frmConnectWmts" role="form">
-    <hs-common-url type="wmts" [(url)]="hsAddDataCommonService.url" (connect)="hsAddDataOwsService.connect()">
-    </hs-common-url>
+  <hs-common-url type="wmts" [(url)]="hsAddDataCommonService.url" (connect)="hsAddDataOwsService.connect()">
+  </hs-common-url>
 
-    <hs-url-progress *ngIf="hsAddDataCommonService.loadingInfo"></hs-url-progress>
-    <div *ngIf="hsAddDataCommonService.showDetails && !hsAddDataCommonService.loadingInfo" class="card">
-        <!-- TODO: Remove function call from template -->
-        <ul class="list-group">
-            <li class="list-group-item hs-ows-layerlistheading clearfix bg-white">
-                <div>{{hsUrlWmtsService.data.title}}</div>
-            </li>
-            <hs-layer-table [type]="'wmts'" [injectedService]="hsUrlWmtsService"> </hs-layer-table>
-        </ul>
+  @if (hsAddDataCommonService.loadingInfo) {
+    <hs-url-progress></hs-url-progress>
+  }
+  @if (hsAddDataCommonService.showDetails && !hsAddDataCommonService.loadingInfo) {
+    <div class="card">
+      <!-- TODO: Remove function call from template -->
+      <ul class="list-group">
+        <li class="list-group-item hs-ows-layerlistheading clearfix bg-white">
+          <div>{{hsUrlWmtsService.data.title}}</div>
+        </li>
+        <hs-layer-table [type]="'wmts'" [injectedService]="hsUrlWmtsService"> </hs-layer-table>
+      </ul>
         <li class="list-group-item hs-ows-layerlistheading clearfix bg-white" style="position: sticky;
         bottom: 0; z-index:10">
-            <div class="d-flex justify-content-center">
-                <hs-url-add class="w-100" [injectedService]="hsUrlWmtsService" [layers]="hsUrlWmtsService.data.layers">
-                </hs-url-add>
-            </div>
-        </li>
+        <div class="d-flex justify-content-center">
+          <hs-url-add class="w-100" [injectedService]="hsUrlWmtsService" [layers]="hsUrlWmtsService.data.layers">
+          </hs-url-add>
+        </div>
+      </li>
     </div>
+  }
 
 </form>

@@ -14,18 +14,16 @@ import {TranslateCustomPipe} from 'hslayers-ng/services/language';
       (click)="addLayer()"
       [ngClass]="classes"
     >
-      <span
-        *ngIf="!loading; else loader"
-        class="d-flex justify-content-center align-items-baseline gap-1"
-      >
-        <i class="icon-plus"> </i>{{ 'COMMON.addToMap' | translateHs }}
-      </span>
-      <ng-template #loader>
+      @if (!loading) {
+        <span class="d-flex justify-content-center align-items-baseline gap-1">
+          <i class="icon-plus"> </i>{{ 'COMMON.addToMap' | translateHs }}
+        </span>
+      } @else {
         <span>
           <span class="hs-loader"></span>&emsp;
           {{ 'COMMON.uploading' | translateHs }}
         </span>
-      </ng-template>
+      }
       <ng-content></ng-content>
     </button>
   `,

@@ -6,7 +6,7 @@
 <div class="form-floating mb-2">
   <textarea class="form-control" id='imprint-abstract' [placeholder]="'COMMON.fillInDescriptive' | translateHs  "
     name="imprint-abstract" [(ngModel)]="imprintObj.abstract">
-                              </textarea>
+  </textarea>
   <label for="imprint-abstract" class="control-label">{{'COMMON.abstract' | translateHs }}</label>
 </div>
 <div class="d-flex flex-row">
@@ -14,9 +14,11 @@
   <div class="p-1 w-100">
     <select class="form-control form-select-sm form-select" [(ngModel)]="imprintObj.width"
       [ngModelOptions]="{standalone: true}">
-      <option [ngValue]="width" *ngFor="let width of sizes">
-        {{width}}px
-      </option>
+      @for (width of sizes; track width) {
+        <option [ngValue]="width">
+          {{width}}px
+        </option>
+      }
     </select>
   </div>
 </div>
@@ -25,9 +27,11 @@
   <div class="p-1 w-100">
     <select class="form-control form-select-sm form-select" [(ngModel)]="imprintObj.height"
       [ngModelOptions]="{standalone: true}">
-      <option [ngValue]="height" *ngFor="let height of sizes">
-        {{height}}px
-      </option>
+      @for (height of sizes; track height) {
+        <option [ngValue]="height">
+          {{height}}px
+        </option>
+      }
     </select>
   </div>
 </div>

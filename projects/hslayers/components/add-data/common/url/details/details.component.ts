@@ -1,6 +1,6 @@
 import {AfterContentInit, Component, Input} from '@angular/core';
 
-import {AddDataUrlType} from 'hslayers-ng/types';
+import {AddDataUrlType, UrlDataObject} from 'hslayers-ng/types';
 import {HsAddDataCommonService} from 'hslayers-ng/services/add-data';
 import {HsUrlTypeServiceModel} from 'hslayers-ng/types';
 
@@ -8,8 +8,8 @@ import {HsUrlTypeServiceModel} from 'hslayers-ng/types';
   selector: 'hs-url-details',
   templateUrl: './details.component.html',
   styles: `
-    .hs-add-url-wms-addas button{
-      min-width: 5rem
+    .hs-add-url-wms-addas button {
+      min-width: 5rem;
     }
   `,
 })
@@ -17,7 +17,7 @@ export class HsUrlDetailsComponent implements AfterContentInit {
   @Input() injectedService: HsUrlTypeServiceModel;
   @Input() type: AddDataUrlType;
 
-  data;
+  data: UrlDataObject;
   getDimensionValues: any;
   advancedPanelVisible = false;
   constructor(public hsAddDataCommonService: HsAddDataCommonService) {}

@@ -18,7 +18,9 @@
     <div class="p-1 w-75">
       <select class="form-control form-select form-select-sm" [(ngModel)]="symbolizer.anchor" (change)="emitChange()"
         name="hs-icon-symbolizer-anchor">
-        <option *ngFor="let anchor of anchors">{{anchor}}</option>
+        @for (anchor of anchors; track anchor) {
+          <option>{{anchor}}</option>
+        }
       </select>
     </div>
   </div>
@@ -39,24 +41,32 @@
     </div>
   </div>
 
-  <div class="d-flex flex-row" *ngIf="symbolizer.offset !== undefined">
-    <div class="p-1 w-25 mt-2">{{'STYLER.anchorX' | translateHs }}:</div>
-    <span class="badge bg-warning mt-2" [title]="'STYLER.warningAttribNotStoredNotVisualized' | translateHs  ">!</span>
-    <div class="p-1 w-75">
-      <input type="range" class="w-100" step="0.05" min="-1.0" max="1.0" name="hs-icon-symbolizer-offset-0"
-        [(ngModel)]="symbolizer.offset[0]" *ngIf="symbolizer.offset !== undefined" (change)="emitChange()" />
+  @if (symbolizer.offset !== undefined) {
+    <div class="d-flex flex-row">
+      <div class="p-1 w-25 mt-2">{{'STYLER.anchorX' | translateHs }}:</div>
+      <span class="badge bg-warning mt-2" [title]="'STYLER.warningAttribNotStoredNotVisualized' | translateHs  ">!</span>
+      <div class="p-1 w-75">
+        @if (symbolizer.offset !== undefined) {
+          <input type="range" class="w-100" step="0.05" min="-1.0" max="1.0" name="hs-icon-symbolizer-offset-0"
+            [(ngModel)]="symbolizer.offset[0]" (change)="emitChange()" />
+        }
+      </div>
     </div>
-  </div>
+  }
 
 
-  <div class="d-flex flex-row" *ngIf="symbolizer.offset !== undefined">
-    <div class="p-1 w-25 mt-2">{{'STYLER.anchorY' | translateHs }}:</div>
-    <span class="badge bg-warning mt-2" [title]="'STYLER.warningAttribNotStoredNotVisualized' | translateHs  ">!</span>
-    <div class="p-1 w-75">
-      <input type="range" class="w-100" step="0.05" min="-1.0" max="1.0" name="hs-icon-symbolizer-offset-1"
-        [(ngModel)]="symbolizer.offset[1]" *ngIf="symbolizer.offset !== undefined" (change)="emitChange()" />
+  @if (symbolizer.offset !== undefined) {
+    <div class="d-flex flex-row">
+      <div class="p-1 w-25 mt-2">{{'STYLER.anchorY' | translateHs }}:</div>
+      <span class="badge bg-warning mt-2" [title]="'STYLER.warningAttribNotStoredNotVisualized' | translateHs  ">!</span>
+      <div class="p-1 w-75">
+        @if (symbolizer.offset !== undefined) {
+          <input type="range" class="w-100" step="0.05" min="-1.0" max="1.0" name="hs-icon-symbolizer-offset-1"
+            [(ngModel)]="symbolizer.offset[1]" (change)="emitChange()" />
+        }
+      </div>
     </div>
-  </div>
+  }
 
   <div class="d-flex flex-row">
     <div class="p-1 w-25">{{'STYLER.rotation' | translateHs }}:</div>

@@ -1,57 +1,71 @@
 <table class="table table-sm table-striped table-bordered hs-url-table" style="width: 100%">
-    <tbody *ngFor="let sub_layer of layers; trackBy:( 'Name' | trackByProperty )">
-        <tr>
-            <td style="width: 1em"><input type="checkbox" [(ngModel)]="sub_layer.checked" (change)="checked(sub_layer)"
-                    [ngModelOptions]="{standalone: true}" style="cursor: pointer;" /></td>
-            <td hsWmsLayerHighlight class="text-truncate" style="max-width: 12em;"
-                [title]="'Title: ' + sub_layer.Title  + '\nName: ' + sub_layer.Name"
-                (click)="hsUrlWmsService.expandTableRow($event)"><span>{{sub_layer.Title}}</span>
-            </td>
-            <!-- <td class="text-truncate" style="width: 30%; padding-left: 1em">{{sub_layer.Name}}</td> -->
-            <td hsWmsLayerHighlight class="text-truncate" style="max-width: 10.875em;width: 30%;"
-                [title]="sub_layer.Abstract" (click)="hsUrlWmsService.expandTableRow($event)">{{sub_layer.Abstract}}
-            </td>
-        </tr>
-        <tr *ngIf="sub_layer.Style?.length > 1 && sub_layer.checked">
-            <td colspan="3">
-                <div class="d-flex align-items-baseline px-2 w-100">
-                    <div class="d-flex align-items-baseline" style="flex-grow: 1;">
-                        <label class="control-label">{{'COMMON.style' | translateHs }}:</label>
-                        <select class="form-control form-select-sm form-select" [(ngModel)]="sub_layer.styleSelected"
-                            [ngModelOptions]="{standalone: true}">
-                            <option *ngFor="let style of sub_layer.Style">{{style.Name}}</option>
-                        </select>
-                    </div>
-                </div>
-            </td>
-        </tr>
-        <tr *ngIf="!!sub_layer.Dimension">
-            <td colspan="3">
-                <form class="form">
-                    <div class="form-group" *ngFor="let dimension of sub_layer.Dimension">
-                        <ng-container
-                            *ngIf="isArray(dimension.values); else unsupported_dim_format"><!-- TODO: Remove function call from template -->
-                            <label class="control-label">{{dimension.name}}:</label>
-                            <div>
-                                <select class="form-control form-select" [(ngModel)]="dimension.value"
-                                    [ngModelOptions]="{standalone: true}">
-                                    <option [value]="dimension_value" *ngFor="let dimension_value of dimension.values">
-                                        {{dimension_value}}</option>
-                                </select>
-                            </div>
-                        </ng-container>
-                        <ng-template #unsupported_dim_format><span class="text-muted">{{'ADDLAYERS.unknownDimesion'|
-                                translateHs }}: {{dimension.name}}</span></ng-template>
-                    </div>
-                </form>
-            </td>
-        </tr>
-
-        <tr *ngIf="!!sub_layer.Layer">
-            <td colspan="3" style="padding-left: 1em">
-                <hs-nested-layers-table style="display: block;" (layerChecked)="checked($event)"
-                    [layers]="sub_layer.Layer"></hs-nested-layers-table>
-            </td>
-        </tr>
-    </tbody>
+  @for (sub_layer of layers; track sub_layer['Name']) {
+  <tbody>
+    <tr>
+      <td style="width: 1em"><input type="checkbox" [(ngModel)]="sub_layer.checked" (change)="checked(sub_layer)"
+          [ngModelOptions]="{standalone: true}" style="cursor: pointer;" /></td>
+      <td hsWmsLayerHighlight class="text-truncate" style="max-width: 12em;"
+        [title]="'Title: ' + sub_layer.Title  + '\nName: ' + sub_layer.Name"
+        (click)="hsUrlWmsService.expandTableRow($event)"><span>{{sub_layer.Title}}</span>
+      </td>
+      <!-- <td class="text-truncate" style="width: 30%; padding-left: 1em">{{sub_layer.Name}}</td> -->
+      <td hsWmsLayerHighlight class="text-truncate" style="max-width: 10.875em;width: 30%;" [title]="sub_layer.Abstract"
+        (click)="hsUrlWmsService.expandTableRow($event)">{{sub_layer.Abstract}}
+      </td>
+    </tr>
+    @if (sub_layer.Style?.length > 1 && sub_layer.checked) {
+    <tr>
+      <td colspan="3">
+        <div class="d-flex align-items-baseline px-2 w-100">
+          <div class="d-flex align-items-baseline" style="flex-grow: 1;">
+            <label class="control-label">{{'COMMON.style' | translateHs }}:</label>
+            <select class="form-control form-select-sm form-select" [(ngModel)]="sub_layer.styleSelected"
+              [ngModelOptions]="{standalone: true}">
+              @for (style of sub_layer.Style; track style) {
+              <option>{{style.Name}}</option>
+              }
+            </select>
+          </div>
+        </div>
+      </td>
+    </tr>
+    }
+    @if (!!sub_layer.Dimension) {
+    <tr>
+      <td colspan="3">
+        <form class="form">
+          @for (dimension of sub_layer.Dimension; track dimension) {
+          <div class="form-group">
+            @if (isArray(dimension.values)) {
+            <!-- TODO: Remove function call from template -->
+            <label class="control-label">{{dimension.name}}:</label>
+            <div>
+              <select class="form-control form-select" [(ngModel)]="dimension.value"
+                [ngModelOptions]="{standalone: true}">
+                @for (dimension_value of dimension.values; track dimension_value) {
+                <option [value]="dimension_value">
+                  {{dimension_value}}</option>
+                }
+              </select>
+            </div>
+            } @else {
+            <span class="text-muted">{{'ADDLAYERS.unknownDimesion'|
+              translateHs }}: {{dimension.name}}</span>
+            }
+          </div>
+          }
+        </form>
+      </td>
+    </tr>
+    }
+    @if (!!sub_layer.Layer) {
+    <tr>
+      <td colspan="3" style="padding-left: 1em">
+        <hs-nested-layers-table style="display: block;" (layerChecked)="checked($event)"
+          [layers]="sub_layer.Layer"></hs-nested-layers-table>
+      </td>
+    </tr>
+    }
+  </tbody>
+  }
 </table>

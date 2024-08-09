@@ -1,91 +1,87 @@
-<div class="card panel-default hs-main-panel" *ngIf="isVisible$ | async" [ngClass]="panelWidthClass">
+@if (isVisible$ | async) {
+  <div class="card panel-default hs-main-panel" [ngClass]="panelWidthClass">
     <hs-panel-header name="share" [panelTabs]="'PERMALINK'">
     </hs-panel-header>
     <div class="card-body">
-        <div class="card-body">
-
-            <div class="form-group">
-                <label for="pure-map-link" class="control-label me-1">{{'PERMALINK.sharePureMap' | translateHs}}</label>
-                <a [href]="HsShareService.pureMapUrl" target="_blank"
-                    id="pure-map-link">{{HsShareService.pureMapUrl}}</a>
-                <p><sub class="text-danger">{{'PERMALINK.sharesOnlyMap' | translateHs }}</sub></p>
-            </div>
-            <br>
-            <div class="form-group">
-                <label for="permalink-link" class="control-label me-1">{{'PERMALINK.permalink' |
-                    translateHs}}</label><br />
-                <a [href]="HsShareService.permalinkUrl" target="_blank" style="overflow-x: hidden;"
-                    id="permalink-link">{{HsShareService.permalinkUrl}}</a>
-                <p><sub class="text-danger">{{'PERMALINK.sharesMapWith' | translateHs }}</sub></p>
-            </div>
-            <hr>
-
+      <div class="card-body">
+        <div class="form-group">
+          <label for="pure-map-link" class="control-label me-1">{{'PERMALINK.sharePureMap' | translateHs}}</label>
+          <a [href]="HsShareService.pureMapUrl" target="_blank"
+          id="pure-map-link">{{HsShareService.pureMapUrl}}</a>
+          <p><sub class="text-danger">{{'PERMALINK.sharesOnlyMap' | translateHs }}</sub></p>
+        </div>
+        <br>
+          <div class="form-group">
+            <label for="permalink-link" class="control-label me-1">{{'PERMALINK.permalink' |
+            translateHs}}</label><br />
+            <a [href]="HsShareService.permalinkUrl" target="_blank" style="overflow-x: hidden;"
+            id="permalink-link">{{HsShareService.permalinkUrl}}</a>
+            <p><sub class="text-danger">{{'PERMALINK.sharesMapWith' | translateHs }}</sub></p>
+          </div>
+          <hr>
             <fieldset class="form-group">
-                <label class="mb-2" style="font-size: 1.5em;" [for]="'share-link-' + app">{{'PERMALINK.linkFor' |
-                    translateHs }}&nbsp;<span [hidden]="!HsCore.embeddedEnabled">{{'PERMALINK.embed' |
-                        translateHs }}/</span>{{'PERMALINK.socialShare' | translateHs}}
-                </label>
-                <div class="form-check">
-                    <label class="form-check-label">
-                        <input type="radio" class="form-check-input" [name]="'share-link-' + app" value="puremap"
-                            [(ngModel)]="HsShareService.shareLink" (click)="updateEmbedCode()">
-                        {{'PERMALINK.pureMap' | translateHs }}
-                    </label>
-                </div>
-                <div class="form-check">
-                    <label class="form-check-label">
-                        <input type="radio" class="form-check-input" [name]="'share-link-' + app" value="permalink"
-                            [(ngModel)]="HsShareService.shareLink" (click)="updateEmbedCode()">
-                        {{'PERMALINK.permalink' | translateHs }}
-                    </label>
-                </div>
-            </fieldset>
-            <div class="form-floating mb-3" [hidden]="!HsCore.embeddedEnabled">
-                <textarea class="form-control" style="height: 80px" id="permalink-embed"
-                    [placeholder]="'PERMALINK.embedCode' | translateHs" [(ngModel)]="HsShareService.embedCode"
-                    [ngModelOptions]="{standalone: true}"></textarea>
-                <label for="permalink-embed" class="control-label">{{'PERMALINK.embedCode' | translateHs}}</label>
-                <br>
+              <label class="mb-2" style="font-size: 1.5em;" [for]="'share-link-' + app">{{'PERMALINK.linkFor' |
+                translateHs }}&nbsp;<span [hidden]="!HsCore.embeddedEnabled">{{'PERMALINK.embed' |
+              translateHs }}/</span>{{'PERMALINK.socialShare' | translateHs}}
+            </label>
+            <div class="form-check">
+              <label class="form-check-label">
+                <input type="radio" class="form-check-input" [name]="'share-link-' + app" value="puremap"
+                  [(ngModel)]="HsShareService.shareLink" (click)="updateEmbedCode()">
+                {{'PERMALINK.pureMap' | translateHs }}
+              </label>
             </div>
-
+            <div class="form-check">
+              <label class="form-check-label">
+                <input type="radio" class="form-check-input" [name]="'share-link-' + app" value="permalink"
+                  [(ngModel)]="HsShareService.shareLink" (click)="updateEmbedCode()">
+                {{'PERMALINK.permalink' | translateHs }}
+              </label>
+            </div>
+          </fieldset>
+          <div class="form-floating mb-3" [hidden]="!HsCore.embeddedEnabled">
+            <textarea class="form-control" style="height: 80px" id="permalink-embed"
+              [placeholder]="'PERMALINK.embedCode' | translateHs" [(ngModel)]="HsShareService.embedCode"
+            [ngModelOptions]="{standalone: true}"></textarea>
+            <label for="permalink-embed" class="control-label">{{'PERMALINK.embedCode' | translateHs}}</label>
+            <br>
+            </div>
             <hr>
-
-            <fieldset>
+              <fieldset>
                 <h4>{{'PERMALINK.shareOnSocialNetwork' | translateHs }}</h4>
                 <div class="form-floating mb-3" [title]="'COMMON.fillInName' | translateHs">
-                    <input type="text" class="form-control" id="hs-prmlnk-title"
-                        [placeholder]="'COMMON.name' | translateHs" (change)="invalidateShareUrl()"
-                        [(ngModel)]="HsShareService.title" [ngModelOptions]="{standalone: true}">
-                    <label for="hs-prmlnk-title" class="control-label">{{'COMMON.name' | translateHs
-                        }}</label>
+                  <input type="text" class="form-control" id="hs-prmlnk-title"
+                    [placeholder]="'COMMON.name' | translateHs" (change)="invalidateShareUrl()"
+                    [(ngModel)]="HsShareService.title" [ngModelOptions]="{standalone: true}">
+                  <label for="hs-prmlnk-title" class="control-label">{{'COMMON.name' | translateHs
+                  }}</label>
                 </div>
                 <div class="form-floating mb-3" [title]="'COMMON.fillInDescriptive' | translateHs">
-                    <textarea class="form-control" id="hs-prmlnk-abstract"
-                        [placeholder]="'COMMON.abstract' | translateHs" (change)="invalidateShareUrl()"
-                        [(ngModel)]="HsShareService.abstract"
-                        [ngModelOptions]="{standalone: true}">                    </textarea>
-                    <label for="hs-prmlnk-abstract" class="control-label">{{'COMMON.abstract' | translateHs}}</label>
+                  <textarea class="form-control" id="hs-prmlnk-abstract"
+                    [placeholder]="'COMMON.abstract' | translateHs" (change)="invalidateShareUrl()"
+                    [(ngModel)]="HsShareService.abstract"
+                  [ngModelOptions]="{standalone: true}">                    </textarea>
+                  <label for="hs-prmlnk-abstract" class="control-label">{{'COMMON.abstract' | translateHs}}</label>
                 </div>
-
                 <div class="form-group">
-                    <div class="form-group">
-                        <label class="control-label"><input type="checkbox" class="me-2" [(ngModel)]="new_share"
-                                [ngModelOptions]="{standalone: true}" /><span class="ng-scope">{{'PERMALINK.newShare' |
-                                translateHs }}</span></label>
-                    </div>
-                    <div class="btn-group" role="group">
-                        <button class="btn btn-secondary" (click)="shareOnSocial()">
-                            <i class="icon-share-alt"></i> {{'COMMON.share' | translateHs }}
-                        </button>
-                    </div>
+                  <div class="form-group">
+                    <label class="control-label"><input type="checkbox" class="me-2" [(ngModel)]="new_share"
+                      [ngModelOptions]="{standalone: true}" /><span class="ng-scope">{{'PERMALINK.newShare' |
+                    translateHs }}</span></label>
+                  </div>
+                  <div class="btn-group" role="group">
+                    <button class="btn btn-secondary" (click)="shareOnSocial()">
+                      <i class="icon-share-alt"></i> {{'COMMON.share' | translateHs }}
+                    </button>
+                  </div>
                 </div>
-
                 <div class="form-group">
-                    <label class="control-label">{{'COMMON.thumbnail' | translateHs }}</label>
-                    <img class="img-thumbnail hs-permalink-thumbnail" [alt]="'COMMON.thumbnail' | translateHs"
-                        width="256" height="256">
+                  <label class="control-label">{{'COMMON.thumbnail' | translateHs }}</label>
+                  <img class="img-thumbnail hs-permalink-thumbnail" [alt]="'COMMON.thumbnail' | translateHs"
+                    width="256" height="256">
                 </div>
-            </fieldset>
+              </fieldset>
+            </div>
+          </div>
         </div>
-    </div>
-</div>
+      }

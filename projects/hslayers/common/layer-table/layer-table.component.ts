@@ -2,7 +2,7 @@ import {AfterContentInit, Component, Input} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 
-import {AddDataUrlType} from 'hslayers-ng/types';
+import {AddDataUrlType, UrlDataObject} from 'hslayers-ng/types';
 import {HsAddDataCommonService} from 'hslayers-ng/services/add-data';
 import {HsAddDataService} from 'hslayers-ng/services/add-data';
 import {HsAddDataUrlService} from 'hslayers-ng/services/add-data';
@@ -33,7 +33,7 @@ export class HsLayerTableComponent implements AfterContentInit {
   @Input() injectedService: HsUrlTypeServiceModel;
   @Input() type: AddDataUrlType;
 
-  data;
+  data: UrlDataObject;
   checkedSubLayers = {};
   getDimensionValues: any;
   limitShown = 100;

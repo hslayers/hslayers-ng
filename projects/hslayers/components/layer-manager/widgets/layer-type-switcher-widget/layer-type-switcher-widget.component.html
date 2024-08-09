@@ -1,6 +1,10 @@
-<div class="btn-group w-75 m-auto my-1 d-block" *ngIf="isEnabled | async">
-    <button *ngFor="let t of types" class="btn btn-sm btn-outline-primary w-50" style="min-width: 7rem;"
+@if (isEnabled | async) {
+  <div class="btn-group w-75 m-auto my-1 d-block">
+    @for (t of types; track t) {
+      <button class="btn btn-sm btn-outline-primary w-50" style="min-width: 7rem;"
         (click)="changeLayerType(t)" [ngClass]="{'btn-primary active': currentType() === t }">
         {{t | translateHs : 'COMMON' }}
-    </button>
-</div>
+      </button>
+    }
+  </div>
+}

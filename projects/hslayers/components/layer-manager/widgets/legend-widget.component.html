@@ -1,10 +1,14 @@
-<div *ngIf="olLayer">
-  <div *ngIf="HsLayerEditorService.legendVisible()"><!-- TODO: Remove function call from template -->
-    <p style="text-align: center; font-weight: bold">
-      {{ "COMMON.legend" | translateHs }}
-    </p>
-    <hs-legend-layer [layer]="HsLayerEditorService.legendDescriptor">
-    </hs-legend-layer>
-    <hr />
+@if (olLayer) {
+  <div>
+    @if (HsLayerEditorService.legendVisible()) {
+      <div><!-- TODO: Remove function call from template -->
+        <p style="text-align: center; font-weight: bold">
+          {{ "COMMON.legend" | translateHs }}
+        </p>
+        <hs-legend-layer [layer]="HsLayerEditorService.legendDescriptor">
+        </hs-legend-layer>
+        <hr />
+      </div>
+    }
   </div>
-</div>
+}

@@ -1,15 +1,19 @@
 <div class="d-flex flex-row form-group p-1">
   <select class="form-control form-select" style="width: 100%" [(ngModel)]="filter[1]" name="hs-sld-filter-attribute">
     <option [ngValue]="undefined" [disabled]="true" selected hidden>Pick an attribute</option>
-    <option [ngValue]="attr" *ngFor="let attr of attributes">
-      {{attr}}
-    </option>
+    @for (attr of attributes; track attr) {
+      <option [ngValue]="attr">
+        {{attr}}
+      </option>
+    }
   </select>
   <select (change)="emitChange()" class="form-control form-select hs-sld-filter-comparison-sign"
     style="width: min-content" [(ngModel)]="filter[0]" name="hs-sld-filter-comparison-sign">
-    <option [ngValue]="op" *ngFor="let op of operators">
-      {{op}}
-    </option>
+    @for (op of operators; track op) {
+      <option [ngValue]="op">
+        {{op}}
+      </option>
+    }
   </select>
   <div style="min-width: 33%;">
     <input class="form-control" name="hs-sld-filter-value" [(ngModel)]="filter[2]" (change)="emitChange()" />

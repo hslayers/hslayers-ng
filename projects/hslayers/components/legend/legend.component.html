@@ -1,28 +1,34 @@
-<div class="card hs-main-panel" *ngIf="isVisible$ | async" [ngClass]="panelWidthClass">
+@if (isVisible$ | async) {
+  <div class="card hs-main-panel" [ngClass]="panelWidthClass">
     <hs-panel-header name="legend" [panelTabs]="'LEGEND'">
     </hs-panel-header>
     <div class="card-body">
-        <p><input type="text" class="form-control hs-filter" [placeholder]="'COMMON.filter' | translateHs"
-                [(ngModel)]="titleSearch" (input)="refreshList()"></p>
-        <span *ngIf="noLayerExists()">
-            <p style="text-align: center">{{'LEGEND.noLegendExists' | translateHs }}</p>
+      <p><input type="text" class="form-control hs-filter" [placeholder]="'COMMON.filter' | translateHs"
+      [(ngModel)]="titleSearch" (input)="refreshList()"></p>
+      @if (noLayerExists()) {
+        <span>
+          <p style="text-align: center">{{'LEGEND.noLegendExists' | translateHs }}</p>
         </span>
-        <ul class="list-group">
-            <li *ngFor="let layer of this.layerDescriptors | filter:legendFilter" class="list-group-item"
-                [hidden]="!hsLegendService.legendValid(layer)"><!-- TODO: Remove function call from template -->
-                <div>
-                    {{layer.title | translateHs : 'LAYERS' }}
-                    <hs-legend-layer [layer]="layer"></hs-legend-layer>
-                </div>
-            </li>
-        </ul>
-        <div class="row justify-content-center">
-            <div class="col col-md-2 d-flex justify-content-center">
-                <button type="button" class="btn btn-light btn-outline ng-scope" [title]="'COMMON.reload' | translateHs"
-                    (click)="rebuildLegends()">
-                    <i class="icon-refresh"></i>
-                </button>
+      }
+      <ul class="list-group">
+        @for (layer of this.layerDescriptors | filter:legendFilter; track layer) {
+          <li class="list-group-item"
+            [hidden]="!hsLegendService.legendValid(layer)"><!-- TODO: Remove function call from template -->
+            <div>
+              {{layer.title | translateHs : 'LAYERS' }}
+              <hs-legend-layer [layer]="layer"></hs-legend-layer>
             </div>
+          </li>
+        }
+      </ul>
+      <div class="row justify-content-center">
+        <div class="col col-md-2 d-flex justify-content-center">
+          <button type="button" class="btn btn-light btn-outline ng-scope" [title]="'COMMON.reload' | translateHs"
+            (click)="rebuildLegends()">
+            <i class="icon-refresh"></i>
+          </button>
         </div>
+      </div>
     </div>
-</div>
+  </div>
+}

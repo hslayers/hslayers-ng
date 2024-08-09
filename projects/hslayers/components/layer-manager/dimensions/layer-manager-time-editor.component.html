@@ -2,40 +2,56 @@
   <button type="button" class="btn btn-sm text-info border-0" (click)="previousTime()" [disabled]="!hasPreviousTime">
     <i class="glyphicon icon-chevron-left"></i>
   </button>
-  <button class="hs-lm-time-editor-currentTime btn btn-sm text-info px-0"
-    (click)="$event.preventDefault();showTimeSelect()" [hidden]="selectVisible"
-    *ngIf="availableTimesFetched; else loading">
-    <span *ngIf="currentTime; else outOfRange">
-      {{currentTime | date:timeDisplayFormat:timeDisplayFormat}}
-    </span>
-  </button>
-  <ng-template #loading>
+  @if (availableTimesFetched) {
+    <button class="hs-lm-time-editor-currentTime btn btn-sm text-info px-0"
+      (click)="$event.preventDefault();showTimeSelect()" [hidden]="selectVisible"
+      >
+      @if (currentTime) {
+        <span>
+          {{currentTime | date:timeDisplayFormat:timeDisplayFormat}}
+        </span>
+      } @else {
+        <span class="bg-warning text-dark" data-toggle="tooltip" data-container="body" data-placement="auto"
+          [ngbTooltip]="'LAYERMANAGER.time.outOfRangeDescription' | translateHs  "
+          [closeDelay]="hsConfig.layerTooltipDelay || 0">
+          {{'LAYERMANAGER.time.outOfRange' | translateHs }}
+        </span>
+      }
+    </button>
+  } @else {
     <div class="spinner-border spinner-border-sm text-info" role="status">
       <span class="visually-hidden">{{'COMMON.loading' | translateHs }}</span>
-    </div>&nbsp;<span class="text-muted">{{'LAYERMANAGER.time.loading'| translateHs }}</span>
-  </ng-template>
-  <ng-template #outOfRange>
-    <span class="bg-warning text-dark" data-toggle="tooltip" data-container="body" data-placement="auto"
-      [ngbTooltip]="'LAYERMANAGER.time.outOfRangeDescription' | translateHs  "
-      [closeDelay]="hsConfig.layerTooltipDelay || 0">
-      {{'LAYERMANAGER.time.outOfRange' | translateHs }}
-    </span>
-  </ng-template>
-  <select #hstimeselector [hidden]="!selectVisible" [(ngModel)]="currentTime" (change)="selectTime();hideTimeSelect();"
-    (blur)="hideTimeSelect()">
-    <option *ngFor="let time of availableTimes" [ngValue]="time">
-      {{time | date:timeDisplayFormat:timeDisplayFormat}}
-    </option>
-  </select>
-  <button type="button" class="btn btn-sm text-info border-0" (click)="followingTime()" [disabled]="!hasFollowingTime">
-    <i class="glyphicon icon-chevron-right"></i>
-  </button>
-</div>
-<div class="p-0">
-  <button type="button" class="hs-timeSync-toggle btn px-0 py-md-1 py-2 me-1"
-    [ngClass]="{'btn-info text-white': timesInSync, 'text-secondary': !timesInSync}" (click)="synchronizeTimes()"
-    [title]="'LAYERMANAGER.time.syncTimesTooltip' | translateHs  ">
-    <i class="glyphicon icon-timeline"></i>
-    <span class="visually-hidden">{{'LAYERMANAGER.time.syncTimes' | translateHs }}</span>
-  </button>
-</div>
+      </div>&nbsp;<span class="text-muted">{{'LAYERMANAGER.time.loading'| translateHs }}</span>
+    }
+    <ng-template #loading>
+      <div class="spinner-border spinner-border-sm text-info" role="status">
+        <span class="visually-hidden">{{'COMMON.loading' | translateHs }}</span>
+        </div>&nbsp;<span class="text-muted">{{'LAYERMANAGER.time.loading'| translateHs }}</span>
+      </ng-template>
+      <ng-template #outOfRange>
+        <span class="bg-warning text-dark" data-toggle="tooltip" data-container="body" data-placement="auto"
+          [ngbTooltip]="'LAYERMANAGER.time.outOfRangeDescription' | translateHs  "
+          [closeDelay]="hsConfig.layerTooltipDelay || 0">
+          {{'LAYERMANAGER.time.outOfRange' | translateHs }}
+        </span>
+      </ng-template>
+      <select #hstimeselector [hidden]="!selectVisible" [(ngModel)]="currentTime" (change)="selectTime();hideTimeSelect();"
+        (blur)="hideTimeSelect()">
+        @for (time of availableTimes; track time) {
+          <option [ngValue]="time">
+            {{time | date:timeDisplayFormat:timeDisplayFormat}}
+          </option>
+        }
+      </select>
+      <button type="button" class="btn btn-sm text-info border-0" (click)="followingTime()" [disabled]="!hasFollowingTime">
+        <i class="glyphicon icon-chevron-right"></i>
+      </button>
+    </div>
+    <div class="p-0">
+      <button type="button" class="hs-timeSync-toggle btn px-0 py-md-1 py-2 me-1"
+        [ngClass]="{'btn-info text-white': timesInSync, 'text-secondary': !timesInSync}" (click)="synchronizeTimes()"
+        [title]="'LAYERMANAGER.time.syncTimesTooltip' | translateHs  ">
+        <i class="glyphicon icon-timeline"></i>
+        <span class="visually-hidden">{{'LAYERMANAGER.time.syncTimes' | translateHs }}</span>
+      </button>
+    </div>

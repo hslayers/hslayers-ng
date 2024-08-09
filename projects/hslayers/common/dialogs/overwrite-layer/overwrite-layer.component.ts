@@ -1,5 +1,4 @@
 import {Component, ViewRef} from '@angular/core';
-import {NgIf} from '@angular/common';
 
 import {FileDataObject} from 'hslayers-ng/types';
 import {HsDialogComponent} from '../dialog-component.interface';
@@ -13,7 +12,7 @@ import {VectorDataObject} from 'hslayers-ng/types';
   selector: 'hs-layer-overwrite-dialog',
   templateUrl: './overwrite-layer.component.html',
   standalone: true,
-  imports: [TranslateCustomPipe, NgIf],
+  imports: [TranslateCustomPipe],
 })
 export class HsLayerOverwriteDialogComponent implements HsDialogComponent {
   dialogItem: HsDialogItem;

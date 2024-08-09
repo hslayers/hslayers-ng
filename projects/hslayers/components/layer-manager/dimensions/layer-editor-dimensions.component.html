@@ -1,35 +1,44 @@
-<div *ngIf="hsDimensionService.isLayerWithDimensions(olLayer)">
-  <!-- TODO: Remove function call from template -->
-  <p style="text-align: center; font-weight: bold">
-    {{'LAYERMANAGER.dimensions' | translateHs }}
-  </p>
-  <div class="form-inline" *ngFor="let dimension of dimensions">
-    <label class="control-label" style="width: 100%; justify-content: left">{{dimension.label ||
-      dimension.name}}:</label>
-    <select class="form-control form-select" style="width: 100%" [(ngModel)]="dimension.modelValue"
-      [ngModelOptions]="{standalone: true}" *ngIf="!dimension.type"
-      (change)="hsDimensionService.dimensionChanged(dimension)">
-      <option [ngValue]="dimension_value" *ngFor="let dimension_value of dimension.values">
-        {{dimension_value}}
-      </option>
-    </select>
-
-    <!-- Time slider replaced by layermanger-time-editor component -->
-    <div class="form-group" [hidden]="!dimensionIsTime(dimension)">
-      <label>{{'COMMON.date' | translateHs }}</label>
-    </div>
-
-    <div class="input-group flex-fill" *ngIf="dimension.type === 'datetime' || dimension.type === 'date'">
-      <input type="text" style="width: 6.1em" ngbDatepicker placeholder="YYYY-MM-DD" #d="ngbDatepicker"
-        [(ngModel)]="dimension.modelValue" (dateSelect)="hsDimensionService.dimensionChanged(dimension)"
-        [ngModelOptions]="{standalone: true}" />
-      <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button">
-        <i class="icon-calendarthree"></i>
-      </button>
-    </div>
-
-    <ngb-timepicker *ngIf="dimension.type === 'datetime'" size="small" [(ngModel)]="dimension.modelTimeValue"
-      (ngModelChange)="hsDimensionService.dimensionChanged(dimension)" [ngModelOptions]="{standalone: true}">
-    </ngb-timepicker>
+@if (hsDimensionService.isLayerWithDimensions(olLayer)) {
+  <div>
+    <!-- TODO: Remove function call from template -->
+    <p style="text-align: center; font-weight: bold">
+      {{'LAYERMANAGER.dimensions' | translateHs }}
+    </p>
+    @for (dimension of dimensions; track $index) {
+      <div class="form-inline">
+        <label class="control-label" style="width: 100%; justify-content: left">{{dimension.label ||
+        dimension.name}}:</label>
+        @if (!dimension.type) {
+          <select class="form-control form-select" style="width: 100%" [(ngModel)]="dimension.modelValue"
+            [ngModelOptions]="{standalone: true}"
+            (change)="hsDimensionService.dimensionChanged(dimension)">
+            @for (dimension_value of dimension.values; track dimension_value) {
+              <option [ngValue]="dimension_value">
+                {{dimension_value}}
+              </option>
+            }
+          </select>
+        }
+        <!-- Time slider replaced by layermanger-time-editor component -->
+        <div class="form-group" [hidden]="!dimensionIsTime(dimension)">
+          <label>{{'COMMON.date' | translateHs }}</label>
+        </div>
+        @if (dimension.type === 'datetime' || dimension.type === 'date') {
+          <div class="input-group flex-fill">
+            <input type="text" style="width: 6.1em" ngbDatepicker placeholder="YYYY-MM-DD" #d="ngbDatepicker"
+              [(ngModel)]="dimension.modelValue" (dateSelect)="hsDimensionService.dimensionChanged(dimension)"
+              [ngModelOptions]="{standalone: true}" />
+            <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button">
+              <i class="icon-calendarthree"></i>
+            </button>
+          </div>
+        }
+        @if (dimension.type === 'datetime') {
+          <ngb-timepicker size="small" [(ngModel)]="dimension.modelTimeValue"
+            (ngModelChange)="hsDimensionService.dimensionChanged(dimension)" [ngModelOptions]="{standalone: true}">
+          </ngb-timepicker>
+        }
+      </div>
+    }
   </div>
-</div>
+}

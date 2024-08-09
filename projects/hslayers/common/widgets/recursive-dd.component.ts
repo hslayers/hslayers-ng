@@ -1,4 +1,3 @@
-import {CommonModule} from '@angular/common';
 import {Component, Input} from '@angular/core';
 
 import {transform} from 'ol/proj';
@@ -8,7 +7,7 @@ import {HsMapService} from 'hslayers-ng/services/map';
 @Component({
   selector: 'hs-widgets-recursive-dd',
   templateUrl: './recursive-dd.component.html',
-  imports: [CommonModule],
+  imports: [],
   standalone: true,
 })
 export class HsUiExtensionsRecursiveDdComponent {

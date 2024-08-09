@@ -13,10 +13,12 @@
             </p>
             <div class="modal-body w-75 mh-75" style="max-height: 75vh; overflow-y: auto; margin:auto">
                 <div ngbAccordion [closeOthers]="true" #acc="ngbAccordion" (show)="beforeChange($event)">
+                    @for (service of data.services; track $index) {
                     <div [ngbAccordionItem]="service.id" [collapsed]="true" [disabled]="!servicesLoaded"
-                        [id]="service.id" *ngFor="let service of data.services" (hide)="service.selected = false">
+                        [id]="service.id" (hide)="service.selected = false">
                         <div ngbAccordionHeader>
-                            <button ngbAccordionButton *ngIf="service.loaded; else loadingLayers"
+                            @if (service.loaded) {
+                            <button ngbAccordionButton
                                 class="accordion-button justify-content-between">{{service.title}}
                                 <span class="ml-auto pe-3">
                                     <i class="icon-trash text-secondary" role="button"
@@ -24,21 +26,24 @@
                                         [title]="'COMMON.delete' | translateHs"></i>
                                 </span>
                             </button>
-                            <ng-template #loadingLayers>
-                                <button
-                                    class="accordion-button justify-content-between">{{'COMPOSITIONS.cswDialog.servicesLoading'
-                                    | translateHs}}&emsp;<span class="hs-loader ml-auto"></span></button>
-                            </ng-template>
+                            } @else {
+                            <button
+                                class="accordion-button justify-content-between">{{'COMPOSITIONS.cswDialog.servicesLoading'
+                                | translateHs}}&emsp;<span class="hs-loader ml-auto"></span></button>
+                            }
                         </div>
                         <div ngbAccordionCollapse>
                             <div ngbAccordionBody>
                                 <ng-template>
-                                    <hs-layer-table *ngIf="service.loaded && service.selected" [type]="service.type"
-                                        [injectedService]="service.typeService"> </hs-layer-table>
+                                    @if (service.loaded && service.selected) {
+                                    <hs-layer-table [type]="service.type" [injectedService]="service.typeService">
+                                    </hs-layer-table>
+                                    }
                                 </ng-template>
                             </div>
                         </div>
                     </div>
+                    }
                 </div>
             </div>
             <div class="w-75 mh-75 m-auto p-3" [hidden]="layersString.length === 0">

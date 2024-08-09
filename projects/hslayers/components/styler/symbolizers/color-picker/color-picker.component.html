@@ -8,9 +8,13 @@
     </div>
   </div>
   <!-- TODO: Remove function call from template -->
-  <color-sketch [color]="hsColorPickerService.addAlpha(symbolizer[attribute], symbolizer[opacityAttribute])"
-  width="320px"
-    *ngIf="pickerVisible && symbolizer[attribute] !== undefined" (onChangeComplete)="onPick($event)"></color-sketch>
-  <color-sketch *ngIf="pickerVisible && symbolizer[attribute] === undefined" width="320px" (onChangeComplete)="onPick($event)">
+  @if (pickerVisible && symbolizer[attribute] !== undefined) {
+    <color-sketch [color]="hsColorPickerService.addAlpha(symbolizer[attribute], symbolizer[opacityAttribute])"
+      width="320px"
+    (onChangeComplete)="onPick($event)"></color-sketch>
+  }
+  @if (pickerVisible && symbolizer[attribute] === undefined) {
+    <color-sketch width="320px" (onChangeComplete)="onPick($event)">
   </color-sketch>
+}
 </div>

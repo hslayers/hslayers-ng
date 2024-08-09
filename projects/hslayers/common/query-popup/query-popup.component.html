@@ -1,14 +1,16 @@
 <div [ngStyle]="popupVisible()" class="hs-hover-popup">
-    <div class="card">
-        <a class="p-1" (click)="data.service.closePopup()" data-toggle="tooltip"
-            [title]="'QUERY.featurePopup.closePopup' | translateHs">
-            <i class="icon-remove-circle"></i>
-        </a>
-        <div *ngFor="let layerDesc of data.service.featureLayersUnderMouse; let i = index" class="hs-popup-layer">
-            <hs-panel-container [service]="hsQueryPopupWidgetContainerService" [reusePanelObserver]="true"
-                [panelObserver]="layerDesc.panelObserver"
-                [data]="{layerDescriptor: layerDesc, attributesForHover: attributesForHover, service: data.service}">
-            </hs-panel-container>
-        </div>
+  <div class="card">
+    <a class="p-1" (click)="data.service.closePopup()" data-toggle="tooltip"
+      [title]="'QUERY.featurePopup.closePopup' | translateHs">
+      <i class="icon-remove-circle"></i>
+    </a>
+    @for (layerDesc of data.service.featureLayersUnderMouse; track layerDesc; let i = $index) {
+    <div class="hs-popup-layer">
+      <hs-panel-container [service]="hsQueryPopupWidgetContainerService" [reusePanelObserver]="true"
+        [panelObserver]="layerDesc.panelObserver"
+        [data]="{layerDescriptor: layerDesc, attributesForHover: attributesForHover, service: data.service}">
+      </hs-panel-container>
     </div>
+    }
+  </div>
 </div>

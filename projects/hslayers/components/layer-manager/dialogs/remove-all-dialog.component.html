@@ -1,26 +1,27 @@
 <div class="modal hs-remove-all-dialog in" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">
-                    {{'PANEL_HEADER.LM' | translateHs }}
-                </h4>
-                <button (click)="close()" class="btn-close" data-dismiss="modal"
-                    [attr.aria-label]="'COMMON.close' | translateHs ">
-                </button>
-            </div>
-            <div class="modal-body" style="max-height:600px; overflow-y:auto">
-                {{'LAYERMANAGER.dialogRemoveAll.dialogMessage' | translateHs }}</div>
-            <div class="modal-footer">
-                <button class="btn btn-primary" (click)="removeAllLayers(false);"
-                    data-dismiss="modal">{{'LAYERMANAGER.dialogRemoveAll.removeAllAdded' | translateHs
-                    }}</button>
-                <button class="btn btn-primary" (click)="removeAllLayers(true)"
-                    *ngIf="hsCompositionsParserService.currentCompositionRecord | async"
-                    data-dismiss="modal">{{'LAYERMANAGER.dialogRemoveAll.reloadComposition' | translateHs}}</button>
-                <button class="btn btn-secondary" (click)="close()" data-dismiss="modal">{{'COMMON.no' |
-                    translateHs}}</button>
-            </div>
-        </div>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">
+          {{'PANEL_HEADER.LM' | translateHs }}
+        </h4>
+        <button (click)="close()" class="btn-close" data-dismiss="modal"
+          [attr.aria-label]="'COMMON.close' | translateHs ">
+        </button>
+      </div>
+      <div class="modal-body" style="max-height:600px; overflow-y:auto">
+      {{'LAYERMANAGER.dialogRemoveAll.dialogMessage' | translateHs }}</div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" (click)="removeAllLayers(false);"
+          data-dismiss="modal">{{'LAYERMANAGER.dialogRemoveAll.removeAllAdded' | translateHs
+        }}</button>
+        @if (hsCompositionsParserService.currentCompositionRecord | async) {
+          <button class="btn btn-primary" (click)="removeAllLayers(true)"
+          data-dismiss="modal">{{'LAYERMANAGER.dialogRemoveAll.reloadComposition' | translateHs}}</button>
+        }
+        <button class="btn btn-secondary" (click)="close()" data-dismiss="modal">{{'COMMON.no' |
+        translateHs}}</button>
+      </div>
     </div>
+  </div>
 </div>

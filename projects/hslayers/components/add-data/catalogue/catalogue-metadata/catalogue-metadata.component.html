@@ -1,56 +1,61 @@
 <div class="modal in hs-datasource_selector-metadata-dialog" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">
-                    {{'DATASOURCE_SELECTOR.metadataFor' | translateHs }} {{ selectedLayer.title}}
-                </h4>
-                <button type="button" (click)="close()" class="btn-close" data-dismiss="modal"
-                    [attr.aria-label]="'COMMON.close' | translateHs "></button>
-            </div>
-            <div class="modal-body" style="max-height:400px; overflow-y:auto">
-                <ng-container *ngFor="let key of selectedLayerKeys">
-                    <dl *ngIf="key!=='feature'">
-                        <dt>{{key}}</dt>
-                        <hs-widgets-recursive-dd [value]="selectedLayer[key]">
-                        </hs-widgets-recursive-dd>
-                    </dl>
-                </ng-container>
-            </div>
-            <div class="modal-footer">
-                <div class="d-flex" *ngIf="selectedDS.type === 'micka' || selectedLayer.wfsWmsStatus === 'AVAILABLE'">
-                    <button type="button" class="btn btn-primary ms-2 d-flex gap-2 align-items-center"
-                        *ngFor="let type of selectedLayer.availableTypes"
-                        (click)="addLayerToMap(selectedDS, selectedLayer, type)" data-dismiss="modal">
-                        <span class="icon-plus"></span><span>{{'DATASOURCE_SELECTOR.addToMapAs' | translateHs }}
-                            {{type}}</span>
-                    </button>
-                </div>
-                <div class="d-flex w-100 justify-content-between">
-                    <ng-container *ngIf="selectedLayer?.metadata?.record_url">
-                        <a target="_blank" [href]="selectedLayer.metadata.record_url" class="btn btn-primary"
-                            (click)="close()">{{'DATASOURCE_SELECTOR.seeFullRecord' | translateHs}} <i
-                                class="icon icon-opennewwindow"></i></a>
-                    </ng-container>
-                    <div class="d-flex gap-2">
-                        <a role="button" class="btn btn-success"
-                            [href]='hsAddDataCatalogueService.layerRDF(selectedDS, selectedLayer)' data-toggle="tooltip"
-                            title="GeoDCAT-AP" target="_blank"
-                            [hidden]='selectedDS.type!=="micka" || hsAddDataCatalogueService.layerRDF(selectedDS, selectedLayer) === "#"'>
-                            <i class="icon-share-alt"></i> RDF
-                        </a><!-- TODO: Remove function call from template -->
-                        <button type="button" class="btn btn-success" [hidden]="selectedLayer.bbox === undefined"
-                            (click)="hsAddDataCatalogueMapService.zoomTo(selectedLayer.bbox)">{{'LAYERMANAGER.layerEditor.zoomToLayer'
-                            |
-                            translateHs }}</button>
-                        <button type="button" class="btn btn-secondary" (click)="close()" data-dismiss="modal"
-                            [title]="'COMMON.close' | translateHs ">
-                            {{'COMMON.close' | translateHs }}
-                        </button>
-                    </div>
-                </div>
-
-            </div>
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">
+          {{'DATASOURCE_SELECTOR.metadataFor' | translateHs }} {{ selectedLayer.title}}
+        </h4>
+        <button type="button" (click)="close()" class="btn-close" data-dismiss="modal"
+          [attr.aria-label]="'COMMON.close' | translateHs "></button>
+      </div>
+      <div class="modal-body" style="max-height:400px; overflow-y:auto">
+        @for (key of selectedLayerKeys; track key) {
+        @if (key!=='feature') {
+        <dl>
+          <dt>{{key}}</dt>
+          <hs-widgets-recursive-dd [value]="selectedLayer[key]">
+          </hs-widgets-recursive-dd>
+        </dl>
+        }
+        }
+      </div>
+      <div class="modal-footer">
+        @if (selectedDS.type === 'micka' || selectedLayer.wfsWmsStatus === 'AVAILABLE') {
+        <div class="d-flex">
+          @for (type of selectedLayer.availableTypes; track type) {
+          <button type="button" class="btn btn-primary ms-2 d-flex gap-2 align-items-center"
+            (click)="addLayerToMap(selectedDS, selectedLayer, type)" data-dismiss="modal">
+            <span class="icon-plus"></span><span>{{'DATASOURCE_SELECTOR.addToMapAs' | translateHs }}
+              {{type}}</span>
+          </button>
+          }
         </div>
+        }
+        <div class="d-flex w-100 justify-content-between">
+          @if (selectedLayer?.metadata?.record_url) {
+          <a target="_blank" [href]="selectedLayer.metadata.record_url" class="btn btn-primary"
+            (click)="close()">{{'DATASOURCE_SELECTOR.seeFullRecord' | translateHs}} <i
+              class="icon icon-opennewwindow"></i></a>
+          }
+          <div class="d-flex gap-2">
+            <a role="button" class="btn btn-success"
+              [href]='hsAddDataCatalogueService.layerRDF(selectedDS, selectedLayer)' data-toggle="tooltip"
+              title="GeoDCAT-AP" target="_blank"
+              [hidden]='selectedDS.type!=="micka" || hsAddDataCatalogueService.layerRDF(selectedDS, selectedLayer) === "#"'>
+              <i class="icon-share-alt"></i> RDF
+            </a><!-- TODO: Remove function call from template -->
+            <button type="button" class="btn btn-success" [hidden]="selectedLayer.bbox === undefined"
+              (click)="hsAddDataCatalogueMapService.zoomTo(selectedLayer.bbox)">{{'LAYERMANAGER.layerEditor.zoomToLayer'
+              |
+              translateHs }}</button>
+            <button type="button" class="btn btn-secondary" (click)="close()" data-dismiss="modal"
+              [title]="'COMMON.close' | translateHs ">
+              {{'COMMON.close' | translateHs }}
+            </button>
+          </div>
+        </div>
+
+      </div>
     </div>
+  </div>
 </div>

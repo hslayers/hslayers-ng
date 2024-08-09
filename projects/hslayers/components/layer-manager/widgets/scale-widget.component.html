@@ -1,28 +1,36 @@
 <div class="form-group" [hidden]="!isScaleVisible()"><!-- TODO: Remove function call from template -->
   <label>{{ "COMMON.scale" | translateHs }}</label>
-  <span *ngIf="minResolutionValid()"><span class="ms-1">{{ "COMMON.from" | translateHs }}</span> 1:{{
+  @if (minResolutionValid()) {
+    <span><span class="ms-1">{{ "COMMON.from" | translateHs }}</span> 1:{{
     minResolution
-    }}</span>
-  <span *ngIf="maxResolutionValid()"><span class="ms-1">{{ "COMMON.to" | translateHs }}</span> 1:{{
-    maxResolution
-    }}</span>
+  }}</span>
+}
+@if (maxResolutionValid()) {
+  <span><span class="ms-1">{{ "COMMON.to" | translateHs }}</span> 1:{{
+  maxResolution
+}}</span>
+}
 
-  <!-- TODO This editor need to be toggle-able-->
-  <div class="form">
-    <br />
-    <label>{{ "COMMON.scale" | translateHs }}</label>
-    <div *ngIf="minResolutionValid()">
+<!-- TODO This editor need to be toggle-able-->
+<div class="form">
+  <br />
+  <label>{{ "COMMON.scale" | translateHs }}</label>
+  @if (minResolutionValid()) {
+    <div>
       <div class="input-group">
         <span class="input-group-text"><span>{{ "COMMON.from" | translateHs }}</span>&nbsp;1</span>
         <input class="form-control" style="width: 65px" [(ngModel)]="minResolution" name="minResolution" />
       </div>
     </div>
-    <div *ngIf="maxResolutionValid()">
+  }
+  @if (maxResolutionValid()) {
+    <div>
       <div class="input-group">
         <span class="input-group-text">
           <span>{{ "COMMON.to" | translateHs }}</span>&nbsp;1</span>
-        <input class="form-control" style="width: 65px" [(ngModel)]="maxResolution" name="maxResolution" />
+          <input class="form-control" style="width: 65px" [(ngModel)]="maxResolution" name="maxResolution" />
+        </div>
       </div>
-    </div>
+    }
   </div>
 </div>

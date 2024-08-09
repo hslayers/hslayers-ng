@@ -1,8 +1,12 @@
-<div class="card hs-main-panel" *ngIf="isVisible$ | async">
+@if (isVisible$ | async) {
+  <div class="card hs-main-panel">
     <hs-panel-header name="feature-table" [panelTabs]="'FEATURE_TABLE'"></hs-panel-header>
     <div class="card-body">
-        <div *ngFor="let layer of layers">
-            <hs-layer-features [layer]="layer"></hs-layer-features>
+      @for (layer of layers; track layer) {
+        <div>
+          <hs-layer-features [layer]="layer"></hs-layer-features>
         </div>
+      }
     </div>
-</div>
+  </div>
+}

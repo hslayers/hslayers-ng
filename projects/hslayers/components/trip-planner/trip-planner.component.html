@@ -1,79 +1,80 @@
-<div
-  class="card hs-main-panel"
-  *ngIf="isVisible$ | async"
-  [ngClass]="panelWidthClass"
->
-  <hs-panel-header name="tripPlanner" [panelTabs]="'TRIP_PLANNER'">
-  </hs-panel-header>
-  <div class="card-body d-flex flex-column px-3">
-    <hs-trip-planner-layer-selector
-      usage="route"
-      [label]="'TRIP_PLANNER.routerLayer' | translateHs"
-      [selectedWrapper]="hsTripPlannerService.selectedLayerWrapper.route"
+@if (isVisible$ | async) {
+  <div
+    class="card hs-main-panel"
+    [ngClass]="panelWidthClass"
     >
-    </hs-trip-planner-layer-selector>
-    <hs-trip-planner-layer-selector
-      usage="waypoints"
-      [label]="'TRIP_PLANNER.waypointLayer' | translateHs"
-      [selectedWrapper]="hsTripPlannerService.selectedLayerWrapper.waypoints"
-    >
-    </hs-trip-planner-layer-selector>
-    <hs-trip-planner-profile-selector
-      [selectedProfile]="hsTripPlannerService.selectedProfile"
-    ></hs-trip-planner-profile-selector>
-    @for (waypoint of hsTripPlannerService.waypoints; track waypoint.hash) {
-      <div class="d-flex flex-row align-items-center px-2">
+    <hs-panel-header name="tripPlanner" [panelTabs]="'TRIP_PLANNER'">
+    </hs-panel-header>
+    <div class="card-body d-flex flex-column px-3">
+      <hs-trip-planner-layer-selector
+        usage="route"
+        [label]="'TRIP_PLANNER.routerLayer' | translateHs"
+        [selectedWrapper]="hsTripPlannerService.selectedLayerWrapper.route"
+        >
+      </hs-trip-planner-layer-selector>
+      <hs-trip-planner-layer-selector
+        usage="waypoints"
+        [label]="'TRIP_PLANNER.waypointLayer' | translateHs"
+        [selectedWrapper]="hsTripPlannerService.selectedLayerWrapper.waypoints"
+        >
+      </hs-trip-planner-layer-selector>
+      <hs-trip-planner-profile-selector
+        [selectedProfile]="hsTripPlannerService.selectedProfile"
+      ></hs-trip-planner-profile-selector>
+      @for (waypoint of hsTripPlannerService.waypoints; track waypoint.hash) {
+        <div class="d-flex flex-row align-items-center px-2">
+          <div class="p-1 flex-grow-1">
+            <a (click)="toggleEdit(waypoint)" [hidden]="!!waypoint.editMode">{{
+              waypoint.name
+            }}</a>
+            <input
+              [(ngModel)]="waypoint.name"
+              class="form-control hs-waypoint-name"
+              [ngModelOptions]="{ standalone: true }"
+              [hidden]="!waypoint.editMode"
+              (blur)="toggleEdit(waypoint)"
+              />
+          </div>
+          <div class="p-1">
+            <span
+              [hidden]="!waypoint.loading"
+              class="hs-loader hs-loader-dark"
+            ></span>
+          </div>
+          <div class="p-1" style="margin-top: 1em">
+            {{ formatDistance(waypoint) }}
+          </div>
+          <div class="p-1">
+            <a
+              class="p-1"
+              (click)="hsTripPlannerService.removeWaypoint(waypoint)"
+              data-toggle="tooltip"
+              [title]="'TRIP_PLANNER.removeWaypoint' | translateHs"
+              >
+              <i class="icon-remove-circle" style="color: rgb(228, 99, 99)"></i>
+            </a>
+          </div>
+        </div>
+      }
+      @if (hsTripPlannerService.waypoints.length === 0) {
+        <div class="alert alert-primary" role="alert">
+          {{ "TRIP_PLANNER.waypointDrawingHint" | translateHs }}
+        </div>
+      } @else {
+        <a class="accordion align-self-end btn btn-danger btn-sm m-2" (click)="hsTripPlannerService.clearAll()">{{
+          "TRIP_PLANNER.clearWaypoints" | translateHs
+        }}</a>
+      }
+      <br />
+      <div class="d-flex flex-row">
         <div class="p-1 flex-grow-1">
-          <a (click)="toggleEdit(waypoint)" [hidden]="!!waypoint.editMode">{{
-            waypoint.name
-          }}</a>
-          <input
-            [(ngModel)]="waypoint.name"
-            class="form-control hs-waypoint-name"
-            [ngModelOptions]="{ standalone: true }"
-            [hidden]="!waypoint.editMode"
-            (blur)="toggleEdit(waypoint)"
-          />
+          <strong>{{ "TRIP_PLANNER.totalDistance" | translateHs }}:</strong>
         </div>
         <div class="p-1">
-          <span
-            [hidden]="!waypoint.loading"
-            class="hs-loader hs-loader-dark"
-          ></span>
+          {{ totalDistance()
+          }}<!-- TODO: Remove function call from template -->
         </div>
-        <div class="p-1" style="margin-top: 1em">
-          {{ formatDistance(waypoint) }}
-        </div>
-        <div class="p-1">
-          <a
-            class="p-1"
-            (click)="hsTripPlannerService.removeWaypoint(waypoint)"
-            data-toggle="tooltip"
-            [title]="'TRIP_PLANNER.removeWaypoint' | translateHs"
-          >
-            <i class="icon-remove-circle" style="color: rgb(228, 99, 99)"></i>
-          </a>
-        </div>
-      </div>
-    }
-    @if (hsTripPlannerService.waypoints.length === 0) {
-      <div class="alert alert-primary" role="alert">
-        {{ "TRIP_PLANNER.waypointDrawingHint" | translateHs }}
-      </div>
-    } @else {
-      <a class="accordion align-self-end btn btn-danger btn-sm m-2" (click)="hsTripPlannerService.clearAll()">{{
-        "TRIP_PLANNER.clearWaypoints" | translateHs
-      }}</a>
-    }
-    <br />
-    <div class="d-flex flex-row">
-      <div class="p-1 flex-grow-1">
-        <strong>{{ "TRIP_PLANNER.totalDistance" | translateHs }}:</strong>
-      </div>
-      <div class="p-1">
-        {{ totalDistance()
-        }}<!-- TODO: Remove function call from template -->
       </div>
     </div>
   </div>
-</div>
+}

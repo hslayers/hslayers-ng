@@ -1,7 +1,7 @@
 import {Component, Input} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 
-import {NgForOf} from '@angular/common';
+
 
 import {CANVAS_SIZES} from '../constants/position-options';
 import {HsPrintTextStylerComponent} from '../text-styler/text-styler.component';
@@ -13,11 +13,10 @@ import {TranslateCustomPipe} from 'hslayers-ng/services/language';
   templateUrl: './imprint-styler.component.html',
   standalone: true,
   imports: [
-    NgForOf,
     FormsModule,
     HsPrintTextStylerComponent,
-    TranslateCustomPipe,
-  ],
+    TranslateCustomPipe
+],
 })
 export class HsPrintImprintStylerComponent {
   @Input() imprintObj: ImprintObj;

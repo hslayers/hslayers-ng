@@ -1,122 +1,140 @@
 <div class="modal in hs-draw-layer-metadata" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header d-flex flex-column" style="height: auto">
-                <div class="d-flex w-100 align-items-center">
-                    <h4 class="modal-title">
-                        {{'COMMON.newDrawingLayer' | translateHs }}
-                    </h4>
-                    <button type="button" (click)="cancel()" class="btn-close" data-dismiss="modal"
-                        [attr.aria-label]="'COMMON.close' | translateHs ">
-                    </button>
-                </div>
-                <p class="m-0 p-0" style="font-size: 0.75rem; color: red;">
-                    {{'DRAW.drawLayerMetadata.layerWillBeAdded' | translateHs }}</p>
-            </div>
-            <div *ngIf="!data.service.isAuthenticated && data.service.laymanEndpoint !== undefined"
-                class="alert alert-danger" role="alert">
-                <p class="text-center">
-                    {{'DRAW.notAuthorized' | translateHs }}
-                </p>
-                <hs-layman-current-user [endpoint]="endpoint"></hs-layman-current-user>
-            </div>
-            <div class="d-flex w-75 m-auto p-4 justify-content-around" style="white-space: nowrap;"
-                *ngIf="data.service.drawableLaymanLayers.length > 0 && data.service.isAuthenticated">
-                <button type="button" class="btn btn-sm rounded  hs-toolbar-button" (click)="type = 'draw'"
-                    [ngClass]="type === 'draw' ? 'btn-primary' : 'btn-secondary'">
-                    {{'DRAW.drawToolbar.addDrawLayer' | translateHs }}
-                </button>
-                <button type="button" class="btn ms-1 btn-sm rounded hs-toolbar-button" (click)="type = 'layman'"
-                    [ngClass]="type === 'layman' ? 'btn-primary' : 'btn-secondary'">
-                    {{'DRAW.drawLayerMetadata.loadServerLayers' | translateHs }}
-                </button>
-            </div>
-            <div class="modal-body" style="max-height:400px; overflow-y:auto">
-                <form *ngIf="type === 'draw'">
-                    <div class="form-floating mb-3">
-                        <input class="form-control" [(ngModel)]="title" (ngModelChange)="titleChanged()" name="title"
-                            [placeholder]="'DRAW.drawLayerMetadata.layerTitle' | translateHs " />
-                        <label for="title" class="control-label">{{'DRAW.drawLayerMetadata.layerTitle' |
-                            translateHs }}</label>
-
-                    </div>
-                    <hs-layman-access-rights *ngIf="data.service.isAuthenticated" [(access_rights)]="access_rights">
-                    </hs-layman-access-rights>
-                    <div class="flex-row w-75 align-items-center" style="display: flex;">
-                        <a class="p-1 mb-1" (click)="folderVisible = !folderVisible">{{'COMMON.advancedOptions' |
-                            translateHs }}</a>
-                    </div>
-                    <div [hidden]="!folderVisible">
-                        <div class="form-floating mb-3" [title]="'DRAW.drawLayerMetadata.nameOfFolder' | translateHs ">
-                            <input class="form-control" [(ngModel)]="path" (ngModelChange)="pathChanged()" name="path"
-                                [placeholder]="'COMMON.folder' | translateHs " />
-                            <label for="path" class="control-label">{{'COMMON.folder' | translateHs
-                                }}</label>
-                        </div>
-                        <div class="card">
-                            <h5 class="card-header">{{'DRAW.drawLayerMetadata.defaultAttributes' | translateHs}}</h5>
-                            <div class="card-body">
-                                <table class="table table-condensed">
-                                    <tr>
-                                        <th>{{'COMMON.attribute' | translateHs }}</th>
-                                        <th>{{'DRAW.drawLayerMetadata.defaultValue' | translateHs }}
-                                        </th>
-                                    </tr>
-                                    <tr *ngFor="let attr of attributes">
-                                        <td><input class="form-control" [(ngModel)]="attr.name"
-                                                [ngModelOptions]="{standalone: true}" /></td>
-                                        <td><input class="form-control" [(ngModel)]="attr.value"
-                                                [ngModelOptions]="{standalone: true}" /></td>
-                                    </tr>
-                                </table>
-                                <button class="btn btn-primary" (click)="addAttr()"><i class="icon-plus"></i></button>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-                <form *ngIf="type === 'layman'">
-                    <div class="d-flex align-items-center w-100 flex-column"
-                        *ngIf="data.service.drawableLaymanLayers.length > 0">
-                        <div class=" bg-primary w-100 text-light m-0 p-1">
-                            <div class="d-flex justify-content-between m-1">
-                                {{'DRAW.serverLayers' | translateHs }}
-                                <span (click)="onlyMineFilterVisible = !onlyMineFilterVisible" style="cursor: pointer;">
-                                    <i class="icon-settingsthree-gears"></i>
-                                </span>
-                            </div>
-
-                            <div class="input-group-text border-0 justify-content-center bg-white"
-                                *ngIf="onlyMineFilterVisible">
-                                <label class="m-0">
-                                    <input type="checkbox" name="onlyMine" [(ngModel)]="data.service.onlyMine"
-                                        (ngModelChange)="data.service.fillDrawableLayers(); onlyMineFilterVisible = !onlyMineFilterVisible">
-                                    {{'COMPOSITIONS.onlyMine' | translateHs }}
-                                </label>
-                            </div>
-                        </div>
-                        <ul class="list-group w-100">
-                            <li *ngFor="let layer of data.service.drawableLaymanLayers"
-                                class="justify-content-between d-flex align-items-center"
-                                [ngClass]="'list-group-item'+(layer.highlighted ? ' active' : '')">
-                                <b><a data-toggle="tooltip" [title]="layer.description">{{layer.title}}</a></b>
-                                <span class="float-right">
-                                    <button type="button" class="btn btn-sm btn-primary" (click)="selectLayer(layer)"
-                                        data-toggle="tooltip" [title]="'COMMON.addToMap' | translateHs "><i
-                                            class="icon-plus"></i></button>
-                                </span>
-                            </li>
-                        </ul>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary" data-dismiss="modal" *ngIf="type === 'draw'"
-                    (click)="confirm()" data-test="Confirm add layer">{{'DRAW.drawToolbar.addLayer' |
-                    translateHs}}</button>
-                <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="cancel()"
-                    data-test="Cancel add layer">{{'COMMON.cancel'
-                    | translateHs }}</button>
-            </div>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header d-flex flex-column" style="height: auto">
+        <div class="d-flex w-100 align-items-center">
+          <h4 class="modal-title">
+            {{'COMMON.newDrawingLayer' | translateHs }}
+          </h4>
+          <button type="button" (click)="cancel()" class="btn-close" data-dismiss="modal"
+            [attr.aria-label]="'COMMON.close' | translateHs ">
+          </button>
         </div>
+        <p class="m-0 p-0" style="font-size: 0.75rem; color: red;">
+        {{'DRAW.drawLayerMetadata.layerWillBeAdded' | translateHs }}</p>
+      </div>
+      @if (!data.service.isAuthenticated && data.service.laymanEndpoint !== undefined) {
+        <div
+          class="alert alert-danger" role="alert">
+          <p class="text-center">
+            {{'DRAW.notAuthorized' | translateHs }}
+          </p>
+          <hs-layman-current-user [endpoint]="endpoint"></hs-layman-current-user>
+        </div>
+      }
+      @if (data.service.drawableLaymanLayers.length > 0 && data.service.isAuthenticated) {
+        <div class="d-flex w-75 m-auto p-4 justify-content-around" style="white-space: nowrap;"
+          >
+          <button type="button" class="btn btn-sm rounded  hs-toolbar-button" (click)="type = 'draw'"
+            [ngClass]="type === 'draw' ? 'btn-primary' : 'btn-secondary'">
+            {{'DRAW.drawToolbar.addDrawLayer' | translateHs }}
+          </button>
+          <button type="button" class="btn ms-1 btn-sm rounded hs-toolbar-button" (click)="type = 'layman'"
+            [ngClass]="type === 'layman' ? 'btn-primary' : 'btn-secondary'">
+            {{'DRAW.drawLayerMetadata.loadServerLayers' | translateHs }}
+          </button>
+        </div>
+      }
+      <div class="modal-body" style="max-height:400px; overflow-y:auto">
+        @if (type === 'draw') {
+          <form>
+            <div class="form-floating mb-3">
+              <input class="form-control" [(ngModel)]="title" (ngModelChange)="titleChanged()" name="title"
+                [placeholder]="'DRAW.drawLayerMetadata.layerTitle' | translateHs " />
+              <label for="title" class="control-label">{{'DRAW.drawLayerMetadata.layerTitle' |
+              translateHs }}</label>
+            </div>
+            @if (data.service.isAuthenticated) {
+              <hs-layman-access-rights [(access_rights)]="access_rights">
+              </hs-layman-access-rights>
+            }
+            <div class="flex-row w-75 align-items-center" style="display: flex;">
+              <a class="p-1 mb-1" (click)="folderVisible = !folderVisible">{{'COMMON.advancedOptions' |
+              translateHs }}</a>
+            </div>
+            <div [hidden]="!folderVisible">
+              <div class="form-floating mb-3" [title]="'DRAW.drawLayerMetadata.nameOfFolder' | translateHs ">
+                <input class="form-control" [(ngModel)]="path" (ngModelChange)="pathChanged()" name="path"
+                  [placeholder]="'COMMON.folder' | translateHs " />
+                <label for="path" class="control-label">{{'COMMON.folder' | translateHs
+                }}</label>
+              </div>
+              <div class="card">
+                <h5 class="card-header">{{'DRAW.drawLayerMetadata.defaultAttributes' | translateHs}}</h5>
+                <div class="card-body">
+                  <table class="table table-condensed">
+                    <tr>
+                      <th>{{'COMMON.attribute' | translateHs }}</th>
+                      <th>{{'DRAW.drawLayerMetadata.defaultValue' | translateHs }}
+                      </th>
+                    </tr>
+                    @for (attr of attributes; track attr) {
+                      <tr>
+                        <td><input class="form-control" [(ngModel)]="attr.name"
+                        [ngModelOptions]="{standalone: true}" /></td>
+                        <td><input class="form-control" [(ngModel)]="attr.value"
+                        [ngModelOptions]="{standalone: true}" /></td>
+                      </tr>
+                    }
+                  </table>
+                  <button class="btn btn-primary" (click)="addAttr()"><i class="icon-plus"></i></button>
+                </div>
+              </div>
+            </div>
+          </form>
+        }
+        @if (type === 'layman') {
+          <form>
+            @if (data.service.drawableLaymanLayers.length > 0) {
+              <div class="d-flex align-items-center w-100 flex-column"
+                >
+                <div class=" bg-primary w-100 text-light m-0 p-1">
+                  <div class="d-flex justify-content-between m-1">
+                    {{'DRAW.serverLayers' | translateHs }}
+                    <span (click)="onlyMineFilterVisible = !onlyMineFilterVisible" style="cursor: pointer;">
+                      <i class="icon-settingsthree-gears"></i>
+                    </span>
+                  </div>
+                  @if (onlyMineFilterVisible) {
+                    <div class="input-group-text border-0 justify-content-center bg-white"
+                      >
+                      <label class="m-0">
+                        <input type="checkbox" name="onlyMine" [(ngModel)]="data.service.onlyMine"
+                          (ngModelChange)="data.service.fillDrawableLayers(); onlyMineFilterVisible = !onlyMineFilterVisible">
+                        {{'COMPOSITIONS.onlyMine' | translateHs }}
+                      </label>
+                    </div>
+                  }
+                </div>
+                <ul class="list-group w-100">
+                  @for (layer of data.service.drawableLaymanLayers; track layer) {
+                    <li
+                      class="justify-content-between d-flex align-items-center"
+                      [ngClass]="'list-group-item'+(layer.highlighted ? ' active' : '')">
+                      <b><a data-toggle="tooltip" [title]="layer.description">{{layer.title}}</a></b>
+                      <span class="float-right">
+                        <button type="button" class="btn btn-sm btn-primary" (click)="selectLayer(layer)"
+                          data-toggle="tooltip" [title]="'COMMON.addToMap' | translateHs "><i
+                        class="icon-plus"></i></button>
+                      </span>
+                    </li>
+                  }
+                </ul>
+              </div>
+            }
+          </form>
+        }
+      </div>
+      <div class="modal-footer">
+        @if (type === 'draw') {
+          <button type="button" class="btn btn-primary" data-dismiss="modal"
+            (click)="confirm()" data-test="Confirm add layer">{{'DRAW.drawToolbar.addLayer' |
+          translateHs}}</button>
+        }
+        <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="cancel()"
+          data-test="Cancel add layer">{{'COMMON.cancel'
+        | translateHs }}</button>
+      </div>
     </div>
+  </div>
 </div>

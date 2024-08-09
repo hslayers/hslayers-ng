@@ -1,30 +1,35 @@
-<ng-container *ngIf="{ layer: layerDescriptor | async } as descriptor">
-  <div class="form-group" *ngIf="descriptor.layer && metadataService.hasMetadata(descriptor.layer)">
-    <!-- Metadata -->
-    <div class="pt-2">
-      <a class="card-href" *ngFor="let metadataUrl of metadataService.metadataArray(descriptor.layer)"
-        [href]="metadataUrl.onlineResource" target="_blank" [title]="'COMMON.metadata' | translateHs">
-        <span [hidden]="!metadataUrl.type">
-          {{ "LAYERMANAGER.layerEditor.metadataOfLayer" | translateHs }}
-          {{ metadataUrl.type }}
-        </span>
-        <span [hidden]="metadataUrl.type">
-          {{ "LAYERMANAGER.layerEditor.metadataOfService" | translateHs }}
-        </span>
-      </a>
+@if ({ layer: layerDescriptor | async }; as descriptor) {
+  @if (descriptor.layer && metadataService.hasMetadata(descriptor.layer)) {
+    <div class="form-group">
+      <!-- Metadata -->
+      <div class="pt-2">
+        @for (metadataUrl of metadataService.metadataArray(descriptor.layer); track metadataUrl) {
+          <a class="card-href"
+            [href]="metadataUrl.onlineResource" target="_blank" [title]="'COMMON.metadata' | translateHs">
+            <span [hidden]="!metadataUrl.type">
+              {{ "LAYERMANAGER.layerEditor.metadataOfLayer" | translateHs }}
+              {{ metadataUrl.type }}
+            </span>
+            <span [hidden]="metadataUrl.type">
+              {{ "LAYERMANAGER.layerEditor.metadataOfService" | translateHs }}
+            </span>
+          </a>
+        }
+      </div>
+      <!-- Copyright -->
+      @if (hasCopyright(descriptor.layer)) {
+        <div>
+          <a class="card-href" [href]="getAttribution(descriptor.layer.layer).onlineResource" target="_blank"
+            [title]="'LAYERMANAGER.layerEditor.copyright' | translateHs">
+          {{ "LAYERMANAGER.layerEditor.copyright" | translateHs }}</a>
+        </div>
+      }
     </div>
-    <!-- Copyright -->
-    <div *ngIf="hasCopyright(descriptor.layer)">
-      <a class="card-href" [href]="getAttribution(descriptor.layer.layer).onlineResource" target="_blank"
-        [title]="'LAYERMANAGER.layerEditor.copyright' | translateHs">
-        {{ "LAYERMANAGER.layerEditor.copyright" | translateHs }}</a>
-    </div>
-  </div>
-
+  }
   <div class="form-group" [hidden]="!abstract">
     <label>{{ "COMMON.abstract" | translateHs }}</label>
     <p [innerHtml]="
         HsLayerManagerService.makeSafeAndTranslate('LAYERS', abstract)
       "></p><!-- TODO: Remove function call from template -->
   </div>
-</ng-container>
+}

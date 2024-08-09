@@ -9,7 +9,7 @@ import {
   HsLayerSelectorService,
 } from 'hslayers-ng/services/layer-manager';
 
-import {AsyncPipe, NgClass, NgFor, NgIf} from '@angular/common';
+import { AsyncPipe, NgClass } from '@angular/common';
 import {HsBaseLayerDescriptor} from 'hslayers-ng/types';
 import {HsConfirmDialogComponent} from 'hslayers-ng/common/confirm';
 import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
@@ -25,7 +25,7 @@ type layerType = 'base' | 'thematic';
 @Component({
   selector: 'hs-layer-type-switcher-widget',
   standalone: true,
-  imports: [NgIf, NgFor, NgClass, AsyncPipe, TranslateCustomPipe],
+  imports: [NgClass, AsyncPipe, TranslateCustomPipe],
   templateUrl: './layer-type-switcher-widget.component.html',
 })
 export class LayerTypeSwitcherWidgetComponent extends HsLayerEditorWidgetBaseComponent {
