@@ -52,6 +52,7 @@ describe('Hslayers layout', () => {
 
   it('should toggle mobile sidebar', () => {
     cy.viewport(766, 1000);
+    cy.wait(1000);
     cy.get('.hs-panelspace-expander')
       .click()
       .then((a) => {

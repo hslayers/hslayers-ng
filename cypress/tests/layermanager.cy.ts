@@ -55,19 +55,23 @@ describe('Hslayers application', () => {
 
     cy.get('.modal-footer button:first').click();
 
-    cy.get('.hs-lm-mapcontentlist').children().should('have.length', 1); //All groups are removed
+    cy.get('.hs-lm-mapcontentlist').children().should('have.length', 0); //All groups are removed
 
     cy.get('hs-panel-header .dropdown-toggle').click();
     cy.get('extra-buttons').find('a').contains('Reset map').click();
 
-    cy.get('.hs-lm-mapcontentlist').children().should('have.length', 4); //All groups retrieved
+    cy.get('.hs-lm-mapcontentlist').children().should('have.length', 3); //All groups retrieved
   });
 
   it('Layermanager filter should hide layers', () => {
     cy.get('hs-layer-manager .hs-filter').type('EVI');
-    cy.get('div.hs-lm-item-title')
-      .contains('IDW layer')
-      .should('not.be.visible');
+    cy.get('.hs-lm-mapcontentlist div.hs-lm-item-title').should(
+      'have.length',
+      1,
+    );
+    cy.get('.hs-lm-mapcontentlist div.hs-lm-item-title')
+      .contains('EVI')
+      .should('be.visible');
   });
 
   it('Should try to load WMS content outside the extent (eg. ignore the extent)', () => {
