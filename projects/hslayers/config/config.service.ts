@@ -50,7 +50,6 @@ export class HsConfigObject {
   sidebarPosition?: string;
   default_layers?: Layer<Source>[];
   mobileBreakpoint?: number;
-  box_layers?: Group[];
   base_layers?: {
     url: string;
     default: string;

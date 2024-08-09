@@ -30,17 +30,6 @@
         </extra-buttons>
     </hs-panel-header>
     <div class="card-body hs-lm-panel">
-        <div class="nav nav-pills" [hidden]="!hasBoxImages()">
-            @for(box of hsLayerManagerService.data.box_layers; track $index){
-            <div class="col-xs-2 col-md-2 list-group-item-primary" style="padding-right: 2px; padding-left: 2px;">
-                <a [ngClass]="{ 'thumbnail': true, 'alert-info': getActive(box)}" [title]="getTitle(box)"
-                    (click)="activateTheme(box)">
-                    <!-- TODO: Remove function call from template -->
-                    <img [src]="box.thumbnail" [alt]="getTitle(box)"><!-- TODO: Remove function call from template -->
-                </a>
-            </div>
-            }
-        </div>
         <div><input #filterInput type="text" class="form-control hs-filter"
                 [placeholder]="'COMMON.filter' | translateHs" name="hs-layermanager-layer-filter">
         </div>

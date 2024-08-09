@@ -817,7 +817,7 @@ export class HsMapService {
   }
 
   /**
-   * Add all layers from app config (box_layers and default_layers) to the map.
+   * Add all layers from app config (default_layers) to the map.
    * Only layers specified in visibilityOverrides parameter will get instantly visible.
    * @public
    * @param visibilityOverrides - Override the visibility using an array layer titles, which
@@ -825,18 +825,6 @@ export class HsMapService {
    */
   repopulateLayers(visibilityOverrides: string[]): void {
     try {
-      if (this.hsConfig.box_layers) {
-        let boxLayers: Layer[] = [];
-        this.hsConfig.box_layers.forEach((box) => {
-          boxLayers = boxLayers.concat(
-            (box.getLayers().getArray() as Layer<Source>[]).filter(
-              (layer) => layer,
-            ),
-          );
-        });
-        this.addLayersFromAppConfig(boxLayers, visibilityOverrides);
-      }
-
       if (this.hsConfig.default_layers) {
         const defaultLayers: Layer[] = this.hsConfig.default_layers.filter(
           (lyr) => lyr,
@@ -853,7 +841,7 @@ export class HsMapService {
   }
 
   /**
-   * Add layers from app config (box_layers and default_layers)
+   * Add layers from app config - default_layers
    * While adding check if hs-composition URL param or defaultComposition is set, if so, filter config's layers by removable property
    * If permalink URL param is set, do not add any of config's layers.
    * @public
