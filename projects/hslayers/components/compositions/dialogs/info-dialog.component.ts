@@ -10,7 +10,22 @@ import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
 })
 export class HsCompositionsInfoDialogComponent implements HsDialogComponent {
   viewRef: ViewRef;
-  data: {[key: string]: any};
+  data: {
+    info: {
+      title: string;
+      abstract: string;
+      metadata?: {
+        [key: string]: any;
+      };
+      contactAddress?: {
+        [key: string]: any;
+      };
+      contactPersonPrimary?: {
+        [key: string]: any;
+      };
+      [key: string]: any;
+    };
+  };
   constructor(
     public HsDialogContainerService: HsDialogContainerService,
     public HsCompositionsService: HsCompositionsService,
