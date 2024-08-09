@@ -180,7 +180,7 @@
             style="cursor: pointer;" [ngClass]="{'hs-endpoint-item-active' : composition.highlighted}"
             (mouseover)="highlightComposition(composition, true)"
             (mouseleave)="highlightComposition(composition, false)" (click)="compositionClicked(composition)"
-            data-container="body" data-placement="bottom" [attr.title]="composition.mdAbstract">
+            data-container="body" data-placement="bottom" [attr.title]="composition.abstract">
             <hs-compositions-list-item [composition]="composition" [selectedCompId]="selectedCompId">
             </hs-compositions-list-item>
           </li>
