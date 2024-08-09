@@ -106,10 +106,6 @@ export class HsInfoComponent
     this.end.complete();
   }
 
-  trackByFn(index: number): number {
-    return index; // or item.id
-  }
-
   /**
    * Test if composition is loaded, to change info template.
    * @returns Returns true if composition title available
