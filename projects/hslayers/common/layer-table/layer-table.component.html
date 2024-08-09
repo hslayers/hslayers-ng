@@ -7,10 +7,7 @@
       <!-- <th style="width:30%">{{'COMMON.name' | translateHs }}</th> -->
       <th>{{ "COMMON.abstract" | translateHs }}</th>
     </thead>
-    @for (
-    layer of data.layers | slice: 0 : limitShown;
-    track layer.Name
-    ) {
+    @for ( layer of data.layers | slice: 0 : limitShown; track layer.Name ) {
     <tbody>
       <tr>
         <td [attr.rowspan]="layer.Style?.length ? 3 : 2" [ngClass]="{ 'align-middle': !layer.Layer }">
@@ -71,10 +68,7 @@
         }
       </div>
     </thead>
-    @for (
-    service of data.services;
-    track service.id
-    ) {
+    @for ( service of data.services; track service.id ) {
     <tbody>
       <tr>
         <td>
@@ -89,10 +83,7 @@
       </tr>
     </tbody>
     }
-    @for (
-    layer of data.layers;
-    track layer[data.table.trackBy]
-    ) {
+    @for ( layer of data.layers; track layer[data.table.trackBy] ) {
     <tbody>
       <tr>
         <td>
@@ -122,9 +113,7 @@
             </div>
           </div>
           }
-          @if (
-          layer.featureCount > 1000 && layer.checked && type === "wfs"
-          ) {
+          @if ( layer.featureCount > 1000 && layer.checked && type === "wfs" ) {
           <div class="alert alert-primary d-flex m-1" role="alert">
             <div class="w-100">
               <p class="mb-0" style="white-space: normal" [hidden]="!layer.limitFeatureCount">

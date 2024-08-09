@@ -1,14 +1,16 @@
-<div *ngIf="isVisible$ | async" class="card hs-main-panel" [ngClass]="panelWidthClass">
-  <!-- Empty string as a translationModule to overwrite default PANEL_HEADER to satisfy translationOverrides definition
-  Another possibility would be to define panelName using PANEL_HEADER obj in config -->
-  <hs-panel-header name="custom" [panelTabs]="'My Cool Panel'" [translationModule]="''">
-  </hs-panel-header>
-  <div class="card-body">
-    <div class="mx-3 my-2">
-      Lorem, ipsum dolor sit amet consectetur adipisicing elit.
-      Novum Eboracum est et urbs et civitas.
-      Fortasse psittaci ebrii non sunt animalia pessima.
-      Illos non interficimus.
+@if(isVisible$ | async){
+  <div  class="card hs-main-panel" [ngClass]="panelWidthClass">
+    <!-- Empty string as a translationModule to overwrite default PANEL_HEADER to satisfy translationOverrides definition
+    Another possibility would be to define panelName using PANEL_HEADER obj in config -->
+    <hs-panel-header name="custom" [panelTabs]="'My Cool Panel'" [translationModule]="''">
+    </hs-panel-header>
+    <div class="card-body">
+      <div class="mx-3 my-2">
+        Lorem, ipsum dolor sit amet consectetur adipisicing elit.
+        Novum Eboracum est et urbs et civitas.
+        Fortasse psittaci ebrii non sunt animalia pessima.
+        Illos non interficimus.
+      </div>
     </div>
   </div>
-</div>
+}
