@@ -1,5 +1,5 @@
 import {AfterContentInit, Component, Input} from '@angular/core';
-import {CommonModule} from '@angular/common';
+
 import {FormsModule} from '@angular/forms';
 
 import {AddDataUrlType, UrlDataObject} from 'hslayers-ng/types';
@@ -15,6 +15,7 @@ import {HsNestedLayersTableComponent} from './nested-layers-table/nested-layers-
 import {HsUrlTypeServiceModel, Service} from 'hslayers-ng/types';
 import {HsUrlWmsService} from 'hslayers-ng/services/add-data';
 import {HsUtilsService} from 'hslayers-ng/services/utils';
+import {NgClass, SlicePipe} from '@angular/common';
 import {TrackByPropertyPipe} from 'hslayers-ng/common/pipes';
 
 @Component({
@@ -24,7 +25,8 @@ import {TrackByPropertyPipe} from 'hslayers-ng/common/pipes';
   imports: [
     TranslateCustomPipe,
     FormsModule,
-    CommonModule,
+    SlicePipe,
+    NgClass,
     TrackByPropertyPipe,
     HsNestedLayersTableComponent,
   ],

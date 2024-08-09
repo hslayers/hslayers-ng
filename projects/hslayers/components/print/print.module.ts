@@ -1,4 +1,4 @@
-import {AsyncPipe, NgClass, NgIf} from '@angular/common';
+import {AsyncPipe, NgClass} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {NgModule} from '@angular/core';
 
@@ -16,7 +16,6 @@ import {TranslateCustomPipe} from 'hslayers-ng/services/language';
     HsPrintLegendStylerComponent,
     HsPrintTextStylerComponent,
     HsPrintScaleStylerComponent,
-    NgIf,
     NgClass,
     AsyncPipe,
     FormsModule,
