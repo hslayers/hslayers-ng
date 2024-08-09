@@ -1,5 +1,6 @@
 export class SenslogSensor {
   phenomenon_name: string;
+  phenomenon_name_translated?: string;
   sensor_id: string | number;
   sensor_name: string;
   sensor_type: string;
