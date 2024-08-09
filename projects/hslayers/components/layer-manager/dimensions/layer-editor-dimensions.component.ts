@@ -2,7 +2,6 @@ import {Component, OnChanges, OnDestroy, OnInit} from '@angular/core';
 import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 
-import {Dimension} from 'hslayers-ng/types';
 import {HsDimensionDescriptor} from 'hslayers-ng/common/dimensions';
 import {HsDimensionService} from 'hslayers-ng/services/get-capabilities';
 import {HsDimensionTimeService} from 'hslayers-ng/services/get-capabilities';
@@ -76,7 +75,7 @@ export class HsLayerEditorDimensionsComponent
     }
   }
 
-  dimensionIsTime(dimension: Dimension): boolean {
+  dimensionIsTime(dimension: HsDimensionDescriptor): boolean {
     const dimensions = getDimensions(this.olLayer);
     const type = Object.keys(dimensions).find(
       (key) => dimensions[key] === dimension,
