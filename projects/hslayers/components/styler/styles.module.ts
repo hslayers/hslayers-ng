@@ -49,7 +49,6 @@ import {TranslateCustomPipe} from 'hslayers-ng/services/language';
     HsSliderComponent,
     HsFiltersComponent,
     HsFilterComponent,
-    HsComparisonFilterComponent,
     HsAddFilterButtonComponent,
     HsScaleDenominatorComponent,
     HsSelectIconDialogComponent,
@@ -71,6 +70,7 @@ import {TranslateCustomPipe} from 'hslayers-ng/services/language';
     DragDropModule,
     HsColormapPickerModule,
     HsPanelHeaderComponent,
+    HsComparisonFilterComponent,
   ],
   exports: [
     HsStylerComponent,
