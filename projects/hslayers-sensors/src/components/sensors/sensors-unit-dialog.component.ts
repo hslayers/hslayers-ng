@@ -2,12 +2,10 @@ import {
   ChangeDetectorRef,
   Component,
   ElementRef,
-  OnDestroy,
   OnInit,
-  Signal,
   ViewRef,
 } from '@angular/core';
-import {Subject, combineLatest, map, startWith, takeUntil} from 'rxjs';
+import {combineLatest, map, startWith} from 'rxjs';
 
 import {
   HsDialogComponent,
@@ -40,8 +38,7 @@ import {takeUntilDestroyed, toSignal} from '@angular/core/rxjs-interop';
     }
   `,
 })
-export class HsSensorsUnitDialogComponent
-  implements HsDialogComponent, OnInit, OnDestroy {
+export class HsSensorsUnitDialogComponent implements HsDialogComponent, OnInit {
   customInterval: CustomInterval = {
     name: 'Custom',
     fromTime: new Date(),
@@ -54,7 +51,6 @@ export class HsSensorsUnitDialogComponent
       this.hsLayoutService.panelSpaceWidth,
       this.hsLayoutService.sidebarPosition,
     ]).pipe(
-      takeUntilDestroyed(),
       map(([panelSpace, sidebar]) => {
         return this.calculateDialogStyle(panelSpace, sidebar == 'bottom');
       }),
@@ -66,10 +62,10 @@ export class HsSensorsUnitDialogComponent
         'background-color': 'transparent',
         'pointer-events': 'none',
       }),
+      takeUntilDestroyed(),
     ),
   );
 
-  private end = new Subject<void>();
   viewRef: ViewRef;
   data: any;
 
@@ -195,10 +191,5 @@ export class HsSensorsUnitDialogComponent
     return this.hsSensorsUnitDialogService.unit
       .map((u) => u.description)
       .join(', ');
-  }
-
-  ngOnDestroy(): void {
-    this.end.next();
-    this.end.complete();
   }
 }

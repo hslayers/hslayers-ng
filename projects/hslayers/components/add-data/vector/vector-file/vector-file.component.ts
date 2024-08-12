@@ -1,13 +1,13 @@
 import {
   AfterViewInit,
   Component,
+  DestroyRef,
   ElementRef,
   Input,
-  OnDestroy,
   OnInit,
   ViewChild,
+  inject,
 } from '@angular/core';
-import {Subject, takeUntil} from 'rxjs';
 
 import {Cluster} from 'ol/source';
 import {Feature} from 'ol';
@@ -32,14 +32,13 @@ import {HsUploadComponent, HsUploadedFiles} from 'hslayers-ng/common/upload';
 import {HsUtilsService} from 'hslayers-ng/services/utils';
 import {VectorFileDataType} from '../../common/advanced-options/advanced-options.component';
 import {getShowInLayerManager} from 'hslayers-ng/common/extensions';
+import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'hs-file-vector',
   templateUrl: 'vector-file.component.html',
 })
-export class HsAddDataVectorFileComponent
-  implements OnInit, AfterViewInit, OnDestroy
-{
+export class HsAddDataVectorFileComponent implements OnInit, AfterViewInit {
   @Input() fileType: 'geojson' | 'kml' | 'gpx';
 
   @ViewChild(HsUploadComponent) hsUploadComponent: HsUploadComponent;
@@ -52,7 +51,7 @@ export class HsAddDataVectorFileComponent
     'access_rights.write': 'private',
     'access_rights.read': 'EVERYONE',
   };
-  private end = new Subject<void>();
+  private destroyRef = inject(DestroyRef);
 
   constructor(
     private hsAddDataVectorService: HsAddDataVectorService,
@@ -73,15 +72,10 @@ export class HsAddDataVectorFileComponent
     this.fileInput = this.hsUploadComponent.getFileInput();
   }
 
-  ngOnDestroy(): void {
-    this.end.next();
-    this.end.complete();
-  }
-
   ngOnInit(): void {
     this.app = this.hsConfig.id;
     this.hsAddDataCommonFileService.dataObjectChanged
-      .pipe(takeUntil(this.end))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((data) => {
         this.data.showDetails = true;
         Object.assign(this.data, data);
@@ -179,21 +173,16 @@ export class HsAddDataVectorFileComponent
           ? (this.data.base64url = uploadedData.url)
           : ((this.data.url = undefined), (this.data.base64url = undefined));
 
-        uploadedData.name !== undefined
-          ? (this.data.name = uploadedData.name)
-          : (this.data.name = '');
-
-        uploadedData.title !== undefined
-          ? (this.data.title = uploadedData.title)
-          : (this.data.title = '');
-
-        uploadedData.srs !== undefined
-          ? (this.data.srs = uploadedData.srs.getCode())
-          : (this.data.srs = 'EPSG:4326');
-
-        uploadedData.abstract !== undefined
-          ? (this.data.abstract = uploadedData.abstract)
-          : (this.data.abstract = '');
+        this.data.name =
+          uploadedData.name !== undefined ? uploadedData.name : '';
+        this.data.title =
+          uploadedData.title !== undefined ? uploadedData.title : '';
+        this.data.srs =
+          uploadedData.srs !== undefined
+            ? uploadedData.srs.getCode()
+            : 'EPSG:4326';
+        this.data.abstract =
+          uploadedData.abstract !== undefined ? uploadedData.abstract : '';
 
         if (uploadedData.features !== undefined) {
           this.data.features = uploadedData.features;

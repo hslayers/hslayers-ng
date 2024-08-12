@@ -1,16 +1,15 @@
 import {
   Component,
+  DestroyRef,
   ElementRef,
   Input,
-  OnDestroy,
   OnInit,
   ViewChild,
+  inject,
 } from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {NgbAccordionDirective} from '@ng-bootstrap/ng-bootstrap';
-
-import {Subject} from 'rxjs';
-import {takeUntil} from 'rxjs/operators';
+import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 
 import {FileDataObject} from 'hslayers-ng/types';
 import {FileDescriptor} from 'hslayers-ng/types';
@@ -22,13 +21,13 @@ import {HsToastService} from 'hslayers-ng/common/toast';
   templateUrl: './raster-timeseries.component.html',
   styleUrls: ['./raster-timeseries.component.scss'],
 })
-export class RasterTimeseriesComponent implements OnInit, OnDestroy {
+export class RasterTimeseriesComponent implements OnInit {
   @Input() data: FileDataObject;
 
   @ViewChild('acc') accordion: NgbAccordionDirective;
   @ViewChild('hsTimeseriesTitle') fileTitleInput: ElementRef<HTMLInputElement>;
 
-  private end = new Subject<void>();
+  private destroyRef = inject(DestroyRef);
 
   form: FormGroup;
   formVisible = false;
@@ -61,18 +60,13 @@ export class RasterTimeseriesComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnDestroy(): void {
-    this.end.next();
-    this.end.complete();
-  }
-
   ngOnInit() {
     this.tsData = this.data.files[0];
 
     this.getFileTitle(this.tsData.content);
 
     this.hsAddDataCommonFileService.dataObjectChanged
-      .pipe(takeUntil(this.end))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((data) => {
         if (data.files) {
           this.resetForm();

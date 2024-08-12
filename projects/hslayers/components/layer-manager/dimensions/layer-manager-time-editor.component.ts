@@ -1,7 +1,12 @@
-import {Component, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
-
-import {Subject} from 'rxjs';
-import {takeUntil} from 'rxjs/operators';
+import {
+  Component,
+  DestroyRef,
+  Input,
+  OnInit,
+  ViewChild,
+  inject,
+} from '@angular/core';
+import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 
 import {HsConfig} from 'hslayers-ng/config';
 import {HsDimensionTimeService} from 'hslayers-ng/services/get-capabilities';
@@ -13,7 +18,7 @@ import {HsLayoutService} from 'hslayers-ng/services/layout';
   selector: 'hs-layer-manager-time-editor',
   templateUrl: 'layer-manager-time-editor.component.html',
 })
-export class HsLayerManagerTimeEditorComponent implements OnInit, OnDestroy {
+export class HsLayerManagerTimeEditorComponent implements OnInit {
   @Input() layer: HsLayerDescriptor;
 
   availableTimes: Array<string>;
@@ -29,7 +34,7 @@ export class HsLayerManagerTimeEditorComponent implements OnInit, OnDestroy {
   selectVisible: boolean;
   timeDisplayFormat = 'yyyy-MM-dd HH:mm:ss z';
   timesInSync: boolean;
-  private end = new Subject<void>();
+  private destroyRef = inject(DestroyRef);
 
   constructor(
     public hsEventBusService: HsEventBusService,
@@ -38,7 +43,7 @@ export class HsLayerManagerTimeEditorComponent implements OnInit, OnDestroy {
     public hsConfig: HsConfig,
   ) {
     this.hsDimensionTimeService.layerTimeChanges
-      .pipe(takeUntil(this.end))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(({layer: layerDescriptor, time}) => {
         if (this.layer.uid !== layerDescriptor.uid) {
           return;
@@ -50,7 +55,7 @@ export class HsLayerManagerTimeEditorComponent implements OnInit, OnDestroy {
       });
 
     this.hsEventBusService.layerTimeSynchronizations
-      .pipe(takeUntil(this.end))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(({sync, time}) => {
         this.timesInSync = sync;
         if (sync) {
@@ -69,12 +74,6 @@ export class HsLayerManagerTimeEditorComponent implements OnInit, OnDestroy {
     if (this.layer.time) {
       this.fillAvailableTimes(this.layer, undefined);
     }
-  }
-
-  ngOnDestroy(): void {
-    this.end.next();
-    this.end.complete();
-    this.availableTimes = [];
   }
 
   /**

@@ -1,5 +1,6 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {Observable, Subject, delay, map, startWith, takeUntil} from 'rxjs';
+import {Component, DestroyRef, OnInit, inject} from '@angular/core';
+import {Observable, delay, map, startWith} from 'rxjs';
+import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 
 import {HsButton} from 'hslayers-ng/types';
 import {HsConfig} from 'hslayers-ng/config';
@@ -11,10 +12,11 @@ import {HsSidebarService} from 'hslayers-ng/services/sidebar';
   selector: 'hs-mini-sidebar',
   templateUrl: './sidebar.component.html',
 })
-export class HsMiniSidebarComponent implements OnInit, OnDestroy {
+export class HsMiniSidebarComponent implements OnInit {
   buttons: HsButton[] = [];
   miniSidebarButton: {title: string};
-  end = new Subject<void>();
+  private destroyRef = inject(DestroyRef);
+
   isVisible: Observable<boolean>;
 
   constructor(
@@ -26,7 +28,7 @@ export class HsMiniSidebarComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.HsSidebarService.buttons
-      .pipe(takeUntil(this.end))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .pipe(startWith([]), delay(0))
       .subscribe((buttons) => {
         this.buttons = this.HsSidebarService.prepareForTemplate(buttons);
@@ -40,11 +42,6 @@ export class HsMiniSidebarComponent implements OnInit, OnDestroy {
         return which == 'sidebar';
       }),
     );
-  }
-
-  ngOnDestroy(): void {
-    this.end.next();
-    this.end.complete();
   }
 
   /**

@@ -1,16 +1,16 @@
 import {
   AfterViewInit,
   Component,
+  DestroyRef,
   ElementRef,
-  OnDestroy,
   OnInit,
   ViewChild,
+  inject,
 } from '@angular/core';
+import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 
 import {Layer} from 'ol/layer';
 import {Source} from 'ol/source';
-import {Subject} from 'rxjs';
-import {takeUntil} from 'rxjs/operators';
 
 import {AddDataFileType} from 'hslayers-ng/types';
 import {FileDataObject} from 'hslayers-ng/types';
@@ -24,15 +24,14 @@ import {HsUploadComponent} from 'hslayers-ng/common/upload';
 @Component({
   template: '<div></div>',
 })
-export class HsAddDataFileBaseComponent
-  implements OnInit, AfterViewInit, OnDestroy
-{
+export class HsAddDataFileBaseComponent implements OnInit, AfterViewInit {
   app: string;
   data: FileDataObject;
   fileInput: ElementRef;
   acceptedFormats: string;
   baseFileType: AddDataFileType;
-  private end = new Subject<void>();
+  private destroyRef = inject(DestroyRef);
+
   @ViewChild(HsUploadComponent) hsUploadComponent: HsUploadComponent;
   constructor(
     public hsAddDataCommonService: HsAddDataCommonService,
@@ -56,7 +55,7 @@ export class HsAddDataFileBaseComponent
   ngOnInit(): void {
     this.app = this.hsConfig.id;
     this.hsAddDataCommonFileService.dataObjectChanged
-      .pipe(takeUntil(this.end))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((data) => {
         this.hsAddDataCommonService.showDetails = true;
         Object.assign(this.data, data);
@@ -64,7 +63,7 @@ export class HsAddDataFileBaseComponent
       });
 
     this.hsAddDataCommonFileService.layerAddedAsService
-      .pipe(takeUntil(this.end))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((success) => {
         if (success) {
           this.hsLayoutService.setMainPanel('layerManager');
@@ -103,10 +102,5 @@ export class HsAddDataFileBaseComponent
     };
     this.hsAddDataCommonFileService.clearParams();
     this.hsAddDataCommonService.clearParams();
-  }
-
-  ngOnDestroy(): void {
-    this.end.next();
-    this.end.complete();
   }
 }

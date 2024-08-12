@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 import {HttpClient} from '@angular/common/http';
 import {Inject, Injectable, Optional, inject} from '@angular/core';
-import {Subject, concatMap, map, take} from 'rxjs';
+import {Subject, concatMap, debounceTime, map, take} from 'rxjs';
 
 import {HsConfig} from 'hslayers-ng/config';
 import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
@@ -82,32 +82,27 @@ export class HsSensorsService {
         });
         this.setEndpoint();
 
-        this.hsEventBusService.vectorQueryFeatureSelection.subscribe(
-          (event) => {
-            this.hsUtilsService.debounce(
-              () => {
-                if (
-                  this.hsMapService.getLayerForFeature(event.feature) ==
-                  this.layer
-                ) {
-                  this.hsLayoutService.setMainPanel('sensors');
-                  this.units.forEach(
-                    (unit: HsSensorUnit) => (unit.expanded = false),
-                  );
-                  this.selectUnit(
-                    this.units.filter(
-                      (unit: HsSensorUnit) =>
-                        unit.unit_id == getUnitId(event.feature),
-                    )[0],
-                  );
-                }
-              },
-              150,
-              false,
-              this,
-            )();
-          },
-        );
+        this.hsEventBusService.vectorQueryFeatureSelection
+          .pipe(debounceTime(150))
+          .subscribe({
+            next: (event) => {
+              if (
+                this.hsMapService.getLayerForFeature(event.feature) ==
+                this.layer
+              ) {
+                this.hsLayoutService.setMainPanel('sensors');
+                this.units.forEach(
+                  (unit: HsSensorUnit) => (unit.expanded = false),
+                );
+                this.selectUnit(
+                  this.units.filter(
+                    (unit: HsSensorUnit) =>
+                      unit.unit_id == getUnitId(event.feature),
+                  )[0],
+                );
+              }
+            },
+          });
       },
     );
   }

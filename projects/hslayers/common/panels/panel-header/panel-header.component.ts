@@ -1,24 +1,26 @@
 import {AsyncPipe, NgClass} from '@angular/common';
 
-import {BehaviorSubject, Subject} from 'rxjs';
+import {BehaviorSubject} from 'rxjs';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  DestroyRef,
   ElementRef,
   EventEmitter,
   Input,
-  OnDestroy,
   OnInit,
   Output,
   ViewChild,
+  inject,
 } from '@angular/core';
 import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
-import {takeUntil, tap} from 'rxjs/operators';
+import {tap} from 'rxjs/operators';
 
 import {HsLanguageService} from 'hslayers-ng/services/language';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {TranslateCustomPipe} from 'hslayers-ng/services/language';
+import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 
 export function toArray(panels: string) {
   return panels.split(',');
@@ -32,11 +34,11 @@ export function toArray(panels: string) {
   changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrl: './panel-header.component.scss',
 })
-export class HsPanelHeaderComponent implements OnDestroy, OnInit {
+export class HsPanelHeaderComponent implements OnInit {
   @ViewChild('extraButtonsContainer', {static: true})
   extraButtons: ElementRef;
   active: string;
-  private end = new Subject<void>();
+  private destroyRef = inject(DestroyRef);
 
   @Input() name: string;
   /**
@@ -57,11 +59,6 @@ export class HsPanelHeaderComponent implements OnDestroy, OnInit {
     private cdr: ChangeDetectorRef,
   ) {}
 
-  ngOnDestroy(): void {
-    this.end.next();
-    this.end.complete();
-  }
-
   ngOnInit() {
     if (!this.selectedTab$) {
       this.selectedTab$ = new BehaviorSubject(this.panelTabs[0]);
@@ -69,10 +66,10 @@ export class HsPanelHeaderComponent implements OnDestroy, OnInit {
     this.hsLanguageService
       .getTranslator()
       .onLangChange.pipe(
-        takeUntil(this.end),
         tap(() => {
           this.cdr.markForCheck();
         }),
+        takeUntilDestroyed(this.destroyRef),
       )
       // eslint-disable-next-line @typescript-eslint/no-empty-function
       .subscribe(() => {});

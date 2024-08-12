@@ -1,7 +1,7 @@
-import {Component, OnDestroy} from '@angular/core';
+import {Component, DestroyRef, inject} from '@angular/core';
 import {Feature} from 'ol';
 import {Geometry} from 'ol/geom';
-import {Subject, takeUntil} from 'rxjs';
+import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsSearchService} from './search.service';
@@ -14,30 +14,26 @@ import {setHighlighted} from 'hslayers-ng/common/extensions';
   selector: 'hs-search-results',
   templateUrl: './search-results.component.html',
 })
-export class HsSearchResultsComponent implements OnDestroy {
+export class HsSearchResultsComponent {
   searchResultsVisible: boolean;
   fcode_zoom_map: any;
-  private end = new Subject<void>();
+  private destroyRef = inject(DestroyRef);
+
   constructor(
     private hsEventBusService: HsEventBusService,
     public hsSearchService: HsSearchService,
   ) {
     this.hsEventBusService.searchResultsReceived
-      .pipe(takeUntil(this.end))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(() => {
         this.searchResultsReceived();
       });
 
     this.hsEventBusService.clearSearchResults
-      .pipe(takeUntil(this.end))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(() => {
         this.clear();
       });
-  }
-
-  ngOnDestroy(): void {
-    this.end.next();
-    this.end.complete();
   }
 
   /**

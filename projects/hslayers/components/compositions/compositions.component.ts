@@ -1,5 +1,5 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {Subject, takeUntil} from 'rxjs';
+import {Component, OnInit} from '@angular/core';
+import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 
 import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
 import {HsCompositionsCatalogueService} from './compositions-catalogue.service';
@@ -19,10 +19,8 @@ import {HsPanelBaseComponent} from 'hslayers-ng/common/panels';
 })
 export class HsCompositionsComponent
   extends HsPanelBaseComponent
-  implements OnDestroy, OnInit
+  implements OnInit
 {
-  private end = new Subject<void>();
-
   keywordsVisible = false;
   themesVisible = false;
   urlToAdd = '';
@@ -50,7 +48,7 @@ export class HsCompositionsComponent
     this.loadFilteredCompositions = () =>
       this.hsCompositionsCatalogueService.loadFilteredCompositions();
     this.hsCompositionsService.notSavedOrEditedCompositionLoading
-      .pipe(takeUntil(this.end))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(({url, record}) => {
         this.hsCompositionsService.compositionToLoad = {
           url,
@@ -59,11 +57,6 @@ export class HsCompositionsComponent
         this.loadUnsavedDialogBootstrap(record);
       });
     super.ngOnInit();
-  }
-
-  ngOnDestroy(): void {
-    this.end.next();
-    this.end.complete();
   }
 
   /**

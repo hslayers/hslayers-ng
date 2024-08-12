@@ -1,6 +1,7 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, DestroyRef, OnDestroy, OnInit, inject} from '@angular/core';
+import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 
-import {Subject, Subscription, debounceTime, takeUntil} from 'rxjs';
+import {Subscription, debounceTime} from 'rxjs';
 
 import {HS_PRMS} from 'hslayers-ng/services/share';
 import {HsButton} from 'hslayers-ng/types';
@@ -19,7 +20,8 @@ export class HsSidebarComponent implements OnInit, OnDestroy {
 
   buttons: HsButton[] = [];
   miniSidebarButton: {title: string};
-  private end = new Subject<void>();
+  private destroyRef = inject(DestroyRef);
+
   sidebarPosition: string;
   constructor(
     public HsLayoutService: HsLayoutService,
@@ -30,15 +32,13 @@ export class HsSidebarComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnDestroy(): void {
-    this.end.next();
-    this.end.complete();
     this.HsSidebarService.destroy();
   }
 
   ngOnInit(): void {
     const panel = this.HsShareUrlService.getParamValue(HS_PRMS.panel);
     this.HsSidebarService.buttons
-      .pipe(debounceTime(500), takeUntil(this.end))
+      .pipe(debounceTime(500), takeUntilDestroyed(this.destroyRef))
       .subscribe((buttons) => {
         this.buttons = this.HsSidebarService.prepareForTemplate(buttons);
         this.HsSidebarService.setPanelState(this.buttons);
@@ -56,13 +56,15 @@ export class HsSidebarComponent implements OnInit, OnDestroy {
       });
     }
     this.HsEventBusService.layoutResizes
-      .pipe(takeUntil(this.end))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(() => {
         this.HsSidebarService.setButtonVisibility(this.buttons);
       });
-    this.HsConfig.configChanges.pipe(takeUntil(this.end)).subscribe(() => {
-      this.refreshButtons();
-    });
+    this.HsConfig.configChanges
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(() => {
+        this.refreshButtons();
+      });
     this.HsSidebarService.sidebarLoad.next();
   }
 

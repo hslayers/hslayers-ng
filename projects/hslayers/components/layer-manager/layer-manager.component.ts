@@ -2,21 +2,13 @@ import {
   AfterViewInit,
   Component,
   ElementRef,
-  OnDestroy,
   OnInit,
   ViewChild,
 } from '@angular/core';
+import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 
 import {Layer} from 'ol/layer';
-import {
-  Observable,
-  Subject,
-  fromEvent,
-  merge,
-  of,
-  throwError,
-  timer,
-} from 'rxjs';
+import {Observable, fromEvent, merge, of, throwError, timer} from 'rxjs';
 import {Source} from 'ol/source';
 import {
   catchError,
@@ -30,7 +22,6 @@ import {
   startWith,
   switchMap,
   take,
-  takeUntil,
 } from 'rxjs/operators';
 
 import {
@@ -66,7 +57,7 @@ import {
 })
 export class HsLayerManagerComponent
   extends HsPanelBaseComponent
-  implements OnInit, OnDestroy, AfterViewInit
+  implements OnInit, AfterViewInit
 {
   layerEditorRef: ElementRef;
   @ViewChild('layerEditor', {static: false, read: ElementRef}) set content(
@@ -146,7 +137,6 @@ export class HsLayerManagerComponent
   name = 'layerManager';
   layerTooltipDelay = 0;
 
-  private end = new Subject<void>();
   constructor(
     public hsCore: HslayersService,
     public hsUtilsService: HsUtilsService,
@@ -171,7 +161,7 @@ export class HsLayerManagerComponent
     ).pipe(startWith(false));
 
     this.hsEventBusService.layerRemovals
-      .pipe(takeUntil(this.end))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((layer) => {
         if (
           this.hsLayerSelectorService?.currentLayer?.layer == layer &&
@@ -189,7 +179,7 @@ export class HsLayerManagerComponent
       });
 
     this.hsEventBusService.compositionLoads
-      .pipe(takeUntil(this.end))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((data) => {
         if (data.error == undefined) {
           if (data.data != undefined && data.data.id != undefined) {
@@ -203,16 +193,18 @@ export class HsLayerManagerComponent
       });
 
     this.hsEventBusService.compositionDeletes
-      .pipe(takeUntil(this.end))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((composition) => {
         if (composition.id == this.composition_id) {
           this.composition_id = null;
         }
       });
 
-    this.hsEventBusService.mapResets.pipe(takeUntil(this.end)).subscribe(() => {
-      this.composition_id = null;
-    });
+    this.hsEventBusService.mapResets
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(() => {
+        this.composition_id = null;
+      });
   }
 
   /**
@@ -311,11 +303,6 @@ export class HsLayerManagerComponent
     return type === 'baselayers'
       ? of([] as HsBaseLayerDescriptor[])
       : of([] as HsTerrainLayerDescriptor[]);
-  }
-
-  ngOnDestroy(): void {
-    this.end.next();
-    this.end.complete();
   }
 
   ngOnInit(): void {

@@ -1,7 +1,8 @@
+import {DestroyRef, Injectable, NgZone, inject} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {Injectable, NgZone} from '@angular/core';
 import {Location, PlatformLocation} from '@angular/common';
-import {Subject, lastValueFrom, takeUntil} from 'rxjs';
+import {Subject, debounceTime, fromEvent, lastValueFrom} from 'rxjs';
+import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 
 import {transformExtent} from 'ol/proj';
 
@@ -32,8 +33,8 @@ export class HsShareUrlService {
   statusSaving = false;
   data: MapComposition;
 
-  private end = new Subject<void>();
   public browserUrlUpdated: Subject<string> = new Subject();
+  private destroyRef = inject(DestroyRef);
 
   constructor(
     public hsMapService: HsMapService,
@@ -51,42 +52,35 @@ export class HsShareUrlService {
     this.hsMapService.loaded().then((map) => {
       if (this.url_generation) {
         //FIXME : always true
-        let timer = null;
         this.HsEventBusService.mapExtentChanges
-          .pipe(takeUntil(this.end))
-          .subscribe(
-            this.HsUtilsService.debounce(
-              ({map, event, extent}) => {
-                this.zone.run(() => {
-                  if (this.HsLayoutService.mainpanel == 'share') {
-                    this.updatePermalinkComposition();
-                  } else {
-                    this.updateViewParamsInUrl(true);
-                  }
-                });
-              },
-              200,
-              false,
-              this,
-            ),
-          );
+          .pipe(debounceTime(200), takeUntilDestroyed(this.destroyRef))
+          .subscribe({
+            next: () => {
+              this.zone.run(() => {
+                if (this.HsLayoutService.mainpanel == 'share') {
+                  this.updatePermalinkComposition();
+                } else {
+                  this.updateViewParamsInUrl(true);
+                }
+              });
+            },
+          });
+
         map.getLayers().on('add', (e) => {
           const layer = e.element;
           const external = getShowInLayerManager(layer);
           if (external !== null && external == false) {
             return;
           }
-          layer.on('change:visible', (e) => {
-            if (timer !== null) {
-              clearTimeout(timer);
-            }
-            timer = setTimeout(() => {
-              if (!this.end.closed) {
+          fromEvent(layer, 'change:visible')
+            .pipe(debounceTime(1000))
+            .subscribe({
+              next: () => {
                 this.update();
-              }
-            }, 1000);
-          });
+              },
+            });
         });
+
         const lang = this.getParamValue(HS_PRMS.lang);
         if (lang && !this.HsLanguageService.langFromCMS) {
           this.HsLanguageService.setLanguage(lang);

@@ -1,11 +1,10 @@
-import {Component, OnDestroy} from '@angular/core';
+import {Component} from '@angular/core';
 
 import {
   CdkDragDrop,
   moveItemInArray,
   transferArrayItem,
 } from '@angular/cdk/drag-drop';
-import {Subject} from 'rxjs';
 
 import {
   HsLayerShiftingService,
@@ -19,11 +18,7 @@ import {HsPanelBaseComponent} from 'hslayers-ng/common/panels';
   templateUrl: './map-swipe.component.html',
   styleUrls: ['./map-swipe.component.scss'],
 })
-export class HsMapSwipeComponent
-  extends HsPanelBaseComponent
-  implements OnDestroy
-{
-  private end = new Subject<void>();
+export class HsMapSwipeComponent extends HsPanelBaseComponent {
   swipeSide = SwipeSide;
   placeholders = {
     entire: true,
@@ -67,11 +62,6 @@ export class HsMapSwipeComponent
    */
   resetSwipePos(): void {
     this.hsMapSwipeService.swipeCtrl.set('position', 0.5);
-  }
-
-  ngOnDestroy(): void {
-    this.end.next();
-    this.end.complete();
   }
 
   /**

@@ -1,5 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {Subject} from 'rxjs';
+import {Component, OnInit} from '@angular/core';
 
 import {AddDataUrlType} from 'hslayers-ng/types';
 import {AddDataUrlValues} from './add-data-url-values';
@@ -18,9 +17,8 @@ import {SERVICES_SUPPORTED_BY_URL} from 'hslayers-ng/types';
   selector: 'hs-add-data-url',
   templateUrl: './add-data-url.component.html',
 })
-export class HsAddDataUrlComponent implements OnInit, OnDestroy {
+export class HsAddDataUrlComponent implements OnInit {
   types: {id: AddDataUrlType; text: string}[];
-  private end = new Subject<void>();
 
   constructor(
     public hsConfig: HsConfig,
@@ -45,11 +43,6 @@ export class HsAddDataUrlComponent implements OnInit, OnDestroy {
     if (this.hsAddDataUrlService.typeSelected) {
       this.connectServiceFromUrlParam(this.hsAddDataUrlService.typeSelected);
     }
-  }
-
-  ngOnDestroy(): void {
-    this.end.next();
-    this.end.complete();
   }
 
   selectType(type: AddDataUrlType): void {

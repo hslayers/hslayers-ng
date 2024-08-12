@@ -1,7 +1,7 @@
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
-import {Component, OnDestroy} from '@angular/core';
+import {Component} from '@angular/core';
 import {DomSanitizer} from '@angular/platform-browser';
-import {Subject, takeUntil} from 'rxjs';
+import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 
 import colorScales from 'colormap/colorScale';
 import {Feature} from 'ol';
@@ -25,11 +25,8 @@ import {HsUtilsService} from 'hslayers-ng/services/utils';
   templateUrl: './styler.component.html',
   styleUrls: ['./styler.component.scss'],
 })
-export class HsStylerComponent
-  extends HsPanelBaseComponent
-  implements OnDestroy {
+export class HsStylerComponent extends HsPanelBaseComponent {
   layerTitle: string;
-  private end = new Subject<void>();
   uploaderVisible = false;
   downloadData: any;
   name = 'styler';
@@ -45,7 +42,7 @@ export class HsStylerComponent
   ) {
     super();
     this.hsEventBusService.layerSelectedFromUrl
-      .pipe(takeUntil(this.end))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((layer: Layer<Source>) => {
         if (
           layer !== null &&
@@ -57,17 +54,12 @@ export class HsStylerComponent
         }
       });
     this.hsLayoutService.mainpanel$
-      .pipe(takeUntil(this.end))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((which) => {
         if (which == 'styler') {
           this.hsStylerService.fill(this.hsStylerService.layer);
         }
       });
-  }
-
-  ngOnDestroy() {
-    this.end.next();
-    this.end.complete();
   }
 
   async close() {

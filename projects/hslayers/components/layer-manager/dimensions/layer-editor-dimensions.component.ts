@@ -1,6 +1,5 @@
-import {Component, OnChanges, OnDestroy, OnInit} from '@angular/core';
-import {Subject} from 'rxjs';
-import {takeUntil} from 'rxjs/operators';
+import {Component, OnChanges, OnInit} from '@angular/core';
+import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 
 import {HsDimensionDescriptor} from 'hslayers-ng/common/dimensions';
 import {HsDimensionService} from 'hslayers-ng/services/get-capabilities';
@@ -18,11 +17,10 @@ import {getDimensions} from 'hslayers-ng/common/extensions';
 })
 export class HsLayerEditorDimensionsComponent
   extends HsLayerEditorWidgetBaseComponent
-  implements OnDestroy, OnChanges, OnInit
+  implements OnChanges, OnInit
 {
   name = 'dimensions';
   dimensions: Array<HsDimensionDescriptor> = [];
-  private end = new Subject<void>();
 
   constructor(
     public hsDimensionService: HsDimensionService,
@@ -34,20 +32,17 @@ export class HsLayerEditorDimensionsComponent
   ) {
     super(hsLayerSelectorService);
     this.hsEventBusService.layerDimensionDefinitionChanges
-      .pipe(takeUntil(this.end))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((layer) => {
         if (layer == this.olLayer) {
           this.ngOnChanges();
         }
       });
-    this.layerDescriptor.pipe(takeUntil(this.end)).subscribe((descriptor) => {
-      this.ngOnChanges();
-    });
-  }
-
-  ngOnDestroy(): void {
-    this.end.next();
-    this.end.complete();
+    this.layerDescriptor
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((descriptor) => {
+        this.ngOnChanges();
+      });
   }
 
   ngOnChanges(): void {

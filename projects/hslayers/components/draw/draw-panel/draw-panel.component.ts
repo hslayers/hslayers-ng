@@ -1,5 +1,4 @@
-import {Component, OnDestroy} from '@angular/core';
-import {Subject} from 'rxjs';
+import {Component} from '@angular/core';
 
 import {Circle, Fill, Stroke, Style} from 'ol/style';
 
@@ -14,7 +13,7 @@ import {getTitle} from 'hslayers-ng/common/extensions';
   templateUrl: './draw-panel.component.html',
   styleUrls: ['./draw-panel.component.scss'],
 })
-export class DrawPanelComponent implements OnDestroy {
+export class DrawPanelComponent {
   onFeatureSelected: any;
   onFeatureDeselected: any;
   drawToolbarExpanded: any;
@@ -24,7 +23,6 @@ export class DrawPanelComponent implements OnDestroy {
   onlyMineFilterVisible = false;
   getTitle = getTitle;
   sidebarPosition: string;
-  private end = new Subject<void>();
 
   constructor(
     public HsDrawService: HsDrawService,
@@ -32,10 +30,6 @@ export class DrawPanelComponent implements OnDestroy {
     public hsLayoutService: HsLayoutService,
     public HsLanguageService: HsLanguageService,
   ) {}
-  ngOnDestroy(): void {
-    this.end.next();
-    this.end.complete();
-  }
 
   translateString(module: string, text: string): string {
     return this.HsLanguageService.getTranslationIgnoreNonExisting(module, text);
