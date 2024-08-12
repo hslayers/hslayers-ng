@@ -31,7 +31,7 @@ export class HsAddColormapComponent implements OnInit {
   ngOnInit(): void {
     const src = this.layer.getSource();
     const features = src.getFeatures();
-    this.attributes = this.hsLayerUtilsService.listNumericAttributes(features);
+    this.attributes = this.hsLayerUtilsService.listAttributes(features, true);
   }
 
   changeAttrib() {
