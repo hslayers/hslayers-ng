@@ -34,7 +34,7 @@ export class HsInfoComponent extends HsGuiOverlayBaseComponent {
   constructor(private hsEventBusService: HsEventBusService) {
     super();
     this.hsEventBusService.compositionLoads
-      .pipe(takeUntilDestroyed(this.destroyRef))
+      .pipe(takeUntilDestroyed())
       .subscribe((data) => {
         if (data.error !== undefined) {
           const temp_abstract = this.composition_abstract;
@@ -49,7 +49,7 @@ export class HsInfoComponent extends HsGuiOverlayBaseComponent {
       });
 
     this.hsEventBusService.layerLoading
-      .pipe(takeUntilDestroyed(this.destroyRef))
+      .pipe(takeUntilDestroyed())
       .subscribe(({layer, progress}) => {
         if (!this.layer_loading.includes(getTitle(layer))) {
           this.layer_loading.push(getTitle(layer));
@@ -58,7 +58,7 @@ export class HsInfoComponent extends HsGuiOverlayBaseComponent {
       });
 
     this.hsEventBusService.layerLoaded
-      .pipe(takeUntilDestroyed(this.destroyRef))
+      .pipe(takeUntilDestroyed())
       .subscribe((layer) => {
         for (let i = 0; i < this.layer_loading.length; i++) {
           if (this.layer_loading[i] == getTitle(layer)) {
@@ -72,7 +72,7 @@ export class HsInfoComponent extends HsGuiOverlayBaseComponent {
       });
 
     this.hsEventBusService.compositionDeletes
-      .pipe(takeUntilDestroyed(this.destroyRef))
+      .pipe(takeUntilDestroyed())
       .subscribe((composition) => {
         if (composition.id == this.composition_id) {
           delete this.composition_title;
@@ -81,7 +81,7 @@ export class HsInfoComponent extends HsGuiOverlayBaseComponent {
       });
 
     this.hsEventBusService.mapResets
-      .pipe(takeUntilDestroyed(this.destroyRef))
+      .pipe(takeUntilDestroyed())
       .subscribe(() => {
         delete this.composition_title;
         delete this.composition_abstract;
@@ -91,7 +91,7 @@ export class HsInfoComponent extends HsGuiOverlayBaseComponent {
       });
 
     this.hsEventBusService.compositionEdits
-      .pipe(takeUntilDestroyed(this.destroyRef))
+      .pipe(takeUntilDestroyed())
       .subscribe(() => {
         this.composition_edited = true;
       });

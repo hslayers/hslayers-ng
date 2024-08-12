@@ -1,11 +1,4 @@
-import {
-  Component,
-  DestroyRef,
-  Input,
-  OnInit,
-  ViewChild,
-  inject,
-} from '@angular/core';
+import {Component, Input, OnInit, ViewChild} from '@angular/core';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 
 import {HsConfig} from 'hslayers-ng/config';
@@ -34,7 +27,6 @@ export class HsLayerManagerTimeEditorComponent implements OnInit {
   selectVisible: boolean;
   timeDisplayFormat = 'yyyy-MM-dd HH:mm:ss z';
   timesInSync: boolean;
-  private destroyRef = inject(DestroyRef);
 
   constructor(
     public hsEventBusService: HsEventBusService,
@@ -43,7 +35,7 @@ export class HsLayerManagerTimeEditorComponent implements OnInit {
     public hsConfig: HsConfig,
   ) {
     this.hsDimensionTimeService.layerTimeChanges
-      .pipe(takeUntilDestroyed(this.destroyRef))
+      .pipe(takeUntilDestroyed())
       .subscribe(({layer: layerDescriptor, time}) => {
         if (this.layer.uid !== layerDescriptor.uid) {
           return;
@@ -55,7 +47,7 @@ export class HsLayerManagerTimeEditorComponent implements OnInit {
       });
 
     this.hsEventBusService.layerTimeSynchronizations
-      .pipe(takeUntilDestroyed(this.destroyRef))
+      .pipe(takeUntilDestroyed())
       .subscribe(({sync, time}) => {
         this.timesInSync = sync;
         if (sync) {

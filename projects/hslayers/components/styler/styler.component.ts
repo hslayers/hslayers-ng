@@ -42,7 +42,7 @@ export class HsStylerComponent extends HsPanelBaseComponent {
   ) {
     super();
     this.hsEventBusService.layerSelectedFromUrl
-      .pipe(takeUntilDestroyed(this.destroyRef))
+      .pipe(takeUntilDestroyed())
       .subscribe((layer: Layer<Source>) => {
         if (
           layer !== null &&
@@ -54,7 +54,7 @@ export class HsStylerComponent extends HsPanelBaseComponent {
         }
       });
     this.hsLayoutService.mainpanel$
-      .pipe(takeUntilDestroyed(this.destroyRef))
+      .pipe(takeUntilDestroyed())
       .subscribe((which) => {
         if (which == 'styler') {
           this.hsStylerService.fill(this.hsStylerService.layer);

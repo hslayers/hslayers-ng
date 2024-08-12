@@ -32,17 +32,15 @@ export class HsLayerEditorDimensionsComponent
   ) {
     super(hsLayerSelectorService);
     this.hsEventBusService.layerDimensionDefinitionChanges
-      .pipe(takeUntilDestroyed(this.destroyRef))
+      .pipe(takeUntilDestroyed())
       .subscribe((layer) => {
         if (layer == this.olLayer) {
           this.ngOnChanges();
         }
       });
-    this.layerDescriptor
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe((descriptor) => {
-        this.ngOnChanges();
-      });
+    this.layerDescriptor.pipe(takeUntilDestroyed()).subscribe((descriptor) => {
+      this.ngOnChanges();
+    });
   }
 
   ngOnChanges(): void {
