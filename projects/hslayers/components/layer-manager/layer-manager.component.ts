@@ -161,7 +161,7 @@ export class HsLayerManagerComponent
     ).pipe(startWith(false));
 
     this.hsEventBusService.layerRemovals
-      .pipe(takeUntilDestroyed(this.destroyRef))
+      .pipe(takeUntilDestroyed())
       .subscribe((layer) => {
         if (
           this.hsLayerSelectorService?.currentLayer?.layer == layer &&
@@ -179,7 +179,7 @@ export class HsLayerManagerComponent
       });
 
     this.hsEventBusService.compositionLoads
-      .pipe(takeUntilDestroyed(this.destroyRef))
+      .pipe(takeUntilDestroyed())
       .subscribe((data) => {
         if (data.error == undefined) {
           if (data.data != undefined && data.data.id != undefined) {
@@ -193,7 +193,7 @@ export class HsLayerManagerComponent
       });
 
     this.hsEventBusService.compositionDeletes
-      .pipe(takeUntilDestroyed(this.destroyRef))
+      .pipe(takeUntilDestroyed())
       .subscribe((composition) => {
         if (composition.id == this.composition_id) {
           this.composition_id = null;
@@ -201,7 +201,7 @@ export class HsLayerManagerComponent
       });
 
     this.hsEventBusService.mapResets
-      .pipe(takeUntilDestroyed(this.destroyRef))
+      .pipe(takeUntilDestroyed())
       .subscribe(() => {
         this.composition_id = null;
       });

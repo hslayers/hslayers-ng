@@ -1,4 +1,4 @@
-import {Component, DestroyRef, inject} from '@angular/core';
+import {Component} from '@angular/core';
 import {Feature} from 'ol';
 import {Geometry} from 'ol/geom';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
@@ -17,20 +17,19 @@ import {setHighlighted} from 'hslayers-ng/common/extensions';
 export class HsSearchResultsComponent {
   searchResultsVisible: boolean;
   fcode_zoom_map: any;
-  private destroyRef = inject(DestroyRef);
 
   constructor(
     private hsEventBusService: HsEventBusService,
     public hsSearchService: HsSearchService,
   ) {
     this.hsEventBusService.searchResultsReceived
-      .pipe(takeUntilDestroyed(this.destroyRef))
+      .pipe(takeUntilDestroyed())
       .subscribe(() => {
         this.searchResultsReceived();
       });
 
     this.hsEventBusService.clearSearchResults
-      .pipe(takeUntilDestroyed(this.destroyRef))
+      .pipe(takeUntilDestroyed())
       .subscribe(() => {
         this.clear();
       });
