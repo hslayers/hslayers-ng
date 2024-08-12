@@ -1,5 +1,5 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {Observable, Subject, of, switchMap, takeUntil} from 'rxjs';
+import {Component, OnInit} from '@angular/core';
+import {Observable, of, switchMap} from 'rxjs';
 
 import {AddDataUrlType} from 'hslayers-ng/types';
 import {DatasetType} from 'hslayers-ng/types';
@@ -16,16 +16,13 @@ import {HsPanelBaseComponent} from 'hslayers-ng/common/panels';
 import {HsRemoveLayerDialogService} from 'hslayers-ng/common/remove-multiple';
 import {HsShareUrlService} from 'hslayers-ng/services/share';
 import {SERVICES_SUPPORTED_BY_URL} from 'hslayers-ng/types';
+import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'hs-add-data',
   templateUrl: './add-data.component.html',
 })
-export class HsAddDataComponent
-  extends HsPanelBaseComponent
-  implements OnInit, OnDestroy {
-  private end = new Subject<void>();
-
+export class HsAddDataComponent extends HsPanelBaseComponent implements OnInit {
   layersAvailable: Observable<boolean>;
   constructor(
     public hsAddDataService: HsAddDataService,
@@ -50,11 +47,6 @@ export class HsAddDataComponent
     this.hsAddDataService.selectType(type);
   }
 
-  ngOnDestroy(): void {
-    this.end.next();
-    this.end.complete();
-  }
-
   ngOnInit(): void {
     this.selectDatasetType('catalogue');
 
@@ -63,7 +55,7 @@ export class HsAddDataComponent
     );
 
     this.hsAddDataUrlService.addDataCapsParsingError
-      .pipe(takeUntil(this.end))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((e) => {
         let error = e.toString();
         if (error?.includes('Unsuccessful OAuth2')) {

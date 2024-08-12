@@ -1,7 +1,6 @@
-import {Component, OnDestroy} from '@angular/core';
-
-import {Subject} from 'rxjs';
-import {map, takeUntil} from 'rxjs/operators';
+import {Component} from '@angular/core';
+import {map} from 'rxjs/operators';
+import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsGuiOverlayBaseComponent} from 'hslayers-ng/common/panels';
@@ -11,10 +10,7 @@ import {getTitle} from 'hslayers-ng/common/extensions';
   selector: 'hs-info',
   templateUrl: './info.component.html',
 })
-export class HsInfoComponent
-  extends HsGuiOverlayBaseComponent
-  implements OnDestroy
-{
+export class HsInfoComponent extends HsGuiOverlayBaseComponent {
   /**
    * Store if composition is loaded
    */
@@ -29,18 +25,16 @@ export class HsInfoComponent
   info_image: string;
   composition_edited: boolean;
 
-  private end = new Subject<void>();
-
   //Show layer loading only in case layermanager is not the main panel
   showLayerLoading = this.hsLayoutService.mainpanel$.pipe(
-    takeUntil(this.end),
     map((panel) => panel !== 'layerManager'),
+    takeUntilDestroyed(this.destroyRef),
   );
   name = 'info';
   constructor(private hsEventBusService: HsEventBusService) {
     super();
     this.hsEventBusService.compositionLoads
-      .pipe(takeUntil(this.end))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((data) => {
         if (data.error !== undefined) {
           const temp_abstract = this.composition_abstract;
@@ -55,7 +49,7 @@ export class HsInfoComponent
       });
 
     this.hsEventBusService.layerLoading
-      .pipe(takeUntil(this.end))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(({layer, progress}) => {
         if (!this.layer_loading.includes(getTitle(layer))) {
           this.layer_loading.push(getTitle(layer));
@@ -64,7 +58,7 @@ export class HsInfoComponent
       });
 
     this.hsEventBusService.layerLoaded
-      .pipe(takeUntil(this.end))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((layer) => {
         for (let i = 0; i < this.layer_loading.length; i++) {
           if (this.layer_loading[i] == getTitle(layer)) {
@@ -78,7 +72,7 @@ export class HsInfoComponent
       });
 
     this.hsEventBusService.compositionDeletes
-      .pipe(takeUntil(this.end))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((composition) => {
         if (composition.id == this.composition_id) {
           delete this.composition_title;
@@ -86,24 +80,21 @@ export class HsInfoComponent
         }
       });
 
-    this.hsEventBusService.mapResets.pipe(takeUntil(this.end)).subscribe(() => {
-      delete this.composition_title;
-      delete this.composition_abstract;
-      this.layer_loading.length = 0;
-      this.composition_loaded = true;
-      this.composition_edited = false;
-    });
+    this.hsEventBusService.mapResets
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(() => {
+        delete this.composition_title;
+        delete this.composition_abstract;
+        this.layer_loading.length = 0;
+        this.composition_loaded = true;
+        this.composition_edited = false;
+      });
 
     this.hsEventBusService.compositionEdits
-      .pipe(takeUntil(this.end))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(() => {
         this.composition_edited = true;
       });
-  }
-
-  ngOnDestroy(): void {
-    this.end.next();
-    this.end.complete();
   }
 
   /**

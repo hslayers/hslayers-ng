@@ -1,6 +1,7 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, DestroyRef, OnInit, inject} from '@angular/core';
+import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 
-import {Observable, Subject, map, startWith, takeUntil} from 'rxjs';
+import {Observable, map, startWith} from 'rxjs';
 
 import {AccessRightsModel} from 'hslayers-ng/types';
 import {HsEndpoint} from 'hslayers-ng/types';
@@ -13,15 +14,14 @@ import {StatusData} from 'hslayers-ng/types';
   selector: 'hs-save-map-form',
   templateUrl: './form.component.html',
 })
-export class HsSaveMapAdvancedFormComponent implements OnDestroy, OnInit {
+export class HsSaveMapAdvancedFormComponent implements OnInit {
   endpoint: HsEndpoint;
   overwrite = false;
   downloadableData: string;
   extraFormOpened = '';
 
   isVisible: Observable<boolean>;
-
-  private end = new Subject<void>();
+  private destroyRef = inject(DestroyRef);
 
   constructor(
     public hsSaveMapManagerService: HsSaveMapManagerService,
@@ -38,13 +38,13 @@ export class HsSaveMapAdvancedFormComponent implements OnDestroy, OnInit {
 
   ngOnInit(): void {
     this.hsSaveMapManagerService.endpointSelected
-      .pipe(takeUntil(this.end))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((endpoint) => {
         this.endpoint = endpoint;
       });
 
     this.hsSaveMapManagerService.saveMapResulted
-      .pipe(takeUntil(this.end))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((statusData) => {
         if ((statusData as StatusData).overWriteNeeded) {
           this.overwrite = true;
@@ -63,11 +63,6 @@ export class HsSaveMapAdvancedFormComponent implements OnDestroy, OnInit {
           this.hsSaveMapManagerService.currentComposition?.name === name;
       },
     );
-  }
-
-  ngOnDestroy(): void {
-    this.end.next();
-    this.end.complete();
   }
 
   /**

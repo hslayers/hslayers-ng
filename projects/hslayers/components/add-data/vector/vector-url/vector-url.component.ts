@@ -1,24 +1,24 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {Component, DestroyRef, Input, OnInit, inject} from '@angular/core';
 
 import {Layer} from 'ol/layer';
 import {Source} from 'ol/source';
-import {Subject, takeUntil} from 'rxjs';
 
 import {HsAddDataCommonFileService} from 'hslayers-ng/services/add-data';
 import {HsAddDataVectorService} from 'hslayers-ng/services/add-data';
 import {HsHistoryListService} from 'hslayers-ng/common/history-list';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {VectorDataObject} from 'hslayers-ng/types';
+import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'hs-url-vector',
   templateUrl: 'vector-url.component.html',
 })
-export class HsAddDataVectorUrlComponent implements OnInit, OnDestroy {
+export class HsAddDataVectorUrlComponent implements OnInit {
   @Input() fileType: 'geojson' | 'kml' | 'gpx';
 
   data: VectorDataObject;
-  private end = new Subject<void>();
+  private destroyRef = inject(DestroyRef);
 
   constructor(
     public hsHistoryListService: HsHistoryListService,
@@ -36,14 +36,9 @@ export class HsAddDataVectorUrlComponent implements OnInit, OnDestroy {
     }
   };
 
-  ngOnDestroy(): void {
-    this.end.next();
-    this.end.complete();
-  }
-
   ngOnInit(): void {
     this.hsAddDataCommonFileService.dataObjectChanged
-      .pipe(takeUntil(this.end))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((data) => {
         this.data.showDetails = true;
         Object.assign(this.data, data);

@@ -1,17 +1,18 @@
-import {BehaviorSubject, Subject, filter, takeUntil} from 'rxjs';
-import {Component, OnDestroy, OnInit, ViewRef} from '@angular/core';
+import {BehaviorSubject, filter} from 'rxjs';
+import {Component, DestroyRef, OnInit, ViewRef, inject} from '@angular/core';
 
 import {Layer} from 'ol/layer';
 
 import {HsLayerDescriptor} from 'hslayers-ng/types';
 import {HsLayerSelectorService} from 'hslayers-ng/services/layer-manager';
 import {HsPanelComponent} from 'hslayers-ng/common/panels';
+import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 
 @Component({
   template: '<div></div>',
 })
 export class HsLayerEditorWidgetBaseComponent
-  implements HsPanelComponent, OnInit, OnDestroy {
+  implements HsPanelComponent, OnInit {
   /**
    * This could be used to enable/disable widgets by name on HsConfig level
    */
@@ -23,8 +24,8 @@ export class HsLayerEditorWidgetBaseComponent
   isVisible$ = new BehaviorSubject<boolean>(true);
 
   baseComponentInitRun = false;
+  destroyRef = inject(DestroyRef);
 
-  private ngBaseUnsubscribe = new Subject<void>();
   constructor(public hsLayerSelectorService: HsLayerSelectorService) {
     this.layerDescriptor.subscribe((descriptor) => {
       this.olLayer = descriptor?.layer;
@@ -48,7 +49,7 @@ export class HsLayerEditorWidgetBaseComponent
 
     this.hsLayerSelectorService.layerSelected
       .pipe(
-        takeUntil(this.ngBaseUnsubscribe),
+        takeUntilDestroyed(this.destroyRef),
         filter((layer) => !!layer),
       )
       .subscribe((layer) => {
@@ -58,10 +59,5 @@ export class HsLayerEditorWidgetBaseComponent
 
   isVisible(): boolean {
     return true;
-  }
-
-  ngOnDestroy(): void {
-    this.ngBaseUnsubscribe.next();
-    this.ngBaseUnsubscribe.complete();
   }
 }

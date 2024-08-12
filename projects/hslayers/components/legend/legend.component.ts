@@ -1,5 +1,5 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {Subject, takeUntil} from 'rxjs';
+import {Component, OnInit} from '@angular/core';
+import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 
 import BaseLayer from 'ol/layer/Base';
 import {Layer} from 'ol/layer';
@@ -20,14 +20,10 @@ import {InterpolatedSource} from 'hslayers-ng/common/layers';
   selector: 'hs-legend',
   templateUrl: './legend.component.html',
 })
-export class HsLegendComponent
-  extends HsPanelBaseComponent
-  implements OnInit, OnDestroy
-{
+export class HsLegendComponent extends HsPanelBaseComponent implements OnInit {
   layerDescriptors = [];
   titleSearch = '';
   name = 'legend';
-  private end = new Subject<void>();
   constructor(
     public hsLegendService: HsLegendService,
     public hsMapService: HsMapService,
@@ -37,10 +33,6 @@ export class HsLegendComponent
     public hsLanguageService: HsLanguageService,
   ) {
     super();
-  }
-  ngOnDestroy(): void {
-    this.end.next();
-    this.end.complete();
   }
 
   ngOnInit(): void {
@@ -66,7 +58,7 @@ export class HsLegendComponent
       const source: any = layer.getSource();
       if (this.hsUtilsService.instOf(source, InterpolatedSource)) {
         (source as InterpolatedSource).colorMapChanged
-          .pipe(takeUntil(this.end))
+          .pipe(takeUntilDestroyed(this.destroyRef))
           .subscribe(() => {
             this.layerSourcePropChanged({target: source});
           });

@@ -1,15 +1,16 @@
 import {
   Component,
+  DestroyRef,
   EventEmitter,
   Input,
   OnDestroy,
   OnInit,
   Output,
   ViewChild,
+  inject,
 } from '@angular/core';
 
-import {ReplaySubject, Subject} from 'rxjs';
-import {takeUntil} from 'rxjs/operators';
+import {ReplaySubject} from 'rxjs';
 
 import {HsConfig} from 'hslayers-ng/config';
 import {HsLogService} from 'hslayers-ng/services/log';
@@ -17,6 +18,7 @@ import {HsPanelComponent} from './panel-component.interface';
 import {HsPanelContainerServiceInterface} from './panel-container.service.interface';
 import {HsPanelHostDirective} from './panel-host.directive';
 import {HsPanelItem} from './panel-item';
+import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'hs-panel-container',
@@ -40,7 +42,8 @@ export class HsPanelContainerComponent implements OnInit, OnDestroy {
   @Input() panelObserver?: ReplaySubject<HsPanelItem>;
   @Output() init = new EventEmitter<void>();
   interval: any;
-  private end = new Subject<void>();
+  private destroyRef = inject(DestroyRef);
+
   constructor(
     private hsConfig: HsConfig,
     private hsLog: HsLogService,
@@ -54,19 +57,17 @@ export class HsPanelContainerComponent implements OnInit, OnDestroy {
     for (const p of this.service.panels) {
       this.service.destroy(p);
     }
-    this.end.next();
-    this.end.complete();
   }
 
   ngOnInit(): void {
     this.service.panels = [];
     (this.panelObserver ?? this.service.panelObserver)
-      .pipe(takeUntil(this.end))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((item: HsPanelItem) => {
         this.loadPanel(item);
       });
     this.service.panelDestroyObserver
-      .pipe(takeUntil(this.end))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((item: HsPanelComponent) => {
         this.destroyPanel(item);
       });

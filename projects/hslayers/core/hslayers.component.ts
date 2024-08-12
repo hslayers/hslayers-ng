@@ -1,13 +1,15 @@
 import {
   AfterViewInit,
   Component,
+  DestroyRef,
   ElementRef,
   Input,
-  OnDestroy,
   OnInit,
   ViewChild,
+  inject,
 } from '@angular/core';
-import {Subject, delay, takeUntil} from 'rxjs';
+import {delay} from 'rxjs';
+import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 
 import {HsConfig, HsConfigObject} from 'hslayers-ng/config';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
@@ -27,7 +29,7 @@ import {HsUtilsService} from 'hslayers-ng/services/utils';
   templateUrl: './hslayers.html',
   styles: [],
 })
-export class HslayersComponent implements AfterViewInit, OnInit, OnDestroy {
+export class HslayersComponent implements AfterViewInit, OnInit {
   @Input() config: HsConfigObject;
   @Input() id: string;
   @ViewChild('hslayout') hslayout: ElementRef;
@@ -36,8 +38,7 @@ export class HslayersComponent implements AfterViewInit, OnInit, OnDestroy {
 
   sidebarPosition: string;
   sidebarVisible: boolean;
-
-  private end = new Subject<void>();
+  private destroyRef = inject(DestroyRef);
 
   constructor(
     public hsConfig: HsConfig,
@@ -50,11 +51,6 @@ export class HslayersComponent implements AfterViewInit, OnInit, OnDestroy {
     public HsOverlayContainerService: HsOverlayContainerService,
     private hsExternalService: HsExternalService, //Leave this, need to inject somewhere
   ) {}
-
-  ngOnDestroy(): void {
-    this.end.next();
-    this.end.complete();
-  }
 
   async ngOnInit(): Promise<void> {
     if (this.config) {
@@ -90,8 +86,7 @@ export class HslayersComponent implements AfterViewInit, OnInit, OnDestroy {
     this.HsLayoutService.mapSpaceRef.next(this.mapHost.viewContainerRef);
 
     this.HsLayoutService.sidebarPosition
-      .pipe(delay(0))
-      .pipe(takeUntil(this.end))
+      .pipe(delay(0), takeUntilDestroyed(this.destroyRef))
       .subscribe((position) => {
         this.sidebarPosition = position;
         if (position === 'left') {
@@ -100,7 +95,7 @@ export class HslayersComponent implements AfterViewInit, OnInit, OnDestroy {
         }
       });
     this.HsLayoutService.sidebarVisible
-      .pipe(takeUntil(this.end))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((visible) => {
         this.sidebarVisible = visible;
       });

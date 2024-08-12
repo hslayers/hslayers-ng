@@ -1,6 +1,5 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-
-import {Subject, takeUntil} from 'rxjs';
+import {Component, OnInit} from '@angular/core';
+import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsMeasureService} from './measure.service';
@@ -11,23 +10,15 @@ import {HsUtilsService} from 'hslayers-ng/services/utils';
   selector: 'hs-measure',
   templateUrl: './measure.component.html',
 })
-export class HsMeasureComponent
-  extends HsPanelBaseComponent
-  implements OnDestroy, OnInit
-{
+export class HsMeasureComponent extends HsPanelBaseComponent implements OnInit {
   type: string;
   name = 'measure';
-  private end = new Subject<void>();
   constructor(
     private hsEventBusService: HsEventBusService,
     public hsMeasureService: HsMeasureService,
     private hsUtilsService: HsUtilsService,
   ) {
     super();
-  }
-  ngOnDestroy(): void {
-    this.end.next();
-    this.end.complete();
   }
 
   ngOnInit() {
@@ -45,19 +36,19 @@ export class HsMeasureComponent
       });
     }
     this.hsEventBusService.measurementStarts
-      .pipe(takeUntil(this.end))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(() => {
         this.hsLayoutService.panelEnabled('toolbar', false);
       });
 
     this.hsEventBusService.measurementEnds
-      .pipe(takeUntil(this.end))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(() => {
         this.hsLayoutService.panelEnabled('toolbar', true);
       });
 
     this.hsLayoutService.mainpanel$
-      .pipe(takeUntil(this.end))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((which) => {
         if (this.hsLayoutService.mainpanel == 'measure') {
           this.hsMeasureService.activateMeasuring(this.type);

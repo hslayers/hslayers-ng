@@ -1,6 +1,7 @@
 //TODO: Check if this import is still needed. Breaks production though
 //import 'ol-popup/src/ol-popup.css';
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 
 import Popup from 'ol-popup';
 import {Subject} from 'rxjs';
@@ -18,15 +19,10 @@ import {HsQueryWmsService} from './query-wms.service';
   selector: 'hs-query',
   templateUrl: './query.component.html',
 })
-export class HsQueryComponent
-  extends HsPanelBaseComponent
-  implements OnDestroy, OnInit
-{
+export class HsQueryComponent extends HsPanelBaseComponent implements OnInit {
   popup = new Popup();
   popupOpens: Subject<any> = new Subject();
   name = 'query';
-  //To Unsubscribe all subscribers
-  private end = new Subject<void>();
   //To deactivate queries (unsubscribe subscribers) per app
   queryDeactivator = new Subject<void>();
 
@@ -42,14 +38,16 @@ export class HsQueryComponent
   }
   async ngOnInit() {
     super.ngOnInit();
-    this.popupOpens.pipe(takeUntil(this.end)).subscribe((source) => {
-      if (source && source != 'hs.query' && this.popup !== undefined) {
-        this.popup.hide();
-      }
-    });
+    this.popupOpens
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((source) => {
+        if (source && source != 'hs.query' && this.popup !== undefined) {
+          this.popup.hide();
+        }
+      });
 
     this.hsQueryVectorService.featureRemovals
-      .pipe(takeUntil(this.end))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((feature) => {
         this.hsQueryBaseService.features.splice(
           this.hsQueryBaseService.features.indexOf(feature),
@@ -61,7 +59,7 @@ export class HsQueryComponent
     });
     //add current panel queryable - activate/deactivate
     this.hsLayoutService.mainpanel$
-      .pipe(debounceTime(250), takeUntil(this.end))
+      .pipe(debounceTime(250), takeUntilDestroyed(this.destroyRef))
       .subscribe((which) => {
         if (this.hsQueryBaseService.currentPanelQueryable()) {
           if (
@@ -77,7 +75,7 @@ export class HsQueryComponent
         }
       });
     this.hsQueryBaseService.queryStatusChanges
-      .pipe(takeUntil(this.end))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((status) => {
         this.queryStatusChanged(status);
       });
@@ -97,7 +95,7 @@ export class HsQueryComponent
       return;
     }
     this.hsQueryBaseService.getFeatureInfoStarted
-      .pipe(takeUntil(this.end))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .pipe(takeUntil(this.queryDeactivator))
       .subscribe((evt) => {
         this.popup.hide();
@@ -110,7 +108,7 @@ export class HsQueryComponent
       });
 
     this.hsQueryBaseService.getFeatureInfoCollected
-      .pipe(takeUntil(this.end))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .pipe(takeUntil(this.queryDeactivator))
       .subscribe((coordinate) => {
         const invisiblePopup: HTMLIFrameElement =
@@ -142,11 +140,6 @@ export class HsQueryComponent
           this.popupOpens.next('hs.query');
         }
       });
-  }
-
-  ngOnDestroy(): void {
-    this.end.next();
-    this.end.complete();
   }
 
   /**

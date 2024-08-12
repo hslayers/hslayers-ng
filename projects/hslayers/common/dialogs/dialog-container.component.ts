@@ -1,11 +1,17 @@
-import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
-
-import {Subject, takeUntil} from 'rxjs';
+import {
+  Component,
+  DestroyRef,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+  inject,
+} from '@angular/core';
 
 import {HsDialogComponent} from './dialog-component.interface';
 import {HsDialogContainerService} from './dialog-container.service';
 import {HsDialogHostDirective} from './dialog-host.directive';
 import {HsDialogItem} from './dialog-item';
+import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'hs-dialog-container',
@@ -17,24 +23,22 @@ export class HsDialogContainerComponent implements OnInit, OnDestroy {
   @ViewChild(HsDialogHostDirective, {static: true})
   dialogHost: HsDialogHostDirective;
   interval: any;
-  private end = new Subject<void>();
+  private destroyRef = inject(DestroyRef);
   constructor(public HsDialogContainerService: HsDialogContainerService) {}
 
   ngOnDestroy(): void {
-    this.end.next();
-    this.end.complete();
     this.HsDialogContainerService.cleanup();
   }
 
   ngOnInit(): void {
     this.HsDialogContainerService.dialogObserver
-      .pipe(takeUntil(this.end))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((item: HsDialogItem) => {
         this.loadDialog(item);
       });
 
     this.HsDialogContainerService.dialogDestroyObserver
-      .pipe(takeUntil(this.end))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((item: HsDialogComponent) => {
         this.destroyDialog(item);
       });
