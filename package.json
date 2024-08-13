@@ -75,7 +75,7 @@
     "passport-oauth2-middleware": "^1.0.3",
     "polygon-clipping": "^0.15.7",
     "polygon-splitter": "^0.0.11",
-    "proj4": "^2.11.0",
+    "proj4": "^2.12.0",
     "queue": "^7.0.0",
     "resumablejs": "^1.1.0",
     "rxjs": "^7.8.1",
