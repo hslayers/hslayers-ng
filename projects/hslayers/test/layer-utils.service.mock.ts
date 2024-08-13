@@ -29,5 +29,6 @@ export function mockLayerUtilsService() {
     'hasNestedLayers',
     'isLayerArcgis',
     'highlightFeatures',
+    'listAttributes',
   ]);
 }
