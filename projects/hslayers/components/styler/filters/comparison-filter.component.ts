@@ -34,7 +34,7 @@ export class HsComparisonFilterComponent
     numeric: ['<', '<=', '>', '>='],
   };
 
-  private features: Feature<Geometry>[] = [];
+  features: Feature<Geometry>[] = [];
 
   attributeControl: FormControl;
   attributes: string[];
