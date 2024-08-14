@@ -1,6 +1,13 @@
 import {DomSanitizer, SafeHtml} from '@angular/platform-browser';
 import {Injectable, Signal} from '@angular/core';
-import {Observable, scan, share} from 'rxjs';
+import {
+  Observable,
+  filter as rxjsFilter,
+  scan,
+  share,
+  switchMap,
+  take,
+} from 'rxjs';
 import {toSignal} from '@angular/core/rxjs-interop';
 
 import {CollectionEvent} from 'ol/Collection';
@@ -140,18 +147,33 @@ export class HsLayerManagerService {
     this.hsEventBusService.layerManagerUpdates.subscribe((layer) => {
       this.refreshLists();
     });
-    this.hsEventBusService.layerDimensionDefinitionChanges.subscribe(
-      (olLayer) => {
-        if (this.hsDimensionTimeService.layerIsWmsT(olLayer)) {
-          const layerDescriptor = this.data.layers.find(
-            (ld) => ld.layer == olLayer,
+
+    /**
+     * Setup time layer
+     */
+    //Give enough time for layerDescriptor to be set up by waiting for
+    // mapEventHandlersSet to emit first
+    this.hsEventBusService.mapEventHandlersSet
+      .pipe(
+        take(1),
+        //Switch to layerDimensionDefinitionChanges
+        switchMap((_) => {
+          return this.hsEventBusService.layerDimensionDefinitionChanges.pipe(
+            //Continue only for WmsT layers
+            rxjsFilter((layer) =>
+              this.hsDimensionTimeService.layerIsWmsT(layer),
+            ),
           );
-          if (layerDescriptor) {
-            this.hsDimensionTimeService.setupTimeLayer(layerDescriptor);
-          }
+        }),
+      )
+      .subscribe((olLayer) => {
+        const layerDescriptor = this.data.layers.find(
+          (ld) => ld.layer == olLayer,
+        );
+        if (layerDescriptor) {
+          this.hsDimensionTimeService.setupTimeLayer(layerDescriptor);
         }
-      },
-    );
+      });
 
     this.hsMapService.loaded().then(async (map) => {
       for (const lyr of map.getLayers().getArray()) {
