@@ -85,7 +85,8 @@ export class HsEventBusService {
    * Used to listen for changes either in "time" property in HsLayerDescriptor
    * or in "dimensions" property in OL Layer object
    */
-  layerDimensionDefinitionChanges: Subject<Layer<Source>> = new Subject();
+  layerDimensionDefinitionChanges: ReplaySubject<Layer<Source>> =
+    new ReplaySubject<Layer<Source>>();
   /**
    * Used to listen for changes of dimension settings in layermanager-dimensions component
    */
