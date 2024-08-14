@@ -20,6 +20,7 @@ export class HsAddColormapComponent implements OnInit {
   colorMap: string;
   min: number | string = '';
   max: number | string = '';
+  categories: number = 10;
   @Output() canceled = new EventEmitter<void>();
 
   constructor(
@@ -52,6 +53,7 @@ export class HsAddColormapComponent implements OnInit {
   save(): void {
     this.hsStylerService.addRule('ColorMap', {
       colorMapName: this.colorMap,
+      categories: this.categories,
       min: this.min ? parseFloat(this.min.toString()) : undefined,
       max: this.max ? parseFloat(this.max.toString()) : undefined,
       attribute: this.weightAttribute,

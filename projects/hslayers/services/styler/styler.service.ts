@@ -589,88 +589,106 @@ export class HsStylerService {
     options?: {
       min?: number;
       max?: number;
+      categories?: number;
       colorMapName?: string;
       attribute?: string;
     },
   ): Promise<void> {
-    switch (kind) {
-      case 'ColorMap':
-        const colors = colormap({
-          colormap: options.colorMapName,
-          nshades: 11,
-          format: 'hex',
-          alpha: 1,
-        });
-        const step = (options.max - options.min) / 10.0;
-        this.styleObject.rules = colors.map((color) => {
-          const ix = colors.indexOf(color);
-          const from = options.min + ix * step;
-          const till = options.min + (ix + 1) * step;
-          return {
-            name: `${from.toFixed(2)} - ${till.toFixed(2)} ${
-              options.attribute
-            }`,
+    try {
+      switch (kind) {
+        case 'ColorMap':
+          const colors = colormap({
+            colormap: options.colorMapName,
+            nshades: options.categories,
+            format: 'hex',
+            alpha: 1,
+          });
+          const step = (options.max - options.min) / (options.categories - 1);
+          this.styleObject.rules = colors.map((color) => {
+            const ix = colors.indexOf(color);
+            const from = options.min + ix * step;
+            const till = options.min + (ix + 1) * step;
+            return {
+              name: `${from.toFixed(2)} - ${till.toFixed(2)} ${
+                options.attribute
+              }`,
+              filter: [
+                '&&',
+                ['>=', options.attribute, from],
+                ['<', options.attribute, till],
+              ],
+              symbolizers: [
+                {
+                  kind: 'Mark',
+                  color: color,
+                  strokeOpacity: 0.41,
+                  strokeColor: 'white',
+                  strokeWidth: 0.3,
+                  wellKnownName: 'circle',
+                  radius: 5,
+                },
+                {
+                  kind: 'Fill',
+                  color: color,
+                  strokeOpacity: 0.2,
+                },
+              ],
+            };
+          });
+          break;
+        case 'Cluster':
+          this.styleObject.rules.push({
+            name: 'Cluster rule',
             filter: [
               '&&',
-              ['>=', options.attribute, from],
-              ['<', options.attribute, till],
+              ['!=', 'features', 'undefined'],
+              ['!=', 'features', '[object Object]'],
             ],
             symbolizers: [
               {
                 kind: 'Mark',
-                color: color,
+                color: '#FFFFFF',
                 strokeOpacity: 0.41,
-                strokeColor: 'white',
-                strokeWidth: 0.3,
+                strokeColor: '#0099ff',
+                strokeWidth: 2,
                 wellKnownName: 'circle',
-                radius: 5,
+                radius: 10,
               },
               {
-                kind: 'Fill',
-                color: color,
-                strokeOpacity: 0.2,
+                kind: 'Text',
+                label: '{{features}}',
+                size: 12,
+                haloColor: '#fff',
+                color: '#000',
+                offset: [0, 0],
               },
             ],
-          };
-        });
-        break;
-      case 'Cluster':
-        this.styleObject.rules.push({
-          name: 'Cluster rule',
-          filter: [
-            '&&',
-            ['!=', 'features', 'undefined'],
-            ['!=', 'features', '[object Object]'],
-          ],
-          symbolizers: [
-            {
-              kind: 'Mark',
-              color: '#FFFFFF',
-              strokeOpacity: 0.41,
-              strokeColor: '#0099ff',
-              strokeWidth: 2,
-              wellKnownName: 'circle',
-              radius: 10,
-            },
-            {
-              kind: 'Text',
-              label: '{{features}}',
-              size: 12,
-              haloColor: '#fff',
-              color: '#000',
-              offset: [0, 0],
-            },
-          ],
-        });
-        break;
-      case 'Simple':
-      default:
-        this.styleObject.rules.push({
-          name: 'Untitled rule',
-          symbolizers: [],
-        });
+          });
+          break;
+        case 'Simple':
+        default:
+          this.styleObject.rules.push({
+            name: 'Untitled rule',
+            symbolizers: [],
+          });
+      }
+      await this.save();
+    } catch (error) {
+      if (error.message?.includes('nshades')) {
+        const min = error.message.match(/\d+/)[0];
+        this.hsToastService.createToastPopupMessage(
+          'STYLER.colorMap',
+          'STYLER.tooFewCategories',
+          {
+            toastStyleClasses: 'bg-warning text-light',
+            serviceCalledFrom: 'HsStylerService',
+            details: [`Min = ${min}`],
+          },
+        );
+        return;
+      }
+      console.error(error);
     }
-    await this.save();
   }
 
   async removeRule(rule: Rule): Promise<void> {

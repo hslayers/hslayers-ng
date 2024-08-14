@@ -586,7 +586,8 @@
       "colorMap": "Toņu karte",
       "max": "Maks.",
       "min": "Min.",
-      "interpolatedAttribute": "Interpolējamais atribūts"
+      "interpolatedAttribute": "Interpolējamais atribūts",
+      "nrOfCategories": "Kategoriju skaits"
     },
     "layerList": {
       "layerIsQueryable": "Šis slānis ir vaicājams",
