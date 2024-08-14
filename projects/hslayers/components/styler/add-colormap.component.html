@@ -1,30 +1,37 @@
-<div class="form-group">
+<div class="form-group ps-2">
   <div class="form-inline">
     <label class="control-label" style="width: 100%; justify-content: left">{{
-    "LAYERMANAGER.layerEditor.interpolatedAttribute" | translateHs }}:</label>
+      "LAYERMANAGER.layerEditor.interpolatedAttribute" | translateHs }}:</label>
 
     <select class="form-control form-select" style="width: 100%" [(ngModel)]="weightAttribute"
       [ngModelOptions]="{standalone: true}" (change)="changeAttrib()">
       @for (attr of attributes; track attr) {
-        <option [ngValue]="attr">
-          {{attr}}
-        </option>
+      <option [ngValue]="attr">
+        {{attr}}
+      </option>
       }
     </select>
   </div>
 
   <hs-colormap-picker [(ngModel)]="colorMap"></hs-colormap-picker>
 
+  <div class="pb-3 pt-2 d-flex flex-column">
+    <label class="form-label">{{
+      "LAYERMANAGER.layerEditor.nrOfCategories" | translateHs }}: {{categories}}</label>
+    <input type="range" min="4" max="16" step="1" class="inline mt-0" [(ngModel)]="categories"
+      name="hs-colormap-categories" />
+  </div>
+
   <div class="row g-3">
     <div class="col-md-6">
       <label class="form-label">{{
-      "LAYERMANAGER.layerEditor.min" | translateHs }}:</label>
+        "LAYERMANAGER.layerEditor.min" | translateHs }}:</label>
       <input class="form-control inline" [(ngModel)]="min" name="hsIdwMin" />
 
     </div>
     <div class="col-md-6">
       <label class="form-label">{{
-      "LAYERMANAGER.layerEditor.max" | translateHs }}:</label>
+        "LAYERMANAGER.layerEditor.max" | translateHs }}:</label>
       <input class="form-control" [(ngModel)]="max" name="hsIdwMax" />
     </div>
   </div>

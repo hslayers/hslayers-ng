@@ -621,7 +621,8 @@
       "selectOption": "Vyberte možnost",
       "typeFolderName": "Zadejte název nové složky",
       "pickOrCreate": "Vyberte nebo vytvořte novou složku",
-      "moveToNewFolder": "Přesunout vrstvu do složky"
+      "moveToNewFolder": "Přesunout vrstvu do složky",
+      "nrOfCategories": "Počet kategorií"
     },
     "layerList": {
       "layerIsQueryable": "Tato vrstva je dotazovatelná",
@@ -1038,7 +1039,8 @@
     "reallyResetStyleToDefault": "Opravdu chcete použít výchozí styl?",
     "sldParsingError": "Chyba při zpracování stylu",
     "sldParsingErrorMessage": "Při zpracování poskytnutého stylu SLD došlo k chybě. Byl použit výchozí styl.",
-    "uploadStyleFile": "Nahrajte styl jako soubor SLD/QML"
+    "uploadStyleFile": "Nahrajte styl jako soubor SLD/QML",
+    "tooFewCategories": "Pro správnou funkci vybrané barevné mapy je potřeba více kategorií"
   },
   "TOOLBAR": {
     "measureLinesAndPolygon": "Měřit linie a polygony",

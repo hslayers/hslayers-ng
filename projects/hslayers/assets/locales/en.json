@@ -621,7 +621,8 @@
       "selectOption": "Select an option",
       "typeFolderName": "Type new folder name",
       "pickOrCreate": "Pick or create new folder",
-      "moveToNewFolder": "Move layer to folder"
+      "moveToNewFolder": "Move layer to folder",
+      "nrOfCategories": "Number of categories"
     },
     "layerList": {
       "layerIsQueryable": "This layer is queryable",
@@ -1038,7 +1039,8 @@
     "reallyResetStyleToDefault": "Do you really want to apply default style?",
     "sldParsingError": "Style parsing error",
     "sldParsingErrorMessage": "There was an error parsing provided SLD style. Default style used.",
-    "uploadStyleFile": "Upload style as SLD/QML file"
+    "uploadStyleFile": "Upload style as SLD/QML file",
+    "tooFewCategories": "Selected color map requires more categories to function"
   },
   "TOOLBAR": {
     "measureLinesAndPolygon": "Measure lines and polygon",
