@@ -487,18 +487,29 @@ export class HsLayerUtilsService {
     return denominator / (mpu * 39.37 * dpi);
   }
 
+  /**
+   * List numeric attributes of the feature
+   */
+  listNumericAttributes(features: Feature[]) {
+    return this.listAttributes(features, true);
+  }
+
+  private readonly ATTRIBUTES_EXCLUDED_FROM_LIST = [
+    'geometry',
+    'hs_normalized_IDW_value',
+  ];
+
+  /**
+   * List all attributes of the feature apart from the geometry
+   */
   listAttributes(features: Feature[], numericOnly = false): string[] {
     return features.length > 0
-      ? Object.keys(features[0].getProperties()).filter(
-          (attr) => {
-            return (
-              (attr != 'geometry' &&
-                attr != 'hs_normalized_IDW_value' &&
-                !numericOnly) ??
-              !isNaN(Number(features[0].get(attr)))
-            );
-          }, //Check if number
-        )
+      ? Object.keys(features[0].getProperties()).filter((attr) => {
+          return (
+            !this.ATTRIBUTES_EXCLUDED_FROM_LIST.includes(attr) &&
+            (!numericOnly || !isNaN(Number(features[0].get(attr))))
+          );
+        })
       : [];
   }
 
