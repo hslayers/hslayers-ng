@@ -1,4 +1,4 @@
-import {Component, OnChanges, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 
 import {HsDimensionDescriptor} from 'hslayers-ng/common/dimensions';
@@ -9,6 +9,7 @@ import {HsLayerEditorWidgetBaseComponent} from '../widgets/layer-editor-widget-b
 import {HsLayerSelectorService} from 'hslayers-ng/services/layer-manager';
 import {HsMapService} from 'hslayers-ng/services/map';
 import {HsUtilsService} from 'hslayers-ng/services/utils';
+import {filter, merge} from 'rxjs';
 import {getDimensions} from 'hslayers-ng/common/extensions';
 
 @Component({
@@ -17,7 +18,7 @@ import {getDimensions} from 'hslayers-ng/common/extensions';
 })
 export class HsLayerEditorDimensionsComponent
   extends HsLayerEditorWidgetBaseComponent
-  implements OnChanges, OnInit
+  implements OnInit
 {
   name = 'dimensions';
   dimensions: Array<HsDimensionDescriptor> = [];
@@ -31,19 +32,23 @@ export class HsLayerEditorDimensionsComponent
     hsLayerSelectorService: HsLayerSelectorService,
   ) {
     super(hsLayerSelectorService);
-    this.hsEventBusService.layerDimensionDefinitionChanges
-      .pipe(takeUntilDestroyed())
-      .subscribe((layer) => {
-        if (layer == this.olLayer) {
-          this.ngOnChanges();
-        }
+
+    merge(
+      this.hsEventBusService.layerDimensionDefinitionChanges.pipe(
+        filter((layer) => layer === this.olLayer),
+      ),
+      this.layerDescriptor,
+    )
+      .pipe(
+        filter((data) => !!data),
+        takeUntilDestroyed(),
+      )
+      .subscribe(() => {
+        this.updateDimensions();
       });
-    this.layerDescriptor.pipe(takeUntilDestroyed()).subscribe((descriptor) => {
-      this.ngOnChanges();
-    });
   }
 
-  ngOnChanges(): void {
+  updateDimensions(): void {
     const layer = this.olLayer;
     if (!layer) {
       return;
