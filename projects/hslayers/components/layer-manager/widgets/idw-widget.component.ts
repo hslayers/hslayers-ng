@@ -81,7 +81,7 @@ export class HsIdwWidgetComponent
   }
 
   listNumericAttributes(features: Feature[]): string[] {
-    return this.hsLayerUtilsService.listAttributes(features, true);
+    return this.hsLayerUtilsService.listNumericAttributes(features);
   }
 
   getIdwSource(): InterpolatedSource {

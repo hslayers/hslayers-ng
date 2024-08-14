@@ -30,5 +30,6 @@ export function mockLayerUtilsService() {
     'isLayerArcgis',
     'highlightFeatures',
     'listAttributes',
+    'listNumericAttributes',
   ]);
 }
