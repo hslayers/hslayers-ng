@@ -32,7 +32,7 @@ import {HsMapServiceMock} from './map.service.mock';
 import {HsQueryBaseService} from 'hslayers-ng/services/query';
 import {HsQueryVectorService} from 'hslayers-ng/services/query';
 import {HsUtilsService} from 'hslayers-ng/services/utils';
-import {HsUtilsServiceMock} from './utils.service.mock';
+import {HsUtilsServiceMock} from './utils/utils.service.mock';
 import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 import {mockLayerUtilsService} from './layer-utils.service.mock';
 class emptyMock {

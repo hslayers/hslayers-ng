@@ -26,7 +26,7 @@ import {HsPanelHelpersModule} from 'hslayers-ng/common/panels';
 import {HsUrlWmsComponent} from 'hslayers-ng//components/add-data';
 import {HsUrlWmsService} from 'hslayers-ng/services/add-data';
 import {HsUtilsService} from 'hslayers-ng/services/utils';
-import {HsUtilsServiceMock} from './utils.service.mock';
+import {HsUtilsServiceMock} from './utils/utils.service.mock';
 import {HsWmsGetCapabilitiesService} from 'hslayers-ng/services/get-capabilities';
 import {mockLayerUtilsService} from './layer-utils.service.mock';
 import {testingServiceEndpoints} from './data/service-endpoints';

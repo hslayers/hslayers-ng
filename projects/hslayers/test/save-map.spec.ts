@@ -30,7 +30,7 @@ import {HsSaveMapDialogSpawnerService} from 'hslayers-ng/components/save-map';
 import {HsSaveMapManagerService} from 'hslayers-ng/components/save-map';
 import {HsSaveMapManagerServiceMock} from './save-map-manager.service.mock';
 import {HsUtilsService} from 'hslayers-ng/services/utils';
-import {HsUtilsServiceMock} from './utils.service.mock';
+import {HsUtilsServiceMock} from './utils/utils.service.mock';
 import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 import {
   getLayerName,

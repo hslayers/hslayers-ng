@@ -9,7 +9,7 @@ import {HsConfigMock} from './config.service.mock';
 import {HsLayerUtilsService} from 'hslayers-ng/services/utils';
 import {HsMapHostDirective, HslayersComponent} from 'hslayers-ng/core';
 import {HsUtilsService} from 'hslayers-ng/services/utils';
-import {HsUtilsServiceMock} from './utils.service.mock';
+import {HsUtilsServiceMock} from './utils/utils.service.mock';
 import {TranslateTestingModule} from 'hslayers-ng/components/language';
 import {mockLayerUtilsService} from './layer-utils.service.mock';
 

@@ -10,7 +10,7 @@ import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsEventBusServiceMock} from './event-bus.service.mock';
 import {HsLayerUtilsService} from 'hslayers-ng/services/utils';
 import {HsUtilsService} from 'hslayers-ng/services/utils';
-import {HsUtilsServiceMock} from './utils.service.mock';
+import {HsUtilsServiceMock} from './utils/utils.service.mock';
 import {mockLayerUtilsService} from './layer-utils.service.mock';
 
 describe('HsGetCapabilitiesModule', () => {
