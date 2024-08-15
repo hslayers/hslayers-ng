@@ -534,7 +534,6 @@ export class HsLayerUtilsService {
    * NOTE: Not using OL because we want to extend width and height independently
    */
   bufferExtent(extent: Extent, currentMapProj: Projection) {
-    const BUFFER_FACTOR = 0.075;
     const inMeters = currentMapProj.getUnits() === 'm';
 
     /**
@@ -558,6 +557,17 @@ export class HsLayerUtilsService {
     //Calculate buffer values
     const extentWidth = Math.abs(transformed[2] - transformed[0]);
     const extentHeight = Math.abs(transformed[3] - transformed[1]);
+
+    // Determine buffer factor based on extent size
+    let BUFFER_FACTOR = 0.075; // Default buffer factor
+    const MAX_EXTENT_SIZE_FOR_HIGHER_BUFFER = 1000000; // 1000 km in meters
+
+    if (
+      extentWidth > MAX_EXTENT_SIZE_FOR_HIGHER_BUFFER ||
+      extentHeight > MAX_EXTENT_SIZE_FOR_HIGHER_BUFFER
+    ) {
+      BUFFER_FACTOR = 0.015; // Reduced buffer factor for larger extents
+    }
     const bufferWidth = extentWidth * BUFFER_FACTOR;
     const bufferHeight = extentHeight * BUFFER_FACTOR;
 
