@@ -529,8 +529,8 @@ export class HsLayerUtilsService {
       : transformExtent(extent, currentMapProj, 'EPSG:4087');
 
     //Calculate buffer values
-    const extentWidth = Math.abs(extent[2] - extent[0]);
-    const extentHeight = Math.abs(extent[3] - extent[1]);
+    const extentWidth = Math.abs(transformed[2] - transformed[0]);
+    const extentHeight = Math.abs(transformed[3] - transformed[1]);
     const bufferWidth = extentWidth * BUFFER_FACTOR;
     const bufferHeight = extentHeight * BUFFER_FACTOR;
 
