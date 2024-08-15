@@ -30,7 +30,7 @@ import {HsSaveMapServiceMock} from './save-map.service.mock';
 import {HsStylerComponent} from 'hslayers-ng/components/styler';
 import {HsStylerService} from 'hslayers-ng/services/styler';
 import {HsUtilsService} from 'hslayers-ng/services/utils';
-import {HsUtilsServiceMock} from './utils.service.mock';
+import {HsUtilsServiceMock} from './utils/utils.service.mock';
 import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 
 class emptyMock {

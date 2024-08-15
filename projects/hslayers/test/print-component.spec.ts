@@ -27,7 +27,7 @@ import {HsPrintService} from 'hslayers-ng/components/print';
 import {HsPrintTextStylerComponent} from 'hslayers-ng/components/print';
 import {HsSidebarService} from 'hslayers-ng/services/sidebar';
 import {HsUtilsService} from 'hslayers-ng/services/utils';
-import {HsUtilsServiceMock} from './utils.service.mock';
+import {HsUtilsServiceMock} from './utils/utils.service.mock';
 import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 import {mockHsPrintScaleService} from './print-scale.service.mock';
 import {mockHsPrintService} from './print.service.mock';

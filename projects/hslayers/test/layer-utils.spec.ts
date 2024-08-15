@@ -13,7 +13,7 @@ import {HsLayerUtilsService} from 'hslayers-ng/services/utils';
 import {HsMapService} from 'hslayers-ng/services/map';
 import {HsMapServiceMock} from './map.service.mock';
 import {HsUtilsService} from 'hslayers-ng/services/utils';
-import {HsUtilsServiceMock} from './utils.service.mock';
+import {HsUtilsServiceMock} from './utils/utils.service.mock';
 import {
   setCluster,
   setEditor,

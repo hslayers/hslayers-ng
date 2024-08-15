@@ -29,7 +29,7 @@ import {HsMapService} from 'hslayers-ng/services/map';
 import {HsMapServiceMock} from './map.service.mock';
 import {HsPanelHelpersModule} from 'hslayers-ng/common/panels';
 import {HsUtilsService} from 'hslayers-ng/services/utils';
-import {HsUtilsServiceMock} from './utils.service.mock';
+import {HsUtilsServiceMock} from './utils/utils.service.mock';
 import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 import {getCluster, setCluster} from 'hslayers-ng/common/extensions';
 

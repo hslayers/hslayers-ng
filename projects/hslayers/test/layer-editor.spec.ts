@@ -39,7 +39,7 @@ import {HsShareUrlService} from 'hslayers-ng/services/share';
 import {HsStylerService} from 'hslayers-ng/services/styler';
 import {HsStylerServiceMock} from './styler.service.mock';
 import {HsUtilsService} from 'hslayers-ng/services/utils';
-import {HsUtilsServiceMock} from './utils.service.mock';
+import {HsUtilsServiceMock} from './utils/utils.service.mock';
 import {getCluster} from 'hslayers-ng/common/extensions';
 import {mockLayerUtilsService} from './layer-utils.service.mock';
 
