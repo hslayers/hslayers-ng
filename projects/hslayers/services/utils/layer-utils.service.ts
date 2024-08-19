@@ -2,6 +2,7 @@ import {Injectable, NgZone} from '@angular/core';
 
 import BaseLayer from 'ol/layer/Base';
 import IDW from 'ol-ext/source/IDW';
+import {Big} from 'big.js';
 import {
   Cluster,
   ImageWMS,
@@ -513,21 +514,38 @@ export class HsLayerUtilsService {
       : [];
   }
 
-  private PROJECTION_BOUNDS = {
-    'EPSG:3035': [-4651953.295, 1696442.705, 7514064.904, 5625549.971],
-    'EPSG:4258': [-31.75, 27.63, 44.83, 84.17],
-    'EPSG:32633': [166021.4431, 0.0, 833978.5569, 9329005.1825],
-    'EPSG:32634': [166021.4431, 0.0, 833978.5569, 9329005.1825],
-    'EPSG:3995': [-4194304.0, -4194304.0, 4194304.0, 4194304.0],
-    'EPSG:3031': [-4514968.208, -4514968.208, 4514968.208, 4514968.208],
-    'EPSG:4087': [-20037508.34, -10018754.17, 20037508.34, 10018754.17],
-    'EPSG:3857': [
-      -20037508.342789244, -20037508.342789244, 20037508.342789244,
-      20037508.342789244,
-    ],
-    'EPSG:4326': [-180, -90, 180, 90],
-    'EPSG:5514': [-951499.37, -1353292.51, -159365.31, -911053.67],
-  };
+  // Coefficients of the polynomial (in reverse order for easy use in the loop)
+  private COEFFICIENTS: Big[] = [
+    new Big('-1.45160526e-15'),
+    new Big('1.61739294e-11'),
+    new Big('-5.22941271e-08'),
+    new Big('1.42650127e-05'),
+    new Big('1.19577462e-01'),
+  ];
+
+  /**
+   * Calculates a buffer factor based on polynomial evaluation using Horner's method.
+   *
+   * This function evaluates a 4th-degree polynomial with pre-calculated coefficients
+   * to determine a buffer factor. The function is designed to return a value close to 0.12
+   * for smaller distances (approximately 0-300 kilometers) and gradually decrease to 0 as the
+   * distance approaches 4000 kilometers.
+   *
+   * Note: This function is intended for use with input values up to 4000 meters.
+   * Using values greater than 4000 kilometers may produce unexpected results
+   */
+  getPolynomialBufferFactor(x: number): number {
+    // Convert x to a Big object
+    const xBig = new Big(x);
+    // Calculate polynomial value using Horner's method with a for...of loop
+    let result = new Big(0);
+    for (const coefficient of this.COEFFICIENTS) {
+      result = result.times(xBig).plus(coefficient);
+    }
+
+    // Return the result as a regular JavaScript number
+    return result.toNumber();
+  }
 
   /**
    * Buffer extent by `BUFFER_FACTOR`
@@ -536,64 +554,38 @@ export class HsLayerUtilsService {
   bufferExtent(extent: Extent, currentMapProj: Projection) {
     const inMeters = currentMapProj.getUnits() === 'm';
 
-    /**
-     * Clamp the extent values to the projection bounds to preven overflowing
-     */
-    const [pMinX, pMinY, pMaxX, pMaxY] =
-      this.PROJECTION_BOUNDS[currentMapProj.getCode()];
-    const [MinX, MinY, MaxX, MaxY] = extent;
-    const clampedExtent = [
-      Math.max(pMinX, MinX), // Left edge (X-min)
-      Math.max(pMinY, MinY), // Bottom edge (Y-min)
-      Math.min(pMaxX, MaxX), // Right edge (X-max)
-      Math.min(pMaxY, MaxY), // Top edge (Y-max)
-    ];
-
     //Transform into projection suitable for area manipulation* if necessary
     const transformed = inMeters
-      ? clampedExtent
-      : transformExtent(clampedExtent, currentMapProj, 'EPSG:4087');
+      ? extent
+      : transformExtent(extent, currentMapProj, 'EPSG:4087');
 
     //Calculate buffer values
     const extentWidth = Math.abs(transformed[2] - transformed[0]);
     const extentHeight = Math.abs(transformed[3] - transformed[1]);
 
-    // Determine buffer factor based on extent size
-    let BUFFER_FACTOR = 0.075; // Default buffer factor
-    const MAX_EXTENT_SIZE_FOR_HIGHER_BUFFER = 1000000; // 1000 km in meters
+    // Calculate diagonal length
+    const diagonalLength = Math.sqrt(extentWidth ** 2 + extentHeight ** 2);
 
-    if (
-      extentWidth > MAX_EXTENT_SIZE_FOR_HIGHER_BUFFER ||
-      extentHeight > MAX_EXTENT_SIZE_FOR_HIGHER_BUFFER
-    ) {
-      BUFFER_FACTOR = 0.015; // Reduced buffer factor for larger extents
+    const BUFFER_FACTOR = this.getPolynomialBufferFactor(diagonalLength / 1000); //convert to kilometers
+
+    if (diagonalLength > 4000000) {
+      return extent;
     }
+
     const bufferWidth = extentWidth * BUFFER_FACTOR;
     const bufferHeight = extentHeight * BUFFER_FACTOR;
 
-    const projCode = inMeters ? currentMapProj.getCode() : 'EPSG:4087';
-    //Transform projection bounds
-    const [tMinX, tMinY, tMaxX, tMaxY] = this.PROJECTION_BOUNDS[projCode];
-    // Apply the buffer to the clamped extent with a fallback of a projection bounds
-    const extended = [
-      Math.max(tMinX, transformed[0] - bufferWidth),
-      Math.max(tMinY, transformed[1] - bufferHeight),
-      Math.min(tMaxX, transformed[2] + bufferWidth),
-      Math.min(tMaxY, transformed[3] + bufferHeight),
-    ];
-
-    // Handle NaN values by replacing them with the corresponding projection bounds
-    const safeExtended = transformExtent(
-      extended,
-      projCode,
+    //Buffer extent and transform back to currentMapProj
+    const extended = transformExtent(
+      [
+        transformed[0] - bufferWidth,
+        transformed[1] - bufferHeight,
+        transformed[2] + bufferWidth,
+        transformed[3] + bufferHeight,
+      ],
+      inMeters ? currentMapProj : 'EPSG:4087',
       currentMapProj,
-    ).map((value, index) =>
-      //NaN check in case the transformation error.
-      isNaN(value)
-        ? this.PROJECTION_BOUNDS[currentMapProj.getCode()][index]
-        : value,
     );
-
-    return safeExtended;
+    return extended;
   }
 }

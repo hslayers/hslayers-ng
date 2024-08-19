@@ -70,7 +70,7 @@ describe('LayerUtilsService', () => {
     });
 
     it('should not extend extent beyond WGS84 bounds', () => {
-      const extremeExtent = [-300, -90, 180, 90]; // Edge of WGS84 bounds
+      const extremeExtent = [-180, -90, 180, 90]; // Edge of WGS84 bounds
       const bufferedExtent = service.bufferExtent(
         extremeExtent,
         getProjection('EPSG:4326'),
@@ -96,21 +96,6 @@ describe('LayerUtilsService', () => {
       expect(bufferedExtent[1]).toBeLessThan(-1010163.8964222762);
       expect(bufferedExtent[2]).toBeGreaterThan(-701407.4374141559);
       expect(bufferedExtent[3]).toBeGreaterThan(-982026.5783390203);
-    });
-
-    fit('should clamp and buffer extent correctly outside bounds in EPSG:5514', () => {
-      // Define an extent that is outside the EPSG:5514 bounds
-      const extent = [-1000000, -1400000, -100000, -900000];
-      const bufferedExtent = service.bufferExtent(
-        extent,
-        getProjection('EPSG:5514'),
-      );
-
-      // Expected clamped extent within the bounds for EPSG:5514
-      expect(bufferedExtent[0]).toBeGreaterThanOrEqual(-951499.37);
-      expect(bufferedExtent[1]).toBeGreaterThanOrEqual(-1353292.51);
-      expect(bufferedExtent[2]).toBeLessThanOrEqual(-159365.31);
-      expect(bufferedExtent[3]).toBeLessThanOrEqual(-911053.67);
     });
   });
 });
