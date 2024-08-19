@@ -1,6 +1,5 @@
 import proj4 from 'proj4'; // Update the path as needed
 import {HsLayerUtilsService} from 'hslayers-ng/services/utils';
-import {Projection} from 'ol/proj';
 import {TestBed} from '@angular/core/testing';
 import {get as getProjection} from 'ol/proj';
 import {provideHttpClient} from '@angular/common/http';
@@ -41,7 +40,7 @@ describe('LayerUtilsService', () => {
     expect(service).toBeTruthy();
   });
 
-  fdescribe('bufferExtent', () => {
+  describe('bufferExtent', () => {
     it('should buffer extent correctly in meters', () => {
       const extent = [1000, 2000, 3000, 4000];
       const bufferedExtent = service.bufferExtent(
@@ -66,7 +65,6 @@ describe('LayerUtilsService', () => {
       expect(bufferedExtent[1]).toBeLessThan(40);
       expect(bufferedExtent[2]).toBeGreaterThan(-70);
       expect(bufferedExtent[3]).toBeGreaterThan(45);
-      console.log(bufferedExtent);
     });
 
     it('should not extend extent beyond WGS84 bounds', () => {
@@ -96,6 +94,33 @@ describe('LayerUtilsService', () => {
       expect(bufferedExtent[1]).toBeLessThan(-1010163.8964222762);
       expect(bufferedExtent[2]).toBeGreaterThan(-701407.4374141559);
       expect(bufferedExtent[3]).toBeGreaterThan(-982026.5783390203);
+    });
+
+    it('should return small but non-zero buffer for moderate distances (e.g., 3000 meters)', () => {
+      const result = service.getPolynomialBufferFactor(3000);
+      expect(Number(result)).toBeCloseTo(0.01, 2); // Expecting close to .0108
+    });
+
+    it('should return decreasing buffer for intermediate distances', () => {
+      const result1 = service.getPolynomialBufferFactor(250);
+      const result2 = service.getPolynomialBufferFactor(1000);
+      // As distance increases, buffer should decrease
+      expect(Number(result1)).toBeGreaterThan(Number(result2));
+    });
+
+    it('should return 0 for distances greater than 4000 meters', () => {
+      const result = service.getPolynomialBufferFactor(4100);
+      expect(result).toBeCloseTo(0, 1);
+    });
+
+    it('should return correct buffer factor for a small distance close to 0 (e.g., 10 meters)', () => {
+      const result = service.getPolynomialBufferFactor(10);
+      expect(result).toBeCloseTo(0.12, 1);
+    });
+
+    it('should return correct buffer factor for 0 meters', () => {
+      const result = service.getPolynomialBufferFactor(0);
+      expect(result).toBeCloseTo(0.12, 1);
     });
   });
 });
