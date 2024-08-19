@@ -1040,7 +1040,7 @@
     "sldParsingError": "Style parsing error",
     "sldParsingErrorMessage": "There was an error parsing provided SLD style. Default style used.",
     "uploadStyleFile": "Upload style as SLD/QML file",
-    "tooFewCategories": "Selected color map requires more categories to function"
+    "tooFewCategories": "Selected color map requires more categories to function properly"
   },
   "TOOLBAR": {
     "measureLinesAndPolygon": "Measure lines and polygon",
