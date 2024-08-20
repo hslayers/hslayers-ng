@@ -568,7 +568,7 @@ export class HsLayerUtilsService {
     const BUFFER_FACTOR =
       diagonalLength < 4000000
         ? this.getPolynomialBufferFactor(diagonalLength / 1000) //convert to kilometers
-        : 0.0008; //
+        : 0.0001; //
 
     const bufferWidth = extentWidth * BUFFER_FACTOR;
     const bufferHeight = extentHeight * BUFFER_FACTOR;
