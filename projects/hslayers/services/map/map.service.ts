@@ -573,14 +573,14 @@ export class HsMapService {
 
     proj4.defs(
       'EPSG:4087',
-      '+proj=cea +lon_0=0 +lat_ts=0 +x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs',
+      '+proj=eqc +lat_ts=0 +lat_0=0 +lon_0=0 +x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs +type=crs',
     );
     proj4.defs(
       'http://www.opengis.net/gml/srs/epsg.xml#4087',
       proj4.defs('EPSG:4087'),
     );
-
     register(proj4);
+
     if (this.hsConfig.componentsEnabled?.mapControls == false) {
       this.removeAllControls();
     }
