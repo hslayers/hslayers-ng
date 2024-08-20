@@ -516,11 +516,11 @@ export class HsLayerUtilsService {
 
   // Coefficients of the polynomial (in reverse order for easy use in the loop)
   private COEFFICIENTS: Big[] = [
-    new Big('-1.45160526e-15'),
-    new Big('1.61739294e-11'),
-    new Big('-5.22941271e-08'),
-    new Big('1.42650127e-05'),
-    new Big('1.19577462e-01'),
+    new Big('-1.31228099e-15'),
+    new Big('1.49629747e-11'),
+    new Big('-4.93320288e-08'),
+    new Big('1.22907821e-05'),
+    new Big('1.19666463e-01'),
   ];
 
   /**
