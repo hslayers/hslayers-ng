@@ -109,6 +109,20 @@ export class HsAddDataUrlService {
   }
 
   /**
+   * Display layers extent parsing error
+   */
+  private layerExtentParsingError(): void {
+    this.hsToastService.createToastPopupMessage(
+      'ADDLAYERS.capabilitiesParsingProblem',
+      'ADDLAYERS.layerExtentParsingProblem',
+      {
+        serviceCalledFrom: 'HsAddDataUrlService',
+        toastStyleClasses: 'bg-warning text-white',
+      },
+    );
+  }
+
+  /**
    * Calculate cumulative bounding box which encloses all the provided layers (service layer definitions)
    * Common for WMS/WMTS (WFS has its own implementation)
    */
@@ -117,17 +131,10 @@ export class HsAddDataUrlService {
       return undefined;
     }
     try {
-      const layerExtents = layers.map((lyr) => [...lyr?.getExtent()]); //Spread need to not create reference
+      const layerExtents = layers.map((lyr) => [...(lyr?.getExtent() || [])]); //Spread need to not create reference
       return this.calcCombinedExtent(layerExtents);
     } catch (error) {
-      this.hsToastService.createToastPopupMessage(
-        'ADDLAYERS.capabilitiesParsingProblem',
-        'ADDLAYERS.layerExtentParsingProblem',
-        {
-          serviceCalledFrom: 'HsAddDataUrlService',
-          toastStyleClasses: 'bg-warning text-white',
-        },
-      );
+      this.layerExtentParsingError();
       return undefined;
     }
   }
@@ -136,30 +143,36 @@ export class HsAddDataUrlService {
    * For given array of layers (service layer definitions) it calculates a cumulative bounding box which encloses all the layers
    */
   calcCombinedExtent(extents: number[][]): number[] {
-    const currentMapProj = this.hsMapService.getCurrentProj();
-    const bounds = transform([180, 90], 'EPSG:4326', currentMapProj);
+    try {
+      const currentMapProj = this.hsMapService.getCurrentProj();
+      const bounds = transform([180, 90], 'EPSG:4326', currentMapProj);
 
-    return extents.reduce((acc, curr) => {
-      //some services define layer bboxes beyond the canonical 180/90 degrees intervals, the checks are necessary then
-      const [west, south, east, north] = curr;
-      //minimum easting
-      if (bounds[1] * -1 <= west && west < acc[0]) {
-        acc[0] = west;
-      }
-      //minimum northing
-      if (bounds[0] * -1 <= south && south < acc[1]) {
-        acc[1] = south;
-      }
-      //maximum easting
-      if (bounds[1] >= east && east > acc[2]) {
-        acc[2] = east;
-      }
-      //maximum northing
-      if (bounds[0] >= north && north > acc[3]) {
-        acc[3] = north;
-      }
-      return acc;
-    });
+      const extent = extents.reduce((acc, curr) => {
+        //some services define layer bboxes beyond the canonical 180/90 degrees intervals, the checks are necessary then
+        const [west, south, east, north] = curr;
+        //minimum easting
+        if (bounds[1] * -1 <= west && west < acc[0]) {
+          acc[0] = west;
+        }
+        //minimum northing
+        if (bounds[0] * -1 <= south && south < acc[1]) {
+          acc[1] = south;
+        }
+        //maximum easting
+        if (bounds[1] >= east && east > acc[2]) {
+          acc[2] = east;
+        }
+        //maximum northing
+        if (bounds[0] >= north && north > acc[3]) {
+          acc[3] = north;
+        }
+        return acc;
+      });
+      return extent.length > 0 ? extent : undefined;
+    } catch (error) {
+      this.layerExtentParsingError();
+      return undefined;
+    }
   }
 
   /**

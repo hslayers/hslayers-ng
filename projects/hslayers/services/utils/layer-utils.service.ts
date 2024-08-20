@@ -551,6 +551,9 @@ export class HsLayerUtilsService {
    * NOTE: Not using OL because we want to extend width and height independently
    */
   bufferExtent(extent: Extent, currentMapProj: Projection) {
+    if (!extent) {
+      return undefined;
+    }
     //EPSG:4087 world bounds
     const [pMinX, pMinY, pMaxX, pMaxY] = [
       -20037508.342789, -10018754.171394, 20037508.342789, 10018754.171394,
