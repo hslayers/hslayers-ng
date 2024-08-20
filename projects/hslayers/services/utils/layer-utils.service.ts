@@ -17,13 +17,12 @@ import {Extent, isEmpty} from 'ol/extent';
 import {Feature, View} from 'ol';
 import {default as FeatureFormat} from 'ol/format/Feature';
 import {Geometry} from 'ol/geom';
-import {Image as ImageLayer, Layer, Vector as VectorLayer} from 'ol/layer';
-import {METERS_PER_UNIT, Projection, transform, transformExtent} from 'ol/proj';
-import {Tile as TileLayer} from 'ol/layer';
-
 import {HsLayerDescriptor} from 'hslayers-ng/types';
 import {HsUtilsService} from './utils.service';
 import {HsWmsLayer} from 'hslayers-ng/types';
+import {Image as ImageLayer, Layer, Vector as VectorLayer} from 'ol/layer';
+import {METERS_PER_UNIT, Projection, transformExtent} from 'ol/proj';
+import {Tile as TileLayer} from 'ol/layer';
 import {VectorImage} from 'ol/layer';
 import {
   getCluster,
@@ -543,8 +542,8 @@ export class HsLayerUtilsService {
       result = result.times(xBig).plus(coefficient);
     }
 
-    // Return the result as a regular JavaScript number
-    return result.toNumber();
+    // Return the result as a regular, positive JavaScript number
+    return Math.abs(result.toNumber());
   }
 
   /**
@@ -552,12 +551,12 @@ export class HsLayerUtilsService {
    * NOTE: Not using OL because we want to extend width and height independently
    */
   bufferExtent(extent: Extent, currentMapProj: Projection) {
-    const inMeters = currentMapProj.getUnits() === 'm';
-
-    //Transform into projection suitable for area manipulation* if necessary
-    const transformed = inMeters
-      ? extent
-      : transformExtent(extent, currentMapProj, 'EPSG:4087');
+    //EPSG:4087 world bounds
+    const [pMinX, pMinY, pMaxX, pMaxY] = [
+      -20037508.342789, -10018754.171394, 20037508.342789, 10018754.171394,
+    ];
+    //Transform into projection suitable for area manipulation
+    const transformed = transformExtent(extent, currentMapProj, 'EPSG:4087');
 
     //Calculate buffer values
     const extentWidth = Math.abs(transformed[2] - transformed[0]);
@@ -566,26 +565,22 @@ export class HsLayerUtilsService {
     // Calculate diagonal length
     const diagonalLength = Math.sqrt(extentWidth ** 2 + extentHeight ** 2);
 
-    const BUFFER_FACTOR = this.getPolynomialBufferFactor(diagonalLength / 1000); //convert to kilometers
-
-    if (diagonalLength > 4000000) {
-      return extent;
-    }
+    const BUFFER_FACTOR =
+      diagonalLength < 4000000
+        ? this.getPolynomialBufferFactor(diagonalLength / 1000) //convert to kilometers
+        : 0.0008; //
 
     const bufferWidth = extentWidth * BUFFER_FACTOR;
     const bufferHeight = extentHeight * BUFFER_FACTOR;
 
     //Buffer extent and transform back to currentMapProj
-    const extended = transformExtent(
-      [
-        transformed[0] - bufferWidth,
-        transformed[1] - bufferHeight,
-        transformed[2] + bufferWidth,
-        transformed[3] + bufferHeight,
-      ],
-      inMeters ? currentMapProj : 'EPSG:4087',
-      currentMapProj,
-    );
-    return extended;
+    const extended = [
+      Math.max(pMinX, transformed[0] - bufferWidth),
+      Math.max(pMinY, transformed[1] - bufferHeight),
+      Math.min(pMaxX, transformed[2] + bufferWidth),
+      Math.min(pMaxY, transformed[3] + bufferHeight),
+    ];
+
+    return transformExtent(extended, 'EPSG:4087', currentMapProj);
   }
 }
