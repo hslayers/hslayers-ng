@@ -250,6 +250,13 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
    * Get extent for a single layer
    */
   private getSingleLayerExtent(serviceLayer: any, crs: string) {
+    /**
+     * serviceLayer might be undefined when trying to parse extent of WMS sublayer
+     * while creating layer.  Will be added along with metadata parsing
+     */
+    if (!serviceLayer) {
+      return;
+    }
     let boundingbox = serviceLayer.BoundingBox;
     if (
       crs !== undefined &&
@@ -498,11 +505,6 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
         ),
         this.hsMapService.getCurrentProj(),
       ),
-      /**
-       * Control preventing duplicated extent parsing
-       * during capability attributes parsing
-       */
-      capsExtentSet: true,
       path: options.path,
       dimensions: dimensions,
       legends: legends,
@@ -510,6 +512,12 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
       base: this.data.base,
       visible: this.data.visible,
     };
+    /**
+     * Control preventing duplicated extent parsing
+     * during capability attributes parsing
+     */
+    layerOptions['capsExtentSet'] = !!layerOptions.extent;
+
     const new_layer = USE_TILES
       ? new Tile(layerOptions as TileOptions<TileSource>)
       : new ImageLayer(layerOptions as ImageOptions<ImageSource>);
