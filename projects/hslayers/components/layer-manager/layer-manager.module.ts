@@ -9,6 +9,7 @@ import {
   NgbTooltipModule,
 } from '@ng-bootstrap/ng-bootstrap';
 
+import {DatePreformatPipe} from './dimensions/date-preformat.pipe';
 import {FilterPipe} from 'hslayers-ng/common/pipes';
 import {HsClusterWidgetComponent} from './widgets/cluster-widget.component';
 import {HsColormapPickerModule} from 'hslayers-ng/common/color-map-picker';
@@ -76,6 +77,7 @@ import {TranslateCustomPipe} from 'hslayers-ng/services/language';
     HsLayerFolderWidgetComponent,
     HsPanelHeaderComponent,
     FilterPipe,
+    DatePreformatPipe,
   ],
   exports: [
     HsLayerManagerComponent,
