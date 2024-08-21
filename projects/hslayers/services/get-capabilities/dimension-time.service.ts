@@ -191,22 +191,18 @@ export class HsDimensionTimeService {
     today = today.slice(0, today.indexOf('T'));
     let defaultTime;
     let layerParams = {};
+
     const isTileWms = this.HsUtilsService.instOf(olLayer.getSource(), TileWMS);
-    if (isTileWms) {
+    const isImgWms = this.HsUtilsService.instOf(olLayer.getSource(), ImageWMS);
+
+    if (isTileWms || isImgWms) {
       const src = olLayer.getSource() as TileWMS;
       layerParams = src.getParams();
       src.on('change', () => {
         this.syncQueryParamToDimension(src, olLayer, currentLayer);
       });
     }
-    const isImgWms = this.HsUtilsService.instOf(olLayer.getSource(), ImageWMS);
-    if (isImgWms) {
-      const src = olLayer.getSource() as ImageWMS;
-      layerParams = src.getParams();
-      src.on('change', () => {
-        this.syncQueryParamToDimension(src, olLayer, currentLayer);
-      });
-    }
+
     if (layerParams['TIME'] && timePoints.includes(layerParams['TIME'])) {
       defaultTime = layerParams['TIME'];
     } else if (timePoints.includes(hsLayerTimeConfig?.default)) {
