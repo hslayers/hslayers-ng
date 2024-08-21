@@ -61,6 +61,24 @@ export class HslayersAppComponent {
       this.hsLayoutService.setDefaultPanel('custom');
     });
 
+    /* Proper WMS-t layer */
+    const imageWmsTSource = new TileWMS({
+      url: 'http://gis.lesprojekt.cz/cgi-bin/mapserv?map=/home/dima/maps/veg_indexy.map&SERVICE=WMS',
+      params: {
+        LAYERS: 'tci',
+      },
+    });
+    const imageWmsTLayer = new Tile({
+      properties: {
+        title: 'Vegetation Satellite Image',
+        base: false,
+        removable: false,
+        dimensions: {time: {value: '2020-01-11'}},
+      },
+      source: imageWmsTSource,
+      visible: false,
+    });
+
     const interpolatedSource = new InterpolatedSource({
       maxFeaturesInCache: 500,
       maxFeaturesInExtent: 100,
@@ -478,6 +496,7 @@ export class HslayersAppComponent {
             removable: false,
           },
         }),
+        imageWmsTLayer,
         new VectorLayer({
           properties: {
             title: 'POIs from SPOI in Italy',
