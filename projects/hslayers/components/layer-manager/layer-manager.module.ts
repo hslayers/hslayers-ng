@@ -11,6 +11,7 @@ import {
 
 import {DatePreformatPipe} from './dimensions/date-preformat.pipe';
 import {FilterPipe} from 'hslayers-ng/common/pipes';
+import {HsClipboardTextComponent} from 'hslayers-ng/common/clipboard-text';
 import {HsClusterWidgetComponent} from './widgets/cluster-widget.component';
 import {HsColormapPickerModule} from 'hslayers-ng/common/color-map-picker';
 import {HsCopyLayerDialogComponent} from './dialogs/copy-layer-dialog.component';
@@ -78,6 +79,7 @@ import {TranslateCustomPipe} from 'hslayers-ng/services/language';
     HsPanelHeaderComponent,
     FilterPipe,
     DatePreformatPipe,
+    HsClipboardTextComponent,
   ],
   exports: [
     HsLayerManagerComponent,

@@ -1,6 +1,6 @@
 @if (!isIterable()) {
-<dd>{{value}}</dd>
-}<!-- TODO: Remove function call from template -->
+<dd><hs-clipboard-text [text]="value" /></dd>
+}
 @for (item of entries; track item) {
 <dl>
   <dt>{{item.key || item[0]}}</dt>

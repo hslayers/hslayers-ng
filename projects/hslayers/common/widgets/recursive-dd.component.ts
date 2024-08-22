@@ -1,14 +1,16 @@
-import {Component, Input} from '@angular/core';
+import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
 
 import {transform} from 'ol/proj';
 
+import {HsClipboardTextComponent} from 'hslayers-ng/common/clipboard-text';
 import {HsMapService} from 'hslayers-ng/services/map';
 
 @Component({
   selector: 'hs-widgets-recursive-dd',
   templateUrl: './recursive-dd.component.html',
-  imports: [],
+  imports: [HsClipboardTextComponent],
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HsUiExtensionsRecursiveDdComponent {
   @Input() value: any;
