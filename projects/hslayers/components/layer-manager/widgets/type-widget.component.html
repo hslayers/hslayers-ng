@@ -1,22 +1,19 @@
 <div class="form-group">
   @if (layerDescriptor | async; as descriptor) {
-    <small class="text-secondary">
-      {{ descriptor.type | translateHs: "LAYERMANAGER.layerEditor" }}
-      {{ "LAYERMANAGER.layerEditor.layerFrom" | translateHs }}
-      <div class="mw-100 d-flex align-items-center justify-content-between">
-        <span class="text-truncate">
-          {{
-          descriptor.source
-          | translateHs: "LAYERMANAGER.layerEditor"
-          }}
-        </span>
-        @if (descriptor.source !== "memory") {
-          <button class="btn btn-sm text-secondary" data-toggle="tooltip" [title]="'COMMON.copyToClipboard' | translateHs"
-            (click)="copyToClipBoard()">
-            <i [class.icon-check]="showCheck" [class.icon-copy]="!showCheck"></i>
-          </button>
-        }
-      </div>
-    </small>
+  <small class="text-secondary">
+    {{ descriptor.type | translateHs: "LAYERMANAGER.layerEditor" }}
+    {{ "LAYERMANAGER.layerEditor.layerFrom" | translateHs }}
+    <div class="mw-100 d-flex align-items-center justify-content-between">
+      @if (descriptor.source === "memory") {
+      <span class="text-truncate">
+        {{
+        descriptor.source
+        | translateHs: "LAYERMANAGER.layerEditor"
+        }}
+      </span>
+      }
+      @else{<hs-clipboard-text [text]="descriptor.source" />}
+    </div>
+  </small>
   }
 </div>

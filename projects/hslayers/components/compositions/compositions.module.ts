@@ -5,6 +5,7 @@ import {FormsModule} from '@angular/forms';
 import {NgbAccordionModule} from '@ng-bootstrap/ng-bootstrap';
 import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
 
+import {HsClipboardTextComponent} from 'hslayers-ng/common/clipboard-text';
 import {HsCommonUrlModule} from 'hslayers-ng/components/add-data';
 import {HsCompositionsComponent} from './compositions.component';
 import {HsCompositionsDeleteDialogComponent} from './dialogs/delete-dialog.component';
@@ -39,6 +40,7 @@ import {TranslateCustomPipe} from 'hslayers-ng/services/language';
     HsPagerModule,
     HsCommonUrlModule,
     HsPanelHeaderComponent,
+    HsClipboardTextComponent,
   ],
   exports: [HsCompositionsComponent],
 })
