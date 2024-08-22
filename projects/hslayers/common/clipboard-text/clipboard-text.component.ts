@@ -9,7 +9,11 @@ import {TranslateCustomPipe} from 'hslayers-ng/services/language';
   standalone: true,
   imports: [TranslateCustomPipe],
   template: `
-    <span class="flex-fill text-truncate">{{ text() }}</span>
+    @if (anchor()) {
+      <a class="flex-fill text-truncate" href="text()">{{ text() }}</a>
+    } @else {
+      <span class="flex-fill text-truncate">{{ text() }}</span>
+    }
     <button
       class="btn btn-sm text-secondary"
       data-toggle="tooltip"
@@ -29,6 +33,7 @@ import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 })
 export class HsClipboardTextComponent {
   text = input.required<string>();
+  anchor = input<boolean>(false);
 
   hsToastService = inject(HsToastService);
   showCheck = false;
