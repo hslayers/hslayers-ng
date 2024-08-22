@@ -610,7 +610,10 @@ export class HsLayerManagerService {
     const layerTitle = this.hsShareUrlService.getParamValue(
       HS_PRMS.layerSelected,
     );
-    if (layerTitle != undefined) {
+    if (
+      layerTitle != undefined &&
+      this.hsLayoutService.mainpanel === 'layerManager'
+    ) {
       setTimeout(() => {
         const layerFound = this.data.layers.find(
           (layer) => layer.title == layerTitle,
