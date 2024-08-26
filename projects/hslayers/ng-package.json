@@ -3,7 +3,7 @@
   "dest": "../../dist/hslayers",
   "assets": [
     "assets",
-    "css/hslayers-bootstrap.scss",
+    "css/hslayers-ng.scss",
     "css/whhg-font/css/whhg.css"
   ],
   "lib": {
