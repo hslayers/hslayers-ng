@@ -1,10 +1,3 @@
-@container hslayers-element (max-width:767px) {
-  :root {
-    font-size: 115%
-  }
-}
-
-
 @import "ol/ol";
 @import "./whhg-font/css/whhg";
 /*Import parts of the bootstrap outside hsl class to allow :root*/
@@ -12,6 +5,7 @@
 @import "bootstrap/scss/variables";
 @import "bootstrap/scss/variables-dark";
 
+$table-group-separator-color: white;
 $list-group-item-padding-y: 0.75rem;
 $list-group-item-padding-x: 1.25rem;
 
@@ -25,923 +19,1147 @@ $list-group-item-padding-x: 1.25rem;
 .hsl::after,
 .hsl * .hsl *::before,
 .hsl *::after {
-  all: revert;
+    all: revert;
 }
 
 .hsl {
-  @for $i from 0 through 20 {
-    &:not(.hs-mobile-view) .hs-panelspace hs-panel-container.hs-panelplace>*>.hs-panel-width-#{400 + ($i * 25)} {
-      width: 400 + ($i * 25)+px;
-    }
-  }
+    container-type: inline-size;
+    container-name: hslayers-element;
 
-  .hs-comp-item-body a.btn:hover,
-  .hs-catalogue-item-body a.btn:hover,
-  .hs-catalogue-item-body button.btn:hover {
-    box-shadow: #0000003d 0px 3px 8px;
-  }
 
-  .form-control:not(.form-control-sm):not(.form-control-lg) {
-    font-size: 1rem;
-  }
-
-  hs-panel-container.hs-panelplace>*>div[class*="hs-panel-width-"] {
-    max-width: 65rem;
-    margin: auto
-  }
-
-  .alert {
-    width: auto;
-  }
-
-  .alert-status {
-    color: #6c757d;
-  }
-
-  //Dropped in b5. suggested to use utilities mb-*. Might refactor later
-  .form-group {
-    margin-bottom: 1rem;
-  }
-
-  .navbar-expand .nav-item {
-    align-items: flex-start;
-  }
-
-  .basemapGallery .dropdown-menu {
-    overflow: visible;
-  }
-
-  hs-add-data-catalogue {
-    .hs-catalogue-list-item-title {
-      color: inherit;
-      text-decoration: none;
+    @for $i from 0 through 20 {
+        &:not(.hs-mobile-view) .hs-panelspace *.hs-panelplace>*>.hs-panel-width-#{400 + ($i * 25)} {
+            width: 400 + ($i * 25)+px;
+        }
     }
 
-    hs-catalogue-list-item>div.disabled .hs-catalogue-list-item-title {
-      color: $secondary;
-      opacity: 50%;
+    hs-panel-container.hs-panelplace>*>div[class*="hs-panel-width-"] {
+        max-width: 65rem;
+        margin: auto
     }
 
-    .dropdown-menu {
-      max-width: revert;
-    }
-  }
-
-  .list-group-item+.list-group-item {
-    border-top-width: 0px;
-  }
-
-  .hs-url-table {
-    tr td {
-      display: table-cell;
+    .form-control:not(.form-control-sm):not(.form-control-lg) {
+        font-size: $font-size-base;
     }
 
-    .text-light th {
-      color: $light;
-    }
-  }
+    //CSS override for each bs5 theme-color - used to force style against hub themes
+    @each $color,
+    $value in $theme-colors {
+        .btn-#{$color} {
+            &:focus:not(.bg-transparent) {
+                background-color: var(--bs-btn-hover-bg) !important;
+                color: var(--bs-btn-active-color) !important;
+            }
 
-  /* app css stylesheet */
-  .icon-spin {
-    -webkit-animation: spin 1500ms infinite linear;
-    animation: spin 1500ms infinite linear;
-    position: relative;
-    display: inline-block;
-    font-style: normal;
-    font-weight: 400;
-    line-height: 1;
-    -webkit-font-smoothing: antialiased;
-  }
+            &:hover:not(.bg-transparent) {
+                background-color: var(--bs-btn-hover-bg) !important;
+            }
 
-  @-webkit-keyframes spin {
-    0% {
-      -webkit-transform: rotate(0deg);
-      transform: rotate(0deg);
-    }
+            &.active:not(.bg-transparent),
+            &:active:not(.bg-transparent) {
+                color: var(--bs-btn-active-color) !important;
+                background-color: var(--bs-btn-active-bg) !important;
+                border-color: var(--bs-btn-active-border-color) !important;
+            }
 
-    100% {
-      -webkit-transform: rotate(359deg);
-      transform: rotate(359deg);
-    }
-  }
-
-  @keyframes spin {
-    0% {
-      -webkit-transform: rotate(0deg);
-      transform: rotate(0deg);
+            &.disabled:not(.bg-transparent),
+            &:disabled:not(.bg-transparent) {
+                background-color: var(--bs-btn-disabled-bg) !important;
+            }
+        }
     }
 
-    100% {
-      -webkit-transform: rotate(359deg);
-      transform: rotate(359deg);
-    }
-  }
-
-  .hs-wms-expandedRow {
-    white-space: break-spaces;
-  }
-
-  .hs-wms-highlighted {
-    cursor: pointer;
-
-    &>span {
-      pointer-events: none;
-    }
-  }
-
-  .hs-flex-fill {
-    flex: 1 1 auto;
-  }
-
-  .hs-greyscale {
-    filter: grayscale(100%);
-  }
-
-  .grayed {
-    color: #cccccc;
-  }
-
-  .hs-main-panel {
-    border: none;
-    margin-bottom: 0;
-    margin-top: 0.25rem !important;
-  }
-
-  div.hs-main-panel:not(.hs-stc-mainpanel)>div.card-body {
-    padding: 0px;
-  }
-
-  .hs-map-space {
-    min-height: inherit;
-    flex: 1 1 auto;
-    position: relative;
-  }
-
-  .hs-map-space>hs-panel-container {
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    pointer-events: none;
-  }
-
-  /* To not disable pointer-events for all hs-panel-containers children too*/
-  .hs-map-space hs-panel-container>* {
-    pointer-events: auto;
-  }
-
-  .flex-reverse {
-    flex-direction: row-reverse;
-  }
-
-  .fill {
-    min-height: 100%;
-    height: 100%;
-  }
-
-  .cursor-pointer {
-    cursor: pointer;
-  }
-
-  .hs-info-container {
-    pointer-events: none;
-  }
-
-  .hs-filter {
-    border: 0 !important;
-    border-top-left-radius: 0.25rem !important;
-    border-bottom-left-radius: 0.25rem !important;
-  }
-
-  .hs-save-map-filter {
-    border: 0 !important;
-    border-radius: 0.25rem !important;
-  }
-
-  .hs-save-map-users-list {
-    overflow-y: auto;
-    height: min-content;
-    max-height: 50vh;
-
-    &.collapsed {
-      max-height: 10rem;
-    }
-  }
-
-  .hs-layerpanel {
-    //max-height: 27.875em;
-    overflow-y: auto;
-    border: 0;
-    margin-bottom: 0;
-    border-bottom: 0;
-    word-wrap: break-word;
-  }
-
-  progress::-webkit-progress-value {
-    transition: width 0.1s ease;
-  }
-
-  .hs-save-comp-advanced-panel {
-    margin-top: 10px;
-  }
-
-  .hs-comp-ext-row {
-    margin-left: 0;
-    margin-right: 0;
-  }
-
-  .hs-comp-ext {
-    padding-left: 3px;
-    padding-right: 3px;
-  }
-
-  .hs-comp-ext input {
-    text-align: center;
-    padding: 3px 6px;
-  }
-
-  .hs-lm-header:first-child,
-  .hs-lm-list:first-child,
-  .hs-lm-item:first-child,
-  .hs-comp-header:first-child,
-  .hs-comp-list:first-child,
-  .hs-comp-item:first-child {
-    border-top-left-radius: 0;
-    border-top-right-radius: 0;
-  }
-
-  .hs-lm-list:last-child,
-  .hs-lm-item:last-child,
-  .hs-comp-list:last-child,
-  .hs-comp-item:last-child {
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0;
-  }
-
-  input.hs-waypoint-name {
-    display: inline-block;
-    width: calc(100% - 2.8125em);
-  }
-
-  .hs-tab-single-datasources a {
-    cursor: pointer;
-  }
-
-  ul.hs-comp-list {
-    margin-bottom: 0;
-    overflow-y: auto;
-  }
-
-  .modal.in {
-    display: block;
-  }
-
-  .modal-backdrop {
-    visibility: hidden;
-  }
-
-  .form-control {
-    border-radius: 0;
-  }
-
-  input[type="range"].form-control {
-    padding: 0;
-  }
-
-  .capabilities_label {
-    padding-right: 0px;
-    padding-left: 0px;
-  }
-
-  .capabilities_input {
-    padding-right: 0px;
-    padding-left: 15px;
-  }
-
-  hr {
-    margin-top: 0px;
-    margin-bottom: 5px;
-  }
-
-  a {
-    cursor: pointer;
-  }
-
-  .input-group-append [class^="icon-"] {
-    font-size: 0.85rem;
-  }
-
-  .but-title-sm {
-    float: right;
-    font-size: 0.85rem;
-    font-weight: 700;
-    line-height: 17px;
-    filter: alpha(opacity=20);
-    opacity: 0.35;
-  }
-
-  .but-title-sm:hover {
-    text-decoration: none;
-    cursor: pointer;
-    filter: alpha(opacity=50);
-    opacity: 0.8;
-  }
-
-  button.but-title-sm {
-    -webkit-appearance: none;
-    cursor: pointer;
-    background: 0 0;
-    border: 0;
-  }
-
-  .popover-content {
-    min-width: 230px;
-  }
-
-  .popover {
-    max-width: 1000px;
-    max-height: 1000px;
-  }
-
-  .thumbnail {
-    margin-top: 3px;
-    margin-bottom: 3px;
-  }
-
-  .modal {
-    font-family: Roboto, "Helvetica Neue", sans-serif;
-  }
-
-  /*************/
-  /** CHECKBOXES **/
-  /*************/
-  .hs-checkmark,
-  .hs-uncheckmark {
-    position: relative;
-    cursor: pointer;
-    margin-right: 0.3em;
-  }
-
-  .hs-checkmark::before {
-    content: "\2713";
-  }
-
-  .hs-uncheckmark::before {
-    content: "\00a0 ";
-  }
-
-  .hs-checkmark::before,
-  .hs-uncheckmark::before {
-    display: inline-block;
-    width: 1.5em;
-    height: 1.5em;
-    padding: 0.09em 0.4em 0.05em 0.35em;
-    border-radius: 0.2em;
-    font-weight: 1000;
-    font-size: 0.8rem;
-  }
-
-  .sublayerContainer .hs-checkmark::before,
-  .sublayerContainer .hs-uncheckmark::before,
-  .form-check .hs-checkmark::before,
-  .form-check .hs-uncheckmark::before {
-    margin-right: 0.5em;
-  }
-
-  /********************/
-  /** STATUS CREATOR **/
-  /********************/
-
-  .hs-stc-footer {
-    text-align: center;
-    margin-top: 10px;
-  }
-
-  #stc-layerlist .list-group-item {
-    padding: 0.25rem;
-  }
-
-  .hs-stc-footer button {
-    width: 100px;
-  }
-
-  /*********/
-  /** OWS **/
-  /*********/
-
-  #hs-ows-abstract {
-    resize: vertical;
-    min-height: 100px;
-  }
-
-  .hs-advanced-options {
-    margin-top: 10px;
-  }
-
-  /**********************************/
-  /** SIDEBAR&TOOLBAR RESPONSIVITY **/
-  /**********************************/
-
-  &.hs-mobile-view {
-    .d-mw-md-block {
-      display: block !important;
+    .hs-comp-item-body a.btn:hover,
+    .hs-catalogue-item-body a.btn:hover,
+    .hs-catalogue-item-body button.btn:hover {
+        box-shadow: #0000003d 0px 3px 8px;
     }
 
-    input[type="checkbox"] {
-      margin-right: 0.5em;
-      margin-left: 0.5em;
+    .card {
+        box-shadow: none;
     }
 
-    div .form-check-inline {
-      margin-right: 0 !important;
+    .alert {
+        width: auto;
     }
 
-    .hs-sb-bottom .hs-ol-map {
-      width: 100% !important;
+    .alert-status {
+        color: $secondary;
     }
 
-    /* Next is needed on iPhone/Safari even if the position gets 
-		overridden with 'relative' afterwards. Without 'absolute' here the 
-		map doesn't display - height stays 0px. */
-    .ol-viewport {
-      position: absolute !important;
+    //Dropped in b5. suggested to use utilities mb-*. Might refactor later
+    .form-group {
+        margin-bottom: 1rem;
     }
 
-    .panel-footer {
-      padding: 5px;
+    .navbar-expand .nav-item {
+        align-items: flex-start;
     }
 
-    .panel-footer {
-      padding: 5px;
+    .basemapGallery .dropdown-menu {
+        overflow: visible;
+    }
+
+    hs-add-data-catalogue {
+        .hs-catalogue-list-item-title {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        hs-catalogue-list-item>div.disabled .hs-catalogue-list-item-title {
+            color: $secondary;
+            opacity: 50%;
+        }
+
+        .dropdown-menu {
+            max-width: revert;
+        }
+    }
+
+    .list-group-item+.list-group-item {
+        border-top-width: 0px;
+    }
+
+    .hs-url-table {
+        tr td {
+            display: table-cell;
+        }
+
+        .text-light th {
+            color: $light;
+        }
+    }
+
+    .nav-link[class*='btn-']:hover {
+        color: white;
+    }
+
+    /* app css stylesheet */
+    .icon-spin {
+        -webkit-animation: spin 1500ms infinite linear;
+        animation: spin 1500ms infinite linear;
+        position: relative;
+        display: inline-block;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 1;
+        -webkit-font-smoothing: antialiased;
+    }
+
+    .icon-primary {
+        color: $primary;
+    }
+
+    @-webkit-keyframes spin {
+        0% {
+            -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
+        }
+
+        100% {
+            -webkit-transform: rotate(359deg);
+            transform: rotate(359deg);
+        }
+    }
+
+    @keyframes spin {
+        0% {
+            -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
+        }
+
+        100% {
+            -webkit-transform: rotate(359deg);
+            transform: rotate(359deg);
+        }
+    }
+
+    .hs-wms-expandedRow {
+        white-space: break-spaces;
+    }
+
+    .hs-wms-highlighted {
+        cursor: pointer;
+
+        &>span {
+            pointer-events: none;
+        }
+    }
+
+    .hs-wms-highlighted:hover {
+        background-color: #d2d8dd96;
+    }
+
+    .hs-flex-fill {
+        flex: 1 1 auto;
+    }
+
+    .hs-greyscale {
+        filter: grayscale(100%);
+    }
+
+    .grayed {
+        color: #cccccc;
+    }
+
+    .hs-main-panel {
+        border: none;
+        margin-bottom: 0;
+    }
+
+    div.hs-main-panel:not(.hs-stc-mainpanel)>div.card-body {
+        padding: 0px;
+    }
+
+    .hs-map-space {
+        min-height: inherit;
+        flex: 1 1 auto;
+        position: relative;
+    }
+
+    .hs-map-space>hs-panel-container {
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        pointer-events: none;
+    }
+
+    /* To not disable pointer-events for all hs-panel-containers children too*/
+    .hs-map-space hs-panel-container>* {
+        pointer-events: auto;
+    }
+
+    .flex-reverse {
+        flex-direction: row-reverse;
+    }
+
+    .fill {
+        min-height: 100%;
+        height: 100%;
+    }
+
+    .cursor-pointer {
+        cursor: pointer;
+    }
+
+    .hs-info-container {
+        pointer-events: none;
     }
 
     .hs-filter {
-      display: none !important;
+        border: 0 !important;
+        border-top-left-radius: 0.25rem !important;
+        border-bottom-left-radius: 0.25rem !important;
     }
 
-    .ol-attribution.ol-uncollapsible {
-      bottom: 0.2em;
+    .hs-save-map-filter {
+        border: 0 !important;
+        border-radius: 0.25rem !important;
     }
 
-    .ol-attribution ul {
-      margin: 0;
+    .hs-save-map-users-list {
+        overflow-y: auto;
+        height: min-content;
+        max-height: 50vh;
+
+        &.collapsed {
+            max-height: 10rem;
+        }
     }
 
-    .ol-control button {
-      font-size: 1rem;
+    .hs-layerpanel {
+        // max-height: 27.875em;
+        overflow-y: auto;
+        border: 0;
+        margin-bottom: 0;
+        border-bottom: 0;
+        word-wrap: break-word;
     }
 
-    .hs-ol-map .ol-zoom {
-      bottom: 2rem;
-      top: auto;
-      right: 5px;
-      left: auto;
+    progress::-webkit-progress-value {
+        transition: width 0.1s ease;
     }
 
-    div.hs-info-container {
-      display: none;
+    .hs-save-comp-advanced-panel {
+        margin-top: 10px;
     }
 
-    .dropzone-container {
-      flex-direction: column;
+    .hs-comp-ext-row {
+        margin-left: 0;
+        margin-right: 0;
     }
 
-    .hs-draw-selectAll {
-      font-size: 1rem;
+    .hs-comp-ext {
+        padding-left: 3px;
+        padding-right: 3px;
+    }
+
+    .hs-comp-ext input {
+        text-align: center;
+        padding: 3px 6px;
+    }
+
+    .hs-lm-header:first-child,
+    .hs-lm-list:first-child,
+    .hs-lm-item:first-child,
+    .hs-comp-header:first-child,
+    .hs-comp-list:first-child,
+    .hs-comp-item:first-child {
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
+    }
+
+    .hs-lm-list:last-child,
+    .hs-lm-item:last-child,
+    .hs-comp-list:last-child,
+    .hs-comp-item:last-child {
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+    }
+
+    input.hs-waypoint-name {
+        display: inline-block;
+        width: calc(100% - 2.8125em);
+    }
+
+    .hs-tab-single-datasources a {
+        cursor: pointer;
+    }
+
+    ul.hs-comp-list {
+        margin-bottom: 0;
+        overflow-y: auto;
+    }
+
+    .modal.in {
+        display: block;
+        background-color: #0e0e0d38;
+    }
+
+    .modal-backdrop {
+        visibility: hidden;
+    }
+
+    .form-control {
+        border-radius: 0;
+    }
+
+    input[type="range"].form-control {
+        padding: 0;
+    }
+
+    .capabilities_label {
+        padding-right: 0px;
+        padding-left: 0px;
+    }
+
+    .capabilities_input {
+        padding-right: 0px;
+        padding-left: 15px;
+    }
+
+    hr {
+        margin-top: 0px;
+        margin-bottom: 5px;
+    }
+
+    a {
+        cursor: pointer;
+    }
+
+    .input-group-append [class^="icon-"] {
+        font-size: 0.85rem;
+    }
+
+    .but-title-sm {
+        float: right;
+        font-size: 0.85rem;
+        line-height: 17px;
+        color: $secondary;
+        filter: alpha(opacity=20);
+        opacity: 0.35;
+    }
+
+    .but-title-sm:hover {
+        text-decoration: none;
+        cursor: pointer;
+        filter: alpha(opacity=50);
+        opacity: 0.8;
+    }
+
+    button.but-title-sm {
+        -webkit-appearance: none;
+        cursor: pointer;
+        background: 0 0;
+        border: 0;
+    }
+
+    .popover-content {
+        min-width: 230px;
+    }
+
+    .popover {
+        max-width: 1000px;
+        max-height: 1000px;
+    }
+
+    .thumbnail {
+        margin-top: 3px;
+        margin-bottom: 3px;
+    }
+
+    .list-group-item.active a {
+        color: #fff;
+    }
+
+    .list-group-item.active {
+        background-color: $primary;
+        border-color: $primary;
+        color: white;
+    }
+
+    .modal {
+        font-family: Roboto, "Helvetica Neue", sans-serif;
+    }
+
+    /****************/
+    /** CHECKBOXES **/
+    /****************/
+    .hs-checkmark,
+    .hs-uncheckmark {
+        position: relative;
+        cursor: pointer;
+        margin-right: 0.3em;
+    }
+
+    .hs-checkmark::before {
+        content: "\2713";
+    }
+
+    .hs-uncheckmark::before {
+        content: "\00a0 ";
+    }
+
+    .hs-checkmark::before,
+    .hs-uncheckmark::before {
+        color: hsl(0, 0%, 100%);
+        display: inline-block;
+        width: 1.5em;
+        height: 1.5em;
+        background-color: $primary;
+        padding: 0.09em 0.4em 0.05em 0.35em;
+        border-radius: 0.2em;
+        font-weight: 1000;
+        font-size: 0.8rem;
+    }
+
+    .hs-uncheckmark::before {
+        background-color: hsl(0, 0%, 100%);
+        box-shadow: inset 0 0 0 0.2em $primary;
+    }
+
+    .hs-checkmark.hs-btn-baselayers::before {
+        color: $primary;
+        background-color: hsl(0, 0%, 100%);
+    }
+
+    .sublayerContainer .hs-checkmark::before,
+    .sublayerContainer .hs-uncheckmark::before,
+    .form-check .hs-checkmark::before,
+    .form-check .hs-uncheckmark::before {
+        margin-right: 0.5em;
+    }
+
+    /********************/
+    /** STATUS CREATOR **/
+    /********************/
+
+    .hs-stc-footer {
+        text-align: center;
+        margin-top: 10px;
     }
 
     #stc-layerlist .list-group-item {
-      padding: 1rem;
+        padding: 0.25rem;
     }
-  }
 
-  ul[dnd-list],
-  ul[dnd-list]>li {
-    position: relative;
-  }
+    .hs-stc-footer button {
+        width: 100px;
+    }
 
-  /**
+    /*********/
+    /** OWS **/
+    /*********/
+
+    #hs-ows-abstract {
+        resize: vertical;
+        min-height: 100px;
+    }
+
+    .hs-advanced-options {
+        margin-top: 10px;
+    }
+
+    .hs-ows-layerlistheading {
+        background-color: hsl(0, 0%, 93%);
+    }
+
+    hs-panel-header {
+        background-color: white;
+    }
+
+    /**********************************/
+    /** SIDEBAR&TOOLBAR RESPONSIVITY **/
+    /**********************************/
+
+    &.hs-mobile-view {
+
+        .d-mw-md-block {
+            display: block !important;
+        }
+
+        input[type="checkbox"] {
+            margin-right: 0.5em;
+            margin-left: 0.5em;
+        }
+
+        div .form-check-inline {
+            margin-right: 0 !important;
+        }
+
+        .hs-sb-bottom .hs-ol-map {
+            width: 100% !important;
+        }
+
+        /* Next is needed on iPhone/Safari even if the position gets 
+		overridden with 'relative' afterwards. Without 'absolute' here the 
+		map doesn't display - height stays 0px. */
+        .ol-viewport {
+            position: absolute !important;
+        }
+
+        .panel-footer {
+            padding: 5px;
+        }
+
+        .panel-footer {
+            padding: 5px;
+        }
+
+        .hs-filter {
+            display: none !important;
+        }
+
+        .ol-attribution.ol-uncollapsible {
+            bottom: 0.2em;
+        }
+
+        .ol-attribution ul {
+            margin: 0;
+        }
+
+        .ol-control button {
+            font-size: 1rem;
+        }
+
+        .hs-ol-map .ol-zoom {
+            bottom: 2rem;
+            top: auto;
+            right: 5px;
+            left: auto;
+        }
+
+        div.hs-info-container {
+            display: none;
+        }
+
+        .dropzone-container {
+            flex-direction: column;
+        }
+
+        .hs-draw-selectAll {
+            font-size: 1rem;
+        }
+
+        #stc-layerlist .list-group-item {
+            padding: 1rem;
+        }
+    }
+
+    ul[dnd-list],
+    ul[dnd-list]>li {
+        position: relative;
+    }
+
+    /**
 	* The dnd-list should always have a min-height,
 	* otherwise you can't drop to it once it's empty
 	*/
-  ul[dnd-list] {
-    min-height: 42px;
-    padding-left: 0px;
-    margin-left: -23px;
-    margin-right: -20px;
-  }
+    ul[dnd-list] {
+        min-height: 42px;
+        padding-left: 0px;
+        margin-left: -23px;
+        margin-right: -20px;
+    }
 
-  /**
+    /**
 	* The dndDraggingSource class will be applied to
 	* the source element of a drag operation. It makes
 	* sense to hide it to give the user the feeling
 	* that he's actually moving it.
 	*/
-  ul[dnd-list] .dndDraggingSource {
-    display: none;
-  }
+    ul[dnd-list] .dndDraggingSource {
+        display: none;
+    }
 
-  /**
+    /**
 	* An element with .dndPlaceholder class will be
 	* added to the dnd-list while the user is dragging
 	* over it.
 	*/
-  ul[dnd-list] .dndPlaceholder {
-    display: block;
-    min-height: 42px;
-  }
+    ul[dnd-list] .dndPlaceholder {
+        display: block;
+        background-color: #ddd;
+        min-height: 42px;
+    }
 
-  /**
+    /**
 	* The dnd-lists's child elements currently MUST have
 	* position: relative. Otherwise we can not determine
 	* whether the mouse pointer is in the upper or lower
 	* half of the element we are dragging over. In other
 	* browsers we can use event.offsetY for this.
 	*/
-  ul[dnd-list] li {
-    border: 1px solid #ddd;
-    border-top-right-radius: 4px;
-    border-top-left-radius: 4px;
-    display: block;
-    padding-top: 7px;
-    margin-bottom: -1px;
-    line-height: 1em;
-    padding-left: 3px;
-    padding-right: 2px;
-    padding-bottom: 0px;
-  }
-
-  .input-group-btn .btn {
-    height: 34px;
-  }
-
-  .badge.bg-warning {
-    height: 100%;
-    width: 1.75em;
-    line-height: inherit;
-  }
-
-  .btn-group>.btn {
-    float: initial;
-  }
-
-  .draw-buttons button {
-    margin-left: 0.3em;
-  }
-
-  .card-href {
-    width: 100%;
-    display: inline-block;
-  }
-
-  @media only screen and (min-width: 600px) {
-    .hs-layout .layout-row {
-      position: relative;
+    ul[dnd-list] li {
+        background-color: #fff;
+        border: 1px solid #ddd;
+        border-top-right-radius: 4px;
+        border-top-left-radius: 4px;
+        display: block;
+        padding-top: 7px;
+        margin-bottom: -1px;
+        line-height: 1em;
+        padding-left: 3px;
+        padding-right: 2px;
+        padding-bottom: 0px;
     }
-  }
 
-  #permalink-link {
-    overflow-x: hidden;
-  }
+    /**
+	* Show selected elements in green
+	*/
+    ul[dnd-list] li.selected {
+        background-color: #dff0d8;
+        color: #3c763d;
+    }
 
-  .hs-dotted-line {
-    border: 1px dotted #495057;
-    border-style: none none dotted;
-  }
+    .hs-senslog-sensor {
+        color: #333;
+    }
 
-  .hs-extra-buttons {
-    line-height: 1em;
-    float: right;
-    margin-right: 0.5em;
-  }
+    .input-group-btn .btn {
+        height: 34px;
+    }
 
-  .dropdown-toggle.hs-custom-toggle::after {
-    display: inline-block;
-    width: 0.47em;
-    height: 0.47em;
-    margin: 0 0 0 0.4em;
-    content: "";
-    border: 0.3em solid;
-    border-width: 0 0.15em 0.15em 0;
-    transform: rotateZ(45deg);
-  }
+    .badge.bg-warning {
+        height: 100%;
+        width: 1.75em;
+        line-height: inherit;
+    }
 
-  .hs-hover-popup {
-    max-height: 20em;
-    min-width: 10em;
-    max-width: 40em;
-    overflow-y: scroll;
-    visibility: visible;
-  }
+    .btn-group>.btn {
+        float: initial;
+    }
 
-  .hs-toolbar-button {
-    height: 2.4em;
-  }
+    .draw-buttons button {
+        margin-left: 0.3em;
+    }
 
-  .dropdown-menu.datetime-picker-menu {
-    min-width: 22rem;
-  }
+    .card-href {
+        color: $gray-900;
+        width: 100%;
+        display: inline-block;
+    }
 
-  .hs-sensor {
-    line-height: 1.9em;
-  }
+    @media only screen and (min-width: 600px) {
+        .hs-layout .layout-row {
+            position: relative;
+        }
+    }
 
-  .hs-date-time-chevron:not(*:root) {
-    /* Supports only WebKit browsers */
-    visibility: hidden;
-  }
+    #permalink-link {
+        overflow-x: hidden;
+    }
 
-  .form-inline .ngb-tp-input {
-    width: 4em;
-  }
+    .hs-dotted-line {
+        border: 1px dotted #495057;
+        border-style: none none dotted;
+        color: #495057;
+        background-color: hsla(0, 0%, 0%, 0.2);
+    }
 
-  hs-layer-editor .form-check {
-    line-height: 1.5;
-  }
+    .hs-extra-buttons {
+        line-height: 1em;
+        float: right;
+        margin-right: 0.5em;
+    }
 
-  hs-layer-editor .card-body {
-    padding: 0.65rem;
-  }
+    extra-buttons a.dropdown-item i {
+        padding-right: 0.2rem;
+    }
 
-  hs-layer-editor hr {
-    margin-top: 0.3rem;
-    margin-bottom: 0.3rem;
-  }
+    .dropdown-toggle.hs-custom-toggle::after {
+        display: inline-block;
+        width: 0.47em;
+        height: 0.47em;
+        margin: 0 0 0 0.4em;
+        content: "";
+        border: 0.3em solid;
+        border-width: 0 0.15em 0.15em 0;
+        transform: rotateZ(45deg);
+        color: #495057;
+    }
 
-  .hs-layerpanel {
-    overflow-x: hidden;
-  }
+    .dropdown-toggle.hs-custom-toggle:focus {
+        box-shadow: 0 0 0 0.2rem hsla(211, 100%, 50%, 0.25) !important;
+    }
 
-  .hs-hover-popup-feature {
-    font-size: 0.8rem;
-    line-height: 1;
-    margin-bottom: 2px;
-    border-bottom: 1px solid hsl(0, 0%, 78%);
-  }
+    .hs-background-alfa {
+        background-color: #edf0f2;
+    }
 
-  .hs-draw-layer-toggle div {
-    display: inline-block;
-    max-width: 7em;
-    overflow-x: hidden;
-    line-height: normal;
-  }
+    .hs-hover-popup {
+        max-height: 20em;
+        min-width: 10em;
+        max-width: 40em;
+        overflow-y: auto;
+        visibility: visible;
+        background: white;
+    }
 
-  .inputfile {
-    width: 0.1px;
-    height: 0.1px;
-    opacity: 0;
-    overflow: hidden;
-    position: absolute;
-    z-index: -1;
-  }
+    .hs-toolbar-button {
+        height: 2.4em;
+    }
 
-  .inputfile+label {
-    font-size: 1.25em;
-    font-weight: 700;
-    display: inline-block;
-    cursor: pointer;
-  }
+    .dropdown-menu.datetime-picker-menu {
+        min-width: 22rem;
+    }
 
-  input[type="checkbox"].checkbox-lg {
-    transform: scale(1.3);
-  }
+    a.hs-sensor-type {
+        color: hsl(0, 0%, 0%);
+    }
 
-  //**DROPZONE **//
-  .dropzone-container {
-    flex-direction: row;
-  }
+    a.hs-sensor-unit {
+        color: hsl(0, 0%, 0%);
+        font-weight: bold;
+    }
 
-  .dropzone {
-    text-align: center;
-    min-height: 80px;
-    border: dashed 3px $primary;
-    border-radius: 5px;
-  }
+    .hs-sensor {
+        line-height: 1.9em;
+    }
 
-  .dropzone.active {
-    border: solid 3px $secondary;
-    opacity: 0.4;
-  }
+    .hs-date-time-chevron:not(*:root) {
+        /* Supports only WebKit browsers */
+        visibility: hidden;
+    }
 
-  .dropzone .dropzone-label {
-    display: block;
-    font-size: 1em;
-  }
+    .form-inline .ngb-tp-input {
+        width: 4em;
+    }
 
-  /////////////////////
+    hs-layer-editor .form-check {
+        line-height: 1.5;
+    }
 
-  .hs-popup-layer {
-    line-height: 1.2;
-  }
+    hs-layer-editor .card-body {
+        padding: 0.65rem;
+    }
 
-  .hs-hover-popup .icon-remove-circle {
-    float: right
-  }
+    hs-layer-editor hr {
+        margin-top: 0.3rem;
+        margin-bottom: 0.3rem;
+    }
 
-  .hs-hover-popup .card {
-    padding: 5px;
-    overflow-y: auto;
-  }
+    .hs-layerpanel {
+        overflow-x: hidden;
+    }
 
-  @import "../core/hslayers.component.scss";
-  @import "../components/layer-manager/layer-manager.component.scss";
-  @import "../components/layer-manager/logical-list/layerlist.component.scss";
-  @import "../components/layer-manager/gallery/layer-manager-gallery.component.scss";
-  @import "../components/sidebar/sidebar.component.scss";
-  @import "../components/geolocation/geolocation.component.scss";
-  @import "../components/sidebar/impressum.component.scss";
-  @import "../components/search/search.component.scss";
-  @import "../components/info/info.component.scss";
-  @import "../components/toolbar/toolbar.component.scss";
-  @import "../components/add-data/common/common.component.scss";
-  /* **OPENLAYERS** */
+    .hs-hover-popup-feature {
+        font-size: 0.8rem;
+        line-height: 1;
+        margin-bottom: 2px;
+        border-bottom: 1px solid hsl(0, 0%, 78%);
+    }
 
-  .ol-attribution {
-    left: auto;
-    right: 5px;
-    bottom: 0.2rem;
-  }
+    .hs-draw-layer-toggle div {
+        display: inline-block;
+        max-width: 7em;
+        overflow-x: hidden;
+        line-height: normal;
+    }
 
-  .ol-attribution.ol-uncollapsible {
-    right: 5px;
-    bottom: 0.2rem;
-  }
+    .inputfile {
+        width: 0.1px;
+        height: 0.1px;
+        opacity: 0;
+        overflow: hidden;
+        position: absolute;
+        z-index: -1;
+    }
 
-  .hs-ol-map .ol-scale-line {
-    right: auto;
-    left: 0.5rem;
-  }
+    .inputfile+label {
+        font-size: 1.25em;
+        font-weight: 700;
+        color: white;
+        background-color: $primary;
+        display: inline-block;
+        cursor: pointer;
+    }
 
-  .hs-ol-map .ol-zoom {
-    bottom: 2.4rem;
-    top: auto;
-    right: 5px;
-    left: auto;
-  }
+    .inputfile+label:hover {
+        background-color: $secondary;
+    }
 
-  .hs-ol-map .hs-defaultView {
-    bottom: 5rem;
-    top: auto;
-    right: 5px;
-    left: auto;
-  }
+    input[type="checkbox"].checkbox-lg {
+        transform: scale(1.3);
+    }
 
-  .ol-touch .ol-zoomslider {
-    display: none;
-  }
+    //**DROPZONE **//
+    .dropzone-container {
+        flex-direction: row;
+    }
 
-  .ol-mouse-position {
-    bottom: 8px;
-    left: 170px;
-    position: absolute;
-    top: auto;
-    right: auto;
-  }
+    .dropzone {
+        text-align: center;
+        min-height: 80px;
+        border: dashed 3px $primary;
+        border-radius: 5px;
+        color: #495057 !important;
+    }
 
-  .ol-popup {
-    display: none;
-    position: absolute;
-    padding: 15px 25px 15px 15px;
-    border: 1px solid #cccccc;
-    bottom: 12px;
-    left: -50px;
-  }
+    .dropzone.active {
+        border: solid 3px $secondary;
+        color: rgba(0, 0, 0, 0.35) !important;
+        opacity: 0.4;
+    }
 
-  .ol-popup:after,
-  .ol-popup:before {
-    top: 100%;
-    border: solid transparent;
-    content: " ";
-    height: 0;
-    width: 0;
-    position: absolute;
-    pointer-events: none;
-  }
+    .dropzone .dropzone-label {
+        display: block;
+        font-size: 1em;
+    }
 
-  .ol-popup:after {
-    border-width: 10px;
-    left: 48px;
-    margin-left: -10px;
-  }
+    /////////////////////
 
-  .ol-popup:before {
-    border-width: 11px;
-    left: 48px;
-    margin-left: -11px;
-  }
+    .hs-endpoint-item-active {
+        background-color: hsla(0, 0%, 0%, 0.2);
+    }
 
-  .ol-popup-content {
-    min-width: 170px;
-    max-height: 200px;
-    overflow-x: auto;
-  }
+    .hs-popup-layer {
+        line-height: 1.2;
+        border-top: 1px solid rgba(200, 200, 200, 0.5)
+    }
 
-  .ol-popup-closer {
-    position: absolute;
-    top: 2px;
-    right: 2px;
-    font-size: 150%;
-    padding: 0 4px;
-    text-decoration: none;
-  }
+    .hs-hover-popup .icon-remove-circle {
+        color: rgb(73, 80, 87);
+        float: right
+    }
 
-  .ol-popup-closer:after {
-    content: "\2716";
-  }
+    .hs-hover-popup .card {
+        padding: 5px;
+        overflow-y: auto;
+    }
 
-  .ol-popup div.infoResult {
-    min-width: 130px;
-  }
+    .hs-vector-layer-legend {
+        svg {
+            background: white;
+        }
+    }
 
-  .ol-popup div.infoResult p {
-    padding: 0.1em;
-    margin: 0;
-  }
+    .hs-styler-rule {
+        cursor: move;
+    }
 
-  .ol-popup-content h3 {
-    margin: 0.25em 0;
-  }
+    .hs-styler-rule:hover {
+        box-shadow: none;
+    }
 
-  .ol-popup.marker {
-    margin-bottom: 30px;
-  }
+    /*
+  * Loader by https://cssloaders.github.io/
+  */
+    .hs-loader {
+        position: relative;
+        display: inline-block;
+        width: 1em;
+        height: 1em;
+        background: white;
+        transform: rotateX(65deg) rotate(45deg);
+        color: $gray-200;
+        animation: layers1 1s linear infinite alternate;
+        margin: 0 0.5em;
+    }
 
-  .ol-overlaycontainer-stopevent {
-    pointer-events: none;
-  }
+    .hs-loader-dark {
+        background: $primary;
+        color: $gray-400
+    }
 
-  .ol-overlaycontainer-stopevent * {
-    pointer-events: auto;
-  }
+    .hs-loader:after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: rgba(255, 255, 255, 0.7);
+        animation: layerTr 1s linear infinite alternate;
+    }
 
-  .ol-control button {
-    font-family: "Lucida Grande", Verdana, Geneva, Lucida, Arial, Helvetica,
-      sans-serif;
-  }
+    .hs-loader-dark:after {
+        background: rgba(82, 162, 216, 0.7);
+    }
 
-  /**
+    @keyframes layers1 {
+        0% {
+            box-shadow: 0px 0px 0 0px
+        }
+
+        90%,
+        100% {
+            box-shadow: 0.75em 0.75em 0 -1px
+        }
+    }
+
+    @keyframes layerTr {
+        0% {
+            transform: translate(0, 0) scale(1)
+        }
+
+        100% {
+            transform: translate(-0.75em, -0.75em) scale(1)
+        }
+    }
+
+    @import "../core/hslayers.component.scss";
+    @import "../components/layer-manager/layer-manager.component.scss";
+    @import "../components/layer-manager/logical-list/layerlist.component.scss";
+    @import "../components/layer-manager/gallery/layer-manager-gallery.component.scss";
+    @import "../components/sidebar/sidebar.component.scss";
+    @import "../components/geolocation/geolocation.component.scss";
+    @import "../components/sidebar/impressum.component.scss";
+    @import "../components/search/search.component.scss";
+    @import "../components/info/info.component.scss";
+    @import "../components/toolbar/toolbar.component.scss";
+    @import "../components/add-data/common/common.component.scss";
+    /* **OPENLAYERS** */
+
+    .ol-attribution {
+        left: auto;
+        right: 5px;
+        bottom: 0.2rem;
+    }
+
+    .ol-attribution.ol-uncollapsible {
+        right: 5px;
+        bottom: 0.2rem;
+    }
+
+    .hs-ol-map .ol-scale-line {
+        right: auto;
+        left: 0.5rem;
+    }
+
+    .hs-ol-map .ol-zoom {
+        bottom: 2.4rem;
+        top: auto;
+        right: 5px;
+        left: auto;
+    }
+
+    .hs-ol-map .hs-defaultView {
+        bottom: 5rem;
+        top: auto;
+        right: 5px;
+        left: auto;
+    }
+
+    .ol-touch .ol-zoomslider {
+        display: none;
+    }
+
+    .ol-mouse-position {
+        bottom: 8px;
+        left: 170px;
+        position: absolute;
+        color: #fff;
+        top: auto;
+        right: auto;
+    }
+
+    .ol-popup {
+        display: none;
+        position: absolute;
+        background-color: hsl(0, 0%, 100%);
+        padding: 15px 25px 15px 15px;
+        border: 1px solid #cccccc;
+        bottom: 12px;
+        left: -50px;
+    }
+
+    .ol-popup:after,
+    .ol-popup:before {
+        top: 100%;
+        border: solid transparent;
+        content: " ";
+        height: 0;
+        width: 0;
+        position: absolute;
+        pointer-events: none;
+    }
+
+    .ol-popup:after {
+        border-top-color: hsl(0, 0%, 100%);
+        border-width: 10px;
+        left: 48px;
+        margin-left: -10px;
+    }
+
+    .ol-popup:before {
+        border-top-color: #cccccc;
+        border-width: 11px;
+        left: 48px;
+        margin-left: -11px;
+    }
+
+    .ol-popup-content {
+        min-width: 170px;
+        max-height: 200px;
+        overflow-x: auto;
+    }
+
+    .ol-popup-closer {
+        position: absolute;
+        top: 2px;
+        right: 2px;
+        font-size: 150%;
+        padding: 0 4px;
+        color: gray;
+        text-decoration: none;
+    }
+
+    .ol-popup-closer:after {
+        content: "\2716";
+    }
+
+    .ol-popup div.infoResult {
+        min-width: 130px;
+    }
+
+    .ol-popup div.infoResult p {
+        padding: 0.1em;
+        margin: 0;
+    }
+
+    .ol-popup-content h3 {
+        margin: 0.25em 0;
+    }
+
+    .ol-popup.marker {
+        margin-bottom: 30px;
+    }
+
+    .ol-overlaycontainer-stopevent {
+        pointer-events: none;
+    }
+
+    .ol-overlaycontainer-stopevent * {
+        pointer-events: auto;
+    }
+
+    .ol-control button {
+        font-family: "Lucida Grande", Verdana, Geneva, Lucida, Arial, Helvetica,
+            sans-serif;
+
+        &:hover,
+        &:active {
+            background-color: $secondary;
+            color: white;
+            outline: none;
+        }
+    }
+
+    /**
  * Taken from https://github.com/Viglino/ol-ext/blob/master/dist/ol-ext.css#L4030
  */
 
-  .ol-swipe {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    -webkit-transform: translate(-50%, -50%);
-    transform: translate(-50%, -50%);
-    -ms-touch-action: none;
-    touch-action: none;
-  }
+    .ol-swipe {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        -webkit-transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%);
+        -ms-touch-action: none;
+        touch-action: none;
 
-  .ol-swipe:before {
-    content: "";
-    position: absolute;
-    top: -5000px;
-    bottom: -5000px;
-    left: 50%;
-    width: 2px;
-    z-index: -1;
-    -webkit-transform: translate(-2px, 0);
-    transform: translate(-2px, 0);
-    pointer-events: none;
+        & button {
+            box-shadow: rgb(0 0 0 / 24%) 0px 3px 8px;
+            background-color: var(--ol-subtle-foreground-color);
 
-  }
+            &:active,
+            &:hover {
+                cursor: pointer;
+                background-color: $secondary;
+            }
+        }
+    }
 
-  .ol-swipe.horizontal:before {
-    left: -5000px;
-    right: -5000px;
-    top: 50%;
-    bottom: auto;
-    width: auto;
-    height: 2px;
-  }
+    .ol-swipe:before {
+        content: "";
+        position: absolute;
+        top: -5000px;
+        bottom: -5000px;
+        left: 50%;
+        width: 2px;
+        background-color: var(--ol-subtle-foreground-color);
+        z-index: -1;
+        -webkit-transform: translate(-2px, 0);
+        transform: translate(-2px, 0);
+        pointer-events: none;
 
-  .ol-swipe:after,
-  .ol-swipe button:before,
-  .ol-swipe button:after {
-    content: "";
-    position: absolute;
-    top: 25%;
-    bottom: 25%;
-    left: 50%;
-    width: 2px;
-    transform: translate(-1px, 0);
-    -webkit-transform: translate(-1px, 0);
-    pointer-events: none;
-  }
+    }
 
-  .ol-swipe button:after {
-    transform: translateX(5px);
-    -webkit-transform: translateX(5px);
-  }
+    .ol-swipe.horizontal:before {
+        left: -5000px;
+        right: -5000px;
+        top: 50%;
+        bottom: auto;
+        width: auto;
+        height: 2px;
+    }
 
-  .ol-swipe button:before {
-    transform: translateX(-7px);
-    -webkit-transform: translateX(-7px);
-  }
+    .ol-swipe:after,
+    .ol-swipe button:before,
+    .ol-swipe button:after {
+        content: "";
+        position: absolute;
+        top: 25%;
+        bottom: 25%;
+        left: 50%;
+        width: 2px;
+        background: var(--ol-background-color);
+        transform: translate(-1px, 0);
+        -webkit-transform: translate(-1px, 0);
+        pointer-events: none;
+    }
 
-  .sketch-picker {
-    margin: 7px;
-  }
+    .ol-swipe button:after {
+        transform: translateX(5px);
+        -webkit-transform: translateX(5px);
+    }
+
+    .ol-swipe button:before {
+        transform: translateX(-7px);
+        -webkit-transform: translateX(-7px);
+    }
+
+    .sketch-picker {
+        margin: 7px;
+    }
 }

@@ -40,9 +40,6 @@
                 "output": "/"
               }
             ],
-            "styles": [
-              "projects/hslayers/css/hslayers-bootstrap.scss"
-            ],
             "scripts": [],
             "customWebpackConfig": {
               "path": "projects/hslayers-app/custom-webpack.config.js"
@@ -62,7 +59,7 @@
             ]
           },
           "configurations": {
-            "production": {
+            "bootstrap": {
               "fileReplacements": [
                 {
                   "replace": "projects/hslayers-app/src/environments/environment.ts",
@@ -86,6 +83,38 @@
                   "maximumWarning": "200kb",
                   "maximumError": "300kb"
                 }
+              ],
+              "styles": [
+                "projects/hslayers/css/hslayers-ng.scss"
+              ]
+            },
+            "without-bootstrap": {
+              "fileReplacements": [
+                {
+                  "replace": "projects/hslayers-app/src/environments/environment.ts",
+                  "with": "projects/hslayers-app/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "sourceMap": false,
+              "namedChunks": true,
+              "extractLicenses": true,
+              "vendorChunk": true,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "200kb",
+                  "maximumError": "300kb"
+                }
+              ],
+              "styles": [
+                "projects/hslayers/css/hslayers-wo-bootstrap.scss"
               ]
             },
             "development": {
