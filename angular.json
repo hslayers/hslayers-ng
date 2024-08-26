@@ -232,7 +232,7 @@
               }
             ],
             "styles": [
-              "projects/hslayers/css/hslayers-bootstrap.scss"
+              "projects/hslayers/css/hslayers-ng.scss"
             ],
             "scripts": [],
             "customWebpackConfig": {
@@ -381,7 +381,7 @@
               }
             ],
             "styles": [
-              "projects/hslayers/css/hslayers-bootstrap.scss"
+              "projects/hslayers/css/hslayers-ng.scss"
             ],
             "scripts": [],
             "customWebpackConfig": {
@@ -519,7 +519,7 @@
             ],
             "styles": [
               "node_modules/cesium/Build/Cesium/Widgets/widgets.css",
-              "projects/hslayers/css/hslayers-bootstrap.scss"
+              "projects/hslayers/css/hslayers-ng.scss"
             ],
             "scripts": [],
             "customWebpackConfig": {
@@ -666,7 +666,7 @@
             ],
             "styles": [
               "node_modules/cesium/Build/Cesium/Widgets/widgets.css",
-              "projects/hslayers/css/hslayers-bootstrap.scss",
+              "projects/hslayers/css/hslayers-ng.scss",
               "projects/hslayers-cesium/css/hslayers-cesium.scss"
             ],
             "scripts": [],
