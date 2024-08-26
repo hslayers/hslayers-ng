@@ -6,9 +6,6 @@ const sass = require('sass');
 const inputFilePath = path.resolve(__dirname, './hslayers-ng.scss');
 const outputCssFilePath = path.resolve('dist/hslayers/css/hslayers-ng-wo-bootstrap.css');
 
-// Define the range of lines to remove (e.g., lines 41 to 75)
-const linesToRemoveStart = 29;
-const linesToRemoveEnd = 64;
 
 // Function to remove specific lines from the content
 function removeLines(content, startLine, endLine) {
@@ -22,7 +19,8 @@ const data = fs.readFileSync(inputFilePath,
   { encoding: 'utf8', flag: 'r' });
 
 // Remove the lines containing Bootstrap imports
-let modifiedContent = removeLines(data, linesToRemoveStart, linesToRemoveEnd);
+let modifiedContent = removeLines(data, 29, 64); //Components
+modifiedContent = removeLines(modifiedContent, 12, 16); //Maps, mixins etx
 
 // Compile the modified SCSS content to CSS
 const result = sass.compileString(modifiedContent, {
