@@ -17,7 +17,7 @@
     "prebuild-watch": "node projects/hslayers/prebuild.js",
     "postbuild": "npm run build-css && npm run build-css-colors && npm run build-css-wo-bootstrap",
     "build-css": "npx sass --load-path=node_modules projects/hslayers/css/hslayers-ng.scss dist/hslayers/css/hslayers-ng.css",
-    "build-css-wo-bootstrap": "npx sass --load-path=node_modules projects/hslayers/css/hslayers-wo-bootstrap.scss dist/hslayers/css/hslayers-ng-wo-bootstrap.css",
+    "build-css-wo-bootstrap": "node projects/hslayers/css/hslayers-wo-bootstrap.js",
     "build-css-colors": "npx sass --load-path=node_modules projects/hslayers/css/hslayers-colors.scss dist/hslayers/css/hslayers-ng-colors.css",
     "start-test-app": "ng serve test-app --hmr",
     "start-decoupling-test-app": "ng serve decoupling-test-app --hmr",
