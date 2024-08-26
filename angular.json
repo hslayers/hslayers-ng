@@ -114,7 +114,7 @@
                 }
               ],
               "styles": [
-                "projects/hslayers/css/hslayers-wo-bootstrap.scss"
+                "dist/hslayers/css/hslayers-ng-wo-bootstrap.css"
               ]
             },
             "development": {
