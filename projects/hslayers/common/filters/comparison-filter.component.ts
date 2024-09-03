@@ -1,14 +1,14 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {AsyncPipe, NgForOf} from '@angular/common';
+import {Component, Input, OnInit, inject} from '@angular/core';
 import {Feature} from 'ol';
 import {FormControl, FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {Geometry} from 'ol/geom';
 import {Observable, map, startWith, tap} from 'rxjs';
 import {Vector as VectorSource} from 'ol/source';
 
-import {AsyncPipe, NgForOf} from '@angular/common';
-import {HsLayerSelectorService} from 'hslayers-ng/services/layer-manager';
+import {HsFiltersService} from './filters.service';
 import {HsLayerUtilsService} from 'hslayers-ng/services/utils';
-import {HsStylerPartBaseComponent} from '../style-part-base.component';
+import {HsStylerPartBaseComponent} from 'hslayers-ng/services/styler';
 import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 
 @Component({
@@ -28,7 +28,6 @@ export class HsComparisonFilterComponent
   implements OnInit {
   @Input() filter;
   @Input() parent;
-
   private readonly OPERATORS = {
     default: ['==', '*=', '!='],
     numeric: ['<', '<=', '>', '>='],
@@ -40,34 +39,38 @@ export class HsComparisonFilterComponent
   attributes: string[];
   operators: Observable<string[]>;
 
-  constructor(
-    private hsLayerSelectorService: HsLayerSelectorService,
-    private hsLayerUtilsService: HsLayerUtilsService,
-  ) {
-    super();
+  hsFiltersService = inject(HsFiltersService);
+  hsLayerUtilsService = inject(HsLayerUtilsService);
 
-    const layer = this.hsLayerSelectorService.currentLayer.layer;
-    const src = layer.getSource();
-    this.features = (src as VectorSource).getFeatures();
-    this.attributes = this.hsLayerUtilsService.listAttributes(this.features);
+  constructor() {
+    super();
+    this.updateFeatures();
   }
 
   ngOnInit(): void {
     this.attributeControl = new FormControl(this.filter[1] ?? null);
     this.operators = this.attributeControl.valueChanges.pipe(
       tap((attr) => {
-        // Update the filter when attribute changes
         this.filter[1] = attr;
         this.emitChange();
       }),
       map((attr: string) => {
-        if (!isNaN(Number(this.features[0].get(attr)))) {
+        if (!isNaN(Number(this.features[0]?.get(attr)))) {
           return [...this.OPERATORS.default, ...this.OPERATORS.numeric];
         }
         return this.OPERATORS.default;
       }),
       startWith([...this.OPERATORS.default, ...this.OPERATORS.numeric]),
     );
+  }
+
+  updateFeatures(): void {
+    const layer = this.hsFiltersService.selectedLayer?.layer;
+    if (layer) {
+      const src = layer.getSource();
+      this.features = (src as VectorSource).getFeatures();
+      this.attributes = this.hsLayerUtilsService.listAttributes(this.features);
+    }
   }
 
   remove(): void {
