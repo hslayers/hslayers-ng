@@ -1,1 +1,61 @@
-<hs-filters [rule]="rule"></hs-filters>
+<div class="container-fluid">
+    <!-- Check if there are available WFS layers -->
+    @if (availableLayers.length > 0) {
+    <!-- Layer selection dropdown -->
+    <div class="row mb-3">
+        <div class="col-12">
+            <label for="layerSelect" class="form-label">Select WFS Layer:</label>
+            <select id="layerSelect" class="form-select" [(ngModel)]="selectedLayer"
+                (ngModelChange)="selectLayer($event)">
+                <option [ngValue]="null">-- Select a layer --</option>
+                <!-- Loop through available layers -->
+                @for (layer of availableLayers; track layer) {
+                <option [ngValue]="layer">
+                    {{ layer.title }}
+                </option>
+                }
+            </select>
+        </div>
+    </div>
+
+    <!-- Display filter options if a layer is selected -->
+    @if (selectedLayer) {
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Filter for: {{ selectedLayer.title }}</h5>
+                    <!-- Filter component -->
+                    <hs-filters [rule]="rule" [selectedLayer]="selectedLayer" (change)="onChange()"></hs-filters>
+                </div>
+            </div>
+        </div>
+    </div>
+    } @else {
+    <!-- Prompt to select a layer if none is selected -->
+    <div class="row">
+        <div class="col-12">
+            <div class="alert alert-info" role="alert">
+                Please select a WFS layer to apply filters.
+            </div>
+        </div>
+    </div>
+    }
+    } @else {
+    <!-- Display when no WFS layers are available -->
+    <div class="row">
+        <div class="col-12">
+            <div class="text-center py-4">
+                <i class="icon-layers mb-3 text-muted" style="font-size: 48px;"></i>
+                <h4>No WFS Layers Available</h4>
+                <p class="mb-0">There are currently no WFS layers available for filtering.</p>
+                <p>To use this feature, please add a WFS layer to the map first.</p>
+                <!-- Button to open the Add Data panel -->
+                <button class="btn btn-primary mt-3" (click)="openAddDataPanel()">
+                    Add WFS Layer
+                </button>
+            </div>
+        </div>
+    </div>
+    }
+</div>
