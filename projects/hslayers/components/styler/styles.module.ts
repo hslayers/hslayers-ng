@@ -7,14 +7,10 @@ import {ColorSketchModule} from 'ngx-color/sketch';
 import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
 
 import {HsAddColormapComponent} from './add-colormap.component';
-import {HsAddFilterButtonComponent} from './filters/add-filter-button.component';
 import {HsColorPickerComponent} from './symbolizers/color-picker/color-picker.component';
 import {HsColormapPickerModule} from 'hslayers-ng/common/color-map-picker';
-import {HsComparisonFilterComponent} from './filters/comparison-filter.component';
 import {HsDownloadModule} from 'hslayers-ng/common/download';
 import {HsFillSymbolizerComponent} from './symbolizers/fill-symbolizer/fill-symbolizer.component';
-import {HsFilterComponent} from './filters/filter.component';
-import {HsFiltersComponent} from './filters/filters.component';
 import {HsIconSymbolizerComponent} from './symbolizers/icon-symbolizer/icon-symbolizer.component';
 import {HsLineSymbolizerComponent} from './symbolizers/line-symbolizer/line-symbolizer.component';
 import {HsMarkSymbolizerComponent} from './symbolizers/mark-symbolizer/mark-symbolizer.component';
@@ -47,9 +43,6 @@ import {TranslateCustomPipe} from 'hslayers-ng/services/language';
     HsLineSymbolizerComponent,
     HsColorPickerComponent,
     HsSliderComponent,
-    HsFiltersComponent,
-    HsFilterComponent,
-    HsAddFilterButtonComponent,
     HsScaleDenominatorComponent,
     HsSelectIconDialogComponent,
     HsStylerPartBaseComponent,
@@ -70,7 +63,6 @@ import {TranslateCustomPipe} from 'hslayers-ng/services/language';
     DragDropModule,
     HsColormapPickerModule,
     HsPanelHeaderComponent,
-    HsComparisonFilterComponent,
   ],
   exports: [
     HsStylerComponent,
@@ -84,10 +76,6 @@ import {TranslateCustomPipe} from 'hslayers-ng/services/language';
     HsSymbolizerListItemComponent,
     HsColorPickerComponent,
     HsSliderComponent,
-    HsFiltersComponent,
-    HsFilterComponent,
-    HsComparisonFilterComponent,
-    HsAddFilterButtonComponent,
     HsScaleDenominatorComponent,
     HsSelectIconDialogComponent,
     HsRuleListItemComponent,
