@@ -2,7 +2,7 @@ import {Component, Input, ViewChild} from '@angular/core';
 
 import {FillSymbolizer, SymbolizerKind} from 'geostyler-style';
 
-import {HsStylerPartBaseComponent} from '../../style-part-base.component';
+import {HsStylerPartBaseComponent} from 'hslayers-ng/services/styler';
 import {Kinds} from '../symbolizer-kind.enum';
 
 @Component({
