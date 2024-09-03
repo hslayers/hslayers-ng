@@ -5,7 +5,7 @@ import {FillSymbolizer, MarkSymbolizer, TextSymbolizer} from 'geostyler-style';
 
 import {HsColorPickerService} from './color-picker.service';
 import {HsLogService} from 'hslayers-ng/services/log';
-import {HsStylerPartBaseComponent} from '../../style-part-base.component';
+import {HsStylerPartBaseComponent} from 'hslayers-ng/services/styler';
 
 @Component({
   selector: 'hs-symbolizer-color-picker',

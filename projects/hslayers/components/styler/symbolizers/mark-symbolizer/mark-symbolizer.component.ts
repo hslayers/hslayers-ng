@@ -2,7 +2,7 @@ import {Component, Input} from '@angular/core';
 
 import {MarkSymbolizer} from 'geostyler-style';
 
-import {HsStylerPartBaseComponent} from '../../style-part-base.component';
+import {HsStylerPartBaseComponent} from 'hslayers-ng/services/styler';
 
 @Component({
   selector: 'hs-mark-symbolizer',

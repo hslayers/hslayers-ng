@@ -11,6 +11,7 @@ import {HsColorPickerComponent} from './symbolizers/color-picker/color-picker.co
 import {HsColormapPickerModule} from 'hslayers-ng/common/color-map-picker';
 import {HsDownloadModule} from 'hslayers-ng/common/download';
 import {HsFillSymbolizerComponent} from './symbolizers/fill-symbolizer/fill-symbolizer.component';
+import {HsFiltersComponent} from 'hslayers-ng/common/filters';
 import {HsIconSymbolizerComponent} from './symbolizers/icon-symbolizer/icon-symbolizer.component';
 import {HsLineSymbolizerComponent} from './symbolizers/line-symbolizer/line-symbolizer.component';
 import {HsMarkSymbolizerComponent} from './symbolizers/mark-symbolizer/mark-symbolizer.component';
@@ -23,7 +24,7 @@ import {HsSelectIconDialogComponent} from './symbolizers/select-icon-dialog/sele
 import {HsSliderComponent} from './symbolizers/slider/slider.component';
 import {HsStylerComponent} from './styler.component';
 import {HsStylerEditDialogComponent} from './edit-dialog/edit-dialog.component';
-import {HsStylerPartBaseComponent} from './style-part-base.component';
+import {HsStylerPartBaseComponent} from 'hslayers-ng/services/styler';
 import {HsSymbolizerComponent} from './symbolizers/symbolizer.component';
 import {HsSymbolizerListItemComponent} from './symbolizers/symbolizer-list-item/symbolizer-list-item.component';
 import {HsTextSymbolizerComponent} from './symbolizers/text-symbolizer/text-symbolizer.component';
@@ -45,7 +46,6 @@ import {TranslateCustomPipe} from 'hslayers-ng/services/language';
     HsSliderComponent,
     HsScaleDenominatorComponent,
     HsSelectIconDialogComponent,
-    HsStylerPartBaseComponent,
     HsRuleListItemComponent,
     HsSymbolizerListItemComponent,
     HsAddColormapComponent,
@@ -63,6 +63,8 @@ import {TranslateCustomPipe} from 'hslayers-ng/services/language';
     DragDropModule,
     HsColormapPickerModule,
     HsPanelHeaderComponent,
+    HsFiltersComponent,
+    HsStylerPartBaseComponent,
   ],
   exports: [
     HsStylerComponent,

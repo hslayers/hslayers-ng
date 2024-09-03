@@ -2,7 +2,7 @@ import {Component, Input, OnInit} from '@angular/core';
 
 import {Rule} from 'geostyler-style';
 
-import {HsStylerPartBaseComponent} from '../style-part-base.component';
+import {HsStylerPartBaseComponent} from 'hslayers-ng/services/styler';
 
 @Component({
   selector: 'hs-scale-denominator',
