@@ -90,6 +90,11 @@ export class HsPanelConstructorService {
       case 'tripPlanner':
         i = await import('hslayers-ng/components/trip-planner');
         break;
+      case 'wfsFilter':
+        i = await import(
+          'hslayers-ng/components/wfs-filter/wfs-filter.component'
+        );
+        break;
 
       default:
         break;

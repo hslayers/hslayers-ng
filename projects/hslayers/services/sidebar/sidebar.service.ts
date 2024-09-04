@@ -143,6 +143,14 @@ export class HsSidebarService {
       description: 'SIDEBAR.descriptions.TRIP_PLANNER',
       icon: 'icon-sextant',
     },
+    'wfsFilter': {
+      panel: 'wfsFilter',
+      order: 0,
+      fits: true,
+      title: 'PANEL_HEADER.WFS_FILTER',
+      description: 'SIDEBAR.descriptions.WFS_FILTER',
+      icon: 'icon-filter',
+    },
   };
 
   extraButtons: Array<HsButton> = [];

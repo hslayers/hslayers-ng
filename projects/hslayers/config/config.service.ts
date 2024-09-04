@@ -113,6 +113,7 @@ export class HsConfigObject {
     tripPlanner?: boolean;
     addData?: boolean;
     mapSwipe?: boolean;
+    wfsFilter?: boolean;
   };
   errorToastDuration?: number;
   advancedForm?: boolean;
@@ -227,6 +228,7 @@ export class HsConfigObject {
       tripPlanner: false,
       addData: true,
       mapSwipe: false,
+      wfsFilter: false,
     };
     this.componentsEnabled = {
       guiOverlay: true,
@@ -250,6 +252,7 @@ export class HsConfigObject {
       ows: 700,
       compositions: 550,
       addData: 700,
+      wfsFilter: 550,
       mapSwipe: 550,
     };
     this.sidebarPosition = 'right';

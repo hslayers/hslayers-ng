@@ -1,15 +1,20 @@
 import * as olFormatFilter from 'ol/format/filter';
+import {AsyncPipe, NgClass} from '@angular/common';
 import {Component, Input, OnDestroy, OnInit, inject} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {HsFiltersComponent, HsFiltersService} from 'hslayers-ng/common/filters';
 import {HsLayerDescriptor, WfsFeatureAttribute} from 'hslayers-ng/types';
 import {HsLayerManagerService} from 'hslayers-ng/services/layer-manager';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
+import {
+  HsPanelBaseComponent,
+  HsPanelHeaderComponent,
+} from 'hslayers-ng/common/panels';
 import {HsUtilsService} from 'hslayers-ng/services/utils';
 import {HttpClient} from '@angular/common/http';
 import {Vector as VectorLayer} from 'ol/layer';
 import {Vector as VectorSource} from 'ol/source';
-import {catchError, lastValueFrom, of} from 'rxjs';
+import {catchError, lastValueFrom} from 'rxjs';
 import {
   getWfsAttributes,
   getWfsUrl,
@@ -19,11 +24,25 @@ import {
 @Component({
   selector: 'hs-wfs-filter',
   templateUrl: './wfs-filter.component.html',
-  styles: ``,
+  styles: `
+    .hs-wfs-filter-panel > div {
+      padding: 0 0.75rem;
+    }
+  `,
   standalone: true,
-  imports: [HsFiltersComponent, FormsModule],
+  imports: [
+    NgClass,
+    HsFiltersComponent,
+    FormsModule,
+    AsyncPipe,
+    HsPanelHeaderComponent,
+  ],
 })
-export class HsWfsFilterComponent implements OnInit, OnDestroy {
+export class HsWfsFilterComponent
+  extends HsPanelBaseComponent
+  implements OnInit, OnDestroy {
+  name = 'wfsFilter';
+
   @Input() rule: any = {};
   @Input() preselectedLayer: HsLayerDescriptor;
 
@@ -37,15 +56,20 @@ export class HsWfsFilterComponent implements OnInit, OnDestroy {
   selectedLayer: HsLayerDescriptor | null = null;
 
   ngOnInit() {
-    this.updateAvailableLayers();
-    if (this.preselectedLayer) {
-      this.selectLayer(this.preselectedLayer);
-    }
-
+    super.ngOnInit();
     this.hsFiltersService.attributesExcludedFromList = [
       'hs_normalized_IDW_value',
       'boundedBy',
     ];
+
+    this.hsLayoutService.mainpanel$.subscribe((which) => {
+      if (which === 'wfsFilter') {
+        this.updateAvailableLayers();
+        if (this.preselectedLayer) {
+          this.selectLayer(this.preselectedLayer);
+        }
+      }
+    });
   }
 
   ngOnDestroy() {
