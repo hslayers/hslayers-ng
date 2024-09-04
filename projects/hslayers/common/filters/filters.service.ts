@@ -1,22 +1,29 @@
 import {Injectable} from '@angular/core';
 
 import {FilterType} from './filter.type';
-import {HsLayerDescriptor} from 'hslayers-ng/types';
+import {HsLayerDescriptor, WfsFeatureAttribute} from 'hslayers-ng/types';
 
 @Injectable({
   providedIn: 'root',
 })
 export class HsFiltersService {
-  private _selectedLayer: HsLayerDescriptor;
+  selectedLayer: HsLayerDescriptor;
 
-  setSelectedLayer(layer: HsLayerDescriptor) {
-    this._selectedLayer = layer;
+  attributesExcludedFromList: string[];
+  layerAttributes: WfsFeatureAttribute[] = [];
+
+  setSelectedLayer(layer: HsLayerDescriptor): void {
+    this.selectedLayer = layer;
   }
 
-  get selectedLayer(): HsLayerDescriptor {
-    return this._selectedLayer;
+  setLayerAttributes(attributes: WfsFeatureAttribute[]): void {
+    this.layerAttributes = attributes;
   }
 
+  /**
+   * Can be used to exclude attributes from the list of attributes
+   * that are displayed in the comparison filter.
+   */
   operators = ['==', '*=', '!=', '<', '<=', '>', '>='];
 
   add(type: FilterType, append: boolean, collection: any[]): void {

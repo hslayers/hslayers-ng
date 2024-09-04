@@ -502,11 +502,17 @@ export class HsLayerUtilsService {
   /**
    * List all attributes of the feature apart from the geometry
    */
-  listAttributes(features: Feature[], numericOnly = false): string[] {
+  listAttributes(
+    features: Feature[],
+    numericOnly = false,
+    customExcludedAttributes?: string[],
+  ): string[] {
+    const excludedAttributes =
+      customExcludedAttributes || this.ATTRIBUTES_EXCLUDED_FROM_LIST;
     return features.length > 0
       ? Object.keys(features[0].getProperties()).filter((attr) => {
           return (
-            !this.ATTRIBUTES_EXCLUDED_FROM_LIST.includes(attr) &&
+            !excludedAttributes.includes(attr) &&
             (!numericOnly || !isNaN(Number(features[0].get(attr))))
           );
         })

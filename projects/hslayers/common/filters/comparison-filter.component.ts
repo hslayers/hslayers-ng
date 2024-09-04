@@ -55,7 +55,11 @@ export class HsComparisonFilterComponent
         this.emitChange();
       }),
       map((attr: string) => {
-        if (!isNaN(Number(this.features[0]?.get(attr)))) {
+        if (
+          this.hsFiltersService.layerAttributes?.find((a) => a.name === attr)
+            .isNumeric ||
+          !isNaN(Number(this.features[0]?.get(attr)))
+        ) {
           return [...this.OPERATORS.default, ...this.OPERATORS.numeric];
         }
         return this.OPERATORS.default;
@@ -69,7 +73,17 @@ export class HsComparisonFilterComponent
     if (layer) {
       const src = layer.getSource();
       this.features = (src as VectorSource).getFeatures();
-      this.attributes = this.hsLayerUtilsService.listAttributes(this.features);
+      /**
+       * If WFS layer is used, use the attributes from the layer descriptor,
+       * otherwise (in styler) use the attributes from the features.
+       */
+      this.attributes =
+        this.hsFiltersService.layerAttributes.map((a) => a.name) ||
+        this.hsLayerUtilsService.listAttributes(
+          this.features,
+          false,
+          this.hsFiltersService.attributesExcludedFromList,
+        );
     }
   }
 
