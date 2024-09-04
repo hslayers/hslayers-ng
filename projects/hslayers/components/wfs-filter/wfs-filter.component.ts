@@ -94,10 +94,15 @@ export class HsWfsFilterComponent implements OnInit, OnDestroy {
     );
 
     if (response) {
-      const attributes = this.parseWfsDescribeFeatureType(response);
+      const {attributes, geometryAttribute} = this.parseWfsDescribeFeatureType(
+        response,
+        layer.layer as VectorLayer<VectorSource>,
+      );
       console.log('Parsed attributes:', attributes);
+      console.log('Geometry attribute:', geometryAttribute);
       this.hsFiltersService.setLayerAttributes(attributes);
       setWfsAttributes(layer.layer, attributes);
+      layer.layer.set('geometryAttribute', geometryAttribute);
     }
 
     this.hsFiltersService.setSelectedLayer(layer);
@@ -106,12 +111,13 @@ export class HsWfsFilterComponent implements OnInit, OnDestroy {
   /**
    * Parses the WFS DescribeFeatureType response XML into an array of feature attributes.
    * @param xmlString The XML string response from the WFS DescribeFeatureType request.
-   * @returns An array of FeatureAttribute objects, each containing the name, type, and isNumeric flag of an attribute.
-   * If no feature type is found in the XML, returns an empty array.
+   * @param layer The layer object to determine geometry attribute from.
+   * @returns An object containing the attributes and geometry attribute name.
    */
   private parseWfsDescribeFeatureType(
     xmlString: string,
-  ): WfsFeatureAttribute[] {
+    layer: VectorLayer<VectorSource>,
+  ): {attributes: WfsFeatureAttribute[]; geometryAttribute: string | null} {
     const parser = new DOMParser();
     const xmlDoc = parser.parseFromString(xmlString, 'text/xml');
     const featureTypeElement = xmlDoc.querySelector(
@@ -119,7 +125,7 @@ export class HsWfsFilterComponent implements OnInit, OnDestroy {
     );
 
     if (featureTypeElement) {
-      return Array.from(
+      const attributes = Array.from(
         featureTypeElement.querySelectorAll('xsd\\:element, element'),
       ).map((el) => {
         const name = el.getAttribute('name');
@@ -130,9 +136,15 @@ export class HsWfsFilterComponent implements OnInit, OnDestroy {
           isNumeric: this.isNumericType(type),
         };
       });
+
+      const geometryAttribute = this.determineGeometryAttribute(
+        layer,
+        attributes,
+      );
+      return {attributes, geometryAttribute};
     } else {
       console.warn('No feature type found in the XML response');
-      return [];
+      return {attributes: [], geometryAttribute: null};
     }
   }
 
@@ -143,7 +155,57 @@ export class HsWfsFilterComponent implements OnInit, OnDestroy {
    */
   private isNumericType(type: string): boolean {
     const numericTypes = ['decimal', 'double', 'float', 'int'];
-    return numericTypes.some((numericType) => type.includes(numericType));
+    return numericTypes.some((numericType) =>
+      type.toLowerCase().includes(numericType),
+    );
+  }
+
+  /**
+   * Determines the geometry attribute name based on the layer and attributes.
+   * @param layer The layer object to determine geometry attribute from.
+   * @param attributes The array of feature attributes.
+   * @returns The geometry attribute name or null if not found.
+   */
+  private determineGeometryAttribute(
+    layer: VectorLayer<VectorSource>,
+    attributes: WfsFeatureAttribute[],
+  ): string | null {
+    // Try to get geometry attribute name from layers' source
+    const source = layer.getSource();
+    const feature = source.getFeatures()[0];
+    if (feature) {
+      const geometryName = feature.getGeometryName();
+      if (
+        geometryName &&
+        attributes.some((attr) => attr.name === geometryName)
+      ) {
+        return geometryName;
+      }
+    }
+
+    // Look for geometry attribute in WFS response
+    const geometryAttr = attributes.find((attr) =>
+      this.isGeometryType(attr.type),
+    );
+    return geometryAttr ? geometryAttr.name : null;
+  }
+
+  /**
+   * Determines if a given type is a geometry type.
+   * @param type The type string to check.
+   * @returns True if the type is a geometry type, false otherwise.
+   */
+  private isGeometryType(type: string): boolean {
+    const geometryKeywords = [
+      'geometry',
+      'point',
+      'line',
+      'polygon',
+      'surface',
+    ];
+    return geometryKeywords.some((keyword) =>
+      type.toLowerCase().includes(keyword),
+    );
   }
 
   /**
