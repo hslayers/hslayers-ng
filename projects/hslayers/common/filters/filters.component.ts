@@ -21,8 +21,8 @@ import {TranslateCustomPipe} from 'hslayers-ng/services/language';
   ],
 })
 export class HsFiltersComponent extends HsStylerPartBaseComponent {
-  @Input() rule: any;
-  @Input() set selectedLayer(layer: HsLayerDescriptor) {
+  @Input({required: true}) rule: any;
+  @Input({required: true}) set selectedLayer(layer: HsLayerDescriptor) {
     this.hsFiltersService.setSelectedLayer(layer);
   }
 
