@@ -19,8 +19,20 @@
     }
   </select>
   <div style="min-width: 33%;">
+    @if (isWfsFilter && currentAttribute()?.values) {
+    <select class="form-control form-select" [(ngModel)]="filter[2]" (change)="emitChange()">
+      @for (value of currentAttribute()?.values; track value) {
+      <option [ngValue]="value">{{value}}</option>
+      }
+    </select>
+    } @else if (currentAttribute()?.type === 'number' && currentAttribute()?.range) {
+    <input type="range" class="form-control" name="hs-sld-filter-value" [(ngModel)]="filter[2]" (change)="emitChange()"
+      [min]="currentAttribute()?.range.min" [max]="currentAttribute()?.range.max" />
+    } @else {
     <input class="form-control" name="hs-sld-filter-value" [(ngModel)]="filter[2]" (change)="emitChange()" />
+    }
   </div>
+
   <div>
     <button class="btn btn-outline-danger btn-sm rounded-0" style="height: 100%" (click)="remove()">
       <span class="icon-trash"></span>

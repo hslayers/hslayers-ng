@@ -1,15 +1,26 @@
 import {AsyncPipe, NgForOf} from '@angular/common';
-import {Component, Input, OnInit, inject} from '@angular/core';
+import {
+  Component,
+  Input,
+  OnInit,
+  Signal,
+  WritableSignal,
+  inject,
+  signal,
+} from '@angular/core';
 import {Feature} from 'ol';
 import {FormControl, FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {Geometry} from 'ol/geom';
-import {Observable, map, startWith, tap} from 'rxjs';
+import {Observable, filter, map, of, startWith, switchMap, tap} from 'rxjs';
 import {Vector as VectorSource} from 'ol/source';
+import {WfsFeatureAttribute} from 'hslayers-ng/types';
 
 import {HsFiltersService} from './filters.service';
 import {HsLayerUtilsService} from 'hslayers-ng/services/utils';
+import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsStylerPartBaseComponent} from 'hslayers-ng/services/styler';
 import {TranslateCustomPipe} from 'hslayers-ng/services/language';
+import {toSignal} from '@angular/core/rxjs-interop';
 
 @Component({
   standalone: true,
@@ -38,33 +49,50 @@ export class HsComparisonFilterComponent
   attributeControl: FormControl;
   attributes: string[];
   operators: Observable<string[]>;
+  currentAttribute: WritableSignal<WfsFeatureAttribute> = signal(null);
 
   hsFiltersService = inject(HsFiltersService);
   hsLayerUtilsService = inject(HsLayerUtilsService);
+  hsLayoutService = inject(HsLayoutService);
 
   constructor() {
     super();
     this.updateFeatures();
   }
 
+  isWfsFilter = toSignal(
+    this.hsLayoutService.mainpanel$.pipe(map((panel) => panel === 'wfsFilter')),
+  );
+
   ngOnInit(): void {
     this.attributeControl = new FormControl(this.filter[1] ?? null);
-    this.operators = this.attributeControl.valueChanges.pipe(
-      tap((attr) => {
-        this.filter[1] = attr;
-        this.emitChange();
+    const currentAttribute$ = this.attributeControl.valueChanges.pipe(
+      switchMap((attrName: string) => {
+        this.filter[1] = attrName;
+        return this.isWfsFilter()
+          ? this.hsFiltersService.getAttributeWithValues(attrName)
+          : /**
+             * If used in styler, we have no values so we create WFSFeatureAttribute
+             * with name, type and isNumeric flag
+             * TODO: possibly get values from features
+             */
+            of({
+              name: attrName,
+              type: 'unknown',
+              isNumeric: !isNaN(Number(this.features[0]?.get(attrName))),
+            });
       }),
-      map((attr: string) => {
-        if (
-          this.hsFiltersService.layerAttributes?.find((a) => a.name === attr)
-            .isNumeric ||
-          !isNaN(Number(this.features[0]?.get(attr)))
-        ) {
+    );
+
+    this.operators = currentAttribute$.pipe(
+      filter((attr) => attr !== null),
+      tap((attr) => this.currentAttribute.set(attr)),
+      map((attr) => {
+        if (attr?.isNumeric) {
           return [...this.OPERATORS.default, ...this.OPERATORS.numeric];
         }
         return this.OPERATORS.default;
       }),
-      startWith([...this.OPERATORS.default, ...this.OPERATORS.numeric]),
     );
   }
 
@@ -77,13 +105,13 @@ export class HsComparisonFilterComponent
        * If WFS layer is used, use the attributes from the layer descriptor,
        * otherwise (in styler) use the attributes from the features.
        */
-      this.attributes =
-        this.hsFiltersService.layerAttributes.map((a) => a.name) ||
-        this.hsLayerUtilsService.listAttributes(
-          this.features,
-          false,
-          this.hsFiltersService.attributesExcludedFromList,
-        );
+      this.attributes = this.isWfsFilter()
+        ? this.hsFiltersService.layerAttributes.map((a) => a.name)
+        : this.hsLayerUtilsService.listAttributes(
+            this.features,
+            false,
+            this.hsFiltersService.attributesExcludedFromList,
+          );
     }
   }
 
