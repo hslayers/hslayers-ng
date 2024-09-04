@@ -1,8 +1,16 @@
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
-import {Component, EventEmitter, Input, Output, ViewChild} from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+  ViewChild,
+  inject,
+} from '@angular/core';
 
 import {SymbolizerKind} from 'geostyler-style';
 
+import {HsLayerSelectorService} from 'hslayers-ng/services/layer-manager';
 import {HsStylerPartBaseComponent} from 'hslayers-ng/services/styler';
 import {HsStylerService} from 'hslayers-ng/services/styler';
 import {Kinds} from '../symbolizers/symbolizer-kind.enum';
@@ -16,6 +24,9 @@ export class HsRuleComponent extends HsStylerPartBaseComponent {
   @Input() rule;
   @Output() changes = new EventEmitter<void>();
   @ViewChild('addSymMenu') menuRef;
+
+  layerSelectorService = inject(HsLayerSelectorService);
+
   filtersVisible = false;
   scalesVisible = false;
   constructor(public hsStylerService: HsStylerService) {
