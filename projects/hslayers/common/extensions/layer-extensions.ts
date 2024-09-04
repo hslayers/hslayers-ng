@@ -14,6 +14,7 @@ import {
   Editor,
   LayerSwipeSide,
   Metadata,
+  WfsFeatureAttribute,
   popUp,
 } from 'hslayers-ng/types';
 import {DOMFeatureLink} from 'hslayers-ng/types';
@@ -69,6 +70,7 @@ const WFS_URL = 'wfsUrl';
 const WORKSPACE = 'workspace';
 export const DOM_FEATURE_LINKS = 'domFeatureLinks';
 const WMS_ORIGINAL_EXTENT = 'wmsOriginalExtent';
+const WFS_ATTRIBUTES = 'wfsAttributes';
 
 export function getAccessRights(layer: Layer<Source>): AccessRightsModel {
   return layer.get(ACCESS_RIGHTS);
@@ -636,6 +638,17 @@ export function getIgnorePathZIndex(layer: Layer<Source>) {
   return layer.get(IGNORE_PATH_ZINDEX);
 }
 
+export function setWfsAttributes(
+  layer: Layer<Source>,
+  attributes: WfsFeatureAttribute[],
+): void {
+  layer.set(WFS_ATTRIBUTES, attributes);
+}
+
+export function getWfsAttributes(layer: Layer<Source>): WfsFeatureAttribute[] {
+  return layer.get(WFS_ATTRIBUTES);
+}
+
 export const HsLayerExt = {
   getAccessRights,
   setAccessRights,
@@ -717,4 +730,6 @@ export const HsLayerExt = {
   setWfsUrl,
   getSwipeSide,
   setSwipeSide,
+  setWfsAttributes,
+  getWfsAttributes,
 };
