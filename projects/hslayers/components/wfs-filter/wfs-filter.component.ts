@@ -1,14 +1,20 @@
 import * as olFormatFilter from 'ol/format/filter';
-import {Component, Input, OnInit, inject} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit, inject} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {HsFiltersComponent, HsFiltersService} from 'hslayers-ng/common/filters';
-import {HsLayerDescriptor} from 'hslayers-ng/types';
+import {HsLayerDescriptor, WfsFeatureAttribute} from 'hslayers-ng/types';
 import {HsLayerManagerService} from 'hslayers-ng/services/layer-manager';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsUtilsService} from 'hslayers-ng/services/utils';
+import {HttpClient} from '@angular/common/http';
 import {Vector as VectorLayer} from 'ol/layer';
 import {Vector as VectorSource} from 'ol/source';
-import {getWfsUrl} from 'hslayers-ng/common/extensions';
+import {catchError, lastValueFrom, of} from 'rxjs';
+import {
+  getWfsAttributes,
+  getWfsUrl,
+  setWfsAttributes,
+} from 'hslayers-ng/common/extensions';
 
 @Component({
   selector: 'hs-wfs-filter',
@@ -17,7 +23,7 @@ import {getWfsUrl} from 'hslayers-ng/common/extensions';
   standalone: true,
   imports: [HsFiltersComponent, FormsModule],
 })
-export class HsWfsFilterComponent implements OnInit {
+export class HsWfsFilterComponent implements OnInit, OnDestroy {
   @Input() rule: any = {};
   @Input() preselectedLayer: HsLayerDescriptor;
 
@@ -25,6 +31,7 @@ export class HsWfsFilterComponent implements OnInit {
   hsLayerManagerService = inject(HsLayerManagerService);
   hsUtilsService = inject(HsUtilsService);
   hsLayoutService = inject(HsLayoutService);
+  httpClient = inject(HttpClient);
 
   availableLayers: HsLayerDescriptor[] = [];
   selectedLayer: HsLayerDescriptor | null = null;
@@ -34,6 +41,15 @@ export class HsWfsFilterComponent implements OnInit {
     if (this.preselectedLayer) {
       this.selectLayer(this.preselectedLayer);
     }
+
+    this.hsFiltersService.attributesExcludedFromList = [
+      'hs_normalized_IDW_value',
+      'boundedBy',
+    ];
+  }
+
+  ngOnDestroy() {
+    this.hsFiltersService.attributesExcludedFromList = undefined;
   }
 
   /**
@@ -52,11 +68,82 @@ export class HsWfsFilterComponent implements OnInit {
    * Selects a layer and updates the filter service
    * @param layer The layer to select
    */
-  selectLayer(layer: HsLayerDescriptor | null) {
+  async selectLayer(layer: HsLayerDescriptor | null) {
     this.selectedLayer = layer;
-    this.hsFiltersService.setSelectedLayer(layer);
+
     // Reset the rule when changing layers
     this.rule = {};
+
+    const wfsUrl = getWfsUrl(layer.layer);
+    const url = this.hsUtilsService.proxify(
+      `${wfsUrl}?service=WFS&request=DescribeFeatureType&version=2.0.0&typeName=${layer.layer.get('layerName')}`,
+    );
+    const wfsAttributes = getWfsAttributes(layer.layer);
+    if (wfsAttributes) {
+      this.hsFiltersService.setLayerAttributes(wfsAttributes);
+      return;
+    }
+
+    const response = await lastValueFrom(
+      this.httpClient.get(url, {responseType: 'text'}).pipe(
+        catchError(async (e) => {
+          console.error(e);
+          return '';
+        }),
+      ),
+    );
+
+    if (response) {
+      const attributes = this.parseWfsDescribeFeatureType(response);
+      console.log('Parsed attributes:', attributes);
+      this.hsFiltersService.setLayerAttributes(attributes);
+      setWfsAttributes(layer.layer, attributes);
+    }
+
+    this.hsFiltersService.setSelectedLayer(layer);
+  }
+
+  /**
+   * Parses the WFS DescribeFeatureType response XML into an array of feature attributes.
+   * @param xmlString The XML string response from the WFS DescribeFeatureType request.
+   * @returns An array of FeatureAttribute objects, each containing the name, type, and isNumeric flag of an attribute.
+   * If no feature type is found in the XML, returns an empty array.
+   */
+  private parseWfsDescribeFeatureType(
+    xmlString: string,
+  ): WfsFeatureAttribute[] {
+    const parser = new DOMParser();
+    const xmlDoc = parser.parseFromString(xmlString, 'text/xml');
+    const featureTypeElement = xmlDoc.querySelector(
+      'xsd\\:complexType, complexType',
+    );
+
+    if (featureTypeElement) {
+      return Array.from(
+        featureTypeElement.querySelectorAll('xsd\\:element, element'),
+      ).map((el) => {
+        const name = el.getAttribute('name');
+        const type = el.getAttribute('type');
+        return {
+          name,
+          type,
+          isNumeric: this.isNumericType(type),
+        };
+      });
+    } else {
+      console.warn('No feature type found in the XML response');
+      return [];
+    }
+  }
+
+  /**
+   * Determines if a given type is numeric.
+   * @param type The type string to check.
+   * @returns True if the type is numeric, false otherwise.
+   */
+  private isNumericType(type: string): boolean {
+    const numericTypes = ['decimal', 'double', 'float', 'int'];
+    return numericTypes.some((numericType) => type.includes(numericType));
   }
 
   /**
@@ -66,7 +153,6 @@ export class HsWfsFilterComponent implements OnInit {
     if (this.rule.filter) {
       const parsedFilter = this.parseFilter(this.rule.filter);
       console.log('Parsed OpenLayers filter for WFS:', parsedFilter);
-      // You can now use this parsedFilter with OpenLayers for WFS requests
     }
   }
 
