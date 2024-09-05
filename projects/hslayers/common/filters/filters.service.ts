@@ -3,7 +3,6 @@ import {Injectable, inject} from '@angular/core';
 import {Observable, of} from 'rxjs';
 import {catchError, map} from 'rxjs/operators';
 
-import VectorSource from 'ol/source/Vector';
 import {FilterType} from './filter.type';
 import {HsLayerDescriptor, WfsFeatureAttribute} from 'hslayers-ng/types';
 import {HsUtilsService} from 'hslayers-ng/services/utils';
