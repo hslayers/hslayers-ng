@@ -3,8 +3,10 @@ import {HsUtilsService} from 'hslayers-ng/services/utils';
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {Projection, transformExtent} from 'ol/proj';
 import {Vector as VectorSource} from 'ol/source';
+import {and, within} from 'ol/format/filter';
 import {bbox, tile} from 'ol/loadingstrategy';
 import {createXYZ} from 'ol/tilegrid';
+import {fromExtent} from 'ol/geom/Polygon';
 import {lastValueFrom} from 'rxjs';
 
 export type WfsOptions = {
@@ -85,6 +87,7 @@ export class WfsSource extends VectorSource {
                   transformedExtent,
                   srs,
                   this.get('filter'),
+                  this.get('geometryAttribute'),
                 )
               : null,
             this.http,
@@ -181,6 +184,7 @@ async function createPostFeatureRequest(
   extent: Extent,
   srs: string,
   filter: any,
+  geometryName: string,
 ): Promise<string> {
   try {
     const [prefix, layerName] = layer_name.split(':');
@@ -197,7 +201,10 @@ async function createPostFeatureRequest(
     };
 
     if (filter) {
-      getFeatureOptions['filter'] = filter;
+      getFeatureOptions['filter'] = and(
+        filter,
+        within(geometryName, fromExtent(extent), srs),
+      );
     } else {
       getFeatureOptions['bbox'] = extent.join(',') + ',' + srs;
     }
