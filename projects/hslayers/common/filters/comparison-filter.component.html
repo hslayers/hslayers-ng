@@ -11,7 +11,8 @@
   </select>
 
   <select (change)="emitChange()" class="form-control form-select hs-sld-filter-comparison-sign"
-    style="width: min-content" [(ngModel)]="filter[0]" name="hs-sld-filter-comparison-sign">
+    style="width: min-content" [(ngModel)]="filter[0]" name="hs-sld-filter-comparison-sign"
+    [disabled]="!attributeControl.value">
     @for (op of operators | async ; track op) {
     <option [ngValue]="op">
       {{op}}
@@ -20,16 +21,19 @@
   </select>
   <div style="min-width: 33%;">
     @if (isWfsFilter() && currentAttribute()?.values) {
-    <select class="form-control form-select h-100" [(ngModel)]="filter[2]" (change)="emitChange()">
+    <select class="form-control form-select h-100" [(ngModel)]="filter[2]" (change)="emitChange()"
+      [disabled]="!attributeControl.value">
       @for (value of currentAttribute()?.values; track value) {
       <option [ngValue]="value">{{value}}</option>
       }
     </select>
     } @else if (currentAttribute()?.type === 'number' && currentAttribute()?.range) {
     <input type="range" class="form-control h-100" name="hs-sld-filter-value" [(ngModel)]="filter[2]"
-      (change)="emitChange()" [min]="currentAttribute()?.range.min" [max]="currentAttribute()?.range.max" />
+      (change)="emitChange()" [min]="currentAttribute()?.range.min" [max]="currentAttribute()?.range.max"
+      [disabled]="!attributeControl.value" />
     } @else {
-    <input class="form-control h-100" name="hs-sld-filter-value" [(ngModel)]="filter[2]" (change)="emitChange()" />
+    <input class="form-control h-100" name="hs-sld-filter-value" [(ngModel)]="filter[2]" (change)="emitChange()"
+      [disabled]="!attributeControl.value" />
     }
   </div>
 

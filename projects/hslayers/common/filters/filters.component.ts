@@ -39,7 +39,7 @@ export class HsFiltersComponent extends HsStylerPartBaseComponent {
   }
 
   remove(): void {
-    delete this.rule.filter;
+    this.rule = {...this.rule, filter: []};
     this.emitChange();
   }
 }
