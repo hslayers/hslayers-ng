@@ -19,7 +19,7 @@ export class HsAddFilterButtonComponent implements OnChanges {
    * Update UI on filter removal
    */
   ngOnChanges() {
-    this.setActiveTab(this.activeTab);
+    this.setActiveTab(undefined);
   }
 
   activeTab: FilterType;
