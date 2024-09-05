@@ -1,7 +1,15 @@
 import * as olFormatFilter from 'ol/format/filter';
 import {AsyncPipe, NgClass} from '@angular/common';
-import {Component, Input, OnDestroy, OnInit, inject} from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  OnInit,
+  Signal,
+  inject,
+} from '@angular/core';
 import {FormsModule} from '@angular/forms';
+import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsFiltersComponent, HsFiltersService} from 'hslayers-ng/common/filters';
 import {HsLayerDescriptor, WfsFeatureAttribute} from 'hslayers-ng/types';
 import {HsLayerManagerService} from 'hslayers-ng/services/layer-manager';
@@ -14,12 +22,14 @@ import {HsUtilsService} from 'hslayers-ng/services/utils';
 import {HttpClient} from '@angular/common/http';
 import {Vector as VectorLayer} from 'ol/layer';
 import {Vector as VectorSource} from 'ol/source';
-import {catchError, lastValueFrom} from 'rxjs';
+import {catchError, filter, lastValueFrom, map, switchMap} from 'rxjs';
+import {computed, signal} from '@angular/core';
 import {
   getWfsAttributes,
   getWfsUrl,
   setWfsAttributes,
 } from 'hslayers-ng/common/extensions';
+import {takeUntilDestroyed, toSignal} from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'hs-wfs-filter',
@@ -37,56 +47,55 @@ import {
     AsyncPipe,
     HsPanelHeaderComponent,
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HsWfsFilterComponent
   extends HsPanelBaseComponent
-  implements OnInit, OnDestroy {
+  implements OnInit {
   name = 'wfsFilter';
 
   @Input() preselectedLayer: HsLayerDescriptor;
 
-  rule: any;
+  selectedLayer = signal<HsLayerDescriptor | null>(null);
+  rule = computed(() => this.selectedLayer()?.layer.get('wfsFilter') || {});
 
   hsFiltersService = inject(HsFiltersService);
+  hsEventBusService = inject(HsEventBusService);
   hsLayerManagerService = inject(HsLayerManagerService);
   hsUtilsService = inject(HsUtilsService);
   hsLayoutService = inject(HsLayoutService);
   httpClient = inject(HttpClient);
 
-  availableLayers: HsLayerDescriptor[] = [];
-  selectedLayer: HsLayerDescriptor | null = null;
+  availableLayers: Signal<HsLayerDescriptor[]>;
 
-  ngOnInit() {
-    super.ngOnInit();
-    this.hsFiltersService.attributesExcludedFromList = [
-      'hs_normalized_IDW_value',
-      'boundedBy',
-    ];
-
-    this.hsLayoutService.mainpanel$.subscribe((which) => {
-      if (which === 'wfsFilter') {
-        this.updateAvailableLayers();
-        if (this.preselectedLayer) {
-          this.selectLayer(this.preselectedLayer);
-        }
-      }
-    });
-  }
-
-  ngOnDestroy() {
-    this.hsFiltersService.attributesExcludedFromList = undefined;
-  }
-
-  /**
-   * Updates the list of available WFS layers
-   */
-  updateAvailableLayers() {
-    this.availableLayers = this.hsLayerManagerService.data.layers.filter(
-      (l: HsLayerDescriptor) =>
-        this.hsUtilsService.instOf(l.layer, VectorLayer) &&
-        this.hsUtilsService.instOf(l.layer.getSource(), VectorSource) &&
-        getWfsUrl(l.layer),
+  constructor() {
+    super();
+    const mainPanelStream = this.hsEventBusService.mapEventHandlersSet.pipe(
+      switchMap(() => this.hsLayoutService.mainpanel$),
+      filter((which) => which === 'wfsFilter'),
+      takeUntilDestroyed(),
     );
+
+    this.availableLayers = toSignal(
+      mainPanelStream.pipe(
+        map(() => {
+          return this.hsLayerManagerService.data.layers.filter(
+            (l: HsLayerDescriptor) =>
+              this.hsUtilsService.instOf(l.layer, VectorLayer) &&
+              this.hsUtilsService.instOf(l.layer.getSource(), VectorSource) &&
+              getWfsUrl(l.layer),
+          );
+        }),
+      ),
+    );
+
+    // Use the same stream to update attributesExcludedFromList
+    mainPanelStream.subscribe(() => {
+      this.hsFiltersService.attributesExcludedFromList = [
+        'hs_normalized_IDW_value',
+        'boundedBy',
+      ];
+    });
   }
 
   /**
@@ -94,13 +103,10 @@ export class HsWfsFilterComponent
    * @param layer The layer to select
    */
   async selectLayer(layer: HsLayerDescriptor | null) {
-    this.selectedLayer = layer;
+    this.selectedLayer.set(layer);
     if (!layer) {
-      this.rule = {};
       return;
     }
-    // Reset the rule when changing layers
-    this.rule = this.selectedLayer.layer.get('wfsFilter') || {};
 
     const wfsUrl = getWfsUrl(layer.layer);
     const url = this.hsUtilsService.proxify(
@@ -241,10 +247,11 @@ export class HsWfsFilterComponent
    * Applies the current filter to the selected layer and refreshes the source
    */
   applyFilters() {
-    if (this.selectedLayer) {
-      const parsedFilter = this.parseFilter(this.rule.filter);
-      this.selectedLayer.layer.set('wfsFilter', this.rule);
-      const source = this.selectedLayer.layer.getSource();
+    const selectedLayer = this.selectedLayer();
+    if (selectedLayer) {
+      const parsedFilter = this.parseFilter(this.rule().filter);
+      selectedLayer.layer.set('wfsFilter', this.rule());
+      const source = selectedLayer.layer.getSource();
       source.set('filter', parsedFilter);
       source.refresh();
     }
