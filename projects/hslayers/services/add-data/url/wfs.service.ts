@@ -526,6 +526,7 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
         crs: options.crs,
         provided_url: url,
         layer_name: options.layerName,
+        featureNS: layer._attributes[Object.keys(layer._attributes)[0]],
         map_projection: this.hsMapService.getMap().getView().getProjection(),
         layerExtent: layerExtent,
       }),
