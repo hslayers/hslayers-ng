@@ -94,9 +94,7 @@ export class HsPanelConstructorService {
        * TODO: Check whether this get bundled correctly
        */
       case 'wfsFilter':
-        i = await import(
-          'hslayers-ng/components/wfs-filter/wfs-filter.component'
-        );
+        i = await import('hslayers-ng/components/wfs-filter');
         break;
 
       default:

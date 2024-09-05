@@ -3,13 +3,13 @@ import {Injectable, inject} from '@angular/core';
 import {Observable, of} from 'rxjs';
 import {catchError, map} from 'rxjs/operators';
 
-import {FilterType, LogicalOperatorType} from './filter.type';
 import {HsLayerDescriptor, WfsFeatureAttribute} from 'hslayers-ng/types';
 import {HsUtilsService} from 'hslayers-ng/services/utils';
 import {Layer} from 'ol/layer';
 import {Source} from 'ol/source';
-import {getWfsUrl} from '../extensions';
+import {getWfsUrl} from 'hslayers-ng/common/extensions';
 
+import {FilterType, LogicalOperatorType} from './filter.type';
 @Injectable({
   providedIn: 'root',
 })
