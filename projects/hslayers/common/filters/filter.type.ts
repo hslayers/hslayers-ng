@@ -1,1 +1,3 @@
-export type FilterType = 'AND' | 'OR' | 'NOT' | 'COMPARE';
+export type LogicalOperatorType = 'AND' | 'OR' | 'NOT';
+export type ComparisonOperatorType = 'COMPARE';
+export type FilterType = LogicalOperatorType | ComparisonOperatorType;

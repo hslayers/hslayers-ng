@@ -3,7 +3,7 @@ import {Injectable, inject} from '@angular/core';
 import {Observable, of} from 'rxjs';
 import {catchError, map} from 'rxjs/operators';
 
-import {FilterType} from './filter.type';
+import {FilterType, LogicalOperatorType} from './filter.type';
 import {HsLayerDescriptor, WfsFeatureAttribute} from 'hslayers-ng/types';
 import {HsUtilsService} from 'hslayers-ng/services/utils';
 import {Layer} from 'ol/layer';
@@ -82,8 +82,8 @@ export class HsFiltersService {
    * @param logOp The logical operator to convert
    * @returns The human-readable version of the operator
    */
-  humanReadableLogOp(logOp: string) {
-    return {'&&': 'AND', '||': 'OR', '!': 'NOT'}[logOp];
+  humanReadableLogOp(logOp: string): LogicalOperatorType {
+    return {'&&': 'AND', '||': 'OR', '!': 'NOT'}[logOp] as LogicalOperatorType;
   }
 
   /**
