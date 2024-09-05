@@ -10,7 +10,16 @@ import {
 import {Feature} from 'ol';
 import {FormControl, FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {Geometry} from 'ol/geom';
-import {Observable, catchError, filter, map, of, switchMap, tap} from 'rxjs';
+import {
+  Observable,
+  catchError,
+  filter,
+  map,
+  of,
+  startWith,
+  switchMap,
+  tap,
+} from 'rxjs';
 import {Vector as VectorSource} from 'ol/source';
 import {WfsFeatureAttribute} from 'hslayers-ng/types';
 
@@ -102,6 +111,13 @@ export class HsComparisonFilterComponent
               type: 'unknown',
               isNumeric: !isNaN(Number(this.features[0]?.get(attrName))),
             });
+      }),
+      startWith({
+        name: this.attributeControl.value,
+        type: 'unknown',
+        isNumeric: !isNaN(
+          Number(this.features[0]?.get(this.attributeControl.value)),
+        ),
       }),
     );
 

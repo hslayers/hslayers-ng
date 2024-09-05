@@ -1,7 +1,19 @@
-import {Component, EventEmitter, Input, OnChanges, Output} from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  Output,
+  inject,
+} from '@angular/core';
 import {Rule} from 'geostyler-style';
 
-import {FilterType} from './filter.type';
+import {
+  ComparisonOperatorType,
+  FilterType,
+  LogicalOperatorType,
+} from './filter.type';
+import {HsFiltersService} from './filters.service';
 import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
 import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 
@@ -15,6 +27,8 @@ export class HsAddFilterButtonComponent implements OnChanges {
   @Output() clicks = new EventEmitter();
   @Input() rule?: Rule;
 
+  hsFiltersService = inject(HsFiltersService);
+
   /**
    * Update UI on filter removal
    */
@@ -23,13 +37,31 @@ export class HsAddFilterButtonComponent implements OnChanges {
   }
 
   activeTab: FilterType;
-  readonly filterOptions: FilterType[] = ['COMPARE', 'AND', 'OR', 'NOT'];
+  readonly logicalOperators: LogicalOperatorType[] = ['AND', 'OR', 'NOT'];
+  readonly comparisonOperator: ComparisonOperatorType = 'COMPARE';
+  readonly filterOptions: FilterType[] = [
+    ...this.logicalOperators,
+    this.comparisonOperator,
+  ];
+
   emitClick(type: FilterType): void {
     this.clicks.emit({type});
     this.setActiveTab(type);
   }
 
   setActiveTab(type: FilterType) {
-    this.activeTab = this.rule?.filter ? type : undefined;
+    if (
+      !type &&
+      this.rule?.filter &&
+      Array.isArray(this.rule.filter) &&
+      this.rule.filter.length > 0
+    ) {
+      const readableType = this.hsFiltersService.humanReadableLogOp(
+        this.rule.filter[0],
+      );
+      this.activeTab = readableType || this.comparisonOperator;
+    } else {
+      this.activeTab = type;
+    }
   }
 }
