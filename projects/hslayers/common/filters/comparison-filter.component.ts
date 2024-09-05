@@ -3,7 +3,6 @@ import {
   Component,
   Input,
   OnInit,
-  Signal,
   WritableSignal,
   inject,
   signal,
@@ -11,7 +10,7 @@ import {
 import {Feature} from 'ol';
 import {FormControl, FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {Geometry} from 'ol/geom';
-import {Observable, filter, map, of, startWith, switchMap, tap} from 'rxjs';
+import {Observable, catchError, filter, map, of, switchMap, tap} from 'rxjs';
 import {Vector as VectorSource} from 'ol/source';
 import {WfsFeatureAttribute} from 'hslayers-ng/types';
 
@@ -33,6 +32,25 @@ import {toSignal} from '@angular/core/rxjs-interop';
   ],
   selector: 'hs-comparison-filter',
   templateUrl: './comparison-filter.component.html',
+  styles: `
+    .comparison-filter-container {
+      position: relative;
+      min-height: 50px;
+    }
+
+    .loading-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(248, 248, 248, 0.7);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+  `,
 })
 export class HsComparisonFilterComponent
   extends HsStylerPartBaseComponent
@@ -55,6 +73,8 @@ export class HsComparisonFilterComponent
   hsLayerUtilsService = inject(HsLayerUtilsService);
   hsLayoutService = inject(HsLayoutService);
 
+  loading: WritableSignal<boolean> = signal(false);
+
   constructor() {
     super();
     this.updateFeatures();
@@ -67,6 +87,7 @@ export class HsComparisonFilterComponent
   ngOnInit(): void {
     this.attributeControl = new FormControl(this.filter[1] ?? null);
     const currentAttribute$ = this.attributeControl.valueChanges.pipe(
+      tap(() => this.loading.set(true)),
       switchMap((attrName: string) => {
         this.filter[1] = attrName;
         return this.isWfsFilter()
@@ -86,12 +107,20 @@ export class HsComparisonFilterComponent
 
     this.operators = currentAttribute$.pipe(
       filter((attr) => attr !== null),
-      tap((attr) => this.currentAttribute.set(attr)),
+      tap((attr) => {
+        this.currentAttribute.set(attr);
+        this.loading.set(false);
+      }),
       map((attr) => {
         if (attr?.isNumeric) {
           return [...this.OPERATORS.default, ...this.OPERATORS.numeric];
         }
         return this.OPERATORS.default;
+      }),
+      catchError((error) => {
+        console.error('Error fetching attribute values:', error);
+        this.loading.set(false);
+        return of(this.OPERATORS.default);
       }),
     );
   }

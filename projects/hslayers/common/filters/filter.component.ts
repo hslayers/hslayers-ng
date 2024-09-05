@@ -16,6 +16,11 @@ import {TranslateCustomPipe} from 'hslayers-ng/services/language';
     HsAddFilterButtonComponent,
     TranslateCustomPipe,
   ],
+  styles: `
+    :host {
+      flex: 1 1 auto;
+    }
+  `,
 })
 export class HsFilterComponent extends HsStylerPartBaseComponent {
   @Input() filter: any[];

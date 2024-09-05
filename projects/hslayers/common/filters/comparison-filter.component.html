@@ -1,4 +1,4 @@
-<div class="d-flex flex-row form-group p-1">
+<div class="comparison-filter-container d-flex flex-row form-group p-1 position-relative">
   <select class="form-control form-select" style="width: 100%" [formControl]="attributeControl"
     name="hs-sld-filter-attribute">
     <option [ngValue]="null" [disabled]="true" selected hidden>Pick an attribute</option>
@@ -19,17 +19,17 @@
     }
   </select>
   <div style="min-width: 33%;">
-    @if (isWfsFilter && currentAttribute()?.values) {
-    <select class="form-control form-select" [(ngModel)]="filter[2]" (change)="emitChange()">
+    @if (isWfsFilter() && currentAttribute()?.values) {
+    <select class="form-control form-select h-100" [(ngModel)]="filter[2]" (change)="emitChange()">
       @for (value of currentAttribute()?.values; track value) {
       <option [ngValue]="value">{{value}}</option>
       }
     </select>
     } @else if (currentAttribute()?.type === 'number' && currentAttribute()?.range) {
-    <input type="range" class="form-control" name="hs-sld-filter-value" [(ngModel)]="filter[2]" (change)="emitChange()"
-      [min]="currentAttribute()?.range.min" [max]="currentAttribute()?.range.max" />
+    <input type="range" class="form-control h-100" name="hs-sld-filter-value" [(ngModel)]="filter[2]"
+      (change)="emitChange()" [min]="currentAttribute()?.range.min" [max]="currentAttribute()?.range.max" />
     } @else {
-    <input class="form-control" name="hs-sld-filter-value" [(ngModel)]="filter[2]" (change)="emitChange()" />
+    <input class="form-control h-100" name="hs-sld-filter-value" [(ngModel)]="filter[2]" (change)="emitChange()" />
     }
   </div>
 
@@ -38,4 +38,14 @@
       <span class="icon-trash"></span>
     </button>
   </div>
+
+  @if (loading()) {
+  <div
+    class="loading-overlay position-absolute top-0 start-0 w-100 h-100 d-flex justify-content-center align-items-center">
+    <div class="text-center bg-secondary-subtle d-flex p-1 px-3 rounded-5 text-center">
+      <span class="hs-loader hs-loader-dark"></span>
+      <div class="small text-muted">Loading attribute values...</div>
+    </div>
+  </div>
+  }
 </div>
