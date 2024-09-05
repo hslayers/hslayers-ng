@@ -10,7 +10,6 @@ export * from './symbolizers/slider/slider.component';
 export * from './symbolizers/symbolizer.component';
 export * from './symbolizers/text-symbolizer/text-symbolizer.component';
 export * from './rule/rule.component';
-export * from '../../services/styler/style-part-base.component';
 export * from './styler.component';
 export * from './styles';
 export * from './styles.module';
