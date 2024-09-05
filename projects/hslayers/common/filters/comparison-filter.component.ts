@@ -125,6 +125,9 @@ export class HsComparisonFilterComponent
     );
   }
 
+  /**
+   * Updates the features and attributes based on the selected layer
+   */
   updateFeatures(): void {
     const layer = this.hsFiltersService.selectedLayer?.layer;
     if (layer) {
@@ -144,6 +147,9 @@ export class HsComparisonFilterComponent
     }
   }
 
+  /**
+   * Removes the current filter from its parent or deletes the rule filter
+   */
   remove(): void {
     if (this.parent) {
       this.parent.splice(this.parent.indexOf(this.filter), 1);
