@@ -20,11 +20,15 @@
 
     <!-- Display filter options if a layer is selected -->
     @if (selectedLayer) {
-    <div class=" card border-0">
-        <div class="card-body">
+    <div class="card border-0">
+        <div class="card-body d-flex flex-column">
             <h5 class="card-title">Filter for: {{ selectedLayer.title }}</h5>
             <!-- Filter component -->
-            <hs-filters [rule]="rule" [selectedLayer]="selectedLayer" (change)="onChange()"></hs-filters>
+            <hs-filters [rule]="rule" [selectedLayer]="selectedLayer"></hs-filters>
+            <!-- Add Apply Filters button -->
+            <button class="btn btn-primary mt-3 align-self-end" (click)="applyFilters()">
+                Apply Filters
+            </button>
         </div>
     </div>
     } @else {

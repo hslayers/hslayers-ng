@@ -43,8 +43,9 @@ export class HsWfsFilterComponent
   implements OnInit, OnDestroy {
   name = 'wfsFilter';
 
-  @Input() rule: any = {};
   @Input() preselectedLayer: HsLayerDescriptor;
+
+  rule: any;
 
   hsFiltersService = inject(HsFiltersService);
   hsLayerManagerService = inject(HsLayerManagerService);
@@ -94,9 +95,12 @@ export class HsWfsFilterComponent
    */
   async selectLayer(layer: HsLayerDescriptor | null) {
     this.selectedLayer = layer;
-
+    if (!layer) {
+      this.rule = {};
+      return;
+    }
     // Reset the rule when changing layers
-    this.rule = {};
+    this.rule = this.selectedLayer.layer.get('wfsFilter') || {};
 
     const wfsUrl = getWfsUrl(layer.layer);
     const url = this.hsUtilsService.proxify(
@@ -122,11 +126,12 @@ export class HsWfsFilterComponent
         response,
         layer.layer as VectorLayer<VectorSource>,
       );
-      console.log('Parsed attributes:', attributes);
-      console.log('Geometry attribute:', geometryAttribute);
       this.hsFiltersService.setLayerAttributes(attributes);
       setWfsAttributes(layer.layer, attributes);
-      layer.layer.set('geometryAttribute', geometryAttribute);
+      /**
+       * Set geometryAttribut to the layers source so it can be easily accessed in loader function
+       */
+      layer.layer.getSource().set('geometryAttribute', geometryAttribute);
     }
 
     this.hsFiltersService.setSelectedLayer(layer);
@@ -233,12 +238,15 @@ export class HsWfsFilterComponent
   }
 
   /**
-   * Handles changes in the filter
+   * Applies the current filter to the selected layer and refreshes the source
    */
-  onChange() {
-    if (this.rule.filter) {
+  applyFilters() {
+    if (this.selectedLayer) {
       const parsedFilter = this.parseFilter(this.rule.filter);
-      console.log('Parsed OpenLayers filter for WFS:', parsedFilter);
+      this.selectedLayer.layer.set('wfsFilter', this.rule);
+      const source = this.selectedLayer.layer.getSource();
+      source.set('filter', parsedFilter);
+      source.refresh();
     }
   }
 
