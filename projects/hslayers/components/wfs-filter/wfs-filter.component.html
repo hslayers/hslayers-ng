@@ -1,64 +1,53 @@
 @if (isVisible$ | async) {
-  <div
-    class="card hs-main-panel hs-wfs-filter-panel"
-    [ngClass]="panelWidthClass"
-  >
-    <hs-panel-header name="wfsFilter" [panelTabs]="'WFS_FILTER'" class="mb-3">
-    </hs-panel-header>
-    <!-- Check if there are available WFS layers -->
-    @if (availableLayers()?.length > 0) {
-      <!-- Layer selection dropdown with floating label -->
-      <div class="m-3 form-floating">
-        <select
-          id="layerSelect"
-          class="form-select"
-          [ngModel]="selectedLayer()"
-          (ngModelChange)="selectLayer($event)"
-        >
-          <option [ngValue]="null">No layer selected</option>
-          @for (layer of availableLayers(); track layer) {
-            <option [ngValue]="layer">
-              {{ layer.title }}
-            </option>
-          }
-        </select>
-        <label class="ms-2" for="layerSelect">Layer to filter</label>
-      </div>
-
-      <!-- Display filter options if a layer is selected -->
-      @if (selectedLayer()) {
-        <div class="card border-0">
-          <div class="card-body d-flex flex-column">
-            <!-- Filter component -->
-            <hs-filters
-              [rule]="rule()"
-              [selectedLayer]="selectedLayer()"
-            ></hs-filters>
-            <!-- Add Apply Filters button -->
-            <button
-              class="btn btn-primary mt-3 align-self-end"
-              (click)="applyFilters()"
-            >
-              Apply Filters
-            </button>
-          </div>
-        </div>
+<div class="card hs-main-panel hs-wfs-filter-panel" [ngClass]="panelWidthClass">
+  <hs-panel-header name="wfsFilter" [panelTabs]="'WFS_FILTER'" class="mb-3">
+  </hs-panel-header>
+  <!-- Check if there are available WFS layers -->
+  @if (availableLayers()?.length > 0) {
+  <!-- Layer selection dropdown with floating label -->
+  <div class="m-3 form-floating">
+    <select id="layerSelect" class="form-select" [ngModel]="selectedLayer()" (ngModelChange)="selectLayer($event)">
+      <option [ngValue]="null">{{ 'WFS_FILTER.noLayerSelected' | translateHs }}</option>
+      @for (layer of availableLayers(); track layer) {
+      <option [ngValue]="layer">
+        {{ layer.title }}
+      </option>
       }
-    } @else {
-      <!-- Display when no WFS layers are available -->
-      <div class="d-flex flex-column gap-2 gap-4 justify-content-center mt-5 px-3 py-4">
-        <div class="d-flex justify-content-center">
-            <div class="w-75">
-                <h4>No WFS layers available</h4>
-                <p>To use this feature, please add a WFS layer to the map first.</p>
-            </div>
-            <i class="icon-layers mb-3 text-muted" style="font-size: 48px"></i>
-        </div>
-        <!-- Button to open the Add Data panel -->
-        <button class="btn btn-primary w-50 m-auto" (click)="openAddDataPanel()">
-          Add WFS Layer
-        </button>
-      </div>
+    </select>
+    <label class="ms-2" for="layerSelect">{{ 'WFS_FILTER.layerToFilter' | translateHs }}</label>
+    @if(!selectedLayer()){
+    <p style="text-align: end;" class="m-0 p-1 small text-secondary">{{ 'WFS_FILTER.selectLayerToStart' | translateHs }}</p>
     }
   </div>
+
+  <!-- Display filter options if a layer is selected -->
+  @if (selectedLayer()) {
+  <div class="card border-0">
+    <div class="card-body d-flex flex-column">
+      <!-- Filter component -->
+      <hs-filters [rule]="rule()" [selectedLayer]="selectedLayer()"></hs-filters>
+      <!-- Add Apply Filters button -->
+      <button class="btn btn-primary mt-3 align-self-end" (click)="applyFilters()">
+        {{ 'WFS_FILTER.applyFilters' | translateHs }}
+      </button>
+    </div>
+  </div>
+  }
+  } @else {
+  <!-- Display when no WFS layers are available -->
+  <div class="d-flex flex-column gap-2 gap-4 justify-content-center mt-5 px-3 py-4">
+    <div class="d-flex justify-content-center">
+      <div class="w-75">
+        <h4>{{ 'WFS_FILTER.noWfsLayersAvailable' | translateHs }}</h4>
+        <p>{{ 'WFS_FILTER.addWfsLayerFirst' | translateHs }}</p>
+      </div>
+      <i class="icon-layers mb-3 text-muted" style="font-size: 48px"></i>
+    </div>
+    <!-- Button to open the Add Data panel -->
+    <button class="btn btn-primary w-50 m-auto" (click)="openAddDataPanel()">
+      {{ 'WFS_FILTER.addWfsLayer' | translateHs }}
+    </button>
+  </div>
+  }
+</div>
 }

@@ -1,9 +1,9 @@
 <div class="mb-2">
   <div class="d-flex flex-row justify-content-end">
-    <hs-add-filter-button class="w-100" [rule]="rule" (clicks)="add($event.type, false)"></hs-add-filter-button>
+    <hs-add-filter-button #addFilterButton class="w-100" [rule]="rule" (clicks)="add($event.type, false)"></hs-add-filter-button>
   </div>
   @if (hsFiltersService.isLogOp(rule.filter)) {
-  <div class="card"><!-- TODO: Remove function call from template -->
+  <div class="card">
     <div class="d-flex flex-row card-header p-0">
       <div class="p-2">
         {{hsFiltersService.humanReadableLogOp(rule.filter[0])}}<!-- TODO: Remove function call from template -->
@@ -26,5 +26,5 @@
   @if (rule.filter?.length > 0 && !(hsFiltersService.isLogOp(rule.filter))) {
   <hs-comparison-filter (changes)="emitChange()" (deleteFilter)="remove()"
     [filter]="rule.filter"></hs-comparison-filter>
-  }<!-- TODO: Remove function call from template -->
+  }
 </div>

@@ -1,11 +1,4 @@
-import {
-  Component,
-  EventEmitter,
-  Input,
-  OnChanges,
-  Output,
-  inject,
-} from '@angular/core';
+import {Component, EventEmitter, Output, inject, input} from '@angular/core';
 import {Rule} from 'geostyler-style';
 
 import {
@@ -23,18 +16,11 @@ import {TranslateCustomPipe} from 'hslayers-ng/services/language';
   standalone: true,
   imports: [TranslateCustomPipe, NgbDropdownModule],
 })
-export class HsAddFilterButtonComponent implements OnChanges {
+export class HsAddFilterButtonComponent {
   @Output() clicks = new EventEmitter();
-  @Input() rule?: Rule;
+  rule = input<Rule>();
 
   hsFiltersService = inject(HsFiltersService);
-
-  /**
-   * Update UI on filter removal
-   */
-  ngOnChanges() {
-    this.setActiveTab(undefined);
-  }
 
   activeTab: FilterType;
   readonly logicalOperators: LogicalOperatorType[] = ['AND', 'OR', 'NOT'];
@@ -50,14 +36,15 @@ export class HsAddFilterButtonComponent implements OnChanges {
   }
 
   setActiveTab(type: FilterType) {
+    const rule = this.rule();
     if (
       !type &&
-      this.rule?.filter &&
-      Array.isArray(this.rule.filter) &&
-      this.rule.filter.length > 0
+      rule?.filter &&
+      Array.isArray(rule.filter) &&
+      rule.filter.length > 0
     ) {
       const readableType = this.hsFiltersService.humanReadableLogOp(
-        this.rule.filter[0],
+        rule.filter[0],
       );
       this.activeTab = readableType || this.comparisonOperator;
     } else {
