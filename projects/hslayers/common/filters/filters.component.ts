@@ -1,4 +1,4 @@
-import {Component, Input, inject} from '@angular/core';
+import {Component, ElementRef, Input, inject, viewChild} from '@angular/core';
 
 import {FilterType} from './filter.type';
 import {HsAddFilterButtonComponent} from './add-filter-button.component';
@@ -25,6 +25,7 @@ export class HsFiltersComponent extends HsStylerPartBaseComponent {
   @Input({required: true}) set selectedLayer(layer: HsLayerDescriptor) {
     this.hsFiltersService.setSelectedLayer(layer);
   }
+  addFilterButton = viewChild<HsAddFilterButtonComponent>('addFilterButton');
 
   hsFiltersService = inject(HsFiltersService);
   constructor() {
@@ -39,7 +40,8 @@ export class HsFiltersComponent extends HsStylerPartBaseComponent {
   }
 
   remove(): void {
-    this.rule = {...this.rule, filter: []};
+    delete this.rule.filter;
+    this.addFilterButton().setActiveTab(undefined);
     this.emitChange();
   }
 }

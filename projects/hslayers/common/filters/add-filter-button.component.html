@@ -1,7 +1,7 @@
-@if (!rule) {
+@if (!rule()) {
   <div class="p-1">
     <div ngbDropdown class="d-inline-block" #menu="ngbDropdown">
-      <button class="btn btn-outline-primary btn-sm" [title]="'STYLER.addFilter' | translateHs  " ngbDropdownToggle>
+      <button class="btn btn-outline-primary btn-sm" [title]="'STYLER.addFilter' | translateHs" ngbDropdownToggle>
         <span class="icon-plus"></span>
       </button>
       <div ngbDropdownMenu>

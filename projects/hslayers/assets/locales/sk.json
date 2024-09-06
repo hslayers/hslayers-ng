@@ -1070,5 +1070,14 @@
     "titleStylingOptions": "Vzhľad nadpisu",
     "top": "Hore",
     "us inch": "Palec (US)"
+  },
+  "WFS_FILTER": {
+    "noLayerSelected": "Nie je vybraná žiadna vrstva",
+    "layerToFilter": "Vrstva na filtrovanie",
+    "selectLayerToStart": "Pre pokračovanie vyberte vrstvu z rozbaľovacieho zoznamu",
+    "applyFilters": "Použiť filtre",
+    "noWfsLayersAvailable": "Nie sú k dispozícii žiadne WFS vrstvy",
+    "addWfsLayerFirst": "Pre použitie tejto funkcie najprv pridajte WFS vrstvu do mapy.",
+    "addWfsLayer": "Pridať WFS vrstvu"
   }
 }

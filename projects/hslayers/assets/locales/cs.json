@@ -1070,5 +1070,14 @@
     "waypointLayer": "Vrstva s body trasy",
     "waypoints": "Body trasy",
     "selectProfile": "Vyberte způsob dopravy"
+  },
+  "WFS_FILTER": {
+    "noLayerSelected": "Není vybrána žádná vrstva",
+    "layerToFilter": "Vrstva k filtrování",
+    "selectLayerToStart": "Pro pokračování vyberte vrstvu z rozbalovací nabídky",
+    "applyFilters": "Použít filtry",
+    "noWfsLayersAvailable": "Nejsou k dispozici žádné WFS vrstvy",
+    "addWfsLayerFirst": "Pro použití této funkce nejprve přidejte WFS vrstvu do mapy.",
+    "addWfsLayer": "Přidat WFS vrstvu"
   }
 }

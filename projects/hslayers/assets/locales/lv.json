@@ -1006,5 +1006,14 @@
     "waypointDrawingHint": "Lūdzu spiediet uz kartes, lai pievienotu pieturas punktus",
     "waypointLayer": "Galapunktu slānis",
     "waypoints": "Pieturas punkti"
+  },
+  "WFS_FILTER": {
+    "noLayerSelected": "Nav izvēlēts neviens slānis",
+    "layerToFilter": "Filtrējamais slānis",
+    "selectLayerToStart": "Lai turpinātu, izvēlieties slāni no nolaižamā saraksta",
+    "applyFilters": "Pielietot filtrus",
+    "noWfsLayersAvailable": "Nav pieejamu WFS slāņu",
+    "addWfsLayerFirst": "Lai izmantotu šo funkciju, vispirms pievienojiet WFS slāni kartei.",
+    "addWfsLayer": "Pievienot WFS slāni"
   }
 }

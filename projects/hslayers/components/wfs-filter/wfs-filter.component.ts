@@ -20,6 +20,7 @@ import {
 } from 'hslayers-ng/common/panels';
 import {HsUtilsService} from 'hslayers-ng/services/utils';
 import {HttpClient} from '@angular/common/http';
+import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 import {Vector as VectorLayer} from 'ol/layer';
 import {Vector as VectorSource} from 'ol/source';
 import {catchError, filter, lastValueFrom, map, switchMap} from 'rxjs';
@@ -46,6 +47,7 @@ import {takeUntilDestroyed, toSignal} from '@angular/core/rxjs-interop';
     FormsModule,
     AsyncPipe,
     HsPanelHeaderComponent,
+    TranslateCustomPipe,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
