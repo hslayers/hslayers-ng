@@ -5,25 +5,28 @@ import {
   HsAddFilterButtonComponent,
   HsFiltersComponent,
   HsFiltersService,
-} from 'hslayers-ng/components/styler';
+} from 'hslayers-ng/common/filters';
 import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 import {provideHttpClient} from '@angular/common/http';
 import {provideHttpClientTesting} from '@angular/common/http/testing';
 
-describe('StylerFiltersComponent', () => {
+describe('CommonFiltersComponent', () => {
   let component: HsFiltersComponent;
   let fixture: ComponentFixture<HsFiltersComponent>;
   let filtersService: HsFiltersService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [HsFiltersComponent, HsAddFilterButtonComponent],
       providers: [
         provideHttpClient(),
         provideHttpClientTesting(),
         HsFiltersService,
       ],
-      imports: [TranslateCustomPipe],
+      imports: [
+        TranslateCustomPipe,
+        HsFiltersComponent,
+        HsAddFilterButtonComponent,
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(HsFiltersComponent);
