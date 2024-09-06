@@ -16,6 +16,7 @@ import {
   filter,
   map,
   of,
+  share,
   startWith,
   switchMap,
   tap,
@@ -96,7 +97,9 @@ export class HsComparisonFilterComponent
   ngOnInit(): void {
     this.attributeControl = new FormControl(this.filter[1] ?? null);
     const currentAttribute$ = this.attributeControl.valueChanges.pipe(
-      tap(() => this.loading.set(true)),
+      tap(() => {
+        this.loading.set(true);
+      }),
       switchMap((attrName: string) => {
         this.filter[1] = attrName;
         return this.isWfsFilter()
@@ -128,11 +131,14 @@ export class HsComparisonFilterComponent
         this.loading.set(false);
       }),
       map((attr) => {
+        console.log('mapattr', attr);
         if (attr?.isNumeric) {
           return [...this.OPERATORS.default, ...this.OPERATORS.numeric];
         }
         return this.OPERATORS.default;
       }),
+      startWith(this.OPERATORS.default),
+      share(),
       catchError((error) => {
         console.error('Error fetching attribute values:', error);
         this.loading.set(false);
