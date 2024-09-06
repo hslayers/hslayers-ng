@@ -145,6 +145,10 @@ export class HsFiltersService {
         const contentType = response.headers.get('content-type');
         let parsedResponse: any;
 
+        /**
+         * NOTE: Spec says it might be served in other formats other than GML but
+         * havent found any example so keeping just in case
+         */
         if (contentType && contentType.includes('application/json')) {
           parsedResponse = JSON.parse(response.body);
         } else {
@@ -183,14 +187,14 @@ export class HsFiltersService {
    */
   private buildWfsUrl(layer: Layer<Source>, attributeName: string): string {
     const baseUrl = getWfsUrl(layer);
-    const params = new URLSearchParams({
-      service: 'WFS',
-      version: '2.0.0',
-      request: 'GetPropertyValue',
-      typename: layer.get('layerName'),
-      valueReference: attributeName,
-      outputFormat: 'application/json',
-    });
+    const params = [
+      'service=WFS',
+      'version=2.0.0',
+      'request=GetPropertyValue',
+      `typename=${layer.get('layerName')}`,
+      `valueReference=${attributeName}`,
+      'outputFormat=application/json',
+    ].join('&');
     return this.hsUtilsService.proxify(`${baseUrl}?${params.toString()}`);
   }
 
@@ -217,7 +221,7 @@ export class HsFiltersService {
       const elementName = `${this.selectedLayer.layer.get('layerName').split(':')[0]}:${attribute.name}`;
       const valueElements = xmlDoc.getElementsByTagName(elementName);
       values = Array.from(valueElements).map((el) =>
-        attribute.isNumeric ? +el.textContent : el.textContent,
+        attribute.isNumeric ? +el.textContent : el.textContent.trim(),
       );
     } else if (response.features && Array.isArray(response.features)) {
       // JSON response
@@ -225,7 +229,6 @@ export class HsFiltersService {
         (feature) => feature.properties[attribute.name],
       );
     }
-
     // Return unique, sorted values
     return [...new Set(values)].sort((a, b) => {
       if (typeof a === 'string' && typeof b === 'string') {

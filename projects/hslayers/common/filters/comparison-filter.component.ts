@@ -131,7 +131,6 @@ export class HsComparisonFilterComponent
         this.loading.set(false);
       }),
       map((attr) => {
-        console.log('mapattr', attr);
         if (attr?.isNumeric) {
           return [...this.OPERATORS.default, ...this.OPERATORS.numeric];
         }
