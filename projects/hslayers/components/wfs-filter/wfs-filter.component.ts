@@ -4,7 +4,6 @@ import {
   ChangeDetectionStrategy,
   Component,
   Input,
-  OnInit,
   Signal,
   inject,
 } from '@angular/core';
@@ -51,9 +50,7 @@ import {takeUntilDestroyed, toSignal} from '@angular/core/rxjs-interop';
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class HsWfsFilterComponent
-  extends HsPanelBaseComponent
-  implements OnInit {
+export class HsWfsFilterComponent extends HsPanelBaseComponent {
   name = 'wfsFilter';
 
   @Input() preselectedLayer: HsLayerDescriptor;
@@ -162,7 +159,7 @@ export class HsWfsFilterComponent
     );
 
     if (featureTypeElement) {
-      const attributes = Array.from(
+      const allAttributes = Array.from(
         featureTypeElement.querySelectorAll('xsd\\:element, element'),
       ).map((el) => {
         const name = el.getAttribute('name');
@@ -176,8 +173,13 @@ export class HsWfsFilterComponent
 
       const geometryAttribute = this.determineGeometryAttribute(
         layer,
-        attributes,
+        allAttributes,
       );
+
+      const attributes = allAttributes.filter(
+        (attr) => attr.name !== geometryAttribute,
+      );
+
       return {attributes, geometryAttribute};
     } else {
       console.warn('No feature type found in the XML response');
@@ -239,6 +241,7 @@ export class HsWfsFilterComponent
       'line',
       'polygon',
       'surface',
+      'curve',
     ];
     return geometryKeywords.some((keyword) =>
       type.toLowerCase().includes(keyword),
