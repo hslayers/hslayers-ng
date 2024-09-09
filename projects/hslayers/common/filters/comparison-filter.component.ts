@@ -1,6 +1,7 @@
-import {AsyncPipe, NgClass, NgForOf, NgStyle} from '@angular/common';
 import {
+  AfterViewInit,
   Component,
+  DestroyRef,
   Input,
   OnInit,
   WritableSignal,
@@ -9,6 +10,7 @@ import {
   signal,
   viewChild,
 } from '@angular/core';
+import {AsyncPipe, NgClass, NgForOf, NgStyle} from '@angular/common';
 import {Feature} from 'ol';
 import {FormControl, FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {Geometry} from 'ol/geom';
@@ -53,8 +55,7 @@ import {toSignal} from '@angular/core/rxjs-interop';
 })
 export class HsComparisonFilterComponent
   extends HsStylerPartBaseComponent
-  implements OnInit
-{
+  implements OnInit {
   @Input() filter;
   @Input() parent;
 
@@ -78,6 +79,7 @@ export class HsComparisonFilterComponent
   hsFiltersService = inject(HsFiltersService);
   hsLayerUtilsService = inject(HsLayerUtilsService);
   hsLayoutService = inject(HsLayoutService);
+  destroyRef = inject(DestroyRef);
 
   loading: WritableSignal<boolean> = signal(false);
 
@@ -159,13 +161,43 @@ export class HsComparisonFilterComponent
   ): Observable<WfsFeatureAttribute> {
     return this.isWfsFilter()
       ? this.hsFiltersService.getAttributeWithValues(attrName)
-      : of({
-          name: attrName,
-          type: 'unknown',
-          isNumeric: !isNaN(Number(this.features[0]?.get(attrName))),
-          range: undefined,
-          values: undefined,
-        } as WfsFeatureAttribute);
+      : this.getLocalAttributesWithValues(attrName);
+  }
+
+  /**
+   * Returns an array of values for the given attribute from the existing features.
+   * @param attrName The name of the attribute to retrieve values from.
+   * @returns An array of values for the given attribute.
+   */
+  private getValuesFromExistingFeatures(attrName: string): any[] {
+    return this.hsFiltersService.getSortedUniqueValues(
+      this.features.map((feature) => feature.get(attrName)),
+    );
+  }
+
+  /**
+   * Creates WFSFeatureAttribute object from the existing feature values
+   * @param attrName The name of the attribute to retrieve.
+   * @returns An observable of WfsFeatureAttribute.
+   */
+  getLocalAttributesWithValues(
+    attrName: string,
+  ): Observable<WfsFeatureAttribute> {
+    const values = this.getValuesFromExistingFeatures(attrName);
+    const isNumeric = !isNaN(Number(values[0]));
+
+    return of({
+      name: attrName,
+      type: 'unknown',
+      isNumeric,
+      range: isNumeric
+        ? {
+            min: Math.min(...values),
+            max: Math.max(...values),
+          }
+        : undefined,
+      values,
+    });
   }
 
   /**

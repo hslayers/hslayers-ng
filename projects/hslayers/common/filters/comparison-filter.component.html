@@ -20,13 +20,13 @@
     }
   </select>
   <div class="comparison-filter-value" [ngClass]="{'expanded': expanded()}">
-    @if (isWfsFilter() ) {
       @if(currentAttribute()?.range){
         <hs-filter-range-input
           [min]="currentAttribute()?.range.min"
           [max]="currentAttribute()?.range.max"
           [(value)]="filter[2]"
-          (valueChange)="emitChange()">
+          (change)="emitChange()"
+          >
         </hs-filter-range-input>
       }
       @else {
@@ -47,10 +47,6 @@
           </select>
         }
       }
-    } @else {
-    <input class="form-control h-100" name="hs-sld-filter-value" [(ngModel)]="filter[2]" (change)="emitChange()"
-      [disabled]="!attributeControl.value" />
-    }
   </div>
 
   <div>

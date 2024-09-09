@@ -9,6 +9,8 @@ import {
 } from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {NgClass} from '@angular/common';
+import {debounceTime} from 'rxjs';
+import {takeUntilDestroyed, toObservable} from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'hs-filter-range-input',
@@ -23,10 +25,10 @@ import {NgClass} from '@angular/common';
         {{ value() }}
       </div>
       <input
+        #rangeInput
         type="range"
         class="form-range border px-1 h-100"
         [(ngModel)]="value"
-        (change)="change.emit(value())"
         [min]="min()"
         [max]="max()"
         (mousedown)="expandRange()"
@@ -68,6 +70,14 @@ export class FilterRangeInputComponent {
 
   private expandedSignal = signal(false);
   expanded = this.expandedSignal.asReadonly();
+
+  constructor() {
+    toObservable(this.bubblePosition)
+      .pipe(debounceTime(250), takeUntilDestroyed())
+      .subscribe(() => {
+        this.change.emit(this.value());
+      });
+  }
 
   expandRange() {
     this.expandedSignal.set(true);
