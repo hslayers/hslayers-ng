@@ -8,8 +8,15 @@
     transition: min-width 0.5s ease-in-out;
 }
 
-.comparison-filter-value.expanded {
-    min-width: 70%;
+.comparison-filter-container.expanded {
+
+    .hs-comparison-filter-operator {
+        display: none;
+    }
+
+    .comparison-filter-value {
+        min-width: 70%;
+    }
 }
 
 .loading-overlay {

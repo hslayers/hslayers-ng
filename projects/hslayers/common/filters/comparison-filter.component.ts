@@ -65,7 +65,8 @@ export class HsComparisonFilterComponent
   expanded = computed(() => this.filterRangeInput()?.expanded() ?? false);
 
   private readonly OPERATORS = {
-    default: ['==', '*=', '!='],
+    default: ['==', '!='],
+    stringBased: ['*='],
     numeric: ['<', '<=', '>', '>='],
   };
 
@@ -139,7 +140,7 @@ export class HsComparisonFilterComponent
           }
           return [...this.OPERATORS.default, ...this.OPERATORS.numeric];
         }
-        return this.OPERATORS.default;
+        return [...this.OPERATORS.default, ...this.OPERATORS.stringBased];
       }),
       startWith(this.OPERATORS.default),
       share(),

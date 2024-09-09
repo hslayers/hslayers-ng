@@ -1,5 +1,5 @@
-<div class="comparison-filter-container d-flex flex-row form-group p-1 position-relative">
-  <select class="form-control form-select" [formControl]="attributeControl"
+<div class="comparison-filter-container d-flex flex-row form-group p-1 position-relative" [ngClass]="{'expanded': expanded()}">
+  <select class="form-control form-select hs-comparison-filter-attribute" [formControl]="attributeControl"
     name="hs-sld-filter-attribute">
     <option [ngValue]="null" [disabled]="true" selected hidden>Pick an attribute</option>
     @for(attr of attributes; track attr){
@@ -10,7 +10,7 @@
 
   </select>
 
-  <select (change)="emitChange()" class="form-control form-select hs-sld-filter-comparison-sign"
+  <select (change)="emitChange()" class="form-control form-select hs-comparison-filter-operator"
     style="width: min-content" [(ngModel)]="filter[0]" name="hs-sld-filter-comparison-sign"
     [disabled]="!attributeControl.value">
     @for (op of operators | async ; track op) {
@@ -19,7 +19,7 @@
     </option>
     }
   </select>
-  <div class="comparison-filter-value" [ngClass]="{'expanded': expanded()}">
+  <div class="comparison-filter-value" >
       @if(currentAttribute()?.range){
         <hs-filter-range-input
           [min]="currentAttribute()?.range.min"
