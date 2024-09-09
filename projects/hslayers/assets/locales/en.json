@@ -320,7 +320,8 @@
     "separateLayers": "separate layers",
     "copyToClipboardFailure": "Could not copy. Clipboard API not supported in your browser.",
     "base": "Basemap",
-    "thematic": "Thematic map"
+    "thematic": "Thematic map",
+    "contains": "contains"
   },
   "COMPOSITIONS": {
     "addByAddress": "Add composition by address",

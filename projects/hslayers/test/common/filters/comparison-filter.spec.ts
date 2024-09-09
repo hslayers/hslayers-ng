@@ -119,7 +119,14 @@ describe('HsComparisonFilterComponent', () => {
       tick(1000);
       fixture.detectChanges();
 
-      expect(ops).toEqual(['==', '!=', '<', '<=', '>', '>=']);
+      expect(ops.map((op) => op.value)).toEqual([
+        '==',
+        '!=',
+        '<',
+        '<=',
+        '>',
+        '>=',
+      ]);
     }));
 
     it('should update currentAttribute when selecting an attribute', fakeAsync(() => {

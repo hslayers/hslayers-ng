@@ -38,6 +38,11 @@ import {HsStylerPartBaseComponent} from 'hslayers-ng/services/styler';
 import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 import {takeUntilDestroyed, toSignal} from '@angular/core/rxjs-interop';
 
+interface Operator {
+  value: string;
+  alias: string;
+}
+
 @Component({
   standalone: true,
   imports: [
@@ -65,16 +70,24 @@ export class HsComparisonFilterComponent
   expanded = computed(() => this.filterRangeInput()?.expanded() ?? false);
 
   private readonly OPERATORS = {
-    default: ['==', '!='],
-    stringBased: ['*='],
-    numeric: ['<', '<=', '>', '>='],
+    default: [
+      {value: '==', alias: '='},
+      {value: '!=', alias: '≠'},
+    ],
+    stringBased: [{value: '*=', alias: 'contains'}],
+    numeric: [
+      {value: '<', alias: '<'},
+      {value: '<=', alias: '≤'},
+      {value: '>', alias: '>'},
+      {value: '>=', alias: '≥'},
+    ],
   };
 
   features: Feature<Geometry>[] = [];
 
   attributeControl: FormControl;
   attributes: string[];
-  operators: Observable<string[]>;
+  operators: Observable<Operator[]>;
   currentAttribute: WritableSignal<WfsFeatureAttribute> = signal(null);
 
   hsFiltersService = inject(HsFiltersService);
@@ -126,7 +139,7 @@ export class HsComparisonFilterComponent
       }),
     );
 
-    // Set up operators stream based on the current attribute
+    // Update the operators stream
     this.operators = currentAttribute$.pipe(
       filter((attr) => attr !== null),
       tap((attr) => {

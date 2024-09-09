@@ -320,7 +320,8 @@
     "separateLayers": "samostatné vrstvy",
     "copyToClipboardFailure": "Nelze zkopírovat. Váš prohlížeč nepodporuje potřebné funkce.",
     "base": "Podkladová mapa",
-    "thematic": "Tematická mapa"
+    "thematic": "Tematická mapa",
+    "contains": "obsahuje"
   },
   "COMPOSITIONS": {
     "addByAddress": "Přidat kompozici z adresy",
