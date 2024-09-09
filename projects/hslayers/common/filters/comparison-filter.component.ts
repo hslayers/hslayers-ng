@@ -15,12 +15,14 @@ import {Geometry} from 'ol/geom';
 import {
   Observable,
   catchError,
+  concat,
   filter,
   map,
   of,
   share,
   startWith,
   switchMap,
+  take,
   tap,
 } from 'rxjs';
 import {Vector as VectorSource} from 'ol/source';
@@ -51,7 +53,8 @@ import {toSignal} from '@angular/core/rxjs-interop';
 })
 export class HsComparisonFilterComponent
   extends HsStylerPartBaseComponent
-  implements OnInit {
+  implements OnInit
+{
   @Input() filter;
   @Input() parent;
 
@@ -88,39 +91,39 @@ export class HsComparisonFilterComponent
   );
 
   ngOnInit(): void {
+    // Initialize attribute control with the current filter value or null
     this.attributeControl = new FormControl(this.filter[1] ?? null);
-    const currentAttribute$ = this.attributeControl.valueChanges.pipe(
-      tap(() => {
-        this.loading.set(true);
-      }),
+
+    /**
+     * Stream to get initial attribute values.
+     * Serves bascally as startWith but with observable
+     * NOTE: take(1) to allow switch to subsequentAttributes in concat
+     */
+    const initialAttribute$ = this.getAttributeWithValues(
+      this.attributeControl.value,
+    ).pipe(take(1));
+
+    // Stream to handle subsequent attribute changes
+    const subsequentAttributes$ = this.attributeControl.valueChanges.pipe(
+      tap(() => this.loading.set(true)),
       switchMap((attrName: string) => {
         this.filter[1] = attrName;
-        return this.isWfsFilter()
-          ? this.hsFiltersService.getAttributeWithValues(attrName)
-          : /**
-             * If used in styler, we have no values so we create WFSFeatureAttribute
-             * with name, type and isNumeric flag
-             * TODO: possibly get values from features
-             */
-            of({
-              name: attrName,
-              type: 'unknown',
-              isNumeric: !isNaN(Number(this.features[0]?.get(attrName))),
-              range: undefined,
-              values: undefined,
-            });
-      }),
-      startWith({
-        name: this.attributeControl.value,
-        type: 'unknown',
-        isNumeric: !isNaN(
-          Number(this.features[0]?.get(this.attributeControl.value)),
-        ),
-        range: undefined,
-        values: undefined,
+        return this.getAttributeWithValues(attrName);
       }),
     );
 
+    // Combine initial and subsequent attribute streams
+    const currentAttribute$ = concat(
+      initialAttribute$,
+      subsequentAttributes$,
+    ).pipe(
+      tap((attr) => {
+        this.currentAttribute.set(attr);
+        this.loading.set(false);
+      }),
+    );
+
+    // Set up operators stream based on the current attribute
     this.operators = currentAttribute$.pipe(
       filter((attr) => attr !== null),
       tap((attr) => {
@@ -129,7 +132,9 @@ export class HsComparisonFilterComponent
       }),
       map((attr) => {
         if (attr?.isNumeric) {
-          this.filter[2] = attr.range?.min || 0;
+          if (this.filter[2] === '<value>') {
+            this.filter[2] = attr.range?.min || 0;
+          }
           return [...this.OPERATORS.default, ...this.OPERATORS.numeric];
         }
         return this.OPERATORS.default;
@@ -142,6 +147,25 @@ export class HsComparisonFilterComponent
         return of(this.OPERATORS.default);
       }),
     );
+  }
+
+  /**
+   * Retrieves attribute with values based on the current filter type (WFS or local)
+   * @param attrName The name of the attribute to retrieve
+   * @returns An Observable of WfsFeatureAttribute
+   */
+  private getAttributeWithValues(
+    attrName: string,
+  ): Observable<WfsFeatureAttribute> {
+    return this.isWfsFilter()
+      ? this.hsFiltersService.getAttributeWithValues(attrName)
+      : of({
+          name: attrName,
+          type: 'unknown',
+          isNumeric: !isNaN(Number(this.features[0]?.get(attrName))),
+          range: undefined,
+          values: undefined,
+        } as WfsFeatureAttribute);
   }
 
   /**
