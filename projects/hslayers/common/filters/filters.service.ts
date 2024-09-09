@@ -199,6 +199,20 @@ export class HsFiltersService {
   }
 
   /**
+   * Returns an array of unique, sorted attribute values
+   * @param values The array of values to sort
+   * @returns An array of unique, sorted values
+   */
+  getSortedUniqueValues(values: any[]): any[] {
+    return [...new Set(values)].sort((a, b) => {
+      if (typeof a === 'string' && typeof b === 'string') {
+        return a.localeCompare(b);
+      }
+      return a - b;
+    });
+  }
+
+  /**
    * Extracts attribute values from the WFS response
    * @param response The WFS response (can be JSON or XML)
    * @param attribute The WFS feature attribute
@@ -230,11 +244,6 @@ export class HsFiltersService {
       );
     }
     // Return unique, sorted values
-    return [...new Set(values)].sort((a, b) => {
-      if (typeof a === 'string' && typeof b === 'string') {
-        return a.localeCompare(b);
-      }
-      return a - b;
-    });
+    return this.getSortedUniqueValues(values);
   }
 }
