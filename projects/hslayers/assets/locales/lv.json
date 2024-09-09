@@ -297,7 +297,8 @@
     "done": "Gatavs",
     "copyToClipboardFailure": "Nevar kopēt. Jūsu pārlūkprogramma neatbalsta nepieciešamās funkcijas.",
     "base": "Pamatkarte",
-    "thematic": "Tematiskā karte"
+    "thematic": "Tematiskā karte",
+    "contains": "satur"
   },
   "COMPOSITIONS": {
     "addByAddress": "Pievienot kompozīciju pēc adreses",
