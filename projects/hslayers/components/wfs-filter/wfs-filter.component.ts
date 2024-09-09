@@ -286,7 +286,7 @@ export class HsWfsFilterComponent extends HsPanelBaseComponent {
       case '==':
         return olFormatFilter.equalTo(operands[0], operands[1]);
       case '*=':
-        return olFormatFilter.like(operands[0], operands[1]);
+        return olFormatFilter.like(operands[0], `*${operands[1]}*`);
       case '!=':
         return olFormatFilter.notEqualTo(operands[0], operands[1]);
       case '<':
