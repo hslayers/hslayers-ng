@@ -36,7 +36,7 @@ import {HsLayerUtilsService} from 'hslayers-ng/services/utils';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsStylerPartBaseComponent} from 'hslayers-ng/services/styler';
 import {TranslateCustomPipe} from 'hslayers-ng/services/language';
-import {toSignal} from '@angular/core/rxjs-interop';
+import {takeUntilDestroyed, toSignal} from '@angular/core/rxjs-interop';
 
 @Component({
   standalone: true,
@@ -149,6 +149,7 @@ export class HsComparisonFilterComponent
         this.loading.set(false);
         return of(this.OPERATORS.default);
       }),
+      takeUntilDestroyed(this.destroyRef),
     );
   }
 

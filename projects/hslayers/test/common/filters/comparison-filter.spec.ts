@@ -1,17 +1,10 @@
-import {
-  BehaviorSubject,
-  firstValueFrom,
-  of,
-  shareReplay,
-  skip,
-  take,
-} from 'rxjs';
+import {BehaviorSubject, firstValueFrom, of} from 'rxjs';
 import {
   ComponentFixture,
   TestBed,
   fakeAsync,
+  flush,
   tick,
-  waitForAsync,
 } from '@angular/core/testing';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
@@ -58,6 +51,16 @@ class MockHsFiltersService {
       return of({...attr, range: {min: 0, max: 100}});
     }
     return of(attr);
+  }
+
+  getSortedUniqueValues(values: any[]): any[] {
+    const uniqueValues = [...new Set(values)];
+    return uniqueValues.sort((a, b) => {
+      if (typeof a === 'string' && typeof b === 'string') {
+        return a.localeCompare(b);
+      }
+      return a - b;
+    });
   }
 }
 
@@ -109,11 +112,14 @@ describe('HsComparisonFilterComponent', () => {
       const operatorsPromise = firstValueFrom(component.operators);
 
       component.attributeControl.setValue('attr2');
-      tick(500);
+      tick();
       fixture.detectChanges();
 
       const ops = await operatorsPromise;
-      expect(ops).toEqual(['==', '*=', '!=', '<', '<=', '>', '>=']);
+      tick(1000);
+      fixture.detectChanges();
+
+      expect(ops).toEqual(['==', '!=', '<', '<=', '>', '>=']);
     }));
 
     it('should update currentAttribute when selecting an attribute', fakeAsync(() => {
@@ -122,15 +128,18 @@ describe('HsComparisonFilterComponent', () => {
       fixture.detectChanges();
       expect(component.currentAttribute().name).toBe('attr1');
       expect(component.currentAttribute().values).toEqual(['value1', 'value2']);
+      flush();
     }));
 
-    it('should handle numeric attributes with range', fakeAsync(() => {
+    it('should handle numeric attributes with range', fakeAsync(async () => {
       component.attributeControl.setValue('attr2');
-      tick();
+      tick(1000);
       fixture.detectChanges();
 
       expect(component.currentAttribute().name).toBe('attr2');
       expect(component.currentAttribute().range).toEqual({min: 0, max: 100});
+
+      tick(250); // wait for debounceTime in filter-range-input to finish
     }));
 
     it('should remove filter when remove() is called', () => {
@@ -143,7 +152,6 @@ describe('HsComparisonFilterComponent', () => {
     });
 
     it('should update features and attributes when updateFeatures() is called', () => {
-      console.log(component.isWfsFilter());
       component.updateFeatures();
       expect(component.attributes).toEqual(['attr1', 'attr2']);
     });
@@ -163,27 +171,29 @@ describe('HsComparisonFilterComponent', () => {
       component.updateFeatures();
       tick();
       expect(component.attributes).toEqual(['attr1', 'attr2']);
-      expect(component.currentAttribute().type).toBe('unknown');
+      expect(component.currentAttribute().type).toBe('string');
     }));
 
-    it('should handle numeric attributes without fetching range', fakeAsync(() => {
+    it('should get values for numeric attributes from features', fakeAsync(() => {
       component.attributeControl.setValue('attr2');
       tick();
       fixture.detectChanges();
 
       expect(component.currentAttribute().name).toBe('attr2');
       expect(component.currentAttribute().isNumeric).toBeTrue();
-      expect(component.currentAttribute().range).toBeUndefined();
+      expect(component.currentAttribute().range).toEqual({min: 50, max: 75});
+
+      tick(250); // wait for debounceTime in filter-range-input to finish
     }));
 
-    it('should handle string attributes without fetching values', fakeAsync(() => {
+    it('should get values for string attributes from features', fakeAsync(() => {
       component.attributeControl.setValue('attr1');
       tick();
       fixture.detectChanges();
 
       expect(component.currentAttribute().name).toBe('attr1');
       expect(component.currentAttribute().isNumeric).toBeFalse();
-      expect(component.currentAttribute().values).toBeUndefined();
+      expect(component.currentAttribute().values).toEqual(['value1', 'value2']);
     }));
   });
 });
