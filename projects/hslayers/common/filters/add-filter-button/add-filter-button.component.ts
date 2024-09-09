@@ -5,8 +5,8 @@ import {
   ComparisonOperatorType,
   FilterType,
   LogicalOperatorType,
-} from './filter.type';
-import {HsFiltersService} from './filters.service';
+} from '../filter.type';
+import {HsFiltersService} from '../filters.service';
 import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
 import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 

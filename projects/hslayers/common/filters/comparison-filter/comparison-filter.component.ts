@@ -30,8 +30,8 @@ import {
 import {Vector as VectorSource} from 'ol/source';
 import {WfsFeatureAttribute} from 'hslayers-ng/types';
 
-import {FilterRangeInputComponent} from './filter-range-input/filter-range-input.component';
-import {HsFiltersService} from './filters.service';
+import {FilterRangeInputComponent} from '../filter-range-input/filter-range-input.component';
+import {HsFiltersService} from '../filters.service';
 import {HsLayerUtilsService} from 'hslayers-ng/services/utils';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsStylerPartBaseComponent} from 'hslayers-ng/services/styler';
