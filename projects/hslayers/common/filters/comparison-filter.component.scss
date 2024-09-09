@@ -1,0 +1,26 @@
+.comparison-filter-container {
+    position: relative;
+    min-height: 50px;
+}
+
+.comparison-filter-value {
+    min-width: 33%;
+    transition: min-width 0.5s ease-in-out;
+}
+
+.comparison-filter-value.expanded {
+    min-width: 70%;
+}
+
+.loading-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(248, 248, 248, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}

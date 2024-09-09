@@ -1,11 +1,13 @@
-import {AsyncPipe, NgForOf} from '@angular/common';
+import {AsyncPipe, NgClass, NgForOf, NgStyle} from '@angular/common';
 import {
   Component,
   Input,
   OnInit,
   WritableSignal,
+  computed,
   inject,
   signal,
+  viewChild,
 } from '@angular/core';
 import {Feature} from 'ol';
 import {FormControl, FormsModule, ReactiveFormsModule} from '@angular/forms';
@@ -24,6 +26,7 @@ import {
 import {Vector as VectorSource} from 'ol/source';
 import {WfsFeatureAttribute} from 'hslayers-ng/types';
 
+import {FilterRangeInputComponent} from './filter-range-input/filter-range-input.component';
 import {HsFiltersService} from './filters.service';
 import {HsLayerUtilsService} from 'hslayers-ng/services/utils';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
@@ -34,39 +37,29 @@ import {toSignal} from '@angular/core/rxjs-interop';
 @Component({
   standalone: true,
   imports: [
-    NgForOf,
+    NgClass,
+    NgStyle,
     ReactiveFormsModule,
     FormsModule,
     TranslateCustomPipe,
     AsyncPipe,
+    FilterRangeInputComponent,
   ],
   selector: 'hs-comparison-filter',
   templateUrl: './comparison-filter.component.html',
-  styles: `
-    .comparison-filter-container {
-      position: relative;
-      min-height: 50px;
-    }
-
-    .loading-overlay {
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background-color: rgba(248, 248, 248, 0.7);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      z-index: 1000;
-    }
-  `,
+  styleUrls: ['./comparison-filter.component.scss'],
 })
 export class HsComparisonFilterComponent
   extends HsStylerPartBaseComponent
   implements OnInit {
   @Input() filter;
   @Input() parent;
+
+  filterRangeInput = viewChild<FilterRangeInputComponent>(
+    FilterRangeInputComponent,
+  );
+  expanded = computed(() => this.filterRangeInput()?.expanded() ?? false);
+
   private readonly OPERATORS = {
     default: ['==', '*=', '!='],
     numeric: ['<', '<=', '>', '>='],
@@ -113,6 +106,8 @@ export class HsComparisonFilterComponent
               name: attrName,
               type: 'unknown',
               isNumeric: !isNaN(Number(this.features[0]?.get(attrName))),
+              range: undefined,
+              values: undefined,
             });
       }),
       startWith({
@@ -121,6 +116,8 @@ export class HsComparisonFilterComponent
         isNumeric: !isNaN(
           Number(this.features[0]?.get(this.attributeControl.value)),
         ),
+        range: undefined,
+        values: undefined,
       }),
     );
 
@@ -132,6 +129,7 @@ export class HsComparisonFilterComponent
       }),
       map((attr) => {
         if (attr?.isNumeric) {
+          this.filter[2] = attr.range?.min || 0;
           return [...this.OPERATORS.default, ...this.OPERATORS.numeric];
         }
         return this.OPERATORS.default;
