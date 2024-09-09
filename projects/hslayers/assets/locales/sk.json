@@ -754,7 +754,8 @@
     "url": "URL",
     "file": "Súbor",
     "draw": "Kresliť",
-    "edit": "Upraviť"
+    "edit": "Upraviť",
+    "WFS_FILTER": "WFS Filter"
   },
   "PERMALINK": {
     "embed": "vloženie",

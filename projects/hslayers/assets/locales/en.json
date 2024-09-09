@@ -754,7 +754,8 @@
     "url": "URL",
     "file": "File",
     "draw": "Draw",
-    "edit": "Edit"
+    "edit": "Edit",
+    "WFS_FILTER": "WFS Filter"
   },
   "PERMALINK": {
     "embed": "embed",
