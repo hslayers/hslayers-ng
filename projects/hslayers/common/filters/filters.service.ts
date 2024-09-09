@@ -160,7 +160,7 @@ export class HsFiltersService {
           parsedResponse,
           attribute,
         );
-        if (attribute.type === 'number') {
+        if (attribute.isNumeric) {
           return {
             ...attribute,
             range: {

@@ -1,5 +1,5 @@
 <div class="comparison-filter-container d-flex flex-row form-group p-1 position-relative">
-  <select class="form-control form-select" style="width: 100%" [formControl]="attributeControl"
+  <select class="form-control form-select" [formControl]="attributeControl"
     name="hs-sld-filter-attribute">
     <option [ngValue]="null" [disabled]="true" selected hidden>Pick an attribute</option>
     @for(attr of attributes; track attr){
@@ -19,18 +19,34 @@
     </option>
     }
   </select>
-  <div style="min-width: 33%;">
-    @if (isWfsFilter() && currentAttribute()?.values) {
-    <select class="form-control form-select h-100" [(ngModel)]="filter[2]" (change)="emitChange()"
-      [disabled]="!attributeControl.value">
-      @for (value of currentAttribute()?.values; track value) {
-      <option [ngValue]="value">{{value}}</option>
+  <div class="comparison-filter-value" [ngClass]="{'expanded': expanded()}">
+    @if (isWfsFilter() ) {
+      @if(currentAttribute()?.range){
+        <hs-filter-range-input
+          [min]="currentAttribute()?.range.min"
+          [max]="currentAttribute()?.range.max"
+          [(value)]="filter[2]"
+          (valueChange)="emitChange()">
+        </hs-filter-range-input>
       }
-    </select>
-    } @else if (currentAttribute()?.type === 'number' && currentAttribute()?.range) {
-    <input type="range" class="form-control h-100" name="hs-sld-filter-value" [(ngModel)]="filter[2]"
-      (change)="emitChange()" [min]="currentAttribute()?.range.min" [max]="currentAttribute()?.range.max"
-      [disabled]="!attributeControl.value" />
+      @else {
+        @if(filter[0] === '*=') {
+          <input class="form-select h-100" [(ngModel)]="filter[2]" (change)="emitChange()"
+            [disabled]="!attributeControl.value" [attr.list]="'customValues'" />
+          <datalist id="customValues">
+            @for (value of currentAttribute()?.values; track value) {
+            <option [value]="value">
+            }
+          </datalist>
+        } @else {
+          <select class="form-control form-select h-100" [(ngModel)]="filter[2]" (change)="emitChange()"
+            [disabled]="!attributeControl.value">
+            @for (value of currentAttribute()?.values; track value) {
+            <option [ngValue]="value">{{value}}</option>
+            }
+          </select>
+        }
+      }
     } @else {
     <input class="form-control h-100" name="hs-sld-filter-value" [(ngModel)]="filter[2]" (change)="emitChange()"
       [disabled]="!attributeControl.value" />
