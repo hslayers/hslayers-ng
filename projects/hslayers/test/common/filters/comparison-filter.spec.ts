@@ -19,6 +19,8 @@ import {HsLayerUtilsService} from 'hslayers-ng/services/utils';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {Point} from 'ol/geom';
 import {WfsFeatureAttribute} from 'hslayers-ng/types';
+import {provideHttpClient} from '@angular/common/http';
+import {provideHttpClientTesting} from '@angular/common/http/testing';
 
 class MockHsFiltersService {
   selectedLayer = {
@@ -88,6 +90,8 @@ describe('HsComparisonFilterComponent', () => {
     await TestBed.configureTestingModule({
       imports: [ReactiveFormsModule, FormsModule, HsComparisonFilterComponent],
       providers: [
+        provideHttpClient(),
+        provideHttpClientTesting(),
         {provide: HsFiltersService, useClass: MockHsFiltersService},
         {provide: HsLayerUtilsService, useClass: MockHsLayerUtilsService},
         {provide: HsLayoutService, useClass: MockHsLayoutService},
