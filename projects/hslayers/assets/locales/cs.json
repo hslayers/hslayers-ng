@@ -754,7 +754,8 @@
     "url": "URL",
     "file": "Soubor",
     "draw": "Kreslit",
-    "edit": "Upravit"
+    "edit": "Upravit",
+    "WFS_FILTER": "WFS Filtr"
   },
   "PERMALINK": {
     "embed": "vložení",

@@ -710,7 +710,8 @@
     "catalogue": "Datu katalogs",
     "url": "URL",
     "draw": "Zīmēt",
-    "edit": "Rediģēt"
+    "edit": "Rediģēt",
+    "WFS_FILTER": "WFS Filtrs"
   },
   "PERMALINK": {
     "embed": "Fiksētās",
