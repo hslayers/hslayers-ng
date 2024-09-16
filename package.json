@@ -103,7 +103,7 @@
     "@angular/cli": "^18.2.4",
     "@angular/compiler-cli": "^18.2.4",
     "@commitlint/cli": "^19.5.0",
-    "@commitlint/config-conventional": "^19.4.1",
+    "@commitlint/config-conventional": "^19.5.0",
     "@compodoc/compodoc": "^1.1.25",
     "@cypress/schematic": "^2.5.2",
     "@frsource/cypress-plugin-visual-regression-diff": "^3.2.14",
