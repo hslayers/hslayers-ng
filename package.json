@@ -114,7 +114,7 @@
     "cypress": "~13.14.2",
     "cypress-real-events": "^1.13.0",
     "cz-conventional-changelog": "^3.3.0",
-    "eslint": "^8.57.0",
+    "eslint": "^8.57.1",
     "eslint-config-openlayers": "14.0.0",
     "eslint-import-resolver-typescript": "^3.6.3",
     "eslint-plugin-import": "2.30.0",
