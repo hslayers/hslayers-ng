@@ -11,6 +11,13 @@ import {containsExtent, equals} from 'ol/extent';
 
 export const NORMALIZED_WEIGHT_PROPERTY_NAME = 'hs_normalized_IDW_value';
 
+export interface IDWImageData {
+  type: 'image';
+  data: Uint8ClampedArray;
+  width: number;
+  height: number;
+}
+
 export interface InterpolatedSourceOptions {
   min?: number;
   max?: number;
@@ -71,10 +78,46 @@ export class InterpolatedSource extends IDW {
       weight: NORMALIZED_WEIGHT_PROPERTY_NAME,
       getColor: getColorMapFromOptions(options),
     });
+
     if (options.features) {
       this.fillFeatures(options.features);
     }
   }
+
+  /*
+   * Display data when ready
+   */
+  onImageData(imageData: IDWImageData) {
+    // Calculation canvas at small resolution
+    const canvas = <HTMLCanvasElement>document.createElement('CANVAS');
+    (this as any)._internal = canvas;
+
+    canvas.width = imageData.width;
+    canvas.height = imageData.height;
+    const ctx = canvas.getContext('2d');
+
+    ctx.putImageData(
+      new ImageData(imageData.data, imageData.width, imageData.height),
+      0,
+      0,
+    );
+
+    if (this.isImageDataMostlyEmpty(imageData)) {
+      this.drawNoData(ctx, canvas);
+    }
+
+    // Draw full resolution canvas
+    (this as any)._canvas
+      .getContext('2d')
+      .drawImage(
+        canvas,
+        0,
+        0,
+        (this as any)._canvas.width,
+        (this as any)._canvas.height,
+      );
+  }
+
   /**
    * Get Minimum boundary used in normalization. Values under this minimum are set to it (clamped)
    */
@@ -235,6 +278,82 @@ export class InterpolatedSource extends IDW {
       const normalizedWeight = Math.ceil(((val - min) / (max - min)) * 99);
       f.set(NORMALIZED_WEIGHT_PROPERTY_NAME, normalizedWeight, true);
     });
+  }
+
+  /**
+   * Determine whether the IDW canvas displays data or not
+   * by checking 4 pixels in predefined image areas
+   */
+  isImageDataMostlyEmpty(imageData: IDWImageData) {
+    const {width, height, data} = imageData;
+    const positions = [
+      // Corners
+      {x: 0, y: 0},
+      {x: width - 2, y: 0},
+      {x: 0, y: height - 2},
+      {x: width - 2, y: height - 2},
+      // Edges
+      {x: Math.floor(width / 2), y: 0},
+      {x: Math.floor(width / 2), y: height - 2},
+      {x: 0, y: Math.floor(height / 2)},
+      {x: width - 2, y: Math.floor(height / 2)},
+      // Center
+      {x: Math.floor(width / 2), y: Math.floor(height / 2)},
+      // Quadrants
+      {x: Math.floor(width / 4), y: Math.floor(height / 4)},
+      {x: Math.floor((3 * width) / 4), y: Math.floor(height / 4)},
+      {x: Math.floor(width / 4), y: Math.floor((3 * height) / 4)},
+      {x: Math.floor((3 * width) / 4), y: Math.floor((3 * height) / 4)},
+    ];
+
+    // Define offsets to check neighboring pixels
+    const offsets = [
+      {dx: 0, dy: 0},
+      {dx: 1, dy: 0},
+      {dx: 0, dy: 1},
+      {dx: 1, dy: 1},
+    ];
+
+    for (const pos of positions) {
+      for (const offset of offsets) {
+        const x = pos.x + offset.dx;
+        const y = pos.y + offset.dy;
+
+        // Ensure x and y are within bounds
+        if (x >= 0 && x < width && y >= 0 && y < height) {
+          const index = (y * width + x) * 4;
+
+          if (
+            data[index] !== 0 || // Red component
+            data[index + 1] !== 0 || // Green component
+            data[index + 2] !== 0 // Blue component
+            //data[index + 3] !== 255 // Alpha component
+          ) {
+            return false; // Found a pixel with data
+          }
+        }
+      }
+    }
+
+    return true;
+  }
+
+  /**
+   * Draw 'NO DATA' label over layers canvas
+   */
+  drawNoData(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement) {
+    // Set text properties
+    ctx.font = '30px Arial';
+    ctx.fillStyle = 'white';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+
+    // Calculate center position
+    const centerX = canvas.width / 2;
+    const centerY = canvas.height / 2;
+
+    // Draw the text
+    ctx.fillText('NO DATA', centerX, centerY);
   }
 }
 
