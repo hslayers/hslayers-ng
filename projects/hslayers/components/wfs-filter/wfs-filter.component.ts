@@ -87,12 +87,14 @@ export class HsWfsFilterComponent extends HsPanelBaseComponent {
           );
         }),
         tap((layers) => {
-          // If the current layer is in the list of available layers, select it
-          for (const layer of layers) {
-            if (
-              this.hsLayerSelectorService.currentLayer.title === layer.title
-            ) {
-              this.selectLayer(layer);
+          const currentLayerTitle =
+            this.hsLayerSelectorService.currentLayer?.title;
+          if (currentLayerTitle) {
+            const layerToSelect = layers.find(
+              (layer) => layer.title === currentLayerTitle,
+            );
+            if (layerToSelect) {
+              this.selectLayer(layerToSelect);
             }
           }
         }),
