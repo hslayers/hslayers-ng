@@ -120,18 +120,20 @@ describe('layermanager editor', () => {
 
   beforeEach(() => {
     fixture = TestBed.createComponent(HsLayerEditorComponent);
+    fixture.componentRef.setInput('currentLayer', {
+      layer: layerForCluster,
+      idString() {
+        return 'layerteststringid';
+      },
+    });
     component = fixture.componentInstance;
     hsConfig = TestBed.inject(HsConfig);
     clusterWidgetFixture = TestBed.createComponent(HsClusterWidgetComponent);
     clusterWidgetFixture.componentInstance.data = {};
     clusterWidgetComponent = clusterWidgetFixture.componentInstance;
+
     fixture.detectChanges();
-    component.currentLayer = {
-      layer: layerForCluster,
-      idString() {
-        return 'layerteststringid';
-      },
-    };
+
     clusterWidgetComponent.layerDescriptor.next({layer: layerForCluster});
     hsConfig.reverseLayerList = true;
     hsConfig.layersInFeatureTable = [];
