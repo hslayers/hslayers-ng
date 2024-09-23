@@ -1,16 +1,13 @@
-import {Component, Input} from '@angular/core';
+import {Component, computed, inject, input, model, signal} from '@angular/core';
 
 import {Feature} from 'ol';
-import {Layer} from 'ol/layer';
-import {Source, Vector as VectorSource} from 'ol/source';
 import {Vector as VectorLayer} from 'ol/layer';
+import {Vector as VectorSource} from 'ol/source';
 
 import {HsClusterWidgetComponent} from '../widgets/cluster-widget.component';
 import {HsConfirmDialogComponent} from 'hslayers-ng/common/confirm';
 import {HsCopyLayerDialogComponent} from '../dialogs/copy-layer-dialog.component';
 import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
-import {HsDimensionTimeService} from 'hslayers-ng/services/get-capabilities';
-import {HsDrawService} from 'hslayers-ng/services/draw';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsExtentWidgetComponent} from '../widgets/extent-widget/extent-widget.component';
 import {HsIdwWidgetComponent} from '../widgets/idw-widget.component';
@@ -29,7 +26,6 @@ import {HsLayerManagerUtilsService} from 'hslayers-ng/services/layer-manager';
 import {HsLayerUtilsService, HsUtilsService} from 'hslayers-ng/services/utils';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsLegendWidgetComponent} from '../widgets/legend-widget.component';
-import {HsMapService} from 'hslayers-ng/services/map';
 import {HsMetadataWidgetComponent} from '../widgets/metadata-widget.component';
 import {HsOpacityWidgetComponent} from '../widgets/opacity-widget.component';
 import {HsScaleWidgetComponent} from '../widgets/scale-widget.component';
@@ -39,55 +35,80 @@ import {HsWmsSourceWidgetComponent} from '../widgets/wms-source-widget/wms-sourc
 import {LayerTypeSwitcherWidgetComponent} from '../widgets/layer-type-switcher-widget/layer-type-switcher-widget.component';
 import {
   getBase,
-  getCachedCapabilities,
   getGreyscale,
   getRemovable,
   getTitle,
+  getWfsUrl,
   setTitle,
 } from 'hslayers-ng/common/extensions';
+import {map, tap} from 'rxjs';
+import {toObservable} from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'hs-layer-editor',
   templateUrl: './layer-editor.component.html',
 })
 export class HsLayerEditorComponent {
-  _currentLayer: HsLayerDescriptor;
-  @Input({required: true}) set currentLayer(value: HsLayerDescriptor) {
-    this._currentLayer = value;
-    this.tmpTitle = undefined;
-    this.layer_renamer_visible = false;
+  currentLayer = input.required<HsLayerDescriptor>();
+  olLayer = computed(() => this.currentLayer()?.layer || undefined);
 
-    if (value) {
-      this.insertEditorElement();
-    }
-  }
+  HsLayerManagerService = inject(HsLayerManagerService);
+  hsWidgetContainerService = inject(HsLayerEditorWidgetContainerService);
+  layerNodeAvailable = signal(false);
+  layer_renamer_visible = signal(false);
 
-  get currentLayer(): HsLayerDescriptor {
-    return this._currentLayer;
-  }
+  layerTitle = model<string | undefined>(undefined);
 
-  layerNodeAvailable: boolean;
-  layer_renamer_visible = false;
   getBase = getBase;
   getGreyscale = getGreyscale;
-  tmpTitle: string = undefined;
+
+  layerIsZoomable = computed(() =>
+    this.HsLayerUtilsService.layerIsZoomable(this.olLayer()),
+  );
+  layerIsStyleable = computed(() =>
+    this.HsLayerUtilsService.layerIsStyleable(this.olLayer()),
+  );
+  isLayerRemovable = computed(() => {
+    const layer = this.olLayer();
+    return (
+      !layer || getRemovable(layer) == undefined || getRemovable(layer) == true
+    );
+  });
+  isVectorLayer = computed(() =>
+    this.HsLayerEditorService.isLayerVectorLayer(this.olLayer()),
+  );
+  isWfsLayer = computed(() => {
+    return this.isVectorLayer() && getWfsUrl(this.olLayer());
+  });
+
+  titleUnsaved = computed(() => this.layerTitle() != getTitle(this.olLayer()));
+
   constructor(
-    public HsLayerUtilsService: HsLayerUtilsService,
-    public HsDimensionTimeService: HsDimensionTimeService,
-    public HsStylerService: HsStylerService,
-    public HsMapService: HsMapService,
-    public HsLayerManagerService: HsLayerManagerService,
-    public HsLayoutService: HsLayoutService,
-    public HsLayerEditorSublayerService: HsLayerEditorSublayerService,
-    public HsLayerEditorService: HsLayerEditorService,
-    public HsDrawService: HsDrawService,
-    public HsEventBusService: HsEventBusService,
-    public HsDialogContainerService: HsDialogContainerService,
-    public hsWidgetContainerService: HsLayerEditorWidgetContainerService,
+    private HsLayerUtilsService: HsLayerUtilsService,
+    private HsStylerService: HsStylerService,
+    private HsLayoutService: HsLayoutService,
+    private HsLayerEditorSublayerService: HsLayerEditorSublayerService,
+    private HsLayerEditorService: HsLayerEditorService,
+    private HsEventBusService: HsEventBusService,
+    private HsDialogContainerService: HsDialogContainerService,
     private hsLayerManagerUtilsService: HsLayerManagerUtilsService,
     private hsLayerManagerCopyLayerService: HsLayerManagerCopyLayerService,
     private hsUtilsService: HsUtilsService,
-  ) {}
+  ) {
+    toObservable(this.currentLayer)
+      .pipe(
+        map((layer) => {
+          this.layerTitle.set(layer.title);
+          this.layer_renamer_visible.set(false);
+        }),
+        tap((layer) => {
+          if (layer !== null) {
+            this.insertEditorElement();
+          }
+        }),
+      )
+      .subscribe();
+  }
 
   createWidgets() {
     const widgets = [
@@ -117,7 +138,7 @@ export class HsLayerEditorComponent {
       await new Promise((r) => setTimeout(r, 200));
       attempts++;
     }
-    this.layerNodeAvailable = true;
+    this.layerNodeAvailable.set(true);
     return true;
   }
 
@@ -125,8 +146,7 @@ export class HsLayerEditorComponent {
    * Insert layer-editor element under the correct layer node
    */
   async insertEditorElement() {
-    const l = this.currentLayer;
-    const idString = this._currentLayer.idString();
+    const idString = this.currentLayer().idString();
     await this.awaitLayerNode(idString);
     const layerNode = document.getElementById(idString);
     if (layerNode && this.HsLayerManagerService.layerEditorElement) {
@@ -155,10 +175,6 @@ export class HsLayerEditorComponent {
     }
   }
 
-  layerIsWmsT() {
-    return this.HsDimensionTimeService.layerIsWmsT(this.currentLayer);
-  }
-
   /**
    * Zoom to selected layer (layer extent). Get extent
    * from bounding box property, getExtent() function or from
@@ -182,36 +198,8 @@ export class HsLayerEditorComponent {
    * Toggle layer rename control on panel (through layer rename variable)
    */
   toggleLayerRename() {
-    this.tmpTitle = undefined;
-    this.layer_renamer_visible = !this.layer_renamer_visible;
-  }
-
-  /**
-   * Determines if selected layer has BoundingBox defined as
-   * its metadata or is a Vector layer. Used for setting visibility
-   * of 'Zoom to ' button
-   */
-  layerIsZoomable(): boolean {
-    return this.HsLayerUtilsService.layerIsZoomable(this.olLayer());
-  }
-
-  /**
-   * Determines if selected layer is a Vector layer and
-   * stylable. Used for allowing styling
-   */
-  layerIsStyleable(): boolean {
-    return this.HsLayerUtilsService.layerIsStyleable(this.olLayer());
-  }
-
-  /**
-   * Check if layer can be removed based on 'removable'
-   * layer attribute
-   */
-  isLayerRemovable(): boolean {
-    const layer = this.olLayer();
-    return (
-      !layer || getRemovable(layer) == undefined || getRemovable(layer) == true
-    );
+    this.layerTitle.set(this.currentLayer().title);
+    this.layer_renamer_visible.update((visible) => !visible);
   }
 
   removeLayer(): void {
@@ -221,57 +209,22 @@ export class HsLayerEditorComponent {
     );
   }
 
-  olLayer(): Layer<Source> {
-    if (!this.currentLayer) {
-      return undefined;
-    }
-    return this.currentLayer.layer;
-  }
-
   /**
-   * Change title of layer (Angular automatically change title in object wrapper but it is needed to manually change in Ol.layer object)
-   * @param newTitle - New title to set
+   * Save the layer title
    */
-  set title(newTitle: string) {
-    this.tmpTitle = newTitle.trim();
-  }
-
-  get title(): string {
-    const layer = this.olLayer();
-    if (layer == undefined) {
-      return;
-    }
-    if (this.tmpTitle == undefined) {
-      this.tmpTitle = getTitle(layer);
-    }
-    return this.tmpTitle;
-  }
-
   saveTitle(): void {
     const layer = this.olLayer();
     if (layer == undefined) {
       return;
     }
     this.HsLayerEditorService.layerTitleChange.next({
-      newTitle: this.tmpTitle,
+      newTitle: this.layerTitle(),
       oldTitle: getTitle(layer),
       layer,
     });
-    setTitle(layer, this.tmpTitle);
+    setTitle(layer, this.layerTitle());
     this.HsEventBusService.layerManagerUpdates.next(null);
     this.toggleLayerRename();
-  }
-
-  titleUnsaved(): boolean {
-    return this.tmpTitle != getTitle(this.olLayer());
-  }
-
-  hasSubLayers(): boolean | undefined {
-    if (this.currentLayer === null) {
-      return;
-    }
-    const subLayers = getCachedCapabilities(this.currentLayer.layer)?.Layer;
-    return subLayers != undefined && subLayers.length > 0;
   }
 
   getSubLayers() {
@@ -284,7 +237,7 @@ export class HsLayerEditorComponent {
       {
         message: 'LAYERMANAGER.layerEditor.copyLayer',
         title: 'COMMON.copyLayer',
-        layerTitle: getTitle(this.currentLayer.layer),
+        layerTitle: getTitle(this.currentLayer().layer),
       },
     );
     const result = await dialog.waitResult();
