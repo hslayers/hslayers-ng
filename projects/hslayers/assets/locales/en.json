@@ -940,7 +940,8 @@
       "PRINT": "Print map",
       "SAVECOMPOSITION": "Save content of map to composition",
       "SEARCH": "Search for location",
-      "TRIP_PLANNER": "Create new trip routes"
+      "TRIP_PLANNER": "Create new trip routes",
+      "wfsFilter": "Create and manage filters for Web Feature Service layers"
     }
   },
   "STYLER": {

@@ -3,7 +3,6 @@ import {AsyncPipe, NgClass} from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
-  Input,
   Signal,
   inject,
 } from '@angular/core';
@@ -11,7 +10,10 @@ import {FormsModule} from '@angular/forms';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsFiltersComponent, HsFiltersService} from 'hslayers-ng/common/filters';
 import {HsLayerDescriptor, WfsFeatureAttribute} from 'hslayers-ng/types';
-import {HsLayerManagerService} from 'hslayers-ng/services/layer-manager';
+import {
+  HsLayerManagerService,
+  HsLayerSelectorService,
+} from 'hslayers-ng/services/layer-manager';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {
   HsPanelBaseComponent,
@@ -22,7 +24,7 @@ import {HttpClient} from '@angular/common/http';
 import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 import {Vector as VectorLayer} from 'ol/layer';
 import {Vector as VectorSource} from 'ol/source';
-import {catchError, filter, lastValueFrom, map, switchMap} from 'rxjs';
+import {catchError, filter, lastValueFrom, map, switchMap, tap} from 'rxjs';
 import {computed, signal} from '@angular/core';
 import {
   getWfsAttributes,
@@ -53,8 +55,6 @@ import {takeUntilDestroyed, toSignal} from '@angular/core/rxjs-interop';
 export class HsWfsFilterComponent extends HsPanelBaseComponent {
   name = 'wfsFilter';
 
-  @Input() preselectedLayer: HsLayerDescriptor;
-
   selectedLayer = signal<HsLayerDescriptor | null>(null);
   rule = computed(() => this.selectedLayer()?.layer.get('wfsFilter') || {});
 
@@ -64,6 +64,7 @@ export class HsWfsFilterComponent extends HsPanelBaseComponent {
   hsUtilsService = inject(HsUtilsService);
   hsLayoutService = inject(HsLayoutService);
   httpClient = inject(HttpClient);
+  hsLayerSelectorService = inject(HsLayerSelectorService);
 
   availableLayers: Signal<HsLayerDescriptor[]>;
 
@@ -84,6 +85,16 @@ export class HsWfsFilterComponent extends HsPanelBaseComponent {
               this.hsUtilsService.instOf(l.layer.getSource(), VectorSource) &&
               getWfsUrl(l.layer),
           );
+        }),
+        tap((layers) => {
+          // If the current layer is in the list of available layers, select it
+          for (const layer of layers) {
+            if (
+              this.hsLayerSelectorService.currentLayer.title === layer.title
+            ) {
+              this.selectLayer(layer);
+            }
+          }
         }),
       ),
     );

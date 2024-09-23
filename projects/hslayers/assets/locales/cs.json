@@ -940,7 +940,8 @@
       "PRINT": "Tisk mapy",
       "SAVECOMPOSITION": "Uložit obsah mapy do kompozice",
       "SEARCH": "Vyhledat místo",
-      "TRIP_PLANNER": "Vytvořit novou trasu výletu"
+      "TRIP_PLANNER": "Vytvořit novou trasu výletu",
+      "wfsFilter": "Vytvářejte a spravujte filtry pro vrstvy Web Feature Service"
     }
   },
   "STYLER": {

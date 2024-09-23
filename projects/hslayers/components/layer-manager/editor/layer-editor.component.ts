@@ -245,4 +245,12 @@ export class HsLayerEditorComponent {
       return this.hsLayerManagerCopyLayerService.copyLayer(result.layerTitle);
     }
   }
+
+  /**
+   * Open the WFS filter panel
+   * currentLayer will be autmiatically selected via hsLayerSelectorService
+   */
+  openWfsFilter() {
+    this.HsLayoutService.setMainPanel('wfsFilter');
+  }
 }
