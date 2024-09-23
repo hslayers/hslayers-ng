@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-empty-function */
 import {Component, inject, input} from '@angular/core';
 
 import {HsToastService} from 'hslayers-ng/common/toast';
