@@ -96,14 +96,14 @@ export class InterpolatedSource extends IDW {
     canvas.height = imageData.height;
     const ctx = canvas.getContext('2d');
 
-    ctx.putImageData(
-      new ImageData(imageData.data, imageData.width, imageData.height),
-      0,
-      0,
-    );
-
     if (this.isImageDataMostlyEmpty(imageData)) {
       this.drawNoData(ctx, canvas);
+    } else {
+      ctx.putImageData(
+        new ImageData(imageData.data, imageData.width, imageData.height),
+        0,
+        0,
+      );
     }
 
     // Draw full resolution canvas
@@ -342,21 +342,45 @@ export class InterpolatedSource extends IDW {
    * Draw 'NO DATA' label over layers canvas
    */
   drawNoData(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement) {
-    // Set text properties
-    ctx.font = '30px Arial';
+    // Set the desired canvas size
+    const originalWidth = canvas.width;
+    const originalHeight = canvas.height;
+
+    // Get the device pixel ratio
+    const scale = window.devicePixelRatio || 1;
+
+    // Set the canvas width and height for high DPI
+    canvas.width = originalWidth * scale;
+    canvas.height = originalHeight * scale;
+
+    // Scale the context to match the canvas size
+    ctx.scale(scale, scale);
+
+    const text = 'NO DATA';
+    let fontSize = 30;
+    ctx.font = `${fontSize}px Arial`;
+
+    // Measure the text width with padding (10px on each side)
+    let textWidth = ctx.measureText(text).width + 20;
+
+    // Adjust font size to fit within the canvas
+    while (
+      textWidth > originalWidth * 0.9 * scale ||
+      fontSize > originalHeight * 0.9 * scale
+    ) {
+      fontSize -= 2;
+      ctx.font = `${fontSize}px Arial`;
+      textWidth = ctx.measureText(text).width + 20;
+    }
+
     ctx.fillStyle = 'white';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
 
-    // Calculate center position
-    const centerX = canvas.width / 2;
-    const centerY = canvas.height / 2;
-
     // Draw the text
-    ctx.fillText('NO DATA', centerX, centerY);
+    ctx.fillText(text, originalWidth / 2, originalHeight / 2);
   }
 }
-
 /**
  * Gets predefined colorMap array based on name and number of shades.
  * If you want to reverse defined color map add '-reverse' to the map name
