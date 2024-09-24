@@ -56,10 +56,6 @@ export class HslayersAppComponent {
       },
       {},
     );
-    /* Switch to it */
-    this.hsLayoutService.layoutLoads.subscribe(() => {
-      this.hsLayoutService.setDefaultPanel('custom');
-    });
 
     /* Proper WMS-t layer */
     const imageWmsTSource = new TileWMS({
@@ -719,6 +715,7 @@ export class HslayersAppComponent {
           'My Cool Panel': 'Mea tabula magna',
         },
       },
+      defaultPanel: 'custom',
     });
 
     const dimensions = opticalMap.get('dimensions');
