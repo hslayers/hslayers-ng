@@ -5,6 +5,7 @@ import {Vector as VectorLayer} from 'ol/layer';
 import {Vector as VectorSource} from 'ol/source';
 
 import {HsClusterWidgetComponent} from '../widgets/cluster-widget.component';
+import {HsConfig} from 'hslayers-ng/config';
 import {HsConfirmDialogComponent} from 'hslayers-ng/common/confirm';
 import {HsCopyLayerDialogComponent} from '../dialogs/copy-layer-dialog.component';
 import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
@@ -54,6 +55,7 @@ export class HsLayerEditorComponent {
 
   HsLayerManagerService = inject(HsLayerManagerService);
   hsWidgetContainerService = inject(HsLayerEditorWidgetContainerService);
+
   layerNodeAvailable = signal(false);
   layer_renamer_visible = signal(false);
 
@@ -77,13 +79,18 @@ export class HsLayerEditorComponent {
   isVectorLayer = computed(() =>
     this.HsLayerEditorService.isLayerVectorLayer(this.olLayer()),
   );
-  isWfsLayer = computed(() => {
-    return this.isVectorLayer() && getWfsUrl(this.olLayer());
+  wfsFilterEnabled = computed(() => {
+    return (
+      this.isVectorLayer() &&
+      getWfsUrl(this.olLayer()) &&
+      this.hsConfig.panelsEnabled.wfsFilter
+    );
   });
 
   titleUnsaved = computed(() => this.layerTitle() != getTitle(this.olLayer()));
 
   constructor(
+    private hsConfig: HsConfig,
     private HsLayerUtilsService: HsLayerUtilsService,
     private HsStylerService: HsStylerService,
     private HsLayoutService: HsLayoutService,
