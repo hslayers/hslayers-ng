@@ -1,16 +1,17 @@
+import {AsyncPipe, NgClass, NgStyle} from '@angular/common';
 import {
-  AfterViewInit,
   Component,
   DestroyRef,
   Input,
+  OnChanges,
   OnInit,
+  SimpleChange,
   WritableSignal,
   computed,
   inject,
   signal,
   viewChild,
 } from '@angular/core';
-import {AsyncPipe, NgClass, NgForOf, NgStyle} from '@angular/common';
 import {Feature} from 'ol';
 import {FormControl, FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {Geometry} from 'ol/geom';
@@ -60,7 +61,8 @@ interface Operator {
 })
 export class HsComparisonFilterComponent
   extends HsStylerPartBaseComponent
-  implements OnInit {
+  implements OnInit, OnChanges
+{
   @Input() filter;
   @Input() parent;
 
@@ -106,13 +108,39 @@ export class HsComparisonFilterComponent
     this.hsLayoutService.mainpanel$.pipe(map((panel) => panel === 'wfsFilter')),
   );
 
+  /**
+   * In case user toggles between layer with comparison filters set up
+   * component is not recreated, only its inputs are changed.
+   * In that case we need to update features and reinitialize the filter.
+   */
+  ngOnChanges({
+    filter,
+    parent,
+  }: {
+    filter?: SimpleChange & {currentValue: any};
+    parent?: SimpleChange & {currentValue: any};
+  }): void {
+    if (filter && filter.previousValue) {
+      this.updateFeatures();
+      this.initializeFilter();
+    }
+  }
+
   ngOnInit(): void {
+    this.initializeFilter();
+  }
+
+  /**
+   * Set up the filter with initial values and streams
+   * Is used both on init and on filter change (in case previous value is present)
+   */
+  private initializeFilter(): void {
     // Initialize attribute control with the current filter value or null
     this.attributeControl = new FormControl(this.filter[1] ?? null);
 
     /**
      * Stream to get initial attribute values.
-     * Serves bascally as startWith but with observable
+     * Serves basically as startWith but with observable
      * NOTE: take(1) to allow switch to subsequentAttributes in concat
      */
     const initialAttribute$ = this.getAttributeWithValues(
