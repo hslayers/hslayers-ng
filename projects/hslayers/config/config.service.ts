@@ -28,6 +28,31 @@ export interface KeyNumberDict {
   [key: string]: number;
 }
 
+export type PanelsEnabled = {
+  legend?: boolean;
+  measure?: boolean;
+  query?: boolean;
+  compositions?: boolean;
+  draw?: boolean;
+  layerManager?: boolean;
+  featureTable?: boolean;
+  feature_crossfilter?: boolean;
+  print?: boolean;
+  saveMap?: boolean;
+  language?: boolean;
+  share?: boolean;
+  sensors?: boolean;
+  search?: boolean;
+  tripPlanner?: boolean;
+  addData?: boolean;
+  mapSwipe?: boolean;
+  wfsFilter?: boolean;
+};
+//Provides PanelsEnabled suggestions while keeping type open for custom panels
+export type DefaultPanel =
+  | keyof PanelsEnabled
+  | (string & Record<never, never>);
+
 export class HsConfigObject {
   componentsEnabled?: {
     guiOverlay?: boolean;
@@ -94,26 +119,8 @@ export class HsConfigObject {
   defaultDrawLayerPath?: string;
   defaultComposition?: string;
   default_view?: View;
-  panelsEnabled?: {
-    legend?: boolean;
-    measure?: boolean;
-    query?: boolean;
-    compositions?: boolean;
-    draw?: boolean;
-    layerManager?: boolean;
-    featureTable?: boolean;
-    feature_crossfilter?: boolean;
-    print?: boolean;
-    saveMap?: boolean;
-    language?: boolean;
-    share?: boolean;
-    sensors?: boolean;
-    search?: boolean;
-    tripPlanner?: boolean;
-    addData?: boolean;
-    mapSwipe?: boolean;
-    wfsFilter?: boolean;
-  };
+  panelsEnabled?: PanelsEnabled;
+  defaultPanel?: DefaultPanel;
   errorToastDuration?: number;
   advancedForm?: boolean;
   project_name?: string;

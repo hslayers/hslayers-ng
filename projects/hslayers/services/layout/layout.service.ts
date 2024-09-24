@@ -194,6 +194,9 @@ export class HsLayoutService extends HsLayoutParams {
       this.sidebarToggleable = this.hsConfig.hasOwnProperty('sidebarToggleable')
         ? this.hsConfig.sidebarToggleable
         : true;
+      if (this.hsConfig.defaultPanel) {
+        this.setMainPanel(this.hsConfig.defaultPanel);
+      }
     }
 
     this.sidebarPosition$.next(this.hsConfig?.sidebarPosition ?? 'left');
@@ -314,16 +317,6 @@ export class HsLayoutService extends HsLayoutParams {
       this.sidebarLabels = false;
     }
     this.mainpanel$.next(which);
-  }
-
-  /**
-   * Sets new default panel (Panel which is opened first and which displayed if previous active panel is closed)
-   * @public
-   * @param which - New panel to be default (specify panel name)
-   */
-  setDefaultPanel(which: string): void {
-    this.defaultPanel = which;
-    this.setMainPanel(which);
   }
 
   getPanelSpaceWidth(): number {
