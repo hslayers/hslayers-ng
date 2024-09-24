@@ -1,4 +1,12 @@
-import {Component, EventEmitter, Output, inject, input} from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  OnChanges,
+  Output,
+  SimpleChange,
+  inject,
+  input,
+} from '@angular/core';
 import {Rule} from 'geostyler-style';
 
 import {
@@ -16,9 +24,21 @@ import {TranslateCustomPipe} from 'hslayers-ng/services/language';
   standalone: true,
   imports: [TranslateCustomPipe, NgbDropdownModule],
 })
-export class HsAddFilterButtonComponent {
+export class HsAddFilterButtonComponent implements OnChanges {
   @Output() clicks = new EventEmitter();
   rule = input<Rule>();
+
+  ngOnChanges({rule}: {rule?: SimpleChange & {currentValue: Rule}}) {
+    /**
+     * Set correct active tab on rule change
+     */
+    if (rule !== undefined && rule.currentValue.filter?.[0]) {
+      const readableType = this.hsFiltersService.humanReadableLogOp(
+        rule.currentValue.filter[0],
+      );
+      this.setActiveTab(readableType || this.comparisonOperator);
+    }
+  }
 
   hsFiltersService = inject(HsFiltersService);
 
