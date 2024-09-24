@@ -121,17 +121,17 @@ export class HsWfsFilterComponent extends HsPanelBaseComponent {
     }
 
     const wfsUrl = getWfsUrl(layer.layer);
-    const url = this.hsUtilsService.proxify(
-      `${wfsUrl}?service=WFS&request=DescribeFeatureType&version=2.0.0&typeName=${layer.layer.get('layerName')}`,
-    );
-    const wfsAttributes = getWfsAttributes(layer.layer);
-    if (wfsAttributes) {
-      this.hsFiltersService.setLayerAttributes(wfsAttributes);
-      return;
-    }
+    const url = new URL(wfsUrl);
+    url.search = ''; // Clear existing query parameters
+    url.searchParams.set('service', 'WFS');
+    url.searchParams.set('request', 'DescribeFeatureType');
+    url.searchParams.set('version', '2.0.0');
+    url.searchParams.set('typeName', layer.layer.get('layerName'));
+
+    const proxifiedUrl = this.hsUtilsService.proxify(url.toString());
 
     const response = await lastValueFrom(
-      this.httpClient.get(url, {responseType: 'text'}).pipe(
+      this.httpClient.get(proxifiedUrl, {responseType: 'text'}).pipe(
         catchError(async (e) => {
           console.error(e);
           return '';
