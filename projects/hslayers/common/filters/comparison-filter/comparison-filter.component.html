@@ -1,7 +1,7 @@
 <div class="comparison-filter-container d-flex flex-row form-group p-1 position-relative" [ngClass]="{'expanded': expanded()}">
   <select class="form-control form-select hs-comparison-filter-attribute" [formControl]="attributeControl"
     name="hs-sld-filter-attribute">
-    <option [ngValue]="null" [disabled]="true" selected hidden>Pick an attribute</option>
+    <option [ngValue]="null" [disabled]="true" selected hidden>{{'FILTERS.pickAnAttribute' | translateHs}}</option>
     @for(attr of attributes; track attr){
     <option [ngValue]="attr">
       {{ attr }}
@@ -60,7 +60,7 @@
     class="loading-overlay position-absolute top-0 start-0 w-100 h-100 d-flex justify-content-center align-items-center">
     <div class="text-center bg-secondary-subtle d-flex p-1 px-3 rounded-5 text-center">
       <span class="hs-loader hs-loader-dark"></span>
-      <div class="small text-muted">Loading attribute values...</div>
+      <div class="small text-muted">{{'FILTERS.loadingAttributeValues' | translateHs}}...</div>
     </div>
   </div>
   }

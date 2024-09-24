@@ -69,6 +69,8 @@ export class HsWfsFilterComponent extends HsPanelBaseComponent {
 
   availableLayers: Signal<HsLayerDescriptor[]>;
 
+  loadingLayerInfo = signal(false);
+
   constructor() {
     super();
     const mainPanelStream = this.hsEventBusService.mapEventHandlersSet.pipe(
@@ -121,7 +123,7 @@ export class HsWfsFilterComponent extends HsPanelBaseComponent {
     if (!layer || this.setExistingLayerAttributes(layer)) {
       return;
     }
-
+    this.loadingLayerInfo.set(true);
     const wfsUrl = getWfsUrl(layer.layer);
     const url = new URL(wfsUrl);
     url.search = ''; // Clear existing query parameters
@@ -153,7 +155,7 @@ export class HsWfsFilterComponent extends HsPanelBaseComponent {
        */
       layer.layer.getSource().set('geometryAttribute', geometryAttribute);
     }
-
+    this.loadingLayerInfo.set(false);
     this.hsFiltersService.setSelectedLayer(layer);
   }
 
