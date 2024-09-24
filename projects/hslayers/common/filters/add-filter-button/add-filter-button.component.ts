@@ -32,11 +32,15 @@ export class HsAddFilterButtonComponent implements OnChanges {
     /**
      * Set correct active tab on rule change
      */
-    if (rule !== undefined && rule.currentValue.filter?.[0]) {
-      const readableType = this.hsFiltersService.humanReadableLogOp(
-        rule.currentValue.filter[0],
-      );
-      this.setActiveTab(readableType || this.comparisonOperator);
+    if (rule !== undefined) {
+      if (rule.currentValue.filter?.[0]) {
+        const readableType = this.hsFiltersService.humanReadableLogOp(
+          rule.currentValue.filter[0],
+        );
+        this.setActiveTab(readableType || this.comparisonOperator);
+      } else {
+        this.activeTab = undefined;
+      }
     }
   }
 
