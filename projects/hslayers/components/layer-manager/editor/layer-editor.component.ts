@@ -248,7 +248,7 @@ export class HsLayerEditorComponent {
 
   /**
    * Open the WFS filter panel
-   * currentLayer will be autmiatically selected via hsLayerSelectorService
+   * currentLayer will be automatically selected via hsLayerSelectorService
    */
   openWfsFilter() {
     this.HsLayoutService.setMainPanel('wfsFilter');
