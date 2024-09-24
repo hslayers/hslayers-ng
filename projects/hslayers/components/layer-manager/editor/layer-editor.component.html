@@ -50,7 +50,7 @@
         [title]="'LAYERMANAGER.layerEditor.zoomToLayer' | translateHs  ">
         <i class="icon-search"></i>
       </button>
-      @if (isWfsLayer()) {
+      @if (wfsFilterEnabled()) {
       <button class="btn btn-primary" (click)="openWfsFilter()" data-toggle="tooltip"
         [title]="'SIDEBAR.descriptions.wfsFilter' | translateHs  ">
         <i class="icon-filter"></i>
