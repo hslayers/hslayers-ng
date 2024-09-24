@@ -116,7 +116,8 @@ export class HsWfsFilterComponent extends HsPanelBaseComponent {
    */
   async selectLayer(layer: HsLayerDescriptor | null) {
     this.selectedLayer.set(layer);
-    if (!layer) {
+
+    if (!layer || this.setExistingLayerAttributes(layer)) {
       return;
     }
 
@@ -153,6 +154,18 @@ export class HsWfsFilterComponent extends HsPanelBaseComponent {
     }
 
     this.hsFiltersService.setSelectedLayer(layer);
+  }
+
+  /**
+   * Sets the existing layer attributes and returns true if successful, false otherwise
+   */
+  private setExistingLayerAttributes(layer: HsLayerDescriptor): boolean {
+    const layerAttributes = getWfsAttributes(layer.layer);
+    if (layerAttributes) {
+      this.hsFiltersService.setLayerAttributes(layerAttributes);
+      return true;
+    }
+    return false;
   }
 
   /**
