@@ -219,46 +219,11 @@ export class HsLayoutService extends HsLayoutParams {
   /**
    * Close opened panel programmatically.
    * If sidebar toolbar is used in the app, sidebar stays expanded with sidebar labels.
-   * Cannot resolve unpinned panels.
    * @public
    */
   hidePanels() {
     this.sidebarLabels = true;
     this.mainpanel$.next(undefined);
-  }
-
-  /**
-   * Close selected panel (either unpinned panels or actual mainpanel). If default panel is defined, it is opened instead.
-   * @public
-   * @param which - Panel to close (panel scope)
-   */
-  closePanel(which) {
-    if (which.unpinned) {
-      this.contentWrapper
-        .querySelector(which.original_container)
-        .appendChild(which.drag_panel);
-      which.drag_panel.css({
-        top: 'auto',
-        left: 'auto',
-        position: 'relative',
-      });
-    }
-    which.unpinned = false;
-    if (which.panelName == this.mainpanel) {
-      if (this.defaultPanel != '') {
-        if (which.panelName == this.defaultPanel) {
-          this.sidebarExpanded = false;
-        } else {
-          this.setMainPanel(this.defaultPanel);
-        }
-      } else {
-        this.mainpanel$.next(undefined);
-        this.sidebarLabels = true;
-      }
-      this.sidebarExpanded = false;
-    }
-
-    this.mainpanel$.next(which);
   }
 
   /**

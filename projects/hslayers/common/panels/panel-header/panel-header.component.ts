@@ -87,8 +87,4 @@ export class HsPanelHeaderComponent implements OnInit {
   tabClicked(tab: string): void {
     this.selectedTab$.next(tab);
   }
-
-  closePanel(): void {
-    this.HsLayoutService.closePanel(this.name);
-  }
 }
