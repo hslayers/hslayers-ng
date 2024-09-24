@@ -74,7 +74,7 @@ export class HsComparisonFilterComponent
       {value: '==', alias: '='},
       {value: '!=', alias: '≠'},
     ],
-    stringBased: [{value: '*=', alias: 'contains'}],
+    stringBased: [{value: '*=', alias: '≈'}],
     numeric: [
       {value: '<', alias: '<'},
       {value: '<=', alias: '≤'},
