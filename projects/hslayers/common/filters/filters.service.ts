@@ -7,7 +7,7 @@ import {HsLayerDescriptor, WfsFeatureAttribute} from 'hslayers-ng/types';
 import {HsUtilsService} from 'hslayers-ng/services/utils';
 import {Layer} from 'ol/layer';
 import {Source} from 'ol/source';
-import {getWfsUrl} from 'hslayers-ng/common/extensions';
+import {getName, getWfsUrl} from 'hslayers-ng/common/extensions';
 
 import {FilterType, LogicalOperatorType} from './filter.type';
 @Injectable({
@@ -191,7 +191,7 @@ export class HsFiltersService {
       'service=WFS',
       'version=2.0.0',
       'request=GetPropertyValue',
-      `typename=${layer.get('layerName')}`,
+      `typename=${getName(layer)}`,
       `valueReference=${attributeName}`,
       'outputFormat=application/json',
     ].join('&');
@@ -232,7 +232,7 @@ export class HsFiltersService {
        * Extract values from the 'namespace:attributeName' elements
        * namespace is extracted from the layerName eg.'filip:layer'
        */
-      const elementName = `${this.selectedLayer.layer.get('layerName').split(':')[0]}:${attribute.name}`;
+      const elementName = `${getName(this.selectedLayer.layer).split(':')[0]}:${attribute.name}`;
       const valueElements = xmlDoc.getElementsByTagName(elementName);
       values = Array.from(valueElements).map((el) =>
         attribute.isNumeric ? +el.textContent : el.textContent.trim(),

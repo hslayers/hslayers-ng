@@ -27,6 +27,7 @@ import {Vector as VectorSource} from 'ol/source';
 import {catchError, filter, lastValueFrom, map, switchMap, tap} from 'rxjs';
 import {computed, signal} from '@angular/core';
 import {
+  getName,
   getWfsAttributes,
   getWfsUrl,
   setWfsAttributes,
@@ -127,7 +128,7 @@ export class HsWfsFilterComponent extends HsPanelBaseComponent {
     url.searchParams.set('service', 'WFS');
     url.searchParams.set('request', 'DescribeFeatureType');
     url.searchParams.set('version', '2.0.0');
-    url.searchParams.set('typeName', layer.layer.get('layerName'));
+    url.searchParams.set('typeName', getName(layer.layer));
 
     const proxifiedUrl = this.hsUtilsService.proxify(url.toString());
 
