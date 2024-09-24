@@ -1071,5 +1071,9 @@
     "noWfsLayersAvailable": "No WFS layers available",
     "addWfsLayerFirst": "To use this feature, please add a WFS layer to the map first.",
     "addWfsLayer": "Add WFS Layer"
+  },
+  "FILTERS": {
+    "loadingAttributeValues": "Loading attribute values",
+    "pickAnAttribute": "Pick an attribute"
   }
 }

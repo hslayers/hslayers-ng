@@ -1082,5 +1082,9 @@
     "noWfsLayersAvailable": "Nejsou k dispozici žádné WFS vrstvy",
     "addWfsLayerFirst": "Pro použití této funkce nejprve přidejte WFS vrstvu do mapy.",
     "addWfsLayer": "Přidat WFS vrstvu"
+  },
+  "FILTERS": {
+    "loadingAttributeValues": "Načítání hodnot atributů",
+    "pickAnAttribute": "Vyberte atribut"
   }
 }
