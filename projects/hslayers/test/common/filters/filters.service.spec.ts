@@ -59,7 +59,7 @@ describe('HsFiltersService', () => {
     olLayer = new Layer({
       source: vectorSource,
       properties: {
-        layerName: 'gen:layer',
+        name: 'gen:layer',
         wfsUrl: 'http://test.com/wfs',
       },
     });
