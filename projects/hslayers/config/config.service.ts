@@ -108,7 +108,6 @@ export class HsConfigObject {
     language?: boolean;
     share?: boolean;
     sensors?: boolean;
-    filter?: boolean;
     search?: boolean;
     tripPlanner?: boolean;
     addData?: boolean;
@@ -220,10 +219,6 @@ export class HsConfigObject {
       share: true,
       query: true,
       sensors: false,
-      /**
-       * @deprecated Panel not available, will be reimplemented
-       */
-      filter: false,
       search: true,
       tripPlanner: false,
       addData: true,
