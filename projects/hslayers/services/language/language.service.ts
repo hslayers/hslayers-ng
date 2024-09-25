@@ -45,7 +45,11 @@ export class HsLanguageService {
       if (this.hsConfig.language) {
         this.setLanguage(this.hsConfig.language);
       }
-      if (this.hsConfig.translationOverrides != undefined) {
+      const currentLoader = translator.currentLoader as WebpackTranslateLoader;
+      if (
+        this.hsConfig.translationOverrides != undefined &&
+        !currentLoader.loadedViaInitializator.includes(translator.currentLang)
+      ) {
         if (translator?.currentLang) {
           translator.reloadLang(translator.currentLang);
         }
@@ -59,7 +63,7 @@ export class HsLanguageService {
   initLanguages() {
     const languages = this.hsConfig.enabledLanguages
       ? this.hsConfig.enabledLanguages.split(',').map((lang) => lang.trim())
-      : ['cs', 'sk'];
+      : ['en,', 'cs', 'sk'];
     this.translationService.addLangs(languages);
     this.translationService.setDefaultLang('en');
     const langToUse = this.getLangToUse();
@@ -154,7 +158,9 @@ export class HsLanguageService {
     const MAX_CONFIG_POLLS = 10;
     let counter = 0;
     while (
-      !(translator.currentLoader as WebpackTranslateLoader).loaded[lang] &&
+      !(translator.currentLoader as WebpackTranslateLoader).loadedLanguages()[
+        lang
+      ] &&
       counter++ < MAX_CONFIG_POLLS
     ) {
       await new Promise((resolve2) => setTimeout(resolve2, 500));
