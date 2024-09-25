@@ -1,7 +1,3 @@
-import {HttpClient} from '@angular/common/http';
-import {Injectable} from '@angular/core';
-import {Observable, forkJoin, from, lastValueFrom, map} from 'rxjs';
-
 import * as merge from 'deepmerge';
 import {
   FakeMissingTranslationHandler,
@@ -10,110 +6,120 @@ import {
   TranslateLoader,
   TranslateService,
 } from '@ngx-translate/core';
-
-//import en from '../../src/assets/locales/en.json';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsLogService} from 'hslayers-ng/services/log';
+import {HttpClient} from '@angular/common/http';
+import {Injectable, signal} from '@angular/core';
+import {Observable, forkJoin, interval, of, throwError} from 'rxjs';
+import {catchError, filter, map, switchMap, take} from 'rxjs/operators';
 
+/**
+ * Custom loader for translations that works with webpack.
+ * It loads translation files from the assets folder and merges them with any overrides.
+ */
+@Injectable({
+  providedIn: 'root',
+})
 export class WebpackTranslateLoader implements TranslateLoader {
-  loaded = {};
+  /**
+   * Map to keep track of loaded languages
+   */
+  loadedLanguages = signal<Record<string, boolean>>({});
+  /**
+   * List of languages loaded using APP_INITALIZATOR token
+   * Considered as fully loaded from the start eg. no reload is necessary to load translation overrides
+   */
+  loadedViaInitializator: string[] = [];
   constructor(
-    public hsConfig: HsConfig,
+    private hsConfig: HsConfig,
     private hsLog: HsLogService,
     private httpClient: HttpClient,
   ) {}
 
   /**
-   *
+   * Loads the translations for a given language.
    * @param lang - language code in ISO 639-1 format such as `en`
-   * @returns
+   * @returns An Observable of the translation object for the specified language
    */
-  getTranslation(lang: string) {
-    //Idea taken from https://github.com/denniske/ngx-translate-multi-http-loader/blob/master/projects/ngx-translate/multi-http-loader/src/lib/multi-http-loader.ts
-    const requests: Observable<any>[] = [
-      //these translations are loaded as promises in order, where next one overwrites previous loaders values
-      /***
-       *
-       * FIXME:  No fallback in case no assets can be reached or assetsPath not set
-       * not sure how to access assets files from within secondary entrypoint
-       *
-       */
-      // from(new Promise((resolve) => resolve(en))),
-      from(
-        new Promise(async (resolve) => {
-          (async () => {
-            if (this.hsConfig.assetsPath == undefined) {
-              this.hsLog.warn('HsConfig.assetsPath not set. Waiting...'); //HsConfig won't be updated yet if HsCore is included in AppComponent
-              let counter = 0;
-              const MAX_CONFIG_POLLS = 10;
-              while (
-                !this.hsConfig.assetsPath &&
-                counter++ < MAX_CONFIG_POLLS
-              ) {
-                await new Promise((resolve2) => setTimeout(resolve2, 100));
-              }
-              if (counter >= MAX_CONFIG_POLLS) {
-                //resolve(en); //This is needed to display English if assetsPath will never be set.
-                if (lang != 'en') {
-                  this.hsLog.error(
-                    'Please set HsConfig.assetsPath so translations can be loaded',
-                  );
-                }
-                return;
-              }
-              this.hsLog.log('assetsPath OK');
-            }
-            let res;
-            try {
-              res = await lastValueFrom(
-                this.httpClient.get(
-                  `${this.hsConfig.assetsPath}/locales/${lang}.json`,
-                ),
-              );
-            } catch (error) {
-              if (
-                error.status == 404 &&
-                this.hsConfig.additionalLanguages &&
-                this.hsConfig.additionalLanguages[lang]
-              ) {
-                //Additional language not present in assets/locales/ --> ignore
-              } else {
-                this.hsLog.log(
-                  'Locales files cannot be loaded. Probably an incorrect assetsPath...?',
-                );
-                this.hsLog.error(error);
-              }
-            }
-            this.loaded[lang] = true;
-            resolve(res); //en fallback missing
-          })();
-        }),
-      ),
-      from(
-        new Promise((resolve) => {
-          //Wait a bit for the HsConfig to be set from container app
-          setTimeout(() => {
-            if (
-              this.hsConfig.translationOverrides &&
-              this.hsConfig.translationOverrides[lang]
-            ) {
-              resolve(this.hsConfig.translationOverrides[lang]);
-            } else {
-              resolve({});
-            }
-          }, 200);
-        }),
-      ),
-    ];
-    const tmp = forkJoin(requests).pipe(
-      map((response) => {
-        return merge.all(response);
+  getTranslation(lang: string): Observable<any> {
+    return this.validateAssetsPath().pipe(
+      switchMap(() => this.loadTranslations(lang)),
+      map((translations) => {
+        this.loadedLanguages.update((languages) => ({
+          ...languages,
+          [lang]: true,
+        }));
+        return translations;
+      }),
+      catchError((error) => {
+        this.hsLog.error('Failed to load translations:', error);
+        return of({});
       }),
     );
-    return tmp;
+  }
+
+  /**
+   * Validates that the assets path is set in the configuration.
+   * Retries up to 10 times with a 100ms interval if the path is not set - basically waits for config update.
+   * @returns An Observable of the assets path or an error if not set after retries
+   */
+  private validateAssetsPath(): Observable<string> {
+    if (this.hsConfig.assetsPath === undefined) {
+      const errorMessage =
+        'AssetsPath not set. Please set HsConfig.assetsPath correctly to enable loading of translation files.';
+      return interval(100).pipe(
+        switchMap((attempt) => {
+          if (attempt >= 10) {
+            return throwError(() => new Error(errorMessage));
+          }
+          return of(this.hsConfig.assetsPath);
+        }),
+        filter((assetsPath) => !!assetsPath),
+        take(1),
+      );
+    } else {
+      return of(this.hsConfig.assetsPath);
+    }
+  }
+
+  /**
+   * Loads translations for a specific language from the assets folder
+   * and merges them with any overrides specified in the configuration.
+   * @param lang - The language code to load translations for
+   * @returns An Observable of the merged translations
+   */
+  private loadTranslations(lang: string): Observable<any> {
+    const requests: Observable<any>[] = [
+      this.httpClient
+        .get(`${this.hsConfig.assetsPath}/locales/${lang}.json`)
+        .pipe(catchError((error) => this.handleTranslationError(error, lang))),
+      of(this.hsConfig.translationOverrides?.[lang] ?? {}),
+    ];
+
+    return forkJoin(requests).pipe(map((responses) => merge.all(responses)));
+  }
+
+  /**
+   * Handles errors that occur when loading translation files.
+   * @param error - The error object from the HTTP request
+   * @param lang - The language code for which the error occurred
+   * @returns An Observable of an empty object for 404 errors with additional languages, or throws an error otherwise
+   */
+  private handleTranslationError(error: any, lang: string): Observable<any> {
+    let message = 'Probably an incorrect assetsPath...?';
+    if (error.status === 404 && this.hsConfig.additionalLanguages?.[lang]) {
+      message = 'Additional language not present in [assetsPath]/locales';
+      return of({});
+    }
+    this.hsLog.log(`Locales files cannot be loaded. ${message}`);
+    this.hsLog.error(error);
+    return throwError(() => error);
   }
 }
 
+/**
+ * Custom translation service that uses WebpackTranslateLoader to load translations.
+ */
 @Injectable({
   providedIn: 'root',
 })
