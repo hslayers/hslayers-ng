@@ -520,7 +520,7 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
         extent: layerExtent,
         cluster: manyFeatures,
       },
-      source: new WfsSource(this.hsUtilsService, this.http, {
+      source: new WfsSource({
         data_version: this.data.version,
         output_format: this.data.output_format,
         crs: options.crs,

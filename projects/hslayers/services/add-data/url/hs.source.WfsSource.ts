@@ -7,6 +7,7 @@ import {and, within} from 'ol/format/filter';
 import {bbox, tile} from 'ol/loadingstrategy';
 import {createXYZ} from 'ol/tilegrid';
 import {fromExtent} from 'ol/geom/Polygon';
+import {inject} from '@angular/core';
 import {lastValueFrom} from 'rxjs';
 
 export type WfsOptions = {
@@ -24,11 +25,10 @@ export type WfsOptions = {
  * Provides a source of features from WFS endpoint
  */
 export class WfsSource extends VectorSource {
-  constructor(
-    private hsUtilsService: HsUtilsService,
-    private http: HttpClient,
-    private options: WfsOptions,
-  ) {
+  private http = inject(HttpClient);
+  private hsUtilsService = inject(HsUtilsService);
+
+  constructor(private options: WfsOptions) {
     super({
       loader: async (extent, resolution, projection) => {
         const {
