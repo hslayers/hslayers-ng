@@ -895,7 +895,7 @@
       "SAVECOMPOSITION": "Saglabāt kartes saturu kompozīcijā",
       "SEARCH": "Meklēt atrašanās vietu",
       "TRIP_PLANNER": "Izveidojiet jaunus ceļojuma maršrutus",
-      "wfsFilter": "Izveidojiet un pārvaldiet filtrus Web Feature Service slāņiem"
+      "WFS_FILTER": "Izveidojiet un pārvaldiet filtrus Web Feature Service slāņiem"
     }
   },
   "STYLER": {

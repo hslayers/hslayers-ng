@@ -910,7 +910,7 @@
       "SAVECOMPOSITION": "Uložiť obsah mapy do kompozície",
       "SEARCH": "Vyhľadať miesto",
       "TRIP_PLANNER": "Vytvoriť novú trasu výletu",
-      "wfsFilter": "Vytvárajte a spravujte filtre pre vrstvy Web Feature Service"
+      "WFS_FITLER": "Vytvárajte a spravujte filtre pre vrstvy Web Feature Service"
     }
   },
   "STYLER": {
