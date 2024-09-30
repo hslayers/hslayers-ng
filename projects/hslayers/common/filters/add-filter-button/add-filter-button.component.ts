@@ -50,8 +50,8 @@ export class HsAddFilterButtonComponent implements OnChanges {
   readonly logicalOperators: LogicalOperatorType[] = ['AND', 'OR', 'NOT'];
   readonly comparisonOperator: ComparisonOperatorType = 'COMPARE';
   readonly filterOptions: FilterType[] = [
-    ...this.logicalOperators,
     this.comparisonOperator,
+    ...this.logicalOperators,
   ];
 
   emitClick(type: FilterType): void {
