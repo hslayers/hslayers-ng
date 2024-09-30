@@ -1,5 +1,5 @@
 import {HttpClient} from '@angular/common/http';
-import {Injectable} from '@angular/core';
+import {Injectable, Injector, inject} from '@angular/core';
 import {Subject, finalize, takeUntil} from 'rxjs';
 
 import * as xml2Json from 'xml-js';
@@ -51,6 +51,8 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
 
   private requestCancelSubjects: Map<string, Subject<void>> = new Map();
   cancelUrlRequest: Subject<void> = new Subject();
+
+  injector = inject(Injector);
 
   constructor(
     private http: HttpClient,
@@ -510,6 +512,7 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
     const layerExtent = manyFeatures
       ? this.getLayerExtent(layer, options.crs)
       : undefined;
+
     const new_layer = new VectorLayer({
       properties: {
         name: options.layerName,
@@ -521,6 +524,7 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
         cluster: manyFeatures,
       },
       source: new WfsSource({
+        injector: this.injector,
         data_version: this.data.version,
         output_format: this.data.output_format,
         crs: options.crs,
