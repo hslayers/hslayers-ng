@@ -19,6 +19,7 @@ import {
   HsPanelBaseComponent,
   HsPanelHeaderComponent,
 } from 'hslayers-ng/common/panels';
+import {HsToastService} from 'hslayers-ng/common/toast';
 import {HsUtilsService} from 'hslayers-ng/services/utils';
 import {HttpClient} from '@angular/common/http';
 import {TranslateCustomPipe} from 'hslayers-ng/services/language';
@@ -66,6 +67,7 @@ export class HsWfsFilterComponent extends HsPanelBaseComponent {
   hsLayoutService = inject(HsLayoutService);
   httpClient = inject(HttpClient);
   hsLayerSelectorService = inject(HsLayerSelectorService);
+  hsToastService = inject(HsToastService);
 
   availableLayers: Signal<HsLayerDescriptor[]>;
 
@@ -278,12 +280,56 @@ export class HsWfsFilterComponent extends HsPanelBaseComponent {
   }
 
   /**
+   * Checks if a value is considered empty
+   */
+  private isEmptyValue(value: any): boolean {
+    return (
+      value === '<value>' ||
+      value === null ||
+      value === undefined ||
+      value === ''
+    );
+  }
+
+  /**
+   * Recursively checks if all filter values are filled
+   */
+  private areAllFilterValuesFilled(filter: any[]): boolean {
+    if (!Array.isArray(filter)) {
+      return !this.isEmptyValue(filter);
+    }
+
+    const [operator, ...operands] = filter;
+
+    // Check if it's a comparison operator
+    if (!Array.isArray(operands[0])) {
+      return !this.isEmptyValue(operands[1]);
+    }
+
+    // For logical operators, check all operands
+    return operands.every((operand) => this.areAllFilterValuesFilled(operand));
+  }
+
+  /**
    * Applies the current filter to the selected layer and refreshes the source
    */
   applyFilters() {
     const selectedLayer = this.selectedLayer();
     if (selectedLayer) {
-      const parsedFilter = this.parseFilter(this.rule().filter);
+      const currentFilter = this.rule().filter;
+
+      if (!this.areAllFilterValuesFilled(currentFilter)) {
+        this.hsToastService.createToastPopupMessage(
+          'PANEL_HEADER.WFS_FILTER',
+          'WFS_FILTER.INCOMPLETE_FILTER',
+          {
+            toastStyleClasses: 'text-bg-warning',
+          },
+        );
+        return;
+      }
+
+      const parsedFilter = this.parseFilter(currentFilter);
       selectedLayer.layer.set('wfsFilter', this.rule());
       const source = selectedLayer.layer.getSource();
       source.set('filter', parsedFilter);

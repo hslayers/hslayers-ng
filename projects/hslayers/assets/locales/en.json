@@ -1070,7 +1070,8 @@
     "applyFilters": "Apply Filters",
     "noWfsLayersAvailable": "No WFS layers available",
     "addWfsLayerFirst": "To use this feature, please add a WFS layer to the map first.",
-    "addWfsLayer": "Add WFS Layer"
+    "addWfsLayer": "Add WFS Layer",
+    "INCOMPLETE_FILTER": "Some filter values are missing. Please fill in all filter fields before proceeding."
   },
   "FILTERS": {
     "loadingAttributeValues": "Loading attribute values",

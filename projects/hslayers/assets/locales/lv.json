@@ -1017,7 +1017,8 @@
     "applyFilters": "Pielietot filtrus",
     "noWfsLayersAvailable": "Nav pieejamu WFS slāņu",
     "addWfsLayerFirst": "Lai izmantotu šo funkciju, vispirms pievienojiet WFS slāni kartei.",
-    "addWfsLayer": "Pievienot WFS slāni"
+    "addWfsLayer": "Pievienot WFS slāni",
+    "INCOMPLETE_FILTER": "Daži no filtru vērtībām nav aizpildīti. Lūdzu, aizpildiet visus filtre pirms turpināšanas."
   },
   "FILTERS": {
     "loadingAttributeValues": "Ielādējot atribūta vērtības",
