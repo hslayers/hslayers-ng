@@ -1012,7 +1012,7 @@
     "sldParsingError": "Chyba pri spracovaní štýlu",
     "sldParsingErrorMessage": "Pri spracovaní poskytnutého štýlu SLD došlo k chybe. Bol použitý predvolený štýl.",
     "uploadStyleFile": "Nahrajte štýl ako súbor SLD/QML",
-    "tooFewCategories": "Pre správnu funkciu vybranej farebnej mapy je potrebné viac kategórií"
+    "tooFewCategories": "Pre správnu funkciu vybranej farebnej mapy je potrebné viac kategórií",
   },
   "TOOLBAR": {
     "measureLinesAndPolygon": "Merať línie a polygóny",
@@ -1085,6 +1085,7 @@
   },
   "FILTERS": {
     "loadingAttributeValues": "Načítavajú sa hodnoty atribútov",
-    "pickAnAttribute": "Vyberte atribút"
+    "pickAnAttribute": "Vyberte atribút",
+    "cannotDeleteFilterToastMessage": "Nepodarilo sa odstrániť. Minimálny počet podmienok pre '{{operator}}' filter: {{count}}"
   }
 }

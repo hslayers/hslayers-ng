@@ -1018,5 +1018,10 @@
     "noWfsLayersAvailable": "Nav pieejamu WFS slāņu",
     "addWfsLayerFirst": "Lai izmantotu šo funkciju, vispirms pievienojiet WFS slāni kartei.",
     "addWfsLayer": "Pievienot WFS slāni"
+  },
+  "FILTERS": {
+    "loadingAttributeValues": "Ielādējot atribūta vērtības",
+    "pickAnAttribute": "Izvēlēties atribūtu",
+    "cannotDeleteFilterToastMessage": "Nevarēja izdzēst. \nMinimālais nosacījumu skaits filtram “{{operator}}”: {{count}}"
   }
 }

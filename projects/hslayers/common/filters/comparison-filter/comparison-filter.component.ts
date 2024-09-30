@@ -31,6 +31,7 @@ import {
 import {Vector as VectorSource} from 'ol/source';
 import {WfsFeatureAttribute} from 'hslayers-ng/types';
 
+import {Filter} from '../filter.type';
 import {FilterRangeInputComponent} from '../filter-range-input/filter-range-input.component';
 import {HsFiltersService} from '../filters.service';
 import {HsLayerUtilsService} from 'hslayers-ng/services/utils';
@@ -63,8 +64,8 @@ export class HsComparisonFilterComponent
   extends HsStylerPartBaseComponent
   implements OnInit, OnChanges
 {
-  @Input() filter;
-  @Input() parent;
+  @Input() filter: Filter;
+  @Input() parent: Filter;
 
   filterRangeInput = viewChild<FilterRangeInputComponent>(
     FilterRangeInputComponent,
@@ -270,7 +271,7 @@ export class HsComparisonFilterComponent
    */
   remove(): void {
     if (this.parent) {
-      this.parent.splice(this.parent.indexOf(this.filter), 1);
+      this.hsFiltersService.removeFilter(this.parent, this.filter);
     } else {
       this.deleteRuleFilter();
     }
