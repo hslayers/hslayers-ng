@@ -31,7 +31,7 @@ import {
 import {Vector as VectorSource} from 'ol/source';
 import {WfsFeatureAttribute} from 'hslayers-ng/types';
 
-import {Filter} from '../filter.type';
+import {Filter} from 'hslayers-ng/types';
 import {FilterRangeInputComponent} from '../filter-range-input/filter-range-input.component';
 import {HsFiltersService} from '../filters.service';
 import {HsLayerUtilsService} from 'hslayers-ng/services/utils';

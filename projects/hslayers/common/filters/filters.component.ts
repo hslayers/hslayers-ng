@@ -1,6 +1,6 @@
 import {Component, Input, inject, viewChild} from '@angular/core';
 
-import {FilterType} from './filter.type';
+import {FilterType} from 'hslayers-ng/types';
 import {HsAddFilterButtonComponent} from './add-filter-button/add-filter-button.component';
 import {HsComparisonFilterComponent} from './comparison-filter/comparison-filter.component';
 import {HsFilterComponent} from './filter.component';
