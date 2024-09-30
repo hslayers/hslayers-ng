@@ -21,7 +21,7 @@
   </div>
 
   <!-- Display filter options if a layer is selected -->
-  @if (selectedLayer()) {
+  @if (selectedLayer() ) {
     @if(loadingLayerInfo()){
     <div class="d-flex justify-content-center p-3">
       <span class="hs-loader hs-loader-dark " style="width: 2rem; height: 2rem;"></span>
@@ -32,10 +32,12 @@
         <div class="card-body d-flex flex-column">
           <!-- Filter component -->
           <hs-filters [rule]="rule()" [selectedLayer]="selectedLayer()"></hs-filters>
-          <!-- Add Apply Filters button -->
+          <!-- Apply Filters button -->
+          @if(rule()?.filter){
           <button class="btn btn-primary mt-3 align-self-end" (click)="applyFilters()">
             {{ 'WFS_FILTER.applyFilters' | translateHs }}
           </button>
+          }
         </div>
       </div>
     }
