@@ -1,16 +1,17 @@
 import {Extent} from 'ol/extent';
 import {HsUtilsService} from 'hslayers-ng/services/utils';
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
+import {Injector} from '@angular/core';
 import {Projection, transformExtent} from 'ol/proj';
 import {Vector as VectorSource} from 'ol/source';
 import {and, within} from 'ol/format/filter';
 import {bbox, tile} from 'ol/loadingstrategy';
 import {createXYZ} from 'ol/tilegrid';
 import {fromExtent} from 'ol/geom/Polygon';
-import {inject} from '@angular/core';
 import {lastValueFrom} from 'rxjs';
 
 export type WfsOptions = {
+  injector: Injector;
   data_version?: string;
   output_format?: string;
   crs?: string;
@@ -25,8 +26,8 @@ export type WfsOptions = {
  * Provides a source of features from WFS endpoint
  */
 export class WfsSource extends VectorSource {
-  private http = inject(HttpClient);
-  private hsUtilsService = inject(HsUtilsService);
+  private http: HttpClient;
+  private hsUtilsService: HsUtilsService;
 
   constructor(private options: WfsOptions) {
     super({
@@ -111,6 +112,8 @@ export class WfsSource extends VectorSource {
         ? tile(createXYZ({extent: options.layerExtent}))
         : bbox,
     });
+    this.http = options.injector.get(HttpClient);
+    this.hsUtilsService = options.injector.get(HsUtilsService);
   }
 }
 
