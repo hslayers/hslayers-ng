@@ -1,5 +1,6 @@
 import {CommonModule} from '@angular/common';
 import {Component, Input, inject} from '@angular/core';
+import {Filter} from './filter.type';
 import {HsAddFilterButtonComponent} from './add-filter-button/add-filter-button.component';
 import {HsComparisonFilterComponent} from './comparison-filter/comparison-filter.component';
 import {HsFiltersService} from './filters.service';
@@ -23,8 +24,8 @@ import {TranslateCustomPipe} from 'hslayers-ng/services/language';
   `,
 })
 export class HsFilterComponent extends HsStylerPartBaseComponent {
-  @Input() filter: any[];
-  @Input() parent: any[];
+  @Input() filter: Filter;
+  @Input() parent: Filter;
 
   hsFiltersService = inject(HsFiltersService);
   constructor() {
@@ -32,7 +33,9 @@ export class HsFilterComponent extends HsStylerPartBaseComponent {
   }
 
   remove(): void {
-    this.parent.splice(this.parent.indexOf(this.filter), 1);
+    if (this.parent) {
+      this.hsFiltersService.removeFilter(this.parent, this.filter);
+    }
     this.emitChange();
   }
 }

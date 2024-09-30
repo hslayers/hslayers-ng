@@ -3,19 +3,25 @@ import {Injectable, inject} from '@angular/core';
 import {Observable, of} from 'rxjs';
 import {catchError, map} from 'rxjs/operators';
 
-import {HsLayerDescriptor, WfsFeatureAttribute} from 'hslayers-ng/types';
-import {HsUtilsService} from 'hslayers-ng/services/utils';
 import {Layer} from 'ol/layer';
 import {Source} from 'ol/source';
+
+import {HsLanguageService} from 'hslayers-ng/services/language';
+import {HsLayerDescriptor, WfsFeatureAttribute} from 'hslayers-ng/types';
+import {HsToastService} from 'hslayers-ng/common/toast';
+import {HsUtilsService} from 'hslayers-ng/services/utils';
 import {getName, getWfsUrl} from 'hslayers-ng/common/extensions';
 
-import {FilterType, LogicalOperatorType} from './filter.type';
+import {Filter, FilterType, LogicalOperatorType} from './filter.type';
+
 @Injectable({
   providedIn: 'root',
 })
 export class HsFiltersService {
   http = inject(HttpClient);
   hsUtilsService = inject(HsUtilsService);
+  hsToastService = inject(HsToastService);
+  hsLanguageService = inject(HsLanguageService);
 
   selectedLayer: HsLayerDescriptor;
 
@@ -93,6 +99,57 @@ export class HsFiltersService {
    */
   isLogOp(filters: any[]): boolean {
     return filters?.length > 0 && ['&&', '||', '!'].includes(filters[0]);
+  }
+
+  /**
+   * Checks if a filter can be deleted
+   */
+  private canDeleteFilter(parent: Filter): boolean {
+    return (
+      (['||', '&&'].includes(parent[0]) && parent.length > 3) ||
+      (parent[0] === '!' && parent.length > 2)
+    );
+  }
+
+  /**
+   * Displays a warning message when a filter cannot be deleted.
+   * @param parent The parent filter array
+   */
+  private showCannotDeleteFilterWarning(parent: Filter): void {
+    const readableOp = this.humanReadableLogOp(parent[0]);
+    const message = this.hsLanguageService.getTranslation(
+      'FILTERS.cannotDeleteFilterToastMessage',
+      {
+        operator: readableOp,
+        count: readableOp === 'NOT' ? 1 : 2,
+      },
+    );
+    this.hsToastService.createToastPopupMessage(
+      'STYLER.removeFilter',
+      message,
+      {
+        toastStyleClasses: 'text-bg-warning',
+        serviceCalledFrom: 'HsFiltersService',
+      },
+    );
+  }
+
+  /**
+   * Removes a filter from the parent filter array
+   * @param parent The parent filter array
+   * @param filter The filter to remove
+   * @returns True if the filter was successfully removed, false otherwise
+   */
+  removeFilter(parent: Filter, filter: Filter): boolean {
+    if (this.canDeleteFilter(parent)) {
+      const index = parent.findIndex((item) => item === filter);
+      if (index !== -1) {
+        parent.splice(index, 1);
+        return true;
+      }
+    }
+    this.showCannotDeleteFilterWarning(parent);
+    return false;
   }
 
   /**

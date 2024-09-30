@@ -1085,6 +1085,7 @@
   },
   "FILTERS": {
     "loadingAttributeValues": "Načítání hodnot atributů",
-    "pickAnAttribute": "Vyberte atribut"
+    "pickAnAttribute": "Vyberte atribut",
+    "cannotDeleteFilterToastMessage": "Nelze smazat. \nMinimální počet podmínek pro filtr '{{operator}}': {{count}}"
   }
 }

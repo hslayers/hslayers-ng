@@ -1074,6 +1074,7 @@
   },
   "FILTERS": {
     "loadingAttributeValues": "Loading attribute values",
-    "pickAnAttribute": "Pick an attribute"
+    "pickAnAttribute": "Pick an attribute",
+    "cannotDeleteFilterToastMessage": "Could not delete. Minimal number of conditions for '{{operator}}' filter: {{count}}"
   }
 }
