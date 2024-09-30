@@ -1,6 +1,6 @@
 import {CommonModule} from '@angular/common';
 import {Component, Input, inject} from '@angular/core';
-import {Filter} from './filter.type';
+import {Filter} from 'hslayers-ng/types';
 import {HsAddFilterButtonComponent} from './add-filter-button/add-filter-button.component';
 import {HsComparisonFilterComponent} from './comparison-filter/comparison-filter.component';
 import {HsFiltersService} from './filters.service';

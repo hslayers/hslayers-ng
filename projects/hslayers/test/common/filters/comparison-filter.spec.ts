@@ -11,6 +11,7 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
 import {Feature} from 'ol';
+import {Filter} from 'hslayers-ng/types';
 import {
   HsComparisonFilterComponent,
   HsFiltersService,
@@ -63,6 +64,12 @@ class MockHsFiltersService {
       }
       return a - b;
     });
+  }
+
+  removeFilter(parent: Filter, filter: Filter): boolean {
+    const index = parent.findIndex((item) => item === filter);
+    parent.splice(index, 1);
+    return true;
   }
 }
 
@@ -154,7 +161,11 @@ describe('HsComparisonFilterComponent', () => {
     }));
 
     it('should remove filter when remove() is called', () => {
-      const parentMock = ['&&', component.filter, ['==', 'attr2', 'value2']];
+      const parentMock = [
+        '&&',
+        component.filter,
+        ['==', 'attr2', 'value2'],
+      ] as Filter;
       component.parent = parentMock;
       spyOn(component, 'emitChange');
       component.remove();

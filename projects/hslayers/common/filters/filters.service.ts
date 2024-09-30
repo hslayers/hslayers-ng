@@ -12,7 +12,7 @@ import {HsToastService} from 'hslayers-ng/common/toast';
 import {HsUtilsService} from 'hslayers-ng/services/utils';
 import {getName, getWfsUrl} from 'hslayers-ng/common/extensions';
 
-import {Filter, FilterType, LogicalOperatorType} from './filter.type';
+import {Filter, FilterType, LogicalOperatorType} from 'hslayers-ng/types';
 
 @Injectable({
   providedIn: 'root',
