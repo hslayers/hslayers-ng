@@ -1082,7 +1082,9 @@
     "noWfsLayersAvailable": "Nie sú k dispozícii žiadne WFS vrstvy",
     "addWfsLayerFirst": "Pre použitie tejto funkcie najprv pridajte WFS vrstvu do mapy.",
     "addWfsLayer": "Pridať WFS vrstvu",
-    "INCOMPLETE_FILTER": "Niektoré filtre nie sú dostatočne vyplnené. Pred pokračovaním ich prosím vyplňte."
+    "INCOMPLETE_FILTER": "Niektoré filtre nie sú dostatočne vyplnené. Pred pokračovaním ich prosím vyplňte.",
+    "ERROR_FETCHING_LAYER_INFO": "Chyba pri načítaní informácií o vrstve. Skúste to znova alebo skontrolujte WFS službu vrstvy.",
+    "ERROR_SELECTING_LAYER": "Pri výbere vrstvy sa vyskytla chyba. Skúste to znova alebo vyberte inú vrstvu."
   },
   "FILTERS": {
     "loadingAttributeValues": "Načítavajú sa hodnoty atribútov",

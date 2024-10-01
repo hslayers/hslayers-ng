@@ -1071,7 +1071,9 @@
     "noWfsLayersAvailable": "No WFS layers available",
     "addWfsLayerFirst": "To use this feature, please add a WFS layer to the map first.",
     "addWfsLayer": "Add WFS Layer",
-    "INCOMPLETE_FILTER": "Some filter values are missing. Please fill in all filter fields before proceeding."
+    "INCOMPLETE_FILTER": "Some filter values are missing. Please fill in all filter fields before proceeding.",
+    "ERROR_FETCHING_LAYER_INFO": "Error fetching layer information. Please try again or check the layer's WFS service.",
+    "ERROR_SELECTING_LAYER": "An error occurred while selecting the layer. Please try again or choose a different layer."
   },
   "FILTERS": {
     "loadingAttributeValues": "Loading attribute values",

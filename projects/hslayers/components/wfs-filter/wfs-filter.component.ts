@@ -7,6 +7,15 @@ import {
   inject,
 } from '@angular/core';
 import {FormsModule} from '@angular/forms';
+import {HttpClient} from '@angular/common/http';
+import {computed, signal} from '@angular/core';
+import {takeUntilDestroyed, toSignal} from '@angular/core/rxjs-interop';
+
+import {Vector as VectorLayer} from 'ol/layer';
+import {Vector as VectorSource} from 'ol/source';
+import {catchError, filter, lastValueFrom, map, switchMap, tap} from 'rxjs';
+
+import {Feature} from 'ol';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsFiltersComponent, HsFiltersService} from 'hslayers-ng/common/filters';
 import {HsLayerDescriptor, WfsFeatureAttribute} from 'hslayers-ng/types';
@@ -14,6 +23,7 @@ import {
   HsLayerManagerService,
   HsLayerSelectorService,
 } from 'hslayers-ng/services/layer-manager';
+import {HsLayerSynchronizerService} from 'hslayers-ng/services/save-map';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {
   HsPanelBaseComponent,
@@ -21,19 +31,15 @@ import {
 } from 'hslayers-ng/common/panels';
 import {HsToastService} from 'hslayers-ng/common/toast';
 import {HsUtilsService} from 'hslayers-ng/services/utils';
-import {HttpClient} from '@angular/common/http';
 import {TranslateCustomPipe} from 'hslayers-ng/services/language';
-import {Vector as VectorLayer} from 'ol/layer';
-import {Vector as VectorSource} from 'ol/source';
-import {catchError, filter, lastValueFrom, map, switchMap, tap} from 'rxjs';
-import {computed, signal} from '@angular/core';
 import {
+  getDefinition,
   getName,
   getWfsAttributes,
   getWfsUrl,
+  getWorkspace,
   setWfsAttributes,
 } from 'hslayers-ng/common/extensions';
-import {takeUntilDestroyed, toSignal} from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'hs-wfs-filter',
@@ -69,6 +75,8 @@ export class HsWfsFilterComponent extends HsPanelBaseComponent {
   hsLayerSelectorService = inject(HsLayerSelectorService);
   hsToastService = inject(HsToastService);
 
+  HsLayerSynchronizerService = inject(HsLayerSynchronizerService);
+
   availableLayers: Signal<HsLayerDescriptor[]>;
 
   loadingLayerInfo = signal(false);
@@ -86,9 +94,10 @@ export class HsWfsFilterComponent extends HsPanelBaseComponent {
         map(() => {
           return this.hsLayerManagerService.data.layers.filter(
             (l: HsLayerDescriptor) =>
-              this.hsUtilsService.instOf(l.layer, VectorLayer) &&
-              this.hsUtilsService.instOf(l.layer.getSource(), VectorSource) &&
-              getWfsUrl(l.layer),
+              (this.hsUtilsService.instOf(l.layer, VectorLayer) &&
+                this.hsUtilsService.instOf(l.layer.getSource(), VectorSource) &&
+                getWfsUrl(l.layer)) ||
+              getDefinition(l.layer),
           );
         }),
         tap((layers) => {
@@ -120,45 +129,65 @@ export class HsWfsFilterComponent extends HsPanelBaseComponent {
    * @param layer The layer to select
    */
   async selectLayer(layer: HsLayerDescriptor | null) {
-    this.selectedLayer.set(layer);
+    try {
+      this.selectedLayer.set(layer);
 
-    if (!layer || this.setExistingLayerAttributes(layer)) {
-      return;
-    }
-    this.loadingLayerInfo.set(true);
-    const wfsUrl = getWfsUrl(layer.layer);
-    const url = new URL(wfsUrl);
-    url.search = ''; // Clear existing query parameters
-    url.searchParams.set('service', 'WFS');
-    url.searchParams.set('request', 'DescribeFeatureType');
-    url.searchParams.set('version', '2.0.0');
-    url.searchParams.set('typeName', getName(layer.layer));
+      if (!layer || this.setExistingLayerAttributes(layer)) {
+        return;
+      }
+      this.loadingLayerInfo.set(true);
+      const wfsUrl = getWfsUrl(layer.layer) || getDefinition(layer.layer).url;
+      const url = new URL(wfsUrl);
+      url.search = ''; // Clear existing query parameters
+      url.searchParams.set('service', 'WFS');
+      url.searchParams.set('request', 'DescribeFeatureType');
+      url.searchParams.set('version', '2.0.0');
+      url.searchParams.set('typeName', getName(layer.layer));
 
-    const proxifiedUrl = this.hsUtilsService.proxify(url.toString());
+      const proxifiedUrl = this.hsUtilsService.proxify(url.toString());
 
-    const response = await lastValueFrom(
-      this.httpClient.get(proxifiedUrl, {responseType: 'text'}).pipe(
-        catchError(async (e) => {
-          console.error(e);
-          return '';
-        }),
-      ),
-    );
-
-    if (response) {
-      const {attributes, geometryAttribute} = this.parseWfsDescribeFeatureType(
-        response,
-        layer.layer as VectorLayer<VectorSource>,
+      const response = await lastValueFrom(
+        this.httpClient.get(proxifiedUrl, {responseType: 'text'}).pipe(
+          catchError((error) => {
+            console.error('Error fetching WFS DescribeFeatureType:', error);
+            this.hsToastService.createToastPopupMessage(
+              'PANEL_HEADER.WFS_FILTER',
+              'WFS_FILTER.ERROR_FETCHING_LAYER_INFO',
+              {
+                toastStyleClasses: 'text-bg-danger',
+              },
+            );
+            throw error; // Re-throw the error to be caught by the outer try-catch
+          }),
+        ),
       );
-      this.hsFiltersService.setLayerAttributes(attributes);
-      setWfsAttributes(layer.layer, attributes);
-      /**
-       * Set geometryAttribut to the layers source so it can be easily accessed in loader function
-       */
-      layer.layer.getSource().set('geometryAttribute', geometryAttribute);
+
+      if (response) {
+        const {attributes, geometryAttribute} =
+          this.parseWfsDescribeFeatureType(
+            response,
+            layer.layer as VectorLayer<VectorSource>,
+          );
+        this.hsFiltersService.setLayerAttributes(attributes);
+        setWfsAttributes(layer.layer, attributes);
+        /**
+         * Set geometryAttribute to the layer's source so it can be easily accessed in loader function
+         */
+        layer.layer.getSource().set('geometryAttribute', geometryAttribute);
+      }
+      this.hsFiltersService.setSelectedLayer(layer);
+    } catch (error) {
+      console.error('Error in selectLayer:', error);
+      this.hsToastService.createToastPopupMessage(
+        'PANEL_HEADER.WFS_FILTER',
+        'WFS_FILTER.ERROR_SELECTING_LAYER',
+        {
+          toastStyleClasses: 'text-bg-danger',
+        },
+      );
+    } finally {
+      this.loadingLayerInfo.set(false);
     }
-    this.loadingLayerInfo.set(false);
-    this.hsFiltersService.setSelectedLayer(layer);
   }
 
   /**
@@ -334,6 +363,15 @@ export class HsWfsFilterComponent extends HsPanelBaseComponent {
       const source = selectedLayer.layer.getSource();
       source.set('filter', parsedFilter);
       source.refresh();
+      /**
+       * Manually pull features from WFS if layer is from Layman
+       */
+      if (getWorkspace(selectedLayer.layer)) {
+        this.HsLayerSynchronizerService.pull(
+          selectedLayer.layer as VectorLayer<VectorSource>,
+          source as VectorSource<Feature>,
+        );
+      }
     }
   }
 

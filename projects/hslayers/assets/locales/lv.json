@@ -1018,7 +1018,9 @@
     "noWfsLayersAvailable": "Nav pieejamu WFS slāņu",
     "addWfsLayerFirst": "Lai izmantotu šo funkciju, vispirms pievienojiet WFS slāni kartei.",
     "addWfsLayer": "Pievienot WFS slāni",
-    "INCOMPLETE_FILTER": "Daži no filtru vērtībām nav aizpildīti. Lūdzu, aizpildiet visus filtre pirms turpināšanas."
+    "INCOMPLETE_FILTER": "Daži no filtru vērtībām nav aizpildīti. Lūdzu, aizpildiet visus filtre pirms turpināšanas.",
+    "ERROR_FETCHING_LAYER_INFO": "Kļūda, iegūstot slāņa informāciju. Lūdzu, mēģiniet vēlreiz vai pārbaudiet slāņa WFS servisu.",
+    "ERROR_SELECTING_LAYER": "Izvēloties slāni, radās kļūda. Lūdzu, mēģiniet vēlreiz vai izvēlieties citu slāni."
   },
   "FILTERS": {
     "loadingAttributeValues": "Ielādējot atribūta vērtības",

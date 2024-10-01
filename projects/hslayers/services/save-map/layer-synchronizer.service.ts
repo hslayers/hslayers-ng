@@ -194,7 +194,7 @@ export class HsLayerSynchronizerService {
         if (featureString) {
           source.loading = true;
           const {default: WFS} = await import('ol/format/WFS');
-          const format = new WFS();
+          const format = new WFS({version: '2.0.0'});
           featureString = featureString.replace(
             /urn:x-ogc:def:crs:EPSG:3857/gm,
             'EPSG:3857',
