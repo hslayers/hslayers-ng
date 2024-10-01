@@ -10,7 +10,12 @@ import {HsLanguageService} from 'hslayers-ng/services/language';
 import {HsLayerDescriptor, WfsFeatureAttribute} from 'hslayers-ng/types';
 import {HsToastService} from 'hslayers-ng/common/toast';
 import {HsUtilsService} from 'hslayers-ng/services/utils';
-import {getName, getWfsUrl} from 'hslayers-ng/common/extensions';
+import {
+  getDefinition,
+  getName,
+  getWfsUrl,
+  getWorkspace,
+} from 'hslayers-ng/common/extensions';
 
 import {Filter, FilterType, LogicalOperatorType} from 'hslayers-ng/types';
 
@@ -243,7 +248,7 @@ export class HsFiltersService {
    * @returns The constructed WFS URL
    */
   private buildWfsUrl(layer: Layer<Source>, attributeName: string): string {
-    const baseUrl = getWfsUrl(layer);
+    const baseUrl = getWfsUrl(layer) || getDefinition(layer).url;
     const params = [
       'service=WFS',
       'version=2.0.0',
@@ -287,9 +292,14 @@ export class HsFiltersService {
       const xmlDoc = parser.parseFromString(response, 'text/xml');
       /**
        * Extract values from the 'namespace:attributeName' elements
-       * namespace is extracted from the layerName eg.'filip:layer'
+       * namespace is extracted from
+       * a) normal WFS layers : the layerName eg.'filip:layer'
+       * b) Layman layers: workspace
        */
-      const elementName = `${getName(this.selectedLayer.layer).split(':')[0]}:${attribute.name}`;
+      const namespace =
+        getWorkspace(this.selectedLayer.layer) ||
+        getName(this.selectedLayer.layer).split(':')[0];
+      const elementName = `${namespace}:${attribute.name}`;
       const valueElements = xmlDoc.getElementsByTagName(elementName);
       values = Array.from(valueElements).map((el) =>
         attribute.isNumeric ? +el.textContent : el.textContent.trim(),

@@ -54,6 +54,10 @@ import {PostPatchLayerResponse} from 'hslayers-ng/common/layman';
 import {UpsertLayerObject} from 'hslayers-ng/types';
 import {WfsSyncParams} from 'hslayers-ng/types';
 import {
+  createGetFeatureRequest,
+  createPostFeatureRequest,
+} from 'hslayers-ng/common/layers';
+import {
   getAccessRights,
   getLaymanLayerDescriptor,
   getQml,
@@ -762,27 +766,62 @@ export class HsLaymanService implements HsSaverService {
     }
 
     try {
-      /* When OL will support GML3.2, then we can use WFS
-        version 2.0.0. Currently only 3.1.1 is possible */
-      const response: string = await lastValueFrom(
-        this.http.get(
-          desc.wfs.url +
-            '?' +
-            this.hsUtilsService.paramsToURL({
-              service: 'wfs',
-              version: '1.1.0',
-              request: 'GetFeature',
-              typeNames: `${getWorkspace(layer)}:${desc.name}`,
-              r: Math.random(),
-              srsName: this.hsMapService.getCurrentProj().getCode(),
-            }),
-          {responseType: 'text', withCredentials: true},
-        ),
+      const requestOptions = await this.buildLayerRequestOptions(layer, desc);
+      const response = await lastValueFrom(
+        this.http.post(desc.wfs.url, requestOptions.body, {
+          responseType: 'text',
+          withCredentials: true,
+          headers: requestOptions.headers,
+        }),
       );
       return response;
     } catch (ex) {
+      this.hsLogService.error('Error in makeGetLayerRequest:', ex);
       return null;
     }
+  }
+
+  /**
+   * Builds request options for Layman's WFS request
+   */
+  private async buildLayerRequestOptions(
+    layer: VectorLayer<VectorSource<Feature>>,
+    desc: HsLaymanLayerDescriptor,
+  ): Promise<{body: string; headers?: {[key: string]: string}}> {
+    const source = layer.getSource();
+    const filter: string = source.get('filter');
+    const srsName = this.hsMapService.getCurrentProj().getCode();
+    const workspace = getWorkspace(layer);
+
+    let body: string;
+    if (filter) {
+      body = await createPostFeatureRequest(
+        `${workspace}:${desc.name}`,
+        '2.0.0',
+        srsName,
+        workspace,
+        'GML32',
+        undefined,
+        srsName,
+        filter,
+        source.get('geometryAttribute'),
+      );
+    } else {
+      body = createGetFeatureRequest(
+        `${workspace}:${desc.name}`,
+        '2.0.0',
+        srsName,
+        'GML32',
+        undefined,
+        srsName,
+      );
+    }
+
+    const headers = filter
+      ? undefined
+      : {'Content-Type': 'application/x-www-form-urlencoded'};
+
+    return {body, headers};
   }
 
   /**

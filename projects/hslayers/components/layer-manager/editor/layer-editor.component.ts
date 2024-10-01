@@ -40,6 +40,7 @@ import {
   getRemovable,
   getTitle,
   getWfsUrl,
+  getWorkspace,
   setTitle,
 } from 'hslayers-ng/common/extensions';
 import {map, tap} from 'rxjs';
@@ -82,8 +83,8 @@ export class HsLayerEditorComponent {
   wfsFilterEnabled = computed(() => {
     return (
       this.isVectorLayer() &&
-      getWfsUrl(this.olLayer()) &&
-      this.hsConfig.panelsEnabled.wfsFilter
+      this.hsConfig.panelsEnabled.wfsFilter &&
+      (getWfsUrl(this.olLayer()) || getWorkspace(this.olLayer()))
     );
   });
 
