@@ -8,7 +8,6 @@ export * from './url/arcgis.service';
 export * from './url/wfs.service';
 export * from './url/wms.service';
 export * from './url/wmts.service';
-export * from './url/hs.source.WfsSource';
 
 export * from './catalogue/layman.service';
 export * from './catalogue/catalogue.service';
