@@ -173,7 +173,6 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
 
       if (layer) {
         this.data.extent = this.getLayerExtent(layer, this.data.map_projection);
-        layer.WGS84BoundingBox || layer.OutputFormats.WGS84BoundingBox;
 
         const srsType = layer && layer.DefaultSRS ? 'SRS' : 'CRS';
         if (layer['Default' + srsType] !== undefined) {
@@ -349,10 +348,7 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
           if (layer.featureCount == 0 || !layer.featureCount) {
             layer.featureCount = parseInt(doc.getAttribute('numberMatched'));
           }
-
-          layer.featureCount > 1000
-            ? (layer.limitFeatureCount = true)
-            : (layer.limitFeatureCount = false);
+          layer.limitFeatureCount = layer.featureCount > 1000;
           layer.loading = false;
           this.requestCancelSubjects.delete(url);
         },
@@ -512,7 +508,6 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
     const layerExtent = manyFeatures
       ? this.getLayerExtent(layer, options.crs)
       : undefined;
-
     const new_layer = new VectorLayer({
       properties: {
         name: options.layerName,

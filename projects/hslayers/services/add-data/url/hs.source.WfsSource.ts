@@ -7,6 +7,12 @@ import {createXYZ} from 'ol/tilegrid';
 import {fromExtent} from 'ol/geom/Polygon';
 
 export type WfsOptions = {
+  /**
+   * If proxy is necessary to use in combination with this WFS layer's server,
+   * specify a path to the running instance of hslayers-server.
+   * This option is independent on HsConfig.proxyPrefix and HsConfig.useProxy.
+   * If left undefined or with an empty string, no proxy is used.
+   */
   proxyPrefix?: string;
   data_version?: string;
   output_format?: string;
@@ -54,7 +60,7 @@ export class WfsSource extends VectorSource {
         const isPostRequest = this.get('filter');
         const url = isPostRequest
           ? `${proxyPrefix}${provided_url}`
-          : `${proxyPrefix}${provided_url}?${await createGetFeatureRequest(
+          : `${proxyPrefix}${provided_url}?${createGetFeatureRequest(
               layer_name,
               data_version,
               responseFeatureCRS,
