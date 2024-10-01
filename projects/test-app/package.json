@@ -1,7 +1,8 @@
 {
-  "name": "hslayers-ng-app",
+  "name": "hslayers-test-app",
+  "private": true,
   "version": "4.0.0",
-  "description": "A bundle of HSLayers-NG library + angular + OL",
+  "description": "A testing app for HSLayers-NG",
   "main": "karma.conf.js",
   "directories": {
     "test": "test"
@@ -24,5 +25,5 @@
   "bugs": {
     "url": "https://github.com/hslayers/hslayers-ng/issues"
   },
-  "homepage": "https://github.com/hslayers/hslayers-ng/blob/develop/projects/hslayers-app/README.md"
+  "homepage": "https://github.com/hslayers/hslayers-ng/blob/develop/projects/test-app/README.md"
 }
