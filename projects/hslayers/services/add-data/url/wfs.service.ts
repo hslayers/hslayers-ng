@@ -21,7 +21,8 @@ import {HsUtilsService} from 'hslayers-ng/services/utils';
 import {HsWfsGetCapabilitiesService} from 'hslayers-ng/services/get-capabilities';
 import {LayerOptions} from 'hslayers-ng/types';
 import {UrlDataObject} from 'hslayers-ng/types';
-import {WfsSource} from './hs.source.WfsSource';
+
+import {WfsSource} from 'hslayers-ng/common/layers';
 import {setCluster} from 'hslayers-ng/common/extensions';
 
 type WfsCapabilitiesLayer = {
