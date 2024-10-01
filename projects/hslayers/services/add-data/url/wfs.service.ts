@@ -1,5 +1,5 @@
 import {HttpClient} from '@angular/common/http';
-import {Injectable, Injector, inject} from '@angular/core';
+import {Injectable} from '@angular/core';
 import {Subject, finalize, takeUntil} from 'rxjs';
 
 import * as xml2Json from 'xml-js';
@@ -12,6 +12,7 @@ import {CapabilitiesResponseWrapper} from 'hslayers-ng/types';
 import {DuplicateHandling, HsMapService} from 'hslayers-ng/services/map';
 import {HsAddDataCommonService} from '../common.service';
 import {HsAddDataUrlService} from './add-data-url.service';
+import {HsConfig} from 'hslayers-ng/config';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsLogService} from 'hslayers-ng/services/log';
@@ -52,9 +53,8 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
   private requestCancelSubjects: Map<string, Subject<void>> = new Map();
   cancelUrlRequest: Subject<void> = new Subject();
 
-  injector = inject(Injector);
-
   constructor(
+    private hsConfig: HsConfig,
     private http: HttpClient,
     public hsUtilsService: HsUtilsService,
     public hsWfsGetCapabilitiesService: HsWfsGetCapabilitiesService,
@@ -524,7 +524,7 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
         cluster: manyFeatures,
       },
       source: new WfsSource({
-        injector: this.injector,
+        proxyPrefix: this.hsConfig.proxyPrefix,
         data_version: this.data.version,
         output_format: this.data.output_format,
         crs: options.crs,

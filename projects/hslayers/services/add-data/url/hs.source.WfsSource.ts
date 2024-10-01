@@ -1,17 +1,13 @@
 import {Extent} from 'ol/extent';
-import {HsUtilsService} from 'hslayers-ng/services/utils';
-import {HttpClient, HttpErrorResponse} from '@angular/common/http';
-import {Injector} from '@angular/core';
 import {Projection, transformExtent} from 'ol/proj';
 import {Vector as VectorSource} from 'ol/source';
 import {and, within} from 'ol/format/filter';
 import {bbox, tile} from 'ol/loadingstrategy';
 import {createXYZ} from 'ol/tilegrid';
 import {fromExtent} from 'ol/geom/Polygon';
-import {lastValueFrom} from 'rxjs';
 
 export type WfsOptions = {
-  injector: Injector;
+  proxyPrefix?: string;
   data_version?: string;
   output_format?: string;
   crs?: string;
@@ -26,13 +22,11 @@ export type WfsOptions = {
  * Provides a source of features from WFS endpoint
  */
 export class WfsSource extends VectorSource {
-  private http: HttpClient;
-  private hsUtilsService: HsUtilsService;
-
   constructor(private options: WfsOptions) {
     super({
       loader: async (extent, resolution, projection) => {
         const {
+          proxyPrefix = '',
           data_version = '1.0.0',
           output_format = data_version === '1.0.0' ? 'GML2' : 'GML3',
           crs,
@@ -59,20 +53,15 @@ export class WfsSource extends VectorSource {
 
         const isPostRequest = this.get('filter');
         const url = isPostRequest
-          ? /**
-             * Proxify the base url or the one updated with GET paramas
-             */
-            this.hsUtilsService.proxify(provided_url)
-          : this.hsUtilsService.proxify(
-              `${provided_url}?${await createGetFeatureRequest(
-                layer_name,
-                data_version,
-                responseFeatureCRS,
-                output_format,
-                transformedExtent,
-                srs,
-              )}`,
-            );
+          ? `${proxyPrefix}${provided_url}`
+          : `${proxyPrefix}${provided_url}?${await createGetFeatureRequest(
+              layer_name,
+              data_version,
+              responseFeatureCRS,
+              output_format,
+              transformedExtent,
+              srs,
+            )}`;
 
         try {
           const response = await getFeatures(
@@ -91,7 +80,6 @@ export class WfsSource extends VectorSource {
                   this.get('geometryAttribute'),
                 )
               : null,
-            this.http,
           );
 
           const features = await readFeatures(
@@ -112,8 +100,6 @@ export class WfsSource extends VectorSource {
         ? tile(createXYZ({extent: options.layerExtent}))
         : bbox,
     });
-    this.http = options.injector.get(HttpClient);
-    this.hsUtilsService = options.injector.get(HsUtilsService);
   }
 }
 
@@ -155,22 +141,28 @@ async function getFeatures(
   isPost: boolean,
   url: string,
   featureRequest: string | null,
-  http: HttpClient,
 ): Promise<string> {
   try {
-    if (isPost) {
-      return lastValueFrom(
-        http.post(url, featureRequest, {responseType: 'text'}),
-      );
-    } else {
-      return lastValueFrom(http.get(url, {responseType: 'text'}));
+    const options: RequestInit = {
+      method: isPost ? 'POST' : 'GET',
+      headers: {
+        'Content-Type': 'application/xml',
+      },
+    };
+
+    if (isPost && featureRequest) {
+      options.body = featureRequest;
     }
+
+    const response = await fetch(url, options);
+
+    if (!response.ok) {
+      throw new Error(`HTTP error ${response.status}: ${response.statusText}`);
+    }
+
+    return await response.text();
   } catch (error) {
-    if (error instanceof HttpErrorResponse) {
-      console.error(`HTTP error ${error.status}: ${error.message}`);
-    } else {
-      console.error('Error fetching features:', error);
-    }
+    console.error('Error fetching features:', error);
     throw new Error('Failed to fetch features');
   }
 }
