@@ -11,6 +11,7 @@ import {HsAddDataUrlService} from 'hslayers-ng/services/add-data';
 import {HsConfirmDialogComponent} from 'hslayers-ng/common/confirm';
 import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
 import {HsGetCapabilitiesErrorComponent} from './common/capabilities-error-dialog/capabilities-error-dialog.component';
+import {HsLayerSynchronizerService} from 'hslayers-ng/services/save-map';
 import {HsLaymanService} from 'hslayers-ng/services/save-map';
 import {HsPanelBaseComponent} from 'hslayers-ng/common/panels';
 import {HsRemoveLayerDialogService} from 'hslayers-ng/common/remove-multiple';
@@ -32,6 +33,10 @@ export class HsAddDataComponent extends HsPanelBaseComponent implements OnInit {
     public hsAddDataCatalogueService: HsAddDataCatalogueService,
     private hsRemoveLayerDialogService: HsRemoveLayerDialogService,
     private hsLaymanService: HsLaymanService,
+    /**
+     * Make sure the hsLayerSynchronizerService is available in the setups with add-data
+     */
+    private hsLayerSynchronizerService: HsLayerSynchronizerService,
   ) {
     super();
     this.layersAvailable =

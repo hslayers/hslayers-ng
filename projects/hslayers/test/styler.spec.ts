@@ -19,13 +19,16 @@ import {HsConfigMock} from './config.service.mock';
 import {HsDownloadModule} from 'hslayers-ng/common/download';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsEventBusServiceMock} from './event-bus.service.mock';
+import {
+  HsLayerSynchronizerService,
+  HsSaveMapService,
+} from 'hslayers-ng/services/save-map';
 import {HsLayerUtilsService} from 'hslayers-ng/services/utils';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsLayoutServiceMock} from './layout.service.mock';
 import {HsMapService} from 'hslayers-ng/services/map';
 import {HsMapServiceMock} from './map.service.mock';
 import {HsQueryVectorService} from 'hslayers-ng/services/query';
-import {HsSaveMapService} from 'hslayers-ng/services/save-map';
 import {HsSaveMapServiceMock} from './save-map.service.mock';
 import {HsStylerComponent} from 'hslayers-ng/components/styler';
 import {HsStylerService} from 'hslayers-ng/services/styler';
@@ -43,7 +46,12 @@ class HsLayerUtilsServiceMock {
   }
 }
 
-describe('HsStyler', () => {
+class HsLayerSynchronizerServiceMock {
+  syncedLayers: VectorLayer<VectorSource<Feature>>[] = [];
+  constructor() {}
+}
+
+fdescribe('HsStyler', () => {
   let layer;
 
   beforeAll(() => {
@@ -88,8 +96,12 @@ describe('HsStyler', () => {
       declarations: [HsStylerComponent],
       imports: [FormsModule, TranslateCustomPipe, HsDownloadModule],
       providers: [
-        HsStylerService,
-        {provide: HsLayerUtilsService, useValue: new HsLayerUtilsServiceMock()},
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
+        {
+          provide: HsLayerUtilsService,
+          useValue: new HsLayerUtilsServiceMock(),
+        },
         {provide: HsSaveMapService, useValue: new HsSaveMapServiceMock()},
         {provide: HsMapService, useValue: new HsMapServiceMock()},
         {provide: HsUtilsService, useValue: new HsUtilsServiceMock()},
@@ -100,8 +112,11 @@ describe('HsStyler', () => {
         {provide: HsQueryVectorService, useValue: new emptyMock()},
         {provide: HsEventBusService, useValue: new HsEventBusServiceMock()},
         {provide: HsConfig, useValue: mockedConfig},
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
+        {
+          provide: HsLayerSynchronizerService,
+          useValue: new HsLayerSynchronizerServiceMock(),
+        },
+        HsStylerService,
       ],
     }); //.compileComponents();
     fixture = TestBed.createComponent(HsStylerComponent);

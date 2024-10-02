@@ -16,6 +16,8 @@ import {
 } from 'hslayers-ng/types';
 import {HsDimensionDescriptor} from 'hslayers-ng/common/dimensions';
 import {HsMapCompositionDescriptor} from 'hslayers-ng/types';
+import {Vector as VectorLayer} from 'ol/layer';
+import {Vector as VectorSource} from 'ol/source';
 
 /**
  * HsEventBusService provides observable events which you can subscribe to or fire them
@@ -170,5 +172,10 @@ export class HsEventBusService {
    * Cancels any external URL data request from datasources panel
    */
   cancelAddDataUrlRequest: Subject<void> = new Subject();
+  /**
+   * Fires when Layman vector layer should be refreshed
+   */
+  refreshLaymanLayer: Subject<VectorLayer<VectorSource<Feature>>> =
+    new Subject();
   constructor() {}
 }

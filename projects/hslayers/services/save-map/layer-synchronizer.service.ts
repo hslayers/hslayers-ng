@@ -8,6 +8,7 @@ import {Vector as VectorLayer} from 'ol/layer';
 import {Vector as VectorSource} from 'ol/source';
 
 import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
+import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsLanguageService} from 'hslayers-ng/services/language';
 import {HsLaymanService} from './layman.service';
 import {HsLogService} from 'hslayers-ng/services/log';
@@ -24,6 +25,7 @@ import {
   setHsLaymanSynchronizing,
   setLaymanLayerDescriptor,
 } from 'hslayers-ng/common/extensions';
+import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 
 @Injectable({
   providedIn: 'root',
@@ -40,6 +42,7 @@ export class HsLayerSynchronizerService {
     private hsToastService: HsToastService,
     private hsLanguageService: HsLanguageService,
     private hsLogService: HsLogService,
+    private hsEventBusService: HsEventBusService,
   ) {
     this.hsMapService.loaded().then((map) => {
       const layerAdded = (e) => this.addLayer(e.element);
@@ -58,6 +61,12 @@ export class HsLayerSynchronizerService {
       this.crs = this.hsMapService.getCurrentProj().getCode();
       this.hsLaymanService.crs = this.crs;
     });
+
+    this.hsEventBusService.refreshLaymanLayer
+      .pipe(takeUntilDestroyed())
+      .subscribe((layer) => {
+        this.pull(layer, layer.getSource());
+      });
   }
   /**
    * Reload all the synchronized layers after Layman's authorization change
