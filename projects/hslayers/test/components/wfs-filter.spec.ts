@@ -1,4 +1,3 @@
-import * as olFormatFilter from 'ol/format/filter';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {Feature} from 'ol';
 import {HsConfigMock} from '../config.service.mock';

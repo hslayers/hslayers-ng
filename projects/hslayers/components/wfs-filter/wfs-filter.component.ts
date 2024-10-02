@@ -75,8 +75,6 @@ export class HsWfsFilterComponent extends HsPanelBaseComponent {
   hsLayerSelectorService = inject(HsLayerSelectorService);
   hsToastService = inject(HsToastService);
 
-  HsLayerSynchronizerService = inject(HsLayerSynchronizerService);
-
   availableLayers: Signal<HsLayerDescriptor[]>;
 
   loadingLayerInfo = signal(false);
@@ -366,9 +364,8 @@ export class HsWfsFilterComponent extends HsPanelBaseComponent {
        * Manually pull features from WFS if layer is from Layman
        */
       if (getWorkspace(selectedLayer.layer)) {
-        this.HsLayerSynchronizerService.pull(
+        this.hsEventBusService.refreshLaymanLayer.next(
           selectedLayer.layer as VectorLayer<VectorSource>,
-          source as VectorSource<Feature>,
         );
       }
     }
