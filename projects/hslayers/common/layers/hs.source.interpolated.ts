@@ -94,6 +94,10 @@ export class InterpolatedSource extends IDW {
 
     canvas.width = imageData.width;
     canvas.height = imageData.height;
+
+    if (canvas.width < 5 || canvas.height < 5) {
+      return;
+    }
     const ctx = canvas.getContext('2d');
 
     if (this.isImageDataMostlyEmpty(imageData)) {
@@ -341,7 +345,7 @@ export class InterpolatedSource extends IDW {
   /**
    * Draw 'NO DATA' label over layers canvas
    */
-  drawNoData(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement) {
+  drawNoData(ctx, canvas) {
     // Set the desired canvas size
     const originalWidth = canvas.width;
     const originalHeight = canvas.height;
@@ -357,20 +361,29 @@ export class InterpolatedSource extends IDW {
     ctx.scale(scale, scale);
 
     const text = 'NO DATA';
-    let fontSize = 30;
+    let fontSize = Math.min(30, Math.min(originalWidth, originalHeight) / 4);
+
+    // Set a minimum font size to prevent infinite loop
+    const minFontSize = 8;
+
     ctx.font = `${fontSize}px Arial`;
 
     // Measure the text width with padding (10px on each side)
     let textWidth = ctx.measureText(text).width + 20;
 
     // Adjust font size to fit within the canvas
+    const MAX_ITERATIONS = 10; // Prevent infinite loop
+    let iterations = 0;
     while (
-      textWidth > originalWidth * 0.9 * scale ||
-      fontSize > originalHeight * 0.9 * scale
+      (textWidth > originalWidth * 0.9 * scale ||
+        fontSize > originalHeight * 0.9 * scale) &&
+      fontSize > minFontSize &&
+      iterations < MAX_ITERATIONS
     ) {
-      fontSize -= 2;
+      fontSize = Math.max(fontSize - 2, minFontSize);
       ctx.font = `${fontSize}px Arial`;
       textWidth = ctx.measureText(text).width + 20;
+      iterations++;
     }
 
     ctx.fillStyle = 'white';
