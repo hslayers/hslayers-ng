@@ -94,10 +94,9 @@ export class HsWfsFilterComponent extends HsPanelBaseComponent {
         map(() => {
           return this.hsLayerManagerService.data.layers.filter(
             (l: HsLayerDescriptor) =>
-              (this.hsUtilsService.instOf(l.layer, VectorLayer) &&
-                this.hsUtilsService.instOf(l.layer.getSource(), VectorSource) &&
-                getWfsUrl(l.layer)) ||
-              getDefinition(l.layer),
+              this.hsUtilsService.instOf(l.layer, VectorLayer) &&
+              this.hsUtilsService.instOf(l.layer.getSource(), VectorSource) &&
+              (getWfsUrl(l.layer) || getDefinition(l.layer)),
           );
         }),
         tap((layers) => {
