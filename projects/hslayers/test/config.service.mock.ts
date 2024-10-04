@@ -10,7 +10,6 @@ export class HsConfigMock {
     toolbar: false,
     draw: false,
     layermanager: false,
-    feature_crossfilter: false,
     print: false,
     saveMap: false,
     language: false,

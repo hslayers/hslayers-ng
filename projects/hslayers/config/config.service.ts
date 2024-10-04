@@ -36,7 +36,6 @@ export type PanelsEnabled = {
   draw?: boolean;
   layerManager?: boolean;
   featureTable?: boolean;
-  feature_crossfilter?: boolean;
   print?: boolean;
   saveMap?: boolean;
   language?: boolean;
