@@ -63,7 +63,7 @@ export class HsLanguageService {
   initLanguages() {
     const languages = this.hsConfig.enabledLanguages
       ? this.hsConfig.enabledLanguages.split(',').map((lang) => lang.trim())
-      : ['en,', 'cs', 'sk'];
+      : ['en', 'cs', 'sk'];
     this.translationService.addLangs(languages);
     this.translationService.setDefaultLang('en');
     const langToUse = this.getLangToUse();
