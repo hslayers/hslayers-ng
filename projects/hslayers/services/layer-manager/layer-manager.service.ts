@@ -101,9 +101,7 @@ export class HsLayermanagerDataObject {
 export class HsLayerManagerService {
   data = new HsLayermanagerDataObject();
   timer: any;
-  menuExpanded = false;
   zIndexValue = 0;
-  layerEditorElement: any;
 
   mapEventHandlers: EventsKey[];
   constructor(
@@ -496,75 +494,6 @@ export class HsLayerManagerService {
   }
 
   /**
-   * Toggles Additional information panel for current layer.
-   * @param layer - Selected layer (HsLayerManagerService.currentLayer)
-   * @param toToggle - Part of layer editor to be toggled
-   */
-  toggleLayerEditor(
-    layer: HsLayerDescriptor,
-    toToggle: 'sublayers' | 'settings',
-  ): void {
-    //  Part of layer editor to be controlled for state.
-    //  Determines whether only toggled part or whole layereditor would be closed
-    const control = toToggle === 'settings' ? 'sublayers' : 'settings';
-    if (!getCachedCapabilities(layer.layer)) {
-      this.hsLayerManagerMetadata.fillMetadata(layer);
-    }
-
-    if (toToggle == 'sublayers' && layer.hasSublayers != true) {
-      return;
-    }
-    if (this.hsLayerSelectorService.currentLayer != layer) {
-      this.toggleCurrentLayer(layer);
-      if (this.menuExpanded) {
-        this.menuExpanded = false;
-      }
-      layer[toToggle] = true;
-    } else {
-      layer[toToggle] = !layer[toToggle];
-      if (!layer[control]) {
-        this.toggleCurrentLayer(layer);
-      }
-    }
-  }
-
-  /**
-   * Opens detailed panel for manipulating selected layer and viewing metadata
-   * @param layer - Selected layer to edit or view - Wrapped layer object
-   */
-  toggleCurrentLayer(layer: HsLayerDescriptor): void | false {
-    if (this.hsLayerSelectorService.currentLayer === layer) {
-      layer.sublayers = false;
-      layer.settings = false;
-      this.hsLayerSelectorService.select(null);
-      this.updateGetParam(undefined);
-    } else {
-      this.setCurrentLayer(layer);
-      return false;
-    }
-  }
-
-  setCurrentLayer(layer: HsLayerDescriptor): boolean {
-    try {
-      this.updateGetParam(layer.title);
-      if (!layer.checkedSubLayers) {
-        layer.checkedSubLayers = {};
-        layer.withChildren = {};
-      }
-      this.hsLayerSelectorService.select(layer);
-      return false;
-    } catch (ex) {
-      this.hsLog.error(ex);
-    }
-  }
-
-  private updateGetParam(title: string) {
-    const t = {};
-    t[HS_PRMS.layerSelected] = title;
-    this.hsShareUrlService.updateCustomParams(t);
-  }
-
-  /**
    * Makes layer greyscale
    * @param layer - Selected layer (currentLayer)
    */
@@ -614,15 +543,13 @@ export class HsLayerManagerService {
       layerTitle != undefined &&
       this.hsLayoutService.mainpanel === 'layerManager'
     ) {
-      setTimeout(() => {
-        const layerFound = this.data.layers.find(
-          (layer) => layer.title == layerTitle,
-        );
-        if (layerFound !== undefined) {
-          this.toggleLayerEditor(layerFound, 'settings');
-          this.hsEventBusService.layerSelectedFromUrl.next(layerFound.layer);
-        }
-      }, 500);
+      const layerFound = this.data.layers.find(
+        (layer) => layer.title == layerTitle,
+      );
+      if (layerFound) {
+        layerFound.layer.set('editorOnInit', true);
+        this.hsEventBusService.layerSelectedFromUrl.next(layerFound.layer);
+      }
     }
   }
 
