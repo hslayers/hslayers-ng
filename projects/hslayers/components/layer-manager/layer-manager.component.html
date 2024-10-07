@@ -67,8 +67,9 @@
                         [ngbTooltip]="layer.abstract ? abstractTooltip : ''" [closeDelay]="layerTooltipDelay">
                         {{layer.title | translateHs : 'LAYERS' }}
                     </div>
+                    <!-- (click)="hsLayerManagerService.toggleLayerEditor(layer,'settings')" -->
                     <div class="ps-1 info_btn text-secondary dropdown-toggle" style="cursor: pointer;"
-                        (click)="hsLayerManagerService.toggleLayerEditor(layer,'settings')">
+                        >
                         <span class="icon-settingsthree-gears" [title]="'COMMON.info' | translateHs"
                             data-toggle="tooltip" data-container="body" data-placement="auto"></span>
                     </div>
@@ -171,7 +172,4 @@
         </ul>
     </div>
 </div>
-}
-@if(hsLayerSelectorService.currentLayer){
-<hs-layer-editor [currentLayer]="hsLayerSelectorService.currentLayer" #layerEditor class="hs-layerpanel w-100" />
 }
