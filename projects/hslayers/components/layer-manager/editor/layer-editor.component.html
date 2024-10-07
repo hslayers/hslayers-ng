@@ -1,6 +1,6 @@
 @let currLayer = currentLayer();
 <div class="card panel-default">
-  @if (currLayer && layerNodeAvailable()) {
+  @if (currLayer) {
   <div class="card-body">
     <!-- Sublayers-->
     <div [hidden]="!currLayer.sublayers" class="form-group">
