@@ -9,7 +9,6 @@ import {
   NgbTooltipModule,
 } from '@ng-bootstrap/ng-bootstrap';
 
-import {DatePreformatPipe} from './dimensions/date-preformat.pipe';
 import {FilterPipe} from 'hslayers-ng/common/pipes';
 import {HsClipboardTextComponent} from 'hslayers-ng/common/clipboard-text';
 import {HsClusterWidgetComponent} from './widgets/cluster-widget.component';
@@ -26,7 +25,6 @@ import {HsLayerListComponent} from './logical-list/layer-manager-layerlist.compo
 import {HsLayerManagerComponent} from './layer-manager.component';
 import {HsLayerManagerRemoveAllDialogComponent} from './dialogs/remove-all-dialog.component';
 import {HsLayerManagerRemoveLayerDialogComponent} from './dialogs/remove-layer-dialog.component';
-import {HsLayerManagerTimeEditorComponent} from './dimensions/layer-manager-time-editor.component';
 import {HsLayerPhysicalListComponent} from './physical-list/physical-layerlist.component';
 import {HsLegendModule} from 'hslayers-ng/components/legend';
 import {HsLegendWidgetComponent} from './widgets/legend-widget.component';
@@ -46,11 +44,9 @@ import {TranslateCustomPipe} from 'hslayers-ng/services/language';
     HsLayerEditorDimensionsComponent,
     HsLayerEditorSubLayerCheckboxesComponent,
     HsLayerEditorComponent,
-    HsLayerListComponent,
     HsLayerManagerRemoveAllDialogComponent,
     HsCopyLayerDialogComponent,
     HsLayerManagerRemoveLayerDialogComponent,
-    HsLayerManagerTimeEditorComponent,
     HsLayerEditorWidgetBaseComponent,
     HsLayerPhysicalListComponent,
     HsTypeWidgetComponent,
@@ -63,6 +59,7 @@ import {TranslateCustomPipe} from 'hslayers-ng/services/language';
     HsExtentWidgetComponent,
   ],
   imports: [
+    HsLayerListComponent,
     TranslateCustomPipe,
     CommonModule,
     FormsModule,
@@ -78,7 +75,6 @@ import {TranslateCustomPipe} from 'hslayers-ng/services/language';
     HsLayerFolderWidgetComponent,
     HsPanelHeaderComponent,
     FilterPipe,
-    DatePreformatPipe,
     HsClipboardTextComponent,
   ],
   exports: [
@@ -90,7 +86,6 @@ import {TranslateCustomPipe} from 'hslayers-ng/services/language';
     HsLayerManagerRemoveAllDialogComponent,
     HsCopyLayerDialogComponent,
     HsLayerManagerRemoveLayerDialogComponent,
-    HsLayerManagerTimeEditorComponent,
     HsLayerPhysicalListComponent,
     HsTypeWidgetComponent,
     HsMetadataWidgetComponent,

@@ -1,4 +1,4 @@
-import {Component, Signal, WritableSignal, inject, signal} from '@angular/core';
+import {Component, Signal, inject, signal} from '@angular/core';
 import {Observable, map} from 'rxjs';
 
 import {
@@ -9,7 +9,7 @@ import {
   HsLayerSelectorService,
 } from 'hslayers-ng/services/layer-manager';
 
-import { AsyncPipe, NgClass } from '@angular/common';
+import {AsyncPipe, NgClass} from '@angular/common';
 import {HsBaseLayerDescriptor} from 'hslayers-ng/types';
 import {HsConfirmDialogComponent} from 'hslayers-ng/common/confirm';
 import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
@@ -134,8 +134,6 @@ export class LayerTypeSwitcherWidgetComponent extends HsLayerEditorWidgetBaseCom
     if (!toBase) {
       this.loadingProgressSerice.loadingEvents(currentLayer);
     }
-
-    this.hsLayermanagerService.toggleLayerEditor(currentLayer, 'settings');
 
     this.hsEventBusService.layerManagerUpdates.next(this.olLayer);
     this.hsEventBusService.compositionEdits.next();
