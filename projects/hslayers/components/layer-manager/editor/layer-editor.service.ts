@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {ComponentRef, Injectable, ViewContainerRef} from '@angular/core';
 
 import {Layer} from 'ol/layer';
 import {Source} from 'ol/source';
@@ -6,8 +6,14 @@ import {Subject, filter} from 'rxjs';
 import {WMSCapabilities} from 'ol/format';
 import {transformExtent} from 'ol/proj';
 
+import {HS_PRMS} from 'hslayers-ng/services/share';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
-import {HsLayerEditorVectorLayerService} from 'hslayers-ng/services/layer-manager';
+import {HsLayerDescriptor} from 'hslayers-ng/types';
+import {HsLayerEditorComponent} from './layer-editor.component';
+import {
+  HsLayerEditorVectorLayerService,
+  HsLayerManagerService,
+} from 'hslayers-ng/services/layer-manager';
 import {HsLayerManagerMetadataService} from 'hslayers-ng/services/layer-manager';
 import {HsLayerSelectorService} from 'hslayers-ng/services/layer-manager';
 import {HsLayerUtilsService} from 'hslayers-ng/services/utils';
@@ -17,6 +23,7 @@ import {HsLegendService} from 'hslayers-ng/components/legend';
 import {HsMapService} from 'hslayers-ng/services/map';
 import {HsWmsGetCapabilitiesService} from 'hslayers-ng/services/get-capabilities';
 import {
+  getCachedCapabilities,
   getCluster,
   getInlineLegend,
   getWmsOriginalExtent,
@@ -35,16 +42,19 @@ export class HsLayerEditorService {
     layer: Layer<Source>;
   }> = new Subject();
 
+  editorComponent: ComponentRef<HsLayerEditorComponent>;
+
   constructor(
-    public HsMapService: HsMapService,
-    public HsWmsGetCapabilitiesService: HsWmsGetCapabilitiesService,
-    public HsLayerUtilsService: HsLayerUtilsService,
-    public HsLayerEditorVectorLayerService: HsLayerEditorVectorLayerService,
-    public HsEventBusService: HsEventBusService,
-    public HsLayoutService: HsLayoutService,
-    public HsLegendService: HsLegendService,
-    public HsLayerSelectorService: HsLayerSelectorService,
-    public HsLayerManagerMetadataService: HsLayerManagerMetadataService,
+    private HsMapService: HsMapService,
+    private HsWmsGetCapabilitiesService: HsWmsGetCapabilitiesService,
+    private HsLayerUtilsService: HsLayerUtilsService,
+    private HsLayerEditorVectorLayerService: HsLayerEditorVectorLayerService,
+    private HsEventBusService: HsEventBusService,
+    private HsLayoutService: HsLayoutService,
+    private HsLegendService: HsLegendService,
+    private HsLayerSelectorService: HsLayerSelectorService,
+    private HsLayerManagerMetadataService: HsLayerManagerMetadataService,
+    private hsLayerManagerService: HsLayerManagerService,
   ) {
     this.HsLayerSelectorService.layerSelected
       .pipe(filter((layer) => !!layer))
@@ -52,6 +62,103 @@ export class HsLayerEditorService {
         this.legendDescriptor =
           await this.HsLegendService.getLayerLegendDescriptor(layer.layer);
       });
+  }
+
+  /**
+   * Create layer editor component
+   * @param vcr - View container reference
+   * @param layer - Layer
+   * @param type - Type of editor to open ('sublayers' or 'settings')
+   */
+  createLayerEditor(
+    vcr: ViewContainerRef,
+    layer: HsLayerDescriptor,
+    type: 'sublayers' | 'settings',
+  ): ComponentRef<HsLayerEditorComponent> | undefined {
+    if (this.editorComponent) {
+      this.editorComponent.destroy();
+    }
+    vcr.clear();
+
+    const shouldCreateEditor = this.toggleLayerEditor(layer, type);
+
+    if (shouldCreateEditor) {
+      this.editorComponent = vcr.createComponent(HsLayerEditorComponent);
+      this.editorComponent.setInput('currentLayer', layer);
+      return this.editorComponent;
+    }
+    return undefined;
+  }
+
+  /**
+   * Toggles layer editor for current layer.
+   * @param layer - Selected layer
+   * @param toToggle - Part of layer editor to be toggled ('sublayers' or 'settings')
+   * @returns Boolean indicating whether the editor should be created
+   */
+  toggleLayerEditor(
+    layer: HsLayerDescriptor,
+    toToggle: 'sublayers' | 'settings',
+  ): boolean {
+    if (!getCachedCapabilities(layer.layer)) {
+      this.HsLayerManagerMetadataService.fillMetadata(layer);
+    }
+
+    if (toToggle === 'sublayers' && !layer.hasSublayers) {
+      return false;
+    }
+
+    const otherPart = toToggle === 'settings' ? 'sublayers' : 'settings';
+
+    if (this.HsLayerSelectorService.currentLayer !== layer) {
+      this.setCurrentLayer(layer);
+      layer[toToggle] = true;
+    } else {
+      layer[toToggle] = !layer[toToggle];
+      if (!layer[otherPart]) {
+        this.HsLayerSelectorService.select(null);
+        this.updateGetParam(undefined);
+        return false;
+      }
+    }
+
+    return layer[toToggle];
+  }
+
+  /**
+   * Opens detailed panel for manipulating selected layer and viewing metadata
+   * @param layer - Selected layer to edit or view - Wrapped layer object
+   */
+  toggleCurrentLayer(layer: HsLayerDescriptor): void | false {
+    if (this.HsLayerSelectorService.currentLayer === layer) {
+      layer.sublayers = false;
+      layer.settings = false;
+      this.HsLayerSelectorService.select(null);
+      this.updateGetParam(undefined);
+    } else {
+      this.setCurrentLayer(layer);
+      return false;
+    }
+  }
+
+  setCurrentLayer(layer: HsLayerDescriptor): boolean {
+    try {
+      this.updateGetParam(layer.title);
+      if (!layer.checkedSubLayers) {
+        layer.checkedSubLayers = {};
+        layer.withChildren = {};
+      }
+      this.HsLayerSelectorService.select(layer);
+      return false;
+    } catch (ex) {
+      console.error(ex);
+    }
+  }
+
+  private updateGetParam(title: string | undefined) {
+    const t = {};
+    t[HS_PRMS.layerSelected] = title;
+    // this.hsShareUrlService.updateCustomParams(t);
   }
 
   /**
