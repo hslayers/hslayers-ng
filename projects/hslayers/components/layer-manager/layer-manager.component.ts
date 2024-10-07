@@ -59,16 +59,6 @@ export class HsLayerManagerComponent
   extends HsPanelBaseComponent
   implements OnInit, AfterViewInit
 {
-  layerEditorRef: ElementRef;
-  @ViewChild('layerEditor', {static: false, read: ElementRef}) set content(
-    content: ElementRef,
-  ) {
-    if (content) {
-      // initially setter gets called with undefined
-      this.layerEditorRef = content;
-      this.hsLayerManagerService.layerEditorElement = content.nativeElement;
-    }
-  }
   @ViewChild('filterInput', {static: false}) filterInput: ElementRef;
 
   filteredBaselayers$: Observable<HsBaseLayerDescriptor[]>;
@@ -159,24 +149,6 @@ export class HsLayerManagerComponent
         map((lib) => lib === 'cesium'),
       ),
     ).pipe(startWith(false));
-
-    this.hsEventBusService.layerRemovals
-      .pipe(takeUntilDestroyed())
-      .subscribe((layer) => {
-        if (
-          this.hsLayerSelectorService?.currentLayer?.layer == layer &&
-          this.hsUtilsService.runningInBrowser()
-        ) {
-          const layerNode = document.getElementsByClassName(
-            'hs-lm-mapcontentlist',
-          )[0];
-          this.hsUtilsService.insertAfter(
-            this.layerEditorRef.nativeElement,
-            layerNode,
-          );
-          this.hsLayerSelectorService.currentLayer = null;
-        }
-      });
 
     this.hsEventBusService.compositionLoads
       .pipe(takeUntilDestroyed())
