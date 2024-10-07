@@ -1,5 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 
+import {FormsModule} from '@angular/forms';
 import {HsConfig} from 'hslayers-ng/config';
 import {
   HsLayerEditorSublayerService,
@@ -9,10 +10,13 @@ import {
   HsLayerManagerService,
   HsLayerManagerVisibilityService,
 } from 'hslayers-ng/services/layer-manager';
+import {NgClass} from '@angular/common';
 
 @Component({
   selector: 'hs-layer-editor-sub-layer-checkbox',
   templateUrl: './layer-editor-sub-layer-checkboxes.component.html',
+  standalone: true,
+  imports: [FormsModule, NgClass],
 })
 export class HsLayerEditorSubLayerCheckboxesComponent implements OnInit {
   @Input() subLayer: any;

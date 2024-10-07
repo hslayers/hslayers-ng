@@ -42,7 +42,6 @@ import {TranslateCustomPipe} from 'hslayers-ng/services/language';
   declarations: [
     HsLayerManagerComponent,
     HsLayerEditorDimensionsComponent,
-    HsLayerEditorSubLayerCheckboxesComponent,
     HsLayerEditorComponent,
     HsLayerManagerRemoveAllDialogComponent,
     HsCopyLayerDialogComponent,
@@ -63,6 +62,7 @@ import {TranslateCustomPipe} from 'hslayers-ng/services/language';
     TranslateCustomPipe,
     CommonModule,
     FormsModule,
+    HsLayerEditorSubLayerCheckboxesComponent,
     HsPanelHelpersModule,
     HsLegendModule,
     NgbDatepickerModule,
