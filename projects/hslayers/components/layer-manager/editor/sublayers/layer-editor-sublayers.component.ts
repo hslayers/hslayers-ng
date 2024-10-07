@@ -1,6 +1,7 @@
 import {Component, Input} from '@angular/core';
 import {HsLayerDescriptor} from 'hslayers-ng/types';
-import {HsLayerEditorSublayerService} from './layer-editor-sub-layer.service';
+import {HsLayerEditorSubLayerCheckboxesComponent} from '../layer-editor-sub-layer-checkboxes.component';
+import {HsLayerEditorSublayerService} from '../layer-editor-sub-layer.service';
 
 @Component({
   selector: 'hs-layer-editor-sublayers',
@@ -16,6 +17,8 @@ import {HsLayerEditorSublayerService} from './layer-editor-sub-layer.service';
       </div>
     </div>
   `,
+  standalone: true,
+  imports: [HsLayerEditorSubLayerCheckboxesComponent],
 })
 export class HsLayerEditorSublayersComponent {
   @Input() layer: HsLayerDescriptor;

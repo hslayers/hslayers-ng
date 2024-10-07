@@ -2,15 +2,6 @@
 <div class="card panel-default">
   @if (currLayer) {
   <div class="card-body">
-    <!-- Sublayers-->
-    <div [hidden]="!currLayer.sublayers" class="form-group">
-      @for (subLayer of getSubLayers(); track subLayer) {
-      <div>
-        <hs-layer-editor-sub-layer-checkbox [subLayer]="subLayer">
-        </hs-layer-editor-sub-layer-checkbox>
-      </div>
-      }
-    </div>
     @if (currLayer.settings) {
     <div>
       <form>
