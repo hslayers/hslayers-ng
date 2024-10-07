@@ -1,0 +1,65 @@
+<li [id]="layerId()" class="list-group-item hs-lm-item my-2 my-md-0" [attr.data-test]="layer().title"
+  [ngClass]="{
+    'hs-lm-detail-activated': hsLayerSelectorService.currentLayer === layer(),
+    'grayed': layer().grayed === true
+  }">
+  <div class="d-flex">
+    <div class="p-0" [ngClass]="getExclusive(layer().layer) ? 'exclusive' : ''">
+      <button type="button" class="btn btn-sm btn-light hs-lm-item-visibility" (click)="toggleVisibility()"
+        [ngClass]="layer().visible ? 'hs-checkmark' : 'hs-uncheckmark'"></button>
+    </div>
+    <ng-template #abstractTooltip>
+      <span [innerHtml]="
+          hsLayerManagerService.makeSafeAndTranslate(
+            'LAYERS',
+            layer().abstract
+          )
+        "></span>
+    </ng-template>
+    <div class="align-items-center p-0 hs-lm-item-title flex-grow-1" (click)="toggleEditor('sublayers')"
+      style="word-break:break-word;" [ngClass]="{'hover': layer().hasSublayers === true}"
+      [ngbTooltip]="layer().abstract ? abstractTooltip : ''" [closeDelay]="hsConfig.layerTooltipDelay || 0">
+      {{ layer().title | translateHs: 'LAYERS' }}
+    </div>
+    @if (layer().hasSublayers) {
+    <div class="hs-sublayer-toggle p-0 me-1 ms-1 info_btn" style="flex-grow: 100; align-self: center;"
+      (click)="toggleEditor('sublayers')">
+      <span class="me-1" [ngClass]="
+            hsLayerSelectorService.currentLayer === layer() &&
+            hsLayerSelectorService.currentLayer.sublayers
+              ? 'icon-chevron-right'
+              : 'icon-chevron-down'
+          "></span>
+    </div>
+    }
+    <div class="p-0 " [hidden]="layerValid()">
+      <i class="icon-warning-sign hs-lm-warning-scale"
+        [title]="'LAYERMANAGER.layerList.noAvailableInScale' | translateHs" data-toggle="tooltip" data-container="body"
+        data-placement="auto" [hidden]="!layer().grayed" (click)="$event.stopPropagation()"></i>
+    </div>
+    <div class="p-0" [hidden]="!layerValid()">
+      <i class="icon-warning-sign alert-danger bg-white hs-lm-warning-error"
+        [title]="'LAYERMANAGER.layerList.layerNotAvailable' | translateHs" data-toggle="tooltip" data-container="body"
+        data-placement="auto" (click)="$event.stopPropagation()"></i>
+    </div>
+    <div class="p-0" [hidden]="!getHsLaymanSynchronizing(layer().layer)">
+      <i class="icon-cloudaltsync" [title]="'LAYERMANAGER.layerList.sendingToLayman' | translateHs"
+        data-toggle="tooltip" data-container="body" data-placement="auto" (click)="$event.stopPropagation()"></i>
+    </div>
+    <div class="p-0" [hidden]="!isLayerQueryable()">
+      <i class="icon-info-sign hs-lm-queryable" [title]="'LAYERMANAGER.layerList.layerIsQueryable' | translateHs"
+        (click)="$event.stopPropagation()"></i>
+    </div>
+    <div class="ps-1 info_btn me-1 text-secondary dropdown-toggle" (click)="toggleEditor('settings')">
+      <span class="icon-settingsthree-gears" [title]="'COMMON.info' | translateHs" data-toggle="tooltip"
+        data-container="body" data-placement="auto"></span>
+    </div>
+  </div>
+  @if (showLayerWmsT()) {
+  <hs-layer-manager-time-editor [layer]="layer()" class="d-flex">
+  </hs-layer-manager-time-editor>
+  }
+  <ngb-progressbar [value]="layer().loadProgress.percents" height="2px" [animated]="true"
+    [ngClass]="{'loaded': layer().loadProgress?.loaded}"></ngb-progressbar>
+</li>
+<ng-container #editor></ng-container>
