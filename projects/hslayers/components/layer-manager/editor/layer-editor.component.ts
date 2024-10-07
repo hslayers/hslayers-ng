@@ -1,4 +1,12 @@
-import {Component, computed, inject, input, model, signal} from '@angular/core';
+import {
+  Component,
+  OnDestroy,
+  computed,
+  inject,
+  input,
+  model,
+  signal,
+} from '@angular/core';
 
 import {Feature} from 'ol';
 import {Vector as VectorLayer} from 'ol/layer';
@@ -43,7 +51,7 @@ import {
   getWorkspace,
   setTitle,
 } from 'hslayers-ng/common/extensions';
-import {map, tap} from 'rxjs';
+import {map} from 'rxjs';
 import {toObservable} from '@angular/core/rxjs-interop';
 
 @Component({
@@ -109,11 +117,6 @@ export class HsLayerEditorComponent {
           this.layerTitle.set(layer.title);
           this.layer_renamer_visible.set(false);
         }),
-        tap((layer) => {
-          if (layer !== null) {
-            this.insertEditorElement();
-          }
-        }),
       )
       .subscribe();
   }
@@ -135,33 +138,6 @@ export class HsLayerEditorComponent {
     ];
     for (const widgetClass of widgets) {
       this.hsWidgetContainerService.create(widgetClass, {});
-    }
-  }
-
-  private async awaitLayerNode(idString: string): Promise<boolean> {
-    let attempts = 0;
-    const maxAttempts = 10;
-
-    while (!document.getElementById(idString) && attempts < maxAttempts) {
-      await new Promise((r) => setTimeout(r, 200));
-      attempts++;
-    }
-    this.layerNodeAvailable.set(true);
-    return true;
-  }
-
-  /**
-   * Insert layer-editor element under the correct layer node
-   */
-  async insertEditorElement() {
-    const idString = this.currentLayer().idString();
-    await this.awaitLayerNode(idString);
-    const layerNode = document.getElementById(idString);
-    if (layerNode && this.HsLayerManagerService.layerEditorElement) {
-      this.hsUtilsService.insertAfter(
-        this.HsLayerManagerService.layerEditorElement,
-        layerNode,
-      );
     }
   }
 
