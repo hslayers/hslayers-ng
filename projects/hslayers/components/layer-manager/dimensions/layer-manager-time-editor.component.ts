@@ -1,15 +1,29 @@
 import {Component, Input, OnInit, ViewChild} from '@angular/core';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 
+import {CommonModule, NgClass} from '@angular/common';
+import {DatePreformatPipe} from './date-preformat.pipe';
+import {FormsModule} from '@angular/forms';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsDimensionTimeService} from 'hslayers-ng/services/get-capabilities';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsLayerDescriptor} from 'hslayers-ng/types';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
+import {NgbTooltipModule} from '@ng-bootstrap/ng-bootstrap';
+import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 
 @Component({
   selector: 'hs-layer-manager-time-editor',
   templateUrl: 'layer-manager-time-editor.component.html',
+  standalone: true,
+  imports: [
+    CommonModule,
+    TranslateCustomPipe,
+    NgClass,
+    DatePreformatPipe,
+    NgbTooltipModule,
+    FormsModule,
+  ],
 })
 export class HsLayerManagerTimeEditorComponent implements OnInit {
   @Input() layer: HsLayerDescriptor;
