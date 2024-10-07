@@ -16,9 +16,7 @@ import {HsColormapPickerModule} from 'hslayers-ng/common/color-map-picker';
 import {HsCopyLayerDialogComponent} from './dialogs/copy-layer-dialog.component';
 import {HsExtentWidgetComponent} from './widgets/extent-widget/extent-widget.component';
 import {HsIdwWidgetComponent} from './widgets/idw-widget.component';
-import {HsLayerEditorComponent} from './editor/layer-editor.component';
 import {HsLayerEditorDimensionsComponent} from './dimensions/layer-editor-dimensions.component';
-import {HsLayerEditorSubLayerCheckboxesComponent} from './editor/layer-editor-sub-layer-checkboxes.component';
 import {HsLayerEditorWidgetBaseComponent} from './widgets/layer-editor-widget-base.component';
 import {HsLayerFolderWidgetComponent} from './widgets/layer-folder-widget/layer-folder-widget.component';
 import {HsLayerListComponent} from './logical-list/layer-manager-layerlist.component';
@@ -42,7 +40,6 @@ import {TranslateCustomPipe} from 'hslayers-ng/services/language';
   declarations: [
     HsLayerManagerComponent,
     HsLayerEditorDimensionsComponent,
-    HsLayerEditorComponent,
     HsLayerManagerRemoveAllDialogComponent,
     HsCopyLayerDialogComponent,
     HsLayerManagerRemoveLayerDialogComponent,
@@ -62,7 +59,6 @@ import {TranslateCustomPipe} from 'hslayers-ng/services/language';
     TranslateCustomPipe,
     CommonModule,
     FormsModule,
-    HsLayerEditorSubLayerCheckboxesComponent,
     HsPanelHelpersModule,
     HsLegendModule,
     NgbDatepickerModule,
@@ -80,8 +76,6 @@ import {TranslateCustomPipe} from 'hslayers-ng/services/language';
   exports: [
     HsLayerManagerComponent,
     HsLayerEditorDimensionsComponent,
-    HsLayerEditorSubLayerCheckboxesComponent,
-    HsLayerEditorComponent,
     HsLayerListComponent,
     HsLayerManagerRemoveAllDialogComponent,
     HsCopyLayerDialogComponent,

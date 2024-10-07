@@ -12,6 +12,7 @@ import {Feature} from 'ol';
 import {Vector as VectorLayer} from 'ol/layer';
 import {Vector as VectorSource} from 'ol/source';
 
+import {FormsModule} from '@angular/forms';
 import {HsClusterWidgetComponent} from '../widgets/cluster-widget.component';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsConfirmDialogComponent} from 'hslayers-ng/common/confirm';
@@ -23,6 +24,7 @@ import {HsIdwWidgetComponent} from '../widgets/idw-widget.component';
 import {HsLayerDescriptor} from 'hslayers-ng/types';
 import {HsLayerEditorDimensionsComponent} from '../dimensions/layer-editor-dimensions.component';
 import {HsLayerEditorService} from './layer-editor.service';
+import {HsLayerEditorSubLayerCheckboxesComponent} from './layer-editor-sub-layer-checkboxes.component';
 import {HsLayerEditorSublayerService} from './layer-editor-sub-layer.service';
 import {HsLayerEditorWidgetContainerService} from '../widgets/layer-editor-widget-container.service';
 import {HsLayerFolderWidgetComponent} from '../widgets/layer-folder-widget/layer-folder-widget.component';
@@ -37,11 +39,14 @@ import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsLegendWidgetComponent} from '../widgets/legend-widget.component';
 import {HsMetadataWidgetComponent} from '../widgets/metadata-widget.component';
 import {HsOpacityWidgetComponent} from '../widgets/opacity-widget.component';
+import {HsPanelHelpersModule} from 'hslayers-ng/common/panels';
 import {HsScaleWidgetComponent} from '../widgets/scale-widget.component';
 import {HsStylerService} from 'hslayers-ng/services/styler';
 import {HsTypeWidgetComponent} from '../widgets/type-widget.component';
 import {HsWmsSourceWidgetComponent} from '../widgets/wms-source-widget/wms-source-widget.component';
 import {LayerTypeSwitcherWidgetComponent} from '../widgets/layer-type-switcher-widget/layer-type-switcher-widget.component';
+import {NgClass} from '@angular/common';
+import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 import {
   getBase,
   getGreyscale,
@@ -57,6 +62,14 @@ import {toObservable} from '@angular/core/rxjs-interop';
 @Component({
   selector: 'hs-layer-editor',
   templateUrl: './layer-editor.component.html',
+  standalone: true,
+  imports: [
+    NgClass,
+    FormsModule,
+    TranslateCustomPipe,
+    HsLayerEditorSubLayerCheckboxesComponent,
+    HsPanelHelpersModule,
+  ],
 })
 export class HsLayerEditorComponent {
   currentLayer = input.required<HsLayerDescriptor>();
