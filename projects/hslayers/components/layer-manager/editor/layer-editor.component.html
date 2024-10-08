@@ -1,4 +1,4 @@
-@let currLayer = currentLayer();
+@let currLayer = layer();
 <div class="card panel-default">
   @if (currLayer) {
   <div class="card-body">
@@ -10,13 +10,11 @@
       </form>
       @if (currLayer.visible && getBase(currLayer.layer)) {
       <div class="btn-group m-auto d-flex w-75">
-        <button class="btn btn-sm btn-outline-primary  w-50"
-          (click)="HsLayerManagerService.setGreyscale(currLayer)"
+        <button class="btn btn-sm btn-outline-primary  w-50" (click)="HsLayerManagerService.setGreyscale(currLayer)"
           [ngClass]="{'active' : !getGreyscale(currLayer.layer)}" data-toggle="tooltip"
           [title]="'LAYERMANAGER.layerEditor.zoomToLayer' | translateHs  ">{{'COMMON.color' |
           translateHs }}</button>
-        <button class="btn btn-sm btn-outline-primary  w-50"
-          (click)="HsLayerManagerService.setGreyscale(currLayer)"
+        <button class="btn btn-sm btn-outline-primary  w-50" (click)="HsLayerManagerService.setGreyscale(currLayer)"
           [ngClass]="{'active' : getGreyscale(currLayer.layer)}" data-toggle="tooltip"
           [title]="'LAYERMANAGER.layerEditor.styleLayer' | translateHs  ">{{'LAYERMANAGER.baseMapGallery.greyscale'
           | translateHs }}</button>

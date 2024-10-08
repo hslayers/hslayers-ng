@@ -1,5 +1,4 @@
-<li [id]="layerId()" class="list-group-item hs-lm-item my-2 my-md-0" [attr.data-test]="layer().title"
-  [ngClass]="{
+<li [id]="layerId()" class="list-group-item hs-lm-item my-2 my-md-0" [attr.data-test]="layer().title" [ngClass]="{
     'hs-lm-detail-activated': hsLayerSelectorService.currentLayer === layer(),
     'grayed': layer().grayed === true
   }">
@@ -16,14 +15,14 @@
           )
         "></span>
     </ng-template>
-    <div class="align-items-center p-0 hs-lm-item-title flex-grow-1" (click)="toggleEditor('sublayers')"
+    <div class="align-items-center p-0 hs-lm-item-title flex-grow-1" (click)="toggleSublayers()"
       style="word-break:break-word;" [ngClass]="{'hover': layer().hasSublayers === true}"
       [ngbTooltip]="layer().abstract ? abstractTooltip : ''" [closeDelay]="hsConfig.layerTooltipDelay || 0">
       {{ layer().title | translateHs: 'LAYERS' }}
     </div>
     @if (layer().hasSublayers) {
     <div class="hs-sublayer-toggle p-0 me-1 ms-1 info_btn" style="flex-grow: 100; align-self: center;"
-      (click)="toggleEditor('sublayers')">
+      (click)="toggleSublayers()">
       <span class="me-1" [ngClass]="
             hsLayerSelectorService.currentLayer === layer() &&
             hsLayerSelectorService.currentLayer.sublayers
@@ -50,7 +49,7 @@
       <i class="icon-info-sign hs-lm-queryable" [title]="'LAYERMANAGER.layerList.layerIsQueryable' | translateHs"
         (click)="$event.stopPropagation()"></i>
     </div>
-    <div class="ps-1 info_btn me-1 text-secondary dropdown-toggle" (click)="toggleEditor('settings')">
+    <div class="ps-1 info_btn me-1 text-secondary dropdown-toggle" (click)="toggleEditor()">
       <span class="icon-settingsthree-gears" [title]="'COMMON.info' | translateHs" data-toggle="tooltip"
         data-container="body" data-placement="auto"></span>
     </div>
@@ -62,4 +61,5 @@
   <ngb-progressbar [value]="layer().loadProgress.percents" height="2px" [animated]="true"
     [ngClass]="{'loaded': layer().loadProgress?.loaded}"></ngb-progressbar>
 </li>
+<ng-container #sublayers></ng-container>
 <ng-container #editor></ng-container>

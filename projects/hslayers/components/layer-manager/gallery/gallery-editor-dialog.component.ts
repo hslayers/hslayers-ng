@@ -32,7 +32,7 @@ import {HsStylerPartBaseComponent} from '../../../services/styler/style-part-bas
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <h4 class="modal-title">Gallery Editor</h4>
+            <h4 class="modal-title text-truncate">{{ title }}</h4>
             <button
               type="button"
               (click)="close()"
@@ -56,6 +56,7 @@ export class HsGalleryEditorDialogComponent
   implements HsDialogComponent, OnInit
 {
   @Input() data: {layer: HsLayerDescriptor};
+  title: string;
   viewRef: ViewRef;
 
   editor = viewChild('editor', {read: ViewContainerRef});
@@ -65,15 +66,15 @@ export class HsGalleryEditorDialogComponent
   private hsLayerEditorService = inject(HsLayerEditorService);
 
   close() {
+    this.hsLayerEditorService.createLayerEditor(this.editor(), this.data.layer);
     this.hsDialogContainerService.destroy(this);
-    this.editorComponent?.destroy();
   }
 
   ngOnInit() {
     this.editorComponent = this.hsLayerEditorService.createLayerEditor(
       this.editor(),
       this.data.layer,
-      'settings',
-    ) as ComponentRef<HsLayerEditorComponent>;
+    );
+    this.title = this.data.layer.title;
   }
 }
