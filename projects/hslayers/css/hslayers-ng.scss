@@ -817,6 +817,26 @@ $list-group-item-padding-x: 1.25rem;
     margin-bottom: 0.3rem;
   }
 
+  hs-layer-editor-sublayers+hs-layer-editor>div.card {
+    border-top: 0;
+    border-top-right-radius: 0;
+    border-top-left-radius: 0;
+
+  }
+
+  hs-layer-editor-sublayers:has(+ hs-layer-editor) {
+    display: block;
+    border: 1px solid var(--bs-card-border-color);
+    border-radius: var(--bs-card-border-radius);
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    border-bottom: 0;
+
+    & div.card-body {
+      padding-bottom: 0;
+    }
+  }
+
   .hs-layerpanel {
     overflow-x: hidden;
   }
