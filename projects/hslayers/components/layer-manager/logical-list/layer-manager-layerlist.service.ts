@@ -2,10 +2,7 @@ import {Injectable} from '@angular/core';
 
 import {HsLayerDescriptor, HsSublayer} from 'hslayers-ng/types';
 import {HsLayerEditorSublayerService} from '../editor/sublayers/layer-editor-sub-layer.service';
-import {
-  HsLayerManagerService,
-  HsLayerSelectorService,
-} from 'hslayers-ng/services/layer-manager';
+import {HsLayerManagerService} from 'hslayers-ng/services/layer-manager';
 import {HsLayerUtilsService} from 'hslayers-ng/services/utils';
 
 @Injectable({
@@ -16,7 +13,6 @@ export class HsLayerListService {
     public hsLayerManagerService: HsLayerManagerService,
     public hsLayerEditorSublayerService: HsLayerEditorSublayerService,
     public hsLayerUtilsService: HsLayerUtilsService,
-    private hsLayerSelectorService: HsLayerSelectorService,
   ) {}
 
   /**

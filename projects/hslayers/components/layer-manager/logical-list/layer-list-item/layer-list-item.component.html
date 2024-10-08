@@ -1,5 +1,6 @@
+@let isInvalid = hsLayerUtilsService.layerInvalid(this.layer());
 <li [id]="layerId()" class="list-group-item hs-lm-item my-2 my-md-0" [attr.data-test]="layer().title" [ngClass]="{
-    'hs-lm-detail-activated': hsLayerSelectorService.currentLayer === layer(),
+    'hs-lm-detail-activated': isSelected(),
     'grayed': layer().grayed === true
   }">
   <div class="d-flex">
@@ -8,12 +9,7 @@
         [ngClass]="layer().visible ? 'hs-checkmark' : 'hs-uncheckmark'"></button>
     </div>
     <ng-template #abstractTooltip>
-      <span [innerHtml]="
-          hsLayerManagerService.makeSafeAndTranslate(
-            'LAYERS',
-            layer().abstract
-          )
-        "></span>
+      <span [innerHtml]="abstract()"></span>
     </ng-template>
     <div class="align-items-center p-0 hs-lm-item-title flex-grow-1" (click)="toggleSublayers()"
       style="word-break:break-word;" [ngClass]="{'hover': layer().hasSublayers === true}"
@@ -24,23 +20,25 @@
     <div class="hs-sublayer-toggle p-0 me-1 ms-1 info_btn" style="flex-grow: 100; align-self: center;"
       (click)="toggleSublayers()">
       <span class="me-1" [ngClass]="
-            hsLayerSelectorService.currentLayer === layer() &&
-            hsLayerSelectorService.currentLayer.sublayers
+            isSelected &&
+            layer().sublayers
               ? 'icon-chevron-right'
               : 'icon-chevron-down'
           "></span>
     </div>
     }
-    <div class="p-0 " [hidden]="layerValid()">
+    @if (isInvalid) {
+    <div class="p-0 " >
       <i class="icon-warning-sign hs-lm-warning-scale"
         [title]="'LAYERMANAGER.layerList.noAvailableInScale' | translateHs" data-toggle="tooltip" data-container="body"
         data-placement="auto" [hidden]="!layer().grayed" (click)="$event.stopPropagation()"></i>
     </div>
-    <div class="p-0" [hidden]="!layerValid()">
+    <div class="p-0" >
       <i class="icon-warning-sign alert-danger bg-white hs-lm-warning-error"
-        [title]="'LAYERMANAGER.layerList.layerNotAvailable' | translateHs" data-toggle="tooltip" data-container="body"
-        data-placement="auto" (click)="$event.stopPropagation()"></i>
+      [title]="'LAYERMANAGER.layerList.layerNotAvailable' | translateHs" data-toggle="tooltip" data-container="body"
+      data-placement="auto" (click)="$event.stopPropagation()"></i>
     </div>
+  }
     <div class="p-0" [hidden]="!getHsLaymanSynchronizing(layer().layer)">
       <i class="icon-cloudaltsync" [title]="'LAYERMANAGER.layerList.sendingToLayman' | translateHs"
         data-toggle="tooltip" data-container="body" data-placement="auto" (click)="$event.stopPropagation()"></i>
