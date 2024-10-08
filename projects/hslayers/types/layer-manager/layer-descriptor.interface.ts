@@ -1,3 +1,4 @@
+import {HsSublayer} from './hs-sublayer.interface';
 import {Layer} from 'ol/layer';
 import {Source} from 'ol/source';
 import {Subject} from 'rxjs';
@@ -22,18 +23,6 @@ export type HsLayerLoadProgress = {
 
 export interface HsLayerDescriptor {
   hasSublayers?: boolean;
-  withChildren?: {
-    [key: string]: boolean;
-  };
-  withChildrenTmp?: {
-    [key: string]: boolean;
-  };
-  checkedSubLayersTmp?: {
-    [key: string]: boolean;
-  };
-  checkedSubLayers?: {
-    [key: string]: boolean;
-  };
   galleryMiniMenu?: boolean;
   loadProgress?: HsLayerLoadProgress;
   layer: Layer<Source>;
@@ -44,6 +33,11 @@ export interface HsLayerDescriptor {
   position?: number;
   settings?: boolean;
   sublayers?: boolean;
+  /**
+   * Internal representation of sublayers structure used to control visibility
+   */
+  _sublayers?: HsSublayer[];
+
   showInLayerManager?: boolean;
   thumbnail?: string;
   title?: string;

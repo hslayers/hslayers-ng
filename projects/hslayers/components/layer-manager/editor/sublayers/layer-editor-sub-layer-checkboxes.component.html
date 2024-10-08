@@ -1,76 +1,44 @@
+@let sl = subLayer();
 <div class="d-flex m-auto sublayerContainer">
-  <!-- string -->
-  @if (subLayerIsString(subLayer)) {
-    <div class="p-0 form-check form-check-inline">
-      <input class="form-check-input" type="checkbox" [(ngModel)]="checkedSubLayers[subLayer]"
-        (change)="subLayerSelected()">
-      <label class="form-check-label">{{subLayer}}</label>
-    </div>
-  }
-  <!-- object -->
-  @if (!subLayerIsString(subLayer)) {
-    <div class="w-100"><!-- TODO: Remove function call from template -->
+    <div class="w-100"> 
       <div class="d-flex">
         <div class="p-0 form-check form-check-inline">
-          @if (!subLayer.Layer) {
-            <input class="form-check-input" type="checkbox" [(ngModel)]="checkedSubLayers[subLayer.Name]"
-              name="sublayerWithoutNestedSublayers"
-              (change)="subLayerSelected(subLayer,checkedSubLayers[subLayer.Name])"
-              [attr.id]="'hs-sublayers-' + subLayer.Name + '-' + app ">
+          @if (!sl.sublayers) {
+            <input class="form-check-input" type="checkbox" [(ngModel)]="sl.visible"
+            name="sublayerWithoutNestedSublayers" (change)="subLayerSelected(sl, parent())"
+            [attr.id]="'hs-sublayers-' + sl.name + '-' + app ">
+            <div>
+              <label class="form-check-label m-0" [ngClass]="{
+                'hs-checkmark':sl.visible,
+                'hs-uncheckmark':!sl.visible,
+                'grayed': (hsLayerManagerVisibilityService.currentResolution > sl.maxResolution) }"
+                [attr.for]="'hs-sublayers-' + sl.name + '-' + app ">{{sl.title ||sl.name}}</label>
+            </div>
           }
-          @if (subLayer.Layer) {
-            <input class="form-check-input" type="checkbox" [(ngModel)]="withChildren[subLayer.Name]"
-              name="sublayerWithNestedSublayers"
-              (change)="subLayerSelected(subLayer, withChildren[subLayer.Name])"
-              [attr.id]="'hs-sublayers-' + subLayer.Name + '-' + app ">
-          }
-          @if (subLayer.Layer) {
+          @else {
+            <input class="form-check-input" type="checkbox" [(ngModel)]="sl.visible"
+            name="sublayerWithNestedSublayers" (change)="subLayerSelected(sl, parent())"
+            [attr.id]="'hs-sublayers-' + sl.name + '-' + app ">
             <div class="p-0 d-inline-flex flex-grow">
               <label class="form-check-label m-0"
-                [ngClass]="{'hs-checkmark':withChildren[subLayer.Name],'hs-uncheckmark':!withChildren[subLayer.Name]}"
-              [attr.for]="'hs-sublayers-' + subLayer.Name + '-' + app "></label>
+                [ngClass]="{'hs-checkmark':sl.visible,'hs-uncheckmark':!sl.visible}"
+                [attr.for]="'hs-sublayers-' + sl.name + '-' + app "></label>
               <div (click)="toggleExpanded()" style="cursor:pointer"
-                [ngClass]="{'grayed': hsLayerManagerVisibilityService.currentResolution >= subLayer.maxResolution}">
-                {{subLayer.Title || subLayer.Name}}
+                [ngClass]="{'grayed': hsLayerManagerVisibilityService.currentResolution >= sl.maxResolution}">
+                {{sl.title || sl.name}}
                 <button type="button" class="btn btn-sm p-0" style="font-size: 0.6rem;">
                   <i [ngClass]="expanded ? 'icon-chevron-down' : 'icon-chevron-right'"></i>
                 </button>
               </div>
             </div>
-          }
-          @if (!subLayer.Layer) {
-            <div>
-                    <label class="form-check-label m-0" [ngClass]="{
-                            'hs-checkmark':checkedSubLayers[subLayer.Name],
-                            'hs-uncheckmark':!checkedSubLayers[subLayer.Name], 
-                            'grayed': (hsLayerManagerVisibilityService.currentResolution > subLayer.maxResolution) }"
-                        [attr.for]="'hs-sublayers-' + subLayer.Name + '-' + app ">{{subLayer.Title ||
-              subLayer.Name}}</label>
-            </div>
-          }
-        </div>
-      </div>
-      @if (subLayer.Layer) {
-        <div class="ms-4" [hidden]="!expanded">
-          @for (subLayer of subLayer.Layer; track subLayer) {
-            <div>
-              @if (subLayerIsString(subLayer)) {
-                <div>
-                  <input class="form-check-input" type="checkbox" [(ngModel)]="checkedSubLayers[subLayer]"
-                    (change)="subLayerSelected(subLayer,checkedSubLayers[subLayer.Name])"
-                    [attr.id]="'hs-sublayers-'+subLayer" [ngModelOptions]="{standalone: true}">
-                  <label class="form-check-label" [attr.for]="'hs-sublayers-'+subLayer">{{subLayer}}</label>
-                </div>
-              }
-              @if (!subLayerIsString(subLayer)) {
-                <hs-layer-editor-sub-layer-checkbox [subLayer]="subLayer"
-                  ><!-- TODO: Remove function call from template -->
+            <div class="mt-2 ms-3" [hidden]="!expanded">
+              @for (nestedLayer of getNestedLayers(); track nestedLayer) {
+                  <hs-layer-editor-sub-layer-checkbox [subLayer]="nestedLayer" [parent]="sl">
                 </hs-layer-editor-sub-layer-checkbox>
               }
             </div>
           }
         </div>
-      }
+      </div>
     </div>
-  }
 </div>

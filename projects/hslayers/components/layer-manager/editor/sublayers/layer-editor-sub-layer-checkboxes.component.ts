@@ -1,15 +1,13 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, OnInit, computed, input} from '@angular/core';
 
 import {FormsModule} from '@angular/forms';
 import {HsConfig} from 'hslayers-ng/config';
-import {
-  HsLayerEditorSublayerService,
-  KeyBooleanDict,
-} from './layer-editor-sub-layer.service';
+import {HsLayerEditorSublayerService} from './layer-editor-sub-layer.service';
 import {
   HsLayerManagerService,
   HsLayerManagerVisibilityService,
 } from 'hslayers-ng/services/layer-manager';
+import {HsSublayer} from 'hslayers-ng/types';
 import {NgClass} from '@angular/common';
 
 @Component({
@@ -19,11 +17,22 @@ import {NgClass} from '@angular/common';
   imports: [FormsModule, NgClass],
 })
 export class HsLayerEditorSubLayerCheckboxesComponent implements OnInit {
-  @Input() subLayer: any;
+  parent = input<HsSublayer>();
+  subLayer = input.required<HsSublayer>();
+
+  getNestedLayers = computed(() => {
+    const wmsLayer = this.subLayer();
+    if (!wmsLayer || !wmsLayer.sublayers) {
+      return [];
+    }
+    return Array.isArray(wmsLayer.sublayers)
+      ? wmsLayer.sublayers
+      : [wmsLayer.sublayers];
+  });
+
   app: string;
   expanded = false;
-  checkedSubLayers: KeyBooleanDict;
-  withChildren: KeyBooleanDict;
+
   constructor(
     public HsLayerEditorSublayerService: HsLayerEditorSublayerService,
     public hsLayerManagerVisibilityService: HsLayerManagerVisibilityService,
@@ -32,13 +41,11 @@ export class HsLayerEditorSubLayerCheckboxesComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.checkedSubLayers = this.HsLayerEditorSublayerService.checkedSubLayers;
-    this.withChildren = this.HsLayerEditorSublayerService.withChildren;
     this.app = this.hsConfig.id;
   }
 
   getSubLayers() {
-    return this.HsLayerEditorSublayerService.getSubLayers();
+    //return this.HsLayerEditorSublayerService.getSubLayers();
   }
 
   subLayerIsString(subLayer: any): boolean {
@@ -54,25 +61,15 @@ export class HsLayerEditorSubLayerCheckboxesComponent implements OnInit {
    * @param sublayer - Selected sublayer
    * @param state - New state of sublayer
    */
-  subLayerSelected(sublayer?, state?) {
-    //TODO: Check if this works where subLayerSelected() is called from template. The second 'if' might fail
-    if (sublayer != undefined && sublayer.Layer) {
-      for (const children of sublayer.Layer) {
-        const nameOrId = children.Name;
-        const sublayersObject = children.Layer
-          ? this.withChildren
-          : this.checkedSubLayers;
-        Object.assign(sublayersObject, {
-          [nameOrId]: state,
-        });
-        this.HsLayerEditorSublayerService.checkedSubLayersTmp[nameOrId] = state;
-      }
+  subLayerSelected(sublayer: HsSublayer, parent?: HsSublayer) {
+    if (parent) {
+      parent.visible =
+        sublayer.visible || parent.sublayers.some((sl) => sl.visible);
     }
-    const nameOrId = sublayer.Name; //ID is stored in Name prop for ArcGISREST
-    if (this.checkedSubLayers[nameOrId] != undefined) {
-      this.HsLayerEditorSublayerService.checkedSubLayersTmp[nameOrId] = state;
-    } else {
-      this.HsLayerEditorSublayerService.withChildrenTmp[nameOrId] = state;
+    if (sublayer.sublayers) {
+      sublayer.sublayers.forEach((sl) => {
+        sl.visible = sublayer.visible; //TODO previous state
+      });
     }
     return this.HsLayerEditorSublayerService.subLayerSelected();
   }

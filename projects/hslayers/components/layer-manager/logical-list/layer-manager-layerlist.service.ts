@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 
-import {HsLayerDescriptor} from 'hslayers-ng/types';
-import {HsLayerEditorSublayerService} from '../editor/layer-editor-sub-layer.service';
+import {HsLayerDescriptor, HsSublayer} from 'hslayers-ng/types';
+import {HsLayerEditorSublayerService} from '../editor/sublayers/layer-editor-sub-layer.service';
 import {
   HsLayerManagerService,
   HsLayerSelectorService,
@@ -24,47 +24,50 @@ export class HsLayerListService {
    * @param layer - Selected layer
    */
   toggleSublayersVisibility(layer: HsLayerDescriptor): void {
-    if (!layer.visible) {
-      if (this.hsLayerSelectorService.currentLayer === layer) {
-        if (this.hsLayerEditorSublayerService.hasSubLayers()) {
-          this.changeSublayerVisibilityState(
-            layer,
-            this.hsLayerSelectorService.currentLayer.visible,
-          );
-        }
+    if (layer._sublayers) {
+      if (!layer.visible) {
+        this.updateSublayersVisibility(layer._sublayers, false);
       } else {
-        this.changeSublayerVisibilityState(layer, layer.visible);
-      }
-    } else {
-      if (layer.checkedSubLayers) {
-        Object.keys(layer.checkedSubLayers).forEach((key) => {
-          layer.checkedSubLayers[key] = layer.checkedSubLayersTmp[key];
-        });
-      }
-      if (layer.withChildren) {
-        Object.keys(layer.withChildren).forEach((key) => {
-          layer.withChildren[key] = layer.withChildrenTmp[key];
-        });
+        this.restoreSublayersVisibility(layer._sublayers);
       }
     }
   }
 
-  private changeSublayerVisibilityState(layer: HsLayerDescriptor, state): void {
-    if (layer.checkedSubLayers) {
-      Object.keys(layer.checkedSubLayers).forEach((key) => {
-        layer.checkedSubLayers[key] = state;
-      });
-    }
-    if (layer.withChildren) {
-      Object.keys(layer.withChildren).forEach((key) => {
-        layer.withChildren[key] = state;
-      });
-    }
+  /**
+   * Recursively updates the visibility of sublayers and stores their previous visibility state
+   * @param sublayers - Array of sublayers to update
+   * @param visible - The new visibility state to set
+   */
+  private updateSublayersVisibility(
+    sublayers: HsSublayer[],
+    visible: boolean,
+  ): void {
+    sublayers.forEach((sublayer) => {
+      sublayer.previousVisible = sublayer.visible;
+      sublayer.visible = visible;
+      if (sublayer.sublayers) {
+        this.updateSublayersVisibility(sublayer.sublayers, visible);
+      }
+    });
+  }
+
+  /**
+   * Recursively restores the visibility of sublayers based on their previous visibility state
+   * @param sublayers - Array of sublayers to restore
+   */
+  private restoreSublayersVisibility(sublayers: HsSublayer[]): void {
+    sublayers.forEach((sublayer) => {
+      sublayer.visible = sublayer.previousVisible ?? true;
+      if (sublayer.sublayers) {
+        this.restoreSublayersVisibility(sublayer.sublayers);
+      }
+    });
   }
 
   /**
    * Test if layer is queryable (WMS layer with Info format)
    * @param layer_container - Selected layer - wrapped in layer object
+   * @returns Boolean indicating if the layer is queryable
    */
   isLayerQueryable(layer_container: HsLayerDescriptor): boolean {
     return this.hsLayerUtilsService.isLayerQueryable(layer_container.layer);
