@@ -24,8 +24,7 @@ import {HsIdwWidgetComponent} from '../widgets/idw-widget.component';
 import {HsLayerDescriptor} from 'hslayers-ng/types';
 import {HsLayerEditorDimensionsComponent} from '../dimensions/layer-editor-dimensions.component';
 import {HsLayerEditorService} from './layer-editor.service';
-import {HsLayerEditorSubLayerCheckboxesComponent} from './layer-editor-sub-layer-checkboxes.component';
-import {HsLayerEditorSublayerService} from './layer-editor-sub-layer.service';
+import {HsLayerEditorSubLayerCheckboxesComponent} from './sublayers/layer-editor-sub-layer-checkboxes.component';
 import {HsLayerEditorWidgetContainerService} from '../widgets/layer-editor-widget-container.service';
 import {HsLayerFolderWidgetComponent} from '../widgets/layer-folder-widget/layer-folder-widget.component';
 import {
@@ -34,7 +33,7 @@ import {
 } from 'hslayers-ng/services/layer-manager';
 import {HsLayerManagerRemoveLayerDialogComponent} from '../dialogs/remove-layer-dialog.component';
 import {HsLayerManagerUtilsService} from 'hslayers-ng/services/layer-manager';
-import {HsLayerUtilsService, HsUtilsService} from 'hslayers-ng/services/utils';
+import {HsLayerUtilsService} from 'hslayers-ng/services/utils';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsLegendWidgetComponent} from '../widgets/legend-widget.component';
 import {HsMetadataWidgetComponent} from '../widgets/metadata-widget.component';
@@ -72,8 +71,8 @@ import {toObservable} from '@angular/core/rxjs-interop';
   ],
 })
 export class HsLayerEditorComponent {
-  currentLayer = input.required<HsLayerDescriptor>();
-  olLayer = computed(() => this.currentLayer()?.layer || undefined);
+  layer = input.required<HsLayerDescriptor>();
+  olLayer = computed(() => this.layer()?.layer || undefined);
 
   HsLayerManagerService = inject(HsLayerManagerService);
   hsWidgetContainerService = inject(HsLayerEditorWidgetContainerService);
@@ -116,15 +115,13 @@ export class HsLayerEditorComponent {
     private HsLayerUtilsService: HsLayerUtilsService,
     private HsStylerService: HsStylerService,
     private HsLayoutService: HsLayoutService,
-    private HsLayerEditorSublayerService: HsLayerEditorSublayerService,
     private HsLayerEditorService: HsLayerEditorService,
     private HsEventBusService: HsEventBusService,
     private HsDialogContainerService: HsDialogContainerService,
     private hsLayerManagerUtilsService: HsLayerManagerUtilsService,
     private hsLayerManagerCopyLayerService: HsLayerManagerCopyLayerService,
-    private hsUtilsService: HsUtilsService,
   ) {
-    toObservable(this.currentLayer)
+    toObservable(this.layer)
       .pipe(
         map((layer) => {
           this.layerTitle.set(layer.title);
@@ -195,7 +192,7 @@ export class HsLayerEditorComponent {
    * Toggle layer rename control on panel (through layer rename variable)
    */
   toggleLayerRename() {
-    this.layerTitle.set(this.currentLayer().title);
+    this.layerTitle.set(this.layer().title);
     this.layer_renamer_visible.update((visible) => !visible);
   }
 
@@ -224,17 +221,13 @@ export class HsLayerEditorComponent {
     this.toggleLayerRename();
   }
 
-  getSubLayers() {
-    return this.HsLayerEditorSublayerService.getSubLayers();
-  }
-
   async copyLayer(): Promise<void> {
     const dialog = this.HsDialogContainerService.create(
       HsCopyLayerDialogComponent,
       {
         message: 'LAYERMANAGER.layerEditor.copyLayer',
         title: 'COMMON.copyLayer',
-        layerTitle: getTitle(this.currentLayer().layer),
+        layerTitle: getTitle(this.layer().layer),
       },
     );
     const result = await dialog.waitResult();
@@ -245,7 +238,7 @@ export class HsLayerEditorComponent {
 
   /**
    * Open the WFS filter panel
-   * currentLayer will be automatically selected via hsLayerSelectorService
+   * layer will be automatically selected via hsLayerSelectorService
    */
   openWfsFilter() {
     this.HsLayoutService.setMainPanel('wfsFilter');

@@ -1,4 +1,4 @@
-import {ComponentRef, Injectable, ViewContainerRef} from '@angular/core';
+import {ComponentRef, Injectable, Type, ViewContainerRef} from '@angular/core';
 
 import {Layer} from 'ol/layer';
 import {Source} from 'ol/source';
@@ -6,14 +6,13 @@ import {Subject, filter} from 'rxjs';
 import {WMSCapabilities} from 'ol/format';
 import {transformExtent} from 'ol/proj';
 
-import {HS_PRMS} from 'hslayers-ng/services/share';
+import {HS_PRMS, HsShareUrlService} from 'hslayers-ng/services/share';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsLayerDescriptor} from 'hslayers-ng/types';
 import {HsLayerEditorComponent} from './layer-editor.component';
-import {
-  HsLayerEditorVectorLayerService,
-  HsLayerManagerService,
-} from 'hslayers-ng/services/layer-manager';
+import {HsLayerEditorSublayerService} from './sublayers/layer-editor-sub-layer.service';
+import {HsLayerEditorSublayersComponent} from './sublayers/layer-editor-sublayers.component';
+import {HsLayerEditorVectorLayerService} from 'hslayers-ng/services/layer-manager';
 import {HsLayerManagerMetadataService} from 'hslayers-ng/services/layer-manager';
 import {HsLayerSelectorService} from 'hslayers-ng/services/layer-manager';
 import {HsLayerUtilsService} from 'hslayers-ng/services/utils';
@@ -44,6 +43,8 @@ export class HsLayerEditorService {
 
   editorComponent: ComponentRef<HsLayerEditorComponent>;
 
+  sublayerEditorComponent: ComponentRef<HsLayerEditorSublayersComponent>;
+
   constructor(
     private HsMapService: HsMapService,
     private HsWmsGetCapabilitiesService: HsWmsGetCapabilitiesService,
@@ -54,7 +55,8 @@ export class HsLayerEditorService {
     private HsLegendService: HsLegendService,
     private HsLayerSelectorService: HsLayerSelectorService,
     private HsLayerManagerMetadataService: HsLayerManagerMetadataService,
-    private hsLayerManagerService: HsLayerManagerService,
+    private HsLayerEditorSublayerService: HsLayerEditorSublayerService,
+    private hsShareUrlService: HsShareUrlService,
   ) {
     this.HsLayerSelectorService.layerSelected
       .pipe(filter((layer) => !!layer))
@@ -65,27 +67,69 @@ export class HsLayerEditorService {
   }
 
   /**
-   * Create layer editor component
+   * Create layer editor component for settings
    * @param vcr - View container reference
    * @param layer - Layer
-   * @param type - Type of editor to open ('sublayers' or 'settings')
    */
   createLayerEditor(
     vcr: ViewContainerRef,
     layer: HsLayerDescriptor,
-    type: 'sublayers' | 'settings',
   ): ComponentRef<HsLayerEditorComponent> | undefined {
-    if (this.editorComponent) {
-      this.editorComponent.destroy();
+    return this.createEditor(vcr, layer, 'settings', HsLayerEditorComponent);
+  }
+
+  /**
+   * Create layer editor component for sublayers
+   * @param vcr - View container reference
+   * @param layer - Layer
+   */
+  createSublayerEditor(
+    vcr: ViewContainerRef,
+    layer: HsLayerDescriptor,
+  ): ComponentRef<HsLayerEditorSublayersComponent> | undefined {
+    return this.createEditor(
+      vcr,
+      layer,
+      'sublayers',
+      HsLayerEditorSublayersComponent,
+    );
+  }
+
+  /**
+   * Generic method to create an editor component
+   * @param vcr - View container reference
+   * @param layer - Layer
+   * @param type - Type of editor ('settings' or 'sublayers')
+   * @param componentType - Component type to create
+   */
+  private createEditor<T>(
+    vcr: ViewContainerRef,
+    layer: HsLayerDescriptor,
+    type: 'settings' | 'sublayers',
+    componentType: Type<T>,
+  ): ComponentRef<T> | undefined {
+    const currentComponent =
+      type === 'settings' ? this.editorComponent : this.sublayerEditorComponent;
+    if (currentComponent) {
+      currentComponent.destroy();
     }
     vcr.clear();
 
     const shouldCreateEditor = this.toggleLayerEditor(layer, type);
 
     if (shouldCreateEditor) {
-      this.editorComponent = vcr.createComponent(HsLayerEditorComponent);
-      this.editorComponent.setInput('currentLayer', layer);
-      return this.editorComponent;
+      const component = vcr.createComponent(componentType);
+      component.setInput('layer', layer);
+
+      if (type === 'settings') {
+        this.editorComponent =
+          component as ComponentRef<HsLayerEditorComponent>;
+      } else {
+        this.sublayerEditorComponent =
+          component as ComponentRef<HsLayerEditorSublayersComponent>;
+      }
+
+      return component;
     }
     return undefined;
   }
@@ -96,7 +140,7 @@ export class HsLayerEditorService {
    * @param toToggle - Part of layer editor to be toggled ('sublayers' or 'settings')
    * @returns Boolean indicating whether the editor should be created
    */
-  toggleLayerEditor(
+  private toggleLayerEditor(
     layer: HsLayerDescriptor,
     toToggle: 'sublayers' | 'settings',
   ): boolean {
@@ -108,46 +152,44 @@ export class HsLayerEditorService {
       return false;
     }
 
-    const otherPart = toToggle === 'settings' ? 'sublayers' : 'settings';
-
-    if (this.HsLayerSelectorService.currentLayer !== layer) {
-      this.setCurrentLayer(layer);
-      layer[toToggle] = true;
-    } else {
-      layer[toToggle] = !layer[toToggle];
-      if (!layer[otherPart]) {
+    if (toToggle === 'settings') {
+      if (this.HsLayerSelectorService.currentLayer !== layer) {
+        this.setCurrentLayer(layer);
+        layer.settings = true;
+        return true;
+      } else {
+        layer.settings = !layer.settings;
         this.HsLayerSelectorService.select(null);
         this.updateGetParam(undefined);
         return false;
       }
-    }
-
-    return layer[toToggle];
-  }
-
-  /**
-   * Opens detailed panel for manipulating selected layer and viewing metadata
-   * @param layer - Selected layer to edit or view - Wrapped layer object
-   */
-  toggleCurrentLayer(layer: HsLayerDescriptor): void | false {
-    if (this.HsLayerSelectorService.currentLayer === layer) {
-      layer.sublayers = false;
-      layer.settings = false;
-      this.HsLayerSelectorService.select(null);
-      this.updateGetParam(undefined);
     } else {
-      this.setCurrentLayer(layer);
-      return false;
+      // Get currently opened sublayers' layer
+      const currentLayer = this.HsLayerEditorSublayerService.layer;
+
+      if (currentLayer === layer) {
+        // If the same layer is clicked again, deselect it
+        this.HsLayerEditorSublayerService.layer = null;
+        layer.sublayers = false;
+      } else {
+        // If a different layer is clicked
+        if (currentLayer) {
+          // Deselect the previously selected layer, if any
+          currentLayer.sublayers = false;
+        }
+        // Select the new layer
+        this.HsLayerEditorSublayerService.layer = layer;
+        layer.sublayers = true;
+      }
+
+      // Return the final state of layer.sublayers
+      return layer.sublayers;
     }
   }
 
   setCurrentLayer(layer: HsLayerDescriptor): boolean {
     try {
       this.updateGetParam(layer.title);
-      if (!layer.checkedSubLayers) {
-        layer.checkedSubLayers = {};
-        layer.withChildren = {};
-      }
       this.HsLayerSelectorService.select(layer);
       return false;
     } catch (ex) {
@@ -158,7 +200,7 @@ export class HsLayerEditorService {
   private updateGetParam(title: string | undefined) {
     const t = {};
     t[HS_PRMS.layerSelected] = title;
-    // this.hsShareUrlService.updateCustomParams(t);
+    this.hsShareUrlService.updateCustomParams(t);
   }
 
   /**

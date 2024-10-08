@@ -44,7 +44,9 @@ import {
 })
 export class LayerListItemComponent implements OnInit {
   layer = input.required<HsLayerDescriptor>();
+
   editor = viewChild('editor', {read: ViewContainerRef});
+  sublayers = viewChild('sublayers', {read: ViewContainerRef});
 
   getExclusive = getExclusive;
   getHsLaymanSynchronizing = getHsLaymanSynchronizing;
@@ -77,7 +79,7 @@ export class LayerListItemComponent implements OnInit {
      * Opens editor for layer specified in 'hs-layer-selected' url parameter
      */
     if (this.layer().layer.get('editorOnInit')) {
-      this.toggleEditor('settings');
+      this.toggleEditor();
       //Once editor is opened, set editorOnInit to false
       this.layer().layer.set('editorOnInit', false);
     }
@@ -91,11 +93,13 @@ export class LayerListItemComponent implements OnInit {
     this.hsLayerListService.toggleSublayersVisibility(this.layer());
   }
 
-  toggleEditor(type: 'sublayers' | 'settings'): void {
-    this.hsLayerEditorService.createLayerEditor(
-      this.editor(),
+  toggleEditor(): void {
+    this.hsLayerEditorService.createLayerEditor(this.editor(), this.layer());
+  }
+  toggleSublayers(): void {
+    this.hsLayerEditorService.createSublayerEditor(
+      this.sublayers(),
       this.layer(),
-      type,
     );
   }
 }
