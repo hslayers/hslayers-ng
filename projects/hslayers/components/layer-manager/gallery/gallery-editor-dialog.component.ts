@@ -32,7 +32,9 @@ import {HsStylerPartBaseComponent} from '../../../services/styler/style-part-bas
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <h4 class="modal-title text-truncate">{{ title }}</h4>
+            <h4 class="modal-title text-truncate">
+              {{ title | translateHs: 'LAYERS' }}
+            </h4>
             <button
               type="button"
               (click)="close()"

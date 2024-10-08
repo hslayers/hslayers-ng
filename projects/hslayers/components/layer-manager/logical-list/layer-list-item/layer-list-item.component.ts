@@ -45,6 +45,17 @@ import {
 export class LayerListItemComponent implements OnInit {
   layer = input.required<HsLayerDescriptor>();
 
+  isSelected = computed(
+    () => this.hsLayerSelectorService.currentLayer === this.layer(),
+  );
+
+  abstract = computed(() =>
+    this.hsLayerManagerService.makeSafeAndTranslate(
+      'LAYERS',
+      this.layer().abstract,
+    ),
+  );
+
   editor = viewChild('editor', {read: ViewContainerRef});
   sublayers = viewChild('sublayers', {read: ViewContainerRef});
 
@@ -53,9 +64,6 @@ export class LayerListItemComponent implements OnInit {
 
   layerId = computed(() => this.layer().idString());
 
-  layerValid = computed(() =>
-    this.hsLayerUtilsService.layerInvalid(this.layer()),
-  );
   isLayerQueryable = computed(() =>
     this.hsLayerListService.isLayerQueryable(this.layer()),
   );
@@ -65,12 +73,12 @@ export class LayerListItemComponent implements OnInit {
 
   constructor(
     public hsConfig: HsConfig,
-    public hsLayerManagerService: HsLayerManagerService,
-    public hsLayerSelectorService: HsLayerSelectorService,
-    public hsDimensionTimeService: HsDimensionTimeService,
+    private hsLayerManagerService: HsLayerManagerService,
+    private hsLayerSelectorService: HsLayerSelectorService,
+    private hsDimensionTimeService: HsDimensionTimeService,
     public hsLayerUtilsService: HsLayerUtilsService,
-    public hsLayerListService: HsLayerListService,
-    public hsLayerManagerVisibilityService: HsLayerManagerVisibilityService,
+    private hsLayerListService: HsLayerListService,
+    private hsLayerManagerVisibilityService: HsLayerManagerVisibilityService,
     private hsLayerEditorService: HsLayerEditorService,
   ) {}
 
