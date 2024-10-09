@@ -101,9 +101,18 @@ export class LayerListItemComponent implements OnInit {
     this.hsLayerListService.toggleSublayersVisibility(this.layer());
   }
 
+  /**
+   * Toggles the layer editor for the current layer.
+   * Creates or removes the layer editor component in the designated view container.
+   */
   toggleEditor(): void {
     this.hsLayerEditorService.createLayerEditor(this.editor(), this.layer());
   }
+
+  /**
+   * Toggles the sublayer editor for the current layer.
+   * Creates or removes the sublayer editor component in the designated view container.
+   */
   toggleSublayers(): void {
     this.hsLayerEditorService.createSublayerEditor(
       this.sublayers(),

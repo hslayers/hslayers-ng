@@ -159,12 +159,10 @@ export class HsLayerEditorService {
         return true;
       } else {
         layer.settings = !layer.settings;
-        this.HsLayerSelectorService.select(null);
-        this.updateGetParam(undefined);
+        this.setCurrentLayer(undefined);
         return false;
       }
     } else {
-      // Get currently opened sublayers' layer
       const currentLayer = this.HsLayerEditorSublayerService.layer;
 
       if (currentLayer === layer) {
@@ -187,14 +185,13 @@ export class HsLayerEditorService {
     }
   }
 
-  setCurrentLayer(layer: HsLayerDescriptor): boolean {
-    try {
-      this.updateGetParam(layer.title);
-      this.HsLayerSelectorService.select(layer);
-      return false;
-    } catch (ex) {
-      console.error(ex);
-    }
+  /**
+   * Updates the current layer and its title in the URL
+   * @param layer - The layer to set as current or undefined to remove the current layer
+   */
+  setCurrentLayer(layer: HsLayerDescriptor | undefined): void {
+    this.updateGetParam(layer?.title);
+    this.HsLayerSelectorService.select(layer);
   }
 
   private updateGetParam(title: string | undefined) {

@@ -1,10 +1,7 @@
 import {Injectable} from '@angular/core';
 
 import {HsLayerDescriptor, HsSublayer, HsWmsLayer} from 'hslayers-ng/types';
-import {
-  HsLayerManagerService,
-  HsLayerManagerVisibilityService,
-} from 'hslayers-ng/services/layer-manager';
+import {HsLayerManagerVisibilityService} from 'hslayers-ng/services/layer-manager';
 import {HsLayerUtilsService} from 'hslayers-ng/services/utils';
 import {getCachedCapabilities} from 'hslayers-ng/common/extensions';
 
@@ -19,7 +16,6 @@ export class HsLayerEditorSublayerService {
   sublayers: HsSublayer[] = [];
 
   constructor(
-    public HsLayerManagerService: HsLayerManagerService,
     private HsLayerUtilsService: HsLayerUtilsService,
     private hsLayerManagerVisibilityService: HsLayerManagerVisibilityService,
   ) {}
@@ -30,10 +26,7 @@ export class HsLayerEditorSublayerService {
   }
 
   getSubLayers(layer: HsLayerDescriptor): HsSublayer[] {
-    if (layer === null) {
-      return [];
-    }
-    return this.populateSubLayers(layer);
+    return layer ? this.populateSubLayers(layer) : [];
   }
 
   /**
@@ -64,12 +57,12 @@ export class HsLayerEditorSublayerService {
    * Populates the sublayers of a layer with the given layer descriptor.
    */
   populateSubLayers(lyr: HsLayerDescriptor): HsSublayer[] {
-    const layer = lyr.layer;
-    const subLayers: HsWmsLayer[] = getCachedCapabilities(layer)?.Layer;
-
     if (this.populatedLayers.includes(lyr.uid)) {
       return lyr._sublayers;
     }
+
+    const layer = lyr.layer;
+    const subLayers: HsWmsLayer[] = getCachedCapabilities(layer)?.Layer;
 
     if (subLayers?.length > 0) {
       const parsed = this.mapWMSToLayerVisibility(subLayers, lyr.visible);
