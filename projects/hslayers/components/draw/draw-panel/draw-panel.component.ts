@@ -2,16 +2,37 @@ import {Component} from '@angular/core';
 
 import {Circle, Fill, Stroke, Style} from 'ol/style';
 
+import {AsyncPipe, NgClass, NgForOf} from '@angular/common';
+import {FormsModule} from '@angular/forms';
 import {HsDrawService} from 'hslayers-ng/services/draw';
-import {HsLanguageService} from 'hslayers-ng/services/language';
+import {
+  HsLanguageService,
+  TranslateCustomPipe,
+} from 'hslayers-ng/services/language';
 import {HsLayerUtilsService} from 'hslayers-ng/services/utils';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
+import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
 import {getTitle} from 'hslayers-ng/common/extensions';
+
+interface DrawToolDefinition {
+  type: string;
+  icon: string;
+  title: string;
+}
 
 @Component({
   selector: 'hs-draw-panel',
   templateUrl: './draw-panel.component.html',
   styleUrls: ['./draw-panel.component.scss'],
+  standalone: true,
+  imports: [
+    AsyncPipe,
+    TranslateCustomPipe,
+    NgClass,
+    NgForOf,
+    FormsModule,
+    NgbDropdownModule,
+  ],
 })
 export class DrawPanelComponent {
   onFeatureSelected: any;
@@ -23,6 +44,13 @@ export class DrawPanelComponent {
   onlyMineFilterVisible = false;
   getTitle = getTitle;
   sidebarPosition: string;
+
+  drawTools: DrawToolDefinition[] = [
+    {type: 'Point', icon: 'icon-pin', title: 'COMMON.point'},
+    {type: 'Polygon', icon: 'icon-polygonlasso', title: 'COMMON.polygon'},
+    {type: 'LineString', icon: 'icon-line', title: 'COMMON.line'},
+    {type: 'Circle', icon: 'icon-circleloaderfull', title: 'COMMON.circle'},
+  ];
 
   constructor(
     public HsDrawService: HsDrawService,

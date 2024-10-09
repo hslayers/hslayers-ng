@@ -9,11 +9,15 @@
     <!-- draw panel -->
     @if ({option: selectedOption | async}; as selected) {
       @if (selected.option === 'draw') {
-        <hs-draw-panel class="pt-1"></hs-draw-panel>
+        @defer (when selected.option === 'draw') {
+          <hs-draw-panel class="pt-1"></hs-draw-panel>
+        }
       }
       @if (selected.option === 'edit') {
-        <hs-draw-edit class="my-4 d-flex flex-column align-items-center">
-        </hs-draw-edit>
+        @defer (when selected.option === 'edit') {
+          <hs-draw-edit class="my-4 d-flex flex-column align-items-center">
+          </hs-draw-edit>
+        }
       }
     }
     @if (HsDrawService.pendingLayers.length > 0) {

@@ -1,20 +1,19 @@
-@if ({position: hsLayoutService.sidebarPosition | async}; as sidebar) {
+@let sidebarPosition = hsLayoutService.sidebarPosition | async;
+
   <div class="d-flex flex-column">
     <div class="d-flex w-75 m-auto py-2 justify-content-around" style="white-space: nowrap;">
       <button type="button" class="btn rounded btn-primary hs-toolbar-button"
-        (click)="HsDrawService.saveDrawingLayer()" [ngClass]="{'btn-sm' : sidebar.position !== 'bottom'}">
+        (click)="HsDrawService.saveDrawingLayer()" [ngClass]="{'btn-sm' : sidebarPosition !== 'bottom'}">
         {{'COMMON.newDrawingLayer' | translateHs }}
       </button>
       <button type="button" (click)="HsDrawService.setType(HsDrawService.type)"
-        [ngClass]="{'btn-sm' : sidebar.position !== 'bottom'}"
+        [ngClass]="{'btn-sm' : sidebarPosition !== 'bottom'}"
         class="btn ms-1 rounded btn-primary hs-toolbar-button" [disabled]="!HsDrawService.type">
         {{'DRAW.disableDrawing' | translateHs }}
       </button>
     </div>
-    <!-- <p class="m-auto p-0 w-75" style="color:crimson; font-size: smaller;text-align: center;"
-  [hidden]="HsDrawService.type">{{'DRAW.activateDrawing' | translateHs }}</p> -->
   <div class="btn-group w-100  m-auto justify-content-center"
-    [ngClass]="sidebar.position === 'bottom' ? 'btn-group-lg' : 'btn-group-sm'">
+    [ngClass]="sidebarPosition === 'bottom' ? 'btn-group-lg' : 'btn-group-sm'">
     @if (HsDrawService.drawableLayersAvailable || HsDrawService.tmpDrawLayer) {
       <div
         class="flex-row w-100 m-auto justify-content-center align-items-center text-primary py-3 py-md-0"
@@ -113,53 +112,44 @@
       }
     </div>
   </div>
-}
 
-@if ({position: hsLayoutService.sidebarPosition | async}; as sidebar) {
+
   <div class="rounded-0 my-1 draw-buttons d-flex justify-content-center"
-    [ngClass]="sidebar.position === 'bottom' ? 'btn-group-lg' : 'btn-group-sm'">
-    <button class="btn btn-light btn-outline-primary" [ngClass]="{active: HsDrawService.type==='Point' }"
-      (click)="setType('Point')" data-toggle="tooltip" [title]="'COMMON.point' | translateHs ">
-      <i class="icon-pin"></i>
-    </button>
-    <button class="btn btn-light btn-outline-primary" [ngClass]="{active: HsDrawService.type==='Polygon' }"
-      (click)="setType('Polygon')" data-toggle="tooltip" [title]="'COMMON.polygon' | translateHs ">
-      <i class="icon-polygonlasso"></i>
-    </button>
-    <button class="btn btn-light btn-outline-primary" [ngClass]="{active: HsDrawService.type==='LineString' }"
-      (click)="setType('LineString')" data-toggle="tooltip" [title]="'COMMON.line' | translateHs ">
-      <i class="icon-line"></i>
-    </button>
-    <button class="btn btn-light btn-outline-primary" [ngClass]="{active: HsDrawService.type==='Circle' }"
-      (click)="setType('Circle')" data-toggle="tooltip" [title]="'COMMON.circle' | translateHs ">
-      <i class="icon-circleloaderfull"></i>
-    </button>
-    <div ngbDropdown placement="bottom-right" class="btn-group btn-group-sm" role="group"
-      #selectionTypeDropdown="ngbDropdown">
-      <button ngbDropdownToggle type="button" [ngClass]="{active: !HsDrawService.type }"
-        [title]="'STYLER.selection' | translateHs " class="btn btn-light btn-outline-primary">
-        <i class="icon-cursor"></i>
+    [ngClass]="sidebarPosition === 'bottom' ? 'btn-group-lg' : 'btn-group-sm'">
+    <ng-container *ngFor="let tool of drawTools">
+      <button class="btn btn-light btn-outline-primary" 
+        [ngClass]="{active: HsDrawService.type === tool.type}"
+        (click)="setType(tool.type)" 
+        data-toggle="tooltip" 
+        [title]="tool.title | translateHs">
+        <i [class]="tool.icon"></i>
       </button>
-      <div ngbDropdownMenu style="white-space: nowrap;">
-        <div class="flex-column px-1 py-2">
-          <div class="d-flex flex-row justify-content-around align-items-baseline">
-            <label class="ms-1 cursor-pointer" for="draw-boxSelection">{{'DRAW.boxSelection' |
-            translateHs }}</label>
-            <input type="checkbox" [(ngModel)]="HsDrawService.boxSelectionActive"
-              (change)="HsDrawService.toggleBoxSelection();selectionTypeDropdown.close()"
-              id="draw-boxSelection" name="filterByExtent" class="cursor-pointer">
-          </div>
-          <button class="btn btn-primary btn-sm hs-draw-selectAll" [disabled]="!HsDrawService.selectedLayer"
-            (click)="HsDrawService.selectAllFeatures();selectionTypeDropdown.close()" data-toggle="tooltip"
-            [title]="'DRAW.deselectAllFeatures' | translateHs ">
-            {{translateString('DRAW',HsDrawService.toggleSelectionString)}}
-            <!-- TODO: Remove function call from template -->
-          </button>
+    </ng-container>
+    <div ngbDropdown placement="bottom-right" class="btn-group btn-group-sm" role="group"
+    #selectionTypeDropdown="ngbDropdown">
+    <button ngbDropdownToggle type="button" [ngClass]="{active: !HsDrawService.type }"
+      [title]="'STYLER.selection' | translateHs " class="btn btn-light btn-outline-primary">
+      <i class="icon-cursor"></i>
+    </button>
+    <div ngbDropdownMenu style="white-space: nowrap;">
+      <div class="flex-column px-1 py-2">
+        <div class="d-flex flex-row justify-content-around align-items-baseline">
+          <label class="ms-1 cursor-pointer" for="draw-boxSelection">{{'DRAW.boxSelection' |
+          translateHs }}</label>
+          <input type="checkbox" [(ngModel)]="HsDrawService.boxSelectionActive"
+            (change)="HsDrawService.toggleBoxSelection();selectionTypeDropdown.close()"
+            id="draw-boxSelection" name="filterByExtent" class="cursor-pointer">
         </div>
+        <button class="btn btn-primary btn-sm hs-draw-selectAll" [disabled]="!HsDrawService.selectedLayer"
+          (click)="HsDrawService.selectAllFeatures();selectionTypeDropdown.close()" data-toggle="tooltip"
+          [title]="'DRAW.deselectAllFeatures' | translateHs ">
+          {{translateString('DRAW',HsDrawService.toggleSelectionString)}}
+          <!-- TODO: Remove function call from template -->
+        </button>
       </div>
     </div>
   </div>
-}
+  </div>
 <div class="pt-2">
   <div style="font-size: 0.9rem;">
     <div class="pb-2">

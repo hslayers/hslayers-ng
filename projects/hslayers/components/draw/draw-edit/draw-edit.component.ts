@@ -9,18 +9,24 @@ import {Vector as VectorLayer} from 'ol/layer';
 
 import {HsDrawService} from 'hslayers-ng/services/draw';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
-import {HsLanguageService} from 'hslayers-ng/services/language';
+import {
+  HsLanguageService,
+  TranslateCustomPipe,
+} from 'hslayers-ng/services/language';
 import {HsLogService} from 'hslayers-ng/services/log';
 import {HsMapService} from 'hslayers-ng/services/map';
 import {HsQueryBaseService} from 'hslayers-ng/services/query';
 import {HsQueryVectorService} from 'hslayers-ng/services/query';
 import {HsToastService} from 'hslayers-ng/common/toast';
+import {NgClass} from '@angular/common';
 import {defaultStyle} from 'hslayers-ng/services/styler';
 
 @Component({
   selector: 'hs-draw-edit',
   templateUrl: './draw-edit.component.html',
   styleUrls: ['./draw-edit.component.scss'],
+  standalone: true,
+  imports: [NgClass, TranslateCustomPipe],
 })
 export class DrawEditComponent implements OnDestroy, OnInit {
   vectorQueryFeatureSubscription;
