@@ -1,7 +1,6 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  ComponentRef,
   Input,
   OnInit,
   ViewContainerRef,
@@ -14,11 +13,8 @@ import {CommonModule} from '@angular/common';
 import {HsDialogComponent} from 'hslayers-ng/common/dialogs';
 import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
 import {HsLayerDescriptor} from 'hslayers-ng/types';
-import {TranslateCustomPipe} from 'hslayers-ng/services/language';
-
-import {HsLayerEditorComponent} from '../editor/layer-editor.component';
 import {HsLayerEditorService} from '../editor/layer-editor.service';
-import {HsStylerPartBaseComponent} from '../../../services/styler/style-part-base.component';
+import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 
 @Component({
   selector: 'hs-gallery-editor-dialog',
@@ -44,14 +40,14 @@ import {HsStylerPartBaseComponent} from '../../../services/styler/style-part-bas
             ></button>
           </div>
           <div class="modal-body" style="overflow-y:auto">
-            <ng-component #editor> </ng-component>
+            <ng-container #editor> </ng-container>
           </div>
         </div>
       </div>
     </div>
   `,
   standalone: true,
-  imports: [CommonModule, TranslateCustomPipe, HsStylerPartBaseComponent],
+  imports: [CommonModule, TranslateCustomPipe],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HsGalleryEditorDialogComponent
@@ -62,7 +58,6 @@ export class HsGalleryEditorDialogComponent
   viewRef: ViewRef;
 
   editor = viewChild('editor', {read: ViewContainerRef});
-  editorComponent: ComponentRef<HsLayerEditorComponent>;
 
   private hsDialogContainerService = inject(HsDialogContainerService);
   private hsLayerEditorService = inject(HsLayerEditorService);
@@ -73,10 +68,7 @@ export class HsGalleryEditorDialogComponent
   }
 
   ngOnInit() {
-    this.editorComponent = this.hsLayerEditorService.createLayerEditor(
-      this.editor(),
-      this.data.layer,
-    );
+    this.hsLayerEditorService.createLayerEditor(this.editor(), this.data.layer);
     this.title = this.data.layer.title;
   }
 }
