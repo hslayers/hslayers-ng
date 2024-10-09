@@ -1,50 +1,27 @@
-import {
-  Component,
-  OnDestroy,
-  computed,
-  inject,
-  input,
-  model,
-  signal,
-} from '@angular/core';
+import {Component, computed, inject, input, model, signal} from '@angular/core';
+import {FormsModule} from '@angular/forms';
+import {NgClass} from '@angular/common';
+import {toObservable} from '@angular/core/rxjs-interop';
 
 import {Feature} from 'ol';
 import {Vector as VectorLayer} from 'ol/layer';
 import {Vector as VectorSource} from 'ol/source';
+import {map} from 'rxjs';
 
-import {FormsModule} from '@angular/forms';
-import {HsClusterWidgetComponent} from '../widgets/cluster-widget.component';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsConfirmDialogComponent} from 'hslayers-ng/common/confirm';
-import {HsCopyLayerDialogComponent} from '../dialogs/copy-layer-dialog.component';
 import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
-import {HsExtentWidgetComponent} from '../widgets/extent-widget/extent-widget.component';
-import {HsIdwWidgetComponent} from '../widgets/idw-widget.component';
 import {HsLayerDescriptor} from 'hslayers-ng/types';
-import {HsLayerEditorDimensionsComponent} from '../dimensions/layer-editor-dimensions.component';
-import {HsLayerEditorService} from './layer-editor.service';
-import {HsLayerEditorSubLayerCheckboxesComponent} from './sublayers/layer-editor-sub-layer-checkboxes.component';
-import {HsLayerEditorWidgetContainerService} from '../widgets/layer-editor-widget-container.service';
-import {HsLayerFolderWidgetComponent} from '../widgets/layer-folder-widget/layer-folder-widget.component';
 import {
   HsLayerManagerCopyLayerService,
   HsLayerManagerService,
 } from 'hslayers-ng/services/layer-manager';
-import {HsLayerManagerRemoveLayerDialogComponent} from '../dialogs/remove-layer-dialog.component';
 import {HsLayerManagerUtilsService} from 'hslayers-ng/services/layer-manager';
 import {HsLayerUtilsService} from 'hslayers-ng/services/utils';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
-import {HsLegendWidgetComponent} from '../widgets/legend-widget.component';
-import {HsMetadataWidgetComponent} from '../widgets/metadata-widget.component';
-import {HsOpacityWidgetComponent} from '../widgets/opacity-widget.component';
 import {HsPanelHelpersModule} from 'hslayers-ng/common/panels';
-import {HsScaleWidgetComponent} from '../widgets/scale-widget.component';
 import {HsStylerService} from 'hslayers-ng/services/styler';
-import {HsTypeWidgetComponent} from '../widgets/type-widget.component';
-import {HsWmsSourceWidgetComponent} from '../widgets/wms-source-widget/wms-source-widget.component';
-import {LayerTypeSwitcherWidgetComponent} from '../widgets/layer-type-switcher-widget/layer-type-switcher-widget.component';
-import {NgClass} from '@angular/common';
 import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 import {
   getBase,
@@ -55,8 +32,25 @@ import {
   getWorkspace,
   setTitle,
 } from 'hslayers-ng/common/extensions';
-import {map} from 'rxjs';
-import {toObservable} from '@angular/core/rxjs-interop';
+
+import {HsClusterWidgetComponent} from '../widgets/cluster-widget.component';
+import {HsExtentWidgetComponent} from '../widgets/extent-widget/extent-widget.component';
+import {HsIdwWidgetComponent} from '../widgets/idw-widget.component';
+import {HsLayerEditorWidgetContainerService} from '../widgets/layer-editor-widget-container.service';
+import {HsLayerFolderWidgetComponent} from '../widgets/layer-folder-widget/layer-folder-widget.component';
+import {HsLegendWidgetComponent} from '../widgets/legend-widget.component';
+import {HsMetadataWidgetComponent} from '../widgets/metadata-widget.component';
+import {HsOpacityWidgetComponent} from '../widgets/opacity-widget.component';
+import {HsScaleWidgetComponent} from '../widgets/scale-widget.component';
+import {HsTypeWidgetComponent} from '../widgets/type-widget.component';
+import {HsWmsSourceWidgetComponent} from '../widgets/wms-source-widget/wms-source-widget.component';
+import {LayerTypeSwitcherWidgetComponent} from '../widgets/layer-type-switcher-widget/layer-type-switcher-widget.component';
+
+import {HsCopyLayerDialogComponent} from '../dialogs/copy-layer-dialog.component';
+import {HsLayerEditorDimensionsComponent} from '../dimensions/layer-editor-dimensions.component';
+import {HsLayerEditorService} from './layer-editor.service';
+import {HsLayerEditorSubLayerCheckboxesComponent} from './sublayers/layer-editor-sub-layer-checkboxes.component';
+import {HsLayerManagerRemoveLayerDialogComponent} from '../dialogs/remove-layer-dialog.component';
 
 @Component({
   selector: 'hs-layer-editor',
