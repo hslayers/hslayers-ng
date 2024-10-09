@@ -1,0 +1,81 @@
+[
+    {
+        "Name": "RST_KN",
+        "Title": "Analogové mapy",
+        "MinScaleDenominator": 0,
+        "MaxScaleDenominator": 5000,
+        "queryable": false,
+        "opaque": false,
+        "noSubsets": false,
+        "maxResolution": 1.4000028000056004
+    },
+    {
+        "Name": "RST_KMD",
+        "Title": "KM-D",
+        "MinScaleDenominator": 0,
+        "MaxScaleDenominator": 5000,
+        "queryable": false,
+        "opaque": false,
+        "noSubsets": false,
+        "maxResolution": 1.4000028000056004
+    },
+    {
+        "Name": "omp",
+        "Title": "Orientační mapa parcel",
+        "MinScaleDenominator": 0,
+        "MaxScaleDenominator": 5000,
+        "queryable": false,
+        "opaque": false,
+        "noSubsets": false,
+        "maxResolution": 1.4000028000056004
+    },
+    {
+        "Name": "DKM",
+        "Title": "Vrstva DKM",
+        "Layer": [
+            {
+                "Name": "parcelni_cisla",
+                "Title": "Parcelní čísla",
+                "MinScaleDenominator": 0,
+                "MaxScaleDenominator": 2000,
+                "queryable": false,
+                "opaque": false,
+                "noSubsets": false,
+                "maxResolution": 0.5600011200022402
+            },
+            {
+                "Name": "obrazy_parcel",
+                "Title": "Obrazy parcel",
+                "MinScaleDenominator": 0,
+                "MaxScaleDenominator": 2000,
+                "queryable": false,
+                "opaque": false,
+                "noSubsets": false,
+                "maxResolution": 0.5600011200022402
+            },
+            {
+                "Name": "hranice_parcel",
+                "Title": "Hranice parcel",
+                "MinScaleDenominator": 0,
+                "MaxScaleDenominator": 5000,
+                "queryable": false,
+                "opaque": false,
+                "noSubsets": false,
+                "maxResolution": 1.4000028000056004
+            },
+            {
+                "Name": "dalsi_p_mapy",
+                "Title": "Další prvky mapy",
+                "MinScaleDenominator": 0,
+                "MaxScaleDenominator": 3000,
+                "queryable": false,
+                "opaque": false,
+                "noSubsets": false,
+                "maxResolution": 0.8400016800033603
+            }
+        ],
+        "queryable": false,
+        "opaque": false,
+        "noSubsets": false
+    }
+]
