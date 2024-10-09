@@ -60,7 +60,7 @@ export class HsLayerEditorSubLayerCheckboxesComponent implements OnInit {
     }
     if (sublayer.sublayers) {
       sublayer.sublayers.forEach((sl) => {
-        sl.visible = sublayer.visible; //TODO previous state
+        sl.visible = sublayer.visible;
       });
     }
     return this.hsLayerEditorSublayerService.subLayerSelected();
