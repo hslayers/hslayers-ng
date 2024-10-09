@@ -51,7 +51,7 @@ class HsLayerSynchronizerServiceMock {
   constructor() {}
 }
 
-fdescribe('HsStyler', () => {
+describe('HsStyler', () => {
   let layer;
 
   beforeAll(() => {
