@@ -3,10 +3,7 @@ import {Component, OnInit, computed, input} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsLayerEditorSublayerService} from './layer-editor-sub-layer.service';
-import {
-  HsLayerManagerService,
-  HsLayerManagerVisibilityService,
-} from 'hslayers-ng/services/layer-manager';
+import {HsLayerManagerVisibilityService} from 'hslayers-ng/services/layer-manager';
 import {HsSublayer} from 'hslayers-ng/types';
 import {NgClass} from '@angular/common';
 
@@ -34,18 +31,13 @@ export class HsLayerEditorSubLayerCheckboxesComponent implements OnInit {
   expanded = false;
 
   constructor(
-    public HsLayerEditorSublayerService: HsLayerEditorSublayerService,
+    private hsLayerEditorSublayerService: HsLayerEditorSublayerService,
     public hsLayerManagerVisibilityService: HsLayerManagerVisibilityService,
-    public HsLayerManagerService: HsLayerManagerService,
     private hsConfig: HsConfig,
   ) {}
 
   ngOnInit() {
     this.app = this.hsConfig.id;
-  }
-
-  getSubLayers() {
-    //return this.HsLayerEditorSublayerService.getSubLayers();
   }
 
   subLayerIsString(subLayer: any): boolean {
@@ -71,6 +63,6 @@ export class HsLayerEditorSubLayerCheckboxesComponent implements OnInit {
         sl.visible = sublayer.visible; //TODO previous state
       });
     }
-    return this.HsLayerEditorSublayerService.subLayerSelected();
+    return this.hsLayerEditorSublayerService.subLayerSelected();
   }
 }
