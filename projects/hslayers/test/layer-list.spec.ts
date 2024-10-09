@@ -122,12 +122,13 @@ describe('layermanager-layer-list', () => {
 
     const bed = TestBed.configureTestingModule({
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      declarations: [HsLayerListComponent],
+      declarations: [],
       imports: [
         HsPanelHelpersModule,
         FormsModule,
         NgbDropdownModule,
         TranslateCustomPipe,
+        HsLayerListComponent,
       ],
       providers: [
         {provide: HsLayerListService, useValue: mockHsLayerListService()},

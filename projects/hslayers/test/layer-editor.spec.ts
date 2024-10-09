@@ -14,32 +14,23 @@ import {Feature} from 'ol';
 import {Vector as VectorLayer} from 'ol/layer';
 
 import {HsAddDataOwsService} from 'hslayers-ng/services/add-data';
-import {
-  HsArcgisGetCapabilitiesService,
-  HsWfsGetCapabilitiesService,
-  HsWmsGetCapabilitiesService,
-  HsWmtsGetCapabilitiesService,
-} from 'hslayers-ng/services/get-capabilities';
 import {HsClusterWidgetComponent} from 'hslayers-ng/components/layer-manager';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsConfigMock} from './config.service.mock';
-import {HsDrawService} from 'hslayers-ng/services/draw';
 import {HsLanguageModule} from 'hslayers-ng/components/language';
 import {HsLayerEditorComponent} from 'hslayers-ng/components/layer-manager';
 import {HsLayerEditorService} from 'hslayers-ng/components/layer-manager';
-import {HsLayerEditorSublayerService} from 'hslayers-ng/components/layer-manager';
 import {HsLayerEditorVectorLayerService} from 'hslayers-ng/services/layer-manager';
 import {HsLayerUtilsService} from 'hslayers-ng/services/utils';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsLayoutServiceMock} from './layout.service.mock';
-import {HsMapService} from 'hslayers-ng/services/map';
-import {HsMapServiceMock} from './map.service.mock';
 import {HsPanelHelpersModule} from 'hslayers-ng/common/panels';
 import {HsShareUrlService} from 'hslayers-ng/services/share';
 import {HsStylerService} from 'hslayers-ng/services/styler';
 import {HsStylerServiceMock} from './styler.service.mock';
 import {HsUtilsService} from 'hslayers-ng/services/utils';
 import {HsUtilsServiceMock} from './utils/utils.service.mock';
+import {HsWmtsGetCapabilitiesService} from 'hslayers-ng/services/get-capabilities';
 import {getCluster} from 'hslayers-ng/common/extensions';
 import {mockLayerUtilsService} from './layer-utils.service.mock';
 
@@ -76,15 +67,15 @@ describe('layermanager editor', () => {
 
     const bed = TestBed.configureTestingModule({
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      declarations: [HsLayerEditorComponent, HsClusterWidgetComponent],
+      declarations: [HsClusterWidgetComponent],
       imports: [
         HsPanelHelpersModule,
         FormsModule,
         NgbDropdownModule,
         HsLanguageModule,
+        HsLayerEditorComponent,
       ],
       providers: [
-        HsLayerEditorSublayerService,
         HsLayerEditorService,
         HsLayerEditorVectorLayerService,
         {provide: HsWmtsGetCapabilitiesService, useValue: new emptyMock()},
@@ -95,17 +86,12 @@ describe('layermanager editor', () => {
             getParamValue: () => undefined,
           },
         },
-        {provide: HsWmsGetCapabilitiesService, useValue: new emptyMock()},
-        {provide: HsWfsGetCapabilitiesService, useValue: new emptyMock()},
-        {provide: HsArcgisGetCapabilitiesService, useValue: new emptyMock()},
         {provide: HsUtilsService, useValue: new HsUtilsServiceMock()},
         {
           provide: HsLayerUtilsService,
           useValue: mockLayerUtilsService(),
         },
         {provide: HsStylerService, useValue: new HsStylerServiceMock()},
-        {provide: HsDrawService, useValue: new emptyMock()},
-        {provide: HsMapService, useValue: new HsMapServiceMock()},
         {provide: HsConfig, useValue: mockedConfig},
         {
           provide: HsLayoutService,
@@ -120,17 +106,20 @@ describe('layermanager editor', () => {
 
   beforeEach(() => {
     fixture = TestBed.createComponent(HsLayerEditorComponent);
-    fixture.componentRef.setInput('currentLayer', {
+    component = fixture.componentInstance;
+
+    fixture.componentRef.setInput('layer', {
       layer: layerForCluster,
       idString() {
         return 'layerteststringid';
       },
     });
-    component = fixture.componentInstance;
+
     hsConfig = TestBed.inject(HsConfig);
     clusterWidgetFixture = TestBed.createComponent(HsClusterWidgetComponent);
     clusterWidgetFixture.componentInstance.data = {};
     clusterWidgetComponent = clusterWidgetFixture.componentInstance;
+    clusterWidgetComponent.ngOnInit();
 
     fixture.detectChanges();
 
