@@ -24,15 +24,11 @@ import {
   take,
 } from 'rxjs/operators';
 
-import {
-  HsBaseLayerDescriptor,
-  HsLayerDescriptor,
-  HsTerrainLayerDescriptor,
-} from 'hslayers-ng/types';
 import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
+import {HsLayerDescriptor, HsTerrainLayerDescriptor} from 'hslayers-ng/types';
 import {HsLayerListService} from './logical-list/layer-manager-layerlist.service';
 import {HsLayerManagerRemoveAllDialogComponent} from './dialogs/remove-all-dialog.component';
 import {
@@ -61,7 +57,7 @@ export class HsLayerManagerComponent
 {
   @ViewChild('filterInput', {static: false}) filterInput: ElementRef;
 
-  filteredBaselayers$: Observable<HsBaseLayerDescriptor[]>;
+  filteredBaselayers$: Observable<HsLayerDescriptor[]>;
   filteredTerrainlayers$: Observable<HsTerrainLayerDescriptor[]>;
 
   map: any;
@@ -233,7 +229,7 @@ export class HsLayerManagerComponent
   // Overload signatures
   createFilteredLayerObservable(
     type: 'baselayers',
-  ): Observable<HsBaseLayerDescriptor[]>;
+  ): Observable<HsLayerDescriptor[]>;
   createFilteredLayerObservable(
     type: 'terrainLayers',
   ): Observable<HsTerrainLayerDescriptor[]>;
@@ -241,7 +237,7 @@ export class HsLayerManagerComponent
   //Implementation
   createFilteredLayerObservable(
     type: 'baselayers' | 'terrainLayers',
-  ): Observable<HsBaseLayerDescriptor[] | HsTerrainLayerDescriptor[]> {
+  ): Observable<HsLayerDescriptor[] | HsTerrainLayerDescriptor[]> {
     return this.hsLayerManagerService.data.filter.pipe(
       switchMap((filter) => {
         if (this.hsLayerManagerService.data[type].length === 0) {
@@ -258,7 +254,7 @@ export class HsLayerManagerComponent
   private handleFilterLayerError<T extends 'baselayers' | 'terrainLayers'>(
     err: any,
     type: T,
-  ): Observable<HsBaseLayerDescriptor[] | HsTerrainLayerDescriptor[]> {
+  ): Observable<HsLayerDescriptor[] | HsTerrainLayerDescriptor[]> {
     console.error(`Error filtering ${type}`, err);
     if (err.message === `No ${type} found`) {
       return this.emptyResult(type);
@@ -271,9 +267,9 @@ export class HsLayerManagerComponent
    */
   private emptyResult<T extends 'baselayers' | 'terrainLayers'>(
     type: T,
-  ): Observable<HsBaseLayerDescriptor[] | HsTerrainLayerDescriptor[]> {
+  ): Observable<HsLayerDescriptor[] | HsTerrainLayerDescriptor[]> {
     return type === 'baselayers'
-      ? of([] as HsBaseLayerDescriptor[])
+      ? of([] as HsLayerDescriptor[])
       : of([] as HsTerrainLayerDescriptor[]);
   }
 
@@ -283,7 +279,7 @@ export class HsLayerManagerComponent
     super.ngOnInit();
   }
 
-  changeBaseLayerVisibility(e?, layer?: HsBaseLayerDescriptor) {
+  changeBaseLayerVisibility(e?, layer?: HsLayerDescriptor) {
     return this.hsLayerManagerVisibilityService.changeBaseLayerVisibility(
       e,
       layer,
@@ -311,13 +307,13 @@ export class HsLayerManagerComponent
   filterLayers(
     filter: string,
     type: 'baselayers' | 'terrainLayers',
-  ): HsBaseLayerDescriptor[] | HsTerrainLayerDescriptor[] {
+  ): HsLayerDescriptor[] | HsTerrainLayerDescriptor[] {
     const r = new RegExp(filter, 'i');
     if (type === 'baselayers') {
-      // Filter and cast to HsBaseLayerDescriptor[]
+      // Filter and cast to HsLayerDescriptor[]
       return this.hsLayerManagerService.data.baselayers.filter(
         (layer) => r.test(layer.title) && layer.showInLayerManager,
-      ) as HsBaseLayerDescriptor[];
+      ) as HsLayerDescriptor[];
     } else {
       // Filter and cast to HsTerrainLayerDescriptor[]
       return this.hsLayerManagerService.data.terrainLayers.filter((layer) =>

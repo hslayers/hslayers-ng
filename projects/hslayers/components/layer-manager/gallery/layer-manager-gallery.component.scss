@@ -21,12 +21,33 @@
     flex-direction: column;
     flex-wrap: wrap-reverse;
     column-gap: 0.25rem;
+    top: calc(0% + 10px) !important;
+
+    &>div:first-child:before {
+      content: '';
+      position: absolute;
+      top: -12px;
+      right: 5px;
+      border-width: 0 10px 10px 10px;
+      border-style: solid;
+      border-color: transparent transparent white transparent;
+    }
 
     &.show {
       display: flex;
     }
 
-    &>div {
+    & .galleryDropdownItem:first-child {
+
+      &,
+      img {
+        border-top-left-radius: var(--bs-border-radius);
+        border-top-right-radius: var(--bs-border-radius);
+      }
+    }
+
+
+    >div {
       flex-grow: 1;
       flex-shrink: 0;
       flex-basis: 8em;
@@ -57,59 +78,6 @@
     color: hsla(0, 0%, 100%, 89%) !important;
   }
 
-  img.active,
-  div.active {
-    border: 0.1rem solid hsl(211, 100%, 50%);
-  }
-
-  .hs-miniMenu {
-    width: 100%;
-    height: 100%;
-    background-color: hsla(212, 20%, 40%, 0.94);
-    border: 0.1rem solid hsl(211, 100%, 50%);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    color: hsl(0, 0%, 100%);
-    cursor: auto;
-    right: 0;
-    transition: all 0.4s ease, right 0ms;
-
-    &>div {
-      display: flex;
-      flex-direction: row;
-      align-items: baseline;
-      cursor: pointer;
-    }
-
-    &>div,
-    &>label {
-      background-color: hsla(0, 2%, 75%, 0.644);
-      color: hsl(0, 0%, 100%);
-    }
-
-    &.expanded {
-      width: 30em;
-      height: auto;
-      z-index: 4;
-      padding-top: 2em;
-      padding-bottom: 2em;
-      border-radius: 0.25rem;
-    }
-
-    &>label {
-      cursor: pointer;
-      text-align: right;
-    }
-
-    p {
-      cursor: pointer;
-      font-size: 1rem;
-    }
-
-  }
-
 }
 
 
@@ -118,11 +86,14 @@
   background-color: var(--ol-background-color);
   color: var(--ol-subtle-foreground-color);
   box-shadow: rgb(0 0 0 / 24%) 0px 3px 8px;
-  height: 32px;
+  font-size: 1rem;
+  height: 2.3em;
+  width: 2.4em;
 
-  &:hover {
-    background-color: $secondary !important;
-    color: var(--ol-background-color) !important;
+  &.show,
+  &.show:focus {
+    color: white !important;
+    background-color: var(--bs-secondary) !important;
   }
 
   i {
@@ -134,10 +105,6 @@
 &.hs-mobile-view {
   .basemapGallery .galleryDropdown img {
     height: 6em;
-  }
-
-  .basemapGallery .hs-miniMenu {
-    max-width: 90vw;
   }
 }
 

@@ -10,10 +10,10 @@ import {
 } from 'hslayers-ng/services/layer-manager';
 
 import {AsyncPipe, NgClass} from '@angular/common';
-import {HsBaseLayerDescriptor} from 'hslayers-ng/types';
 import {HsConfirmDialogComponent} from 'hslayers-ng/common/confirm';
 import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
+import {HsLayerDescriptor} from 'hslayers-ng/types';
 import {HsLayerEditorWidgetBaseComponent} from '../layer-editor-widget-base.component';
 import {HsLayerUtilsService, HsUtilsService} from 'hslayers-ng/services/utils';
 import {OSM} from 'ol/source';
@@ -120,8 +120,8 @@ export class LayerTypeSwitcherWidgetComponent extends HsLayerEditorWidgetBaseCom
           this.hsLayermanagerService.data.layers,
         ];
 
-    destination.push(currentLayer as HsBaseLayerDescriptor);
-    current.splice(current.indexOf(currentLayer as HsBaseLayerDescriptor), 1);
+    destination.push(currentLayer as HsLayerDescriptor);
+    current.splice(current.indexOf(currentLayer as HsLayerDescriptor), 1);
 
     /**
      * Update visiblity of base layer
