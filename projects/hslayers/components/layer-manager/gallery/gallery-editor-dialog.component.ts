@@ -14,7 +14,11 @@ import {HsDialogComponent} from 'hslayers-ng/common/dialogs';
 import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
 import {HsLayerDescriptor} from 'hslayers-ng/types';
 import {HsLayerEditorService} from '../editor/layer-editor.service';
+import {HsLayerManagerService} from 'hslayers-ng/services/layer-manager';
 import {TranslateCustomPipe} from 'hslayers-ng/services/language';
+import {filter, map} from 'rxjs';
+import {getBase} from 'hslayers-ng/common/extensions';
+import {takeUntilDestroyed, toObservable} from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'hs-gallery-editor-dialog',
@@ -61,6 +65,18 @@ export class HsGalleryEditorDialogComponent
 
   private hsDialogContainerService = inject(HsDialogContainerService);
   private hsLayerEditorService = inject(HsLayerEditorService);
+  private hsLayerManagerService = inject(HsLayerManagerService);
+
+  constructor() {
+    toObservable(this.hsLayerManagerService.data.folders)
+      .pipe(
+        filter((_) => !getBase(this.data.layer.layer)),
+        takeUntilDestroyed(),
+      )
+      .subscribe((folders) => {
+        this.close();
+      });
+  }
 
   close() {
     this.hsLayerEditorService.createLayerEditor(this.editor(), this.data.layer);

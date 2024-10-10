@@ -140,7 +140,7 @@ export class HsLayerEditorService {
    * @param toToggle - Part of layer editor to be toggled ('sublayers' or 'settings')
    * @returns Boolean indicating whether the editor should be created
    */
-  private toggleLayerEditor(
+  toggleLayerEditor(
     layer: HsLayerDescriptor,
     toToggle: 'sublayers' | 'settings',
   ): boolean {

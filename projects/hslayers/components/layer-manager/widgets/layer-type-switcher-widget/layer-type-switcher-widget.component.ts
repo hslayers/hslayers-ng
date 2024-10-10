@@ -1,4 +1,5 @@
 import {Component, Signal, inject, signal} from '@angular/core';
+import {OSM} from 'ol/source';
 import {Observable, map} from 'rxjs';
 
 import {
@@ -14,9 +15,9 @@ import {HsConfirmDialogComponent} from 'hslayers-ng/common/confirm';
 import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsLayerDescriptor} from 'hslayers-ng/types';
+import {HsLayerEditorService} from '../../editor/layer-editor.service';
 import {HsLayerEditorWidgetBaseComponent} from '../layer-editor-widget-base.component';
 import {HsLayerUtilsService, HsUtilsService} from 'hslayers-ng/services/utils';
-import {OSM} from 'ol/source';
 import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 import {getBase, setBase} from 'hslayers-ng/common/extensions';
 
@@ -40,6 +41,7 @@ export class LayerTypeSwitcherWidgetComponent extends HsLayerEditorWidgetBaseCom
   private hsLayerUtilsService = inject(HsLayerUtilsService);
   private hsUtilsService = inject(HsUtilsService);
   private hsDialogContainerService = inject(HsDialogContainerService);
+  private layerEditorService = inject(HsLayerEditorService);
 
   isEnabled: Observable<boolean>;
   currentType: Signal<string>;
@@ -133,6 +135,8 @@ export class LayerTypeSwitcherWidgetComponent extends HsLayerEditorWidgetBaseCom
 
     if (!toBase) {
       this.loadingProgressSerice.loadingEvents(currentLayer);
+    } else {
+      this.layerEditorService.toggleLayerEditor(currentLayer, 'settings');
     }
 
     this.hsEventBusService.layerManagerUpdates.next(this.olLayer);

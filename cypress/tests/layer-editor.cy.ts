@@ -47,14 +47,12 @@ describe('Hslayers application', () => {
       .parent()
       .within(() => {
         cy.get('div').click();
-        cy.get('label').contains('More').click();
-        cy.get('hs-layer-editor form hs-layer-type-switcher-widget div')
-          .find('button')
-          .contains('Thematic map')
-          .should('exist')
-          .click();
       });
-
+    cy.get('hs-layer-type-switcher-widget div')
+      .find('button')
+      .contains('Thematic map')
+      .should('exist')
+      .click();
     cy.get('.modal-footer').find('button').contains('Yes').click();
     cy.get('.hs-lm-mapcontentlist .hs-lm-item-title').should('contain', 'EVI');
   });
