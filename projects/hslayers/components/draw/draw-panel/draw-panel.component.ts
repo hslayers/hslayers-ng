@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, input} from '@angular/core';
 
 import {Circle, Fill, Stroke, Style} from 'ol/style';
 
@@ -35,6 +35,8 @@ interface DrawToolDefinition {
   ],
 })
 export class DrawPanelComponent {
+  inToolbar = input<boolean>(false);
+
   onFeatureSelected: any;
   onFeatureDeselected: any;
   drawToolbarExpanded: any;
