@@ -90,8 +90,12 @@ describe('HsDrawPanel', () => {
 
     TestBed.configureTestingModule({
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      declarations: [DrawPanelComponent],
-      imports: [FormsModule, TranslateCustomPipe, NgbDropdownModule],
+      imports: [
+        FormsModule,
+        TranslateCustomPipe,
+        NgbDropdownModule,
+        DrawPanelComponent,
+      ],
       providers: [
         HsDrawService,
         HsLanguageService,
