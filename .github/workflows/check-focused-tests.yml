@@ -1,0 +1,26 @@
+name: Check for Focused Tests
+
+on:
+  push:
+    branches:
+      - "**"
+    paths:
+      - "projects/hslayers/test/**"
+jobs:
+  check-focused-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Check for fdescribe and fit in projects/hslayers/test
+        run: |
+          # Search for fdescribe or fit in the test directory and print matches with filename and line number
+          if grep -rn 'fdescribe(' ./projects/hslayers/test || grep -rn 'fit(' ./projects/hslayers/test; then
+            echo "Error: Found focused tests (fdescribe or fit) in the following files:"
+            # Show where focused tests were found, including line numbers
+            grep -rn 'fdescribe(' ./projects/hslayers/test
+            grep -rn 'fit(' ./projects/hslayers/test
+            exit 1
+          fi
