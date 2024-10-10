@@ -5,6 +5,9 @@ import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsSearchService} from './search.service';
+import {KeyValuePipe, NgClass} from '@angular/common';
+import {TranslateCustomPipe} from 'hslayers-ng/services/language';
+import {limitToPipe} from './limitTo.pipe';
 import {setHighlighted} from 'hslayers-ng/common/extensions';
 
 /**
@@ -13,6 +16,13 @@ import {setHighlighted} from 'hslayers-ng/common/extensions';
 @Component({
   selector: 'hs-search-results',
   templateUrl: './search-results.component.html',
+  standalone: true,
+  imports: [limitToPipe, NgClass, TranslateCustomPipe, KeyValuePipe],
+  styles: `
+    .hsl-search-result:hover {
+      background-color: rgba(var(--bs-light-rgb), 1);
+    }
+  `,
 })
 export class HsSearchResultsComponent {
   searchResultsVisible: boolean;

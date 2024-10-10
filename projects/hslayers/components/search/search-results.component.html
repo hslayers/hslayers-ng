@@ -1,4 +1,4 @@
-<div class="list-group" [hidden]="!searchResultsVisible" style="display: block; margin-bottom: 0px">
+<div class="list-group py-1" [hidden]="!searchResultsVisible" style="display: block; margin-bottom: 0px">
   @for (provider of hsSearchService.providers | keyvalue ; track provider) {
     <div>
       <a class="list-group-item active" [hidden]="!(provider.value.results.length > 0)">Provider:

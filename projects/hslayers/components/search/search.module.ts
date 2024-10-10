@@ -7,31 +7,20 @@ import {HsPanelHelpersModule} from 'hslayers-ng/common/panels';
 import {HsSearchComponent} from './search.component';
 import {HsSearchInputComponent} from './search-input.component';
 import {HsSearchResultsComponent} from './search-results.component';
-import {HsSearchToolbarComponent} from './search-toolbar.component';
 import {TranslateCustomPipe} from 'hslayers-ng/services/language';
-import {limitToPipe} from './limitTo.pipe';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  declarations: [
-    HsSearchComponent,
-    HsSearchResultsComponent,
-    HsSearchInputComponent,
-    limitToPipe,
-    HsSearchToolbarComponent,
-  ],
+  declarations: [HsSearchComponent],
   imports: [
     FormsModule,
     CommonModule,
     HsPanelHelpersModule,
     TranslateCustomPipe,
     HsPanelHeaderComponent,
-  ],
-  exports: [
-    HsSearchComponent,
-    HsSearchResultsComponent,
     HsSearchInputComponent,
-    HsSearchToolbarComponent,
+    HsSearchResultsComponent,
   ],
+  exports: [HsSearchComponent],
 })
 export class HsSearchModule {}

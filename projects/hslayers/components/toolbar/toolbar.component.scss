@@ -4,11 +4,45 @@
 
 .hs-toolbar {
     position: absolute;
-    top: 10px;
+    top: 0.7rem;
     left: 10px;
     max-width: 636px;
     display: inline-block;
     z-index: 101;
+
+    .navbar {
+        box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    }
+
+
+    .navbar-nav>* {
+        &:not(:first-child):not(:last-child) button.hs-toolbar-button {
+            border-radius: 0;
+        }
+
+        &:first-child:not(:last-child) button.hs-toolbar-button {
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+        }
+
+        &:last-child:not(:first-child) button.hs-toolbar-button {
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+        }
+    }
+
+    .navbar-nav {
+        >hs-search-toolbar:last-child {
+            hs-search-input {
+                button {
+                    &:has(+ input[hidden]) {
+                        border-top-right-radius: var(--bs-border-radius) !important;
+                        border-bottom-right-radius: var(--bs-border-radius) !important;
+                    }
+                }
+            }
+        }
+    }
 }
 
 &.hs-mobile-view {

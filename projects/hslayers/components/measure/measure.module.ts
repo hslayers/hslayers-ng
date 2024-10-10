@@ -11,7 +11,7 @@ import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  declarations: [HsMeasureComponent, HsMeasureToolbarComponent],
+  declarations: [HsMeasureComponent],
   imports: [
     CommonModule,
     FormsModule,
@@ -19,6 +19,7 @@ import {TranslateCustomPipe} from 'hslayers-ng/services/language';
     NgbDropdownModule,
     TranslateCustomPipe,
     HsPanelHeaderComponent,
+    HsMeasureToolbarComponent,
   ],
   exports: [HsMeasureComponent, HsMeasureToolbarComponent],
 })

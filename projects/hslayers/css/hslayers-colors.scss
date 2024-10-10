@@ -75,19 +75,6 @@ $table-group-separator-color: white;
     color: hsla(0, 0%, 100%, 89%) !important;
   }
 
-  .basemapGallery .hs-miniMenu {
-    background-color: hsla(212, 20%, 40%, 0.94);
-    color: hsl(0, 0%, 100%);
-  }
-
-  .basemapGallery .hs-miniMenu>div {
-    background-color: hsla(0, 2%, 75%, 0.644);
-  }
-
-  .basemapGallery .hs-miniMenu.expanded hs-layer-editor label {
-    color: hsl(0, 0%, 100%);
-  }
-
   .galleryButton {
     opacity: 0.9 !important;
     background-color: #003c8a80 !important;
@@ -95,7 +82,7 @@ $table-group-separator-color: white;
   }
 
   .galleryButton:hover {
-    background-color: $primary  !important;
+    background-color: $primary !important;
   }
 
   i.hs-lm-warning-scale {
