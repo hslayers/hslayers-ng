@@ -9,7 +9,6 @@ import {Source} from 'ol/source';
 
 import {
   ClickedCoordinates,
-  HsBaseLayerDescriptor,
   HsLayerDescriptor,
   HsLayerLoadProgress,
   HsTerrainLayerDescriptor,
@@ -59,7 +58,7 @@ export class HsEventBusService {
    * Fires when base layer or terrain layer changes visibility
    */
   LayerManagerBaseLayerVisibilityChanges: Subject<
-    HsLayerDescriptor | HsBaseLayerDescriptor | HsTerrainLayerDescriptor
+    HsLayerDescriptor | HsTerrainLayerDescriptor
   > = new Subject();
   LayerManagerLayerVisibilityChanges: Subject<any> = new Subject();
   /**

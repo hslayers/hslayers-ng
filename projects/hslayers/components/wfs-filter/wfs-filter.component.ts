@@ -15,7 +15,6 @@ import {Vector as VectorLayer} from 'ol/layer';
 import {Vector as VectorSource} from 'ol/source';
 import {catchError, filter, lastValueFrom, map, switchMap, tap} from 'rxjs';
 
-import {Feature} from 'ol';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsFiltersComponent, HsFiltersService} from 'hslayers-ng/common/filters';
 import {HsLayerDescriptor, WfsFeatureAttribute} from 'hslayers-ng/types';
@@ -23,7 +22,6 @@ import {
   HsLayerManagerService,
   HsLayerSelectorService,
 } from 'hslayers-ng/services/layer-manager';
-import {HsLayerSynchronizerService} from 'hslayers-ng/services/save-map';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {
   HsPanelBaseComponent,

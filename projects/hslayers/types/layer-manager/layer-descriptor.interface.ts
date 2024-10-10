@@ -23,7 +23,6 @@ export type HsLayerLoadProgress = {
 
 export interface HsLayerDescriptor {
   hasSublayers?: boolean;
-  galleryMiniMenu?: boolean;
   loadProgress?: HsLayerLoadProgress;
   layer: Layer<Source>;
   abstract?: string;

@@ -19,12 +19,11 @@ import {unByKey} from 'ol/Observable';
 
 import {HS_PRMS} from 'hslayers-ng/services/share';
 import {HsAddDataOwsService} from 'hslayers-ng/services/add-data';
-import {HsBaseLayerDescriptor} from 'hslayers-ng/types';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsDimensionTimeService} from 'hslayers-ng/services/get-capabilities';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsLanguageService} from 'hslayers-ng/services/language';
-import {HsLayerDescriptor} from 'hslayers-ng/types';
+import {HsLayerDescriptor, HsTerrainLayerDescriptor} from 'hslayers-ng/types';
 import {HsLayerSelectorService} from './layer-selector.service';
 import {HsLayerUtilsService} from 'hslayers-ng/services/utils';
 import {HsLayermanagerFolder} from 'hslayers-ng/types';
@@ -33,14 +32,12 @@ import {HsLogService} from 'hslayers-ng/services/log';
 import {HsMapService} from 'hslayers-ng/services/map';
 import {HsQueuesService} from 'hslayers-ng/services/queues';
 import {HsShareUrlService} from 'hslayers-ng/services/share';
-import {HsTerrainLayerDescriptor} from 'hslayers-ng/types';
 import {HsToastService} from 'hslayers-ng/common/toast';
 import {HsUtilsService} from 'hslayers-ng/services/utils';
 import {
   SHOW_IN_LAYER_MANAGER,
   getAbstract,
   getBase,
-  getCachedCapabilities,
   getCluster,
   getFromBaseComposition,
   getFromComposition,
@@ -69,7 +66,7 @@ export class HsLayermanagerDataObject {
   // Folders object for structure of layers.
   folders: Signal<Map<string, HsLayermanagerFolder>>;
   layers: HsLayerDescriptor[];
-  baselayers: HsBaseLayerDescriptor[];
+  baselayers: HsLayerDescriptor[];
   terrainLayers: HsTerrainLayerDescriptor[];
   baselayer?: string;
   /**
@@ -359,7 +356,7 @@ export class HsLayerManagerService {
       }
       layerDescriptor.thumbnail =
         this.hsLayerManagerUtilsService.getImage(layer);
-      this.data.baselayers.push(<HsBaseLayerDescriptor>layerDescriptor);
+      this.data.baselayers.push(<HsLayerDescriptor>layerDescriptor);
       //Composition layers are already set up using ol.layer.className
       if (getGreyscale(layer) && !getFromComposition(layer)) {
         setTimeout(() => {
@@ -513,7 +510,6 @@ export class HsLayerManagerService {
       //Dispatching change event triggers renderer which causes non base layer to be
       //moved into separate canvas thus not being affected by css filter
       layer.layer.getSource().changed();
-      layer.galleryMiniMenu = false;
     }, 0);
   }
 
