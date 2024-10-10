@@ -52,7 +52,7 @@
     "@angular/forms": "^18.2.7",
     "@angular/localize": "^18.2.7",
     "@angular/platform-browser": "^18.2.7",
-    "@angular/platform-browser-dynamic": "^18.2.7",
+    "@angular/platform-browser-dynamic": "^18.2.8",
     "@ng-bootstrap/ng-bootstrap": "^17.0.1",
     "@ngx-translate/core": "^15.0.0",
     "@ngx-translate/http-loader": "^8.0.0",
