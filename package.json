@@ -50,7 +50,7 @@
     "@angular/compiler": "^18.2.7",
     "@angular/core": "^18.2.7",
     "@angular/forms": "^18.2.7",
-    "@angular/localize": "^18.2.7",
+    "@angular/localize": "^18.2.8",
     "@angular/platform-browser": "^18.2.7",
     "@angular/platform-browser-dynamic": "^18.2.7",
     "@ng-bootstrap/ng-bootstrap": "^17.0.1",
