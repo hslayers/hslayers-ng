@@ -5,6 +5,7 @@ import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
 
 import {HsConfig} from 'hslayers-ng/config';
 
+import {DrawPanelComponent} from '../draw-panel/draw-panel.component';
 import {HsDrawService} from 'hslayers-ng/services/draw';
 import {HsGuiOverlayBaseComponent} from 'hslayers-ng/common/panels';
 import {TranslateCustomPipe} from 'hslayers-ng/services/language';
@@ -14,7 +15,36 @@ import {getTitle} from 'hslayers-ng/common/extensions';
   selector: 'hs-draw-toolbar',
   templateUrl: './draw-toolbar.component.html',
   standalone: true,
-  imports: [CommonModule, FormsModule, NgbDropdownModule, TranslateCustomPipe],
+  styles: `
+    :host {
+      position: relative;
+      display: block;
+    }
+
+    .draw-panel-popup {
+      position: absolute;
+      top: calc(100% + 14px);
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+      z-index: 1000;
+    }
+
+    .draw-panel-popup::before {
+      content: '';
+      position: absolute;
+      top: -12px;
+      left: 10px;
+      border-width: 0 10px 10px 10px;
+      border-style: solid;
+      border-color: transparent transparent white transparent;
+    }
+  `,
+  imports: [
+    CommonModule,
+    FormsModule,
+    NgbDropdownModule,
+    TranslateCustomPipe,
+    DrawPanelComponent,
+  ],
 })
 export class HsDrawToolbarComponent extends HsGuiOverlayBaseComponent {
   drawToolbarExpanded = false;

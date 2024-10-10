@@ -1,7 +1,7 @@
 @let sidebarPosition = hsLayoutService.sidebarPosition | async;
 
   <div class="d-flex flex-column">
-    <div class="d-flex w-75 m-auto py-2 justify-content-around" style="white-space: nowrap;">
+    <div class="d-flex m-auto py-2 justify-content-around" style="white-space: nowrap;">
       <button type="button" class="btn rounded btn-primary hs-toolbar-button"
         (click)="HsDrawService.saveDrawingLayer()" [ngClass]="{'btn-sm' : sidebarPosition !== 'bottom'}">
         {{'COMMON.newDrawingLayer' | translateHs }}
@@ -160,7 +160,7 @@
           [ngClass]="{'hs-checkmark':HsDrawService.snapActive,'hs-uncheckmark':!HsDrawService.snapActive}">{{'DRAW.allowSnapping'
         | translateHs }}</label>
       </div>
-      @if (HsDrawService.snapActive && HsDrawService.drawableLayers.length > 1) {
+      @if (HsDrawService.snapActive && HsDrawService.drawableLayers.length > 1 && !inToolbar())  {
         <div
           class="d-flex align-items-center card flex-row justify-content-around mx-3 text-primary">
           <p class="m-0 p-0">{{'DRAW.snapTo' | translateHs }}:</p>
