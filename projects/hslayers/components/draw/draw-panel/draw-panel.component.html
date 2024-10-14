@@ -116,7 +116,7 @@
 
   <div class="rounded-0 my-1 draw-buttons d-flex justify-content-center"
     [ngClass]="sidebarPosition === 'bottom' ? 'btn-group-lg' : 'btn-group-sm'">
-    <ng-container *ngFor="let tool of drawTools">
+    @for (tool of drawTools; track tool.type) {
       <button class="btn btn-light btn-outline-primary" 
         [ngClass]="{active: HsDrawService.type === tool.type}"
         (click)="setType(tool.type)" 
@@ -124,7 +124,7 @@
         [title]="tool.title | translateHs">
         <i [class]="tool.icon"></i>
       </button>
-    </ng-container>
+    }
     <div ngbDropdown placement="bottom-right" class="btn-group btn-group-sm" role="group"
     #selectionTypeDropdown="ngbDropdown">
     <button ngbDropdownToggle type="button" [ngClass]="{active: !HsDrawService.type }"

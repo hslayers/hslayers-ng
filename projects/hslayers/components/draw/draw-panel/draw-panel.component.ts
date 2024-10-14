@@ -2,7 +2,7 @@ import {Component, input} from '@angular/core';
 
 import {Circle, Fill, Stroke, Style} from 'ol/style';
 
-import {AsyncPipe, NgClass, NgForOf} from '@angular/common';
+import {AsyncPipe, NgClass} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {HsDrawService} from 'hslayers-ng/services/draw';
 import {
@@ -29,7 +29,6 @@ interface DrawToolDefinition {
     AsyncPipe,
     TranslateCustomPipe,
     NgClass,
-    NgForOf,
     FormsModule,
     NgbDropdownModule,
   ],
