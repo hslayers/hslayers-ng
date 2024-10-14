@@ -1,4 +1,4 @@
-import { AsyncPipe } from '@angular/common';
+import {AsyncPipe} from '@angular/common';
 import {ChangeDetectionStrategy, Component, inject} from '@angular/core';
 import {Observable, map} from 'rxjs';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
@@ -67,7 +67,7 @@ export class HsLayerFolderWidgetComponent extends HsLayerEditorWidgetBaseCompone
     this.folderService.folderAction$.next(
       this.folderService.addLayer(this.hsLayerSelectorService.currentLayer),
     );
-    this.folderService.folderAction$.next(this.folderService.sortByZ());
+    this.folderService.folderAction$.next(this.folderService.sortByZ(false));
     this.hsLayermanagerService.toggleLayerEditor(
       this.hsLayerSelectorService.currentLayer,
       'settings',

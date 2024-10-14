@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {Subject} from 'rxjs';
+import {Subject, debounceTime} from 'rxjs';
 
 import {HsConfig} from 'hslayers-ng/config';
 import {HsLanguageService} from 'hslayers-ng/services/language';
@@ -32,6 +32,7 @@ interface RemoveLayerAction {
 interface SortFoldersByZAction {
   type: FolderActionTypes.SORT_BY_Z;
   lyr: HsLayerDescriptor;
+  debounce: boolean;
 }
 interface UpdateFoldersZIndex {
   type: FolderActionTypes.UPDATE_Z;
@@ -47,6 +48,9 @@ type FolderAction =
   providedIn: 'root',
 })
 export class HsLayerManagerFolderService {
+  private sortDebounceTime = 300;
+  private sortSubject = new Subject<void>();
+
   // Subject to dispatch actions to manipulate folders through
   folderAction$ = new Subject<FolderAction>();
 
@@ -54,7 +58,11 @@ export class HsLayerManagerFolderService {
   constructor(
     private hsLanguageService: HsLanguageService,
     private hsConfig: HsConfig,
-  ) {}
+  ) {
+    this.sortSubject.pipe(debounceTime(this.sortDebounceTime)).subscribe(() => {
+      this.folderAction$.next(this.sortByZ(false));
+    });
+  }
 
   foldersReducer(
     state: Map<string, HsLayermanagerFolder>,
@@ -66,7 +74,7 @@ export class HsLayerManagerFolderService {
       case FolderActionTypes.REMOVE_LAYER:
         return this.cleanFolders(state, action.lyr);
       case FolderActionTypes.SORT_BY_Z:
-        return this.sortFoldersByZ(state);
+        return this.sortFoldersByZ(state, action.debounce);
       case FolderActionTypes.UPDATE_Z:
         return this.updateFoldersZ(state);
       default:
@@ -96,10 +104,11 @@ export class HsLayerManagerFolderService {
     };
   }
 
-  sortByZ(): SortFoldersByZAction {
+  sortByZ(debounce = true): SortFoldersByZAction {
     return {
       type: FolderActionTypes.SORT_BY_Z,
       lyr: undefined,
+      debounce: debounce,
     };
   }
 
@@ -172,6 +181,9 @@ export class HsLayerManagerFolderService {
       }
 
       folder.layers.splice(folder.layers.indexOf(lyr), 1);
+      folder.zIndex = Math.max(
+        ...folder.layers.map((l) => l.layer.getZIndex()),
+      );
       if (folder.layers.length === 0) {
         newState.delete(path);
       }
@@ -199,7 +211,7 @@ export class HsLayerManagerFolderService {
       const zIndexes = folderChanged.layers.map((l) => l.layer.getZIndex());
       folderChanged.zIndex = Math.max(...zIndexes);
     }
-    return this.sortFoldersByZ(newState);
+    return this.sortFoldersByZ(newState, false);
   }
 
   /**
@@ -207,13 +219,46 @@ export class HsLayerManagerFolderService {
    */
   private sortFoldersByZ(
     state: Map<string, HsLayermanagerFolder>,
+    debounce = true,
   ): Map<string, HsLayermanagerFolder> {
-    return new Map(
-      [...state.entries()].sort(
-        (a, b) =>
-          (a[1].zIndex < b[1].zIndex ? -1 : a[1].zIndex > b[1].zIndex ? 1 : 0) *
-          (this.hsConfig.reverseLayerList ?? true ? -1 : 1),
-      ),
+    if (debounce) {
+      this.sortSubject.next();
+      return state;
+    }
+
+    const shouldReverseList = this.hsConfig.reverseLayerList ?? true;
+    const sortDirection = shouldReverseList ? -1 : 1;
+
+    // Sort folders
+    const sortedEntries = [...state.entries()].sort(
+      (a, b) =>
+        (a[1].zIndex < b[1].zIndex ? -1 : a[1].zIndex > b[1].zIndex ? 1 : 0) *
+        sortDirection,
     );
+
+    // Create a new map to store the sorted result
+    const sortedState = new Map<string, HsLayermanagerFolder>();
+
+    // Sort layers within each folder using the existing sortLayersByZ method
+    sortedEntries.forEach(([key, folder]) => {
+      const sortedLayers = this.sortLayersByZ(folder.layers);
+
+      // Create a new folder object with sorted layers
+      sortedState.set(key, {
+        ...folder,
+        layers: sortedLayers,
+      });
+    });
+
+    return sortedState;
+  }
+
+  sortLayersByZ(arr: any[]): any[] {
+    const minus = this.hsConfig.reverseLayerList ?? true;
+    return arr.sort((a, b) => {
+      a = a.layer.getZIndex();
+      b = b.layer.getZIndex();
+      return (a < b ? -1 : a > b ? 1 : 0) * (minus ? -1 : 1);
+    });
   }
 }
