@@ -4,6 +4,7 @@ import {
   ElementRef,
   OnInit,
   ViewChild,
+  signal,
 } from '@angular/core';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 
@@ -66,7 +67,7 @@ export class HsLayerManagerComponent
   composition_id: string;
   layerlistVisible: boolean;
   hovering: boolean;
-  physicalLayerListEnabled = false;
+  physicalLayerListEnabled = signal(false);
   cesiumActive$: Observable<boolean>;
   icons = [
     'bag1.svg',
@@ -122,7 +123,6 @@ export class HsLayerManagerComponent
   getThumbnail = getThumbnail;
   name = 'layerManager';
   layerTooltipDelay = 0;
-
   constructor(
     public hsCore: HslayersService,
     public hsUtilsService: HsUtilsService,
@@ -277,6 +277,10 @@ export class HsLayerManagerComponent
     this.layerTooltipDelay = this.hsConfig.layerTooltipDelay;
     this.layerlistVisible = true;
     super.ngOnInit();
+  }
+
+  togglePhysicalLayerList() {
+    this.physicalLayerListEnabled.update((enabled) => !enabled);
   }
 
   changeBaseLayerVisibility(e?, layer?: HsLayerDescriptor) {

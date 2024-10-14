@@ -58,7 +58,7 @@ export class HsLayerShiftingService {
     if (!this.layerFilter()) {
       return;
     }
-    this.layersCopy = this.hsLayerManagerService.sortLayersByZ(
+    this.layersCopy = this.hsFolderService.sortLayersByZ(
       this.layerFilter().map((l) => {
         return {title: l.title, layer: l.layer};
       }),

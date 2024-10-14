@@ -2,8 +2,8 @@
 <div class="card panel-default hs-main-panel hs-layermanager-card" [ngClass]="panelWidthClass">
     <hs-panel-header name="layerManager" [panelTabs]="'LM'">
         <button mainButton class="btn btn-sm btn-outline-primary border-0 align-items-center d-flex gap-2"
-            [class.text-bg-primary]="physicalLayerListEnabled"
-            (click)="physicalLayerListEnabled = !physicalLayerListEnabled" [title]="'LAYERMANAGER.enablePhysicalLayerList' |
+            [class.text-bg-primary]="physicalLayerListEnabled()"
+            (click)="togglePhysicalLayerList()" [title]="'LAYERMANAGER.enablePhysicalLayerList' |
         translateHs"> {{'COMMON.reorder' | translateHs}}
             <i class="glyphicon icon-layerorder"></i>
         </button>
@@ -21,7 +21,7 @@
                 <i class="glyphicon icon-fatredo"></i>&nbsp;{{'LAYERMANAGER.resetMap' |
                 translateHs }}
             </a>
-            @if(hsLayerManagerService.data.layers?.length > 0 && !physicalLayerListEnabled){
+            @if(hsLayerManagerService.data.layers?.length > 0 && !physicalLayerListEnabled()){
             <a class="dropdown-item" (click)="toggleVisibilityForAll()">
                 <i class="glyphicon me-0" [ngClass]="allLayersVisible ? 'hs-checkmark' : 'hs-uncheckmark'"></i>
                 {{'LAYERMANAGER.toggleAllLayerVisibility'|translateHs}}
@@ -132,7 +132,7 @@
                 <span class="align-middle" style="line-height: 2em;">{{ 'LAYERMANAGER.mapContent' | translateHs}}</span>
             </li>
             }
-            @if(!physicalLayerListEnabled){
+            @if(!physicalLayerListEnabled()){
             @for(entry of hsLayerManagerService.data.folders() | keyvalue :keepOrder; track entry.key){
             <ul class="list-group hs-lm-layerlist mb-1">
                 @if(hsLayerManagerService.data.folders().size > 1){
