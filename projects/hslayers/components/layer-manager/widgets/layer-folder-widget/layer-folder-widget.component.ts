@@ -6,11 +6,10 @@ import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
 import {
   HsLayerManagerFolderService,
-  HsLayerManagerService,
   HsLayerSelectorService,
 } from 'hslayers-ng/services/layer-manager';
 import {TranslateCustomPipe} from 'hslayers-ng/services/language';
-import {setPath} from 'hslayers-ng/common/extensions';
+import {getBase, setPath} from 'hslayers-ng/common/extensions';
 
 import {HsLayerEditorWidgetBaseComponent} from '../layer-editor-widget-base.component';
 import {LayerFolderWidgetDialogComponent} from './layer-folder-dialog/layer-folder-dialog.component';
@@ -34,7 +33,7 @@ export class HsLayerFolderWidgetComponent extends HsLayerEditorWidgetBaseCompone
     this.isEnabled = this.layerDescriptor.pipe(
       takeUntilDestroyed(),
       map((layer) => {
-        return !!layer.layer;
+        return layer.layer && !getBase(layer.layer);
       }),
     );
   }
