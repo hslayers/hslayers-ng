@@ -182,7 +182,7 @@ export class HsLayerManagerService {
       }
 
       this.folderService.folderAction$.next(this.folderService.sortByZ());
-      this.sortLayersByZ(this.data.layers);
+      this.folderService.sortLayersByZ(this.data.layers);
       this.hsEventBusService.layerManagerUpdates.next(null);
       this.toggleEditLayerByUrlParam();
 
@@ -388,16 +388,11 @@ export class HsLayerManagerService {
    */
   updateLayerListPositions(): void {
     //TODO: We could also sort by title or other property. Not supported right now though, just zIndex
-    this.data.layers = this.sortLayersByZ(this.data.layers);
+    this.folderService.folderAction$.next(this.folderService.sortByZ());
   }
 
   sortLayersByZ(arr: any[]): any[] {
-    const minus = this.hsConfig.reverseLayerList ?? true;
-    return arr.sort((a, b) => {
-      a = a.layer.getZIndex();
-      b = b.layer.getZIndex();
-      return (a < b ? -1 : a > b ? 1 : 0) * (minus ? -1 : 1);
-    });
+    return this.folderService.sortLayersByZ(arr);
   }
 
   /**
