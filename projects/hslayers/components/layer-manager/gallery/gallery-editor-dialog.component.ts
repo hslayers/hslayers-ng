@@ -1,24 +1,30 @@
+import {AsyncPipe, CommonModule} from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
   Input,
   OnInit,
+  Signal,
   ViewContainerRef,
   ViewRef,
   inject,
+  signal,
   viewChild,
 } from '@angular/core';
-import {CommonModule} from '@angular/common';
 
 import {HsDialogComponent} from 'hslayers-ng/common/dialogs';
 import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
 import {HsLayerDescriptor} from 'hslayers-ng/types';
 import {HsLayerEditorService} from '../editor/layer-editor.service';
 import {HsLayerManagerService} from 'hslayers-ng/services/layer-manager';
+import {Observable, filter, map, startWith} from 'rxjs';
 import {TranslateCustomPipe} from 'hslayers-ng/services/language';
-import {filter, map} from 'rxjs';
 import {getBase} from 'hslayers-ng/common/extensions';
-import {takeUntilDestroyed, toObservable} from '@angular/core/rxjs-interop';
+import {
+  takeUntilDestroyed,
+  toObservable,
+  toSignal,
+} from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'hs-gallery-editor-dialog',
@@ -33,7 +39,7 @@ import {takeUntilDestroyed, toObservable} from '@angular/core/rxjs-interop';
         <div class="modal-content">
           <div class="modal-header">
             <h4 class="modal-title text-truncate">
-              {{ title | translateHs: 'LAYERS' }}
+              {{ title | async | translateHs: 'LAYERS' }}
             </h4>
             <button
               type="button"
@@ -51,14 +57,14 @@ import {takeUntilDestroyed, toObservable} from '@angular/core/rxjs-interop';
     </div>
   `,
   standalone: true,
-  imports: [CommonModule, TranslateCustomPipe],
+  imports: [CommonModule, TranslateCustomPipe, AsyncPipe],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HsGalleryEditorDialogComponent
   implements HsDialogComponent, OnInit
 {
   @Input() data: {layer: HsLayerDescriptor};
-  title: string;
+  title: Observable<string>;
   viewRef: ViewRef;
 
   editor = viewChild('editor', {read: ViewContainerRef});
@@ -85,6 +91,9 @@ export class HsGalleryEditorDialogComponent
 
   ngOnInit() {
     this.hsLayerEditorService.createLayerEditor(this.editor(), this.data.layer);
-    this.title = this.data.layer.title;
+    this.title = this.hsLayerEditorService.layerTitleChange.pipe(
+      map((event) => event.newTitle),
+      startWith(this.data.layer.title),
+    );
   }
 }
