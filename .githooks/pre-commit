@@ -1,0 +1,12 @@
+#!/usr/bin/env sh
+# Pre-commit hook to check for focused tests (fdescribe and fit)
+
+if grep -rn 'fdescribe(' ./projects/hslayers/test || grep -rn 'fit(' ./projects/hslayers/test; then
+  echo "Error: Found focused tests (fdescribe or fit). Please remove them before committing."
+  echo "Pre-commit hook failed. Commit aborted."
+  exit 1
+else
+  echo "No focused tests found."
+fi
+
+echo "Pre-commit hook completed."
