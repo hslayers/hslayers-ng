@@ -64,7 +64,7 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
       map_projection: '',
       tile_size: 512,
       use_resampling: false,
-      use_tiles: true,
+      useTiles: true,
       visible: true,
       table: {
         trackBy: 'Name',
@@ -475,10 +475,9 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
       },
       crossOrigin: 'anonymous',
     };
-    const USE_TILES = options.useTiles ?? this.data.use_tiles;
-    const source: ImageWMS | TileWMS = !USE_TILES
-      ? new ImageWMS(sourceOptions)
-      : new TileWMS(sourceOptions);
+    const source: ImageWMS | TileWMS = this.data.useTiles
+      ? new TileWMS(sourceOptions)
+      : new ImageWMS(sourceOptions);
     const metadata =
       this.hsWmsGetCapabilitiesService.getMetadataObjectWithUrls(layer);
     const view = this.hsMapService.getMap().getView();
@@ -518,10 +517,10 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
      */
     layerOptions['capsExtentSet'] = !!layerOptions.extent;
 
-    const new_layer = USE_TILES
+    const new_layer = this.data.useTiles
       ? new Tile(layerOptions as TileOptions<TileSource>)
       : new ImageLayer(layerOptions as ImageOptions<ImageSource>);
-    this.hsMapService.proxifyLayerLoader(new_layer, USE_TILES);
+    this.hsMapService.proxifyLayerLoader(new_layer, this.data.useTiles);
     return new_layer;
   }
 

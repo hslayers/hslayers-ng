@@ -1,5 +1,6 @@
 import {Injectable, NgZone} from '@angular/core';
-import {buffer, filter, first, map} from 'rxjs';
+import {Observable, merge} from 'rxjs';
+import {buffer, filter, first, map, switchMap, take} from 'rxjs/operators';
 
 import {Layer} from 'ol/layer';
 import {Source} from 'ol/source';
@@ -78,18 +79,28 @@ export class HsMapSwipeService {
       }
     });
 
-    this.hsEventBusService.layerManagerUpdates
+    //Stream used to update layers while mapSwipe panel is active
+    const isMapSwipe$ = this.getLayerUpdateWithCurrentPanel().pipe(
+      filter(({panel}) => panel === 'mapSwipe'),
+      map(({layer}) => [layer]),
+    );
+    //Stream used to update layers while mapSwipe panel is not active
+    const isNotMapSwipe$ = this.getLayerUpdateWithCurrentPanel().pipe(
+      filter(({panel}) => panel !== 'mapSwipe'),
+      map(({layer}) => layer),
+      //buffer layerManagerUpdates until mapSwipe panel is opened
+      buffer(
+        this.hsLayoutService.mainpanel$.pipe(filter((p) => p === 'mapSwipe')),
+      ),
+    );
+
+    merge(isMapSwipe$, isNotMapSwipe$)
       .pipe(
-        //Buffer layerManagerUpdates until mapSwipe panel is opened
-        buffer(
-          this.hsLayoutService.mainpanel$.pipe(filter((p) => p === 'mapSwipe')),
-        ),
-        //Do not accept empty array
-        filter((layers) => layers.length > 0),
+        filter((layers) => layers?.length > 0),
         map((layers) => this.removeDuplicateUpdates(layers as Layer<Source>[])),
       )
-      .subscribe((filteredLayers) => {
-        this.fillSwipeLayers(filteredLayers);
+      .subscribe((layers) => {
+        this.fillSwipeLayers(layers);
       });
 
     this.hsLayerEditorService.layerTitleChange.subscribe(({layer}) => {
@@ -98,6 +109,25 @@ export class HsMapSwipeService {
         this.fillSwipeLayers(layer);
       }, 500);
     });
+  }
+
+  /**
+   * Get layer manager update along with the current mainPanel
+   */
+  private getLayerUpdateWithCurrentPanel(): Observable<{
+    layer: Layer<Source>;
+    panel: string;
+  }> {
+    return this.hsEventBusService.layerManagerUpdates.pipe(
+      //filter out nulls
+      filter((layer): layer is Layer<Source> => !!layer),
+      switchMap((layer) =>
+        this.hsLayoutService.mainpanel$.pipe(
+          take(1),
+          map((panel) => ({layer, panel})),
+        ),
+      ),
+    );
   }
 
   /**

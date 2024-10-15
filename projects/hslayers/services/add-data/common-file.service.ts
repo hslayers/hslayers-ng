@@ -515,7 +515,7 @@ export class HsAddDataCommonFileService extends HsAddDataCommonFileServiceParams
    */
   handleLaymanError(response: PostPatchLayerResponse): void {
     const errorMessage =
-      response?.error?.message ?? response?.message == 'Wrong parameter value'
+      (response?.error?.message ?? response?.message == 'Wrong parameter value')
         ? `${response?.message} : ${response?.detail.parameter}`
         : response?.message;
     const errorDetails = response?.detail?.missing_extensions
@@ -577,6 +577,7 @@ export class HsAddDataCommonFileService extends HsAddDataCommonFileServiceParams
               descriptor.style.url,
             )
           : undefined,
+        group: false, //Make sure WMS layer is not set as group, no effect on others
       },
     });
   }

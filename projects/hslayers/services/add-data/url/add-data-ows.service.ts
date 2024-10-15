@@ -20,7 +20,7 @@ import {
 } from 'hslayers-ng/services/get-capabilities';
 import {HsLogService} from 'hslayers-ng/services/log';
 
-import {AddDataUrlType} from 'hslayers-ng/types';
+import {AddDataUrlType, LayerOptions} from 'hslayers-ng/types';
 import {HsHistoryListService} from 'hslayers-ng/common/history-list';
 import {HsUrlTypeServiceModel} from 'hslayers-ng/types';
 import {LayerConnection, OwsConnection} from 'hslayers-ng/types';
@@ -90,6 +90,7 @@ export class HsAddDataOwsService {
       this.hsAddDataCommonService.throwParsingError(wrapper.response);
       return [];
     } else {
+      this.overwriteServiceDefaults(options?.layerOptions);
       const response = await this.typeService.listLayerFromCapabilities(
         wrapper,
         options?.layerOptions,
@@ -118,6 +119,18 @@ export class HsAddDataOwsService {
       }
 
       return response;
+    }
+  }
+
+  /**
+   * Overwrites service defaults with layerOptions
+   * @param layerOptions - Layer options to overwrite
+   */
+  overwriteServiceDefaults(layerOptions: LayerOptions): void {
+    for (const key in layerOptions) {
+      if (Object.hasOwn(this.typeService.data, key)) {
+        this.typeService.data[key] = layerOptions[key];
+      }
     }
   }
 
