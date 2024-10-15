@@ -17,7 +17,13 @@ export type LayerOptions = {
   crs?: string;
   opacity?: number;
 
-  //WMS
+  //****WMS****//
+
+  /**
+   * Normally used to determine if layer is a group of sublayers or single layers.
+   * Set to false when loading layer after an upload to parse correct layer name
+   */
+  group?: boolean;
   useTiles?: boolean;
   base?: boolean;
   imageFormat?: string;
