@@ -1,15 +1,15 @@
+import {CommonModule, NgClass} from '@angular/common';
 import {Component, Input, OnInit, ViewChild} from '@angular/core';
+import {FormsModule} from '@angular/forms';
+import {NgbTooltipModule} from '@ng-bootstrap/ng-bootstrap';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 
-import {CommonModule, NgClass} from '@angular/common';
 import {DatePreformatPipe} from './date-preformat.pipe';
-import {FormsModule} from '@angular/forms';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsDimensionTimeService} from 'hslayers-ng/services/get-capabilities';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsLayerDescriptor} from 'hslayers-ng/types';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
-import {NgbTooltipModule} from '@ng-bootstrap/ng-bootstrap';
 import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 
 @Component({

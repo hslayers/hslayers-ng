@@ -1,9 +1,10 @@
+import {AsyncPipe, NgClass} from '@angular/common';
 import {Component, input} from '@angular/core';
+import {FormsModule} from '@angular/forms';
+import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
 
 import {Circle, Fill, Stroke, Style} from 'ol/style';
 
-import {AsyncPipe, NgClass} from '@angular/common';
-import {FormsModule} from '@angular/forms';
 import {HsDrawService} from 'hslayers-ng/services/draw';
 import {
   HsLanguageService,
@@ -11,7 +12,6 @@ import {
 } from 'hslayers-ng/services/language';
 import {HsLayerUtilsService} from 'hslayers-ng/services/utils';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
-import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
 import {getTitle} from 'hslayers-ng/common/extensions';
 
 interface DrawToolDefinition {
@@ -23,7 +23,6 @@ interface DrawToolDefinition {
 @Component({
   selector: 'hs-draw-panel',
   templateUrl: './draw-panel.component.html',
-  styleUrls: ['./draw-panel.component.scss'],
   standalone: true,
   imports: [
     AsyncPipe,
@@ -33,7 +32,7 @@ interface DrawToolDefinition {
     NgbDropdownModule,
   ],
 })
-export class DrawPanelComponent {
+export class HsDrawPanelComponent {
   inToolbar = input<boolean>(false);
 
   onFeatureSelected: any;

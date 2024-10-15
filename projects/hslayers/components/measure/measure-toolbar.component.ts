@@ -1,7 +1,7 @@
+import {AsyncPipe} from '@angular/common';
 import {Component} from '@angular/core';
 import {of} from 'rxjs';
 
-import {AsyncPipe} from '@angular/common';
 import {HsGuiOverlayBaseComponent} from 'hslayers-ng/common/panels';
 import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 

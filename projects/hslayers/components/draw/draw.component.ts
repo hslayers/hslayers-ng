@@ -1,8 +1,7 @@
 import {AsyncPipe, NgClass} from '@angular/common';
+import {BehaviorSubject} from 'rxjs';
 import {Component, OnInit} from '@angular/core';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
-
-import {BehaviorSubject} from 'rxjs';
 
 import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
 import {HsDrawService} from 'hslayers-ng/services/draw';
@@ -14,8 +13,8 @@ import {
 import {HsQueryModule} from 'hslayers-ng/components/query';
 import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 
-import {DrawEditComponent} from './draw-edit/draw-edit.component';
-import {DrawPanelComponent} from './draw-panel/draw-panel.component';
+import {HsDrawEditComponent} from './draw-edit/draw-edit.component';
+import {HsDrawPanelComponent} from './draw-panel/draw-panel.component';
 
 @Component({
   selector: 'hs-draw',
@@ -25,9 +24,9 @@ import {DrawPanelComponent} from './draw-panel/draw-panel.component';
     NgClass,
     AsyncPipe,
     TranslateCustomPipe,
+    HsDrawEditComponent,
+    HsDrawPanelComponent,
     HsPanelBaseComponent,
-    DrawPanelComponent,
-    DrawEditComponent,
     HsQueryModule,
     HsPanelHeaderComponent,
     HsPanelHelpersModule,

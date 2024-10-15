@@ -4,27 +4,21 @@ import {
   Component,
   Input,
   OnInit,
-  Signal,
   ViewContainerRef,
   ViewRef,
   inject,
-  signal,
   viewChild,
 } from '@angular/core';
+import {Observable, filter, map, startWith} from 'rxjs';
+import {takeUntilDestroyed, toObservable} from '@angular/core/rxjs-interop';
 
 import {HsDialogComponent} from 'hslayers-ng/common/dialogs';
 import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
 import {HsLayerDescriptor} from 'hslayers-ng/types';
 import {HsLayerEditorService} from '../editor/layer-editor.service';
 import {HsLayerManagerService} from 'hslayers-ng/services/layer-manager';
-import {Observable, filter, map, startWith} from 'rxjs';
 import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 import {getBase} from 'hslayers-ng/common/extensions';
-import {
-  takeUntilDestroyed,
-  toObservable,
-  toSignal,
-} from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'hs-gallery-editor-dialog',

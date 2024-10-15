@@ -1,11 +1,12 @@
 import {Component} from '@angular/core';
+import {KeyValuePipe, NgClass} from '@angular/common';
+import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
+
 import {Feature} from 'ol';
 import {Geometry} from 'ol/geom';
-import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsSearchService} from './search.service';
-import {KeyValuePipe, NgClass} from '@angular/common';
 import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 import {limitToPipe} from './limitTo.pipe';
 import {setHighlighted} from 'hslayers-ng/common/extensions';

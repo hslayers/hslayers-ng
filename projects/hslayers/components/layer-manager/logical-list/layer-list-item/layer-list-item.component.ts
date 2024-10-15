@@ -42,7 +42,7 @@ import {
     HsLayerManagerTimeEditorComponent,
   ],
 })
-export class LayerListItemComponent implements OnInit {
+export class HsLayerListItemComponent implements OnInit {
   layer = input.required<HsLayerDescriptor>();
 
   isSelected = computed(

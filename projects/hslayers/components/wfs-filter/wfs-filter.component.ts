@@ -1,4 +1,3 @@
-import * as olFormatFilter from 'ol/format/filter';
 import {AsyncPipe, NgClass} from '@angular/common';
 import {
   ChangeDetectionStrategy,
@@ -11,6 +10,7 @@ import {HttpClient} from '@angular/common/http';
 import {computed, signal} from '@angular/core';
 import {takeUntilDestroyed, toSignal} from '@angular/core/rxjs-interop';
 
+import * as olFormatFilter from 'ol/format/filter';
 import {Vector as VectorLayer} from 'ol/layer';
 import {Vector as VectorSource} from 'ol/source';
 import {catchError, filter, lastValueFrom, map, switchMap, tap} from 'rxjs';

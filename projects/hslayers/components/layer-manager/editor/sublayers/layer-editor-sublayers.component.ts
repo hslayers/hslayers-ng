@@ -1,4 +1,5 @@
 import {Component, computed, input} from '@angular/core';
+
 import {HsLayerDescriptor} from 'hslayers-ng/types';
 import {HsLayerEditorSubLayerCheckboxesComponent} from './layer-editor-sub-layer-checkboxes.component';
 import {HsLayerEditorSublayerService} from './layer-editor-sub-layer.service';

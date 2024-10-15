@@ -46,9 +46,9 @@ export class HsSearchInputComponent implements OnInit, OnDestroy {
       this.query = query;
       this.queryChanged();
     }
-    window.innerWidth < this.hsConfig.mobileBreakpoint
-      ? (this.searchInputVisible = false)
-      : (this.searchInputVisible = true);
+    this.searchInputVisible = !(
+      window.innerWidth < this.hsConfig.mobileBreakpoint
+    );
   }
 
   /**
