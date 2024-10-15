@@ -88,14 +88,14 @@
     <div class="capabilities_input d-flex flex-column">
       @if (type === 'wms') {
       <label class="capabilities_label control-label"> <input type="checkbox" class="me-1 checkbox-lg" name="useTiles"
-          [(ngModel)]="data.use_tiles" />
+          [(ngModel)]="data.useTiles" />
         {{'ADDLAYERS.useTiles' | translateHs }}
       </label>
       }
     </div>
   </div>
   @if (type === 'wms' || type === 'arcgis') {
-  <p class="col-sm-12 alert alert-warning" [hidden]="data.use_tiles">
+  <p class="col-sm-12 alert alert-warning" [hidden]="data.useTiles">
     {{'ADDLAYERS.considerUsingTiles' | translateHs }}
   </p>
   }

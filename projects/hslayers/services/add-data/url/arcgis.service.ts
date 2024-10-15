@@ -55,7 +55,7 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
       map_projection: '',
       tile_size: 512,
       use_resampling: false,
-      use_tiles: true,
+      useTiles: true,
       table: {
         trackBy: 'id',
         nameProperty: 'name',
