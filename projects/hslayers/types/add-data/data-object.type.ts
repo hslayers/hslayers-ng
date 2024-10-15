@@ -36,7 +36,7 @@ export type UrlDataObject = {
   tile_size?: number;
   title?: string;
   use_resampling?: boolean;
-  use_tiles?: boolean;
+  useTiles?: boolean;
   version?: string;
   visible?: boolean;
   table: {
