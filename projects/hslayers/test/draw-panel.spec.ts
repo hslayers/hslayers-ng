@@ -13,13 +13,13 @@ import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
 import {Vector as VectorLayer} from 'ol/layer';
 import {Vector as VectorSource} from 'ol/source';
 
-import {DrawPanelComponent} from 'hslayers-ng/components/draw';
 import {HsAddDataOwsService} from 'hslayers-ng/services/add-data';
 import {HsAddDataVectorService} from 'hslayers-ng/services/add-data';
 import {HsCommonEndpointsService} from 'hslayers-ng/services/endpoints';
 import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsConfigMock} from './config.service.mock';
+import {HsDrawPanelComponent} from 'hslayers-ng/components/draw';
 import {HsDrawService} from 'hslayers-ng/services/draw';
 import {HsLanguageService} from 'hslayers-ng/services/language';
 import {HsLayerUtilsService} from 'hslayers-ng/services/utils';
@@ -82,8 +82,8 @@ describe('HsDrawPanel', () => {
     );
   });
 
-  let fixture: ComponentFixture<DrawPanelComponent>;
-  let component: DrawPanelComponent;
+  let fixture: ComponentFixture<HsDrawPanelComponent>;
+  let component: HsDrawPanelComponent;
   let service: HsDrawService;
   beforeEach(() => {
     const mockedConfig = new HsConfigMock();
@@ -94,7 +94,7 @@ describe('HsDrawPanel', () => {
         FormsModule,
         TranslateCustomPipe,
         NgbDropdownModule,
-        DrawPanelComponent,
+        HsDrawPanelComponent,
       ],
       providers: [
         HsDrawService,
@@ -132,7 +132,7 @@ describe('HsDrawPanel', () => {
         provideHttpClientTesting(),
       ],
     }); //.compileComponents();
-    fixture = TestBed.createComponent(DrawPanelComponent);
+    fixture = TestBed.createComponent(HsDrawPanelComponent);
     service = TestBed.inject(HsDrawService);
     component = fixture.componentInstance;
 

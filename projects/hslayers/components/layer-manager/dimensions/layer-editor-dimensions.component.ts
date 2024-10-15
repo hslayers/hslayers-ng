@@ -1,4 +1,5 @@
 import {Component, OnInit} from '@angular/core';
+import {filter, merge} from 'rxjs';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 
 import {HsDimensionDescriptor} from 'hslayers-ng/common/dimensions';
@@ -9,7 +10,6 @@ import {HsLayerEditorWidgetBaseComponent} from '../widgets/layer-editor-widget-b
 import {HsLayerSelectorService} from 'hslayers-ng/services/layer-manager';
 import {HsMapService} from 'hslayers-ng/services/map';
 import {HsUtilsService} from 'hslayers-ng/services/utils';
-import {filter, merge} from 'rxjs';
 import {getDimensions} from 'hslayers-ng/common/extensions';
 
 @Component({

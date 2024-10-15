@@ -1,8 +1,20 @@
 export interface HsSublayer {
-  name: string; // Unique identifier for the layer
+  /**
+   * Unique identifier for the layer
+   */
+  name: string;
   title: string;
-  visible: boolean; // Visibility state of this layer
-  previousVisible: boolean; // Previous visibility state
-  sublayers?: HsSublayer[]; // Nested sublayers, if any
+  /**
+   * Visibility state of this layer
+   */
+  visible: boolean;
+  /**
+   * Previous visibility state
+   */
+  previousVisible: boolean;
+  /**
+   * Nested sublayers, if any
+   */
+  sublayers?: HsSublayer[];
   maxResolution?: number;
 }

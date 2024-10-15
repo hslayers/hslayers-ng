@@ -4,8 +4,7 @@ import {FormsModule} from '@angular/forms';
 import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
 
 import {HsConfig} from 'hslayers-ng/config';
-
-import {DrawPanelComponent} from '../draw-panel/draw-panel.component';
+import {HsDrawPanelComponent} from '../draw-panel/draw-panel.component';
 import {HsDrawService} from 'hslayers-ng/services/draw';
 import {HsGuiOverlayBaseComponent} from 'hslayers-ng/common/panels';
 import {TranslateCustomPipe} from 'hslayers-ng/services/language';
@@ -43,7 +42,7 @@ import {getTitle} from 'hslayers-ng/common/extensions';
     FormsModule,
     NgbDropdownModule,
     TranslateCustomPipe,
-    DrawPanelComponent,
+    HsDrawPanelComponent,
   ],
 })
 export class HsDrawToolbarComponent extends HsGuiOverlayBaseComponent {

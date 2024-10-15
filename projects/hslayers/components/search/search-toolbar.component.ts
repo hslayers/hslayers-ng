@@ -1,6 +1,6 @@
+import {AsyncPipe} from '@angular/common';
 import {Component} from '@angular/core';
 
-import {AsyncPipe} from '@angular/common';
 import {HsGuiOverlayBaseComponent} from 'hslayers-ng/common/panels';
 import {HsSearchInputComponent} from './search-input.component';
 import {HsSearchResultsComponent} from './search-results.component';

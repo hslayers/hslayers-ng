@@ -1,12 +1,12 @@
 import {Component, computed, inject, input, model, signal} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {NgClass} from '@angular/common';
+import {map} from 'rxjs';
 import {toObservable} from '@angular/core/rxjs-interop';
 
 import {Feature} from 'ol';
 import {Vector as VectorLayer} from 'ol/layer';
 import {Vector as VectorSource} from 'ol/source';
-import {map} from 'rxjs';
 
 import {HsConfig} from 'hslayers-ng/config';
 import {HsConfirmDialogComponent} from 'hslayers-ng/common/confirm';
@@ -33,18 +33,19 @@ import {
   setTitle,
 } from 'hslayers-ng/common/extensions';
 
+// Widgets
 import {HsClusterWidgetComponent} from '../widgets/cluster-widget.component';
 import {HsExtentWidgetComponent} from '../widgets/extent-widget/extent-widget.component';
 import {HsIdwWidgetComponent} from '../widgets/idw-widget.component';
 import {HsLayerEditorWidgetContainerService} from '../widgets/layer-editor-widget-container.service';
 import {HsLayerFolderWidgetComponent} from '../widgets/layer-folder-widget/layer-folder-widget.component';
+import {HsLayerTypeSwitcherWidgetComponent} from '../widgets/layer-type-switcher-widget/layer-type-switcher-widget.component';
 import {HsLegendWidgetComponent} from '../widgets/legend-widget.component';
 import {HsMetadataWidgetComponent} from '../widgets/metadata-widget.component';
 import {HsOpacityWidgetComponent} from '../widgets/opacity-widget.component';
 import {HsScaleWidgetComponent} from '../widgets/scale-widget.component';
 import {HsTypeWidgetComponent} from '../widgets/type-widget.component';
 import {HsWmsSourceWidgetComponent} from '../widgets/wms-source-widget/wms-source-widget.component';
-import {LayerTypeSwitcherWidgetComponent} from '../widgets/layer-type-switcher-widget/layer-type-switcher-widget.component';
 
 import {HsCopyLayerDialogComponent} from '../dialogs/copy-layer-dialog.component';
 import {HsLayerEditorDimensionsComponent} from '../dimensions/layer-editor-dimensions.component';
@@ -138,7 +139,7 @@ export class HsLayerEditorComponent {
       HsOpacityWidgetComponent,
       HsIdwWidgetComponent,
       HsWmsSourceWidgetComponent,
-      LayerTypeSwitcherWidgetComponent,
+      HsLayerTypeSwitcherWidgetComponent,
     ];
     for (const widgetClass of widgets) {
       this.hsWidgetContainerService.create(widgetClass, {});

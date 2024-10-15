@@ -1,18 +1,18 @@
+import {AsyncPipe} from '@angular/common';
 import {Component, Input} from '@angular/core';
 import {Observable, map} from 'rxjs';
 import {combineLatestWith, filter, startWith} from 'rxjs/operators';
+import {toObservable} from '@angular/core/rxjs-interop';
 
-import {AsyncPipe} from '@angular/common';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsLayerDescriptor, HsLayermanagerFolder} from 'hslayers-ng/types';
+import {HsLayerListItemComponent} from './layer-list-item/layer-list-item.component';
 import {HsLayerManagerService} from 'hslayers-ng/services/layer-manager';
-import {LayerListItemComponent} from './layer-list-item/layer-list-item.component';
-import {toObservable} from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'hs-layer-manager-layer-list',
   templateUrl: './layer-manager-layerlist.component.html',
-  imports: [LayerListItemComponent, AsyncPipe],
+  imports: [HsLayerListItemComponent, AsyncPipe],
   standalone: true,
 })
 export class HsLayerListComponent {

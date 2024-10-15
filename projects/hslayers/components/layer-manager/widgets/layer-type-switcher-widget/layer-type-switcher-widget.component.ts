@@ -1,7 +1,15 @@
+import {AsyncPipe, NgClass} from '@angular/common';
 import {Component, Signal, inject, signal} from '@angular/core';
-import {OSM} from 'ol/source';
 import {Observable, map} from 'rxjs';
 
+import {OSM} from 'ol/source';
+
+import {HsConfirmDialogComponent} from 'hslayers-ng/common/confirm';
+import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
+import {HsEventBusService} from 'hslayers-ng/services/event-bus';
+import {HsLayerDescriptor} from 'hslayers-ng/types';
+import {HsLayerEditorService} from '../../editor/layer-editor.service';
+import {HsLayerEditorWidgetBaseComponent} from '../layer-editor-widget-base.component';
 import {
   HsLayerManagerFolderService,
   HsLayerManagerLoadingProgressService,
@@ -9,14 +17,6 @@ import {
   HsLayerManagerVisibilityService,
   HsLayerSelectorService,
 } from 'hslayers-ng/services/layer-manager';
-
-import {AsyncPipe, NgClass} from '@angular/common';
-import {HsConfirmDialogComponent} from 'hslayers-ng/common/confirm';
-import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
-import {HsEventBusService} from 'hslayers-ng/services/event-bus';
-import {HsLayerDescriptor} from 'hslayers-ng/types';
-import {HsLayerEditorService} from '../../editor/layer-editor.service';
-import {HsLayerEditorWidgetBaseComponent} from '../layer-editor-widget-base.component';
 import {HsLayerUtilsService, HsUtilsService} from 'hslayers-ng/services/utils';
 import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 import {getBase, setBase} from 'hslayers-ng/common/extensions';
@@ -29,7 +29,7 @@ type layerType = 'base' | 'thematic';
   imports: [NgClass, AsyncPipe, TranslateCustomPipe],
   templateUrl: './layer-type-switcher-widget.component.html',
 })
-export class LayerTypeSwitcherWidgetComponent extends HsLayerEditorWidgetBaseComponent {
+export class HsLayerTypeSwitcherWidgetComponent extends HsLayerEditorWidgetBaseComponent {
   private hsLayermanagerService = inject(HsLayerManagerService);
   private hsLayerManagerVisibilityService = inject(
     HsLayerManagerVisibilityService,

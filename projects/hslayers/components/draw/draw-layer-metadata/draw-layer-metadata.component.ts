@@ -1,7 +1,8 @@
 import {Component, Input, OnInit, ViewRef} from '@angular/core';
+import {FormsModule} from '@angular/forms';
+import {NgClass} from '@angular/common';
 
 import {AccessRightsModel} from 'hslayers-ng/types';
-import {FormsModule} from '@angular/forms';
 import {HsDialogComponent} from 'hslayers-ng/common/dialogs';
 import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
 import {HsDrawService} from 'hslayers-ng/services/draw';
@@ -11,7 +12,6 @@ import {
   getLaymanFriendlyLayerName,
 } from 'hslayers-ng/common/layman';
 import {HsMapService} from 'hslayers-ng/services/map';
-import {NgClass} from '@angular/common';
 import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 import {
   getEditor,
@@ -26,7 +26,7 @@ import {
 
 @Component({
   selector: 'hs-draw-layer-metadata',
-  templateUrl: './draw-layer-metadata.html',
+  templateUrl: './draw-layer-metadata.component.html',
   standalone: true,
   imports: [NgClass, FormsModule, TranslateCustomPipe, HsLaymanModule],
 })

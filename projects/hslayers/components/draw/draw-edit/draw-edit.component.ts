@@ -1,4 +1,5 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
+import {NgClass} from '@angular/common';
 
 import * as polygonClipping from 'polygon-clipping';
 import polygonSplitter from 'polygon-splitter';
@@ -18,20 +19,18 @@ import {HsMapService} from 'hslayers-ng/services/map';
 import {HsQueryBaseService} from 'hslayers-ng/services/query';
 import {HsQueryVectorService} from 'hslayers-ng/services/query';
 import {HsToastService} from 'hslayers-ng/common/toast';
-import {NgClass} from '@angular/common';
 import {defaultStyle} from 'hslayers-ng/services/styler';
 
 @Component({
   selector: 'hs-draw-edit',
   templateUrl: './draw-edit.component.html',
-  styleUrls: ['./draw-edit.component.scss'],
   standalone: true,
   imports: [NgClass, TranslateCustomPipe],
 })
-export class DrawEditComponent implements OnDestroy, OnInit {
+export class HsDrawEditComponent implements OnDestroy, OnInit {
   vectorQueryFeatureSubscription;
-  editOptions = ['difference', 'union', 'intersection', 'split'];
-  selectedType: 'difference' | 'union' | 'intersection' | 'split';
+  editOptions = ['difference', 'union', 'intersection', 'split'] as const;
+  selectedType: (typeof this.editOptions)[number];
 
   selectedFeature;
   editLayer = new VectorLayer({
