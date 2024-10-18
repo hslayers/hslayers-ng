@@ -111,7 +111,7 @@
     "@types/jasmine": "^5.1.4",
     "@types/jasminewd2": "~2.0.12",
     "@typescript-eslint/eslint-plugin": "^8.8.1",
-    "@typescript-eslint/parser": "^8.9.0",
+    "@typescript-eslint/parser": "^8.10.0",
     "cypress": "~13.15.0",
     "cypress-real-events": "^1.13.0",
     "cz-conventional-changelog": "^3.3.0",
