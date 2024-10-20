@@ -101,7 +101,7 @@ describe('HsLayerManagerFolderService', () => {
   });
 
   it('should reorder folders by zIndex', () => {
-    service.folderAction$.next(service.sortByZ());
+    service.folderAction$.next(service.sortByZ({debounce: false}));
     expect(Array.from(service.data.folders().keys())[0]).toEqual(
       'Path with higher zIndex',
     );
@@ -109,7 +109,7 @@ describe('HsLayerManagerFolderService', () => {
 
   it('should remain in the original order after reorder', () => {
     hsConfig.reverseLayerList = false;
-    service.folderAction$.next(service.sortByZ());
+    service.folderAction$.next(service.sortByZ({debounce: false}));
     expect(Array.from(service.data.folders().keys())[0]).toEqual('other');
   });
 
