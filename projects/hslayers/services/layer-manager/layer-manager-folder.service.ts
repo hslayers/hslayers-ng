@@ -60,7 +60,7 @@ export class HsLayerManagerFolderService {
     private hsConfig: HsConfig,
   ) {
     this.sortSubject.pipe(debounceTime(this.sortDebounceTime)).subscribe(() => {
-      this.folderAction$.next(this.sortByZ(false));
+      this.folderAction$.next(this.sortByZ({debounce: false}));
     });
   }
 
@@ -104,11 +104,11 @@ export class HsLayerManagerFolderService {
     };
   }
 
-  sortByZ(debounce = true): SortFoldersByZAction {
+  sortByZ(options = {debounce: true}): SortFoldersByZAction {
     return {
       type: FolderActionTypes.SORT_BY_Z,
       lyr: undefined,
-      debounce: debounce,
+      debounce: options.debounce,
     };
   }
 

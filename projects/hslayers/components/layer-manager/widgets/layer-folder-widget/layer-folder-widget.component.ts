@@ -65,6 +65,8 @@ export class HsLayerFolderWidgetComponent extends HsLayerEditorWidgetBaseCompone
     this.folderService.folderAction$.next(
       this.folderService.addLayer(this.hsLayerSelectorService.currentLayer),
     );
-    this.folderService.folderAction$.next(this.folderService.sortByZ(false));
+    this.folderService.folderAction$.next(
+      this.folderService.sortByZ({debounce: false}),
+    );
   }
 }
