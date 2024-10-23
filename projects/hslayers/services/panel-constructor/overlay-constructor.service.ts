@@ -1,10 +1,10 @@
+import {HsQueryPopupService} from 'hslayers-ng/common/query-popup';
 import {
-  EnvironmentInjector,
   Injectable,
+  Injector,
   inject,
   runInInjectionContext,
 } from '@angular/core';
-import {HsQueryPopupService} from 'hslayers-ng/common/query-popup';
 import {filter, firstValueFrom, map, take, tap} from 'rxjs';
 
 import {HsConfig} from 'hslayers-ng/config';
@@ -17,7 +17,7 @@ import {toObservable} from '@angular/core/rxjs-interop';
   providedIn: 'root',
 })
 export class HsOverlayConstructorService extends HsPanelContainerService {
-  private injector = inject(EnvironmentInjector);
+  private injector = inject(Injector);
 
   panels$ = toObservable(this.hsToolbarPanelContainerService.panels);
 
