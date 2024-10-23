@@ -3,10 +3,14 @@ import {Component} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
 
-import {HsConfig} from 'hslayers-ng/config';
 import {HsDrawPanelComponent} from '../draw-panel/draw-panel.component';
 import {HsDrawService} from 'hslayers-ng/services/draw';
+import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsGuiOverlayBaseComponent} from 'hslayers-ng/common/panels';
+import {HsLayerUtilsService} from 'hslayers-ng/services/utils';
+import {HsMapService} from 'hslayers-ng/services/map';
+import {Layer} from 'ol/layer';
+import {Source} from 'ol/source';
 import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 import {getTitle} from 'hslayers-ng/common/extensions';
 
@@ -51,17 +55,54 @@ export class HsDrawToolbarComponent extends HsGuiOverlayBaseComponent {
   name = 'drawToolbar';
   getTitle = getTitle;
   constructor(
-    public HsDrawService: HsDrawService,
-    public HsConfig: HsConfig,
+    public hsDrawService: HsDrawService,
+    private hsMapService: HsMapService,
+    private hsLayerUtilsService: HsLayerUtilsService,
+    private hsEventBusService: HsEventBusService,
   ) {
     super();
+
+    /**
+     * Add listener for initial layers
+     */
+    this.hsMapService.getLayersArray().forEach((l) => {
+      if (this.hsLayerUtilsService.isLayerDrawable(l, {checkVisible: false})) {
+        this.addVisibilityChangeListener(l);
+      }
+    });
+
+    /**
+     * Add listener for layers added to map later on
+     */
+    this.hsEventBusService.mapEventHandlersSet.subscribe(() => {
+      this.hsMapService.map.getLayers().on('add', (e) => {
+        if (
+          this.hsLayerUtilsService.isLayerDrawable(e.element as Layer<Source>)
+        ) {
+          this.addVisibilityChangeListener(e.element as Layer<Source>);
+        }
+      });
+    });
   }
+
+  /**
+   * Add listener for layer visibility change
+   * @param layer - Layer to listen to
+   */
+  addVisibilityChangeListener(layer: Layer<Source>) {
+    layer.on('change:visible', (e) => {
+      if (this.drawToolbarExpanded) {
+        this.hsDrawService.fillDrawableLayers();
+      }
+    });
+  }
+
   selectionMenuToggled(): void {
-    this.setType(this.HsDrawService.type);
+    this.setType(this.hsDrawService.type);
   }
 
   toggleDrawToolbar(): void {
-    this.HsDrawService.highlightDrawButton = false;
+    this.hsDrawService.highlightDrawButton = false;
     if (
       this.hsLayoutService.layoutElement.clientWidth > 767 &&
       this.hsLayoutService.layoutElement.clientWidth < 870 &&
@@ -71,32 +112,33 @@ export class HsDrawToolbarComponent extends HsGuiOverlayBaseComponent {
     }
     this.drawToolbarExpanded = !this.drawToolbarExpanded;
     if (!this.drawToolbarExpanded) {
-      this.HsDrawService.stopDrawing();
+      this.hsDrawService.stopDrawing();
+    } else {
+      this.hsDrawService.fillDrawableLayers();
     }
-    this.HsDrawService.fillDrawableLayers();
   }
 
   selectLayer(layer): void {
-    this.HsDrawService.selectLayer(layer);
+    this.hsDrawService.selectLayer(layer);
   }
 
   controlLayerListAction() {
     if (
-      !this.HsDrawService.hasSomeDrawables &&
-      this.HsDrawService.tmpDrawLayer
+      !this.hsDrawService.hasSomeDrawables &&
+      this.hsDrawService.tmpDrawLayer
     ) {
-      this.HsDrawService.saveDrawingLayer();
+      this.hsDrawService.saveDrawingLayer();
     }
   }
 
   setType(what): void {
-    const type = this.HsDrawService.setType(what);
+    const type = this.hsDrawService.setType(what);
     if (type) {
-      this.HsDrawService.activateDrawing({});
+      this.hsDrawService.activateDrawing({});
     }
   }
 
   finishDrawing(): void {
-    this.HsDrawService.stopDrawing();
+    this.hsDrawService.stopDrawing();
   }
 }

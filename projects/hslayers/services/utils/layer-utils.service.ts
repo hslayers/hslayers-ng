@@ -433,10 +433,14 @@ export class HsLayerUtilsService {
    * @param layer - Layer to check
    * @returns True if layer is drawable vector layer
    */
-  isLayerDrawable(layer: Layer<Source>): boolean {
+  isLayerDrawable(
+    layer: Layer<Source>,
+    options: {checkVisible?: boolean} = {},
+  ): boolean {
+    const checkVisible = options.checkVisible ?? true;
     return (
       this.isLayerVectorLayer(layer, false) &&
-      layer.getVisible() &&
+      (checkVisible ? layer.getVisible() : true) &&
       this.isLayerInManager(layer) &&
       this.hasLayerTitle(layer) &&
       this.isLayerEditable(layer)

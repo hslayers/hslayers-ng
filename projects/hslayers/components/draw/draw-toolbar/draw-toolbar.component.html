@@ -1,60 +1,37 @@
 @if ({ position: hsLayoutService.sidebarPosition | async }; as sidebar) {
-  <button
-    class="btn btn-light hs-toolbar-button text-secondary"
-    [ngClass]="{
-      'btn-outline-danger': HsDrawService.highlightDrawButton,
+<button class="btn btn-light hs-toolbar-button text-secondary" [ngClass]="{
+      'btn-outline-danger': hsDrawService.highlightDrawButton,
       'btn-light text-secondary': !drawToolbarExpanded,
       'btn-secondary': drawToolbarExpanded,
-    }"
-    (click)="toggleDrawToolbar()"
-  >
-    <i
-      [ngClass]="{
+    }" (click)="toggleDrawToolbar()">
+  <i [ngClass]="{
         'icon-pencil': !drawToolbarExpanded,
         'icon-remove': drawToolbarExpanded,
-      }"
-      data-toggle="tooltip"
-      [title]="'PANEL_HEADER.draw' | translateHs"
-    ></i>
-  </button>
+      }" data-toggle="tooltip" [title]="'PANEL_HEADER.draw' | translateHs"></i>
+</button>
 
-  @if (drawToolbarExpanded) {
-    @defer (when drawToolbarExpanded) {
-      <hs-draw-panel
-        [inToolbar]="true"
-        class="draw-panel-popup d-block w-100 rounded-3 d-flex flex-column w-auto bg-white p-3"
-      ></hs-draw-panel>
-    }
-  }
+@if (drawToolbarExpanded) {
+@defer (when drawToolbarExpanded) {
+<hs-draw-panel [inToolbar]="true"
+  class="draw-panel-popup d-block w-100 rounded-3 d-flex flex-column w-auto bg-white p-3"></hs-draw-panel>
+}
+}
 
-  @if (HsDrawService.drawActive) {
-  <div
-    style="top: 35vh"
-    role="group"
-    class="btn-group-vertical position-fixed d-flex flex-column"
-    [ngStyle]="
+@if (hsDrawService.drawActive) {
+<div style="top: 35vh" role="group" class="btn-group-vertical position-fixed d-flex flex-column" [ngStyle]="
       sidebar.position === 'right' || sidebar.position === 'bottom'
         ? { left: 0 }
         : { right: 0 }
-    "
-  >
-      <button
-        class="btn btn-secondary"
-        (click)="HsDrawService.removeLastPoint()"
-        data-toggle="tooltip"
-        [title]="'DRAW.drawToolbar.removeLastPoint' | translateHs"
-      >
-        <i class="icon-remove-circle"></i>
-      </button>
+    ">
+  <button class="btn btn-secondary" (click)="hsDrawService.removeLastPoint()" data-toggle="tooltip"
+    [title]="'DRAW.drawToolbar.removeLastPoint' | translateHs">
+    <i class="icon-remove-circle"></i>
+  </button>
 
-      <button
-        class="btn btn-secondary"
-        (click)="finishDrawing()"
-        data-toggle="tooltip"
-        [title]="'DRAW.drawToolbar.finishFeature' | translateHs"
-      >
-        <i class="icon-check"></i>
-      </button>
-    </div>
-  }
+  <button class="btn btn-secondary" (click)="finishDrawing()" data-toggle="tooltip"
+    [title]="'DRAW.drawToolbar.finishFeature' | translateHs">
+    <i class="icon-check"></i>
+  </button>
+</div>
+}
 }

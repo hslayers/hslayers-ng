@@ -316,7 +316,7 @@ export class HsConfig extends HsConfigObject {
       val.url = (this.assetsPath ?? '') + val.url;
       return val;
     });
-    Object.assign(this.componentsEnabled, newConfig.componentsEnabled);
+    this.componentsEnabled = this.updateComponentsEnabled(newConfig);
     //Delete since we assign the whole object later and don't want it replaced, but merged
     delete newConfig.componentsEnabled;
     Object.assign(this.panelWidths, newConfig.panelWidths);
@@ -337,6 +337,29 @@ export class HsConfig extends HsConfigObject {
     this.assetsPath += this.assetsPath.endsWith('/') ? '' : '/';
 
     this.configChanges.next();
+  }
+
+  /**
+   * Merges componentsEnabled from newConfig with existing componentsEnabled
+   * Preserves the order of keys from newConfig.componentsEnabled
+   */
+  updateComponentsEnabled?(
+    newConfig: HsConfigObject,
+  ): HsConfigObject['componentsEnabled'] {
+    // Merging the keys into a Set to keep the order from newConfig.componentsEnabled first
+    const orderedKeys = new Set([
+      ...Object.keys(newConfig.componentsEnabled),
+      ...Object.keys(this.componentsEnabled),
+    ]);
+
+    // Creating a new object with the desired key order
+    const mergedComponentsEnabled = {};
+    orderedKeys.forEach((key) => {
+      mergedComponentsEnabled[key] =
+        newConfig.componentsEnabled[key] ?? this.componentsEnabled[key];
+    });
+
+    return mergedComponentsEnabled;
   }
 
   /**

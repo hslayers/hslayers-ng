@@ -25,7 +25,7 @@ export class HsPanelConstructorService {
         (acc, [panel, isEnabled]) => (isEnabled ? [...acc, panel] : acc),
         [],
       );
-      const created = this.HsPanelContainerService.panels.map((p) => p.name);
+      const created = this.HsPanelContainerService.panels().map((p) => p.name);
       const toBeCreated = activePanels.filter((p) => !created.includes(p));
       for (const panel of toBeCreated) {
         await this._createPanel(panel);

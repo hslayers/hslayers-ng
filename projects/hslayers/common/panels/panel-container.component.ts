@@ -54,13 +54,13 @@ export class HsPanelContainerComponent implements OnInit, OnDestroy {
       this.service.panelObserver.complete();
       this.service.panelObserver = new ReplaySubject<HsPanelItem>();
     }
-    for (const p of this.service.panels) {
+    for (const p of this.service.panels()) {
       this.service.destroy(p);
     }
   }
 
   ngOnInit(): void {
-    this.service.panels = [];
+    this.service.panels.set([]);
     (this.panelObserver ?? this.service.panelObserver)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((item: HsPanelItem) => {
@@ -96,7 +96,7 @@ export class HsPanelContainerComponent implements OnInit, OnDestroy {
       Object.assign(panelItem.data, this.data);
       componentRefInstance.data = panelItem.data;
     }
-    this.service.panels.push(componentRefInstance);
+    this.service.panels.update((panels) => [...panels, componentRefInstance]);
     if (!componentRefInstance.isVisible$) {
       this.hsLog.warn(
         componentRefInstance,
