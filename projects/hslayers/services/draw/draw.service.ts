@@ -88,14 +88,6 @@ export class HsDrawService extends HsDrawServiceParams {
     this.keyUp = this.keyUp.bind(this);
     this.hsMapService.loaded().then((map) => {
       this.fillDrawableLayers();
-      this.hsMapService.getLayersArray().forEach((l) =>
-        l.on('change:visible', (e) => {
-          if (this.draw && l == this.selectedLayer) {
-            this.setType(this.type);
-          }
-          this.fillDrawableLayers();
-        }),
-      );
 
       this.modify = new Modify({
         features: this.selectedFeatures,
