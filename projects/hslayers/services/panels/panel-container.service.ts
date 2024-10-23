@@ -1,4 +1,4 @@
-import {Injectable, Type} from '@angular/core';
+import {Injectable, Type, signal} from '@angular/core';
 import {ReplaySubject, Subject} from 'rxjs';
 
 import {HsPanelComponent} from 'hslayers-ng/common/panels';
@@ -10,7 +10,7 @@ import {HsPanelItem} from 'hslayers-ng/common/panels';
 })
 export class HsPanelContainerService
   implements HsPanelContainerServiceInterface {
-  panels: HsPanelComponent[] = [];
+  panels = signal<HsPanelComponent[]>([]);
   panelObserver: ReplaySubject<HsPanelItem> = new ReplaySubject();
   panelDestroyObserver: Subject<any> = new Subject();
 
@@ -41,7 +41,7 @@ export class HsPanelContainerService
     if (component.cleanup) {
       component.cleanup();
     }
-    const panelCollection = this.panels;
+    const panelCollection = this.panels();
     const panelIx = panelCollection.findIndex((d) => d == component);
     if (panelIx > -1) {
       panelCollection.splice(panelIx, 1);
