@@ -1,15 +1,26 @@
+import {
+  EnvironmentInjector,
+  Injectable,
+  inject,
+  runInInjectionContext,
+} from '@angular/core';
 import {HsQueryPopupService} from 'hslayers-ng/common/query-popup';
-import {Injectable} from '@angular/core';
+import {filter, firstValueFrom, map, take, tap} from 'rxjs';
 
 import {HsConfig} from 'hslayers-ng/config';
 import {HsOverlayContainerService} from 'hslayers-ng/services/panels';
 import {HsPanelContainerService} from 'hslayers-ng/services/panels';
 import {HsToolbarPanelContainerService} from 'hslayers-ng/services/panels';
+import {toObservable} from '@angular/core/rxjs-interop';
 
 @Injectable({
   providedIn: 'root',
 })
 export class HsOverlayConstructorService extends HsPanelContainerService {
+  private injector = inject(EnvironmentInjector);
+
+  panels$ = toObservable(this.hsToolbarPanelContainerService.panels);
+
   constructor(
     private hsConfig: HsConfig,
     private hsToolbarPanelContainerService: HsToolbarPanelContainerService,
@@ -82,12 +93,32 @@ export class HsOverlayConstructorService extends HsPanelContainerService {
               : acc,
           [],
         );
-        for (const toolbar of enabledToolbarParts) {
-          this._createGuiComponent(
-            toolbar,
-            this.hsToolbarPanelContainerService,
-          );
-        }
+
+        //Imitate toolbar queue
+        runInInjectionContext(this.injector, async () => {
+          for (const [index, toolbar] of enabledToolbarParts.entries()) {
+            /**
+             * Wait for previous toolbar to be created before creating the next one
+             * First one is created immediately
+             */
+            if (index > 0) {
+              await firstValueFrom(
+                this.panels$.pipe(
+                  map((panels) => panels.map((p) => p.name)),
+                  filter((panels) =>
+                    panels.includes(enabledToolbarParts[index - 1]),
+                  ),
+                  take(1),
+                ),
+              );
+            }
+
+            this._createGuiComponent(
+              toolbar,
+              this.hsToolbarPanelContainerService,
+            );
+          }
+        });
       }
       /**
        * GUI OVERLAY
