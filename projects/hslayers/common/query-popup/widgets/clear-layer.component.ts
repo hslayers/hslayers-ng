@@ -58,6 +58,7 @@ export class HsClearLayerComponent
       }
       layer.getSource().clear();
       this.data.service.featuresUnderMouse = [];
+      this.data.service.featureLayersUnderMouse = [];
     }
   }
 

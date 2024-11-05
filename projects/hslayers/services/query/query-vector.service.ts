@@ -143,21 +143,6 @@ export class HsQueryVectorService {
   }
 
   /**
-   * Get features under the mouse pointer on the map
-   * @param map - Current map object
-   * @param pixel - Target pixel
-   * @returns Array with features
-   */
-  getFeaturesUnderMouse(map: Map, pixel: number[]): FeatureLike[] {
-    return map
-      .getFeaturesAtPixel(pixel)
-      .filter((feature: Feature<Geometry>) => {
-        const layer = this.hsMapService.getLayerForFeature(feature);
-        return layer && layer != this.hsQueryBaseService.queryLayer;
-      });
-  }
-
-  /**
    * Get selected features original data
    * @param feature - Feature selected
    * @returns Feature
