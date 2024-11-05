@@ -4,12 +4,13 @@ import {ReplaySubject} from 'rxjs';
 import {Feature} from 'ol';
 import {Geometry} from 'ol/geom';
 
+import {HsFeatureLayer} from './query-popup.service.model';
 import {HsMapService} from 'hslayers-ng/services/map';
 import {HsPanelItem} from 'hslayers-ng/common/panels';
 import {HsQueryPopupData} from './popup-data';
 import {HsQueryPopupWidgetContainerService} from './query-popup-widget-container.service';
 import {HsUtilsService} from 'hslayers-ng/services/utils';
-import {getPopUp, getTitle} from 'hslayers-ng/common/extensions';
+import {getName, getPopUp, getTitle} from 'hslayers-ng/common/extensions';
 
 @Injectable({
   providedIn: 'root',
@@ -33,29 +34,36 @@ export class HsQueryPopupBaseService extends HsQueryPopupData {
     this.zone.run(() => {
       this.featuresUnderMouse = features;
       if (this.featuresUnderMouse.length) {
-        const layersFound = this.hsUtilsService.removeDuplicates(
-          this.featuresUnderMouse.map((f) =>
-            this.hsMapService.getLayerForFeature(f),
-          ),
-          'title',
+        const featuresByLayer = features.reduce(
+          (acc, feature) => {
+            const layer = this.hsMapService.getLayerForFeature(feature);
+            if (layer === undefined) {
+              return acc;
+            }
+            const popUp = getPopUp(layer);
+            if (popUp) {
+              const layerName = getName(layer);
+              if (!acc[layerName]) {
+                const needSpecialWidgets =
+                  popUp.widgets || popUp.displayFunction;
+                acc[layerName] = {
+                  layer: layer,
+                  title: getTitle(layer),
+                  features: [],
+                  panelObserver: needSpecialWidgets
+                    ? new ReplaySubject<HsPanelItem>()
+                    : undefined,
+                };
+              }
+              acc[layerName].features.push(feature);
+            }
+            return acc;
+          },
+          {} as {[key: string]: HsFeatureLayer},
         );
-        this.featureLayersUnderMouse = layersFound
-          .filter((l) => getPopUp(l)) //Only list the layers which have popUp defined
-          .map((l) => {
-            const needSpecialWidgets =
-              getPopUp(l)?.widgets || getPopUp(l)?.displayFunction;
-            const layer = {
-              title: getTitle(l),
-              layer: l,
-              features: this.featuresUnderMouse.filter(
-                (f) => this.hsMapService.getLayerForFeature(f) == l,
-              ),
-              panelObserver: needSpecialWidgets
-                ? new ReplaySubject<HsPanelItem>()
-                : undefined,
-            };
-            return layer;
-          });
+
+        this.featureLayersUnderMouse = Object.values(featuresByLayer);
+
         for (const layer of this.featureLayersUnderMouse) {
           if (layer.panelObserver) {
             const popupDef = getPopUp(layer.layer);
