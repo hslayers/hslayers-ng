@@ -79,6 +79,7 @@ export class HsQueryPopupBaseService extends HsQueryPopupData {
         }
       } else {
         this.featuresUnderMouse = [];
+        this.featureLayersUnderMouse = [];
       }
     });
   }
@@ -88,6 +89,7 @@ export class HsQueryPopupBaseService extends HsQueryPopupData {
    */
   closePopup(): void {
     this.featuresUnderMouse = [];
+    this.featureLayersUnderMouse = [];
   }
 
   /**

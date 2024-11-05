@@ -91,6 +91,7 @@ export class HsFeatureInfoComponent
     if (confirmed == 'yes') {
       this.hsQueryVectorService.removeFeature(feature);
       this.data.service.featuresUnderMouse = [];
+      this.data.service.featureLayersUnderMouse = [];
     }
   }
 
