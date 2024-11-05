@@ -69,6 +69,7 @@ export class HsCompositionsLayerParserService {
         fromComposition: true,
       },
     });
+    newLayer[0].setVisible(lyr_def.visibility);
     return newLayer[0];
   }
 
@@ -94,6 +95,7 @@ export class HsCompositionsLayerParserService {
           fromComposition: true,
         },
       });
+      newLayer[0].setVisible(lyr_def.visibility);
       return newLayer[0];
     } catch (error) {
       this.HsToastService.createToastPopupMessage(
@@ -185,6 +187,7 @@ export class HsCompositionsLayerParserService {
         fromComposition: true,
       },
     });
+    newLayer[0].setVisible(lyr_def.visibility);
     return newLayer[0];
   }
 
