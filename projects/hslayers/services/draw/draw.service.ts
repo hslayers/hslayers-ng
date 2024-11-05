@@ -203,8 +203,7 @@ export class HsDrawService extends HsDrawServiceParams {
       tmpTitle = `${this.translate('DRAW.drawLayer')} ${i++}`;
     }
     const layman = this.hsCommonLaymanService.layman;
-    const drawLayer = new VectorLayer<VectorSource<Feature>>();
-    ({
+    const drawLayer = new VectorLayer<VectorSource<Feature>>({
       //TODO: Also name should be set, but take care in case a layer with that name already exists in layman
       source: tmpSource,
       visible: true,
