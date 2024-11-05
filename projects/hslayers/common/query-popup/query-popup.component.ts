@@ -17,7 +17,6 @@ import {HsMapService} from 'hslayers-ng/services/map';
 import {HsQueryPopupServiceModel} from './query-popup.service.model';
 import {HsQueryPopupWidgetContainerService} from './query-popup-widget-container.service';
 import {getFeatures} from 'hslayers-ng/common/extensions';
-import {getPopUp} from 'hslayers-ng/common/extensions';
 
 @Component({
   selector: 'hs-query-popup',
@@ -71,16 +70,10 @@ export class HsQueryPopupComponent
     if (this.data.service == undefined) {
       return DISPLAY_NONE;
     }
-    const featuresWithPopup = this.data.service.featuresUnderMouse.filter(
-      (f) => {
-        const layer = this.hsMapService.getLayerForFeature(f);
-        if (!layer) {
-          return DISPLAY_NONE;
-        }
-        return getPopUp(layer) != undefined;
-      },
+    const featureCount = this.data.service.featureLayersUnderMouse.reduce(
+      (acc, featureLayer) => acc + featureLayer.features.length,
+      0,
     );
-    const featureCount = featuresWithPopup.length;
     if (featureCount > 0) {
       let tmpForHover: any[] = [];
       this.data.service.featuresUnderMouse.forEach((feature) => {

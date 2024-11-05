@@ -108,7 +108,8 @@ export class HsDrawService extends HsDrawServiceParams {
 
       this.hsEventBusService.vectorQueryFeatureSelection.subscribe((event) => {
         this.selectedFeatures.push(event.feature);
-        if (getEditor(event.selector.getLayer(event.feature)).editable) {
+        const layer = event.selector.getLayer(event.feature);
+        if (getEditor(layer)?.editable) {
           this.modify.setActive(true);
         }
       });

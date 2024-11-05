@@ -9,7 +9,7 @@ import {HsQueryPopupData} from './popup-data';
 
 export type HsFeatureLayer = {
   title: string;
-  feature: Feature<Geometry>[];
+  features: Feature<Geometry>[];
   layer: VectorLayer<VectorSource<Feature>>;
   panelObserver: ReplaySubject<HsPanelItem>;
 };
