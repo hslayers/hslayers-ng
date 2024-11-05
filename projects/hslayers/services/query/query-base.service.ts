@@ -121,12 +121,9 @@ export class HsQueryBaseService {
    * @returns Array with features
    */
   getFeaturesUnderMouse(map: Map, pixel: number[]): FeatureLike[] {
-    return map
-      .getFeaturesAtPixel(pixel)
-      .filter((feature: Feature<Geometry>) => {
-        const layer = this.hsMapService.getLayerForFeature(feature);
-        return layer && layer != this.queryLayer;
-      });
+    return map.getFeaturesAtPixel(pixel, {
+      layerFilter: (layer) => layer['ol_uid'] !== this.queryLayer['ol_uid'],
+    });
   }
 
   /**
