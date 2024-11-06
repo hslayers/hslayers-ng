@@ -3,17 +3,35 @@ import {Component} from '@angular/core';
 import {Feature, getUid} from 'ol';
 import {Geometry} from 'ol/geom';
 
+import {AsyncPipe, NgClass, NgStyle, SlicePipe} from '@angular/common';
+import {FormsModule} from '@angular/forms';
 import {HsConfirmDialogComponent} from 'hslayers-ng/common/confirm';
 import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
+import {HsDownloadModule} from 'hslayers-ng/common/download';
 import {HsFeatureCommonService} from '../feature-common.service';
 import {HsQueryBaseService} from 'hslayers-ng/services/query';
+import {HsQueryFeatureComponent} from '../feature/feature.component';
 import {HsQueryVectorService} from 'hslayers-ng/services/query';
+import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
+import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 import {exportFormats} from '../feature-common.service';
 import {getTitle} from 'hslayers-ng/common/extensions';
 
 @Component({
   selector: 'hs-query-feature-list',
   templateUrl: './feature-list.component.html',
+  standalone: true,
+  imports: [
+    TranslateCustomPipe,
+    AsyncPipe,
+    FormsModule,
+    NgbDropdownModule,
+    HsDownloadModule,
+    NgClass,
+    NgStyle,
+    HsQueryFeatureComponent,
+    SlicePipe,
+  ],
 })
 export class HsQueryFeatureListComponent {
   exportMenuVisible;

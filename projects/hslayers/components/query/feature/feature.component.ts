@@ -6,16 +6,32 @@ import {Feature} from 'ol';
 import {Geometry} from 'ol/geom';
 import {Layer} from 'ol/layer';
 
+import {AsyncPipe, NgClass} from '@angular/common';
+import {FormsModule} from '@angular/forms';
+import {HsDownloadModule} from 'hslayers-ng/common/download';
 import {HsFeatureCommonService} from '../feature-common.service';
 import {HsLayerUtilsService} from 'hslayers-ng/services/utils';
 import {HsMapService} from 'hslayers-ng/services/map';
+import {HsQueryAttributeRowComponent} from '../attribute-row/attribute-row.component';
 import {HsQueryVectorService} from 'hslayers-ng/services/query';
+import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
+import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 import {exportFormats} from '../feature-common.service';
 import {getTitle} from 'hslayers-ng/common/extensions';
 
 @Component({
   selector: 'hs-query-feature',
   templateUrl: './feature.component.html',
+  standalone: true,
+  imports: [
+    TranslateCustomPipe,
+    AsyncPipe,
+    FormsModule,
+    NgbDropdownModule,
+    HsDownloadModule,
+    NgClass,
+    HsQueryAttributeRowComponent,
+  ],
 })
 export class HsQueryFeatureComponent implements OnInit {
   @Input() feature;

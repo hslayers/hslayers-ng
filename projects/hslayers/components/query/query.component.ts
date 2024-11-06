@@ -1,23 +1,45 @@
 //TODO: Check if this import is still needed. Breaks production though
 //import 'ol-popup/src/ol-popup.css';
-import {Component, OnInit} from '@angular/core';
+import {Component, Inject, OnInit, Type} from '@angular/core';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 
 import Popup from 'ol-popup';
 import {Subject} from 'rxjs';
 import {debounceTime, takeUntil} from 'rxjs/operators';
 
+import {AsyncPipe, NgClass} from '@angular/common';
+import {FormsModule} from '@angular/forms';
 import {HsDrawService} from 'hslayers-ng/services/draw';
 import {HsLogService} from 'hslayers-ng/services/log';
 import {HsMapService} from 'hslayers-ng/services/map';
-import {HsPanelBaseComponent} from 'hslayers-ng/common/panels';
+import {
+  HsPanelBaseComponent,
+  HsPanelHeaderComponent,
+} from 'hslayers-ng/common/panels';
 import {HsQueryBaseService} from 'hslayers-ng/services/query';
+import {HsQueryDefaultInfoPanelBodyComponent} from './default-info-panel-body/default-info-panel-body.component';
 import {HsQueryVectorService} from 'hslayers-ng/services/query';
 import {HsQueryWmsService} from './query-wms.service';
+import {QUERY_INFO_PANEL} from './query.tokens';
+import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 
 @Component({
   selector: 'hs-query',
   templateUrl: './query.component.html',
+  standalone: true,
+  imports: [
+    TranslateCustomPipe,
+    HsPanelHeaderComponent,
+    AsyncPipe,
+    NgClass,
+    FormsModule,
+  ],
+  providers: [
+    {
+      provide: QUERY_INFO_PANEL,
+      useValue: HsQueryDefaultInfoPanelBodyComponent, // Default value
+    },
+  ],
 })
 export class HsQueryComponent extends HsPanelBaseComponent implements OnInit {
   popup = new Popup();
@@ -33,6 +55,7 @@ export class HsQueryComponent extends HsPanelBaseComponent implements OnInit {
     private hsQueryVectorService: HsQueryVectorService,
     private hsDrawService: HsDrawService,
     private hsQueryWmsService: HsQueryWmsService,
+    @Inject(QUERY_INFO_PANEL) public infoPanelComponent: Type<any>,
   ) {
     super();
   }
