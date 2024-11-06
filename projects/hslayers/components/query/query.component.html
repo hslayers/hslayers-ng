@@ -12,7 +12,7 @@
   </div>
   }
   @if (hsLayoutService.mainpanel === 'query') {
-  <ng-container *ngComponentOutlet="infoPanelComponent">
+  <ng-container *ngComponentOutlet="infoPanelComponent; injector: injector">
   </ng-container>
   }
   @if (hsQueryBaseService?.coordinates !== undefined && hsQueryBaseService?.coordinates.length > 0) {

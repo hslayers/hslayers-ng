@@ -1,13 +1,13 @@
 //TODO: Check if this import is still needed. Breaks production though
 //import 'ol-popup/src/ol-popup.css';
-import {Component, Inject, OnInit, Type} from '@angular/core';
+import {Component, Injector, OnInit, inject} from '@angular/core';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 
 import Popup from 'ol-popup';
 import {Subject} from 'rxjs';
 import {debounceTime, takeUntil} from 'rxjs/operators';
 
-import {AsyncPipe, NgClass} from '@angular/common';
+import {AsyncPipe, NgClass, NgComponentOutlet} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {HsDrawService} from 'hslayers-ng/services/draw';
 import {HsLogService} from 'hslayers-ng/services/log';
@@ -33,12 +33,7 @@ import {TranslateCustomPipe} from 'hslayers-ng/services/language';
     AsyncPipe,
     NgClass,
     FormsModule,
-  ],
-  providers: [
-    {
-      provide: QUERY_INFO_PANEL,
-      useValue: HsQueryDefaultInfoPanelBodyComponent, // Default value
-    },
+    NgComponentOutlet,
   ],
 })
 export class HsQueryComponent extends HsPanelBaseComponent implements OnInit {
@@ -48,6 +43,12 @@ export class HsQueryComponent extends HsPanelBaseComponent implements OnInit {
   //To deactivate queries (unsubscribe subscribers) per app
   queryDeactivator = new Subject<void>();
 
+  // Inject QUERY_INFO_PANEL if available, otherwise fallback to HsQueryDefaultInfoPanelBodyComponent
+  infoPanelComponent =
+    inject(QUERY_INFO_PANEL, {optional: true}) ||
+    HsQueryDefaultInfoPanelBodyComponent;
+  injector = inject(Injector);
+
   constructor(
     public hsQueryBaseService: HsQueryBaseService,
     private hsMapService: HsMapService,
@@ -55,7 +56,6 @@ export class HsQueryComponent extends HsPanelBaseComponent implements OnInit {
     private hsQueryVectorService: HsQueryVectorService,
     private hsDrawService: HsDrawService,
     private hsQueryWmsService: HsQueryWmsService,
-    @Inject(QUERY_INFO_PANEL) public infoPanelComponent: Type<any>,
   ) {
     super();
   }

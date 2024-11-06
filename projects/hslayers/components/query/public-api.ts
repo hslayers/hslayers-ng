@@ -6,3 +6,4 @@ export * from './feature/feature.component';
 export * from './query-wms.service';
 export * from './query-wmts.service';
 export * from './query.component';
+export * from './query.tokens';
