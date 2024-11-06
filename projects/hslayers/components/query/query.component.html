@@ -1,42 +1,39 @@
 @if (isVisible$ | async) {
-  <div class="card hs-main-panel" [ngClass]="panelWidthClass">
-    <hs-panel-header name="query" [panelTabs]="'INFO'"></hs-panel-header>
-    @if (noFeatureSelected()) {
-      <div class="card hs-main-panel">
-        <div class="d-flex flex-column align-items-center p-4">
-          <i class="icon-cursor bg-primary p-3 text-white rounded "
-          style="font-size: 1.5rem; color:hsl(208, 100%, 97%)"></i>
-          <p class="h4">{{'QUERY.infoPanel.noFeaturesSelected' | translateHs }}</p>
-          <p class="small">{{'QUERY.infoPanel.clickOnMap' | translateHs }}</p>
-        </div>
-      </div>
-    }
-    @if (hsLayoutService.mainpanel === 'query') {
-      <hs-query-default-info-panel-body>
-      </hs-query-default-info-panel-body>
-    }
-    <hs-custom-info-panel-body></hs-custom-info-panel-body>
-    @if (hsQueryBaseService?.coordinates !== undefined && hsQueryBaseService?.coordinates.length > 0) {
-      <div class="container-fluid"
-        >
-        <div class="row">
-          <div class="col-12 m-2"><strong>{{hsQueryBaseService?.coordinates[0].name}}</strong></div>
-        </div>
-        <div class="row">
-          <div class="input-group m-1">
-            @if (hsQueryBaseService?.coordinates.length>0) {
-              <select class="form-control form-select" [(ngModel)]="hsQueryBaseService.selectedProj"
-                [ngModelOptions]="{standalone: true}">
-                @for (projection of hsQueryBaseService.coordinates[0].projections; track projection) {
-                  <option
-                  [ngValue]="projection">{{projection.name}}</option>
-                }
-              </select>
-            }
-            <input class="form-control" [value]="hsQueryBaseService.selectedProj.value" readonly="">
-          </div>
-        </div>
-      </div>
-    }
+<div class="card hs-main-panel" [ngClass]="panelWidthClass">
+  <hs-panel-header name="query" [panelTabs]="'INFO'"></hs-panel-header>
+  @if (noFeatureSelected()) {
+  <div class="card hs-main-panel">
+    <div class="d-flex flex-column align-items-center p-4">
+      <i class="icon-cursor bg-primary p-3 text-white rounded "
+        style="font-size: 1.5rem; color:hsl(208, 100%, 97%)"></i>
+      <p class="h4">{{'QUERY.infoPanel.noFeaturesSelected' | translateHs }}</p>
+      <p class="small">{{'QUERY.infoPanel.clickOnMap' | translateHs }}</p>
+    </div>
   </div>
+  }
+  @if (hsLayoutService.mainpanel === 'query') {
+  <ng-container *ngComponentOutlet="infoPanelComponent">
+  </ng-container>
+  }
+  @if (hsQueryBaseService?.coordinates !== undefined && hsQueryBaseService?.coordinates.length > 0) {
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-12 m-2"><strong>{{hsQueryBaseService?.coordinates[0].name}}</strong></div>
+    </div>
+    <div class="row">
+      <div class="input-group m-1">
+        @if (hsQueryBaseService?.coordinates.length>0) {
+        <select class="form-control form-select" [(ngModel)]="hsQueryBaseService.selectedProj"
+          [ngModelOptions]="{standalone: true}">
+          @for (projection of hsQueryBaseService.coordinates[0].projections; track projection) {
+          <option [ngValue]="projection">{{projection.name}}</option>
+          }
+        </select>
+        }
+        <input class="form-control" [value]="hsQueryBaseService.selectedProj.value" readonly="">
+      </div>
+    </div>
+  </div>
+  }
+</div>
 }

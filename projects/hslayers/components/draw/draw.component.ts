@@ -10,11 +10,11 @@ import {
   HsPanelHeaderComponent,
   HsPanelHelpersModule,
 } from 'hslayers-ng/common/panels';
-import {HsQueryModule} from 'hslayers-ng/components/query';
 import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 
 import {HsDrawEditComponent} from './draw-edit/draw-edit.component';
 import {HsDrawPanelComponent} from './draw-panel/draw-panel.component';
+import {HsQueryFeatureListComponent} from 'hslayers-ng/components/query';
 
 @Component({
   selector: 'hs-draw',
@@ -27,7 +27,7 @@ import {HsDrawPanelComponent} from './draw-panel/draw-panel.component';
     HsDrawEditComponent,
     HsDrawPanelComponent,
     HsPanelBaseComponent,
-    HsQueryModule,
+    HsQueryFeatureListComponent,
     HsPanelHeaderComponent,
     HsPanelHelpersModule,
   ],

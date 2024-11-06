@@ -1,8 +1,11 @@
 import {Component, Input, OnInit} from '@angular/core';
+import {FormsModule} from '@angular/forms';
 
 @Component({
   selector: 'hs-query-attribute-row',
   templateUrl: './attribute-row.component.html',
+  standalone: true,
+  imports: [FormsModule],
 })
 export class HsQueryAttributeRowComponent implements OnInit {
   isObject = false;
