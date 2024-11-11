@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
+import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
 
 import {HsQueryBaseService} from 'hslayers-ng/services/query';
 import {HsQueryFeatureListComponent} from '../feature-list/feature-list.component';
-import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
 import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 @Component({
   selector: 'hs-query-default-info-panel-body',
