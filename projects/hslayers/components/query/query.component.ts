@@ -1,14 +1,14 @@
 //TODO: Check if this import is still needed. Breaks production though
 //import 'ol-popup/src/ol-popup.css';
+import {AsyncPipe, NgClass, NgComponentOutlet} from '@angular/common';
 import {Component, Injector, OnInit, inject} from '@angular/core';
+import {FormsModule} from '@angular/forms';
+import {Subject} from 'rxjs';
+import {debounceTime, takeUntil} from 'rxjs/operators';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 
 import Popup from 'ol-popup';
-import {Subject} from 'rxjs';
-import {debounceTime, takeUntil} from 'rxjs/operators';
 
-import {AsyncPipe, NgClass, NgComponentOutlet} from '@angular/common';
-import {FormsModule} from '@angular/forms';
 import {HsDrawService} from 'hslayers-ng/services/draw';
 import {HsLogService} from 'hslayers-ng/services/log';
 import {HsMapService} from 'hslayers-ng/services/map';
