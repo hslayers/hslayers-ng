@@ -4,7 +4,7 @@ import yargs from 'yargs';
 import path from 'node:path';
 import { existsSync, mkdirSync } from 'node:fs';
 
-import packageJson from './package.json' assert { type: 'json'};
+import packageJson from './package.json' with { type: 'json'};
 
 let envExists = existsSync('.env');
 if (!envExists)
