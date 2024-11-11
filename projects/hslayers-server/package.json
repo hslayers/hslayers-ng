@@ -30,7 +30,7 @@
     "hslayers-server": "./server.js"
   },
   "dependencies": {
-    "better-sqlite3": "^9.3.0",
+    "better-sqlite3": "^10.1.0",
     "connect-sqlite3": "^0.9.11",
     "cors": "^2.8.5",
     "cors-anywhere": "^0.4.4",
