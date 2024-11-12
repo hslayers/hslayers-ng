@@ -2,6 +2,7 @@ import {AsyncPipe, NgClass, NgStyle} from '@angular/common';
 import {
   Component,
   DestroyRef,
+  Injector,
   Input,
   OnChanges,
   OnInit,
@@ -31,6 +32,7 @@ import {
 import {Vector as VectorSource} from 'ol/source';
 import {WfsFeatureAttribute} from 'hslayers-ng/types';
 
+import {CombinationOperator, ComparisonOperator} from 'geostyler-style';
 import {Filter} from 'hslayers-ng/types';
 import {FilterRangeInputComponent} from '../filter-range-input/filter-range-input.component';
 import {HsFiltersService} from '../filters.service';
@@ -67,16 +69,24 @@ export class HsComparisonFilterComponent
   @Input() filter: Filter;
   @Input() parent: Filter;
 
+  injector = inject(Injector);
+
   filterRangeInput = viewChild<FilterRangeInputComponent>(
     FilterRangeInputComponent,
   );
   expanded = computed(() => this.filterRangeInput()?.expanded() ?? false);
 
+  private readonly _defaultOperators = [
+    {value: '==', alias: '='},
+    {value: '!=', alias: '≠'},
+  ] as const;
+  private readonly _customOperators = [
+    {value: '==', alias: '= ∅'},
+    {value: '!=', alias: '≠ ∅'},
+  ] as const;
+
   private readonly OPERATORS = {
-    default: [
-      {value: '==', alias: '='},
-      {value: '!=', alias: '≠'},
-    ],
+    default: [...this._defaultOperators, ...this._customOperators],
     stringBased: [{value: '*=', alias: '≈'}],
     numeric: [
       {value: '<', alias: '<'},
@@ -85,6 +95,7 @@ export class HsComparisonFilterComponent
       {value: '>=', alias: '≥'},
     ],
   };
+  customOperatorSelected = signal(false);
 
   features: Feature<Geometry>[] = [];
 
@@ -99,6 +110,8 @@ export class HsComparisonFilterComponent
   destroyRef = inject(DestroyRef);
 
   loading: WritableSignal<boolean> = signal(false);
+
+  selectedOperator = signal<string>(null);
 
   constructor() {
     super();
@@ -127,6 +140,33 @@ export class HsComparisonFilterComponent
     }
   }
 
+  /**
+   * Handles operator selection changes
+   */
+  onOperatorChange(e: Event): void {
+    const operatorAlias = (e.target as HTMLSelectElement).value;
+    const isCustom = (
+      this._customOperators.map((op) => op.alias) as string[]
+    ).includes(operatorAlias);
+    this.customOperatorSelected.set(isCustom);
+    const operators = Object.values(this.OPERATORS).flat();
+    const foundOperator = operators.find(
+      (op) =>
+        op.alias === operatorAlias &&
+        (isCustom ? op.alias.includes('∅') : !op.alias.includes('∅')),
+    );
+    if (foundOperator) {
+      this.filter[0] = foundOperator.value as
+        | ComparisonOperator
+        | '!'
+        | CombinationOperator;
+    }
+    if (isCustom) {
+      this.filter[2] = undefined;
+    }
+    this.emitChange();
+  }
+
   ngOnInit(): void {
     this.initializeFilter();
   }
@@ -136,6 +176,7 @@ export class HsComparisonFilterComponent
    * Is used both on init and on filter change (in case previous value is present)
    */
   private initializeFilter(): void {
+    this.initOperator();
     // Initialize attribute control with the current filter value or null
     this.attributeControl = new FormControl(this.filter[1] ?? null);
 
@@ -168,7 +209,6 @@ export class HsComparisonFilterComponent
       }),
     );
 
-    // Update the operators stream
     this.operators = currentAttribute$.pipe(
       filter((attr) => attr !== null),
       tap((attr) => {
@@ -193,6 +233,26 @@ export class HsComparisonFilterComponent
       }),
       takeUntilDestroyed(this.destroyRef),
     );
+  }
+
+  /**
+   * Init operator value and adjusts it if necessary to match the custom operator mappings
+   * geostyler parses '= ∅' as '==', so in case value is undefined we need to adjust the operator
+   */
+  private initOperator(): void {
+    const operatorValue = this.filter[0];
+    const isCustom =
+      ['==', '!='].includes(operatorValue) && this.filter[2] === undefined;
+    this.customOperatorSelected.set(isCustom);
+
+    const operators = Object.values(this.OPERATORS).flat();
+    const operatorAlias = operators.find(
+      (op) =>
+        op.value === operatorValue &&
+        (isCustom ? op.alias.includes('∅') : !op.alias.includes('∅')),
+    )?.alias;
+
+    this.selectedOperator.set(operatorAlias);
   }
 
   /**
