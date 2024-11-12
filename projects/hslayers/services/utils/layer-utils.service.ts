@@ -504,23 +504,51 @@ export class HsLayerUtilsService {
   ];
 
   /**
-   * List all attributes of the feature apart from the geometry
+   * List all attributes of the features apart from the geometry
+   * Samples up to 33% of features with a hard limit of 400 features
+   * to build a comprehensive attribute list
    */
   listAttributes(
     features: Feature[],
     numericOnly = false,
     customExcludedAttributes?: string[],
   ): string[] {
+    if (features.length === 0) {
+      return [];
+    }
+
     const excludedAttributes =
       customExcludedAttributes || this.ATTRIBUTES_EXCLUDED_FROM_LIST;
-    return features.length > 0
-      ? Object.keys(features[0].getProperties()).filter((attr) => {
-          return (
-            !excludedAttributes.includes(attr) &&
-            (!numericOnly || !isNaN(Number(features[0].get(attr))))
-          );
-        })
-      : [];
+
+    // Calculate sample size (33% with max 400)
+    const sampleSize = Math.min(
+      Math.ceil(features.length * 0.33),
+      400,
+      features.length,
+    );
+
+    const attributeSet = new Set<string>();
+    const step = Math.max(1, Math.floor(features.length / sampleSize));
+
+    // Collect attributes using reservoir sampling
+    for (let i = 0; i < features.length; i += step) {
+      const feature = features[i];
+      Object.keys(feature.getProperties()).reduce((set, attr) => {
+        if (
+          !excludedAttributes.includes(attr) &&
+          (!numericOnly || !isNaN(Number(feature.get(attr))))
+        ) {
+          set.add(attr);
+        }
+        return set;
+      }, attributeSet);
+
+      if (attributeSet.size >= sampleSize) {
+        break;
+      }
+    }
+
+    return Array.from(attributeSet);
   }
 
   // Coefficients of the polynomial (in reverse order for easy use in the loop)
