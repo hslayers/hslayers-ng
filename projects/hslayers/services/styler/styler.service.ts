@@ -552,7 +552,11 @@ export class HsStylerService {
       );
       return {...defaultSldObject.output, name: 'HSLayers default style'};
     }
-    return sldObject.output;
+    const result = this.adjustForUndefinedValues({
+      styleObject: sldObject.output,
+      toSld: true,
+    });
+    return result;
   }
 
   /**
@@ -572,9 +576,46 @@ export class HsStylerService {
     }
   }
 
+  /**
+   * Recursively replaces all "NULL" values with undefined in an object
+   */
+  private replaceNullValues(obj: any): any {
+    if (Array.isArray(obj)) {
+      return obj.map((item) => this.replaceNullValues(item));
+    } else if (obj && typeof obj === 'object') {
+      const newObj = {};
+      for (const key in obj) {
+        newObj[key] = this.replaceNullValues(obj[key]);
+      }
+      return newObj;
+    } else if (obj === 'NULL') {
+      return undefined;
+    }
+    return obj;
+  }
+
+  /**
+   * Adjusts for undefined values in filter expressions.
+   * Replacing undefined (which works with OpenLayers) with 'NULL' (which works with Geostyler)
+   */
+  adjustForUndefinedValues(options: {
+    styleObject: GeoStylerStyle;
+    toSld: boolean;
+  }): GeoStylerStyle {
+    if (options.toSld) {
+      return this.replaceNullValues(options.styleObject);
+    } else {
+      return JSON.parse(
+        JSON.stringify(options.styleObject).replaceAll('null]', '"NULL"]'),
+      );
+    }
+  }
+
   private async jsonToSld(styleObject: GeoStylerStyle): Promise<string> {
     const sldParser = new SLDParser({sldVersion: this.sldVersion});
-    const {output: sld} = await sldParser.writeStyle(styleObject);
+    const {output: sld} = await sldParser.writeStyle(
+      this.adjustForUndefinedValues({styleObject, toSld: false}),
+    );
     return sld;
   }
 

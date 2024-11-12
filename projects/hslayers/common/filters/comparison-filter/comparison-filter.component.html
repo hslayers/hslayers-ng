@@ -1,4 +1,5 @@
-<div class="comparison-filter-container d-flex flex-row form-group p-1 position-relative" [ngClass]="{'expanded': expanded()}">
+<div class="comparison-filter-container d-flex flex-row form-group p-1 position-relative"
+  [ngClass]="{'expanded': expanded()}">
   <select class="form-control form-select hs-comparison-filter-attribute" [formControl]="attributeControl"
     name="hs-sld-filter-attribute">
     <option [ngValue]="null" [disabled]="true" selected hidden>{{'FILTERS.pickAnAttribute' | translateHs}}</option>
@@ -10,43 +11,42 @@
 
   </select>
 
-  <select (change)="emitChange()" class="form-control form-select hs-comparison-filter-operator"
-    style="width: min-content" [(ngModel)]="filter[0]" name="hs-sld-filter-comparison-sign"
+  <select class="form-control form-select hs-comparison-filter-operator" style="width: min-content"
+    [ngModel]="selectedOperator()" (change)="onOperatorChange($event)" name="hs-sld-filter-comparison-sign"
     [disabled]="!attributeControl.value">
-    @for (op of operators | async ; track op.value) {
-    <option [ngValue]="op.value">
+    @for (op of operators | async; track op.alias) {
+    <option [value]="op.alias">
       {{op.alias | translateHs : 'COMMON'}}
     </option>
     }
   </select>
-  <div class="comparison-filter-value" >
-      @if(currentAttribute()?.range){
-        <hs-filter-range-input
-          [min]="currentAttribute()?.range.min"
-          [max]="currentAttribute()?.range.max"
-          [(value)]="filter[2]"
-          (change)="emitChange()"
-          >
-        </hs-filter-range-input>
-      }
-      @else {
-        @if(filter[0] === '*=') {
-          <input class="form-select h-100" [(ngModel)]="filter[2]" (change)="emitChange()"
-            [disabled]="!attributeControl.value" [attr.list]="'customValues'" />
-          <datalist id="customValues">
-            @for (value of currentAttribute()?.values; track value) {
-            <option [value]="value">
-            }
-          </datalist>
-        } @else {
-          <select class="form-control form-select h-100" [(ngModel)]="filter[2]" (change)="emitChange()"
-            [disabled]="!attributeControl.value">
-            @for (value of currentAttribute()?.values; track value) {
-            <option [ngValue]="value">{{value}}</option>
-            }
-          </select>
+  <div class="comparison-filter-value">
+    @if(customOperatorSelected()){
+    <input class="form-select h-100 rounded-0" disabled value='NULL' />
+    }
+    @else if(currentAttribute()?.range){
+    <hs-filter-range-input [min]="currentAttribute()?.range.min" [max]="currentAttribute()?.range.max"
+      [(value)]="filter[2]" (change)="emitChange()">
+    </hs-filter-range-input>
+    }
+    @else {
+    @if(filter[0] === '*=') {
+    <input class="form-select h-100" [(ngModel)]="filter[2]" (change)="emitChange()"
+      [disabled]="!attributeControl.value" [attr.list]="'customValues'" />
+    <datalist id="customValues">
+      @for (value of currentAttribute()?.values; track value) {
+      <option [value]="value">
         }
+    </datalist>
+    } @else {
+    <select class="form-control form-select h-100" [(ngModel)]="filter[2]" (change)="emitChange()"
+      [disabled]="!attributeControl.value">
+      @for (value of currentAttribute()?.values; track value) {
+      <option [ngValue]="value">{{value}}</option>
       }
+    </select>
+    }
+    }
   </div>
 
   <div>
