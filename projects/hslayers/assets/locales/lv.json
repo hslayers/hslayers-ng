@@ -298,7 +298,8 @@
     "copyToClipboardFailure": "Nevar kopēt. Jūsu pārlūkprogramma neatbalsta nepieciešamās funkcijas.",
     "base": "Pamatkarte",
     "thematic": "Tematiskā karte",
-    "contains": "satur"
+    "contains": "satur",
+    "property": "Īpašība"
   },
   "COMPOSITIONS": {
     "addByAddress": "Pievienot kompozīciju pēc adreses",

@@ -321,7 +321,8 @@
     "copyToClipboardFailure": "Nelze zkopírovat. Váš prohlížeč nepodporuje potřebné funkce.",
     "base": "Podkladová mapa",
     "thematic": "Tematická mapa",
-    "contains": "obsahuje"
+    "contains": "obsahuje",
+    "property": "Atribut"
   },
   "COMPOSITIONS": {
     "addByAddress": "Přidat kompozici z adresy",
