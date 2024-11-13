@@ -13,5 +13,6 @@ export class HsEventBusServiceMock {
   layerManagerUpdates: Subject<any> = new Subject();
   mapResets: Subject<any> = new Subject();
   mapEventHandlersSet: Subject<any> = new Subject();
+  resetWfsFilter: Subject<any> = new Subject();
   constructor() {}
 }
