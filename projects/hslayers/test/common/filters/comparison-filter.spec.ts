@@ -133,8 +133,6 @@ describe('HsComparisonFilterComponent', () => {
       expect(ops.map((op) => op.value)).toEqual([
         '==',
         '!=',
-        '==',
-        '!=',
         '<',
         '<=',
         '>',
@@ -185,6 +183,29 @@ describe('HsComparisonFilterComponent', () => {
     beforeEach(() => {
       layoutService.setMainPanel('styler');
     });
+
+    it('should update operators when selecting a numeric attribute in styler context', fakeAsync(async () => {
+      const operatorsPromise = firstValueFrom(component.operators);
+
+      component.attributeControl.setValue('attr2');
+      tick();
+      fixture.detectChanges();
+
+      const ops = await operatorsPromise;
+      tick(1000);
+      fixture.detectChanges();
+
+      expect(ops.map((op) => op.value)).toEqual([
+        '==',
+        '!=',
+        '==',
+        '!=',
+        '<',
+        '<=',
+        '>',
+        '>=',
+      ]);
+    }));
 
     it('should set isWfsFilter to false', fakeAsync(() => {
       tick();
