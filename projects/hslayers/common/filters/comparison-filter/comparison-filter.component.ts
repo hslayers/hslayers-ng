@@ -221,7 +221,8 @@ export class HsComparisonFilterComponent
         | CombinationOperator;
     }
     if (isCustom) {
-      this.filter[2] = undefined;
+      this._filter[2] = undefined;
+      this.valueSource.set('value');
     }
     this.emitChange();
   }
@@ -307,9 +308,12 @@ export class HsComparisonFilterComponent
   private initOperator(): void {
     const operatorValue = this._filter[0];
     const isCustom =
-      ['==', '!='].includes(operatorValue) && this._filter[2] === undefined;
+      ['==', '!='].includes(operatorValue) &&
+      (this._filter[2] === undefined || this._filter[2] === null);
     this.customOperatorSelected.set(isCustom);
-
+    if (isCustom) {
+      this.valueSource.set('value');
+    }
     const operators = Object.values(this.OPERATORS).flat();
     const operatorAlias = operators.find(
       (op) =>
