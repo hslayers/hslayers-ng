@@ -119,7 +119,10 @@ export class HsWfsFilterComponent extends HsPanelBaseComponent {
     });
 
     this.hsEventBusService.resetWfsFilter
-      .pipe(takeUntilDestroyed())
+      .pipe(
+        takeUntilDestroyed(),
+        filter(() => this.hsLayoutService.mainpanel === 'wfsFilter'),
+      )
       .subscribe(() => {
         this.updateLayer(this.selectedLayer(), undefined, undefined);
       });
