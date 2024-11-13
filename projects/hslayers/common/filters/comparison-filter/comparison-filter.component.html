@@ -24,7 +24,7 @@
       [(value)]="_filter[2]" (change)="emitChange()">
     </hs-filter-range-input>
     } @else if(valueSource() === 'property') {
-    <hs-filters-attribute-selector [attributes]="attributes" [ngModel]="_filter[2]" (ngModelChange)="emitChange()">
+    <hs-filters-attribute-selector [attributes]="attributes" [(ngModel)]="_filter[2]" (ngModelChange)="emitChange()">
     </hs-filters-attribute-selector>
     }
     }
@@ -63,7 +63,7 @@
   </div>
   }
 </div>
-@if(currentAttribute()?.range && !isWfsFilter()){
+@if(currentAttribute()?.range && !isWfsFilter() && !customOperatorSelected()){
 <div class="comparison-filter-value-source btn-group w-100 p-1 d-flex justify-content-end">
   <button type="button" class="btn btn-sm btn-outline-secondary p-1 border-0 rounded-0 w-25 flex-grow-0"
     [class.active]="valueSource() === 'value'" (click)="toggleValueSource('value')">
