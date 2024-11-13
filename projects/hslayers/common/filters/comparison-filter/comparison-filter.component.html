@@ -67,11 +67,11 @@
 <div class="comparison-filter-value-source btn-group w-100 p-1 d-flex justify-content-end">
   <button type="button" class="btn btn-sm btn-outline-secondary p-1 border-0 rounded-0 w-25 flex-grow-0"
     [class.active]="valueSource() === 'value'" (click)="toggleValueSource('value')">
-    Value
+    {{'COMMON.value' | translateHs}}
   </button>
   <button type="button" class="btn btn-sm btn-outline-secondary p-1 border-0 rounded-0 w-25 flex-grow-0"
     [class.active]="valueSource() === 'property'" (click)="toggleValueSource('property')">
-    Property
+    {{'COMMON.property' | translateHs}}
   </button>
 </div>
 }
