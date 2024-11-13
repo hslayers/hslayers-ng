@@ -117,6 +117,12 @@ export class HsWfsFilterComponent extends HsPanelBaseComponent {
         'boundedBy',
       ];
     });
+
+    this.hsEventBusService.resetWfsFilter
+      .pipe(takeUntilDestroyed())
+      .subscribe(() => {
+        this.updateLayer(this.selectedLayer(), undefined, undefined);
+      });
   }
 
   /**
@@ -352,20 +358,30 @@ export class HsWfsFilterComponent extends HsPanelBaseComponent {
         );
         return;
       }
-
       const parsedFilter = this.parseFilter(currentFilter);
-      selectedLayer.layer.set('wfsFilter', this.rule());
-      const source = selectedLayer.layer.getSource();
-      source.set('filter', parsedFilter);
-      source.refresh();
-      /**
-       * Manually pull features from WFS if layer is from Layman
-       */
-      if (getWorkspace(selectedLayer.layer)) {
-        this.hsEventBusService.refreshLaymanLayer.next(
-          selectedLayer.layer as VectorLayer<VectorSource>,
-        );
-      }
+      this.updateLayer(selectedLayer, parsedFilter, this.rule());
+    }
+  }
+
+  /**
+   * Updates the layer with the parsed filter
+   */
+  updateLayer(
+    selectedLayer: HsLayerDescriptor,
+    parsedFilter: any,
+    wfsFilter: any[],
+  ) {
+    selectedLayer.layer.set('wfsFilter', wfsFilter);
+    const source = selectedLayer.layer.getSource();
+    source.set('filter', parsedFilter);
+    source.refresh();
+    /**
+     * Manually pull features from WFS if layer is from Layman
+     */
+    if (getWorkspace(selectedLayer.layer)) {
+      this.hsEventBusService.refreshLaymanLayer.next(
+        selectedLayer.layer as VectorLayer<VectorSource>,
+      );
     }
   }
 

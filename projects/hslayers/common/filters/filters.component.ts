@@ -3,6 +3,7 @@ import {Component, Input, inject, viewChild} from '@angular/core';
 import {FilterType} from 'hslayers-ng/types';
 import {HsAddFilterButtonComponent} from './add-filter-button/add-filter-button.component';
 import {HsComparisonFilterComponent} from './comparison-filter/comparison-filter.component';
+import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsFilterComponent} from './filter.component';
 import {HsFiltersService} from './filters.service';
 import {HsLayerDescriptor} from 'hslayers-ng/types';
@@ -28,6 +29,8 @@ export class HsFiltersComponent extends HsStylerPartBaseComponent {
   addFilterButton = viewChild<HsAddFilterButtonComponent>('addFilterButton');
 
   hsFiltersService = inject(HsFiltersService);
+  hsEventBusService = inject(HsEventBusService);
+
   constructor() {
     super();
   }
@@ -42,6 +45,7 @@ export class HsFiltersComponent extends HsStylerPartBaseComponent {
   remove(): void {
     delete this.rule.filter;
     this.addFilterButton().setActiveTab(undefined);
+    this.hsEventBusService.resetWfsFilter.next();
     this.emitChange();
   }
 }
