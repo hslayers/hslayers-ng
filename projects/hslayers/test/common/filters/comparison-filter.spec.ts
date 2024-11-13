@@ -133,6 +133,8 @@ describe('HsComparisonFilterComponent', () => {
       expect(ops.map((op) => op.value)).toEqual([
         '==',
         '!=',
+        '==',
+        '!=',
         '<',
         '<=',
         '>',
