@@ -85,17 +85,15 @@ export class HsComparisonFilterComponent
   );
   expanded = computed(() => this.filterRangeInput()?.expanded() ?? false);
 
-  private readonly _defaultOperators = [
-    {value: '==', alias: '='},
-    {value: '!=', alias: '≠'},
-  ] as const;
-  private readonly _customOperators = [
-    {value: '==', alias: '= ∅'},
-    {value: '!=', alias: '≠ ∅'},
-  ] as const;
-
   private readonly OPERATORS = {
-    default: [...this._defaultOperators, ...this._customOperators],
+    default: [
+      {value: '==', alias: '='},
+      {value: '!=', alias: '≠'},
+    ],
+    custom: [
+      {value: '==', alias: '= ∅'},
+      {value: '!=', alias: '≠ ∅'},
+    ],
     stringBased: [{value: '*=', alias: '≈'}],
     numeric: [
       {value: '<', alias: '<'},
@@ -205,7 +203,7 @@ export class HsComparisonFilterComponent
   onOperatorChange(e: Event): void {
     const operatorAlias = (e.target as HTMLSelectElement).value;
     const isCustom = (
-      this._customOperators.map((op) => op.alias) as string[]
+      this.OPERATORS.custom.map((op) => op.alias) as string[]
     ).includes(operatorAlias);
     this.customOperatorSelected.set(isCustom);
     const operators = Object.values(this.OPERATORS).flat();
@@ -282,13 +280,16 @@ export class HsComparisonFilterComponent
         this.loading.set(false);
       }),
       map((attr) => {
+        const d = this.isWfsFilter()
+          ? this.OPERATORS.default
+          : [...this.OPERATORS.default, ...this.OPERATORS.custom];
         if (attr?.isNumeric) {
           if (this._filter[2] === '<value>') {
             this._filter[2] = attr.range?.min || 0;
           }
-          return [...this.OPERATORS.default, ...this.OPERATORS.numeric];
+          return [...d, ...this.OPERATORS.numeric];
         }
-        return [...this.OPERATORS.default, ...this.OPERATORS.stringBased];
+        return [...d, ...this.OPERATORS.stringBased];
       }),
       startWith(this.OPERATORS.default),
       share(),
