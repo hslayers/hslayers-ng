@@ -8,7 +8,7 @@ import {
 import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 
 @Component({
-  selector: 'hs-attribute-selector',
+  selector: 'hs-filters-attribute-selector',
   standalone: true,
   imports: [FormsModule, ReactiveFormsModule, TranslateCustomPipe],
   providers: [
