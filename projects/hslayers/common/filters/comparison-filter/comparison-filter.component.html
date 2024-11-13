@@ -1,7 +1,8 @@
 <div class="comparison-filter-container d-flex flex-row form-group p-1 position-relative mb-0"
   [ngClass]="{'expanded': expanded()}">
-  <hs-attribute-selector [attributes]="attributes" [formControl]="attributeControl" (ngModelChange)="emitChange()">
-  </hs-attribute-selector>
+  <hs-filters-attribute-selector [attributes]="attributes" [formControl]="attributeControl"
+    (ngModelChange)="emitChange()">
+  </hs-filters-attribute-selector>
 
   <select class=" form-control form-select hs-comparison-filter-operator" style="width: min-content"
     [ngModel]="selectedOperator()" (change)="onOperatorChange($event)" name="hs-sld-filter-comparison-sign"
@@ -23,8 +24,8 @@
       [(value)]="_filter[2]" (change)="emitChange()">
     </hs-filter-range-input>
     } @else if(valueSource() === 'property') {
-    <hs-attribute-selector [attributes]="attributes" [ngModel]="_filter[2]" (ngModelChange)="emitChange()">
-    </hs-attribute-selector>
+    <hs-filters-attribute-selector [attributes]="attributes" [ngModel]="_filter[2]" (ngModelChange)="emitChange()">
+    </hs-filters-attribute-selector>
     }
     }
     @else {
