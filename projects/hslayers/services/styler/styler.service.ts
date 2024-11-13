@@ -554,7 +554,7 @@ export class HsStylerService {
     }
     const result = this.adjustForUndefinedValues({
       styleObject: sldObject.output,
-      toSld: true,
+      toSld: false,
     });
     return result;
   }
@@ -603,18 +603,18 @@ export class HsStylerService {
     toSld: boolean;
   }): GeoStylerStyle {
     if (options.toSld) {
-      return this.replaceNullValues(options.styleObject);
-    } else {
       return JSON.parse(
         JSON.stringify(options.styleObject).replaceAll('null]', '"NULL"]'),
       );
+    } else {
+      return this.replaceNullValues(options.styleObject);
     }
   }
 
   private async jsonToSld(styleObject: GeoStylerStyle): Promise<string> {
     const sldParser = new SLDParser({sldVersion: this.sldVersion});
     const {output: sld} = await sldParser.writeStyle(
-      this.adjustForUndefinedValues({styleObject, toSld: false}),
+      this.adjustForUndefinedValues({styleObject, toSld: true}),
     );
     return sld;
   }
