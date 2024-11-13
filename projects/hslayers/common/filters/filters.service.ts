@@ -110,6 +110,9 @@ export class HsFiltersService {
    * Checks if a filter can be deleted
    */
   private canDeleteFilter(parent: Filter): boolean {
+    if (!Array.isArray(parent)) {
+      return false;
+    }
     return (
       (['||', '&&'].includes(parent[0]) && parent.length > 3) ||
       (parent[0] === '!' && parent.length > 2)
@@ -146,7 +149,7 @@ export class HsFiltersService {
    * @returns True if the filter was successfully removed, false otherwise
    */
   removeFilter(parent: Filter, filter: Filter): boolean {
-    if (this.canDeleteFilter(parent)) {
+    if (Array.isArray(parent) && this.canDeleteFilter(parent)) {
       const index = parent.findIndex((item) => item === filter);
       if (index !== -1) {
         parent.splice(index, 1);

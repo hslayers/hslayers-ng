@@ -1,17 +1,9 @@
-<div class="comparison-filter-container d-flex flex-row form-group p-1 position-relative"
+<div class="comparison-filter-container d-flex flex-row form-group p-1 position-relative mb-0"
   [ngClass]="{'expanded': expanded()}">
-  <select class="form-control form-select hs-comparison-filter-attribute" [formControl]="attributeControl"
-    name="hs-sld-filter-attribute">
-    <option [ngValue]="null" [disabled]="true" selected hidden>{{'FILTERS.pickAnAttribute' | translateHs}}</option>
-    @for(attr of attributes; track attr){
-    <option [ngValue]="attr">
-      {{ attr }}
-    </option>
-    }
+  <hs-attribute-selector [attributes]="attributes" [formControl]="attributeControl" (ngModelChange)="emitChange()">
+  </hs-attribute-selector>
 
-  </select>
-
-  <select class="form-control form-select hs-comparison-filter-operator" style="width: min-content"
+  <select class=" form-control form-select hs-comparison-filter-operator" style="width: min-content"
     [ngModel]="selectedOperator()" (change)="onOperatorChange($event)" name="hs-sld-filter-comparison-sign"
     [disabled]="!attributeControl.value">
     @for (op of operators | async; track op.alias) {
@@ -25,13 +17,19 @@
     <input class="form-select h-100 rounded-0" disabled value='NULL' />
     }
     @else if(currentAttribute()?.range){
+    @if(valueSource() === 'value'){
+
     <hs-filter-range-input [min]="currentAttribute()?.range.min" [max]="currentAttribute()?.range.max"
-      [(value)]="filter[2]" (change)="emitChange()">
+      [(value)]="_filter[2]" (change)="emitChange()">
     </hs-filter-range-input>
+    } @else if(valueSource() === 'property') {
+    <hs-attribute-selector [attributes]="attributes" [ngModel]="_filter[2]" (ngModelChange)="emitChange()">
+    </hs-attribute-selector>
+    }
     }
     @else {
-    @if(filter[0] === '*=') {
-    <input class="form-select h-100" [(ngModel)]="filter[2]" (change)="emitChange()"
+    @if(_filter[0] === '*=') {
+    <input class=" form-select h-100" [(ngModel)]="_filter[2]" (change)="emitChange()"
       [disabled]="!attributeControl.value" [attr.list]="'customValues'" />
     <datalist id="customValues">
       @for (value of currentAttribute()?.values; track value) {
@@ -39,7 +37,7 @@
         }
     </datalist>
     } @else {
-    <select class="form-control form-select h-100" [(ngModel)]="filter[2]" (change)="emitChange()"
+    <select class="form-control form-select h-100" [(ngModel)]="_filter[2]" (change)="emitChange()"
       [disabled]="!attributeControl.value">
       @for (value of currentAttribute()?.values; track value) {
       <option [ngValue]="value">{{value}}</option>
@@ -48,7 +46,6 @@
     }
     }
   </div>
-
   <div>
     <button class="btn btn-outline-danger btn-sm rounded-0" style="height: 100%" (click)="remove()">
       <span class="icon-trash"></span>
@@ -65,3 +62,15 @@
   </div>
   }
 </div>
+@if(currentAttribute()?.range && !isWfsFilter()){
+<div class="comparison-filter-value-source btn-group w-100 p-1 d-flex justify-content-end">
+  <button type="button" class="btn btn-sm btn-outline-secondary p-1 border-0 rounded-0 w-25 flex-grow-0"
+    [class.active]="valueSource() === 'value'" (click)="toggleValueSource('value')">
+    Value
+  </button>
+  <button type="button" class="btn btn-sm btn-outline-secondary p-1 border-0 rounded-0 w-25 flex-grow-0"
+    [class.active]="valueSource() === 'property'" (click)="toggleValueSource('property')">
+    Property
+  </button>
+</div>
+}
