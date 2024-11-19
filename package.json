@@ -70,6 +70,7 @@
     "geostyler-qgis-parser": "^3.0.0",
     "geostyler-sld-parser": "^7.0.0",
     "geostyler-style": "^9.1.0",
+    "hammerjs": "^2.0.8",
     "jszip": "^3.10.1",
     "ngx-color": "^9.0.0",
     "ngx-cookie-service": "^18.0.0",

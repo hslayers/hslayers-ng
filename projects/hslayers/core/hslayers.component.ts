@@ -8,7 +8,7 @@ import {
   ViewChild,
   inject,
 } from '@angular/core';
-import {delay} from 'rxjs';
+import {debounceTime, delay, fromEvent, map} from 'rxjs';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 
 import {HsConfig, HsConfigObject} from 'hslayers-ng/config';
@@ -73,7 +73,6 @@ export class HslayersComponent implements AfterViewInit, OnInit {
         'width=device-width, initial-scale=0.6, maximum-scale=2, user-scalable=no',
       );
     }
-
     // const appInUrl = this.hsShareUrlService.getParamValue('app');
     // if (appInUrl != undefined) {
     //   this.HsLayoutService.scrollTo(this.elementRef);
@@ -114,7 +113,7 @@ export class HslayersComponent implements AfterViewInit, OnInit {
     );
   }
 
-  ngAfterViewInit() {
+  async ngAfterViewInit() {
     this.HsLayoutService.layoutElement = this.hslayout.nativeElement;
     const hsapp = this.elementRef.nativeElement;
 
@@ -153,6 +152,40 @@ export class HslayersComponent implements AfterViewInit, OnInit {
           `Height of the element <hslayers> is lower than recommended value of ${minHeight}px.`,
         );
       }
+    }
+
+    const canHover = window.matchMedia('(hover: hover)').matches;
+    if (!canHover) {
+      // Load Hammer.js dynamically on mobile devices
+      const {default: Hammer} = await import('hammerjs');
+      const hammer = new Hammer(
+        this.HsLayoutService.layoutElement.querySelector('.hs-panelplace'),
+        {
+          'recognizers': [
+            [
+              Hammer.Swipe,
+              {
+                direction: Hammer.DIRECTION_VERTICAL,
+                threshold: 250,
+                velocity: 0.3,
+              },
+            ],
+          ],
+        },
+      );
+
+      fromEvent(hammer, 'swipedown')
+        .pipe(
+          takeUntilDestroyed(this.destroyRef),
+          debounceTime(10),
+          map((e: any) => {
+            this.HsLayoutService.setMainPanel(
+              this.HsLayoutService.mainpanel,
+              true,
+            );
+          }),
+        )
+        .subscribe(() => {});
     }
   }
 
