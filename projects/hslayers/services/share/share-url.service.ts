@@ -236,8 +236,8 @@ export class HsShareUrlService {
             .map((dic) => `${dic.key}=${encodeURIComponent(dic.value)}`)
             .join('&');
           const baseHref = this.PlatformLocation.getBaseHrefFromDOM();
-          if (locationPath.indexOf(baseHref) == 0 && this.hsConfig.ngRouter) {
-            locationPath = locationPath.replace(baseHref, '');
+          if (locationPath.startsWith(baseHref)) {
+            locationPath = locationPath.substring(baseHref.length);
           }
           this.Location.replaceState(locationPath, paramsSerialized);
           this.browserUrlUpdated.next(this.getPermalinkUrl());
