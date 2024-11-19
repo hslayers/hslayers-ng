@@ -67,6 +67,7 @@ export class HsCompositionsLayerParserService {
         style: style,
         path: lyr_def.path,
         fromComposition: true,
+        opacity: parseFloat(lyr_def.opacity) || 1,
       },
     });
     newLayer[0].setVisible(lyr_def.visibility);
@@ -93,6 +94,7 @@ export class HsCompositionsLayerParserService {
           base: lyr_def.base,
           greyscale: lyr_def.greyscale,
           fromComposition: true,
+          opacity: parseFloat(lyr_def.opacity) || 1,
         },
       });
       newLayer[0].setVisible(lyr_def.visibility);
@@ -153,7 +155,7 @@ export class HsCompositionsLayerParserService {
       dimensions: lyr_def.dimensions,
       legends: legends,
       path: lyr_def.path,
-      opacity: parseInt(lyr_def.opacity) || 1,
+      opacity: parseFloat(lyr_def.opacity) || 1,
       source,
       subLayers: lyr_def.subLayers,
       className: lyr_def.greyscale ? 'ol-layer hs-greyscale' : 'ol-layer',
@@ -185,6 +187,7 @@ export class HsCompositionsLayerParserService {
         base: lyr_def.base,
         greyscale: lyr_def.greyscale,
         fromComposition: true,
+        opacity: parseFloat(lyr_def.opacity) || 1,
       },
     });
     newLayer[0].setVisible(lyr_def.visibility);
@@ -216,7 +219,7 @@ export class HsCompositionsLayerParserService {
     const new_layer = new Tile({
       maxResolution: lyr_def.maxResolution || Infinity,
       minResolution: lyr_def.minResolution || 0,
-      opacity: parseInt(lyr_def.opacity) || 1,
+      opacity: parseFloat(lyr_def.opacity) || 1,
       source,
       className: lyr_def.greyscale ? 'ol-layer hs-greyscale' : 'ol-layer',
       properties: {
@@ -261,7 +264,7 @@ export class HsCompositionsLayerParserService {
       maxResolution: lyr_def.maxResolution || Infinity,
       minResolution: lyr_def.minResolution || 0,
       className: lyr_def.greyscale ? 'ol-layer hs-greyscale' : 'ol-layer',
-      opacity: parseInt(lyr_def.opacity) || 1,
+      opacity: parseFloat(lyr_def.opacity) || 1,
       source,
       properties: {
         title: lyr_def.title,
@@ -313,7 +316,7 @@ export class HsCompositionsLayerParserService {
         definition,
       },
       source: src,
-      opacity: parseInt(lyr_def.opacity) || 1,
+      opacity: parseFloat(lyr_def.opacity) || 1,
       style: style,
     });
     lyr.setVisible(lyr_def.visibility);
@@ -350,7 +353,7 @@ export class HsCompositionsLayerParserService {
         }
       }
       const options: HsVectorLayerOptions = {
-        opacity: parseInt(lyr_def.opacity) || 1,
+        opacity: parseFloat(lyr_def.opacity) || 1,
         fromComposition: lyr_def.fromComposition ?? true,
         path: lyr_def.path,
         visible: lyr_def.visibility,
@@ -438,7 +441,7 @@ export class HsCompositionsLayerParserService {
             lyr_def.abstract,
             lyr_def.projection?.toUpperCase(),
             {
-              opacity: parseInt(lyr_def.opacity),
+              opacity: parseFloat(lyr_def.opacity),
               visible: lyr_def.visibility,
               path: lyr_def.path,
               fromComposition: lyr_def.fromComposition,

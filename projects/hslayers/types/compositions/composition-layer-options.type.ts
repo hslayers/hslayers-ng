@@ -16,7 +16,7 @@ export type LayerOptions = {
   subLayers?: string;
   crs?: string;
   opacity?: number;
-
+  queryable?: boolean;
   //****WMS****//
 
   /**

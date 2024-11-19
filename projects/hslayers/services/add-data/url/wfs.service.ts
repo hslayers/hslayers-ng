@@ -531,6 +531,7 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
         layerExtent: layerExtent,
       }),
       renderOrder: null,
+      opacity: options.opacity || 1,
       //Used to determine whether its URL WFS service when saving to compositions
     });
     if (this.hsAddDataCommonService.layerToSelect) {
