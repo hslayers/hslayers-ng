@@ -61,11 +61,13 @@ export class HsAddDataCommonService {
       //TODO: If Layman allows layers with different casing,
       // then remove the case lowering
       const layerName = nameOrTitle
-        ? layer.Name?.toLowerCase() ?? layer.Title?.toLowerCase()
+        ? (layer.Name?.toLowerCase() ??
+          layer.name?.toLowerCase() ??
+          layer.Title?.toLowerCase() ??
+          layer.title?.toLowerCase())
         : layer.Identifier?.toLowerCase();
-      if (layerName === this.layerToSelect.toLowerCase()) {
-        layer.checked = true;
-      }
+      //Checks selected layer or uncheck if status carried from previous process
+      layer.checked = layerName === this.layerToSelect.toLowerCase();
     }
   }
 
