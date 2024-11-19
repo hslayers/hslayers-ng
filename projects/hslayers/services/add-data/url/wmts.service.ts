@@ -239,6 +239,7 @@ export class HsUrlWmtsService implements HsUrlTypeServiceModel {
   getLayer(layer, options: LayerOptions): Layer<Source> {
     try {
       const wmts = new Tile({
+        opacity: options.opacity || 1,
         extent: this.getWMTSExtent(layer.Identifier),
         className: options?.greyscale ? 'ol-layer hs-greyscale' : 'ol-layer',
         properties: {
