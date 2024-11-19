@@ -76,10 +76,14 @@ div.hs-panelspace:not(.buttons) hs-sidebar~div.hs-panelplace {
 }
 
 
-.hs-sidebar-list .list-group-item {
-    border-left: 0px;
-    border-right: 0px;
-    white-space: nowrap;
+.hs-sidebar-list {
+    margin-top: 0.25rem;
+
+    .list-group-item {
+        border-left: 0px;
+        border-right: 0px;
+        white-space: nowrap;
+    }
 }
 
 .hs-sidebar-list .list-group-item:first-child {
@@ -190,8 +194,12 @@ hs-sidebar~div.hs-panelplace {
         justify-content: space-evenly;
     }
 
-    .hs-sidebar-list .list-group-item {
-        white-space: normal;
+    .hs-sidebar-list {
+        margin-top: 0;
+
+        .list-group-item {
+            white-space: normal;
+        }
     }
 
     .hs-content-wrapper.hs-open div.hs-panelspace:not(.labels) hs-sidebar .hs-sidebar-list {
@@ -220,6 +228,8 @@ hs-sidebar~div.hs-panelplace {
 
     .hs-sidebar-item {
         align-self: center;
+        border: 0 !important;
+        min-height: 3rem;
     }
 
     hs-mini-sidebar .hs-sidebar-list {
@@ -228,6 +238,9 @@ hs-sidebar~div.hs-panelplace {
         align-items: center;
         flex-wrap: wrap;
         margin: auto;
+        gap: 0.75rem;
+        padding-top: 0.5rem;
+        min-height: 50%;
     }
 
     hs-mini-sidebar hs-panel-header.sidebar-header {

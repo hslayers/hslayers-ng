@@ -5,6 +5,10 @@ $table-group-separator-color: white;
 $list-group-item-padding-y: 0.75rem;
 $list-group-item-padding-x: 1.25rem;
 
+html:has(div.hs-layout.hsl.hs-mobile-view) {
+  font-size: 140%;
+}
+
 /*Import parts of the bootstrap outside hsl class to allow :root*/
 @import "bootstrap/scss/functions";
 @import "bootstrap/scss/variables";

@@ -333,9 +333,10 @@ export class HsSidebarService {
     this.HsLayoutService.sidebarToggleable =
       this.hsConfig.sidebarToggleable &&
       this.HsLayoutService.layoutElement.clientWidth > mobileBreakpoint;
-    let maxNumberOfButtons = Math.floor(
-      this.HsLayoutService.layoutElement[dimensionToCheck] / 65,
-    );
+    let maxNumberOfButtons =
+      dimensionToCheck == 'clientHeight'
+        ? Math.floor(this.HsLayoutService.layoutElement[dimensionToCheck] / 65)
+        : 6;
     maxNumberOfButtons =
       dimensionToCheck == 'clientHeight'
         ? maxNumberOfButtons - 1

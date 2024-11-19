@@ -109,5 +109,5 @@ div.hs-content-wrapper:not(.hs-open) div.hs-panelspace-wrapper {
 
 //Forced by config
 &.hs-mobile-view {
-    @include mobile-view
+    @include mobile-view;
 }
