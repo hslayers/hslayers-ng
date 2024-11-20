@@ -4,11 +4,12 @@ import {
   DestroyRef,
   ElementRef,
   Input,
+  NgZone,
   OnInit,
   ViewChild,
   inject,
 } from '@angular/core';
-import {debounceTime, delay, fromEvent, map} from 'rxjs';
+import {debounceTime, delay, filter, fromEvent, map} from 'rxjs';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 
 import {HsConfig, HsConfigObject} from 'hslayers-ng/config';
@@ -22,6 +23,14 @@ import {
   HsPanelContainerService,
 } from 'hslayers-ng/services/panels';
 import {HsUtilsService} from 'hslayers-ng/services/utils';
+
+interface PanState {
+  readonly MIN_HEIGHT: number;
+  readonly MAX_HEIGHT: number;
+  initialHeight: number;
+  startY: number;
+  isProcessing: boolean;
+}
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
@@ -40,6 +49,21 @@ export class HslayersComponent implements AfterViewInit, OnInit {
   sidebarVisible: boolean;
   private destroyRef = inject(DestroyRef);
 
+  private panState: PanState = {
+    /**
+     * Maximum and minimum values of how much the panel can 'moved' by panning
+     * Final values are controlled by css variables
+     */
+    MIN_HEIGHT: 20, // vh
+    MAX_HEIGHT: 70, // vh
+    initialHeight: 0,
+    startY: 0,
+    isProcessing: false,
+  };
+
+  private panelSpace: HTMLElement;
+  private mapSpace: HTMLElement;
+
   constructor(
     public hsConfig: HsConfig,
     private elementRef: ElementRef,
@@ -50,6 +74,7 @@ export class HslayersComponent implements AfterViewInit, OnInit {
     public HsPanelContainerService: HsPanelContainerService,
     public HsOverlayContainerService: HsOverlayContainerService,
     private hsExternalService: HsExternalService, //Leave this, need to inject somewhere
+    private ngZone: NgZone,
   ) {}
 
   async ngOnInit(): Promise<void> {
@@ -155,60 +180,129 @@ export class HslayersComponent implements AfterViewInit, OnInit {
       }
     }
 
+    this.mapSpace = this.HsLayoutService.contentWrapper.querySelector(
+      '.hs-map-space',
+    ) as HTMLElement;
+
+    this.panelSpace = this.HsLayoutService.contentWrapper.querySelector(
+      '.hs-panelspace',
+    ) as HTMLElement;
+
     const canHover = window.matchMedia('(hover: hover)').matches;
     if (!canHover) {
-      // Load Hammer.js dynamically on mobile devices
       const {default: Hammer} = await import('hammerjs');
 
-      /**
-       * Change sidebar height by 'draggin' resizer
-       */
-      const panRecognizer = new Hammer(
-        this.HsLayoutService.layoutElement.querySelector(
-          '.hs-panelspace-expander',
-        ),
-        {
-          'recognizers': [[Hammer.Pan, {direction: Hammer.DIRECTION_VERTICAL}]],
-          cssProps: {
-            touchCallout: 'auto', // Allow default touch behaviors
-            contentZooming: 'auto', // Allow zooming
-            tapHighlightColor: 'rgba(0,0,0,0)', // Optional: remove tap highlight
-          },
-        },
-      );
+      this.ngZone.runOutsideAngular(() => {
+        const isProcessingPan = this.panState.isProcessing;
 
-      fromEvent(panRecognizer, 'panmove')
-        .pipe(
-          takeUntilDestroyed(this.destroyRef),
-          debounceTime(100),
-          map((e: any) => {
-            this.resizePanelSpaceWrapper(e);
-          }),
-        )
-        .subscribe(() => {});
-    } else {
-      //Desktop small width handler
-      this.HsLayoutService.layoutElement
-        .querySelector('.hs-panelspace-expander')
-        .addEventListener('click', (e) => {
-          this.resizePanelSpaceWrapper(e);
-        });
+        const panRecognizer = new Hammer(
+          this.HsLayoutService.layoutElement.querySelector(
+            '.hs-panelspace-expander',
+          ),
+          {
+            'recognizers': [
+              [Hammer.Pan, {direction: Hammer.DIRECTION_VERTICAL}],
+            ],
+            cssProps: {
+              touchCallout: 'none',
+              contentZooming: 'none',
+              tapHighlightColor: 'rgba(0,0,0,0)',
+            },
+          },
+        );
+
+        // Handle pan start
+        fromEvent(panRecognizer, 'panstart')
+          .pipe(
+            filter(() => !isProcessingPan),
+            takeUntilDestroyed(this.destroyRef),
+          )
+          .subscribe((e: any) => {
+            this.panState.initialHeight =
+              this.panelSpace.getBoundingClientRect().height;
+            this.panState.startY = e.center.y;
+
+            // Fix map height
+            const currentMapHeight =
+              this.mapSpace.getBoundingClientRect().height;
+            this.mapSpace.style.flex = `0 0 ${currentMapHeight}px`;
+            this.panelSpace.classList.add('dragging');
+          });
+
+        // Handle pan move
+        fromEvent(panRecognizer, 'panmove')
+          .pipe(
+            filter(() => !isProcessingPan),
+            takeUntilDestroyed(this.destroyRef),
+          )
+          .subscribe((e: any) => this.updatePanelHeight(e));
+
+        // Handle pan end
+        fromEvent(panRecognizer, 'panend')
+          .pipe(takeUntilDestroyed(this.destroyRef))
+          .subscribe(() => this.snapToNearestHeight());
+      });
     }
   }
 
   /**
-   * Toggles 'shrunk' class on panelspace-wrapper. Switching height between 70 and  20vh
+   * Updates the height of the panel space based on the pan event.
+   *
+   * @param e The pan event object.
    */
-  resizePanelSpaceWrapper(e: any): void {
-    const contentWrapper = this.HsLayoutService.contentWrapper;
-    const panelSpaceWrapper = contentWrapper.querySelector(
-      '.hs-panelspace-wrapper',
+  private updatePanelHeight(e: any): void {
+    // Calculate the delta Y from the start of the pan to the current position.
+    const deltaY = e.center.y - this.panState.startY;
+    const viewportHeight = window.innerHeight;
+    // Calculate the new height of the panel space in viewport height units (vh).
+    const newHeightVh =
+      ((this.panState.initialHeight - deltaY) / viewportHeight) * 100;
+    // Clamp the new height to be within the minimum and maximum allowed heights.
+    const clampedHeight = Math.max(
+      this.panState.MIN_HEIGHT,
+      Math.min(this.panState.MAX_HEIGHT, newHeightVh),
     );
-    if (panelSpaceWrapper) {
-      panelSpaceWrapper.classList.toggle('shrunk');
+
+    // Set the style height of the panel space to the clamped height.
+    this.panelSpace.style.height = `${clampedHeight}vh`;
+  }
+
+  /**
+   * Snaps the panel space to the nearest height.
+   */
+  private snapToNearestHeight(): void {
+    this.panState.isProcessing = true;
+
+    const panelspace = this.panelSpace;
+    const currentHeight =
+      (panelspace.getBoundingClientRect().height / window.innerHeight) * 100;
+    const shouldCollapse =
+      currentHeight <=
+      (this.panState.MIN_HEIGHT + this.panState.MAX_HEIGHT) / 2;
+
+    panelspace.classList.remove('dragging');
+    /**
+     * Remove user agent styles to allow css take over
+     */
+    panelspace.style.removeProperty('height');
+    this.mapSpace.style.removeProperty('flex');
+
+    /**
+     * Add or remove panel-collapsed class based on the current height
+     * causing height to snap to the nearest value
+     */
+    if (shouldCollapse) {
+      panelspace.classList.add('panel-collapsed');
+    } else {
+      panelspace.classList.remove('panel-collapsed');
     }
+
+    // Update map only after snap animation completes
     setTimeout(() => {
-      this.HsEventBusService.mapSizeUpdates.next();
-    }, 500);
+      this.ngZone.run(() => {
+        this.HsEventBusService.mapSizeUpdates.next();
+      });
+      this.panState.isProcessing = false;
+    }, 300);
   }
 }
