@@ -556,8 +556,9 @@ html:has(div.hs-layout.hsl.hs-mobile-view) {
 
   &.hs-mobile-view {
 
-    .d-mw-md-block {
-      display: block !important;
+    .d-mw-md-block:not(:has(> span.disabled)) {
+      display: flex !important;
+      justify-content: center
     }
 
     input[type="checkbox"] {
