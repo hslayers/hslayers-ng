@@ -19,8 +19,8 @@ const data = fs.readFileSync(inputFilePath,
   { encoding: 'utf8', flag: 'r' });
 
 // Remove the lines containing Bootstrap imports
-let modifiedContent = removeLines(data, 29, 64); //Components
-modifiedContent = removeLines(modifiedContent, 12, 16); //Maps, mixins etx
+let modifiedContent = removeLines(data, 33, 68); //Components
+modifiedContent = removeLines(modifiedContent, 16, 20); //Maps, mixins etx
 
 // Compile the modified SCSS content to CSS
 const result = sass.compileString(modifiedContent, {
