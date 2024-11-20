@@ -194,7 +194,7 @@ export class HsLayoutService extends HsLayoutParams {
       this.sidebarToggleable = this.hsConfig.hasOwnProperty('sidebarToggleable')
         ? this.hsConfig.sidebarToggleable
         : true;
-      if (this.hsConfig.defaultPanel) {
+      if (this.hsConfig.defaultPanel && !this.hsConfig.sidebarClosed) {
         this.setMainPanel(this.hsConfig.defaultPanel);
       }
     }
