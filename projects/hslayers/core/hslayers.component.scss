@@ -108,13 +108,13 @@ div.hs-content-wrapper:not(.hs-open) div.hs-panelspace-wrapper {
         flex-direction: column;
         scrollbar-width: none;
         /* firefox */
-        height: 40vh;
+        height: var(--hs-panelspace-normal-height, 70vh);
         overflow-y: visible;
         width: 100%;
         transition: height 0.5s ease-in-out;
 
-        &.expanded {
-            height: 70vh;
+        &.shrunk {
+            height: var(--hs-panelspace-shrunk-height, 20vh);
         }
     }
 
