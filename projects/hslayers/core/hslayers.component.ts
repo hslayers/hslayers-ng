@@ -116,6 +116,7 @@ export class HslayersComponent implements AfterViewInit, OnInit {
   async ngAfterViewInit() {
     this.HsLayoutService.layoutElement = this.hslayout.nativeElement;
     const hsapp = this.elementRef.nativeElement;
+    hsapp.style.overflow = 'hidden';
 
     if (window.innerWidth < this.hsConfig.mobileBreakpoint) {
       document.body.style.margin = '0px';
@@ -158,50 +159,53 @@ export class HslayersComponent implements AfterViewInit, OnInit {
     if (!canHover) {
       // Load Hammer.js dynamically on mobile devices
       const {default: Hammer} = await import('hammerjs');
-      const hammer = new Hammer(
-        this.HsLayoutService.layoutElement.querySelector('.hs-panelplace'),
+
+      /**
+       * Change sidebar height by 'draggin' resizer
+       */
+      const panRecognizer = new Hammer(
+        this.HsLayoutService.layoutElement.querySelector(
+          '.hs-panelspace-expander',
+        ),
         {
-          'recognizers': [
-            [
-              Hammer.Swipe,
-              {
-                direction: Hammer.DIRECTION_VERTICAL,
-                threshold: 250,
-                velocity: 0.3,
-              },
-            ],
-          ],
+          'recognizers': [[Hammer.Pan, {direction: Hammer.DIRECTION_VERTICAL}]],
+          cssProps: {
+            touchCallout: 'auto', // Allow default touch behaviors
+            contentZooming: 'auto', // Allow zooming
+            tapHighlightColor: 'rgba(0,0,0,0)', // Optional: remove tap highlight
+          },
         },
       );
 
-      fromEvent(hammer, 'swipedown')
+      fromEvent(panRecognizer, 'panmove')
         .pipe(
           takeUntilDestroyed(this.destroyRef),
-          debounceTime(10),
+          debounceTime(100),
           map((e: any) => {
-            this.HsLayoutService.setMainPanel(
-              this.HsLayoutService.mainpanel,
-              true,
-            );
+            this.resizePanelSpaceWrapper(e);
           }),
         )
         .subscribe(() => {});
+    } else {
+      //Desktop small width handler
+      this.HsLayoutService.layoutElement
+        .querySelector('.hs-panelspace-expander')
+        .addEventListener('click', (e) => {
+          this.resizePanelSpaceWrapper(e);
+        });
     }
   }
 
   /**
-   * Toggles 'expanded' class on panelspace-wrapper. Switching height between 40 to 70vh
+   * Toggles 'shrunk' class on panelspace-wrapper. Switching height between 70 and  20vh
    */
-  resizePanelSpaceWrapper(e: MouseEvent): void {
-    const target: HTMLSpanElement = e.target as HTMLSpanElement;
-    target.classList.toggle('icon-chevron-down');
-
+  resizePanelSpaceWrapper(e: any): void {
     const contentWrapper = this.HsLayoutService.contentWrapper;
     const panelSpaceWrapper = contentWrapper.querySelector(
       '.hs-panelspace-wrapper',
     );
     if (panelSpaceWrapper) {
-      panelSpaceWrapper.classList.toggle('expanded');
+      panelSpaceWrapper.classList.toggle('shrunk');
     }
     setTimeout(() => {
       this.HsEventBusService.mapSizeUpdates.next();
