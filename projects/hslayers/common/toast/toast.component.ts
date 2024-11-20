@@ -16,6 +16,14 @@ import {HsToastService} from './toast.service';
         max-height: 90%;
         flex-direction: column;
         max-width: 400px;
+        padding: 1rem 0;
+        gap: 0.5rem;
+      }
+
+      :host-context(.hs-mobile-view) {
+        top: 0;
+        right: 50%;
+        transform: translateX(50%);
       }
     `,
   ],
