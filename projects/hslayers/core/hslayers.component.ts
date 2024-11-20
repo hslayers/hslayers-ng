@@ -9,7 +9,7 @@ import {
   ViewChild,
   inject,
 } from '@angular/core';
-import {debounceTime, delay, filter, fromEvent, map} from 'rxjs';
+import {delay, filter, fromEvent} from 'rxjs';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 
 import {HsConfig, HsConfigObject} from 'hslayers-ng/config';
@@ -27,9 +27,8 @@ import {HsUtilsService} from 'hslayers-ng/services/utils';
 interface PanState {
   readonly MIN_HEIGHT: number;
   readonly MAX_HEIGHT: number;
-  initialHeight: number;
-  startY: number;
   isProcessing: boolean;
+  TOGGLE_THRESHOLD: number;
 }
 
 @Component({
@@ -56,9 +55,8 @@ export class HslayersComponent implements AfterViewInit, OnInit {
      */
     MIN_HEIGHT: 20, // vh
     MAX_HEIGHT: 70, // vh
-    initialHeight: 0,
-    startY: 0,
     isProcessing: false,
+    TOGGLE_THRESHOLD: 200, // px
   };
 
   private panelSpace: HTMLElement;
@@ -218,11 +216,8 @@ export class HslayersComponent implements AfterViewInit, OnInit {
             takeUntilDestroyed(this.destroyRef),
           )
           .subscribe((e: any) => {
-            this.panState.initialHeight =
-              this.panelSpace.getBoundingClientRect().height;
-            this.panState.startY = e.center.y;
-
-            // Fix map height
+            // Dynamically set the map space height to freeze it in its current height
+            // because of performance reasons
             const currentMapHeight =
               this.mapSpace.getBoundingClientRect().height;
             this.mapSpace.style.flex = `0 0 ${currentMapHeight}px`;
@@ -240,7 +235,7 @@ export class HslayersComponent implements AfterViewInit, OnInit {
         // Handle pan end
         fromEvent(panRecognizer, 'panend')
           .pipe(takeUntilDestroyed(this.destroyRef))
-          .subscribe(() => this.snapToNearestHeight());
+          .subscribe((e: any) => this.snapToNearestHeight(e));
       });
     }
   }
@@ -251,53 +246,46 @@ export class HslayersComponent implements AfterViewInit, OnInit {
    * @param e The pan event object.
    */
   private updatePanelHeight(e: any): void {
-    // Calculate the delta Y from the start of the pan to the current position.
-    const deltaY = e.center.y - this.panState.startY;
     const viewportHeight = window.innerHeight;
     // Calculate the new height of the panel space in viewport height units (vh).
-    const newHeightVh =
-      ((this.panState.initialHeight - deltaY) / viewportHeight) * 100;
     // Clamp the new height to be within the minimum and maximum allowed heights.
-    const clampedHeight = Math.max(
+    const newHeightVh = Math.max(
       this.panState.MIN_HEIGHT,
-      Math.min(this.panState.MAX_HEIGHT, newHeightVh),
+      Math.min(
+        this.panState.MAX_HEIGHT,
+        ((window.innerHeight - e.center.y) / viewportHeight) * 100,
+      ),
     );
 
     // Set the style height of the panel space to the clamped height.
-    this.panelSpace.style.height = `${clampedHeight}vh`;
+    this.panelSpace.style.height = `${newHeightVh}vh`;
   }
 
   /**
    * Snaps the panel space to the nearest height.
    */
-  private snapToNearestHeight(): void {
-    this.panState.isProcessing = true;
-
+  /**
+   * Snaps the panel space to the nearest height based on the pan event.
+   *
+   * @param e The pan event object.
+   */
+  private snapToNearestHeight(e: any): void {
     const panelspace = this.panelSpace;
-    const currentHeight =
-      (panelspace.getBoundingClientRect().height / window.innerHeight) * 100;
-    const shouldCollapse =
-      currentHeight <=
-      (this.panState.MIN_HEIGHT + this.panState.MAX_HEIGHT) / 2;
 
-    panelspace.classList.remove('dragging');
     /**
-     * Remove user agent styles to allow css take over
+     * Remove the dragging class and inline style height from the panel space
+     * to visually indicate the end of dragging and allow it to snap to its nearest height.
      */
+    panelspace.classList.remove('dragging');
     panelspace.style.removeProperty('height');
     this.mapSpace.style.removeProperty('flex');
 
-    /**
-     * Add or remove panel-collapsed class based on the current height
-     * causing height to snap to the nearest value
-     */
-    if (shouldCollapse) {
-      panelspace.classList.add('panel-collapsed');
-    } else {
-      panelspace.classList.remove('panel-collapsed');
+    // Check if the absolute delta Y of the pan event exceeds the toggle threshold.
+    if (Math.abs(e.deltaY) >= this.panState.TOGGLE_THRESHOLD) {
+      panelspace.classList.toggle('panel-collapsed');
     }
 
-    // Update map only after snap animation completes
+    // Set a timeout to allow for visual adjustments before notifying about map size updates.
     setTimeout(() => {
       this.ngZone.run(() => {
         this.HsEventBusService.mapSizeUpdates.next();
