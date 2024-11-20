@@ -106,7 +106,7 @@ export class HsLayerManagerMetadataService {
       this.hsLog.warn(`Error while querying metadata ${error}`);
     }
     const subLayers = getCachedCapabilities(layer)?.Layer;
-    if (subLayers != undefined && subLayers.length > 0) {
+    if (subLayers != undefined && subLayers.length > 1) {
       if (!layerDescriptor.hasSublayers) {
         layerDescriptor.hasSublayers = true;
         //ADD config values
