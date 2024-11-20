@@ -234,7 +234,7 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
     this.hsAddDataCommonService.clearParams();
     this.setDataToDefault();
     this.hsAddDataCommonService.setPanelToCatalogue();
-    if (collection.length > 0) {
+    if (collection.length > 0 && !layerOptions?.fromComposition) {
       this.hsLayoutService.setMainPanel('layerManager');
     }
     return collection;
