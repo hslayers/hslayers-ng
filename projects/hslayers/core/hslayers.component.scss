@@ -52,16 +52,37 @@ div.hs-content-wrapper:not(.hs-open) div.hs-panelspace-wrapper {
     display: block;
 }
 
-.hs-panelspace-expander {
-    position: absolute;
-    right: 45%;
-    bottom: 100%;
-    border-radius: 0;
-    font-size: 0.8rem;
-    //to overwrite bootstrap btn
-    font-family: 'WebHostingHub-Glyphs';
+.hs-panelspace-expander-container {
+    height: 1rem;
+
+    .hs-panelspace-expander {
+        height: 2.15rem;
+        z-index: 1000;
+        position: absolute;
+        border-radius: 0;
+        font-size: 0.75rem;
+        font-family: "WebHostingHub-Glyphs";
+    }
+
 }
 
+.drag-handle {
+    width: 3rem;
+    height: 2px;
+    background-color: currentColor;
+    margin: auto;
+    transition: box-shadow 0.2s ease;
+
+    &:hover,
+    &:active,
+    &.active {
+        box-shadow: 0 0 20px 12px rgba(13, 110, 253, 0.5);
+    }
+}
+
+.disabled .drag-handle {
+    opacity: 0.65;
+}
 
 @mixin mobile-view {
     .hs-content-wrapper {
@@ -78,7 +99,7 @@ div.hs-content-wrapper:not(.hs-open) div.hs-panelspace-wrapper {
         transition: none;
     }
 
-    .hs-panelspace.expanded {
+    .hs-panelspace.shrunk {
         min-width: 300px;
     }
 
