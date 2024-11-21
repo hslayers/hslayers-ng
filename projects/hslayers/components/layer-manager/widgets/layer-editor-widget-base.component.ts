@@ -49,8 +49,8 @@ export class HsLayerEditorWidgetBaseComponent
 
     this.hsLayerSelectorService.layerSelected
       .pipe(
-        takeUntilDestroyed(this.destroyRef),
         filter((layer) => !!layer),
+        takeUntilDestroyed(this.destroyRef),
       )
       .subscribe((layer) => {
         this.layerDescriptor.next(layer);
