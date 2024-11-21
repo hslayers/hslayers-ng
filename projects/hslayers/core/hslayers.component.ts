@@ -9,7 +9,7 @@ import {
   ViewChild,
   inject,
 } from '@angular/core';
-import {delay, filter, fromEvent} from 'rxjs';
+import {delay, filter, fromEvent, timer} from 'rxjs';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 
 import {HsConfig, HsConfigObject} from 'hslayers-ng/config';
@@ -23,6 +23,7 @@ import {
   HsPanelContainerService,
 } from 'hslayers-ng/services/panels';
 import {HsUtilsService} from 'hslayers-ng/services/utils';
+import {safeTakeUntilDestroyed} from './safeTakeUntilDestroyed';
 
 interface PanState {
   readonly MIN_HEIGHT: number;
@@ -191,8 +192,6 @@ export class HslayersComponent implements AfterViewInit, OnInit {
       const {default: Hammer} = await import('hammerjs');
 
       this.ngZone.runOutsideAngular(() => {
-        const isProcessingPan = this.panState.isProcessing;
-
         const panRecognizer = new Hammer(
           this.HsLayoutService.layoutElement.querySelector(
             '.hs-panelspace-expander',
@@ -212,8 +211,8 @@ export class HslayersComponent implements AfterViewInit, OnInit {
         // Handle pan start
         fromEvent(panRecognizer, 'panstart')
           .pipe(
-            filter(() => !isProcessingPan),
-            takeUntilDestroyed(this.destroyRef),
+            filter(() => !this.panState.isProcessing),
+            safeTakeUntilDestroyed(this.destroyRef),
           )
           .subscribe((e: any) => {
             // Dynamically set the map space height to freeze it in its current height
@@ -227,14 +226,14 @@ export class HslayersComponent implements AfterViewInit, OnInit {
         // Handle pan move
         fromEvent(panRecognizer, 'panmove')
           .pipe(
-            filter(() => !isProcessingPan),
-            takeUntilDestroyed(this.destroyRef),
+            filter(() => !this.panState.isProcessing),
+            safeTakeUntilDestroyed(this.destroyRef),
           )
           .subscribe((e: any) => this.updatePanelHeight(e));
 
         // Handle pan end
         fromEvent(panRecognizer, 'panend')
-          .pipe(takeUntilDestroyed(this.destroyRef))
+          .pipe(safeTakeUntilDestroyed(this.destroyRef))
           .subscribe((e: any) => this.snapToNearestHeight(e));
       });
     }
@@ -286,11 +285,13 @@ export class HslayersComponent implements AfterViewInit, OnInit {
     }
 
     // Set a timeout to allow for visual adjustments before notifying about map size updates.
-    setTimeout(() => {
-      this.ngZone.run(() => {
-        this.HsEventBusService.mapSizeUpdates.next();
+    timer(300)
+      .pipe(safeTakeUntilDestroyed(this.destroyRef))
+      .subscribe(() => {
+        this.ngZone.run(() => {
+          this.HsEventBusService.mapSizeUpdates.next();
+          this.panState.isProcessing = false;
+        });
       });
-      this.panState.isProcessing = false;
-    }, 300);
   }
 }
