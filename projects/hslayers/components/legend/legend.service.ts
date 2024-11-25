@@ -124,9 +124,7 @@ export class HsLegendService {
         sld = defaultStyle;
         sldObject = (await parser.readStyle(sld)).output;
       }
-      if (sldObject.name == undefined || sldObject.name == '') {
-        sldObject.name = currentLayer.get('title') || 'Layer';
-      }
+      sldObject.name = '';
 
       this.fixOpacity(sldObject);
       const legendOpts: any = {
