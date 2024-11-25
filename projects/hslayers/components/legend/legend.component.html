@@ -15,9 +15,7 @@
       <li class="list-group-item" [hidden]="!hsLegendService.legendValid(layer)">
         <!-- TODO: Remove function call from template -->
         <div>
-          @if(layer.type !== 'vector'){
           {{layer.title | translateHs : 'LAYERS' }}
-          }
           <hs-legend-layer [layer]="layer"></hs-legend-layer>
         </div>
       </li>

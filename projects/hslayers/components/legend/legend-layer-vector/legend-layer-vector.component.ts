@@ -7,7 +7,7 @@ import {Component, Input} from '@angular/core';
     :host ::ng-deep {
       .geostyler-legend-renderer {
         .legend-title {
-          transform: translateY(-7px);
+          display: none;
         }
       }
     }
