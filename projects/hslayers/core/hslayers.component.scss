@@ -90,12 +90,13 @@ div.hs-content-wrapper:not(.hs-open) div.hs-panelspace-wrapper {
         height: 1rem;
 
         .hs-panelspace-expander {
-            height: 2.15rem;
+            height: 2.5rem;
             z-index: 1000;
             position: absolute;
             border-radius: 0;
             font-size: 0.75rem;
             font-family: "WebHostingHub-Glyphs";
+            margin-top: -1rem;
         }
 
     }
@@ -106,6 +107,7 @@ div.hs-content-wrapper:not(.hs-open) div.hs-panelspace-wrapper {
         height: 2px;
         background-color: currentColor;
         margin: auto;
+        margin-top: 1.3rem !important;
         transition: box-shadow 0.2s ease;
 
         &:hover,
