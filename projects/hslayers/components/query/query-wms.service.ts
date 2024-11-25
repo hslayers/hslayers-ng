@@ -63,24 +63,6 @@ export class HsQueryWmsService {
   }
 
   /**
-   * Update feature list
-   * @param updated - Feature list has been updated
-   * @param group -
-   */
-  updateFeatureList(
-    updated: boolean,
-    group: {
-      layer?: string;
-      name?: any;
-      attributes?: any[];
-    },
-  ): void {
-    if (updated) {
-      this.hsQueryBaseService.set(group, 'features');
-    }
-  }
-
-  /**
    * Request information about clicked WMS layer coordinates
    * @param url - Request URL
    * @param infoFormat - Request information format
@@ -188,7 +170,7 @@ export class HsQueryWmsService {
           };
         }),
       };
-      this.updateFeatureList(true, group);
+      this.hsQueryBaseService.setFeatures(group);
     }
   }
 
@@ -238,7 +220,9 @@ export class HsQueryWmsService {
             };
           }),
       };
-      this.updateFeatureList(updated, group);
+      if (updated) {
+        this.hsQueryBaseService.setFeatures(group);
+      }
     });
   }
 

@@ -72,10 +72,16 @@ export class HsQueryComponent extends HsPanelBaseComponent implements OnInit {
     this.hsQueryVectorService.featureRemovals
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((feature) => {
-        this.hsQueryBaseService.features.splice(
-          this.hsQueryBaseService.features.indexOf(feature),
-          1,
-        );
+        const featureIdxInQuery = this.hsQueryBaseService.features
+          .map((fDescription) => fDescription.feature)
+          .filter((f) => f)
+          .indexOf(feature);
+        if (featureIdxInQuery < 0) {
+          // should not happen as the hsQueryBaseService.features array can't be manipulated from other place in the GUI,
+          // but it could be done programmatically
+          return;
+        }
+        this.hsQueryBaseService.features.splice(featureIdxInQuery, 1);
       });
     this.hsMapService.loaded().then((map) => {
       map.addOverlay(this.popup);

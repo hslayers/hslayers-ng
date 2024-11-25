@@ -5,8 +5,7 @@ import {Subject, debounceTime} from 'rxjs';
 import * as extent from 'ol/extent';
 import {Cluster, Vector as VectorSource} from 'ol/source';
 import {Coordinate} from 'ol/coordinate';
-import {Feature, Map} from 'ol';
-import {FeatureLike} from 'ol/Feature';
+import {Feature} from 'ol';
 import {GeoJSON, WKT} from 'ol/format';
 import {Geometry, LineString, Polygon} from 'ol/geom';
 import {Select} from 'ol/interaction';
@@ -33,16 +32,16 @@ type AttributeValuePair = {
   sanitizedValue?;
 };
 
-type FeatureDescription = {
+export type HsFeatureDescription = {
   layer: string;
   name: string;
   attributes: any[];
-  stats: {
+  stats?: {
     name: string;
     value: any;
   }[];
-  hstemplate: any;
-  feature: any;
+  hstemplate?: any;
+  feature?: Feature;
 };
 
 @Injectable({
@@ -161,13 +160,13 @@ export class HsQueryVectorService {
   createFeatureAttributeList(): void {
     this.hsQueryBaseService.attributes.length = 0;
     const features = this.selector.getFeatures().getArray();
-    let featureDescriptions = [];
+    let featureDescriptions: HsFeatureDescription[] = [];
     for (const feature of features) {
       featureDescriptions = featureDescriptions.concat(
         this.getFeatureAttributes(feature),
       );
     }
-    this.hsQueryBaseService.set(featureDescriptions, 'features');
+    this.hsQueryBaseService.setFeatures(featureDescriptions);
     this.hsQueryBaseService.getFeatureInfoCollected.next();
   }
 
@@ -303,9 +302,9 @@ export class HsQueryVectorService {
    * @param feature - Selected feature from map
    * @returns Feature attributes
    */
-  getFeatureAttributes(feature: Feature<Geometry>): FeatureDescription[] {
+  getFeatureAttributes(feature: Feature<Geometry>): HsFeatureDescription[] {
     const attributes = [];
-    let tmp: FeatureDescription[] = [];
+    let tmp: HsFeatureDescription[] = [];
     const hstemplate = feature.get('hstemplate')
       ? feature.get('hstemplate')
       : null;
@@ -340,7 +339,7 @@ export class HsQueryVectorService {
       }
     }
     if (!getFeatures(feature)) {
-      const featureDescription: FeatureDescription = {
+      const featureDescription: HsFeatureDescription = {
         layer: this.getFeatureLayerName(feature),
         name: 'Feature',
         attributes: attributes,
