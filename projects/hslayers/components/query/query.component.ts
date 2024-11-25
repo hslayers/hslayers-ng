@@ -91,6 +91,12 @@ export class HsQueryComponent extends HsPanelBaseComponent implements OnInit {
           ) {
             this.hsQueryBaseService.activateQueries();
           }
+          const panelSpace = this.hsLayoutService.contentWrapper.querySelector(
+            '.hs-panelspace',
+          ) as HTMLElement;
+          if (panelSpace) {
+            panelSpace.classList.remove('panel-collapsed');
+          }
         } else {
           if (this.hsQueryBaseService.queryActive) {
             this.hsQueryBaseService.deactivateQueries();
