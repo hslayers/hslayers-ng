@@ -6,7 +6,7 @@ import {Circle as CircleStyle, Fill, Stroke, Style} from 'ol/style';
 import {Coordinate, createStringXY, toStringHDMS} from 'ol/coordinate';
 import {Feature, Map} from 'ol';
 import {FeatureLike} from 'ol/Feature';
-import {Geometry, Point} from 'ol/geom';
+import {Point} from 'ol/geom';
 import {Select} from 'ol/interaction';
 import {Vector} from 'ol/source';
 import {Vector as VectorLayer} from 'ol/layer';
@@ -14,23 +14,31 @@ import {transform} from 'ol/proj';
 
 import {HsConfig} from 'hslayers-ng/config';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
+import {HsFeatureDescription} from './query-vector.service';
 import {HsLanguageService} from 'hslayers-ng/services/language';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsMapService} from 'hslayers-ng/services/map';
 import {HsSaveMapService} from 'hslayers-ng/services/save-map';
 import {HsUtilsService} from 'hslayers-ng/services/utils';
 
+declare type HsCoordinateDescription = {
+  name: string;
+  mapProjCoordinate: Coordinate;
+  epsg4326Coordinate: Coordinate;
+  projections: {name: string; value: any}[];
+};
+
 @Injectable({
   providedIn: 'root',
 })
 export class HsQueryBaseService {
   attributes = [];
-  features = [];
+  features: HsFeatureDescription[] = [];
   featureInfoHtmls = [];
   customFeatures = [];
   coordinates = [];
   selectedProj;
-  queryLayer;
+  queryLayer: VectorLayer;
   featureLayersUnderMouse = [];
   dataCleared = true;
   invisiblePopup;
@@ -105,7 +113,7 @@ export class HsQueryBaseService {
           }
           this.dataCleared = false;
           this.currentQuery = (Math.random() + 1).toString(36).substring(7);
-          this.set(this.getCoordinate(evt.coordinate), 'coordinates', true);
+          this.setCoordinates(this.getCoordinate(evt.coordinate));
           this.last_coordinate_clicked = evt.coordinate; //It is used in some examples and apps
           this.selectedProj = this.coordinates[0].projections[0];
           this.getFeatureInfoStarted.next(evt);
@@ -181,12 +189,7 @@ export class HsQueryBaseService {
    * @param coordinate - Coordinates from map single click interaction
    * @returns Object with coordinates in multiple projections
    */
-  getCoordinate(coordinate: Coordinate): {
-    name: string;
-    mapProjCoordinate: Coordinate;
-    epsg4326Coordinate: Coordinate;
-    projections: {name: string; value: any}[];
-  } {
+  getCoordinate(coordinate: Coordinate): HsCoordinateDescription {
     this.queryPoint.setCoordinates(coordinate, 'XY');
     const epsg4326Coordinate = transform(
       coordinate,
@@ -288,20 +291,27 @@ export class HsQueryBaseService {
     return defaultStyle;
   }
 
-  set(data: any, type: string, overwrite?: boolean): void {
-    if (type) {
-      if (overwrite) {
-        this[type].length = 0;
-      }
-      if (Array.isArray(data)) {
-        this[type] = this[type].concat(data);
-      } else {
-        this[type].push(data);
-      }
-      this.hsEventBusService.queryDataUpdated.next(this);
-    } else if (console) {
-      console.log('Query.BaseService.setData type not passed');
+  /**
+   * Sets latest coordinates as current descriptor
+   * @param coords - Description of coordinates in HsCoordinateDescription format
+   */
+  setCoordinates(coords: HsCoordinateDescription): void {
+    this.coordinates.length = 0;
+    this.coordinates.push(coords);
+    this.hsEventBusService.queryDataUpdated.next(this);
+  }
+
+  /**
+   * Sets latest features as current descriptor
+   * @param features - Either a description of features in HsFeatureDescription format or an array of these descriptions
+   */
+  setFeatures(features: HsFeatureDescription[] | HsFeatureDescription): void {
+    if (Array.isArray(features)) {
+      this.features = this.features.concat(features);
+    } else {
+      this.features.push(features);
     }
+    this.hsEventBusService.queryDataUpdated.next(this);
   }
 
   clear(type?: string): void {

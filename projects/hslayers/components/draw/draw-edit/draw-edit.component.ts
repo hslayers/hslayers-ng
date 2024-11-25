@@ -4,7 +4,7 @@ import {NgClass} from '@angular/common';
 import * as polygonClipping from 'polygon-clipping';
 import polygonSplitter from 'polygon-splitter';
 import {Feature} from 'ol';
-import {Polygon} from 'ol/geom';
+import {LineString, Polygon, SimpleGeometry} from 'ol/geom';
 import {Vector} from 'ol/source';
 import {Vector as VectorLayer} from 'ol/layer';
 
@@ -20,6 +20,12 @@ import {HsQueryBaseService} from 'hslayers-ng/services/query';
 import {HsQueryVectorService} from 'hslayers-ng/services/query';
 import {HsToastService} from 'hslayers-ng/common/toast';
 import {defaultStyle} from 'hslayers-ng/services/styler';
+
+declare type HsModifyOperations =
+  | 'difference'
+  | 'split'
+  | 'intersection'
+  | 'union';
 
 @Component({
   selector: 'hs-draw-edit',
@@ -277,15 +283,22 @@ export class HsDrawEditComponent implements OnDestroy, OnInit {
   /**
    * Modify firstly selected features with the output of polygonClipping
    */
-  setCoordinatesToFirstFeature(coords): void {
-    this.features[0].feature.getGeometry().setCoordinates(coords[0], 'XY');
+  setCoordinatesToFirstFeature(coords: any[]): void {
+    (this.features[0].feature.getGeometry() as SimpleGeometry).setCoordinates(
+      coords[0],
+      'XY',
+    );
   }
 
   get features() {
     return this.HsQueryBaseService.features;
   }
 
-  modify(type): void | boolean {
+  /**
+   * A wrapper for any modification of the selected polygons. Calls intersection(), split(), difference() or union() based on the type param.
+   * @param type - Type of modification.
+   */
+  modify(type: HsModifyOperations): void {
     const features = [];
     const editCoords = [];
 
@@ -304,8 +317,10 @@ export class HsDrawEditComponent implements OnDestroy, OnInit {
     if (type === 'split') {
       const splittingLine =
         this.features.length > 1
-          ? this.features[1].feature
-          : this.editLayer.getSource().getFeatures()[0];
+          ? (this.features[1].feature as Feature<LineString>)
+          : (this.editLayer
+              .getSource()
+              .getFeatures()[0] as Feature<LineString>);
 
       newGeom = polygonSplitter(
         {
