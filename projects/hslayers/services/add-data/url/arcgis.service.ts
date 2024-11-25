@@ -295,11 +295,11 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
         : new XYZ(sourceParams)
       : new TileArcGISRest(sourceParams);
     /**
-     * Use provided extent when displaying more than 3 layers
+     * Use provided extent when displaying more than 3 layers or no layer are defined(all layers)
      * calculate extent otherwise
      */
     this.data.extent =
-      layers.length > 3
+      layers.length > 3 || layers.length === 0
         ? this.transformLayerExtent(this.data.extent, this.data)
         : await this.calcAllLayersExtent(layers, options);
 
