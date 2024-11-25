@@ -1,4 +1,4 @@
-import {DomSanitizer} from '@angular/platform-browser';
+import {DomSanitizer, SafeHtml} from '@angular/platform-browser';
 import {Injectable, NgZone} from '@angular/core';
 import {Subject} from 'rxjs';
 
@@ -21,11 +21,25 @@ import {HsMapService} from 'hslayers-ng/services/map';
 import {HsSaveMapService} from 'hslayers-ng/services/save-map';
 import {HsUtilsService} from 'hslayers-ng/services/utils';
 
-declare type HsCoordinateDescription = {
+export type HsProjectedCoordinatesDescription = {
+  /**
+   * EPSG code name of the projection
+   */
+  name: string;
+  /**
+   * Stringified coordinate values in the named projection
+   */
+  value: string;
+};
+
+export type HsCoordinateDescription = {
+  /**
+   * Translated title "coordinates"
+   */
   name: string;
   mapProjCoordinate: Coordinate;
   epsg4326Coordinate: Coordinate;
-  projections: {name: string; value: any}[];
+  projections: HsProjectedCoordinatesDescription[];
 };
 
 @Injectable({
@@ -34,19 +48,19 @@ declare type HsCoordinateDescription = {
 export class HsQueryBaseService {
   attributes = [];
   features: HsFeatureDescription[] = [];
-  featureInfoHtmls = [];
+  featureInfoHtmls: SafeHtml[] = [];
   customFeatures = [];
-  coordinates = [];
-  selectedProj;
+  coordinates: HsCoordinateDescription[] = [];
+  selectedProj: HsProjectedCoordinatesDescription;
   queryLayer: VectorLayer;
   featureLayersUnderMouse = [];
   dataCleared = true;
-  invisiblePopup;
+  invisiblePopup: HTMLIFrameElement;
   queryPoint = new Point([0, 0]);
-  selector = null;
+  selector: Select = null;
   last_coordinate_clicked: any;
   queryActive = false;
-  currentQuery = null;
+  currentQuery: string = null;
 
   popupClassname = '';
   nonQueryablePanels = [
