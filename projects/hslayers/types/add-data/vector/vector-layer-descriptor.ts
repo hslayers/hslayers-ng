@@ -46,7 +46,7 @@ export class VectorLayerDescriptor {
       definition,
       name,
       title,
-      opacity: options.opacity || 1,
+      opacity: options.opacity ?? 1,
       fromComposition: options.fromComposition || false,
       removable: true,
       path: options.path,
