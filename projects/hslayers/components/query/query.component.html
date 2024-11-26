@@ -23,14 +23,15 @@
     <div class="row">
       <div class="input-group m-1">
         @if (hsQueryBaseService?.coordinates.length>0) {
-        <select class="form-control form-select" [(ngModel)]="hsQueryBaseService.selectedProj"
+        <select class="form-control form-select w-auto" [(ngModel)]="hsQueryBaseService.selectedProj"
           [ngModelOptions]="{standalone: true}">
           @for (projection of hsQueryBaseService.coordinates[0].projections; track projection) {
           <option [ngValue]="projection">{{projection.name}}</option>
           }
         </select>
         }
-        <input class="form-control" [value]="hsQueryBaseService.selectedProj.value" readonly="">
+        <input class="form-control" style="width: min-content;" [value]="hsQueryBaseService.selectedProj.value"
+          readonly="">
       </div>
     </div>
   </div>
