@@ -51,13 +51,16 @@ export class HslayersComponent implements AfterViewInit, OnInit {
 
   private panState: PanState = {
     /**
-     * Maximum and minimum values of how much the panel can 'moved' by panning
+     * Maximum and minimum values in 'vh' units of how much the panel can be 'moved' by panning
      * Final values are controlled by css variables
      */
     MIN_HEIGHT: 20, // vh
     MAX_HEIGHT: 70, // vh
     isProcessing: false,
-    TOGGLE_THRESHOLD: 200, // px
+    /**
+     * Threshold in px
+     */
+    TOGGLE_THRESHOLD: 200,
   };
 
   private panelSpace: HTMLElement;
