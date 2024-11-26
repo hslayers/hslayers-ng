@@ -304,7 +304,7 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
         : await this.calcAllLayersExtent(layers, options);
 
     const layerParams = {
-      opacity: options.opacity || 1,
+      opacity: options.opacity ?? 1,
       properties: {
         title: options.title,
         name: options.title,
