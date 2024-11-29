@@ -91,7 +91,7 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
     try {
       await this.capabilitiesReceived(
         wrapper.response,
-        this.hsAddDataCommonService.layerToSelect,
+        this.hsAddDataCommonService.layerToSelect as string,
       );
       if (this.hsAddDataCommonService.layerToSelect) {
         this.hsAddDataCommonService.checkTheSelectedLayer(

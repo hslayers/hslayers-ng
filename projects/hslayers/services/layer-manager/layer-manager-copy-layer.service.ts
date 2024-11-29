@@ -50,7 +50,7 @@ export class HsLayerManagerCopyLayerService {
           currentOlLayer,
         );
       const layerCopy = await this.hsAddDataOwsService.connectToOWS({
-        type: layerType.toLowerCase(),
+        type: layerType.toLowerCase() as any,
         uri: url,
         layer: name,
         getOnly: true,

@@ -417,7 +417,7 @@ export class HsAddDataCatalogueService extends HsAddDataCatalogueParams {
         this.datasetSelect('url');
       }
       await this.hsAddDataOwsService.connectToOWS({
-        type: whatToAdd.type.toLowerCase(),
+        type: whatToAdd.type.toLowerCase() as 'wms',
         uri: decodeURIComponent(whatToAdd.link),
         layer:
           ds.type.includes('layman') || whatToAdd.recordType === 'dataset'
@@ -440,7 +440,7 @@ export class HsAddDataCatalogueService extends HsAddDataCatalogueParams {
             )[0]
           : whatToAdd.link;
         await this.hsAddDataOwsService.connectToOWS({
-          type: whatToAdd.type.toLowerCase(),
+          type: whatToAdd.type.toLowerCase() as 'wfs',
           uri: decodeURIComponent(whatToAdd.link),
           layer: whatToAdd.workspace
             ? `${whatToAdd.workspace}:${whatToAdd.name}`
@@ -498,7 +498,7 @@ export class HsAddDataCatalogueService extends HsAddDataCatalogueParams {
         this.datasetSelect('url');
       }
       await this.hsAddDataOwsService.connectToOWS({
-        type: whatToAdd.type.toLowerCase(),
+        type: whatToAdd.type.toLowerCase() as 'wmts',
         uri: decodeURIComponent(whatToAdd.link),
         layer: whatToAdd.recordType === 'dataset' ? whatToAdd.name : undefined,
       });
