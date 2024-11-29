@@ -1,3 +1,4 @@
+import {AddDataUrlType} from './url.type';
 import {IntersectWithTooltip} from '../type-intersection.type';
 import {LayerOptions} from '../compositions/composition-layer-options.type';
 
@@ -8,9 +9,9 @@ export type LayerConnection = {
 };
 
 export type OwsType = {
-  layer?: string;
-  type?: string;
+  type?: AddDataUrlType;
   uri?: string;
+  layer?: OwsType['type'] extends 'arcgis' ? string | string[] : string;
 };
 
 export type OwsConnection = IntersectWithTooltip<
