@@ -181,11 +181,8 @@ export class HsCompositionsLayerParserService {
       uri: lyr_def.url.split('tile/{z}/{y}/{x}')[0],
       /**
        * Allows sublayer definition in compositions as
-       * {
-       *   "LAYERS": "layer1,layer2" or ":layer1id,layer2id"
-       * }
        */
-      layer: lyr_def.params?.LAYERS.split(',') || lyr_def.title,
+      layer: lyr_def.sublayers?.split(',') || lyr_def.title,
       owrCache: false,
       getOnly: true,
       layerOptions: {

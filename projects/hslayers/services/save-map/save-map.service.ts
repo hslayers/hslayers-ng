@@ -308,6 +308,9 @@ export class HsSaveMapService {
       ) {
         json.className = 'ArcGISRest';
         json.singleTile = this.hsUtilsService.instOf(src, ImageArcGISRest);
+        if (getSubLayers(layer)) {
+          json.params = {LAYERS: getSubLayers(layer)};
+        }
       }
       if (this.hsUtilsService.instOf(src, ImageStatic)) {
         json.className = 'StaticImage';
