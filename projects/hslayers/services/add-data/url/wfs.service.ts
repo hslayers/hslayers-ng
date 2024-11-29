@@ -231,7 +231,7 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
             : this.data.layers;
           this.getFeatureCountForLayers(
             layers,
-            this.hsAddDataCommonService.layerToSelect,
+            this.hsAddDataCommonService.layerToSelect as string,
           );
         } catch (e) {
           throw new Error(e);
