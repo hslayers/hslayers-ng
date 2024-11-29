@@ -20,11 +20,6 @@ export class HsLayerEditorSublayerService {
     private hsLayerManagerVisibilityService: HsLayerManagerVisibilityService,
   ) {}
 
-  hasSubLayers(layer: HsLayerDescriptor): boolean {
-    const subLayers = getCachedCapabilities(layer.layer)?.Layer;
-    return subLayers != undefined && subLayers.length > 0;
-  }
-
   getSubLayers(layer: HsLayerDescriptor): HsSublayer[] {
     return layer ? this.populateSubLayers(layer) : [];
   }
