@@ -182,7 +182,7 @@ export class HsCompositionsLayerParserService {
       /**
        * Allows sublayer definition in compositions as
        */
-      layer: lyr_def.sublayers?.split(',') || lyr_def.title,
+      layer: lyr_def.subLayers?.split(',') || lyr_def.title,
       owrCache: false,
       getOnly: true,
       layerOptions: {
