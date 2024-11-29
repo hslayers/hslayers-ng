@@ -8,10 +8,11 @@ import {HsDimensionService} from 'hslayers-ng/services/get-capabilities';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsMapService} from 'hslayers-ng/services/map';
 import {HsToastService} from 'hslayers-ng/common/toast';
+import {OwsType} from 'hslayers-ng/types';
 
 @Injectable({providedIn: 'root'})
 export class HsAddDataCommonService {
-  layerToSelect: string;
+  layerToSelect: string | string[];
   loadingInfo = false;
   showDetails = false;
   url: string;
@@ -52,22 +53,33 @@ export class HsAddDataCommonService {
     this.url = url;
   }
 
-  checkTheSelectedLayer(services: any, serviceType: string) {
+  checkTheSelectedLayer(services: any, serviceType: OwsType['type']): void {
     if (!services) {
       return;
     }
     const nameOrTitle = serviceType !== 'wmts';
     for (const layer of services) {
-      //TODO: If Layman allows layers with different casing,
-      // then remove the case lowering
       const layerName = nameOrTitle
         ? (layer.Name?.toLowerCase() ??
           layer.name?.toLowerCase() ??
           layer.Title?.toLowerCase() ??
           layer.title?.toLowerCase())
         : layer.Identifier?.toLowerCase();
-      //Checks selected layer or uncheck if status carried from previous process
-      layer.checked = layerName === this.layerToSelect.toLowerCase();
+
+      if (serviceType === 'arcgis') {
+        layer.checked = Array.isArray(this.layerToSelect)
+          ? this.layerToSelect.some(
+              (lt) =>
+                layerName === lt.toLowerCase() ||
+                layer.id?.toString().toLowerCase() === lt.toLowerCase(),
+            )
+          : layerName === this.layerToSelect.toLowerCase() ||
+            layer.id?.toString().toLowerCase() ===
+              this.layerToSelect.toLowerCase();
+      } else {
+        layer.checked =
+          layerName === (this.layerToSelect as string).toLowerCase();
+      }
     }
   }
 

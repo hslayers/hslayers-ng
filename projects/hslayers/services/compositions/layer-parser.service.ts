@@ -179,7 +179,13 @@ export class HsCompositionsLayerParserService {
     const newLayer = await this.hsAddDataOwsService.connectToOWS({
       type: 'arcgis',
       uri: lyr_def.url.split('tile/{z}/{y}/{x}')[0],
-      layer: lyr_def.title,
+      /**
+       * Allows sublayer definition in compositions as
+       * {
+       *   "LAYERS": "layer1,layer2" or ":layer1id,layer2id"
+       * }
+       */
+      layer: lyr_def.params?.LAYERS.split(',') || lyr_def.title,
       owrCache: false,
       getOnly: true,
       layerOptions: {
