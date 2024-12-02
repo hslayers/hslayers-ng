@@ -22,6 +22,7 @@ import {
   WebMercatorTilingScheme,
   createWorldTerrainAsync,
 } from 'cesium';
+import {Coordinate} from 'ol/coordinate';
 import {Feature} from 'ol';
 import {GeoJSON, KML} from 'ol/format';
 import {
@@ -41,6 +42,7 @@ import {
   Vector as VectorSource,
   XYZ,
 } from 'ol/source';
+import {get as getProjection, transform} from 'ol/proj';
 
 import {HsConfig} from 'hslayers-ng/config';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
@@ -61,7 +63,6 @@ import {
 import {HsCesiumConfig} from './hscesium-config.service';
 import {OlCesiumObjectMapItem} from './ol-cesium-object-map-item.class';
 import {ParamCacheMapItem} from './param-cache-map-item.class';
-import {transform} from 'ol/proj';
 
 function MyProxy({proxy, maxResolution, HsUtilsService, projection}) {
   this.proxy = proxy;
@@ -366,16 +367,13 @@ export class HsCesiumLayersService {
         'PROJCS["WGS 84 / Pseudo-Mercator",GEOGCS["WGS 84",DATUM["WGS_1984",SPHEROID["WGS 84",6378137,298.257223563,AUTHORITY["EPSG","7030"]],AUTHORITY["EPSG","6326"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["degree",0.0174532925199433,AUTHORITY["EPSG","9122"]],AUTHORITY["EPSG","4326"]],PROJECTION["Mercator_1SP"],PARAMETER["central_meridian",0],PARAMETER["scale_factor",1],PARAMETER["false_easting",0],PARAMETER["false_northing",0],UNIT["metre",1,AUTHORITY["EPSG","9001"]],AXIS["X",EAST],AXIS["Y",NORTH],EXTENSION["PROJ4","+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +wktext  +no_defs"],AUTHORITY["EPSG","3857"]]';
       const secondProjection =
         'GEOGCS["WGS 84",DATUM["WGS_1984",SPHEROID["WGS 84",6378137,298.257223563,AUTHORITY["EPSG","7030"]],AUTHORITY["EPSG","6326"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["degree",0.0174532925199433,AUTHORITY["EPSG","9122"]],AUTHORITY["EPSG","4326"]]';
-
-      const xa = coordinates[0];
-      const ya = coordinates[1];
-      const za = coordinates[2];
-
-      const newCoordinates = transform(
-        [xa, ya],
-        firstProjection,
-        secondProjection,
-      );
+      const [xa, ya, za] = coordinates;
+      let newCoordinates: Coordinate;
+      if (getProjection(firstProjection) && getProjection(secondProjection)) {
+        newCoordinates = transform([xa, ya], firstProjection, secondProjection);
+      } else {
+        newCoordinates = coordinates;
+      }
       return Cartesian3.fromDegrees(
         newCoordinates[0],
         newCoordinates[1],

@@ -3,7 +3,7 @@ import {Injectable} from '@angular/core';
 import WMTSTileGrid from 'ol/tilegrid/WMTS';
 import {Layer} from 'ol/layer';
 import {WMTS} from 'ol/source';
-import {transform} from 'ol/proj';
+import {get as getProjection, transform} from 'ol/proj';
 
 import {HsMapService} from 'hslayers-ng/services/map';
 import {HsUtilsService} from 'hslayers-ng/services/utils';
@@ -30,11 +30,13 @@ export class HsQueryWmtsService {
   ): Promise<{url: string; format: string}> {
     const source = layer.getSource();
 
-    coordinate = transform(
-      coordinate,
-      this.hsMapService.getCurrentProj(),
-      source.getProjection(),
-    );
+    if (getProjection(source.getProjection())) {
+      coordinate = transform(
+        coordinate,
+        this.hsMapService.getCurrentProj(),
+        source.getProjection(),
+      );
+    }
 
     const tileGrid = source.getTileGrid() as WMTSTileGrid;
     const tileCoord = tileGrid.getTileCoordForCoordAndResolution(

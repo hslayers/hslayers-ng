@@ -3,7 +3,7 @@ import {Feature} from 'ol';
 import {GeoJSON, WKT} from 'ol/format';
 import {Point} from 'ol/geom';
 import {Vector} from 'ol/source';
-import {transform} from 'ol/proj';
+import {get as getProjection, transform} from 'ol/proj';
 
 export type SparqlOptions = {
   category?: string;
@@ -288,8 +288,10 @@ export class SparqlJson extends Vector {
       '&format=application%2Fsparql-results%2Bjson';
     let first_pair = [extent[0], extent[1]];
     let second_pair = [extent[2], extent[3]];
-    first_pair = transform(first_pair, 'EPSG:3857', 'EPSG:4326');
-    second_pair = transform(second_pair, 'EPSG:3857', 'EPSG:4326');
+    if (getProjection('EPSG:3857') && getProjection('EPSG:4326')) {
+      first_pair = transform(first_pair, 'EPSG:3857', 'EPSG:4326');
+      second_pair = transform(second_pair, 'EPSG:3857', 'EPSG:4326');
+    }
     extent = [...first_pair, ...second_pair];
     let s_extent;
     if (optimization === 'wikibase') {
@@ -362,7 +364,7 @@ export class SparqlJson extends Vector {
         const y = parseFloat(
           entity['http://www.w3.org/2003/01/geo/wgs84_pos#lat'],
         );
-        if (!isNaN(x) && !isNaN(y)) {
+        if (!isNaN(x) && !isNaN(y) && getProjection(proj)) {
           const coord = transform([x, y], 'EPSG:4326', proj);
           if (typeof occupiedXY[coord.toString()] !== 'undefined') {
             continue;
@@ -429,6 +431,7 @@ export class SparqlJson extends Vector {
    * Adam Cole, 2011-Sept-14
    * HSV to RBG adapted from: http://mjijackson.com/2008/02/rgb-to-hsl-and-rgb-to-hsv-color-model-conversion-algorithms-in-javascript
    * based on http://stackoverflow.com/a/7419630
+   * TODO: try inject(HsUtilsService) and call the rainbow() method from there
    * @param numOfSteps
    * @param step
    * @param opacity
@@ -441,19 +444,29 @@ export class SparqlJson extends Vector {
     const q = 1 - f;
     switch (i % 4) {
       case 2:
-        (r = f), (g = 1), (b = 0);
+        r = f;
+        g = 1;
+        b = 0;
         break;
       case 0:
-        (r = 0), (g = f), (b = 1);
+        r = 0;
+        g = f;
+        b = 1;
         break;
       case 3:
-        (r = 1), (g = q), (b = 0);
+        r = 1;
+        g = q;
+        b = 0;
         break;
       case 1:
-        (r = 0), (g = 1), (b = q);
+        r = 0;
+        g = 1;
+        b = q;
         break;
       default:
-        (r = 0), (g = 0), (b = 0);
+        r = 0;
+        g = 0;
+        b = 0;
     }
     const c =
       'rgba(' +

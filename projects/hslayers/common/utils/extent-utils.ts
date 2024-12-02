@@ -1,7 +1,7 @@
 import Feature from 'ol/Feature';
 import {Geometry} from 'ol/geom';
+import {get as getProjection, transform} from 'ol/proj';
 import {fromExtent as polygonFromExtent} from 'ol/geom/Polygon';
-import {transform} from 'ol/proj';
 
 import {generateUuid} from 'hslayers-ng/services/utils';
 
@@ -64,8 +64,9 @@ export function transformExtentValue(
   }
   let first_pair;
   let second_pair;
-  if (disableTransform) {
-    (first_pair = pairs[0]), (second_pair = pairs[1]);
+  if (disableTransform || !getProjection(mapProjection)) {
+    first_pair = pairs[0];
+    second_pair = pairs[1];
   } else {
     first_pair = transform(pairs[0], 'EPSG:4326', mapProjection);
     second_pair = transform(pairs[1], 'EPSG:4326', mapProjection);
