@@ -3,7 +3,7 @@ import {Inject, Injectable, PLATFORM_ID} from '@angular/core';
 import {isPlatformBrowser} from '@angular/common';
 
 import {LineString, Polygon} from 'ol/geom';
-import {ProjectionLike, transform} from 'ol/proj';
+import {ProjectionLike, get as getProjection, transform} from 'ol/proj';
 import {getArea, getDistance} from 'ol/sphere';
 import {lastValueFrom} from 'rxjs';
 
@@ -254,38 +254,39 @@ export class HsUtilsService {
   }
 
   /**
-   * Generates CSS color string (rgba(0, 0, 0, 1)) from given range and value for which to have color
-   * @public
+   * Generates CSS color from given range and value for which to have color
+   * Based on http://stackoverflow.com/a/7419630
+   * This function generates vibrant, "evenly spaced" colours (i.e. no clustering).
+   * This is ideal for creating easily distinguishable vibrant markers in Google Maps and other apps.
+   * Adam Cole, 2011-Sept-14
+   * HSV to RBG adapted from: http://mjijackson.com/2008/02/rgb-to-hsl-and-rgb-to-hsv-color-model-conversion-algorithms-in-javascript
    * @param numOfSteps - Maximum value which is the last color in rainbow
    * @param step - Current value to get color for
    * @param opacity - Opacity from 0 to 1
-   * @returns CSS color
+   * @returns CSS color string (rgba(0, 0, 0, 1))
    */
   rainbow(numOfSteps: number, step: number, opacity: number | string): string {
-    // based on http://stackoverflow.com/a/7419630
-    // This function generates vibrant, "evenly spaced" colours (i.e. no clustering). This is ideal for creating easily distinguishable vibrant markers in Google Maps and other apps.
-    // Adam Cole, 2011-Sept-14
-    // HSV to RBG adapted from: http://mjijackson.com/2008/02/rgb-to-hsl-and-rgb-to-hsv-color-model-conversion-algorithms-in-javascript
-    let r, g, b;
+    let rgb = [0, 0, 0];
     const h = step / (numOfSteps * 1.00000001);
     const i = ~~(h * 4);
     const f = h * 4 - i;
     const q = 1 - f;
     switch (i % 4) {
       case 2:
-        (r = f), (g = 1), (b = 0);
+        rgb = [f, 1, 0];
         break;
       case 0:
-        (r = 0), (g = f), (b = 1);
+      default:
+        rgb = [0, f, 1];
         break;
       case 3:
-        (r = 1), (g = q), (b = 0);
+        rgb = [1, q, 0];
         break;
       case 1:
-        (r = 0), (g = 1), (b = q);
+        rgb = [0, 1, q];
         break;
-      default:
     }
+    const [r, g, b] = rgb;
     const c =
       'rgba(' +
       ~~(r * 235) +
@@ -455,17 +456,21 @@ export class HsUtilsService {
 
   /**
    * Compute and format line length with correct units (m/km)
-   * @private
    * @param line
    * @returns numeric length of line with used units
    */
   formatLength(line: LineString, sourceProj: ProjectionLike): Measurement {
     let length = 0;
     const coordinates = line.getCoordinates();
+    const sourceProjRegistered = getProjection(sourceProj);
 
     for (let i = 0; i < coordinates.length - 1; ++i) {
-      const c1 = transform(coordinates[i], sourceProj, 'EPSG:4326');
-      const c2 = transform(coordinates[i + 1], sourceProj, 'EPSG:4326');
+      const c1 = sourceProjRegistered
+        ? transform(coordinates[i], sourceProj, 'EPSG:4326')
+        : coordinates[i];
+      const c2 = sourceProjRegistered
+        ? transform(coordinates[i + 1], sourceProj, 'EPSG:4326')
+        : coordinates[i + 1];
       length += getDistance(c1, c2);
     }
 

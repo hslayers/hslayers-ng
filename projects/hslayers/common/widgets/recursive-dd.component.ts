@@ -35,7 +35,7 @@ export class HsUiExtensionsRecursiveDdComponent {
    * ZoomTo / MoveTo to selected layer overview
    * @param bbox - Bounding box of selected layer
    */
-  zoomTo(bbox): void {
+  zoomTo(bbox: string | number[]): void {
     if (!bbox) {
       return;
     }
