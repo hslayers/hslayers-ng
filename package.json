@@ -66,7 +66,7 @@
     "dayjs": "^1.11.13",
     "deepmerge": "^4.3.1",
     "geostyler-legend": "^5.0.0",
-    "geostyler-openlayers-parser": "^5.0.0",
+    "geostyler-openlayers-parser": "^5.0.1",
     "geostyler-qgis-parser": "^3.0.0",
     "geostyler-sld-parser": "^7.0.0",
     "geostyler-style": "^9.2.0",
