@@ -1,3 +1,85 @@
+# [15.0.0-next.0](https://github.com/hslayers/hslayers-ng/compare/14.1.0...15.0.0-next.0) (2024-12-05)
+
+
+### Bug Fixes
+
+* **add-data:** After upload, load WMS as a single not as a a group ([038fdbd](https://github.com/hslayers/hslayers-ng/commit/038fdbda2da9bfe0d31a89199f05912c057a8799))
+* **add-data:** When no layer are defined for ArcGIS service use whole extent ([f66b198](https://github.com/hslayers/hslayers-ng/commit/f66b198bb5d9b0f880341a1e3ec7d11137b855e5))
+* **add-data:** WMS sublayer extent parsing ([b732d41](https://github.com/hslayers/hslayers-ng/commit/b732d41fe6a4a545ed458caaefb9c4f6a98cb4aa))
+* **arcgis:** Preserved layer status in case of concurrent layer loads from the same url ([b5d1a11](https://github.com/hslayers/hslayers-ng/commit/b5d1a117601e0b0cb4ff288703e517d8effda883))
+* **compositions:** Composition filter should always return array ([a054f8c](https://github.com/hslayers/hslayers-ng/commit/a054f8c69e99028b5c25b1e344b1ee3e972c9977))
+* **compositions:** Do not switch to LM automatically when loading WMTS or ArcGIS from composition ([13ad665](https://github.com/hslayers/hslayers-ng/commit/13ad665c76b221f0389036ff528fe3704ba38400))
+* **compositions:** Honour layer visibility defined in composition for ArcGIS. WMTS and WFS sources ([13afc39](https://github.com/hslayers/hslayers-ng/commit/13afc3962c850d14dfe588eecfa58291d1d88fc2))
+* **compositions:** Parse layer opacity from composition ([43c7461](https://github.com/hslayers/hslayers-ng/commit/43c74610f01d6ec66e6c4cb50d1116c71d565169))
+* **config:** Prioritize sidebarClosed over defaultPanel setting ([23404fe](https://github.com/hslayers/hslayers-ng/commit/23404fed63ec6ad65343305d3bbc4454863107a7))
+* **css:** No bootstrap css generation ([a34af31](https://github.com/hslayers/hslayers-ng/commit/a34af31bdc9543c037644c0cce87cf854f5b427b))
+* **draw:** tmpDrawing layer not created properly ([afcb316](https://github.com/hslayers/hslayers-ng/commit/afcb3167b894ba8acb17ebbd295a8c3fe2f38185))
+* **filters:** Comparison filter has got to update on filter change ([4bcfaa4](https://github.com/hslayers/hslayers-ng/commit/4bcfaa4abb96b3034d4d8c15b1c8871de3f745fb))
+* **filters:** Few logic bugs ([c0a699f](https://github.com/hslayers/hslayers-ng/commit/c0a699fb96867be64145ffe07b85c3e638b6d24e))
+* **filters:** If no filter is active, add-filter-button should not have any tab active ([214062c](https://github.com/hslayers/hslayers-ng/commit/214062cec813fd8c91b1e1893059a36f6b4f6911))
+* **filters:** Parse previously created filters ([1754c51](https://github.com/hslayers/hslayers-ng/commit/1754c51a6684060678b27d4fc28f5a0e510324e3))
+* **IDW:** Prevent infinite loop of text size adjustments ([a6aa993](https://github.com/hslayers/hslayers-ng/commit/a6aa993b0e616ccdafd7b137a3d368f91b447410))
+* **language:** Delete dangling comma from JSON ([74af8d8](https://github.com/hslayers/hslayers-ng/commit/74af8d884bbdcc499681b9ec7142a7762106b085))
+* **layer-editor:** WFS Filter shortcut should not be available in case wfs-filter panel is disabled ([92e74bd](https://github.com/hslayers/hslayers-ng/commit/92e74bd39a3a5c687e2ac0d5f1497cfcf7473da1))
+* **layerEditor:** layerDimensionDefinitionChanges race conditions at init ([129409f](https://github.com/hslayers/hslayers-ng/commit/129409f4f71e29498f0816f24132265ecde1794d))
+* **layermanager:** Gallery dialog import, template typo ([0e47994](https://github.com/hslayers/hslayers-ng/commit/0e479944edfbbe93e3554227fb078ed5d9581a8b))
+* **layermanager:** It should not be possible to set folder for base layers ([27e9e20](https://github.com/hslayers/hslayers-ng/commit/27e9e206d558e7aaa6504b15063b20bac1a70016))
+* **layermanager:** Layer order ([6c0db8e](https://github.com/hslayers/hslayers-ng/commit/6c0db8ec8b34ab2904834028a6bcb0120d63b3a9))
+* **layermanager:** Open layerEditor via url param only in case mainpanel is Layermanager ([4ca4988](https://github.com/hslayers/hslayers-ng/commit/4ca498841d79178f5e9297a70fb36bf892170a7d))
+* **layermanager:** Reset layer editor state on layer type change ([501e772](https://github.com/hslayers/hslayers-ng/commit/501e772e9c7060f84727eedc86c83d0caa4dbe18))
+* **layermanager:** Show sublayers if there are 2 or more options ([83c7741](https://github.com/hslayers/hslayers-ng/commit/83c7741344117b6248bec0a950aed142b6603f15))
+* **layermanager:** takeUntilDestroyed as last operator ([b13880b](https://github.com/hslayers/hslayers-ng/commit/b13880b92f3efc08123cc23309505700887d41ad))
+* **layermanager:** Update gallery editor layer title on change ([05363fb](https://github.com/hslayers/hslayers-ng/commit/05363fb2a418a20e5c6d44cf2137ca2019325d5b))
+* **legend:** For vector layers use legend title in SVG ([4d2a41f](https://github.com/hslayers/hslayers-ng/commit/4d2a41f35091e28a57eff15287f1781ac7f17c62))
+* **map-swipe:** Swipe properties of layers not updating with layerManagerUpdates when mapSwipe panel is active ([c3ed643](https://github.com/hslayers/hslayers-ng/commit/c3ed6435fd6cb4cde590f571c19f45348d7bd6a0)), closes [#5332](https://github.com/hslayers/hslayers-ng/issues/5332)
+* **map:** EPSG:4087 definition ([35c4290](https://github.com/hslayers/hslayers-ng/commit/35c42902323d5d0be0302d3d0939dbaf704a9f23))
+* **overlay:** Use correct injector ([bdc65f9](https://github.com/hslayers/hslayers-ng/commit/bdc65f931e30d0d1e75b1bde5182c648b8f59b2f))
+* **query:** Properly remove features from query ([91beb2b](https://github.com/hslayers/hslayers-ng/commit/91beb2b56dfe21cf6e4911e4e4fcecdbb578e12f))
+* Replace logical OR with nullish coalescing when setting opacity ([41b4030](https://github.com/hslayers/hslayers-ng/commit/41b4030a2c3bb036a50e6f3b03a37d3c604c55c3))
+* **save-map:** Store sublayers in sublayers prop ([eb8af73](https://github.com/hslayers/hslayers-ng/commit/eb8af73329da74ced3351596c62dc33eb6841c9e))
+* **sensors:** Dialog positioning and width ([920c570](https://github.com/hslayers/hslayers-ng/commit/920c5708e984054ea6babf137f4eaf22b184af53))
+* **share:** Do not duplicate locationPath in url when deployed on non root path ([8b994da](https://github.com/hslayers/hslayers-ng/commit/8b994daf93065397b0a98f697c559c74c8354084))
+* **styler:** Do not recreate rule obj on filter remove ([d0a040e](https://github.com/hslayers/hslayers-ng/commit/d0a040ee03dc149d82e1726faf334400e4561b93))
+* **styler:** Pass currentLayer into filters component ([dd5464e](https://github.com/hslayers/hslayers-ng/commit/dd5464ebee0ce6b7b1cd818ec2abefe1dd0c7dde))
+* **test-app:** Reintroduce custom pop-up widget ([76479fc](https://github.com/hslayers/hslayers-ng/commit/76479fc527474dc885d216c521862a75e8b2e426))
+* **wfs-filter:** Add wildcard symbols to LIKE filter to match any value that contains a specific substring ([c82aefc](https://github.com/hslayers/hslayers-ng/commit/c82aefc0b82d811434843fd7049505efb6617bd2))
+* **wfs-filter:** Correct initial value ([0baf02d](https://github.com/hslayers/hslayers-ng/commit/0baf02d5d017aba5e2ea340b2300104f38b982ef))
+* **wfs-filter:** Don't query DescribeFeatureType multiple time for the same layer ([a072db7](https://github.com/hslayers/hslayers-ng/commit/a072db71a163ab4374c62dc727e1bd4feb6c8be4))
+* **wfs-filter:** Layer filter condition ([eb09ee5](https://github.com/hslayers/hslayers-ng/commit/eb09ee5afcd230a1daa5d21f9163d3726378271c))
+* **wfs-filter:** Update layer when last filter is deleted ([09b97e7](https://github.com/hslayers/hslayers-ng/commit/09b97e798765350c6b631f3424cf981719da9818))
+* **wfs-source:** Provide injector to the non angular decorated wfs class ([25c53ab](https://github.com/hslayers/hslayers-ng/commit/25c53ab7396b47ed7010efdec7cc1cef3cd979d7))
+* **wms-t:** Display proper date in YYYYMMDD format ([212dd21](https://github.com/hslayers/hslayers-ng/commit/212dd2189a32eebd05f62945eb1f07546cae27f7))
+
+
+### Features
+
+* Add workflow for focused tests ([cdef91f](https://github.com/hslayers/hslayers-ng/commit/cdef91fdd611f53c236b73984899cea15a817de4))
+* **common:** Clipboard text component ([e29bc8f](https://github.com/hslayers/hslayers-ng/commit/e29bc8fb766337e5136817f79a7709e27f36353a))
+* **config:** Allow configuration of query hitTolerance ([e7e7768](https://github.com/hslayers/hslayers-ng/commit/e7e77686b99dbd3844d52f05de0c53b0f09d3591))
+* **config:** defaultPanel conf param ([596fe38](https://github.com/hslayers/hslayers-ng/commit/596fe3884d2bbf923f973410afae835e1a2666b3))
+* Create a wfs-filter component ([b5aa8b4](https://github.com/hslayers/hslayers-ng/commit/b5aa8b43db3cc3d251b3d3bcf8cbc263ebac5845))
+* **filters:** Allow filtering by presence or non presence of attribute value ([c65be60](https://github.com/hslayers/hslayers-ng/commit/c65be60662f2a8ea6bb879d8c6bdd026b674986b))
+* **filters:** Attribute selector component ([4c26d62](https://github.com/hslayers/hslayers-ng/commit/4c26d6255b3fbe10a2ea714904a8d0b2f2bfdde1))
+* **filters:** Minimal condition bounds for filter ([149638d](https://github.com/hslayers/hslayers-ng/commit/149638d705b5ca3f740b1b9fcb11f04e9f3dad4f))
+* **gallery-editor:** Create dialog component to render editor in there ([8f01e8d](https://github.com/hslayers/hslayers-ng/commit/8f01e8dfd33813d81e66db68baf9ea7a08e1d8fa))
+* **layer-editor:** Open wfs filter from layer-editor with current layer selected ([c02f20a](https://github.com/hslayers/hslayers-ng/commit/c02f20af425f873e5ab0358db5ed8294639d7389))
+* **layout:** Make sidebar height in mobile view configurable ([ce6a647](https://github.com/hslayers/hslayers-ng/commit/ce6a64760856f21cd5031c397f3eaf4b9e021e52))
+* **layput:** Register swipe gesture closing bottom panels on non hover devices ([c5004d6](https://github.com/hslayers/hslayers-ng/commit/c5004d62eab1988a23b2e677ac0f3b0bed45d836))
+* **query:** Dynamic info panel ([5b5ec2d](https://github.com/hslayers/hslayers-ng/commit/5b5ec2d83f4077ea15c5f6a8bb5a953fbd982a2d))
+* **styler:** Configurable number of color map categories ([9b39785](https://github.com/hslayers/hslayers-ng/commit/9b39785f70af274a7ce484a1ca3983cbe8f67f58))
+* **styler:** Properly set up styles for layer with OL style definitions ([26fc86c](https://github.com/hslayers/hslayers-ng/commit/26fc86c8034987c8fc496fa3841bdee314dfabca))
+* **styler:** String based attributes for style comparison filter ([99ee115](https://github.com/hslayers/hslayers-ng/commit/99ee115b7f29af77870a52c37080d11435074f04))
+* **wfs-filter:** Identify geometry property ([dcf8f23](https://github.com/hslayers/hslayers-ng/commit/dcf8f231b1ac389f6d30a5d2fd7e44d4a06f8790))
+* **wfs-filter:** Range input for numeric values ([333d86d](https://github.com/hslayers/hslayers-ng/commit/333d86db61bf3d55dead713214f7a6aa6eda3a32))
+
+
+### Performance Improvements
+
+* **pop-up:** Reduce usage of getLayerForFeature ([02e27df](https://github.com/hslayers/hslayers-ng/commit/02e27dfa3885180d5cccefd033996abb7f59c718))
+* **query:** Simplify getFeaturesUnderMouse ([8cbe4fc](https://github.com/hslayers/hslayers-ng/commit/8cbe4fcd9e21c596703758c6b3fab9ff9f837817))
+
+
+
 # [14.1.0](https://github.com/hslayers/hslayers-ng/compare/14.0.1...14.1.0) (2024-07-29)
 
 
