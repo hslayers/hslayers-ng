@@ -401,7 +401,7 @@ export class HsComparisonFilterComponent
    */
   remove(): void {
     if (this.parent) {
-      this.hsFiltersService.removeFilter(this.parent, this._filter);
+      this.hsFiltersService.removeFilter(this.parent, this.filter);
     } else {
       this.deleteRuleFilter();
     }
