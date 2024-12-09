@@ -1058,7 +1058,7 @@ html:has(div.hs-layout.hsl.hs-mobile-view) {
     display: none;
     position: absolute;
     background-color: hsl(0, 0%, 100%);
-    padding: 15px 25px 15px 15px;
+    padding: 0 15px 15px 15px;
     border: 1px solid #cccccc;
     bottom: 12px;
     left: -50px;
@@ -1090,17 +1090,16 @@ html:has(div.hs-layout.hsl.hs-mobile-view) {
   }
 
   .ol-popup-content {
-    min-width: 170px;
-    max-height: 200px;
+    min-width: var(--hs-ol-popup-content-min-width, 200px);
+    max-height: var(--hs-ol-popup-content-max-height, 45vh);
     overflow-x: auto;
   }
 
   .ol-popup-closer {
-    position: absolute;
-    top: 2px;
-    right: 2px;
-    font-size: 150%;
-    padding: 0 4px;
+    margin-left: auto;
+    width: 15px;
+    display: block;
+    font-size: 1.5rem;
     color: gray;
     text-decoration: none;
   }
