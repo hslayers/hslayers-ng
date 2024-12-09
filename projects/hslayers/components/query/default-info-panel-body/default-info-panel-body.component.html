@@ -1,29 +1,33 @@
 @if ((hsQueryBaseService.features.length > 0) || (hsQueryBaseService.coordinates.length > 0)) {
-  <div
-    class="card hs-main-panel">
-    <div class="card-body">
-      <div ngbDropdown [hidden]="!(hsQueryBaseService.featureInfoHtmls.length > 0)">
-        <button ngbDropdownToggle class="btn btn-light w-100 rounded-0">
-          {{'QUERY.featureInfo' | translateHs }}
-        </button>
-        @for (html of hsQueryBaseService.featureInfoHtmls; track html) {
-          <div ngbDropdownMenu class="position-relative w-100"
-          [innerHtml]="html"></div>
-        }
-      </div>
-      <hs-query-feature-list></hs-query-feature-list>
-      <table class="table table-striped" style="table-layout:fixed"
-        [hidden]="!(hsQueryBaseService.attributes.length > 0)">
-        <tbody>
-          @for (attribute of hsQueryBaseService.attributes; track attribute) {
-            <tr>
-              <td class="first-col">{{attribute.name}}</td>
-              <td class="second-col" [innerHtml]="attribute.value"></td>
-            </tr>
-          }
-        </tbody>
-      </table>
+<div class="card hs-main-panel">
+  <div class="card-body">
+    @if(hsQueryBaseService.featureInfoHtmls.length > 0) {
+    <div ngbDropdown>
+      <button ngbDropdownToggle class="btn btn-light w-100 rounded-0">
+        {{'QUERY.featureInfo' | translateHs }}
+      </button>
+      @for (html of hsQueryBaseService.featureInfoHtmls; track html) {
+      <div ngbDropdownMenu class="position-relative w-100 px-1 mt-1" [innerHtml]="html"></div>
+      }
     </div>
-    <iframe id="invisible_popup" style="display:block; z-index:12122;left:-10000px; position:absolute"></iframe>
+    }
+    @else if(hsQueryBaseService.wmsFeatureInfoLoading) {
+    <div class="d-flex justify-content-center p-2" style="min-height: 38px;"><span
+        class="hs-loader hs-loader-dark ml-auto"></span></div>
+    }
+    <hs-query-feature-list></hs-query-feature-list>
+    <table class="table table-striped" style="table-layout:fixed"
+      [hidden]="!(hsQueryBaseService.attributes.length > 0)">
+      <tbody>
+        @for (attribute of hsQueryBaseService.attributes; track attribute) {
+        <tr>
+          <td class="first-col">{{attribute.name}}</td>
+          <td class="second-col" [innerHtml]="attribute.value"></td>
+        </tr>
+        }
+      </tbody>
+    </table>
   </div>
+  <iframe id="invisible_popup" style="display:block; z-index:12122;left:-10000px; position:absolute"></iframe>
+</div>
 }
