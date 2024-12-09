@@ -157,7 +157,7 @@ export class HsConfigObject {
   additionalLanguages?: {
     [key: string]: string;
   };
-  query?: {multi?: boolean; style?: StyleLike; hitTolerance: number};
+  query?: {multi?: boolean; style?: StyleLike; hitTolerance?: number};
   /**
    * Configures visibility of clicked point feature.
    *   - `'hidden'` - Hides clicked point feature at all times
