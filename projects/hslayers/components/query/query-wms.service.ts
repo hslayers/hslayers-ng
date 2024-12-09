@@ -75,6 +75,11 @@ export class HsQueryWmsService {
     coordinate: number[],
     layer: Layer<Source>,
   ): Promise<void> {
+    this.infoCounter++;
+    if (this.infoCounter > 1) {
+      this.hsQueryBaseService.multiWmsQuery = true;
+    }
+
     const req_url = this.hsUtilsService.proxify(url);
     const reqHash = this.hsQueryBaseService.currentQuery;
     try {
@@ -132,12 +137,19 @@ export class HsQueryWmsService {
     }
     if (infoFormat.includes('html')) {
       if (response.length <= 1) {
+        this.infoCounter--;
+        if (this.infoCounter === 0) {
+          this.queriesCollected(coordinate);
+        }
         return;
       }
-      if (getFeatureInfoTarget(layer) == 'info-panel') {
+      if (getFeatureInfoTarget(layer) === 'info-panel') {
         this.hsQueryBaseService.pushFeatureInfoHtml(response);
       } else {
-        this.hsQueryBaseService.fillIframeAndResize(response, true);
+        this.hsQueryBaseService.fillIframeAndResize(
+          response,
+          this.hsQueryBaseService.multiWmsQuery,
+        );
         if (getPopupClass(layer) != undefined) {
           this.hsQueryBaseService.popupClassname =
             'ol-popup ' + getPopupClass(layer);
@@ -231,6 +243,9 @@ export class HsQueryWmsService {
    * @param coordinate - Clicked coordinates
    */
   queriesCollected(coordinate: number[]): void {
+    this.hsQueryBaseService.multiWmsQuery = false;
+    this.hsQueryBaseService.wmsFeatureInfoLoading = false;
+
     const invisiblePopup: any = this.hsQueryBaseService.getInvisiblePopup();
     if (
       this.hsQueryBaseService.features.length > 0 ||
@@ -250,12 +265,25 @@ export class HsQueryWmsService {
     coordinate: number[],
   ): void {
     if (this.isLayerWmsQueryable(layer)) {
+      /**
+       * Reset info panel before new request/set of requests.
+       * To prevent appending to previous query results
+       */
+      if (this.infoCounter === 0) {
+        const invisiblePopup: any = this.hsQueryBaseService.getInvisiblePopup();
+        if (invisiblePopup) {
+          invisiblePopup.contentDocument.body.innerHTML = '';
+        }
+        if (getFeatureInfoTarget(layer) === 'info-panel') {
+          this.hsQueryBaseService.wmsFeatureInfoLoading = true;
+        }
+        this.hsQueryBaseService.featureInfoHtmls = [];
+      }
       if (instOf(layer.getSource(), WMTS)) {
         this.hsQueryWmtsService
           .parseRequestURL(layer as Layer<WMTS>, coordinate)
           .then((res) => {
             console.log(res);
-            this.infoCounter++;
             this.request(res.url, res.format, coordinate, layer);
           });
         return;
@@ -267,6 +295,8 @@ export class HsQueryWmsService {
       } else if (instOf(layer.getSource(), TileWMS)) {
         source = layer.getSource() as TileWMS;
       }
+
+      const info_format = source.getParams().INFO_FORMAT;
       const map = this.hsMapService.getMap();
       const viewResolution = map.getView().getResolution();
       let url = source.getFeatureInfoUrl(
@@ -276,7 +306,7 @@ export class HsQueryWmsService {
           ? source.getProjection()
           : this.hsMapService.getCurrentProj(),
         {
-          INFO_FORMAT: source.getParams().INFO_FORMAT,
+          INFO_FORMAT: info_format,
           /**
            * FIXME: Might return multiple results for the same layer not always 1 of each
            */
@@ -301,15 +331,10 @@ export class HsQueryWmsService {
       }
       if (url) {
         this.hsLogService.log(url);
-
         if (
-          source.getParams().INFO_FORMAT.includes('xml') ||
-          source.getParams().INFO_FORMAT.includes('html') ||
-          source.getParams().INFO_FORMAT.includes('gml') ||
-          source.getParams().INFO_FORMAT.includes('json')
+          ['xml', 'html', 'json', 'gml'].some((o) => info_format.includes(o))
         ) {
-          this.infoCounter++;
-          this.request(url, source.getParams().INFO_FORMAT, coordinate, layer);
+          this.request(url, info_format, coordinate, layer);
         }
       }
     }

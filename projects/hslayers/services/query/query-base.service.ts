@@ -76,6 +76,9 @@ export class HsQueryBaseService {
   queryStatusChanges: Subject<boolean> = new Subject();
   vectorSelectorCreated: Subject<Select> = new Subject();
 
+  multiWmsQuery = false;
+  wmsFeatureInfoLoading = false;
+
   constructor(
     private hsMapService: HsMapService,
     private hsConfig: HsConfig,
@@ -163,7 +166,12 @@ export class HsQueryBaseService {
    * @param html - Feature info html content
    */
   pushFeatureInfoHtml(html: string): void {
-    this.featureInfoHtmls.push(this.domSanitizer.bypassSecurityTrustHtml(html));
+    const sanitizedHtml = this.domSanitizer.bypassSecurityTrustHtml(html);
+    if (this.multiWmsQuery) {
+      this.featureInfoHtmls.push(sanitizedHtml);
+    } else {
+      this.featureInfoHtmls = [sanitizedHtml];
+    }
     this.dataCleared = false;
   }
 
@@ -179,23 +187,16 @@ export class HsQueryBaseService {
     } else {
       iframe.contentDocument.body.innerHTML = response;
     }
-    let tmp_width = iframe.contentWindow.innerWidth;
-    if (
-      tmp_width >
-      this.hsLayoutService.contentWrapper.querySelector('.hs-ol-map')
-        .clientWidth -
-        60
-    ) {
-      tmp_width =
-        this.hsLayoutService.contentWrapper.querySelector('.hs-ol-map')
-          .clientWidth - 60;
-    }
-    iframe.style.width = tmp_width + 'px';
-    let tmp_height = iframe.contentWindow.innerHeight;
-    if (tmp_height > 700) {
-      tmp_height = 700;
-    }
-    iframe.style.height = tmp_height + 'px';
+    const mapElement =
+      this.hsLayoutService.contentWrapper.querySelector('.hs-ol-map');
+    const maxWidth = mapElement.clientWidth - 60;
+    const maxHeight = 700;
+
+    const tmp_width = Math.min(iframe.contentWindow.innerWidth, maxWidth);
+    const tmp_height = Math.min(iframe.contentWindow.innerHeight, maxHeight);
+
+    iframe.style.width = `${tmp_width}px`;
+    iframe.style.height = `${tmp_height}px`;
   }
 
   /**
