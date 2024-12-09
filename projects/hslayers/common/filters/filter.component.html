@@ -13,7 +13,7 @@
     @for (item of filter; track item; let i = $index) {
     <div class="d-flex flex-row">
       @if (i>0) {
-      <hs-filter [filter]="item" [parent]="filter"></hs-filter>
+      <hs-filter [filter]="item" [parent]="filter" (changes)="emitChange()"></hs-filter>
       }
     </div>
     }
