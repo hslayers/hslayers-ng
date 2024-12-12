@@ -71,8 +71,7 @@ interface FilterWithArgs {
 })
 export class HsComparisonFilterComponent
   extends HsStylerPartBaseComponent
-  implements OnInit, OnChanges
-{
+  implements OnInit, OnChanges {
   @Input() filter: Filter;
   @Input() parent: Filter;
 
@@ -343,9 +342,20 @@ export class HsComparisonFilterComponent
    * @param attrName The name of the attribute to retrieve values from.
    * @returns An array of values for the given attribute.
    */
-  private getValuesFromExistingFeatures(attrName: string): any[] {
+  private getValidValuesFromExistingFeatures(attrName: string): any[] {
     return this.hsFiltersService.getSortedUniqueValues(
-      this.features.map((feature) => feature.get(attrName)),
+      this.features.reduce((acc, feature) => {
+        const value = feature.get(attrName);
+        // Keep all non-null/undefined values and filter NaN for numbers
+        if (
+          value !== null &&
+          value !== undefined &&
+          (typeof value !== 'number' || !isNaN(value))
+        ) {
+          acc.push(value);
+        }
+        return acc;
+      }, []),
     );
   }
 
@@ -357,7 +367,7 @@ export class HsComparisonFilterComponent
   getLocalAttributesWithValues(
     attrName: string,
   ): Observable<WfsFeatureAttribute> {
-    const values = this.getValuesFromExistingFeatures(attrName);
+    const values = this.getValidValuesFromExistingFeatures(attrName);
     const isNumeric = !isNaN(Number(values[0]));
 
     return of({
