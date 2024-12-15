@@ -14,9 +14,11 @@ import {HsLanguageService} from 'hslayers-ng/services/language';
 })
 export class HslayersService {
   embeddedEnabled = true;
-  config: any;
+  //TODO: remove
+  //config: any;
   initCalled: boolean;
-  missingLRFunctionsWarned: any;
+  //TODO: remove
+  //missingLRFunctionsWarned: any;
 
   constructor(
     private hsLanguageService: HsLanguageService,
@@ -99,6 +101,7 @@ export class HslayersService {
       }
     } else {
       this.log.log('Map not yet initialized!');
+      return;
     }
     const neededSize = {
       width: map.offsetWidth,

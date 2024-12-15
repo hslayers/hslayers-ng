@@ -1,5 +1,6 @@
 /* eslint-disable no-eq-null */
 import {Injectable, Renderer2, RendererFactory2} from '@angular/core';
+import {filter} from 'rxjs';
 
 import ImageWrapper from 'ol/Image';
 import RenderFeature from 'ol/render/Feature';
@@ -48,7 +49,6 @@ import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsLogService} from 'hslayers-ng/services/log';
 import {HsQueuesService} from 'hslayers-ng/services/queues';
 import {HsUtilsService} from 'hslayers-ng/services/utils';
-import {filter} from 'rxjs';
 import {
   getDimensions,
   getEnableProxy,
@@ -102,7 +102,7 @@ export class HsMapService {
    */
   originalView: {center: number[]; zoom: number; rotation: number};
   /**
-   * Keeps track of zoomWithModifier listener so its not registered multiple times when using router
+   * Keeps track of zoomWithModifier listener so it's not registered multiple times when using router
    */
   zoomWithModifierListener;
   constructor(
@@ -347,7 +347,7 @@ export class HsMapService {
    * @public
    * @param mapElement - Map html element
    */
-  init(mapElement): void {
+  init(mapElement: HTMLElement): void {
     let map: Map;
     if (this.map) {
       map = this.map;

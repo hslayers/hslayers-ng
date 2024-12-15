@@ -229,8 +229,9 @@ export class HsCesiumService {
           this.cesiumPositionClicked.next(position);
         });
 
-      //Remove overlays registered when init was called last time (when switching between 2d/3d)
-      for (const p of this.hsOverlayConstructorService.panels) {
+      //Remove overlays registered when init was called last time (when switching between 2D/3D)
+      const panelCollection = this.hsOverlayConstructorService.panels();
+      for (const p of panelCollection) {
         if (this.HsUtilsService.instOf(p, HsQueryPopupComponent)) {
           this.hsOverlayConstructorService.destroy(p);
         }

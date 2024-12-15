@@ -7,7 +7,6 @@ import {
   ViewChild,
 } from '@angular/core';
 
-
 import {Subscription} from 'rxjs';
 import {transform} from 'ol/proj';
 

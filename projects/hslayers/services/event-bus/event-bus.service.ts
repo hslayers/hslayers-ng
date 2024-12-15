@@ -177,7 +177,7 @@ export class HsEventBusService {
   refreshLaymanLayer: Subject<VectorLayer<VectorSource<Feature>>> =
     new Subject();
   /**
-   * Fires when WFS filter should be reset - used  when last filter is removed
+   * Fires when WFS filter should be reset - used when last filter is removed
    */
   resetWfsFilter: Subject<void> = new Subject();
   constructor() {}
