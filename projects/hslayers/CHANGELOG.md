@@ -1,8 +1,26 @@
+# [15.0.0-next.1](https://github.com/hslayers/hslayers-ng/compare/15.0.0-next.0...15.0.0-next.1) (2024-12-16)
+
+
+### Bug Fixes
+
+* **config:** Query config - hitTolerance should not be compulsory ([0dd21d6](https://github.com/hslayers/hslayers-ng/commit/0dd21d68d3d1c7b0c73dda533120ed00ded1bee6))
+* **filters:** Pass global comparison into removeFilter instead of local ([9848afa](https://github.com/hslayers/hslayers-ng/commit/9848afaeb5b78dd9d5470272e69a9374c6ef9faf))
+* **styler:** Emit change from hs-filter ([05fb303](https://github.com/hslayers/hslayers-ng/commit/05fb303f0c78d3f33495508c78c87e5cab8191f6))
+
+
+### Features
+
+* **query:** Dimensions of ol-popup configurable via SCSS variables ([03380b8](https://github.com/hslayers/hslayers-ng/commit/03380b8449791631bb42618521e442a91e5b5a57))
+* **query:** Indicate loading of feature info inside query panel ([0904a2d](https://github.com/hslayers/hslayers-ng/commit/0904a2d4d7bbcf28d217a6b41a85409dbe86b2bf))
+
+
+
 # [15.0.0-next.0](https://github.com/hslayers/hslayers-ng/compare/14.1.0...15.0.0-next.0) (2024-12-05)
 
 
 ### Bug Fixes
 
+* **cesium:** Call signal before loop ([97b49f7](https://github.com/hslayers/hslayers-ng/commit/97b49f7f5b9e18850ba4c2d17df4ada5043ee401))
 * **add-data:** After upload, load WMS as a single not as a a group ([038fdbd](https://github.com/hslayers/hslayers-ng/commit/038fdbda2da9bfe0d31a89199f05912c057a8799))
 * **add-data:** When no layer are defined for ArcGIS service use whole extent ([f66b198](https://github.com/hslayers/hslayers-ng/commit/f66b198bb5d9b0f880341a1e3ec7d11137b855e5))
 * **add-data:** WMS sublayer extent parsing ([b732d41](https://github.com/hslayers/hslayers-ng/commit/b732d41fe6a4a545ed458caaefb9c4f6a98cb4aa))
