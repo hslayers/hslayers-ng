@@ -265,12 +265,12 @@ export class HsQueryWmsService {
     coordinate: number[],
   ): void {
     if (this.isLayerWmsQueryable(layer)) {
-      /**
+      /*
        * Reset info panel before new request/set of requests.
        * To prevent appending to previous query results
        */
       if (this.infoCounter === 0) {
-        const invisiblePopup: any = this.hsQueryBaseService.getInvisiblePopup();
+        const invisiblePopup = this.hsQueryBaseService.getInvisiblePopup();
         if (invisiblePopup) {
           invisiblePopup.contentDocument.body.innerHTML = '';
         }
@@ -283,7 +283,6 @@ export class HsQueryWmsService {
         this.hsQueryWmtsService
           .parseRequestURL(layer as Layer<WMTS>, coordinate)
           .then((res) => {
-            console.log(res);
             this.request(res.url, res.format, coordinate, layer);
           });
         return;
@@ -330,7 +329,7 @@ export class HsQueryWmsService {
         }
       }
       if (url) {
-        this.hsLogService.log(url);
+        //this.hsLogService.log(url);
         if (
           ['xml', 'html', 'json', 'gml'].some((o) => info_format.includes(o))
         ) {
