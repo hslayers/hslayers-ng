@@ -279,8 +279,31 @@ export class HsConfig extends HsConfigObject {
     super();
   }
 
+  private logConfigWarning(message: string) {
+    console.warn('HsConfig Warning:', message);
+  }
+
+  /**
+   * Safely executes a configuration update operation and handles any errors
+   * @param operation - Function to execute
+   * @param errorMessage - Message to log if operation fails
+   * @returns The result of the operation or a fallback value if provided
+   */
+  private safeUpdate<T>(
+    operation: () => T,
+    errorMessage: string,
+    fallback?: T,
+  ): T | undefined {
+    try {
+      return operation();
+    } catch (e) {
+      this.logConfigWarning(`${errorMessage}: ${e.message}`);
+      return fallback;
+    }
+  }
+
   checkDeprecatedCesiumConfig?(newConfig: any) {
-    for (const prop of [
+    const deprecatedProps = [
       'cesiumDebugShowFramesPerSecond',
       'cesiumShadows',
       'cesiumBase',
@@ -297,7 +320,9 @@ export class HsConfig extends HsConfigObject {
       'terrain_providers',
       'cesiumAccessToken',
       'cesiumTime',
-    ]) {
+    ];
+
+    for (const prop of deprecatedProps) {
       if (newConfig[prop] != undefined) {
         console.error(
           `HsConfig.${prop} has been moved to HsCesiumConfig service or hslayersCesiumConfig.${prop} when using hslayers-cesium-app`,
@@ -307,36 +332,80 @@ export class HsConfig extends HsConfigObject {
   }
 
   update?(newConfig: HsConfigObject): void {
-    this.checkDeprecatedCesiumConfig(newConfig);
-    if (newConfig.sidebarPosition === 'bottom') {
-      /**Set hight enough value to make sure class setting mobile-view is not toggled*/
-      newConfig.mobileBreakpoint = 9999;
-    }
-    this.symbolizerIcons = this.defaultSymbolizerIcons.map((val) => {
-      val.url = (this.assetsPath ?? '') + val.url;
-      return val;
-    });
-    this.componentsEnabled = this.updateComponentsEnabled(newConfig);
-    //Delete since we assign the whole object later and don't want it replaced, but merged
-    delete newConfig.componentsEnabled;
-    Object.assign(this.panelWidths, newConfig.panelWidths);
-    delete newConfig.panelWidths;
-    //See componentsEnabled ^
-    Object.assign(this.panelsEnabled, newConfig.panelsEnabled);
-    delete newConfig.panelsEnabled;
-    this.symbolizerIcons = [
-      ...this.updateSymbolizers(newConfig),
-      ...(newConfig.symbolizerIcons ?? []),
-    ];
-    delete newConfig.symbolizerIcons;
-    Object.assign(this, newConfig);
+    try {
+      if (!newConfig) {
+        this.logConfigWarning('Empty configuration provided');
+        return;
+      }
 
-    if (this.assetsPath == undefined) {
-      this.assetsPath = '';
-    }
-    this.assetsPath += this.assetsPath.endsWith('/') ? '' : '/';
+      this.checkDeprecatedCesiumConfig(newConfig);
 
-    this.configChanges.next();
+      if (newConfig.sidebarPosition === 'bottom') {
+        /**Set high enough value to make sure class setting mobile-view is not toggled*/
+        newConfig.mobileBreakpoint = 9999;
+      }
+
+      // Update symbolizer icons with current assets path
+      this.safeUpdate<void>(() => {
+        this.symbolizerIcons = this.defaultSymbolizerIcons.map((val) => ({
+          ...val,
+          url: (this.assetsPath ?? '') + val.url,
+        }));
+      }, 'Error updating symbolizer icons');
+
+      // Update components enabled
+      this.componentsEnabled =
+        this.safeUpdate(
+          () => this.updateComponentsEnabled(newConfig),
+          'Error updating components enabled',
+          {...this.componentsEnabled},
+        ) ?? this.componentsEnabled;
+      delete newConfig.componentsEnabled;
+
+      // Update panel widths
+      this.safeUpdate(
+        () => Object.assign(this.panelWidths, newConfig.panelWidths ?? {}),
+        'Error updating panel widths',
+      );
+      delete newConfig.panelWidths;
+
+      // Update panels enabled
+      this.safeUpdate(
+        () => Object.assign(this.panelsEnabled, newConfig.panelsEnabled ?? {}),
+        'Error updating panels enabled',
+      );
+      delete newConfig.panelsEnabled;
+
+      // Update symbolizer icons
+      this.symbolizerIcons =
+        this.safeUpdate(
+          () => [
+            ...this.updateSymbolizers(newConfig),
+            ...(newConfig.symbolizerIcons ?? []),
+          ],
+          'Error updating symbolizers',
+          this.symbolizerIcons,
+        ) ?? this.symbolizerIcons;
+      delete newConfig.symbolizerIcons;
+
+      // Merge remaining config
+      this.safeUpdate(
+        () => Object.assign(this, newConfig),
+        'Error merging configuration',
+      );
+
+      // Handle assets path
+      if (this.assetsPath == undefined) {
+        this.assetsPath = '';
+      }
+      this.assetsPath += this.assetsPath.endsWith('/') ? '' : '/';
+
+      this.configChanges.next();
+    } catch (e) {
+      this.logConfigWarning(
+        'Critical error updating configuration: ' + e.message,
+      );
+    }
   }
 
   /**
@@ -346,38 +415,45 @@ export class HsConfig extends HsConfigObject {
   updateComponentsEnabled?(
     newConfig: HsConfigObject,
   ): HsConfigObject['componentsEnabled'] {
-    // Merging the keys into a Set to keep the order from newConfig.componentsEnabled first
-    const orderedKeys = new Set([
-      ...Object.keys(newConfig.componentsEnabled),
-      ...Object.keys(this.componentsEnabled),
-    ]);
+    if (!newConfig?.componentsEnabled) {
+      return {...this.componentsEnabled};
+    }
 
-    // Creating a new object with the desired key order
-    const mergedComponentsEnabled = {};
-    orderedKeys.forEach((key) => {
-      mergedComponentsEnabled[key] =
-        newConfig.componentsEnabled[key] ?? this.componentsEnabled[key];
-    });
+    try {
+      const orderedKeys = new Set([
+        ...Object.keys(newConfig.componentsEnabled),
+        ...Object.keys(this.componentsEnabled),
+      ]);
 
-    return mergedComponentsEnabled;
+      const mergedComponentsEnabled = {};
+      orderedKeys.forEach((key) => {
+        mergedComponentsEnabled[key] =
+          newConfig.componentsEnabled[key] ?? this.componentsEnabled[key];
+      });
+
+      return mergedComponentsEnabled;
+    } catch (e) {
+      this.logConfigWarning(
+        'Error in updateComponentsEnabled, using defaults: ' + e.message,
+      );
+      return {...this.componentsEnabled};
+    }
   }
 
-  /**
-   * This kind of duplicates getAssetsPath() in HsUtilsService, which can't be used here due to circular dependency
-   */
   updateSymbolizers?(config: HsConfigObject) {
-    /* Removing 'private' since it makes this method non-optional */
-    let assetsPath = config.assetsPath ?? '';
-    assetsPath += assetsPath.endsWith('/') ? '' : '/';
-    return this.defaultSymbolizerIcons.map((val) => {
-      val.url = assetsPath + val.url;
-      return val;
-    });
+    try {
+      let assetsPath = config.assetsPath ?? '';
+      assetsPath += assetsPath.endsWith('/') ? '' : '/';
+      return this.defaultSymbolizerIcons.map((val) => ({
+        ...val,
+        url: assetsPath + val.url,
+      }));
+    } catch (e) {
+      this.logConfigWarning('Error in updateSymbolizers: ' + e.message);
+      return [...this.defaultSymbolizerIcons];
+    }
   }
 
-  /**
-   * Sets app id
-   */
   setAppId(id: string) {
     this.id = id;
   }
