@@ -4,7 +4,7 @@
       [title]="'QUERY.featurePopup.closePopup' | translateHs">
       <i class="icon-remove-circle"></i>
     </a>
-    @for (layerDesc of data.service.featureLayersUnderMouse; track layerDesc; let i = $index) {
+    @for (layerDesc of data.service.featureLayersUnderMouse; track $index) {
     <div class="hs-popup-layer">
       <hs-panel-container [service]="hsQueryPopupWidgetContainerService" [reusePanelObserver]="true"
         [panelObserver]="layerDesc.panelObserver"
