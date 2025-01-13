@@ -34,24 +34,12 @@ import {
 } from 'hslayers-ng/common/extensions';
 
 // Widgets
-import {HsClusterWidgetComponent} from '../widgets/cluster-widget.component';
-import {HsExtentWidgetComponent} from '../widgets/extent-widget/extent-widget.component';
-import {HsIdwWidgetComponent} from '../widgets/idw-widget.component';
-import {HsLayerEditorWidgetContainerService} from '../widgets/layer-editor-widget-container.service';
-import {HsLayerFolderWidgetComponent} from '../widgets/layer-folder-widget/layer-folder-widget.component';
-import {HsLayerTypeSwitcherWidgetComponent} from '../widgets/layer-type-switcher-widget/layer-type-switcher-widget.component';
-import {HsLegendWidgetComponent} from '../widgets/legend-widget.component';
-import {HsMetadataWidgetComponent} from '../widgets/metadata-widget.component';
-import {HsOpacityWidgetComponent} from '../widgets/opacity-widget.component';
-import {HsScaleWidgetComponent} from '../widgets/scale-widget.component';
-import {HsTypeWidgetComponent} from '../widgets/type-widget.component';
-import {HsWmsSourceWidgetComponent} from '../widgets/wms-source-widget/wms-source-widget.component';
-
 import {HsCopyLayerDialogComponent} from '../dialogs/copy-layer-dialog.component';
-import {HsLayerEditorDimensionsComponent} from '../dimensions/layer-editor-dimensions.component';
 import {HsLayerEditorService} from './layer-editor.service';
 import {HsLayerEditorSubLayerCheckboxesComponent} from './sublayers/layer-editor-sub-layer-checkboxes.component';
+import {HsLayerEditorWidgetContainerService} from '../widgets/layer-editor-widget-container.service';
 import {HsLayerManagerRemoveLayerDialogComponent} from '../dialogs/remove-layer-dialog.component';
+import {LAYER_EDITOR_WIDGETS} from './widget-config';
 
 @Component({
   selector: 'hs-layer-editor',
@@ -126,23 +114,23 @@ export class HsLayerEditorComponent {
       .subscribe();
   }
 
-  createWidgets() {
-    const widgets = [
-      HsTypeWidgetComponent,
-      HsMetadataWidgetComponent,
-      HsExtentWidgetComponent,
-      HsClusterWidgetComponent,
-      HsScaleWidgetComponent,
-      HsLegendWidgetComponent,
-      HsLayerEditorDimensionsComponent,
-      HsLayerFolderWidgetComponent,
-      HsOpacityWidgetComponent,
-      HsIdwWidgetComponent,
-      HsWmsSourceWidgetComponent,
-      HsLayerTypeSwitcherWidgetComponent,
-    ];
-    for (const widgetClass of widgets) {
-      this.hsWidgetContainerService.create(widgetClass, {});
+  async createWidgets(): Promise<void> {
+    if (!this.hsConfig.layerEditorWidgetsEnabled) {
+      return;
+    }
+    const widgetSettings = this.hsConfig.layerEditorWidgets ?? {};
+
+    for (const widget of LAYER_EDITOR_WIDGETS) {
+      // Widget is enabled unless explicitly disabled in config
+      const isEnabled = widgetSettings[widget.name] ?? true;
+
+      if (isEnabled) {
+        try {
+          this.hsWidgetContainerService.create(widget.component, {});
+        } catch (e) {
+          console.warn(`Failed to load widget ${widget.name}:`, e);
+        }
+      }
     }
   }
 
