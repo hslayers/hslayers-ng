@@ -68,6 +68,33 @@ export class HsConfigObject {
     mapSwipe?: boolean;
     queryPopup?: boolean;
   };
+  /**
+   * Master switch for layer editor widgets.
+   * If false, all widgets are disabled regardless of layerEditorWidgets settings.
+   * Default: true
+   */
+  layerEditorWidgetsEnabled?: boolean;
+
+  /**
+   * Configuration for individual layer editor widgets.
+   * Only applied when layerEditorWidgetsEnabled is true.
+   * Set individual widgets to false to disable them.
+   * Default: all true
+   */
+  layerEditorWidgets?: {
+    type?: boolean;
+    metadata?: boolean;
+    extent?: boolean;
+    cluster?: boolean;
+    scale?: boolean;
+    legend?: boolean;
+    dimensions?: boolean;
+    folder?: boolean;
+    opacity?: boolean;
+    idw?: boolean;
+    wmsSource?: boolean;
+    layerType?: boolean;
+  };
   clusteringDistance?: number;
   mapInteractionsEnabled?: boolean;
   sidebarClosed?: boolean;
@@ -247,6 +274,7 @@ export class HsConfigObject {
       mapSwipe: false,
       queryPopup: true,
     };
+    this.layerEditorWidgetsEnabled = true;
     this.queryPopupWidgets = ['layer-name', 'feature-info', 'clear-layer'];
     this.panelWidths = {
       default: 425,
