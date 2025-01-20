@@ -15,10 +15,12 @@ import {getTitle} from 'hslayers-ng/common/extensions';
   selector: 'hs-clear-layer',
   templateUrl: './clear-layer.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class HsClearLayerComponent
   extends HsQueryPopupWidgetBaseComponent
-  implements OnInit {
+  implements OnInit
+{
   @Input() data: {
     layerDescriptor: any;
     service: HsQueryPopupServiceModel;

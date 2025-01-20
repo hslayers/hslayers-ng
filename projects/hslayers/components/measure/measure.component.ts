@@ -9,6 +9,7 @@ import {HsUtilsService} from 'hslayers-ng/services/utils';
 @Component({
   selector: 'hs-measure',
   templateUrl: './measure.component.html',
+  standalone: false,
 })
 export class HsMeasureComponent extends HsPanelBaseComponent implements OnInit {
   type: string;

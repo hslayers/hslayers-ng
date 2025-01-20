@@ -37,6 +37,7 @@ import {SparqlJson} from 'hslayers-ng/common/layers';
   selector: 'hslayers-cesium-app',
   templateUrl: './app.component.html',
   styleUrls: [],
+  standalone: false,
 })
 export class AppComponent implements OnInit {
   id = '';

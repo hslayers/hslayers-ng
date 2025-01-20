@@ -6,6 +6,7 @@ import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
   selector: 'hs-styles-edit-dialog',
   templateUrl: './edit-dialog.component.html',
   styleUrls: ['./edit-dialog.component.css'],
+  standalone: false,
 })
 export class HsStylerEditDialogComponent extends HsConfirmDialogComponent {
   constructor(public HsDialogContainerService: HsDialogContainerService) {

@@ -7,6 +7,7 @@ import {HsQueryPopupWidgetBaseComponent} from '../query-popup-widget-base.compon
   selector: 'hs-layer-name',
   templateUrl: './layer-name.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class HsLayerNameComponent
   extends HsQueryPopupWidgetBaseComponent

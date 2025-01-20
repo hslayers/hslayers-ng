@@ -9,6 +9,7 @@ import {HsUploadedFiles} from 'hslayers-ng/common/upload';
 @Component({
   selector: 'hs-new-layer-form',
   templateUrl: 'new-layer-form.component.html',
+  standalone: false,
 })
 export class HsNewLayerFormComponent implements OnInit {
   advancedPanelVisible = false;

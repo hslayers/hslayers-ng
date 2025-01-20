@@ -11,6 +11,7 @@ import {HsEndpoint} from 'hslayers-ng/types';
 @Component({
   selector: 'hs-catalogue-metadata',
   templateUrl: './catalogue-metadata.component.html',
+  standalone: false,
 })
 export class HsCatalogueMetadataComponent implements HsDialogComponent, OnInit {
   @Input() data: {

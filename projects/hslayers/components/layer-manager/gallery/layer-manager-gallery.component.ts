@@ -24,7 +24,6 @@ import {getBase} from 'hslayers-ng/common/extensions';
   selector: 'hs-layer-manager-gallery',
   templateUrl: './layer-manager-gallery.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
   imports: [CommonModule, TranslateCustomPipe, NgbDropdownModule],
 })
 export class HsLayerManagerGalleryComponent extends HsGuiOverlayBaseComponent {

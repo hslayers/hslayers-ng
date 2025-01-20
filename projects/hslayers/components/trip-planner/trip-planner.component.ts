@@ -12,6 +12,7 @@ import {setHighlighted} from 'hslayers-ng/common/extensions';
 @Component({
   selector: 'hs-trip-planner',
   templateUrl: './trip-planner.component.html',
+  standalone: false,
 })
 export class HsTripPlannerComponent
   extends HsPanelBaseComponent

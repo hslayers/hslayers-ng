@@ -15,6 +15,7 @@ import {getDimensions} from 'hslayers-ng/common/extensions';
 @Component({
   selector: 'hs-layer-editor-dimensions',
   templateUrl: './layer-editor-dimensions.component.html',
+  standalone: false,
 })
 export class HsLayerEditorDimensionsComponent
   extends HsLayerEditorWidgetBaseComponent

@@ -10,7 +10,6 @@ import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 @Component({
   selector: 'hs-confirm-dialog',
   templateUrl: './confirm-dialog.component.html',
-  standalone: true,
   imports: [TranslateCustomPipe],
 })
 export class HsConfirmDialogComponent implements HsDialogComponent {

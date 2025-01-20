@@ -16,7 +16,6 @@ import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 @Component({
   selector: 'hs-search-input',
   templateUrl: './search-input.component.html',
-  standalone: true,
   imports: [FormsModule, TranslateCustomPipe, KeyValuePipe],
 })
 export class HsSearchInputComponent implements OnInit, OnDestroy {

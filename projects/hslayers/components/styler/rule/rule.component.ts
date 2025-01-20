@@ -19,6 +19,7 @@ import {Kinds} from '../symbolizers/symbolizer-kind.enum';
   selector: 'hs-rule',
   templateUrl: './rule.component.html',
   styleUrls: ['../styler.component.scss'],
+  standalone: false,
 })
 export class HsRuleComponent extends HsStylerPartBaseComponent {
   @Input() rule;

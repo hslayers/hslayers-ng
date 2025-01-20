@@ -38,6 +38,7 @@ export type HsRmLayerDialogResponse = {
       max-width: 18ch;
     }
   `,
+  standalone: false,
 })
 export class HsRmLayerDialogComponent implements HsDialogComponent, OnInit {
   dialogItem: HsDialogItem;
@@ -119,7 +120,7 @@ export class HsRmLayerDialogComponent implements HsDialogComponent, OnInit {
   getTitle(item: RemoveLayerWrapper): string {
     let title =
       item.layer instanceof Layer
-        ? getTitle(item.layer) ?? getName(item.layer)
+        ? (getTitle(item.layer) ?? getName(item.layer))
         : item.layer;
     if (!title) {
       title = this.hsLanguageService.getTranslation(

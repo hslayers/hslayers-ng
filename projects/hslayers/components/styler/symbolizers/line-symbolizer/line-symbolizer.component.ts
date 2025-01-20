@@ -8,6 +8,7 @@ import {Kinds} from '../symbolizer-kind.enum';
 @Component({
   selector: 'hs-line-symbolizer',
   templateUrl: './line-symbolizer.component.html',
+  standalone: false,
 })
 export class HsLineSymbolizerComponent extends HsStylerPartBaseComponent {
   @Input() symbolizer: LineSymbolizer;

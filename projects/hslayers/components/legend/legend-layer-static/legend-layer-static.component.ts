@@ -8,6 +8,7 @@ import {getLegends} from 'hslayers-ng/common/extensions';
 @Component({
   selector: 'hs-legend-layer-static',
   templateUrl: './legend-layer-static.component.html',
+  standalone: false,
 })
 export class HsLegendLayerStaticComponent implements OnInit {
   @Input() layer: HsLegendDescriptor;

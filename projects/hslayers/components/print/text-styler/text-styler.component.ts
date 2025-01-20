@@ -1,4 +1,4 @@
-import { AsyncPipe, NgClass, NgStyle } from '@angular/common';
+import {AsyncPipe, NgClass, NgStyle} from '@angular/common';
 import {Component, Input} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 
@@ -19,15 +19,14 @@ export enum ColorPickers {
 @Component({
   selector: 'hs-print-text-styler',
   templateUrl: './text-styler.component.html',
-  standalone: true,
   imports: [
     NgStyle,
     NgClass,
     AsyncPipe,
     FormsModule,
     TranslateCustomPipe,
-    ColorSketchModule
-],
+    ColorSketchModule,
+  ],
 })
 export class HsPrintTextStylerComponent {
   @Input() textStyle: TextStyle;

@@ -9,6 +9,7 @@ import {getTitle} from 'hslayers-ng/common/extensions';
 @Component({
   selector: 'hs-info',
   templateUrl: './info.component.html',
+  standalone: false,
 })
 export class HsInfoComponent extends HsGuiOverlayBaseComponent {
   /**

@@ -11,6 +11,7 @@ import {Styler} from './types/styler.type';
 @Component({
   selector: 'hs-print',
   templateUrl: './print.component.html',
+  standalone: false,
 })
 export class HsPrintComponent extends HsPanelBaseComponent implements OnInit {
   name = 'print';

@@ -22,6 +22,7 @@ import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 @Component({
   selector: 'hs-add-data',
   templateUrl: './add-data.component.html',
+  standalone: false,
 })
 export class HsAddDataComponent extends HsPanelBaseComponent implements OnInit {
   layersAvailable: Observable<boolean>;

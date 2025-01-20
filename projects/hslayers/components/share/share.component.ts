@@ -10,6 +10,7 @@ import {HslayersService} from 'hslayers-ng/core';
 @Component({
   selector: 'hs-share',
   templateUrl: './share.component.html',
+  standalone: false,
 })
 export class HsShareComponent extends HsPanelBaseComponent implements OnInit {
   new_share = false;

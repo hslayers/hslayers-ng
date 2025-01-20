@@ -11,6 +11,7 @@ import {HsStylerService} from 'hslayers-ng/services/styler';
 @Component({
   selector: 'hs-add-colormap',
   templateUrl: './add-colormap.component.html',
+  standalone: false,
 })
 export class HsAddColormapComponent implements OnInit {
   name = 'add-colormap';

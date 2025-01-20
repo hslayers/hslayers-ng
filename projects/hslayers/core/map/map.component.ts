@@ -21,7 +21,6 @@ import {HslayersService} from '../hslayers.service';
 @Component({
   selector: 'hs-map',
   templateUrl: './map.component.html',
-  standalone: true,
   imports: [HsMapDirective],
 })
 export class HsMapComponent implements AfterViewInit, OnDestroy {

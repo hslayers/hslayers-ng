@@ -28,7 +28,6 @@ export function toArray(panels: string) {
 
 @Component({
   selector: 'hs-panel-header',
-  standalone: true,
   templateUrl: './panel-header.component.html',
   imports: [TranslateCustomPipe, NgbDropdownModule, NgClass, AsyncPipe],
   changeDetection: ChangeDetectionStrategy.OnPush,

@@ -8,6 +8,7 @@ import {HsUtilsService} from 'hslayers-ng/services/utils';
 @Component({
   selector: 'hs-url-wfs',
   templateUrl: './wfs.component.html',
+  standalone: false,
 })
 export class HsUrlWfsComponent {
   title = ''; //FIXME: unused

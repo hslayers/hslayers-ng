@@ -10,6 +10,7 @@ import {HsUtilsService} from 'hslayers-ng/services/utils';
 @Component({
   selector: 'hs-legend-layer',
   templateUrl: './legend-layer.component.html',
+  standalone: false,
 })
 export class HsLegendLayerComponent implements OnInit {
   @Input() layer: HsLegendDescriptor;

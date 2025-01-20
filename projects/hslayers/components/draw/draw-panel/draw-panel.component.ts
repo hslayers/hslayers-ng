@@ -23,7 +23,6 @@ interface DrawToolDefinition {
 @Component({
   selector: 'hs-draw-panel',
   templateUrl: './draw-panel.component.html',
-  standalone: true,
   imports: [
     AsyncPipe,
     TranslateCustomPipe,

@@ -16,6 +16,7 @@ import {HsLayerShiftingService} from 'hslayers-ng/services/layer-shifting';
   templateUrl: './physical-layerlist.component.html',
   styleUrls: ['./physical-layerlist.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class HsLayerPhysicalListComponent implements OnDestroy, OnInit {
   layerManagerUpdatesSubscription: Subscription;

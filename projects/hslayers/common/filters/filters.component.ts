@@ -13,7 +13,6 @@ import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 @Component({
   selector: 'hs-filters',
   templateUrl: './filters.component.html',
-  standalone: true,
   imports: [
     HsAddFilterButtonComponent,
     TranslateCustomPipe,

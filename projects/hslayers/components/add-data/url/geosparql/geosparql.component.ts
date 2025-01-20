@@ -10,6 +10,7 @@ import {HsUrlGeoSparqlService} from './geosparql.service';
 @Component({
   selector: 'hs-url-geosparql',
   templateUrl: './geosparql.component.html',
+  standalone: false,
 })
 export class HsUrlGeoSparqlComponent {
   querySuccessful: boolean;

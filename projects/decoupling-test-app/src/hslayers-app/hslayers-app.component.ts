@@ -26,6 +26,7 @@ import {HsSidebarService} from 'hslayers-ng/services/sidebar';
   selector: 'hslayers-app',
   templateUrl: './hslayers-app.component.html',
   styleUrls: [],
+  standalone: false,
 })
 export class HslayersAppComponent {
   constructor(

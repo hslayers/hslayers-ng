@@ -11,6 +11,7 @@ import {SymbolizerIcon} from 'hslayers-ng/config';
 @Component({
   selector: 'hs-icon-symbolizer',
   templateUrl: './icon-symbolizer.component.html',
+  standalone: false,
 })
 export class HsIconSymbolizerComponent extends HsStylerPartBaseComponent {
   @Input() symbolizer: IconSymbolizer;

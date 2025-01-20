@@ -5,6 +5,7 @@ import {HsGuiOverlayBaseComponent} from 'hslayers-ng/common/panels';
 @Component({
   selector: 'hs-geolocation',
   templateUrl: './geolocation.component.html',
+  standalone: false,
 })
 export class HsGeolocationComponent
   extends HsGuiOverlayBaseComponent

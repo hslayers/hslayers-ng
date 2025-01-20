@@ -7,6 +7,7 @@ import {HsStylerPartBaseComponent} from 'hslayers-ng/services/styler';
 @Component({
   selector: 'hs-symbolizer-slider',
   templateUrl: './slider.component.html',
+  standalone: false,
 })
 export class HsSliderComponent extends HsStylerPartBaseComponent {
   @Input() symbolizer: MarkSymbolizer | FillSymbolizer | TextSymbolizer;

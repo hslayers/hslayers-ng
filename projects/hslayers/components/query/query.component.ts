@@ -26,7 +26,6 @@ import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 @Component({
   selector: 'hs-query',
   templateUrl: './query.component.html',
-  standalone: true,
   imports: [
     TranslateCustomPipe,
     HsPanelHeaderComponent,

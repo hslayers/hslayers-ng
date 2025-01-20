@@ -7,6 +7,7 @@ import {HsStylerPartBaseComponent} from 'hslayers-ng/services/styler';
 @Component({
   selector: 'hs-text-symbolizer',
   templateUrl: './text-symbolizer.component.html',
+  standalone: false,
 })
 export class HsTextSymbolizerComponent extends HsStylerPartBaseComponent {
   @Input() symbolizer: TextSymbolizer;

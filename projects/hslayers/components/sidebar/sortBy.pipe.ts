@@ -1,6 +1,9 @@
 import {Pipe, PipeTransform} from '@angular/core';
 
-@Pipe({name: 'sortBy'})
+@Pipe({
+  name: 'sortBy',
+  standalone: false,
+})
 export class SortByPipe implements PipeTransform {
   transform(value: any[], order = '', column = ''): any[] {
     if (value.length <= 1) {

@@ -26,6 +26,7 @@ import {HslayersCesiumComponent} from 'hslayers-cesium/src/hscesium.component';
   selector: 'hslayers-cesium-app',
   templateUrl: './app.component.html',
   styleUrls: [],
+  standalone: false,
 })
 export class AppComponent implements OnInit {
   constructor(

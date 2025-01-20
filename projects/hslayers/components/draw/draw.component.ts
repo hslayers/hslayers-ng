@@ -19,7 +19,6 @@ import {HsDrawPanelComponent} from './draw-panel/draw-panel.component';
 @Component({
   selector: 'hs-draw',
   templateUrl: './draw.component.html',
-  standalone: true,
   imports: [
     NgClass,
     AsyncPipe,

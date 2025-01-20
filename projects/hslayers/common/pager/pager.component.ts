@@ -10,6 +10,7 @@ import {Component, Input} from '@angular/core';
       }
     `,
   ],
+  standalone: false,
 })
 export class HsPagerComponent {
   @Input() pagerService: any;

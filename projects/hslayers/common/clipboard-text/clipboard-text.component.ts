@@ -5,7 +5,6 @@ import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 
 @Component({
   selector: 'hs-clipboard-text',
-  standalone: true,
   imports: [TranslateCustomPipe],
   template: `
     @if (anchor()) {

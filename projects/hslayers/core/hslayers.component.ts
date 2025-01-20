@@ -37,6 +37,7 @@ interface PanState {
   selector: 'hslayers',
   templateUrl: './hslayers.html',
   styles: [],
+  standalone: false,
 })
 export class HslayersComponent implements AfterViewInit, OnInit {
   @Input() config: HsConfigObject;

@@ -7,6 +7,7 @@ import {HsLaymanService} from 'hslayers-ng/services/save-map';
 @Component({
   selector: 'hs-add-layer-authorized',
   templateUrl: 'add-layer-authorized.component.html',
+  standalone: false,
 })
 export class HsAddLayerAuthorizedComponent {
   @Input() data: FileDataObject;

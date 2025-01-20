@@ -12,6 +12,7 @@ import {HsUploadedFiles} from 'hslayers-ng/common/upload';
 @Component({
   selector: 'hs-file-raster',
   templateUrl: 'raster.component.html',
+  standalone: false,
 })
 export class HsFileRasterComponent
   extends HsAddDataFileBaseComponent

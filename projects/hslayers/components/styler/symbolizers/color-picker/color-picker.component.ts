@@ -18,10 +18,12 @@ import {HsStylerPartBaseComponent} from 'hslayers-ng/services/styler';
       }
     `,
   ],
+  standalone: false,
 })
 export class HsColorPickerComponent
   extends HsStylerPartBaseComponent
-  implements OnInit {
+  implements OnInit
+{
   constructor(
     public hsColorPickerService: HsColorPickerService,
     private hsLog: HsLogService,

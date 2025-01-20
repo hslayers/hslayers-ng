@@ -16,6 +16,7 @@ export type HsUploadedFiles = {
 @Component({
   selector: 'hs-file-upload',
   templateUrl: './upload.component.html',
+  standalone: false,
 })
 export class HsUploadComponent {
   @Output() uploaded = new EventEmitter<HsUploadedFiles>();

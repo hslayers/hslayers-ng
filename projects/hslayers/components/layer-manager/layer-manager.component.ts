@@ -51,6 +51,7 @@ import {
 @Component({
   selector: 'hs-layer-manager',
   templateUrl: './layer-manager.component.html',
+  standalone: false,
 })
 export class HsLayerManagerComponent
   extends HsPanelBaseComponent

@@ -9,7 +9,6 @@ import {WmsLayerHighlightDirective} from '../wms-layer-highlight.directive';
 @Component({
   selector: 'hs-nested-layers-table',
   templateUrl: './nested-layers-table.component.html',
-  standalone: true,
   imports: [
     FormsModule,
     TranslateCustomPipe,

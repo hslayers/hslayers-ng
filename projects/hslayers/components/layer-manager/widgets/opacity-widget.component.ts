@@ -7,6 +7,7 @@ import {HsLayerSelectorService} from 'hslayers-ng/services/layer-manager';
 @Component({
   selector: 'hs-opacity-widget',
   templateUrl: './opacity-widget.component.html',
+  standalone: false,
 })
 export class HsOpacityWidgetComponent extends HsLayerEditorWidgetBaseComponent {
   name = 'opacity-widget';

@@ -12,6 +12,7 @@ import {HsUrlTypeServiceModel} from 'hslayers-ng/types';
       min-width: 5rem;
     }
   `,
+  standalone: false,
 })
 export class HsUrlDetailsComponent implements AfterContentInit {
   @Input() injectedService: HsUrlTypeServiceModel;

@@ -9,6 +9,7 @@ import {HsLaymanLoginComponent} from './layman-login.component';
 @Component({
   selector: 'hs-layman-current-user',
   templateUrl: './layman-current-user.component.html',
+  standalone: false,
 })
 export class HsLaymanCurrentUserComponent implements OnInit {
   @Input() endpoint?: HsEndpoint;

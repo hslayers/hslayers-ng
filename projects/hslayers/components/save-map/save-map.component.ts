@@ -13,6 +13,7 @@ import {HsSaveMapService} from 'hslayers-ng/services/save-map';
 @Component({
   selector: 'hs-save-map',
   templateUrl: './save-map.component.html',
+  standalone: false,
 })
 export class HsSaveMapComponent extends HsPanelBaseComponent implements OnInit {
   endpoint: HsEndpoint = null;

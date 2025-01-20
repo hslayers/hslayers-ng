@@ -12,6 +12,7 @@ import {
 @Component({
   selector: 'hs-layman-login',
   templateUrl: './layman-login.component.html',
+  standalone: false,
 })
 export class HsLaymanLoginComponent
   implements HsDialogComponent, OnDestroy, OnInit

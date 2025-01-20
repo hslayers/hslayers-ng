@@ -21,7 +21,6 @@ import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 @Component({
   selector: 'hs-add-filter-button',
   templateUrl: './add-filter-button.component.html',
-  standalone: true,
   imports: [TranslateCustomPipe, NgbDropdownModule],
 })
 export class HsAddFilterButtonComponent implements OnChanges {

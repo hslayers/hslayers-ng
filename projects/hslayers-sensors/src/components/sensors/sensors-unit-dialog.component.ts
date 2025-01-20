@@ -37,6 +37,7 @@ import {takeUntilDestroyed, toSignal} from '@angular/core/rxjs-interop';
       animation-fill-mode: forwards;
     }
   `,
+  standalone: false,
 })
 export class HsSensorsUnitDialogComponent implements HsDialogComponent, OnInit {
   customInterval: CustomInterval = {

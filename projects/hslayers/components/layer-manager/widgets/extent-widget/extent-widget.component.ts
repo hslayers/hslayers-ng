@@ -12,6 +12,7 @@ import {
 @Component({
   selector: 'hs-extent-widget',
   templateUrl: './extent-widget.component.html',
+  standalone: false,
 })
 export class HsExtentWidgetComponent extends HsLayerEditorWidgetBaseComponent {
   name = 'extent-widget';

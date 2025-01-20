@@ -21,6 +21,7 @@ import {getFeatures} from 'hslayers-ng/common/extensions';
 @Component({
   selector: 'hs-query-popup',
   templateUrl: './query-popup.component.html',
+  standalone: false,
 })
 export class HsQueryPopupComponent
   implements OnDestroy, HsDialogComponent, AfterViewInit, OnInit

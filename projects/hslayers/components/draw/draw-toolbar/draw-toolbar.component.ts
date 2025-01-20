@@ -17,7 +17,6 @@ import {getTitle} from 'hslayers-ng/common/extensions';
 @Component({
   selector: 'hs-draw-toolbar',
   templateUrl: './draw-toolbar.component.html',
-  standalone: true,
   styles: `
     :host {
       position: relative;

@@ -16,6 +16,7 @@ import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
   selector: 'hs-cesium',
   templateUrl: './hscesium.component.html',
   styleUrl: './hscesium.component.scss',
+  standalone: false,
 })
 export class HslayersCesiumComponent implements AfterViewInit {
   app = 'default';

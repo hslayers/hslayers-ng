@@ -6,6 +6,7 @@ import {HsLayerSelectorService} from 'hslayers-ng/services/layer-manager';
 @Component({
   selector: 'hs-type-widget',
   templateUrl: './type-widget.component.html',
+  standalone: false,
 })
 export class HsTypeWidgetComponent extends HsLayerEditorWidgetBaseComponent {
   showCheck = false;

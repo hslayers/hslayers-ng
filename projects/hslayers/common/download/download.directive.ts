@@ -9,6 +9,7 @@ import {
 import {DomSanitizer} from '@angular/platform-browser';
 @Directive({
   selector: '[hsDownload]',
+  standalone: false,
 })
 export class HsDownloadDirective implements OnChanges {
   @Input() hsDownload = '';

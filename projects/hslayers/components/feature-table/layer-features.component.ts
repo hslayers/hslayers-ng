@@ -34,6 +34,7 @@ type Operation = {
       }
     `,
   ],
+  standalone: false,
 })
 export class HsLayerFeaturesComponent implements OnInit {
   /**

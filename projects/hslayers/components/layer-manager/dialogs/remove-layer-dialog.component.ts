@@ -9,9 +9,11 @@ import {HsMapService} from 'hslayers-ng/services/map';
 @Component({
   selector: 'hs-layermanager-remove-layer-dialog',
   templateUrl: './remove-layer-dialog.component.html',
+  standalone: false,
 })
 export class HsLayerManagerRemoveLayerDialogComponent
-  implements HsDialogComponent {
+  implements HsDialogComponent
+{
   @Input() data: any;
   viewRef: ViewRef;
 

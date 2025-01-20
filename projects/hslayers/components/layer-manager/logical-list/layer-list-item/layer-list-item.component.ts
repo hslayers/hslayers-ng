@@ -33,7 +33,6 @@ import {
 @Component({
   selector: 'hs-layer-list-item',
   templateUrl: './layer-list-item.component.html',
-  standalone: true,
   imports: [
     CommonModule,
     NgbTooltipModule,

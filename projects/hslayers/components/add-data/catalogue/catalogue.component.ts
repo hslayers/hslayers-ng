@@ -18,6 +18,7 @@ import {HsUtilsService} from 'hslayers-ng/services/utils';
 @Component({
   selector: 'hs-add-data-catalogue',
   templateUrl: './catalogue.component.html',
+  standalone: false,
 })
 export class HsAddDataCatalogueComponent implements OnInit {
   types: any[];

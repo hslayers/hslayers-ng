@@ -37,6 +37,7 @@ import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 @Component({
   selector: 'hs-file-vector',
   templateUrl: 'vector-file.component.html',
+  standalone: false,
 })
 export class HsAddDataVectorFileComponent implements OnInit, AfterViewInit {
   @Input() fileType: 'geojson' | 'kml' | 'gpx';

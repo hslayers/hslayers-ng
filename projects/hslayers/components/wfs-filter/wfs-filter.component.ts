@@ -47,7 +47,6 @@ import {
       padding: 0 0.75rem;
     }
   `,
-  standalone: true,
   imports: [
     NgClass,
     HsFiltersComponent,

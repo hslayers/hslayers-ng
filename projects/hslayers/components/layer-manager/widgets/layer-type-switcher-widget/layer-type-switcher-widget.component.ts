@@ -25,7 +25,6 @@ type layerType = 'base' | 'thematic';
 
 @Component({
   selector: 'hs-layer-type-switcher-widget',
-  standalone: true,
   imports: [NgClass, AsyncPipe, TranslateCustomPipe],
   templateUrl: './layer-type-switcher-widget.component.html',
 })

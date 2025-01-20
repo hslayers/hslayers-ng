@@ -22,7 +22,6 @@ import {
   selector: 'hs-csw-layers-dialog',
   templateUrl: './csw-layers-dialog.component.html',
   styleUrls: ['./csw-layers-dialog.component.scss'],
-  standalone: true,
   imports: [TranslateCustomPipe, NgbAccordionModule, HsLayerTableComponent],
 })
 export class CswLayersDialogComponent implements OnInit, HsDialogComponent {

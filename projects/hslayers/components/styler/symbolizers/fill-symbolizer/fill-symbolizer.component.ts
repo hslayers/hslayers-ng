@@ -15,6 +15,7 @@ import {Kinds} from '../symbolizer-kind.enum';
       }
     `,
   ],
+  standalone: false,
 })
 export class HsFillSymbolizerComponent extends HsStylerPartBaseComponent {
   @Input() symbolizer: FillSymbolizer;

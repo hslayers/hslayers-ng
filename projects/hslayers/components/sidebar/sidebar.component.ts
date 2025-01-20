@@ -14,6 +14,7 @@ import {HsSidebarService} from 'hslayers-ng/services/sidebar';
 @Component({
   selector: 'hs-sidebar',
   templateUrl: './sidebar.component.html',
+  standalone: false,
 })
 export class HsSidebarComponent implements OnInit, OnDestroy {
   configChangesSubscription: Subscription;

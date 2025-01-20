@@ -27,11 +27,11 @@ import {
 @Component({
   selector: 'hs-draw-layer-metadata',
   templateUrl: './draw-layer-metadata.component.html',
-  standalone: true,
   imports: [NgClass, FormsModule, TranslateCustomPipe, HsLaymanModule],
 })
 export class HsDrawLayerMetadataDialogComponent
-  implements HsDialogComponent, OnInit {
+  implements HsDialogComponent, OnInit
+{
   @Input() data: {
     service: HsDrawService;
   };

@@ -19,6 +19,7 @@ import {InterpolatedSource} from 'hslayers-ng/common/layers';
 @Component({
   selector: 'hs-legend',
   templateUrl: './legend.component.html',
+  standalone: false,
 })
 export class HsLegendComponent extends HsPanelBaseComponent implements OnInit {
   layerDescriptors = [];

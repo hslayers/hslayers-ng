@@ -7,6 +7,7 @@ import {HsUrlWmtsService} from 'hslayers-ng/services/add-data';
 @Component({
   selector: 'hs-url-wmts',
   templateUrl: './wmts.component.html',
+  standalone: false,
 })
 export class HsUrlWmtsComponent {
   constructor(

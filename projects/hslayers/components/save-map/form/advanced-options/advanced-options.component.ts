@@ -29,6 +29,7 @@ export type saveMapLayer = {
       useFactory: () => inject(ControlContainer, {skipSelf: true}),
     },
   ],
+  standalone: false,
 })
 export class AdvancedOptionsComponent implements OnInit, OnDestroy {
   @Input() thumbnail: HTMLImageElement;

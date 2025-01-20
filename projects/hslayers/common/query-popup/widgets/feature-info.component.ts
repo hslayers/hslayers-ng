@@ -21,10 +21,12 @@ import {
   selector: 'hs-feature-info',
   templateUrl: './feature-info.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class HsFeatureInfoComponent
   extends HsQueryPopupWidgetBaseComponent
-  implements OnInit {
+  implements OnInit
+{
   layerDescriptor: any;
   attributesForHover: any[] = [];
   name = 'feature-info';

@@ -6,6 +6,7 @@ import {HsSaveMapManagerService} from '../save-map-manager.service';
 @Component({
   selector: 'hs-save-map-dialog-result',
   templateUrl: './dialog-result.component.html',
+  standalone: false,
 })
 export class HsSaveMapResultDialogComponent implements HsDialogComponent {
   viewRef: ViewRef;

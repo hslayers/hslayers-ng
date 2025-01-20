@@ -44,7 +44,6 @@ import {LAYER_EDITOR_WIDGETS} from './widget-config';
 @Component({
   selector: 'hs-layer-editor',
   templateUrl: './layer-editor.component.html',
-  standalone: true,
   imports: [
     NgClass,
     FormsModule,

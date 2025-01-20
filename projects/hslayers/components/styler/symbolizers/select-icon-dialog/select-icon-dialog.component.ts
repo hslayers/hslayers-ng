@@ -9,6 +9,7 @@ import {HsIconSymbolizerComponent} from '../icon-symbolizer/icon-symbolizer.comp
 @Component({
   selector: 'hs-select-icon-dialog',
   templateUrl: './select-icon-dialog.component.html',
+  standalone: false,
 })
 export class HsSelectIconDialogComponent implements HsDialogComponent {
   dialogItem?: HsDialogItem;

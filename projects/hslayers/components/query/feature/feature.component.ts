@@ -22,7 +22,6 @@ import {getTitle} from 'hslayers-ng/common/extensions';
 @Component({
   selector: 'hs-query-feature',
   templateUrl: './feature.component.html',
-  standalone: true,
   imports: [
     TranslateCustomPipe,
     AsyncPipe,

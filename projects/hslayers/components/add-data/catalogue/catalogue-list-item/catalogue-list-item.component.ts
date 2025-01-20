@@ -26,6 +26,7 @@ import {HsSetPermissionsDialogComponent} from 'hslayers-ng/common/dialog-set-per
       }
     `,
   ],
+  standalone: false,
 })
 export class HsCatalogueListItemComponent implements OnInit {
   @Input() layer: HsAddDataLayerDescriptor;
