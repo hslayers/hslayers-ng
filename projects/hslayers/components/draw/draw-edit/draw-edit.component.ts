@@ -30,7 +30,6 @@ declare type HsModifyOperations =
 @Component({
   selector: 'hs-draw-edit',
   templateUrl: './draw-edit.component.html',
-  standalone: true,
   imports: [NgClass, TranslateCustomPipe],
 })
 export class HsDrawEditComponent implements OnDestroy, OnInit {

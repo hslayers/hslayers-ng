@@ -32,6 +32,7 @@ type hsStylerColorMapsKeyValue = {
       multi: true,
     },
   ],
+  standalone: false,
 })
 export class ColormapPickerComponent implements ControlValueAccessor {
   @Input() height?: string = '50vh';

@@ -14,7 +14,6 @@ import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 @Component({
   selector: 'hs-print-legend-styler',
   templateUrl: './legend-styler.component.html',
-  standalone: true,
   imports: [CommonModule, FormsModule, TranslateCustomPipe, ColorSketchModule],
 })
 export class HsPrintLegendStylerComponent {

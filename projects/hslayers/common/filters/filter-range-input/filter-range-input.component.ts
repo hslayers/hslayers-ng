@@ -14,7 +14,6 @@ import {takeUntilDestroyed, toObservable} from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'hs-filter-range-input',
-  standalone: true,
   imports: [FormsModule, NgClass],
   template: `
     <div

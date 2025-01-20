@@ -15,7 +15,6 @@ import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 @Component({
   selector: 'hs-layer-manager-time-editor',
   templateUrl: 'layer-manager-time-editor.component.html',
-  standalone: true,
   imports: [
     CommonModule,
     TranslateCustomPipe,

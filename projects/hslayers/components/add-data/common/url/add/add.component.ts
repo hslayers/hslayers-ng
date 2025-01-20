@@ -6,6 +6,7 @@ import {HsUrlTypeServiceModel, Service} from 'hslayers-ng/types';
 @Component({
   selector: 'hs-url-add',
   templateUrl: './add.component.html',
+  standalone: false,
 })
 export class HsUrlAddComponent {
   @Input() services?: Service[];

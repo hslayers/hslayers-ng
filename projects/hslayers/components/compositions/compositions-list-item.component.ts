@@ -15,6 +15,7 @@ import {HsToastService} from 'hslayers-ng/common/toast';
 @Component({
   selector: 'hs-compositions-list-item',
   templateUrl: 'compositions-list-item.component.html',
+  standalone: false,
 })
 export class HsCompositionsListItemComponent {
   @Input() composition: HsMapCompositionDescriptor;

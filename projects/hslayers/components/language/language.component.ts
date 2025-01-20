@@ -8,6 +8,7 @@ import {HsPanelBaseComponent} from 'hslayers-ng/common/panels';
 @Component({
   selector: 'hs-language',
   templateUrl: './language.component.html',
+  standalone: false,
 })
 export class HsLanguageComponent
   extends HsPanelBaseComponent

@@ -13,7 +13,6 @@ import {HsLayerManagerService} from 'hslayers-ng/services/layer-manager';
   selector: 'hs-layer-manager-layer-list',
   templateUrl: './layer-manager-layerlist.component.html',
   imports: [HsLayerListItemComponent, AsyncPipe],
-  standalone: true,
 })
 export class HsLayerListComponent {
   @Input({required: true}) folder: string;

@@ -9,10 +9,12 @@ import {HsToolbarPanelContainerService} from 'hslayers-ng/services/panels';
 @Component({
   selector: 'hs-toolbar',
   templateUrl: './toolbar.component.html',
+  standalone: false,
 })
 export class HsToolbarComponent
   extends HsGuiOverlayBaseComponent
-  implements OnDestroy {
+  implements OnDestroy
+{
   name = 'toolbar';
   collapsed = false;
   composition_title: any;

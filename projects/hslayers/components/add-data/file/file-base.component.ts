@@ -23,6 +23,7 @@ import {HsUploadComponent} from 'hslayers-ng/common/upload';
 
 @Component({
   template: '<div></div>',
+  standalone: false,
 })
 export class HsAddDataFileBaseComponent implements OnInit, AfterViewInit {
   app: string;

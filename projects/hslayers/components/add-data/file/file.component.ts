@@ -8,6 +8,7 @@ import {HsLanguageService} from 'hslayers-ng/services/language';
 @Component({
   selector: 'hs-add-data-file',
   templateUrl: './file.component.html',
+  standalone: false,
 })
 export class HsAddDataFileComponent {
   typeSelected: AddDataFileType;

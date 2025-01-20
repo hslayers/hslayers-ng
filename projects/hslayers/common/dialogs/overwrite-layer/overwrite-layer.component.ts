@@ -11,7 +11,6 @@ import {VectorDataObject} from 'hslayers-ng/types';
 @Component({
   selector: 'hs-layer-overwrite-dialog',
   templateUrl: './overwrite-layer.component.html',
-  standalone: true,
   imports: [TranslateCustomPipe],
 })
 export class HsLayerOverwriteDialogComponent implements HsDialogComponent {

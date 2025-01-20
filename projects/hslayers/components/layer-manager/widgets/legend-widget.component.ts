@@ -7,6 +7,7 @@ import {HsLayerSelectorService} from 'hslayers-ng/services/layer-manager';
 @Component({
   selector: 'hs-legend-widget',
   templateUrl: './legend-widget.component.html',
+  standalone: false,
 })
 export class HsLegendWidgetComponent extends HsLayerEditorWidgetBaseComponent {
   name = 'legend-widget';

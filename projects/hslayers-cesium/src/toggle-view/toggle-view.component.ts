@@ -10,7 +10,6 @@ import {HsCesiumService} from '../hscesium.service';
   selector: 'hs-toggle-view',
   templateUrl: './toggle-view.component.html',
   styleUrl: './toggle-view.component.scss',
-  standalone: true,
   imports: [AsyncPipe, TranslateCustomPipe, NgClass],
 })
 export class HsToggleViewComponent extends HsGuiOverlayBaseComponent {

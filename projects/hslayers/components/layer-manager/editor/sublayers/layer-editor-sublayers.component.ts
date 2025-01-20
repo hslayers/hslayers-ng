@@ -14,7 +14,6 @@ import {HsLayerEditorSublayerService} from './layer-editor-sub-layer.service';
       }
     </div>
   `,
-  standalone: true,
   imports: [HsLayerEditorSubLayerCheckboxesComponent],
 })
 export class HsLayerEditorSublayersComponent {

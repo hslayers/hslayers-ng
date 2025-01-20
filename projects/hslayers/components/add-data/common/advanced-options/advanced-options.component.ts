@@ -12,6 +12,7 @@ export type VectorFileDataType = IntersectWithTooltip<
 @Component({
   selector: 'hs-advanced-options',
   templateUrl: 'advanced-options.component.html',
+  standalone: false,
 })
 export class HsAdvancedOptionsComponent implements OnInit {
   @Input() data: VectorFileDataType;

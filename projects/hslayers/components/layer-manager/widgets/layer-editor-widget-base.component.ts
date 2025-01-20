@@ -10,9 +10,11 @@ import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 
 @Component({
   template: '<div></div>',
+  standalone: false,
 })
 export class HsLayerEditorWidgetBaseComponent
-  implements HsPanelComponent, OnInit {
+  implements HsPanelComponent, OnInit
+{
   /**
    * This could be used to enable/disable widgets by name on HsConfig level
    */

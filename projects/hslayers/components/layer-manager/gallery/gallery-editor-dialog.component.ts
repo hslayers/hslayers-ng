@@ -50,7 +50,6 @@ import {getBase} from 'hslayers-ng/common/extensions';
       </div>
     </div>
   `,
-  standalone: true,
   imports: [CommonModule, TranslateCustomPipe, AsyncPipe],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

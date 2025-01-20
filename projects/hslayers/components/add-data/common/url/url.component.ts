@@ -5,6 +5,7 @@ import {HsHistoryListService} from 'hslayers-ng/common/history-list';
 @Component({
   selector: 'hs-common-url',
   templateUrl: './url.component.html',
+  standalone: false,
 })
 export class HsCommonUrlComponent {
   items;

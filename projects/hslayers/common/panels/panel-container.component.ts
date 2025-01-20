@@ -23,6 +23,7 @@ import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 @Component({
   selector: 'hs-panel-container',
   templateUrl: './panel-container.component.html',
+  standalone: false,
 })
 export class HsPanelContainerComponent implements OnInit, OnDestroy {
   @ViewChild(HsPanelHostDirective, {static: true})

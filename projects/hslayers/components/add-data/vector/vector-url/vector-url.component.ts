@@ -13,6 +13,7 @@ import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 @Component({
   selector: 'hs-url-vector',
   templateUrl: 'vector-url.component.html',
+  standalone: false,
 })
 export class HsAddDataVectorUrlComponent implements OnInit {
   @Input() fileType: 'geojson' | 'kml' | 'gpx';

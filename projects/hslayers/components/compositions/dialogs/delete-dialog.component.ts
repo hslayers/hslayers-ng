@@ -6,6 +6,7 @@ import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
 @Component({
   selector: 'hs-compositions-delete-dialog',
   templateUrl: './delete-dialog.component.html',
+  standalone: false,
 })
 export class HsCompositionsDeleteDialogComponent implements HsDialogComponent {
   viewRef: ViewRef;

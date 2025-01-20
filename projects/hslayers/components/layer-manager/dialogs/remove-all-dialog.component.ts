@@ -17,9 +17,11 @@ import {
 @Component({
   selector: 'hs-layermanager-remove-all-dialog',
   templateUrl: './remove-all-dialog.component.html',
+  standalone: false,
 })
 export class HsLayerManagerRemoveAllDialogComponent
-  implements HsDialogComponent {
+  implements HsDialogComponent
+{
   @Input() data: any;
   viewRef: ViewRef;
 

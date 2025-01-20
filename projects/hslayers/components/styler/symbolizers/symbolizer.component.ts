@@ -6,6 +6,7 @@ import {Kinds} from './symbolizer-kind.enum';
 @Component({
   selector: 'hs-symbolizer',
   templateUrl: './symbolizer.component.html',
+  standalone: false,
 })
 export class HsSymbolizerComponent extends HsStylerPartBaseComponent {
   @Input() symbolizer;

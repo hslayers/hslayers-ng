@@ -6,6 +6,7 @@ import {FileDataObject} from 'hslayers-ng/types';
 @Component({
   selector: 'hs-save-to-layman',
   templateUrl: 'save-to-layman.component.html',
+  standalone: false,
 })
 export class HsSaveToLaymanComponent {
   @Input() data: FileDataObject;

@@ -11,6 +11,7 @@ import {HsLayerSelectorService} from 'hslayers-ng/services/layer-manager';
 @Component({
   selector: 'hs-cluster-widget',
   templateUrl: './cluster-widget.component.html',
+  standalone: false,
 })
 export class HsClusterWidgetComponent
   extends HsLayerEditorWidgetBaseComponent

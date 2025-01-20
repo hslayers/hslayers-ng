@@ -7,7 +7,6 @@ import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 
 @Component({
   selector: 'hs-measure-toolbar',
-  standalone: true,
   template: `
     <div class="nav-item" [hidden]="(isVisible$ | async) === false">
       <button

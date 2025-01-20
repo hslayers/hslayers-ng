@@ -17,7 +17,6 @@ import {setHighlighted} from 'hslayers-ng/common/extensions';
 @Component({
   selector: 'hs-search-results',
   templateUrl: './search-results.component.html',
-  standalone: true,
   imports: [limitToPipe, NgClass, TranslateCustomPipe, KeyValuePipe],
   styles: `
     .hsl-search-result:hover {

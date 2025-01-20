@@ -17,6 +17,7 @@ import {HsPanelBaseComponent} from 'hslayers-ng/common/panels';
 @Component({
   selector: 'hs-compositions',
   templateUrl: './compositions.component.html',
+  standalone: false,
 })
 export class HsCompositionsComponent
   extends HsPanelBaseComponent

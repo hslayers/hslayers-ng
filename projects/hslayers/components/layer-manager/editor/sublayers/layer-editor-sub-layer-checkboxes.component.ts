@@ -10,7 +10,6 @@ import {HsSublayer} from 'hslayers-ng/types';
 @Component({
   selector: 'hs-layer-editor-sub-layer-checkbox',
   templateUrl: './layer-editor-sub-layer-checkboxes.component.html',
-  standalone: true,
   imports: [FormsModule, NgClass],
 })
 export class HsLayerEditorSubLayerCheckboxesComponent implements OnInit {

@@ -10,6 +10,7 @@ import {HsStylerService} from 'hslayers-ng/services/styler';
   selector: 'hs-rule-list-item',
   templateUrl: 'rule-list-item.component.html',
   styleUrls: ['../../styler.component.scss'],
+  standalone: false,
 })
 export class HsRuleListItemComponent implements OnInit {
   @Input() rule: any;

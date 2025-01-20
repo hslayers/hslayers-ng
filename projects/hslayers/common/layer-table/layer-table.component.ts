@@ -21,7 +21,6 @@ import {TrackByPropertyPipe} from 'hslayers-ng/common/pipes';
 @Component({
   selector: 'hs-layer-table',
   templateUrl: './layer-table.component.html',
-  standalone: true,
   imports: [
     TranslateCustomPipe,
     FormsModule,

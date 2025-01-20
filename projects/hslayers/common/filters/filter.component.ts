@@ -8,7 +8,6 @@ import {HsStylerPartBaseComponent} from 'hslayers-ng/services/styler';
 import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 
 @Component({
-  standalone: true,
   selector: 'hs-filter',
   templateUrl: './filter.component.html',
   imports: [

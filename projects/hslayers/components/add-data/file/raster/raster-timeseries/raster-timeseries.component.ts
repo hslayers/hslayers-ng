@@ -20,6 +20,7 @@ import {HsToastService} from 'hslayers-ng/common/toast';
   selector: 'hs-file-raster-timeseries',
   templateUrl: './raster-timeseries.component.html',
   styleUrls: ['./raster-timeseries.component.scss'],
+  standalone: false,
 })
 export class RasterTimeseriesComponent implements OnInit {
   @Input() data: FileDataObject;

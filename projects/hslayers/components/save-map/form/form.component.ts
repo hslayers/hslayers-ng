@@ -13,6 +13,7 @@ import {StatusData} from 'hslayers-ng/types';
 @Component({
   selector: 'hs-save-map-form',
   templateUrl: './form.component.html',
+  standalone: false,
 })
 export class HsSaveMapAdvancedFormComponent implements OnInit {
   endpoint: HsEndpoint;

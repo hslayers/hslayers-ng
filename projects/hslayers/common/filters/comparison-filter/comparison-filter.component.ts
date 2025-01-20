@@ -54,7 +54,6 @@ interface FilterWithArgs {
 }
 
 @Component({
-  standalone: true,
   imports: [
     NgClass,
     NgStyle,
@@ -71,7 +70,8 @@ interface FilterWithArgs {
 })
 export class HsComparisonFilterComponent
   extends HsStylerPartBaseComponent
-  implements OnInit, OnChanges {
+  implements OnInit, OnChanges
+{
   @Input() filter: Filter;
   @Input() parent: Filter;
 

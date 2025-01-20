@@ -7,6 +7,7 @@ import {HsSensorsUnitDialogService} from './unit-dialog.service';
 @Component({
   selector: 'hs-sensors',
   templateUrl: './partials/sensors.component.html',
+  standalone: false,
 })
 export class HsSensorsComponent extends HsPanelBaseComponent implements OnInit {
   viewMode = 'sensors';

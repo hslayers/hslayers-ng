@@ -5,7 +5,6 @@ import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 
 @Component({
   selector: 'hs-add-to-map',
-  standalone: true,
   template: `
     <button
       class="btn btn-primary w-100"

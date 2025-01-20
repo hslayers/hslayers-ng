@@ -6,6 +6,7 @@ import {RouteProfile} from './ors-profiles.const';
 @Component({
   selector: 'hs-trip-planner-profile-selector',
   templateUrl: './route-profile-selector.component.html',
+  standalone: false,
 })
 export class HsTripPlannerProfileSelectorComponent {
   @Input() selectedProfile: RouteProfile;

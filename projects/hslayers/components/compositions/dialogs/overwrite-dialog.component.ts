@@ -9,6 +9,7 @@ import {HsSaveMapManagerService} from 'hslayers-ng/components/save-map';
 @Component({
   selector: 'hs-compositions-overwrite-dialog',
   templateUrl: './overwrite-dialog.component.html',
+  standalone: false,
 })
 export class HsCompositionsOverwriteDialogComponent
   implements HsDialogComponent

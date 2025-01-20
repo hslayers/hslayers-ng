@@ -14,6 +14,7 @@ import {InterpolatedSource} from 'hslayers-ng/common/layers';
 @Component({
   selector: 'hs-idw-widget',
   templateUrl: './idw-widget.component.html',
+  standalone: false,
 })
 /**
  * A widget to configure IDW interpolated layer attribute being

@@ -12,6 +12,7 @@ import {getAttribution} from 'hslayers-ng/common/extensions';
 @Component({
   selector: 'hs-metadata-widget',
   templateUrl: './metadata-widget.component.html',
+  standalone: false,
 })
 export class HsMetadataWidgetComponent extends HsLayerEditorWidgetBaseComponent {
   name = 'metadata-widget';

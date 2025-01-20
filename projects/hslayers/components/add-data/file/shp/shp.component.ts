@@ -13,6 +13,7 @@ import {HsUploadedFiles} from 'hslayers-ng/common/upload';
 @Component({
   selector: 'hs-file-shp',
   templateUrl: './shp.component.html',
+  standalone: false,
 })
 export class HsFileShpComponent
   extends HsAddDataFileBaseComponent

@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import {CommonModule} from '@angular/common';
 import {Component} from '@angular/core';
 import {Observable, map, tap} from 'rxjs';
 
@@ -17,7 +17,6 @@ import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 
 @Component({
   selector: 'hs-wms-source-widget',
-  standalone: true,
   imports: [CommonModule, HsConfirmDialogComponent, TranslateCustomPipe],
   templateUrl: './wms-source-widget.component.html',
 })

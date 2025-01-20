@@ -32,6 +32,7 @@ import {SparqlJson} from 'hslayers-ng/common/layers';
   selector: 'hslayers-app',
   templateUrl: './hslayers-app.component.html',
   styleUrls: [],
+  standalone: false,
 })
 export class HslayersAppComponent {
   id;

@@ -7,7 +7,6 @@ import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 @Component({
   selector: 'hs-query-default-info-panel-body',
   templateUrl: './default-info-panel-body.component.html',
-  standalone: true,
   imports: [
     HsQueryFeatureListComponent,
     NgbDropdownModule,

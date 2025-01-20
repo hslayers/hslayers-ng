@@ -8,9 +8,11 @@ import {
 @Component({
   selector: 'hs-get-capabilities-error',
   templateUrl: './capabilities-error-dialog.component.html',
+  standalone: false,
 })
 export class HsGetCapabilitiesErrorComponent
-  implements HsDialogComponent, OnInit {
+  implements HsDialogComponent, OnInit
+{
   @Input() data: any;
 
   capabilitiesErrorModalVisible;

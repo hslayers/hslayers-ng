@@ -17,7 +17,6 @@ import {UpsertLayerObject} from 'hslayers-ng/types';
 @Component({
   selector: 'hs-set-permissions-dialog',
   templateUrl: './set-permissions.component.html',
-  standalone: true,
   imports: [TranslateCustomPipe, HsLaymanModule],
 })
 export class HsSetPermissionsDialogComponent

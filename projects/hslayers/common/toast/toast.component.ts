@@ -27,6 +27,7 @@ import {HsToastService} from './toast.service';
       }
     `,
   ],
+  standalone: false,
 })
 export class HsToastComponent {
   constructor(public hsToastService: HsToastService) {}

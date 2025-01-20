@@ -6,7 +6,6 @@ import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 @Component({
   selector: 'hs-compositions-warning-dialog',
   templateUrl: './warning-dialog.component.html',
-  standalone: true,
   imports: [TranslateCustomPipe],
 })
 export class HsCompositionsWarningDialogComponent implements HsDialogComponent {

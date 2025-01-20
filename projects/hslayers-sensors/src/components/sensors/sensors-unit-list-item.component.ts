@@ -11,6 +11,7 @@ import {SenslogSensor} from './types/senslog-sensor.type';
 @Component({
   selector: 'hs-sensor-unit-list-item',
   templateUrl: './partials/unit-list-item.component.html',
+  standalone: false,
 })
 export class HsSensorsUnitListItemComponent {
   @Input() unit: HsSensorUnit;

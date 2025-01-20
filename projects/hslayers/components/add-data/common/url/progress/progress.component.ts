@@ -7,6 +7,7 @@ import {HsUtilsService} from 'hslayers-ng/services/utils';
   selector: 'hs-url-progress',
   templateUrl: './progress.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class HsUrlProgressComponent {
   constructor(

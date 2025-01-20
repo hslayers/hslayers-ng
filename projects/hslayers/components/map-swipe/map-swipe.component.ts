@@ -17,6 +17,7 @@ import {HsPanelBaseComponent} from 'hslayers-ng/common/panels';
   selector: 'hs-map-swipe',
   templateUrl: './map-swipe.component.html',
   styleUrls: ['./map-swipe.component.scss'],
+  standalone: false,
 })
 export class HsMapSwipeComponent extends HsPanelBaseComponent {
   swipeSide = SwipeSide;

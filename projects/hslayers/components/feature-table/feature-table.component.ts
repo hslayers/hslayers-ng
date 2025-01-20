@@ -13,6 +13,7 @@ import {HsSidebarService} from 'hslayers-ng/services/sidebar';
 @Component({
   selector: 'hs-feature-table',
   templateUrl: './feature-table.component.html',
+  standalone: false,
 })
 export class HsFeatureTableComponent
   extends HsPanelBaseComponent

@@ -13,7 +13,7 @@ import {
   computed,
   inject,
 } from '@angular/core';
-import { AsyncPipe } from '@angular/common';
+import {AsyncPipe} from '@angular/common';
 import {FormControl, ReactiveFormsModule, Validators} from '@angular/forms';
 import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
 import {Observable, debounceTime, filter, fromEvent} from 'rxjs';
@@ -39,13 +39,12 @@ import {getPath} from 'hslayers-ng/common/extensions';
 
 @Component({
   selector: 'hs-layer-folder-widget-dialog',
-  standalone: true,
   imports: [
     AsyncPipe,
     TranslateCustomPipe,
     ReactiveFormsModule,
-    NgbDropdownModule
-],
+    NgbDropdownModule,
+  ],
   templateUrl: './layer-folder-dialog.component.html',
   styles: `
     .hs-folder-widget-dialog-list * {
@@ -55,7 +54,8 @@ import {getPath} from 'hslayers-ng/common/extensions';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LayerFolderWidgetDialogComponent
-  implements HsDialogComponent, OnInit, AfterViewInit {
+  implements HsDialogComponent, OnInit, AfterViewInit
+{
   data: {
     layer: Layer;
   };

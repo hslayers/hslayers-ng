@@ -16,7 +16,6 @@ import {LayerFolderWidgetDialogComponent} from './layer-folder-dialog/layer-fold
 
 @Component({
   selector: 'hs-layer-folder-widget',
-  standalone: true,
   imports: [AsyncPipe, TranslateCustomPipe],
   templateUrl: './layer-folder-widget.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,

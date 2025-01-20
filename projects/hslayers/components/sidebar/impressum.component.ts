@@ -5,6 +5,7 @@ import {HsConfig} from 'hslayers-ng/config';
 @Component({
   selector: 'hs-impressum',
   templateUrl: './impressum.component.html',
+  standalone: false,
 })
 export class HsImpressumComponent implements OnInit {
   version = 'dev';

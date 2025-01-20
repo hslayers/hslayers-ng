@@ -9,7 +9,6 @@ import {HsMapService} from 'hslayers-ng/services/map';
   selector: 'hs-widgets-recursive-dd',
   templateUrl: './recursive-dd.component.html',
   imports: [HsClipboardTextComponent],
-  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HsUiExtensionsRecursiveDdComponent {

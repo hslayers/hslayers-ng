@@ -10,6 +10,7 @@ import {HsPanelBaseComponent} from 'hslayers-ng/common/panels';
 @Component({
   selector: 'hs-search',
   templateUrl: './search.component.html',
+  standalone: false,
 })
 export class HsSearchComponent
   extends HsPanelBaseComponent

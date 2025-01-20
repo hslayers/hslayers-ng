@@ -8,6 +8,7 @@ import {HsShareService} from 'hslayers-ng/components/share';
 @Component({
   selector: 'hs-compositions-share-dialog',
   templateUrl: './share-dialog.component.html',
+  standalone: false,
 })
 export class HsCompositionsShareDialogComponent implements HsDialogComponent {
   viewRef: ViewRef;

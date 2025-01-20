@@ -7,6 +7,7 @@ import {HsStylerPartBaseComponent} from 'hslayers-ng/services/styler';
 @Component({
   selector: 'hs-mark-symbolizer',
   templateUrl: './mark-symbolizer.component.html',
+  standalone: false,
 })
 export class HsMarkSymbolizerComponent extends HsStylerPartBaseComponent {
   @Input() symbolizer: MarkSymbolizer;

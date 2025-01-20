@@ -11,6 +11,7 @@ import {HsHistoryListService} from './history-list.service';
 @Component({
   selector: 'hs-history-list',
   templateUrl: './history-list.component.html',
+  standalone: false,
 })
 export class HsHistoryListComponent implements OnChanges {
   @Input() what: string; //input

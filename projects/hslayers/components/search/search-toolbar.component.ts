@@ -15,7 +15,6 @@ import {HsSearchResultsComponent} from './search-results.component';
       </div>
     </div>
   `,
-  standalone: true,
   imports: [HsSearchInputComponent, HsSearchResultsComponent, AsyncPipe],
 })
 export class HsSearchToolbarComponent extends HsGuiOverlayBaseComponent {

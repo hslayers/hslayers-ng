@@ -24,6 +24,7 @@ import {HsUtilsService} from 'hslayers-ng/services/utils';
   selector: 'hs-styles',
   templateUrl: './styler.component.html',
   styleUrls: ['./styler.component.scss'],
+  standalone: false,
 })
 export class HsStylerComponent extends HsPanelBaseComponent {
   layerTitle: string;

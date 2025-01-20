@@ -7,6 +7,7 @@ import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
 @Component({
   selector: 'hs-compositions-info-dialog',
   templateUrl: './info-dialog.component.html',
+  standalone: false,
 })
 export class HsCompositionsInfoDialogComponent implements HsDialogComponent {
   viewRef: ViewRef;

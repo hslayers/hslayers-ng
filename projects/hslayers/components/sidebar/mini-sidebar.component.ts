@@ -11,6 +11,7 @@ import {HsSidebarService} from 'hslayers-ng/services/sidebar';
 @Component({
   selector: 'hs-mini-sidebar',
   templateUrl: './sidebar.component.html',
+  standalone: false,
 })
 export class HsMiniSidebarComponent implements OnInit {
   buttons: HsButton[] = [];

@@ -10,6 +10,7 @@ import {HsMapService} from 'hslayers-ng/services/map';
 @Component({
   selector: 'hs-scale-widget',
   templateUrl: './scale-widget.component.html',
+  standalone: false,
 })
 export class HsScaleWidgetComponent extends HsLayerEditorWidgetBaseComponent {
   name = 'scale-widget';

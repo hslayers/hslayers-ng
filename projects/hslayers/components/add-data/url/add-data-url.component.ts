@@ -16,6 +16,7 @@ import {SERVICES_SUPPORTED_BY_URL} from 'hslayers-ng/types';
 @Component({
   selector: 'hs-add-data-url',
   templateUrl: './add-data-url.component.html',
+  standalone: false,
 })
 export class HsAddDataUrlComponent implements OnInit {
   types: {id: AddDataUrlType; text: string}[];

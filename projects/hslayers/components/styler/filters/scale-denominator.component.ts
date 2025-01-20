@@ -7,6 +7,7 @@ import {HsStylerPartBaseComponent} from 'hslayers-ng/services/styler';
 @Component({
   selector: 'hs-scale-denominator',
   templateUrl: './scale-denominator.component.html',
+  standalone: false,
 })
 export class HsScaleDenominatorComponent
   extends HsStylerPartBaseComponent

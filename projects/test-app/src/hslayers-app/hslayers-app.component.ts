@@ -31,6 +31,7 @@ import {SomeComponent} from './some-panel/some-panel.component';
   selector: 'hslayers-app',
   templateUrl: './hslayers-app.component.html',
   styleUrls: ['./hslayers-app.component.scss'],
+  standalone: false,
 })
 export class HslayersAppComponent {
   constructor(

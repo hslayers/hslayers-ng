@@ -16,7 +16,6 @@ import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 @Component({
   selector: 'hs-dialog-container',
   templateUrl: './dialog-container.component.html',
-  standalone: true,
   imports: [HsDialogHostDirective],
 })
 export class HsDialogContainerComponent implements OnInit, OnDestroy {

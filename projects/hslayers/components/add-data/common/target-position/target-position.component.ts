@@ -10,6 +10,7 @@ import {HsLayerUtilsService} from 'hslayers-ng/services/utils';
 @Component({
   selector: 'hs-target-position',
   templateUrl: './target-position.component.html',
+  standalone: false,
 })
 export class HsPositionComponent {
   @Input() addUnder: Layer<Source> | null;

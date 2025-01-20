@@ -5,6 +5,7 @@ import {HsPanelBaseComponent} from 'hslayers-ng/common/panels';
 @Component({
   selector: 'hs-some-panel',
   templateUrl: './some-panel.component.html',
+  standalone: false,
 })
 export class SomeComponent extends HsPanelBaseComponent implements OnInit {
   /* The name is very important, as it is used to manage panel's visibility */

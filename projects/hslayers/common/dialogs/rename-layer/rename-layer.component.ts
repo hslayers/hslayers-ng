@@ -10,7 +10,6 @@ import {HsDialogItem} from '../dialog-item';
 @Component({
   selector: 'hs-rename-layer-dialog',
   templateUrl: './rename-layer.component.html',
-  standalone: true,
   imports: [TranslateCustomPipe, FormsModule],
 })
 export class HsRenameLayerDialogComponent implements HsDialogComponent, OnInit {

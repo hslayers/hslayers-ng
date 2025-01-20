@@ -46,6 +46,7 @@ export type AccessRightsType = 'read' | 'write';
 @Component({
   selector: 'hs-layman-access-rights',
   templateUrl: './layman-access-rights.component.html',
+  standalone: false,
 })
 export class HsCommonLaymanAccessRightsComponent implements OnInit {
   @Input() access_rights: AccessRightsModel;
