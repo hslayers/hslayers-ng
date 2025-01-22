@@ -58,6 +58,14 @@ const HsLayerManagerServiceMock: jasmine.SpyObj<HsLayerManagerService> = {
   ]),
 };
 const params = {'LAYERS': 'BSS', 'TILED': true};
+const loadProgress = {
+  pending: 0,
+  total: 0,
+  loadError: 0,
+  loaded: true,
+  error: undefined,
+  percents: 0,
+};
 
 const layer: HsLayerDescriptor = {
   layer: new ImageLayer({
@@ -69,6 +77,8 @@ const layer: HsLayerDescriptor = {
     }),
   }),
   showInLayerManager: true,
+  idString: () => 'test',
+  loadProgress: loadProgress,
 };
 
 const layer2: HsLayerDescriptor = {
@@ -81,6 +91,8 @@ const layer2: HsLayerDescriptor = {
     }),
   }),
   showInLayerManager: true,
+  idString: () => 'another_layer',
+  loadProgress,
 };
 
 const layerFilter = new BehaviorSubject('');
