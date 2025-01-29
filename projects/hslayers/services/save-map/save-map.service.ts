@@ -319,15 +319,17 @@ export class HsSaveMapService {
       if (this.hsLayerUtilsService.isLayerWMS(layer)) {
         json.className = 'WMS';
         json.singleTile = this.hsUtilsService.instOf(src, ImageWMS);
-        if (getLegends(layer)) {
-          json.legends = [];
-          const legends = getLegends(layer);
-          if (Array.isArray(legends)) {
-            json.legends = legends;
-          }
-          if (typeof legends == 'string') {
-            json.legends = [legends];
-          }
+        const legends = getLegends(layer);
+        if (legends) {
+          // Convert legends to array if it's a string; if it's empty string, make it []
+          const normalized = Array.isArray(legends)
+            ? legends
+            : typeof legends == 'string' && legends !== ''
+              ? [legends]
+              : [];
+
+          // Finally, remove any empty strings
+          json.legends = normalized.filter((l) => l !== '');
         }
         if (src.getProjection()) {
           json.projection = src.getProjection().getCode().toLowerCase();
