@@ -45,7 +45,6 @@ export default typescriptEslint.config({
             tagNamePreference: {
                 returns: "returns",
             },
-            "require-returns-type": "off",
         },
     },
     rules: {
@@ -59,7 +58,7 @@ export default typescriptEslint.config({
             prefix: ["hs", "hslayers"],
             style: "kebab-case",
         }],
-        "@angular-eslint/prefer-standalone": 'warn',
+        "@angular-eslint/prefer-standalone": "warn",
         "brace-style": "warn",
         "no-console": "warn",
         "object-curly-spacing": "warn",
@@ -77,6 +76,12 @@ export default typescriptEslint.config({
         "@typescript-eslint/no-explicit-any": "warn",
         "@typescript-eslint/no-unused-vars": "warn",
         "valid-jsdoc": "off",
+        "jsdoc/require-returns-type": "off",
+        "jsdoc/require-hyphen-before-param-description": "off",
+        "jsdoc/require-param": "warn",
+        "jsdoc/require-param-type": "off",
+        "jsdoc/require-returns": 'warn',
+        "jsdoc/require-returns-check": "warn",
         "tsdoc/syntax": "warn",
     },
 }, {
@@ -91,7 +96,11 @@ export default typescriptEslint.config({
     languageOptions: {
         parser: angularEslintParser,
     },*/
-    rules: {},
+    rules: {
+        "@angular-eslint/template/interactive-supports-focus": "warn",
+        "@angular-eslint/template/click-events-have-key-events": "warn",
+        "@angular-eslint/template/elements-content": "warn",
+    },
 }, {
     files: ["**/*.spec.ts"],
     languageOptions: {

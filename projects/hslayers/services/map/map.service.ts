@@ -845,7 +845,6 @@ export class HsMapService {
    * While adding check if hs-composition URL param or defaultComposition is set, if so, filter config's layers by removable property
    * If permalink URL param is set, do not add any of config's layers.
    * @public
-   * @returns Projection
    */
   addLayersFromAppConfig(layers: Layer[], visibilityOverrides: string[]): void {
     if (this.externalCompositionId) {

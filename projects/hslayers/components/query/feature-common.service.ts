@@ -20,7 +20,6 @@ export interface exportFormats {
   mimeType: string;
   downloadData?: any; //Serialized/sanitized data suitable for href
 }
-[];
 
 @Injectable({
   providedIn: 'root',
