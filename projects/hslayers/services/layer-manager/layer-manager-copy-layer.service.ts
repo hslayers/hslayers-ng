@@ -33,7 +33,7 @@ export class HsLayerManagerCopyLayerService {
 
   /**
     Creates a copy of the currentLayer
-  */
+   */
   async copyLayer(newTitle: string): Promise<void> {
     const copyTitle = this.createCopyTitle(newTitle);
     const currentOlLayer = this.hsLayerSelectorService.currentLayer.layer;
@@ -83,7 +83,7 @@ export class HsLayerManagerCopyLayerService {
 
   /**
     Creates a copy of the currentLayer if it is a vector layer
-  */
+   */
   copyVectorLayer(newTitle: string): void {
     let features;
     const currentOlLayer = this.hsLayerSelectorService.currentLayer.layer;
@@ -109,7 +109,7 @@ export class HsLayerManagerCopyLayerService {
 
   /**
     Creates a new title for the copied layer
-  */
+   */
   createCopyTitle(newTitle: string): string {
     const layerName = getName(this.hsLayerSelectorService.currentLayer.layer);
     let copyTitle = getTitle(this.hsLayerSelectorService.currentLayer.layer);

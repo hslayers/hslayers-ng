@@ -10,8 +10,8 @@ export class HsFeatureFilterPipe implements PipeTransform {
   /**
    * Transform
    *
-   * @param features -
-   * @param searchText -
+   
+   
    * @returns Filtered features
    */
   transform(features: any[], searchText: string): any[] {

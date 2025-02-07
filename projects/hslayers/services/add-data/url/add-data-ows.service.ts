@@ -20,11 +20,15 @@ import {
 } from 'hslayers-ng/services/get-capabilities';
 import {HsLogService} from 'hslayers-ng/services/log';
 
-import {AddDataUrlType, LayerOptions} from 'hslayers-ng/types';
+import {
+  AddDataUrlType,
+  LayerOptions,
+  HsUrlTypeServiceModel,
+  LayerConnection,
+  OwsConnection,
+  UrlDataObject,
+} from 'hslayers-ng/types';
 import {HsHistoryListService} from 'hslayers-ng/common/history-list';
-import {HsUrlTypeServiceModel} from 'hslayers-ng/types';
-import {LayerConnection, OwsConnection} from 'hslayers-ng/types';
-import {UrlDataObject} from 'hslayers-ng/types';
 
 @Injectable({
   providedIn: 'root',
@@ -89,37 +93,36 @@ export class HsAddDataOwsService {
     ) {
       this.hsAddDataCommonService.throwParsingError(wrapper.response);
       return [];
-    } else {
-      this.overwriteServiceDefaults(options?.layerOptions);
-      const response = await this.typeService.listLayerFromCapabilities(
-        wrapper,
-        options?.layerOptions,
-      );
-      if (!options?.getOnly) {
-        if (response?.length > 0) {
-          this.typeService.addLayers(response);
-        }
-        //Note:
-        //!response condition would result in infinite connectToOWS calls
-        //response?.length by design also checks for hsAddDataCommonService.layerToSelect
-        if (response?.length == 0) {
-          this.hsLog.log('Empty response when layer selected');
-          this.hsAddDataService.selectType('url');
-          await this.connectToOWS({
-            type: typeBeingSelected,
-            uri: url,
-            layer: undefined,
-          });
-        }
-
-        if (this.hsUrlArcGisService.isImageService()) {
-          const layers = await this.hsUrlArcGisService.getLayers();
-          this.hsUrlArcGisService.addLayers(layers);
-        }
+    }
+    this.overwriteServiceDefaults(options?.layerOptions);
+    const response = await this.typeService.listLayerFromCapabilities(
+      wrapper,
+      options?.layerOptions,
+    );
+    if (!options?.getOnly) {
+      if (response?.length > 0) {
+        this.typeService.addLayers(response);
+      }
+      //Note:
+      //!response condition would result in infinite connectToOWS calls
+      //response?.length by design also checks for hsAddDataCommonService.layerToSelect
+      if (response?.length == 0) {
+        this.hsLog.log('Empty response when layer selected');
+        this.hsAddDataService.selectType('url');
+        await this.connectToOWS({
+          type: typeBeingSelected,
+          uri: url,
+          layer: undefined,
+        });
       }
 
-      return response;
+      if (this.hsUrlArcGisService.isImageService()) {
+        const layers = await this.hsUrlArcGisService.getLayers();
+        this.hsUrlArcGisService.addLayers(layers);
+      }
     }
+
+    return response;
   }
 
   /**
@@ -137,7 +140,6 @@ export class HsAddDataOwsService {
   /**
    * Connect to service of specified Url
    * @param params - Connection params
-   
    */
   async setUrlAndConnect(params: OwsConnection): Promise<Layer<Source>[]> {
     this.hsAddDataCommonService.layerToSelect = params.layer;

@@ -1,8 +1,10 @@
 import {Component, Input, ViewRef} from '@angular/core';
 
 import {HsCompositionsParserService} from 'hslayers-ng/services/compositions';
-import {HsDialogComponent} from 'hslayers-ng/common/dialogs';
-import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
+import {
+  HsDialogComponent,
+  HsDialogContainerService,
+} from 'hslayers-ng/common/dialogs';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsLayerManagerService} from 'hslayers-ng/services/layer-manager';
 import {HsMapService} from 'hslayers-ng/services/map';

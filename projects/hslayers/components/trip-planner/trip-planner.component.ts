@@ -2,11 +2,10 @@ import {Component, OnInit} from '@angular/core';
 
 import {HsConfig} from 'hslayers-ng/config';
 import {HsLanguageService} from 'hslayers-ng/services/language';
-import {HsLayerUtilsService} from 'hslayers-ng/services/utils';
+import {HsLayerUtilsService, HsUtilsService} from 'hslayers-ng/services/utils';
 import {HsMapService} from 'hslayers-ng/services/map';
 import {HsPanelBaseComponent} from 'hslayers-ng/common/panels';
 import {HsTripPlannerService, Waypoint} from './trip-planner.service';
-import {HsUtilsService} from 'hslayers-ng/services/utils';
 import {setHighlighted} from 'hslayers-ng/common/extensions';
 
 @Component({

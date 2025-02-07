@@ -7,8 +7,10 @@ import {
 import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 
-import {HsPanelHeaderComponent} from 'hslayers-ng/common/panels';
-import {HsPanelHelpersModule} from 'hslayers-ng/common/panels';
+import {
+  HsPanelHeaderComponent,
+  HsPanelHelpersModule,
+} from 'hslayers-ng/common/panels';
 import {HsShareComponent} from './share.component';
 import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 

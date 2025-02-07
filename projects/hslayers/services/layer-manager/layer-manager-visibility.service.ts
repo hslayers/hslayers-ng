@@ -17,7 +17,6 @@ import {getBase, getExclusive, getPath} from 'hslayers-ng/common/extensions';
 export class HsLayerManagerVisibilityService {
   /**
    * Store if baselayers are visible (more precisely one of baselayers)
-   * @public
    */
   baselayersVisible = true;
   currentResolution: number;

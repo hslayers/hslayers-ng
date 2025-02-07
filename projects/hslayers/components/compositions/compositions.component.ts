@@ -79,7 +79,7 @@ export class HsCompositionsComponent
   }
 
   /**
-   * @param url -
+   
    * Load selected composition in map, if current composition was edited display Overwrite dialog
    */
   addCompositionUrl(url: string): void {

@@ -2,8 +2,10 @@ import {Component, ViewRef} from '@angular/core';
 
 import {HsCompositionsParserService} from 'hslayers-ng/services/compositions';
 import {HsCompositionsService} from '../compositions.service';
-import {HsDialogComponent} from 'hslayers-ng/common/dialogs';
-import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
+import {
+  HsDialogComponent,
+  HsDialogContainerService,
+} from 'hslayers-ng/common/dialogs';
 import {HsSaveMapManagerService} from 'hslayers-ng/components/save-map';
 
 @Component({
@@ -29,7 +31,6 @@ export class HsCompositionsOverwriteDialogComponent
   }
 
   /**
-   * @public
    * Load new composition without saving old composition
    */
   overwrite() {
@@ -41,7 +42,6 @@ export class HsCompositionsOverwriteDialogComponent
   }
 
   /**
-   * @public
    * Save currently loaded composition first
    */
   save() {
@@ -50,7 +50,6 @@ export class HsCompositionsOverwriteDialogComponent
   }
 
   /**
-   * @public
    * Load new composition (with service_parser Load function) and merge it with old composition
    */
   add() {

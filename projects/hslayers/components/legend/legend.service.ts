@@ -16,13 +16,11 @@ import {
 import {Style} from 'ol/style';
 
 import {HsLayerSelectorService} from 'hslayers-ng/services/layer-manager';
-import {HsLayerUtilsService} from 'hslayers-ng/services/utils';
+import {HsLayerUtilsService, HsUtilsService} from 'hslayers-ng/services/utils';
 import {HsLegendDescriptor} from './legend-descriptor.interface';
 import {HsLogService} from 'hslayers-ng/services/log';
-import {HsStylerService} from 'hslayers-ng/services/styler';
-import {HsUtilsService} from 'hslayers-ng/services/utils';
+import {HsStylerService, defaultStyle} from 'hslayers-ng/services/styler';
 import {InterpolatedSource} from 'hslayers-ng/common/layers';
-import {defaultStyle} from 'hslayers-ng/services/styler';
 import {filter} from 'rxjs';
 import {
   getAutoLegend,
@@ -194,13 +192,12 @@ export class HsLegendService {
         source_url = this.hsUtilsService.proxify(source_url);
       }
       return source_url;
-    } else {
-      if (typeof legendImage == 'string') {
-        return legendImage;
-      }
-      if (Array.isArray(legendImage)) {
-        return legendImage[0];
-      }
+    }
+    if (typeof legendImage == 'string') {
+      return legendImage;
+    }
+    if (Array.isArray(legendImage)) {
+      return legendImage[0];
     }
   }
 
@@ -255,7 +252,8 @@ export class HsLegendService {
         subLayerLegends: subLayerLegends,
         visible: layer.getVisible(),
       };
-    } else if (
+    }
+    if (
       this.hsLayerUtilsService.isLayerVectorLayer(layer, false) &&
       (getShowInLayerManager(layer) === undefined ||
         getShowInLayerManager(layer) == true)
@@ -268,7 +266,8 @@ export class HsLegendService {
         visible: layer.getVisible(),
         svg: await this.setSvg(layer),
       };
-    } else if (
+    }
+    if (
       this.hsUtilsService.instOf(layer, ImageLayer) &&
       this.hsUtilsService.instOf(layer.getSource(), Static)
     ) {
@@ -278,19 +277,18 @@ export class HsLegendService {
         type: 'static',
         visible: layer.getVisible(),
       };
-    } else if (this.hsUtilsService.instOf(layer.getSource(), XYZ)) {
+    }
+    if (this.hsUtilsService.instOf(layer.getSource(), XYZ)) {
       return {
         title: getTitle(layer),
         lyr: layer,
         type: 'static',
         visible: layer.getVisible(),
       };
-    } else if (
-      this.hsUtilsService.instOf(layer.getSource(), InterpolatedSource)
-    ) {
-      return this.generateInterpolatedLayerLegend(layer);
-    } else {
-      return undefined;
     }
+    if (this.hsUtilsService.instOf(layer.getSource(), InterpolatedSource)) {
+      return this.generateInterpolatedLayerLegend(layer);
+    }
+    return undefined;
   }
 }

@@ -3,20 +3,18 @@ import {Injectable} from '@angular/core';
 
 import {Feature, Map, MapBrowserEvent} from 'ol';
 import {Geometry} from 'ol/geom';
-import {Layer} from 'ol/layer';
+import {Layer, Vector as VectorLayer} from 'ol/layer';
 import {Select} from 'ol/interaction';
-import {Source} from 'ol/source';
-import {Vector as VectorLayer} from 'ol/layer';
-import {Vector as VectorSource} from 'ol/source';
+import {Source, Vector as VectorSource} from 'ol/source';
 
 import {
   ClickedCoordinates,
   HsLayerDescriptor,
   HsLayerLoadProgress,
   HsTerrainLayerDescriptor,
+  HsMapCompositionDescriptor,
 } from 'hslayers-ng/types';
 import {HsDimensionDescriptor} from 'hslayers-ng/common/dimensions';
-import {HsMapCompositionDescriptor} from 'hslayers-ng/types';
 
 /**
  * HsEventBusService provides observable events which you can subscribe to or fire them

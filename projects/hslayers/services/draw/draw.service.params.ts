@@ -1,11 +1,9 @@
 import {Collection, Feature} from 'ol';
 import {DragBox, Draw, Modify, Snap} from 'ol/interaction';
 import {EventsKey} from 'ol/events';
-import {Layer} from 'ol/layer';
-import {Source} from 'ol/source';
+import {Layer, Vector as VectorLayer} from 'ol/layer';
+import {Source, Vector as VectorSource} from 'ol/source';
 import {Subject} from 'rxjs';
-import {Vector as VectorLayer} from 'ol/layer';
-import {Vector as VectorSource} from 'ol/source';
 
 export class HsDrawServiceParams {
   drawableLayers: Array<Layer<Source>> = [];

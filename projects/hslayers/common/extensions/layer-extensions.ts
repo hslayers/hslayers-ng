@@ -16,9 +16,9 @@ import {
   Metadata,
   WfsFeatureAttribute,
   popUp,
+  DOMFeatureLink,
+  HsLaymanLayerDescriptor,
 } from 'hslayers-ng/types';
-import {DOMFeatureLink} from 'hslayers-ng/types';
-import {HsLaymanLayerDescriptor} from 'hslayers-ng/types';
 
 const ABSTRACT = 'abstract';
 const ACCESS_RIGHTS = 'access_rights';
@@ -175,7 +175,7 @@ export function getDefinition(layer: Layer<Source>): Definition {
 /**
  * Set the dimensions definition. TODO: Extend description
  * @param layer - OL layer
- * @param dimensions
+ 
  * @example
  *  dimensions: \{
       time: \{ label: 'Local time', default: '2020-02-25T01:00' \},
@@ -435,8 +435,6 @@ export function getMaxResolutionDenominator(layer: Layer<Source>): number {
 
 /**
  * Store metadata which were parsed from layer definition in composition json.
- * @param layer -
- * @param metadata -
  */
 export function setMetadata(layer: Layer<Source>, metadata: Metadata): void {
   layer.set(METADATA, metadata);
@@ -562,7 +560,6 @@ export function getShowInLayerManager(layer: BaseLayer): boolean {
  * This is used to limit the displayed sub-layers on the map.
  * If sublayers property is set, the sub-layer tree in layer manager is
  * hidden, otherwise all sub-layers are shown.
- * @param layer -
  * @param subLayers - String of all possible WMS layers sub-layer names separated by comma
  */
 export function setSubLayers(layer: Layer<Source>, subLayers: string): void {
@@ -574,7 +571,6 @@ export function setSubLayers(layer: Layer<Source>, subLayers: string): void {
  * This is used to limit the displayed sub-layers on the map.
  * If sub-layers property is set, the sub-layer tree in layer manager is
  * hidden, otherwise all sub-layers are shown.
- * @param layer -
  */
 export function getSubLayers(layer: Layer<Source>): string {
   return layer.get(SUB_LAYERS[0]) ?? layer.get(SUB_LAYERS[1]);

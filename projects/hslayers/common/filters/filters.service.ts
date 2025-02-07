@@ -7,7 +7,13 @@ import {Layer} from 'ol/layer';
 import {Source} from 'ol/source';
 
 import {HsLanguageService} from 'hslayers-ng/services/language';
-import {HsLayerDescriptor, WfsFeatureAttribute} from 'hslayers-ng/types';
+import {
+  HsLayerDescriptor,
+  WfsFeatureAttribute,
+  Filter,
+  FilterType,
+  LogicalOperatorType,
+} from 'hslayers-ng/types';
 import {HsToastService} from 'hslayers-ng/common/toast';
 import {HsUtilsService} from 'hslayers-ng/services/utils';
 import {
@@ -16,8 +22,6 @@ import {
   getWfsUrl,
   getWorkspace,
 } from 'hslayers-ng/common/extensions';
-
-import {Filter, FilterType, LogicalOperatorType} from 'hslayers-ng/types';
 
 @Injectable({
   providedIn: 'root',
@@ -233,12 +237,11 @@ export class HsFiltersService {
               max: Math.max(...values),
             },
           };
-        } else {
-          return {
-            ...attribute,
-            values,
-          };
         }
+        return {
+          ...attribute,
+          values,
+        };
       }),
       catchError(() => of(attribute)),
     );

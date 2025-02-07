@@ -4,9 +4,8 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {lastValueFrom} from 'rxjs';
 
-import {CompoData} from 'hslayers-ng/types';
+import {CompoData, HsEndpoint, MapComposition} from 'hslayers-ng/types';
 import {HsConfig} from 'hslayers-ng/config';
-import {HsEndpoint} from 'hslayers-ng/types';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsLanguageService} from 'hslayers-ng/services/language';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
@@ -19,7 +18,6 @@ import {
 } from 'hslayers-ng/services/share';
 import {HsToastService} from 'hslayers-ng/common/toast';
 import {HsUtilsService} from 'hslayers-ng/services/utils';
-import {MapComposition} from 'hslayers-ng/types';
 import {getShowInLayerManager} from 'hslayers-ng/common/extensions';
 
 @Injectable({
@@ -142,7 +140,6 @@ export class HsShareService {
 
   /**
    * Get correct Embed code with correct share link type
-   * @public
    * @returns embeddable iframe HTML code
    */
   getEmbedCode(): string {
@@ -154,7 +151,6 @@ export class HsShareService {
   }
 
   /**
-   * @public
    * @returns Share URL
    */
   getShareUrl(): string {
@@ -168,7 +164,6 @@ export class HsShareService {
   }
 
   /**
-   * @public
    * @returns Encoded share URL
    */
   getShareUrlEncoded(): string {
@@ -177,7 +172,6 @@ export class HsShareService {
 
   /**
    * Make current share url invalid for social sharing
-   * @public
    */
   invalidateShareUrl(): void {
     this.shareUrlValid = false;
@@ -185,7 +179,6 @@ export class HsShareService {
 
   /**
    * Share map on social network
-   * @public
    * @param provider - Social share provider (twitter/facebook)
    * @param newShare - If new share record on server should be created
    */
@@ -257,7 +250,6 @@ export class HsShareService {
 
   /**
    * Generate thumbnail of current map and save it to variable and selected element
-   * @public
    * @param $element - DOM img element where to place the thumbnail
    * @param newRender - Force synchronous rendering again or use last canvas state
    */

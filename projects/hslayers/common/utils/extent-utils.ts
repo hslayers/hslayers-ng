@@ -7,7 +7,6 @@ import {generateUuid} from 'hslayers-ng/services/utils';
 
 /**
  * @param record - Record of one dataset from Get Records response
- * @returns
  * Create extent features for displaying extent of loaded dataset records in map
  */
 export function addExtentFeature(

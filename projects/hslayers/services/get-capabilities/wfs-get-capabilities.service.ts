@@ -30,9 +30,8 @@ export class HsWfsGetCapabilitiesService implements IGetCapabilities {
   getPathFromUrl(str: string): string {
     if (str.indexOf('?') > -1) {
       return str.substring(0, str.indexOf('?'));
-    } else {
-      return str;
     }
+    return str;
   }
 
   /**

@@ -7,17 +7,19 @@ import {Source} from 'ol/source';
 import {WMTSCapabilities} from 'ol/format';
 import {transformExtent} from 'ol/proj';
 
-import {CapabilitiesResponseWrapper} from 'hslayers-ng/types';
+import {
+  CapabilitiesResponseWrapper,
+  AddLayersRecursivelyOptions,
+  HsUrlTypeServiceModel,
+  LayerOptions,
+  UrlDataObject,
+} from 'hslayers-ng/types';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsMapService} from 'hslayers-ng/services/map';
 
 import {HsAddDataCommonService} from '../common.service';
 import {HsAddDataUrlService} from './add-data-url.service';
 
-import {AddLayersRecursivelyOptions} from 'hslayers-ng/types';
-import {HsUrlTypeServiceModel} from 'hslayers-ng/types';
-import {LayerOptions} from 'hslayers-ng/types';
-import {UrlDataObject} from 'hslayers-ng/types';
 import {addAnchors} from 'hslayers-ng/common/utils';
 
 @Injectable({providedIn: 'root'})

@@ -3,12 +3,11 @@ import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 
 import {Subscription, debounceTime} from 'rxjs';
 
-import {HS_PRMS} from 'hslayers-ng/services/share';
+import {HS_PRMS, HsShareUrlService} from 'hslayers-ng/services/share';
 import {HsButton} from 'hslayers-ng/types';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
-import {HsShareUrlService} from 'hslayers-ng/services/share';
 import {HsSidebarService} from 'hslayers-ng/services/sidebar';
 
 @Component({

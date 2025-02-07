@@ -12,13 +12,17 @@ import {HsLayerDescriptor} from 'hslayers-ng/types';
 import {HsLayerEditorComponent} from './layer-editor.component';
 import {HsLayerEditorSublayerService} from './sublayers/layer-editor-sub-layer.service';
 import {HsLayerEditorSublayersComponent} from './sublayers/layer-editor-sublayers.component';
-import {HsLayerEditorVectorLayerService} from 'hslayers-ng/services/layer-manager';
-import {HsLayerManagerMetadataService} from 'hslayers-ng/services/layer-manager';
-import {HsLayerSelectorService} from 'hslayers-ng/services/layer-manager';
+import {
+  HsLayerEditorVectorLayerService,
+  HsLayerManagerMetadataService,
+  HsLayerSelectorService,
+} from 'hslayers-ng/services/layer-manager';
 import {HsLayerUtilsService} from 'hslayers-ng/services/utils';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
-import {HsLegendDescriptor} from 'hslayers-ng/components/legend';
-import {HsLegendService} from 'hslayers-ng/components/legend';
+import {
+  HsLegendDescriptor,
+  HsLegendService,
+} from 'hslayers-ng/components/legend';
 import {HsMapService} from 'hslayers-ng/services/map';
 import {HsWmsGetCapabilitiesService} from 'hslayers-ng/services/get-capabilities';
 import {
@@ -157,32 +161,30 @@ export class HsLayerEditorService {
         this.setCurrentLayer(layer);
         layer.settings = true;
         return true;
-      } else {
-        layer.settings = !layer.settings;
-        this.setCurrentLayer(undefined);
-        return false;
       }
-    } else {
-      const currentLayer = this.HsLayerEditorSublayerService.layer;
-
-      if (currentLayer === layer) {
-        // If the same layer is clicked again, deselect it
-        this.HsLayerEditorSublayerService.layer = null;
-        layer.sublayers = false;
-      } else {
-        // If a different layer is clicked
-        if (currentLayer) {
-          // Deselect the previously selected layer, if any
-          currentLayer.sublayers = false;
-        }
-        // Select the new layer
-        this.HsLayerEditorSublayerService.layer = layer;
-        layer.sublayers = true;
-      }
-
-      // Return the final state of layer.sublayers
-      return layer.sublayers;
+      layer.settings = !layer.settings;
+      this.setCurrentLayer(undefined);
+      return false;
     }
+    const currentLayer = this.HsLayerEditorSublayerService.layer;
+
+    if (currentLayer === layer) {
+      // If the same layer is clicked again, deselect it
+      this.HsLayerEditorSublayerService.layer = null;
+      layer.sublayers = false;
+    } else {
+      // If a different layer is clicked
+      if (currentLayer) {
+        // Deselect the previously selected layer, if any
+        currentLayer.sublayers = false;
+      }
+      // Select the new layer
+      this.HsLayerEditorSublayerService.layer = layer;
+      layer.sublayers = true;
+    }
+
+    // Return the final state of layer.sublayers
+    return layer.sublayers;
   }
 
   /**

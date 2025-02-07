@@ -1,12 +1,11 @@
 import {Component, ViewRef} from '@angular/core';
 
-import {FileDataObject} from 'hslayers-ng/types';
+import {FileDataObject, VectorDataObject} from 'hslayers-ng/types';
 import {HsDialogComponent} from '../dialog-component.interface';
 import {HsDialogContainerService} from '../dialog-container.service';
 import {HsDialogItem} from '../dialog-item';
 import {HsRenameLayerDialogComponent} from '../rename-layer/rename-layer.component';
 import {TranslateCustomPipe} from 'hslayers-ng/services/language';
-import {VectorDataObject} from 'hslayers-ng/types';
 
 @Component({
   selector: 'hs-layer-overwrite-dialog',
@@ -24,7 +23,6 @@ export class HsLayerOverwriteDialogComponent implements HsDialogComponent {
   constructor(public hsDialogContainerService: HsDialogContainerService) {}
 
   /**
-   * @public
    * Close the dialog
    */
   close(): void {
@@ -33,7 +31,6 @@ export class HsLayerOverwriteDialogComponent implements HsDialogComponent {
   }
 
   /**
-   * @public
    * Overwrite the existing layer with current layer data
    */
   overwrite(): void {

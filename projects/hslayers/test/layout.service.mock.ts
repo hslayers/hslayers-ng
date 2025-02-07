@@ -31,12 +31,10 @@ export class HsLayoutServiceMock {
     if (status === undefined) {
       if (this.panel_enabled[which] != undefined) {
         return this.panel_enabled[which];
-      } else {
-        return true;
       }
-    } else {
-      this.panel_enabled[which] = status;
+      return true;
     }
+    this.panel_enabled[which] = status;
   }
 
   panelVisible(which, scope?) {

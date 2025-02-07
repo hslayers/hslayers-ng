@@ -14,8 +14,10 @@ import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsLayoutServiceMock} from './layout.service.mock';
 import {HsMapService} from 'hslayers-ng/services/map';
 import {HsMapServiceMock} from './map.service.mock';
-import {HsMeasureComponent} from 'hslayers-ng/components/measure';
-import {HsMeasureService} from 'hslayers-ng/components/measure';
+import {
+  HsMeasureComponent,
+  HsMeasureService,
+} from 'hslayers-ng/components/measure';
 import {HsUtilsService} from 'hslayers-ng/services/utils';
 import {HsUtilsServiceMock} from './utils/utils.service.mock';
 import {TranslateCustomPipe} from 'hslayers-ng/services/language';

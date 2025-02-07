@@ -14,13 +14,12 @@ import {toLonLat} from 'ol/proj';
 
 import {HsConfig} from 'hslayers-ng/config';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
-import {HsLayerUtilsService} from 'hslayers-ng/services/utils';
+import {HsLayerUtilsService, HsUtilsService} from 'hslayers-ng/services/utils';
 import {HsMapService} from 'hslayers-ng/services/map';
 import {HsQueryBaseService} from './query-base.service';
-import {HsUtilsService} from 'hslayers-ng/services/utils';
 import {StyleLike, createDefaultStyle} from 'ol/style/Style';
-import {getFeatures} from 'hslayers-ng/common/extensions';
 import {
+  getFeatures,
   getOnFeatureSelected,
   getQueryable,
   getVirtualAttributes,
@@ -110,9 +109,8 @@ export class HsQueryVectorService {
         }
         if (getQueryable(layer) === false) {
           return false;
-        } else {
-          return true;
         }
+        return true;
       },
       style: style || this.hsConfig.query?.style || createDefaultStyle,
       hitTolerance: this.hsConfig.query?.hitTolerance || 0,
@@ -261,11 +259,11 @@ export class HsQueryVectorService {
     const layer = this.hsMapService.getLayerForFeature(feature);
     if (layer == undefined) {
       return;
-    } else if (this.hsUtilsService.instOf(layer.getSource(), Cluster)) {
-      return (layer.getSource() as Cluster<Feature>).getSource();
-    } else {
-      return layer.getSource();
     }
+    if (this.hsUtilsService.instOf(layer.getSource(), Cluster)) {
+      return (layer.getSource() as Cluster<Feature>).getSource();
+    }
+    return layer.getSource();
   }
 
   /**
@@ -361,8 +359,7 @@ export class HsQueryVectorService {
   sanitizeAttributeValue(value): SafeHtml {
     if ((typeof value).toLowerCase() == 'string') {
       return this.domSanitizer.bypassSecurityTrustHtml(value);
-    } else {
-      return;
     }
+    return;
   }
 }

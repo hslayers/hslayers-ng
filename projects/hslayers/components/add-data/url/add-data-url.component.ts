@@ -1,17 +1,18 @@
 import {Component, OnInit} from '@angular/core';
 
-import {AddDataUrlType} from 'hslayers-ng/types';
+import {AddDataUrlType, SERVICES_SUPPORTED_BY_URL} from 'hslayers-ng/types';
 import {AddDataUrlValues} from './add-data-url-values';
-import {HsAddDataCommonService} from 'hslayers-ng/services/add-data';
-import {HsAddDataOwsService} from 'hslayers-ng/services/add-data';
-import {HsAddDataUrlService} from 'hslayers-ng/services/add-data';
+import {
+  HsAddDataCommonService,
+  HsAddDataOwsService,
+  HsAddDataUrlService,
+} from 'hslayers-ng/services/add-data';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
 import {HsLanguageService} from 'hslayers-ng/services/language';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsLogService} from 'hslayers-ng/services/log';
 import {HsShareUrlService} from 'hslayers-ng/services/share';
-import {SERVICES_SUPPORTED_BY_URL} from 'hslayers-ng/types';
 
 @Component({
   selector: 'hs-add-data-url',

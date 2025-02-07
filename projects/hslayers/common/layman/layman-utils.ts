@@ -1,8 +1,7 @@
 import {Layer} from 'ol/layer';
 import {Source} from 'ol/source';
 
-import {HsEndpoint} from 'hslayers-ng/types';
-import {HsLaymanLayerDescriptor} from 'hslayers-ng/types';
+import {HsEndpoint, HsLaymanLayerDescriptor} from 'hslayers-ng/types';
 import {TRANSLITERATION_MAP} from './transliteration-map';
 import {
   getHsLaymanSynchronizing,

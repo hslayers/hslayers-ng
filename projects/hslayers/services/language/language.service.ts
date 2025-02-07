@@ -72,7 +72,6 @@ export class HsLanguageService {
 
   /**
    * Set language
-   * @public
    * @param lang - Language code
    */
   setLanguage(lang: string, retryCount = 0): void {
@@ -102,7 +101,6 @@ export class HsLanguageService {
 
   /**
    * Get code of current language
-   * @public
    * @returns Language code
    */
   getCurrentLanguageCode(): string {

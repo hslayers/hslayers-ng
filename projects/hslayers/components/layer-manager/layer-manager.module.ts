@@ -28,8 +28,10 @@ import {HsLegendModule} from 'hslayers-ng/components/legend';
 import {HsLegendWidgetComponent} from './widgets/legend-widget.component';
 import {HsMetadataWidgetComponent} from './widgets/metadata-widget.component';
 import {HsOpacityWidgetComponent} from './widgets/opacity-widget.component';
-import {HsPanelHeaderComponent} from 'hslayers-ng/common/panels';
-import {HsPanelHelpersModule} from 'hslayers-ng/common/panels';
+import {
+  HsPanelHeaderComponent,
+  HsPanelHelpersModule,
+} from 'hslayers-ng/common/panels';
 import {HsScaleWidgetComponent} from './widgets/scale-widget.component';
 import {HsTypeWidgetComponent} from './widgets/type-widget.component';
 import {HsWmsSourceWidgetComponent} from './widgets/wms-source-widget/wms-source-widget.component';

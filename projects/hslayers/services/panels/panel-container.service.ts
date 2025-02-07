@@ -1,9 +1,11 @@
 import {Injectable, Type, signal} from '@angular/core';
 import {ReplaySubject, Subject} from 'rxjs';
 
-import {HsPanelComponent} from 'hslayers-ng/common/panels';
-import {HsPanelContainerServiceInterface} from 'hslayers-ng/common/panels';
-import {HsPanelItem} from 'hslayers-ng/common/panels';
+import {
+  HsPanelComponent,
+  HsPanelContainerServiceInterface,
+  HsPanelItem,
+} from 'hslayers-ng/common/panels';
 
 @Injectable({
   providedIn: 'root',

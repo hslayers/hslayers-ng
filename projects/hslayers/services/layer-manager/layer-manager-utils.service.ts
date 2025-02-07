@@ -49,7 +49,7 @@ export class HsLayerManagerUtilsService {
   /**
     Generates downloadable GeoJSON for vector layer.
     Features are also transformed into the EPSG:4326 projection
-  */
+   */
   saveGeoJson(): void {
     const geojsonParser = new GeoJSON();
     const olLayer = this.hsLayerSelectorService.currentLayer.layer;
@@ -151,11 +151,9 @@ export class HsLayerManagerUtilsService {
     if (thumbnail) {
       if (thumbnail.length > 10) {
         return thumbnail;
-      } else {
-        return this.hsConfig.assetsPath + 'img/' + thumbnail;
       }
-    } else {
-      return this.hsConfig.assetsPath + 'img/default.png';
+      return this.hsConfig.assetsPath + 'img/' + thumbnail;
     }
+    return this.hsConfig.assetsPath + 'img/default.png';
   }
 }

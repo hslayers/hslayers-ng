@@ -17,23 +17,24 @@ import {Map as OlMap} from 'ol';
 import {Source} from 'ol/source';
 import {unByKey} from 'ol/Observable';
 
-import {HS_PRMS} from 'hslayers-ng/services/share';
+import {HS_PRMS, HsShareUrlService} from 'hslayers-ng/services/share';
 import {HsAddDataOwsService} from 'hslayers-ng/services/add-data';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsDimensionTimeService} from 'hslayers-ng/services/get-capabilities';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsLanguageService} from 'hslayers-ng/services/language';
-import {HsLayerDescriptor, HsTerrainLayerDescriptor} from 'hslayers-ng/types';
+import {
+  HsLayerDescriptor,
+  HsTerrainLayerDescriptor,
+  HsLayermanagerFolder,
+} from 'hslayers-ng/types';
 import {HsLayerSelectorService} from './layer-selector.service';
-import {HsLayerUtilsService} from 'hslayers-ng/services/utils';
-import {HsLayermanagerFolder} from 'hslayers-ng/types';
+import {HsLayerUtilsService, HsUtilsService} from 'hslayers-ng/services/utils';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsLogService} from 'hslayers-ng/services/log';
 import {HsMapService} from 'hslayers-ng/services/map';
 import {HsQueuesService} from 'hslayers-ng/services/queues';
-import {HsShareUrlService} from 'hslayers-ng/services/share';
 import {HsToastService} from 'hslayers-ng/common/toast';
-import {HsUtilsService} from 'hslayers-ng/services/utils';
 import {
   SHOW_IN_LAYER_MANAGER,
   getAbstract,
@@ -76,17 +77,14 @@ export class HsLayermanagerDataObject {
   constructor() {
     /**
      * List of all layers (baselayers are excluded) loaded in LayerManager.
-     * @public
      */
     this.layers = [];
     /**
      * List of all baselayers loaded in layer manager.
-     * @public
      */
     this.baselayers = [];
     /*
      * List of all cesium terrain layers loaded in layer manager.
-     * @public
      */
     this.terrainLayers = [];
   }
@@ -273,7 +271,6 @@ export class HsLayerManagerService {
      * Wrapper for layers in layer manager structure.
      * Each layer object stores layer's title, grayed (if layer is currently visible - for layers which have max/min resolution), visible (layer is visible), and actual layer.
      * Each layer wrapper is accessible from layer list or folder structure.
-     * @private
      */
     const layerDescriptor: HsLayerDescriptor = {
       title: this.hsLayerUtilsService.getLayerTitle(layer),
@@ -408,7 +405,6 @@ export class HsLayerManagerService {
 
   /**
    * (PRIVATE) Get layer by its title
-   * @private
    */
   getLayerByTitle(title: string): HsLayerDescriptor | undefined {
     let tmp;
@@ -422,7 +418,6 @@ export class HsLayerManagerService {
 
   /**
    * Get layer container object for OL layer
-   * @private
    * @param layer - to get layer title
    * @param base - Wether to search within base layers or not. Defaults to false
    * @returns Layer container which is used in layer-list directive
@@ -604,8 +599,7 @@ export class HsLayerManagerService {
     );
     if (translation) {
       return this.sanitizer.bypassSecurityTrustHtml(translation);
-    } else {
-      return '';
     }
+    return '';
   }
 }

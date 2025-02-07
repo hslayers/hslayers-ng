@@ -90,9 +90,11 @@ export class HsLayerManagerLoadingProgressService {
   private determineLayerType(olLayer: Layer) {
     if (this.hsLayerUtilsService.isLayerVectorLayer(olLayer, false)) {
       return 'features';
-    } else if (this.hsUtilsService.instOf(olLayer, ImageLayer)) {
+    }
+    if (this.hsUtilsService.instOf(olLayer, ImageLayer)) {
       return 'image';
-    } else if (this.hsUtilsService.instOf(olLayer, Tile)) {
+    }
+    if (this.hsUtilsService.instOf(olLayer, Tile)) {
       return 'tile';
     }
     return undefined;

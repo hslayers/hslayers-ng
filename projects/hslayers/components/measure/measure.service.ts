@@ -38,7 +38,6 @@ export class HsMeasureService {
 
   /**
    * Enable/disable multiple shape mode for measuring (switch without parameter)
-   * @public
    * @param mode - Optional parameter if multiple shape mode should be enabled
    */
   switchMultipleMode(mode?: boolean): void {
@@ -69,7 +68,6 @@ export class HsMeasureService {
 
   /**
    * Change geometry type of measurement without deleting of old ones
-   * @public
    * @param type - Geometry type of measurement ('area' for polygon, 'line' for linestring)
    */
   changeMeasureParams(type: string): void {
@@ -80,7 +78,6 @@ export class HsMeasureService {
 
   /**
    * Clear all measurements and restart measuring
-   * @public
    */
   clearMeasurement(): void {
     this.draw.setActive(false);
@@ -92,7 +89,6 @@ export class HsMeasureService {
 
   /**
    * Start measuring interaction in app
-   * @public
    */
   activateMeasuring(type: string): void {
     if (this.measuringActivated) {
@@ -122,7 +118,6 @@ export class HsMeasureService {
 
   /**
    * Stop measuring interaction in app
-   * @public
    */
   deactivateMeasuring(): void {
     this.hsMapService.loaded().then((map) => {

@@ -120,7 +120,6 @@ export class HsCompositionsListItemComponent {
 
   /**
    * @param record - Composition selected for sharing
-   * @param url -
    */
   shareDialogBootstrap(record: HsMapCompositionDescriptor, url: string): void {
     this.hsDialogContainerService.create(HsCompositionsShareDialogComponent, {

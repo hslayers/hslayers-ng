@@ -42,9 +42,8 @@ export class HsMapSwipeComponent extends HsPanelBaseComponent {
   getEnabledButtonString(): string {
     if (this.hsMapSwipeService.swipeControlActive) {
       return 'MAP_SWIPE.disableSwipe';
-    } else {
-      return 'MAP_SWIPE.enableSwipe';
     }
+    return 'MAP_SWIPE.enableSwipe';
   }
 
   /**
@@ -53,9 +52,8 @@ export class HsMapSwipeComponent extends HsPanelBaseComponent {
   getOrientationButtonString(): string {
     if (this.hsMapSwipeService.orientationVertical) {
       return 'MAP_SWIPE.horizontalSwipe';
-    } else {
-      return 'MAP_SWIPE.verticalSwipe';
     }
+    return 'MAP_SWIPE.verticalSwipe';
   }
 
   /**

@@ -6,20 +6,18 @@ import {Geometry} from 'ol/geom';
 import {Observable, Subject, lastValueFrom} from 'rxjs';
 
 import {DuplicateHandling, HsMapService} from 'hslayers-ng/services/map';
-import {HS_PRMS} from 'hslayers-ng/services/share';
+import {HS_PRMS, HsShareUrlService} from 'hslayers-ng/services/share';
 import {HsCommonEndpointsService} from 'hslayers-ng/services/endpoints';
 import {HsCompositionsLaymanService} from './endpoints/compositions-layman.service';
 import {HsCompositionsMapService} from './compositions-map.service';
 import {HsCompositionsMickaService} from './endpoints/compositions-micka.service';
 import {HsCompositionsParserService} from 'hslayers-ng/services/compositions';
 import {HsConfig} from 'hslayers-ng/config';
-import {HsEndpoint} from 'hslayers-ng/types';
+import {HsEndpoint, HsMapCompositionDescriptor} from 'hslayers-ng/types';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsLanguageService} from 'hslayers-ng/services/language';
 import {HsLayerManagerService} from 'hslayers-ng/services/layer-manager';
 import {HsLogService} from 'hslayers-ng/services/log';
-import {HsMapCompositionDescriptor} from 'hslayers-ng/types';
-import {HsShareUrlService} from 'hslayers-ng/services/share';
 import {HsToastService} from 'hslayers-ng/common/toast';
 import {HsUtilsService} from 'hslayers-ng/services/utils';
 
@@ -291,18 +289,17 @@ export class HsCompositionsService {
       return record.serviceType == 'CSW'
         ? await this.getLaymanTemplateRecordObject(record)
         : this.getRecordLink(record);
-    } else if (recordEndpoint.type.includes('layman')) {
-      return record.url + '/file';
-    } else {
-      this.$log.warn(`Endpoint type '${recordEndpoint.type} not supported`);
-      return;
     }
+    if (recordEndpoint.type.includes('layman')) {
+      return record.url + '/file';
+    }
+    this.$log.warn(`Endpoint type '${recordEndpoint.type} not supported`);
+    return;
   }
 
   /**
    * Load composition from datasource record url
    * @param record - Datasource record selected
-
    */
   async loadCompositionParser(
     record: HsMapCompositionDescriptor,

@@ -3,8 +3,10 @@ import {Component, DestroyRef, Input, OnInit, inject} from '@angular/core';
 import {Layer} from 'ol/layer';
 import {Source} from 'ol/source';
 
-import {HsAddDataCommonFileService} from 'hslayers-ng/services/add-data';
-import {HsAddDataVectorService} from 'hslayers-ng/services/add-data';
+import {
+  HsAddDataCommonFileService,
+  HsAddDataVectorService,
+} from 'hslayers-ng/services/add-data';
 import {HsHistoryListService} from 'hslayers-ng/common/history-list';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {VectorDataObject} from 'hslayers-ng/types';

@@ -21,8 +21,10 @@ import {
 } from 'ol/source';
 import {Options as TileOptions} from 'ol/layer/BaseTile';
 
-import {HsAddDataOwsService} from 'hslayers-ng/services/add-data';
-import {HsAddDataVectorService} from 'hslayers-ng/services/add-data';
+import {
+  HsAddDataOwsService,
+  HsAddDataVectorService,
+} from 'hslayers-ng/services/add-data';
 import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
 import {HsLanguageService} from 'hslayers-ng/services/language';
 import {HsLogService} from 'hslayers-ng/services/log';
@@ -52,7 +54,6 @@ export class HsCompositionsLayerParserService {
    * Initiate creation of WFS layer through HsUrlWfsService
    * Create WFS layer from capabilities
    *
-   * @public
    * @param lyr_def - Layer definition object
    */
   async createWFSLayer(lyr_def): Promise<Layer<Source>> {
@@ -76,7 +77,6 @@ export class HsCompositionsLayerParserService {
 
   /**
    * Parse definition object to create WMTS Ol.layer  (source = ol.source.WMTS)
-   * @public
    * @param lyr_def - Layer definition object
    * @returns Ol Tile layer
    */
@@ -119,7 +119,6 @@ export class HsCompositionsLayerParserService {
 
   /**
    * Parse definition object to create WMS Ol.layer  (source = ol.source.ImageWMS / ol.source.TileWMS)
-   * @public
    * @param lyr_def - Layer definition object
    * @returns Ol Image or Tile layer
    */
@@ -171,7 +170,6 @@ export class HsCompositionsLayerParserService {
 
   /**
    * Parse definition object to create ArcGIS Ol.layer  (source = ol.source.ImageArcGISRest / ol.source.TileArcGISRest)
-   * @public
    * @param lyr_def - Layer definition object
    * @returns Ol Image or Tile layer
    */
@@ -199,7 +197,6 @@ export class HsCompositionsLayerParserService {
 
   /**
    * Parse definition object to create XYZ Ol.layer
-   * @public
    * @param lyr_def - Layer definition object
    * @returns Ol Image or Tile layer
    */
@@ -247,7 +244,6 @@ export class HsCompositionsLayerParserService {
 
   /**
    * Parse definition object to create ImageStatic Ol.layer
-   * @public
    * @param lyr_def - Layer definition object
    * @returns OL Image or Tile layer
    */
@@ -289,7 +285,6 @@ export class HsCompositionsLayerParserService {
 
   /**
    * Parse definition object to create Sparql layer
-   * @public
    * @param lyr_def - Layer definition object
    */
   async createSparqlLayer(
@@ -328,7 +323,6 @@ export class HsCompositionsLayerParserService {
 
   /**
    * Get layer legends
-   * @public
    * @param lyr_def - Layer definition object
    */
   getLegends(lyr_def): string[] {
@@ -340,7 +334,6 @@ export class HsCompositionsLayerParserService {
 
   /**
    * Parse definition object to create Vector layer (classic Ol.vector, KML, GeoJSON, WFS, Sparql)
-   * @public
    * @param lyr_def - Layer definition object
    * @returns Either valid vector layer or function for creation of other supported vector file types)
    */

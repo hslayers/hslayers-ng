@@ -3,24 +3,28 @@ import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 
-import {AccessRightsModel} from 'hslayers-ng/types';
-import {CompoData} from 'hslayers-ng/types';
+import {
+  AccessRightsModel,
+  CompoData,
+  HsEndpoint,
+  LaymanCompositionDescriptor,
+  MapComposition,
+  StatusData,
+  UserData,
+} from 'hslayers-ng/types';
 import {HsCompositionsParserService} from 'hslayers-ng/services/compositions';
 import {HsConfig} from 'hslayers-ng/config';
-import {HsEndpoint} from 'hslayers-ng/types';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
-import {HsLaymanService} from 'hslayers-ng/services/save-map';
+import {
+  HsLaymanService,
+  HsSaveMapService,
+  HsSaverService,
+} from 'hslayers-ng/services/save-map';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsLogService} from 'hslayers-ng/services/log';
 import {HsMapService} from 'hslayers-ng/services/map';
-import {HsSaveMapService} from 'hslayers-ng/services/save-map';
-import {HsSaverService} from 'hslayers-ng/services/save-map';
 import {HsShareService} from 'hslayers-ng/components/share';
 import {HsUtilsService} from 'hslayers-ng/services/utils';
-import {LaymanCompositionDescriptor} from 'hslayers-ng/types';
-import {MapComposition} from 'hslayers-ng/types';
-import {StatusData} from 'hslayers-ng/types';
-import {UserData} from 'hslayers-ng/types';
 
 export class HsSaveMapManagerParams {
   statusData: StatusData = {

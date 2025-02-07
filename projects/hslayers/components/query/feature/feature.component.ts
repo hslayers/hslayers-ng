@@ -10,13 +10,12 @@ import {Geometry} from 'ol/geom';
 import {Layer} from 'ol/layer';
 
 import {HsDownloadModule} from 'hslayers-ng/common/download';
-import {HsFeatureCommonService} from '../feature-common.service';
+import {HsFeatureCommonService, exportFormats} from '../feature-common.service';
 import {HsLayerUtilsService} from 'hslayers-ng/services/utils';
 import {HsMapService} from 'hslayers-ng/services/map';
 import {HsQueryAttributeRowComponent} from '../attribute-row/attribute-row.component';
 import {HsQueryVectorService} from 'hslayers-ng/services/query';
 import {TranslateCustomPipe} from 'hslayers-ng/services/language';
-import {exportFormats} from '../feature-common.service';
 import {getTitle} from 'hslayers-ng/common/extensions';
 
 @Component({

@@ -49,13 +49,11 @@ export class HsShareUrlServiceMock {
     const key = Object.keys(HS_PRMS).find((k) => HS_PRMS[k] == param);
     if (tmp[param]) {
       return tmp[param];
-    } else {
-      if (tmp[param] == undefined && HS_PRMS_BACKWARDS[key] != undefined) {
-        return this.getParamValue(HS_PRMS_BACKWARDS[key]);
-      } else {
-        return;
-      }
     }
+    if (tmp[param] == undefined && HS_PRMS_BACKWARDS[key] != undefined) {
+      return this.getParamValue(HS_PRMS_BACKWARDS[key]);
+    }
+    return;
   }
 
   getParamValues(keys: string[]): any {

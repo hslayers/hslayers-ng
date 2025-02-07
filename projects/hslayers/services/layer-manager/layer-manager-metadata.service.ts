@@ -5,8 +5,18 @@ import {Source} from 'ol/source';
 import {WMSCapabilities, WMTSCapabilities} from 'ol/format';
 import {get as getProjection, transformExtent} from 'ol/proj';
 
-import {Attribution, MetadataUrl} from 'hslayers-ng/types';
-import {HsAddDataUrlService} from 'hslayers-ng/services/add-data';
+import {
+  Attribution,
+  MetadataUrl,
+  HsLayerDescriptor,
+  HsWmsLayer,
+  WMSGetCapabilitiesResponse,
+  WmsDimension,
+} from 'hslayers-ng/types';
+import {
+  HsAddDataUrlService,
+  HsUrlWmsService,
+} from 'hslayers-ng/services/add-data';
 import {
   HsArcgisGetCapabilitiesService,
   HsDimensionTimeService,
@@ -14,16 +24,9 @@ import {
   HsWmsGetCapabilitiesService,
   HsWmtsGetCapabilitiesService,
 } from 'hslayers-ng/services/get-capabilities';
-import {
-  HsLayerDescriptor,
-  HsWmsLayer,
-  WMSGetCapabilitiesResponse,
-  WmsDimension,
-} from 'hslayers-ng/types';
 import {HsLayerUtilsService} from 'hslayers-ng/services/utils';
 import {HsLogService} from 'hslayers-ng/services/log';
 import {HsMapService} from 'hslayers-ng/services/map';
-import {HsUrlWmsService} from 'hslayers-ng/services/add-data';
 import {
   getAttribution,
   getCachedCapabilities,
@@ -72,7 +75,8 @@ export class HsLayerManagerMetadataService {
     // NOTE: We are parsing also a top-most layer of the WMS Service, as it is implementation-wise simpler
     if (layerName == currentLayer.Name || serviceLayer) {
       return serviceLayer ? this.getParsedLayers(currentLayer) : currentLayer;
-    } else if (Array.isArray(currentLayer.Layer)) {
+    }
+    if (Array.isArray(currentLayer.Layer)) {
       for (const subLayer of currentLayer.Layer) {
         const found = this.identifyLayerObject(layerName, subLayer);
         if (found) {
@@ -125,9 +129,8 @@ export class HsLayerManagerMetadataService {
   hasMetadata(layer: HsLayerDescriptor): boolean {
     if (!layer) {
       return false;
-    } else {
-      return layer && getMetadata(layer.layer)?.urls ? true : false;
     }
+    return layer && getMetadata(layer.layer)?.urls ? true : false;
   }
 
   /**
@@ -431,9 +434,8 @@ export class HsLayerManagerMetadataService {
       const wrapper = await this.HsArcgisGetCapabilitiesService.request(url);
       if (wrapper.error) {
         return wrapper.response;
-      } else {
-        this.parseArcGisCaps(layerDescriptor, wrapper.response);
       }
+      this.parseArcGisCaps(layerDescriptor, wrapper.response);
     }
     //WMS
     else if (this.HsLayerUtilsService.isLayerWMS(layer)) {
@@ -478,17 +480,16 @@ export class HsLayerManagerMetadataService {
       const wrapper = await this.HsWmtsGetCapabilitiesService.request(url);
       if (wrapper.error) {
         return wrapper.response;
-      } else {
-        const parser = new WMTSCapabilities();
-        const caps = parser.read(wrapper.response);
-        layer.setProperties(caps);
-        if (!getAttribution(layer)?.locked) {
-          setAttribution(layer, {
-            onlineResource: caps.ServiceProvider.ProviderSite,
-          });
-        }
-        return true;
       }
+      const parser = new WMTSCapabilities();
+      const caps = parser.read(wrapper.response);
+      layer.setProperties(caps);
+      if (!getAttribution(layer)?.locked) {
+        setAttribution(layer, {
+          onlineResource: caps.ServiceProvider.ProviderSite,
+        });
+      }
+      return true;
     }
     //WFS and vector
     else if (this.HsLayerUtilsService.isLayerVectorLayer(layer)) {
@@ -496,20 +497,19 @@ export class HsLayerManagerMetadataService {
         const wrapper = await this.HsWfsGetCapabilitiesService.request(url);
         if (wrapper.error) {
           return wrapper.response;
-        } else {
-          const parser = new DOMParser();
-          const caps = parser.parseFromString(
-            wrapper.response.data,
-            'application/xml',
-          );
-          const el = caps.getElementsByTagNameNS('*', 'ProviderSite');
-          if (!getAttribution(layer)?.locked) {
-            setAttribution(layer, {
-              onlineResource: el[0].getAttribute('xlink:href'),
-            });
-          }
-          return true;
         }
+        const parser = new DOMParser();
+        const caps = parser.parseFromString(
+          wrapper.response.data,
+          'application/xml',
+        );
+        const el = caps.getElementsByTagNameNS('*', 'ProviderSite');
+        if (!getAttribution(layer)?.locked) {
+          setAttribution(layer, {
+            onlineResource: el[0].getAttribute('xlink:href'),
+          });
+        }
+        return true;
       }
     }
   }
@@ -600,24 +600,24 @@ export class HsLayerManagerMetadataService {
           return {Title: l.name, Name: l.id};
         }),
       };
-    } else {
-      const found = caps.layers.find((l) => l.id == layerId);
-      if (found) {
-        const tmp = {
-          Title: found.name,
-          Name: found.id,
-          Layer: caps.layers
-            .filter((l) => l.parentLayerId == layerId)
-            .map((l) => {
-              return {Title: l.name, Name: l.id};
-            }),
-        };
-        if (tmp.Layer.length == 0) {
-          delete tmp.Layer;
-        }
-        return tmp;
-      }
     }
+    const found = caps.layers.find((l) => l.id == layerId);
+    if (found) {
+      const tmp = {
+        Title: found.name,
+        Name: found.id,
+        Layer: caps.layers
+          .filter((l) => l.parentLayerId == layerId)
+          .map((l) => {
+            return {Title: l.name, Name: l.id};
+          }),
+      };
+      if (tmp.Layer.length == 0) {
+        delete tmp.Layer;
+      }
+      return tmp;
+    }
+
     return null;
   }
 

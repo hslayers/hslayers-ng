@@ -1,8 +1,10 @@
 import {Component} from '@angular/core';
 
-import {HsAddDataCommonService} from 'hslayers-ng/services/add-data';
-import {HsAddDataOwsService} from 'hslayers-ng/services/add-data';
-import {HsUrlWmsService} from 'hslayers-ng/services/add-data';
+import {
+  HsAddDataCommonService,
+  HsAddDataOwsService,
+  HsUrlWmsService,
+} from 'hslayers-ng/services/add-data';
 
 @Component({
   selector: 'hs-url-wms',

@@ -1,4 +1,4 @@
-import {AsyncPipe, NgClass, NgStyle} from '@angular/common';
+import {AsyncPipe, NgClass} from '@angular/common';
 import {
   Component,
   DestroyRef,
@@ -30,10 +30,9 @@ import {
   tap,
 } from 'rxjs';
 import {Vector as VectorSource} from 'ol/source';
-import {WfsFeatureAttribute} from 'hslayers-ng/types';
+import {WfsFeatureAttribute, Filter} from 'hslayers-ng/types';
 
 import {CombinationOperator, ComparisonOperator} from 'geostyler-style';
-import {Filter} from 'hslayers-ng/types';
 import {FilterRangeInputComponent} from '../filter-range-input/filter-range-input.component';
 import {HsAttributeSelectorComponent} from './attribute-selector/attribute-selector.component';
 import {HsFiltersService} from '../filters.service';
@@ -56,7 +55,6 @@ interface FilterWithArgs {
 @Component({
   imports: [
     NgClass,
-    NgStyle,
     ReactiveFormsModule,
     FormsModule,
     TranslateCustomPipe,

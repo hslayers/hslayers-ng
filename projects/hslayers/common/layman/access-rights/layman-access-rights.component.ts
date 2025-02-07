@@ -2,9 +2,8 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable, catchError, lastValueFrom, map, of, switchMap} from 'rxjs';
 
-import {AccessRightsModel} from 'hslayers-ng/types';
+import {AccessRightsModel, HsEndpoint} from 'hslayers-ng/types';
 import {HsCommonLaymanService} from '../layman.service';
-import {HsEndpoint} from 'hslayers-ng/types';
 import {HsLogService} from 'hslayers-ng/services/log';
 import {LaymanUser} from '../types/layman-user.type';
 
@@ -470,10 +469,10 @@ export class HsCommonLaymanAccessRightsComponent implements OnInit {
   getDisplayName(user: any): string {
     if (user.given_name && user.family_name) {
       return user.given_name + ' ' + user.family_name;
-    } else if (user.screen_name) {
-      return user.screen_name;
-    } else {
-      return user.username;
     }
+    if (user.screen_name) {
+      return user.screen_name;
+    }
+    return user.username;
   }
 }
