@@ -16,9 +16,11 @@ import {
   HsPanelBaseComponent,
   HsPanelHeaderComponent,
 } from 'hslayers-ng/common/panels';
-import {HsQueryBaseService} from 'hslayers-ng/services/query';
+import {
+  HsQueryBaseService,
+  HsQueryVectorService,
+} from 'hslayers-ng/services/query';
 import {HsQueryDefaultInfoPanelBodyComponent} from './default-info-panel-body/default-info-panel-body.component';
-import {HsQueryVectorService} from 'hslayers-ng/services/query';
 import {HsQueryWmsService} from './query-wms.service';
 import {QUERY_INFO_PANEL} from './query.tokens';
 import {TranslateCustomPipe} from 'hslayers-ng/services/language';

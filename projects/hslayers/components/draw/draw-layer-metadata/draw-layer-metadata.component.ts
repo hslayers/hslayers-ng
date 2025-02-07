@@ -3,8 +3,10 @@ import {FormsModule} from '@angular/forms';
 import {NgClass} from '@angular/common';
 
 import {AccessRightsModel} from 'hslayers-ng/types';
-import {HsDialogComponent} from 'hslayers-ng/common/dialogs';
-import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
+import {
+  HsDialogComponent,
+  HsDialogContainerService,
+} from 'hslayers-ng/common/dialogs';
 import {HsDrawService} from 'hslayers-ng/services/draw';
 import {
   HsLaymanModule,

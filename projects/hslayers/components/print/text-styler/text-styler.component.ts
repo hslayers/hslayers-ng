@@ -1,4 +1,4 @@
-import {AsyncPipe, NgClass, NgStyle} from '@angular/common';
+import {NgStyle} from '@angular/common';
 import {Component, Input} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 
@@ -6,11 +6,13 @@ import {ColorEvent} from 'ngx-color';
 
 import {ColorSketchModule} from 'ngx-color/sketch';
 import {HsColorPickerService} from 'hslayers-ng/components/styler';
-import {HsLanguageService} from 'hslayers-ng/services/language';
+import {
+  HsLanguageService,
+  TranslateCustomPipe,
+} from 'hslayers-ng/services/language';
 import {POSITION_OPTIONS} from '../constants/position-options';
 import {TEXT_STYLING_OPTIONS} from '../constants/text-styling-options';
 import {TextStyle} from '../types/text-style.type';
-import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 
 export enum ColorPickers {
   Fill = 'fill',
@@ -19,14 +21,7 @@ export enum ColorPickers {
 @Component({
   selector: 'hs-print-text-styler',
   templateUrl: './text-styler.component.html',
-  imports: [
-    NgStyle,
-    NgClass,
-    AsyncPipe,
-    FormsModule,
-    TranslateCustomPipe,
-    ColorSketchModule,
-  ],
+  imports: [NgStyle, FormsModule, TranslateCustomPipe, ColorSketchModule],
 })
 export class HsPrintTextStylerComponent {
   @Input() textStyle: TextStyle;

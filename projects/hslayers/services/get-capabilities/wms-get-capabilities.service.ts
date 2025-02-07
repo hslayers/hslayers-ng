@@ -6,16 +6,14 @@ import {Source, TileWMS} from 'ol/source';
 import {WMSCapabilities} from 'ol/format';
 import {lastValueFrom, takeUntil} from 'rxjs';
 
-import {CapabilitiesResponseWrapper} from 'hslayers-ng/types';
+import {CapabilitiesResponseWrapper, Metadata} from 'hslayers-ng/types';
 import {HsCapabilityCacheService} from './capability-cache.service';
-import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
+import {HsCommonLaymanService, isLaymanUrl} from 'hslayers-ng/common/layman';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsMapService} from 'hslayers-ng/services/map';
 import {HsUtilsService} from 'hslayers-ng/services/utils';
 import {IGetCapabilities} from './get-capabilities.interface';
-import {Metadata} from 'hslayers-ng/types';
 import {getPreferredFormat} from 'hslayers-ng/common/utils';
-import {isLaymanUrl} from 'hslayers-ng/common/layman';
 
 @Injectable({providedIn: 'root'})
 export class HsWmsGetCapabilitiesService implements IGetCapabilities {
@@ -37,9 +35,8 @@ export class HsWmsGetCapabilitiesService implements IGetCapabilities {
   getPathFromUrl(str: string): string {
     if (str.indexOf('?') > -1) {
       return str.substring(0, str.indexOf('?'));
-    } else {
-      return str;
     }
+    return str;
   }
 
   /**

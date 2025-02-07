@@ -6,9 +6,11 @@ import {Vector as VectorLayer} from 'ol/layer';
 import {Vector as VectorSource} from 'ol/source';
 
 import {HsLanguageService} from 'hslayers-ng/services/language';
-import {HsLegendDescriptor} from 'hslayers-ng/components/legend';
-import {HsLegendLayerStaticService} from 'hslayers-ng/components/legend';
-import {HsLegendService} from 'hslayers-ng/components/legend';
+import {
+  HsLegendDescriptor,
+  HsLegendLayerStaticService,
+  HsLegendService,
+} from 'hslayers-ng/components/legend';
 import {HsMapService} from 'hslayers-ng/services/map';
 import {HsShareThumbnailService} from 'hslayers-ng/services/share';
 import {LegendObj} from './types/legend-object.type';

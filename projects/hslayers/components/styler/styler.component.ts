@@ -5,20 +5,17 @@ import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 
 import colorScales from 'colormap/colorScale';
 import {Feature} from 'ol';
-import {Layer} from 'ol/layer';
+import {Layer, Vector as VectorLayer} from 'ol/layer';
 import {Source, Vector as VectorSource} from 'ol/source';
-
-import {Vector as VectorLayer} from 'ol/layer';
 
 import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
-import {HsLayerUtilsService} from 'hslayers-ng/services/utils';
+import {HsLayerUtilsService, HsUtilsService} from 'hslayers-ng/services/utils';
 import {HsPanelBaseComponent} from 'hslayers-ng/common/panels';
 import {HsSaveMapService} from 'hslayers-ng/services/save-map';
 import {HsStylerEditDialogComponent} from './edit-dialog/edit-dialog.component';
 import {HsStylerService} from 'hslayers-ng/services/styler';
 import {HsUploadedFiles} from 'hslayers-ng/common/upload';
-import {HsUtilsService} from 'hslayers-ng/services/utils';
 
 @Component({
   selector: 'hs-styles',
@@ -72,7 +69,8 @@ export class HsStylerComponent extends HsPanelBaseComponent {
       const confirmed = await dialog.waitResult();
       if (confirmed == 'no') {
         return;
-      } else if (confirmed == 'yes') {
+      }
+      if (confirmed == 'yes') {
         this.hsStylerService.setSldQml();
       }
     }

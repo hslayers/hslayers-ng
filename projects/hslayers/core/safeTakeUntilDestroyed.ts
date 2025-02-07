@@ -1,6 +1,5 @@
 import {DestroyRef} from '@angular/core';
-import {EMPTY, NEVER, pipe, takeUntil} from 'rxjs';
-import {MonoTypeOperatorFunction} from 'rxjs';
+import {EMPTY, NEVER, pipe, takeUntil, MonoTypeOperatorFunction} from 'rxjs';
 import {catchError, defaultIfEmpty} from 'rxjs/operators';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 

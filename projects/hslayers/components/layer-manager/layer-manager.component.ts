@@ -319,12 +319,11 @@ export class HsLayerManagerComponent
       return this.hsLayerManagerService.data.baselayers.filter(
         (layer) => r.test(layer.title) && layer.showInLayerManager,
       ) as HsLayerDescriptor[];
-    } else {
-      // Filter and cast to HsTerrainLayerDescriptor[]
-      return this.hsLayerManagerService.data.terrainLayers.filter((layer) =>
-        r.test(layer.title),
-      ) as HsTerrainLayerDescriptor[];
     }
+    // Filter and cast to HsTerrainLayerDescriptor[]
+    return this.hsLayerManagerService.data.terrainLayers.filter((layer) =>
+      r.test(layer.title),
+    ) as HsTerrainLayerDescriptor[];
   }
 
   toggleVisibilityForAll(): void {
@@ -381,9 +380,8 @@ export class HsLayerManagerComponent
   hasCopyright(layer: HsLayerDescriptor): boolean | undefined {
     if (!this.hsLayerSelectorService.currentLayer) {
       return;
-    } else {
-      return getAttribution(layer.layer)?.onlineResource != undefined;
     }
+    return getAttribution(layer.layer)?.onlineResource != undefined;
   }
 
   /**

@@ -133,12 +133,11 @@ export class SwipeControl extends Control {
       : this.leftLayers.find((l) => l.layer == lyr.layer);
     if (!found) {
       return -1;
-    } else {
-      const index = right
-        ? this.rightLayers.indexOf(found)
-        : this.leftLayers.indexOf(found);
-      return index;
     }
+    const index = right
+      ? this.rightLayers.indexOf(found)
+      : this.leftLayers.indexOf(found);
+    return index;
   }
 
   /**

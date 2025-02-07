@@ -327,9 +327,8 @@ export class HsMapSwipeService {
       }
       if (existingFilter != undefined) {
         return existingFilter(map, layer, pixel) && swipeFilter;
-      } else {
-        return swipeFilter;
       }
+      return swipeFilter;
     };
     setQueryFilter(layerItem.layer, filter);
   }

@@ -11,8 +11,10 @@ import {
 import {SymbolizerKind} from 'geostyler-style';
 
 import {HsLayerSelectorService} from 'hslayers-ng/services/layer-manager';
-import {HsStylerPartBaseComponent} from 'hslayers-ng/services/styler';
-import {HsStylerService} from 'hslayers-ng/services/styler';
+import {
+  HsStylerPartBaseComponent,
+  HsStylerService,
+} from 'hslayers-ng/services/styler';
 import {Kinds} from '../symbolizers/symbolizer-kind.enum';
 
 @Component({

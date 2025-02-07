@@ -9,7 +9,6 @@ export class HsLayoutParams {
   /**
    * Storage of default main panel.
    * This panel is opened during initialization of app and also when other panel than default is closed.
-   * @public
    * @default ''
    */
   defaultPanel: string;
@@ -19,45 +18,38 @@ export class HsLayoutParams {
   panel_statuses: any;
   /**
    * DEPRECATED?
-   * @public
    */
   panel_enabled: any;
   /**
    * Side on which sidebar will be shown (true = right side of map, false = left side of map)
-   * @public
    * @default true
    */
   sidebarRight: boolean;
   /**
    * Whether to display labels of sidebar buttons or not.
    * Used in CSS classes assertion on hs-panelspace.
-   * @public
    * @default true
    */
   sidebarLabels: boolean;
   /**
    * Enable sidebar function to open/close sidebar (if false sidebar panel cannot be opened/closed through GUI)
-   * @public
    * @default true
    */
   sidebarToggleable: boolean;
   /**
    * Show if any sidebar panel is opened (sidebar is completely expanded).
    * When hs.sidebar module is used in the app, it changes automatically to true during initialization.
-   * @public
    * @default false
    */
   sidebarExpanded: boolean;
   /**
    * Show if minisidebar panel is visible in sidebar, allows sidebar to be visible in panelspace
-   * @public
    * @default false
    */
   initializedOnce: boolean;
   /**
    * Whether the app has been initialized already once.
    * Need this to not add panels twice when NgRouter is used
-   * @public
    * @default false
    */
   minisidebar: boolean;
@@ -219,7 +211,6 @@ export class HsLayoutService extends HsLayoutParams {
   /**
    * Close opened panel programmatically.
    * If sidebar toolbar is used in the app, sidebar stays expanded with sidebar labels.
-   * @public
    */
   hidePanels() {
     this.sidebarLabels = true;
@@ -230,7 +221,6 @@ export class HsLayoutService extends HsLayoutParams {
    * Get or set panel visibility in sidebar.
    * When panel is disabled it means that it's not displayed in sidebar (it can be opened programmatically) but its functionality is running.
    * Use with status parameter as setter.
-   * @public
    * @param which - Selected panel (panel name)
    * @param status - Visibility status of panel to set
    * @returns Panel enabled/disabled status for getter function
@@ -239,12 +229,10 @@ export class HsLayoutService extends HsLayoutParams {
     if (status === undefined) {
       if (this.panel_enabled[which] != undefined) {
         return this.panel_enabled[which];
-      } else {
-        return true;
       }
-    } else {
-      this.panel_enabled[which] = status;
+      return true;
     }
+    this.panel_enabled[which] = status;
   }
 
   /**
@@ -263,7 +251,6 @@ export class HsLayoutService extends HsLayoutParams {
   /**
    * Sets new main panel (Panel displayed in expanded sidebar).
    * Change GUI and queryable status of map (when queryable and with hs.query component in the app, the map does info query on map click).
-   * @public
    * @param which - New panel to activate (panel name)
    * @param byGui - Whether function call came as result of GUI action
    */

@@ -4,10 +4,11 @@ import {
   Component,
   Signal,
   inject,
+  computed,
+  signal,
 } from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {HttpClient} from '@angular/common/http';
-import {computed, signal} from '@angular/core';
 import {takeUntilDestroyed, toSignal} from '@angular/core/rxjs-interop';
 
 import * as olFormatFilter from 'ol/format/filter';
@@ -244,10 +245,9 @@ export class HsWfsFilterComponent extends HsPanelBaseComponent {
       );
 
       return {attributes, geometryAttribute};
-    } else {
-      console.warn('No feature type found in the XML response');
-      return {attributes: [], geometryAttribute: null};
     }
+    console.warn('No feature type found in the XML response');
+    return {attributes: [], geometryAttribute: null};
   }
 
   /**

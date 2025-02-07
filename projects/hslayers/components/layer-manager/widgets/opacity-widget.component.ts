@@ -20,7 +20,6 @@ export class HsOpacityWidgetComponent extends HsLayerEditorWidgetBaseComponent {
 
   /**
    * Set selected layer's opacity and emits "compositionchanged"
-   * @param newValue
    */
   set opacity(newValue) {
     if (!this.layerDescriptor) {

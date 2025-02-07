@@ -12,8 +12,10 @@ import {
 import {Observable, filter, map, startWith} from 'rxjs';
 import {takeUntilDestroyed, toObservable} from '@angular/core/rxjs-interop';
 
-import {HsDialogComponent} from 'hslayers-ng/common/dialogs';
-import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
+import {
+  HsDialogComponent,
+  HsDialogContainerService,
+} from 'hslayers-ng/common/dialogs';
 import {HsLayerDescriptor} from 'hslayers-ng/types';
 import {HsLayerEditorService} from '../editor/layer-editor.service';
 import {HsLayerManagerService} from 'hslayers-ng/services/layer-manager';

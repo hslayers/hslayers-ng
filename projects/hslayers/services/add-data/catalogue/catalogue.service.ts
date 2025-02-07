@@ -4,23 +4,25 @@ import {Feature} from 'ol';
 import {Geometry} from 'ol/geom';
 import {Observable, Subject, debounceTime, forkJoin} from 'rxjs';
 
-import {DatasetType} from 'hslayers-ng/types';
+import {
+  DatasetType,
+  HsAddDataLayerDescriptor,
+  HsEndpoint,
+  WhatToAddDescriptor,
+} from 'hslayers-ng/types';
 import {HsAddDataCatalogueMapService} from './catalogue-map.service';
-import {HsAddDataLayerDescriptor} from 'hslayers-ng/types';
 import {HsAddDataOwsService} from '../url/add-data-ows.service';
 import {HsAddDataService} from '../add-data.service';
 import {HsAddDataVectorService} from '../vector/vector.service';
 import {HsCommonEndpointsService} from 'hslayers-ng/services/endpoints';
 import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
 import {HsConfig} from 'hslayers-ng/config';
-import {HsEndpoint} from 'hslayers-ng/types';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsLaymanBrowserService} from './layman.service';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsMapService} from 'hslayers-ng/services/map';
 import {HsMickaBrowserService} from './micka.service';
 import {HsUtilsService} from 'hslayers-ng/services/utils';
-import {WhatToAddDescriptor} from 'hslayers-ng/types';
 
 class HsAddDataCatalogueParams {
   data: any = {
@@ -142,7 +144,6 @@ export class HsAddDataCatalogueService extends HsAddDataCatalogueParams {
 
   /**
    * Queries all configured catalogs for datasources (layers)
-   * @param suspendLimitCalculation
    */
   queryCatalogs(suspendLimitCalculation?: boolean): void {
     if (this.endpoints.length > 0) {

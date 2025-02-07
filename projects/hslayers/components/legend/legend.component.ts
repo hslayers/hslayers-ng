@@ -7,13 +7,12 @@ import {Map} from 'ol';
 import {Source} from 'ol/source';
 
 import {HsLanguageService} from 'hslayers-ng/services/language';
-import {HsLayerUtilsService} from 'hslayers-ng/services/utils';
+import {HsLayerUtilsService, HsUtilsService} from 'hslayers-ng/services/utils';
 import {HsLegendDescriptor} from './legend-descriptor.interface';
 import {HsLegendService} from './legend.service';
 import {HsMapService} from 'hslayers-ng/services/map';
 import {HsPanelBaseComponent} from 'hslayers-ng/common/panels';
 import {HsQueuesService} from 'hslayers-ng/services/queues';
-import {HsUtilsService} from 'hslayers-ng/services/utils';
 import {InterpolatedSource} from 'hslayers-ng/common/layers';
 
 @Component({
@@ -175,9 +174,6 @@ export class HsLegendComponent extends HsPanelBaseComponent implements OnInit {
     return this.layerDescriptors.find((ld) => ld.lyr == layer);
   }
 
-  /**
-   * @param source -
-   */
   findLayerDescriptorBySource(source: Source): any {
     const found = this.layerDescriptors.filter(
       (ld) => ld.lyr.getSource() == source,

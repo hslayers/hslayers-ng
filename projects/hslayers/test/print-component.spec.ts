@@ -14,17 +14,21 @@ import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsEventBusServiceMock} from './event-bus.service.mock';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsLayoutServiceMock} from './layout.service.mock';
-import {HsPanelHeaderComponent} from 'hslayers-ng/common/panels';
-import {HsPanelHelpersModule} from 'hslayers-ng/common/panels';
-import {HsPrintComponent} from 'hslayers-ng/components/print';
-import {HsPrintImprintStylerComponent} from 'hslayers-ng/components/print';
-import {HsPrintLegendService} from 'hslayers-ng/components/print';
+import {
+  HsPanelHeaderComponent,
+  HsPanelHelpersModule,
+} from 'hslayers-ng/common/panels';
+import {
+  HsPrintComponent,
+  HsPrintImprintStylerComponent,
+  HsPrintLegendService,
+  HsPrintLegendStylerComponent,
+  HsPrintScaleService,
+  HsPrintScaleStylerComponent,
+  HsPrintService,
+  HsPrintTextStylerComponent,
+} from 'hslayers-ng/components/print';
 import {HsPrintLegendServiceMock} from './print-legend.service.mock';
-import {HsPrintLegendStylerComponent} from 'hslayers-ng/components/print';
-import {HsPrintScaleService} from 'hslayers-ng/components/print';
-import {HsPrintScaleStylerComponent} from 'hslayers-ng/components/print';
-import {HsPrintService} from 'hslayers-ng/components/print';
-import {HsPrintTextStylerComponent} from 'hslayers-ng/components/print';
 import {HsSidebarService} from 'hslayers-ng/services/sidebar';
 import {HsUtilsService} from 'hslayers-ng/services/utils';
 import {HsUtilsServiceMock} from './utils/utils.service.mock';

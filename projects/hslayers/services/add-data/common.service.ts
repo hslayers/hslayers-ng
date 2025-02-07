@@ -164,9 +164,6 @@ export class HsAddDataCommonService {
     return baseNameParts.join();
   }
 
-  /**
-   * @param service -
-   */
   getSublayerNames(service): string {
     if (service.Layer) {
       return service.Layer.map((l) => {
@@ -180,8 +177,7 @@ export class HsAddDataCommonService {
         }
         return tmp.join(',');
       });
-    } else {
-      return '';
     }
+    return '';
   }
 }

@@ -323,8 +323,8 @@ export class HsCesiumCameraService extends CesiumCameraServiceParams {
 
   /**
    * Calculates the distance from the ground based on resolution and latitude
-   * @param resolution -
-   * @param latitude -
+
+
    * @deprecated
    */
   calcDistanceForResolution(resolution, latitude) {

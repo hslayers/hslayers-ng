@@ -90,9 +90,8 @@ export class HsClusterWidgetComponent
     const layer = this.olLayer;
     if (!this.HsLayerEditorService.isLayerVectorLayer(layer)) {
       return;
-    } else {
-      return true;
     }
+    return true;
   }
 
   /**

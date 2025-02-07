@@ -10,8 +10,7 @@ import {
 import {BehaviorSubject} from 'rxjs';
 
 import {HsConfig} from 'hslayers-ng/config';
-import {HsDialogComponent} from 'hslayers-ng/common/dialogs';
-import {HsDialogItem} from 'hslayers-ng/common/dialogs';
+import {HsDialogComponent, HsDialogItem} from 'hslayers-ng/common/dialogs';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsMapService} from 'hslayers-ng/services/map';
 import {HsQueryPopupServiceModel} from './query-popup.service.model';

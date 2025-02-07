@@ -24,26 +24,29 @@ import {
 } from 'hslayers-ng/services/add-data';
 import {HsCommonEndpointsService} from 'hslayers-ng/services/endpoints';
 import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
-import {HsCompositionsCatalogueService} from 'hslayers-ng/components/compositions';
-import {HsCompositionsComponent} from 'hslayers-ng/components/compositions';
+import {
+  HsCompositionsCatalogueService,
+  HsCompositionsComponent,
+  HsCompositionsMapService,
+  HsCompositionsMickaService,
+  HsCompositionsService,
+} from 'hslayers-ng/components/compositions';
 import {HsCompositionsLayerParserService} from 'hslayers-ng/services/compositions';
-import {HsCompositionsMapService} from 'hslayers-ng/components/compositions';
-import {HsCompositionsMickaService} from 'hslayers-ng/components/compositions';
-import {HsCompositionsService} from 'hslayers-ng/components/compositions';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsConfigMock} from './config.service.mock';
-import {HsLayerUtilsService} from 'hslayers-ng/services/utils';
+import {HsLayerUtilsService, HsUtilsService} from 'hslayers-ng/services/utils';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsLayoutServiceMock} from './layout.service.mock';
 import {HsMapService} from 'hslayers-ng/services/map';
 import {HsMapServiceMock} from './map.service.mock';
-import {HsPanelHeaderComponent} from 'hslayers-ng/common/panels';
-import {HsPanelHelpersModule} from 'hslayers-ng/common/panels';
+import {
+  HsPanelHeaderComponent,
+  HsPanelHelpersModule,
+} from 'hslayers-ng/common/panels';
 import {HsSaveMapService} from 'hslayers-ng/services/save-map';
 import {HsSaveMapServiceMock} from './save-map.service.mock';
 import {HsStylerModule} from 'hslayers-ng/components/styler';
 import {HsStylerService} from 'hslayers-ng/services/styler';
-import {HsUtilsService} from 'hslayers-ng/services/utils';
 import {HsUtilsServiceMock} from './utils/utils.service.mock';
 import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 import {compositionJson} from './data/composition';
@@ -256,9 +259,6 @@ describe('compositions', () => {
     ).toBeDefined();
   }));
 
-  /**
-   * @param component -
-   */
   async function loadComposition(component) {
     await component.hsCompositionsParserService.loadCompositionObject(
       compositionJson,

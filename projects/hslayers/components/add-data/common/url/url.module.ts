@@ -1,7 +1,6 @@
-import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
+import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
-import {NgModule} from '@angular/core';
 
 import {EpsgPipe, TrackByPropertyPipe} from 'hslayers-ng/common/pipes';
 import {HsAddToMapButtonComponent} from 'hslayers-ng/common/add-to-map';

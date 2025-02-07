@@ -77,9 +77,8 @@ export class WebpackTranslateLoader implements TranslateLoader {
         filter((assetsPath) => !!assetsPath),
         take(1),
       );
-    } else {
-      return of(this.hsConfig.assetsPath);
     }
+    return of(this.hsConfig.assetsPath);
   }
 
   /**

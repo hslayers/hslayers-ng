@@ -12,10 +12,9 @@ import {unByKey} from 'ol/Observable';
 
 import {HsConfig} from 'hslayers-ng/config';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
-import {HsLayerUtilsService} from 'hslayers-ng/services/utils';
+import {HsLayerUtilsService, HsUtilsService} from 'hslayers-ng/services/utils';
 import {HsMapService} from 'hslayers-ng/services/map';
 import {HsStylerService} from 'hslayers-ng/services/styler';
-import {HsUtilsService} from 'hslayers-ng/services/utils';
 import {setShowInLayerManager, setTitle} from 'hslayers-ng/common/extensions';
 
 @Injectable({
@@ -47,7 +46,6 @@ export class HsSearchService {
 
   /**
    * Send geolocation request to Geolocation server (based on app config), pass response to results function
-   * @public
    * @param query - Place name or part of it
    */
   request(query: string): void {
@@ -114,7 +112,6 @@ export class HsSearchService {
 
   /**
    * Maintain inner results object and parse response with correct provider parser
-   * @public
    * @param response - Response object of Geolocation request
    * @param providerName - Name of request provider
    */
@@ -141,7 +138,6 @@ export class HsSearchService {
 
   /**
    * Remove results layer from map
-   * @public
    */
   hideResultsLayer(): void {
     this.hsMapService.getMap().removeLayer(this.searchResultsLayer);
@@ -149,7 +145,6 @@ export class HsSearchService {
 
   /**
    * Send geolocation request to Geolocation server (based on app config), pass response to results function
-   * @public
    */
   showResultsLayer(): void {
     this.hideResultsLayer();
@@ -158,7 +153,6 @@ export class HsSearchService {
 
   /**
    * Clean all search results from results variable and results layer
-   * @public
    */
   cleanResults(): void {
     if (this.providers !== undefined) {
@@ -198,7 +192,6 @@ export class HsSearchService {
 
   /**
    * Move map and zoom on selected search result
-   * @public
    * @param result - Entity of selected result
    * @param zoomLevel - Zoom level to zoom on
    */
@@ -221,7 +214,6 @@ export class HsSearchService {
 
   /**
    * Parse coordinate of selected result
-   * @public
    * @param result - Entity of selected result
    * @returns Ol.coordinate of selected result
    */
@@ -236,7 +228,8 @@ export class HsSearchService {
         'EPSG:4326',
         currentProj,
       );
-    } else if (result.provider_name == 'sdi4apps_openapi') {
+    }
+    if (result.provider_name == 'sdi4apps_openapi') {
       const g_feature = this.formatWKT.readFeature(
         result.FullGeom.toUpperCase(),
       );

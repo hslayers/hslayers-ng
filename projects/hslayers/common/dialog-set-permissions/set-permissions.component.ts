@@ -1,18 +1,23 @@
 import {Component, OnInit, ViewRef} from '@angular/core';
 
-import {AccessRightsModel, HsAddDataLayerDescriptor} from 'hslayers-ng/types';
-import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
+import {
+  AccessRightsModel,
+  HsAddDataLayerDescriptor,
+  HsEndpoint,
+  UpsertLayerObject,
+} from 'hslayers-ng/types';
+import {
+  HsCommonLaymanService,
+  HsLaymanModule,
+  PostPatchLayerResponse,
+} from 'hslayers-ng/common/layman';
 import {
   HsDialogComponent,
   HsDialogContainerService,
   HsDialogItem,
 } from 'hslayers-ng/common/dialogs';
-import {HsEndpoint} from 'hslayers-ng/types';
-import {HsLaymanModule} from 'hslayers-ng/common/layman';
 import {HsLaymanService} from 'hslayers-ng/services/save-map';
-import {PostPatchLayerResponse} from 'hslayers-ng/common/layman';
 import {TranslateCustomPipe} from 'hslayers-ng/services/language';
-import {UpsertLayerObject} from 'hslayers-ng/types';
 
 @Component({
   selector: 'hs-set-permissions-dialog',
@@ -83,7 +88,6 @@ export class HsSetPermissionsDialogComponent
   }
 
   /**
-   * @public
    * Close the dialog
    */
   close(): void {

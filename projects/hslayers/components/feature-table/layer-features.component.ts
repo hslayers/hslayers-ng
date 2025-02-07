@@ -5,9 +5,8 @@ import {Geometry} from 'ol/geom';
 
 import {HsFeatureTableService} from './feature-table.service';
 import {HsLanguageService} from 'hslayers-ng/services/language';
-import {HsLayerUtilsService} from 'hslayers-ng/services/utils';
+import {HsLayerUtilsService, HsUtilsService} from 'hslayers-ng/services/utils';
 import {HsMapService} from 'hslayers-ng/services/map';
-import {HsUtilsService} from 'hslayers-ng/services/utils';
 
 type Operation = {
   action: 'zoom to' | 'delete' | 'custom action';
@@ -79,7 +78,6 @@ export class HsLayerFeaturesComponent implements OnInit {
   /**
    * Zoom to feature from HTML table after triggering zoom action
    * @param operation - Action for HTML table
-   * @public
    */
   executeOperation(operation: Operation): void {
     switch (operation.action) {

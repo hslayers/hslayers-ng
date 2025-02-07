@@ -11,23 +11,27 @@ import {HsLaymanService} from 'hslayers-ng/services/save-map';
 import {HsLogService} from 'hslayers-ng/services/log';
 import {HsUtilsService} from 'hslayers-ng/services/utils';
 
-import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
-import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
-import {HsToastService} from 'hslayers-ng/common/toast';
-import {PostPatchLayerResponse} from 'hslayers-ng/common/layman';
 import {
+  HsCommonLaymanService,
+  PostPatchLayerResponse,
   getLaymanFriendlyLayerName,
   layerParamPendingOrStarting,
 } from 'hslayers-ng/common/layman';
+import {
+  HsDialogContainerService,
+  HsLayerOverwriteDialogComponent,
+} from 'hslayers-ng/common/dialogs';
+import {HsToastService} from 'hslayers-ng/common/toast';
 
-import {AsyncUpload} from 'hslayers-ng/types';
-import {FileDataObject} from 'hslayers-ng/types';
-import {FileFormData} from 'hslayers-ng/types';
-import {HsEndpoint} from 'hslayers-ng/types';
-import {HsLayerOverwriteDialogComponent} from 'hslayers-ng/common/dialogs';
-import {HsLaymanLayerDescriptor} from 'hslayers-ng/types';
-import {OverwriteResponse} from 'hslayers-ng/types';
-import {VectorDataObject} from 'hslayers-ng/types';
+import {
+  AsyncUpload,
+  FileDataObject,
+  FileFormData,
+  HsEndpoint,
+  HsLaymanLayerDescriptor,
+  OverwriteResponse,
+  VectorDataObject,
+} from 'hslayers-ng/types';
 
 export type errorMessageOptions = {
   message?: string;
@@ -100,12 +104,11 @@ export class HsAddDataCommonFileService extends HsAddDataCommonFileServiceParams
           return;
         }
         return true;
-      } else {
-        this.hsAddDataUrlService.addDataCapsParsingError.next(
-          response.statusText,
-        );
-        return;
       }
+      this.hsAddDataUrlService.addDataCapsParsingError.next(
+        response.statusText,
+      );
+      return;
     } catch (e) {
       this.hsAddDataUrlService.addDataCapsParsingError.next(e.message);
       return;
@@ -141,13 +144,12 @@ export class HsAddDataCommonFileService extends HsAddDataCommonFileServiceParams
         'SRSRequired',
         undefined,
       );
-    } else {
-      return this.hsLanguageService.getTranslationIgnoreNonExisting(
-        'DRAW.drawToolbar',
-        'addLayer',
-        undefined,
-      );
     }
+    return this.hsLanguageService.getTranslationIgnoreNonExisting(
+      'DRAW.drawToolbar',
+      'addLayer',
+      undefined,
+    );
   }
 
   /**
@@ -227,7 +229,6 @@ export class HsAddDataCommonFileService extends HsAddDataCommonFileServiceParams
    * @param sld - Array of sld files
    * @param access_rights - User access rights for the new layer,
    * @param overwrite - (Optional) Overwrite existing layman layer
-   * @returns
    */
   async loadNonWmsLayer(
     endpoint: HsEndpoint,
@@ -277,9 +278,8 @@ export class HsAddDataCommonFileService extends HsAddDataCommonFileServiceParams
     }
     if (!descriptor || descriptor?.name != friendlyName) {
       return false;
-    } else {
-      return true;
     }
+    return true;
   }
 
   /**
@@ -610,9 +610,8 @@ export class HsAddDataCommonFileService extends HsAddDataCommonFileServiceParams
             resolve(this.describeNewLayer(endpoint, layerName, pendingParams));
           }, 2000);
         });
-      } else {
-        return descriptor;
       }
+      return descriptor;
     } catch (ex) {
       this.hsLog.error(ex);
       throw ex;

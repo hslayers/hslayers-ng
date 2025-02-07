@@ -7,7 +7,11 @@ import {ObjectEvent} from 'ol/Object';
 import {Vector as VectorLayer} from 'ol/layer';
 import {Vector as VectorSource} from 'ol/source';
 
-import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
+import {
+  HsCommonLaymanService,
+  awaitLayerSync,
+  isLaymanUrl,
+} from 'hslayers-ng/common/layman';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsLanguageService} from 'hslayers-ng/services/language';
 import {HsLaymanService} from './layman.service';
@@ -15,7 +19,6 @@ import {HsLogService} from 'hslayers-ng/services/log';
 import {HsMapService} from 'hslayers-ng/services/map';
 import {HsToastService} from 'hslayers-ng/common/toast';
 import {HsUtilsService} from 'hslayers-ng/services/utils';
-import {awaitLayerSync, isLaymanUrl} from 'hslayers-ng/common/layman';
 import {
   getDefinition,
   getEventsSuspended,
@@ -131,9 +134,8 @@ export class HsLayerSynchronizerService {
           retryCount + 1,
           desc,
         );
-      } else {
-        return false;
       }
+      return false;
     }
     return desc;
   }

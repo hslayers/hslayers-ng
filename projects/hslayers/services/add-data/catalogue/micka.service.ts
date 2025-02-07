@@ -10,8 +10,8 @@ import {
   EndpointErrorHandling,
   HsEndpoint,
   isErrorHandlerFunction,
+  HsAddDataLayerDescriptor,
 } from 'hslayers-ng/types';
-import {HsAddDataLayerDescriptor} from 'hslayers-ng/types';
 import {HsLanguageService} from 'hslayers-ng/services/language';
 import {HsLogService} from 'hslayers-ng/services/log';
 import {HsMapService} from 'hslayers-ng/services/map';
@@ -41,7 +41,6 @@ export class HsMickaBrowserService {
    * Loads datasets metadata from selected source (CSW server).
    * Currently supports only "Micka" type of source.
    * Use all query params (search text, bbox, params.., sorting, start)
-   * @returns
    */
   queryCatalog(
     dataset: HsEndpoint,
@@ -171,31 +170,29 @@ export class HsMickaBrowserService {
     if (data.records.length == 0) {
       dataset.datasourcePaging.matched = 0;
       return false;
-    } else {
-      dataset.datasourcePaging.matched = data.matched;
-      dataset.datasourcePaging.next = data.next;
+    }
+    dataset.datasourcePaging.matched = data.matched;
+    dataset.datasourcePaging.next = data.next;
 
-      for (const lyr of data.records) {
-        dataset.layers.push(lyr);
-        if (data.extentFeatureCreated) {
-          const extentFeature = addExtentFeature(
-            lyr,
-            this.hsMapService.getCurrentProj(),
-          );
-          if (extentFeature) {
-            lyr.featureId = extentFeature.getId();
-            data.extentFeatureCreated(extentFeature);
-          }
+    for (const lyr of data.records) {
+      dataset.layers.push(lyr);
+      if (data.extentFeatureCreated) {
+        const extentFeature = addExtentFeature(
+          lyr,
+          this.hsMapService.getCurrentProj(),
+        );
+        if (extentFeature) {
+          lyr.featureId = extentFeature.getId();
+          data.extentFeatureCreated(extentFeature);
         }
       }
-      return true;
     }
+    return true;
   }
 
   /**
    * @param which - Parameter name to parse
-   * @param query -
-   * @returns
+   
    * Parse query parameter into encoded key value pair.
    */
   private param2Query(which: string, query): string {
@@ -206,26 +203,25 @@ export class HsMickaBrowserService {
         return `(${dataset})`;
       }
       return query[which] != '' ? which + "='" + query[which] + "'" : '';
-    } else {
-      if (which == 'ServiceType') {
-        const service = 'type=service';
-        switch (query.type) {
-          case 'service':
-            return `(${service})`;
-          case 'dataset':
-            return `(${dataset})`;
-          case 'all':
-          default:
-            return `(${service} OR ${dataset})`;
-        }
-      } else {
-        return '';
+    }
+    if (which == 'ServiceType') {
+      const service = 'type=service';
+      switch (query.type) {
+        case 'service':
+          return `(${service})`;
+        case 'dataset':
+          return `(${dataset})`;
+        case 'all':
+        default:
+          return `(${service} OR ${dataset})`;
       }
+    } else {
+      return '';
     }
   }
 
   /**
-   * @param type -
+   
    * @param layer - Micka layer for which to get metadata
    * @param type - Optional service type specification
    * @returns Url of service or resource
@@ -245,9 +241,8 @@ export class HsMickaBrowserService {
 
       if (layer.links[0].url !== undefined) {
         return layer.links[0].url;
-      } else {
-        return layer.links[0];
       }
+      return layer.links[0];
     }
     if (layer.link) {
       return layer.link;
@@ -391,7 +386,7 @@ export class HsMickaBrowserService {
     whatToAdd.title = layer.title || 'Layer';
     whatToAdd.name =
       type === 'dataset'
-        ? this.parseLayerName(whatToAdd) ?? layer.title
+        ? (this.parseLayerName(whatToAdd) ?? layer.title)
         : layer.title;
     whatToAdd.abstract = layer.abstract || 'Layer';
     return whatToAdd;

@@ -10,6 +10,8 @@ import {HsAddDataService} from '../add-data.service';
 import {
   HsCommonLaymanService,
   PostPatchLayerResponse,
+  awaitLayerSync,
+  getLaymanFriendlyLayerName,
 } from 'hslayers-ng/common/layman';
 import {HsLaymanService} from 'hslayers-ng/services/save-map';
 import {HsLogService} from 'hslayers-ng/services/log';
@@ -20,19 +22,15 @@ import {
   OverwriteResponse,
   UpsertLayerObject,
   VectorDataObject,
+  HsVectorLayerOptions,
+  VectorLayerDescriptor,
+  VectorSourceDescriptor,
 } from 'hslayers-ng/types';
 import {SparqlJson} from 'hslayers-ng/common/layers';
 
-import {
-  awaitLayerSync,
-  getLaymanFriendlyLayerName,
-} from 'hslayers-ng/common/layman';
 import {setDefinition} from 'hslayers-ng/common/extensions';
 
 import {HsAddDataVectorUtilsService} from './vector-utils.service';
-import {HsVectorLayerOptions} from 'hslayers-ng/types';
-import {VectorLayerDescriptor} from 'hslayers-ng/types';
-import {VectorSourceDescriptor} from 'hslayers-ng/types';
 
 @Injectable({
   providedIn: 'root',
@@ -54,10 +52,10 @@ export class HsAddDataVectorService {
    * Load non-wms OWS data and create layer
    * @param type - Type of data to load (supports Kml, Geojson, Wfs and Sparql)
    * @param url - Url of data/service localization
-   * @param name -
+   
    * @param title - Title of new layer
    * @param abstract - Abstract of new layer
-   * @param addUnder -
+   
    * @param srs - EPSG code of selected projection (eg. "EPSG:4326")
    * @param options - Other options
    * @returns Promise which return OpenLayers vector layer
@@ -113,7 +111,7 @@ export class HsAddDataVectorService {
    * Load non-wms OWS data and create layer
    * @param type - Type of data to load (supports KML, GeoJSON, WFS and SPARQL)
    * @param url - Url of data/service localization
-   * @param name -
+   
    * @param title - Title of new layer
    * @param abstract - Abstract of new layer
    * @param srs - EPSG code of selected projection (eg. "EPSG:4326")
@@ -360,40 +358,40 @@ export class HsAddDataVectorService {
     );
     if (!exists) {
       return OverwriteResponse.add;
-    } else {
-      const result =
-        await this.hsAddDataCommonFileService.loadOverwriteLayerDialog(
-          data,
-          repetitive,
-        );
-      switch (result) {
-        case OverwriteResponse.overwrite:
-          upsertReq = await this.upsertLayer(data);
-          if (!upsertReq) {
-            return OverwriteResponse.cancel;
-          } else if (upsertReq?.code) {
-            switch (upsertReq.code) {
-              case 17:
-                return await this.checkForLayerInLayman(data);
-              default:
-                this.hsAddDataCommonFileService.handleLaymanError(upsertReq);
-                return OverwriteResponse.cancel;
-            }
-          } else {
-            await this.hsLaymanService.describeLayer(
-              commonFileRef.endpoint,
-              upsertReq.name,
-              commonFileRef.endpoint.user,
-            );
-            return OverwriteResponse.overwrite;
-          }
-        case OverwriteResponse.add:
-          return await this.checkForLayerInLayman(data, true);
-        case OverwriteResponse.cancel:
-          commonFileRef.loadingToLayman = false;
+    }
+    const result =
+      await this.hsAddDataCommonFileService.loadOverwriteLayerDialog(
+        data,
+        repetitive,
+      );
+    switch (result) {
+      case OverwriteResponse.overwrite:
+        upsertReq = await this.upsertLayer(data);
+        if (!upsertReq) {
           return OverwriteResponse.cancel;
-        default:
-      }
+        }
+        if (upsertReq?.code) {
+          switch (upsertReq.code) {
+            case 17:
+              return await this.checkForLayerInLayman(data);
+            default:
+              this.hsAddDataCommonFileService.handleLaymanError(upsertReq);
+              return OverwriteResponse.cancel;
+          }
+        } else {
+          await this.hsLaymanService.describeLayer(
+            commonFileRef.endpoint,
+            upsertReq.name,
+            commonFileRef.endpoint.user,
+          );
+          return OverwriteResponse.overwrite;
+        }
+      case OverwriteResponse.add:
+        return await this.checkForLayerInLayman(data, true);
+      case OverwriteResponse.cancel:
+        commonFileRef.loadingToLayman = false;
+        return OverwriteResponse.cancel;
+      default:
     }
   }
 
@@ -406,9 +404,8 @@ export class HsAddDataVectorService {
   isKml(fileType: string, url: string) {
     if (fileType == 'kml' || url?.endsWith('kml')) {
       return true;
-    } else {
-      return false;
     }
+    return false;
   }
 
   /**

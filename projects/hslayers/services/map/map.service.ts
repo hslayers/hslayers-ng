@@ -34,9 +34,8 @@ import {
 import {Extent} from 'ol/extent';
 import {Feature, ImageTile, Kinetic, Map, MapBrowserEvent, View} from 'ol';
 import {Geometry} from 'ol/geom';
-import {Group, Layer, Tile} from 'ol/layer';
+import {Group, Layer, Tile, Vector as VectorLayer} from 'ol/layer';
 import {Projection, transform, transformExtent} from 'ol/proj';
-import {Vector as VectorLayer} from 'ol/layer';
 import {platformModifierKeyOnly as platformModifierKeyOnlyCondition} from 'ol/events/condition';
 import {register} from 'ol/proj/proj4';
 
@@ -92,7 +91,6 @@ export class HsMapService {
   puremap: any;
   /**
    * Duration of added interactions animation. (400 ms used, default in OpenLayers is 250 ms)
-   * @public
    * @default 400
    */
   duration = 400;
@@ -185,7 +183,8 @@ export class HsMapService {
       return array.find(
         (entry) => this.findFeatureByInst(entry, feature) !== undefined,
       )?.layer;
-    } else if (array.length == 1) {
+    }
+    if (array.length == 1) {
       return array[0].layer;
     }
   }
@@ -207,7 +206,6 @@ export class HsMapService {
 
   /**
    * Get vector layers from the map, mentioned in the layersToLookFor array
-   * @public
    * @param layersToLookFor - Layers requested
    */
   getVectorLayers(layersToLookFor: VectorAndSource[]): void {
@@ -241,7 +239,6 @@ export class HsMapService {
   /**
    * Get geometry feature by its ID.
    * Used in hslayers-cesium.
-   * @public
    * @param fid - Feature ID
    * @returns Feature
    */
@@ -267,7 +264,6 @@ export class HsMapService {
 
   /**
    * Create default view button inside the map html element
-   * @public
    * @param defaultDesktopControls - Default controls
    */
   async createDefaultViewButton(): Promise<void> {
@@ -308,7 +304,6 @@ export class HsMapService {
 
   /**
    * Set map to default view
-   * @public
    * @param e - Mouse click event
    */
   setDefaultView = function (e): void {
@@ -344,7 +339,6 @@ export class HsMapService {
    * Initialization function for HSLayers map object.
    * Initialize map with basic interaction, scale line and watcher for map view changes.
    * When default controller is used, it's called automatically, otherwise it must be called before other modules dependent on map object are loaded.
-   * @public
    * @param mapElement - Map html element
    */
   init(mapElement: HTMLElement): void {
@@ -589,7 +583,6 @@ export class HsMapService {
 
   /**
    * Wait until the OL map is fully loaded
-   * @public
    * @returns OL map object
    */
   loaded(): Promise<Map> {
@@ -597,19 +590,17 @@ export class HsMapService {
       if (this.map) {
         resolve(this.map);
         return;
-      } else {
-        this.hsEventBusService.olMapLoads.subscribe((map) => {
-          if (map) {
-            resolve(map);
-          }
-        });
       }
+      this.hsEventBusService.olMapLoads.subscribe((map) => {
+        if (map) {
+          resolve(map);
+        }
+      });
     });
   }
 
   /**
    * Find layer object by title of layer
-   * @public
    * @param title - Title of the layer (from layer creation)
    * @returns OL.layer object
    */
@@ -819,7 +810,6 @@ export class HsMapService {
   /**
    * Add all layers from app config (default_layers) to the map.
    * Only layers specified in visibilityOverrides parameter will get instantly visible.
-   * @public
    * @param visibilityOverrides - Override the visibility using an array layer titles, which
    * should be visible. Useful when the layer visibility is stored in a URL parameter
    */
@@ -844,7 +834,6 @@ export class HsMapService {
    * Add layers from app config - default_layers
    * While adding check if hs-composition URL param or defaultComposition is set, if so, filter config's layers by removable property
    * If permalink URL param is set, do not add any of config's layers.
-   * @public
    */
   addLayersFromAppConfig(layers: Layer[], visibilityOverrides: string[]): void {
     if (this.externalCompositionId) {
@@ -859,7 +848,6 @@ export class HsMapService {
 
   /**
    * Get map projection currently used in the map view
-   * @public
    * @returns Projection
    */
   getCurrentProj(): Projection {
@@ -869,7 +857,6 @@ export class HsMapService {
   /**
    * For a vector layer with a vector source, determines if it includes points, lines and/or polygons and stores the information in hasPoint, hasLine, hasPoly properties of the source.
    * Get vector type from the layer selected
-   * @public
    * @param layer - Vector layer selected
    */
   getVectorType(layer): void {
@@ -925,7 +912,6 @@ export class HsMapService {
 
   /**
    * Reset map to state configured in app config (reload all layers and set default view)
-   * @public
    */
   reset(): void {
     this.removeAllLayers();
@@ -935,7 +921,6 @@ export class HsMapService {
 
   /**
    * Reset map view to view configured in app config
-   * @public
    */
   resetView(): void {
     const view = this.map.getView();
@@ -958,7 +943,6 @@ export class HsMapService {
   /**
    * Checks if layer title is present in an array of layer titles.
    * Used to set visibility by URL parameter which contains visible layer titles
-   * @public
    * @param lyr - Layer for which to determine visibility
    * @param array - Layer title to check in.
    * @returns Detected visibility of layer
@@ -972,7 +956,6 @@ export class HsMapService {
 
   /**
    * Get ol-layer canvas element from DOM
-   * @public
    * @returns DOM NodeListOf<HTMLCanvasElement>
    */
   getCanvases(): NodeListOf<HTMLCanvasElement> {
@@ -981,7 +964,6 @@ export class HsMapService {
 
   /**
    * Get ol-layer canvas element from DOM
-   * @public
    * @param type - Scale type (scaleline or scalebar)
    * @returns DOM element
    */
@@ -1001,7 +983,6 @@ export class HsMapService {
 
   /**
    * Proxify layer loader to work with layers from other sources than app
-   * @public
    * @param lyr - Layer to proxify
    * @param tiled - Info if layer is tiled
    * @returns proxified URL
@@ -1051,7 +1032,6 @@ export class HsMapService {
 
   /**
    * Proxify loader for any imagery layer, either tiled or not
-   * @public
    * @param image - Image or ImageTile as required by setImageLoadFunction() in ImageWMS, ImageArcGISRest and WMTS sources
    * @param src - Original (unproxified) source URL
    */
@@ -1120,7 +1100,6 @@ export class HsMapService {
 
   /**
    * Move map and zoom to specified coordinate/zoom level
-   * @public
    * @param x - X coordinate of new center
    * @param y - Y coordinate of new center
    * @param zoom - New zoom level
@@ -1133,7 +1112,6 @@ export class HsMapService {
 
   /**
    * Get current map extent
-   * @public
    * @returns Extent
    */
   getMapExtent(): Extent {
@@ -1146,7 +1124,6 @@ export class HsMapService {
 
   /**
    * Get current map extent in WGS84 (EPSG:4326) projection
-   * @public
    * @returns Extent
    */
   getMapExtentInEpsg4326(): Extent {
@@ -1160,7 +1137,6 @@ export class HsMapService {
 
   /**
    * Fit extent into map view
-   * @public
    * @param extent - Extent provided
    */
   async fitExtent(extent: number[]): Promise<void> {
@@ -1176,7 +1152,6 @@ export class HsMapService {
 
   /**
    * Get ol.Map object from service
-   * @public
    * @returns ol.Map
    */
   getMap(): Map {
@@ -1185,7 +1160,6 @@ export class HsMapService {
 
   /**
    * Remove all map layers
-   * @public
    */
   removeAllLayers(): void {
     const to_be_removed = [];
@@ -1219,7 +1193,6 @@ export class HsMapService {
 
   /**
    * Remove all map controls
-   * @public
    */
   removeAllControls(): void {
     [...this.map.getControls().getArray()].forEach((control) => {
@@ -1230,7 +1203,6 @@ export class HsMapService {
 
   /**
    * Remove all map interactions
-   * @public
    */
   removeAllInteractions(): void {
     this.map.getInteractions().forEach((interaction) => {

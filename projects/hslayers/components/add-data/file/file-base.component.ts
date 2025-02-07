@@ -12,11 +12,15 @@ import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {Layer} from 'ol/layer';
 import {Source} from 'ol/source';
 
-import {AddDataFileType} from 'hslayers-ng/types';
-import {FileDataObject} from 'hslayers-ng/types';
-import {FileDescriptor} from 'hslayers-ng/types';
-import {HsAddDataCommonFileService} from 'hslayers-ng/services/add-data';
-import {HsAddDataCommonService} from 'hslayers-ng/services/add-data';
+import {
+  AddDataFileType,
+  FileDataObject,
+  FileDescriptor,
+} from 'hslayers-ng/types';
+import {
+  HsAddDataCommonFileService,
+  HsAddDataCommonService,
+} from 'hslayers-ng/services/add-data';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsUploadComponent} from 'hslayers-ng/common/upload';

@@ -10,14 +10,13 @@ import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
 import {HsLayerEditorWidgetBaseComponent} from '../layer-editor-widget-base.component';
 import {HsLayerSelectorService} from 'hslayers-ng/services/layer-manager';
 import {HsLayerShiftingService} from 'hslayers-ng/services/layer-shifting';
-import {HsLayerUtilsService} from 'hslayers-ng/services/utils';
+import {HsLayerUtilsService, HsUtilsService} from 'hslayers-ng/services/utils';
 import {HsMapService} from 'hslayers-ng/services/map';
-import {HsUtilsService} from 'hslayers-ng/services/utils';
 import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 
 @Component({
   selector: 'hs-wms-source-widget',
-  imports: [CommonModule, HsConfirmDialogComponent, TranslateCustomPipe],
+  imports: [CommonModule, TranslateCustomPipe],
   templateUrl: './wms-source-widget.component.html',
 })
 export class HsWmsSourceWidgetComponent extends HsLayerEditorWidgetBaseComponent {

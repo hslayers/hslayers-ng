@@ -187,9 +187,8 @@ export class HsSensorsService {
           this.closeSensorDialog();
         }
         return;
-      } else {
-        this.hsSensorsUnitDialogService.unit.push(unit);
       }
+      this.hsSensorsUnitDialogService.unit.push(unit);
     } else {
       /**
        * Single unit only
@@ -426,8 +425,7 @@ export class HsSensorsService {
 
   /**
    * Filter sensors based on the query value
-   * @param sensors -
-   * @param query -
+   
    */
   filterquery(units: HsSensorUnit[], query) {
     return units.filter(

@@ -9,12 +9,13 @@ import {Geometry} from 'ol/geom';
 import {HsConfirmDialogComponent} from 'hslayers-ng/common/confirm';
 import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
 import {HsDownloadModule} from 'hslayers-ng/common/download';
-import {HsFeatureCommonService} from '../feature-common.service';
-import {HsQueryBaseService} from 'hslayers-ng/services/query';
+import {HsFeatureCommonService, exportFormats} from '../feature-common.service';
+import {
+  HsQueryBaseService,
+  HsQueryVectorService,
+} from 'hslayers-ng/services/query';
 import {HsQueryFeatureComponent} from '../feature/feature.component';
-import {HsQueryVectorService} from 'hslayers-ng/services/query';
 import {TranslateCustomPipe} from 'hslayers-ng/services/language';
-import {exportFormats} from '../feature-common.service';
 import {getTitle} from 'hslayers-ng/common/extensions';
 
 @Component({
@@ -64,9 +65,8 @@ export class HsQueryFeatureListComponent {
   trackById(index, item) {
     if (item.feature) {
       return getUid(item.feature);
-    } else {
-      return JSON.stringify(item);
     }
+    return JSON.stringify(item);
   }
 
   /**

@@ -12,8 +12,11 @@ import {fromCircle} from 'ol/geom/Polygon';
 import {platformModifierKeyOnly} from 'ol/events/condition';
 import {unByKey} from 'ol/Observable';
 
-import {HsAddDataOwsService} from 'hslayers-ng/services/add-data';
-import {HsAddDataVectorService} from 'hslayers-ng/services/add-data';
+import {
+  HsAddDataOwsService,
+  HsAddDataVectorService,
+  HsLaymanBrowserService,
+} from 'hslayers-ng/services/add-data';
 import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsConfirmDialogComponent} from 'hslayers-ng/common/confirm';
@@ -21,17 +24,17 @@ import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
 import {HsDrawServiceParams} from './draw.service.params';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsLanguageService} from 'hslayers-ng/services/language';
-import {HsLayerUtilsService} from 'hslayers-ng/services/utils';
-import {HsLaymanBrowserService} from 'hslayers-ng/services/add-data';
+import {HsLayerUtilsService, HsUtilsService} from 'hslayers-ng/services/utils';
 import {HsLaymanService} from 'hslayers-ng/services/save-map';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsLogService} from 'hslayers-ng/services/log';
 import {HsMapService} from 'hslayers-ng/services/map';
-import {HsQueryBaseService} from 'hslayers-ng/services/query';
-import {HsQueryVectorService} from 'hslayers-ng/services/query';
+import {
+  HsQueryBaseService,
+  HsQueryVectorService,
+} from 'hslayers-ng/services/query';
 import {HsRemoveLayerDialogService} from 'hslayers-ng/common/remove-multiple';
 import {HsToastService} from 'hslayers-ng/common/toast';
-import {HsUtilsService} from 'hslayers-ng/services/utils';
 import {defaultStyle} from 'hslayers-ng/services/styler';
 import {
   getEditor,
@@ -168,9 +171,8 @@ export class HsDrawService extends HsDrawServiceParams {
             title,
             undefined,
           ) || getName(this.selectedLayer);
-    } else {
-      return this.translate('DRAW.Select layer');
     }
+    return this.translate('DRAW.Select layer');
   }
   /**
    * snapLayerString
@@ -272,7 +274,6 @@ export class HsDrawService extends HsDrawServiceParams {
   /**
    * Handles drawing layer selection/change by activating drawing for selected layer.
    * In case of Layman layer not yet existing in app it pulls the layer first.
-   * @param layer -
    */
   async selectLayer(layer) {
     let metadata;
@@ -351,7 +352,6 @@ export class HsDrawService extends HsDrawServiceParams {
   }
   /**
    * Add draw layer to the map and repopulate list of drawables.
-   * @param layer -
    */
   addDrawLayer(layer: VectorLayer<VectorSource<Feature>>) {
     this.hsMapService.getMap().addLayer(layer);
@@ -544,18 +544,17 @@ export class HsDrawService extends HsDrawServiceParams {
   private selectedLayerNotAvailable(drawables) {
     if (this.addedLayersRemoved) {
       return true;
-    } else {
-      return (
-        //Don't want to change after authChange when layer is being added
-        (!this.tmpDrawLayer &&
-          !drawables.some(
-            (layer) =>
-              this.selectedLayer &&
-              getTitle(layer) == getTitle(this.selectedLayer),
-          )) ||
-        !this.selectedLayer
-      );
     }
+    return (
+      //Don't want to change after authChange when layer is being added
+      (!this.tmpDrawLayer &&
+        !drawables.some(
+          (layer) =>
+            this.selectedLayer &&
+            getTitle(layer) == getTitle(this.selectedLayer),
+        )) ||
+      !this.selectedLayer
+    );
   }
 
   keyUp(event) {
@@ -614,12 +613,14 @@ export class HsDrawService extends HsDrawServiceParams {
         if (e.originalEvent.buttons === 1) {
           //left click
           return true;
-        } else if (e.originalEvent.buttons === 2) {
+        }
+        if (e.originalEvent.buttons === 2) {
           //right click
           if (this.type == 'Polygon') {
             const vertexCount = (this.draw as any).sketchLineCoords_?.length;
             return this.rightClickCondition(4, vertexCount);
-          } else if (this.type == 'LineString') {
+          }
+          if (this.type == 'LineString') {
             const vertexCount = (this.draw as any).sketchCoords_?.length;
             return this.rightClickCondition(2, vertexCount - 1);
           }

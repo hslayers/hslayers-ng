@@ -135,15 +135,13 @@ export class HsShareUrlService {
     if (this.hsConfig.shareServiceUrl?.includes('://')) {
       //Full url specified
       return this.hsConfig.shareServiceUrl;
-    } else {
-      return hostName + (this.hsConfig.shareServiceUrl || '/share/');
     }
+    return hostName + (this.hsConfig.shareServiceUrl || '/share/');
   }
 
   /**
    * Updates permalink composition. Used without data prop to update extent of the composition
    * @param data - Map composition data
-   * @returns
    */
   async updatePermalinkComposition(data?: MapComposition): Promise<any> {
     const status_url = this.endpointUrl();
@@ -275,11 +273,10 @@ export class HsShareUrlService {
         ) +
         `&${HS_PRMS.permalink}=${encodeURIComponent(this.permalinkRequestUrl)}`
       ).replace(this.pathName(), this.hsConfig.permalinkLocation.pathname);
-    } else {
-      return `${this.current_url}&${HS_PRMS.permalink}=${encodeURIComponent(
-        this.permalinkRequestUrl,
-      )}`;
     }
+    return `${this.current_url}&${HS_PRMS.permalink}=${encodeURIComponent(
+      this.permalinkRequestUrl,
+    )}`;
   }
 
   private pathName(): string {
@@ -410,13 +407,11 @@ export class HsShareUrlService {
     const key = Object.keys(HS_PRMS).find((k) => HS_PRMS[k] == param);
     if (tmp[param]) {
       return tmp[param];
-    } else {
-      if (tmp[param] == undefined && HS_PRMS_BACKWARDS[key] != undefined) {
-        return this.getParamValue(HS_PRMS_BACKWARDS[key]);
-      } else {
-        return;
-      }
     }
+    if (tmp[param] == undefined && HS_PRMS_BACKWARDS[key] != undefined) {
+      return this.getParamValue(HS_PRMS_BACKWARDS[key]);
+    }
+    return;
   }
 
   getParamValues(keys: string[]): any {

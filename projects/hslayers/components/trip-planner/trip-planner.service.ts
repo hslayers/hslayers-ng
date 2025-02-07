@@ -14,15 +14,17 @@ import {transform} from 'ol/proj';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsLanguageService} from 'hslayers-ng/services/language';
-import {HsLayerUtilsService} from 'hslayers-ng/services/utils';
+import {HsLayerUtilsService, HsUtilsService} from 'hslayers-ng/services/utils';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsMapService} from 'hslayers-ng/services/map';
 import {HsShareUrlService} from 'hslayers-ng/services/share';
 import {HsToastService} from 'hslayers-ng/common/toast';
-import {HsUtilsService} from 'hslayers-ng/services/utils';
 import {RouteProfile, profiles} from './ors-profiles.const';
-import {getHighlighted, setTitle} from 'hslayers-ng/common/extensions';
-import {getTitle} from 'hslayers-ng/common/extensions';
+import {
+  getHighlighted,
+  setTitle,
+  getTitle,
+} from 'hslayers-ng/common/extensions';
 
 export type Waypoint = {
   name: string;
@@ -517,9 +519,8 @@ export class HsTripPlannerService {
       const distance = route?.get('summary').distance / 1000.0;
       if (distance == undefined) {
         return '';
-      } else {
-        return distance.toFixed(2) + 'km';
       }
+      return distance.toFixed(2) + 'km';
     }
   }
 }

@@ -18,11 +18,17 @@ import {transformExtent} from 'ol/proj';
 
 import {CswLayersDialogComponent} from 'hslayers-ng/common/dialog-csw-layers';
 import {DuplicateHandling, HsMapService} from 'hslayers-ng/services/map';
-import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
+import {
+  HsCommonLaymanService,
+  getLaymanFriendlyLayerName,
+  isLaymanUrl,
+} from 'hslayers-ng/common/layman';
 import {HsCompositionsLayerParserService} from './layer-parser.service';
-import {HsCompositionsWarningDialogComponent} from 'hslayers-ng/common/dialogs';
+import {
+  HsCompositionsWarningDialogComponent,
+  HsDialogContainerService,
+} from 'hslayers-ng/common/dialogs';
 import {HsConfig} from 'hslayers-ng/config';
-import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsLanguageService} from 'hslayers-ng/services/language';
 import {
@@ -36,12 +42,8 @@ import {HsUtilsService, generateUuid} from 'hslayers-ng/services/utils';
 import {
   HslayersLayerJSON,
   LaymanCompositionDescriptor,
+  SERVICES_SUPPORTED_BY_URL,
 } from 'hslayers-ng/types';
-import {SERVICES_SUPPORTED_BY_URL} from 'hslayers-ng/types';
-import {
-  getLaymanFriendlyLayerName,
-  isLaymanUrl,
-} from 'hslayers-ng/common/layman';
 import {
   getTitle,
   setFromBaseComposition,
@@ -61,17 +63,14 @@ export class HsCompositionsParserService {
    */
   currentCompositionRecord: Observable<LaymanCompositionDescriptor>;
   /**
-   * @public
    * Stores current composition URL if there is one or NULL
    */
   composition_loaded = null;
   /**
-   * @public
    * Stores whether current composition was edited (for composition changes, saving etc.)
    */
   composition_edited = false;
   /**
-   * @public
    * Stores title of current composition
    */
   current_composition_title = '';
@@ -131,7 +130,6 @@ export class HsCompositionsParserService {
   }
 
   /**
-   * @public
    * Load selected composition from server, parse it and add layers to map.
    * Optionally (based on app config) may open layer manager panel
    * @param url - URL of selected composition
@@ -555,7 +553,6 @@ export class HsCompositionsParserService {
   }
 
   /**
-   * @public
    * Send Ajax request to selected server to gain information about composition
    * @param url - Url to composition info
    * @returns Object containing composition info
@@ -706,7 +703,6 @@ export class HsCompositionsParserService {
   }
 
   /**
-   * @public
    * Parse composition object to extract individual layers and add them to map
    * @param j - Composition object with Layers
    * @returns Array of created layers

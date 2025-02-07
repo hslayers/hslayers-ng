@@ -65,7 +65,6 @@ export class HsCesiumService {
 
   /**
    * Initializes Cesium map
-   * @public
    */
   async init() {
     this.end = new Subject();

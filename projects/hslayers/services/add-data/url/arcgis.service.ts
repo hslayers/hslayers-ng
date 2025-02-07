@@ -2,28 +2,27 @@ import {Injectable} from '@angular/core';
 
 import TileGrid from 'ol/tilegrid/TileGrid';
 import {Layer, Tile} from 'ol/layer';
-import {Source, TileArcGISRest, XYZ} from 'ol/source';
+import {Source, TileArcGISRest, XYZ, Tile as TileSource} from 'ol/source';
 import {Options as TileOptions} from 'ol/layer/BaseTile';
-import {Tile as TileSource} from 'ol/source';
 import {transformExtent} from 'ol/proj';
 
 import {
   ArcGISRestResponseLayer,
   ArcGISRestResponseLayerExtent,
+  CapabilitiesResponseWrapper,
+  HsUrlTypeServiceModel,
+  Service,
+  LayerOptions,
+  UrlDataObject,
 } from 'hslayers-ng/types';
-import {CapabilitiesResponseWrapper} from 'hslayers-ng/types';
 import {DuplicateHandling, HsMapService} from 'hslayers-ng/services/map';
 import {HsAddDataCommonService} from '../common.service';
 import {HsAddDataUrlService} from './add-data-url.service';
 import {HsArcgisGetCapabilitiesService} from 'hslayers-ng/services/get-capabilities';
 import {HsLanguageService} from 'hslayers-ng/services/language';
-import {HsLayerUtilsService} from 'hslayers-ng/services/utils';
+import {HsLayerUtilsService, HsUtilsService} from 'hslayers-ng/services/utils';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsToastService} from 'hslayers-ng/common/toast';
-import {HsUrlTypeServiceModel, Service} from 'hslayers-ng/types';
-import {HsUtilsService} from 'hslayers-ng/services/utils';
-import {LayerOptions} from 'hslayers-ng/types';
-import {UrlDataObject} from 'hslayers-ng/types';
 import {addAnchors, getPreferredFormat} from 'hslayers-ng/common/utils';
 
 @Injectable({providedIn: 'root'})
@@ -403,7 +402,7 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
       problem is that folder name is also included inside the service.name
       to avoid any uncertainties,lets remove everything starting from 'services'
       inside the url and rebuild it
-    */
+     */
     if (urlRest.includes('services')) {
       urlRest = urlRest.slice(0, urlRest.indexOf('services'));
     }

@@ -215,7 +215,6 @@ export class HsCesiumLayersService {
   }
 
   /**
-   * @public
    * Add all layers from app HsConfig - default_layers to the map. Only layers specified in visible_layers parameter will get instantly visible.
    */
   async repopulateLayers() {

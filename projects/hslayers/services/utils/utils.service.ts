@@ -32,7 +32,6 @@ export class HsUtilsService {
 
   /**
    * Proxify URL if enabled.
-   * @public
    * @param url - URL to proxify
    * @returns Encoded URL with path to hslayers-server proxy
    */
@@ -67,12 +66,13 @@ export class HsUtilsService {
   }
 
   /**
-   * @public
    * @param url - URL to shorten
    * @returns Shortened URL
    * Promise which shortens URL by using some URL shortener.
    * By default tinyurl is used, but user provided function in config.shortenUrl can be used.
-   * @example function(url) {
+   * @example
+   * ```typescript
+   * function(url) {
             return new Promise(function(resolve, reject){
                 $http.get("http://tinyurl.com/api-create.php?url=" + url, {
                     longUrl: url
@@ -83,6 +83,7 @@ export class HsUtilsService {
                 })
             })
         }
+   * ```
    */
   async shortUrl(url: string): Promise<any> {
     if (this.hsConfig.shortenUrl != undefined) {
@@ -124,7 +125,6 @@ export class HsUtilsService {
 
   /**
    * Parse parameters and their values from URL string
-   * @public
    * @param str - URL to parse parameters from
    * @returns Object with parsed parameters as properties
    */
@@ -167,7 +167,6 @@ export class HsUtilsService {
 
   /**
    * Create encoded URL string from object with parameters
-   * @public
    * @param params - Parameter object with parameter key-value pairs
    * @returns Joined encoded URL query string
    */
@@ -185,7 +184,6 @@ export class HsUtilsService {
 
   /**
    * Insert every element in the set of matched elements after the target.
-   * @public
    * @param newNode - Element to insert
    * @param referenceNode - Element after which to insert
    */
@@ -198,7 +196,6 @@ export class HsUtilsService {
 
   /**
    * Create URL string from object with parameters without encoding
-   * @public
    * @param params - Parameter object with parameter key-value pairs
    * @returns Joined URL query string
    */
@@ -216,7 +213,6 @@ export class HsUtilsService {
    * Returns a function, that, as long as it continues to be
    * invoked, will not be triggered.
    * (https://davidwalsh.name/javascript-debounce-function)
-   * @public
    * @param func - Function to execute with throttling
    * @param wait - The function will be called after it stops
    * being called for N milliseconds.
@@ -246,7 +242,6 @@ export class HsUtilsService {
 
   /**
    * Generate randomized UUID
-   * @public
    * @returns Random uuid
    */
   generateUuid(): string {
@@ -335,7 +330,7 @@ export class HsUtilsService {
 
   /**
    * Check if object is a function
-   * @param functionToCheck
+   
    * @returns true when input is a function, false otherwise
    */
   isFunction(functionToCheck: any): boolean {
@@ -344,7 +339,7 @@ export class HsUtilsService {
 
   /**
    * Check if object is plain object (not function, not array, not class)
-   * @param objectToCheck
+   
    * @returns true when input is plain old JavaScript object, false otherwise
    */
   isPOJO(objectToCheck: any): boolean {
@@ -405,7 +400,6 @@ export class HsUtilsService {
 
   /**
    * Replaces input string text with replacement text
-   * @public
    * @param target - Target string
    * @param search - String to look for
    * @param replacement - Replacement value
@@ -418,14 +412,12 @@ export class HsUtilsService {
   resolveEsModule(module) {
     if (module.default) {
       return module.default;
-    } else {
-      return module;
     }
+    return module;
   }
 
   /**
    * Replaces first string letter to UpperCase
-   * @public
    * @param target - Target string
    * @returns modified string
    */
@@ -456,7 +448,7 @@ export class HsUtilsService {
 
   /**
    * Compute and format line length with correct units (m/km)
-   * @param line
+   
    * @returns numeric length of line with used units
    */
   formatLength(line: LineString, sourceProj: ProjectionLike): Measurement {
@@ -496,8 +488,6 @@ export class HsUtilsService {
 
   /**
    * Compute and format polygon area with correct units (m2/km2)
-   * @private
-   * @param polygon
    * @returns area of polygon with used units
    */
   formatArea(polygon: Polygon, sourceProj: ProjectionLike): Measurement {
@@ -530,9 +520,8 @@ export class HsUtilsService {
         parseFloat(bbox.west),
         parseFloat(bbox.north),
       ];
-    } else {
-      return bbox as number[];
     }
+    return bbox as number[];
   }
 }
 

@@ -166,9 +166,8 @@ export class HsFeatureTableService {
         }
       }
       return name;
-    } else {
-      return 'Feature';
     }
+    return 'Feature';
   }
 
   /**

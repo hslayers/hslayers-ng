@@ -16,8 +16,8 @@ import {HsLayerDescriptor} from 'hslayers-ng/types';
 import {
   HsLayerManagerCopyLayerService,
   HsLayerManagerService,
+  HsLayerManagerUtilsService,
 } from 'hslayers-ng/services/layer-manager';
-import {HsLayerManagerUtilsService} from 'hslayers-ng/services/layer-manager';
 import {HsLayerUtilsService} from 'hslayers-ng/services/utils';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsPanelHelpersModule} from 'hslayers-ng/common/panels';
@@ -36,7 +36,6 @@ import {
 // Widgets
 import {HsCopyLayerDialogComponent} from '../dialogs/copy-layer-dialog.component';
 import {HsLayerEditorService} from './layer-editor.service';
-import {HsLayerEditorSubLayerCheckboxesComponent} from './sublayers/layer-editor-sub-layer-checkboxes.component';
 import {HsLayerEditorWidgetContainerService} from '../widgets/layer-editor-widget-container.service';
 import {HsLayerManagerRemoveLayerDialogComponent} from '../dialogs/remove-layer-dialog.component';
 import {LAYER_EDITOR_WIDGETS} from './widget-config';
@@ -44,13 +43,7 @@ import {LAYER_EDITOR_WIDGETS} from './widget-config';
 @Component({
   selector: 'hs-layer-editor',
   templateUrl: './layer-editor.component.html',
-  imports: [
-    NgClass,
-    FormsModule,
-    TranslateCustomPipe,
-    HsLayerEditorSubLayerCheckboxesComponent,
-    HsPanelHelpersModule,
-  ],
+  imports: [NgClass, FormsModule, TranslateCustomPipe, HsPanelHelpersModule],
 })
 export class HsLayerEditorComponent {
   layer = input.required<HsLayerDescriptor>();

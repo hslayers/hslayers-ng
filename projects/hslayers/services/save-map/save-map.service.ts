@@ -8,15 +8,19 @@ import {
   TileArcGISRest,
   WMTS,
   XYZ,
+  Vector as VectorSource,
 } from 'ol/source';
 import {Feature, Map} from 'ol';
 import {GeoJSON} from 'ol/format';
 import {GeoJSONFeatureCollection} from 'ol/format/GeoJSON';
 import {Geometry} from 'ol/geom';
-import {Image as ImageLayer, Tile, Vector as VectorLayer} from 'ol/layer';
+import {
+  Image as ImageLayer,
+  Tile,
+  Vector as VectorLayer,
+  Layer,
+} from 'ol/layer';
 import {Injectable} from '@angular/core';
-import {Layer} from 'ol/layer';
-import {Vector as VectorSource} from 'ol/source';
 import {transformExtent} from 'ol/proj';
 
 import {
@@ -24,18 +28,17 @@ import {
   CurrentBaseLayer,
   HslayersLayerJSON,
   SerializedStyle,
+  CompoData,
+  LayerJSON,
+  MapComposition,
+  SerializedImage,
+  StatusData,
+  UserData,
 } from 'hslayers-ng/types';
-import {CompoData} from 'hslayers-ng/types';
-import {HsLayerUtilsService} from 'hslayers-ng/services/utils';
+import {HsLayerUtilsService, HsUtilsService} from 'hslayers-ng/services/utils';
 import {HsLogService} from 'hslayers-ng/services/log';
 import {HsMapService} from 'hslayers-ng/services/map';
 import {HsShareThumbnailService} from 'hslayers-ng/services/share';
-import {HsUtilsService} from 'hslayers-ng/services/utils';
-import {LayerJSON} from 'hslayers-ng/types';
-import {MapComposition} from 'hslayers-ng/types';
-import {SerializedImage} from 'hslayers-ng/types';
-import {StatusData} from 'hslayers-ng/types';
-import {UserData} from 'hslayers-ng/types';
 import {
   getAttribution,
   getBase,

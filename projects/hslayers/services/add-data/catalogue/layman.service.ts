@@ -11,11 +11,11 @@ import {
   EndpointErrorHandling,
   HsEndpoint,
   isErrorHandlerFunction,
+  HsAddDataLayerDescriptor,
+  HsLaymanLayerDescriptor,
 } from 'hslayers-ng/types';
-import {HsAddDataLayerDescriptor} from 'hslayers-ng/types';
 import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
 import {HsLanguageService} from 'hslayers-ng/services/language';
-import {HsLaymanLayerDescriptor} from 'hslayers-ng/types';
 import {HsLogService} from 'hslayers-ng/services/log';
 import {HsMapService} from 'hslayers-ng/services/map';
 import {HsToastService} from 'hslayers-ng/common/toast';
@@ -312,22 +312,21 @@ export class HsLaymanBrowserService {
         editable: lyr.editable,
         workspace: lyr.workspace,
       };
-    } else {
-      this.hsToastService.createToastPopupMessage(
-        this.hsLanguageService.getTranslation(
-          'ADDLAYERS.ERROR.errorWhileRequestingLayers',
-          undefined,
-        ),
-        this.hsLanguageService.getTranslation(
-          'ADDLAYERS.ERROR.urlInvalid',
-          undefined,
-        ),
-        {
-          disableLocalization: true,
-          serviceCalledFrom: 'HsLaymanBrowserService',
-        },
-      );
-      return false;
     }
+    this.hsToastService.createToastPopupMessage(
+      this.hsLanguageService.getTranslation(
+        'ADDLAYERS.ERROR.errorWhileRequestingLayers',
+        undefined,
+      ),
+      this.hsLanguageService.getTranslation(
+        'ADDLAYERS.ERROR.urlInvalid',
+        undefined,
+      ),
+      {
+        disableLocalization: true,
+        serviceCalledFrom: 'HsLaymanBrowserService',
+      },
+    );
+    return false;
   }
 }

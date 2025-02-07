@@ -64,7 +64,6 @@ export class HslayersService {
 
   /**
    * Add event listeners for updating HS element and map size after browser resizing or complete load of application.
-   * @public
    */
   initSizeListeners(): void {
     window.addEventListener('resize', () => {
@@ -82,7 +81,6 @@ export class HslayersService {
 
   /**
    * Update map size.
-   * @public
    */
   mapSizeUpdates(): void {
     const map = this.HsMapService.mapElement;
@@ -112,7 +110,6 @@ export class HslayersService {
 
   /**
    * Do complete reset of map (view, layers) according to app config
-   * @public
    */
   resetMap(): void {
     this.HsMapService.reset();

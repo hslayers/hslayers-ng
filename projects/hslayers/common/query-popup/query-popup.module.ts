@@ -7,8 +7,10 @@ import {HsDownloadModule} from 'hslayers-ng/common/download';
 import {HsDynamicTextComponent} from './widgets/dynamic-text.component';
 import {HsFeatureInfoComponent} from './widgets/feature-info.component';
 import {HsLayerNameComponent} from './widgets/layer-name.component';
-import {HsPanelHeaderComponent} from 'hslayers-ng/common/panels';
-import {HsPanelHelpersModule} from 'hslayers-ng/common/panels';
+import {
+  HsPanelHeaderComponent,
+  HsPanelHelpersModule,
+} from 'hslayers-ng/common/panels';
 import {HsQueryPopupComponent} from './query-popup.component';
 import {HsQueryPopupWidgetBaseComponent} from './query-popup-widget-base.component';
 import {TranslateCustomPipe} from 'hslayers-ng/services/language';

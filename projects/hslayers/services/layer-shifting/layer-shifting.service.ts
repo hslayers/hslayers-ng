@@ -129,9 +129,8 @@ export class HsLayerShiftingService {
   ): Layer<Source> {
     if (this.hsUtilsService.instOf(providedLayer, Layer)) {
       return providedLayer as Layer<Source>;
-    } else {
-      return (providedLayer as LayerListItem).layer;
     }
+    return (providedLayer as LayerListItem).layer;
   }
 
   /**

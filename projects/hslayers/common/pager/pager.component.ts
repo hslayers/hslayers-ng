@@ -26,9 +26,8 @@ export class HsPagerComponent {
       this.pagerService.matchedRecords == 0
     ) {
       return true;
-    } else {
-      return false;
     }
+    return false;
   }
 
   /**

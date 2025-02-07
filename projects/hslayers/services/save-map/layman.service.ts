@@ -17,30 +17,24 @@ import {Feature} from 'ol';
 import {GeoJSON} from 'ol/format';
 import {GeoJSONFeatureCollection} from 'ol/format/GeoJSON';
 import {Geometry} from 'ol/geom';
-import {Layer} from 'ol/layer';
+import {Layer, Vector as VectorLayer} from 'ol/layer';
 import {Source, Vector as VectorSource} from 'ol/source';
-import {Vector as VectorLayer} from 'ol/layer';
 
-import {AboutLayman} from 'hslayers-ng/types';
-import {AccessRightsModel} from 'hslayers-ng/types';
-import {AsyncUpload} from 'hslayers-ng/types';
-import {CompoData} from 'hslayers-ng/types';
+import {
+  AboutLayman,
+  AccessRightsModel,
+  AsyncUpload,
+  CompoData,
+  HsEndpoint,
+  HsLaymanLayerDescriptor,
+  MapComposition,
+  UpsertLayerObject,
+  WfsSyncParams,
+} from 'hslayers-ng/types';
 import {
   DeleteAllLayersResponse,
   DeleteSingleLayerResponse,
-} from 'hslayers-ng/common/layman';
-import {HsCommonEndpointsService} from 'hslayers-ng/services/endpoints';
-import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
-import {HsEndpoint} from 'hslayers-ng/types';
-import {HsLanguageService} from 'hslayers-ng/services/language';
-import {HsLaymanLayerDescriptor} from 'hslayers-ng/types';
-import {HsLogService} from 'hslayers-ng/services/log';
-import {HsMapService} from 'hslayers-ng/services/map';
-import {HsSaverService} from './saver-service.interface';
-import {HsToastService} from 'hslayers-ng/common/toast';
-import {HsUtilsService} from 'hslayers-ng/services/utils';
-import {MapComposition} from 'hslayers-ng/types';
-import {
+  HsCommonLaymanService,
   PREFER_RESUMABLE_SIZE_LIMIT,
   SUPPORTED_SRS_LIST,
   getLayerName,
@@ -49,10 +43,15 @@ import {
   layerParamPendingOrStarting,
   wfsFailed,
   wfsNotAvailable,
+  PostPatchLayerResponse,
 } from 'hslayers-ng/common/layman';
-import {PostPatchLayerResponse} from 'hslayers-ng/common/layman';
-import {UpsertLayerObject} from 'hslayers-ng/types';
-import {WfsSyncParams} from 'hslayers-ng/types';
+import {HsCommonEndpointsService} from 'hslayers-ng/services/endpoints';
+import {HsLanguageService} from 'hslayers-ng/services/language';
+import {HsLogService} from 'hslayers-ng/services/log';
+import {HsMapService} from 'hslayers-ng/services/map';
+import {HsSaverService} from './saver-service.interface';
+import {HsToastService} from 'hslayers-ng/common/toast';
+import {HsUtilsService} from 'hslayers-ng/services/utils';
 import {
   createGetFeatureRequest,
   createPostFeatureRequest,
@@ -440,12 +439,10 @@ export class HsLaymanService implements HsSaverService {
             endpoint,
           );
           return promise;
-        } else {
-          return data;
         }
-      } else {
         return data;
       }
+      return data;
     } catch (error) {
       this.hsLogService.error(error);
     }
@@ -757,7 +754,8 @@ export class HsLaymanService implements HsSaverService {
         (desc.wfs.status == desc.wms.status && wfsNotAvailable(desc))
       ) {
         return null;
-      } else if (desc?.name && !wfsNotAvailable(desc)) {
+      }
+      if (desc?.name && !wfsNotAvailable(desc)) {
         this.cacheLaymanDescriptor(layer, desc, endpoint);
       }
     } catch (ex) {

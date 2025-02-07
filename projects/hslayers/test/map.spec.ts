@@ -18,14 +18,16 @@ import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsLanguageService} from 'hslayers-ng/services/language';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsLayoutServiceMock} from './layout.service.mock';
-import {HsMapComponent} from 'hslayers-ng/core';
-import {HsMapDirective} from 'hslayers-ng/core';
+import {
+  HsMapComponent,
+  HsMapDirective,
+  HslayersService,
+} from 'hslayers-ng/core';
 import {HsMapService} from 'hslayers-ng/services/map';
 import {HsShareUrlService} from 'hslayers-ng/services/share';
 import {HsShareUrlServiceMock} from './share-url.service.mock';
 import {HsUtilsService} from 'hslayers-ng/services/utils';
 import {HsUtilsServiceMock} from './utils/utils.service.mock';
-import {HslayersService} from 'hslayers-ng/core';
 
 class emptyMock {
   constructor() {}

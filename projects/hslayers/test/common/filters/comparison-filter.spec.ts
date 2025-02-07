@@ -11,7 +11,7 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
 import {Feature} from 'ol';
-import {Filter} from 'hslayers-ng/types';
+import {Filter, WfsFeatureAttribute} from 'hslayers-ng/types';
 import {
   HsComparisonFilterComponent,
   HsFiltersService,
@@ -19,7 +19,6 @@ import {
 import {HsLayerUtilsService} from 'hslayers-ng/services/utils';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {Point} from 'ol/geom';
-import {WfsFeatureAttribute} from 'hslayers-ng/types';
 import {provideHttpClient} from '@angular/common/http';
 import {provideHttpClientTesting} from '@angular/common/http/testing';
 
@@ -50,7 +49,8 @@ class MockHsFiltersService {
     const attr = this.layerAttributes.find((a) => a.name === attributeName);
     if (attr.name === 'attr1') {
       return of({...attr, values: ['value1', 'value2']});
-    } else if (attr.name === 'attr2') {
+    }
+    if (attr.name === 'attr2') {
       return of({...attr, range: {min: 0, max: 100}});
     }
     return of(attr);

@@ -13,22 +13,23 @@ import {
 } from '@angular/common/http';
 import {lastValueFrom} from 'rxjs';
 
-import {HsAddDataUrlComponent} from 'hslayers-ng/components/add-data';
-import {HsAddDataVectorModule} from 'hslayers-ng/components/add-data';
+import {
+  HsAddDataUrlComponent,
+  HsAddDataVectorModule,
+  HsUrlArcGisModule,
+  HsUrlGeoSparqlModule,
+  HsUrlWfsModule,
+  HsUrlWmsModule,
+  HsUrlWmtsModule,
+} from 'hslayers-ng/components/add-data';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsConfigMock} from './config.service.mock';
 import {HsLanguageModule} from 'hslayers-ng/components/language';
-import {HsLayerUtilsService} from 'hslayers-ng/services/utils';
+import {HsLayerUtilsService, HsUtilsService} from 'hslayers-ng/services/utils';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsLayoutServiceMock} from './layout.service.mock';
 import {HsMapService} from 'hslayers-ng/services/map';
 import {HsMapServiceMock} from './map.service.mock';
-import {HsUrlArcGisModule} from 'hslayers-ng/components/add-data';
-import {HsUrlGeoSparqlModule} from 'hslayers-ng/components/add-data';
-import {HsUrlWfsModule} from 'hslayers-ng/components/add-data';
-import {HsUrlWmsModule} from 'hslayers-ng/components/add-data';
-import {HsUrlWmtsModule} from 'hslayers-ng/components/add-data';
-import {HsUtilsService} from 'hslayers-ng/services/utils';
 import {HsUtilsServiceMock} from './utils/utils.service.mock';
 import {HsWmsGetCapabilitiesService} from 'hslayers-ng/services/get-capabilities';
 import {mockLayerUtilsService} from './layer-utils.service.mock';

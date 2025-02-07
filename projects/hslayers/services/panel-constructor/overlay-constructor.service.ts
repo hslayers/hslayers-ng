@@ -8,9 +8,11 @@ import {
 import {filter, firstValueFrom, map, take, tap} from 'rxjs';
 
 import {HsConfig} from 'hslayers-ng/config';
-import {HsOverlayContainerService} from 'hslayers-ng/services/panels';
-import {HsPanelContainerService} from 'hslayers-ng/services/panels';
-import {HsToolbarPanelContainerService} from 'hslayers-ng/services/panels';
+import {
+  HsOverlayContainerService,
+  HsPanelContainerService,
+  HsToolbarPanelContainerService,
+} from 'hslayers-ng/services/panels';
 import {toObservable} from '@angular/core/rxjs-interop';
 
 @Injectable({

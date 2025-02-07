@@ -247,7 +247,8 @@ export class InterpolatedSource extends IDW {
   createIDWSourceUrl(url: string, extent: number[]): string {
     if (!url) {
       return;
-    } else if (extent) {
+    }
+    if (extent) {
       const extentObj = [
         {ref: 'minx', value: extent[0].toFixed(1)},
         {ref: 'miny', value: extent[1].toFixed(1)},
@@ -441,7 +442,7 @@ function getColorMap(mapName: string): (v: number) => number | number[] {
  * Assingns colorMap function based on colorMap option used.
  * Predefined color maps if name of color map is provided
  * or uses the passed function directly.
- * @param options
+ 
  */
 function getColorMapFromOptions(
   options: InterpolatedSourceOptions,

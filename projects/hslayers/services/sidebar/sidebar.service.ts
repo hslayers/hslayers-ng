@@ -311,17 +311,16 @@ export class HsSidebarService {
   checkConfigurableButtons(button: HsButton): boolean {
     if (typeof button.condition == 'undefined') {
       return true;
-    } else if (!this.hsConfig.panelsEnabled) {
-      return false;
-    } else {
-      return this.hsConfig.panelsEnabled[button.panel];
     }
+    if (!this.hsConfig.panelsEnabled) {
+      return false;
+    }
+    return this.hsConfig.panelsEnabled[button.panel];
   }
 
   /**
    * Check if sidebar button should be visible in classic sidebar or hidden inside minisidebar panel
    * Toggles minisidebar button
-   * @public
    * @param which - Sidebar button to be checked (specify panel name)
    */
   fitsSidebar(button: HsButton): boolean {

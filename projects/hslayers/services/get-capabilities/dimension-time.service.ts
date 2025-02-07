@@ -4,10 +4,9 @@ import {Subject} from 'rxjs';
 import {ImageWMS, Source, TileWMS} from 'ol/source';
 import {Layer} from 'ol/layer';
 
-import {HsLayerDescriptor} from 'hslayers-ng/types';
+import {HsLayerDescriptor, HsWmsLayer} from 'hslayers-ng/types';
 import {HsLogService} from 'hslayers-ng/services/log';
 import {HsUtilsService} from 'hslayers-ng/services/utils';
-import {HsWmsLayer} from 'hslayers-ng/types';
 import {
   getDimensions,
   setDimension,
@@ -274,7 +273,8 @@ export class HsDimensionTimeService {
           timeValues[1],
           this.parseInterval(timeValues[2]),
         );
-      } else if (timeValues.length == 2) {
+      }
+      if (timeValues.length == 2) {
         // Duration, pattern: "1999-01-22T19:00:00/2018-01-22T13:00:00"
         // Daily interval is a pure guessing here and might be overkill for common cases
         // TODO: => try better guessing
@@ -283,9 +283,8 @@ export class HsDimensionTimeService {
           timeValues[1],
           24 * 60 * 60 * 1000,
         );
-      } else {
-        throw new Error(`Invalid ISO8601 time definition provided: ${values}`);
       }
+      throw new Error(`Invalid ISO8601 time definition provided: ${values}`);
     }
     return values.split(',');
   }

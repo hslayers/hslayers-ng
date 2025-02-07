@@ -36,7 +36,6 @@ export class HsScaleWidgetComponent extends HsLayerEditorWidgetBaseComponent {
 
   /**
    * Set min resolution for selected layer
-   * @param newValue
    */
   set minResolution(newValue) {
     if (!this.layerDescriptor) {
@@ -61,7 +60,6 @@ export class HsScaleWidgetComponent extends HsLayerEditorWidgetBaseComponent {
 
   /**
    * Set max resolution for selected layer
-   * @param newValue
    */
   set maxResolution(newValue) {
     if (!this.layerDescriptor) {

@@ -25,24 +25,23 @@ import {StyleFunction, StyleLike, createDefaultStyle} from 'ol/style/Style';
 import {
   HsCommonLaymanService,
   parseBase64Style,
+  awaitLayerSync,
+  getLaymanFriendlyLayerName,
 } from 'hslayers-ng/common/layman';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsConfirmDialogComponent} from 'hslayers-ng/common/confirm';
 import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsLanguageService} from 'hslayers-ng/services/language';
-import {HsLayerSynchronizerService} from 'hslayers-ng/services/save-map';
-import {HsLayerUtilsService} from 'hslayers-ng/services/utils';
+import {
+  HsLayerSynchronizerService,
+  HsSaveMapService,
+} from 'hslayers-ng/services/save-map';
+import {HsLayerUtilsService, HsUtilsService} from 'hslayers-ng/services/utils';
 import {HsLogService} from 'hslayers-ng/services/log';
 import {HsMapService} from 'hslayers-ng/services/map';
 import {HsQueryVectorService} from 'hslayers-ng/services/query';
-import {HsSaveMapService} from 'hslayers-ng/services/save-map';
 import {HsToastService} from 'hslayers-ng/common/toast';
-import {HsUtilsService} from 'hslayers-ng/services/utils';
-import {
-  awaitLayerSync,
-  getLaymanFriendlyLayerName,
-} from 'hslayers-ng/common/layman';
 import {defaultStyle} from './default-style';
 import {
   getCluster,
@@ -51,8 +50,8 @@ import {
   getTitle,
   setQml,
   setSld,
+  getHighlighted,
 } from 'hslayers-ng/common/extensions';
-import {getHighlighted} from 'hslayers-ng/common/extensions';
 
 @Injectable({
   providedIn: 'root',
@@ -148,15 +147,13 @@ export class HsStylerService {
   isVectorLayer(layer: any): boolean {
     if (this.hsUtilsService.instOf(layer, VectorLayer)) {
       return true;
-    } else {
-      return false;
     }
+    return false;
   }
 
   /**
    * Get a Source for any vector layer. Both clustered and un-clustered.
    * @param layer - Any vector layer
-   * @param isClustered -
    * @returns Source of the input layer or source of its cluster's source
    */
   getLayerSource(
@@ -311,7 +308,6 @@ export class HsStylerService {
   /**
    * Parse style encoded as SLD or QML and return OL style object.
    * This function is used to support backwards compatibility with custom format.
-   * @param style -
    * @returns OL style object
    */
   async parseStyle(
@@ -328,18 +324,19 @@ export class HsStylerService {
       const olStyle = await this.sldToOlStyle(style);
       const sld = this.sldParsingError ? defaultStyle : style;
       return {sld: sld, style: olStyle};
-    } else if (styleType == 'qml') {
-      return {qml: style, style: await this.qmlToOlStyle(style)};
-    } else {
-      return {style};
     }
+    if (styleType == 'qml') {
+      return {qml: style, style: await this.qmlToOlStyle(style)};
+    }
+    return {style};
   }
 
   guessStyleFormat(style: any): 'qml' | 'sld' {
     if (typeof style == 'string') {
       if ((style as string).includes('StyledLayerDescriptor')) {
         return 'sld';
-      } else if ((style as string).includes('<qgis')) {
+      }
+      if ((style as string).includes('<qgis')) {
         return 'qml';
       }
     }
@@ -528,8 +525,6 @@ export class HsStylerService {
 
   /**
    * Convert SLD text to JSON which is easier to edit in Angular.
-   * @param sld -
-   * @returns
    */
   async sldToJson(sld: string): Promise<GeoStylerStyle> {
     const options: ConstructorParams = {};
@@ -561,8 +556,6 @@ export class HsStylerService {
 
   /**
    * Convert QML text to JSON which is easier to edit in Angular.
-   * @param qml -
-   * @returns
    */
   async qmlToJson(qml: string): Promise<GeoStylerStyle> {
     const {QGISStyleParser} = await import('geostyler-qgis-parser');
@@ -571,9 +564,8 @@ export class HsStylerService {
     const result = await qmlParser.readStyle(qml);
     if (result.output) {
       return result.output;
-    } else {
-      this.hsLogService.error(result.errors);
     }
+    this.hsLogService.error(result.errors);
   }
 
   /**
@@ -582,13 +574,15 @@ export class HsStylerService {
   private replaceNullValues(obj: any): any {
     if (Array.isArray(obj)) {
       return obj.map((item) => this.replaceNullValues(item));
-    } else if (obj && typeof obj === 'object') {
+    }
+    if (obj && typeof obj === 'object') {
       const newObj = {};
       for (const key in obj) {
         newObj[key] = this.replaceNullValues(obj[key]);
       }
       return newObj;
-    } else if (obj === 'NULL') {
+    }
+    if (obj === 'NULL') {
       return undefined;
     }
     return obj;
@@ -606,9 +600,8 @@ export class HsStylerService {
       return JSON.parse(
         JSON.stringify(options.styleObject).replaceAll('null]', '"NULL"]'),
       );
-    } else {
-      return this.replaceNullValues(options.styleObject);
     }
+    return this.replaceNullValues(options.styleObject);
   }
 
   private async jsonToSld(styleObject: GeoStylerStyle): Promise<string> {
@@ -821,8 +814,6 @@ export class HsStylerService {
    * (which returns the "features" attribute of the parent/cluster feature) and returned
    * '[object Object], [object Object]' the result would become "2".
    * See https://github.com/geostyler/geostyler-openlayers-parser/issues/227
-   * @param style -
-   * @returns
    */
   wrapStyleForClusters(style: StyleFunction): StyleFunction {
     return (feature, resolution) => {

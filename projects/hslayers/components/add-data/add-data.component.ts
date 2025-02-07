@@ -1,22 +1,26 @@
 import {Component, OnInit} from '@angular/core';
 import {Observable, of, switchMap} from 'rxjs';
 
-import {AddDataUrlType} from 'hslayers-ng/types';
-import {DatasetType} from 'hslayers-ng/types';
+import {
+  AddDataUrlType,
+  DatasetType,
+  SERVICES_SUPPORTED_BY_URL,
+} from 'hslayers-ng/types';
 import {
   HsAddDataCatalogueService,
   HsAddDataService,
+  HsAddDataUrlService,
 } from 'hslayers-ng/services/add-data';
-import {HsAddDataUrlService} from 'hslayers-ng/services/add-data';
 import {HsConfirmDialogComponent} from 'hslayers-ng/common/confirm';
 import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
 import {HsGetCapabilitiesErrorComponent} from './common/capabilities-error-dialog/capabilities-error-dialog.component';
-import {HsLayerSynchronizerService} from 'hslayers-ng/services/save-map';
-import {HsLaymanService} from 'hslayers-ng/services/save-map';
+import {
+  HsLayerSynchronizerService,
+  HsLaymanService,
+} from 'hslayers-ng/services/save-map';
 import {HsPanelBaseComponent} from 'hslayers-ng/common/panels';
 import {HsRemoveLayerDialogService} from 'hslayers-ng/common/remove-multiple';
 import {HsShareUrlService} from 'hslayers-ng/services/share';
-import {SERVICES_SUPPORTED_BY_URL} from 'hslayers-ng/types';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 
 @Component({

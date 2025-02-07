@@ -15,8 +15,10 @@ import {HsFiltersComponent} from 'hslayers-ng/common/filters';
 import {HsIconSymbolizerComponent} from './symbolizers/icon-symbolizer/icon-symbolizer.component';
 import {HsLineSymbolizerComponent} from './symbolizers/line-symbolizer/line-symbolizer.component';
 import {HsMarkSymbolizerComponent} from './symbolizers/mark-symbolizer/mark-symbolizer.component';
-import {HsPanelHeaderComponent} from 'hslayers-ng/common/panels';
-import {HsPanelHelpersModule} from 'hslayers-ng/common/panels';
+import {
+  HsPanelHeaderComponent,
+  HsPanelHelpersModule,
+} from 'hslayers-ng/common/panels';
 import {HsRuleComponent} from './rule/rule.component';
 import {HsRuleListItemComponent} from './rule/rule-list-item/rule-list-item.component';
 import {HsScaleDenominatorComponent} from './filters/scale-denominator.component';

@@ -226,10 +226,6 @@ export class SparqlJson extends Vector {
     this.set('legendCategories', this.category_map);
   }
 
-  /**
-   * @param extend_with_attribs
-   * @param objects
-   */
   extendAttributes(extend_with_attribs, objects) {
     if (typeof extend_with_attribs !== 'undefined') {
       for (const attr_i in extend_with_attribs) {
@@ -432,9 +428,6 @@ export class SparqlJson extends Vector {
    * HSV to RBG adapted from: http://mjijackson.com/2008/02/rgb-to-hsl-and-rgb-to-hsv-color-model-conversion-algorithms-in-javascript
    * based on http://stackoverflow.com/a/7419630
    * TODO: try inject(HsUtilsService) and call the rainbow() method from there
-   * @param numOfSteps
-   * @param step
-   * @param opacity
    */
   rainbow(numOfSteps: number, step: number, opacity: number) {
     let r, g, b;
@@ -483,11 +476,6 @@ export class SparqlJson extends Vector {
 
   /**
    * FIXME: What is this?
-   * @param featureObject
-   * @param categoryField
-   * @param feature
-   * @param categoryMap
-   * @param categoryId
    */
   registerCategoryForStatistics({
     featureObject,

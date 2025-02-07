@@ -7,10 +7,9 @@ import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
 import {HsCompositionsInfoDialogComponent} from './dialogs/info-dialog.component';
 import {HsCompositionsService} from './compositions.service';
 import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
-import {HsEndpoint} from 'hslayers-ng/types';
+import {HsEndpoint, HsMapCompositionDescriptor} from 'hslayers-ng/types';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
-import {HsMapCompositionDescriptor} from 'hslayers-ng/types';
 import {HsMapService} from 'hslayers-ng/services/map';
 import {HsUtilsService} from 'hslayers-ng/services/utils';
 import {
@@ -147,7 +146,6 @@ export class HsCompositionsCatalogueService {
 
   /**
    * Load list of compositions for all endpoints
-   * @param suspendLimitCalculation -
    */
   loadCompositions(suspendLimitCalculation?: boolean): void {
     if (this.loadCompositionsQuery) {
@@ -225,7 +223,6 @@ export class HsCompositionsCatalogueService {
   /**
    * Load list of compositions according to current filter values and pager position
    * (filter, keywords, current extent, start composition, compositions number per page). Display compositions extent in map
-   * @param ep -
    */
   loadCompositionFromEndpoint(ep: HsEndpoint): Observable<any> {
     return this.hsCompositionsService.loadCompositions(ep, {
@@ -248,9 +245,8 @@ export class HsCompositionsCatalogueService {
     this.endpoints = this.endpoints.filter((ep: HsEndpoint) => {
       if (this.filterByOnlyMine) {
         return !this.filterByOnlyMine || ep.type.includes('layman');
-      } else {
-        return true;
       }
+      return true;
     });
     this.loadCompositions();
   }
@@ -271,7 +267,6 @@ export class HsCompositionsCatalogueService {
 
   /**
    *  Filters compositions from responseArray with the same id in already loaded compositionEntries array
-   * @param endpoint -
    */
   filterDuplicates(endpoint: HsEndpoint): HsMapCompositionDescriptor[] {
     if (!this.arrayContainsData(endpoint.compositions)) {
@@ -306,7 +301,6 @@ export class HsCompositionsCatalogueService {
     this.endpoints.forEach((ep) => (ep.compositions = []));
   }
   /**
-   
    * Evaluates if array is defined and contains any data
    * @param arr - Endpoint composition records
    */

@@ -11,8 +11,7 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {NgbAccordionDirective} from '@ng-bootstrap/ng-bootstrap';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 
-import {FileDataObject} from 'hslayers-ng/types';
-import {FileDescriptor} from 'hslayers-ng/types';
+import {FileDataObject, FileDescriptor} from 'hslayers-ng/types';
 import {HsAddDataCommonFileService} from 'hslayers-ng/services/add-data';
 import {HsToastService} from 'hslayers-ng/common/toast';
 
@@ -168,9 +167,8 @@ export class RasterTimeseriesComponent implements OnInit {
       let parts = timestamp.split(separator);
       parts = parts.map((part) => `([0-9]{${part.length}})`);
       return parts.join(separator);
-    } else {
-      return `[0-9]{${this.selectedString.length}}`;
     }
+    return `[0-9]{${this.selectedString.length}}`;
   }
 
   /**

@@ -25,7 +25,6 @@ import {HsDrawPanelComponent} from './draw-panel/draw-panel.component';
     TranslateCustomPipe,
     HsDrawEditComponent,
     HsDrawPanelComponent,
-    HsPanelBaseComponent,
     HsQueryFeatureListComponent,
     HsPanelHeaderComponent,
     HsPanelHelpersModule,

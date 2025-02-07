@@ -1,7 +1,9 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import {Component, Input, OnInit} from '@angular/core';
 
-import {HsAddDataCatalogueService} from 'hslayers-ng/services/add-data';
+import {
+  HsAddDataCatalogueService,
+  HsLaymanBrowserService,
+} from 'hslayers-ng/services/add-data';
 import {
   HsAddDataLayerDescriptor,
   HsEndpoint,
@@ -10,7 +12,6 @@ import {
 import {HsCatalogueMetadataComponent} from '../catalogue-metadata/catalogue-metadata.component';
 import {HsCatalogueMetadataService} from '../catalogue-metadata/catalogue-metadata.service';
 import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
-import {HsLaymanBrowserService} from 'hslayers-ng/services/add-data';
 import {HsLogService} from 'hslayers-ng/services/log';
 import {HsRemoveLayerDialogService} from 'hslayers-ng/common/remove-multiple';
 import {HsSetPermissionsDialogComponent} from 'hslayers-ng/common/dialog-set-permissions';

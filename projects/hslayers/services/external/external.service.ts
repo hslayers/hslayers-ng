@@ -13,14 +13,15 @@ import {
   DOM_FEATURE_LINKS,
   getDomFeatureLinks,
 } from 'hslayers-ng/common/extensions';
-import {HsLayerUtilsService} from 'hslayers-ng/services/utils';
+import {HsLayerUtilsService, HsUtilsService} from 'hslayers-ng/services/utils';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsLogService} from 'hslayers-ng/services/log';
 import {HsMapService} from 'hslayers-ng/services/map';
-import {HsQueryBaseService} from 'hslayers-ng/services/query';
+import {
+  HsQueryBaseService,
+  HsQueryVectorService,
+} from 'hslayers-ng/services/query';
 import {HsQueryPopupService} from 'hslayers-ng/common/query-popup';
-import {HsQueryVectorService} from 'hslayers-ng/services/query';
-import {HsUtilsService} from 'hslayers-ng/services/utils';
 
 export type FeatureDomEventLink = {
   handles: EventListenerOrEventListenerObject[];
@@ -224,9 +225,11 @@ export class HsExternalService {
       const featureLike = source.getFeatureById(link.feature);
       //Filter out possible RenderFeatures
       return featureLike instanceof Feature ? featureLike : undefined;
-    } else if (this.hsUtilsService.instOf(link.feature, Feature)) {
+    }
+    if (this.hsUtilsService.instOf(link.feature, Feature)) {
       return link.feature as Feature<Geometry>;
-    } else if (typeof link.feature == 'function') {
+    }
+    if (typeof link.feature == 'function') {
       return link.feature(layer, domElement);
     }
   }

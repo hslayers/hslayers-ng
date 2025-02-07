@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import {Injectable} from '@angular/core';
 
 import {HsUtilsService} from 'hslayers-ng/services/utils';
@@ -7,24 +6,16 @@ import {HsUtilsService} from 'hslayers-ng/services/utils';
 export class HsCatalogueMetadataService {
   constructor(public hsUtilsService: HsUtilsService) {}
 
-  /**
-   * @param input -
-   * @param prestring -
-   */
   decomposeMetadata(input, prestring?: string): any {
     if (this.hsUtilsService.isPOJO(input)) {
       return this.decomposeObject(input, prestring);
-    } else if (Array.isArray(input)) {
-      return this.decomposeArray(input, prestring);
-    } else {
-      return false;
     }
+    if (Array.isArray(input)) {
+      return this.decomposeArray(input, prestring);
+    }
+    return false;
   }
 
-  /**
-   * @param obj -
-   * @param substring -
-   */
   decomposeObject(obj, substring?: string): any {
     let decomposed = {};
     let subvalue = undefined;
@@ -55,10 +46,6 @@ export class HsCatalogueMetadataService {
     return decomposed;
   }
 
-  /**
-   * @param arr -
-   * @param substring -
-   */
   decomposeArray(arr: any[], substring: string): any {
     let decomposed = undefined;
     let sub: any = '';

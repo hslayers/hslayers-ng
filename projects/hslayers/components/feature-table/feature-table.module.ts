@@ -6,8 +6,10 @@ import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
 import {HsFeatureFilterPipe} from './feature-filter.pipe';
 import {HsFeatureTableComponent} from './feature-table.component';
 import {HsLayerFeaturesComponent} from './layer-features.component';
-import {HsPanelHeaderComponent} from 'hslayers-ng/common/panels';
-import {HsPanelHelpersModule} from 'hslayers-ng/common/panels';
+import {
+  HsPanelHeaderComponent,
+  HsPanelHelpersModule,
+} from 'hslayers-ng/common/panels';
 import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 
 @NgModule({

@@ -9,23 +9,27 @@ import {Options as TileOptions} from 'ol/layer/BaseTile';
 import {WMSCapabilities} from 'ol/format';
 import {get, transformExtent} from 'ol/proj';
 
-import {AddLayersRecursivelyOptions} from 'hslayers-ng/types';
-import {CapabilitiesResponseWrapper} from 'hslayers-ng/types';
+import {
+  AddLayersRecursivelyOptions,
+  CapabilitiesResponseWrapper,
+  HsUrlTypeServiceModel,
+  HsWmsLayer,
+  WMSGetCapabilitiesResponse,
+  LayerOptions,
+  UrlDataObject,
+} from 'hslayers-ng/types';
 import {DuplicateHandling, HsMapService} from 'hslayers-ng/services/map';
 import {HsAddDataCommonService} from '../common.service';
 import {HsAddDataService} from '../add-data.service';
 import {HsAddDataUrlService} from './add-data-url.service';
 import {HsConfig} from 'hslayers-ng/config';
-import {HsDimensionService} from 'hslayers-ng/services/get-capabilities';
+import {
+  HsDimensionService,
+  HsWmsGetCapabilitiesService,
+} from 'hslayers-ng/services/get-capabilities';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
-import {HsLayerUtilsService} from 'hslayers-ng/services/utils';
+import {HsLayerUtilsService, HsUtilsService} from 'hslayers-ng/services/utils';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
-import {HsUrlTypeServiceModel} from 'hslayers-ng/types';
-import {HsUtilsService} from 'hslayers-ng/services/utils';
-import {HsWmsGetCapabilitiesService} from 'hslayers-ng/services/get-capabilities';
-import {HsWmsLayer, WMSGetCapabilitiesResponse} from 'hslayers-ng/types';
-import {LayerOptions} from 'hslayers-ng/types';
-import {UrlDataObject} from 'hslayers-ng/types';
 import {addAnchors, getPreferredFormat} from 'hslayers-ng/common/utils';
 
 @Injectable({providedIn: 'root'})

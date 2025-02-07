@@ -9,12 +9,11 @@ import {Vector as VectorSource} from 'ol/source';
 import {unByKey} from 'ol/Observable';
 
 import {HsCommonEndpointsService} from 'hslayers-ng/services/endpoints';
-import {HsLayerUtilsService} from 'hslayers-ng/services/utils';
+import {HsLayerUtilsService, HsUtilsService} from 'hslayers-ng/services/utils';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsMapCompositionDescriptor} from 'hslayers-ng/types';
 import {HsMapService} from 'hslayers-ng/services/map';
 import {HsSaveMapService} from 'hslayers-ng/services/save-map';
-import {HsUtilsService} from 'hslayers-ng/services/utils';
 import {getHighlighted, setHighlighted} from 'hslayers-ng/common/extensions';
 
 @Injectable({
@@ -107,7 +106,6 @@ export class HsCompositionsMapService {
 
   /**
    * Act on map pointer movement and highlight features under it
-   * @param evt
    */
   mapPointerMoved(evt) {
     const featuresUnderMouse = this.extentLayer

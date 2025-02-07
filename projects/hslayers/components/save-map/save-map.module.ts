@@ -4,8 +4,10 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 import {AdvancedOptionsComponent} from './form/advanced-options/advanced-options.component';
 import {HsLaymanModule} from 'hslayers-ng/common/layman';
-import {HsPanelHeaderComponent} from 'hslayers-ng/common/panels';
-import {HsPanelHelpersModule} from 'hslayers-ng/common/panels';
+import {
+  HsPanelHeaderComponent,
+  HsPanelHelpersModule,
+} from 'hslayers-ng/common/panels';
 import {HsSaveMapAdvancedFormComponent} from './form/form.component';
 import {HsSaveMapComponent} from './save-map.component';
 import {HsSaveMapResultDialogComponent} from './dialog-result/dialog-result.component';

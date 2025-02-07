@@ -13,29 +13,30 @@ import {Map} from 'ol';
 import {Vector as VectorLayer} from 'ol/layer';
 
 import {HsCommonEndpointsService} from 'hslayers-ng/services/endpoints';
-import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
+import {
+  HsCommonLaymanService,
+  getLayerName,
+  getLaymanFriendlyLayerName,
+} from 'hslayers-ng/common/layman';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsConfigMock} from './config.service.mock';
 import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
 import {HsEndpoint} from 'hslayers-ng/types';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
-import {HsLayerUtilsService} from 'hslayers-ng/services/utils';
+import {HsLayerUtilsService, HsUtilsService} from 'hslayers-ng/services/utils';
 import {HsLaymanService} from 'hslayers-ng/services/save-map';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsLayoutServiceMock} from './layout.service.mock';
 import {HsMapService} from 'hslayers-ng/services/map';
 import {HsMapServiceMock} from './map.service.mock';
-import {HsSaveMapComponent} from 'hslayers-ng/components/save-map';
-import {HsSaveMapDialogSpawnerService} from 'hslayers-ng/components/save-map';
-import {HsSaveMapManagerService} from 'hslayers-ng/components/save-map';
+import {
+  HsSaveMapComponent,
+  HsSaveMapDialogSpawnerService,
+  HsSaveMapManagerService,
+} from 'hslayers-ng/components/save-map';
 import {HsSaveMapManagerServiceMock} from './save-map-manager.service.mock';
-import {HsUtilsService} from 'hslayers-ng/services/utils';
 import {HsUtilsServiceMock} from './utils/utils.service.mock';
 import {TranslateCustomPipe} from 'hslayers-ng/services/language';
-import {
-  getLayerName,
-  getLaymanFriendlyLayerName,
-} from 'hslayers-ng/common/layman';
 import {mockLayerUtilsService} from './layer-utils.service.mock';
 
 class emptyMock {

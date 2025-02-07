@@ -7,7 +7,6 @@ import {Geometry} from 'ol/geom';
 
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsSearchService} from './search.service';
-import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 import {limitToPipe} from './limitTo.pipe';
 import {setHighlighted} from 'hslayers-ng/common/extensions';
 
@@ -17,7 +16,7 @@ import {setHighlighted} from 'hslayers-ng/common/extensions';
 @Component({
   selector: 'hs-search-results',
   templateUrl: './search-results.component.html',
-  imports: [limitToPipe, NgClass, TranslateCustomPipe, KeyValuePipe],
+  imports: [limitToPipe, NgClass, KeyValuePipe],
   styles: `
     .hsl-search-result:hover {
       background-color: rgba(var(--bs-light-rgb), 1);

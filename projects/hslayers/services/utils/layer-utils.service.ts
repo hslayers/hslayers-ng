@@ -17,13 +17,16 @@ import {Extent, isEmpty} from 'ol/extent';
 import {Feature, View} from 'ol';
 import {default as FeatureFormat} from 'ol/format/Feature';
 import {Geometry} from 'ol/geom';
-import {HsLayerDescriptor} from 'hslayers-ng/types';
+import {HsLayerDescriptor, HsWmsLayer} from 'hslayers-ng/types';
 import {HsUtilsService} from './utils.service';
-import {HsWmsLayer} from 'hslayers-ng/types';
-import {Image as ImageLayer, Layer, Vector as VectorLayer} from 'ol/layer';
+import {
+  Image as ImageLayer,
+  Layer,
+  Vector as VectorLayer,
+  Tile as TileLayer,
+  VectorImage,
+} from 'ol/layer';
 import {METERS_PER_UNIT, Projection, transformExtent} from 'ol/proj';
-import {Tile as TileLayer} from 'ol/layer';
-import {VectorImage} from 'ol/layer';
 import {
   getCluster,
   getEditor,
@@ -107,9 +110,8 @@ export class HsLayerUtilsService {
   getLayerTitle(layer: Layer<Source>): string {
     if (getTitle(layer) !== undefined && getTitle(layer) != '') {
       return getTitle(layer).replace(/&#47;/g, '/');
-    } else {
-      return 'Void';
     }
+    return 'Void';
   }
 
   getURL(layer: Layer<Source>): string {
@@ -133,7 +135,8 @@ export class HsLayerUtilsService {
       const tmpUrl = (src as any).getUrl();
       if (typeof tmpUrl == 'string') {
         return tmpUrl;
-      } else if (this.HsUtilsService.isFunction(tmpUrl)) {
+      }
+      if (this.HsUtilsService.isFunction(tmpUrl)) {
         return tmpUrl();
       }
     }
@@ -383,10 +386,9 @@ export class HsLayerUtilsService {
         getShowInLayerManager(layer) === false)
     ) {
       return '';
-    } else {
-      const layerName = getTitle(layer) || getName(layer);
-      return layerName;
     }
+    const layerName = getTitle(layer) || getName(layer);
+    return layerName;
   }
 
   /**

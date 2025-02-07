@@ -16,8 +16,10 @@ import {
 } from 'hslayers-ng/services/language';
 import {HsLogService} from 'hslayers-ng/services/log';
 import {HsMapService} from 'hslayers-ng/services/map';
-import {HsQueryBaseService} from 'hslayers-ng/services/query';
-import {HsQueryVectorService} from 'hslayers-ng/services/query';
+import {
+  HsQueryBaseService,
+  HsQueryVectorService,
+} from 'hslayers-ng/services/query';
 import {HsToastService} from 'hslayers-ng/common/toast';
 import {defaultStyle} from 'hslayers-ng/services/styler';
 

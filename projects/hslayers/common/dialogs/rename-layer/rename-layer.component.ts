@@ -26,7 +26,6 @@ export class HsRenameLayerDialogComponent implements HsDialogComponent, OnInit {
   }
 
   /**
-   * @public
    * Close the dialog
    */
   close(): void {
@@ -35,7 +34,6 @@ export class HsRenameLayerDialogComponent implements HsDialogComponent, OnInit {
   }
 
   /**
-   * @public
    * Continue with the new layer name from user's input
    */
   continue(): void {

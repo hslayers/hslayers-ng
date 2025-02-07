@@ -2,21 +2,25 @@ import {AfterContentInit, Component, Input} from '@angular/core';
 
 import {FormsModule} from '@angular/forms';
 
-import {AddDataUrlType, UrlDataObject} from 'hslayers-ng/types';
-import {HsAddDataCommonService} from 'hslayers-ng/services/add-data';
-import {HsAddDataService} from 'hslayers-ng/services/add-data';
-import {HsAddDataUrlService} from 'hslayers-ng/services/add-data';
+import {
+  AddDataUrlType,
+  UrlDataObject,
+  HsUrlTypeServiceModel,
+  Service,
+} from 'hslayers-ng/types';
+import {
+  HsAddDataCommonService,
+  HsAddDataService,
+  HsAddDataUrlService,
+  HsUrlWmsService,
+} from 'hslayers-ng/services/add-data';
 import {
   HsLanguageService,
   TranslateCustomPipe,
 } from 'hslayers-ng/services/language';
-import {HsLayerUtilsService} from 'hslayers-ng/services/utils';
+import {HsLayerUtilsService, HsUtilsService} from 'hslayers-ng/services/utils';
 import {HsNestedLayersTableComponent} from './nested-layers-table/nested-layers-table.component';
-import {HsUrlTypeServiceModel, Service} from 'hslayers-ng/types';
-import {HsUrlWmsService} from 'hslayers-ng/services/add-data';
-import {HsUtilsService} from 'hslayers-ng/services/utils';
 import {NgClass, SlicePipe} from '@angular/common';
-import {TrackByPropertyPipe} from 'hslayers-ng/common/pipes';
 
 @Component({
   selector: 'hs-layer-table',
@@ -26,7 +30,6 @@ import {TrackByPropertyPipe} from 'hslayers-ng/common/pipes';
     FormsModule,
     SlicePipe,
     NgClass,
-    TrackByPropertyPipe,
     HsNestedLayersTableComponent,
   ],
 })
@@ -59,9 +62,8 @@ export class HsLayerTableComponent implements AfterContentInit {
       this.data.services?.length > this.limitShown
     ) {
       return true;
-    } else {
-      return false;
     }
+    return false;
   }
 
   /**

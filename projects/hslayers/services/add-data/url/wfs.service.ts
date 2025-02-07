@@ -7,8 +7,13 @@ import {Layer, Vector as VectorLayer} from 'ol/layer';
 import {Source} from 'ol/source';
 import {get, transformExtent} from 'ol/proj';
 
-import {AddLayersRecursivelyOptions} from 'hslayers-ng/types';
-import {CapabilitiesResponseWrapper} from 'hslayers-ng/types';
+import {
+  AddLayersRecursivelyOptions,
+  CapabilitiesResponseWrapper,
+  HsUrlTypeServiceModel,
+  LayerOptions,
+  UrlDataObject,
+} from 'hslayers-ng/types';
 import {DuplicateHandling, HsMapService} from 'hslayers-ng/services/map';
 import {HsAddDataCommonService} from '../common.service';
 import {HsAddDataUrlService} from './add-data-url.service';
@@ -16,11 +21,8 @@ import {HsConfig} from 'hslayers-ng/config';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsLogService} from 'hslayers-ng/services/log';
-import {HsUrlTypeServiceModel} from 'hslayers-ng/types';
 import {HsUtilsService} from 'hslayers-ng/services/utils';
 import {HsWfsGetCapabilitiesService} from 'hslayers-ng/services/get-capabilities';
-import {LayerOptions} from 'hslayers-ng/types';
-import {UrlDataObject} from 'hslayers-ng/types';
 
 import {WfsSource} from 'hslayers-ng/common/layers';
 import {setCluster} from 'hslayers-ng/common/extensions';
@@ -417,7 +419,6 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
 
   /**
    * Parse EPSG in usable formats
-   * @param srss -
    */
   parseEPSG(srss): Array<any> {
     srss.forEach((srs, index) => {

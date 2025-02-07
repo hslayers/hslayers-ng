@@ -12,9 +12,12 @@ import {LineString, Point, Polygon} from 'ol/geom';
 import {Vector as VectorLayer} from 'ol/layer';
 
 import {HsConfig} from 'hslayers-ng/config';
-import {HsLayerUtilsService} from 'hslayers-ng/services/utils';
+import {
+  HsLayerUtilsService,
+  HsUtilsService,
+  instOf,
+} from 'hslayers-ng/services/utils';
 import {HsLogService} from 'hslayers-ng/services/log';
-import {HsUtilsService, instOf} from 'hslayers-ng/services/utils';
 import {mockLayerUtilsService} from '../layer-utils.service.mock';
 
 class EmptyMock {
