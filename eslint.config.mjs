@@ -59,7 +59,6 @@ export default typescriptEslint.config({
             style: "kebab-case",
         }],
         "@angular-eslint/prefer-standalone": "off",
-        "@angular-eslint/template/click-events-have-key-events": "off",
         "brace-style": "warn",
         "no-console": "warn",
         "object-curly-spacing": "warn",
@@ -96,11 +95,14 @@ export default typescriptEslint.config({
     },
     languageOptions: {
         parser: angularEslintParser,
-    },*/
+        },*/
     rules: {
-        "@angular-eslint/template/interactive-supports-focus": "warn",
-        "@angular-eslint/template/click-events-have-key-events": "warn",
+        "@angular-eslint/template/interactive-supports-focus": "off",
+        "@angular-eslint/template/click-events-have-key-events": "off",
+        "@angular-eslint/template/mouse-events-have-key-events": "off",
         "@angular-eslint/template/elements-content": "warn",
+        "@angular-eslint/template/label-has-associated-control": "warn",
+        "@angular-eslint/template/alt-text": "warn",
     },
 }, {
     files: ["**/*.spec.ts"],
