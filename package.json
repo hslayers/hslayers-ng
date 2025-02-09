@@ -49,7 +49,7 @@
     "@angular/cdk": "^19.1.0",
     "@angular/common": "^19.1.2",
     "@angular/compiler": "^19.1.2",
-    "@angular/core": "^19.1.2",
+    "@angular/core": "^19.1.5",
     "@angular/forms": "^19.1.2",
     "@angular/localize": "^19.1.2",
     "@angular/platform-browser": "^19.1.2",
