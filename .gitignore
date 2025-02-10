@@ -32,3 +32,5 @@ cypress/screenshots
 cypress/downloads/*
 cypress/tests/__image_snapshots__
 .cursorignore
+.cursorrules
+.venv/
