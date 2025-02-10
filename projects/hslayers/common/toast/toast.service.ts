@@ -1,16 +1,18 @@
-import {Injectable, TemplateRef} from '@angular/core';
+import {Injectable, TemplateRef, signal} from '@angular/core';
 
 import {HsConfig} from 'hslayers-ng/config';
 import {HsLanguageService} from 'hslayers-ng/services/language';
+import {ToastType} from './toast-item.component';
 
 export interface Toast {
   autohide?: boolean;
-  classname?: string;
+  type?: ToastType;
   delay?: number;
   details?: string[];
   header?: string;
   serviceCalledFrom?: string;
   textOrTpl?: string;
+  id?: string;
 }
 
 export type customToastOptions = {
@@ -19,10 +21,9 @@ export type customToastOptions = {
    */
   disableLocalization?: boolean;
   /**
-   * Toast message background and text style classes, for example - background: (bg-primary, bg-secondary, bg-success, bg-danger, bg-warning, bg-info, bg-light, bg-dark, bg-white)
-   * and text: (text-primary, text-secondary, text-success, text-danger, text-warning, text-info, text-light, text-dark, text-white, text-muted)
+   * Type of toast message (success, danger, warning, info)
    */
-  toastStyleClasses?: string;
+  type?: ToastType;
   /**
    * Sets custom delay for the toast message
    */
@@ -41,27 +42,29 @@ export type customToastOptions = {
   providedIn: 'root',
 })
 export class HsToastService {
-  toasts: Toast[] = [];
+  private toastsSignal = signal<Toast[]>([]);
+
   constructor(
     public HsLanguageService: HsLanguageService,
     private hsConfig: HsConfig,
   ) {}
+
+  get toasts() {
+    return this.toastsSignal();
+  }
 
   /**
    * Callback method to remove Toast DOM element from view
    * @param toast - Toast pop up
    */
   remove(toast: Toast): void {
-    this.toasts = this.toasts.filter((t) => t !== toast);
+    this.toastsSignal.update((toasts) => toasts.filter((t) => t !== toast));
   }
 
   removeByText(text: string): void {
-    const found = this.toasts.filter((t) => t.textOrTpl === text);
-    if (found?.length > 0) {
-      for (const f of found) {
-        this.remove(f);
-      }
-    }
+    this.toastsSignal.update((toasts) =>
+      toasts.filter((t) => t.textOrTpl !== text),
+    );
   }
 
   /**
@@ -71,8 +74,11 @@ export class HsToastService {
    */
   show(textOrTpl: string | TemplateRef<any>, options: any = {}): void {
     if (this.toasts.length >= 5) {
-      this.toasts = this.toasts.slice(-4);
+      this.toastsSignal.update((toasts) => toasts.slice(-4));
     }
+
+    const newToast = {textOrTpl, ...options, id: crypto.randomUUID()};
+
     if (
       !this.toasts.some(
         (toast) =>
@@ -80,7 +86,7 @@ export class HsToastService {
           toast?.serviceCalledFrom === options.serviceCalledFrom,
       )
     ) {
-      this.toasts.push({textOrTpl, ...options});
+      this.toastsSignal.update((toasts) => [...toasts, newToast]);
     }
   }
 
@@ -106,7 +112,7 @@ export class HsToastService {
         delay:
           options.customDelay || (this.hsConfig.errorToastDuration ?? 7000),
         autohide: true,
-        classname: options.toastStyleClasses || `bg-danger text-light`,
+        type: options.type || 'info',
         serviceCalledFrom: options.serviceCalledFrom,
         details: options.details || [],
       },
