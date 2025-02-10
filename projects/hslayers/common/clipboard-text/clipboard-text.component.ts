@@ -42,7 +42,7 @@ export class HsClipboardTextComponent {
         'COMMON.copyToClipboard',
         'COMMON.copyToClipboardFailure',
         {
-          toastStyleClasses: 'bg-danger text-white',
+          type: 'danger',
         },
       );
       return;

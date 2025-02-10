@@ -114,7 +114,7 @@ export class HsFeatureCommonService {
         undefined,
       ) + getTitle(toLayer),
       {
-        toastStyleClasses: 'bg-success text-light',
+        type: 'success',
         serviceCalledFrom: 'HsFeatureCommonService',
       },
     );

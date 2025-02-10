@@ -824,7 +824,7 @@ export class HsDrawService extends HsDrawServiceParams {
             platformModifierKey: 'CTRL/META',
           })}`,
           {
-            toastStyleClasses: 'bg-info text-white',
+            type: 'info',
             serviceCalledFrom: 'HsDrawService',
           },
         );

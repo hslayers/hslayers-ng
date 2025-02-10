@@ -4,10 +4,9 @@ import {HttpClient} from '@angular/common/http';
 import {Circle, Fill, Stroke, Style} from 'ol/style';
 import {Feature} from 'ol';
 import {GeoJSON} from 'ol/format';
-import {Image as ImageLayer, Vector as VectorLayer} from 'ol/layer';
+import {Image as ImageLayer, Vector as VectorLayer, Tile} from 'ol/layer';
 import {OSM, TileWMS, Vector as VectorSource, XYZ} from 'ol/source';
 import {Point} from 'ol/geom';
-import {Tile} from 'ol/layer';
 import {catchError, lastValueFrom, takeUntil} from 'rxjs';
 import {transformExtent} from 'ol/proj';
 
@@ -20,9 +19,7 @@ import {
 } from 'hslayers-ng/services/panel-constructor';
 import {HsSidebarService} from 'hslayers-ng/services/sidebar';
 import {HsUtilsService} from 'hslayers-ng/services/utils';
-import {InterpolatedSource} from 'hslayers-ng/common/layers';
-import {SPOI} from 'hslayers-ng/common/layers';
-import {SparqlJson} from 'hslayers-ng/common/layers';
+import {InterpolatedSource, SPOI, SparqlJson} from 'hslayers-ng/common/layers';
 
 import {PopupWidgetComponent} from './popup-widget.component';
 import {SomeComponent} from './some-panel/some-panel.component';

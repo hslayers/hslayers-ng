@@ -121,7 +121,7 @@ export class HsRemoveLayerDialogService {
         'LAYMAN.deleteLayersRequest',
         'LAYMAN.deletionInProgress',
         {
-          toastStyleClasses: 'bg-info text-white',
+          type: 'info',
           serviceCalledFrom: 'HsDrawService',
           customDelay: 600000,
         },

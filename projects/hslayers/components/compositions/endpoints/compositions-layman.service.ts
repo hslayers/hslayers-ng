@@ -251,7 +251,7 @@ export class HsCompositionsLaymanService {
       endpoint.title + ': ' + this.hsLanguageService.getTranslation(message),
       {
         disableLocalization: true,
-        toastStyleClasses: 'bg-warning text-light',
+        type: 'warning',
         serviceCalledFrom: 'HsCompositionsLaymanService',
       },
     );

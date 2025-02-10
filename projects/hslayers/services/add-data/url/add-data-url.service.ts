@@ -116,7 +116,7 @@ export class HsAddDataUrlService {
       'ADDLAYERS.layerExtentParsingProblem',
       {
         serviceCalledFrom: 'HsAddDataUrlService',
-        toastStyleClasses: 'bg-warning text-white',
+        type: 'warning',
       },
     );
   }
