@@ -149,7 +149,16 @@ export class HsConfigObject {
   default_view?: View;
   panelsEnabled?: PanelsEnabled;
   defaultPanel?: DefaultPanel;
+
+  /**
+   * Controls where toast notifications are anchored to
+   * @default 'map' - anchors toasts to the map container
+   * 'screen' - anchors toasts to the viewport
+   * 'map' - anchors toasts to the map container
+   */
+  toastAnchor?: 'screen' | 'map' = 'map';
   errorToastDuration?: number;
+
   advancedForm?: boolean;
   project_name?: string;
   hostname?: {
