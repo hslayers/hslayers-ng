@@ -108,7 +108,7 @@ export class HsCompositionsMickaService {
           ),
         {
           disableLocalization: true,
-          toastStyleClasses: 'bg-warning text-light',
+          type: 'warning',
           serviceCalledFrom: 'HsCompositionsMickaService',
         },
       );

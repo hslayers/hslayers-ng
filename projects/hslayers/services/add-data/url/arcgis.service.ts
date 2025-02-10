@@ -373,7 +373,7 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
           'ADDLAYERS.layerExtentParsingProblem',
           {
             serviceCalledFrom: 'HsUrlArcGisService',
-            toastStyleClasses: 'bg-warning text-white',
+            type: 'warning',
           },
         );
         return this.transformLayerExtent(this.data.extent, this.data);

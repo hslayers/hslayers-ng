@@ -172,7 +172,7 @@ export class HsLaymanBrowserService {
           ),
         {
           disableLocalization: true,
-          toastStyleClasses: 'bg-warning text-light',
+          type: 'warning',
           serviceCalledFrom: 'HsLaymanBrowserService',
         },
       );

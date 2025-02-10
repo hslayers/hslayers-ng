@@ -140,7 +140,7 @@ export class HsFiltersService {
       'STYLER.removeFilter',
       message,
       {
-        toastStyleClasses: 'text-bg-warning',
+        type: 'warning',
         serviceCalledFrom: 'HsFiltersService',
       },
     );

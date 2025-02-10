@@ -169,7 +169,7 @@ export class HsAddDataCommonFileService extends HsAddDataCommonFileServiceParams
         'ADDLAYERS.SHP.considerUsingZip',
         {
           serviceCalledFrom: 'HsAddDataCommonFileService',
-          toastStyleClasses: 'bg-warning text-white',
+          type: 'warning',
         },
       );
     }

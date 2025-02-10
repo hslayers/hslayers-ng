@@ -99,7 +99,7 @@ export class HsDrawEditComponent implements OnDestroy, OnInit {
                   undefined,
                 ),
                 {
-                  toastStyleClasses: 'bg-info text-light',
+                  type: 'info',
                 },
               );
             } else {
@@ -207,7 +207,7 @@ export class HsDrawEditComponent implements OnDestroy, OnInit {
         undefined,
       ),
       {
-        toastStyleClasses: 'bg-info text-light',
+        type: 'info',
       },
     );
     setTimeout(() => {
@@ -245,7 +245,7 @@ export class HsDrawEditComponent implements OnDestroy, OnInit {
               undefined,
             ),
             {
-              toastStyleClasses: 'bg-info text-light',
+              type: 'info',
             },
           );
         }
@@ -364,7 +364,7 @@ export class HsDrawEditComponent implements OnDestroy, OnInit {
           undefined,
         ),
         {
-          toastStyleClasses: 'bg-warning text-light',
+          type: 'warning',
         },
       );
     }

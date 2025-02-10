@@ -129,7 +129,7 @@ export class RasterTimeseriesComponent implements OnInit {
         'Selected string is invalid',
         'Selected string is missing or is not supported.',
         {
-          toastStyleClasses: 'bg-danger text-light',
+          type: 'danger',
           customDelay: 7000,
         },
       );

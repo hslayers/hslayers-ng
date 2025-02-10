@@ -984,7 +984,7 @@ export class HsLaymanService implements HsSaverService {
                 'LAYMAN.deleteLayersRequest',
                 message,
                 {
-                  toastStyleClasses: 'bg-success text-light',
+                  type: 'success',
                   details,
                 },
               );

@@ -158,7 +158,7 @@ export class HsWfsFilterComponent extends HsPanelBaseComponent {
               'PANEL_HEADER.WFS_FILTER',
               'WFS_FILTER.ERROR_FETCHING_LAYER_INFO',
               {
-                toastStyleClasses: 'text-bg-danger',
+                type: 'danger',
               },
             );
             throw error; // Re-throw the error to be caught by the outer try-catch
@@ -186,7 +186,7 @@ export class HsWfsFilterComponent extends HsPanelBaseComponent {
         'PANEL_HEADER.WFS_FILTER',
         'WFS_FILTER.ERROR_SELECTING_LAYER',
         {
-          toastStyleClasses: 'text-bg-danger',
+          type: 'danger',
         },
       );
     } finally {
@@ -355,7 +355,7 @@ export class HsWfsFilterComponent extends HsPanelBaseComponent {
           'PANEL_HEADER.WFS_FILTER',
           'WFS_FILTER.INCOMPLETE_FILTER',
           {
-            toastStyleClasses: 'text-bg-warning',
+            type: 'warning',
           },
         );
         return;

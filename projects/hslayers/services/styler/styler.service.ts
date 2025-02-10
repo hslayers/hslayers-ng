@@ -714,7 +714,7 @@ export class HsStylerService {
           'STYLER.colorMap',
           'STYLER.tooFewCategories',
           {
-            toastStyleClasses: 'bg-warning text-light',
+            type: 'warning',
             serviceCalledFrom: 'HsStylerService',
             details: [`Min = ${min}`],
           },

@@ -1,12 +1,13 @@
 import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
-import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
-import {HsPanelHelpersModule} from 'hslayers-ng/common/panels';
+import {
+  HsPanelHelpersModule,
+  HsPanelHeaderComponent,
+} from 'hslayers-ng/common/panels';
 import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 
-import {HsPanelHeaderComponent} from 'hslayers-ng/common/panels';
 import {SomeComponent} from './some-panel.component';
 
 @NgModule({
@@ -16,7 +17,6 @@ import {SomeComponent} from './some-panel.component';
     FormsModule,
     TranslateCustomPipe,
     HsPanelHelpersModule,
-    NgbModule,
     HsPanelHeaderComponent,
   ],
   exports: [],
