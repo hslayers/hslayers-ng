@@ -6,11 +6,12 @@ import {
   Input,
   NgZone,
   OnInit,
+  Signal,
   ViewChild,
   inject,
 } from '@angular/core';
 import {delay, filter, fromEvent, timer} from 'rxjs';
-import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
+import {takeUntilDestroyed, toSignal} from '@angular/core/rxjs-interop';
 
 import {HsConfig, HsConfigObject} from 'hslayers-ng/config';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
@@ -46,8 +47,9 @@ export class HslayersComponent implements AfterViewInit, OnInit {
   @ViewChild(HsMapHostDirective, {static: true})
   mapHost: HsMapHostDirective;
 
-  sidebarPosition: string;
-  sidebarVisible: boolean;
+  sidebarPosition: Signal<string>;
+  sidebarVisible: Signal<boolean>;
+
   private destroyRef = inject(DestroyRef);
 
   private panState: PanState = {
@@ -78,7 +80,10 @@ export class HslayersComponent implements AfterViewInit, OnInit {
     public HsOverlayContainerService: HsOverlayContainerService,
     private hsExternalService: HsExternalService, //Leave this, need to inject somewhere
     private ngZone: NgZone,
-  ) {}
+  ) {
+    this.sidebarPosition = toSignal(this.HsLayoutService.sidebarPosition);
+    this.sidebarVisible = toSignal(this.HsLayoutService.sidebarVisible);
+  }
 
   async ngOnInit(): Promise<void> {
     if (this.config) {
@@ -115,16 +120,10 @@ export class HslayersComponent implements AfterViewInit, OnInit {
     this.HsLayoutService.sidebarPosition
       .pipe(delay(0), takeUntilDestroyed(this.destroyRef))
       .subscribe((position) => {
-        this.sidebarPosition = position;
         if (position === 'left') {
           this.HsLayoutService.contentWrapper.classList.add('flex-reverse');
           this.HsLayoutService.sidebarRight = false;
         }
-      });
-    this.HsLayoutService.sidebarVisible
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe((visible) => {
-        this.sidebarVisible = visible;
       });
 
     window.addEventListener(
