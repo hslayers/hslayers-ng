@@ -1,34 +1,67 @@
-import {Component} from '@angular/core';
+import {Component, Input, computed} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {toSignal} from '@angular/core/rxjs-interop';
 
 import {HsToastService} from './toast.service';
+import {HsToastItemComponent} from './toast-item.component';
+import {HsConfig} from 'hslayers-ng/config';
+
+export type ToastPosition =
+  | 'top-left'
+  | 'top-right'
+  | 'top-center'
+  | 'bottom-left'
+  | 'bottom-right'
+  | 'bottom-center';
 
 @Component({
   selector: 'hs-toast',
-  templateUrl: './toast.component.html',
-  styles: [
-    `
-      :host {
-        position: absolute;
-        bottom: 0.1rem;
-        z-index: 150;
-        border-style: none;
-        display: flex;
-        max-height: 90%;
-        flex-direction: column;
-        max-width: 400px;
-        padding: 1rem 0;
-        gap: 0.5rem;
-      }
-
-      :host-context(.hs-mobile-view) {
-        top: 0;
-        right: 50%;
-        transform: translateX(50%);
-      }
-    `,
-  ],
-  standalone: false,
+  standalone: true,
+  imports: [CommonModule, HsToastItemComponent],
+  template: `
+    @for (toast of hsToastService.toasts; track toast) {
+      <hs-toast-item
+        [header]="toast.header"
+        [text]="toast.textOrTpl"
+        [details]="toast.details"
+        [type]="toast.type"
+        [delay]="toast.delay"
+        [autohide]="toast.autohide"
+        (hidden)="hsToastService.remove(toast)"
+      />
+    }
+  `,
+  styleUrls: ['./toast.component.scss'],
+  host: {
+    '[class]': 'positionClasses()',
+  },
 })
 export class HsToastComponent {
-  constructor(public hsToastService: HsToastService) {}
+  @Input() position: ToastPosition = 'bottom-center';
+
+  constructor(
+    public hsToastService: HsToastService,
+    private hsConfig: HsConfig,
+  ) {}
+
+  /**
+   * Signal that tracks config changes
+   */
+  private configChanges = toSignal(this.hsConfig.configChanges, {
+    initialValue: undefined,
+  });
+
+  /**
+   * Computes the CSS classes for positioning the toast container
+   * Combines position class with positioning based on anchor point
+   * Recomputes when config is updated through configChanges
+   */
+  positionClasses = computed(() => {
+    this.configChanges();
+    const positionType =
+      this.hsConfig.toastAnchor === 'screen'
+        ? 'position-fixed'
+        : 'position-absolute';
+    return `${this.position} ${positionType}`;
+  });
 }
