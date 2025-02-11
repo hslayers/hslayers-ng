@@ -15,7 +15,7 @@ import {TranslateCustomPipe} from 'hslayers-ng/services/language';
     >
       @if (!loading) {
         <span class="d-flex justify-content-center align-items-baseline gap-1">
-          <i class="icon-plus"> </i>{{ 'COMMON.addToMap' | translateHs }}
+          <i class="fa-solid fa-plus"> </i>{{ 'COMMON.addToMap' | translateHs }}
         </span>
       } @else {
         <span>

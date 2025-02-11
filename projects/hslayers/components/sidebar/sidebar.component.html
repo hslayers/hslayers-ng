@@ -7,24 +7,24 @@
   @if (HsLayoutService.sidebarToggleable && {position: HsLayoutService.sidebarPosition | async}; as sidebar) {
   <span class="hs-sidebar-item list-group-item border-top-0" (click)="toggleSidebar()">
     <i class="menu-icon"
-      [ngClass]="HsLayoutService.sidebarExpanded ? (sidebar.position === 'left' ? 'icon-chevron-left' : 'icon-chevron-right') : (sidebar.position === 'left' ? 'icon-chevron-right' : 'icon-chevron-left')"></i>
+      [ngClass]="HsLayoutService.sidebarExpanded ? (sidebar.position === 'left' ? 'fa-solid fa-chevron-left' : 'fa-solid fa-chevron-right') : (sidebar.position === 'left' ? 'fa-solid fa-chevron-right' : 'fa-solid fa-chevron-left')"></i>
   </span>
   }<!-- TODO: Remove function call from template -->
 
   @for (button of buttons; track button) {
-  <span class="hs-sidebar-item list-group-item h-100 d-flex align-items-center flex-fill" [attr.data-cy]="button.panel"
-    [hidden]="!button.visible" (click)="HsSidebarService.buttonClicked(button)"
+  <span class="hs-sidebar-item list-group-item h-100 d-flex align-items-center flex-fill fa-solid"
+    [attr.data-cy]="button.panel" [hidden]="!button.visible" (click)="HsSidebarService.buttonClicked(button)"
     [ngClass]="{'active': HsLayoutService.mainpanel === button.panel,  'hs-panel-hidden' : !button.fits}"
-    [title]="button.description | translateHs">
+    [class.language]="button.panel === 'language'" [title]="button.description | translateHs">
     <!-- TODO: Remove function call from template -->
     @if (button.icon) {
-    <i class="menu-icon {{button.icon}}" data-toggle="tooltip" data-container="body" data-placement="auto"></i>
+    <i class="menu-icon fa-solid {{button.icon}}" data-toggle="tooltip" data-container="body" data-placement="auto"></i>
     }
     @if (button.content) {
-    <span data-toggle="tooltip" data-container="body" data-placement="auto" class=""
+    <span data-toggle="tooltip" class="hs-sidebar-item-content" data-container="body" data-placement="auto" 
       [title]="button.description | translateHs ">{{button.content()}}</span>
     }
-    <span [ngClass]="{'language': button.panel === 'language'}" class="hs-sidebar-item-title">{{button.title |
+    <span class="hs-sidebar-item-title">{{button.title |
       translateHs }}</span>
   </span>
   }
@@ -33,8 +33,8 @@
   <span class="hs-sidebar-item d-flex list-group-item hs-sidebar-additional-items flex-fill align-items-center"
     (click)="HsLayoutService.setMainPanel('sidebar', true)"
     [ngClass]="{'active': HsLayoutService.mainpanel === 'sidebar'}">
-    <i class="menu-icon icon-equals" data-toggle="tooltip" data-container="body" data-placement="auto" title="Menu"
-      style="margin-left: 0px !important;"></i>
+    <i class="menu-icon fa-solid fa-equals" data-toggle="tooltip" data-container="body" data-placement="auto"
+      title="Menu"></i>
     <span class="hs-sidebar-item-title">{{miniSidebarButton.title | translateHs }}</span>
   </span>
   }

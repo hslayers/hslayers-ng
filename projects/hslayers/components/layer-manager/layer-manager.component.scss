@@ -38,7 +38,7 @@ div.list-group-item.hs-lm-list {
     cursor: pointer;
 }
 
-.hs-lm-list li .info_btn .icon-settingsthree-gears:hover::before {
+.hs-lm-list li .info_btn .fa-gears:hover::before {
     color: $primary;
 }
 
@@ -106,7 +106,7 @@ hs-layer-manager-time-editor button.btn {
 
 
 @container hslayers-element (max-width:767px) {
-    &.hs-mobile-view .hs-lm-item .icon-settingsthree-gears {
+    &.hs-mobile-view .hs-lm-item .fa-gears {
         font-size: 1.2rem;
     }
 }

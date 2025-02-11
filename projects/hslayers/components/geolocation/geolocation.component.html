@@ -3,14 +3,14 @@
   @if (!getLocalization()) {
     <button class="ol-has-tooltip blocate hs-locateToggler" [title]="'GEOLOCATION.locateMe' | translateHs"
       type="button" (click)="startLocalization()">
-      <i class="glyphicon icon-gpsoff-gps hs-locateToggler"></i>
+      <i class="fa-solid fa-location-slash hs-locateToggler"></i>
     </button>
   }
   @if (getLocalization()) {
     <button class="ol-has-tooltip blocate hs-locateToggler hs-locationButton" type="button"
       (click)="toggleTracking()" [title]="'GEOLOCATION.locateMe' | translateHs" (dblclick)="stopLocalization()">
-      <i class="glyphicon hs-locateToggler"
-      [ngClass]="(isFollowing() && getLocalization()) ? 'icon-navigation' : 'icon-gpson'"></i><!-- TODO: Remove function call from template -->
+      <i class="fa-solid fa-location-slash hs-locateToggler"
+      [ngClass]="(isFollowing() && getLocalization()) ? 'fa-solid fa-location-arrow' : 'fa-solid fa-location-dot'"></i><!-- TODO: Remove function call from template -->
     </button>
   }
 </div>

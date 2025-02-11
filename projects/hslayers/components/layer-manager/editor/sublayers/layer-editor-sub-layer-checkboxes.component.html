@@ -1,44 +1,41 @@
 @let sl = subLayer();
 <div class="d-flex m-auto sublayerContainer">
-    <div class="w-100"> 
-      <div class="d-flex">
-        <div class="p-0 form-check form-check-inline">
-          @if (!sl.sublayers) {
-            <input class="form-check-input" type="checkbox" [(ngModel)]="sl.visible"
-            name="sublayerWithoutNestedSublayers" (change)="subLayerSelected(sl, parent())"
-            [attr.id]="'hs-sublayers-' + sl.name + '-' + app ">
-            <div>
-              <label class="form-check-label m-0" [ngClass]="{
+  <div class="w-100">
+    <div class="d-flex">
+      <div class="p-0 form-check form-check-inline">
+        @if (!sl.sublayers) {
+        <input class="form-check-input" type="checkbox" [(ngModel)]="sl.visible" name="sublayerWithoutNestedSublayers"
+          (change)="subLayerSelected(sl, parent())" [attr.id]="'hs-sublayers-' + sl.name + '-' + app ">
+        <div>
+          <label class="form-check-label m-0" [ngClass]="{
                 'hs-checkmark':sl.visible,
                 'hs-uncheckmark':!sl.visible,
                 'grayed': (hsLayerManagerVisibilityService.currentResolution > sl.maxResolution) }"
-                [attr.for]="'hs-sublayers-' + sl.name + '-' + app ">{{sl.title ||sl.name}}</label>
-            </div>
-          }
-          @else {
-            <input class="form-check-input" type="checkbox" [(ngModel)]="sl.visible"
-            name="sublayerWithNestedSublayers" (change)="subLayerSelected(sl, parent())"
-            [attr.id]="'hs-sublayers-' + sl.name + '-' + app ">
-            <div class="p-0 d-inline-flex flex-grow">
-              <label class="form-check-label m-0"
-                [ngClass]="{'hs-checkmark':sl.visible,'hs-uncheckmark':!sl.visible}"
-                [attr.for]="'hs-sublayers-' + sl.name + '-' + app "></label>
-              <div (click)="toggleExpanded()" style="cursor:pointer"
-                [ngClass]="{'grayed': hsLayerManagerVisibilityService.currentResolution >= sl.maxResolution}">
-                {{sl.title || sl.name}}
-                <button type="button" class="btn btn-sm p-0" style="font-size: 0.6rem;">
-                  <i [ngClass]="expanded ? 'icon-chevron-down' : 'icon-chevron-right'"></i>
-                </button>
-              </div>
-            </div>
-            <div class="mt-2 ms-3" [hidden]="!expanded">
-              @for (nestedLayer of getNestedLayers(); track nestedLayer) {
-                  <hs-layer-editor-sub-layer-checkbox [subLayer]="nestedLayer" [parent]="sl">
-                </hs-layer-editor-sub-layer-checkbox>
-              }
-            </div>
+            [attr.for]="'hs-sublayers-' + sl.name + '-' + app ">{{sl.title ||sl.name}}</label>
+        </div>
+        }
+        @else {
+        <input class="form-check-input" type="checkbox" [(ngModel)]="sl.visible" name="sublayerWithNestedSublayers"
+          (change)="subLayerSelected(sl, parent())" [attr.id]="'hs-sublayers-' + sl.name + '-' + app ">
+        <div class="p-0 d-inline-flex flex-grow">
+          <label class="form-check-label m-0" [ngClass]="{'hs-checkmark':sl.visible,'hs-uncheckmark':!sl.visible}"
+            [attr.for]="'hs-sublayers-' + sl.name + '-' + app "></label>
+          <div (click)="toggleExpanded()" style="cursor:pointer"
+            [ngClass]="{'grayed': hsLayerManagerVisibilityService.currentResolution >= sl.maxResolution}">
+            {{sl.title || sl.name}}
+            <button type="button" class="btn btn-sm p-0" style="font-size: 0.6rem;">
+              <i class="fa-solid" [ngClass]="expanded ? 'fa-chevron-down' : 'fa-chevron-right'"></i>
+            </button>
+          </div>
+        </div>
+        <div class="mt-2 ms-3" [hidden]="!expanded">
+          @for (nestedLayer of getNestedLayers(); track nestedLayer) {
+          <hs-layer-editor-sub-layer-checkbox [subLayer]="nestedLayer" [parent]="sl">
+          </hs-layer-editor-sub-layer-checkbox>
           }
         </div>
+        }
       </div>
     </div>
+  </div>
 </div>

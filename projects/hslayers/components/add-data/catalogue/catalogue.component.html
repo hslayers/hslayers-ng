@@ -6,7 +6,7 @@
         <input type="search" class="form-control w-50" [placeholder]="'COMMON.search' | translateHs   " name="search"
           [(ngModel)]="data.query.textFilter" (ngModelChange)="queryByFilter()">
         <button class="input-group-text text-secondary border-start-0" (click)="queryByFilter()">
-          <i class="icon-search icon-primary"></i>
+          <i class="fa-solid fa-magnifying-glass fa-primary"></i>
         </button>
       </div>
       <hs-layman-current-user [endpoint]="ctx.layman"></hs-layman-current-user>

@@ -4,9 +4,9 @@
       'btn-light text-secondary': !drawToolbarExpanded,
       'btn-secondary': drawToolbarExpanded,
     }" (click)="toggleDrawToolbar()">
-  <i [ngClass]="{
-        'icon-pencil': !drawToolbarExpanded,
-        'icon-remove': drawToolbarExpanded,
+  <i class="fa-solid" [ngClass]="{
+        'fa-pencil': !drawToolbarExpanded,
+        'fa-xmark': drawToolbarExpanded,
       }" data-toggle="tooltip" [title]="'PANEL_HEADER.draw' | translateHs"></i>
 </button>
 
@@ -25,12 +25,12 @@
     ">
   <button class="btn btn-secondary" (click)="hsDrawService.removeLastPoint()" data-toggle="tooltip"
     [title]="'DRAW.drawToolbar.removeLastPoint' | translateHs">
-    <i class="icon-remove-circle"></i>
+    <i class="fa-solid fa-ban"></i>
   </button>
 
   <button class="btn btn-secondary" (click)="finishDrawing()" data-toggle="tooltip"
     [title]="'DRAW.drawToolbar.finishFeature' | translateHs">
-    <i class="icon-check"></i>
+    <i class="fa-solid fa-square-check"></i>
   </button>
 </div>
 }

@@ -278,8 +278,8 @@ export class HsMapService {
     );
 
     const icon = rendered.createElement('i');
-    rendered.addClass(icon, 'glyphicon');
-    rendered.addClass(icon, 'icon-globe');
+    rendered.addClass(icon, 'fa-solid');
+    rendered.addClass(icon, 'fa-earth-europe');
 
     const element = rendered.createElement('div');
     rendered.addClass(element, 'hs-defaultView');

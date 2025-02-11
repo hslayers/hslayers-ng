@@ -6,10 +6,10 @@
     <extra-buttons>
       @if ({enabled: layersAvailable | async}; as removal) {
       <a class="dropdown-item" (click)="removeMultipleLayers()" [class.disabled]="!removal.enabled">
-        <i class="icon-trash"></i>&nbsp;{{'DRAW.removeMultipleLayers' | translateHs }}
+        <i class="fa-solid fa-trash"></i>&nbsp;{{'DRAW.removeMultipleLayers' | translateHs }}
       </a>
       <a class="dropdown-item" (click)="removeAllLayers()" [class.disabled]="!removal.enabled">
-        <i class="icon-trash"></i>&nbsp;{{'LAYERMANAGER.removeAllLayers' | translateHs }}
+        <i class="fa-solid fa-trash"></i>&nbsp;{{'LAYERMANAGER.removeAllLayers' | translateHs }}
       </a>
       }
     </extra-buttons>

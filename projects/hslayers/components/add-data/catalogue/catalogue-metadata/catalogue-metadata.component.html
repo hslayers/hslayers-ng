@@ -25,7 +25,7 @@
           @for (type of selectedLayer.availableTypes; track type) {
           <button type="button" class="btn btn-primary ms-2 d-flex gap-2 align-items-center"
             (click)="addLayerToMap(selectedDS, selectedLayer, type)" data-dismiss="modal">
-            <span class="icon-plus"></span><span>{{'DATASOURCE_SELECTOR.addToMapAs' | translateHs }}
+            <span class="fa-solid fa-plus"></span><span>{{'DATASOURCE_SELECTOR.addToMapAs' | translateHs }}
               {{type}}</span>
           </button>
           }
@@ -35,14 +35,14 @@
           @if (selectedLayer?.metadata?.record_url) {
           <a target="_blank" [href]="selectedLayer.metadata.record_url" class="btn btn-primary"
             (click)="close()">{{'DATASOURCE_SELECTOR.seeFullRecord' | translateHs}} <i
-              class="icon icon-opennewwindow"></i></a>
+              class="fa-solid fa-up-right-from-square"></i></a>
           }
           <div class="d-flex gap-2">
             <a role="button" class="btn btn-success"
               [href]='hsAddDataCatalogueService.layerRDF(selectedDS, selectedLayer)' data-toggle="tooltip"
               title="GeoDCAT-AP" target="_blank"
               [hidden]='selectedDS.type!=="micka" || hsAddDataCatalogueService.layerRDF(selectedDS, selectedLayer) === "#"'>
-              <i class="icon-share-alt"></i> RDF
+              <i class="fa-solid fa-share-nodes"></i> RDF
             </a><!-- TODO: Remove function call from template -->
             <button type="button" class="btn btn-success" [hidden]="selectedLayer.bbox === undefined"
               (click)="hsAddDataCatalogueMapService.zoomTo(selectedLayer.bbox)">{{'LAYERMANAGER.layerEditor.zoomToLayer'

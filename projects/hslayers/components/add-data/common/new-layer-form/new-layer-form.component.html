@@ -40,7 +40,7 @@
         (change)="read({fileList: $event.target.files, uploader: 'style', dropped: false})" id="style">
       <label for="style" class="p-2 rounded" style="font-size: 1em;"
         [ngClass]="data.serializedStyle ? 'bg-success' : 'bg-primary'">
-        <i class="icon-uploadalt p-2"></i>{{data.serializedStyle?.name ?? allowedStyles.title |translateHs}}</label>
+        <i class="fa-solid fa-cloud-arrow-up p-2"></i>{{data.serializedStyle?.name ?? allowedStyles.title |translateHs}}</label>
     </label>
   </div>
   }

@@ -7,18 +7,18 @@
           <button mainButton [disabled]="!hsConfig.panelsEnabled['saveMap']"
             class="btn btn-sm btn-outline-primary border-0 align-items-center d-flex gap-2"
             (click)="openSaveMapPanel()"> {{'PANEL_HEADER.SAVECOMPOSITION' | translateHs}}
-            <i class="glyphicon icon-save-floppy"></i>
+            <i class="fa-solid fa-floppy-disk"></i>
           </button>
           <extra-buttons>
             <a class="dropdown-item" (click)="reload()">
-              <i class="icon-fatredo"></i>&nbsp;{{'COMMON.reload' | translateHs}}
+              <i class="fa-solid fa-rotate-right"></i>&nbsp;{{'COMMON.reload' | translateHs}}
             </a>
             <label class="dropdown-item cursor-pointer" style="text-wrap: pretty;">
-              <span class="icon-upload"></span><input type="file" (change)="handleFileSelect($event)"
+              <span class="fa-solid fa-upload"></span><input type="file" (change)="handleFileSelect($event)"
               accept=".json" style="display: none;"> {{'COMPOSITIONS.import' | translateHs}}
             </label>
             <a class="dropdown-item" (click)="changeUrlButtonVisible()">
-              <i class="icon-plus"></i>&nbsp;{{'COMPOSITIONS.addByAddress'|translateHs}}
+              <i class="fa-solid fa-plus"></i>&nbsp;{{'COMPOSITIONS.addByAddress'|translateHs}}
             </a>
           </extra-buttons>
         </hs-panel-header>
@@ -27,7 +27,7 @@
             <input type="text" class="form-control" [placeholder]="'COMPOSITIONS.Address'|translateHs"
               [(ngModel)]="urlToAdd" [ngModelOptions]="{standalone: true}">
             <button type="button" class="btn btn-secondary" (click)="addCompositionUrl(urlToAdd)"><i
-            class="icon-link"></i></button>
+            class="fa-solid fa-link"></i></button>
           </div>
         </div>
         <div class="mx-3 ps-1 d-flex justify-content-between">
@@ -36,7 +36,7 @@
               name="search" [(ngModel)]="hsCompositionsCatalogueService.data.query.title"
               (ngModelChange)="loadFilteredCompositions()">
             <button class="input-group-text text-secondary border-start-0" (click)="loadFilteredCompositions()">
-              <i class="icon-search icon-primary"></i>
+              <i class="fa-solid fa-magnifying-glass fa-primary"></i>
             </button>
           </div>
           <hs-layman-current-user [endpoint]="ctx.layman"><!-- TODO: Remove function call from template -->
@@ -165,10 +165,10 @@
               </tbody>
             </table>
           </div>
+          </div>
         </div>
       </div>
-    </div>
-  }
+    }
     <div class="card d-flex flex-fill border-0" style="font-size: 1rem !important; overflow-y:auto;     overflow-y: auto;
     border-bottom-right-radius: 0;
     border-bottom-left-radius: 0;">

@@ -1,6 +1,6 @@
 <div class="p-0 flex-grow-1">
   <button type="button" class="btn btn-sm text-info border-0" (click)="previousTime()" [disabled]="!hasPreviousTime">
-    <i class="glyphicon icon-chevron-left"></i>
+    <i class="fa-solid fa-chevron-left"></i>
   </button>
   @if (availableTimesFetched) {
     <button class="hs-lm-time-editor-currentTime btn btn-sm text-info px-0"
@@ -32,14 +32,14 @@
     }
   </select>
   <button type="button" class="btn btn-sm text-info border-0" (click)="followingTime()" [disabled]="!hasFollowingTime">
-    <i class="glyphicon icon-chevron-right"></i>
+    <i class="fa-solid fa-chevron-right"></i>
   </button>
 </div>
 <div class="p-0">
   <button type="button" class="hs-timeSync-toggle btn px-0 py-md-1 py-2 me-1"
     [ngClass]="{'btn-info text-white': timesInSync, 'text-secondary': !timesInSync}" (click)="synchronizeTimes()"
     [title]="'LAYERMANAGER.time.syncTimesTooltip' | translateHs  ">
-    <i class="glyphicon icon-timeline"></i>
+    <i class="fa-solid fa-clock-rotate-left"></i>
     <span class="visually-hidden">{{'LAYERMANAGER.time.syncTimes' | translateHs }}</span>
   </button>
 </div>

@@ -3,47 +3,52 @@
  * License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License)
  * Copyright 2024 Fonticons, Inc.
  */
- .fa {
-    font-family: var(--fa-style-family, "Font Awesome 6 Free");
-    font-weight: var(--fa-style, 900); }
-  
-  .fas,
-  .far,
-  .fab,
-  .fa-solid,
-  .fa-regular,
-  .fa-brands,
-  .fa {
-    -moz-osx-font-smoothing: grayscale;
-    -webkit-font-smoothing: antialiased;
-    display: var(--fa-display, inline-block);
-    font-style: normal;
-    font-variant: normal;
-    line-height: 1;
-    text-rendering: auto; }
-  
-  .fas::before,
-  .far::before,
-  .fab::before,
-  .fa-solid::before,
-  .fa-regular::before,
-  .fa-brands::before,
-  .fa::before {
-    content: var(--fa); }
-  
-  .fa-classic,
-  .fas,
-  .fa-solid,
-  .far,
-  .fa-regular {
-    font-family: 'Font Awesome 6 Free'; }
-  
-  .fa-brands,
-  .fab {
-    font-family: 'Font Awesome 6 Brands'; }
+.fa {
+  font-family: var(--fa-style-family, "Font Awesome 6 Free");
+  font-weight: var(--fa-style, 900);
+}
+
+.fas,
+.far,
+.fab,
+.fa-solid,
+.fa-regular,
+.fa-brands,
+.fa {
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  display: var(--fa-display, inline-block);
+  font-style: normal;
+  font-variant: normal;
+  line-height: 1;
+  text-rendering: auto;
+}
+
+.fas::before,
+.far::before,
+.fab::before,
+.fa-solid::before,
+.fa-regular::before,
+.fa-brands::before,
+.fa::before {
+  content: var(--fa);
+}
+
+.fa-classic,
+.fas,
+.fa-solid,
+.far,
+.fa-regular {
+  font-family: 'Font Awesome 6 Free';
+}
+
+.fa-brands,
+.fab {
+  font-family: 'Font Awesome 6 Brands';
+}
 
 
-    .fas,
+.fas,
 .fa-solid {
   font-weight: 900;
 }
@@ -51,4 +56,25 @@
 .far,
 .fa-regular {
   font-weight: 400;
+}
+
+/* Custom icons extracted from WHHG */
+.fa-navigation,
+.fa-layerorder {
+  --fa: '\f23a';
+  /* Override Font Awesome font-family */
+  font-family: 'WHHG' !important;
+}
+
+.fa-layerorder {
+  --fa: '\f7e6';
+}
+
+/* WHHG Font subset */
+@font-face {
+  font-family: 'WHHG';
+  font-style: normal;
+  font-weight: 900;
+  font-display: block;
+  src: url(data:font/truetype;charset=utf-8;base64,AAEAAAAPAIAAAwBwR1BPU0R2THUAAAOwAAAAIEdTVUK4+rj0AAAD0AAAACpPUy8yVc9afQAAAYQAAABWY21hcAAAAAAAAAHcAAAABGdhc3D//wADAAADqAAAAAhnbHlmAAAAAAAAAPwAAAABaGVhZP956qsAAAEkAAAANmhoZWEIvQPmAAABYAAAACRobXR4AQAAAAAAAVwAAAAEbG9jYQAAAAAAAAEgAAAABG1heHAAKwNQAAABAAAAACBuYW1lImY7IwAAAeAAAAGmcG9zdAADAAAAAAOIAAAAIHZoZWEGfA3/AAAEAAAAACR2bXR4AFoAAAAAA/wAAAAEAAAAAAABAAAAAQNPACkAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAQAAtvdfIF8PPPUAKwQAAAAAAM4Q0tYAAAAAzhDS1v/+//0EGwQFAAAACAACAAAAAAAAAQAAAAABAAAERf/+AFwEAP/+/+YEGwABAAAAAAAAAAAAAAAAAAAAAQABA/8BkAAFAAgCmQLMAAAAjwKZAswAAAHrADMBCQAAAgAFAwAAAAAAAAAAAAAAAAAAAAAAAAAAAABQZkVkAEAAJPfzAzP/MwBcBEUAAQAAAAEAAAAAAAAAAAAAAAAABwBaAAMAAQQJAAAApAAAAAMAAQQJAAEAKACkAAMAAQQJAAIADgDMAAMAAQQJAAMAYADaAAMAAQQJAAQAKACkAAMAAQQJAAUAEgE6AAMAAQQJAAYAKACkAFcAZQBiAEgAbwBzAHQAaQBuAGcASAB1AGIAIABHAGwAeQBwAGgAcwAgAC0AIABhAHUAdABoAG8AcgAgAFcAZQBiAEgAbwBzAHQAaQBuAGcASAB1AGIALgBjAG8AbQAgAC0AIABoAHQAdABwADoALwAvAHcAZQBiAGgAbwBzAHQAaQBuAGcAaAB1AGIALgBjAG8AbQAvAGcAbAB5AHAAaABzAC8AVwBlAGIASABvAHMAdABpAG4AZwBIAHUAYgAtAEcAbAB5AHAAaABzAFIAZQBnAHUAbABhAHIARgBvAG4AdABGAG8AcgBnAGUAIAAyAC4AMAAgADoAIABXAGUAYgBIAG8AcwB0AGkAbgBnAEgAdQBiAC0ARwBsAHkAcABoAHMAIAA6ACAAMgAxAC0ANwAtADIAMAAxADMAVgBlAHIAcwBpAG8AbgAgACAAAAADAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAf//AAIAAQAAAAoAHAAeAAFERkxUAAgABAAAAAD//wAAAAAAAAABAAAACgAmACgAAkRGTFQADmxhdG4AGAAEAAAAAP//AAAAAAAAAAAAAAAAAFoAAAABEAACGv3+AFwEAP/9/AAEBQAAAAEAAAAAAAAAAAAAAAAAAQ==) format('truetype');
 }

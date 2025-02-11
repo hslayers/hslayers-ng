@@ -20,7 +20,7 @@ export class HsSidebarService {
       fits: true,
       title: 'PANEL_HEADER.MAP_SWIPE',
       description: 'SIDEBAR.descriptions.MAP_SWIPE',
-      icon: 'icon-resizehorizontalalt',
+      icon: 'fa-arrows-left-right-to-line',
     },
     'layerManager': {
       panel: 'layerManager',
@@ -29,7 +29,7 @@ export class HsSidebarService {
       fits: true,
       title: 'PANEL_HEADER.LM',
       description: 'SIDEBAR.descriptions.LM',
-      icon: 'icon-layers',
+      icon: 'fa-layer-group',
     },
     'legend': {
       panel: 'legend',
@@ -38,7 +38,7 @@ export class HsSidebarService {
       fits: true,
       title: 'PANEL_HEADER.LEGEND',
       description: 'SIDEBAR.descriptions.LEGEND',
-      icon: 'icon-dotlist',
+      icon: 'fa-list-ul',
     },
     'addData': {
       panel: 'addData',
@@ -47,7 +47,7 @@ export class HsSidebarService {
       fits: true,
       title: 'PANEL_HEADER.ADDLAYERS',
       description: 'SIDEBAR.descriptions.ADDLAYERS',
-      icon: 'icon-database',
+      icon: 'fa-database',
     },
     'compositions': {
       panel: 'compositions',
@@ -56,7 +56,7 @@ export class HsSidebarService {
       fits: true,
       title: 'PANEL_HEADER.MAPCOMPOSITIONS',
       description: 'SIDEBAR.descriptions.MAPCOMPOSITIONS',
-      icon: 'icon-map',
+      icon: 'fa-map',
     },
     'draw': {
       panel: 'draw',
@@ -65,7 +65,7 @@ export class HsSidebarService {
       fits: true,
       title: 'PANEL_HEADER.draw',
       description: 'SIDEBAR.descriptions.DRAW',
-      icon: 'icon-pencil',
+      icon: 'fa-pencil',
     },
     'language': {
       panel: 'language',
@@ -85,7 +85,7 @@ export class HsSidebarService {
       fits: true,
       title: 'PANEL_HEADER.PERMALINK',
       description: 'SIDEBAR.descriptions.PERMALINK',
-      icon: 'icon-share-alt',
+      icon: 'fa-share-nodes',
     },
     'print': {
       panel: 'print',
@@ -94,7 +94,7 @@ export class HsSidebarService {
       fits: true,
       title: 'PANEL_HEADER.PRINT',
       description: 'SIDEBAR.descriptions.PRINT',
-      icon: 'icon-print',
+      icon: 'fa-print',
     },
     'query': {
       panel: 'query',
@@ -103,7 +103,7 @@ export class HsSidebarService {
       fits: true,
       title: 'PANEL_HEADER.INFO',
       description: 'SIDEBAR.descriptions.INFO',
-      icon: 'icon-info-sign',
+      icon: 'fa-circle-info',
     },
     'saveMap': {
       panel: 'saveMap',
@@ -112,7 +112,7 @@ export class HsSidebarService {
       fits: true,
       title: 'PANEL_HEADER.SAVECOMPOSITION',
       description: 'SIDEBAR.descriptions.SAVECOMPOSITION',
-      icon: 'icon-save-floppy',
+      icon: 'fa-floppy-disk',
     },
     'measure': {
       panel: 'measure',
@@ -121,7 +121,7 @@ export class HsSidebarService {
       fits: true,
       title: 'PANEL_HEADER.MEASURE',
       description: 'SIDEBAR.descriptions.MEASURE',
-      icon: 'icon-design',
+      icon: 'fa-ruler',
       condition: true,
     },
     'search': {
@@ -131,7 +131,7 @@ export class HsSidebarService {
       fits: true,
       title: 'PANEL_HEADER.SEARCH',
       description: 'SIDEBAR.descriptions.SEARCH',
-      icon: 'icon-search',
+      icon: 'fa-magnifying-glass',
       condition: true,
     },
     'tripPlanner': {
@@ -141,7 +141,7 @@ export class HsSidebarService {
       fits: true,
       title: 'PANEL_HEADER.TRIP_PLANNER',
       description: 'SIDEBAR.descriptions.TRIP_PLANNER',
-      icon: 'icon-sextant',
+      icon: 'fa-suitcase-rolling',
     },
     'wfsFilter': {
       panel: 'wfsFilter',
@@ -149,7 +149,7 @@ export class HsSidebarService {
       fits: true,
       title: 'PANEL_HEADER.WFS_FILTER',
       description: 'SIDEBAR.descriptions.WFS_FILTER',
-      icon: 'icon-filter',
+      icon: 'fa-filter',
     },
   };
 

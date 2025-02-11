@@ -2,7 +2,7 @@
   (click)="ruleVisible = !ruleVisible">
   <div>
     <button type="button" style="border: none; background-color: transparent; cursor: move">
-      <i class="icon-move text-secondary"></i>
+      <i class="fa-solid fa-up-down-left-right text-secondary"></i>
     </button>
   </div>
   <div class="flex-grow-1 hs-vector-layer-legend">
@@ -13,10 +13,10 @@
     </div>
   </div>
   <div>
-    <span class="glyphicon m-2" [ngClass]="ruleVisible ? 'icon-chevron-right' : 'icon-chevron-down'"></span>
+    <span class="glyphicon m-2" [ngClass]="ruleVisible ? 'fa-solid fa-chevron-right' : 'fa-solid fa-chevron-down'"></span>
     <button class="btn btn-danger btn-sm me-0" (click)="hsStylerService.removeRule(rule)" data-toggle="tooltip"
       [title]="'STYLER.removeRule' | translateHs  ">
-      <i class="icon-trash"></i>
+      <i class="fa-solid fa-trash"></i>
     </button>
   </div>
 </li>

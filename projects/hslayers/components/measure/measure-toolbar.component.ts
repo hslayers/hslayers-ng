@@ -14,7 +14,7 @@ import {TranslateCustomPipe} from 'hslayers-ng/services/language';
         [title]="'TOOLBAR.measureLinesAndPolygon' | translateHs"
         (click)="measureButtonClicked()"
       >
-        <i class="icon-design"></i>
+        <i class="fa-solid fa-ruler"></i>
       </button>
     </div>
   `,
