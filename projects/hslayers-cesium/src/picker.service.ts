@@ -100,8 +100,7 @@ export class HsCesiumPickerService {
       ]);
       this.HsCesiumQueryPopupService.showPopup({pixel: movement.position});
       return;
-    } else {
-      this.HsCesiumQueryPopupService.fillFeatures([]);
     }
+    this.HsCesiumQueryPopupService.fillFeatures([]);
   }
 }

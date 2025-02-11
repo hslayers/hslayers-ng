@@ -25,6 +25,7 @@ export class CesiumCameraServiceParams {
   ellipsoid: any;
   lastSyncedExtentFromOl: any;
 }
+
 @Injectable({
   providedIn: 'root',
 })
@@ -75,7 +76,8 @@ export class HsCesiumCameraService extends CesiumCameraServiceParams {
         this.viewer.camera.positionCartographic.latitude * (180 / Math.PI);
       const position = [lngDeg, latDeg, 0];
       return position;
-    } else if (this.viewer.scene.mode == SceneMode.SCENE3D) {
+    }
+    if (this.viewer.scene.mode == SceneMode.SCENE3D) {
       const ray = this.viewer.camera.getPickRay(
         new Cartesian2(
           this.viewer.canvas.width / 2,
@@ -101,9 +103,8 @@ export class HsCesiumCameraService extends CesiumCameraServiceParams {
           ),
         ];
         return position;
-      } else {
-        return null;
       }
+      return null;
     }
   }
 
@@ -123,9 +124,8 @@ export class HsCesiumCameraService extends CesiumCameraServiceParams {
     );
     if (positionCartesian3) {
       return positionCartesian3;
-    } else {
-      return null;
     }
+    return null;
   }
 
   getViewportPolygon() {
@@ -323,8 +323,6 @@ export class HsCesiumCameraService extends CesiumCameraServiceParams {
 
   /**
    * Calculates the distance from the ground based on resolution and latitude
-
-
    * @deprecated
    */
   calcDistanceForResolution(resolution, latitude) {
