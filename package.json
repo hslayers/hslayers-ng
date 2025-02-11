@@ -41,7 +41,8 @@
     "commit": "git-cz",
     "deps-graph": "madge --exclude '.*(layer-extensions)\\.ts$' --dot projects/decoupling-test-app/src/hslayers-app/hslayers-app.module.ts > graph.gv",
     "proxy": "cd ./projects/hslayers-server && node server.js -l",
-    "prepare-release": "cd ./scripts && bump-version.sh"
+    "prepare-release": "cd ./scripts && bump-version.sh",
+    "subset-icons": "python projects/hslayers/css/fontawesome/create-fa-icons.py"
   },
   "private": true,
   "dependencies": {
