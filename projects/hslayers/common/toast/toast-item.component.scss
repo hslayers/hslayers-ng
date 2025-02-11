@@ -28,6 +28,15 @@
         strong {
             font-size: 1.05rem;
         }
+
+        .toast-content-body {
+            max-height: 12rem;
+            overflow-y: auto;
+
+            p {
+                overflow-wrap: anywhere;
+            }
+        }
     }
 
     .toast-body {
