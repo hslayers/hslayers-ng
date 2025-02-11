@@ -25,7 +25,7 @@
         @if (hsQueryBaseService?.coordinates.length>0) {
         <select class="form-control form-select w-auto" [(ngModel)]="hsQueryBaseService.selectedProj"
           [ngModelOptions]="{standalone: true}">
-          @for (projection of hsQueryBaseService.coordinates[0].projections; track projection) {
+          @for (projection of hsQueryBaseService.coordinates[0].projections; track projection.value) {
           <option [ngValue]="projection">{{projection.name}}</option>
           }
         </select>
