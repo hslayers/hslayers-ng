@@ -60,7 +60,7 @@ export class HsToastItemComponent implements AfterContentInit {
   /** Optional array of detail messages shown as bullet points */
   readonly details = input<string[]>([]);
   /** Visual style of the toast (success, danger, warning, info) */
-  readonly type = input<ToastType>('info');
+  readonly type = input<ToastType>('danger');
   /** Duration in milliseconds before the toast auto-hides */
   readonly delay = input<number>(5000);
   readonly autohide = input<boolean>(true);
