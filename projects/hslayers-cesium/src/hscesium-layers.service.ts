@@ -111,21 +111,20 @@ export class HsCesiumLayersService {
           resource.indexOf('bbox=0, 45') > -1
         ) {
           return blank_url;
-        } else {
-          const params = this.HsUtilsService.getParamsFromUrl(resource);
-          const bbox = params.bbox.split(',');
-          const dist = Math.sqrt(
-            Math.pow(bbox[0] - bbox[2], 2) + Math.pow(bbox[1] - bbox[3], 2),
-          );
-          if (this.projection == 'EPSG:3857') {
-            if (dist > 1000000) {
-              return blank_url;
-            }
+        }
+        const params = this.HsUtilsService.getParamsFromUrl(resource);
+        const bbox = params.bbox.split(',');
+        const dist = Math.sqrt(
+          Math.pow(bbox[0] - bbox[2], 2) + Math.pow(bbox[1] - bbox[3], 2),
+        );
+        if (this.projection == 'EPSG:3857') {
+          if (dist > 1000000) {
+            return blank_url;
           }
-          if (this.projection == 'EPSG:4326') {
-            if (dist > 1) {
-              return blank_url;
-            }
+        }
+        if (this.projection == 'EPSG:4326') {
+          if (dist > 1) {
+            return blank_url;
           }
         }
       }
@@ -143,7 +142,7 @@ export class HsCesiumLayersService {
     };
   }
 
-  getProjectFromVersion(version, srs, crs) {
+  getProjectFromVersion(version: string, srs, crs) {
     if (version == '1.1.1') {
       return srs;
     }
@@ -288,9 +287,8 @@ export class HsCesiumLayersService {
   currentMapProjCode() {
     if (this.hsMapService.getMap()) {
       return this.hsMapService.getCurrentProj().getCode();
-    } else {
-      this.hsConfig.default_view.getProjection().getCode();
     }
+    this.hsConfig.default_view.getProjection().getCode();
   }
 
   findCesiumLayer(ol: Layer<Source> | Source): ImageryLayer | DataSource {
@@ -362,17 +360,18 @@ export class HsCesiumLayersService {
   async syncFeatures(ol_source: VectorSource) {
     const tmp_source = new GeoJsonDataSource('tmp');
     GeoJsonDataSource.crsNames['EPSG:3857'] = function (coordinates) {
-      const firstProjection =
-        'PROJCS["WGS 84 / Pseudo-Mercator",GEOGCS["WGS 84",DATUM["WGS_1984",SPHEROID["WGS 84",6378137,298.257223563,AUTHORITY["EPSG","7030"]],AUTHORITY["EPSG","6326"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["degree",0.0174532925199433,AUTHORITY["EPSG","9122"]],AUTHORITY["EPSG","4326"]],PROJECTION["Mercator_1SP"],PARAMETER["central_meridian",0],PARAMETER["scale_factor",1],PARAMETER["false_easting",0],PARAMETER["false_northing",0],UNIT["metre",1,AUTHORITY["EPSG","9001"]],AXIS["X",EAST],AXIS["Y",NORTH],EXTENSION["PROJ4","+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +wktext  +no_defs"],AUTHORITY["EPSG","3857"]]';
-      const secondProjection =
-        'GEOGCS["WGS 84",DATUM["WGS_1984",SPHEROID["WGS 84",6378137,298.257223563,AUTHORITY["EPSG","7030"]],AUTHORITY["EPSG","6326"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["degree",0.0174532925199433,AUTHORITY["EPSG","9122"]],AUTHORITY["EPSG","4326"]]';
+      //PROJCS["WGS 84 / Pseudo-Mercator",GEOGCS["WGS 84",DATUM["WGS_1984",SPHEROID["WGS 84",6378137,298.257223563,AUTHORITY["EPSG","7030"]],AUTHORITY["EPSG","6326"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["degree",0.0174532925199433,AUTHORITY["EPSG","9122"]],AUTHORITY["EPSG","4326"]],PROJECTION["Mercator_1SP"],PARAMETER["central_meridian",0],PARAMETER["scale_factor",1],PARAMETER["false_easting",0],PARAMETER["false_northing",0],UNIT["metre",1,AUTHORITY["EPSG","9001"]],AXIS["X",EAST],AXIS["Y",NORTH],EXTENSION["PROJ4","+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +wktext  +no_defs"],AUTHORITY["EPSG","3857"]]
+      const firstProjection = 'EPSG:3857';
+      const secondProjection = 'EPSG:4326';
       const [xa, ya, za] = coordinates;
-      let newCoordinates: Coordinate;
-      if (getProjection(firstProjection) && getProjection(secondProjection)) {
-        newCoordinates = transform([xa, ya], firstProjection, secondProjection);
-      } else {
-        newCoordinates = coordinates;
+      if (!getProjection(firstProjection) || !getProjection(secondProjection)) {
+        this.hsLog.error('UNDEFINED PROJECTION!');
       }
+      const newCoordinates = transform(
+        [xa, ya],
+        firstProjection,
+        secondProjection,
+      );
       return Cartesian3.fromDegrees(
         newCoordinates[0],
         newCoordinates[1],
@@ -441,7 +440,6 @@ export class HsCesiumLayersService {
           this.hsMapService.proxifyLayerLoader(lyr as Layer<Source>, false);
         }
       }
-
       if (this.HsUtilsService.instOf(lyr, TileLayer)) {
         if (
           this.HsUtilsService.instOf(
@@ -490,7 +488,8 @@ export class HsCesiumLayersService {
         show: olLayer.getVisible(),
         minimumTerrainLevel: getMinimumTerrainLevel(olLayer) || 1,
       });
-    } else if (this.HsUtilsService.instOf(layerSource, XYZ)) {
+    }
+    if (this.HsUtilsService.instOf(layerSource, XYZ)) {
       return new ImageryLayer(
         new UrlTemplateImageryProvider({
           url: (layerSource as XYZ).getUrls()[0],
@@ -499,22 +498,24 @@ export class HsCesiumLayersService {
           show: olLayer.getVisible(),
         },
       );
-    } else if (this.HsUtilsService.instOf(layerSource, TileWMS)) {
+    }
+    if (this.HsUtilsService.instOf(layerSource, TileWMS)) {
       return this.createTileProvider(olLayer);
-    } else if (this.HsUtilsService.instOf(layerSource, ImageWMS)) {
+    }
+    if (this.HsUtilsService.instOf(layerSource, ImageWMS)) {
       return this.createSingleImageProvider(olLayer as ImageLayer<ImageSource>);
-    } else if (this.HsUtilsService.instOf(olLayer, VectorLayer)) {
+    }
+    if (this.HsUtilsService.instOf(olLayer, VectorLayer)) {
       const dataSource = await this.createVectorDataSource(
         olLayer as VectorLayer<VectorSource<Feature>>,
       );
       return dataSource;
-    } else {
-      this.hsLog.error(
-        'Unsupported layer type for layer: ',
-        olLayer,
-        'in Cesium converter',
-      );
     }
+    this.hsLog.error(
+      'Unsupported layer type for layer: ',
+      olLayer,
+      'in Cesium converter',
+    );
   }
 
   async createVectorDataSource(ol_lyr: VectorLayer<VectorSource<Feature>>) {

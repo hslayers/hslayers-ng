@@ -76,6 +76,7 @@ export default typescriptEslint.config({
         "@typescript-eslint/no-explicit-any": "warn",
         "@typescript-eslint/no-unused-vars": "warn",
         "valid-jsdoc": "off",
+        "jsdoc/check-param-names": "off",
         "jsdoc/require-returns-type": "off",
         "jsdoc/require-hyphen-before-param-description": "off",
         "jsdoc/require-param": "off",
