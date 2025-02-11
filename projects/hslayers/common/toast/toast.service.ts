@@ -36,6 +36,10 @@ export type customToastOptions = {
    * Error details
    */
   details?: string[];
+  /**
+   * Whether the toast should automatically hide after delay
+   */
+  autohide?: boolean;
 };
 
 @Injectable({

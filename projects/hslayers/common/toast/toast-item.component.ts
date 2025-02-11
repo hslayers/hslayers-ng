@@ -32,14 +32,16 @@ export type ToastType = 'success' | 'danger' | 'warning' | 'info';
         </div>
         <div class="toast-content">
           <strong class="me-auto">{{ header() }}</strong>
-          <p class="mb-0 mt-2">{{ text() }}</p>
-          @if (details()?.length) {
-            <ul class="mt-2 mb-0 ps-3">
-              @for (detail of details(); track detail) {
-                <li>{{ detail }}</li>
-              }
-            </ul>
-          }
+          <div class="toast-content-body">
+            <p class="mb-0 mt-2">{{ text() }}</p>
+            @if (details()?.length) {
+              <ul class="mt-2 mb-0 ps-3">
+                @for (detail of details(); track detail) {
+                  <li>{{ detail }}</li>
+                }
+              </ul>
+            }
+          </div>
         </div>
         <button
           type="button"
@@ -71,7 +73,7 @@ export class HsToastItemComponent implements AfterContentInit {
   readonly isHiding = signal<boolean>(false);
 
   maxHeight = computed(() =>
-    this.details()?.length > 0 ? `${this.details().length + 8}rem` : '8rem',
+    this.details()?.length > 0 ? `${this.details().length + 8}rem` : '18rem',
   );
 
   /** Computed CSS class based on toast type */
