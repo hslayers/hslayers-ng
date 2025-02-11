@@ -3,7 +3,7 @@
     <hs-panel-header name="print" [panelTabs]="'PRINT'">
       <button mainButton class="btn btn-sm btn-outline-primary border-0" (click)="setToDefault()"
         [title]="'COMMON.resetToDefault' | translateHs "> {{'COMMON.reset' | translateHs}}
-        <i class="glyphicon icon-fatredo"></i>
+        <i class="fa-solid fa-redo"></i>
       </button>
     </hs-panel-header>
     <div class="card-body">
@@ -81,7 +81,7 @@
             <button type="button" class="btn btn-secondary w-50" (click)="printLayout(false)">{{'COMMON.preview' |
             translateHs }}</button>
             <button class="btn btn-secondary ms-2" (click)="download()" data-toggle="tooltip"
-              [title]="'COMMON.downloadAsPng' | translateHs"><i class="icon-download"></i></button>
+              [title]="'COMMON.downloadAsPng' | translateHs"><i class="fa-solid fa-download"></i></button>
             </div>
           }
           @if (isLoading()) {

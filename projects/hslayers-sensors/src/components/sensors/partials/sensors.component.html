@@ -31,28 +31,28 @@
           </ul><!-- Tab panes -->
         </div>
         <div class="col-3 text-end">
-          <!-- <button type="button" class="btn btn-sm" (click)="toggleExpansion()"><i
-        [ngClass]="{'icon-calcminus': viewExpanded, 'icon-calcplus':!viewExpanded}"></i>
-      </button> -->
+          <button type="button" class="btn btn-sm" (click)="toggleExpansion()">
+            <i [ngClass]="{'fa-solid fa-square-minus': viewExpanded, 'fa-solid fa-square-plus':!viewExpanded}"></i>
+          </button>
+        </div>
+      </div>
     </div>
-  </div>
-</div>
-@if (hsSensorsService.units.length > 0) {
-  <ul class="list-group">
-    @for (unit of filterQuery(query); track unit) {
-      <li class="list-group-item">
-        <!-- TODO: Remove function call from template -->
-        <hs-sensor-unit-list-item [unit]="unit" [expanded]="viewExpanded" [view-mode]="viewMode">
-        </hs-sensor-unit-list-item>
-      </li>
+    @if (hsSensorsService.units.length > 0) {
+      <ul class="list-group">
+        @for (unit of filterQuery(query); track unit) {
+          <li class="list-group-item">
+            <!-- TODO: Remove function call from template -->
+            <hs-sensor-unit-list-item [unit]="unit" [expanded]="viewExpanded" [view-mode]="viewMode">
+            </hs-sensor-unit-list-item>
+          </li>
+        }
+      </ul>
     }
-  </ul>
-}
-@else {
-<div class="alert alert-warning m-2 text-center" role="alert">
-  {{'SENSORS.noUnitsFound' | translateHs}}
-</div>
-}
-</div>
+    @else {
+    <div class="alert alert-warning m-2 text-center" role="alert">
+      {{'SENSORS.noUnitsFound' | translateHs}}
+    </div>
+    }
+  </div>
 </div>
 }

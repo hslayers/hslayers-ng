@@ -19,7 +19,7 @@
       <div class="btn-group" (click)="$event.stopPropagation()">
         <button type="button" class="btn btn-sm border-0" [class.disabled]="!layerAvailable"
           (click)="selectTypeAndAdd('WMS',$event)">
-          <i class="icon-plus icon-primary"></i>
+          <i class="fa-solid fa-plus fa-primary"></i>
           @if (layerAvailable) {
           <span class="ms-1">{{'COMMON.addToMap' |
             translateHs }}</span>
@@ -34,13 +34,13 @@
         }
       </div>
       <a class="btn btn-sm border-0" (click)="showMetadata(layer.endpoint, layer)">
-        <i class="icon-info-sign icon-primary"></i><span class="ms-1">{{'COMMON.metadata' |
+        <i class="fa-solid fa-circle-info fa-primary"></i><span class="ms-1">{{'COMMON.metadata' |
           translateHs }}</span>
       </a>
       <a class="btn btn-sm border-0" (click)="$event.stopPropagation();showPermissions(layer)" data-toggle="tooltip"
         data-placement="bottom"
         [title]="layer.editable ? '' : 'DATASOURCE_SELECTOR.datasourceListItem.notAllowedToEditLayer' | translateHs ">
-        <i class="icon-lock icon-primary" [ngClass]="{'text-muted': !layer.editable}"
+        <i class="fa-solid fa-lock fa-primary" [ngClass]="{'text-muted': !layer.editable}"
           [ngStyle]="{'cursor' : layer.editable ? 'pointer' : 'default'}"></i>@if (layer.editable) {
         <span class="ms-1">{{'COMMON.setPermissions' | translateHs }}</span>
         }
@@ -48,7 +48,7 @@
       <a class="btn btn-sm border-0" (click)="$event.stopPropagation();removeLayer(layer)" data-toggle="tooltip"
         data-placement="bottom"
         [title]="layer.editable ? '' : 'DATASOURCE_SELECTOR.datasourceListItem.notAllowedToEditLayer' | translateHs ">
-        <i class="icon-trash text-danger" [ngClass]="layer.editable ? 'text-danger' : 'text-muted'"
+        <i class="fa-solid fa-trash text-danger" [ngClass]="layer.editable ? 'text-danger' : 'text-muted'"
           [ngStyle]="{'cursor' : layer.editable ? 'pointer' : 'default'}"></i>@if (layer.editable) {
         <span class="ms-1">{{'COMMON.removeLayer' | translateHs }}</span>
         }
@@ -61,7 +61,7 @@
       <!-- TODO: Remove function call from template -->
       <a class="btn btn-sm border-0 btn-secondary"
         [href]='hsAddDataCatalogueService.layerDownload(layer.endpoint, layer)' data-toggle="tooltip"
-        [title]="'COMMON.download' | translateHs "><i class="icon-download"></i></a>
+        [title]="'COMMON.download' | translateHs "><i class="fa-solid fa-download"></i></a>
     </div>
   </div>
 </div>
@@ -87,12 +87,12 @@
         <a class="btn btn-sm border-0 px-0" style="margin-top: -1rem;"
           (click)="$event.stopPropagation();toggleExplanations()"
           [title]="'DATASOURCE_SELECTOR.datasourceListItem.whatDoesItMean' | translateHs ">
-          <i class="icon-question-sign text-primary"></i>
+          <i class="fa-solid fa-circle-question text-primary"></i>
         </a>
       </div>
       <a class="btn btn-sm border-0" [title]="'COMMON.close' | translateHs "
         (click)="$event.stopPropagation();abortAdd()" [hidden]="!selectTypeToAddLayerVisible">
-        <i class="icon-remove text-danger"></i>
+        <i class="fa-solid fa-xmark text-danger"></i>
       </a>
     </div>
     <div class="d-flex">

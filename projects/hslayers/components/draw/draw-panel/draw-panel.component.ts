@@ -45,10 +45,18 @@ export class HsDrawPanelComponent {
   sidebarPosition: string;
 
   drawTools: DrawToolDefinition[] = [
-    {type: 'Point', icon: 'icon-pin', title: 'COMMON.point'},
-    {type: 'Polygon', icon: 'icon-polygonlasso', title: 'COMMON.polygon'},
-    {type: 'LineString', icon: 'icon-line', title: 'COMMON.line'},
-    {type: 'Circle', icon: 'icon-circleloaderfull', title: 'COMMON.circle'},
+    {type: 'Point', icon: 'fa-solid fa-thumbtack', title: 'COMMON.point'},
+    {
+      type: 'Polygon',
+      icon: 'fa-solid fa-draw-polygon',
+      title: 'COMMON.polygon',
+    },
+    {type: 'LineString', icon: 'fa-solid fa-slash', title: 'COMMON.line'},
+    {
+      type: 'Circle',
+      icon: 'fa-regular fa-circle',
+      title: 'COMMON.circle',
+    },
   ];
 
   constructor(

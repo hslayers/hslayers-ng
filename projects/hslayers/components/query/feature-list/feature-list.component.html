@@ -15,7 +15,7 @@
           <div class="btn-group">
             <div class="btn-group" ngbDropdown placement="bottom" display="dynamic">
               <button ngbDropdownToggle class="btn btn-secondary btn-sm" type="button"
-                (click)="toggleEditMenu()"><i class="icon-settingsthree-gears"></i></button>
+                (click)="toggleEditMenu()"><i class="fa-solid fa-gears"></i></button>
               <div ngbDropdownMenu [ngClass]="{'show': editMenuVisible}">
                 <a class="dropdown-item" (click)="editTypeSelected('copy')">{{'QUERY.feature.copyFeatures' |
                   translateHs }}</a>
@@ -26,7 +26,7 @@
             <div class="btn-group" ngbDropdown placement="bottom" display="dynamic">
               <button ngbDropdownToggle class="btn btn-secondary btn-sm rounded-0" type="button"
                 [title]="'QUERY.downloadAs' | translateHs  " (click)="toggleExportMenu()"><i
-                class="icon-download"></i></button>
+                class="fa-solid fa-download"></i></button>
               <div ngbDropdownMenu [ngClass]="{'show': exportMenuVisible}">
                 @for (format of exportFormats; track format) {
                   <a class="dropdown-item"
@@ -39,7 +39,7 @@
             </div>
             <button type="button" class="btn-danger btn btn-sm border-0"
               [title]="'QUERY.deleteAllSelected' | translateHs  " (click)="removeAllSelectedFeatures()">
-              <i class="glyphicon icon-trash"></i>
+              <i class="fa-solid fa-trash"></i>
             </button>
           </div>
         }
@@ -59,7 +59,7 @@
               }
             </select>
             <button class="btn btn-primary btn-sm" (click)="moveOrCopyFeature()" [disabled]="!selectedLayer"><i
-            class="icon-save-floppy"></i></button>
+            class="fa-solid fa-floppy-disk"></i></button>
           </div>
         </div>
       }

@@ -4,13 +4,10 @@
       [placeholder]="'ADDLAYERS.externalDataSource' | translateHs " required #uri="ngModel" style="height: auto;" />
 
     @if (uri.valid) {
-    <button type="button" class="btn btn-secondary" (click)="emitConnect()"><i class="icon-link"></i></button>
+    <button type="button" class="btn btn-secondary" (click)="emitConnect()"><i class="fa-solid fa-link"></i></button>
     }
 
     <!-- TODO: Following should be validating URL and warning user if URL is invalid -->
-
-    <!-- <button type="button" class="btn btn-danger" *ngIf="uri && !uri.valid"><i
-  class="icon-alertalt"></i></button> -->
     <hs-history-list type="button" (historyUrlSelected)="historySelected($event)" [(what)]="type">
     </hs-history-list>
   </div>

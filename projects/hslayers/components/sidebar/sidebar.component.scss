@@ -5,7 +5,7 @@
     min-height: 48px;
 }
 
-.hs-sidebar-item [class*=" icon-"] {
+.hs-sidebar-item [class*=" fa-"] {
     margin-left: -4px;
 }
 
@@ -96,8 +96,12 @@ div.hs-panelspace:not(.buttons) hs-sidebar~div.hs-panelplace {
     border-bottom-right-radius: 0;
 }
 
-.hs-sidebar-item-title:not(.language) {
+.hs-sidebar-item:not(.language) .hs-sidebar-item-title {
     margin-left: 20px;
+}
+
+.hs-sidebar-item.language .hs-sidebar-item-content {
+    transform: translateX(-5px);
 }
 
 .hs-sidebar-item-title {

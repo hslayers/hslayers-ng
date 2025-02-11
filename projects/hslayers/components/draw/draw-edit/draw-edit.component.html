@@ -24,21 +24,21 @@
         <button class="w-50 btn btn-sm btn-light btn-outline-primary"
           (click)="setType('Polygon')" [ngClass]="{active: HsDrawService.type==='Polygon' }"
           [title]="'COMMON.polygon' | translateHs ">
-          <i class="icon-polygonlasso"></i>
+          <i class="fa-solid fa-draw-polygon"></i>
         </button>
       }
       @if (selectedType === 'split') {
         <button class="w-50 btn btn-sm btn-light btn-outline-primary"
           [ngClass]="{active: HsDrawService.type==='LineString' }" (click)="setType('LineString')"
           data-toggle="tooltip" [title]="'COMMON.line' | translateHs ">
-          <i class="icon-line"></i>
+          <i class="fa-solid fa-slash"></i>
         </button>
       }
       <span class="py-1"> {{'DRAW.featureEditor.orSelectOne' | translateHs }}
       </span>
       <button class="w-50 btn btn-sm btn-light btn-outline-primary" [ngClass]="{active: !HsDrawService.type }"
         (click)="setType(HsDrawService.type)" data-toggle="tooltip" [title]="'COMMON.line' | translateHs ">
-        <i class="icon-cursor"></i>
+        <i class="fa-solid fa-arrow-pointer"></i>
       </button>
     </div>
     @if (selectedType) {

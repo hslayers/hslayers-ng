@@ -81,13 +81,13 @@ export class HsToastItemComponent implements AfterContentInit {
   iconClass = computed(() => {
     switch (this.type()) {
       case 'success':
-        return 'icon-check';
+        return 'fa-solid fa-square-check';
       case 'danger':
-        return 'icon-check';
+        return 'fa-solid fa-square-check';
       case 'warning':
-        return 'icon-check';
+        return 'fa-solid fa-square-check';
       case 'info':
-        return 'icon-check';
+        return 'fa-solid fa-square-check';
       default:
         return '';
     }

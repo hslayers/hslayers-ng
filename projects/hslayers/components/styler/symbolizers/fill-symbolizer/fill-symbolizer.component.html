@@ -29,7 +29,7 @@
         <div ngbDropdown class="btn-group d-inline-block" role="group" #graphicFillMenu="ngbDropdown"
           placement="top-right">
           <button class="btn btn-outline-primary btn-sm" id="dropdownAddFillSymbolizer" ngbDropdownToggle>
-            <span class="icon-plus"></span>
+            <span class="fa-solid fa-plus"></span>
           </button>
           <div ngbDropdownMenu aria-labelledby="dropdownAddFillSymbolizer">
             <button ngbDropdownItem (click)="addSymbolizer('graphicFill', 'Mark'); graphicFillMenu.close()">
@@ -43,7 +43,7 @@
         @if (symbolizer.graphicFill !== undefined) {
           <button class="btn btn-outline-danger btn-sm"
             (click)="symbolizer.graphicFill = undefined;emitChange()">
-            <span class="icon-trash"></span>
+            <span class="fa-solid fa-trash"></span>
           </button>
         }
       </div>

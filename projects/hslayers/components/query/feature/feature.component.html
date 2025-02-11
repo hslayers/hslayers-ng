@@ -31,7 +31,7 @@
     <div class="row justify-content-end" [hidden]="!(attributeName && attributeValue && newAttribVisible)">
       <button class="btn btn-primary btn-sm w-auto d-flex gap-2 mx-2"
         (click)="saveNewAttribute(attributeName,attributeValue)">{{'COMMON.save'
-        | translateHs}}<i class="icon-save-floppy"></i></button>
+        | translateHs}}<i class="fa-solid fa-floppy-disk"></i></button>
       </div>
     </div>
   }
@@ -52,7 +52,7 @@
         }
       </select>
       <button class="btn btn-primary btn-sm" (click)="moveOrCopyFeature()" [disabled]="!selectedLayer"><i
-      class="icon-save-floppy"></i></button>
+      class="fa-solid fa-floppy-disk"></i></button>
     </div>
   </div>
 </div>
@@ -61,11 +61,11 @@
     <div class="mx-1 mb-2 text-end">
       <div class="btn-group">
         <button [disabled]="readonly" class="btn btn-secondary btn-sm"
-          (click)="newAttribVisible = !newAttribVisible"><i class="icon-calcplus"></i></button>
-          <button class="btn btn-secondary btn-sm" (click)="zoomToFeature()"><i class="icon-search"></i></button>
+          (click)="newAttribVisible = !newAttribVisible"><i class="fa-solid fa-square-plus"></i></button>
+          <button class="btn btn-secondary btn-sm" (click)="zoomToFeature()"><i class="fa-solid fa-magnifying-glass"></i></button>
           <div class="btn-group" ngbDropdown placement="bottom" display="dynamic">
             <button ngbDropdownToggle class="btn btn-secondary btn-sm" type="button" (click)="toggleEditMenu()"><i
-            class="icon-settingsthree-gears"></i></button>
+            class="fa-solid fa-gears"></i></button>
             <div ngbDropdownMenu [ngClass]="{'show': editMenuVisible}">
               <a class="dropdown-item" (click)="editTypeSelected('copy')">{{'QUERY.feature.copyFeature' |
               translateHs }}</a>
@@ -76,7 +76,7 @@
           <div class="btn-group" ngbDropdown placement="bottom" display="dynamic">
             <button ngbDropdownToggle class="btn btn-secondary btn-sm rounded-0" type="button"
               (click)="toggleExportMenu()" [title]="'QUERY.downloadAs' | translateHs  "><i
-            class="icon-download"></i></button>
+            class="fa-solid fa-download"></i></button>
             <div ngbDropdownMenu [ngClass]="{'show': exportMenuVisible}">
               @for (format of exportFormats; track format) {
                 <a class="dropdown-item" [download]="format.name + '_file.' + format.ext"
@@ -88,7 +88,7 @@
           </div>
           @if (isFeatureRemovable()) {
             <button class="btn btn-danger btn-sm" (click)="removeFeature()"><i
-            class="icon-trash"></i></button>
+            class="fa-solid fa-trash"></i></button>
           }
         </div>
       </div>

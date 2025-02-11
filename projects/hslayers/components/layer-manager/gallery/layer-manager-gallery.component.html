@@ -4,7 +4,7 @@
       [attr.data-cy]="'basemap-gallery'" #galleryDropdown="ngbDropdown">
       <button ngbDropdownToggle type="button" class="btn rounded galleryButton btn-light text-secondary pt-0 pb-0" style="font-size: 1rem"
         aria-haspopup="true">
-        <i class="glyphicon icon-th-large x-large p-0" style="line-height: inherit;"></i>
+        <i class="fa-solid fa-map-location-dot x-large p-0" style="line-height: inherit;"></i>
       </button>
       <div ngbDropdownMenu class="bg-transparent border-0 dropdown-menu galleryDropdown p-1 gap-2">
         @for (layer of hsLayerManagerService.data.baselayers; track layer) {
@@ -14,7 +14,7 @@
             @if (layer.active) {
               <div style="position:absolute;top:5px; right:5px;z-index:5"
                 (click)="$event.preventDefault(); expandMenu(layer)">
-                <span class="glyphicon icon-menu icon-small"></span>
+                <span class="fa-solid fa-bars icon-small"></span>
               </div>
             }
             <img [ngClass]="{'active': layer.active}" [src]="layer.thumbnail"

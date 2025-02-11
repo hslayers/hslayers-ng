@@ -5,25 +5,25 @@
             [class.text-bg-primary]="physicalLayerListEnabled()"
             (click)="togglePhysicalLayerList()" [title]="'LAYERMANAGER.enablePhysicalLayerList' |
         translateHs"> {{'COMMON.reorder' | translateHs}}
-            <i class="glyphicon icon-layerorder"></i>
+            <i class="fa-solid fa-layer-group"></i>
         </button>
         <extra-buttons>
             <a class="dropdown-item" (click)="removeMultipleLayers()">
-                <i class="glyphicon icon-trash"></i>&nbsp;{{'DRAW.removeMultipleLayers'
+                <i class="fa-solid fa-trash"></i>&nbsp;{{'DRAW.removeMultipleLayers'
                 | translateHs }}
             </a>
             <a class="dropdown-item" (click)="removeAllLayers()">
-                <i class="glyphicon icon-trash"></i>&nbsp;{{'LAYERMANAGER.dialogRemoveAll.removeAllAdded'
+                <i class="fa-solid fa-trash"></i>&nbsp;{{'LAYERMANAGER.dialogRemoveAll.removeAllAdded'
                 |
                 translateHs }}
             </a>
             <a class="dropdown-item" (click)="hsCore.resetMap()">
-                <i class="glyphicon icon-fatredo"></i>&nbsp;{{'LAYERMANAGER.resetMap' |
+                <i class="fa-solid fa-rotate-right"></i>&nbsp;{{'LAYERMANAGER.resetMap' |
                 translateHs }}
             </a>
             @if(hsLayerManagerService.data.layers?.length > 0 && !physicalLayerListEnabled()){
             <a class="dropdown-item" (click)="toggleVisibilityForAll()">
-                <i class="glyphicon me-0" [ngClass]="allLayersVisible ? 'hs-checkmark' : 'hs-uncheckmark'"></i>
+                <i class="fa-solid fa-check-circle" [ngClass]="allLayersVisible ? 'hs-checkmark' : 'hs-uncheckmark'"></i>
                 {{'LAYERMANAGER.toggleAllLayerVisibility'|translateHs}}
             </a>
             }
@@ -70,7 +70,7 @@
                     <!-- (click)="hsLayerManagerService.toggleLayerEditor(layer,'settings')" -->
                     <div class="ps-1 info_btn text-secondary dropdown-toggle" style="cursor: pointer;"
                         >
-                        <span class="icon-settingsthree-gears" [title]="'COMMON.info' | translateHs"
+                        <span class="fa-solid fa-gears" [title]="'COMMON.info' | translateHs"
                             data-toggle="tooltip" data-container="body" data-placement="auto"></span>
                     </div>
                 </div>
@@ -103,8 +103,7 @@
                             [ngClass]="(hsLayerManagerVisibilityService.baselayersVisible && layer.visible) ? 'hs-checkmark' : 'hs-uncheckmark'"></button>
                         } @else {
                         <span class="btn btn-sm text-muted">
-                            <i class="glyphicon icon-globealt"
-                                [title]="'LAYERMANAGER.terrainOnlyIn3d' | translateHs"></i>
+                            <i class="fa-solid fa-globe"></i>
                         </span>
                         }
                     </div>
@@ -140,8 +139,8 @@
                 <li class="list-group-item hs-lm-layerlist-header list-group-item-primary"
                     (click)="entry.value.visible = !entry.value.visible">
                     <span>{{entry.key | translateHs : 'LAYERMANAGER' }}&nbsp;</span>
-                    <span class="glyphicon"
-                        [ngClass]="entry.value.visible ? 'icon-chevron-right' : 'icon-chevron-down'"></span>
+                    <span class="fa-solid fa-chevron-right"
+                        [ngClass]="entry.value.visible ? 'fa-solid fa-chevron-right' : 'fa-solid fa-chevron-down'"></span>
                 </li>
                 }
                 <div [hidden]="!entry.value.visible">

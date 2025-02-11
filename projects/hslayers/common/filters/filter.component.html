@@ -7,7 +7,7 @@
       <hs-add-filter-button (clicks)="hsFiltersService.add($event.type, true, filter)"></hs-add-filter-button>
       <button class="btn btn-outline-danger btn-sm m-1" [title]="'STYLER.removeFilter' | translateHs"
         (click)="remove()">
-        <span class="icon-trash"></span>
+        <span class="fa-solid fa-trash"></span>
       </button>
     </div>
     @for (item of filter; track item; let i = $index) {

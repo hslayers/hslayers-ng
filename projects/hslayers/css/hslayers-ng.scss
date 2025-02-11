@@ -409,7 +409,7 @@ html:has(div.hs-layout.hsl.hs-mobile-view) {
     cursor: pointer;
   }
 
-  .input-group-append [class^="icon-"] {
+  .input-group-append [class^="fa-"] {
     font-size: 0.85rem;
   }
 
@@ -921,7 +921,7 @@ html:has(div.hs-layout.hsl.hs-mobile-view) {
     border-top: 1px solid rgba(200, 200, 200, 0.5)
   }
 
-  .hs-hover-popup .icon-remove-circle {
+  .hs-hover-popup .fa-ban {
     color: rgb(73, 80, 87);
     float: right
   }

@@ -17,10 +17,10 @@
     }
     <div class="btn-group" role="group" [attr.aria-label]="'STYLER.dashPattern' | translateHs  ">
       <button class="btn btn-outline-primary btn-sm" (click)="addDashItem()">
-        <span class="icon-plus"></span>
+        <span class="fa-solid fa-plus"></span>
       </button>
       <button class="btn btn-outline-danger btn-sm" (click)="removeDashItem()">
-        <span class="icon-minus"></span>
+        <span class="fa-solid fa-minus"></span>
       </button>
     </div>
   </div>
@@ -82,7 +82,7 @@
       <div class="btn-group">
         <div ngbDropdown #graphicLineMenu="ngbDropdown" class="d-inline-block" placement="top-right">
           <button class="btn btn-outline-primary btn-sm" id="dropdownAddFillSymbolizer" ngbDropdownToggle>
-            <span class="icon-plus"></span>
+            <span class="fa-solid fa-plus"></span>
           </button>
           <div ngbDropdownMenu aria-labelledby="dropdownAddFillSymbolizer">
             <button ngbDropdownItem (click)="addSymbolizer('graphicFill', 'Mark')">
@@ -96,7 +96,7 @@
         @if (symbolizer.graphicFill !== undefined) {
           <button class="btn btn-outline-danger btn-sm"
             (click)="symbolizer.graphicFill = undefined">
-            <span class="icon-trash"></span>
+            <span class="fa-solid fa-trash"></span>
           </button>
         }
       </div>
@@ -126,7 +126,7 @@
       <div class="btn-group me-3">
         <div ngbDropdown #graphicStrokeMenu="ngbDropdown" class="d-inline-block" placement="top-right">
           <button class="btn btn-outline-primary btn-sm" id="dropdownAddStrokeSymbolizer" ngbDropdownToggle>
-            <span class="icon-plus"></span>
+            <span class="fa-solid fa-plus"></span>
           </button>
           <div ngbDropdownMenu aria-labelledby="dropdownAddStrokeSymbolizer">
             <button ngbDropdownItem (click)="addSymbolizer('graphicStroke', 'Mark')">
@@ -140,7 +140,7 @@
         @if (symbolizer.graphicStroke !== undefined) {
           <button class="btn btn-outline-danger btn-sm"
             (click)="symbolizer.graphicStroke = undefined">
-            <span class="icon-trash"></span>
+            <span class="fa-solid fa-trash"></span>
           </button>
         }
       </div>

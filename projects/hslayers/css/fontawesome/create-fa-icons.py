@@ -1,4 +1,3 @@
-#!.venv/Scripts/python
 """
 Process the Font Awesome CSS and font files to create a minimal, optimized version that
 includes only the specified icons in both regular and solid variants.

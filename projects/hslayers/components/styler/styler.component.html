@@ -3,15 +3,15 @@
     <hs-panel-header name="styler" [panelTabs]="'styler'">
       <button mainButton class="btn btn-sm btn-outline-primary border-0 align-items-center d-flex gap-2"
         [title]="'STYLER.clear' | translateHs" (click)="clear()"> {{'COMMON.reset' | translateHs}}
-        <i class="glyphicon icon-fatredo"></i>
+        <i class="fa-solid fa-rotate-right"></i>
       </button>
       <extra-buttons>
         <a class="dropdown-item" download="style.sld" [hsDownload]="hsStylerService.sld" mimeType="text/plain"
           [href]="downloadData" (downloadPrepared)="downloadData = $event">
-          <i class="icon-download"></i>{{'STYLER.downloadSld' | translateHs}}
+          <i class="fa-solid fa-download"></i>{{'STYLER.downloadSld' | translateHs}}
         </a>
         <a class="dropdown-item" (click)="uploadSld()" [ngClass]="uploaderVisible ? 'text-primary opacity-100' : ''">
-          <i class="icon-upload"></i>{{'STYLER.uploadStyleFile' | translateHs}}
+          <i class="fa-solid fa-upload"></i>{{'STYLER.uploadStyleFile' | translateHs}}
         </a>
       </extra-buttons>
     </hs-panel-header>
@@ -39,7 +39,7 @@
           <div ngbDropdown class="d-inline-block" display="dynamic" placement="bottom-right">
             <button class="btn btn-outline-primary btn-sm" [title]="'STYLER.addRule' | translateHs" id="dropdownAddRule"
               ngbDropdownToggle>
-              <span class="icon-plus"></span>
+              <span class="fa-solid fa-plus"></span>
             </button>
             <div ngbDropdownMenu aria-labelledby="dropdownAddRule">
               <button ngbDropdownItem (click)="hsStylerService.addRule('Simple')">
@@ -78,7 +78,7 @@
               >
               {{'COMMON.unsavedChanges' | translateHs}} <button class="btn btn-primary btn-sm m-1"
               (click)="hsStylerService.setSldQml()" data-toggle="tooltip" [title]="'STYLER.unsavedChanges' | translateHs">
-              <i class="icon-save-floppy"></i>
+              <i class="fa-solid fa-floppy-disk"></i>
             </button>
           </div>
         } @else {

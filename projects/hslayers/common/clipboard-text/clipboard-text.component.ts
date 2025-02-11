@@ -18,7 +18,11 @@ import {TranslateCustomPipe} from 'hslayers-ng/services/language';
       [title]="'COMMON.copyToClipboard' | translateHs"
       (click)="copyToClipBoard()"
     >
-      <i [class.icon-check]="showCheck" [class.icon-copy]="!showCheck"></i>
+      <i
+        class="fa-solid"
+        [class.fa-square-check]="showCheck"
+        [class.fa-copy]="!showCheck"
+      ></i>
     </button>
   `,
   styles: `
