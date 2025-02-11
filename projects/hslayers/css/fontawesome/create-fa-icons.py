@@ -208,17 +208,22 @@ def main():
         script_dir = Path(__file__).resolve().parent
         fa_dir = script_dir  # Same directory for now
 
+        # Calculate the path to node_modules relative to the script's location
+        # Assuming the structure: hslayers-ng/projects/hslayers/css/fontawesome
+        node_modules_dir = (
+            script_dir / '../../../../node_modules/@fortawesome/fontawesome-free').resolve()
+
         processor = FontAwesomeProcessor()
 
         # Load required data
         processor.load_icon_list(fa_dir / 'icons.txt')
         processor.load_base_css(fa_dir / 'base.css')
-        processor.parse_css_file(fa_dir / 'css' / 'all.css')
+        processor.parse_css_file(node_modules_dir / 'css' / 'all.css')
 
         # Generate optimized CSS with embedded fonts
         processor.generate_css(
             output_file=fa_dir / 'hslayers-ng-fa-icons.css',
-            webfonts_dir=fa_dir / 'webfonts'
+            webfonts_dir=node_modules_dir / 'webfonts'
         )
 
     except Exception as e:
