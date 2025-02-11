@@ -100,7 +100,7 @@
     "@angular/cli": "^19.1.6",
     "@angular/compiler-cli": "^19.1.2",
     "@commitlint/cli": "^19.6.0",
-    "@commitlint/config-conventional": "^19.6.0",
+    "@commitlint/config-conventional": "^19.7.1",
     "@compodoc/compodoc": "^1.1.26",
     "@cypress/schematic": "^3.0.0",
     "@eslint/compat": "^1.2.5",
