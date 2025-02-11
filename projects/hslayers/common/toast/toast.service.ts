@@ -112,7 +112,7 @@ export class HsToastService {
         delay:
           options.customDelay || (this.hsConfig.errorToastDuration ?? 7000),
         autohide: true,
-        type: options.type || 'info',
+        type: options.type || 'danger',
         serviceCalledFrom: options.serviceCalledFrom,
         details: options.details || [],
       },
