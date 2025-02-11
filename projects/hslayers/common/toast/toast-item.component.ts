@@ -83,11 +83,11 @@ export class HsToastItemComponent implements AfterContentInit {
       case 'success':
         return 'fa-solid fa-square-check';
       case 'danger':
-        return 'fa-solid fa-square-check';
+        return 'fa-solid fa-triangle-exclamation';
       case 'warning':
-        return 'fa-solid fa-square-check';
+        return 'fa-solid fa-triangle-exclamation';
       case 'info':
-        return 'fa-solid fa-square-check';
+        return 'fa-solid fa-circle-info';
       default:
         return '';
     }
