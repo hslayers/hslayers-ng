@@ -4,7 +4,8 @@
   "assets": [
     "assets",
     "css/hslayers-ng.scss",
-    "css/whhg-font/css/whhg.css"
+    "css/icons/hslayers-ng-fa-icons.css",
+    "css/icons/create-fa-icons.py"
   ],
   "lib": {
     "entryFile": "public-api.ts"
