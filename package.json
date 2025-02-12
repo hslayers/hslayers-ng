@@ -108,7 +108,7 @@
     "@types/jasmine": "^5.1.5",
     "@types/jasminewd2": "~2.0.12",
     "angular-eslint": "^19.1.0",
-    "cypress": "~14.0.2",
+    "cypress": "~14.0.3",
     "cypress-real-events": "^1.13.0",
     "cz-conventional-changelog": "^3.3.0",
     "eslint": "^9.18.0",
