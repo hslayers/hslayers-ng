@@ -46,12 +46,12 @@ describe('Hslayers application', () => {
   /**
    * This changes based on current test-app config
    */
-  it('Only 9 sidebar panels should be visible', () => {
+  it('Only 6 sidebar panels should be visible', () => {
     cy.viewport(600, 1000);
     // Wait for the layout to update
     cy.wait(500);
     cy.get('hs-sidebar  span.hs-sidebar-item:not(.hs-panel-hidden)')
       .its('length')
-      .should('equal', 9);
+      .should('equal', 6);
   });
 });

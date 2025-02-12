@@ -7,7 +7,7 @@ describe('Hslayers application', () => {
   });
 
   it('Should not be possible to change base/thematic type for vector layer', () => {
-    cy.get('[data-test="Points"] span.icon-settingsthree-gears ').click();
+    cy.get('[data-test="Points"] span.fa-gears ').click();
     cy.get('hs-layer-editor form').within(() => {
       cy.get('hs-layer-type-switcher-widget').should('exist');
       cy.get('hs-layer-type-switcher-widget div').should('not.exist');
@@ -15,14 +15,14 @@ describe('Hslayers application', () => {
   });
 
   it('Should be possible to find base/thematic type toggle for WMS layer', () => {
-    cy.get('[data-test="EVI"] span.icon-settingsthree-gears ').click();
+    cy.get('[data-test="EVI"] span.fa-gears ').click();
     cy.get('hs-layer-editor form').within(() => {
       cy.get('hs-layer-type-switcher-widget div').should('exist');
     });
   });
 
   it.only('Should be possible to change type of WMS layer back and forth', () => {
-    cy.get('[data-test="EVI"] span.icon-settingsthree-gears ').click();
+    cy.get('[data-test="EVI"] span.fa-gears ').click();
 
     //Change to BASE
     cy.get('hs-layer-editor form hs-layer-type-switcher-widget div')

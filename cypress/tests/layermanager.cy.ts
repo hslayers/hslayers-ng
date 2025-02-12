@@ -78,7 +78,7 @@ describe('Hslayers application', () => {
     //Enable EVI layer and zoom to its extent
     cy.get('[data-test="EVI"] button.hs-lm-item-visibility').click();
     cy.wait(2000);
-    cy.get('[data-test="EVI"] span.icon-settingsthree-gears ').click();
+    cy.get('[data-test="EVI"] span.fa-gears ').click();
     cy.get('.card-footer button[title="Zoom to layer"]').click();
 
     /**
@@ -92,7 +92,7 @@ describe('Hslayers application', () => {
 
     //Zoom to different layer
     cy.get(
-      '[data-test="Latvian municipalities (1 sub-layer)"] span.icon-settingsthree-gears ',
+      '[data-test="Latvian municipalities (1 sub-layer)"] span.fa-gears ',
     ).click();
     cy.get('.card-footer button[title="Zoom to layer"]').click();
 
@@ -102,7 +102,7 @@ describe('Hslayers application', () => {
         throw new Error('UNexpected getMap request was intercepted.');
       } else {
         //Ignore extent eg. allow requests to be made no matter the extent
-        cy.get('[data-test="EVI"] span.icon-settingsthree-gears ').click();
+        cy.get('[data-test="EVI"] span.fa-gears ').click();
         cy.get(
           'hs-layer-editor hs-extent-widget #hs-layer-extent-toggle',
         ).click();
