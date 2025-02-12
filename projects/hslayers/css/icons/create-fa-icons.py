@@ -1,10 +1,20 @@
 """
 Process the Font Awesome CSS and font files to create a minimal, optimized version that
 includes only the specified icons in both regular and solid variants.
+
+Usage:
+    python create-fa-icons.py --icons-file path/to/icons.txt --output-file path/to/output.css [--fa-path path/to/fontawesome]
+
+Arguments:
+    --icons-file: Path to text file containing icon names (one per line)
+    --output-file: Path where the generated CSS will be saved
+    --fa-path: (Optional) Path to @fortawesome/fontawesome-free package
+               If not provided, will try to find it in node_modules
 """
 
 import re
 import base64
+import argparse
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Dict, List, Set, Tuple, Optional
@@ -111,8 +121,12 @@ class FontAwesomeProcessor:
     def load_base_css(self, base_css_file: Path) -> None:
         """Load base Font Awesome CSS with core styles."""
         print(f"Loading base CSS from: {base_css_file}")
-        with open(base_css_file, 'r', encoding='utf-8') as f:
-            self.base_css = f.read()
+        if base_css_file.exists():
+            with open(base_css_file, 'r', encoding='utf-8') as f:
+                self.base_css = f.read()
+        else:
+            print(
+                f"Warning: base.css not found at {base_css_file}, skipping base CSS")
 
     def process_font(self, font_config: FontConfig, webfonts_dir: Path, output_dir: Path) -> Optional[Tuple[str, str, str]]:
         """Process a single font variant (solid/regular/brands).
@@ -161,8 +175,11 @@ class FontAwesomeProcessor:
         output_dir = output_file.parent
         output_dir.mkdir(exist_ok=True)
 
-        # Start with base CSS
-        css_content = [self.base_css, ""]
+        # Start with base CSS if available
+        css_content = []
+        if self.base_css:
+            css_content.extend([self.base_css, ""])
+
         css_content.append("/* Font face definitions */")
 
         # Process each font variant
@@ -201,30 +218,63 @@ class FontAwesomeProcessor:
         print(f"Generated CSS file ({size_kb:.1f}KB)")
 
 
+def find_fontawesome_path(start_path: Path) -> Optional[Path]:
+    """Find @fortawesome/fontawesome-free in node_modules."""
+    current = start_path
+    while current != current.parent:
+        fa_path = current / 'node_modules' / '@fortawesome' / 'fontawesome-free'
+        if fa_path.exists():
+            return fa_path
+        current = current.parent
+    return None
+
+
 def main():
     """Main entry point for Font Awesome subsetting process."""
-    try:
-        # Set up paths
-        script_dir = Path(__file__).resolve().parent
-        fa_dir = script_dir  # Same directory for now
+    parser = argparse.ArgumentParser(
+        description='Create Font Awesome icon subset')
+    parser.add_argument('--icons-file',
+                        help='Path to file containing icon names (default: icons.txt in script directory)')
+    parser.add_argument('--output-file',
+                        help='Path where the generated CSS will be saved (default: hslayers-ng-fa-icons.css in script directory)')
+    parser.add_argument(
+        '--fa-path', help='Path to @fortawesome/fontawesome-free package')
 
-        # Calculate the path to node_modules relative to the script's location
-        # Assuming the structure: hslayers-ng/projects/hslayers/css/fontawesome
-        node_modules_dir = (
-            script_dir / '../../../../node_modules/@fortawesome/fontawesome-free').resolve()
+    args = parser.parse_args()
+
+    try:
+        script_dir = Path(__file__).resolve().parent
+
+        # Use default paths for hslayers-ng if not specified
+        icons_file = Path(
+            args.icons_file) if args.icons_file else script_dir / 'icons.txt'
+        output_file = Path(
+            args.output_file) if args.output_file else script_dir / 'hslayers-ng-fa-icons.css'
+
+        # Find Font Awesome path
+        if args.fa_path:
+            fa_path = Path(args.fa_path)
+        else:
+            fa_path = find_fontawesome_path(script_dir)
+            if not fa_path:
+                raise FileNotFoundError(
+                    "Could not find @fortawesome/fontawesome-free in node_modules")
 
         processor = FontAwesomeProcessor()
 
         # Load required data
-        processor.load_icon_list(fa_dir / 'icons.txt')
-        processor.load_base_css(fa_dir / 'base.css')
-        processor.parse_css_file(node_modules_dir / 'css' / 'all.css')
+        processor.load_icon_list(icons_file)
+        processor.load_base_css(script_dir / 'base.css')
+        processor.parse_css_file(fa_path / 'css' / 'all.css')
 
         # Generate optimized CSS with embedded fonts
         processor.generate_css(
-            output_file=fa_dir / 'hslayers-ng-fa-icons.css',
-            webfonts_dir=node_modules_dir / 'webfonts'
+            output_file=output_file,
+            webfonts_dir=fa_path / 'webfonts'
         )
+
+        print(f"\nSuccess! Created Font Awesome subset at: {output_file}")
+        print("You can now import this file in your application's styles.")
 
     except Exception as e:
         print(f"Error: {e}")
