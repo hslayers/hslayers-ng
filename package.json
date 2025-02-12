@@ -51,7 +51,7 @@
     "@angular/compiler": "^19.1.5",
     "@angular/core": "^19.1.5",
     "@angular/forms": "^19.1.5",
-    "@angular/localize": "^19.1.2",
+    "@angular/localize": "^19.1.5",
     "@angular/platform-browser": "^19.1.2",
     "@angular/platform-browser-dynamic": "^19.1.5",
     "@ng-bootstrap/ng-bootstrap": "^18.0.0",
