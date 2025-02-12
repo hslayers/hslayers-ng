@@ -50,7 +50,7 @@ export class HslayersAppComponent {
         order: 0,
         title: 'Custom panel',
         description: 'Custom panel with some fancy features',
-        icon: 'icon-analytics-piechart',
+        icon: 'fa-truck-fast',
       },
       {},
     );

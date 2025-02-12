@@ -232,7 +232,8 @@
               }
             ],
             "styles": [
-              "projects/hslayers/css/hslayers-ng.scss"
+              "projects/hslayers/css/hslayers-ng.scss",
+              "projects/test-app/custom-fa-icons.css"
             ],
             "scripts": [],
             "customWebpackConfig": {

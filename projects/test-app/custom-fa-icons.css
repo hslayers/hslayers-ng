@@ -1,0 +1,15 @@
+/* Font face definitions */
+@font-face {
+                font-family: 'Font Awesome 6 Free';
+                font-style: normal;
+                font-weight: 900;
+                font-display: block;
+                src: url(data:font/woff2;charset=utf-8;base64,d09GMgABAAAAAAJwAAoAAAAABPAAAAIoAwcFAAAAAAAAAAAAAAAAAAAAAAAAAAAABmAANMqCagE2AiQDCMsGBCAFgxgHIBs9BECeBTkZb2omtL85uUXmcS5RC57n91PPDRG/fOqIVdQY7Kqq0Q1QT9ixjx8KPz2X2H4/b8+kclVQBS27cRueHZtp0m/xE9W2PWCgZiKD3WxqH6O1oDZ1qn6C2eC5B4yHMIJzY9JuLPVKy8bybsAWpLypNmlrBWtY3YYYXIHH81ezZfAzcDWnc58b8sgTDBeeg2vy9sHB31E6pppT78UFb/XsKpMf9newX+QyCEC2fAQ1AA7gBClOAlJcasDFRbB6Ztv2dltYAC7YS0dlyae5PkhOr1Icp1WT8pmsppHoDdNsRoxKK5GFpmVamjm3lYbe7TQN9Yot7CpBmmGn20p1d9pI3wVNZd2g2OvxJiSg5Uab2SngAd21m6lIWGZRkejsr8X+xrDYJ/dTBn2953WKxX6/WJTtEdcifj09klwkC5qEIymb/KUtDqoYDYWiRcuRmGRzuazYy6VLZxKNSre3N5YL6J5EZuQbnqyNYnKRnJ01/J/UmXuLvW0HZhXvQuBcbj48PTh3o0fXPg4A/u1+751or+zvjmf5AXwcAAR/PXJUHqznEJo4sk0NAOC7sI61J71IgKCOed3gyPADOiIo5nToEPAEOh232e9aBd0e+T/lMUqCM2C6lCiqjfQ85NWcB2Pu90452AIdZ1LExJka2WTVRdCI3LuN/lcD04RlYu4KphYBA7FYDBMzyiEGjTJnqOnVGtzaZzqp1fD7yGYcxNPxw/COAgAA) format('woff2');
+            }
+            
+
+/* Icon definitions */
+.fa-truck-fast {
+                --fa: "\f48b";
+            }
+            
