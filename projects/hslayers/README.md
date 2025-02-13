@@ -19,6 +19,7 @@ HSLayers-NG is a library which extends OpenLayers functionality by providing a f
 | 12               | 16.x                | 5.3         | 7.x
 | 13               | 17.x                | 5.3         | ^8.2
 | 14               | 18.x                | 5.3         | ^9.2.2
+| 15               | 19.x                | 5.3         | ^10.4
 
 ## Demo
 
@@ -44,13 +45,13 @@ It will install hslayers-ng for the default application specified in your angula
 `ng add hslayers-ng --project myProject`
 
 Add peer dependencies if not installed automatically by npm:
-`npm i bootstrap@^5.3 ol@^9.2.2 @angular/cdk@^18 @angular/common@^18 @angular/core@^18 @angular/forms@^18 @angular/compiler@^18 @angular/platform-browser@^18 @angular/platform-browser-dynamic@^18 @angular/localize@^18 @ngx-translate/core@^15 @ngx-translate/http-loader@^8 deepmerge@^4.0.0 dayjs@^1.0.0 @ng-bootstrap/ng-bootstrap@^16 ol-popup@^5.0.0 proj4@^2.8.1 share-api-polyfill@^1.0.0 rxjs@^7.0.0 zone.js@~0.14.0 xml-js@^1.6.11 ngx-cookie-service@^18 geostyler-style@^8.1.0 geostyler-sld-parser@^5 geostyler-openlayers-parser@^4 geostyler-legend@4 geostyler-qgis-parser@^2 ngx-color@^9 queue@^7 resumablejs@^1 d3@^7 jszip@^3 polygon-splitter@^0.0.11 polygon-clipping@^0.15.3 @popperjs/core@^2 ol-ext@^4 big.js@^6.2.1`
+`npm i bootstrap@^5.3 ol@^10.4.0 @angular/cdk@^19 @angular/common@^19 @angular/core@^19 @angular/forms@^19 @angular/compiler@^19 @angular/platform-browser@^19 @angular/platform-browser-dynamic@^19 @angular/localize@^19 @ngx-translate/core@^16 @ngx-translate/http-loader@^16 deepmerge@^4.0.0 dayjs@^1.0.0 @ng-bootstrap/ng-bootstrap@^18 ol-popup@^5.0.0 proj4@^2.15.0 share-api-polyfill@^1.0.0 rxjs@^7.8.0 zone.js@~0.15.0 xml-js@^1.6.11 ngx-cookie-service@^19 geostyler-style@^9.2.0 geostyler-sld-parser@^7 geostyler-openlayers-parser@^5 geostyler-legend@5 geostyler-qgis-parser@^4 ngx-color@^9 queue@^7 resumablejs@^1 d3@^7 jszip@^3 polygon-splitter@^0.0.11 polygon-clipping@^0.15.3 @popperjs/core@^2 ol-ext@^4 big.js@^6.2.1 hammerjs@2`
 
 For using hslayers-ng prebuilt bundle including Angular, Bootstrap and other dependencies by loading it through `<script>` tags see: [Hslayers-ng application](https://github.com/hslayers/hslayers-ng/tree/develop/projects/hslayers-app)
 
 ## Configuration
 
-Configuring hslayers-ng is described in more depth in the [wiki](https://github.com/hslayers/hslayers-ng/wiki) 
+Configuring hslayers-ng is described in more depth in the [wiki](https://github.com/hslayers/hslayers-ng/wiki)
 
 ### HsConfig service
 Use HsConfig service injected in your component to set applications layers, looks and behavior. See full list of [config options](https://github.com/hslayers/hslayers-ng/wiki/App-config-parameters)
@@ -78,7 +79,7 @@ Use HsConfig service injected in your component to set applications layers, look
 ```
 
 ## Back-end
-HSLayers-NG can be used as a client-only single-page-application without any need for additional server components. But incorporating at least some unlocks some great features of HSLayers-NG. Here is the list of recommended server-side components:
+HSLayers-NG can be used as a client-only single-page-application without any need for additional server components. But incorporating at least some server-side components unlocks some great features of HSLayers-NG. Here is a list of recommended server-side components:
 
 + **[hslayers-server](./projects/hslayers-server)** - a simple [cors-anywhere](https://www.npmjs.com/package/cors-anywhere) based proxy server which can be used to overcome [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS) restrictions, fill API keys for services such as [Geonames](https://www.geonames.org/) used for search and other tasks. Copying and modifying the .env file to preserve secrets and not expose them for everyone and all kinds of requests will be necessary.
 + [Layman](https://github.com/LayerManager/layman) - geospatial data catalogue, map composition catalogue

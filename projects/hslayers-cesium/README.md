@@ -6,7 +6,7 @@ See [example](https://github.com/hslayers/examples/tree/master/cesium)
 ## Installation
 
 ```
-npm i cesium @types/cesium hslayers-cesium
+npm i hslayers-cesium
 ```
 
 ## Usage
