@@ -21,6 +21,26 @@ import {getFeatures} from 'hslayers-ng/common/extensions';
   selector: 'hs-query-popup',
   templateUrl: './query-popup.component.html',
   standalone: false,
+  styles: `
+    .hs-hover-popup .fa-xmark {
+      color: rgb(73, 80, 87);
+      float: right;
+    }
+
+    .hs-hover-popup .card {
+      padding: 5px;
+      overflow-y: auto;
+    }
+
+    .hs-hover-popup {
+      max-height: 20em;
+      min-width: 10em;
+      max-width: 40em;
+      overflow-y: auto;
+      visibility: visible;
+      background: white;
+    }
+  `,
 })
 export class HsQueryPopupComponent
   implements OnDestroy, HsDialogComponent, AfterViewInit, OnInit

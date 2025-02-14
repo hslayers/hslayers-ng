@@ -2,7 +2,7 @@
   <div class="card">
     <a class="p-1" (click)="data.service.closePopup()" data-toggle="tooltip"
       [title]="'QUERY.featurePopup.closePopup' | translateHs">
-      <i class="fa-solid fa-ban"></i>
+      <i class="fa-solid fa-xmark"></i>
     </a>
     @for (layerDesc of data.service.featureLayersUnderMouse; track $index) {
     <div class="hs-popup-layer">
