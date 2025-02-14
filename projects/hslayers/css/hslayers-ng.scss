@@ -63,8 +63,8 @@ html:has(div.hs-layout.hsl.hs-mobile-view) {
   // Helpers
   @import "bootstrap/scss/helpers";
 
-  // Utilities
-  @import "bootstrap/scss/utilities/api";
+  // Utilities = default utilities + custom utilities
+  @import "./bootstrap-utilities";
 
 
   @for $i from 0 through 20 {
