@@ -72,3 +72,4 @@ up-right-and-down-left-from-center
 map-location-dot
 fa-triangle-exclamation
 fa-circle-info
+eraser

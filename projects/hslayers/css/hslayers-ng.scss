@@ -770,15 +770,6 @@ html:has(div.hs-layout.hsl.hs-mobile-view) {
     background-color: #edf0f2;
   }
 
-  .hs-hover-popup {
-    max-height: 20em;
-    min-width: 10em;
-    max-width: 40em;
-    overflow-y: auto;
-    visibility: visible;
-    background: white;
-  }
-
   .hs-toolbar-button {
     height: 2.4em;
   }
@@ -919,16 +910,6 @@ html:has(div.hs-layout.hsl.hs-mobile-view) {
   .hs-popup-layer {
     line-height: 1.2;
     border-top: 1px solid rgba(200, 200, 200, 0.5)
-  }
-
-  .hs-hover-popup .fa-ban {
-    color: rgb(73, 80, 87);
-    float: right
-  }
-
-  .hs-hover-popup .card {
-    padding: 5px;
-    overflow-y: auto;
   }
 
   .hs-vector-layer-legend {
