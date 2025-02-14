@@ -1,0 +1,15 @@
+@import "bootstrap/scss/functions";
+@import "bootstrap/scss/variables";
+@import "bootstrap/scss/utilities";
+
+$utilities: map-merge($utilities,
+        ("rotate": (property: transform,
+                class: rotate,
+                values: (n90: rotate(-90deg),
+                    0: rotate(0deg),
+                    90: rotate(90deg),
+                    180: rotate(180deg),
+                    270: rotate(270deg)))));
+
+// Generate utilities
+@import "bootstrap/scss/utilities/api";

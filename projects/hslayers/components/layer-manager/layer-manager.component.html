@@ -138,9 +138,8 @@
 
                 <li class="list-group-item hs-lm-layerlist-header list-group-item-primary"
                     (click)="entry.value.visible = !entry.value.visible">
+                    <span class="mx-2 fa-solid fa-chevron-down" style="min-width: 1rem; transition: transform 0.3s ease;" [class.rotate-n90]="!entry.value.visible "></span>
                     <span>{{entry.key | translateHs : 'LAYERMANAGER' }}&nbsp;</span>
-                    <span class="fa-solid fa-chevron-right"
-                        [ngClass]="entry.value.visible ? 'fa-solid fa-chevron-right' : 'fa-solid fa-chevron-down'"></span>
                 </li>
                 }
                 <div [hidden]="!entry.value.visible">
