@@ -12,7 +12,7 @@
   }<!-- TODO: Remove function call from template -->
 
   @for (button of buttons; track button) {
-  <span class="hs-sidebar-item list-group-item h-100 d-flex align-items-center flex-fill fa-solid"
+  <span class="hs-sidebar-item list-group-item h-100 d-flex align-items-center flex-fill"
     [attr.data-cy]="button.panel" [hidden]="!button.visible" (click)="HsSidebarService.buttonClicked(button)"
     [ngClass]="{'active': HsLayoutService.mainpanel === button.panel,  'hs-panel-hidden' : !button.fits}"
     [class.language]="button.panel === 'language'" [title]="button.description | translateHs">
