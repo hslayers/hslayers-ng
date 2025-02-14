@@ -73,3 +73,4 @@ map-location-dot
 fa-triangle-exclamation
 fa-circle-info
 eraser
+globe
