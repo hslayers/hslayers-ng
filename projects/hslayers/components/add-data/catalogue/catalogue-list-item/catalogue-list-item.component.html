@@ -19,7 +19,7 @@
       <div class="btn-group" (click)="$event.stopPropagation()">
         <button type="button" class="btn btn-sm border-0" [class.disabled]="!layerAvailable"
           (click)="selectTypeAndAdd('WMS',$event)">
-          <i class="fa-solid fa-plus fa-primary"></i>
+          <i class="fa-solid fa-plus icon-primary"></i>
           @if (layerAvailable) {
           <span class="ms-1">{{'COMMON.addToMap' |
             translateHs }}</span>
@@ -34,13 +34,13 @@
         }
       </div>
       <a class="btn btn-sm border-0" (click)="showMetadata(layer.endpoint, layer)">
-        <i class="fa-solid fa-circle-info fa-primary"></i><span class="ms-1">{{'COMMON.metadata' |
+        <i class="fa-solid fa-circle-info icon-primary"></i><span class="ms-1">{{'COMMON.metadata' |
           translateHs }}</span>
       </a>
       <a class="btn btn-sm border-0" (click)="$event.stopPropagation();showPermissions(layer)" data-toggle="tooltip"
         data-placement="bottom"
         [title]="layer.editable ? '' : 'DATASOURCE_SELECTOR.datasourceListItem.notAllowedToEditLayer' | translateHs ">
-        <i class="fa-solid fa-lock fa-primary" [ngClass]="{'text-muted': !layer.editable}"
+        <i class="fa-solid fa-lock icon-primary" [ngClass]="{'text-muted': !layer.editable}"
           [ngStyle]="{'cursor' : layer.editable ? 'pointer' : 'default'}"></i>@if (layer.editable) {
         <span class="ms-1">{{'COMMON.setPermissions' | translateHs }}</span>
         }
