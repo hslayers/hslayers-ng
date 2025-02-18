@@ -115,7 +115,7 @@
     "cz-conventional-changelog": "^3.3.0",
     "eslint": "^9.18.0",
     "eslint-config-openlayers": "20.0.0",
-    "eslint-import-resolver-typescript": "^3.6.3",
+    "eslint-import-resolver-typescript": "^3.8.1",
     "eslint-plugin-import": "2.31.0",
     "eslint-plugin-jsdoc": "50.6.3",
     "eslint-plugin-prefer-arrow": "1.2.3",
