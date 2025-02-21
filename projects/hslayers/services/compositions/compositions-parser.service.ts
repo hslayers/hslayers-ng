@@ -112,7 +112,7 @@ export class HsCompositionsParserService {
               this.current_composition_url.replace('/file', ''),
               {
                 withCredentials:
-                  this.hsCommonLaymanService.layman.user && fromLayman,
+                  this.hsCommonLaymanService.layman?.user && fromLayman,
               },
             )
             .pipe(
