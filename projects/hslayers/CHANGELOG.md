@@ -1,3 +1,28 @@
+# [15.0.0](https://github.com/hslayers/hslayers-ng/compare/15.0.0-next.1...15.0.0) (2025-02-24)
+
+
+### Bug Fixes
+
+* **build:** Re-create package-lock ([fa8d84f](https://github.com/hslayers/hslayers-ng/commit/fa8d84fe80ede8f7cb4cd35a68f3333e91215079))
+* **cesium:** Use valid projection for transform ([fa4e3c6](https://github.com/hslayers/hslayers-ng/commit/fa4e3c6fef5667ae8c2f934585db9ee1aa06591c))
+* **compositions:** Composition metadata fetch should not fail on missing layman endpoint ([b8e4f4d](https://github.com/hslayers/hslayers-ng/commit/b8e4f4d8acead19aeb8fddfd7ced553c1fbc318a))
+* **config:** Prevent crash when config update fails ([031ec9e](https://github.com/hslayers/hslayers-ng/commit/031ec9ee81dbd408aa76052b9ca59a4925007a6f))
+* **deps:** Revert sld-parser change ([45840e3](https://github.com/hslayers/hslayers-ng/commit/45840e3b8a8747280a15e1214700ff924d930df6))
+* **icons:** Correct path for icon font css file ([dacc5ce](https://github.com/hslayers/hslayers-ng/commit/dacc5ced867aa92cf223834c2e8a4d1788384367))
+* **icons:** Include icon css in build and fix paths ([324682b](https://github.com/hslayers/hslayers-ng/commit/324682bf4bb86ed45bf0e19b2e5ad9ad8f7e4692))
+* **icons:** Revert change of icon-primary to fa-primary ([bd13937](https://github.com/hslayers/hslayers-ng/commit/bd13937251799e9c9df41d798d516bc273c0f99a))
+* **layermanager:** Animated layer group chevrons ([d857dd9](https://github.com/hslayers/hslayers-ng/commit/d857dd99d209a0d9770acc5c1d63e3953dfb7504))
+* **query:** Better track by property ([9322a49](https://github.com/hslayers/hslayers-ng/commit/9322a49627df4120d2182b6726a8ed81e1c036ae))
+* **save-map:** Sanitize empty string legends ([42b6952](https://github.com/hslayers/hslayers-ng/commit/42b6952edbf868d3793d80869afa9989d7dbfb56))
+
+
+### Features
+
+* **config:** Add possibility to anchor toasts to screen or map ([d69caea](https://github.com/hslayers/hslayers-ng/commit/d69caea1196f472587d2fe0ff2880888ccc64d72))
+* Layer editor widgets - configurable ([ca24968](https://github.com/hslayers/hslayers-ng/commit/ca249688d69cacd0a00f1015d092e610a1015d2e))
+
+
+
 # [15.0.0-next.2](https://github.com/hslayers/hslayers-ng/compare/15.0.0-next.1...15.0.0-next.2) (2025-02-13)
 
 
