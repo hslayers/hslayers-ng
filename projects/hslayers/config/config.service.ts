@@ -14,6 +14,14 @@ import {
 } from 'hslayers-ng/types';
 import {StyleLike} from 'ol/style/Style';
 
+export type ToastPosition =
+  | 'top-left'
+  | 'top-right'
+  | 'top-center'
+  | 'bottom-left'
+  | 'bottom-right'
+  | 'bottom-center';
+
 export type SymbolizerIcon = {
   name: string;
   url: string;
@@ -157,6 +165,11 @@ export class HsConfigObject {
    * 'map' - anchors toasts to the map container
    */
   toastAnchor?: 'screen' | 'map' = 'map';
+  /**
+   * Controls the position of toast notifications
+   * @default 'bottom-right'
+   */
+  toastPosition?: ToastPosition;
   errorToastDuration?: number;
 
   advancedForm?: boolean;

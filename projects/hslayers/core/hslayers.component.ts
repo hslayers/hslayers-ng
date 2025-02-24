@@ -10,10 +10,18 @@ import {
   ViewChild,
   inject,
 } from '@angular/core';
-import {delay, filter, fromEvent, timer} from 'rxjs';
+import {
+  combineLatestWith,
+  delay,
+  filter,
+  fromEvent,
+  map,
+  startWith,
+  timer,
+} from 'rxjs';
 import {takeUntilDestroyed, toSignal} from '@angular/core/rxjs-interop';
 
-import {HsConfig, HsConfigObject} from 'hslayers-ng/config';
+import {HsConfig, HsConfigObject, ToastPosition} from 'hslayers-ng/config';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsExternalService} from 'hslayers-ng/services/external';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
@@ -69,6 +77,7 @@ export class HslayersComponent implements AfterViewInit, OnInit {
   private panelSpace: HTMLElement;
   private mapSpace: HTMLElement;
 
+  toastPosition: Signal<ToastPosition>;
   constructor(
     public hsConfig: HsConfig,
     private elementRef: ElementRef,
@@ -83,6 +92,20 @@ export class HslayersComponent implements AfterViewInit, OnInit {
   ) {
     this.sidebarPosition = toSignal(this.HsLayoutService.sidebarPosition);
     this.sidebarVisible = toSignal(this.HsLayoutService.sidebarVisible);
+
+    this.toastPosition = toSignal(
+      this.HsLayoutService.sidebarPosition$.pipe(
+        combineLatestWith(
+          this.hsConfig.configChanges.pipe(startWith(this.hsConfig)),
+        ),
+        map(([sidebarPosition, _]) => {
+          return (
+            this.hsConfig.toastPosition ??
+            (sidebarPosition === 'left' ? 'bottom-right' : 'bottom-left')
+          );
+        }),
+      ),
+    );
   }
 
   async ngOnInit(): Promise<void> {

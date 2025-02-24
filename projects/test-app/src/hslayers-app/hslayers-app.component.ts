@@ -425,6 +425,7 @@ export class HslayersAppComponent {
       language: 'en',
       assetsPath: 'assets',
       saveMapStateOnReload: false,
+      toastAnchor: 'screen',
       symbolizerIcons: [
         {name: 'bag', url: '/assets/icons/bag1.svg'},
         {name: 'banking', url: '/assets/icons/banking4.svg'},

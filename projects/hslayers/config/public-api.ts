@@ -4,4 +4,5 @@ export {
   SymbolizerIcon,
   MapSwipeOptions,
   KeyNumberDict,
+  ToastPosition,
 } from './config.service';

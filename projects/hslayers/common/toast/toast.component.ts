@@ -1,18 +1,10 @@
-import {Component, Input, computed} from '@angular/core';
+import {Component, computed, input} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {toSignal} from '@angular/core/rxjs-interop';
 
 import {HsToastService} from './toast.service';
 import {HsToastItemComponent} from './toast-item.component';
-import {HsConfig} from 'hslayers-ng/config';
-
-export type ToastPosition =
-  | 'top-left'
-  | 'top-right'
-  | 'top-center'
-  | 'bottom-left'
-  | 'bottom-right'
-  | 'bottom-center';
+import {HsConfig, ToastPosition} from 'hslayers-ng/config';
 
 @Component({
   selector: 'hs-toast',
@@ -37,7 +29,7 @@ export type ToastPosition =
   },
 })
 export class HsToastComponent {
-  @Input() position: ToastPosition = 'bottom-center';
+  position = input<ToastPosition>('bottom-center');
 
   constructor(
     public hsToastService: HsToastService,
@@ -58,10 +50,11 @@ export class HsToastComponent {
    */
   positionClasses = computed(() => {
     this.configChanges();
+    const containerPosition = this.position();
     const positionType =
       this.hsConfig.toastAnchor === 'screen'
         ? 'position-fixed'
         : 'position-absolute';
-    return `${this.position} ${positionType}`;
+    return `${containerPosition} ${positionType}`;
   });
 }
