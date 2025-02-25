@@ -85,7 +85,7 @@
     "proj4": "^2.15.0",
     "queue": "^7.0.0",
     "resumablejs": "^1.1.0",
-    "rxjs": "^7.8.1",
+    "rxjs": "^7.8.2",
     "share-api-polyfill": "^1.1.1",
     "tslib": "^2.8.1",
     "vega": "5.25.0",
