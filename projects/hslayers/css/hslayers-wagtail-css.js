@@ -1,10 +1,15 @@
+/**
+ * This script compiles the HSLayers SCSS file to CSS without the Bootstrap imports and FONT AWESOME ICONS.
+ * This setup is necessary for the use on the Wagtail (preventing bootstrap duplication, icon overriding)
+ * The compiled CSS is saved to the dist folder.
+ */
 const fs = require('fs');
 const path = require('path');
 const sass = require('sass');
 
 // Paths to your SCSS files
 const inputFilePath = path.resolve(__dirname, './hslayers-ng.scss');
-const outputCssFilePath = path.resolve('dist/hslayers/css/hslayers-ng-wo-bootstrap.css');
+const outputCssFilePath = path.resolve('dist/hslayers/css/hslayers-ng-wagtail.css');
 
 
 // Function to remove specific lines from the content
@@ -21,6 +26,7 @@ const data = fs.readFileSync(inputFilePath,
 // Remove the lines containing Bootstrap imports
 let modifiedContent = removeLines(data, 33, 68); //Components
 modifiedContent = removeLines(modifiedContent, 16, 20); //Maps, mixins etx
+modifiedContent = removeLines(modifiedContent, 2, 3) //ICONS
 
 // Compile the modified SCSS content to CSS
 const result = sass.compileString(modifiedContent, {
