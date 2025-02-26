@@ -110,7 +110,7 @@
     "@eslint/compat": "^1.2.7",
     "@fortawesome/fontawesome-free": "^6.7.2",
     "@frsource/cypress-plugin-visual-regression-diff": "^3.2.14",
-    "@types/jasmine": "^5.1.5",
+    "@types/jasmine": "^5.1.7",
     "@types/jasminewd2": "~2.0.12",
     "angular-eslint": "^19.1.0",
     "cypress": "~14.1.0",
