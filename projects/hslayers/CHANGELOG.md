@@ -1,3 +1,7 @@
+## [15.0.1](https://github.com/hslayers/hslayers-ng/compare/15.0.0...15.0.1) (2025-02-26)
+
+
+
 # [15.0.0](https://github.com/hslayers/hslayers-ng/compare/15.0.0-next.1...15.0.0) (2025-02-24)
 
 
