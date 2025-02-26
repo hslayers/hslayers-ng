@@ -55,7 +55,7 @@ export class HsPrintLegendService extends PrintLegendParams {
           subscriber.complete();
         };
         img.onerror = function (event) {
-          subscriber.next();
+          subscriber.next(null);
           subscriber.complete();
         };
         if (
@@ -344,7 +344,7 @@ export class HsPrintLegendService extends PrintLegendParams {
           subscriber.complete();
         };
         img.onerror = function () {
-          subscriber.next();
+          subscriber.next(null);
           subscriber.complete();
         };
         img.src = imageUrl;
