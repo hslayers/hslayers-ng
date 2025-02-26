@@ -518,16 +518,42 @@
               "geostyler-qgis-parser",
               "geostyler-sld-parser"
             ],
-            "styles": [
-              "node_modules/cesium/Build/Cesium/Widgets/widgets.css",
-              "projects/hslayers/css/hslayers-ng.scss"
-            ],
             "scripts": [],
             "customWebpackConfig": {
               "path": "projects/hslayers-cesium-app/custom-webpack.config.js"
             }
           },
           "configurations": {
+            "wagtail": {
+              "fileReplacements": [
+                {
+                  "replace": "projects/hslayers-app/src/environments/environment.ts",
+                  "with": "projects/hslayers-app/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "sourceMap": false,
+              "namedChunks": true,
+              "extractLicenses": true,
+              "vendorChunk": true,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "6mb",
+                  "maximumError": "8mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "200kb",
+                  "maximumError": "300kb"
+                }
+              ],
+              "styles": [
+                "node_modules/cesium/Build/Cesium/Widgets/widgets.css",
+                "dist/hslayers/css/hslayers-ng-wagtail.css"
+              ]
+            },
             "production": {
               "fileReplacements": [
                 {
@@ -552,6 +578,10 @@
                   "maximumWarning": "200kb",
                   "maximumError": "300kb"
                 }
+              ],
+              "styles": [
+                "node_modules/cesium/Build/Cesium/Widgets/widgets.css",
+                "dist/hslayers/css/hslayers-ng.scss"
               ]
             }
           }
