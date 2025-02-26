@@ -581,7 +581,7 @@
               ],
               "styles": [
                 "node_modules/cesium/Build/Cesium/Widgets/widgets.css",
-                "dist/hslayers/css/hslayers-ng.scss"
+                "projects/hslayers/css/hslayers-ng.scss"
               ]
             }
           }
