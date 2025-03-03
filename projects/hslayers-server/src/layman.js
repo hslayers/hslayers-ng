@@ -85,34 +85,48 @@ OAuth2.prototype.userProfile = (access_token, done) => {
 app.use(
   `/rest`,
   createProxyMiddleware({
-    target: process.env.LAYMAN_BASEURL,
+    target: process.env.LAYMAN_BASEURL + '/rest',
     changeOrigin: true,
     selfHandleResponse: true,
     secure: !process.env.LAYMAN_BASEURL.includes('http://local'),
-    onProxyReq: (proxyReq, req, res) => {
-      try {
-        authnUtil.addAuthenticationHeaders(proxyReq, req, res);
-      } catch (error) {
-        res.send(error);
-      }
-    },
-    onProxyRes: authnUtil.handleProxyRes
+    on: {
+      proxyReq: (proxyReq, req, res) => {
+        try {
+          authnUtil.addAuthenticationHeaders(proxyReq, req, res);
+        } catch (error) {
+          res.send(error);
+        }
+      },
+      proxyRes: authnUtil.handleProxyRes,
+    }
   })
 );
 
-const gsProxy = createProxyMiddleware({
-  target: process.env.LAYMAN_BASEURL,
+// Layman proxy for WFS transactions endpoint
+app.use(`/geoserver`, createProxyMiddleware({
+  target: process.env.LAYMAN_BASEURL + '/geoserver',
   changeOrigin: true,
   selfHandleResponse: true,
   secure: !process.env.LAYMAN_BASEURL.includes('http://local'),
-  onProxyReq: (proxyReq, req, res) => {
-    authnUtil.addAuthenticationHeaders(proxyReq, req, res);
-  },
-  onProxyRes: authnUtil.handleProxyRes
-});
-// Layman proxy for WFS transactions endpoint
-app.use(`/geoserver`, gsProxy);
-app.use(`/client/geoserver`, gsProxy);
+  on: {
+    proxyReq: (proxyReq, req, res) => {
+      authnUtil.addAuthenticationHeaders(proxyReq, req, res);
+    },
+    proxyRes: authnUtil.handleProxyRes,
+  }
+}));
+app.use(`/client/geoserver`, createProxyMiddleware({
+  target: process.env.LAYMAN_BASEURL + '/client/geoserver',
+  changeOrigin: true,
+  selfHandleResponse: true,
+  secure: !process.env.LAYMAN_BASEURL.includes('http://local'),
+  on: {
+    proxyReq: (proxyReq, req, res) => {
+      authnUtil.addAuthenticationHeaders(proxyReq, req, res);
+    },
+    proxyRes: authnUtil.handleProxyRes,
+  }
+}));
 
 app.get('/', (req, res) => {
   if (

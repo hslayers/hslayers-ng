@@ -19,7 +19,7 @@
   "main": "server.js",
   "type": "module",
   "engines": {
-    "node": "^18.20.0 || >=20.10.0"
+    "node": "^20.10.0 || >= 22.0.0"
   },
   "scripts": {
     "start": "node server.js",
@@ -30,16 +30,16 @@
     "hslayers-server": "./server.js"
   },
   "dependencies": {
-    "better-sqlite3": "^10.1.0",
+    "better-sqlite3": "^11.0.0",
     "connect-sqlite3": "^0.9.11",
     "cors": "^2.8.5",
     "cors-anywhere": "^0.4.4",
     "dotenv": "^16.4.0",
     "express": "^4.17.3",
     "express-session": "^1.17.2",
-    "got": "^13.0.0",
+    "got": "^14.0.0",
     "http": "0.0.1-security",
-    "http-proxy-middleware": "^2.0.1",
+    "http-proxy-middleware": "^3.0.0",
     "passport": "^0.7.0",
     "passport-oauth2": "^1.6.1",
     "passport-oauth2-middleware": "^1.0.3",
@@ -49,7 +49,7 @@
   "devDependencies": {
     "chai": "^5.0.0",
     "eslint-plugin-mocha": "^10.2.0",
-    "mocha": "^10.2.0",
+    "mocha": "^11.0.0",
     "mocha-reporter-gha": "^1.1.1"
   }
 }
