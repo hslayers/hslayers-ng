@@ -112,7 +112,7 @@
     "@frsource/cypress-plugin-visual-regression-diff": "^3.2.14",
     "@types/jasmine": "^5.1.7",
     "@types/jasminewd2": "~2.0.12",
-    "angular-eslint": "^19.1.0",
+    "angular-eslint": "^19.2.0",
     "cypress": "~14.1.0",
     "cypress-real-events": "^1.13.0",
     "cz-conventional-changelog": "^3.3.0",
