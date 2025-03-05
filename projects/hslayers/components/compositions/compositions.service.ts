@@ -82,7 +82,7 @@ export class HsCompositionsService {
       this.tryParseCompositionFromUrlParam();
     });
     this.hsEventBusService.vectorQueryFeatureSelection.subscribe((e) => {
-      for (const endpoint of this.hsCommonEndpointsService.endpoints) {
+      for (const endpoint of this.hsCommonEndpointsService.endpoints()) {
         const record =
           this.hsCompositionsMapService.getFeatureRecordAndUnhighlight(
             e.feature,
@@ -118,7 +118,7 @@ export class HsCompositionsService {
    * Reset composition counters for datasource endpoints
    */
   resetCompositionCounter(): void {
-    this.hsCommonEndpointsService.endpoints.forEach((ep) => {
+    this.hsCommonEndpointsService.endpoints().forEach((ep) => {
       switch (ep.type) {
         case 'micka':
           return this.hsCompositionsMickaService.resetCompositionCounter(ep);

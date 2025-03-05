@@ -19,7 +19,7 @@
           <p class="text-center">
             {{'DRAW.notAuthorized' | translateHs }}
           </p>
-          <hs-layman-current-user [endpoint]="endpoint"></hs-layman-current-user>
+          <hs-layman-current-user/>
         </div>
       }
       @if (data.service.drawableLaymanLayers.length > 0 && data.service.isAuthenticated) {
@@ -45,8 +45,7 @@
               translateHs }}</label>
             </div>
             @if (data.service.isAuthenticated) {
-              <hs-layman-access-rights [(access_rights)]="access_rights">
-              </hs-layman-access-rights>
+              <hs-layman-access-rights [(access_rights)]="access_rights"/>
             }
             <div class="flex-row w-75 align-items-center" style="display: flex;">
               <a class="p-1 mb-1" (click)="folderVisible = !folderVisible">{{'COMMON.advancedOptions' |

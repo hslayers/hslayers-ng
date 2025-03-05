@@ -1,5 +1,5 @@
 import {HttpClient} from '@angular/common/http';
-import {Inject, Injectable, PLATFORM_ID} from '@angular/core';
+import {Inject, Injectable, Injector, PLATFORM_ID} from '@angular/core';
 import {isPlatformBrowser} from '@angular/common';
 
 import {LineString, Polygon} from 'ol/geom';
@@ -7,8 +7,7 @@ import {ProjectionLike, get as getProjection, transform} from 'ol/proj';
 import {getArea, getDistance} from 'ol/sphere';
 import {lastValueFrom} from 'rxjs';
 
-import {BoundingBoxObject} from 'hslayers-ng/types';
-import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
+import {BoundingBoxObject, HsEndpoint} from 'hslayers-ng/types';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsLogService} from 'hslayers-ng/services/log';
 
@@ -22,13 +21,23 @@ export type Measurement = {
   providedIn: 'root',
 })
 export class HsUtilsService {
+  private laymanUrl: string;
+
   constructor(
     public hsConfig: HsConfig,
     private http: HttpClient,
     private LogService: HsLogService,
-    private hsCommonLaymanService: HsCommonLaymanService,
+    private injector: Injector,
     @Inject(PLATFORM_ID) private platformId: any,
   ) {}
+
+  /**
+   * Register Layman endpoints to avoid proxifying them
+   * @param endpoints - Layman endpoints to register
+   */
+  registerLaymanEndpoints(url: string): void {
+    this.laymanUrl = url;
+  }
 
   /**
    * Proxify URL if enabled.
@@ -36,16 +45,21 @@ export class HsUtilsService {
    * @returns Encoded URL with path to hslayers-server proxy
    */
   proxify(url: string): string {
-    const laymanEp = this.hsCommonLaymanService.layman;
-    if (
-      url.startsWith(this.hsConfig.proxyPrefix) ||
-      (laymanEp && url.startsWith(laymanEp.url))
-    ) {
+    // Don't proxify if it's already proxified
+    if (url.startsWith(this.hsConfig.proxyPrefix)) {
       return url;
     }
+
+    // Don't proxify data URLs
     if (url.startsWith('data:application')) {
       return url;
     }
+
+    // Don't proxify Layman endpoints
+    if (url.startsWith(this.laymanUrl)) {
+      return url;
+    }
+
     let outUrl = url;
     //Not using location because don't know if port 80 was specified explicitly or not
     const windowUrlPosition = url.indexOf(window.location.origin);

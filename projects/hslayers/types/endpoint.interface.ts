@@ -20,8 +20,6 @@ export interface HsEndpoint {
   language?;
   listLoading?;
   layers?: HsAddDataLayerDescriptor[];
-  user?: string;
-  authenticated?: boolean;
   code_list_url?: string;
   code_lists?;
   version?: string;
@@ -53,7 +51,6 @@ export interface HsEndpoint {
     compositionLoad?: EndpointErrorHandling | EndpointErrorHandler;
     addDataCatalogueLoad?: EndpointErrorHandling | EndpointErrorHandler;
   };
-  getCurrentUserIfNeeded?(endpoint: HsEndpoint): Promise<void>;
 }
 
 function isErrorHandlerFunction(object: any): object is EndpointErrorHandler {

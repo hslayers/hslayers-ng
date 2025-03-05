@@ -209,8 +209,7 @@ export class HsAddDataVectorFileComponent implements OnInit, AfterViewInit {
           this.data.saveAvailable = false;
         } else {
           this.data.saveAvailable = true;
-          this.data.saveToLayman =
-            this.hsCommonLaymanService.layman?.authenticated;
+          this.data.saveToLayman = this.hsCommonLaymanService.isAuthenticated();
           if (this.data.saveToLayman) {
             this.data.loadAsType = DEFAULT_VECTOR_LOAD_TYPE;
           }
@@ -221,7 +220,7 @@ export class HsAddDataVectorFileComponent implements OnInit, AfterViewInit {
             undefined &&
           this.data.saveToLayman
         ) {
-          this.data.url = this.hsCommonLaymanService.layman?.url;
+          this.data.url = this.hsCommonLaymanService.layman()?.url;
         }
         this.data.showDetails = true;
       } else {

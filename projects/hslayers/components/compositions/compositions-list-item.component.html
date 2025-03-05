@@ -14,7 +14,7 @@
   <i class="fa-solid fa-share-nodes icon-primary"></i><span class="ms-1">{{'COMMON.share' |
 translateHs }}</span>
 </a>
-@if (composition.endpoint?.authenticated) {
+@if (hsCommonLaymanService.isAuthenticated()) {
   <a class="btn btn-sm border-0" (click)="$event.stopPropagation();showPermissions(composition)"
     data-toggle="tooltip" data-placement="bottom"
     [title]="composition.editable ? '' : 'COMPOSITIONS.notAllowedToEditLayer' | translateHs ">

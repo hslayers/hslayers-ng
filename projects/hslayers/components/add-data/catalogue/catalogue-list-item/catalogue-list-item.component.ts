@@ -15,6 +15,7 @@ import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
 import {HsLogService} from 'hslayers-ng/services/log';
 import {HsRemoveLayerDialogService} from 'hslayers-ng/common/remove-multiple';
 import {HsSetPermissionsDialogComponent} from 'hslayers-ng/common/dialog-set-permissions';
+import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
 
 @Component({
   selector: 'hs-catalogue-list-item',
@@ -49,6 +50,7 @@ export class HsCatalogueListItemComponent implements OnInit {
     private hsLaymanBrowserService: HsLaymanBrowserService,
     private hsLog: HsLogService,
     private hsRemoveLayerDialogService: HsRemoveLayerDialogService,
+    private hsCommonLaymanService: HsCommonLaymanService,
   ) {}
 
   ngOnInit() {
@@ -177,7 +179,7 @@ export class HsCatalogueListItemComponent implements OnInit {
    * @param layer - Metadata record of selected layer
    */
   async showPermissions(layer: HsAddDataLayerDescriptor): Promise<void> {
-    if (!this.layer.endpoint?.authenticated) {
+    if (!this.hsCommonLaymanService.isAuthenticated()) {
       return;
     }
     this.hsDialogContainerService.create(HsSetPermissionsDialogComponent, {

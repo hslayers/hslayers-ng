@@ -7,6 +7,7 @@ import {HsCommonLaymanAccessRightsComponent} from './access-rights/layman-access
 import {HsLaymanCurrentUserComponent} from './layman-current-user.component';
 import {HsLaymanLoginComponent} from './layman-login.component';
 import {TranslateCustomPipe} from 'hslayers-ng/services/language';
+import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -15,7 +16,13 @@ import {TranslateCustomPipe} from 'hslayers-ng/services/language';
     HsLaymanCurrentUserComponent,
     HsCommonLaymanAccessRightsComponent,
   ],
-  imports: [CommonModule, TranslateCustomPipe, FilterPipe, FormsModule],
+  imports: [
+    CommonModule,
+    TranslateCustomPipe,
+    FilterPipe,
+    FormsModule,
+    NgbDropdownModule,
+  ],
   exports: [
     HsLaymanLoginComponent,
     HsLaymanCurrentUserComponent,

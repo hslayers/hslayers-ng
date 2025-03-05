@@ -11,6 +11,7 @@ import {HsLanguageService} from 'hslayers-ng/services/language';
 import {HsMapCompositionDescriptor} from 'hslayers-ng/types';
 import {HsSetPermissionsDialogComponent} from 'hslayers-ng/common/dialog-set-permissions';
 import {HsToastService} from 'hslayers-ng/common/toast';
+import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
 
 @Component({
   selector: 'hs-compositions-list-item',
@@ -28,6 +29,7 @@ export class HsCompositionsListItemComponent {
     private hsConfig: HsConfig,
     private hsLanguageService: HsLanguageService,
     private hsCompositionsCatalogueService: HsCompositionsCatalogueService,
+    public hsCommonLaymanService: HsCommonLaymanService,
   ) {}
 
   /**
