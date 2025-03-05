@@ -95,9 +95,9 @@ export class HsAddDataCatalogueMapService {
     const featuresUnderMouse = this.extentLayer
       .getSource()
       .getFeaturesAtCoordinate(evt.coordinate);
-    for (const endpoint of this.hsCommonEndpointsService.endpoints.filter(
-      (ep) => ep.layers,
-    )) {
+    for (const endpoint of this.hsCommonEndpointsService
+      .endpoints()
+      .filter((ep) => ep.layers)) {
       this.hsLayerUtilsService.highlightFeatures(
         featuresUnderMouse,
         this.extentLayer,

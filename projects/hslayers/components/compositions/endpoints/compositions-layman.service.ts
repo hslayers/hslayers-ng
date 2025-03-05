@@ -46,9 +46,8 @@ export class HsCompositionsLaymanService {
     extentFeatureCreated,
     _bbox,
   ): Observable<any> {
-    endpoint.getCurrentUserIfNeeded(endpoint);
     endpoint.compositionsPaging.loaded = false;
-    const loggedIn = endpoint.authenticated;
+    const loggedIn = this.hsCommonLaymanService.isAuthenticated();
     const query = params.query.title ? params.query.title : '';
     const sortBy =
       params.sortBy == 'date:D'
@@ -65,11 +64,12 @@ export class HsCompositionsLaymanService {
       this.hsMapService.getCurrentProj(),
       'EPSG:3857',
     );
-    const bbox = params.filterByExtent ? b.join(',') : '';
 
+    const bbox = params.filterByExtent ? b.join(',') : '';
+    const workspace = this.hsCommonLaymanService.user();
     const withPermissionOrMine = params.filterByOnlyMine
       ? loggedIn
-        ? `workspaces/${endpoint.user}/`
+        ? `workspaces/${workspace}/`
         : ''
       : '';
     const url = `${endpoint.url}/rest/${withPermissionOrMine}maps`;
@@ -154,6 +154,7 @@ export class HsCompositionsLaymanService {
       ? parseInt(response.headers.get('x-total-count'))
       : response.body.length;
 
+    const currentUser = this.hsCommonLaymanService.user();
     endpoint.compositions = response.body.map((record) => {
       const tmp: HsMapCompositionDescriptor = {
         name: record.name,
@@ -162,7 +163,7 @@ export class HsCompositionsLaymanService {
         featureId: undefined,
         highlighted: false,
         editable: record.access_rights.write.some((user) => {
-          return [endpoint.user, 'EVERYONE'].includes(user);
+          return [currentUser, 'EVERYONE'].includes(user);
         }),
         url: `${endpoint.url}/rest/workspaces/${record.workspace}/maps/${record.name}`,
         endpoint,

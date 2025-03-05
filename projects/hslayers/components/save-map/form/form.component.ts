@@ -1,5 +1,5 @@
 import {Component, DestroyRef, OnInit, inject} from '@angular/core';
-import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
+import {takeUntilDestroyed, toSignal} from '@angular/core/rxjs-interop';
 
 import {Observable, map, startWith} from 'rxjs';
 
@@ -14,7 +14,9 @@ import {HsUtilsService} from 'hslayers-ng/services/utils';
   standalone: false,
 })
 export class HsSaveMapAdvancedFormComponent implements OnInit {
-  endpoint: HsEndpoint;
+  endpoint = toSignal(this.hsSaveMapManagerService.endpointSelected, {
+    initialValue: null,
+  });
   overwrite = false;
   downloadableData: string;
   extraFormOpened = '';
@@ -36,12 +38,6 @@ export class HsSaveMapAdvancedFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.hsSaveMapManagerService.endpointSelected
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe((endpoint) => {
-        this.endpoint = endpoint;
-      });
-
     this.hsSaveMapManagerService.saveMapResulted
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((statusData) => {
@@ -136,7 +132,7 @@ export class HsSaveMapAdvancedFormComponent implements OnInit {
     if (this.endpoint === null) {
       return false;
     }
-    if (this.endpoint.type.includes('layman')) {
+    if (this.endpoint().type.includes('layman')) {
       return true;
     }
   }
@@ -150,7 +146,7 @@ export class HsSaveMapAdvancedFormComponent implements OnInit {
      * Overwriting composition of other user and making it private
      *  = access for owner + current user
      */
-    const currentUser = this.hsSaveMapManagerService.currentUser;
+    const currentUser = this.hsSaveMapManagerService.currentUser();
     const workspace =
       this.hsSaveMapManagerService.compoData.get('workspace').value;
     if (newSave == false && this.canOverwrite() && currentUser !== workspace) {

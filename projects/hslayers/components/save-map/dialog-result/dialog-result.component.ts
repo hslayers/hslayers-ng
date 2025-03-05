@@ -35,7 +35,7 @@ export class HsSaveMapResultDialogComponent implements HsDialogComponent {
      * Thus - this has to always be making a request for current user workspace
      */
     this.hsSaveMapManagerService.compoData.patchValue({
-      workspace: this.hsSaveMapManagerService.currentUser,
+      workspace: this.hsSaveMapManagerService.currentUser(),
     });
 
     await this.hsSaveMapManagerService.initiateSave(newSave);

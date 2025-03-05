@@ -39,7 +39,8 @@ export class HsAddDataVectorUtilsService {
       .map((proj) => proj.getCode())
       .some((code) => code === projection.getCode())
       ? getProjection('EPSG:4326')
-      : this.hsLaymanService.supportedCRRList.indexOf(projection.getCode()) > -1
+      : this.hsLaymanService.supportedCRRList().indexOf(projection.getCode()) >
+          -1
         ? projection
         : getProjection('EPSG:4326');
     //Features in map CRS

@@ -59,7 +59,7 @@ export class HsCompositionsCatalogueService {
    */
   dataLoading: boolean;
   loadCompositionsQuery: any;
-  endpoints: HsEndpoint[];
+  endpoints: HsEndpoint[] = this.hsCommonEndpointsService.endpoints();
   extentChangeSuppressed = false;
   constructor(
     public hsMapService: HsMapService,
@@ -72,9 +72,6 @@ export class HsCompositionsCatalogueService {
     public hsCommonLaymanService: HsCommonLaymanService,
     private _zone: NgZone,
   ) {
-    this.hsCommonEndpointsService.endpointsFilled.subscribe((endpoints) => {
-      this.endpoints = endpoints ?? [];
-    });
     this.hsLayoutService.mainpanel$.subscribe((which) => {
       if (
         this.hsLayoutService.mainpanel === 'compositions' ||
@@ -121,7 +118,7 @@ export class HsCompositionsCatalogueService {
       });
     });
 
-    this.hsCommonLaymanService.authChange.subscribe((endpoint) => {
+    this.hsCommonLaymanService.layman$.subscribe((endpoint) => {
       if (
         this.hsLayoutService.mainpanel != 'compositions' &&
         this.hsLayoutService.mainpanel != 'composition'
@@ -358,10 +355,6 @@ export class HsCompositionsCatalogueService {
     this.data.type = TYPES[0].name;
     this.data.keywords.forEach((kw) => (kw.selected = false));
     this.data.themes.forEach((th) => (th.selected = false));
-    const laymanEndpoint = this.hsCommonLaymanService.layman;
-    if (laymanEndpoint) {
-      this.endpoints.push(laymanEndpoint);
-    }
     this.loadFilteredCompositions();
   }
 }

@@ -1,28 +1,218 @@
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {Injectable} from '@angular/core';
+import {computed, inject, Injectable} from '@angular/core';
+import {toObservable, toSignal} from '@angular/core/rxjs-interop';
 
-import {BehaviorSubject, Subject, lastValueFrom, map} from 'rxjs';
+import {
+  Observable,
+  Subject,
+  catchError,
+  distinctUntilChanged,
+  lastValueFrom,
+  map,
+  merge,
+  of,
+  retry,
+  shareReplay,
+  startWith,
+  switchMap,
+  tap,
+  timer,
+} from 'rxjs';
 
 import {CurrentUserResponse} from './types/current-user-response.type';
-import {HsEndpoint} from 'hslayers-ng/types';
+import {AboutLayman, HsEndpoint} from 'hslayers-ng/types';
 import {HsLanguageService} from 'hslayers-ng/services/language';
 import {HsLogService} from 'hslayers-ng/services/log';
 import {HsToastService} from 'hslayers-ng/common/toast';
+import {HsCommonEndpointsService} from 'hslayers-ng/services/endpoints';
+import {HsUtilsService} from 'hslayers-ng/services/utils';
 import {parseBase64Style} from './parse-base64-style';
+import {AuthAction, AuthState} from 'hslayers-ng/types/authentication';
 
 @Injectable({
   providedIn: 'root',
 })
 export class HsCommonLaymanService {
-  authChange: Subject<HsEndpoint> = new Subject();
+  endpointService = inject(HsCommonEndpointsService);
+  http = inject(HttpClient);
+  hsUtilsService = inject(HsUtilsService);
 
-  layman$: BehaviorSubject<HsEndpoint | undefined> = new BehaviorSubject(
-    undefined,
+  private readonly MAX_USER_POLL_ATTEMPTS = 7;
+  private readonly USER_POLL_DELAY = 2500;
+
+  readonly layman$: Observable<HsEndpoint> = toObservable(
+    this.endpointService.endpoints,
+  ).pipe(
+    map((endpoints) => endpoints.find((ep) => ep.type.includes('layman'))),
+    switchMap((endpoint) => {
+      if (!endpoint) {
+        return of(undefined);
+      }
+      // Query version information when endpoint is available
+      return this.http
+        .get<AboutLayman>(endpoint.url + '/rest/about/version')
+        .pipe(
+          map((version) => {
+            if (version) {
+              return {
+                ...endpoint,
+                version: version.about.applications.layman.version,
+              };
+            }
+            return endpoint;
+          }),
+          catchError((error) => {
+            this.hsToastService.createToastPopupMessage(
+              'COMMON.error',
+              'Could not get layman version',
+            );
+            return of(endpoint);
+          }),
+        );
+    }),
+    // Register the endpoint with HsUtilsService to avoid circular dependency
+    tap((endpoint) => {
+      if (endpoint) {
+        this.hsUtilsService.registerLaymanEndpoints(endpoint.url);
+      }
+    }),
+    shareReplay(1),
   );
 
-  public get layman(): HsEndpoint {
-    return this.layman$.getValue();
-  }
+  readonly layman = toSignal(this.layman$);
+
+  // Action streams
+  login$ = new Subject<void>();
+  logout$ = new Subject<void>();
+
+  // Combined auth actions
+  authActions$ = merge(
+    this.login$.pipe(map(() => ({type: 'login'}))),
+    this.logout$.pipe(map(() => ({type: 'logout'}))),
+  );
+
+  authState$: Observable<AuthState> = this.layman$.pipe(
+    // Initial check for current user when endpoint is available
+    switchMap((endpoint) => {
+      if (!endpoint) {
+        return of(undefined);
+      }
+      /**
+       * Check for current user. In wagtail we might recive authentication right of the bat.
+       * The rest is controlled via login and logout triggers.
+       */
+      return this.getCurrentUser(endpoint.url).pipe(
+        // Listen for auth actions after initial check
+        switchMap((currentUser) => {
+          return this.authActions$.pipe(
+            // Start with the initial state
+            startWith(null),
+            // For each auth action, update the state
+            switchMap((action) => {
+              if (!action) {
+                return of({
+                  user: currentUser.username,
+                  authenticated: currentUser.authenticated,
+                }); // Initial state
+              }
+
+              if (action.type === 'login') {
+                // On login poll for user
+                return this.pollForUser().pipe(
+                  map((cu) => {
+                    const authenticated = !!cu?.authenticated;
+                    const username = cu?.username;
+
+                    // Show success toast if authentication was successful
+                    if (authenticated && username) {
+                      this.hsToastService.createToastPopupMessage(
+                        'COMMON.success',
+                        'AUTH.loginSuccessful',
+                        {
+                          type: 'success',
+                          serviceCalledFrom: 'HsCommonLaymanService',
+                        },
+                      );
+                    }
+
+                    return {
+                      user: username,
+                      authenticated,
+                    };
+                  }),
+                  catchError((error) => {
+                    // Handle authentication errors
+                    this.hsToastService.createToastPopupMessage(
+                      'COMMON.error',
+                      'AUTH.loginFailed',
+                      {
+                        type: 'danger',
+                        serviceCalledFrom: 'HsCommonLaymanService',
+                        details: [error.message || 'AUTH.loginFailed'],
+                      },
+                    );
+
+                    // Return endpoint with authentication failed
+                    return of({
+                      user: undefined,
+                      authenticated: false,
+                    });
+                  }),
+                );
+              }
+              if (action.type === 'logout') {
+                this.hsToastService.createToastPopupMessage(
+                  'AUTH.Logout',
+                  'AUTH.logoutSuccessful',
+                  {
+                    type: 'success',
+                  },
+                );
+                // On logout action, clear user data
+                return of({
+                  ...endpoint,
+                  user: undefined,
+                  authenticated: false,
+                });
+              }
+            }),
+          );
+        }),
+        catchError((error) => {
+          // Handle errors from getCurrentUser
+          this.hsToastService.createToastPopupMessage(
+            'COMMON.Error',
+            'AUTH.userInfoFailed',
+            {
+              type: 'danger',
+              serviceCalledFrom: 'HsCommonLaymanService',
+              details: [error.message || 'AUTH.userInfoFailed'],
+            },
+          );
+
+          return of(undefined);
+        }),
+      );
+    }),
+    shareReplay(1),
+  );
+
+  authState = toSignal(this.authState$);
+
+  // Always return a boolean value, defaulting to false when layman is undefined
+  isAuthenticated = computed(() => !!this.authState()?.authenticated);
+  user = computed(() => this.authState()?.user);
+
+  // Create an observable for the authenticating state
+  isAuthenticating = toSignal(
+    merge(
+      // Set to true when login action is triggered
+      this.login$.pipe(map(() => true)),
+
+      // Set to false when layman$ emits a new value (authentication completed)
+      this.layman$.pipe(map(() => false)),
+    ).pipe(startWith(false), distinctUntilChanged(), shareReplay(1)),
+  );
 
   constructor(
     private $http: HttpClient,
@@ -31,64 +221,83 @@ export class HsCommonLaymanService {
     private hsLog: HsLogService,
   ) {}
 
-  isAuthenticated() {
-    return this.layman?.authenticated;
+  /**
+   * Get current user from layman endpoint
+   * @param endpoint - Layman endpoint
+   */
+  getCurrentUser(endpoint_url: HsEndpoint['url']) {
+    if (!endpoint_url) {
+      return of(undefined);
+    }
+    const url = `${endpoint_url}/rest/current-user`;
+    return this.$http.get<CurrentUserResponse>(url, {withCredentials: true});
   }
 
   /**
-   *  Monitor if authorization state has changed and
-   * return true and broadcast authChange event if so .
-   * @param endpoint - Endpoint definition - usually Layman
-   * @returns Promise<boolean> true if authorization state changed (user logged in or out)
+   * Log into existing account by opening a login endpoint in new window
+   * and polling for the results
    */
-  async detectAuthChange(endpoint: HsEndpoint): Promise<boolean> {
-    const url = `${endpoint.url}/rest/current-user`;
-    try {
-      const res: CurrentUserResponse = await lastValueFrom(
-        this.$http.get(url, {withCredentials: true}),
-      );
-
-      let somethingChanged = false;
-      if (res.code === 32) {
-        endpoint.authenticated = false;
-        endpoint.user = undefined;
-      }
-      if (res.username) {
-        if (endpoint.user != res.username) {
-          endpoint.user = res.username;
-          endpoint.authenticated = res.authenticated;
-          somethingChanged = true;
-          this.authChange.next(endpoint);
-        }
-      } else {
-        if (endpoint.user != undefined) {
-          somethingChanged = true;
-        }
-        endpoint.user = undefined;
-      }
-      return somethingChanged;
-    } catch (e) {
-      this.hsLog.warn(e);
-      return e;
+  pollForUser(): Observable<CurrentUserResponse | undefined> {
+    const laymanEndpoint = this.layman();
+    if (!laymanEndpoint) {
+      return of(undefined);
     }
+
+    return timer(1000).pipe(
+      switchMap(() =>
+        this.getCurrentUser(laymanEndpoint.url).pipe(
+          switchMap((response) => {
+            if (!response || !response.authenticated) {
+              // Handle case where authenticated is false
+              throw new Error('AUTH.notAuthenticated');
+            }
+            return of(response);
+          }),
+        ),
+      ),
+      retry({
+        count: this.MAX_USER_POLL_ATTEMPTS,
+        delay: this.USER_POLL_DELAY,
+      }),
+      catchError((error) => {
+        // Handle error after all retries are exhausted
+        console.error('Error retrieving profile:', error);
+
+        // Show error toast after retries are exhausted
+        this.hsToastService.createToastPopupMessage(
+          'COMMON.error',
+          'AUTH.authenticationFailed',
+          {
+            type: 'danger',
+            serviceCalledFrom: 'HsCommonLaymanService',
+            details: [
+              'AUTH.authenticationFailed',
+              error.message || 'Unknown error occurred',
+            ],
+          },
+        );
+
+        return of(null);
+      }),
+    );
   }
 
-  async getCurrentUserIfNeeded(endpoint: HsEndpoint): Promise<void> {
-    if (endpoint.type.includes('layman') && endpoint.user === undefined) {
-      await this.detectAuthChange(endpoint);
+  async logout(): Promise<void> {
+    const laymanEndpoint = this.layman();
+    if (!laymanEndpoint) {
+      return;
     }
-  }
 
-  async logout(endpoint): Promise<void> {
-    const url = `${endpoint.url}/logout`;
+    const url = `${laymanEndpoint.url}/logout`;
     try {
       await lastValueFrom(this.$http.get(url, {withCredentials: true}));
     } catch (ex) {
       this.hsLog.warn(ex);
     } finally {
-      endpoint.user = undefined;
-      endpoint.authenticated = false;
-      this.authChange.next(endpoint);
+      /***
+       * TODO: this might go first
+       */
+      this.logout$.next();
     }
   }
 
@@ -107,7 +316,7 @@ export class HsCommonLaymanService {
         break;
       case 32:
         simplifiedResponse = 'Authentication failed. Login to the catalogue.';
-        this.detectAuthChange(endpoint);
+        //this.detectAuthChange(endpoint);
         break;
       default:
         simplifiedResponse = responseBody.message;
@@ -125,7 +334,11 @@ export class HsCommonLaymanService {
           simplifiedResponse,
           undefined,
         ),
-      {disableLocalization: true, serviceCalledFrom: 'HsCommonLaymanService'},
+      {
+        disableLocalization: true,
+        serviceCalledFrom: 'HsCommonLaymanService',
+        type: 'danger',
+      },
     );
   }
 

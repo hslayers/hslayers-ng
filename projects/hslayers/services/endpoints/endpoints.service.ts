@@ -1,32 +1,25 @@
-import {Injectable} from '@angular/core';
+import {inject, Injectable} from '@angular/core';
 
-import {BehaviorSubject} from 'rxjs';
-
-import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsEndpoint} from 'hslayers-ng/types';
 import {HsUtilsService} from 'hslayers-ng/services/utils';
+import {toSignal} from '@angular/core/rxjs-interop';
+import {of, switchMap} from 'rxjs';
 
 @Injectable({providedIn: 'root'})
 export class HsCommonEndpointsService {
-  endpointsFilled: BehaviorSubject<HsEndpoint[]> = new BehaviorSubject(null);
-  endpoints: HsEndpoint[];
+  hsConfig = inject(HsConfig);
+  hsUtilsService = inject(HsUtilsService);
 
-  constructor(
-    public hsConfig: HsConfig,
-    public hsCommonLaymanService: HsCommonLaymanService,
-    public hsUtilsService: HsUtilsService,
-  ) {
-    this.fillEndpoints();
-    this.hsConfig.configChanges.subscribe(() => {
-      this.fillEndpoints();
-    });
-  }
+  endpoints = toSignal(
+    this.hsConfig.configChanges.pipe(switchMap(() => of(this.fillEndpoints()))),
+    {initialValue: [] as HsEndpoint[]},
+  );
 
-  private fillEndpoints() {
-    this.endpoints = [
-      ...(this.hsConfig.datasources || []).map((ds) => {
-        const tmp = {
+  private fillEndpoints(): HsEndpoint[] {
+    const endpoints = (this.hsConfig.datasources || []).map(
+      (ds) =>
+        ({
           url: ds.url,
           id: this.hsUtilsService.generateUuid(),
           type: ds.type,
@@ -45,26 +38,17 @@ export class HsCommonEndpointsService {
           paging: {
             itemsPerPage: this.getItemsPerPageConfig(ds),
           },
-          user: undefined,
-          getCurrentUserIfNeeded: async () =>
-            await this.hsCommonLaymanService.getCurrentUserIfNeeded(tmp),
-        };
-        return tmp;
-      }),
-    ]
-      /**
-       * Sort endpoints in order to give layman's
-       * layers priority in duplicate filtering.
-       */
-      .sort((a, b) => a.type.localeCompare(b.type));
+        }) as HsEndpoint,
+    );
 
-    if (this.endpoints) {
-      this.hsCommonLaymanService.layman$.next(
-        this.endpoints.find((ep) => ep.type.includes('layman')),
-      );
-      this.endpointsFilled.next(this.endpoints);
-    }
+    // Sort endpoints to give layman's layers priority in duplicate filtering
+    return endpoints.sort((a, b) => a.type.localeCompare(b.type));
   }
+  /**
+   * Get items per page config
+   * @param endpoint - Endpoint
+   * @returns number
+   */
   getItemsPerPageConfig(endpoint): number {
     return endpoint.paging !== undefined &&
       endpoint.paging.itemsPerPage !== undefined

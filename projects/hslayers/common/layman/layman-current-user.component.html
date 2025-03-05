@@ -1,23 +1,53 @@
-@if ((inAppLogin | async) && endpoint) {
-<div style="margin-left: 1em; float: right; ">
-  @if (!isAuthenticated() && sameDomain()) {
-  <a class="btn btn-primary" style="border-radius: 0.25rem; color: #fff;" (click)="login();">
-    <!-- TODO: Remove function call from template -->
-    {{'COMPOSITIONS.loginToCatalogue' | translateHs }}
-  </a>
-  }
-  @if (!isAuthenticated() && !sameDomain()) {
-  <a class="btn btn-primary" style="border-radius: 0.25rem; color: #fff;" (click)="login();" [href]="authUrl()"
-    target="_blank">
-    <!-- TODO: Remove function call from template -->
-    {{'COMPOSITIONS.loginToCatalogue' | translateHs }}
-  </a>
-  }
-  @if (isAuthenticated()) {
-  <a class="btn btn-primary text-truncate"
-    style="border-radius: 0.25rem; color: #fff; max-width:25ch; white-space:nowrap" (click)="logout()">{{'COMMON.Logout'
-    | translateHs }}
-    {{endpoint.user}}</a>
-  }<!-- TODO: Remove function call from template -->
-</div>
+@if ((inAppLogin | async) && hsCommonLaymanService.layman()) {
+  <div class="user-auth-container ms-3 float-end">
+    @if (!hsCommonLaymanService.isAuthenticated()) {
+      @if (hsCommonLaymanService.isAuthenticating()) {
+        <button 
+          class="btn btn-outline-primary d-flex align-items-center"
+          type="button"
+          disabled>
+          <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+          <span>{{'AUTH.signingIn' | translateHs }}</span>
+        </button>
+      } @else {
+        <button 
+          class="btn btn-outline-primary d-flex align-items-center"
+          (click)="login()"
+          type="button">
+          <i class="fa-solid fa-sign-in-alt me-2"></i>
+          {{'COMPOSITIONS.loginToCatalogue' | translateHs }}
+        </button>
+      }
+    } @else {
+      <div ngbDropdown placement="bottom-end" class="user-dropdown">
+        <button 
+          class="btn btn-primary d-flex align-items-center" 
+          ngbDropdownToggle>
+          <div class="user-avatar me-2">
+            <i class="fa-solid fa-user"></i>
+          </div>
+          <span class="text-truncate" style="max-width: 8rem;">{{hsCommonLaymanService.user()}}</span>
+        </button>
+        <div ngbDropdownMenu class="user-dropdown-menu p-0">
+          <div class="user-header p-3 bg-light border-bottom">
+            <div class="d-flex align-items-center">
+              <div class="user-avatar-large me-3">
+                <i class="fa-solid fa-user"></i>
+              </div>
+              <div>
+                <h6 class="mb-0">{{hsCommonLaymanService.user()}}</h6>
+                <small class="text-muted">Logged in</small>
+              </div>
+            </div>
+          </div>
+          <div class="p-2">
+            <button ngbDropdownItem (click)="logout()" class="text-danger">
+              <i class="fa-solid fa-sign-out-alt me-2"></i>
+              {{'AUTH.Logout' | translateHs }}
+            </button>
+          </div>
+        </div>
+      </div>
+    }
+  </div>
 }

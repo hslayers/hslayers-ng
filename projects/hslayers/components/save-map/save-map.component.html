@@ -7,21 +7,22 @@
       <div class="form-group">
         <div class="input-group">
           <span class="input-group-text control-label">{{'COMMON.saveTo' | translateHs }}</span>
-          <select class="form-control form-select" [(ngModel)]="endpoint" (change)="selectEndpoint(endpoint)"
-            name="endpoint">
+          <select class="form-control form-select" 
+          [compareWith]="compareEndpoints"
+                  [ngModel]="selectedEndpoint()" 
+                  (ngModelChange)="selectEndpoint($event)"
+                  name="endpoint">
             @for (e of endpoints; track e) {
               <option [ngValue]="e">{{e.title}}</option>
             }
           </select>
         </div>
       </div>
-      @if (endpoint?.type === 'layman') {
-        <hs-layman-current-user class="d-block pb-5" [endpoint]="endpoint">
-        </hs-layman-current-user>
+      @if (selectedEndpoint()?.type === 'layman') {
+        <hs-layman-current-user class="d-block pb-5" />
       }
-      @if (isAuthenticated || !endpoint?.type.includes('layman')) {
-        <hs-save-map-form>
-        </hs-save-map-form>
+      @if (isAuthenticated() || !selectedEndpoint()?.type?.includes('layman')) {
+        <hs-save-map-form/>
       } @else {
         <div class="alert alert-info text-gray">
         {{'SAVECOMPOSITION.panelMd.youAreNotAuthorized' | translateHs }} </div>

@@ -1,7 +1,7 @@
 import {BehaviorSubject, Subject, withLatestFrom} from 'rxjs';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {HttpClient} from '@angular/common/http';
-import {Injectable} from '@angular/core';
+import {computed, Injectable, Signal} from '@angular/core';
 
 import {
   AccessRightsModel,
@@ -25,6 +25,7 @@ import {HsLogService} from 'hslayers-ng/services/log';
 import {HsMapService} from 'hslayers-ng/services/map';
 import {HsShareService} from 'hslayers-ng/components/share';
 import {HsUtilsService} from 'hslayers-ng/services/utils';
+import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
 
 export class HsSaveMapManagerParams {
   statusData: StatusData = {
@@ -65,7 +66,7 @@ export class HsSaveMapManagerParams {
   endpointSelected: BehaviorSubject<HsEndpoint> = new BehaviorSubject(null);
   preSaveCheckCompleted: Subject<HsEndpoint> = new Subject();
   changeTitle: boolean;
-  currentUser: string;
+  currentUser: Signal<string>;
   missingName = false;
   missingAbstract = false;
 
@@ -76,6 +77,8 @@ export class HsSaveMapManagerParams {
   providedIn: 'root',
 })
 export class HsSaveMapManagerService extends HsSaveMapManagerParams {
+  currentUser = this.hsCommonLaymanService.user;
+
   constructor(
     private hsMapService: HsMapService,
     private hsSaveMapService: HsSaveMapService,
@@ -88,6 +91,7 @@ export class HsSaveMapManagerService extends HsSaveMapManagerParams {
     private hsEventBusService: HsEventBusService,
     private hsLogService: HsLogService,
     private hsCompositionsParserService: HsCompositionsParserService,
+    private hsCommonLaymanService: HsCommonLaymanService,
   ) {
     super();
 
@@ -99,7 +103,7 @@ export class HsSaveMapManagerService extends HsSaveMapManagerParams {
           this.currentComposition = responseData;
 
           const workspace = metadata['error']
-            ? this.currentUser
+            ? this.currentUser()
             : this.parseAccessRights(metadata);
 
           this.compoData.patchValue({
@@ -133,11 +137,11 @@ export class HsSaveMapManagerService extends HsSaveMapManagerParams {
       : null;
     const write = metadata.access_rights.write;
     const read = metadata.access_rights.read;
-    if (this.currentUser === workspace) {
-      this.privateOrPublic(write, 'write', this.currentUser);
-      this.privateOrPublic(read, 'read', this.currentUser);
+    if (this.currentUser() === workspace) {
+      this.privateOrPublic(write, 'write', this.currentUser());
+      this.privateOrPublic(read, 'read', this.currentUser());
     } else if (
-      write.includes(this.currentUser) ||
+      write.includes(this.currentUser()) ||
       /**
        * Different user + PUBLIC write
        */

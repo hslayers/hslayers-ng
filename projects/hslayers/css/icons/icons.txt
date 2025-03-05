@@ -74,3 +74,5 @@ fa-triangle-exclamation
 fa-circle-info
 eraser
 globe
+user
+right-to-bracket

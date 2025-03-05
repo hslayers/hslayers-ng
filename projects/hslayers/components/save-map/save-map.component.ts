@@ -1,5 +1,9 @@
-import {Component, OnInit} from '@angular/core';
-import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
+import {Component, linkedSignal, OnInit} from '@angular/core';
+import {
+  takeUntilDestroyed,
+  toObservable,
+  toSignal,
+} from '@angular/core/rxjs-interop';
 
 import {HsCommonEndpointsService} from 'hslayers-ng/services/endpoints';
 import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
@@ -16,9 +20,15 @@ import {HsSaveMapService} from 'hslayers-ng/services/save-map';
   standalone: false,
 })
 export class HsSaveMapComponent extends HsPanelBaseComponent implements OnInit {
-  endpoint: HsEndpoint = null;
+  selectedEndpoint = toSignal(this.hsSaveMapManagerService.endpointSelected);
+
+  compareEndpoints(a: HsEndpoint, b: HsEndpoint): boolean {
+    // Compare endpoints by their URL or other unique identifier
+    return a?.url === b?.url;
+  }
+
   endpoints: HsEndpoint[];
-  isAuthenticated = false;
+  isAuthenticated = this.hsCommonLaymanService.isAuthenticated;
   name = 'saveMap';
   constructor(
     private hsConfig: HsConfig,
@@ -30,16 +40,12 @@ export class HsSaveMapComponent extends HsPanelBaseComponent implements OnInit {
     private hsSaveMapService: HsSaveMapService,
   ) {
     super();
-  }
-  ngOnInit() {
-    super.ngOnInit();
-    this.endpoints = this.hsCommonEndpointsService.endpoints;
 
-    this.hsCommonEndpointsService.endpointsFilled
+    toObservable(this.hsCommonEndpointsService.endpoints)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((endpoints) => {
-        if (endpoints?.length > 0 && !this.endpoint) {
-          const laymanEp = this.hsCommonLaymanService.layman;
+        if (endpoints?.length > 0 && !this.selectedEndpoint()) {
+          const laymanEp = this.hsCommonLaymanService.layman();
           if (laymanEp) {
             this.hsSaveMapManagerService.selectEndpoint(laymanEp);
           } else {
@@ -47,33 +53,19 @@ export class HsSaveMapComponent extends HsPanelBaseComponent implements OnInit {
           }
         }
       });
-
-    this.hsCommonLaymanService.authChange
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe((endpoint) => {
-        this.isAuthenticated = endpoint.authenticated;
-        this.hsSaveMapManagerService.currentUser = endpoint.user;
-      });
-
-    this.hsSaveMapManagerService.endpointSelected
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe((endpoint) => {
-        if (endpoint) {
-          this.endpoint = endpoint;
-          if (endpoint.getCurrentUserIfNeeded) {
-            endpoint.getCurrentUserIfNeeded(endpoint);
-          }
-        }
-      });
+  }
+  ngOnInit() {
+    super.ngOnInit();
+    this.endpoints = this.hsCommonEndpointsService.endpoints();
 
     this.hsSaveMapManagerService.panelOpened
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((composition) => {
         if (composition && composition.endpoint) {
           const openedType = composition.endpoint.type;
-          const found = this.hsCommonEndpointsService.endpoints.filter((ep) =>
-            ep.type.includes(openedType),
-          );
+          const found = this.hsCommonEndpointsService
+            .endpoints()
+            .filter((ep) => ep.type.includes(openedType));
           if (found.length > 0) {
             this.hsSaveMapManagerService.selectEndpoint(found[0]);
           }

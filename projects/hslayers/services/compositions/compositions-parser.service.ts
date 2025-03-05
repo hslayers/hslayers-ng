@@ -105,14 +105,14 @@ export class HsCompositionsParserService {
         switchMap((_) => {
           const fromLayman = isLaymanUrl(
             this.current_composition_url,
-            this.hsCommonLaymanService.layman,
+            this.hsCommonLaymanService.layman(),
           );
           return this.$http
             .get<LaymanCompositionDescriptor>(
               this.current_composition_url.replace('/file', ''),
               {
                 withCredentials:
-                  this.hsCommonLaymanService.layman?.user && fromLayman,
+                  this.hsCommonLaymanService.isAuthenticated() && fromLayman,
               },
             )
             .pipe(
@@ -160,8 +160,8 @@ export class HsCompositionsParserService {
       options['responseType'] = 'text';
     }
     options['withCredentials'] =
-      isLaymanUrl(url, this.hsCommonLaymanService.layman) &&
-      this.hsCommonLaymanService.layman.user;
+      isLaymanUrl(url, this.hsCommonLaymanService.layman()) &&
+      this.hsCommonLaymanService.isAuthenticated();
 
     const data: any = await lastValueFrom(this.$http.get(url, options)).catch(
       (e) => {
@@ -576,7 +576,7 @@ export class HsCompositionsParserService {
       response = await lastValueFrom(
         this.$http.get(url, {
           responseType: 'json',
-          withCredentials: !!this.hsCommonLaymanService.layman.user,
+          withCredentials: !!this.hsCommonLaymanService.isAuthenticated(),
         }),
       );
     }

@@ -1,4 +1,12 @@
 {
+  "AUTH": {
+    "signingIn": "Prihlasovanie ...",
+    "logoutSuccessful": "Boli ste úspešne odhlásený!",
+    "loginSuccessful": "Úspešne prihlásený",
+    "authenticationFailed": "Chyba prihlásenia",
+    "userInfoFailed": "Chyba pri načítaní údajov o užívateľovi",
+    "loginFailed": "Prihlasovanie nebolo úspešné"
+  },
   "ADDDATA": {
     "CATALOGUE": {
       "DESC": {
@@ -322,7 +330,9 @@
     "base": "Podkladová mapa",
     "thematic": "Tematická mapa",
     "contains": "obsahuje",
-    "property": "Atribút"
+    "property": "Atribút",
+    "error": "Chyba",
+    "success": "Úspech"
   },
   "COMPOSITIONS": {
     "addByAddress": "Pridať kompozíciu z adresy",
