@@ -68,12 +68,12 @@ export class HsCommonLaymanAccessRightsComponent implements OnInit {
   userSearch: string;
   endpoint: HsEndpoint;
   constructor(
-    private hsCommonLaymanService: HsCommonLaymanService,
+    public hsCommonLaymanService: HsCommonLaymanService,
     private $http: HttpClient,
     private hsLog: HsLogService,
   ) {}
   async ngOnInit(): Promise<void> {
-    this.endpoint = this.hsCommonLaymanService.layman;
+    this.endpoint = this.hsCommonLaymanService.layman();
     this.defaultAccessRights = JSON.parse(JSON.stringify(this.access_rights));
     this.setUpAccessRights();
   }
@@ -113,7 +113,7 @@ export class HsCommonLaymanAccessRightsComponent implements OnInit {
       this.allUsers.length / 2 >= this.allUsers.filter((u) => u[type]).length;
 
     this.allUsers.forEach((user) => {
-      const isCurrentUser = user.name === this.endpoint.user;
+      const isCurrentUser = user.name === this.hsCommonLaymanService.user();
       //Value for current user won't be changed
       user[type] = isCurrentUser ? user[type] : value;
       //In case write permission is being added make sure read is granted as well
@@ -199,7 +199,7 @@ export class HsCommonLaymanAccessRightsComponent implements OnInit {
         : [
             ...this.allRoles,
             //Add current user as he has got to retain both read and write rights
-            {name: this.endpoint.user, read: true, write: true},
+            {name: this.hsCommonLaymanService.user(), read: true, write: true},
           ];
     this.access_rights[`access_rights.${type}`] = source
       .reduce((acc, curr) => {
@@ -291,7 +291,7 @@ export class HsCommonLaymanAccessRightsComponent implements OnInit {
    * Get user roles
    */
   async getRoles(access_rights?: AccessRightsModel): Promise<void> {
-    if (this.endpoint?.authenticated) {
+    if (this.hsCommonLaymanService.isAuthenticated()) {
       const url = `${this.endpoint.url}/rest/roles`;
 
       access_rights ??= this.access_rights;
@@ -390,7 +390,7 @@ export class HsCommonLaymanAccessRightsComponent implements OnInit {
    * Get all registered users from Layman's endpoint service
    */
   async getAllUsers(access_rights?: AccessRightsModel): Promise<void> {
-    if (this.endpoint?.authenticated) {
+    if (this.hsCommonLaymanService.isAuthenticated()) {
       access_rights ??= this.access_rights;
       const read = access_rights[AccessRights.READ].split(',');
       const write = access_rights[AccessRights.WRITE].split(',');
@@ -403,7 +403,8 @@ export class HsCommonLaymanAccessRightsComponent implements OnInit {
             ),
             map((res: LaymanUser[]) => {
               return res.map((user) => {
-                const isCurrentUser = user.username === this.endpoint.user;
+                const isCurrentUser =
+                  user.username === this.hsCommonLaymanService.user();
                 const laymanUser: LaymanUser = {
                   ...user,
                   name: user.username,

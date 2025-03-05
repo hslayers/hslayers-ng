@@ -1,41 +1,36 @@
-import {Component, Input, OnDestroy, OnInit, ViewRef} from '@angular/core';
+import {Component, Input, OnInit, ViewRef} from '@angular/core';
 import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
-
-import {Subscription} from 'rxjs';
 
 import {HsCommonLaymanService} from './layman.service';
 import {
   HsDialogComponent,
   HsDialogContainerService,
 } from 'hslayers-ng/common/dialogs';
+import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'hs-layman-login',
   templateUrl: './layman-login.component.html',
   standalone: false,
 })
-export class HsLaymanLoginComponent
-  implements HsDialogComponent, OnDestroy, OnInit
-{
+export class HsLaymanLoginComponent implements HsDialogComponent, OnInit {
   @Input() data: {
     url: string;
   };
   viewRef: ViewRef;
   url: SafeResourceUrl;
-  authChangeSubscription: Subscription;
   constructor(
     public HsCommonLaymanService: HsCommonLaymanService,
     public HsDialogContainerService: HsDialogContainerService,
     private sanitizer: DomSanitizer,
   ) {
-    this.authChangeSubscription =
-      this.HsCommonLaymanService.authChange.subscribe(() => {
+    this.HsCommonLaymanService.layman$
+      .pipe(takeUntilDestroyed())
+      .subscribe(() => {
         this.close();
       });
   }
-  ngOnDestroy(): void {
-    this.authChangeSubscription.unsubscribe();
-  }
+
   ngOnInit(): void {
     this.url = this.sanitizer.bypassSecurityTrustResourceUrl(this.data.url);
   }

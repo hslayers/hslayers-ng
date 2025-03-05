@@ -1041,7 +1041,7 @@ export class HsMapService {
         (image.getImage() as HTMLImageElement).src = src;
         return;
       }
-      const laymanEp = this.hsCommonLaymanService.layman;
+      const laymanEp = this.hsCommonLaymanService.layman();
       if (laymanEp && src.startsWith(laymanEp.url)) {
         this.laymanWmsLoadingFunction(image, src)
           .then((_) => {

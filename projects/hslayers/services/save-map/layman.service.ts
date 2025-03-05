@@ -1,5 +1,5 @@
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {Injectable} from '@angular/core';
+import {computed, Injectable} from '@angular/core';
 
 import Resumable from 'resumablejs';
 import {
@@ -21,7 +21,6 @@ import {Layer, Vector as VectorLayer} from 'ol/layer';
 import {Source, Vector as VectorSource} from 'ol/source';
 
 import {
-  AboutLayman,
   AccessRightsModel,
   AsyncUpload,
   CompoData,
@@ -45,13 +44,11 @@ import {
   wfsNotAvailable,
   PostPatchLayerResponse,
 } from 'hslayers-ng/common/layman';
-import {HsCommonEndpointsService} from 'hslayers-ng/services/endpoints';
 import {HsLanguageService} from 'hslayers-ng/services/language';
 import {HsLogService} from 'hslayers-ng/services/log';
 import {HsMapService} from 'hslayers-ng/services/map';
 import {HsSaverService} from './saver-service.interface';
 import {HsToastService} from 'hslayers-ng/common/toast';
-import {HsUtilsService} from 'hslayers-ng/services/utils';
 import {
   createGetFeatureRequest,
   createPostFeatureRequest,
@@ -76,65 +73,23 @@ export class HsLaymanService implements HsSaverService {
   laymanLayerPending: Subject<string[]> = new Subject();
   totalProgress = 0;
   deleteQuery: Subscription;
-  supportedCRRList: string[] = SUPPORTED_SRS_LIST;
+  supportedCRRList = computed(() => {
+    const laymanEP = this.hsCommonLaymanService.layman();
+    if (laymanEP) {
+      return getSupportedSrsList(laymanEP);
+    }
+    return SUPPORTED_SRS_LIST;
+  });
 
   pendingRequests: Map<string, Promise<HsLaymanLayerDescriptor>> = new Map();
   constructor(
-    private hsUtilsService: HsUtilsService,
     private http: HttpClient,
     private hsMapService: HsMapService,
     private hsLogService: HsLogService,
-    private hsCommonEndpointsService: HsCommonEndpointsService,
     private hsToastService: HsToastService,
     private hsLanguageService: HsLanguageService,
     private hsCommonLaymanService: HsCommonLaymanService,
-  ) {
-    this.hsCommonEndpointsService.endpointsFilled.subscribe(
-      async (endpoints) => {
-        if (endpoints) {
-          const laymanEP = endpoints.find((ep) => ep.type.includes('layman'));
-          if (laymanEP) {
-            const laymanVersion: AboutLayman = await lastValueFrom(
-              this.http
-                .get<AboutLayman>(laymanEP.url + '/rest/about/version')
-                .pipe(
-                  map((res: any) => {
-                    return {
-                      about: {
-                        applications: {
-                          layman: {
-                            version: res.about.applications.layman.version,
-                            releaseTimestamp:
-                              res.about.applications.layman[
-                                'release-timestamp'
-                              ],
-                          },
-                          laymanTestClient: {
-                            version:
-                              res.about.applications['layman-test-client']
-                                .version,
-                          },
-                        },
-                        data: {
-                          layman: {
-                            lastSchemaMigration:
-                              res.about.applications['last-schema-migration'],
-                            lastDataMigration:
-                              res.about.applications['last-data-migration'],
-                          },
-                        },
-                      },
-                    };
-                  }),
-                ),
-            );
-            laymanEP.version = laymanVersion.about.applications.layman.version;
-            this.supportedCRRList = getSupportedSrsList(laymanEP);
-          }
-        }
-      },
-    );
-  }
+  ) {}
 
   /**
    * Update composition's access rights
@@ -148,14 +103,14 @@ export class HsLaymanService implements HsSaverService {
     endpoint: HsEndpoint,
     access_rights: AccessRightsModel,
   ): Promise<any> {
-    const rights = this.parseAccessRightsForLayman(endpoint, access_rights);
+    const rights = this.parseAccessRightsForLayman(access_rights);
     const formdata = new FormData();
     formdata.append('name', compName);
     formdata.append('access_rights.read', rights.read);
     formdata.append('access_rights.write', rights.write);
     return await this.makeMapPostPatchRequest(
       endpoint,
-      endpoint.user,
+      this.hsCommonLaymanService.user(),
       compName,
       formdata,
       false,
@@ -175,10 +130,7 @@ export class HsLaymanService implements HsSaverService {
     compoData: CompoData,
     saveAsNew: boolean,
   ): Promise<any> {
-    const rights = this.parseAccessRightsForLayman(
-      endpoint,
-      compoData.access_rights,
-    );
+    const rights = this.parseAccessRightsForLayman(compoData.access_rights);
     const formdata = new FormData();
     formdata.append(
       'file',
@@ -192,11 +144,12 @@ export class HsLaymanService implements HsSaverService {
     formdata.append('access_rights.read', rights.read);
     formdata.append('access_rights.write', rights.write);
 
+    const user = this.hsCommonLaymanService.user();
     const workspace =
-      compoData.workspace === endpoint.user
-        ? endpoint.user
+      compoData.workspace === user
+        ? user
         : saveAsNew
-          ? endpoint.user
+          ? user
           : compoData.workspace;
 
     return await this.makeMapPostPatchRequest(
@@ -215,20 +168,18 @@ export class HsLaymanService implements HsSaverService {
    * @param access_rights - Provided access rights
    * @returns Access rights object as two strings, one for read access and the other for write access
    */
-  parseAccessRightsForLayman(
-    endpoint: HsEndpoint,
-    access_rights: AccessRightsModel,
-  ): {
+  parseAccessRightsForLayman(access_rights: AccessRightsModel): {
     write: string;
     read: string;
   } {
+    const user = this.hsCommonLaymanService.user();
     const write =
       access_rights['access_rights.write'] == 'private'
-        ? endpoint.user
+        ? user
         : access_rights['access_rights.write'];
     const read =
       access_rights['access_rights.read'] == 'private'
-        ? endpoint.user
+        ? user
         : access_rights['access_rights.read'];
     return {write, read};
   }
@@ -346,10 +297,7 @@ export class HsLaymanService implements HsSaverService {
       formData.append('crs', description.crs);
     }
     if (description.access_rights) {
-      const rights = this.parseAccessRightsForLayman(
-        endpoint,
-        description.access_rights,
-      );
+      const rights = this.parseAccessRightsForLayman(description.access_rights);
 
       formData.append('access_rights.write', rights.write);
       formData.append('access_rights.read', rights.read);
@@ -406,7 +354,8 @@ export class HsLaymanService implements HsSaverService {
     layerName = getLaymanFriendlyLayerName(layerName);
     try {
       const postOrPatch = overwrite ? 'patch' : 'post';
-      const url = `${endpoint.url}/rest/workspaces/${endpoint.user}/layers${
+      const workspace = this.hsCommonLaymanService.user();
+      const url = `${endpoint.url}/rest/workspaces/${workspace}/layers${
         overwrite ? `/${layerName}` : `?${Math.random()}`
       }`;
       let data: PostPatchLayerResponse = await lastValueFrom(
@@ -503,8 +452,9 @@ export class HsLaymanService implements HsSaverService {
           ),
       );
       const layername = data['name'];
+      const workspace = this.hsCommonLaymanService.user();
       const resumable = new Resumable({
-        target: `${endpoint.url}/rest/workspaces/${endpoint.user}/layers/${layername}/chunk`,
+        target: `${endpoint.url}/rest/workspaces/${workspace}/layers/${layername}/chunk`,
         query: {
           'layman_original_parameter': 'file',
         },
@@ -559,7 +509,7 @@ export class HsLaymanService implements HsSaverService {
     }
     const layerName = getLayerName(layer);
     let layerTitle = getTitle(layer);
-    const crsSupported = this.supportedCRRList.includes(this.crs);
+    const crsSupported = this.supportedCRRList().includes(this.crs);
 
     if ((endpoint?.version?.split('.').join() as unknown as number) < 171) {
       layerTitle = getLaymanFriendlyLayerName(layerTitle);
@@ -641,7 +591,7 @@ export class HsLaymanService implements HsSaverService {
       try {
         if (!desc) {
           desc = await this.describeLayer(endpoint, name, getWorkspace(layer));
-          this.cacheLaymanDescriptor(layer, desc, endpoint);
+          this.cacheLaymanDescriptor(layer, desc);
         }
         if (desc.name == undefined || desc.wfs.url == undefined) {
           throw `Layer or its name/url didn't exist`;
@@ -679,11 +629,12 @@ export class HsLaymanService implements HsSaverService {
     try {
       const srsName = this.hsMapService.getCurrentProj().getCode();
       const featureType = getLayerName(layer);
+      const user = this.hsCommonLaymanService.user();
       const {default: WFS} = await import('ol/format/WFS');
       const wfsFormat = new WFS();
       const options = {
-        featureNS: 'http://' + ep.user,
-        featurePrefix: ep.user,
+        featureNS: 'http://' + user,
+        featurePrefix: user,
         featureType,
         srsName,
         nativeElements: null,
@@ -718,14 +669,12 @@ export class HsLaymanService implements HsSaverService {
    * Cache Layman's layer descriptor so it can be used later on
    * @param layer - Layer interacted with
    * @param layer - Layman's layer descriptor
-   * @param endpoint - Layman's endpoint description
    */
   private cacheLaymanDescriptor(
     layer: VectorLayer<VectorSource<Feature>>,
     desc: HsLaymanLayerDescriptor,
-    endpoint: HsEndpoint,
   ): void {
-    if (endpoint.user != 'browser') {
+    if (this.hsCommonLaymanService.user() != 'browser') {
       setLaymanLayerDescriptor(layer, desc);
     }
   }
@@ -756,7 +705,7 @@ export class HsLaymanService implements HsSaverService {
         return null;
       }
       if (desc?.name && !wfsNotAvailable(desc)) {
-        this.cacheLaymanDescriptor(layer, desc, endpoint);
+        this.cacheLaymanDescriptor(layer, desc);
       }
     } catch (ex) {
       //If Layman returned 404
@@ -948,14 +897,15 @@ export class HsLaymanService implements HsSaverService {
       }
       const observables: Observable<any>[] = [];
 
-      const ds = this.hsCommonLaymanService.layman;
+      const ds = this.hsCommonLaymanService.layman();
+      const workspace = this.hsCommonLaymanService.user();
       let url;
       if (layer) {
         const layerName =
           typeof layer == 'string' ? layer : getLayerName(layer);
-        url = `${ds.url}/rest/workspaces/${ds.user}/layers/${layerName}`;
+        url = `${ds.url}/rest/workspaces/${workspace}/layers/${layerName}`;
       } else {
-        url = `${ds.url}/rest/workspaces/${ds.user}/layers`;
+        url = `${ds.url}/rest/workspaces/${workspace}/layers`;
       }
 
       const response = this.http

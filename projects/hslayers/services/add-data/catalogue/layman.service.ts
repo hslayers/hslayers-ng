@@ -52,11 +52,11 @@ export class HsLaymanBrowserService {
     },
     extentFeatureCreated?: (feature: Feature<Geometry>) => void,
   ): Observable<any> {
-    endpoint.getCurrentUserIfNeeded(endpoint);
-    const loggedIn = endpoint.authenticated;
+    const loggedIn = this.hsCommonLaymanService.isAuthenticated();
+    const workspace = this.hsCommonLaymanService.user();
     const withPermissionOrMine = data?.onlyMine
       ? loggedIn
-        ? `workspaces/${endpoint.user}/`
+        ? `workspaces/${workspace}/`
         : ''
       : '';
     const url = `${endpoint.url}/rest/${withPermissionOrMine}layers`;
@@ -246,16 +246,13 @@ export class HsLaymanBrowserService {
           ),
       );
       if (data.code || data.message) {
-        if (data.code == 32) {
-          endpoint.user = undefined;
-          endpoint.authenticated = false;
-          this.hsCommonLaymanService.authChange.next(endpoint);
+        if (data.code != 32) {
+          this.hsToastService.createToastPopupMessage(
+            data.message ?? 'ADDLAYERS.ERROR.errorWhileRequestingLayers',
+            data.detail ?? `${data.code}/${data.sub_code}`,
+            {},
+          );
         }
-        this.hsToastService.createToastPopupMessage(
-          data.message ?? 'ADDLAYERS.ERROR.errorWhileRequestingLayers',
-          data.detail ?? `${data.code}/${data.sub_code}`,
-          {},
-        );
         return;
       }
 

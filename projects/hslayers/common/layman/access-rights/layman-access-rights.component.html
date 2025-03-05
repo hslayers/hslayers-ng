@@ -56,11 +56,11 @@
 <div class="hs-save-map-users-list p-1 my-1" [class.collapsed]="collapsed">
   @for (user of allUsers | filter: userFilter; track user) {
   <div class="d-flex flex-row justify-content-between align-items-start p-1"
-    [class.bg-primary-subtle]="user.username === this.endpoint.user">
+    [class.bg-primary-subtle]="user.username === hsCommonLaymanService.user()">
     <span class="w-50">{{user.hslDisplayName}}</span>
     @for (type of rightsOptions; track type) {
     <label style="cursor: pointer;"><input class="me-2" type="checkbox" [name]="'rightTo'+type"
-        [disabled]="user.username === this.endpoint.user" [(ngModel)]="user[type]"
+        [disabled]="user.username === hsCommonLaymanService.user()" [(ngModel)]="user[type]"
         (change)="accessRightsChanged(type, user.username, $event)">{{ type | translateHs :'SAVECOMPOSITION.form'
       }}</label>
     }

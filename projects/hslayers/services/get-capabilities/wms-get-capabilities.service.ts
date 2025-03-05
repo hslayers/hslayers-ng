@@ -109,7 +109,7 @@ export class HsWmsGetCapabilitiesService implements IGetCapabilities {
             responseType: 'text',
             withCredentials: isLaymanUrl(
               url,
-              this.hsCommonLaymanService.layman,
+              this.hsCommonLaymanService.layman(),
             ),
             observe: 'response', // Set observe to 'response' to get headers as well
           })

@@ -355,7 +355,7 @@ export class HsLayerManagerComponent
         .map((l) => {
           return l.layer;
         }),
-      this.hsCommonLaymanService.layman?.authenticated
+      this.hsCommonLaymanService.isAuthenticated()
         ? ['map', 'mapcatalogue']
         : ['map'],
     );

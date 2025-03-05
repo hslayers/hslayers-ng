@@ -1,4 +1,14 @@
 {
+  "AUTH": {
+    "signingIn": "Signing in...",
+    "logoutSuccessful": "You have been sucesfully logged out!",
+    "loginSuccessful": "Successfully logged in",
+    "authenticationFailed": "Authentication failed",
+    "userInfoFailed": "Failed to retrieve user information",
+    "loginFailed": "Login failed",
+    "Login": "Log in",
+    "Logout": "Log out"
+  },
   "ADDDATA": {
     "CATALOGUE": {
       "DESC": {
@@ -219,8 +229,6 @@
     "lineColor": "Line color",
     "lineWidth": "Line width",
     "loading": "Loading",
-    "Login": "Log in",
-    "Logout": "Log out",
     "mapExtentFilterMissing": "Please enable Filter by map extent checkbox to be able to sort data by Bounding box",
     "menu": "Menu",
     "metadata": "Metadata",
@@ -322,7 +330,9 @@
     "base": "Basemap",
     "thematic": "Thematic map",
     "contains": "contains",
-    "property": "Property"
+    "property": "Property",
+    "error": "Error",
+    "success": "Success"
   },
   "COMPOSITIONS": {
     "addByAddress": "Add composition by address",

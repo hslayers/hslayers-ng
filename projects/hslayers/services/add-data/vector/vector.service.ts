@@ -228,7 +228,7 @@ export class HsAddDataVectorService {
       idAttribute: `?${data.idProperty}`,
       path: this.hsUtilsService.undefineEmptyString(data.folder_name),
       access_rights: data.access_rights,
-      workspace: this.hsAddDataCommonFileService.endpoint?.user,
+      workspace: this.hsCommonLaymanService.user(),
       query: data.query,
       queryCapabilities:
         data.type != 'kml' &&
@@ -248,7 +248,8 @@ export class HsAddDataVectorService {
    */
   async addNewLayer(data: VectorDataObject) {
     if (!this.hsAddDataCommonFileService.endpoint) {
-      this.hsAddDataCommonFileService.pickEndpoint();
+      console.error('No endpoint available');
+      return;
     }
     const addLayerRes: {
       layer: VectorLayer<VectorSource<Feature>>;
@@ -312,9 +313,9 @@ export class HsAddDataVectorService {
   async upsertLayer(data: VectorDataObject): Promise<PostPatchLayerResponse> {
     const commonFileRef = this.hsAddDataCommonFileService;
 
-    const crsSupported = this.hsLaymanService.supportedCRRList.includes(
-      data.nativeSRS,
-    );
+    const crsSupported = this.hsLaymanService
+      .supportedCRRList()
+      .includes(data.nativeSRS);
     const style =
       typeof data.serializedStyle == 'string'
         ? data.serializedStyle
@@ -325,7 +326,7 @@ export class HsAddDataVectorService {
       crs: this.hsAddDataVectorUtilsService
         .getFeaturesProjection(getProjection(data.nativeSRS))
         .getCode(),
-      workspace: commonFileRef.endpoint.user,
+      workspace: this.hsCommonLaymanService.user(),
       access_rights: data.access_rights,
       style,
     };
@@ -382,7 +383,7 @@ export class HsAddDataVectorService {
           await this.hsLaymanService.describeLayer(
             commonFileRef.endpoint,
             upsertReq.name,
-            commonFileRef.endpoint.user,
+            this.hsCommonLaymanService.user(),
           );
           return OverwriteResponse.overwrite;
         }

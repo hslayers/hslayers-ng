@@ -50,6 +50,7 @@ import {
   setTitle,
   setWorkspace,
 } from 'hslayers-ng/common/extensions';
+import {takeUntilDestroyed, toObservable} from '@angular/core/rxjs-interop';
 
 type ActivateParams = {
   onDrawStart?;
@@ -66,6 +67,8 @@ export const TMP_LAYER_TITLE = 'tmpDrawLayer';
   providedIn: 'root',
 })
 export class HsDrawService extends HsDrawServiceParams {
+  isAuthenticated = this.hsCommonLaymanService.isAuthenticated;
+
   constructor(
     public hsMapService: HsMapService,
     public hsLayerUtilsService: HsLayerUtilsService,
@@ -139,22 +142,23 @@ export class HsDrawService extends HsDrawServiceParams {
           this.fillDrawableLayers();
         }
       });
+    });
 
-      this.hsCommonLaymanService.authChange.subscribe((endpoint) => {
+    toObservable(this.hsCommonLaymanService.isAuthenticated)
+      .pipe(takeUntilDestroyed())
+      .subscribe((isAuthenticated) => {
         this.fillDrawableLayers();
-        this.isAuthenticated = endpoint?.authenticated;
         //When metadata dialog window opened. Layer is being added
         if (this.selectedLayer && this.tmpDrawLayer) {
-          setWorkspace(this.selectedLayer, endpoint?.user);
+          setWorkspace(this.selectedLayer, this.hsCommonLaymanService.user());
           setDefinition(this.selectedLayer, {
-            format: this.isAuthenticated ? 'WFS' : null,
-            url: this.isAuthenticated
-              ? this.hsCommonLaymanService.layman?.url + '/wfs'
+            format: isAuthenticated ? 'WFS' : null,
+            url: isAuthenticated
+              ? this.hsCommonLaymanService.layman()?.url + '/wfs'
               : null,
           });
         }
       });
-    });
   }
 
   /**
@@ -205,7 +209,7 @@ export class HsDrawService extends HsDrawServiceParams {
     while (this.hsMapService.findLayerByTitle(tmpTitle)) {
       tmpTitle = `${this.translate('DRAW.drawLayer')} ${i++}`;
     }
-    const layman = this.hsCommonLaymanService.layman;
+    const layman = this.hsCommonLaymanService.layman();
     const drawLayer = new VectorLayer<VectorSource<Feature>>({
       //TODO: Also name should be set, but take care in case a layer with that name already exists in layman
       source: tmpSource,
@@ -221,7 +225,7 @@ export class HsDrawService extends HsDrawServiceParams {
       format: this.isAuthenticated ? 'WFS' : null,
       url: this.isAuthenticated ? layman.url + '/wfs' : null,
     });
-    setWorkspace(drawLayer, layman?.user);
+    setWorkspace(drawLayer, this.hsCommonLaymanService.user());
     this.tmpDrawLayer = true;
     this.selectedLayer = drawLayer;
     this.layerMetadataDialog.next();
@@ -516,7 +520,7 @@ export class HsDrawService extends HsDrawServiceParams {
     }
     this.addedLayersRemoved = false;
     this.drawableLayers = drawables;
-    this.laymanEndpoint = this.hsCommonLaymanService.layman;
+    this.laymanEndpoint = this.hsCommonLaymanService.layman();
     if (this.laymanEndpoint) {
       await lastValueFrom(
         this.hsLaymanBrowserService.queryCatalog(this.laymanEndpoint, {
@@ -851,10 +855,10 @@ export class HsDrawService extends HsDrawServiceParams {
    */
   private async layerRemoval(multi: boolean = false) {
     let confirmed;
-    const a: ['map', 'mapcatalogue'] | ['map'] = this.hsCommonLaymanService
-      .layman?.authenticated
-      ? ['map', 'mapcatalogue']
-      : ['map'];
+    const a: ['map', 'mapcatalogue'] | ['map'] =
+      this.hsCommonLaymanService.isAuthenticated()
+        ? ['map', 'mapcatalogue']
+        : ['map'];
     if (multi) {
       confirmed = await this.hsRemoveLayerDialogService.removeMultipleLayers(
         this.drawableLayers,

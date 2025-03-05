@@ -79,7 +79,6 @@ export class HsAddDataFileBaseComponent implements OnInit, AfterViewInit {
       });
 
     this.setDataToDefault();
-    this.hsAddDataCommonFileService.pickEndpoint();
   }
 
   /**

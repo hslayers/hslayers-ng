@@ -57,7 +57,7 @@ export class HsSetPermissionsDialogComponent
 
   ngOnInit(): void {
     // Can set permission for Layman endpoint only
-    this.endpoint = this.hsCommonLaymanService.layman;
+    this.endpoint = this.hsCommonLaymanService.layman();
     if (!this.data.selectedRecord?.access_rights || !this.endpoint) {
       this.close();
       return;
@@ -70,7 +70,7 @@ export class HsSetPermissionsDialogComponent
    * so it can be used for Layman access rights component
    */
   parseCurrentPermissions(): void {
-    const currentUser = this.endpoint.user;
+    const currentUser = this.hsCommonLaymanService.user();
     let read: string[] = this.data.selectedRecord.access_rights.read;
     let write: string[] = this.data.selectedRecord.access_rights.write;
     if (read.includes('EVERYONE')) {
@@ -105,7 +105,7 @@ export class HsSetPermissionsDialogComponent
         const layerDesc: UpsertLayerObject = {
           name: this.data.selectedRecord.name,
           title: this.data.selectedRecord.title,
-          workspace: this.endpoint.user,
+          workspace: this.hsCommonLaymanService.user(),
           access_rights: this.access_rights,
         };
         response = await this.hsLaymanService.makeUpsertLayerRequest(

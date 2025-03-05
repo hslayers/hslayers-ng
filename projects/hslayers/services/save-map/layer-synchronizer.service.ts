@@ -58,12 +58,16 @@ export class HsLayerSynchronizerService {
           element: lyr,
         });
       });
-      this.hsCommonLaymanService.authChange.subscribe(() => {
-        this.reloadLayersOnAuthChange();
-      });
+
       this.crs = this.hsMapService.getCurrentProj().getCode();
       this.hsLaymanService.crs = this.crs;
     });
+
+    this.hsCommonLaymanService.layman$
+      .pipe(takeUntilDestroyed())
+      .subscribe((layman) => {
+        this.reloadLayersOnAuthChange();
+      });
 
     this.hsEventBusService.refreshLaymanLayer
       .pipe(takeUntilDestroyed())
@@ -75,11 +79,13 @@ export class HsLayerSynchronizerService {
    * Reload all the synchronized layers after Layman's authorization change
    */
   private reloadLayersOnAuthChange(): void {
-    for (const layer of this.syncedLayers) {
-      const layerSource = layer.getSource();
-      setLaymanLayerDescriptor(layer, undefined);
-      layerSource.clear();
-      this.pull(layer, layerSource);
+    if (this.syncedLayers.length > 0) {
+      for (const layer of this.syncedLayers) {
+        const layerSource = layer.getSource();
+        setLaymanLayerDescriptor(layer, undefined);
+        layerSource.clear();
+        this.pull(layer, layerSource);
+      }
     }
   }
 
@@ -123,7 +129,7 @@ export class HsLayerSynchronizerService {
     if (!desc) {
       if (retryCount < maxRetryCount) {
         const desc = await this.hsLaymanService.describeLayer(
-          this.hsCommonLaymanService.layman,
+          this.hsCommonLaymanService.layman(),
           getName(layer),
           getWorkspace(layer),
         );
@@ -180,7 +186,7 @@ export class HsLayerSynchronizerService {
    */
   findLaymanForWfsLayer(layer: VectorLayer<VectorSource<Feature>>) {
     const definitionUrl = getDefinition(layer).url;
-    const laymanEp = this.hsCommonLaymanService?.layman;
+    const laymanEp = this.hsCommonLaymanService?.layman();
     if (!laymanEp || !definitionUrl) {
       return undefined;
     }

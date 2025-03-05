@@ -23,6 +23,7 @@ import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsMapService} from 'hslayers-ng/services/map';
 import {HsMickaBrowserService} from './micka.service';
 import {HsUtilsService} from 'hslayers-ng/services/utils';
+import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 
 class HsAddDataCatalogueParams {
   data: any = {
@@ -90,11 +91,13 @@ export class HsAddDataCatalogueService extends HsAddDataCatalogueParams {
       this.calcExtentLayerVisibility();
     });
 
-    this.hsCommonLaymanService.authChange.subscribe(() => {
-      if (this.panelVisible()) {
-        this.reloadData();
-      }
-    });
+    this.hsCommonLaymanService.layman$
+      .pipe(takeUntilDestroyed())
+      .subscribe(() => {
+        if (this.panelVisible()) {
+          this.reloadData();
+        }
+      });
 
     this.hsAddDataService.datasetTypeSelected.subscribe((type) => {
       if (type == 'catalogue' && this.panelVisible()) {
@@ -102,7 +105,7 @@ export class HsAddDataCatalogueService extends HsAddDataCatalogueParams {
       }
     });
 
-    this.endpoints = this.hsCommonEndpointsService.endpoints;
+    this.endpoints = this.hsCommonEndpointsService.endpoints();
 
     if (this.dataSourceExistsAndEmpty() && this.panelVisible()) {
       this.queryCatalogs();
@@ -135,7 +138,7 @@ export class HsAddDataCatalogueService extends HsAddDataCatalogueParams {
   }
 
   reloadData(): void {
-    this.endpoints = this.hsCommonEndpointsService.endpoints;
+    this.endpoints = this.hsCommonEndpointsService.endpoints();
     this.resetList();
     this.queryCatalogs();
     // this.hsMickaFilterService.fillCodesets();

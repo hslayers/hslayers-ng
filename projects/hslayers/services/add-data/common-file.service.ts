@@ -5,7 +5,6 @@ import {Subject} from 'rxjs';
 import {HsAddDataOwsService} from './url/add-data-ows.service';
 import {HsAddDataService} from './add-data.service';
 import {HsAddDataUrlService} from './url/add-data-url.service';
-import {HsCommonEndpointsService} from 'hslayers-ng/services/endpoints';
 import {HsLanguageService} from 'hslayers-ng/services/language';
 import {HsLaymanService} from 'hslayers-ng/services/save-map';
 import {HsLogService} from 'hslayers-ng/services/log';
@@ -45,7 +44,7 @@ export class HsAddDataCommonFileServiceParams {
   readingData = false;
   loadingToLayman = false;
   asyncLoading = false;
-  endpoint: HsEndpoint = null;
+  endpoint: HsEndpoint;
   /**
    * @param success - true when layer added successfully
    */
@@ -60,7 +59,6 @@ export class HsAddDataCommonFileService extends HsAddDataCommonFileServiceParams
     private hsAddDataOwsService: HsAddDataOwsService,
     private hsAddDataUrlService: HsAddDataUrlService,
     private hsAddDataService: HsAddDataService,
-    private hsCommonEndpointsService: HsCommonEndpointsService,
     private hsDialogContainerService: HsDialogContainerService,
     private hsLanguageService: HsLanguageService,
     private hsLaymanService: HsLaymanService,
@@ -72,12 +70,12 @@ export class HsAddDataCommonFileService extends HsAddDataCommonFileServiceParams
     super();
   }
 
+  endpoint = this.hsCommonLaymanService.layman();
   /**
    * Clear service param values to default values
    */
   clearParams(): void {
     this.asyncLoading = false;
-    this.endpoint = null;
     this.loadingToLayman = false;
     this.hsLaymanService.totalProgress = 0;
   }
@@ -112,23 +110,6 @@ export class HsAddDataCommonFileService extends HsAddDataCommonFileServiceParams
     } catch (e) {
       this.hsAddDataUrlService.addDataCapsParsingError.next(e.message);
       return;
-    }
-  }
-
-  /**
-   * From available endpoints picks one
-   * - either Layman endpoint if available or any other if not
-   */
-  pickEndpoint(): void {
-    const endpoints = this.hsCommonEndpointsService.endpoints;
-    if (endpoints && endpoints.length > 0) {
-      const layman = this.hsCommonLaymanService.layman;
-      if (layman) {
-        this.endpoint = layman;
-        this.endpoint.getCurrentUserIfNeeded(this.endpoint);
-      } else {
-        this.endpoint = endpoints[0];
-      }
     }
   }
 
@@ -236,7 +217,7 @@ export class HsAddDataCommonFileService extends HsAddDataCommonFileServiceParams
     overwrite?: boolean,
   ): Promise<PostPatchLayerResponse> {
     try {
-      const formData = await this.constructFormData(endpoint, formDataParams);
+      const formData = await this.constructFormData(formDataParams);
       const asyncUpload: AsyncUpload =
         this.hsLaymanService.prepareAsyncUpload(formData);
       this.asyncLoading = asyncUpload.async;
@@ -263,12 +244,11 @@ export class HsAddDataCommonFileService extends HsAddDataCommonFileServiceParams
     const friendlyName = getLaymanFriendlyLayerName(name);
     let descriptor: HsLaymanLayerDescriptor;
     if (this.isAuthenticated()) {
-      this.pickEndpoint();
       try {
         descriptor = await this.hsLaymanService.describeLayer(
           this.endpoint,
           name,
-          this.endpoint.user,
+          this.hsCommonLaymanService.user(),
           true,
         );
       } catch (error) {
@@ -323,7 +303,6 @@ export class HsAddDataCommonFileService extends HsAddDataCommonFileServiceParams
 
   /**
    * Construct a set of key/value pairs from, that can be easily sent using HTTP
-   * @param endpoint - Layman endpoint description (url, name, user)
    * @param files - Array of files
    * @param name - Name of new layer
    * @param title - Title of new layer
@@ -333,10 +312,7 @@ export class HsAddDataCommonFileService extends HsAddDataCommonFileServiceParams
    * @param access_rights - User access rights for the new layer,
    * @returns FormData object for HTTP request
    */
-  async constructFormData(
-    endpoint: HsEndpoint,
-    formDataParams: FileFormData,
-  ): Promise<FormData> {
+  async constructFormData(formDataParams: FileFormData): Promise<FormData> {
     this.readingData = true;
     const {files, name, abstract, srs, access_rights, timeRegex} =
       formDataParams;
@@ -380,10 +356,8 @@ export class HsAddDataCommonFileService extends HsAddDataCommonFileServiceParams
     formData.append('abstract', abstract);
     formData.append('crs', srs);
 
-    const rights = this.hsLaymanService.parseAccessRightsForLayman(
-      endpoint,
-      access_rights,
-    );
+    const rights =
+      this.hsLaymanService.parseAccessRightsForLayman(access_rights);
 
     formData.append('access_rights.write', rights.write);
     formData.append('access_rights.read', rights.read);
@@ -408,7 +382,7 @@ export class HsAddDataCommonFileService extends HsAddDataCommonFileServiceParams
     try {
       this.loadingToLayman = true;
       if (!this.endpoint) {
-        this.pickEndpoint();
+        throw new Error('No endpoint available');
       }
       if (!this.isSRSSupported(data)) {
         throw new Error(
@@ -598,7 +572,7 @@ export class HsAddDataCommonFileService extends HsAddDataCommonFileServiceParams
       const descriptor = await this.hsLaymanService.describeLayer(
         endpoint,
         layerName,
-        endpoint.user,
+        this.hsCommonLaymanService.user(),
       );
       if (
         pendingParams.some((param) =>
@@ -640,9 +614,9 @@ export class HsAddDataCommonFileService extends HsAddDataCommonFileServiceParams
    * @returns True, if srs is supported, false otherwise
    */
   isSRSSupported(data: FileDataObject): boolean {
-    return this.hsLaymanService.supportedCRRList.some((epsg) =>
-      data.srs.endsWith(epsg),
-    );
+    return this.hsLaymanService
+      .supportedCRRList()
+      .some((epsg) => data.srs.endsWith(epsg));
   }
 
   /**
@@ -650,7 +624,7 @@ export class HsAddDataCommonFileService extends HsAddDataCommonFileServiceParams
    * @returns True, if user is authorized, false otherwise
    */
   isAuthenticated(): boolean {
-    return this.hsCommonLaymanService.layman?.authenticated ?? false;
+    return this.hsCommonLaymanService.isAuthenticated();
   }
 
   /**

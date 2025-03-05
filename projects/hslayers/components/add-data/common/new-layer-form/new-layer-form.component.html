@@ -18,7 +18,7 @@
     <div class="form-floating">
       <select class="form-select rounded-0" id="hs-add-data-crs" [(ngModel)]="data.srs" name="srs"
         [ngClass]="data?.srs ? 'is-valid mb-2' : 'is-invalid'" aria-label="CRS floating label select">
-        @for (epsg of hsLaymanService.supportedCRRList; track epsg) {
+        @for (epsg of hsLaymanService.supportedCRRList(); track epsg) {
            <option [ngValue]="epsg">{{epsg | epsg}}
         }
       </select>

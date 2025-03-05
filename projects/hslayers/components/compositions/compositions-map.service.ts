@@ -111,9 +111,9 @@ export class HsCompositionsMapService {
     const featuresUnderMouse = this.extentLayer
       .getSource()
       .getFeaturesAtCoordinate(evt.coordinate);
-    for (const endpoint of this.hsCommonEndpointsService.endpoints.filter(
-      (ep) => ep.compositions,
-    )) {
+    for (const endpoint of this.hsCommonEndpointsService
+      .endpoints()
+      .filter((ep) => ep.compositions)) {
       this.hsLayerUtilsService.highlightFeatures(
         featuresUnderMouse,
         this.extentLayer,

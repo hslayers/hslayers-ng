@@ -65,7 +65,7 @@ export class HsStylerService {
 
   sld: string;
   qml: string;
-  isAuthenticated: boolean;
+  isAuthenticated = this.hsCommonLaymanService.isAuthenticated;
 
   pin_white_blue;
   pin_white_blue_highlight;
@@ -119,10 +119,6 @@ export class HsStylerService {
         }),
       ];
     };
-
-    this.hsCommonLaymanService.authChange.subscribe((endpoint) => {
-      this.isAuthenticated = endpoint?.authenticated;
-    });
 
     this.hsMapService.loaded().then((map) => {
       for (const layer of this.hsMapService
@@ -755,7 +751,7 @@ export class HsStylerService {
    * Indicate only when user is logged in Layman and layer is being monitored otherwise save
    */
   resolveSldChange() {
-    if (this.isAuthenticated && this.layerBeingMonitored) {
+    if (this.isAuthenticated() && this.layerBeingMonitored) {
       this.changesStore.set(getUid(this.layer), {
         sld: this.sld,
         qml: this.qml,

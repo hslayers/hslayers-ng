@@ -22,7 +22,7 @@
       <img #compositionThumbnail class="hs-stc-thumbnail img-thumbnail"
         [alt]="'SAVECOMPOSITION.compositionThumbnail' | translateHs " width="256" height="256">
     </label>
-    @if (endpoint?.type.includes('layman')) {
+    @if (endpoint()?.type.includes('layman')) {
       <hs-layman-access-rights [collapsed]="true"
         [(access_rights)]="hsSaveMapManagerService._access_rights" (access_rights_changed)="setAccessRights($event)">
       </hs-layman-access-rights>

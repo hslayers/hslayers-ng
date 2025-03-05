@@ -1,103 +1,108 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {Observable, map} from 'rxjs';
+import {Component, computed, inject, signal} from '@angular/core';
+import {map} from 'rxjs';
 
 import {HsCommonLaymanService} from './layman.service';
 import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
-import {HsEndpoint} from 'hslayers-ng/types';
-import {HsLaymanLoginComponent} from './layman-login.component';
+import {HsConfig} from 'hslayers-ng/config';
+import {HsToastService} from 'hslayers-ng/common/toast';
 
 @Component({
   selector: 'hs-layman-current-user',
   templateUrl: './layman-current-user.component.html',
   standalone: false,
-})
-export class HsLaymanCurrentUserComponent implements OnInit {
-  @Input() endpoint?: HsEndpoint;
-  monitorTries = 0;
-  DEFAULT_TIMER_INTERVAL = 2000;
-  MAX_MONITOR_TRIES = 100;
-  timerInterval = this.DEFAULT_TIMER_INTERVAL;
-  getCurrentUserTimer;
-
-  /**
-   * Controls availability of "Log in" button in HSL components.
-   * Not available for Wagtail endpoints as login is handled via separate hub proxy
-   */
-  inAppLogin: Observable<boolean>;
-  constructor(
-    public HsCommonLaymanService: HsCommonLaymanService,
-    public HsDialogContainerService: HsDialogContainerService,
-  ) {}
-
-  ngOnInit(): void {
-    this.inAppLogin = this.HsCommonLaymanService.layman$.pipe(
-      map((layman) => {
-        if (layman) {
-          //Assign received layman endpoint to local variable
-          this.endpoint = layman;
-          return this.endpoint?.type === 'layman';
+  styles: `
+    .user-auth-container {
+      .user-dropdown {
+        .user-avatar {
+          width: 1.75rem;
+          height: 1.75rem;
+          background-color: rgba(255, 255, 255, 0.2);
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 0.875rem;
         }
-      }),
-    );
-  }
 
-  isAuthenticated() {
-    return this.HsCommonLaymanService.isAuthenticated();
-  }
+        .user-dropdown-menu {
+          min-width: 15rem;
+          border-radius: 0.5rem;
+          box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
 
+          .user-header {
+            border-radius: 0.5rem 0.5rem 0 0;
+
+            .user-avatar-large {
+              width: 3rem;
+              height: 3rem;
+              background-color: #e9ecef;
+              border-radius: 50%;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              font-size: 1.25rem;
+            }
+          }
+
+          button.dropdown-item {
+            border-radius: 0.25rem;
+            margin: 0.125rem 0;
+
+            &:hover {
+              background-color: #f8f9fa;
+            }
+
+            &.text-danger:hover {
+              background-color: #fff5f5;
+            }
+          }
+        }
+      }
+    }
+  `,
+})
+export class HsLaymanCurrentUserComponent {
+  hsCommonLaymanService = inject(HsCommonLaymanService);
+  HsDialogContainerService = inject(HsDialogContainerService);
+  hsConfig = inject(HsConfig);
+  hsToastService = inject(HsToastService);
+
+  dropdownOpen = signal(false);
+
+  sameDomain = computed(() => {
+    const laymanEndpoint = this.hsCommonLaymanService.layman();
+    if (!laymanEndpoint) {
+      return false;
+    }
+    return laymanEndpoint.url.includes(window.location.origin);
+  });
+
+  inAppLogin = this.hsCommonLaymanService.layman$.pipe(
+    map((layman) => layman?.type === 'layman'),
+  );
+
+  /**
+   * Log out the current user
+   */
   logout(): void {
-    this.monitorUser();
-    this.HsCommonLaymanService.logout(this.endpoint);
-  }
-
-  sameDomain() {
-    const endpointUrl = new URL(this.endpoint.url);
-    return (
-      location.protocol == endpointUrl.protocol &&
-      location.host == endpointUrl.host
-    );
-  }
-
-  authUrl() {
-    return this.endpoint.url + '/login';
+    this.hsCommonLaymanService.logout();
   }
 
   /**
-   * Periodically poll layman client endpoint for auth change.
-   * This is used for hiding login iframe and toggling state for login buttons,
-   * which is done in separate modules by subscribing to HsCommonLaymanService.authChange
+   * Open login dialog or redirect to login page
    */
-  monitorUser(): void {
-    if (this.getCurrentUserTimer) {
-      clearTimeout(this.getCurrentUserTimer);
-    }
-    this.monitorTries = 0;
-    this.timerInterval = this.DEFAULT_TIMER_INTERVAL;
-    const poll = () => {
-      this.HsCommonLaymanService.detectAuthChange(this.endpoint).then(
-        (somethingChanged) => {
-          if (somethingChanged && this.getCurrentUserTimer) {
-            clearTimeout(this.getCurrentUserTimer);
-            this.monitorTries = this.MAX_MONITOR_TRIES;
-          }
-        },
-      );
-      this.monitorTries++;
-      if (this.monitorTries > this.MAX_MONITOR_TRIES) {
-        clearTimeout(this.getCurrentUserTimer);
-      }
-      this.getCurrentUserTimer = setTimeout(poll, this.timerInterval);
-    };
-    this.getCurrentUserTimer = setTimeout(poll, this.timerInterval);
-  }
-
-  login(): void {
-    this.monitorUser();
+  async login(): Promise<void> {
+    this.hsCommonLaymanService.login$.next();
+    const authUrl = this.hsCommonLaymanService.layman()?.url + '/login';
     if (!this.sameDomain()) {
+      window.open(authUrl, 'AuthWindow');
       return;
     }
+
+    // For same-domain logins, open the dialog
+    const {HsLaymanLoginComponent} = await import('./layman-login.component');
     this.HsDialogContainerService.create(HsLaymanLoginComponent, {
-      url: this.authUrl(),
+      url: authUrl,
     });
   }
 }
