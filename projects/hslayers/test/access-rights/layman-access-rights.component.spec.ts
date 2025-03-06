@@ -9,8 +9,9 @@ import {
   HttpTestingController,
   provideHttpClientTesting,
 } from '@angular/common/http/testing';
-import {NO_ERRORS_SCHEMA} from '@angular/core';
+import {NO_ERRORS_SCHEMA, signal} from '@angular/core';
 import {provideHttpClient, withInterceptorsFromDi} from '@angular/common/http';
+import {BehaviorSubject, of} from 'rxjs';
 
 import {
   AccessRights,
@@ -109,9 +110,30 @@ describe('HsCommonLaymanAccessRightsComponent', () => {
   let component: HsCommonLaymanAccessRightsComponent;
   let fixture: ComponentFixture<HsCommonLaymanAccessRightsComponent>;
   let httpMock: HttpTestingController;
-
   let commonLaymanMock: HsCommonLaymanService;
+
+  // Mock endpoint data
+  const mockEndpoint = {
+    type: 'layman-wagtail',
+    title: 'layman',
+    url: 'http://madeupurl',
+    user: 'current-user',
+    authenticated: true,
+  };
+
   beforeEach(async () => {
+    // Create a mock service
+    const mockLaymanService = {
+      layman$: of(mockEndpoint),
+      layman: signal(mockEndpoint),
+      authState: signal({
+        user: 'current-user',
+        authenticated: true,
+      }),
+      isAuthenticated: signal(true),
+      user: signal('current-user'),
+    };
+
     await TestBed.configureTestingModule({
       declarations: [HsCommonLaymanAccessRightsComponent],
       schemas: [NO_ERRORS_SCHEMA],
@@ -119,19 +141,13 @@ describe('HsCommonLaymanAccessRightsComponent', () => {
       providers: [
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
+        {provide: HsCommonLaymanService, useValue: mockLaymanService},
       ],
     }).compileComponents();
   });
 
   beforeEach(() => {
     commonLaymanMock = TestBed.inject(HsCommonLaymanService);
-    commonLaymanMock.layman$.next({
-      type: 'layman-wagtail',
-      title: 'layman',
-      url: 'http://madeupurl',
-      user: 'current-user',
-      authenticated: true,
-    });
     fixture = TestBed.createComponent(HsCommonLaymanAccessRightsComponent);
     component = fixture.componentInstance;
     httpMock = TestBed.inject(HttpTestingController);
@@ -143,14 +159,16 @@ describe('HsCommonLaymanAccessRightsComponent', () => {
 
   it('should create and initialize with default state - per user from layman', fakeAsync(() => {
     component.access_rights = perUserAccessRights;
-    commonLaymanMock.layman$.next({
-      type: 'layman', // Set the type needed for the next set of tests
+    // Update the mock endpoint for this test
+    (commonLaymanMock as any).layman.set({
+      type: 'layman',
       title: 'layman',
       url: 'http://madeupurl',
       user: 'current-user',
       authenticated: true,
     });
     fixture.detectChanges();
+    tick(1000);
     expect(component).toBeTruthy();
 
     // Expect an HTTP GET request to be made to the Layman URL
@@ -185,6 +203,14 @@ describe('HsCommonLaymanAccessRightsComponent', () => {
 
   it('should create and initialize with default state (per role) and parse to users', fakeAsync(() => {
     component.access_rights = perRoleAccessRights;
+    // Ensure we're using layman type for this test
+    (commonLaymanMock as any).layman.set({
+      type: 'layman',
+      title: 'layman',
+      url: 'http://madeupurl',
+      user: 'current-user',
+      authenticated: true,
+    });
     fixture.detectChanges();
     expect(component).toBeTruthy();
 
@@ -199,7 +225,7 @@ describe('HsCommonLaymanAccessRightsComponent', () => {
 
     component.changeGrantingOptions(GrantingOptions.PERUSER);
     // Expect an HTTP GET request to be made to the Layman URL
-    const userReq = httpMock.expectOne('/users');
+    const userReq = httpMock.expectOne(`${component.endpoint.url}/rest/users`);
     expect(userReq.request.method).toBe('GET');
     // Simulate a successful response with mockUsers
     userReq.flush(mockedUsersFromWagtail);
@@ -214,7 +240,7 @@ describe('HsCommonLaymanAccessRightsComponent', () => {
       'access_rights.write': '',
       'access_rights.read': '',
     };
-    component.endpoint = commonLaymanMock.layman;
+    component.endpoint = (commonLaymanMock as any).layman();
     component.allRoles = parsedRoles;
     component.currentOption = GrantingOptions.PERROLE;
     //Set up role based access rights
@@ -233,7 +259,7 @@ describe('HsCommonLaymanAccessRightsComponent', () => {
     component.access_rights = perUserAccessRights;
     fixture.detectChanges();
     component.allRoles = parsedRoles;
-    component.endpoint = commonLaymanMock.layman;
+    component.endpoint = commonLaymanMock.layman();
 
     // Expect an HTTP GET request to be made to the Layman URL
     const userReq = httpMock.expectOne('/users');

@@ -3,7 +3,7 @@ import {
   BrowserDynamicTestingModule,
   platformBrowserDynamicTesting,
 } from '@angular/platform-browser-dynamic/testing';
-import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
+import {CUSTOM_ELEMENTS_SCHEMA, signal} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
@@ -11,7 +11,6 @@ import {provideHttpClient, withInterceptorsFromDi} from '@angular/common/http';
 import {provideHttpClientTesting} from '@angular/common/http/testing';
 
 import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
-import {Subject} from 'rxjs';
 
 import {HsAddDataVectorFileComponent} from 'hslayers-ng/components/add-data';
 import {HsAddDataVectorService} from 'hslayers-ng/services/add-data';
@@ -19,7 +18,6 @@ import {HsCommonEndpointsService} from 'hslayers-ng/services/endpoints';
 import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsConfigMock} from './config.service.mock';
-import {HsEndpoint} from 'hslayers-ng/types';
 import {HsLayerUtilsService, HsUtilsService} from 'hslayers-ng/services/utils';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsLayoutServiceMock} from './layout.service.mock';
@@ -30,16 +28,11 @@ import {HsUtilsServiceMock} from './utils/utils.service.mock';
 import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 import {getTitle} from 'hslayers-ng/common/extensions';
 import {mockLayerUtilsService} from './layer-utils.service.mock';
-
-class HsCommonLaymanServiceMock {
-  constructor() {}
-  authChange: Subject<any> = new Subject();
-}
+import {createMockLaymanService} from './common/layman/layman.service.mock';
 
 class CommonEndpointsServiceMock {
   constructor() {}
-  endpointsFilled: Subject<HsEndpoint[]> = new Subject();
-  endpoints = [];
+  endpoints = signal([]);
 }
 
 let mockedMapService;
@@ -84,7 +77,7 @@ describe('add-layers-vector', () => {
         },
         {
           provide: HsCommonLaymanService,
-          useValue: new HsCommonLaymanServiceMock(),
+          useValue: createMockLaymanService(),
         },
         {provide: HsLayerUtilsService, useValue: mockLayerUtilsService()},
         {
