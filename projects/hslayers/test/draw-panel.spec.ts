@@ -40,6 +40,7 @@ import {
 } from 'hslayers-ng/services/query';
 import {HsUtilsServiceMock} from './utils/utils.service.mock';
 import {mockLayerUtilsService} from './layer-utils.service.mock';
+import {createMockLaymanService} from './common/layman/layman.service.mock';
 class emptyMock {
   constructor() {}
 }
@@ -48,10 +49,10 @@ class HsQueryVectorMock {
   constructor() {}
 }
 
-class HsCommonEndpointsServiceMock {
+class LaymanBrowserServiceMock {
   constructor() {}
-  fillLayerMetadata() {
-    return;
+  queryCatalog() {
+    return of([]);
   }
 }
 
@@ -67,7 +68,6 @@ describe('HsDrawPanel', () => {
   };
   const mockHsCommonEndpointsService = {
     ...jasmine.createSpyObj('HsCommonEndpointsService', ['fillEndpoints']),
-    endpointsFilled: of([]),
   };
 
   let layer;
@@ -92,6 +92,8 @@ describe('HsDrawPanel', () => {
   let service: HsDrawService;
   beforeEach(() => {
     const mockedConfig = new HsConfigMock();
+
+    const mockedCommonLaymanService = createMockLaymanService(undefined, {});
 
     TestBed.configureTestingModule({
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -120,18 +122,14 @@ describe('HsDrawPanel', () => {
         },
         {
           provide: HsLaymanBrowserService,
-          useValue: new HsCommonEndpointsServiceMock(),
+          useValue: new LaymanBrowserServiceMock(),
         },
         {provide: HsAddDataOwsService, useValue: new emptyMock()},
         {provide: HsAddDataVectorService, useValue: new emptyMock()},
         {provide: HsUtilsService, useValue: new HsUtilsServiceMock()},
         {
           provide: HsCommonLaymanService,
-          useValue: {
-            authChange: of('endpoint'),
-            //No layman endpoint available
-            layman$: new BehaviorSubject(undefined),
-          },
+          useValue: mockedCommonLaymanService,
         },
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),

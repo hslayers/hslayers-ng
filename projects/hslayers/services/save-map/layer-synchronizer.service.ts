@@ -66,7 +66,7 @@ export class HsLayerSynchronizerService {
 
     this.hsCommonLaymanService.authState$
       .pipe(
-        filter((authState) => !!authState.authenticated),
+        filter((authState) => authState && authState.authenticated),
         takeUntilDestroyed(),
       )
       .subscribe(() => {

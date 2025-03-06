@@ -2,7 +2,7 @@ import {
   BrowserDynamicTestingModule,
   platformBrowserDynamicTesting,
 } from '@angular/platform-browser-dynamic/testing';
-import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
+import {CUSTOM_ELEMENTS_SCHEMA, signal} from '@angular/core';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
 import {Subject} from 'rxjs';
@@ -38,14 +38,10 @@ import {HsSaveMapManagerServiceMock} from './save-map-manager.service.mock';
 import {HsUtilsServiceMock} from './utils/utils.service.mock';
 import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 import {mockLayerUtilsService} from './layer-utils.service.mock';
+import {createMockLaymanService} from './common/layman/layman.service.mock';
 
 class emptyMock {
   constructor() {}
-}
-
-class HsCommonLaymanServiceMock {
-  constructor() {}
-  authChange: Subject<any> = new Subject();
 }
 
 class HsEventBusServiceMock {
@@ -60,7 +56,7 @@ class HsEventBusServiceMock {
 
 class CommonEndpointsServiceMock {
   constructor() {}
-  endpointsFilled: Subject<{endpoints: HsEndpoint[]}> = new Subject();
+  endpoints = signal([]);
 }
 
 describe('HsSaveMap', () => {
@@ -114,7 +110,7 @@ describe('HsSaveMap', () => {
         },
         {
           provide: HsCommonLaymanService,
-          useValue: new HsCommonLaymanServiceMock(),
+          useValue: createMockLaymanService(),
         },
         {provide: HsMapService, useValue: new HsMapServiceMock()},
         {provide: HsUtilsService, useValue: new HsUtilsServiceMock()},
