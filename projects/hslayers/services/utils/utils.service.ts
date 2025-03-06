@@ -1,5 +1,5 @@
 import {HttpClient} from '@angular/common/http';
-import {Inject, Injectable, Injector, PLATFORM_ID} from '@angular/core';
+import {Inject, Injectable, PLATFORM_ID} from '@angular/core';
 import {isPlatformBrowser} from '@angular/common';
 
 import {LineString, Polygon} from 'ol/geom';
@@ -7,7 +7,7 @@ import {ProjectionLike, get as getProjection, transform} from 'ol/proj';
 import {getArea, getDistance} from 'ol/sphere';
 import {lastValueFrom} from 'rxjs';
 
-import {BoundingBoxObject, HsEndpoint} from 'hslayers-ng/types';
+import {BoundingBoxObject} from 'hslayers-ng/types';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsLogService} from 'hslayers-ng/services/log';
 
@@ -27,7 +27,6 @@ export class HsUtilsService {
     public hsConfig: HsConfig,
     private http: HttpClient,
     private LogService: HsLogService,
-    private injector: Injector,
     @Inject(PLATFORM_ID) private platformId: any,
   ) {}
 
@@ -42,41 +41,76 @@ export class HsUtilsService {
   /**
    * Proxify URL if enabled.
    * @param url - URL to proxify
-   * @returns Encoded URL with path to hslayers-server proxy
+   * @returns Encoded URL with path to hslayers-server proxy or original URL if proxification not needed
    */
   proxify(url: string): string {
-    // Don't proxify if it's already proxified
-    if (url.startsWith(this.hsConfig.proxyPrefix)) {
+    // Early returns for URLs that should never be proxified
+    if (this.shouldSkipProxification(url)) {
       return url;
+    }
+
+    // Apply proxy if enabled
+    if (
+      this.hsConfig.useProxy === undefined ||
+      this.hsConfig.useProxy === true
+    ) {
+      const proxyPrefix = this.hsConfig.proxyPrefix || '/proxy/';
+      return `${proxyPrefix}${url}`;
+    }
+
+    return url;
+  }
+
+  /**
+   * Checks if URL should skip proxification based on predefined rules
+   * @param url - URL to check
+   * @returns boolean indicating if proxification should be skipped
+   */
+  private shouldSkipProxification(url: string): boolean {
+    // Don't proxify if it's already proxified
+    if (
+      this.hsConfig.proxyPrefix &&
+      url.startsWith(this.hsConfig.proxyPrefix)
+    ) {
+      return true;
+    }
+
+    // Don't proxify Layman endpoints
+    if (this.laymanUrl && url.startsWith(this.laymanUrl)) {
+      return true;
     }
 
     // Don't proxify data URLs
     if (url.startsWith('data:application')) {
-      return url;
+      return true;
     }
 
-    // Don't proxify Layman endpoints
-    if (url.startsWith(this.laymanUrl)) {
-      return url;
+    // Don't proxify if URL is from the same origin
+    if (this.isFromSameOrigin(url)) {
+      return true;
     }
 
-    let outUrl = url;
-    //Not using location because don't know if port 80 was specified explicitly or not
+    return false;
+  }
+
+  /**
+   * Checks if URL is from the same origin as the application
+   * @param url - URL to check
+   * @returns boolean indicating if URL is from the same origin
+   */
+  private isFromSameOrigin(url: string): boolean {
     const windowUrlPosition = url.indexOf(window.location.origin);
+
+    // Check if URL is not from the same origin (matching original logic)
     if (
-      windowUrlPosition == -1 ||
+      windowUrlPosition === -1 ||
       windowUrlPosition > 7 ||
-      this.getPortFromUrl(url) != this.getPortFromUrl(window.location.origin)
+      this.getPortFromUrl(url) !== this.getPortFromUrl(window.location.origin)
     ) {
-      if (
-        this.hsConfig.useProxy === undefined ||
-        this.hsConfig.useProxy === true
-      ) {
-        outUrl = this.hsConfig.proxyPrefix || '/proxy/';
-        outUrl += url;
-      }
+      return false;
     }
-    return outUrl;
+
+    return true;
   }
 
   /**
