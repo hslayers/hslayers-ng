@@ -521,11 +521,10 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
         cluster: manyFeatures,
       },
       source: new WfsSource({
-        proxyPrefix: this.hsConfig.proxyPrefix,
         data_version: this.data.version,
         output_format: this.data.output_format,
         crs: options.crs,
-        provided_url: url,
+        provided_url: this.hsUtilsService.proxify(url),
         layer_name: options.layerName,
         featureNS: layer._attributes[Object.keys(layer._attributes)[0]],
         map_projection: this.hsMapService.getMap().getView().getProjection(),
