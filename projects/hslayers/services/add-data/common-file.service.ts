@@ -223,7 +223,6 @@ export class HsAddDataCommonFileService extends HsAddDataCommonFileServiceParams
       this.asyncLoading = asyncUpload.async;
 
       const res = await this.hsLaymanService.tryLoadLayer(
-        endpoint,
         formData,
         asyncUpload,
         formDataParams.name,
@@ -246,7 +245,6 @@ export class HsAddDataCommonFileService extends HsAddDataCommonFileServiceParams
     if (this.isAuthenticated()) {
       try {
         descriptor = await this.hsLaymanService.describeLayer(
-          this.endpoint,
           name,
           this.hsCommonLaymanService.user(),
           true,
@@ -507,11 +505,10 @@ export class HsAddDataCommonFileService extends HsAddDataCommonFileServiceParams
     data: FileDataObject,
   ): Promise<void> {
     data.name = response.name; //Name translated to Layman-safe name
-    const descriptor = await this.describeNewLayer(
-      this.endpoint,
-      response.name,
-      ['wms', 'style'],
-    );
+    const descriptor = await this.describeNewLayer(response.name, [
+      'wms',
+      'style',
+    ]);
     if (descriptor?.file.error) {
       const error = descriptor.file.error;
       const msg = error?.detail.message ?? error.message;
@@ -564,13 +561,11 @@ export class HsAddDataCommonFileService extends HsAddDataCommonFileServiceParams
    * @returns Description of Layman layer
    */
   async describeNewLayer(
-    endpoint: HsEndpoint,
     layerName: string,
     pendingParams: string[] = ['wms'],
   ): Promise<HsLaymanLayerDescriptor> {
     try {
       const descriptor = await this.hsLaymanService.describeLayer(
-        endpoint,
         layerName,
         this.hsCommonLaymanService.user(),
       );
@@ -581,7 +576,7 @@ export class HsAddDataCommonFileService extends HsAddDataCommonFileServiceParams
       ) {
         return new Promise((resolve) => {
           setTimeout(() => {
-            resolve(this.describeNewLayer(endpoint, layerName, pendingParams));
+            resolve(this.describeNewLayer(layerName, pendingParams));
           }, 2000);
         });
       }

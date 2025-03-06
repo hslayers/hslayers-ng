@@ -297,7 +297,6 @@ export class HsAddDataVectorService {
    */
   async setLaymanLayerStyle(layerName: string, data: VectorDataObject) {
     const descriptor = await this.hsAddDataCommonFileService.describeNewLayer(
-      this.hsAddDataCommonFileService.endpoint,
       layerName,
       ['style'],
     );
@@ -331,7 +330,6 @@ export class HsAddDataVectorService {
       style,
     };
     return this.hsLaymanService.makeUpsertLayerRequest(
-      commonFileRef.endpoint,
       this.hsLaymanService.getFeatureGeoJSON(
         data.nativeFeatures,
         crsSupported,
@@ -381,7 +379,6 @@ export class HsAddDataVectorService {
           }
         } else {
           await this.hsLaymanService.describeLayer(
-            commonFileRef.endpoint,
             upsertReq.name,
             this.hsCommonLaymanService.user(),
           );
