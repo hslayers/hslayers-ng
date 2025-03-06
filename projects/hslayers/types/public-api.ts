@@ -61,3 +61,4 @@ export * from './extensions/layer-extensions.type';
 export * from './wfs-filter/wfs-attributes.type';
 
 export * from './filters/filter-types';
+export * from './authentication';
