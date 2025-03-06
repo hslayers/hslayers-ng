@@ -20,14 +20,13 @@ import {
 } from 'rxjs';
 
 import {CurrentUserResponse} from './types/current-user-response.type';
-import {AboutLayman, HsEndpoint} from 'hslayers-ng/types';
+import {AboutLayman, HsEndpoint, AuthState} from 'hslayers-ng/types';
 import {HsLanguageService} from 'hslayers-ng/services/language';
 import {HsLogService} from 'hslayers-ng/services/log';
 import {HsToastService} from 'hslayers-ng/common/toast';
 import {HsCommonEndpointsService} from 'hslayers-ng/services/endpoints';
 import {HsUtilsService} from 'hslayers-ng/services/utils';
 import {parseBase64Style} from './parse-base64-style';
-import {AuthAction, AuthState} from 'hslayers-ng/types/authentication';
 
 @Injectable({
   providedIn: 'root',
