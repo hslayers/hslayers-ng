@@ -13,7 +13,7 @@
         <p class="m-0 p-0" style="font-size: 0.75rem; color: red;">
         {{'DRAW.drawLayerMetadata.layerWillBeAdded' | translateHs }}</p>
       </div>
-      @if (!data.service.isAuthenticated && data.service.laymanEndpoint !== undefined) {
+      @if (!hsCommonLaymanService.isAuthenticated() && hsDrawService.laymanEndpoint !== undefined) {
         <div
           class="alert alert-danger" role="alert">
           <p class="text-center">
@@ -22,7 +22,7 @@
           <hs-layman-current-user/>
         </div>
       }
-      @if (data.service.drawableLaymanLayers.length > 0 && data.service.isAuthenticated) {
+      @if (hsDrawService.drawableLaymanLayers.length > 0 && hsCommonLaymanService.isAuthenticated()) {
         <div class="d-flex w-75 m-auto p-4 justify-content-around" style="white-space: nowrap;"
           >
           <button type="button" class="btn btn-sm rounded  hs-toolbar-button" (click)="type = 'draw'"
@@ -44,7 +44,7 @@
               <label for="title" class="control-label">{{'DRAW.drawLayerMetadata.layerTitle' |
               translateHs }}</label>
             </div>
-            @if (data.service.isAuthenticated) {
+            @if (hsCommonLaymanService.isAuthenticated()) {
               <hs-layman-access-rights [(access_rights)]="access_rights"/>
             }
             <div class="flex-row w-75 align-items-center" style="display: flex;">
@@ -84,7 +84,7 @@
         }
         @if (type === 'layman') {
           <form>
-            @if (data.service.drawableLaymanLayers.length > 0) {
+            @if (hsDrawService.drawableLaymanLayers.length > 0) {
               <div class="d-flex align-items-center w-100 flex-column"
                 >
                 <div class=" bg-primary w-100 text-light m-0 p-1">
@@ -98,15 +98,15 @@
                     <div class="input-group-text border-0 justify-content-center bg-white"
                       >
                       <label class="m-0">
-                        <input type="checkbox" name="onlyMine" [(ngModel)]="data.service.onlyMine"
-                          (ngModelChange)="data.service.fillDrawableLayers(); onlyMineFilterVisible = !onlyMineFilterVisible">
+                        <input type="checkbox" name="onlyMine" [(ngModel)]="hsDrawService.onlyMine"
+                          (ngModelChange)="hsDrawService.fillDrawableLayers(); onlyMineFilterVisible = !onlyMineFilterVisible">
                         {{'COMPOSITIONS.onlyMine' | translateHs }}
                       </label>
                     </div>
                   }
                 </div>
                 <ul class="list-group w-100">
-                  @for (layer of data.service.drawableLaymanLayers; track layer) {
+                  @for (layer of hsDrawService.drawableLaymanLayers; track layer) {
                     <li
                       class="justify-content-between d-flex align-items-center"
                       [ngClass]="'list-group-item'+(layer.highlighted ? ' active' : '')">
