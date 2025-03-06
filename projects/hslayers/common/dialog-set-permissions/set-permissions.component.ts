@@ -109,7 +109,6 @@ export class HsSetPermissionsDialogComponent
           access_rights: this.access_rights,
         };
         response = await this.hsLaymanService.makeUpsertLayerRequest(
-          this.endpoint,
           null,
           layerDesc,
         );
@@ -125,7 +124,6 @@ export class HsSetPermissionsDialogComponent
       case 'composition':
         await this.hsLaymanService.updateCompositionAccessRights(
           this.data.selectedRecord.name,
-          this.endpoint,
           this.access_rights,
         );
         if (response?.error) {

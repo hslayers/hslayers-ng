@@ -1,4 +1,5 @@
 import {Injectable} from '@angular/core';
+import {filter} from 'rxjs/operators';
 
 import * as xml2Json from 'xml-js';
 import {Feature} from 'ol';
@@ -63,9 +64,12 @@ export class HsLayerSynchronizerService {
       this.hsLaymanService.crs = this.crs;
     });
 
-    this.hsCommonLaymanService.layman$
-      .pipe(takeUntilDestroyed())
-      .subscribe((layman) => {
+    this.hsCommonLaymanService.authState$
+      .pipe(
+        filter((authState) => !!authState.authenticated),
+        takeUntilDestroyed(),
+      )
+      .subscribe(() => {
         this.reloadLayersOnAuthChange();
       });
 
@@ -77,6 +81,8 @@ export class HsLayerSynchronizerService {
   }
   /**
    * Reload all the synchronized layers after Layman's authorization change
+   * to true.
+   * Log out should not force the geometry clearnce
    */
   private reloadLayersOnAuthChange(): void {
     if (this.syncedLayers.length > 0) {
@@ -129,7 +135,6 @@ export class HsLayerSynchronizerService {
     if (!desc) {
       if (retryCount < maxRetryCount) {
         const desc = await this.hsLaymanService.describeLayer(
-          this.hsCommonLaymanService.layman(),
           getName(layer),
           getWorkspace(layer),
         );
@@ -158,11 +163,7 @@ export class HsLayerSynchronizerService {
       if (e.key == 'sld' || e.key == 'title') {
         awaitLayerSync(layer).then(async () => {
           await this.layerExistsOnLayman(layer);
-          this.hsLaymanService.upsertLayer(
-            this.findLaymanForWfsLayer(layer),
-            layer,
-            false,
-          );
+          this.hsLaymanService.upsertLayer(layer, false);
         });
       }
     });
@@ -181,16 +182,15 @@ export class HsLayerSynchronizerService {
   }
 
   /**
-   * Find Layman's endpoint description for WFS layer
-   * @param layer - Layer to add
+   * Check if the layer is a Layman layer
    */
-  findLaymanForWfsLayer(layer: VectorLayer<VectorSource<Feature>>) {
+  isLaymanLayer(layer: VectorLayer<VectorSource<Feature>>): boolean {
     const definitionUrl = getDefinition(layer).url;
-    const laymanEp = this.hsCommonLaymanService?.layman();
-    if (!laymanEp || !definitionUrl) {
-      return undefined;
+    if (!definitionUrl) {
+      return false;
     }
-    return isLaymanUrl(definitionUrl, laymanEp) ? laymanEp : undefined;
+    const laymanEp = this.hsCommonLaymanService?.layman();
+    return isLaymanUrl(definitionUrl, laymanEp);
   }
 
   /**
@@ -202,11 +202,13 @@ export class HsLayerSynchronizerService {
   async pull(layer: VectorLayer<VectorSource<Feature>>, source: VectorSource) {
     try {
       setEventsSuspended(layer, (getEventsSuspended(layer) || 0) + 1);
-      const laymanEndpoint = this.findLaymanForWfsLayer(layer);
-      if (laymanEndpoint) {
+      if (
+        this.isLaymanLayer(layer) &&
+        this.hsCommonLaymanService.isAuthenticated()
+      ) {
         setHsLaymanSynchronizing(layer, true);
         let featureString: string =
-          await this.hsLaymanService.makeGetLayerRequest(laymanEndpoint, layer);
+          await this.hsLaymanService.makeGetLayerRequest(layer);
         setHsLaymanSynchronizing(layer, false);
         if (featureString) {
           source.loading = true;
@@ -299,11 +301,10 @@ export class HsLayerSynchronizerService {
     if ((getEventsSuspended(layer) || 0) > 0) {
       return;
     }
-    const ep = this.findLaymanForWfsLayer(layer);
-    if (ep) {
+    if (this.hsCommonLaymanService.isAuthenticated()) {
       setHsLaymanSynchronizing(layer, true);
       this.hsLaymanService
-        .sync({ep, add, upd, del, layer})
+        .sync({add, upd, del, layer})
         .then((response: string) => {
           if (response?.includes('Exception')) {
             this.displaySyncErrorDialog(response);
