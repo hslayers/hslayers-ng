@@ -49,7 +49,7 @@ export class HsDrawComponent extends HsPanelBaseComponent implements OnInit {
         );
         this.HsDialogContainerService.create(
           HsDrawLayerMetadataDialogComponent,
-          {service: this.HsDrawService},
+          {},
         );
       });
     super.ngOnInit();
