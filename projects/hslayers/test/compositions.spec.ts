@@ -3,7 +3,7 @@ import {
   BrowserDynamicTestingModule,
   platformBrowserDynamicTesting,
 } from '@angular/platform-browser-dynamic/testing';
-import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
+import {CUSTOM_ELEMENTS_SCHEMA, signal} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {
   ComponentFixture,
@@ -15,7 +15,7 @@ import {FormsModule} from '@angular/forms';
 import {provideHttpClient, withInterceptorsFromDi} from '@angular/common/http';
 import {provideHttpClientTesting} from '@angular/common/http/testing';
 
-import {BehaviorSubject, Subject, of} from 'rxjs';
+import {of} from 'rxjs';
 import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
 
 import {
@@ -53,6 +53,8 @@ import {compositionJson} from './data/composition';
 import {compositionsJson} from './data/compositions';
 import {getTitle} from 'hslayers-ng/common/extensions';
 import {mockLayerUtilsService} from './layer-utils.service.mock';
+import {createMockLaymanService} from './common/layman/layman.service.mock';
+import {compositionStyleXml} from './data/composition-style';
 
 class HsCompositionsMickaServiceMock {
   constructor(private originalService: HsCompositionsMickaService) {}
@@ -60,60 +62,6 @@ class HsCompositionsMickaServiceMock {
     this.originalService.compositionsReceived(ds, compositionsJson);
     return of(ds);
   }
-}
-
-class hsCommonLaymanServiceMock {
-  authChange: Subject<void> = new Subject();
-  async getStyleFromUrl(styleUrl: string): Promise<string> {
-    return `<?xml version="1.0" encoding="UTF-8"?><sld:StyledLayerDescriptor xmlns="http://www.opengis.net/sld" xmlns:sld="http://www.opengis.net/sld" xmlns:gml="http://www.opengis.net/gml" xmlns:ogc="http://www.opengis.net/ogc" version="1.0.0">
-    <sld:NamedLayer>
-      <sld:Name>Default Styler</sld:Name>
-      <sld:UserStyle>
-        <sld:Name>Default Styler</sld:Name>
-        <sld:Title>Default Styler</sld:Title>
-        <sld:FeatureTypeStyle>
-          <sld:Name>name</sld:Name>
-          <sld:Rule>
-            <sld:PointSymbolizer>
-              <sld:Graphic>
-                <sld:Mark>
-                  <sld:WellKnownName>triangle</sld:WellKnownName>
-                  <sld:Fill>
-                    <sld:CssParameter name="fill">#5171aa</sld:CssParameter>
-                  </sld:Fill>
-                  <sld:Stroke>
-                    <sld:CssParameter name="stroke">#3790cb</sld:CssParameter>
-                    <sld:CssParameter name="stroke-width">1.25</sld:CssParameter>
-                  </sld:Stroke>
-                </sld:Mark>
-                <sld:Opacity>0.45</sld:Opacity>
-                <sld:Size>70</sld:Size>
-              </sld:Graphic>
-            </sld:PointSymbolizer>
-            <sld:PolygonSymbolizer>
-              <sld:Fill>
-                <sld:CssParameter name="fill-opacity">0.45</sld:CssParameter>
-              </sld:Fill>
-              <sld:Stroke>
-                <sld:CssParameter name="stroke">rgba(0, 153, 255, 1)</sld:CssParameter>
-                <sld:CssParameter name="stroke-opacity">0.3</sld:CssParameter>
-                <sld:CssParameter name="stroke-width">1.25</sld:CssParameter>
-              </sld:Stroke>
-            </sld:PolygonSymbolizer>
-            <sld:LineSymbolizer>
-              <sld:Stroke>
-                <sld:CssParameter name="stroke">rgba(0, 153, 255, 1)</sld:CssParameter>
-                <sld:CssParameter name="stroke-width">1.25</sld:CssParameter>
-              </sld:Stroke>
-            </sld:LineSymbolizer>
-          </sld:Rule>
-        </sld:FeatureTypeStyle>
-      </sld:UserStyle>
-    </sld:NamedLayer>
-  </sld:StyledLayerDescriptor>
-  `;
-  }
-  constructor() {}
 }
 
 let mockedMapService;
@@ -139,7 +87,9 @@ describe('compositions', () => {
     const mockedConfig = new HsConfigMock();
     const mockedMapService: any = new HsMapServiceMock();
     const mockedVectorUtilsService = new HsAddDataVectorUtilsService(null);
-    const mockedCommonLaymanService = new hsCommonLaymanServiceMock();
+    const mockedCommonLaymanService = createMockLaymanService(undefined, {
+      getStyleFromUrl: async () => compositionStyleXml,
+    });
     const mockedStylerService = jasmine.createSpyObj('HsStylerService', [
       'parseStyle',
     ]);
@@ -205,8 +155,7 @@ describe('compositions', () => {
         {
           provide: HsCommonEndpointsService,
           useValue: {
-            endpoints: [],
-            endpointsFilled: new BehaviorSubject(null),
+            endpoints: signal([]),
           },
         },
         {
