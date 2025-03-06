@@ -24,7 +24,6 @@ import {
   AccessRightsModel,
   AsyncUpload,
   CompoData,
-  HsEndpoint,
   HsLaymanLayerDescriptor,
   MapComposition,
   UpsertLayerObject,
@@ -100,7 +99,6 @@ export class HsLaymanService implements HsSaverService {
    */
   async updateCompositionAccessRights(
     compName: string,
-    endpoint: HsEndpoint,
     access_rights: AccessRightsModel,
   ): Promise<any> {
     const rights = this.parseAccessRightsForLayman(access_rights);
@@ -109,7 +107,6 @@ export class HsLaymanService implements HsSaverService {
     formdata.append('access_rights.read', rights.read);
     formdata.append('access_rights.write', rights.write);
     return await this.makeMapPostPatchRequest(
-      endpoint,
       this.hsCommonLaymanService.user(),
       compName,
       formdata,
@@ -119,14 +116,12 @@ export class HsLaymanService implements HsSaverService {
   /**
    * Save composition to Layman's database
    * @param compositionJson - Json with composition's definition
-   * @param endpoint - Endpoint's description
    * @param compoData - Additional data for composition
    * @param saveAsNew - Save as new composition
    * @returns Promise result of POST
    */
   async save(
     compositionJson: MapComposition,
-    endpoint: HsEndpoint,
     compoData: CompoData,
     saveAsNew: boolean,
   ): Promise<any> {
@@ -153,7 +148,6 @@ export class HsLaymanService implements HsSaverService {
           : compoData.workspace;
 
     return await this.makeMapPostPatchRequest(
-      endpoint,
       workspace,
       compoData.name,
       formdata,
@@ -195,7 +189,6 @@ export class HsLaymanService implements HsSaverService {
    * @returns Promise result of POST/PATCH request
    */
   async makeMapPostPatchRequest(
-    endpoint: HsEndpoint,
     workspace: string,
     mapName: string,
     formdata: FormData,
@@ -216,6 +209,7 @@ export class HsLaymanService implements HsSaverService {
           headers: headers,
           withCredentials: true,
         };
+        const endpoint = this.hsCommonLaymanService.layman();
         response = await lastValueFrom(
           this.http[saveAsNew ? 'post' : 'patch'](
             `${endpoint.url}/rest/workspaces/${workspace}/maps${
@@ -266,7 +260,6 @@ export class HsLaymanService implements HsSaverService {
    * @returns Promise result of POST/PATCH
    */
   async makeUpsertLayerRequest(
-    endpoint: HsEndpoint,
     geojson: GeoJSONFeatureCollection,
     description: UpsertLayerObject,
   ): Promise<PostPatchLayerResponse> {
@@ -314,7 +307,6 @@ export class HsLaymanService implements HsSaverService {
       let layerDesc;
       try {
         layerDesc = await this.describeLayer(
-          endpoint,
           description.name,
           description.workspace,
         );
@@ -323,7 +315,6 @@ export class HsLaymanService implements HsSaverService {
       }
       const exists = !!layerDesc?.name;
       const res = await this.tryLoadLayer(
-        endpoint,
         formData,
         asyncUpload,
         layerDesc?.name ? description.name : '',
@@ -337,7 +328,6 @@ export class HsLaymanService implements HsSaverService {
 
   /**
    * Try to load layer to Layman's server
-   * @param endpoint - Endpoint's description
    * @param formData - A set of key/value pairs representing layer fields and values, for HTTP request
    * @param asyncUpload - Async upload data: Async upload state and files to upload
    * @param layerName - Existing layer's name
@@ -345,7 +335,6 @@ export class HsLaymanService implements HsSaverService {
    * @returns Promise result of POST/PATCH
    */
   async tryLoadLayer(
-    endpoint: HsEndpoint,
     formData: FormData,
     asyncUpload: AsyncUpload,
     layerName: string,
@@ -355,6 +344,7 @@ export class HsLaymanService implements HsSaverService {
     try {
       const postOrPatch = overwrite ? 'patch' : 'post';
       const workspace = this.hsCommonLaymanService.user();
+      const endpoint = this.hsCommonLaymanService.layman();
       const url = `${endpoint.url}/rest/workspaces/${workspace}/layers${
         overwrite ? `/${layerName}` : `?${Math.random()}`
       }`;
@@ -385,7 +375,6 @@ export class HsLaymanService implements HsSaverService {
           const promise = await this.asyncUpload(
             asyncUpload.filesToAsyncUpload,
             data,
-            endpoint,
           );
           return promise;
         }
@@ -437,12 +426,10 @@ export class HsLaymanService implements HsSaverService {
    * Use resumable to chunk upload data larger than PREFER_RESUMABLE_SIZE_LIMIT(2MB)
    * @param files_to_async_upload - File array that will get uploaded asynchronously
    * @param data - Layman's response after posting layer
-   * @param endpoint - Layman's service endpoint
    */
   asyncUpload(
     files_to_async_upload: File[],
     data: PostPatchLayerResponse,
-    endpoint: HsEndpoint,
   ): Promise<any> {
     return new Promise((resolve, reject) => {
       files_to_async_upload = files_to_async_upload.filter(
@@ -453,6 +440,7 @@ export class HsLaymanService implements HsSaverService {
       );
       const layername = data['name'];
       const workspace = this.hsCommonLaymanService.user();
+      const endpoint = this.hsCommonLaymanService.layman();
       const resumable = new Resumable({
         target: `${endpoint.url}/rest/workspaces/${workspace}/layers/${layername}/chunk`,
         query: {
@@ -494,13 +482,11 @@ export class HsLaymanService implements HsSaverService {
 
   /**
    * Create Layman layer if needed and send all features
-   * @param endpoint - Layman's endpoint description
    * @param layer - Layer to get Layman friendly name for
    * in order to get features
    * @param withFeatures - Layer state, whether or not it has features
    */
   public async upsertLayer(
-    endpoint: HsEndpoint,
     layer: VectorLayer<VectorSource<Feature>>,
     withFeatures: boolean,
   ): Promise<void> {
@@ -510,7 +496,7 @@ export class HsLaymanService implements HsSaverService {
     const layerName = getLayerName(layer);
     let layerTitle = getTitle(layer);
     const crsSupported = this.supportedCRRList().includes(this.crs);
-
+    const endpoint = this.hsCommonLaymanService.layman();
     if ((endpoint?.version?.split('.').join() as unknown as number) < 171) {
       layerTitle = getLaymanFriendlyLayerName(layerTitle);
     }
@@ -524,7 +510,6 @@ export class HsLaymanService implements HsSaverService {
       style: getSld(layer) || getQml(layer),
     };
     await this.makeUpsertLayerRequest(
-      endpoint,
       this.getFeatureGeoJSON(
         layer.getSource().getFeatures(),
         crsSupported,
@@ -533,7 +518,7 @@ export class HsLaymanService implements HsSaverService {
       data,
     );
     setTimeout(async () => {
-      await this.makeGetLayerRequest(endpoint, layer);
+      await this.makeGetLayerRequest(layer);
       setHsLaymanSynchronizing(layer, false);
     }, 2000);
   }
@@ -573,24 +558,19 @@ export class HsLaymanService implements HsSaverService {
    * Sync WFS features using transaction. Publish layer first if needed
    * @param param0 - Object describing endpoint, layer and arrays
    * for each of the methods: update, del, insert containing the features to be processed
-   * @param ep - Layman's endpoint description
    * @param add - Features being added
    * @param upd - Features being uploaded
    * @param del - Features being deleted
    * @param layer - Layer interacted with
    * @returns Promise result of POST
    */
-  async sync({ep, add, upd, del, layer}: WfsSyncParams): Promise<string> {
-    /* Clone because endpoint.user can change while the request is processed
-    and then description might get cached even if anonymous user was set before.
-    Should not cache anonymous layers, because layer can be authorized anytime */
-    const endpoint = {...ep};
+  async sync({add, upd, del, layer}: WfsSyncParams): Promise<string> {
     try {
       let desc = getLaymanLayerDescriptor(layer);
       const name = getLayerName(layer);
       try {
         if (!desc) {
-          desc = await this.describeLayer(endpoint, name, getWorkspace(layer));
+          desc = await this.describeLayer(name, getWorkspace(layer));
           this.cacheLaymanDescriptor(layer, desc);
         }
         if (desc.name == undefined || desc.wfs.url == undefined) {
@@ -598,14 +578,11 @@ export class HsLaymanService implements HsSaverService {
         }
       } catch (ex) {
         this.hsLogService.warn(`Layer ${name} didn't exist. Creating..`);
-        this.upsertLayer(ep, layer, true);
+        this.upsertLayer(layer, true);
         return;
       }
       desc.wfs.url = desc.wfs.url;
-      return this.makeWfsRequest(
-        {ep: endpoint, add, upd, del, layer},
-        desc.wfs.url,
-      );
+      return this.makeWfsRequest({add, upd, del, layer}, desc.wfs.url);
     } catch (ex) {
       throw ex;
     }
@@ -615,7 +592,6 @@ export class HsLaymanService implements HsSaverService {
    * Make WFS transaction request
    * @param param0 - Object describing endpoint, layer and arrays
    * for each of the methods: update, del, insert containing the features to be processed
-   * @param ep - Layman's endpoint description
    * @param add - Features being added
    * @param upd - Features being uploaded
    * @param del - Features being deleted
@@ -623,7 +599,7 @@ export class HsLaymanService implements HsSaverService {
    * @returns Promise result of POST
    */
   private async makeWfsRequest(
-    {ep, add, upd, del, layer}: WfsSyncParams,
+    {add, upd, del, layer}: WfsSyncParams,
     url: string,
   ): Promise<string> {
     try {
@@ -681,23 +657,20 @@ export class HsLaymanService implements HsSaverService {
 
   /**
    * Retrieve layer's features from server
-   * @param ep - Layman's endpoint description
    * @param layer - Layer interacted with
    * @returns Promise with WFS xml (GML3.1) response
    * with features for a specified layer
    */
   async makeGetLayerRequest(
-    ep: HsEndpoint,
     layer: VectorLayer<VectorSource<Feature>>,
   ): Promise<string> {
     /* Clone because endpoint.user can change while the request is processed
     and then description might get cached even if anonymous user was set before.
     Should not cache anonymous layers, because layer can be authorized anytime */
-    const endpoint = {...ep};
     let desc: HsLaymanLayerDescriptor;
     const layerName = getLayerName(layer);
     try {
-      desc = await this.describeLayer(endpoint, layerName, getWorkspace(layer));
+      desc = await this.describeLayer(layerName, getWorkspace(layer));
       if (
         desc === null || //In case of response?.code == 15 || 32
         (desc.wfs.status == desc.wms.status && wfsNotAvailable(desc))
@@ -774,14 +747,12 @@ export class HsLaymanService implements HsSaverService {
   /**
    * Try getting layer's description from Layman. Subsequent request with same parameters
    * are reused.
-   * @param endpoint - Layman's endpoint description
    * @param layerName - Interacted layer's name
    * @param workspace - Current Layman's workspace
    * @returns Promise which returns layers
    * description containing name, file, WMS, WFS urls etc.
    */
   async describeLayer(
-    endpoint: HsEndpoint,
     layerName: string,
     workspace: string,
     ignoreStatus?: boolean,
@@ -793,7 +764,6 @@ export class HsLaymanService implements HsSaverService {
       return this.pendingRequests.get(requestKey);
     }
     const desc = this.makeDescribeLayerRequest(
-      endpoint,
       layerName,
       workspace,
       ignoreStatus,
@@ -807,7 +777,6 @@ export class HsLaymanService implements HsSaverService {
    * Try getting layer's description from Layman.
    */
   private async makeDescribeLayerRequest(
-    endpoint: HsEndpoint,
     layerName: string,
     workspace: string,
     ignoreStatus?: boolean,
@@ -815,6 +784,7 @@ export class HsLaymanService implements HsSaverService {
     const requestKey = `${workspace}/${layerName}`;
     try {
       layerName = getLaymanFriendlyLayerName(layerName); //Better safe than sorry
+      const endpoint = this.hsCommonLaymanService.layman();
       const response: HsLaymanLayerDescriptor = await lastValueFrom(
         this.http
           .get(
@@ -850,7 +820,7 @@ export class HsLaymanService implements HsSaverService {
             this.laymanLayerPending.next(this.pendingLayers);
           }
           await new Promise((resolve) => setTimeout(resolve, 310));
-          return this.makeDescribeLayerRequest(endpoint, layerName, workspace);
+          return this.makeDescribeLayerRequest(layerName, workspace);
         default:
           if (response.name) {
             this.deletePendingDescribeRequest(requestKey, 1000);

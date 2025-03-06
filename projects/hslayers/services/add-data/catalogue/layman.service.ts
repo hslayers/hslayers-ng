@@ -196,7 +196,9 @@ export class HsLaymanBrowserService {
           workspace: layer.workspace,
           access_rights: layer.access_rights,
           editable: layer.access_rights.write.some((user) => {
-            return [dataset.user, 'EVERYONE'].includes(user);
+            return [this.hsCommonLaymanService.user(), 'EVERYONE'].includes(
+              user,
+            );
           }),
           wfsWmsStatus: layer.wfs_wms_status,
         };

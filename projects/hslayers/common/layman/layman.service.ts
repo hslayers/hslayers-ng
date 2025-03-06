@@ -210,7 +210,7 @@ export class HsCommonLaymanService {
       this.login$.pipe(map(() => true)),
 
       // Set to false when layman$ emits a new value (authentication completed)
-      this.layman$.pipe(map(() => false)),
+      this.authState$.pipe(map(() => false)),
     ).pipe(startWith(false), distinctUntilChanged(), shareReplay(1)),
   );
 

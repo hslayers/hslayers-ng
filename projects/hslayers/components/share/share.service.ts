@@ -4,7 +4,7 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {lastValueFrom} from 'rxjs';
 
-import {CompoData, HsEndpoint, MapComposition} from 'hslayers-ng/types';
+import {CompoData, MapComposition} from 'hslayers-ng/types';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsLanguageService} from 'hslayers-ng/services/language';
@@ -293,7 +293,6 @@ export class HsShareService {
    */
   save(
     compositionJson: MapComposition,
-    endpoint: HsEndpoint,
     compoData: CompoData,
     saveAsNew: boolean,
   ): Promise<any> {

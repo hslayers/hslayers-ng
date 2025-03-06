@@ -215,7 +215,7 @@ export class HsSaveMapManagerService extends HsSaveMapManagerParams {
         saver = this.hsLaymanService;
       }
       saver
-        .save(compositionJson, endpoint, tempCompoData, saveAsNew)
+        .save(compositionJson, tempCompoData, saveAsNew)
         .then((response) => {
           const compInfo: any = {};
           const j = response;
