@@ -710,7 +710,8 @@
       "18": "Chýba jeden alebo viac súborov Shapefile",
       "50": "Chyba pri normalizácií rastrového súboru"
     },
-    "layerSuccessfullyRemoved": "Vrstva bola úspešne vymazaná"
+    "layerSuccessfullyRemoved": "Vrstva bola úspešne vymazaná",
+    "requestWasProcessed": "Vrstva bola spracovaná, ale nebola uložená do katalógu kvôli chýbajúcej autorizácii"
   },
   "LEGEND": {
     "noLegendExists": "Žiadna vrstva s legendou neexistuje!"

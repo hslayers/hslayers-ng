@@ -150,6 +150,7 @@ describe('compositions', () => {
             mockedStylerService,
             mockedUtilsService,
             mockedVectorUtilsService,
+            null,
           ),
         },
         {

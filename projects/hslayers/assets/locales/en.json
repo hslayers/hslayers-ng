@@ -710,7 +710,7 @@
       "18": "Missing one or more Shape files",
       "50": "Error when normalizing raster file"
     },
-    "requestWasProcessed": "Layer was processed, but map was not saved due to missing authorization",
+    "requestWasProcessed": "Layer was processed, but not saved to catalogue due to missing authorization",
     "layerSuccessfullyRemoved": "Layer successfully removed"
   },
   "LEGEND": {
