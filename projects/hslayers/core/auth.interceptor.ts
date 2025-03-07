@@ -1,21 +1,29 @@
-import {HttpInterceptorFn} from '@angular/common/http';
-import {catchError} from 'rxjs/operators';
+import {HttpInterceptorFn, HttpResponse} from '@angular/common/http';
+import {map} from 'rxjs/operators';
 import {inject} from '@angular/core';
-import {throwError} from 'rxjs';
 
 import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
 
-export const authInterceptor: HttpInterceptorFn = (req, next) => {
+export const HsAuthInterceptor: HttpInterceptorFn = (req, next) => {
   const authService = inject(HsCommonLaymanService);
 
-  return next(req).pipe(
-    catchError((err) => {
-      if (err.status === 401 && err?.authenticated === false) {
-        //Unauthorized request sent to backend -> logout
-        authService.logout$.next();
-      }
-      // Re-throw the error so it can be handled elsewhere if needed
-      return throwError(() => err);
-    }),
-  );
+  if (
+    authService.layman()?.url &&
+    req.url.includes(authService.layman()?.url)
+  ) {
+    return next(req).pipe(
+      map((event: HttpResponse<unknown>) => {
+        if (
+          event.body?.['authenticated'] === false &&
+          authService.isAuthenticated()
+        ) {
+          //Unauthorized request sent to backend -> logout
+          authService.logout$.next();
+        }
+        return event;
+      }),
+    );
+  }
+
+  return next(req);
 };
