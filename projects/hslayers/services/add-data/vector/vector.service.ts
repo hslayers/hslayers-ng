@@ -31,6 +31,7 @@ import {SparqlJson} from 'hslayers-ng/common/layers';
 import {setDefinition} from 'hslayers-ng/common/extensions';
 
 import {HsAddDataVectorUtilsService} from './vector-utils.service';
+import {HsToastService} from 'hslayers-ng/common/toast';
 
 @Injectable({
   providedIn: 'root',
@@ -46,6 +47,7 @@ export class HsAddDataVectorService {
     private hsStylerService: HsStylerService,
     private hsUtilsService: HsUtilsService,
     private hsAddDataVectorUtilsService: HsAddDataVectorUtilsService,
+    private hsToastService: HsToastService,
   ) {}
 
   /**
@@ -247,9 +249,16 @@ export class HsAddDataVectorService {
    * @returns Created layer and layer adding state (true, if complete, false otherwise)
    */
   async addNewLayer(data: VectorDataObject) {
-    if (!this.hsAddDataCommonFileService.endpoint) {
-      console.error('No endpoint available');
-      return;
+    if (data.saveToLayman && !this.hsCommonLaymanService.isAuthenticated()) {
+      data.saveToLayman = false;
+      this.hsToastService.createToastPopupMessage(
+        'COMMON.warning',
+        'LAYMAN.requestWasProcessed',
+        {
+          type: 'warning',
+          serviceCalledFrom: 'hsAddDataVectorService',
+        },
+      );
     }
     const addLayerRes: {
       layer: VectorLayer<VectorSource<Feature>>;

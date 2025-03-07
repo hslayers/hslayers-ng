@@ -212,7 +212,6 @@ export class HsAddDataCommonFileService extends HsAddDataCommonFileServiceParams
    * @param overwrite - (Optional) Overwrite existing layman layer
    */
   async loadNonWmsLayer(
-    endpoint: HsEndpoint,
     formDataParams: FileFormData,
     overwrite?: boolean,
   ): Promise<PostPatchLayerResponse> {
@@ -398,7 +397,6 @@ export class HsAddDataCommonFileService extends HsAddDataCommonFileServiceParams
         this.callOverwriteDialog(data, options?.repetive);
       } else {
         const response = await this.loadNonWmsLayer(
-          this.endpoint,
           {
             files: data.files,
             name: data.name,
