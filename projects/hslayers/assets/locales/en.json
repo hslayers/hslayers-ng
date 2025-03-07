@@ -7,7 +7,8 @@
     "userInfoFailed": "Failed to retrieve user information",
     "loginFailed": "Login failed",
     "Login": "Log in",
-    "Logout": "Log out"
+    "Logout": "Log out",
+    "loggedIn": "Logged in"
   },
   "ADDDATA": {
     "CATALOGUE": {

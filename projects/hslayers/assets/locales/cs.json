@@ -6,8 +6,9 @@
     "authenticationFailed": "Chyba ověření",
     "userInfoFailed": "Chyba při načítání uživatelských údajů",
     "loginFailed": "Přihlášení se nezdařilo",
-    "Login": "Přihlásit",
-    "Logout": "Odhlásit"
+    "Login": "Přihlásit se",
+    "Logout": "Odhlásit",
+    "loggedIn": "Přihlášen"
   },
   "ADDDATA": {
     "CATALOGUE": {
@@ -230,8 +231,6 @@
     "lineColor": "Barva linie",
     "lineWidth": "Šířka linie",
     "loading": "Načítání",
-    "Login": "Přihlásit se",
-    "Logout": "Odhlásit",
     "mapExtentFilterMissing": "Řazení výsledků dle rozsahu dat je možné jen po aktivaci 'filtrace na rozsah okna'. Aktivujte ji prosím.",
     "menu": "Menu",
     "metadata": "Metadata",
