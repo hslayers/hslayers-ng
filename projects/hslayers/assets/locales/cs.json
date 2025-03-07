@@ -1,11 +1,13 @@
 {
   "AUTH": {
     "signingIn": "Přihlašování ...",
-    "logoutSuccessful": "Byli jste velmi odhlášeni!",
-    "loginSuccessful": "Úspěšně přihlášen",
+    "logoutSuccessful": "Byli jste úspěšně odhlášeni!",
+    "loginSuccessful": "Přihlášení proběhlo úspěšně",
     "authenticationFailed": "Chyba ověření",
     "userInfoFailed": "Chyba při načítání uživatelských údajů",
-    "loginFailed": "Přihlášení se nezdařilo"
+    "loginFailed": "Přihlášení se nezdařilo",
+    "Login": "Přihlásit",
+    "Logout": "Odhlásit"
   },
   "ADDDATA": {
     "CATALOGUE": {
