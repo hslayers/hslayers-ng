@@ -665,7 +665,8 @@
       "18": "Trūkst viena vai vairāku Shape failu",
       "50": "Kļūda, normalizējot rastra failu"
     },
-    "layerSuccessfullyRemoved": "Slānis veiksmīgi noņemts"
+    "layerSuccessfullyRemoved": "Slānis veiksmīgi noņemts",
+    "requestWasProcessed": "Slānis tika apstrādāts, bet netika saglabāts katalogā trūkstošās atļaujas dēļ"
   },
   "LEGEND": {
     "noLegendExists": "Nav neviena slāņa ar leģendu!"
