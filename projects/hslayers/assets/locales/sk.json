@@ -5,7 +5,10 @@
     "loginSuccessful": "Úspešne prihlásený",
     "authenticationFailed": "Chyba prihlásenia",
     "userInfoFailed": "Chyba pri načítaní údajov o užívateľovi",
-    "loginFailed": "Prihlasovanie nebolo úspešné"
+    "loginFailed": "Prihlasovanie nebolo úspešné",
+    "loggedIn": "Prihlásený",
+    "Login": "Prihlásiť sa",
+    "Logout": "Odhlásiť sa"
   },
   "ADDDATA": {
     "CATALOGUE": {
@@ -224,8 +227,6 @@
     "lineColor": "Farba línie",
     "lineWidth": "Šířka línie",
     "loading": "Načítanie",
-    "Login": "Prihlásiť sa",
-    "Logout": "Odhlásiť",
     "mapExtentFilterMissing": "Radenie výsledkov podľa rozsahu dát (BBOX) je možné jedine po aktivácií 'filtrácie na rozsah okna'. Aktivujte ho prosím.",
     "menu": "Menu",
     "metadata": "Metadáta",
@@ -921,7 +922,7 @@
       "SAVECOMPOSITION": "Uložiť obsah mapy do kompozície",
       "SEARCH": "Vyhľadať miesto",
       "TRIP_PLANNER": "Vytvoriť novú trasu výletu",
-      "WFS_FITLER": "Vytvárajte a spravujte filtre pre vrstvy Web Feature Service"
+      "WFS_FILTER": "Vytvorte a spravujte filtre pre vrstvy WFS (Web Feature Service)"
     }
   },
   "STYLER": {

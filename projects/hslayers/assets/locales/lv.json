@@ -1,4 +1,15 @@
 {
+  "AUTH": {
+    "signingIn": "Autorizēties...",
+    "logoutSuccessful": "Jūs esat veiksmīgi atlogots!",
+    "loginSuccessful": "Autorizācija veiksmīga",
+    "authenticationFailed": "Autorizācijas kļūda",
+    "userInfoFailed": "Neizdevās iegūt lietotāja informāciju",
+    "loginFailed": "Autorizācija neizdevās",
+    "Login": "Autorizēties",
+    "Logout": "Atteikties",
+    "loggedIn": "Autorizēts"
+  },
   "ADDDATA": {
     "CATALOGUE": {
       "DESC": {
@@ -206,8 +217,6 @@
     "lineColor": "Līnijas krāsa",
     "lineWidth": "Līnijas platums",
     "loading": "Notiek ielāde",
-    "Login": "Autorizēties",
-    "Logout": "Atteikties",
     "mapExtentFilterMissing": "Lūdzu, iespējojiet izvēles rūtiņu Filtrēt pēc kartes apjoma, lai varētu kārtot datus pēc mērogojuma (Bounding box)",
     "menu": "Izvēlne",
     "metadata": "Metadati",
