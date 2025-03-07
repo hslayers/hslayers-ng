@@ -73,7 +73,7 @@ OAuth2.prototype.userProfile = (access_token, done) => {
       // reserve username in Layman in case it does not exist yet
       authnUtil.ensureUsername(access_token, response.body);
 
-      console.log('LAYMAN RESPONSE BODY',response.body);
+      console.log('LAYMAN RESPONSE BODY', response.body);
       done(null, response.body);
     } catch (error) {
       console.log(error.response.body);
@@ -140,12 +140,25 @@ app.get('/', (req, res) => {
 
 app.get('/login', passport.authenticate('oauth2'));
 
-app.get('/logout', (req, res) => {
-  authnUtil.deleteUserSession(req);
-  req.logout((err) => {
-    if (err) console.log(err);
-  });
-  res.redirect('/');
+app.get('/logout', (req, res, next) => {
+  try {
+    authnUtil.deleteUserSession(req);
+    req.logout((err) => {
+      if (err) console.log(err);
+      req.session.destroy((err) => {
+        if (err) {
+          console.warn("Session destruction error", { error: err.message });
+          return next(err);
+        }
+        res.clearCookie("connect-hsl.sid", { path: "/" });
+        //Successfully logged out
+        res.status(200).json({ message: "Successfully logged out!" });
+      });
+    });
+  } catch (error) {
+    console.error("Logout error", { error: error.message });
+    res.status(500).json({ error: "Internal server error during logout" });
+  }
 });
 
 app.get(
@@ -158,10 +171,9 @@ app.get(
       (req.session.passport.user.authenticated ||
         req.session.passport.user.ticket)
     ) {
-      res.send(`Logged in as ${
-        req.session.passport.user.claims.screen_name ||
+      res.send(`Logged in as ${req.session.passport.user.claims.screen_name ||
         req.session.passport.user.username
-      }. You can now close this window and return back to the map.
+        }. You can now close this window and return back to the map.
     <script>
     function inIframe () {
         try {
@@ -186,8 +198,7 @@ app.get('/error', (req, res) => {
 // start the service on the port xxxx
 app.listen(process.env.LAYMAN_PORT || 8087, () =>
   console.log(
-    `HSLayers auth service for Layman listening on port ${
-      process.env.LAYMAN_PORT || 8087
+    `HSLayers auth service for Layman listening on port ${process.env.LAYMAN_PORT || 8087
     }`
   )
 );
