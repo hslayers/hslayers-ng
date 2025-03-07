@@ -118,7 +118,10 @@ export class HsToastService {
         autohide: true,
         type: options.type || 'danger',
         serviceCalledFrom: options.serviceCalledFrom,
-        details: options.details || [],
+        details:
+          options.details?.map((detail) =>
+            this.HsLanguageService.getTranslation(detail, undefined),
+          ) || [],
       },
     );
   }
