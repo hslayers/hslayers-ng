@@ -20,7 +20,7 @@ import {
 } from 'rxjs';
 
 import {CurrentUserResponse} from './types/current-user-response.type';
-import {AboutLayman, HsEndpoint, AuthState} from 'hslayers-ng/types';
+import {AboutLayman, HsEndpoint, HsAuthState} from 'hslayers-ng/types';
 import {HsLanguageService} from 'hslayers-ng/services/language';
 import {HsLogService} from 'hslayers-ng/services/log';
 import {HsToastService} from 'hslayers-ng/common/toast';
@@ -35,6 +35,9 @@ export class HsCommonLaymanService {
   endpointService = inject(HsCommonEndpointsService);
   http = inject(HttpClient);
   hsUtilsService = inject(HsUtilsService);
+  hsToastService = inject(HsToastService);
+  hsLanguageService = inject(HsLanguageService);
+  hsLog = inject(HsLogService);
 
   private readonly MAX_USER_POLL_ATTEMPTS = 7;
   private readonly USER_POLL_DELAY = 2500;
@@ -61,10 +64,7 @@ export class HsCommonLaymanService {
             return endpoint;
           }),
           catchError((error) => {
-            this.hsToastService.createToastPopupMessage(
-              'COMMON.error',
-              'Could not get layman version',
-            );
+            console.warn('There was an error trying to get layman version');
             return of(endpoint);
           }),
         );
@@ -90,7 +90,7 @@ export class HsCommonLaymanService {
     this.logout$.pipe(map(() => ({type: 'logout'}))),
   );
 
-  authState$: Observable<AuthState> = this.layman$.pipe(
+  authState$: Observable<HsAuthState> = this.layman$.pipe(
     // Initial check for current user when endpoint is available
     switchMap((endpoint) => {
       if (!endpoint) {
@@ -213,13 +213,6 @@ export class HsCommonLaymanService {
     ).pipe(startWith(false), distinctUntilChanged(), shareReplay(1)),
   );
 
-  constructor(
-    private $http: HttpClient,
-    public hsToastService: HsToastService,
-    public hsLanguageService: HsLanguageService,
-    private hsLog: HsLogService,
-  ) {}
-
   /**
    * Get current user from layman endpoint
    * @param endpoint - Layman endpoint
@@ -229,7 +222,7 @@ export class HsCommonLaymanService {
       return of(undefined);
     }
     const url = `${endpoint_url}/rest/current-user`;
-    return this.$http.get<CurrentUserResponse>(url, {withCredentials: true});
+    return this.http.get<CurrentUserResponse>(url, {withCredentials: true});
   }
 
   /**
@@ -289,7 +282,7 @@ export class HsCommonLaymanService {
 
     const url = `${laymanEndpoint.url}/logout`;
     try {
-      await lastValueFrom(this.$http.get(url, {withCredentials: true}));
+      await lastValueFrom(this.http.get(url, {withCredentials: true}));
     } catch (ex) {
       this.hsLog.warn(ex);
     } finally {
@@ -344,7 +337,7 @@ export class HsCommonLaymanService {
   async getStyleFromUrl(styleUrl: string): Promise<string> {
     try {
       return await lastValueFrom(
-        this.$http
+        this.http
           .get(styleUrl, {
             headers: new HttpHeaders().set('Content-Type', 'text'),
             responseType: 'text',
