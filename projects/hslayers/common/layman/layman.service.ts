@@ -97,7 +97,7 @@ export class HsCommonLaymanService {
         return of(undefined);
       }
       /**
-       * Check for current user. In wagtail we might recive authentication right of the bat.
+       * Check for current user. In Wagtail we might receive authentication right of the bat.
        * The rest is controlled via login and logout triggers.
        */
       return this.getCurrentUser(endpoint.url).pipe(
