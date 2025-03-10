@@ -31,14 +31,13 @@ export const HsAuthInterceptor: HttpInterceptorFn = (req, next) => {
         return event;
       }),
       catchError((error: HttpErrorResponse) => {
-        // Check for HttpErrorResponse (error case)
         if (error.status === 403) {
           //Unauthorized access, Unsuccessful OAuth2 authentication/HTTP Header authentication
           //https://github.com/LayerManager/layman/blob/master/src/layman/error_list.py
           // --> logout
           authService.logout$.next();
         }
-        // Re-throw the error using throwError
+        // Re-throw the error
         return throwError(() => error);
       }),
     );
