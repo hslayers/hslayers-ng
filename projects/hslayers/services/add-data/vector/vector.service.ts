@@ -319,8 +319,6 @@ export class HsAddDataVectorService {
    * @param data - Vector data object
    */
   async upsertLayer(data: VectorDataObject): Promise<PostPatchLayerResponse> {
-    const commonFileRef = this.hsAddDataCommonFileService;
-
     const crsSupported = this.hsLaymanService
       .supportedCRRList()
       .includes(data.nativeSRS);
@@ -359,8 +357,7 @@ export class HsAddDataVectorService {
     repetitive?: boolean,
   ): Promise<OverwriteResponse> {
     let upsertReq: PostPatchLayerResponse;
-    const commonFileRef = this.hsAddDataCommonFileService;
-    commonFileRef.loadingToLayman = true;
+    this.hsAddDataCommonFileService.loadingToLayman = true;
     const exists = await this.hsAddDataCommonFileService.lookupLaymanLayer(
       data.name,
     );
@@ -396,7 +393,7 @@ export class HsAddDataVectorService {
       case OverwriteResponse.add:
         return await this.checkForLayerInLayman(data, true);
       case OverwriteResponse.cancel:
-        commonFileRef.loadingToLayman = false;
+        this.hsAddDataCommonFileService.loadingToLayman = false;
         return OverwriteResponse.cancel;
       default:
     }

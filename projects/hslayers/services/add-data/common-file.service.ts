@@ -44,9 +44,8 @@ export class HsAddDataCommonFileServiceParams {
   readingData = false;
   loadingToLayman = false;
   asyncLoading = false;
-  endpoint: HsEndpoint;
   /**
-   * @param success - true when layer added successfully
+   * True when layer added successfully
    */
   layerAddedAsService: Subject<boolean> = new Subject();
   dataObjectChanged: Subject<FileDataObject> = new Subject();
@@ -70,7 +69,6 @@ export class HsAddDataCommonFileService extends HsAddDataCommonFileServiceParams
     super();
   }
 
-  endpoint = this.hsCommonLaymanService.layman();
   /**
    * Clear service param values to default values
    */
@@ -375,10 +373,11 @@ export class HsAddDataCommonFileService extends HsAddDataCommonFileServiceParams
       repetive?: boolean;
     },
   ): Promise<void> {
+    const endpoint = this.hsCommonLaymanService.layman();
     let exists: boolean;
     try {
       this.loadingToLayman = true;
-      if (!this.endpoint) {
+      if (!endpoint) {
         throw new Error('No endpoint available');
       }
       if (!this.isSRSSupported(data)) {
