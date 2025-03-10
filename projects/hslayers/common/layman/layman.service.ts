@@ -177,20 +177,6 @@ export class HsCommonLaymanService {
             }),
           );
         }),
-        catchError((error) => {
-          // Handle errors from getCurrentUser
-          this.hsToastService.createToastPopupMessage(
-            'COMMON.Error',
-            'AUTH.userInfoFailed',
-            {
-              type: 'danger',
-              serviceCalledFrom: 'HsCommonLaymanService',
-              details: [error.message || 'AUTH.userInfoFailed'],
-            },
-          );
-
-          return of(undefined);
-        }),
       );
     }),
     shareReplay(1),
@@ -222,7 +208,26 @@ export class HsCommonLaymanService {
       return of(undefined);
     }
     const url = `${endpoint_url}/rest/current-user`;
-    return this.http.get<CurrentUserResponse>(url, {withCredentials: true});
+    return this.http
+      .get<CurrentUserResponse>(url, {withCredentials: true})
+      .pipe(
+        catchError((error) => {
+          // Handle errors from getCurrentUser
+          this.hsToastService.createToastPopupMessage(
+            'COMMON.Error',
+            'AUTH.userInfoFailed',
+            {
+              type: 'danger',
+              serviceCalledFrom: 'HsCommonLaymanService',
+              details: [error.message || 'AUTH.userInfoFailed'],
+            },
+          );
+          return of({
+            authenticated: false,
+            username: undefined,
+          });
+        }),
+      );
   }
 
   /**
