@@ -1,4 +1,4 @@
-import {TestBed, fakeAsync, tick} from '@angular/core/testing';
+import {TestBed, fakeAsync, tick, flush} from '@angular/core/testing';
 import {
   HttpTestingController,
   provideHttpClientTesting,
@@ -54,13 +54,22 @@ describe('HsCommonLaymanService', () => {
     url = mockEndpoint.url,
     authenticated = false,
     username = undefined,
+    response?,
+    status = 200,
   ) {
     const userReq = httpMock.expectOne(`${url}/rest/current-user`);
     expect(userReq.request.method).toBe('GET');
-    userReq.flush({
-      authenticated,
-      username,
-    });
+    if (response) {
+      userReq.flush(response, {status: status, statusText: 'OK'});
+    } else {
+      userReq.flush(
+        {
+          authenticated,
+          username,
+        },
+        {status: status, statusText: 'OK'},
+      );
+    }
   }
 
   beforeEach(fakeAsync(() => {
@@ -364,5 +373,53 @@ describe('HsCommonLaymanService', () => {
         type: 'danger',
       }),
     );
+  }));
+
+  it('should handle 403 error from getCurrentUser gracefully', fakeAsync(() => {
+    // Subscribe to authState$ to ensure the observable chain is active
+    let authStateResult;
+    service.authState$.subscribe((state) => {
+      authStateResult = state;
+    });
+
+    // Expect the getCurrentUser request, and FLUSH the 403 error response
+    handleUserRequest(
+      mockEndpoint.url,
+      false,
+      undefined,
+      {
+        code: 32,
+        detail:
+          "Introspection endpoint claims that access token is not active or it's not Bearer token.",
+        message: 'Unsuccessful OAuth2 authentication.',
+        sub_code: 9,
+      },
+      403,
+    );
+
+    // Advance the clock to ensure all pending operations complete
+    tick(100);
+    flush();
+
+    // Verify that authState$ emits the default unauthenticated state
+    // This is what we expect from the catchError in getCurrentUser
+    expect(authStateResult).toEqual({
+      authenticated: false,
+      user: undefined,
+    });
+
+    // Verify that the toast service was called with the error message
+    expect(toastService.createToastPopupMessage).toHaveBeenCalledWith(
+      'COMMON.Error',
+      'AUTH.userInfoFailed',
+      jasmine.objectContaining({
+        type: 'danger',
+        serviceCalledFrom: 'HsCommonLaymanService',
+      }),
+    );
+
+    // Verify that the service's computed properties reflect the unauthenticated state
+    expect(service.isAuthenticated()).toBeFalse();
+    expect(service.user()).toBeUndefined();
   }));
 });
