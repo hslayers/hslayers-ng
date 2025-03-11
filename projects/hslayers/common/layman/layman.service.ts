@@ -160,13 +160,15 @@ export class HsCommonLaymanService {
                 );
               }
               if (action.type === 'logout') {
-                this.hsToastService.createToastPopupMessage(
-                  'AUTH.Logout',
-                  'AUTH.logoutSuccessful',
-                  {
-                    type: 'success',
-                  },
-                );
+                if (this.isAuthenticated()) {
+                  this.hsToastService.createToastPopupMessage(
+                    'AUTH.Logout',
+                    'AUTH.logoutSuccessful',
+                    {
+                      type: 'success',
+                    },
+                  );
+                }
                 // On logout action, clear user data
                 return of({
                   ...endpoint,
@@ -214,7 +216,7 @@ export class HsCommonLaymanService {
         catchError((error) => {
           // Handle errors from getCurrentUser
           this.hsToastService.createToastPopupMessage(
-            'COMMON.Error',
+            'COMMON.error',
             'AUTH.userInfoFailed',
             {
               type: 'danger',
