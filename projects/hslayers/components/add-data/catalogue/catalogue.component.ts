@@ -1,4 +1,6 @@
 import {Component, computed, OnInit, signal} from '@angular/core';
+import {FormsModule} from '@angular/forms';
+import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
 
 import {
   HsAddDataCatalogueMapService,
@@ -6,17 +8,32 @@ import {
   HsAddDataCatalogueService,
 } from 'hslayers-ng/services/add-data';
 import {HsAddDataLayerDescriptor} from 'hslayers-ng/types';
-import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
+import {
+  HsCommonLaymanService,
+  HsLaymanCurrentUserComponent,
+} from 'hslayers-ng/common/layman';
 import {HsConfig} from 'hslayers-ng/config';
-import {HsLanguageService} from 'hslayers-ng/services/language';
+import {
+  HsLanguageService,
+  TranslateCustomPipe,
+} from 'hslayers-ng/services/language';
 import {HsLaymanService} from 'hslayers-ng/services/save-map';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsUtilsService} from 'hslayers-ng/services/utils';
+import {HsPagerModule} from 'hslayers-ng/common/pager';
+import {HsCatalogueListItemComponent} from './catalogue-list-item/catalogue-list-item.component';
 
 @Component({
   selector: 'hs-add-data-catalogue',
   templateUrl: './catalogue.component.html',
-  standalone: false,
+  imports: [
+    FormsModule,
+    HsPagerModule,
+    NgbDropdownModule,
+    TranslateCustomPipe,
+    HsCatalogueListItemComponent,
+    HsLaymanCurrentUserComponent,
+  ],
 })
 export class HsAddDataCatalogueComponent implements OnInit {
   types: any[];
