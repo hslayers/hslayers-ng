@@ -120,7 +120,7 @@
     "eslint-config-openlayers": "20.0.0",
     "eslint-import-resolver-typescript": "^3.8.4",
     "eslint-plugin-import": "2.31.0",
-    "eslint-plugin-jsdoc": "50.6.3",
+    "eslint-plugin-jsdoc": "50.6.6",
     "eslint-plugin-prefer-arrow": "1.2.3",
     "eslint-plugin-prettier": "5.2.3",
     "eslint-plugin-tsdoc": "^0.4.0",
