@@ -1,15 +1,19 @@
 import {Component, computed, inject, signal} from '@angular/core';
+import {AsyncPipe} from '@angular/common';
+
 import {map} from 'rxjs';
+import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
 
 import {HsCommonLaymanService} from './layman.service';
 import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsToastService} from 'hslayers-ng/common/toast';
+import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 
 @Component({
   selector: 'hs-layman-current-user',
   templateUrl: './layman-current-user.component.html',
-  standalone: false,
+  imports: [AsyncPipe, TranslateCustomPipe, NgbDropdownModule],
   styles: `
     .user-auth-container {
       .user-dropdown {
