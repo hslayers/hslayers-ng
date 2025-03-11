@@ -9,13 +9,14 @@ import {
   HsEndpoint,
   WhatToAddDescriptor,
 } from 'hslayers-ng/types';
-import {HsCatalogueMetadataComponent} from '../catalogue-metadata/catalogue-metadata.component';
 import {HsCatalogueMetadataService} from '../catalogue-metadata/catalogue-metadata.service';
 import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
 import {HsLogService} from 'hslayers-ng/services/log';
 import {HsRemoveLayerDialogService} from 'hslayers-ng/common/remove-multiple';
 import {HsSetPermissionsDialogComponent} from 'hslayers-ng/common/dialog-set-permissions';
 import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
+import {NgClass, NgStyle} from '@angular/common';
+import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 
 @Component({
   selector: 'hs-catalogue-list-item',
@@ -28,7 +29,7 @@ import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
       }
     `,
   ],
-  standalone: false,
+  imports: [NgClass, NgStyle, TranslateCustomPipe],
 })
 export class HsCatalogueListItemComponent implements OnInit {
   @Input() layer: HsAddDataLayerDescriptor;
@@ -167,6 +168,9 @@ export class HsCatalogueListItemComponent implements OnInit {
     }
     //this.metadata = this.hsDatasourcesMetadataService.decomposeMetadata(layer);
     //console.log(this.metadata);
+    const {HsCatalogueMetadataComponent} = await import(
+      '../catalogue-metadata/catalogue-metadata.component'
+    );
     this.hsDialogContainerService.create(HsCatalogueMetadataComponent, {
       selectedLayer: layerWithMetadata || layer,
       selectedDS: endpoint,
