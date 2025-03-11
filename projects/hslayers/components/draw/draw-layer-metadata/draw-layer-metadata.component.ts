@@ -9,8 +9,9 @@ import {
 } from 'hslayers-ng/common/dialogs';
 import {HsDrawService} from 'hslayers-ng/services/draw';
 import {
+  HsCommonLaymanAccessRightsComponent,
   HsCommonLaymanService,
-  HsLaymanModule,
+  HsLaymanCurrentUserComponent,
   awaitLayerSync,
   getLaymanFriendlyLayerName,
 } from 'hslayers-ng/common/layman';
@@ -32,7 +33,13 @@ import {FeatureLike} from 'ol/Feature';
 @Component({
   selector: 'hs-draw-layer-metadata',
   templateUrl: './draw-layer-metadata.component.html',
-  imports: [NgClass, FormsModule, TranslateCustomPipe, HsLaymanModule],
+  imports: [
+    NgClass,
+    FormsModule,
+    TranslateCustomPipe,
+    HsLaymanCurrentUserComponent,
+    HsCommonLaymanAccessRightsComponent,
+  ],
 })
 export class HsDrawLayerMetadataDialogComponent
   implements HsDialogComponent, OnInit

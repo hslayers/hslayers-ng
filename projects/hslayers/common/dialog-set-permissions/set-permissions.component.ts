@@ -7,8 +7,8 @@ import {
   UpsertLayerObject,
 } from 'hslayers-ng/types';
 import {
+  HsCommonLaymanAccessRightsComponent,
   HsCommonLaymanService,
-  HsLaymanModule,
   PostPatchLayerResponse,
 } from 'hslayers-ng/common/layman';
 import {
@@ -22,7 +22,7 @@ import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 @Component({
   selector: 'hs-set-permissions-dialog',
   templateUrl: './set-permissions.component.html',
-  imports: [TranslateCustomPipe, HsLaymanModule],
+  imports: [TranslateCustomPipe, HsCommonLaymanAccessRightsComponent],
 })
 export class HsSetPermissionsDialogComponent
   implements HsDialogComponent, OnInit
