@@ -8,7 +8,7 @@ import {HsAddLayerAuthorizedComponent} from './add-layer-authorized/add-layer-au
 import {HsAddToMapButtonComponent} from 'hslayers-ng/common/add-to-map';
 import {HsAdvancedOptionsComponent} from './advanced-options/advanced-options.component';
 import {HsGetCapabilitiesErrorComponent} from './capabilities-error-dialog/capabilities-error-dialog.component';
-import {HsLaymanModule} from 'hslayers-ng/common/layman';
+import {HsLaymanCurrentUserComponent} from 'hslayers-ng/common/layman';
 import {HsNewLayerFormComponent} from './new-layer-form/new-layer-form.component';
 import {HsPositionComponent} from './target-position/target-position.component';
 import {HsSaveToLaymanComponent} from './save-to-layman/save-to-layman.component';
@@ -20,7 +20,7 @@ import {TranslateCustomPipe} from 'hslayers-ng/services/language';
     CommonModule,
     FormsModule,
     TranslateCustomPipe,
-    HsLaymanModule,
+    HsLaymanCurrentUserComponent,
     NgbProgressbarModule,
     HsAddToMapButtonComponent,
     EpsgPipe,

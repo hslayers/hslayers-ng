@@ -2,7 +2,6 @@ import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 
-import {HsAddDataCatalogueModule} from './catalogue/catalogue.module';
 import {HsAddDataComponent} from './add-data.component';
 import {HsAddDataFileModule} from './file/file.module';
 import {HsAddDataUrlModule} from './url/add-data-url.module';
@@ -11,6 +10,7 @@ import {
   HsPanelHelpersModule,
 } from 'hslayers-ng/common/panels';
 import {TranslateCustomPipe} from 'hslayers-ng/services/language';
+import {HsAddDataCatalogueComponent} from './catalogue/catalogue.component';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -22,7 +22,7 @@ import {TranslateCustomPipe} from 'hslayers-ng/services/language';
     HsPanelHelpersModule,
     HsAddDataUrlModule,
     HsAddDataFileModule,
-    HsAddDataCatalogueModule,
+    HsAddDataCatalogueComponent,
     HsPanelHeaderComponent,
   ],
   exports: [HsAddDataComponent],

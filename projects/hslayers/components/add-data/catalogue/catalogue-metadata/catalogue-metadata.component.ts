@@ -14,11 +14,13 @@ import {
   HsDialogComponent,
   HsDialogContainerService,
 } from 'hslayers-ng/common/dialogs';
+import {HsUiExtensionsRecursiveDdComponent} from 'hslayers-ng/common/widgets';
+import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 
 @Component({
   selector: 'hs-catalogue-metadata',
   templateUrl: './catalogue-metadata.component.html',
-  standalone: false,
+  imports: [HsUiExtensionsRecursiveDdComponent, TranslateCustomPipe],
 })
 export class HsCatalogueMetadataComponent implements HsDialogComponent, OnInit {
   @Input() data: {
