@@ -7,11 +7,12 @@ import {
   HsDialogContainerService,
 } from 'hslayers-ng/common/dialogs';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
+import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 
 @Component({
   selector: 'hs-layman-login',
   templateUrl: './layman-login.component.html',
-  standalone: false,
+  imports: [TranslateCustomPipe],
 })
 export class HsLaymanLoginComponent implements HsDialogComponent, OnInit {
   @Input() data: {
