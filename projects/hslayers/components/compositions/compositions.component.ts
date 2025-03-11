@@ -8,7 +8,6 @@ import {HsCompositionsParserService} from 'hslayers-ng/services/compositions';
 import {HsCompositionsService} from './compositions.service';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
-import {HsLanguageService} from 'hslayers-ng/services/language';
 import {HsLayerSynchronizerService} from 'hslayers-ng/services/save-map';
 import {HsMapCompositionDescriptor} from 'hslayers-ng/types';
 import {HsPanelBaseComponent} from 'hslayers-ng/common/panels';
@@ -42,7 +41,6 @@ export class HsCompositionsComponent
     private hsCompositionsMapService: HsCompositionsMapService,
     private hsDialogContainerService: HsDialogContainerService,
     public hsCompositionsCatalogueService: HsCompositionsCatalogueService,
-    private hsLanguageService: HsLanguageService,
     public hsCommonLaymanService: HsCommonLaymanService,
     /**
      * Make sure the hsLayerSynchronizerService is available in the setups with add-data
