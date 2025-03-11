@@ -111,7 +111,7 @@
       <ul class="list-group">
         @for (layer of hsAddDataCatalogueService.catalogEntries; track layer.id) {
         <li [hidden]="hsAddDataCatalogueService.dataLoading" style="cursor: pointer;"
-          class="list-group-item border-0 border-bottom" [ngClass]="{ 'hs-endpoint-item-active': layer.highlighted}"
+          class="list-group-item border-0 border-bottom" [class.hs-endpoint-item-active]="layer.highlighted"
           (click)="layerSelected(layer)" (mouseover)="highlightLayer(layer, true)"
           (mouseleave)="highlightLayer(layer, false)">
           <hs-catalogue-list-item [layer]="layer" class="w-100"></hs-catalogue-list-item>

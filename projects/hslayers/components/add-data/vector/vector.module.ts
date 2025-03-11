@@ -7,7 +7,7 @@ import {HsAddDataVectorFileComponent} from './vector-file/vector-file.component'
 import {HsAddDataVectorUrlComponent} from './vector-url/vector-url.component';
 import {HsAddToMapButtonComponent} from 'hslayers-ng/common/add-to-map';
 import {HsCommonUrlModule} from '../common/url/url.module';
-import {HsLaymanModule} from 'hslayers-ng/common/layman';
+import {HsLaymanCurrentUserComponent} from 'hslayers-ng/common/layman';
 import {HsUploadModule} from 'hslayers-ng/common/upload';
 import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 
@@ -19,7 +19,7 @@ import {TranslateCustomPipe} from 'hslayers-ng/services/language';
     TranslateCustomPipe,
     HsAddDataCommonModule,
     HsCommonUrlModule,
-    HsLaymanModule,
+    HsLaymanCurrentUserComponent,
     HsUploadModule,
     HsAddToMapButtonComponent,
   ],
