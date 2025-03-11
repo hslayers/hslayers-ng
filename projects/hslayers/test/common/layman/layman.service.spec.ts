@@ -410,7 +410,7 @@ describe('HsCommonLaymanService', () => {
 
     // Verify that the toast service was called with the error message
     expect(toastService.createToastPopupMessage).toHaveBeenCalledWith(
-      'COMMON.Error',
+      'COMMON.error',
       'AUTH.userInfoFailed',
       jasmine.objectContaining({
         type: 'danger',
