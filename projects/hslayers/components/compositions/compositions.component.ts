@@ -1,10 +1,9 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, computed, OnInit, signal} from '@angular/core';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 
 import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
 import {HsCompositionsCatalogueService} from './compositions-catalogue.service';
 import {HsCompositionsMapService} from './compositions-map.service';
-import {HsCompositionsOverwriteDialogComponent} from './dialogs/overwrite-dialog.component';
 import {HsCompositionsParserService} from 'hslayers-ng/services/compositions';
 import {HsCompositionsService} from './compositions.service';
 import {HsConfig} from 'hslayers-ng/config';
@@ -27,8 +26,11 @@ export class HsCompositionsComponent
   themesVisible = false;
   urlToAdd = '';
   addCompositionUrlVisible = false;
-  optionsButtonLabel = 'more';
-  optionsMenuOpen = false;
+
+  optionsMenuOpen = signal(false);
+  optionsButtonLabel = computed(() =>
+    this.optionsMenuOpen() ? 'less' : 'more',
+  );
   selectedCompId: string;
   loadFilteredCompositions: any;
   name = 'compositions';
@@ -124,7 +126,11 @@ export class HsCompositionsComponent
    * Open overwrite dialog
    * @param title - Dialog title
    */
-  loadUnsavedDialogBootstrap(record: any): void {
+  async loadUnsavedDialogBootstrap(record: any): Promise<void> {
+    const {HsCompositionsOverwriteDialogComponent} = await import(
+      './dialogs/overwrite-dialog.component'
+    );
+
     this.hsDialogContainerService.create(
       HsCompositionsOverwriteDialogComponent,
       record,
@@ -135,13 +141,10 @@ export class HsCompositionsComponent
    * Open options menu
    */
   openOptionsMenu(): void {
-    this.optionsMenuOpen = !this.optionsMenuOpen;
-    if (this.optionsMenuOpen) {
-      this.optionsButtonLabel = 'less';
+    this.optionsMenuOpen.update((value) => !value);
+    if (this.optionsMenuOpen()) {
       this.keywordsVisible = false;
       this.themesVisible = false;
-    } else {
-      this.optionsButtonLabel = 'more';
     }
   }
 
@@ -149,7 +152,7 @@ export class HsCompositionsComponent
    * Clear all options menu filters
    */
   clearFilters(): void {
-    this.optionsMenuOpen = false;
+    this.optionsMenuOpen.set(false);
     this.themesVisible = false;
     this.keywordsVisible = false;
     this.selectedCompId = '';
@@ -199,20 +202,6 @@ export class HsCompositionsComponent
   sortByValueChanged(sortBy: any): void {
     this.hsCompositionsCatalogueService.data.sortBy = sortBy;
     this.loadFilteredCompositions();
-  }
-
-  /**
-   * Translate string value to the selected UI language
-   * @param module - Locales json key
-   * @param text - Locales json key value
-   * @returns Translated text
-   */
-  translateString(module: string, text: string): string {
-    return this.hsLanguageService.getTranslationIgnoreNonExisting(
-      module,
-      text,
-      undefined,
-    );
   }
 
   /**
