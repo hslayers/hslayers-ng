@@ -15,7 +15,7 @@ import {HsCompositionsInfoDialogComponent} from './dialogs/info-dialog.component
 import {HsCompositionsListItemComponent} from './compositions-list-item.component';
 import {HsCompositionsOverwriteDialogComponent} from './dialogs/overwrite-dialog.component';
 import {HsCompositionsShareDialogComponent} from './dialogs/share-dialog.component';
-import {HsLaymanModule} from 'hslayers-ng/common/layman';
+import {HsLaymanCurrentUserComponent} from 'hslayers-ng/common/layman';
 import {HsPagerModule} from 'hslayers-ng/common/pager';
 import {
   HsPanelHeaderComponent,
@@ -40,7 +40,7 @@ import {TranslateCustomPipe} from 'hslayers-ng/services/language';
     TranslateCustomPipe,
     NgbDropdownModule,
     NgbAccordionModule,
-    HsLaymanModule,
+    HsLaymanCurrentUserComponent,
     HsPagerModule,
     HsCommonUrlModule,
     HsPanelHeaderComponent,
