@@ -135,7 +135,6 @@ describe('HsCommonLaymanAccessRightsComponent', () => {
     };
 
     await TestBed.configureTestingModule({
-      declarations: [HsCommonLaymanAccessRightsComponent],
       schemas: [NO_ERRORS_SCHEMA],
       imports: [CommonModule, TranslateCustomPipe, FilterPipe],
       providers: [
