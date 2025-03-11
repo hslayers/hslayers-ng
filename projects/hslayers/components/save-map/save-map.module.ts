@@ -3,7 +3,7 @@ import {CommonModule} from '@angular/common';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 import {AdvancedOptionsComponent} from './form/advanced-options/advanced-options.component';
-import {HsLaymanModule} from 'hslayers-ng/common/layman';
+import {HsLaymanCurrentUserComponent} from 'hslayers-ng/common/layman';
 import {
   HsPanelHeaderComponent,
   HsPanelHelpersModule,
@@ -27,7 +27,7 @@ import {TranslateCustomPipe} from 'hslayers-ng/services/language';
     FormsModule,
     ReactiveFormsModule,
     TranslateCustomPipe,
-    HsLaymanModule,
+    HsLaymanCurrentUserComponent,
     HsPanelHeaderComponent,
   ],
   exports: [HsSaveMapComponent],
