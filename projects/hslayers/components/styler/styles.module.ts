@@ -9,7 +9,7 @@ import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
 import {HsAddColormapComponent} from './add-colormap.component';
 import {HsColorPickerComponent} from './symbolizers/color-picker/color-picker.component';
 import {HsColormapPickerModule} from 'hslayers-ng/common/color-map-picker';
-import {HsDownloadModule} from 'hslayers-ng/common/download';
+import {HsDownloadDirective} from 'hslayers-ng/common/download';
 import {HsFillSymbolizerComponent} from './symbolizers/fill-symbolizer/fill-symbolizer.component';
 import {HsFiltersComponent} from 'hslayers-ng/common/filters';
 import {HsIconSymbolizerComponent} from './symbolizers/icon-symbolizer/icon-symbolizer.component';
@@ -32,7 +32,6 @@ import {HsSymbolizerListItemComponent} from './symbolizers/symbolizer-list-item/
 import {HsTextSymbolizerComponent} from './symbolizers/text-symbolizer/text-symbolizer.component';
 import {HsUploadModule} from 'hslayers-ng/common/upload';
 import {TranslateCustomPipe} from 'hslayers-ng/services/language';
-
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   declarations: [
@@ -61,7 +60,7 @@ import {TranslateCustomPipe} from 'hslayers-ng/services/language';
     NgbDropdownModule,
     TranslateCustomPipe,
     HsUploadModule,
-    HsDownloadModule,
+    HsDownloadDirective,
     DragDropModule,
     HsColormapPickerModule,
     HsPanelHeaderComponent,

@@ -1,5 +1,5 @@
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
-import {Component} from '@angular/core';
+import {Component, computed} from '@angular/core';
 import {DomSanitizer} from '@angular/platform-browser';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 
@@ -14,7 +14,10 @@ import {HsLayerUtilsService, HsUtilsService} from 'hslayers-ng/services/utils';
 import {HsPanelBaseComponent} from 'hslayers-ng/common/panels';
 import {HsSaveMapService} from 'hslayers-ng/services/save-map';
 import {HsStylerEditDialogComponent} from './edit-dialog/edit-dialog.component';
-import {HsStylerService} from 'hslayers-ng/services/styler';
+import {
+  HsStylerService,
+  normalizeSldComparisonOperators,
+} from 'hslayers-ng/services/styler';
 import {HsUploadedFiles} from 'hslayers-ng/common/upload';
 
 @Component({
@@ -26,9 +29,19 @@ import {HsUploadedFiles} from 'hslayers-ng/common/upload';
 export class HsStylerComponent extends HsPanelBaseComponent {
   layerTitle: string;
   uploaderVisible = false;
+
+  /**
+   * Normalized SLD which will be used for download.
+   */
+  sldForDownload = computed(() => {
+    const sld = normalizeSldComparisonOperators(this.hsStylerService.sld());
+    return sld;
+  });
   downloadData: any;
+
   name = 'styler';
   colormaps = Object.keys(colorScales);
+
   constructor(
     public hsStylerService: HsStylerService,
     public hsEventBusService: HsEventBusService,

@@ -1,5 +1,5 @@
 import {DomSanitizer} from '@angular/platform-browser';
-import {Injectable} from '@angular/core';
+import {Injectable, signal, WritableSignal} from '@angular/core';
 import {Subject} from 'rxjs';
 
 import colormap from 'colormap';
@@ -63,7 +63,7 @@ export class HsStylerService {
   layerTitle: string;
   styleObject: GeoStylerStyle;
 
-  sld: string;
+  sld: WritableSignal<string> = signal('');
   qml: string;
   isAuthenticated = this.hsCommonLaymanService.isAuthenticated;
 
@@ -297,7 +297,7 @@ export class HsStylerService {
         `Unexpected style definition for layer ${getTitle(layer)}`,
       );
     }
-    this.sld = sld;
+    this.sld.set(sld);
     this.qml = qml;
   }
 
@@ -753,7 +753,7 @@ export class HsStylerService {
   resolveSldChange() {
     if (this.isAuthenticated() && this.layerBeingMonitored) {
       this.changesStore.set(getUid(this.layer), {
-        sld: this.sld,
+        sld: this.sld(),
         qml: this.qml,
       });
       this.unsavedChange = true;
@@ -764,7 +764,7 @@ export class HsStylerService {
 
   /**Set SLD/QML parameter of layer*/
   setSldQml() {
-    setSld(this.layer, this.sld);
+    setSld(this.layer, this.sld());
     setQml(this.layer, this.qml);
     this.changesStore.delete(getUid(this.layer));
     this.syncing = true;
@@ -794,7 +794,7 @@ export class HsStylerService {
       }
       this.layer.setStyle(style);
       const sld = await this.jsonToSld(this.styleObject);
-      this.sld = sld;
+      this.sld.set(sld);
       this.resolveSldChange();
       this.onSet.next(this.layer);
     } catch (ex) {
@@ -845,7 +845,7 @@ export class HsStylerService {
     );
     const confirmed = await dialog.waitResult();
     if (confirmed == 'yes') {
-      this.sld = defaultStyle;
+      this.sld.set(defaultStyle);
       const style = (await this.parseStyle(defaultStyle)).style;
       if (style) {
         this.layer.setStyle(style);
@@ -867,7 +867,7 @@ export class HsStylerService {
           sldVersion: this.guessSldVersion(styleString),
         });
         await sldParser.readStyle(styleString);
-        this.sld = styleString;
+        this.sld.set(styleString);
       } else if (styleFmt == 'qml') {
         const {QGISStyleParser} = await import('geostyler-qgis-parser');
         const qmlParser = new QGISStyleParser();
