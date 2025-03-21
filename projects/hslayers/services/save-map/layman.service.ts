@@ -62,7 +62,7 @@ import {
   setHsLaymanSynchronizing,
   setLaymanLayerDescriptor,
 } from 'hslayers-ng/common/extensions';
-import {normalizeSldComparisonOperators} from '../styler';
+import {normalizeSldComparisonOperators} from 'hslayers-ng/services/styler';
 
 @Injectable({
   providedIn: 'root',
