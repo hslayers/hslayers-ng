@@ -1,34 +1,68 @@
 import {
   Directive,
   EventEmitter,
+  HostListener,
   Input,
-  OnChanges,
+  OnDestroy,
   Output,
-  SimpleChanges,
 } from '@angular/core';
-import {DomSanitizer} from '@angular/platform-browser';
+import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
+
 @Directive({
   selector: '[hsDownload]',
-  standalone: false,
+  standalone: true,
 })
-export class HsDownloadDirective implements OnChanges {
+export class HsDownloadDirective implements OnDestroy {
   @Input() hsDownload = '';
   @Input() mimeType = '';
-  @Output() downloadPrepared = new EventEmitter<string>();
+  @Output() downloadPrepared = new EventEmitter<SafeResourceUrl>();
 
-  exportedHref: any;
-  constructor(private DomSanitizer: DomSanitizer) {}
+  private exportedHref: SafeResourceUrl | null = null;
+  private blobUrl: string | null = null;
 
-  ngOnChanges(changes: SimpleChanges) {
+  constructor(private domSanitizer: DomSanitizer) {}
+
+  /**
+   * Clean up any created object URLs when the directive is destroyed
+   */
+  ngOnDestroy(): void {
+    this.cleanupResources();
+  }
+
+  /**
+   * Prepare the download URL only when the user clicks
+   */
+  @HostListener('click')
+  onClick(): void {
+    this.prepareDownload();
+  }
+
+  /**
+   * Creates the Blob and object URL for download
+   */
+  prepareDownload(): void {
+    // Clean up previous resources if they exist
+    this.cleanupResources();
+
+    // Create new resources
     const data = new Blob([this.hsDownload], {type: this.mimeType});
-    const url = URL.createObjectURL(data);
-    if (this.exportedHref) {
-      URL.revokeObjectURL(this.exportedHref);
+    this.blobUrl = URL.createObjectURL(data);
+    this.exportedHref = this.domSanitizer.bypassSecurityTrustResourceUrl(
+      this.blobUrl,
+    );
+
+    // Emit the prepared URL
+    this.downloadPrepared.emit(this.exportedHref);
+  }
+
+  /**
+   * Cleanup resources to prevent memory leaks
+   */
+  private cleanupResources(): void {
+    if (this.blobUrl) {
+      URL.revokeObjectURL(this.blobUrl);
+      this.blobUrl = null;
+      this.exportedHref = null;
     }
-    this.exportedHref = this.DomSanitizer.bypassSecurityTrustResourceUrl(url);
-    //Timeout is needed, otherwise the hsDownload will be from previous digest i.e undefined
-    setTimeout(() => {
-      this.downloadPrepared.emit(this.exportedHref);
-    }, 0);
   }
 }

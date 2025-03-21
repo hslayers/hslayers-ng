@@ -9,7 +9,7 @@ import {Feature} from 'ol';
 import {Geometry} from 'ol/geom';
 import {Layer} from 'ol/layer';
 
-import {HsDownloadModule} from 'hslayers-ng/common/download';
+import {HsDownloadDirective} from 'hslayers-ng/common/download';
 import {HsFeatureCommonService, exportFormats} from '../feature-common.service';
 import {HsLayerUtilsService} from 'hslayers-ng/services/utils';
 import {HsMapService} from 'hslayers-ng/services/map';
@@ -26,7 +26,7 @@ import {getTitle} from 'hslayers-ng/common/extensions';
     AsyncPipe,
     FormsModule,
     NgbDropdownModule,
-    HsDownloadModule,
+    HsDownloadDirective,
     NgClass,
     HsQueryAttributeRowComponent,
   ],
