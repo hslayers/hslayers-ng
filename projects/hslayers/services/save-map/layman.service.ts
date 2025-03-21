@@ -62,6 +62,7 @@ import {
   setHsLaymanSynchronizing,
   setLaymanLayerDescriptor,
 } from 'hslayers-ng/common/extensions';
+import {normalizeSldComparisonOperators} from '../styler';
 
 @Injectable({
   providedIn: 'root',
@@ -501,13 +502,14 @@ export class HsLaymanService implements HsSaverService {
       layerTitle = getLaymanFriendlyLayerName(layerTitle);
     }
     setHsLaymanSynchronizing(layer, true);
+    const normalizedSld = normalizeSldComparisonOperators(getSld(layer));
     const data: UpsertLayerObject = {
       title: layerTitle,
       name: layerName,
       crs: crsSupported ? this.crs : 'EPSG:3857',
       workspace: getWorkspace(layer),
       access_rights: getAccessRights(layer),
-      style: getSld(layer) || getQml(layer),
+      style: normalizedSld || getQml(layer),
     };
     await this.makeUpsertLayerRequest(
       this.getFeatureGeoJSON(

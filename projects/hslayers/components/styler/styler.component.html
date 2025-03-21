@@ -6,7 +6,7 @@
         <i class="fa-solid fa-rotate-right"></i>
       </button>
       <extra-buttons>
-        <a class="dropdown-item" download="style.sld" [hsDownload]="hsStylerService.sld" mimeType="text/plain"
+        <a class="dropdown-item" download="style.sld" [hsDownload]="sldForDownload()" mimeType="text/plain"
           [href]="downloadData" (downloadPrepared)="downloadData = $event">
           <i class="fa-solid fa-download"></i>{{'STYLER.downloadSld' | translateHs}}
         </a>

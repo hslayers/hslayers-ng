@@ -59,6 +59,7 @@ import {
   getWfsUrl,
   getWorkspace,
 } from 'hslayers-ng/common/extensions';
+import {normalizeSldComparisonOperators} from '../styler/normalize-sld';
 
 const LOCAL_STORAGE_EXPIRE = 5000;
 
@@ -403,7 +404,7 @@ export class HsSaveMapService {
       json.minResolution = layer.getMinResolution();
       json.projection = this.hsMapService.getCurrentProj().getCode();
       if (getSld(layer) != undefined) {
-        json.style = getSld(layer);
+        json.style = normalizeSldComparisonOperators(getSld(layer));
       } else if (getQml(layer) != undefined) {
         json.style = getQml(layer);
       } else {
