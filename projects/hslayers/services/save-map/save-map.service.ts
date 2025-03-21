@@ -59,7 +59,7 @@ import {
   getWfsUrl,
   getWorkspace,
 } from 'hslayers-ng/common/extensions';
-import {normalizeSldComparisonOperators} from '../styler/normalize-sld';
+import {normalizeSldComparisonOperators} from 'hslayers-ng/services/styler';
 
 const LOCAL_STORAGE_EXPIRE = 5000;
 
