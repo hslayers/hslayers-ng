@@ -8,7 +8,7 @@ import {Geometry} from 'ol/geom';
 
 import {HsConfirmDialogComponent} from 'hslayers-ng/common/confirm';
 import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
-import {HsDownloadModule} from 'hslayers-ng/common/download';
+import {HsDownloadDirective} from 'hslayers-ng/common/download';
 import {HsFeatureCommonService, exportFormats} from '../feature-common.service';
 import {
   HsQueryBaseService,
@@ -26,7 +26,7 @@ import {getTitle} from 'hslayers-ng/common/extensions';
     AsyncPipe,
     FormsModule,
     NgbDropdownModule,
-    HsDownloadModule,
+    HsDownloadDirective,
     NgClass,
     NgStyle,
     HsQueryFeatureComponent,

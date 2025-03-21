@@ -3,7 +3,7 @@ import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 
 import {HsClearLayerComponent} from './widgets/clear-layer.component';
-import {HsDownloadModule} from 'hslayers-ng/common/download';
+import {HsDownloadDirective} from 'hslayers-ng/common/download';
 import {HsDynamicTextComponent} from './widgets/dynamic-text.component';
 import {HsFeatureInfoComponent} from './widgets/feature-info.component';
 import {HsLayerNameComponent} from './widgets/layer-name.component';
@@ -30,7 +30,7 @@ import {TranslateCustomPipe} from 'hslayers-ng/services/language';
     HsPanelHelpersModule,
     FormsModule,
     TranslateCustomPipe,
-    HsDownloadModule,
+    HsDownloadDirective,
     HsPanelHeaderComponent,
   ],
   exports: [
