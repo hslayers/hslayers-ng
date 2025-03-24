@@ -102,6 +102,26 @@ export const normalizeSldComparisonOperators = (sld: string): string => {
     parts.push(sld.substring(lastIndex));
   }
 
-  // Join all parts to form the final result
-  return parts.join('');
+  // Join all parts to form the intermediate result
+  let result = parts.join('');
+
+  // Add ElseFilter to the last rule if it doesn't have a filter
+  const ruleRegex = /<se:Rule[^>]*>([\s\S]*?)<\/se:Rule>/g;
+  const rules = result.match(ruleRegex);
+  
+  if (rules && rules.length > 0) {
+    const lastRule = rules[rules.length - 1];
+    if (!lastRule.includes('<se:Filter') && !lastRule.includes('<Filter')) {
+      // Find the position of the last rule's closing tag
+      const lastRuleEndIndex = result.lastIndexOf('</se:Rule>');
+      if (lastRuleEndIndex !== -1) {
+        // Insert ElseFilter specifically before the last rule's closing tag
+        result = result.slice(0, lastRuleEndIndex) + 
+                 '<se:ElseFilter xmlns:se="http://www.opengis.net/se"/>' + 
+                 result.slice(lastRuleEndIndex);
+      }
+    }
+  }
+
+  return result;
 };
