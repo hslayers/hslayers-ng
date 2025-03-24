@@ -23,7 +23,7 @@ import {
   HsLayerSynchronizerService,
   HsSaveMapService,
 } from 'hslayers-ng/services/save-map';
-import {HsLayerUtilsService, HsUtilsService} from 'hslayers-ng/services/utils';
+import {HsLayerUtilsService, HsUtilsService, normalizeSldComparisonOperators} from 'hslayers-ng/services/utils';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsLayoutServiceMock} from './layout.service.mock';
 import {HsMapService} from 'hslayers-ng/services/map';
@@ -31,10 +31,7 @@ import {HsMapServiceMock} from './map.service.mock';
 import {HsQueryVectorService} from 'hslayers-ng/services/query';
 import {HsSaveMapServiceMock} from './save-map.service.mock';
 import {HsStylerComponent} from 'hslayers-ng/components/styler';
-import {
-  HsStylerService,
-  normalizeSldComparisonOperators,
-} from 'hslayers-ng/services/styler';
+import {HsStylerService} from 'hslayers-ng/services/styler';
 import {HsUtilsServiceMock} from './utils/utils.service.mock';
 import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 

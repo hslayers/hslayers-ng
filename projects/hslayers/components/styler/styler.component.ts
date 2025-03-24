@@ -10,14 +10,11 @@ import {Source, Vector as VectorSource} from 'ol/source';
 
 import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
-import {HsLayerUtilsService, HsUtilsService} from 'hslayers-ng/services/utils';
+import {HsLayerUtilsService, HsUtilsService, normalizeSldComparisonOperators} from 'hslayers-ng/services/utils';
 import {HsPanelBaseComponent} from 'hslayers-ng/common/panels';
 import {HsSaveMapService} from 'hslayers-ng/services/save-map';
 import {HsStylerEditDialogComponent} from './edit-dialog/edit-dialog.component';
-import {
-  HsStylerService,
-  normalizeSldComparisonOperators,
-} from 'hslayers-ng/services/styler';
+import {HsStylerService} from 'hslayers-ng/services/styler';
 import {HsUploadedFiles} from 'hslayers-ng/common/upload';
 
 @Component({

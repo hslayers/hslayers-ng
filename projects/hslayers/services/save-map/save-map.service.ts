@@ -35,7 +35,7 @@ import {
   StatusData,
   UserData,
 } from 'hslayers-ng/types';
-import {HsLayerUtilsService, HsUtilsService} from 'hslayers-ng/services/utils';
+import {HsLayerUtilsService, HsUtilsService, normalizeSldComparisonOperators} from 'hslayers-ng/services/utils';
 import {HsLogService} from 'hslayers-ng/services/log';
 import {HsMapService} from 'hslayers-ng/services/map';
 import {HsShareThumbnailService} from 'hslayers-ng/services/share';
@@ -59,7 +59,6 @@ import {
   getWfsUrl,
   getWorkspace,
 } from 'hslayers-ng/common/extensions';
-import {normalizeSldComparisonOperators} from 'hslayers-ng/services/styler';
 
 const LOCAL_STORAGE_EXPIRE = 5000;
 
