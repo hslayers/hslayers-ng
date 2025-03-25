@@ -1,6 +1,7 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {FormsModule} from '@angular/forms';
+import {NgTemplateOutlet} from '@angular/common';
 import {Observable, catchError, lastValueFrom, map, of, switchMap} from 'rxjs';
 
 import {AccessRightsModel, HsEndpoint} from 'hslayers-ng/types';
@@ -9,7 +10,6 @@ import {HsLogService} from 'hslayers-ng/services/log';
 import {LaymanUser} from '../types/layman-user.type';
 import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 import {FilterPipe} from 'hslayers-ng/common/pipes';
-import {NgTemplateOutlet} from '@angular/common';
 
 export enum GrantingOptions {
   PERUSER = 'perUser',
@@ -97,9 +97,11 @@ export class HsCommonLaymanAccessRightsComponent implements OnInit {
       )
         ? GrantingOptions.PERROLE
         : GrantingOptions.PERUSER;
-      this.currentOption === GrantingOptions.PERUSER
-        ? this.getAllUsers()
-        : this.getRoles();
+      if (this.currentOption === GrantingOptions.PERUSER) {
+        this.getAllUsers();
+      } else {
+        this.getRoles();
+      }
     }
   }
 
