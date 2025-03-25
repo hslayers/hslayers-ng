@@ -26,7 +26,6 @@ import {
   AsyncUpload,
   FileDataObject,
   FileFormData,
-  HsEndpoint,
   HsLaymanLayerDescriptor,
   OverwriteResponse,
   VectorDataObject,
@@ -508,7 +507,7 @@ export class HsAddDataCommonFileService extends HsAddDataCommonFileServiceParams
     ]);
     if (descriptor?.file.error) {
       const error = descriptor.file.error;
-      const msg = error?.detail.message ?? error.message;
+      const msg = error?.detail?.message ?? error.message;
       this.hsToastService.createToastPopupMessage(
         this.hsLanguageService.getTranslation(
           'ADDLAYERS.ERROR.someErrorHappened',
