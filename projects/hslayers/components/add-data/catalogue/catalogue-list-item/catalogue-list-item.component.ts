@@ -1,4 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
+import {NgClass, NgStyle} from '@angular/common';
 
 import {
   HsAddDataCatalogueService,
@@ -15,7 +16,6 @@ import {HsLogService} from 'hslayers-ng/services/log';
 import {HsRemoveLayerDialogService} from 'hslayers-ng/common/remove-multiple';
 import {HsSetPermissionsDialogComponent} from 'hslayers-ng/common/dialog-set-permissions';
 import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
-import {NgClass, NgStyle} from '@angular/common';
 import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 
 @Component({
@@ -101,9 +101,9 @@ export class HsCatalogueListItemComponent implements OnInit {
       /**
        * Add another type allowing user to choose image source type
        */
-      availableTypes.includes('WMS')
-        ? availableTypes.splice(1, 0, 'WMTS')
-        : availableTypes;
+      if (availableTypes.includes('WMS')) {
+        availableTypes.splice(1, 0, 'WMTS');
+      }
       this.whatToAddTypes = availableTypes;
     }
 
