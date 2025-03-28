@@ -91,7 +91,7 @@
     "rxjs": "^7.8.2",
     "share-api-polyfill": "^1.1.1",
     "tslib": "^2.8.1",
-    "vega": "5.25.0",
+    "vega": "6.0.0",
     "vega-embed": "6.29.0",
     "vega-lite": "~5.23.0",
     "xml-js": "^1.6.11",
