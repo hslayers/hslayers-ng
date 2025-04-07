@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, computed, input, Input, OnInit} from '@angular/core';
 import {NgClass, NgStyle} from '@angular/common';
 
 import {
@@ -6,6 +6,7 @@ import {
   HsLaymanBrowserService,
 } from 'hslayers-ng/services/add-data';
 import {
+  HsAddDataHsLaymanLayerDescriptor,
   HsAddDataLayerDescriptor,
   HsEndpoint,
   WhatToAddDescriptor,
@@ -31,8 +32,24 @@ import {TranslateCustomPipe} from 'hslayers-ng/services/language';
   ],
   imports: [NgClass, NgStyle, TranslateCustomPipe],
 })
-export class HsCatalogueListItemComponent implements OnInit {
-  @Input() layer: HsAddDataLayerDescriptor;
+export class HsCatalogueListItemComponent {
+  layer = input<HsAddDataLayerDescriptor>();
+
+  title = computed(() => this.layer().title);
+  abstract = computed(() => {
+    const layer = this.layer();
+    const hasAbstract = layer['abstract'];
+    return hasAbstract ? layer['abstract'] : '';
+  });
+
+  //** Layers wfsWmsStatus is AVAILABLE  */
+  layerAvailable = computed(() => {
+    const layer = this.layer();
+    return (
+      layer.endpoint.type === 'micka' || layer.wfsWmsStatus === 'AVAILABLE'
+    );
+  });
+
   explanationsVisible: boolean;
   metadata;
   selectTypeToAddLayerVisible: boolean;
@@ -42,8 +59,6 @@ export class HsCatalogueListItemComponent implements OnInit {
 
   loadingMetadata = false;
 
-  //** Layers wfsWmsStatus is AVAILABLE  */
-  layerAvailable: boolean;
   constructor(
     private hsDatasourcesMetadataService: HsCatalogueMetadataService,
     public hsAddDataCatalogueService: HsAddDataCatalogueService,
@@ -54,19 +69,13 @@ export class HsCatalogueListItemComponent implements OnInit {
     private hsCommonLaymanService: HsCommonLaymanService,
   ) {}
 
-  ngOnInit() {
-    this.layerAvailable =
-      this.layer.endpoint.type === 'micka' ||
-      this.layer.wfsWmsStatus === 'AVAILABLE';
-  }
-
   /**
    * Toggle add layer options
    */
-  toggleAddOptions(endpoint: HsEndpoint, layer: HsAddDataLayerDescriptor) {
+  toggleAddOptions() {
     if (!this.selectTypeToAddLayerVisible) {
       this.loadingInfo = true;
-      this.describeCatalogueLayer(endpoint, layer);
+      this.describeCatalogueLayer(this.layer().endpoint, this.layer());
       return;
     }
     this.abortAdd();
@@ -123,11 +132,12 @@ export class HsCatalogueListItemComponent implements OnInit {
    */
   async selectTypeAndAdd(type: string, event: MouseEvent) {
     event.preventDefault();
+    const layer = this.layer();
     if (!this.whatToAdd) {
       this.whatToAdd =
         await this.hsAddDataCatalogueService.describeCatalogueLayer(
-          this.layer.endpoint,
-          this.layer,
+          layer.endpoint,
+          layer,
         );
     }
     if (!this.whatToAdd.type || this.whatToAdd.type === 'none') {
@@ -136,12 +146,12 @@ export class HsCatalogueListItemComponent implements OnInit {
     }
     this.whatToAdd.type = type === 'WMS' || type === 'WMTS' ? 'WMS' : type;
     this.hsAddDataCatalogueService.addLayerToMap(
-      this.layer.endpoint,
+      layer.endpoint,
+      layer,
+      this.whatToAdd as WhatToAddDescriptor<string>,
       {
-        ...this.layer,
         useTiles: type === 'WMTS',
       },
-      this.whatToAdd as WhatToAddDescriptor<string>,
     );
   }
 
@@ -154,16 +164,15 @@ export class HsCatalogueListItemComponent implements OnInit {
    * @param endpoint - Datasource of selected layer
    * @param layer - Metadata record of selected layer
    */
-  async showMetadata(
-    endpoint: HsEndpoint,
-    layer: HsAddDataLayerDescriptor,
-  ): Promise<void> {
+  async showMetadata(): Promise<void> {
+    const layer = this.layer();
+    const endpoint = layer.endpoint;
     let layerWithMetadata;
     if (endpoint.type.includes('layman')) {
       this.loadingMetadata = true;
       layerWithMetadata = await this.hsLaymanBrowserService.fillLayerMetadata(
         endpoint,
-        layer,
+        layer as HsAddDataHsLaymanLayerDescriptor,
       );
     }
     //this.metadata = this.hsDatasourcesMetadataService.decomposeMetadata(layer);
@@ -172,8 +181,11 @@ export class HsCatalogueListItemComponent implements OnInit {
       '../catalogue-metadata/catalogue-metadata.component'
     );
     this.hsDialogContainerService.create(HsCatalogueMetadataComponent, {
-      selectedLayer: layerWithMetadata || layer,
-      selectedDS: endpoint,
+      data: {
+        selectedLayer: layerWithMetadata || layer,
+        selectedDS: endpoint,
+      },
+      signalInput: true,
     });
     this.loadingMetadata = false;
   }
@@ -182,7 +194,8 @@ export class HsCatalogueListItemComponent implements OnInit {
    * Show permissions dialog window for selected layer.
    * @param layer - Metadata record of selected layer
    */
-  async showPermissions(layer: HsAddDataLayerDescriptor): Promise<void> {
+  async showPermissions(): Promise<void> {
+    const layer = this.layer();
     if (!this.hsCommonLaymanService.isAuthenticated()) {
       return;
     }
@@ -210,7 +223,8 @@ export class HsCatalogueListItemComponent implements OnInit {
    * Removes selected drawing layer from both Layermanager and Layman
    * @param layer - Metadata record of selected layer
    */
-  async removeLayer(layer: HsAddDataLayerDescriptor): Promise<void> {
+  async removeLayer(): Promise<void> {
+    const layer = this.layer();
     if (!layer.editable) {
       return;
     }
