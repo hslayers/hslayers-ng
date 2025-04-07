@@ -6,7 +6,9 @@ import {Observable, Subject, debounceTime, forkJoin} from 'rxjs';
 
 import {
   DatasetType,
+  HsAddDataHsLaymanLayerDescriptor,
   HsAddDataLayerDescriptor,
+  HsAddDataMickaLayerDescriptor,
   HsEndpoint,
   WhatToAddDescriptor,
 } from 'hslayers-ng/types';
@@ -24,6 +26,13 @@ import {HsMapService} from 'hslayers-ng/services/map';
 import {HsMickaBrowserService} from './micka.service';
 import {HsUtilsService} from 'hslayers-ng/services/utils';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
+
+/**
+ * Options for adding catalogue layer to map
+ */
+export type AddCatalogueLayerOptions = {
+  useTiles?: boolean;
+};
 
 class HsAddDataCatalogueParams {
   data: any = {
@@ -390,11 +399,14 @@ export class HsAddDataCatalogueService extends HsAddDataCatalogueParams {
   ): Promise<WhatToAddDescriptor> {
     let whatToAdd: WhatToAddDescriptor;
     if (ds.type == 'micka') {
-      whatToAdd = await this.hsMickaBrowserService.describeWhatToAdd(ds, layer);
+      whatToAdd = await this.hsMickaBrowserService.describeWhatToAdd(
+        ds,
+        layer as HsAddDataMickaLayerDescriptor,
+      );
     } else if (ds.type.includes('layman')) {
       whatToAdd = await this.hsLaymanBrowserService.describeWhatToAdd(
         ds,
-        layer,
+        layer as HsAddDataHsLaymanLayerDescriptor,
       );
     } else {
       whatToAdd = {type: 'none'};
@@ -412,6 +424,7 @@ export class HsAddDataCatalogueService extends HsAddDataCatalogueParams {
     ds: HsEndpoint,
     layer: HsAddDataLayerDescriptor,
     whatToAdd: WhatToAddDescriptor<string>,
+    options: AddCatalogueLayerOptions = {useTiles: true},
   ): Promise<void> {
     if (whatToAdd.type == 'WMS') {
       whatToAdd.link = Array.isArray(whatToAdd.link)
@@ -430,7 +443,7 @@ export class HsAddDataCatalogueService extends HsAddDataCatalogueParams {
               : whatToAdd.name
             : undefined,
         layerOptions: {
-          useTiles: layer.useTiles ?? true,
+          useTiles: options.useTiles,
         },
       });
     } else if (whatToAdd.type == 'WFS') {
