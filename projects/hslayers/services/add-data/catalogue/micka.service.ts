@@ -10,7 +10,7 @@ import {
   EndpointErrorHandling,
   HsEndpoint,
   isErrorHandlerFunction,
-  HsAddDataLayerDescriptor,
+  HsAddDataMickaLayerDescriptor,
 } from 'hslayers-ng/types';
 import {HsLanguageService} from 'hslayers-ng/services/language';
 import {HsLogService} from 'hslayers-ng/services/log';
@@ -43,35 +43,35 @@ export class HsMickaBrowserService {
    * Use all query params (search text, bbox, params.., sorting, start)
    */
   queryCatalog(
-    dataset: HsEndpoint,
+    endpoint: HsEndpoint,
     data,
     extentFeatureCreated,
     textField: string,
   ): any {
-    const url = this.createRequestUrl(dataset, data, textField);
-    dataset.datasourcePaging.loaded = false;
+    const url = this.createRequestUrl(endpoint, data, textField);
+    endpoint.datasourcePaging.loaded = false;
 
-    dataset.httpCall = this.http
+    endpoint.httpCall = this.http
       .get(url, {
         responseType: 'json',
       })
       .pipe(
         timeout(5000),
         map((x: any) => {
-          x.dataset = dataset;
+          x.endpoint = endpoint;
           x.extentFeatureCreated = extentFeatureCreated;
           this.datasetsReceived(x);
           return x;
         }),
         catchError((e) => {
-          if (isErrorHandlerFunction(dataset.onError?.compositionLoad)) {
-            (<EndpointErrorHandler>dataset.onError?.compositionLoad).handle(
-              dataset,
+          if (isErrorHandlerFunction(endpoint.onError?.compositionLoad)) {
+            (<EndpointErrorHandler>endpoint.onError?.compositionLoad).handle(
+              endpoint,
               e,
             );
             return of(e);
           }
-          switch (dataset.onError?.compositionLoad) {
+          switch (endpoint.onError?.compositionLoad) {
             case EndpointErrorHandling.ignore:
               break;
             case EndpointErrorHandling.toast:
@@ -81,7 +81,7 @@ export class HsMickaBrowserService {
                   'ADDLAYERS.ERROR.errorWhileRequestingLayers',
                   undefined,
                 ),
-                dataset.title +
+                endpoint.title +
                   ': ' +
                   this.hsLanguageService.getTranslationIgnoreNonExisting(
                     'ERRORMESSAGES',
@@ -94,15 +94,15 @@ export class HsMickaBrowserService {
                 },
               );
           }
-          dataset.datasourcePaging.loaded = true;
+          endpoint.datasourcePaging.loaded = true;
           return of(e);
         }),
       );
     // .subscribe(()=>{console.log('sub')});
-    return dataset.httpCall;
+    return endpoint.httpCall;
   }
 
-  private createRequestUrl(dataset, data, textField) {
+  private createRequestUrl(endpoint: HsEndpoint, data, textField) {
     const query = data.query;
     const b = transformExtent(
       this.hsMapService
@@ -140,16 +140,16 @@ export class HsMickaBrowserService {
       })
       .join(' AND ');
     const url =
-      dataset.url +
+      endpoint.url +
       '?' +
       this.hsUtilsService.paramsToURL({
         request: 'GetRecords',
         format: 'application/json',
-        language: dataset.language,
+        language: endpoint.language,
         query: sql,
         sortby: sortBy,
-        limit: dataset.datasourcePaging.limit,
-        start: dataset.datasourcePaging.start,
+        limit: endpoint.datasourcePaging.limit,
+        start: endpoint.datasourcePaging.start,
         validservice: '>0',
       });
     return this.hsUtilsService.proxify(url);
@@ -160,22 +160,23 @@ export class HsMickaBrowserService {
    * Callback for catalogue http query
    */
   private datasetsReceived(data): boolean {
-    if (!data.dataset || !data.extentFeatureCreated) {
+    if (!data.endpoint || !data.extentFeatureCreated) {
       return;
     }
-    const dataset = data.dataset;
-    dataset.loading = false;
-    dataset.layers = [];
-    dataset.datasourcePaging.loaded = true;
+    const endpoint = data.endpoint;
+    endpoint.loading = false;
+    endpoint.layers = [];
+    endpoint.datasourcePaging.loaded = true;
     if (data.records.length == 0) {
-      dataset.datasourcePaging.matched = 0;
+      endpoint.datasourcePaging.matched = 0;
       return false;
     }
-    dataset.datasourcePaging.matched = data.matched;
-    dataset.datasourcePaging.next = data.next;
+    endpoint.datasourcePaging.matched = data.matched;
+    endpoint.datasourcePaging.next = data.next;
 
     for (const lyr of data.records) {
-      dataset.layers.push(lyr);
+      lyr.name = lyr.title;
+      endpoint.layers.push(lyr);
       if (data.extentFeatureCreated) {
         const extentFeature = addExtentFeature(
           lyr,
@@ -229,7 +230,7 @@ export class HsMickaBrowserService {
    * property of record in older Micka versions
    * in a common format for use in add-layers component
    */
-  getLayerLink(layer, type?: string): string {
+  getLayerLink(layer: HsAddDataMickaLayerDescriptor, type?: string): string {
     if (layer.links?.length > 0) {
       if (type) {
         layer.links = layer.links.filter(
@@ -243,9 +244,6 @@ export class HsMickaBrowserService {
         return layer.links[0].url;
       }
       return layer.links[0];
-    }
-    if (layer.link) {
-      return layer.link;
     }
     this.log.warn('Layer does not contain any links or link properties');
   }
@@ -293,7 +291,7 @@ export class HsMickaBrowserService {
    */
   async describeWhatToAdd(
     ds: HsEndpoint,
-    layer: HsAddDataLayerDescriptor,
+    layer: HsAddDataMickaLayerDescriptor,
   ): Promise<any> {
     let whatToAdd: any = {type: 'none'};
     const type = layer.type || layer.trida;

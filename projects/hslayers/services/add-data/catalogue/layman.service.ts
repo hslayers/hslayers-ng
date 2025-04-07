@@ -11,8 +11,8 @@ import {
   EndpointErrorHandling,
   HsEndpoint,
   isErrorHandlerFunction,
-  HsAddDataLayerDescriptor,
   HsLaymanLayerDescriptor,
+  HsAddDataHsLaymanLayerDescriptor,
 } from 'hslayers-ng/types';
 import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
 import {HsLanguageService} from 'hslayers-ng/services/language';
@@ -21,6 +21,17 @@ import {HsMapService} from 'hslayers-ng/services/map';
 import {HsToastService} from 'hslayers-ng/common/toast';
 import {HsUtilsService} from 'hslayers-ng/services/utils';
 import {addExtentFeature} from 'hslayers-ng/common/utils';
+import {HsLaymanGetLayer} from 'hslayers-ng/types/layman/get-layers.interface';
+
+/**
+ * Layman GET /layers response wrapper with custom HSLayers properties
+ */
+export interface HsLaymanGetLayersWrapper {
+  endpoint?: HsEndpoint;
+  extentFeatureCreated?: (feature: Feature<Geometry>) => void;
+  matched?: number;
+  datasets?: HsLaymanGetLayer[];
+}
 
 @Injectable({providedIn: 'root'})
 export class HsLaymanBrowserService {
@@ -93,7 +104,7 @@ export class HsLaymanBrowserService {
     }
 
     endpoint.httpCall = this.http
-      .get(url, {
+      .get<HsLaymanGetLayer[]>(url, {
         observe: 'response',
         withCredentials: loggedIn,
         responseType: 'json',
@@ -101,19 +112,21 @@ export class HsLaymanBrowserService {
       })
       .pipe(
         timeout(5000),
-        map((x: any) => {
+        map((x) => {
+          const data: HsLaymanGetLayersWrapper = {};
           if (Array.isArray(x.body)) {
-            x.body.dataset = endpoint;
-            x.body.extentFeatureCreated = extentFeatureCreated;
-            x.body.matched = x.headers.get('x-total-count')
-              ? x.headers.get('x-total-count')
+            data.datasets = x.body;
+            data.endpoint = endpoint;
+            data.extentFeatureCreated = extentFeatureCreated;
+            data.matched = x.headers.get('x-total-count')
+              ? parseInt(x.headers.get('x-total-count'))
               : x.body.length;
-            this.datasetsReceived(x.body);
+            this.datasetsReceived(data);
           } else {
             this.hsCommonLaymanService.displayLaymanError(
               endpoint,
               'ADDLAYERS.ERROR.errorWhileRequestingLayers',
-              x.body,
+              x.body as any,
             );
           }
           return x.body;
@@ -160,11 +173,12 @@ export class HsLaymanBrowserService {
    * (PRIVATE) Callback for catalogue http query
    * @param data - HTTP response containing all the layers
    */
-  private datasetsReceived(data): void {
-    if (!data.dataset) {
+  private datasetsReceived(data: HsLaymanGetLayersWrapper): void {
+    const endpoint = data.endpoint;
+    if (!endpoint) {
       this.hsToastService.createToastPopupMessage(
         this.hsLanguageService.getTranslation('COMMON.warning', undefined),
-        data.dataset.title +
+        endpoint.title +
           ': ' +
           this.hsLanguageService.getTranslation(
             'COMMON.noDataReceived',
@@ -178,20 +192,18 @@ export class HsLaymanBrowserService {
       );
       return;
     }
-    const dataset = data.dataset;
-    dataset.loading = false;
-    dataset.layers = [];
-    dataset.datasourcePaging.loaded = true;
-    if (!data.length) {
-      dataset.datasourcePaging.matched = 0;
+    endpoint.loading = false;
+    endpoint.layers = [];
+    endpoint.datasourcePaging.loaded = true;
+    if (!data.datasets.length) {
+      endpoint.datasourcePaging.matched = 0;
     } else {
-      dataset.datasourcePaging.matched = parseInt(data.matched);
-      dataset.layers = data.map((layer) => {
-        const tmp = {
+      endpoint.datasourcePaging.matched = data.matched;
+      endpoint.layers = data.datasets.map((layer) => {
+        const tmp: HsAddDataHsLaymanLayerDescriptor = {
           title: layer.title,
           name: layer.name,
           id: layer.uuid,
-          featureId: layer.featureId,
           highlighted: false,
           workspace: layer.workspace,
           access_rights: layer.access_rights,
@@ -208,7 +220,7 @@ export class HsLaymanBrowserService {
             this.hsMapService.getCurrentProj(),
           );
           if (extentFeature) {
-            tmp.featureId = extentFeature.getId();
+            tmp.featureId = extentFeature.getId() as string;
             data.extentFeatureCreated(extentFeature);
           }
         }
@@ -225,11 +237,11 @@ export class HsLaymanBrowserService {
    */
   async fillLayerMetadata(
     endpoint: HsEndpoint,
-    layer: HsAddDataLayerDescriptor,
-  ): Promise<HsAddDataLayerDescriptor> {
+    layer: HsAddDataHsLaymanLayerDescriptor,
+  ): Promise<HsAddDataHsLaymanLayerDescriptor> {
     const url = `${endpoint.url}/rest/workspaces/${layer.workspace}/layers/${layer.name}`;
     try {
-      const data = await lastValueFrom(
+      const data: HsLaymanLayerDescriptor = await lastValueFrom(
         this.http
           .get<HsLaymanLayerDescriptor>(url, {
             //timeout: endpoint.canceler.promise,
@@ -258,11 +270,13 @@ export class HsLaymanBrowserService {
         return;
       }
 
-      layer.type =
-        data?.file?.file_type === 'raster' ? ['WMS'] : ['WMS', 'WFS'];
+      layer.type = data?.geodata_type === 'vector' ? ['WMS', 'WFS'] : ['WMS'];
       layer = {...layer, ...data};
       if (layer.thumbnail) {
-        layer.thumbnail = endpoint.url + layer.thumbnail.url;
+        /**
+         * TODO LAYMAN: look forr rhumbnail in object not string
+         */
+        layer.thumbnail.url = endpoint.url + layer.thumbnail.url;
       }
       return layer;
     } catch (e) {
@@ -279,7 +293,7 @@ export class HsLaymanBrowserService {
    */
   async describeWhatToAdd(
     ds: HsEndpoint,
-    layer: HsAddDataLayerDescriptor,
+    layer: HsAddDataHsLaymanLayerDescriptor,
   ): Promise<any> {
     const lyr = await this.fillLayerMetadata(ds, layer);
     if (!lyr) {

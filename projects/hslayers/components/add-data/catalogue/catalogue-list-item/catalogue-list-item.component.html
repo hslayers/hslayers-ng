@@ -1,19 +1,19 @@
+@let editable = layer().editable;
 <div class="d-flex flex-column" [class.disabled]="!layerAvailable">
   <div style=" display: flex; justify-content: space-between;">
-    <a class="hs-catalogue-list-item-title" data-toggle="tooltip" [title]="layer.abstract || ''">{{layer.title ||
-      layer.abstract}}</a>
+    <a class="hs-catalogue-list-item-title" data-toggle="tooltip" [title]="abstract()">{{title() ||
+      abstract()}}</a>
     <!-- STATUS BADGE -->
     @if (loadingMetadata) {
     <span class="pe-2 hs-loader hs-loader-dark"></span>
     }
     @if (!layerAvailable) {
-    <span class="badge rounded-pill w-auto" [ngClass]="{
-            'bg-danger':layer.wfsWmsStatus === 'NOT_AVAILABLE',
-            'bg-warning':layer.wfsWmsStatus === 'PREPARING'
-        }"> {{layer.wfsWmsStatus | translateHs:{ 'module' :'COMMON'} }}</span>
+    <span class="badge rounded-pill w-auto" [class.bg-danger]="layer().wfsWmsStatus === 'NOT_AVAILABLE'"
+      [class.bg-warning]="layer().wfsWmsStatus === 'PREPARING'"> {{layer().wfsWmsStatus | translateHs:{ 'module'
+      :'COMMON'} }}</span>
     }
   </div>
-  @if (hsAddDataCatalogueService.selectedLayer?.id === layer.id) {
+  @if (hsAddDataCatalogueService.selectedLayer?.id === layer().id) {
   <div class="hs-catalogue-item-body d-flex flex-column w-100 justify-content-around mt-2">
     <div class="d-flex flex-row justify-content-around align-items-end">
       <div class="btn-group" (click)="$event.stopPropagation()">
@@ -28,28 +28,28 @@
         @if (layerAvailable) {
         <div class="btn-group" role="group">
           <button type="button" class="btn btn-sm dropdown-toggle-split btn-outline-primary border-0 dropdown-toggle"
-            (click)="$event.stopPropagation();toggleAddOptions(layer.endpoint, layer)">
+            (click)="$event.stopPropagation();toggleAddOptions()">
           </button>
         </div>
         }
       </div>
-      <a class="btn btn-sm border-0" (click)="showMetadata(layer.endpoint, layer)">
+      <a class="btn btn-sm border-0" (click)="showMetadata()">
         <i class="fa-solid fa-circle-info icon-primary"></i><span class="ms-1">{{'COMMON.metadata' |
           translateHs }}</span>
       </a>
-      <a class="btn btn-sm border-0" (click)="$event.stopPropagation();showPermissions(layer)" data-toggle="tooltip"
+      <a class="btn btn-sm border-0" (click)="$event.stopPropagation();showPermissions()" data-toggle="tooltip"
         data-placement="bottom"
-        [title]="layer.editable ? '' : 'DATASOURCE_SELECTOR.datasourceListItem.notAllowedToEditLayer' | translateHs ">
-        <i class="fa-solid fa-lock icon-primary" [ngClass]="{'text-muted': !layer.editable}"
-          [ngStyle]="{'cursor' : layer.editable ? 'pointer' : 'default'}"></i>@if (layer.editable) {
+        [title]="layer().editable ? '' : 'DATASOURCE_SELECTOR.datasourceListItem.notAllowedToEditLayer' | translateHs ">
+        <i class="fa-solid fa-lock icon-primary" [ngClass]="{'text-muted': !layer().editable}"
+          [ngStyle]="{'cursor' : layer().editable ? 'pointer' : 'default'}"></i>@if (layer().editable) {
         <span class="ms-1">{{'COMMON.setPermissions' | translateHs }}</span>
         }
       </a>
-      <a class="btn btn-sm border-0" (click)="$event.stopPropagation();removeLayer(layer)" data-toggle="tooltip"
+      <a class="btn btn-sm border-0" (click)="$event.stopPropagation();removeLayer()" data-toggle="tooltip"
         data-placement="bottom"
-        [title]="layer.editable ? '' : 'DATASOURCE_SELECTOR.datasourceListItem.notAllowedToEditLayer' | translateHs ">
-        <i class="fa-solid fa-trash text-danger" [ngClass]="layer.editable ? 'text-danger' : 'text-muted'"
-          [ngStyle]="{'cursor' : layer.editable ? 'pointer' : 'default'}"></i>@if (layer.editable) {
+        [title]="editable ? '' : 'DATASOURCE_SELECTOR.datasourceListItem.notAllowedToEditLayer' | translateHs ">
+        <i class="fa-solid fa-trash text-danger" [ngClass]="editable ? 'text-danger' : 'text-muted'"
+          [ngStyle]="{'cursor' : editable ? 'pointer' : 'default'}"></i>@if (editable) {
         <span class="ms-1">{{'COMMON.removeLayer' | translateHs }}</span>
         }
       </a>
@@ -57,10 +57,10 @@
   </div>
   }
   <div class="d-none">
-    <div class="p-0" [hidden]='hsAddDataCatalogueService.layerDownload(layer.endpoint,layer) === "#"'>
+    <div class="p-0" [hidden]='hsAddDataCatalogueService.layerDownload(layer().endpoint,layer()) === "#"'>
       <!-- TODO: Remove function call from template -->
       <a class="btn btn-sm border-0 btn-secondary"
-        [href]='hsAddDataCatalogueService.layerDownload(layer.endpoint, layer)' data-toggle="tooltip"
+        [href]='hsAddDataCatalogueService.layerDownload(layer().endpoint, layer())' data-toggle="tooltip"
         [title]="'COMMON.download' | translateHs "><i class="fa-solid fa-download"></i></a>
     </div>
   </div>
@@ -71,7 +71,7 @@
     &emsp;{{'ADDDATA.CATALOGUE.loading' | translateHs }}
   </div>
   <div class="card bg-light align-items-center"
-    [hidden]="!selectTypeToAddLayerVisible || loadingInfo || hsAddDataCatalogueService.selectedLayer?.id !== layer.id">
+    [hidden]="!selectTypeToAddLayerVisible || loadingInfo || hsAddDataCatalogueService.selectedLayer?.id !== layer().id">
     <div class="d-flex flex-row justify-content-between align-items-center w-100">
       <div class="px-3 py-2">
         <span class="btn btn-sm disabled border-0" disabled="true" aria-disabled="true">{{
