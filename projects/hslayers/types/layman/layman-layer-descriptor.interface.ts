@@ -1,5 +1,5 @@
-import { StatusStateType } from './status-state.type';
-
+import {StatusStateType} from './status-state.type';
+import {HsLaymanLayerBase} from './layman-layer-base.interface';
 
 export type LaymanGetWorkspaceLayerTime = {
   units: string;
@@ -16,29 +16,25 @@ export type LaymanGetWorkspaceLayerTypeResponse = {
   name?: string;
 };
 
-export type LaymanGetWorkspaceLayerTypeWms = LaymanGetWorkspaceLayerTypeResponse
-export type LaymanGetWorkspaceLayerTypeWfs = LaymanGetWorkspaceLayerTypeResponse & {
-  /**
- * Available only for time-series layers
+export type LaymanGetWorkspaceLayerTypeWms =
+  LaymanGetWorkspaceLayerTypeResponse;
+export type LaymanGetWorkspaceLayerTypeWfs =
+  LaymanGetWorkspaceLayerTypeResponse & {
+    /**
+     * Available only for time-series layers
+     */
+    time?: LaymanGetWorkspaceLayerTime;
+  };
+
+/**
+ * Layer type for GET /layers/{id} response object
+ * Extends base properties using HsLaymanGetLayer
  */
-  time?: LaymanGetWorkspaceLayerTime;
-};
-
-export type LaymanGetWorkspaceLayerMap = {
-  name: string;
-  workspace: string;
-};
-
-export interface HsLaymanLayerDescriptor {
-  name?: string;
-  uuid?: string;
+export interface HsLaymanLayerDescriptor extends HsLaymanLayerBase {
   layman_metadata?: {
     publication_status: 'COMPLETE' | 'INCOMPLETE' | 'UPDATING';
   };
-  url?: string;
-  title?: string;
   description?: string;
-  updated_at?: string;
 
   wms?: LaymanGetWorkspaceLayerTypeWms;
   wfs?: LaymanGetWorkspaceLayerTypeWfs;
@@ -50,7 +46,7 @@ export interface HsLaymanLayerDescriptor {
   };
   file?: {
     /**
-     * If data file was sent in ZIP archive to the server, path includes also path to the main file inside ZIP file. 
+     * If data file was sent in ZIP archive to the server, path includes also path to the main file inside ZIP file.
      * E.g. layers/b8a6c133-3363-4343-8a25-978d0df52c11/input_file/b8a6c133-3363-4343-8a25-978d0df52c11.zip/layer_main_file.shp
      */
     paths?: string[];
@@ -78,7 +74,7 @@ export interface HsLaymanLayerDescriptor {
     status?: StatusStateType;
     error?: any;
   };
-  original_data_source: 'file' | 'database_table';
+  original_data_source?: 'file' | 'database_table';
   metadata?: {
     identifier?: string;
     record_url?: string;
@@ -87,25 +83,10 @@ export interface HsLaymanLayerDescriptor {
     status?: StatusStateType;
     error?: any;
   };
-  access_rights?: {
-    read: string[];
-    write: string[];
-  };
-  bounding_box?: number[];
-  native_crs?: any;
-  native_bounding_box?: number[];
   /**
    * True for raster layers using image_mosaic plugin in GeoServer, so far only timeseries layers.
    */
-  image_mosaic: boolean;
-  /**
-   * Type of the layer
-   */
-  geodata_type: 'vector' | 'raster' | 'unknown';
-  /**
-* List of compositions (maps) in which the layer is used
-*/
-  used_in_maps?: LaymanGetWorkspaceLayerMap[];
+  image_mosaic?: boolean;
 
   exists?: boolean;
   /**
@@ -128,5 +109,4 @@ export interface HsLaymanLayerDescriptor {
    * Not part of original response. Added by describeLayer
    */
   workspace?: string;
-
 }

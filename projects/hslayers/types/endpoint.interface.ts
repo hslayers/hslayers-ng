@@ -19,6 +19,7 @@ export interface HsEndpoint {
   download?: boolean;
   language?;
   listLoading?;
+  loading?: boolean;
   layers?: HsAddDataLayerDescriptor[];
   code_list_url?: string;
   code_lists?;
