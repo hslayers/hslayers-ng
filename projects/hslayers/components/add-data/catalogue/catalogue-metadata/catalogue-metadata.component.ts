@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, ViewRef} from '@angular/core';
+import {Component, computed, input, OnInit, ViewRef} from '@angular/core';
 
 import {
   HsAddDataCatalogueMapService,
@@ -8,6 +8,8 @@ import {
   HsAddDataLayerDescriptor,
   WhatToAddDescriptor,
   HsEndpoint,
+  HsAddDataHsLaymanLayerDescriptor,
+  HsAddDataMickaLayerDescriptor,
 } from 'hslayers-ng/types';
 import {HsConfig} from 'hslayers-ng/config';
 import {
@@ -23,30 +25,27 @@ import {TranslateCustomPipe} from 'hslayers-ng/services/language';
   imports: [HsUiExtensionsRecursiveDdComponent, TranslateCustomPipe],
 })
 export class HsCatalogueMetadataComponent implements HsDialogComponent, OnInit {
-  @Input() data: {
+  data = input<{
     selectedLayer: HsAddDataLayerDescriptor;
     selectedDS: HsEndpoint;
-  };
+  }>();
 
-  selectedLayer: HsAddDataLayerDescriptor;
-  selectedLayerKeys: string[];
-  selectedDS: HsEndpoint;
-  viewRef: ViewRef;
+  selectedLayer = computed(() => this.data().selectedLayer);
+  selectedDS = computed(() => this.data().selectedDS);
 
-  constructor(
-    public hsConfig: HsConfig, // used in template
-    public hsAddDataCatalogueService: HsAddDataCatalogueService, //used in template
-    public hsAddDataCatalogueMapService: HsAddDataCatalogueMapService, //used in template
-    public hsDialogContainerService: HsDialogContainerService,
-  ) {}
+  endpointType = computed(() => this.selectedDS().type);
 
-  ngOnInit(): void {
-    this.selectedDS = this.data.selectedDS;
-    this.selectedLayer = this.data.selectedLayer;
+  addAvailable = computed(() => {
+    const layer = this.selectedLayer();
+    const endpointType = this.endpointType();
+    return endpointType === 'micka' || layer.wfsWmsStatus === 'AVAILABLE';
+  });
 
-    //Micka
-    if (this.selectedDS.type === 'micka') {
-      const availableTypes = this.selectedLayer.links
+  availableTypes = computed(() => {
+    let types = [];
+    const layer = this.selectedLayer();
+    if (this.isMickaLayer(layer)) {
+      types = layer.links
         .map((l) => {
           return ['WMS', 'WFS'].some((t) => l.protocol.includes(t))
             ? l.protocol.includes('WMS')
@@ -55,59 +54,76 @@ export class HsCatalogueMetadataComponent implements HsDialogComponent, OnInit {
             : null;
         })
         .filter((type) => !!type);
-      this.fillAvailableTypes(availableTypes);
-
-      this.selectedLayer.availableTypes = availableTypes;
-      this.selectedLayer.metadata = {};
-      this.selectedLayer.metadata.record_url = `${this.selectedDS.url.replace(
-        'csw',
-        'record/basic',
-      )}/${this.selectedLayer.id}`;
+    } else {
+      types = layer.type;
     }
-    //Layman
-    else {
-      this.fillAvailableTypes(this.selectedLayer.type);
-      this.selectedLayer.availableTypes = this.selectedLayer.type;
-      this.selectedLayer.bbox = this.selectedLayer['native_bounding_box'];
-    }
+    return types.includes('WMS') ? [...types, 'WMTS'] : types;
+  });
 
-    this.selectedLayerKeys = Object.keys(this.selectedLayer);
+  metadataUrl = computed(() => {
+    const layer = this.selectedLayer();
+    if (this.isMickaLayer(layer)) {
+      return `${this.selectedDS().url.replace('csw', 'record/basic')}/${layer.id}`;
+    }
+    return layer.metadata.record_url;
+  });
+
+  bbox = computed(() => {
+    const layer = this.selectedLayer();
+    if (this.isLaymanLayer(layer)) {
+      return layer.native_bounding_box;
+    }
+    return layer.bbox;
+  });
+
+  selectedLayerKeys: string[];
+  viewRef: ViewRef;
+
+  constructor(
+    public hsConfig: HsConfig,
+    public hsAddDataCatalogueService: HsAddDataCatalogueService,
+    public hsAddDataCatalogueMapService: HsAddDataCatalogueMapService,
+    public hsDialogContainerService: HsDialogContainerService,
+  ) {}
+
+  ngOnInit(): void {
+    this.selectedLayerKeys = Object.keys(this.selectedLayer());
     this.selectedLayerKeys = this.selectedLayerKeys.filter(
       (e) => e !== 'endpoint',
     );
   }
 
   /**
-   * Add WMTS (Tiled WMS) option in case WMS is available
-   */
-  private fillAvailableTypes(types: string[]) {
-    if (types.includes('WMS')) {
-      types.splice(1, 0, 'WMTS');
-    }
-  }
-
-  /**
-   * @param ds - Datasource (i.e. endpoint)
-   * @param layer - Description of a layer to be added
    * @param type - Type in which the layer shall be added (WMS, WFS, etc.)
    */
-  async addLayerToMap(
-    ds: HsEndpoint,
-    layer: HsAddDataLayerDescriptor,
-    type: string,
-  ): Promise<void> {
+  async addLayerToMap(type: string): Promise<void> {
+    const ds = this.selectedDS();
+    const layer = this.selectedLayer();
+
     const whatToAdd =
       await this.hsAddDataCatalogueService.describeCatalogueLayer(ds, layer);
     whatToAdd.type = type === 'WMS' || type === 'WMTS' ? 'WMS' : type;
     this.hsAddDataCatalogueService.addLayerToMap(
       ds,
+      layer,
+      whatToAdd as WhatToAddDescriptor<string>,
       {
-        ...layer,
         useTiles: type === 'WMTS',
       },
-      whatToAdd as WhatToAddDescriptor<string>,
     );
     this.close();
+  }
+
+  private isMickaLayer(
+    layer: HsAddDataLayerDescriptor,
+  ): layer is HsAddDataMickaLayerDescriptor {
+    return 'links' in layer && Array.isArray(layer.links);
+  }
+
+  private isLaymanLayer(
+    layer: HsAddDataLayerDescriptor,
+  ): layer is HsAddDataHsLaymanLayerDescriptor {
+    return 'native_bounding_box' in layer;
   }
 
   close(): void {
