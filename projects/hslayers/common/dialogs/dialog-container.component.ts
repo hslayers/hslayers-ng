@@ -56,7 +56,15 @@ export class HsDialogContainerComponent implements OnInit, OnDestroy {
     //    viewContainerRef.clear();
     const componentRef = viewContainerRef.createComponent(dialogItem.component);
     (<HsDialogComponent>componentRef.instance).viewRef = componentRef.hostView;
-    (<HsDialogComponent>componentRef.instance).data = dialogItem.data;
+    /**
+     * Quick workaround for possiblity to use singal input in dialogs.
+     * To achieve so wrap data into a another object {data: originalData, signalInput: true}
+     */
+    if (dialogItem.data.signalInput) {
+      componentRef.setInput('data', dialogItem.data.data);
+    } else {
+      (<HsDialogComponent>componentRef.instance).data = dialogItem.data;
+    }
     (<HsDialogComponent>componentRef.instance).dialogItem = dialogItem;
     this.HsDialogContainerService.dialogs.push(
       componentRef.instance as HsDialogComponent,
