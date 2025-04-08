@@ -45,7 +45,7 @@
               <i class="fa-solid fa-share-nodes"></i> RDF
             </a><!-- TODO: Remove function call from template -->
             <button type="button" class="btn btn-success" [hidden]="bbox() === undefined"
-              (click)="hsAddDataCatalogueMapService.zoomTo(bbox())">{{'LAYERMANAGER.layerEditor.zoomToLayer'
+              (click)="zoomTo()">{{'LAYERMANAGER.layerEditor.zoomToLayer'
               |
               translateHs }}</button>
             <button type="button" class="btn btn-secondary" (click)="close()" data-dismiss="modal"

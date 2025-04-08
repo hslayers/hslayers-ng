@@ -150,47 +150,4 @@ export class HsAddDataCatalogueMapService {
       }
     }
   }
-
-  /**
-   * ZoomTo / MoveTo to selected layer overview
-   * @param bbox - Bounding box of selected layer
-   */
-  zoomTo(bbox): void {
-    if (!bbox) {
-      return;
-    }
-    let b = null;
-    if (typeof bbox === 'string') {
-      b = bbox.split(' ');
-    } else if (Array.isArray(bbox)) {
-      b = bbox;
-    }
-    let first_pair = [parseFloat(b[0]), parseFloat(b[1])];
-    let second_pair = [parseFloat(b[2]), parseFloat(b[3])];
-    first_pair = transform(
-      first_pair,
-      'EPSG:4326',
-      this.hsMapService.getMap().getView().getProjection(),
-    );
-    second_pair = transform(
-      second_pair,
-      'EPSG:4326',
-      this.hsMapService.getMap().getView().getProjection(),
-    );
-    if (
-      isNaN(first_pair[0]) ||
-      isNaN(first_pair[1]) ||
-      isNaN(second_pair[0]) ||
-      isNaN(second_pair[1])
-    ) {
-      return;
-    }
-    const extent = [
-      first_pair[0],
-      first_pair[1],
-      second_pair[0],
-      second_pair[1],
-    ];
-    this.hsMapService.fitExtent(extent);
-  }
 }

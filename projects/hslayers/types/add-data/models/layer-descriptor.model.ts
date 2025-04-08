@@ -29,20 +29,25 @@ export type HsAddDataHsLaymanLayerDescriptor = HsLaymanLayerDescriptor &
 
 export interface HsAddDataMickaLayerDescriptor
   extends HsAddLayerDescriptorCommon {
-  title: string;
-  name: string;
   abstract: string;
-  links: any; //TODO: property types - string[];
-  imgURL: string;
   contacts: any[];
+  dateStamp: string;
+  dates: {date: string; dateType: string}[];
+  degree: any;
+  imgURL: string;
   keywords: string[];
+  links: any; //TODO: property types - string[];
+  scales: string[];
+  title: string;
+
+  name: string;
   trida: string;
+
   serviceType: string;
   formats: string[];
   thumbnail: string;
   mayedit: string;
   public: string;
-  scales: string[];
 }
 
 export type HsAddDataLayerDescriptor =
