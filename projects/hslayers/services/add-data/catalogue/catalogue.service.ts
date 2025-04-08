@@ -469,7 +469,9 @@ export class HsAddDataCatalogueService extends HsAddDataCatalogueParams {
           },
         });
       } else {
-        //Layman layers of logged user/ with write access
+        /**
+         * Layman layers with write access
+         */
         if (whatToAdd.editable) {
           const layer = await this.hsAddDataVectorService.addVectorLayer(
             'wfs',
@@ -488,7 +490,9 @@ export class HsAddDataCatalogueService extends HsAddDataCatalogueParams {
           this.hsAddDataVectorService.fitExtent(layer);
           this.datasetSelect('catalogue');
         } else {
-          //Layman layers without write access
+          /**
+           * Layman layers without write access
+           */
           await this.hsAddDataOwsService.connectToOWS({
             type: 'wfs',
             uri: whatToAdd.link.replace('_wms/ows', '/wfs'),
@@ -496,6 +500,7 @@ export class HsAddDataCatalogueService extends HsAddDataCatalogueParams {
             layerOptions: {
               style: whatToAdd.style,
             },
+            laymanLayer: isLayman ? whatToAdd : undefined,
           });
         }
         this.hsLayoutService.setMainPanel('layerManager');
