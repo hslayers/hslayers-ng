@@ -419,13 +419,14 @@ export class HsAddDataCatalogueService extends HsAddDataCatalogueParams {
    * @param ds - Datasource of selected layer
    * @param layer - Metadata record of selected layer
    * @param whatToAdd - Catalogue layer descriptor. Among others holds the type of the layer (supported values: WMS, WFS, Sparql, kml, geojson, json)
+   * TODO: clean this function up, its starting to look like a mess
    */
   async addLayerToMap(
     ds: HsEndpoint,
-    layer: HsAddDataLayerDescriptor,
     whatToAdd: WhatToAddDescriptor<string>,
     options: AddCatalogueLayerOptions = {useTiles: true},
   ): Promise<void> {
+    const isLayman = ds.type.includes('layman');
     if (whatToAdd.type == 'WMS') {
       whatToAdd.link = Array.isArray(whatToAdd.link)
         ? whatToAdd.link.filter((link) => link.toLowerCase().includes('wms'))[0]
@@ -433,18 +434,19 @@ export class HsAddDataCatalogueService extends HsAddDataCatalogueParams {
       if (ds.type == 'micka' && whatToAdd.recordType != 'dataset') {
         this.datasetSelect('url');
       }
+
       await this.hsAddDataOwsService.connectToOWS({
         type: whatToAdd.type.toLowerCase() as 'wms',
         uri: decodeURIComponent(whatToAdd.link),
-        layer:
-          ds.type.includes('layman') || whatToAdd.recordType === 'dataset'
-            ? ds.type.includes('layman')
-              ? layer.name
-              : whatToAdd.name
+        layer: isLayman
+          ? whatToAdd.layer
+          : whatToAdd.recordType === 'dataset'
+            ? whatToAdd.name
             : undefined,
         layerOptions: {
           useTiles: options.useTiles,
         },
+        laymanLayer: isLayman ? whatToAdd : undefined,
       });
     } else if (whatToAdd.type == 'WFS') {
       if (ds.type == 'micka') {

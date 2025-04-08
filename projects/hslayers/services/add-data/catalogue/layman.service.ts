@@ -294,10 +294,10 @@ export class HsLaymanBrowserService {
   async describeWhatToAdd(
     ds: HsEndpoint,
     layer: HsAddDataHsLaymanLayerDescriptor,
-  ): Promise<any> {
+  ) {
     const lyr = await this.fillLayerMetadata(ds, layer);
     if (!lyr) {
-      return;
+      return undefined;
     }
     let style: string = undefined;
     if (lyr.style?.url) {
@@ -318,28 +318,22 @@ export class HsLaymanBrowserService {
         type: lyr.type,
         link: lyr.wms.url,
         style,
-        layer: lyr.name,
+        layer: lyr.wms.name,
         name: lyr.name,
         title: lyr.title,
         dsType: ds.type,
         editable: lyr.editable,
         workspace: lyr.workspace,
+        extent: lyr.bounding_box,
       };
     }
     this.hsToastService.createToastPopupMessage(
-      this.hsLanguageService.getTranslation(
-        'ADDLAYERS.ERROR.errorWhileRequestingLayers',
-        undefined,
-      ),
-      this.hsLanguageService.getTranslation(
-        'ADDLAYERS.ERROR.urlInvalid',
-        undefined,
-      ),
+      'ADDLAYERS.ERROR.errorWhileRequestingLayers',
+      'ADDLAYERS.ERROR.urlInvalid',
       {
-        disableLocalization: true,
         serviceCalledFrom: 'HsLaymanBrowserService',
       },
     );
-    return false;
+    return undefined;
   }
 }

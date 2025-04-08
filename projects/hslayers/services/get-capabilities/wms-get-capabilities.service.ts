@@ -103,14 +103,15 @@ export class HsWmsGetCapabilitiesService implements IGetCapabilities {
       return this.hsCapabilityCacheService.get(url);
     }
     try {
+      const withCredentials = isLaymanUrl(
+        url,
+        this.hsCommonLaymanService.layman(),
+      );
       const r = await lastValueFrom(
         this.httpClient
           .get(url, {
             responseType: 'text',
-            withCredentials: isLaymanUrl(
-              url,
-              this.hsCommonLaymanService.layman(),
-            ),
+            withCredentials,
             observe: 'response', // Set observe to 'response' to get headers as well
           })
           .pipe(takeUntil(this.hsEventBusService.cancelAddDataUrlRequest)),

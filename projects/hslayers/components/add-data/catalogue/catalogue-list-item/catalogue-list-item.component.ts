@@ -147,7 +147,6 @@ export class HsCatalogueListItemComponent {
     this.whatToAdd.type = type === 'WMS' || type === 'WMTS' ? 'WMS' : type;
     this.hsAddDataCatalogueService.addLayerToMap(
       layer.endpoint,
-      layer,
       this.whatToAdd as WhatToAddDescriptor<string>,
       {
         useTiles: type === 'WMTS',

@@ -108,7 +108,6 @@ export class HsCatalogueMetadataComponent implements HsDialogComponent, OnInit {
     whatToAdd.type = type === 'WMS' || type === 'WMTS' ? 'WMS' : type;
     this.hsAddDataCatalogueService.addLayerToMap(
       ds,
-      layer,
       whatToAdd as WhatToAddDescriptor<string>,
       {
         useTiles: type === 'WMTS',
