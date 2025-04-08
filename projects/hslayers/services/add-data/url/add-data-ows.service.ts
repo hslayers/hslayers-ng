@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {inject, Injectable} from '@angular/core';
 
 import {Layer} from 'ol/layer';
 import {Source} from 'ol/source';
@@ -29,7 +29,8 @@ import {
   UrlDataObject,
 } from 'hslayers-ng/types';
 import {HsHistoryListService} from 'hslayers-ng/common/history-list';
-import {HsAddDataWmsLaymanService} from './wms-layman-service';
+import {HsAddDataWmsLaymanService} from './wms-layman.service';
+import {HsAddDataWfsLaymanService} from './wfs-layman.service';
 
 @Injectable({
   providedIn: 'root',
@@ -37,6 +38,10 @@ import {HsAddDataWmsLaymanService} from './wms-layman-service';
 export class HsAddDataOwsService {
   typeService: HsUrlTypeServiceModel;
   typeCapabilitiesService: IGetCapabilities;
+
+  private hsAddDatawmsLaymanService = inject(HsAddDataWmsLaymanService);
+  private hsAddDatawfsLaymanService = inject(HsAddDataWfsLaymanService);
+
   constructor(
     public hsAddDataService: HsAddDataService,
     public hsAddDataCommonService: HsAddDataCommonService,
@@ -51,7 +56,6 @@ export class HsAddDataOwsService {
     public hsWmsGetCapabilitiesService: HsWmsGetCapabilitiesService,
     public hsWmtsGetCapabilitiesService: HsWmtsGetCapabilitiesService,
     public hsUrlWmtsService: HsUrlWmtsService,
-    private hsAddDataWmsLaymanService: HsAddDataWmsLaymanService,
   ) {
     this.hsAddDataCommonService.serviceLayersCalled.subscribe((url) => {
       this.setUrlAndConnect({uri: url});
@@ -92,7 +96,8 @@ export class HsAddDataOwsService {
       /**
        * Create Layaman layer which circumvents getCapabilities request
        */
-      response = await this.hsAddDataWmsLaymanService.getLayer(
+      const serviceName = `hsAddData${this.hsAddDataUrlService.typeSelected}LaymanService`;
+      response = await this[serviceName].getLayer(
         options.laymanLayer,
         options.layerOptions,
       );

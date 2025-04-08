@@ -24,6 +24,7 @@ export type WfsOptions = {
   featureNS?: string;
   map_projection?: any;
   layerExtent?: Extent;
+  withCredentials?: boolean;
 };
 
 /**
@@ -43,6 +44,7 @@ export class WfsSource extends VectorSource {
           featureNS,
           map_projection,
           layerExtent,
+          withCredentials = false,
         } = this.options;
 
         const srs = crs.toUpperCase();
@@ -88,6 +90,7 @@ export class WfsSource extends VectorSource {
                   this.get('geometryAttribute'),
                 )
               : null,
+            withCredentials,
           );
 
           const features = await readFeatures(
@@ -149,6 +152,7 @@ async function getFeatures(
   isPost: boolean,
   url: string,
   featureRequest: string | null,
+  withCredentials: boolean,
 ): Promise<string> {
   try {
     const options: RequestInit = {
@@ -156,6 +160,7 @@ async function getFeatures(
       headers: {
         'Content-Type': 'application/xml',
       },
+      credentials: withCredentials ? 'include' : 'omit',
     };
 
     if (isPost && featureRequest) {
