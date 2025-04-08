@@ -14,7 +14,7 @@ import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 
 import dayjs from 'dayjs';
 import objectSupport from 'dayjs/plugin/objectSupport';
-import {vega as vegaEmbed} from 'vega-embed';
+import vegaEmbed from 'vega-embed';
 
 import {HsConfig} from 'hslayers-ng/config';
 import {HsLanguageService} from 'hslayers-ng/services/language';

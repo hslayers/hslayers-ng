@@ -6,7 +6,7 @@
       "jasmine",
       "node"
     ],
-    "resolveJsonModule":true
+    "resolveJsonModule": true
   },
   "files": [],
   "include": [
