@@ -10,23 +10,23 @@ import {
 } from 'rxjs';
 import {ElementRef, Inject, Injectable, Optional, signal} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
+import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 
 import dayjs from 'dayjs';
 import objectSupport from 'dayjs/plugin/objectSupport';
-import {default as vegaEmbed} from 'vega-embed';
+import {vega as vegaEmbed} from 'vega-embed';
 
+import {HsConfig} from 'hslayers-ng/config';
 import {HsLanguageService} from 'hslayers-ng/services/language';
+import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsLogService} from 'hslayers-ng/services/log';
 import {HsUtilsService} from 'hslayers-ng/services/utils';
 
 import {Aggregate} from './types/aggregate.type';
 import {CustomInterval, Interval} from './types/interval.type';
-import {HsConfig} from 'hslayers-ng/config';
-import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsSensorUnit} from './sensor-unit.class';
 import {SensLogEndpoint} from './types/senslog-endpoint.type';
 import {SenslogSensor} from './types/senslog-sensor.type';
-import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 
 dayjs.extend(objectSupport);
 
