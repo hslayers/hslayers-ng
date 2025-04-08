@@ -11,6 +11,8 @@ export type WhatToAddDescriptorBase = {
   workspace?: string;
   style?: string;
   recordType?: string;
+  //Layman layer descriptor only
+  extent?: number[];
 };
 
 /**

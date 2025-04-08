@@ -29,6 +29,7 @@ import {
   UrlDataObject,
 } from 'hslayers-ng/types';
 import {HsHistoryListService} from 'hslayers-ng/common/history-list';
+import {HsAddDataWmsLaymanService} from './wms-layman-service';
 
 @Injectable({
   providedIn: 'root',
@@ -50,6 +51,7 @@ export class HsAddDataOwsService {
     public hsWmsGetCapabilitiesService: HsWmsGetCapabilitiesService,
     public hsWmtsGetCapabilitiesService: HsWmtsGetCapabilitiesService,
     public hsUrlWmtsService: HsUrlWmtsService,
+    private hsAddDataWmsLaymanService: HsAddDataWmsLaymanService,
   ) {
     this.hsAddDataCommonService.serviceLayersCalled.subscribe((url) => {
       this.setUrlAndConnect({uri: url});
@@ -83,24 +85,44 @@ export class HsAddDataOwsService {
       loadingInfo: true,
       showDetails: true,
     });
-    const wrapper = await this.typeCapabilitiesService.request(
-      url,
-      options?.owrCache,
-    );
-    if (
-      typeof wrapper.response === 'string' &&
-      wrapper.response?.includes('Unsuccessful OAuth2')
-    ) {
-      this.hsAddDataCommonService.throwParsingError(wrapper.response);
-      return [];
+
+    let response: Layer<Source>[] = [];
+
+    if (options?.laymanLayer) {
+      /**
+       * Create Layaman layer which circumvents getCapabilities request
+       */
+      response = await this.hsAddDataWmsLaymanService.getLayer(
+        options.laymanLayer,
+        options.layerOptions,
+      );
+    } else {
+      /**
+       * Create common OWS layer based on getCapabilities request
+       */
+      const wrapper = await this.typeCapabilitiesService.request(
+        url,
+        options?.owrCache,
+      );
+      if (
+        typeof wrapper.response === 'string' &&
+        wrapper.response?.includes('Unsuccessful OAuth2')
+      ) {
+        this.hsAddDataCommonService.throwParsingError(wrapper.response);
+        return [];
+      }
+      this.overwriteServiceDefaults(options?.layerOptions);
+      response = await this.typeService.listLayerFromCapabilities(
+        wrapper,
+        options?.layerOptions,
+      );
     }
-    this.overwriteServiceDefaults(options?.layerOptions);
-    const response = await this.typeService.listLayerFromCapabilities(
-      wrapper,
-      options?.layerOptions,
-    );
+
     if (!options?.getOnly) {
       if (response?.length > 0) {
+        /**
+         * Add created layers to map
+         */
         this.typeService.addLayers(response);
       }
       //Note:
@@ -109,6 +131,9 @@ export class HsAddDataOwsService {
       if (response?.length == 0) {
         this.hsLog.log('Empty response when layer selected');
         this.hsAddDataService.selectType('url');
+        /**
+         * Open as a service eg. switcht to URL tab
+         */
         await this.connectToOWS({
           type: typeBeingSelected,
           uri: url,
@@ -148,6 +173,7 @@ export class HsAddDataOwsService {
       owrCache: params.owrCache,
       getOnly: params.getOnly,
       layerOptions: params.layerOptions,
+      laymanLayer: params.laymanLayer,
     });
   }
 
