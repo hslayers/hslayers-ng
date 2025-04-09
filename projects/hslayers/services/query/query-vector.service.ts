@@ -24,24 +24,10 @@ import {
   getQueryable,
   getVirtualAttributes,
 } from 'hslayers-ng/common/extensions';
-
-type AttributeValuePair = {
-  name;
-  value;
-  sanitizedValue?;
-};
-
-export type HsFeatureDescription = {
-  layer: string;
-  name: string;
-  attributes: any[];
-  stats?: {
-    name: string;
-    value: any;
-  }[];
-  hstemplate?: any;
-  feature?: Feature;
-};
+import {
+  HsFeatureAttribute,
+  HsFeatureDescriptor,
+} from 'hslayers-ng/types/feature-descriptor';
 
 @Injectable({
   providedIn: 'root',
@@ -159,7 +145,7 @@ export class HsQueryVectorService {
   createFeatureAttributeList(): void {
     this.hsQueryBaseService.attributes.length = 0;
     const features = this.selector.getFeatures().getArray();
-    let featureDescriptions: HsFeatureDescription[] = [];
+    let featureDescriptions: HsFeatureDescriptor[] = [];
     for (const feature of features) {
       featureDescriptions = featureDescriptions.concat(
         this.getFeatureAttributes(feature),
@@ -301,9 +287,9 @@ export class HsQueryVectorService {
    * @param feature - Selected feature from map
    * @returns Feature attributes
    */
-  getFeatureAttributes(feature: Feature<Geometry>): HsFeatureDescription[] {
+  getFeatureAttributes(feature: Feature<Geometry>): HsFeatureDescriptor[] {
     const attributes = [];
-    let tmp: HsFeatureDescription[] = [];
+    let tmp: HsFeatureDescriptor[] = [];
     const hstemplate = feature.get('hstemplate')
       ? feature.get('hstemplate')
       : null;
@@ -316,7 +302,7 @@ export class HsQueryVectorService {
           tmp = tmp.concat(this.getFeatureAttributes(subFeature));
         }
       } else {
-        const obj: AttributeValuePair = {
+        const obj: HsFeatureAttribute = {
           name: key,
           value: feature.get(key),
         };
@@ -329,7 +315,7 @@ export class HsQueryVectorService {
       const virtualAttributes = getVirtualAttributes(layer);
       for (const key of Object.keys(virtualAttributes)) {
         const value = virtualAttributes[key](feature);
-        const obj: AttributeValuePair = {
+        const obj: HsFeatureAttribute = {
           name: key,
           value,
         };
