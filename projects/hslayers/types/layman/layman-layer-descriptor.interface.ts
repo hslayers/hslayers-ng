@@ -35,7 +35,7 @@ export interface HsLaymanLayerDescriptor extends HsLaymanLayerBase {
     publication_status: 'COMPLETE' | 'INCOMPLETE' | 'UPDATING';
   };
   description?: string;
-
+  uuid?: string;
   wms?: LaymanGetWorkspaceLayerTypeWms;
   wfs?: LaymanGetWorkspaceLayerTypeWfs;
   thumbnail?: {

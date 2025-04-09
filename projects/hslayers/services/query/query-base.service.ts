@@ -14,12 +14,12 @@ import {transform} from 'ol/proj';
 
 import {HsConfig} from 'hslayers-ng/config';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
-import {HsFeatureDescription} from './query-vector.service';
 import {HsLanguageService} from 'hslayers-ng/services/language';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsMapService} from 'hslayers-ng/services/map';
 import {HsSaveMapService} from 'hslayers-ng/services/save-map';
 import {HsUtilsService} from 'hslayers-ng/services/utils';
+import {HsFeatureDescriptor} from 'hslayers-ng/types';
 
 export type HsProjectedCoordinatesDescription = {
   /**
@@ -47,7 +47,7 @@ export type HsCoordinateDescription = {
 })
 export class HsQueryBaseService {
   attributes = [];
-  features: HsFeatureDescription[] = [];
+  features: HsFeatureDescriptor[] = [];
   featureInfoHtmls: SafeHtml[] = [];
   customFeatures = [];
   coordinates: HsCoordinateDescription[] = [];
@@ -320,7 +320,7 @@ export class HsQueryBaseService {
    * Sets latest features as current descriptor
    * @param features - Either a description of features in HsFeatureDescription format or an array of these descriptions
    */
-  setFeatures(features: HsFeatureDescription[] | HsFeatureDescription): void {
+  setFeatures(features: HsFeatureDescriptor[] | HsFeatureDescriptor): void {
     if (Array.isArray(features)) {
       this.features = this.features.concat(features);
     } else {
