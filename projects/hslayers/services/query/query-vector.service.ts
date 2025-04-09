@@ -338,8 +338,8 @@ export class HsQueryVectorService {
       }
     }
     if (!getFeatures(feature)) {
-      const featureDescription: HsFeatureDescription = {
-        layer: this.getFeatureLayerName(feature),
+      const featureDescription: HsFeatureDescriptor = {
+        layer: this.hsLayerUtilsService.getLayerName(layer),
         name: 'Feature',
         attributes: attributes,
         stats: this.addDefaultStats(feature),
