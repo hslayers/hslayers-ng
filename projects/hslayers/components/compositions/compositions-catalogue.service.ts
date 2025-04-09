@@ -1,6 +1,6 @@
 import {Injectable, NgZone} from '@angular/core';
 
-import {Observable, forkJoin} from 'rxjs';
+import {Observable, filter, forkJoin} from 'rxjs';
 
 import {HsCommonEndpointsService} from 'hslayers-ng/services/endpoints';
 import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
@@ -82,28 +82,26 @@ export class HsCompositionsCatalogueService {
       }
     });
     const extentChangeDebouncer = {};
-    this.hsEventBusService.mapExtentChanges.subscribe(
-      hsUtilsService.debounce(
-        ({map, event, extent}) => {
-          if (
-            (this.hsLayoutService.mainpanel != 'compositions' &&
-              this.hsLayoutService.mainpanel != 'composition') ||
-            this.extentChangeSuppressed
-          ) {
-            this.extentChangeSuppressed = false;
-            return;
-          }
-          if (this.filterByExtent) {
-            this._zone.run(() => {
-              this.loadFilteredCompositions();
-            });
-          }
-        },
-        400,
-        false,
-        extentChangeDebouncer,
-      ),
-    );
+    this.hsEventBusService.mapExtentChanges
+      .pipe(filter(() => this.hsLayoutService.mainpanel === 'compositions'))
+      .subscribe(
+        hsUtilsService.debounce(
+          ({map, event, extent}) => {
+            if (this.extentChangeSuppressed) {
+              this.extentChangeSuppressed = false;
+              return;
+            }
+            if (this.filterByExtent) {
+              this._zone.run(() => {
+                this.loadFilteredCompositions();
+              });
+            }
+          },
+          400,
+          false,
+          extentChangeDebouncer,
+        ),
+      );
 
     this.hsEventBusService.compositionDeletes.subscribe((composition) => {
       //TODO: rewrite
@@ -154,6 +152,9 @@ export class HsCompositionsCatalogueService {
     this.hsMapService.loaded().then(() => {
       const observables: Observable<any>[] = [];
       for (const endpoint of this.endpoints) {
+        if (endpoint.type === 'micka' && this.filterByOnlyMine) {
+          continue;
+        }
         observables.push(this.loadCompositionFromEndpoint(endpoint));
       }
       this.loadCompositionsQuery = forkJoin(observables).subscribe(() => {
@@ -235,16 +236,10 @@ export class HsCompositionsCatalogueService {
     });
   }
   /**
-   * Clear all loaded data and filter endpoint array (if required) before loading compositions
+   * Reset endpoint counters and reload compositions
    */
   loadFilteredCompositions(): void {
     this.clearListCounters();
-    this.endpoints = this.endpoints.filter((ep: HsEndpoint) => {
-      if (this.filterByOnlyMine) {
-        return !this.filterByOnlyMine || ep.type.includes('layman');
-      }
-      return true;
-    });
     this.loadCompositions();
   }
   /**
