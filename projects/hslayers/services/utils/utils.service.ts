@@ -480,6 +480,9 @@ export class HsUtilsService {
     return str.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
   }
 
+  /**
+   * Returns undefined if string is undefined or empty
+   */
   undefineEmptyString(str: string): any {
     if (str === undefined) {
       return undefined;

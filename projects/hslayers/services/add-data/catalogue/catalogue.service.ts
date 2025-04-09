@@ -497,7 +497,7 @@ export class HsAddDataCatalogueService extends HsAddDataCatalogueParams {
           await this.hsAddDataOwsService.connectToOWS({
             type: 'wfs',
             uri: whatToAdd.link,
-            layer: `${whatToAdd.workspace}:${whatToAdd.name}`,
+            layer: whatToAdd.layer, //basically not used in this case
             layerOptions: {
               style: whatToAdd.style,
             },

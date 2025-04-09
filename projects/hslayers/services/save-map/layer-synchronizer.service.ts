@@ -311,7 +311,7 @@ export class HsLayerSynchronizerService {
             setHsLaymanSynchronizing(layer, false);
             return;
           }
-          if (add[0]) {
+          if (add[0] && response) {
             const id = new DOMParser()
               .parseFromString(response, 'application/xml')
               .getElementsByTagName('ogc:FeatureId')[0]

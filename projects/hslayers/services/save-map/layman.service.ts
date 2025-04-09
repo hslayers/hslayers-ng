@@ -275,7 +275,7 @@ export class HsLaymanService implements HsSaverService {
       asyncUpload = this.prepareAsyncUpload(formData);
     }
 
-    //Empty blob causes Layman to return “Internal Server Error”
+    //Empty blob causes Layman to return "Internal Server Error"
     if (description.style) {
       formData.append(
         'sld',
@@ -297,13 +297,6 @@ export class HsLaymanService implements HsSaverService {
       formData.append('access_rights.read', rights.read);
     }
 
-    const headers = new HttpHeaders();
-    headers.append('Content-Type', null);
-    headers.append('Accept', 'application/json');
-    const options = {
-      headers: headers,
-      withCredentials: true,
-    };
     try {
       let layerDesc;
       try {
@@ -495,12 +488,9 @@ export class HsLaymanService implements HsSaverService {
       return;
     }
     const layerName = getLayerName(layer);
-    let layerTitle = getTitle(layer);
+    const layerTitle = getTitle(layer);
     const crsSupported = this.supportedCRRList().includes(this.crs);
-    const endpoint = this.hsCommonLaymanService.layman();
-    if ((endpoint?.version?.split('.').join() as unknown as number) < 171) {
-      layerTitle = getLaymanFriendlyLayerName(layerTitle);
-    }
+
     setHsLaymanSynchronizing(layer, true);
     const normalizedSld = normalizeSldComparisonOperators(getSld(layer));
     const data: UpsertLayerObject = {
@@ -591,6 +581,29 @@ export class HsLaymanService implements HsSaverService {
   }
 
   /**
+   * Get feature type (layer identifiactor) l_<uuid>
+   * from changes array (add, upd, or del ) or layer
+   */
+  private getFeatureType(
+    add: Feature[],
+    upd: Feature[],
+    del: Feature[],
+    layer: VectorLayer<VectorSource<Feature>>,
+  ) {
+    const feature = add?.[0] ?? upd?.[0] ?? del?.[0];
+    const featureId = feature?.getId() as string;
+    if (featureId !== undefined && featureId !== null) {
+      return featureId.split('.')[0];
+    }
+    if (feature) {
+      this.hsLogService.warn(
+        'First feature found has no ID. Falling back to layer name for featureType.',
+      );
+    }
+    return `l_${getLaymanLayerDescriptor(layer).uuid}`;
+  }
+
+  /**
    * Make WFS transaction request
    * @param param0 - Object describing endpoint, layer and arrays
    * for each of the methods: update, del, insert containing the features to be processed
@@ -606,14 +619,14 @@ export class HsLaymanService implements HsSaverService {
   ): Promise<string> {
     try {
       const srsName = this.hsMapService.getCurrentProj().getCode();
-      const featureType = getLayerName(layer);
-      const user = this.hsCommonLaymanService.user();
+      const featureType = this.getFeatureType(add, upd, del, layer);
+
       const {default: WFS} = await import('ol/format/WFS');
       const wfsFormat = new WFS();
       const options = {
-        featureNS: 'http://' + user,
-        featurePrefix: user,
-        featureType,
+        featureNS: 'http://layman',
+        featurePrefix: 'layman',
+        featureType: String(featureType), // Ensure featureType is a string for WFS options
         srsName,
         nativeElements: null,
       };
@@ -666,9 +679,6 @@ export class HsLaymanService implements HsSaverService {
   async makeGetLayerRequest(
     layer: VectorLayer<VectorSource<Feature>>,
   ): Promise<string> {
-    /* Clone because endpoint.user can change while the request is processed
-    and then description might get cached even if anonymous user was set before.
-    Should not cache anonymous layers, because layer can be authorized anytime */
     let desc: HsLaymanLayerDescriptor;
     const layerName = getLayerName(layer);
     try {
@@ -714,11 +724,12 @@ export class HsLaymanService implements HsSaverService {
     const filter: string = source.get('filter');
     const srsName = this.hsMapService.getCurrentProj().getCode();
     const workspace = getWorkspace(layer);
+    const laymanUuid = `l_${desc.uuid}`;
 
     let body: string;
     if (filter) {
       body = await createPostFeatureRequest(
-        `${workspace}:${desc.name}`,
+        laymanUuid,
         '2.0.0',
         srsName,
         workspace,
@@ -730,7 +741,7 @@ export class HsLaymanService implements HsSaverService {
       );
     } else {
       body = createGetFeatureRequest(
-        `${workspace}:${desc.name}`,
+        laymanUuid,
         '2.0.0',
         srsName,
         'GML32',
