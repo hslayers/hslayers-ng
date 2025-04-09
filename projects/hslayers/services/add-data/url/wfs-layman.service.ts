@@ -21,11 +21,12 @@ export class HsAddDataWfsLaymanService {
     const srs = this.mapService.getMap().getView().getProjection().getCode();
     this.wfsService.data.srs = srs;
 
-    this.hsWfsGetCapabilitiesService.service_url = whatToAdd.link;
-    this.wfsService.data.version = '1.1.0';
+    this.hsWfsGetCapabilitiesService.service_url.set(whatToAdd.link);
+    this.wfsService.data.version = '2.0.0';
     this.wfsService.data.output_format = 'GML3';
     this.wfsService.data.visible = true;
     this.wfsService.data.base = false;
+    this.wfsService.data.group = false;
 
     const layer = this.wfsService.getLayer(
       {
@@ -33,14 +34,12 @@ export class HsAddDataWfsLaymanService {
         Name: whatToAdd.layer,
         Title: whatToAdd.title,
         _attributes: {
-          namespace: 'http://layman_wms',
+          namespace: 'http://layman',
         },
-        withCredentials: true,
       },
       {
         ...options,
-        layerName: whatToAdd.layer,
-        url: whatToAdd.link,
+        layerName: `layman:${whatToAdd.layer}`,
         crs: srs,
         queryable: true,
       },

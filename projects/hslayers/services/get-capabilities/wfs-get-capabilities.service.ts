@@ -1,24 +1,24 @@
 import {HttpClient} from '@angular/common/http';
-import {Injectable} from '@angular/core';
+import {Injectable, WritableSignal, signal} from '@angular/core';
 
 import {lastValueFrom, takeUntil} from 'rxjs';
 
 import {CapabilitiesResponseWrapper} from 'hslayers-ng/types';
 import {HsCapabilityCacheService} from './capability-cache.service';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
-import {HsMapService} from 'hslayers-ng/services/map';
 import {HsUtilsService} from 'hslayers-ng/services/utils';
 import {IGetCapabilities} from './get-capabilities.interface';
+import {HsCommonLaymanService, isLaymanUrl} from 'hslayers-ng/common/layman';
 
 @Injectable({providedIn: 'root'})
 export class HsWfsGetCapabilitiesService implements IGetCapabilities {
-  service_url: any;
+  service_url: WritableSignal<string> = signal('');
   constructor(
     private httpClient: HttpClient,
-    public hsEventBusService: HsEventBusService,
-    public hsMapService: HsMapService,
-    public hsUtilsService: HsUtilsService,
-    public hsCapabilityCacheService: HsCapabilityCacheService,
+    private hsEventBusService: HsEventBusService,
+    private hsUtilsService: HsUtilsService,
+    private hsCapabilityCacheService: HsCapabilityCacheService,
+    private hsCommonLaymanService: HsCommonLaymanService,
   ) {}
 
   /**
@@ -75,7 +75,7 @@ export class HsWfsGetCapabilitiesService implements IGetCapabilities {
     owrCache?: boolean,
   ): Promise<CapabilitiesResponseWrapper> {
     service_url = service_url.replace(/&amp;/g, '&');
-    this.service_url = service_url;
+    this.service_url.set(service_url);
     const params = this.hsUtilsService.getParamsFromUrl(service_url);
     const path = this.getPathFromUrl(service_url);
     if (params.request == undefined && params.REQUEST == undefined) {
@@ -98,11 +98,16 @@ export class HsWfsGetCapabilitiesService implements IGetCapabilities {
       return this.hsCapabilityCacheService.get(url);
     }
     try {
+      const withCredentials = isLaymanUrl(
+        url,
+        this.hsCommonLaymanService.layman(),
+      );
       let r = await lastValueFrom(
         this.httpClient
           .get(url, {
             responseType: 'text',
             observe: 'response', // Set observe to 'response' to get headers as well
+            withCredentials,
           })
           .pipe(takeUntil(this.hsEventBusService.cancelAddDataUrlRequest)),
       );

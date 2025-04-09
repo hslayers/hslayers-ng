@@ -469,13 +469,14 @@ export class HsAddDataCatalogueService extends HsAddDataCatalogueParams {
           },
         });
       } else {
+        whatToAdd.link = whatToAdd.link.replace('_wms/ows', '/wfs');
         /**
          * Layman layers with write access
          */
         if (whatToAdd.editable) {
           const layer = await this.hsAddDataVectorService.addVectorLayer(
             'wfs',
-            whatToAdd.link.replace('_wms/ows', '/wfs'),
+            whatToAdd.link,
             whatToAdd.name,
             whatToAdd.title,
             whatToAdd.abstract,
@@ -495,7 +496,7 @@ export class HsAddDataCatalogueService extends HsAddDataCatalogueParams {
            */
           await this.hsAddDataOwsService.connectToOWS({
             type: 'wfs',
-            uri: whatToAdd.link.replace('_wms/ows', '/wfs'),
+            uri: whatToAdd.link,
             layer: `${whatToAdd.workspace}:${whatToAdd.name}`,
             layerOptions: {
               style: whatToAdd.style,
