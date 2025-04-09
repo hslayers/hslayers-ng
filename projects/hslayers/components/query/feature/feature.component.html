@@ -1,17 +1,18 @@
+@let f = feature();
 <div class="container-fluid">
   <div class="row">
-    <div class="col-12 m-2"><strong>{{feature.name}} @if (feature.layer) {
+    <div class="col-12 m-2"><strong>{{f.name}} @if (f.layer) {
       <span>{{'QUERY.feature.inLayer' |
       translateHs }}</span>
     }
-  {{feature.layer}}</strong></div>
+  {{f.layer}}</strong></div>
 </div>
-@for (attribute of feature.attributes; track attribute) {
-  <hs-query-attribute-row [template]="feature.hstemplate"
+@for (attribute of f.attributes; track attribute) {
+  <hs-query-attribute-row [template]="f.hstemplate"
     [feature]="feature" [attribute]="attribute" [readonly]="readonly">
   </hs-query-attribute-row>
 }
-@for (stat of feature.stats; track stat) {
+@for (stat of f.stats; track stat) {
   <hs-query-attribute-row [feature]="feature" [attribute]="stat" [readonly]="true">
   </hs-query-attribute-row>
 }

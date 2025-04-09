@@ -1,12 +1,10 @@
 import {AsyncPipe, NgClass} from '@angular/common';
-import {Component, DestroyRef, Input, OnInit} from '@angular/core';
+import {Component, DestroyRef, OnInit, computed, input} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
 import {Observable, map} from 'rxjs';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 
-import {Feature} from 'ol';
-import {Geometry} from 'ol/geom';
 import {Layer} from 'ol/layer';
 
 import {HsDownloadDirective} from 'hslayers-ng/common/download';
@@ -17,6 +15,7 @@ import {HsQueryAttributeRowComponent} from '../attribute-row/attribute-row.compo
 import {HsQueryVectorService} from 'hslayers-ng/services/query';
 import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 import {getTitle} from 'hslayers-ng/common/extensions';
+import {HsFeatureDescriptor} from 'hslayers-ng/types';
 
 @Component({
   selector: 'hs-query-feature',
@@ -32,7 +31,20 @@ import {getTitle} from 'hslayers-ng/common/extensions';
   ],
 })
 export class HsQueryFeatureComponent implements OnInit {
-  @Input() feature;
+  feature = input<HsFeatureDescriptor>();
+
+  olFeature = computed(() => {
+    return this.feature().feature;
+  });
+
+  layer = computed(() => {
+    return this.hsMapService.getLayerForFeature(this.olFeature());
+  });
+
+  isFeatureRemovable = computed(() => {
+    const layer = this.layer();
+    return this.hsLayerUtilsService.isLayerEditable(layer);
+  });
 
   attributeName = '';
   attributeValue = '';
@@ -71,31 +83,11 @@ export class HsQueryFeatureComponent implements OnInit {
           //Feature from WMS getFeatureInfo
           return [];
         }
-        const featureLayer = this.hsMapService.getLayerForFeature(
-          this.olFeature(),
-        );
+        const featureLayer = this.layer();
         this.readonly = !this.hsLayerUtilsService.isLayerEditable(featureLayer);
         return layers.filter((layer) => layer != featureLayer);
       }),
     );
-  }
-
-  /**
-   * Get OL feature
-   * @returns Returns feature
-   */
-  olFeature(): Feature<Geometry> {
-    return this.feature?.feature;
-  }
-
-  /**
-   * Check if this feature is removable
-   * @returns True if the feature can be removed from the map, false otherwise
-   */
-  isFeatureRemovable(): boolean {
-    return this.olFeature()
-      ? this.hsQueryVectorService.isFeatureRemovable(this.olFeature())
-      : false;
   }
 
   /**
@@ -104,14 +96,14 @@ export class HsQueryFeatureComponent implements OnInit {
    * @param attributeValue - New attribute value
    */
   saveNewAttribute(attributeName: string, attributeValue): void {
-    if (this.feature?.feature) {
-      const feature = this.feature.feature;
-      const getDuplicates = this.feature.attributes.filter(
+    const feature = this.olFeature();
+    if (feature) {
+      const getDuplicates = this.feature().attributes.filter(
         (duplicate) => duplicate.name == attributeName,
       );
       if (getDuplicates.length == 0) {
         const obj = {name: attributeName, value: attributeValue};
-        this.feature.attributes.push(obj);
+        this.feature().attributes.push(obj);
         feature.set(attributeName, attributeValue);
       }
     }
