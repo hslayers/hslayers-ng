@@ -1,5 +1,5 @@
 import {HttpClient} from '@angular/common/http';
-import {Injectable} from '@angular/core';
+import {computed, Injectable} from '@angular/core';
 import {Subject, finalize, takeUntil} from 'rxjs';
 
 import * as xml2Json from 'xml-js';
@@ -26,6 +26,7 @@ import {HsWfsGetCapabilitiesService} from 'hslayers-ng/services/get-capabilities
 
 import {WfsSource} from 'hslayers-ng/common/layers';
 import {setCluster} from 'hslayers-ng/common/extensions';
+import {HsCommonLaymanService, isLaymanUrl} from 'hslayers-ng/common/layman';
 
 type WfsCapabilitiesLayer = {
   Abstract: string;
@@ -56,6 +57,11 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
   private requestCancelSubjects: Map<string, Subject<void>> = new Map();
   cancelUrlRequest: Subject<void> = new Subject();
 
+  withCredentials = computed(() => {
+    const url = this.hsWfsGetCapabilitiesService.service_url();
+    return isLaymanUrl(url, this.hsCommonLaymanService.layman());
+  });
+
   constructor(
     private hsConfig: HsConfig,
     private http: HttpClient,
@@ -67,6 +73,7 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
     public hsLayoutService: HsLayoutService,
     public hsAddDataCommonService: HsAddDataCommonService,
     private hsAddDataUrlService: HsAddDataUrlService,
+    private hsCommonLaymanService: HsCommonLaymanService,
   ) {
     this.setDataToDefault();
   }
@@ -160,7 +167,8 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
       this.data.title =
         typeof serviceTitle === 'string'
           ? serviceTitle
-          : this.hsWfsGetCapabilitiesService.service_url
+          : this.hsWfsGetCapabilitiesService
+              .service_url()
               .split('//')[1]
               .split('/')[0];
       // this.description = addAnchors(caps.ServiceIdentification.Abstract);
@@ -306,7 +314,7 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
       params[this.data.version.startsWith('1') ? 'typeName' : 'typeNames'] =
         layer.Name;
       const url = [
-        this.hsWfsGetCapabilitiesService.service_url.split('?')[0],
+        this.hsWfsGetCapabilitiesService.service_url().split('?')[0],
         this.hsUtilsService.paramsToURLWoEncode(params),
       ].join('?');
 
@@ -327,9 +335,11 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
 
     // Associate the cancel subject with the request URL
     this.requestCancelSubjects.set(url, cancelSubject);
-
     this.http
-      .get(this.hsUtilsService.proxify(url), {responseType: 'text'})
+      .get(this.hsUtilsService.proxify(url), {
+        responseType: 'text',
+        withCredentials: this.withCredentials(),
+      })
       .pipe(
         takeUntil(this.cancelUrlRequest),
         finalize(() => {
@@ -497,7 +507,7 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
    * @param srs - of the layer
    */
   getLayer(layer, options: LayerOptions): Layer<Source> {
-    const url = this.hsWfsGetCapabilitiesService.service_url.split('?')[0];
+    const url = this.hsWfsGetCapabilitiesService.service_url().split('?')[0];
     /**
      * Do not cluster features for layer from catalogue now as unlikely
      * we have a hits already. Will be set in parseFeatureCount once the request is completed
@@ -529,7 +539,7 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
         featureNS: layer._attributes[Object.keys(layer._attributes)[0]],
         map_projection: this.hsMapService.getMap().getView().getProjection(),
         layerExtent: layerExtent,
-        withCredentials: layer.withCredentials,
+        withCredentials: this.withCredentials(),
       }),
       renderOrder: null,
       opacity: options.opacity ?? 1,
