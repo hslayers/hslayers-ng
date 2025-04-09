@@ -77,7 +77,7 @@ export class HsCompositionsLaymanService {
     endpoint.listLoading = this.$http
       .get(url, {
         observe: 'response',
-        withCredentials: loggedIn,
+        withCredentials: true,
         params: {
           'limit': `${endpoint.compositionsPaging.limit}`,
           'offset': `${endpoint.compositionsPaging.start}`,
