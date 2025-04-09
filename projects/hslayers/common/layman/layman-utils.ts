@@ -89,20 +89,27 @@ export function getSupportedSrsList(ep: HsEndpoint) {
  * @param ep - Layman endpoint
  * @param version - Version which the endpoint version will be compared with
  */
-export function isAtLeastVersions(ep: HsEndpoint, version: string) {
-  let epVer = ep.version.split('.').map((part) => parseInt(part));
-  const compareVer = version.split('.').map((part) => parseInt(part));
-  if (epVer.length != compareVer.length) {
-    epVer = epVer.slice(0, (epVer.length - compareVer.length) * -1);
-  }
+export function isAtLeastVersions(ep: HsEndpoint, version: string): boolean {
+  const epVerParts = ep.version.split('.').map((part) => parseInt(part, 10));
+  const compareVerParts = version.split('.').map((part) => parseInt(part, 10));
 
-  for (let i = 0; i < epVer.length; i++) {
-    if (epVer[i] < compareVer[i]) {
+  const maxLength = Math.max(epVerParts.length, compareVerParts.length);
+
+  for (let i = 0; i < maxLength; i++) {
+    const epSegment = epVerParts[i] || 0;
+    const compareSegment = compareVerParts[i] || 0;
+
+    //If epSegment is greater than compareSegment, return true
+    if (epSegment > compareSegment) {
+      return true;
+    }
+    //If epSegment is less than compareSegment, return false
+    if (epSegment < compareSegment) {
       return false;
     }
   }
 
-  return true;
+  return true; // Versions are equal or epVer is longer with trailing zeros
 }
 
 /**
