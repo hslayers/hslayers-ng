@@ -546,6 +546,16 @@ export class HsAddDataCommonFileService extends HsAddDataCommonFileServiceParams
           : undefined,
         group: false, //Make sure WMS layer is not set as group, no effect on others
       },
+      //Provide layman layer descriptor to opt out of getCapabilities usage in connectToOWS
+      laymanLayer: {
+        layer: `l_${descriptor.uuid}`,
+        name: data.name,
+        title: data.title,
+        link: descriptor[serviceType].url,
+        type: serviceType,
+        projection: data.srs,
+        extent: descriptor.bounding_box,
+      },
     });
   }
 
