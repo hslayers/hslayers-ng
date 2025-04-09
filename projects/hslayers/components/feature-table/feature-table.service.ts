@@ -12,17 +12,7 @@ import {
   getShowInLayerManager,
   getTitle,
 } from 'hslayers-ng/common/extensions';
-
-type FeatureDescriptor = {
-  name: string;
-  feature: Feature<Geometry>;
-  attributes: {
-    name;
-    value;
-    sanitizedValue?;
-  }[];
-  stats: any[];
-};
+import {HsFeatureDescriptor} from 'hslayers-ng/types';
 
 @Injectable({
   providedIn: 'root',
@@ -39,7 +29,7 @@ export class HsFeatureTableService {
   /**
    * all feature attributes for HTML table
    */
-  features: FeatureDescriptor[] = [];
+  features: HsFeatureDescriptor[] = [];
   constructor(
     private hsLayerUtilsService: HsLayerUtilsService,
     private hsQueryVectorService: HsQueryVectorService,
@@ -136,7 +126,7 @@ export class HsFeatureTableService {
    *
    * @param feature - Feature selected
    */
-  describeFeature(feature: Feature<Geometry>): FeatureDescriptor {
+  describeFeature(feature: Feature<Geometry>): HsFeatureDescriptor {
     const attribWrapper = this.hsQueryVectorService
       .getFeatureAttributes(feature)
       .pop();

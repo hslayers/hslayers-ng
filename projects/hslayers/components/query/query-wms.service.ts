@@ -184,6 +184,8 @@ export class HsQueryWmsService {
             'value': value,
           };
         }),
+        feature: feature,
+        stats: [],
       };
       this.hsQueryBaseService.setFeatures(group);
     }
@@ -234,6 +236,8 @@ export class HsQueryWmsService {
               'value': value,
             };
           }),
+        feature: feature,
+        stats: [],
       };
       if (updated) {
         this.hsQueryBaseService.setFeatures(group);
