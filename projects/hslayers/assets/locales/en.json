@@ -333,7 +333,8 @@
     "contains": "contains",
     "property": "Property",
     "error": "Error",
-    "success": "Success"
+    "success": "Success",
+    "update": "Update"
   },
   "COMPOSITIONS": {
     "addByAddress": "Add composition by address",
@@ -885,7 +886,8 @@
       "state": "State",
       "toggleAll": "Toggle all",
       "userCurrentMapExtent": "Use current map extent",
-      "write": "Write"
+      "write": "Write",
+      "saveAsNew": "Create composition"
     },
     "panelMd": {
       "fillKeywords": "Fill keywords",
@@ -908,7 +910,8 @@
     "perUser": "Per user",
     "everyone": "Everyone",
     "compositionThumbnail": "Composition thumbnail",
-    "perRole": "Per role"
+    "perRole": "Per role",
+    "setupAndDownload": "Set up and download composition"
   },
   "SENSORS": {
     "1D": "1D",

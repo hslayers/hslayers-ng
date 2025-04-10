@@ -1,7 +1,15 @@
-import {BehaviorSubject, Subject, withLatestFrom} from 'rxjs';
+import {
+  filter,
+  map,
+  Subject,
+  tap,
+  withLatestFrom,
+  merge,
+  lastValueFrom,
+} from 'rxjs';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {HttpClient} from '@angular/common/http';
-import {computed, Injectable, Signal} from '@angular/core';
+import {Injectable, signal, Signal, WritableSignal} from '@angular/core';
 
 import {
   AccessRightsModel,
@@ -13,7 +21,6 @@ import {
   UserData,
 } from 'hslayers-ng/types';
 import {HsCompositionsParserService} from 'hslayers-ng/services/compositions';
-import {HsConfig} from 'hslayers-ng/config';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {
   HsLaymanService,
@@ -24,19 +31,15 @@ import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsLogService} from 'hslayers-ng/services/log';
 import {HsMapService} from 'hslayers-ng/services/map';
 import {HsShareService} from 'hslayers-ng/components/share';
-import {HsUtilsService} from 'hslayers-ng/services/utils';
 import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
+import {toSignal} from '@angular/core/rxjs-interop';
+import {HsToastService} from 'hslayers-ng/common/toast';
 
 export class HsSaveMapManagerParams {
   statusData: StatusData = {
-    titleFree: undefined,
-    hasPermission: undefined,
     success: undefined,
-    changeTitle: undefined,
-    groups: [],
+    canEditExistingComposition: undefined,
   };
-
-  currentComposition = undefined;
 
   _access_rights: AccessRightsModel = {
     'access_rights.write': 'private',
@@ -52,7 +55,7 @@ export class HsSaveMapManagerParams {
       validators: Validators.required,
       nonNullable: true,
     }),
-    workspace: new FormControl(undefined), //{value: undefined, disabled: true}
+    workspace: new FormControl<string | undefined>(undefined), //{value: undefined, disabled: true}
     keywords: new FormControl(''),
 
     id: new FormControl(''),
@@ -63,11 +66,8 @@ export class HsSaveMapManagerParams {
   userData: UserData = {};
   panelOpened: Subject<any> = new Subject();
   saveMapResulted: Subject<StatusData | string> = new Subject();
-  endpointSelected: BehaviorSubject<HsEndpoint> = new BehaviorSubject(null);
   preSaveCheckCompleted: Subject<HsEndpoint> = new Subject();
-  changeTitle: boolean;
   currentUser: Signal<string>;
-  missingName = false;
   missingAbstract = false;
 
   constructor() {}
@@ -79,59 +79,75 @@ export class HsSaveMapManagerParams {
 export class HsSaveMapManagerService extends HsSaveMapManagerParams {
   currentUser = this.hsCommonLaymanService.user;
 
+  private mapResets = this.hsEventBusService.mapResets.pipe(
+    filter(() => {
+      return (
+        this.hsLayoutService.mainpanel == 'saveMap' ||
+        this.hsLayoutService.mainpanel == 'statusCreator'
+      );
+    }),
+    tap(() => this.resetCompoData()),
+    map(() => undefined),
+  );
+
+  private _currentComposition = merge(
+    //Undefined...
+    this.mapResets,
+    //..or result of omposition loaded
+    this.hsCompositionsParserService.currentCompositionRecord.pipe(
+      withLatestFrom(this.hsEventBusService.compositionLoads),
+      filter(([metadata, composition]) => {
+        return composition.error == undefined;
+      }),
+      map(([metadata, composition]) => {
+        const compositionData = composition.data ?? composition;
+        return [metadata, compositionData];
+      }),
+      tap(([metadata, compositionData]) => {
+        const workspace = metadata['error']
+          ? this.currentUser()
+          : this.parseAccessRights(metadata);
+
+        this.compoData.patchValue({
+          id: compositionData.id,
+          abstract: compositionData.abstract,
+          keywords: compositionData.keywords,
+          workspace: workspace,
+          //NOTE: Keep name last so its valueChange subscription has access to updated values
+          name: compositionData.name,
+          access_rights: this._access_rights,
+        });
+      }),
+      map(([metadata, compositionData]) => {
+        return compositionData;
+      }),
+    ),
+  );
+
+  currentComposition = toSignal(this._currentComposition, {
+    initialValue: undefined,
+  });
+
+  currentCompositionEditable: WritableSignal<boolean> = signal(false);
+
   constructor(
     private hsMapService: HsMapService,
     private hsSaveMapService: HsSaveMapService,
-    private hsConfig: HsConfig,
     private http: HttpClient,
     private hsShareService: HsShareService,
     private hsLaymanService: HsLaymanService,
     private hsLayoutService: HsLayoutService,
-    private hsUtilsService: HsUtilsService,
     private hsEventBusService: HsEventBusService,
     private hsLogService: HsLogService,
     private hsCompositionsParserService: HsCompositionsParserService,
     private hsCommonLaymanService: HsCommonLaymanService,
+    private hsToastService: HsToastService,
   ) {
     super();
-
-    this.hsCompositionsParserService.currentCompositionRecord
-      .pipe(withLatestFrom(this.hsEventBusService.compositionLoads))
-      .subscribe(([metadata, composition]) => {
-        if (composition.error == undefined) {
-          const responseData = composition.data ?? composition;
-          this.currentComposition = responseData;
-
-          const workspace = metadata['error']
-            ? this.currentUser()
-            : this.parseAccessRights(metadata);
-
-          this.compoData.patchValue({
-            id: responseData.id,
-            abstract: responseData.abstract,
-            keywords: responseData.keywords,
-            workspace: workspace,
-            //NOTE: Keep name last so its valueChange subscription has access to updated values
-            name: responseData.name,
-            access_rights: this._access_rights,
-          });
-        }
-      });
-
-    this.hsLayoutService.mainpanel$.subscribe((which) => {
-      if (
-        this.hsLayoutService.mainpanel == 'saveMap' ||
-        this.hsLayoutService.mainpanel == 'statusCreator'
-      ) {
-        this.hsEventBusService.mapResets.subscribe(() => {
-          this.resetCompoData();
-        });
-      }
-    });
   }
 
   parseAccessRights(metadata: LaymanCompositionDescriptor): string {
-    this.currentComposition.editable = true;
+    this.currentCompositionEditable.set(true);
     const workspace = metadata.url.match(/\/workspaces\/([^/]+)/)
       ? metadata.url.match(/\/workspaces\/([^/]+)/)[1]
       : null;
@@ -157,7 +173,7 @@ export class HsSaveMapManagerService extends HsSaveMapManagerParams {
        */
       this._access_rights[`access_rights.read`] = 'EVERYONE';
       this._access_rights[`access_rights.write`] = 'private';
-      this.currentComposition.editable = false;
+      this.currentCompositionEditable.set(false);
     }
 
     return workspace;
@@ -179,13 +195,6 @@ export class HsSaveMapManagerService extends HsSaveMapManagerParams {
         : filtered.length === 1 && filtered[0] === 'EVERYONE'
           ? filtered[0]
           : access.join(',');
-  }
-
-  /**
-   * Select the endpoint
-   */
-  selectEndpoint(endpoint: HsEndpoint): void {
-    this.endpointSelected.next(endpoint);
   }
 
   /**
@@ -261,7 +270,6 @@ export class HsSaveMapManagerService extends HsSaveMapManagerParams {
       this.hsMapService.getMap(),
       this.compoData.value,
       this.userData,
-      this.statusData,
     );
   }
 
@@ -299,27 +307,6 @@ export class HsSaveMapManagerService extends HsSaveMapManagerParams {
   }
 
   /**
-   * Callback for saving with new name
-   */
-  selectNewName(): void {
-    this.updateCompoDataName(this.statusData.guessedTitle);
-    this.changeTitle = true;
-  }
-
-  /**
-   * Check if the composition's input form is valid
-   * @returns True if the form is valid, false otherwise
-   */
-  validateForm(): boolean {
-    this.missingName = !this.compoData.controls.name.value;
-    this.missingAbstract = !this.compoData.controls.abstract.value;
-    return (
-      !!this.compoData.controls.name.value &&
-      !!this.compoData.controls.abstract.value
-    );
-  }
-
-  /**
    * Reset locally stored composition's input data to default values
    */
   resetCompoData(): void {
@@ -329,14 +316,13 @@ export class HsSaveMapManagerService extends HsSaveMapManagerParams {
       name: '',
       keywords: '',
     });
-    this.currentComposition = undefined;
   }
 
   /**
    * Initiate composition's saving procedure
    * @param saveAsNew - If true save a new composition, otherwise overwrite to current one
    */
-  async initiateSave(saveAsNew: boolean): Promise<void> {
+  async initiateSave(saveAsNew: boolean): Promise<StatusData> {
     if (!this.compoData.valid) {
       this.hsLogService.log('validationfailed');
       return;
@@ -344,48 +330,103 @@ export class HsSaveMapManagerService extends HsSaveMapManagerParams {
     try {
       const augmentedResponse = await this.save(
         saveAsNew,
-        this.endpointSelected.getValue(),
+        this.hsCommonLaymanService.layman(),
       );
-      this.processSaveCallback(augmentedResponse);
+      return this.processSaveCallback(augmentedResponse);
     } catch (ex) {
       this.hsLogService.error(ex);
-      this.processSaveCallback(ex);
+      return this.processSaveCallback(ex);
     }
   }
 
   /**
-   * Process response data after saving the composition
+   * Process response data after saving the composition and display results using toasts
    * @param response - HTTP response after saving the composition
+   * @returns The StatusData object reflecting the outcome
    */
-  processSaveCallback(response): void {
+  async processSaveCallback(response): Promise<StatusData> {
     this.statusData.status = response.status;
+    this.statusData.error = undefined; // Reset error
+    this.statusData.resultCode = undefined; // Reset result code
+    this.statusData.overWriteNeeded = false; // Reset overwrite flag
+    this.statusData.canEditExistingComposition = undefined;
+
     if (!response.status) {
       const error = response.error;
-      if (error.code == 24) {
+      this.statusData.error = error;
+      const errorHeader = 'Error saving composition';
+      const errorDetails = error?.['message'] ? [error['message']] : undefined;
+      const reason = error.detail?.reason;
+      let errorText = 'Could not save composition.'; // Default error text
+
+      if (error?.code === 24) {
         this.statusData.overWriteNeeded = true;
         this.updateCompoDataName(error.detail.mapname);
         this.statusData.resultCode = 'exists';
-      } else if (error.code == 32) {
+        this.hsToastService.show(
+          `Composition '${error.detail.mapname}' already exists. Please choose a different name or overwrite.`,
+          {
+            header: 'Composition exists',
+            type: 'warning',
+            autohide: false, // Keep this visible
+            details: errorDetails,
+          },
+        );
+        this.statusData.canEditExistingComposition =
+          await this.canEditExistingComposition(error.detail.mapname);
+      } else if (error?.code === 32) {
         this.statusData.resultCode = 'not-saved';
+        errorText = 'Request was processed, but composition was not saved.';
+        this.hsToastService.show(errorText, {
+          header: 'Composition not saved',
+          type: 'warning',
+          details: errorDetails,
+        });
       } else {
         this.statusData.resultCode = 'error';
+        // Use generic error text unless specific message exists
+        errorText = error?.['message'] ?? errorText;
+        this.hsToastService.show(errorText, {
+          header: errorHeader,
+          type: 'danger',
+          details: [reason],
+        });
       }
-      this.statusData.error = error;
     } else {
       this.statusData.resultCode = 'success';
+      this.hsToastService.show(
+        `Composition '${this.compoData.controls.name.value}' was saved.`,
+        {
+          header: 'Composition saved successfully',
+          type: 'success',
+        },
+      );
       this.hsLayoutService.setMainPanel('layerManager', true);
     }
-    this.saveMapResulted.next(this.statusData);
+    return this.statusData;
   }
 
   /**
-   * Focus the browser to composition's title
+   * Check if the current user has write access to the composition
    */
-  focusTitle() {
-    if (this.statusData.guessedTitle) {
-      this.updateCompoDataName(this.statusData.guessedTitle);
+  async canEditExistingComposition(compositionName: string): Promise<boolean> {
+    try {
+      const layman = this.hsCommonLaymanService.layman();
+      const url = `${layman.url}/rest/maps?full_text_filter=${compositionName}`;
+      const response = await lastValueFrom(
+        this.http.get<any>(url, {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          withCredentials: true,
+        }),
+      );
+      const write = response[0].access_rights.write;
+      const user = this.currentUser();
+      return write.includes(user) || write.includes('EVERYONE');
+    } catch (error) {
+      console.error('Error checking if composition can be edited:', error);
+      return false;
     }
-    //TODO: Check if this works and input is focused
-    this.hsLayoutService.contentWrapper.querySelector('.hs-stc-title').focus();
   }
 }

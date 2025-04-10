@@ -308,7 +308,8 @@
     "base": "Pamatkarte",
     "thematic": "Tematiskā karte",
     "contains": "satur",
-    "property": "Īpašība"
+    "property": "Īpašība",
+    "update": "Atjaunināt"
   },
   "COMPOSITIONS": {
     "addByAddress": "Pievienot kompozīciju pēc adreses",
@@ -839,7 +840,8 @@
       "state": "Novads",
       "toggleAll": "Pārslēgt visu",
       "userCurrentMapExtent": "Izmantot pašreizējo kartes apmēru",
-      "write": "Rakstīt"
+      "write": "Rakstīt",
+      "saveAsNew": "Izveidot kompozīciju"
     },
     "panelMd": {
       "fillKeywords": "Ievadiet atslēgvārdus",

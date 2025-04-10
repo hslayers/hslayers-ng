@@ -21,7 +21,6 @@ import {
 import {HsConfig} from 'hslayers-ng/config';
 import {HsConfigMock} from './config.service.mock';
 import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
-import {HsEndpoint} from 'hslayers-ng/types';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsLayerUtilsService, HsUtilsService} from 'hslayers-ng/services/utils';
 import {HsLaymanService} from 'hslayers-ng/services/save-map';
@@ -29,11 +28,7 @@ import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsLayoutServiceMock} from './layout.service.mock';
 import {HsMapService} from 'hslayers-ng/services/map';
 import {HsMapServiceMock} from './map.service.mock';
-import {
-  HsSaveMapComponent,
-  HsSaveMapDialogSpawnerService,
-  HsSaveMapManagerService,
-} from 'hslayers-ng/components/save-map';
+
 import {HsSaveMapManagerServiceMock} from './save-map-manager.service.mock';
 import {HsUtilsServiceMock} from './utils/utils.service.mock';
 import {TranslateCustomPipe} from 'hslayers-ng/services/language';
@@ -96,12 +91,6 @@ describe('HsSaveMap', () => {
         {
           provide: HsCommonEndpointsService,
           useValue: new CommonEndpointsServiceMock(),
-        },
-        {
-          provide: HsSaveMapDialogSpawnerService,
-          useValue: jasmine.createSpyObj('HsSaveMapDialogSpawnerService', [
-            'init',
-          ]),
         },
         {provide: HsDialogContainerService, useValue: new emptyMock()},
         {

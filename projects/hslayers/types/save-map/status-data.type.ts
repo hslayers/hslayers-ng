@@ -1,12 +1,12 @@
 export type StatusData = {
-  titleFree?: boolean;
-  hasPermission?: boolean;
   success?: boolean;
-  changeTitle?: boolean;
-  groups?: any[];
   overWriteNeeded?: boolean;
   resultCode?: string;
-  guessedTitle?: string;
   error?: any;
   status?: boolean;
+  /**
+   * Whether it is possible for current user to edit composition with
+   * existing name
+   */
+  canEditExistingComposition?: boolean;
 };

@@ -4,6 +4,7 @@ import {
   FormBuilder,
   FormControl,
   FormGroup,
+  ReactiveFormsModule,
 } from '@angular/forms';
 
 import {Layer} from 'ol/layer';
@@ -13,6 +14,7 @@ import {HsMapService} from 'hslayers-ng/services/map';
 import {HsSaveMapService} from 'hslayers-ng/services/save-map';
 import {HsUtilsService} from 'hslayers-ng/services/utils';
 import {getShowInLayerManager, getTitle} from 'hslayers-ng/common/extensions';
+import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 
 export type saveMapLayer = {
   checked: boolean;
@@ -29,7 +31,7 @@ export type saveMapLayer = {
       useFactory: () => inject(ControlContainer, {skipSelf: true}),
     },
   ],
-  standalone: false,
+  imports: [TranslateCustomPipe, ReactiveFormsModule],
 })
 export class AdvancedOptionsComponent implements OnInit, OnDestroy {
   @Input() thumbnail: HTMLImageElement;

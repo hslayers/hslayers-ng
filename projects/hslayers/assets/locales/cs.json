@@ -333,7 +333,8 @@
     "contains": "obsahuje",
     "property": "Atribut",
     "error": "Chyba",
-    "success": "Úspěch"
+    "success": "Úspěch",
+    "update": "Aktualizovat"
   },
   "COMPOSITIONS": {
     "addByAddress": "Přidat kompozici z adresy",
@@ -885,7 +886,8 @@
       "state": "Stát",
       "toggleAll": "Přepnout vše",
       "userCurrentMapExtent": "Použít aktuální rozsah mapy",
-      "write": "Zapisovat"
+      "write": "Zapisovat",
+      "saveAsNew": "Vytvořit kompozici"
     },
     "panelMd": {
       "fillKeywords": "Vyplňte klíčová slova",
@@ -908,7 +910,8 @@
     "everyone": "Každý",
     "perUser": "Vybraní uživatelé",
     "compositionThumbnail": "Náhled kompozice",
-    "perRole": "Vybrané role"
+    "perRole": "Vybrané role",
+    "setupAndDownload": "Vytvorte a stiahnite kompozici"
   },
   "SENSORS": {
     "1D": "1D",

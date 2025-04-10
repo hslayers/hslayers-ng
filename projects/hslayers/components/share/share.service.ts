@@ -83,7 +83,6 @@ export class HsShareService {
             this.HsMapService.getMap(),
             {layers, bbox},
             {},
-            {},
           );
           await this.HsShareUrlService.updatePermalinkComposition(data);
         } catch (ex) {

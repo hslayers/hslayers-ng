@@ -35,7 +35,11 @@ import {
   StatusData,
   UserData,
 } from 'hslayers-ng/types';
-import {HsLayerUtilsService, HsUtilsService, normalizeSldComparisonOperators} from 'hslayers-ng/services/utils';
+import {
+  HsLayerUtilsService,
+  HsUtilsService,
+  normalizeSldComparisonOperators,
+} from 'hslayers-ng/services/utils';
 import {HsLogService} from 'hslayers-ng/services/log';
 import {HsMapService} from 'hslayers-ng/services/map';
 import {HsShareThumbnailService} from 'hslayers-ng/services/share';
@@ -80,24 +84,9 @@ export class HsSaveMapService {
    * @param map - Selected OL map object
    * @param compoData - Composition general metadata
    * @param userData - Metadata about user, organisation and point of contact
-   * @param statusData - Metadata about permissions
    * @returns - JSON object with all required map composition's metadata
    */
-  map2json(
-    map: Map,
-    compoData: CompoData,
-    userData: UserData,
-    statusData: StatusData,
-  ): MapComposition {
-    const groups: any = {};
-    for (const g of statusData.groups || []) {
-      if (g.r || g.w) {
-        groups[g.roleName] = (g.r ? 'r' : '') + (g.w ? 'w' : '');
-      }
-    }
-    if (groups.guest == undefined) {
-      groups.guest = 'r';
-    }
+  map2json(map: Map, compoData: CompoData, userData: UserData): MapComposition {
     const bbox = this.hsUtilsService.getBboxFromObject(compoData.bbox);
     const json: MapComposition = {
       abstract: compoData.abstract,

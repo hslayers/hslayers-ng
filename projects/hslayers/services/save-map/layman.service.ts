@@ -220,17 +220,6 @@ export class HsLaymanService implements HsSaverService {
             options,
           ),
         ).catch((err) => {
-          this.hsToastService.createToastPopupMessage(
-            this.hsLanguageService.getTranslation(
-              'COMMON.setPermissionsError',
-              undefined,
-            ),
-            this.hsLanguageService.getTranslationIgnoreNonExisting(
-              'COMMON',
-              'somethingWentWrong',
-            ),
-            {serviceCalledFrom: 'HsLaymanService'},
-          );
           return err;
         });
         //Unsuccessful request response contains code, detail and message properties

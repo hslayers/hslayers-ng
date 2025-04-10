@@ -1,75 +1,53 @@
-import {Component, linkedSignal, OnInit} from '@angular/core';
-import {
-  takeUntilDestroyed,
-  toObservable,
-  toSignal,
-} from '@angular/core/rxjs-interop';
+import {Component, OnInit} from '@angular/core';
+import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 
 import {HsCommonEndpointsService} from 'hslayers-ng/services/endpoints';
 import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
 import {HsConfig} from 'hslayers-ng/config';
-import {HsEndpoint} from 'hslayers-ng/types';
 import {HsPanelBaseComponent} from 'hslayers-ng/common/panels';
-import {HsSaveMapDialogSpawnerService} from './dialog-spawner.service';
 import {HsSaveMapManagerService} from './save-map-manager.service';
 import {HsSaveMapService} from 'hslayers-ng/services/save-map';
+import {filter} from 'rxjs';
 
 @Component({
   selector: 'hs-save-map',
   templateUrl: './save-map.component.html',
+  styles: `
+    .divider {
+      width: 80%;
+      height: 1px;
+      background-color: var(--bs-gray);
+      margin: 1.5rem 0;
+      align-self: center;
+    }
+  `,
   standalone: false,
 })
 export class HsSaveMapComponent extends HsPanelBaseComponent implements OnInit {
-  selectedEndpoint = toSignal(this.hsSaveMapManagerService.endpointSelected);
-
-  compareEndpoints(a: HsEndpoint, b: HsEndpoint): boolean {
-    // Compare endpoints by their URL or other unique identifier
-    return a?.url === b?.url;
-  }
-
-  endpoints: HsEndpoint[];
-  isAuthenticated = this.hsCommonLaymanService.isAuthenticated;
   name = 'saveMap';
+
+  isAuthenticated = this.hsCommonLaymanService.isAuthenticated;
+  localDownload = false;
+
   constructor(
     private hsConfig: HsConfig,
     private hsSaveMapManagerService: HsSaveMapManagerService,
     private hsCommonLaymanService: HsCommonLaymanService,
     private hsCommonEndpointsService: HsCommonEndpointsService,
-    //Running in background and watching observables
-    private hsSaveMapDialogSpawnerService: HsSaveMapDialogSpawnerService,
     private hsSaveMapService: HsSaveMapService,
   ) {
     super();
-
-    toObservable(this.hsCommonEndpointsService.endpoints)
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe((endpoints) => {
-        if (endpoints?.length > 0 && !this.selectedEndpoint()) {
-          const laymanEp = this.hsCommonLaymanService.layman();
-          if (laymanEp) {
-            this.hsSaveMapManagerService.selectEndpoint(laymanEp);
-          } else {
-            this.hsSaveMapManagerService.selectEndpoint(endpoints[0]);
-          }
-        }
-      });
   }
   ngOnInit() {
     super.ngOnInit();
-    this.endpoints = this.hsCommonEndpointsService.endpoints();
 
-    this.hsSaveMapManagerService.panelOpened
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe((composition) => {
-        if (composition && composition.endpoint) {
-          const openedType = composition.endpoint.type;
-          const found = this.hsCommonEndpointsService
-            .endpoints()
-            .filter((ep) => ep.type.includes(openedType));
-          if (found.length > 0) {
-            this.hsSaveMapManagerService.selectEndpoint(found[0]);
-          }
-        }
+    this.hsLayoutService.mainpanel$
+      .pipe(
+        takeUntilDestroyed(this.destroyRef),
+        filter((panel) => panel.name !== 'saveMap'),
+      )
+      .subscribe((panel) => {
+        this.localDownload = false;
       });
 
     window.addEventListener('beforeunload', () => {
@@ -80,10 +58,29 @@ export class HsSaveMapComponent extends HsPanelBaseComponent implements OnInit {
   }
 
   /**
-   * Select service endpoint, which will be used to save the map composition
-   * @param endpoint - Endpoint to select
+   * Save map composition as json file
    */
-  selectEndpoint(endpoint: HsEndpoint): void {
-    this.hsSaveMapManagerService.selectEndpoint(endpoint);
+  saveCompoJson(): void {
+    const compositionJSON =
+      this.hsSaveMapManagerService.generateCompositionJson();
+    const file = new Blob([JSON.stringify(compositionJSON)], {
+      type: 'application/json',
+    });
+
+    // Create a temporary anchor element
+    const a = document.createElement('a');
+    const url = URL.createObjectURL(file);
+    a.href = url;
+    a.download =
+      this.hsSaveMapManagerService.compoData.controls.name.value ||
+      'composition'; // Use form name or default
+    document.body.appendChild(a); // Append to body
+    a.click(); // Programmatically click the anchor
+
+    // Clean up: remove the anchor and revoke the URL
+    setTimeout(() => {
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(url);
+    }, 0);
   }
 }

@@ -1,32 +1,150 @@
-import {Component, DestroyRef, OnInit, inject} from '@angular/core';
-import {takeUntilDestroyed, toSignal} from '@angular/core/rxjs-interop';
+import {
+  Component,
+  computed,
+  inject,
+  input,
+  signal,
+  Output,
+  EventEmitter,
+} from '@angular/core';
+import {toSignal} from '@angular/core/rxjs-interop';
+import {startWith, Observable, map, debounceTime} from 'rxjs';
 
-import {Observable, map, startWith} from 'rxjs';
-
-import {AccessRightsModel, HsEndpoint, StatusData} from 'hslayers-ng/types';
+import {AccessRightsModel} from 'hslayers-ng/types';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsSaveMapManagerService} from '../save-map-manager.service';
-import {HsUtilsService} from 'hslayers-ng/services/utils';
+import {
+  HsCommonLaymanAccessRightsComponent,
+  HsCommonLaymanService,
+} from 'hslayers-ng/common/layman';
+import {HsCompositionsParserService} from 'hslayers-ng/services/compositions';
+import {AsyncPipe} from '@angular/common';
+import {NgbTooltipModule} from '@ng-bootstrap/ng-bootstrap';
+import {TranslateCustomPipe} from 'hslayers-ng/services/language';
+import {AdvancedOptionsComponent} from './advanced-options/advanced-options.component';
+import {ReactiveFormsModule} from '@angular/forms';
 
 @Component({
   selector: 'hs-save-map-form',
   templateUrl: './form.component.html',
-  standalone: false,
+  imports: [
+    AsyncPipe,
+    ReactiveFormsModule,
+    NgbTooltipModule,
+    TranslateCustomPipe,
+    AdvancedOptionsComponent,
+    HsCommonLaymanAccessRightsComponent,
+  ],
 })
-export class HsSaveMapAdvancedFormComponent implements OnInit {
-  endpoint = toSignal(this.hsSaveMapManagerService.endpointSelected, {
-    initialValue: null,
+export class HsSaveMapFormComponent {
+  @Output() download = new EventEmitter<void>();
+  private hsCommonLaymanService = inject(HsCommonLaymanService);
+  private hsCompositionsParserService = inject(HsCompositionsParserService);
+
+  local = input<boolean>(false);
+
+  /**
+   *  Check if current user can overwrite the composition data
+   */
+  canOverwrite = this.hsSaveMapManagerService.currentCompositionEditable;
+  overwriteNecessary = signal(false);
+  isEditable = this.hsSaveMapManagerService.currentCompositionEditable;
+
+  currentComposition = toSignal(
+    this.hsCompositionsParserService.currentCompositionRecord,
+    {
+      initialValue: null,
+    },
+  );
+
+  compoWorkspace = toSignal(
+    this.hsSaveMapManagerService.compoData.controls.workspace.valueChanges.pipe(
+      startWith(
+        this.hsSaveMapManagerService.compoData.controls.workspace.value,
+      ),
+    ),
+    {
+      initialValue: null,
+    },
+  );
+
+  compoName = toSignal(
+    this.hsSaveMapManagerService.compoData.controls.name.valueChanges.pipe(
+      startWith(this.hsSaveMapManagerService.compoData.controls.name.value),
+      debounceTime(250),
+    ),
+  );
+
+  isMyComposition = computed(() => {
+    return this.compoWorkspace() === this.hsCommonLaymanService.user();
   });
-  overwrite = false;
+
+  compositionWithThisNameExists = computed(() => {
+    const currentCompositionName =
+      this.hsSaveMapManagerService.currentComposition()?.name;
+    const currentFormName = this.compoName();
+    return currentCompositionName === currentFormName;
+  });
+
+  availableActions = computed(() => {
+    const exists = this.compositionWithThisNameExists();
+    const overwriteNecessary = this.overwriteNecessary();
+    if (overwriteNecessary) {
+      return this.hsSaveMapManagerService.statusData.canEditExistingComposition
+        ? ['overwrite', 'rename']
+        : ['rename'];
+    }
+
+    if (!this.isEditable()) {
+      return ['save'];
+    }
+    if (this.isMyComposition()) {
+      return exists ? ['overwrite', 'rename'] : ['save'];
+    }
+    if (this.isEditable()) {
+      return exists ? ['overwrite', 'rename'] : ['save'];
+    }
+    return ['save'];
+  });
+
+  contextTooltipText = computed(() => {
+    const result = {text: '', iconClass: 'fa-solid fa-circle-info'};
+    if (!this.isEditable()) {
+      result.text =
+        'You have no write access to this composition. You can however save it as a new one.';
+      result.iconClass = 'fa-solid fa-lock';
+    } else if (this.isMyComposition()) {
+      if (this.compositionWithThisNameExists()) {
+        result.text =
+          'This is your composition. You can update it or create a copy with new name.';
+        result.iconClass = 'fa-solid fa-user-pen';
+      } else {
+        result.text = 'Ready to save as a new composition.';
+        result.iconClass = 'fa-solid fa-check-circle';
+      }
+    } else if (this.isEditable()) {
+      if (this.compositionWithThisNameExists()) {
+        result.text =
+          'You have write access to update this composition or save as new.';
+        if (!this.isMyComposition()) {
+          result.text += ` (Owned by: ${this.compoWorkspace()})`;
+        }
+        result.iconClass = 'fa-solid fa-pencil';
+      } else {
+        result.text = 'You have write access to save changes.';
+        result.iconClass = 'fa-solid fa-check-circle';
+      }
+    }
+    return result;
+  });
+
   downloadableData: string;
   extraFormOpened = '';
 
   isVisible: Observable<boolean>;
-  private destroyRef = inject(DestroyRef);
 
   constructor(
     public hsSaveMapManagerService: HsSaveMapManagerService,
-    private hsUtilsService: HsUtilsService,
     private hsLayoutService: HsLayoutService,
   ) {
     this.isVisible = this.hsLayoutService.mainpanel$.pipe(
@@ -34,29 +152,6 @@ export class HsSaveMapAdvancedFormComponent implements OnInit {
       map((panel) => {
         return panel === 'saveMap';
       }),
-    );
-  }
-
-  ngOnInit(): void {
-    this.hsSaveMapManagerService.saveMapResulted
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe((statusData) => {
-        if ((statusData as StatusData).overWriteNeeded) {
-          this.overwrite = true;
-        }
-        if (statusData == 'rename') {
-          this.hsLayoutService.layoutElement
-            .querySelector('[name="hs-save-map-name"]')
-            .focus();
-        }
-      });
-
-    this.hsSaveMapManagerService.compoData.controls.name.valueChanges.subscribe(
-      (name: string) => {
-        this.overwrite =
-          this.hsSaveMapManagerService.compoData.controls.workspace.value &&
-          this.hsSaveMapManagerService.currentComposition?.name === name;
-      },
     );
   }
 
@@ -82,42 +177,6 @@ export class HsSaveMapAdvancedFormComponent implements OnInit {
   }
 
   /**
-   * Save map composition as json file
-   */
-  saveCompoJson(): void {
-    const compositionJSON =
-      this.hsSaveMapManagerService.generateCompositionJson();
-    const file = new Blob([JSON.stringify(compositionJSON)], {
-      type: 'application/json',
-    });
-
-    const a = <HTMLAnchorElement>document.getElementById('stc-download'),
-      url = URL.createObjectURL(file);
-    a.href = url;
-    a.download = 'composition';
-    setTimeout(() => {
-      window.URL.revokeObjectURL(url);
-    }, 0);
-  }
-
-  /**
-   * Set the first string letter to an uppercase
-   * NOTE not being used
-   * @returns Returns the same string, but with a capitalized first letter
-   */
-  capitalizeFirstLetter(string: string): string {
-    return this.hsUtilsService.capitalizeFirstLetter(string);
-  }
-
-  /**
-   * Triggered when composition's title input field receives user's input
-   */
-  nameChanged(): void {
-    this.overwrite = false;
-    this.hsSaveMapManagerService.missingName = false;
-  }
-
-  /**
    * Triggered when composition's abstract input field receives user's input
    */
   abstractChanged(): void {
@@ -125,23 +184,19 @@ export class HsSaveMapAdvancedFormComponent implements OnInit {
   }
 
   /**
-   * Check if user is allowed to save the composition, based on the currently selected endpoint type
-   * @returns True if endpoint type is 'layman'.
+   * Visual clue for user to rename the composition
    */
-  isAllowed(): boolean {
-    if (this.endpoint === null) {
-      return false;
-    }
-    if (this.endpoint().type.includes('layman')) {
-      return true;
-    }
+  rename(): void {
+    this.hsLayoutService.layoutElement
+      .querySelector('[name="hs-save-map-name"]')
+      .focus();
   }
 
   /**
    * Initiate composition's saving procedure
    * @param newSave - If true save a new composition, otherwise overwrite to current one
    */
-  initiateSave(newSave: boolean): void {
+  async initiateSave(newSave: boolean): Promise<void> {
     /***
      * Overwriting composition of other user and making it private
      *  = access for owner + current user
@@ -159,13 +214,9 @@ export class HsSaveMapAdvancedFormComponent implements OnInit {
         },
       });
     }
-    this.hsSaveMapManagerService.initiateSave(newSave);
-  }
-
-  /**
-   *  Check if current user can overwrite the composition data
-   */
-  canOverwrite() {
-    return this.hsSaveMapManagerService.currentComposition?.editable;
+    await this.hsSaveMapManagerService.initiateSave(newSave);
+    this.overwriteNecessary.set(
+      this.hsSaveMapManagerService.statusData.overWriteNeeded,
+    );
   }
 }
