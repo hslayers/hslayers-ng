@@ -25,7 +25,7 @@ import {
   HsAddDataOwsService,
   HsAddDataVectorService,
 } from 'hslayers-ng/services/add-data';
-import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
+import {HsCommonLaymanService, isLaymanUrl} from 'hslayers-ng/common/layman';
 import {HsLanguageService} from 'hslayers-ng/services/language';
 import {HsLogService} from 'hslayers-ng/services/log';
 import {HsMapService} from 'hslayers-ng/services/map';
@@ -33,7 +33,10 @@ import {HsStylerService} from 'hslayers-ng/services/styler';
 import {HsToastService} from 'hslayers-ng/common/toast';
 import {HsVectorLayerOptions} from 'hslayers-ng/types';
 import {SparqlJson} from 'hslayers-ng/common/layers';
-import {setDefinition} from 'hslayers-ng/common/extensions';
+import {
+  setDefinition,
+  setQueryCapabilities,
+} from 'hslayers-ng/common/extensions';
 
 @Injectable({
   providedIn: 'root',
@@ -58,9 +61,10 @@ export class HsCompositionsLayerParserService {
    */
   async createWFSLayer(lyr_def): Promise<Layer<Source>> {
     const style = (lyr_def.sld || lyr_def.qml) ?? lyr_def.style;
+    const uri = lyr_def.protocol.url.split('?')[0];
     const newLayer = await this.hsAddDataOwsService.connectToOWS({
       type: 'wfs',
-      uri: lyr_def.protocol.url.split('?')[0],
+      uri,
       layer: lyr_def.name,
       owrCache: false,
       getOnly: true,
@@ -70,6 +74,15 @@ export class HsCompositionsLayerParserService {
         fromComposition: true,
         opacity: parseFloat(lyr_def.opacity) ?? 1,
       },
+      laymanLayer: isLaymanUrl(uri, this.hsCommonLaymanService.layman())
+        ? {
+            title: lyr_def.title,
+            layer: lyr_def.name,
+            name: lyr_def.name,
+            link: uri,
+            type: 'wfs',
+          }
+        : undefined,
     });
     newLayer[0].setVisible(lyr_def.visibility);
     return newLayer[0];
@@ -163,6 +176,10 @@ export class HsCompositionsLayerParserService {
       ? new ImageLayer(layerOptions as ImageOptions<ImageSource>)
       : new Tile(layerOptions as TileOptions<TileSource>);
 
+    setQueryCapabilities(
+      new_layer,
+      !isLaymanUrl(url, this.hsCommonLaymanService.layman()),
+    );
     new_layer.setVisible(lyr_def.visibility);
     this.hsMapService.proxifyLayerLoader(new_layer, !lyr_def.singleTile);
     return new_layer;

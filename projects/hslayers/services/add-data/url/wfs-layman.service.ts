@@ -6,6 +6,7 @@ import {HsWfsGetCapabilitiesService} from 'hslayers-ng/services/get-capabilities
 import {setQueryCapabilities} from 'hslayers-ng/common/extensions';
 
 import {HsUrlWfsService} from './wfs.service';
+
 @Injectable({
   providedIn: 'root',
 })
@@ -39,7 +40,9 @@ export class HsAddDataWfsLaymanService {
       },
       {
         ...options,
-        layerName: `layman:${whatToAdd.layer}`,
+        layerName: whatToAdd.layer.includes('layman')
+          ? whatToAdd.layer
+          : `layman:${whatToAdd.layer}`,
         crs: srs,
         queryable: true,
       },
