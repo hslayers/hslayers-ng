@@ -1,6 +1,6 @@
 <fieldset class="form">
-  <div [formGroup]="parentFormGroup.controls.bbox">
-    <div class="d-flex w-100 pb-2 stc-extent-row">
+  <div [formGroup]="parentFormGroup.controls.bbox" class="mb-3">
+    <div class="d-flex w-100 stc-extent-row">
       <div class="form-floating px-0">
         <input type="text" formControlName="east" class="form-control" id="floatingEast"
           [title]="'COMMON.east' | translateHs  ">
@@ -22,30 +22,33 @@
         <label for="floatingNorth">{{'COMMON.north' | translateHs }}</label>
       </div>
     </div>
-    <button type="button" class="mt-1 btn btn-secondary w-100"
+    <button type="button" class="btn text-bg-light border border-top-0 w-100 rounded-0 btn-sm"
       (click)="setCurrentBoundingBox()">{{'SAVECOMPOSITION.form.userCurrentMapExtent'
-    | translateHs }}</button>
+      | translateHs }}</button>
   </div>
 
   <div class="form-group">
     <ul class="list-group" id="stc-layerlist">
 
       @for (layer of layers; track layer; let i = $index) {
-        <li class="list-group-item">
-          <div class="form-check text-truncate">
-            <input type="checkbox" [value]="layer.layer"
-              (change)="onChecklistChange($event.target.checked, layer)" class="form-check-input mt-0"
-              name="hs-stclayer-{{i}}" [checked]="layer.checked">
-            <label for="hs-stclayer-{{i}}" [title]="layer.title | translateHs : 'LAYERS'"
-            class="form-check-label mw-100 text-truncate">{{layer.title | translateHs : 'LAYERS' }}</label>
-          </div>
-        </li>
+      <li class="list-group-item p-0">
+        <label class="form-check-label d-flex align-items-center w-100 p-2">
+          <input type="checkbox" [value]="layer.layer" (change)="onChecklistChange($event.target.checked, layer)"
+            class="form-check-input me-2 mt-0" [checked]="layer.checked">
+          <span class="text-truncate flex-grow-1" [title]="layer.title | translateHs : 'LAYERS'">
+            {{layer.title | translateHs : 'LAYERS' }}
+          </span>
+          @if(layer.base) {
+          <i class="fa-solid fa-map-location-dot text-secondary" [title]="'COMMON.base' | translateHs"></i>
+          }
+        </label>
+      </li>
       }
       <li class="list-group-item" style="padding: 3px">
         <div class="d-flex w-100 justify-content-center">
-          <button type="button" class="mt-1 btn btn-primary"
-            (click)="toggleLayers()">{{'SAVECOMPOSITION.form.toggleAll' |
-          translateHs }}</button>
+          <button type="button" class="mt-1 btn btn-primary" (click)="toggleLayers()">{{'SAVECOMPOSITION.form.toggleAll'
+            |
+            translateHs }}</button>
         </div>
       </li>
     </ul>

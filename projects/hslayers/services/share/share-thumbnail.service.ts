@@ -39,8 +39,8 @@ export class HsShareThumbnailService {
     let thumbnail;
     const collectorCanvas = this.renderer.createElement('canvas');
     const targetCanvas = this.renderer.createElement('canvas');
-    const width = 256,
-      height = 256;
+    const width = 200,
+      height = 200;
     const firstCanvas =
       this.HsMapService.mapElement.querySelector('.ol-layer canvas');
     this.setCanvasSize(targetCanvas, width, height);

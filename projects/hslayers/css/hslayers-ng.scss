@@ -522,7 +522,16 @@ html:has(div.hs-layout.hsl.hs-mobile-view) {
   }
 
   #stc-layerlist .list-group-item {
-    padding: 0.25rem;
+    padding: 0.15rem;
+    border: 0;
+
+    label {
+      cursor: pointer;
+    }
+
+    &:hover {
+      background-color: $light;
+    }
   }
 
   .hs-stc-footer button {
