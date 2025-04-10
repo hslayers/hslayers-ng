@@ -9,9 +9,6 @@
     }
   </hs-panel-header>
   <div class="card-body">
-    @if (isAuthenticated() ) {
-    <hs-layman-current-user class="d-block pb-5" />
-    }
     @if(isAuthenticated() || localDownload) {
     @defer {
     <hs-save-map-form [local]="localDownload" (download)="saveCompoJson()" />

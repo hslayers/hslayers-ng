@@ -16,6 +16,7 @@ import {HsSaveMapManagerService} from '../save-map-manager.service';
 import {
   HsCommonLaymanAccessRightsComponent,
   HsCommonLaymanService,
+  HsLaymanCurrentUserComponent,
 } from 'hslayers-ng/common/layman';
 import {HsCompositionsParserService} from 'hslayers-ng/services/compositions';
 import {AsyncPipe} from '@angular/common';
@@ -34,6 +35,7 @@ import {ReactiveFormsModule} from '@angular/forms';
     TranslateCustomPipe,
     AdvancedOptionsComponent,
     HsCommonLaymanAccessRightsComponent,
+    HsLaymanCurrentUserComponent,
   ],
 })
 export class HsSaveMapFormComponent {

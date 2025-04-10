@@ -13,13 +13,18 @@ import {Source} from 'ol/source';
 import {HsMapService} from 'hslayers-ng/services/map';
 import {HsSaveMapService} from 'hslayers-ng/services/save-map';
 import {HsUtilsService} from 'hslayers-ng/services/utils';
-import {getShowInLayerManager, getTitle} from 'hslayers-ng/common/extensions';
+import {
+  getBase,
+  getShowInLayerManager,
+  getTitle,
+} from 'hslayers-ng/common/extensions';
 import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 
 export type saveMapLayer = {
   checked: boolean;
   layer: Layer<Source>;
   title: string;
+  base: boolean;
 };
 
 @Component({
@@ -128,6 +133,7 @@ export class AdvancedOptionsComponent implements OnInit, OnDestroy {
           title: getTitle(lyr),
           checked: this.btnSelectDeselectClicked,
           layer: lyr,
+          base: getBase(lyr),
         };
       })
       .sort((a, b) => {

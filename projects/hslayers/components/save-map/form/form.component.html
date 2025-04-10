@@ -1,5 +1,11 @@
 @if (isVisible | async) {
 <form class="form" [formGroup]="hsSaveMapManagerService.compoData" (ngSubmit)="initiateSave(true)" #compoForm="ngForm">
+  <div class="d-flex flex-reverse align-items-center mb-3 justify-content-between">
+    <hs-layman-current-user class="d-block pb-5" />
+    <img #compositionThumbnail class="hs-stc-thumbnail img-thumbnail mt-1 d-block"
+      [alt]="'SAVECOMPOSITION.compositionThumbnail' | translateHs " width="200" height="200">
+  </div>
+
   <div class="form-floating mb-2">
     <input type="text" class="form-control" formControlName="name"
       [class.is-invalid]="hsSaveMapManagerService.compoData.controls.name.invalid  && compoForm.submitted"
@@ -16,18 +22,15 @@
     <input type="text" class="form-control" name="hs-save-map-keywords" [placeholder]="'COMMON.keywords' | translateHs">
     <label for="hs-save-map-keywords">{{'COMMON.keywords' | translateHs }}</label>
   </div>
-  <label class="form-group">{{'COMMON.thumbnail' | translateHs }}
-    <img #compositionThumbnail class="hs-stc-thumbnail img-thumbnail"
-      [alt]="'SAVECOMPOSITION.compositionThumbnail' | translateHs " width="256" height="256">
-  </label>
+
   @if(!local()) {
-  <hs-layman-access-rights [collapsed]="true" [(access_rights)]="hsSaveMapManagerService._access_rights"
-    (access_rights_changed)="setAccessRights($event)">
+  <hs-layman-access-rights [collapsed]="true" class="d-block pt-2"
+    [(access_rights)]="hsSaveMapManagerService._access_rights" (access_rights_changed)="setAccessRights($event)">
   </hs-layman-access-rights>
   }
 
   <div class="mb-2 d-flex justify-content-center">
-    <button type="button" class="btn btn-secondary me-2 w-50" id="stc-advanced-options"
+    <button type="button" class="btn btn-secondary me-2 w-50 dropdown-toggle" id="stc-advanced-options"
       (click)="setExtraFormTo('advancedOptions')">{{'COMMON.advancedOptions' | translateHs }}</button>
   </div>
   <hs-save-map-advanced-options [thumbnail]="compositionThumbnail"
