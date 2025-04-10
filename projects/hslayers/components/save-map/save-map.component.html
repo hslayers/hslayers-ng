@@ -1,33 +1,33 @@
 @if (isVisible$ | async) {
-  <div class="card panel-default hs-main-panel mainpanel hs-stc-mainpanel"
-    [ngClass]="panelWidthClass">
-    <hs-panel-header name="saveMap" [panelTabs]="'SAVECOMPOSITION'">
-    </hs-panel-header>
-    <div class="card-body">
-      <div class="form-group">
-        <div class="input-group">
-          <span class="input-group-text control-label">{{'COMMON.saveTo' | translateHs }}</span>
-          <select class="form-control form-select" 
-          [compareWith]="compareEndpoints"
-                  [ngModel]="selectedEndpoint()" 
-                  (ngModelChange)="selectEndpoint($event)"
-                  name="endpoint">
-            @for (e of endpoints; track e) {
-              <option [ngValue]="e">{{e.title}}</option>
-            }
-          </select>
-        </div>
-      </div>
-      @if (selectedEndpoint()?.type === 'layman') {
-        <hs-layman-current-user class="d-block pb-5" />
-      }
-      @if (isAuthenticated() || !selectedEndpoint()?.type?.includes('layman')) {
-        <hs-save-map-form/>
-      } @else {
-        <div class="alert alert-info text-gray">
-        {{'SAVECOMPOSITION.panelMd.youAreNotAuthorized' | translateHs }} </div>
-      }
+<div class="card panel-default hs-main-panel mainpanel hs-stc-mainpanel" [ngClass]="panelWidthClass">
+  <hs-panel-header name="saveMap" [panelTabs]="'SAVECOMPOSITION'">
+    @if (isAuthenticated() ) {
+    <button mainButton class="btn btn-sm btn-outline-primary border-0 align-items-center d-flex gap-2"
+      (click)="saveCompoJson()"> {{'COMMON.download' | translateHs}}
+      <i class="fa-solid fa-floppy-disk"></i>
+    </button>
+    }
+  </hs-panel-header>
+  <div class="card-body">
+    @if (isAuthenticated() ) {
+    <hs-layman-current-user class="d-block pb-5" />
+    }
+    @if(isAuthenticated() || localDownload) {
+    @defer {
+    <hs-save-map-form [local]="localDownload" (download)="saveCompoJson()" />
+    }
+    } @else {
+    <div class="alert alert-info text-gray mt-5 d-flex flex-column align-items-center gap-3 text-center ">
+      <i class="fa-solid fa-lock fs-1"></i>
+      {{'SAVECOMPOSITION.panelMd.youAreNotAuthorized' | translateHs }}
+      <hs-layman-current-user class="d-block" />
+      <div class="divider"></div>
+      <button mainButton type="button" class="btn btn-sm btn-outline-primary border-0 align-items-center d-flex gap-2"
+        (click)="localDownload = !localDownload"> {{'SAVECOMPOSITION.setupAndDownload' | translateHs}}
+        <i class="fa-solid fa-floppy-disk"></i>
+      </button>
     </div>
+    }
   </div>
+</div>
 }
-

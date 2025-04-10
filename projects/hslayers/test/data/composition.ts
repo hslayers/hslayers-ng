@@ -3,7 +3,6 @@ export const compositionJson = {
   'abstract': '',
   'title': 'Housing availability',
   'user': {'email': 'none@none'},
-  'groups': {'guest': 'r'},
   'scale': 1,
   'projection': 'epsg:3857',
   'center': [2831309.671235698, 7822190.932631157],

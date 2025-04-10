@@ -107,14 +107,14 @@ export class HsCompositionsParserService {
             this.current_composition_url,
             this.hsCommonLaymanService.layman(),
           );
+          const url = this.hsUtilsService.proxify(
+            this.current_composition_url.replace('/file', ''),
+          );
           return this.$http
-            .get<LaymanCompositionDescriptor>(
-              this.current_composition_url.replace('/file', ''),
-              {
-                withCredentials:
-                  this.hsCommonLaymanService.isAuthenticated() && fromLayman,
-              },
-            )
+            .get<LaymanCompositionDescriptor>(url, {
+              withCredentials:
+                this.hsCommonLaymanService.isAuthenticated() && fromLayman,
+            })
             .pipe(
               catchError((e) => {
                 fromLayman
