@@ -24,10 +24,7 @@ import {
   getQueryable,
   getVirtualAttributes,
 } from 'hslayers-ng/common/extensions';
-import {
-  HsFeatureAttribute,
-  HsFeatureDescriptor,
-} from 'hslayers-ng/types/feature-descriptor';
+import {HsFeatureAttribute, HsFeatureDescriptor} from 'hslayers-ng/types';
 
 @Injectable({
   providedIn: 'root',
