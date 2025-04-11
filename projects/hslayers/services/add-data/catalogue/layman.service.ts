@@ -13,6 +13,7 @@ import {
   isErrorHandlerFunction,
   HsLaymanLayerDescriptor,
   HsAddDataHsLaymanLayerDescriptor,
+  HsLaymanGetLayer,
 } from 'hslayers-ng/types';
 import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
 import {HsLanguageService} from 'hslayers-ng/services/language';
@@ -21,7 +22,6 @@ import {HsMapService} from 'hslayers-ng/services/map';
 import {HsToastService} from 'hslayers-ng/common/toast';
 import {HsUtilsService} from 'hslayers-ng/services/utils';
 import {addExtentFeature} from 'hslayers-ng/common/utils';
-import {HsLaymanGetLayer} from 'hslayers-ng/types/layman/get-layers.interface';
 
 /**
  * Layman GET /layers response wrapper with custom HSLayers properties

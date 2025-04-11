@@ -19,6 +19,7 @@ export * from './layman/status-state.type';
 export * from './layman/layman-layer-descriptor.interface';
 export * from './layman/upsert-layer-object.type';
 export * from './layman/about-layman-response.type';
+export * from './layman/get-layers.interface';
 
 export * from './save-map/status-data.type';
 export * from './save-map/wfs-sync-params.type';
