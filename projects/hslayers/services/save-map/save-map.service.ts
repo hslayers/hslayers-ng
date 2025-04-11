@@ -63,6 +63,7 @@ import {
   getWfsUrl,
   getWorkspace,
 } from 'hslayers-ng/common/extensions';
+import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
 
 const LOCAL_STORAGE_EXPIRE = 5000;
 
@@ -77,6 +78,7 @@ export class HsSaveMapService {
     private hsLogService: HsLogService,
     private hsLayerUtilsService: HsLayerUtilsService,
     private hsShareThumbnailService: HsShareThumbnailService,
+    private hsCommonLaymanService: HsCommonLaymanService,
   ) {}
 
   /**
@@ -391,14 +393,28 @@ export class HsSaveMapService {
       json.maxResolution = layer.getMaxResolution();
       json.minResolution = layer.getMinResolution();
       json.projection = this.hsMapService.getCurrentProj().getCode();
-      if (getSld(layer) != undefined) {
-        json.style = normalizeSldComparisonOperators(getSld(layer));
-      } else if (getQml(layer) != undefined) {
-        json.style = getQml(layer);
+
+      if (json.protocol.format == 'WFS') {
+        /**
+         * Do not store style directly in composition for Layman vector layers
+         */
+        json.style =
+          this.hsCommonLaymanService.layman().url +
+          '/rest/workspaces/' +
+          json.workspace +
+          '/layers/' +
+          json.name +
+          '/style';
       } else {
-        this.hsLogService.warn(
-          `Vector layer ${layer.get('title')} is missing style definition`,
-        );
+        if (getSld(layer) != undefined) {
+          json.style = normalizeSldComparisonOperators(getSld(layer));
+        } else if (getQml(layer) != undefined) {
+          json.style = getQml(layer);
+        } else {
+          this.hsLogService.warn(
+            `Vector layer ${layer.get('title')} is missing style definition`,
+          );
+        }
       }
     }
     return json;
