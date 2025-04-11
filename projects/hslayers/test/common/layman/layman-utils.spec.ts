@@ -164,7 +164,7 @@ describe('Layman Utils', () => {
     });
   });
 
-  fdescribe('isLaymanUrl', () => {
+  describe('isLaymanUrl', () => {
     const laymanEp: HsEndpoint = {
       type: 'layman',
       title: 'layman',

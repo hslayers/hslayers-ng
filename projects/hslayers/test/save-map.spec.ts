@@ -34,6 +34,10 @@ import {HsUtilsServiceMock} from './utils/utils.service.mock';
 import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 import {mockLayerUtilsService} from './layer-utils.service.mock';
 import {createMockLaymanService} from './common/layman/layman.service.mock';
+import {
+  HsSaveMapComponent,
+  HsSaveMapManagerService,
+} from 'hslayers-ng/components/save-map';
 
 class emptyMock {
   constructor() {}
