@@ -636,6 +636,10 @@ html:has(div.hs-layout.hsl.hs-mobile-view) {
     #stc-layerlist .list-group-item {
       padding: 1rem;
     }
+
+    .hs-form-thumbnail-container {
+      flex-direction: column;
+    }
   }
 
   ul[dnd-list],

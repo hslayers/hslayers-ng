@@ -1,6 +1,6 @@
 @if (isVisible | async) {
 <form class="form" [formGroup]="hsSaveMapManagerService.compoData" (ngSubmit)="initiateSave(true)" #compoForm="ngForm">
-  <div class="d-flex flex-reverse align-items-center mb-3 justify-content-between">
+  <div class="hs-form-thumbnail-container d-flex flex-reverse align-items-center mb-3 justify-content-between">
     <hs-layman-current-user class="d-block pb-5" />
     <img #compositionThumbnail class="hs-stc-thumbnail img-thumbnail mt-1 d-block"
       [alt]="'SAVECOMPOSITION.compositionThumbnail' | translateHs " width="200" height="200">
