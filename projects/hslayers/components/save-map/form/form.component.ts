@@ -85,16 +85,26 @@ export class HsSaveMapFormComponent {
     const currentCompositionName =
       this.hsSaveMapManagerService.currentComposition()?.name;
     const currentFormName = this.compoName();
-    return currentCompositionName === currentFormName;
+    const existingCompositionName =
+      this.hsSaveMapManagerService.existingComposition()?.name;
+    return (
+      currentFormName === currentCompositionName ||
+      currentFormName === existingCompositionName
+    );
   });
 
   availableActions = computed(() => {
     const exists = this.compositionWithThisNameExists();
     const overwriteNecessary = this.overwriteNecessary();
     if (overwriteNecessary) {
-      return this.hsSaveMapManagerService.statusData.canEditExistingComposition
-        ? ['overwrite', 'rename']
-        : ['rename'];
+      if (exists) {
+        return this.hsSaveMapManagerService.statusData
+          .canEditExistingComposition
+          ? ['overwrite', 'rename']
+          : ['rename'];
+      }
+      //Name was changed and is no longer same as existing composition
+      return ['save'];
     }
 
     if (!this.isEditable()) {

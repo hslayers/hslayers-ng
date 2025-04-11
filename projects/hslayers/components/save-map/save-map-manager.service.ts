@@ -15,6 +15,7 @@ import {
   AccessRightsModel,
   CompoData,
   HsEndpoint,
+  HsGetMapsComposition,
   LaymanCompositionDescriptor,
   MapComposition,
   StatusData,
@@ -62,6 +63,13 @@ export class HsSaveMapManagerParams {
     thumbnail: new FormControl(undefined),
     access_rights: new FormControl<AccessRightsModel>(this._access_rights),
   });
+
+  /**
+   * In case user tires to use existing composition name by accident,
+   * we store the composition data here so it can be used to determine proper UI state
+   */
+  existingComposition: WritableSignal<HsGetMapsComposition | undefined> =
+    signal(undefined);
 
   userData: UserData = {};
   panelOpened: Subject<any> = new Subject();
@@ -210,54 +218,94 @@ export class HsSaveMapManagerService extends HsSaveMapManagerParams {
    * @param endpoint - Endpoint's description
    * @returns Promise result of POST
    */
-  save(saveAsNew: boolean, endpoint: HsEndpoint): Promise<any> {
-    return new Promise((resolve, reject) => {
-      const tempCompoData: CompoData = {};
-      Object.assign(tempCompoData, this.compoData.value);
-      // Check whether layers were already formatted
-      // if (tempCompoData.layers[0].layer) {
-      //   tempCompoData.layers = tempCompoData.layers.filter((l) => l.checked);
-      // }
-      const compositionJson = this.generateCompositionJson();
-      let saver: HsSaverService = this.hsShareService;
+  async save(
+    saveAsNew: boolean,
+    endpoint: HsEndpoint,
+  ): Promise<{status: boolean; response?: any; error?: any; reason?: string}> {
+    const compoDataValue = this.compoData.value;
+    const tempCompoData: CompoData = {
+      ...compoDataValue,
+      /**
+       * In case compoData workspace is not populated (no composition was loaded) check
+       * existingComposition (it will be available in case used tried to use exisitng name by accident and has write access to it)
+       */
+      workspace:
+        compoDataValue.workspace ?? this.existingComposition()?.workspace,
+    };
+
+    const compositionJson = this.generateCompositionJson();
+    let saver: HsSaverService = this.hsShareService;
+    if (endpoint.type.includes('layman')) {
+      saver = this.hsLaymanService;
+    }
+
+    try {
+      const response = await saver.save(
+        compositionJson,
+        tempCompoData,
+        saveAsNew,
+      );
+
+      let isSuccess = false;
+      let reason: string | undefined;
+
       if (endpoint.type.includes('layman')) {
-        saver = this.hsLaymanService;
+        if (saveAsNew) {
+          // Layman success for new composition: response is array with one item having uuid
+          isSuccess =
+            Array.isArray(response) &&
+            response.length === 1 &&
+            response[0]?.uuid !== undefined;
+        } else {
+          // Layman success for updating composition: response directly has uuid
+          isSuccess = response?.uuid !== undefined;
+        }
+
+        // Handle specific Layman conflict case
+        if (!isSuccess && response?.status === 'CONFLICT') {
+          console.warn('Save conflict detected:', response);
+          reason = 'CONFLICT';
+        }
+      } else {
+        // Assume success for share if save() resolves without error
+        isSuccess = true;
       }
-      saver
-        .save(compositionJson, tempCompoData, saveAsNew)
-        .then((response) => {
-          const compInfo: any = {};
-          const j = response;
-          let status = false;
-          if (endpoint.type.includes('layman')) {
-            if (saveAsNew) {
-              status = j.length == 1 && j[0].uuid !== undefined;
-            } else {
-              status = j.uuid !== undefined;
-            }
-          }
-          if (!status) {
-            if (endpoint.type.includes('layman') && j.status == 'CONFLICT') {
-              compInfo.id = j[0].uuid;
-              compInfo.name = j[0].name;
-            }
-          } else {
-            this.hsEventBusService.compositionLoads.next(compInfo);
-          }
-          //const saveStatus = this.status ? 'ok' : 'not-saved';
-          //this.statusData.success = this.status;
-          response.status = status;
-          resolve(response);
-        })
-        .catch((e) => {
-          //e contains the json responses data object from api
-          //this.statusData.success = false;
-          reject({
-            status: false,
-            error: e,
+
+      if (isSuccess) {
+        if (
+          endpoint.type.includes('layman') &&
+          Array.isArray(response) &&
+          response.length === 1
+        ) {
+          const compositionUrl = response[0].url;
+          this.hsCompositionsParserService.current_composition_url =
+            compositionUrl;
+          this.hsEventBusService.compositionLoads.next({
+            ...compositionJson,
+            name: this.compoData.value.name,
           });
-        });
-    });
+          return {
+            status: true,
+            response: response,
+            reason: 'SUCCESS',
+          };
+        }
+        return {status: true, response: response};
+      }
+      // General failure or specific non-success case like CONFLICT
+      return {
+        status: false,
+        response: response,
+        reason: reason ?? 'SAVE_FAILED',
+      };
+    } catch (error) {
+      console.error('Error during save operation:', error);
+      return {
+        status: false,
+        error: error,
+        reason: 'EXCEPTION',
+      };
+    }
   }
 
   /**
@@ -350,13 +398,14 @@ export class HsSaveMapManagerService extends HsSaveMapManagerParams {
     this.statusData.resultCode = undefined; // Reset result code
     this.statusData.overWriteNeeded = false; // Reset overwrite flag
     this.statusData.canEditExistingComposition = undefined;
+    this.existingComposition.set(undefined);
 
     if (!response.status) {
       const error = response.error;
       this.statusData.error = error;
       const errorHeader = 'Error saving composition';
       const errorDetails = error?.['message'] ? [error['message']] : undefined;
-      const reason = error.detail?.reason;
+      const reason = error?.detail?.reason;
       let errorText = 'Could not save composition.'; // Default error text
 
       if (error?.code === 24) {
@@ -423,7 +472,13 @@ export class HsSaveMapManagerService extends HsSaveMapManagerParams {
       );
       const write = response[0].access_rights.write;
       const user = this.currentUser();
-      return write.includes(user) || write.includes('EVERYONE');
+      const hasWriteAccess = write.includes(user) || write.includes('EVERYONE');
+      if (hasWriteAccess) {
+        //Update composition data with data of quereid compsition
+        const compositionData = response[0];
+        this.existingComposition.set(compositionData);
+      }
+      return hasWriteAccess;
     } catch (error) {
       console.error('Error checking if composition can be edited:', error);
       return false;
