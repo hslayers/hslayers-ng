@@ -2,7 +2,7 @@ import {
   BrowserDynamicTestingModule,
   platformBrowserDynamicTesting,
 } from '@angular/platform-browser-dynamic/testing';
-import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
+import {CUSTOM_ELEMENTS_SCHEMA, signal, WritableSignal} from '@angular/core';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
 import {provideHttpClient, withInterceptorsFromDi} from '@angular/common/http';
@@ -23,7 +23,11 @@ import {
   HsLayerSynchronizerService,
   HsSaveMapService,
 } from 'hslayers-ng/services/save-map';
-import {HsLayerUtilsService, HsUtilsService, normalizeSldComparisonOperators} from 'hslayers-ng/services/utils';
+import {
+  HsLayerUtilsService,
+  HsUtilsService,
+  normalizeSldComparisonOperators,
+} from 'hslayers-ng/services/utils';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsLayoutServiceMock} from './layout.service.mock';
 import {HsMapService} from 'hslayers-ng/services/map';
@@ -51,7 +55,7 @@ class HsLayerSynchronizerServiceMock {
 }
 
 describe('HsStyler', () => {
-  let layer;
+  let layer: WritableSignal<VectorLayer<VectorSource<Feature>>>;
 
   beforeAll(() => {
     TestBed.resetTestEnvironment();
@@ -70,26 +74,28 @@ describe('HsStyler', () => {
   beforeEach(() => {
     const mockedConfig = new HsConfigMock();
 
-    layer = new VectorLayer({
-      properties: {title: 'Point'},
-      source: new VectorSource<Feature<Point | Polygon>>({
-        features: [
-          new Feature({geometry: new Point([0, 0]), name: 'test'}),
-          new Feature({
-            geometry: new Polygon([
-              [
-                [1e6, 6e6],
-                [1e6, 8e6],
-                [3e6, 8e6],
-                [3e6, 6e6],
-                [1e6, 6e6],
-              ],
-            ]),
-            name: 'test',
-          }),
-        ],
+    layer = signal(
+      new VectorLayer({
+        properties: {title: 'Point'},
+        source: new VectorSource<Feature<Point | Polygon>>({
+          features: [
+            new Feature({geometry: new Point([0, 0]), name: 'test'}),
+            new Feature({
+              geometry: new Polygon([
+                [
+                  [1e6, 6e6],
+                  [1e6, 8e6],
+                  [3e6, 8e6],
+                  [3e6, 6e6],
+                  [1e6, 6e6],
+                ],
+              ]),
+              name: 'test',
+            }),
+          ],
+        }),
       }),
-    });
+    );
     TestBed.configureTestingModule({
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
       declarations: [HsStylerComponent],
@@ -122,7 +128,7 @@ describe('HsStyler', () => {
     service = TestBed.inject(HsStylerService);
     component = fixture.componentInstance;
     fixture.detectChanges();
-    service.fill(layer);
+    service.fill(layer());
     service.styleObject = {name: 'Test', rules: []};
   });
 
@@ -134,13 +140,13 @@ describe('HsStyler', () => {
     service.addRule('Simple');
     service.styleObject.rules[0].symbolizers = [{color: '#000', kind: 'Fill'}];
     await service.save();
-    expect(service.layer.get('sld').replace(/\s/g, '')).toBe(
+    expect(service.layer().get('sld').replace(/\s/g, '')).toBe(
       `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><StyledLayerDescriptor version="1.0.0" xsi:schemaLocation="http://www.opengis.net/sld StyledLayerDescriptor.xsd" xmlns="http://www.opengis.net/sld" xmlns:ogc="http://www.opengis.net/ogc" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:se="http://www.opengis.net/se"><NamedLayer><Name>Test</Name><UserStyle><Name>Test</Name><Title>Test</Title><FeatureTypeStyle><Rule><Name>Untitled rule</Name><PolygonSymbolizer><Fill><CssParameter name="fill">#000</CssParameter></Fill></PolygonSymbolizer></Rule></FeatureTypeStyle></UserStyle></NamedLayer></StyledLayerDescriptor>`.replace(
         /\s/g,
         '',
       ),
     );
-    expect((service.layer.getStyle() as Style).getFill()).toBeDefined();
+    expect((service.layer().getStyle() as Style).getFill()).toBeDefined();
   });
 
   it('should issue onSet event when style changes', async () => {
