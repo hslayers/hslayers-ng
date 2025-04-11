@@ -26,9 +26,24 @@ export interface HsMapCompositionDescriptor {
   dateStamp?: string;
 }
 
-export interface LaymanCompositionDescriptor {
-  access_rights: {read: string[]; write: string[]};
+export interface HsGetMapsComposition {
+  access_rights: {
+    read: string[];
+    write: string[];
+  };
   bounding_box: number[];
+  name: string;
+  native_bounding_box: number[];
+  native_crs: string;
+  publication_type: string;
+  title: string;
+  updated_at: string;
+  url: string;
+  uuid: string;
+  workspace: string;
+}
+
+export interface LaymanCompositionDescriptor extends HsGetMapsComposition {
   description: string;
   layman_metadata: {
     publication_status: 'COMPLETE' | 'INCOMPLETE' | 'UPDATING';
@@ -46,12 +61,5 @@ export interface LaymanCompositionDescriptor {
     url: string;
     error?: any;
   };
-  name: string;
-  native_bounding_box: number[];
-  native_crs: string;
-  title: string;
-  updated_at: string;
-  url: string;
-  uuid: string;
   file: any;
 }

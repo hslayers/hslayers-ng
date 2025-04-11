@@ -102,6 +102,7 @@ export class HsCompositionsParserService {
      */
     this.currentCompositionRecord =
       this.hsEventBusService.compositionLoads.pipe(
+        filter((data) => data.error === undefined),
         switchMap((_) => {
           const fromLayman = isLaymanUrl(
             this.current_composition_url,

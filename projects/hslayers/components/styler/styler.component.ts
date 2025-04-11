@@ -10,7 +10,11 @@ import {Source, Vector as VectorSource} from 'ol/source';
 
 import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
-import {HsLayerUtilsService, HsUtilsService, normalizeSldComparisonOperators} from 'hslayers-ng/services/utils';
+import {
+  HsLayerUtilsService,
+  HsUtilsService,
+  normalizeSldComparisonOperators,
+} from 'hslayers-ng/services/utils';
 import {HsPanelBaseComponent} from 'hslayers-ng/common/panels';
 import {HsSaveMapService} from 'hslayers-ng/services/save-map';
 import {HsStylerEditDialogComponent} from './edit-dialog/edit-dialog.component';
@@ -65,7 +69,7 @@ export class HsStylerComponent extends HsPanelBaseComponent {
       .pipe(takeUntilDestroyed())
       .subscribe((which) => {
         if (which == 'styler') {
-          this.hsStylerService.fill(this.hsStylerService.layer);
+          this.hsStylerService.fill(this.hsStylerService.layer());
         }
       });
   }
