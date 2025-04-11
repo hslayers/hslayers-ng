@@ -1,5 +1,6 @@
-import {Injectable} from '@angular/core';
-import {filter} from 'rxjs/operators';
+import {Injectable, DestroyRef} from '@angular/core';
+import {filter, switchMap} from 'rxjs/operators';
+import {fromEvent} from 'rxjs';
 
 import * as xml2Json from 'xml-js';
 import {Feature} from 'ol';
@@ -10,8 +11,8 @@ import {Vector as VectorSource} from 'ol/source';
 
 import {
   HsCommonLaymanService,
-  awaitLayerSync,
   isLaymanUrl,
+  isLayerSynchronizable,
 } from 'hslayers-ng/common/layman';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsLanguageService} from 'hslayers-ng/services/language';
@@ -47,6 +48,7 @@ export class HsLayerSynchronizerService {
     private hsLanguageService: HsLanguageService,
     private hsLogService: HsLogService,
     private hsEventBusService: HsEventBusService,
+    private destroyRef: DestroyRef,
   ) {
     this.hsMapService.loaded().then((map) => {
       const layerAdded = (e) => this.addLayer(e.element);
@@ -100,26 +102,10 @@ export class HsLayerSynchronizerService {
    * @param layer - Layer to add
    */
   addLayer(layer: VectorLayer<VectorSource<Feature>>): void {
-    if (this.isLayerSynchronizable(layer)) {
+    if (isLayerSynchronizable(layer, this.hsUtilsService)) {
       this.syncedLayers.push(layer);
       this.startMonitoringIfNeeded(layer);
     }
-  }
-
-  /**
-   * Check if the selected layer is synchronize-able
-   * @param layer - Layer to check
-   * @returns True if the layer can be synchronized, false otherwise
-   */
-  isLayerSynchronizable(layer: VectorLayer<VectorSource<Feature>>): boolean {
-    const definition = getDefinition(layer);
-    return (
-      this.hsUtilsService.instOf(layer.getSource(), VectorSource) &&
-      //Test whether format contains 'wfs' AND does not contain 'external'. Case insensitive
-      new RegExp('^(?=.*wfs)(?:(?!external).)*$', 'i').test(
-        definition?.format?.toLowerCase(),
-      )
-    );
   }
 
   /**
@@ -159,14 +145,18 @@ export class HsLayerSynchronizerService {
   async startMonitoringIfNeeded(layer: VectorLayer<VectorSource<Feature>>) {
     const layerSource = layer.getSource();
     await this.pull(layer, layerSource);
-    layer.on('propertychange', (e) => {
-      if (e.key == 'sld' || e.key == 'title') {
-        awaitLayerSync(layer).then(async () => {
+
+    fromEvent<ObjectEvent>(layer, 'propertychange')
+      .pipe(
+        filter((e) => e.key === 'sld' || e.key === 'title'),
+        switchMap(async () => {
           await this.layerExistsOnLayman(layer);
-          this.hsLaymanService.upsertLayer(layer, false);
-        });
-      }
-    });
+          return this.hsLaymanService.upsertLayer(layer, false);
+        }),
+        takeUntilDestroyed(this.destroyRef),
+      )
+      .subscribe();
+
     layerSource.forEachFeature((f) => this.observeFeature(f));
     layerSource.on('addfeature', (e) => {
       this.sync(

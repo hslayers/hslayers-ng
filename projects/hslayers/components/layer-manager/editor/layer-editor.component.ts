@@ -159,7 +159,7 @@ export class HsLayerEditorComponent {
    */
   styleLayer() {
     const layer = this.olLayer();
-    this.HsStylerService.layer = layer as VectorLayer<VectorSource<Feature>>;
+    this.HsStylerService.layer.set(layer as VectorLayer<VectorSource<Feature>>);
     this.HsLayoutService.setMainPanel('styler');
   }
 

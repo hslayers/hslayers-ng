@@ -1,13 +1,16 @@
-import {Layer} from 'ol/layer';
-import {Source} from 'ol/source';
+import {Layer, Vector as VectorLayer} from 'ol/layer';
+import {Vector as VectorSource, Source} from 'ol/source';
 
 import {HsEndpoint, HsLaymanLayerDescriptor} from 'hslayers-ng/types';
 import {TRANSLITERATION_MAP} from './transliteration-map';
 import {
+  getDefinition,
   getHsLaymanSynchronizing,
   getName,
   getTitle,
 } from 'hslayers-ng/common/extensions';
+import {Feature} from 'ol/index';
+import {HsUtilsService} from 'hslayers-ng/services/utils';
 
 export const PREFER_RESUMABLE_SIZE_LIMIT = 2 * 1024 * 1024; // 2 MB
 export const SUPPORTED_SRS_LIST = [
@@ -145,4 +148,23 @@ export function isLaymanUrl(url: string, layman: HsEndpoint): boolean {
     ? layman.url.split('layman-proxy')[0]
     : layman.url;
   return url.includes(laymanUrl);
+}
+
+/**
+ * Check if the selected layer is synchronize-able
+ * @param layer - Layer to check
+ * @returns True if the layer can be synchronized, false otherwise
+ */
+export function isLayerSynchronizable(
+  layer: VectorLayer<VectorSource<Feature>>,
+  utilsService: HsUtilsService,
+): boolean {
+  const definition = getDefinition(layer);
+  return (
+    utilsService.instOf(layer.getSource(), VectorSource) &&
+    //Test whether format contains 'wfs' AND does not contain 'external'. Case insensitive
+    new RegExp('^(?=.*wfs)(?:(?!external).)*$', 'i').test(
+      definition?.format?.toLowerCase(),
+    )
+  );
 }

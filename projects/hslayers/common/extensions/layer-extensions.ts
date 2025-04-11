@@ -4,6 +4,7 @@ import {Feature} from 'ol';
 import {Geometry} from 'ol/geom';
 import {Group, Layer} from 'ol/layer';
 import {Source} from 'ol/source';
+import {signal, WritableSignal, isSignal} from '@angular/core';
 
 import {
   AccessRightsModel,
@@ -363,10 +364,22 @@ export function setHsLaymanSynchronizing(
   layer: Layer<Source>,
   hsLaymanSynchronizing: boolean,
 ): void {
-  layer.set(HS_LAYMAN_SYNCHRONIZING, hsLaymanSynchronizing);
+  const currentSignal = layer.get(HS_LAYMAN_SYNCHRONIZING);
+  if (isSignal(currentSignal)) {
+    (currentSignal as WritableSignal<boolean>).set(hsLaymanSynchronizing);
+  } else {
+    layer.set(HS_LAYMAN_SYNCHRONIZING, signal(hsLaymanSynchronizing));
+  }
 }
 
 export function getHsLaymanSynchronizing(layer: Layer<Source>): boolean {
+  const ls = layer.get(HS_LAYMAN_SYNCHRONIZING);
+  return isSignal(ls) ? (ls as WritableSignal<boolean>)() : false;
+}
+
+export function getHsLaymanSynchronizingSignal(
+  layer: Layer<Source>,
+): WritableSignal<boolean> {
   return layer.get(HS_LAYMAN_SYNCHRONIZING);
 }
 

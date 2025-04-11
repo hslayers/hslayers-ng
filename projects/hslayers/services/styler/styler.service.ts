@@ -1,5 +1,5 @@
 import {DomSanitizer} from '@angular/platform-browser';
-import {Injectable, signal, WritableSignal} from '@angular/core';
+import {computed, Injectable, signal, WritableSignal} from '@angular/core';
 import {Subject} from 'rxjs';
 
 import colormap from 'colormap';
@@ -27,6 +27,7 @@ import {
   parseBase64Style,
   awaitLayerSync,
   getLaymanFriendlyLayerName,
+  isLayerSynchronizable,
 } from 'hslayers-ng/common/layman';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsConfirmDialogComponent} from 'hslayers-ng/common/confirm';
@@ -51,13 +52,15 @@ import {
   setQml,
   setSld,
   getHighlighted,
+  getHsLaymanSynchronizingSignal,
+  setHsLaymanSynchronizing,
 } from 'hslayers-ng/common/extensions';
 
 @Injectable({
   providedIn: 'root',
 })
 export class HsStylerService {
-  layer: VectorLayer<VectorSource<Feature>> = null;
+  layer: WritableSignal<VectorLayer<VectorSource<Feature>>> = signal(null);
   layerBeingMonitored: boolean;
   onSet: Subject<VectorLayer<VectorSource<Feature>>> = new Subject();
   layerTitle: string;
@@ -72,7 +75,19 @@ export class HsStylerService {
   colorMapDialogVisible = false;
   unsavedChange = false;
   changesStore = new Map<string, {sld: string; qml: string}>();
-  syncing = false;
+
+  syncing = computed(() => {
+    const layer = this.layer();
+    if (!layer) {
+      return false;
+    }
+    const layerSyncing = getHsLaymanSynchronizingSignal(layer)();
+    if (!layerSyncing) {
+      this.unsavedChange = false;
+    }
+    return layerSyncing;
+  });
+
   sldVersion: SldVersion = '1.0.0';
 
   //Cumbersome as we need to toggle it but needed to track parsing errors
@@ -353,7 +368,7 @@ export class HsStylerService {
       if (!layer) {
         return;
       }
-      this.layer = layer;
+      this.layer.set(layer);
       this.layerBeingMonitored =
         !!this.hsLayerSynchronizerService.syncedLayers.find((l) => l == layer);
       this.unsavedChange = this.changesStore.has(getUid(layer));
@@ -752,7 +767,7 @@ export class HsStylerService {
    */
   resolveSldChange() {
     if (this.isAuthenticated() && this.layerBeingMonitored) {
-      this.changesStore.set(getUid(this.layer), {
+      this.changesStore.set(getUid(this.layer()), {
         sld: this.sld(),
         qml: this.qml,
       });
@@ -764,15 +779,16 @@ export class HsStylerService {
 
   /**Set SLD/QML parameter of layer*/
   setSldQml() {
-    setSld(this.layer, this.sld());
-    setQml(this.layer, this.qml);
-    this.changesStore.delete(getUid(this.layer));
-    this.syncing = true;
-
-    awaitLayerSync(this.layer).then(() => {
-      this.syncing = false;
-      this.unsavedChange = false;
-    });
+    const layer = this.layer();
+    if (!layer) {
+      return;
+    }
+    if (isLayerSynchronizable(layer, this.hsUtilsService)) {
+      setHsLaymanSynchronizing(layer, true);
+    }
+    setSld(layer, this.sld());
+    setQml(layer, this.qml);
+    this.changesStore.delete(getUid(layer));
   }
 
   async save(): Promise<void> {
@@ -780,23 +796,23 @@ export class HsStylerService {
       let style: Style | Style[] | StyleFunction =
         await this.geoStylerStyleToOlStyle(this.styleObject);
       if (this.styleObject.rules.length == 0) {
-        this.hsLogService.warn('Missing style rules for layer', this.layer);
+        this.hsLogService.warn('Missing style rules for layer', this.layer());
         style = createDefaultStyle;
       }
       /* style is a function when text symbolizer is used. We need some hacking 
       for cluster layer in that case to have the correct number of features in 
       cluster display over the label */
       if (
-        this.hsUtilsService.instOf(this.layer.getSource(), Cluster) &&
+        this.hsUtilsService.instOf(this.layer().getSource(), Cluster) &&
         this.hsUtilsService.isFunction(style)
       ) {
         style = this.wrapStyleForClusters(style as StyleFunction);
       }
-      this.layer.setStyle(style);
+      this.layer().setStyle(style);
       const sld = await this.jsonToSld(this.styleObject);
       this.sld.set(sld);
       this.resolveSldChange();
-      this.onSet.next(this.layer);
+      this.onSet.next(this.layer());
     } catch (ex) {
       this.hsLogService.error(ex);
     }
@@ -848,10 +864,10 @@ export class HsStylerService {
       this.sld.set(defaultStyle);
       const style = (await this.parseStyle(defaultStyle)).style;
       if (style) {
-        this.layer.setStyle(style);
+        this.layer().setStyle(style);
       }
       this.resolveSldChange();
-      this.fill(this.layer);
+      this.fill(this.layer());
     }
   }
 
@@ -876,7 +892,7 @@ export class HsStylerService {
         this.qml = parseBase64Style(styleString);
       }
       this.resolveSldChange();
-      this.fill(this.layer, styleFmt);
+      this.fill(this.layer(), styleFmt);
     } catch (err) {
       this.hsLogService.warn('SLD could not be parsed', err);
     }
