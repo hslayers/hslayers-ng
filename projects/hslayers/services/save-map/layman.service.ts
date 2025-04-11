@@ -267,7 +267,7 @@ export class HsLaymanService implements HsSaverService {
     //Empty blob causes Layman to return "Internal Server Error"
     if (description.style) {
       formData.append(
-        'sld',
+        'style',
         new Blob([description.style], {type: 'application/octet-stream'}),
         'file.sld',
       );
