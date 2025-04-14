@@ -101,6 +101,7 @@ export class HsAddDataOwsService {
         options.laymanLayer,
         options.layerOptions,
       );
+      this.typeService.finalizeLayerRetrieval(response, options?.layerOptions);
     } else {
       /**
        * Create common OWS layer based on getCapabilities request

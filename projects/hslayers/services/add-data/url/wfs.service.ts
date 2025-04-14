@@ -444,6 +444,25 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
   }
 
   /**
+   * Finalize layer retrieval
+   * Calculates extent, zooms to layers, clears params, sets panel to catalogue and resets to default
+   * @param collection - Layers created and retrieved collection
+   * @param layerOptions - Layer options
+   */
+  finalizeLayerRetrieval(
+    collection: Layer<Source>[],
+    layerOptions?: LayerOptions,
+  ) {
+    this.data.extent = this.calcAllLayersExtent(collection);
+    if (!layerOptions?.fromComposition) {
+      this.hsAddDataUrlService.zoomToLayers(this.data);
+    }
+    this.hsAddDataCommonService.clearParams();
+    this.setDataToDefault();
+    this.hsAddDataCommonService.setPanelToCatalogue();
+  }
+
+  /**
    * Loop through the list of layers and call getLayer
    * @param checkedOnly - Add all available layers or only checked ones. Checked=false=all
    * @param shallow - Whether to go through full depth of layer tree or to stop on first queryable
@@ -454,17 +473,11 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
     layerOptions?: LayerOptions,
   ): Layer<Source>[] {
     this.data.add_all = checkedOnly;
-    const collection = [];
+    const collection: Layer<Source>[] = [];
     for (const layer of this.data.layers) {
       this.getLayersRecursively(layer, {layerOptions}, collection);
     }
-    this.data.extent = this.calcAllLayersExtent(collection);
-    if (!layerOptions?.fromComposition) {
-      this.hsAddDataUrlService.zoomToLayers(this.data);
-    }
-    this.hsAddDataCommonService.clearParams();
-    this.setDataToDefault();
-    this.hsAddDataCommonService.setPanelToCatalogue();
+    this.finalizeLayerRetrieval(collection, layerOptions);
     return collection;
   }
 

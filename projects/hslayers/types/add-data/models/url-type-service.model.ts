@@ -43,4 +43,12 @@ export interface HsUrlTypeServiceModel {
    *  Side effect to be triggered on a layer being checked
    */
   tableLayerChecked?($event: MouseEvent, layer: any): void;
+  /**
+   * Groups actions that take place after getLayers for WMS and WFS layers
+   * Separate from getLayers to provide for Layman layers
+   */
+  finalizeLayerRetrieval?(
+    collection: Layer<Source>[],
+    layerOptions?: LayerOptions,
+  ): void;
 }
