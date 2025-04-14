@@ -612,7 +612,21 @@ export class HsStylerService {
         JSON.stringify(options.styleObject).replaceAll('null]', '"NULL"]'),
       );
     }
-    return this.replaceNullValues(options.styleObject);
+    const withNullValues = this.replaceNullValues(options.styleObject);
+    return this.laymanFiltersFix(withNullValues);
+  }
+
+  /**
+   * Remove dimension filters in case style is Layman's default style
+   */
+  private laymanFiltersFix(styleObject: GeoStylerStyle): GeoStylerStyle {
+    if (styleObject.name === 'generic' && styleObject.rules.length === 4) {
+      styleObject.rules = styleObject.rules.map((rule) => {
+        const {filter, ...rest} = rule;
+        return rest;
+      });
+    }
+    return styleObject;
   }
 
   private async jsonToSld(styleObject: GeoStylerStyle): Promise<string> {
