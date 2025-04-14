@@ -8,6 +8,9 @@ import {HsMapService} from 'hslayers-ng/services/map';
   providedIn: 'root',
 })
 export class HsShareThumbnailService {
+  private readonly THUMBNAIL_SIZE = 200;
+  private readonly SCALE_FACTOR = 2.5;
+
   private renderer: Renderer2;
   constructor(
     public HsMapService: HsMapService,
@@ -36,62 +39,92 @@ export class HsShareThumbnailService {
     if (!$element) {
       return;
     }
-    let thumbnail;
+
+    const canvasLayers =
+      this.HsMapService.mapElement.querySelectorAll('.ol-layer canvas');
+    if (canvasLayers.length === 0) {
+      this.HsLogService.warn('No canvas layers found to generate thumbnail.');
+      // Optionally set a default image or return early
+      $element.setAttribute(
+        'src',
+        this.hsConfig.assetsPath + 'img/notAvailable.png',
+      );
+      return;
+    }
+
+    let thumbnail: string | undefined;
     const collectorCanvas = this.renderer.createElement('canvas');
     const targetCanvas = this.renderer.createElement('canvas');
-    const width = 200,
-      height = 200;
-    const firstCanvas =
-      this.HsMapService.mapElement.querySelector('.ol-layer canvas');
+    const width = this.THUMBNAIL_SIZE,
+      height = this.THUMBNAIL_SIZE;
+    const scaleFactor = this.SCALE_FACTOR; // Capture a 3x larger area
+    const captureWidth = width * scaleFactor;
+    const captureHeight = height * scaleFactor;
+
+    const firstCanvas = canvasLayers[0]; // Use the first found canvas for dimensions
+
     this.setCanvasSize(targetCanvas, width, height);
+    // Use dimensions from the actual first canvas found
     this.setCanvasSize(
       collectorCanvas,
-      firstCanvas?.width ?? width,
-      firstCanvas?.height ?? height,
+      firstCanvas.width, // Use actual width
+      firstCanvas.height, // Use actual height
     );
+
     const ctxCollector = collectorCanvas.getContext('2d');
     const ctxTarget = targetCanvas.getContext('2d');
     this.setupContext(ctxTarget);
     this.setupContext(ctxCollector);
-    Array.prototype.forEach.call(
-      this.HsMapService.mapElement.querySelectorAll('.ol-layer canvas'),
-      (canvas) => {
-        if (canvas.width > 0) {
-          //console.log('canvas loop', this.isCanvasTainted(canvas), canvas);
-          /* canvases retrieved from mapElement might be already tainted because they can contain
-           * images (i.e. maps) retrieved from another sources without CORS
-           */
-          const opacity = canvas.parentNode.style.opacity;
-          ctxCollector.globalAlpha = opacity === '' ? 1 : Number(opacity);
-          const transform = canvas.style.transform;
+
+    // Iterate over the found canvas layers using for...of
+    for (const canvas of Array.from<HTMLCanvasElement>(canvasLayers)) {
+      if (canvas.width > 0) {
+        const opacity = (canvas.parentNode as HTMLElement).style.opacity;
+        ctxCollector.globalAlpha = opacity === '' ? 1 : Number(opacity);
+        const transform = canvas.style.transform;
+
+        if (transform && transform.startsWith('matrix(')) {
           // Get the transform parameters from the style's transform matrix
           const matrix = transform
-            .match(/^matrix\(([^\(]*)\)$/)[1]
+            .slice(7, -1) // Faster than regex for simple 'matrix(...)'
             .split(',')
             .map(Number);
-          // Apply the transform to the export map context
-          CanvasRenderingContext2D.prototype.setTransform.apply(
-            ctxCollector,
-            matrix,
-          );
-          ctxCollector.drawImage(canvas, 0, 0);
+          // Apply the transform to the collector context directly
+          ctxCollector.setTransform(...matrix);
+        } else {
+          // Reset transform if none is applied to the current canvas
+          ctxCollector.setTransform(1, 0, 0, 1, 0, 0);
         }
-      },
-    );
+        ctxCollector.drawImage(canvas, 0, 0);
+      }
+    }
+    // Reset transform for the final draw operation
+    ctxCollector.setTransform(1, 0, 0, 1, 0, 0);
 
-    /* Final render pass */
+    /* Final render pass: Capture a larger area and scale it down */
+    // Calculate source coordinates and dimensions, ensuring they are within bounds
+    const sx = Math.max(
+      0,
+      Math.floor(collectorCanvas.width / 2 - captureWidth / 2),
+    );
+    const sy = Math.max(
+      0,
+      Math.floor(collectorCanvas.height / 2 - captureHeight / 2),
+    );
+    const sWidth = Math.min(captureWidth, collectorCanvas.width - sx);
+    const sHeight = Math.min(captureHeight, collectorCanvas.height - sy);
+
     ctxTarget.drawImage(
       collectorCanvas,
-      Math.floor(collectorCanvas.width / 2 - width / 2),
-      Math.floor(collectorCanvas.height / 2 - height / 2),
-      width,
-      height,
-      0,
-      0,
-      width,
-      height,
+      sx, // source x
+      sy, // source y
+      sWidth, // source width
+      sHeight, // source height
+      0, // destination x
+      0, // destination y
+      width, // destination width (final thumbnail size)
+      height, // destination height (final thumbnail size)
     );
-    //console.log('image drawn', this.isCanvasTainted(targetCanvas));
     /**
      * from now on, the targetCanvas is also tainted because another tainted canvas was used
      * to draw inside it
