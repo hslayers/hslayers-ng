@@ -85,8 +85,6 @@ export class HsSaveMapManagerParams {
   providedIn: 'root',
 })
 export class HsSaveMapManagerService extends HsSaveMapManagerParams {
-  currentUser = this.hsCommonLaymanService.user;
-
   private mapResets = this.hsEventBusService.mapResets.pipe(
     filter(() => {
       return (
@@ -161,11 +159,12 @@ export class HsSaveMapManagerService extends HsSaveMapManagerParams {
       : null;
     const write = metadata.access_rights.write;
     const read = metadata.access_rights.read;
-    if (this.currentUser() === workspace) {
-      this.privateOrPublic(write, 'write', this.currentUser());
-      this.privateOrPublic(read, 'read', this.currentUser());
+    const user = this.hsCommonLaymanService.user();
+    if (user === workspace) {
+      this.privateOrPublic(write, 'write', user);
+      this.privateOrPublic(read, 'read', user);
     } else if (
-      write.includes(this.currentUser()) ||
+      write.includes(user) ||
       /**
        * Different user + PUBLIC write
        */
@@ -471,7 +470,7 @@ export class HsSaveMapManagerService extends HsSaveMapManagerParams {
         }),
       );
       const write = response[0].access_rights.write;
-      const user = this.currentUser();
+      const user = this.hsCommonLaymanService.user();
       const hasWriteAccess = write.includes(user) || write.includes('EVERYONE');
       if (hasWriteAccess) {
         //Update composition data with data of quereid compsition

@@ -213,7 +213,7 @@ export class HsSaveMapFormComponent {
      * Overwriting composition of other user and making it private
      *  = access for owner + current user
      */
-    const currentUser = this.hsSaveMapManagerService.currentUser();
+    const currentUser = this.hsCommonLaymanService.user();
     const workspace =
       this.hsSaveMapManagerService.compoData.get('workspace').value;
     if (newSave == false && this.canOverwrite() && currentUser !== workspace) {
