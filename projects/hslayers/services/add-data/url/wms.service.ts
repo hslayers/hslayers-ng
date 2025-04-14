@@ -378,6 +378,27 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
   }
 
   /**
+   * Finalize layer retrieval
+   * Calculates extent, zooms to layers, clears params, sets panel to catalogue and resets to default
+   * @param collection - Layers created and retrieved collection
+   * @param layerOptions - Layer options
+   */
+  finalizeLayerRetrieval(
+    collection: Layer<Source>[],
+    layerOptions?: LayerOptions,
+  ) {
+    this.data.extent = this.hsAddDataUrlService.calcAllLayersExtent(collection);
+    this.data.base = false;
+    this.hsAddDataUrlService.zoomToLayers(this.data);
+    this.hsAddDataCommonService.clearParams();
+    this.setDataToDefault();
+    this.hsAddDataCommonService.setPanelToCatalogue();
+    if (collection.length > 0) {
+      this.hsLayoutService.setMainPanel('layerManager');
+    }
+  }
+
+  /**
    * Loop through the list of layers and call getLayer.
    * @param checkedOnly - Add all available layers or only checked ones. checkedOnly=false=all
    * @param layerOptions - Optional layer parameters. Used to parse composition layers
@@ -419,15 +440,7 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
         );
       }
     }
-    this.data.extent = this.hsAddDataUrlService.calcAllLayersExtent(collection);
-    this.data.base = false;
-    this.hsAddDataUrlService.zoomToLayers(this.data);
-    this.hsAddDataCommonService.clearParams();
-    this.setDataToDefault();
-    this.hsAddDataCommonService.setPanelToCatalogue();
-    if (collection.length > 0) {
-      this.hsLayoutService.setMainPanel('layerManager');
-    }
+    this.finalizeLayerRetrieval(collection, layerOptions);
     return collection;
   }
 
