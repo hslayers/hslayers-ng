@@ -16,9 +16,9 @@ export type LaymanGetWorkspaceLayerTypeResponse = {
   name?: string;
 };
 
-export type LaymanGetWorkspaceLayerTypeWms =
-  LaymanGetWorkspaceLayerTypeResponse;
 export type LaymanGetWorkspaceLayerTypeWfs =
+  LaymanGetWorkspaceLayerTypeResponse;
+export type LaymanGetWorkspaceLayerTypeWms =
   LaymanGetWorkspaceLayerTypeResponse & {
     /**
      * Available only for time-series layers
