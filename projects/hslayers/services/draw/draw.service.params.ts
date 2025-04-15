@@ -67,11 +67,6 @@ export class HsDrawServiceParams {
 
   layerMetadataDialog: Subject<void> = new Subject();
 
-  /**
-   * Layer being loaded from layman (endpoint url pending)
-   */
-  pendingLayers = [];
-
   requiredSymbolizer = {
     Point: ['Point'],
     Polygon: ['Fill', 'Line', 'Polygon'],

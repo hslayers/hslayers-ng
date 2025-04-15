@@ -17,7 +17,10 @@ import {
   HsAddDataVectorService,
   HsLaymanBrowserService,
 } from 'hslayers-ng/services/add-data';
-import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
+import {
+  HsCommonLaymanLayerService,
+  HsCommonLaymanService,
+} from 'hslayers-ng/common/layman';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsConfirmDialogComponent} from 'hslayers-ng/common/confirm';
 import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
@@ -69,6 +72,7 @@ export const TMP_LAYER_TITLE = 'tmpDrawLayer';
 export class HsDrawService extends HsDrawServiceParams {
   isAuthenticated = this.hsCommonLaymanService.isAuthenticated;
 
+  pendingLayers = this.hsCommonLaymanLayerService.pendingLayers;
   constructor(
     public hsMapService: HsMapService,
     public hsLayerUtilsService: HsLayerUtilsService,
@@ -85,6 +89,7 @@ export class HsDrawService extends HsDrawServiceParams {
     public hsAddDataVectorService: HsAddDataVectorService,
     public hsUtilsService: HsUtilsService,
     public hsCommonLaymanService: HsCommonLaymanService,
+    public hsCommonLaymanLayerService: HsCommonLaymanLayerService,
     public hsToastService: HsToastService,
     public hsAddDataOwsService: HsAddDataOwsService,
     private hsRemoveLayerDialogService: HsRemoveLayerDialogService,
@@ -125,9 +130,6 @@ export class HsDrawService extends HsDrawServiceParams {
           this.selectedFeatures.remove(feature);
         },
       );
-      this.hsLaymanService.laymanLayerPending.subscribe((pendingLayers) => {
-        this.pendingLayers = pendingLayers;
-      });
 
       merge(
         this.hsEventBusService.addedLayersRemoved,

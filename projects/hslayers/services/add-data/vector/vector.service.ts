@@ -8,6 +8,7 @@ import {get as getProjection} from 'ol/proj';
 import {HsAddDataCommonFileService} from '../common-file.service';
 import {HsAddDataService} from '../add-data.service';
 import {
+  HsCommonLaymanLayerService,
   HsCommonLaymanService,
   PostPatchLayerResponse,
   awaitLayerSync,
@@ -42,6 +43,7 @@ export class HsAddDataVectorService {
     private hsAddDataService: HsAddDataService,
     private hsLaymanService: HsLaymanService,
     private hsCommonLaymanService: HsCommonLaymanService,
+    private hsCommonLaymanLayerService: HsCommonLaymanLayerService,
     private hsLog: HsLogService,
     private hsMapService: HsMapService,
     private hsStylerService: HsStylerService,
@@ -384,7 +386,7 @@ export class HsAddDataVectorService {
               return OverwriteResponse.cancel;
           }
         } else {
-          await this.hsLaymanService.describeLayer(
+          await this.hsCommonLaymanLayerService.describeLayer(
             upsertReq.name,
             this.hsCommonLaymanService.user(),
           );

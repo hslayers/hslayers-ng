@@ -4,7 +4,6 @@ import {computed, Injectable} from '@angular/core';
 import Resumable from 'resumablejs';
 import {
   Observable,
-  Subject,
   Subscription,
   catchError,
   forkJoin,
@@ -38,8 +37,6 @@ import {
   getLayerName,
   getLaymanFriendlyLayerName,
   getSupportedSrsList,
-  layerParamPendingOrStarting,
-  wfsFailed,
   wfsNotAvailable,
   PostPatchLayerResponse,
 } from 'hslayers-ng/common/layman';
@@ -63,14 +60,13 @@ import {
   setLaymanLayerDescriptor,
 } from 'hslayers-ng/common/extensions';
 import {normalizeSldComparisonOperators} from 'hslayers-ng/services/utils';
+import {HsCommonLaymanLayerService} from 'hslayers-ng/common/layman/layman-layer.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class HsLaymanService implements HsSaverService {
   crs: string;
-  pendingLayers: Array<string> = [];
-  laymanLayerPending: Subject<string[]> = new Subject();
   totalProgress = 0;
   deleteQuery: Subscription;
   supportedCRRList = computed(() => {
@@ -81,7 +77,6 @@ export class HsLaymanService implements HsSaverService {
     return SUPPORTED_SRS_LIST;
   });
 
-  pendingRequests: Map<string, Promise<HsLaymanLayerDescriptor>> = new Map();
   constructor(
     private http: HttpClient,
     private hsMapService: HsMapService,
@@ -89,6 +84,7 @@ export class HsLaymanService implements HsSaverService {
     private hsToastService: HsToastService,
     private hsLanguageService: HsLanguageService,
     private hsCommonLaymanService: HsCommonLaymanService,
+    private hsCommonLaymanLayerService: HsCommonLaymanLayerService,
   ) {}
 
   /**
@@ -289,7 +285,7 @@ export class HsLaymanService implements HsSaverService {
     try {
       let layerDesc;
       try {
-        layerDesc = await this.describeLayer(
+        layerDesc = await this.hsCommonLaymanLayerService.describeLayer(
           description.name,
           description.workspace,
         );
@@ -551,7 +547,10 @@ export class HsLaymanService implements HsSaverService {
       const name = getLayerName(layer);
       try {
         if (!desc) {
-          desc = await this.describeLayer(name, getWorkspace(layer));
+          desc = await this.hsCommonLaymanLayerService.describeLayer(
+            name,
+            getWorkspace(layer),
+          );
           this.cacheLaymanDescriptor(layer, desc);
         }
         if (desc.name == undefined || desc.wfs.url == undefined) {
@@ -671,7 +670,10 @@ export class HsLaymanService implements HsSaverService {
     let desc: HsLaymanLayerDescriptor;
     const layerName = getLayerName(layer);
     try {
-      desc = await this.describeLayer(layerName, getWorkspace(layer));
+      desc = await this.hsCommonLaymanLayerService.describeLayer(
+        layerName,
+        getWorkspace(layer),
+      );
       if (
         desc === null || //In case of response?.code == 15 || 32
         (desc.wfs.status == desc.wms.status && wfsNotAvailable(desc))
@@ -744,116 +746,6 @@ export class HsLaymanService implements HsSaverService {
       : {'Content-Type': 'application/x-www-form-urlencoded'};
 
     return {body, headers};
-  }
-
-  /**
-   * Try getting layer's description from Layman. Subsequent request with same parameters
-   * are reused.
-   * @param layerName - Interacted layer's name
-   * @param workspace - Current Layman's workspace
-   * @returns Promise which returns layers
-   * description containing name, file, WMS, WFS urls etc.
-   */
-  async describeLayer(
-    layerName: string,
-    workspace: string,
-    ignoreStatus?: boolean,
-  ): Promise<HsLaymanLayerDescriptor> {
-    const requestKey = `${workspace}/${layerName}`;
-
-    // Check if there's a pending request with the same parameters
-    if (this.pendingRequests.has(requestKey)) {
-      return this.pendingRequests.get(requestKey);
-    }
-    const desc = this.makeDescribeLayerRequest(
-      layerName,
-      workspace,
-      ignoreStatus,
-    );
-    // Store the promise for the request
-    this.pendingRequests.set(requestKey, desc);
-    return desc;
-  }
-
-  /**
-   * Try getting layer's description from Layman.
-   */
-  private async makeDescribeLayerRequest(
-    layerName: string,
-    workspace: string,
-    ignoreStatus?: boolean,
-  ): Promise<HsLaymanLayerDescriptor> {
-    const requestKey = `${workspace}/${layerName}`;
-    try {
-      layerName = getLaymanFriendlyLayerName(layerName); //Better safe than sorry
-      const endpoint = this.hsCommonLaymanService.layman();
-      const response: HsLaymanLayerDescriptor = await lastValueFrom(
-        this.http
-          .get(
-            `${
-              endpoint.url
-            }/rest/workspaces/${workspace}/layers/${layerName}?${Math.random()}`,
-            {
-              withCredentials: true,
-            },
-          )
-          .pipe(
-            catchError((e) => {
-              //Layer not found
-              if (e?.error.code == 15) {
-                return of(e?.error);
-              }
-              throw e;
-            }),
-          ),
-      );
-      switch (true) {
-        case response?.code == 15 || wfsFailed(response):
-          this.deletePendingDescribeRequest(requestKey, 0);
-          return null;
-        case response.name && ignoreStatus:
-          this.deletePendingDescribeRequest(requestKey, 1000);
-          return {...response, workspace};
-        case response.wfs &&
-          (layerParamPendingOrStarting(response, 'wfs') ||
-            response.wfs?.url == undefined):
-          if (!this.pendingLayers.includes(layerName)) {
-            this.pendingLayers.push(layerName);
-            this.laymanLayerPending.next(this.pendingLayers);
-          }
-          await new Promise((resolve) => setTimeout(resolve, 310));
-          return this.makeDescribeLayerRequest(layerName, workspace);
-        default:
-          if (response.name) {
-            this.deletePendingDescribeRequest(requestKey, 1000);
-            this.managePendingLayers(layerName);
-            return {...response, workspace};
-          }
-      }
-    } catch (ex) {
-      this.managePendingLayers(layerName);
-      this.hsLogService.error(ex);
-      throw ex;
-    }
-  }
-
-  private deletePendingDescribeRequest(key: string, timeout: number = 0) {
-    setTimeout(() => {
-      this.pendingRequests.delete(key);
-    }, timeout);
-  }
-
-  /**
-   * Keep track of pending layers that are still being loaded
-   * @param layerName - Interacted layer's name
-   */
-  private managePendingLayers(layerName: string): void {
-    if (this.pendingLayers.includes(layerName)) {
-      this.pendingLayers = this.pendingLayers.filter(
-        (layer) => layer != layerName,
-      );
-      this.laymanLayerPending.next(this.pendingLayers);
-    }
   }
 
   /**
