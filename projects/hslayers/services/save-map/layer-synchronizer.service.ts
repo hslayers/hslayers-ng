@@ -13,6 +13,7 @@ import {
   HsCommonLaymanService,
   isLaymanUrl,
   isLayerSynchronizable,
+  HsCommonLaymanLayerService,
 } from 'hslayers-ng/common/layman';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsLanguageService} from 'hslayers-ng/services/language';
@@ -44,6 +45,7 @@ export class HsLayerSynchronizerService {
     private hsLaymanService: HsLaymanService,
     private hsMapService: HsMapService,
     private hsCommonLaymanService: HsCommonLaymanService,
+    private hsCommonLaymanLayerService: HsCommonLaymanLayerService,
     private hsToastService: HsToastService,
     private hsLanguageService: HsLanguageService,
     private hsLogService: HsLogService,
@@ -120,7 +122,7 @@ export class HsLayerSynchronizerService {
   ) {
     if (!desc) {
       if (retryCount < maxRetryCount) {
-        const desc = await this.hsLaymanService.describeLayer(
+        const desc = await this.hsCommonLaymanLayerService.describeLayer(
           getName(layer),
           getWorkspace(layer),
         );

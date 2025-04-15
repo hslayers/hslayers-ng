@@ -11,6 +11,7 @@ import {HsLogService} from 'hslayers-ng/services/log';
 import {HsUtilsService} from 'hslayers-ng/services/utils';
 
 import {
+  HsCommonLaymanLayerService,
   HsCommonLaymanService,
   PostPatchLayerResponse,
   getLaymanFriendlyLayerName,
@@ -64,6 +65,7 @@ export class HsAddDataCommonFileService extends HsAddDataCommonFileServiceParams
     private hsToastService: HsToastService,
     private hsUtilsService: HsUtilsService,
     private hsCommonLaymanService: HsCommonLaymanService,
+    private hsCommonLaymanLayerService: HsCommonLaymanLayerService,
   ) {
     super();
   }
@@ -240,7 +242,7 @@ export class HsAddDataCommonFileService extends HsAddDataCommonFileServiceParams
     let descriptor: HsLaymanLayerDescriptor;
     if (this.isAuthenticated()) {
       try {
-        descriptor = await this.hsLaymanService.describeLayer(
+        descriptor = await this.hsCommonLaymanLayerService.describeLayer(
           name,
           this.hsCommonLaymanService.user(),
           true,
@@ -571,7 +573,7 @@ export class HsAddDataCommonFileService extends HsAddDataCommonFileServiceParams
     pendingParams: string[] = ['wms'],
   ): Promise<HsLaymanLayerDescriptor> {
     try {
-      const descriptor = await this.hsLaymanService.describeLayer(
+      const descriptor = await this.hsCommonLaymanLayerService.describeLayer(
         layerName,
         this.hsCommonLaymanService.user(),
       );
