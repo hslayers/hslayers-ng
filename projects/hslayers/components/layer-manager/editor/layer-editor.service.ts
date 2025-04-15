@@ -1,34 +1,35 @@
-import {ComponentRef, Injectable, Type, ViewContainerRef} from '@angular/core';
+import { ComponentRef, Injectable, Type, ViewContainerRef } from '@angular/core';
 
-import {Layer} from 'ol/layer';
-import {Source} from 'ol/source';
-import {Subject, filter} from 'rxjs';
-import {WMSCapabilities} from 'ol/format';
-import {transformExtent} from 'ol/proj';
+import { Layer } from 'ol/layer';
+import { Source } from 'ol/source';
+import { Subject, filter } from 'rxjs';
+import { WMSCapabilities } from 'ol/format';
+import { transformExtent } from 'ol/proj';
 
-import {HS_PRMS, HsShareUrlService} from 'hslayers-ng/services/share';
-import {HsEventBusService} from 'hslayers-ng/services/event-bus';
-import {HsLayerDescriptor} from 'hslayers-ng/types';
-import {HsLayerEditorComponent} from './layer-editor.component';
-import {HsLayerEditorSublayerService} from './sublayers/layer-editor-sub-layer.service';
-import {HsLayerEditorSublayersComponent} from './sublayers/layer-editor-sublayers.component';
+import { HS_PRMS, HsShareUrlService } from 'hslayers-ng/services/share';
+import { HsEventBusService } from 'hslayers-ng/services/event-bus';
+import { HsLayerDescriptor } from 'hslayers-ng/types';
+import { HsLayerEditorComponent } from './layer-editor.component';
+import { HsLayerEditorSublayerService } from './sublayers/layer-editor-sub-layer.service';
+import { HsLayerEditorSublayersComponent } from './sublayers/layer-editor-sublayers.component';
 import {
   HsLayerEditorVectorLayerService,
   HsLayerManagerMetadataService,
   HsLayerSelectorService,
 } from 'hslayers-ng/services/layer-manager';
-import {HsLayerUtilsService} from 'hslayers-ng/services/utils';
-import {HsLayoutService} from 'hslayers-ng/services/layout';
+import { HsLayerUtilsService } from 'hslayers-ng/services/utils';
+import { HsLayoutService } from 'hslayers-ng/services/layout';
 import {
   HsLegendDescriptor,
   HsLegendService,
 } from 'hslayers-ng/components/legend';
-import {HsMapService} from 'hslayers-ng/services/map';
-import {HsWmsGetCapabilitiesService} from 'hslayers-ng/services/get-capabilities';
+import { HsMapService } from 'hslayers-ng/services/map';
+import { HsWmsGetCapabilitiesService } from 'hslayers-ng/services/get-capabilities';
 import {
   getCachedCapabilities,
   getCluster,
   getInlineLegend,
+  getQueryCapabilities,
   getWmsOriginalExtent,
   setCluster,
 } from 'hslayers-ng/common/extensions';
@@ -148,7 +149,10 @@ export class HsLayerEditorService {
     layer: HsLayerDescriptor,
     toToggle: 'sublayers' | 'settings',
   ): boolean {
-    if (!getCachedCapabilities(layer.layer)) {
+    if (
+      !getCachedCapabilities(layer.layer) &&
+      getQueryCapabilities(layer.layer) !== false
+    ) {
       this.HsLayerManagerMetadataService.fillMetadata(layer);
     }
 
