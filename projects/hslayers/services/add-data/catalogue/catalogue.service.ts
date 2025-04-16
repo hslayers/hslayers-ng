@@ -2,7 +2,7 @@ import {Injectable, NgZone} from '@angular/core';
 
 import {Feature} from 'ol';
 import {Geometry} from 'ol/geom';
-import {Observable, Subject, debounceTime, forkJoin} from 'rxjs';
+import {Observable, Subject, debounceTime, forkJoin, of} from 'rxjs';
 
 import {
   DatasetType,
@@ -283,6 +283,7 @@ export class HsAddDataCatalogueService extends HsAddDataCatalogueParams {
       this.matchedRecords -= endpoint.layers.length - filteredLayers.length;
     }
     this.catalogEntries = this.catalogEntries.concat(filteredLayers);
+    return filteredLayers;
   }
 
   getNextRecords(): void {
@@ -332,9 +333,9 @@ export class HsAddDataCatalogueService extends HsAddDataCatalogueParams {
    * Use all query params (search text, bbox, params.., sorting, start)
    * @param catalog - Configuration of selected datasource (from app config)
    */
-  queryCatalog(catalog: HsEndpoint): any {
+  queryCatalog(catalog: HsEndpoint): Observable<any> {
     this.hsAddDataCatalogueMapService.clearDatasetFeatures(catalog);
-    let query;
+    let query: Observable<any>;
     switch (catalog.type) {
       case 'micka':
         query = this.hsMickaBrowserService.queryCatalog(
@@ -355,7 +356,7 @@ export class HsAddDataCatalogueService extends HsAddDataCatalogueParams {
         );
         return query;
       default:
-        break;
+        return of(null); // Return a completed observable for unsupported catalog types
     }
   }
 
@@ -417,9 +418,8 @@ export class HsAddDataCatalogueService extends HsAddDataCatalogueParams {
   /**
    * Add selected layer to map
    * @param ds - Datasource of selected layer
-   * @param layer - Metadata record of selected layer
    * @param whatToAdd - Catalogue layer descriptor. Among others holds the type of the layer (supported values: WMS, WFS, Sparql, kml, geojson, json)
-   * TODO: clean this function up, its starting to look like a mess
+   * @param options - Options for adding the layer
    */
   async addLayerToMap(
     ds: HsEndpoint,
@@ -427,109 +427,167 @@ export class HsAddDataCatalogueService extends HsAddDataCatalogueParams {
     options: AddCatalogueLayerOptions = {useTiles: true},
   ): Promise<void> {
     const isLayman = ds.type.includes('layman');
-    if (whatToAdd.type == 'WMS') {
-      whatToAdd.link = Array.isArray(whatToAdd.link)
-        ? whatToAdd.link.filter((link) => link.toLowerCase().includes('wms'))[0]
-        : whatToAdd.link;
-      if (ds.type == 'micka' && whatToAdd.recordType != 'dataset') {
-        this.datasetSelect('url');
-      }
 
-      await this.hsAddDataOwsService.connectToOWS({
-        type: whatToAdd.type.toLowerCase() as 'wms',
-        uri: decodeURIComponent(whatToAdd.link),
-        layer: isLayman
-          ? whatToAdd.layer
-          : whatToAdd.recordType === 'dataset'
-            ? whatToAdd.name
-            : undefined,
-        layerOptions: {
-          useTiles: options.useTiles,
-        },
-        laymanLayer: isLayman ? whatToAdd : undefined,
-      });
-    } else if (whatToAdd.type == 'WFS') {
-      if (ds.type == 'micka') {
-        if (!whatToAdd.workspace) {
-          this.datasetSelect('url');
-        }
-        whatToAdd.link = Array.isArray(whatToAdd.link)
-          ? whatToAdd.link.filter((link) =>
-              link.toLowerCase().includes('wfs'),
-            )[0]
-          : whatToAdd.link;
-        await this.hsAddDataOwsService.connectToOWS({
-          type: whatToAdd.type.toLowerCase() as 'wfs',
-          uri: decodeURIComponent(whatToAdd.link),
-          layer: whatToAdd.workspace
-            ? `${whatToAdd.workspace}:${whatToAdd.name}`
-            : undefined,
-          layerOptions: {
-            style: whatToAdd.style,
-          },
-        });
-      } else {
-        whatToAdd.link = whatToAdd.link.replace('_wms/ows', '/wfs');
-        /**
-         * Layman layers with write access
-         */
-        if (whatToAdd.editable) {
-          const layer = await this.hsAddDataVectorService.addVectorLayer(
-            'wfs',
-            whatToAdd.link,
-            whatToAdd.name,
-            whatToAdd.title,
-            whatToAdd.abstract,
-            whatToAdd.projection,
-            {
-              extractStyles: whatToAdd.extractStyles,
-              workspace: whatToAdd.workspace,
-              style: whatToAdd.style,
-              saveToLayman: true,
-            },
-          );
-          this.hsAddDataVectorService.fitExtent(layer);
-          this.datasetSelect('catalogue');
-        } else {
-          /**
-           * Layman layers without write access
-           */
-          await this.hsAddDataOwsService.connectToOWS({
-            type: 'wfs',
-            uri: whatToAdd.link,
-            layer: whatToAdd.layer, //basically not used in this case
-            layerOptions: {
-              style: whatToAdd.style,
-            },
-            laymanLayer: isLayman ? whatToAdd : undefined,
-          });
-        }
-        this.hsLayoutService.setMainPanel('layerManager');
-      }
+    // Process layer based on type
+    if (whatToAdd.type === 'WMS') {
+      await this.handleWmsLayer(ds, whatToAdd, options, isLayman);
+    } else if (whatToAdd.type === 'WFS') {
+      await this.handleWfsLayer(ds, whatToAdd);
     } else if (['KML', 'GEOJSON'].includes(whatToAdd.type)) {
+      await this.handleVectorLayer(whatToAdd);
+    } else if (whatToAdd.type === 'WMTS' && ds.type === 'micka') {
+      await this.handleWmtsLayer(whatToAdd);
+    } else {
+      this.hsLayoutService.setMainPanel('layerManager');
+    }
+  }
+
+  /**
+   * Handle adding a WMS layer to the map
+   */
+  private async handleWmsLayer(
+    ds: HsEndpoint,
+    whatToAdd: WhatToAddDescriptor<string>,
+    options: AddCatalogueLayerOptions,
+    isLayman: boolean,
+  ): Promise<void> {
+    whatToAdd.link = Array.isArray(whatToAdd.link)
+      ? whatToAdd.link.filter((link) => link.toLowerCase().includes('wms'))[0]
+      : whatToAdd.link;
+
+    if (ds.type === 'micka' && whatToAdd.recordType !== 'dataset') {
+      this.datasetSelect('url');
+    }
+
+    await this.hsAddDataOwsService.connectToOWS({
+      type: 'wms',
+      uri: decodeURIComponent(whatToAdd.link),
+      layer: isLayman
+        ? whatToAdd.layer
+        : whatToAdd.recordType === 'dataset'
+          ? whatToAdd.name
+          : undefined,
+      layerOptions: {
+        useTiles: options.useTiles,
+      },
+      laymanLayer: isLayman ? whatToAdd : undefined,
+    });
+  }
+
+  /**
+   * Handle adding a WFS layer to the map
+   */
+  private async handleWfsLayer(
+    ds: HsEndpoint,
+    whatToAdd: WhatToAddDescriptor<string>,
+  ): Promise<void> {
+    if (ds.type === 'micka') {
+      await this.handleMickaWfsLayer(whatToAdd);
+    } else {
+      await this.handleLaymanWfsLayer(whatToAdd);
+      this.hsLayoutService.setMainPanel('layerManager');
+    }
+  }
+
+  /**
+   * Handle adding a Micka WFS layer to the map
+   */
+  private async handleMickaWfsLayer(
+    whatToAdd: WhatToAddDescriptor<string>,
+  ): Promise<void> {
+    if (!whatToAdd.workspace) {
+      this.datasetSelect('url');
+    }
+
+    whatToAdd.link = Array.isArray(whatToAdd.link)
+      ? whatToAdd.link.filter((link) => link.toLowerCase().includes('wfs'))[0]
+      : whatToAdd.link;
+
+    await this.hsAddDataOwsService.connectToOWS({
+      type: 'wfs',
+      uri: decodeURIComponent(whatToAdd.link),
+      layer: whatToAdd.workspace
+        ? `${whatToAdd.workspace}:${whatToAdd.name}`
+        : undefined,
+      layerOptions: {
+        style: whatToAdd.style,
+      },
+    });
+  }
+
+  /**
+   * Handle adding a Layman WFS layer to the map
+   */
+  private async handleLaymanWfsLayer(
+    whatToAdd: WhatToAddDescriptor<string>,
+  ): Promise<void> {
+    whatToAdd.link = whatToAdd.link.replace('_wms/ows', '/wfs');
+
+    if (whatToAdd.editable) {
+      // Layman layers with write access
       const layer = await this.hsAddDataVectorService.addVectorLayer(
-        whatToAdd.type.toLowerCase(),
+        'wfs',
         whatToAdd.link,
         whatToAdd.name,
         whatToAdd.title,
         whatToAdd.abstract,
         whatToAdd.projection,
-        {extractStyles: whatToAdd.extractStyles},
+        {
+          extractStyles: whatToAdd.extractStyles,
+          workspace: whatToAdd.workspace,
+          style: whatToAdd.style,
+          saveToLayman: true,
+        },
       );
       this.hsAddDataVectorService.fitExtent(layer);
-    } else if (whatToAdd.type == 'WMTS' && ds.type == 'micka') {
-      //Micka only yet
-      if (whatToAdd.recordType === 'service') {
-        this.datasetSelect('url');
-      }
-      await this.hsAddDataOwsService.connectToOWS({
-        type: whatToAdd.type.toLowerCase() as 'wmts',
-        uri: decodeURIComponent(whatToAdd.link),
-        layer: whatToAdd.recordType === 'dataset' ? whatToAdd.name : undefined,
-      });
+      this.datasetSelect('catalogue');
     } else {
-      this.hsLayoutService.setMainPanel('layerManager');
+      // Layman layers without write access
+      await this.hsAddDataOwsService.connectToOWS({
+        type: 'wfs',
+        uri: whatToAdd.link,
+        layer: whatToAdd.layer, // basically not used in this case
+        layerOptions: {
+          style: whatToAdd.style,
+        },
+        laymanLayer: whatToAdd,
+      });
     }
+  }
+
+  /**
+   * Handle adding a vector layer (KML, GEOJSON) to the map
+   */
+  private async handleVectorLayer(
+    whatToAdd: WhatToAddDescriptor<string>,
+  ): Promise<void> {
+    const layer = await this.hsAddDataVectorService.addVectorLayer(
+      whatToAdd.type.toLowerCase(),
+      whatToAdd.link,
+      whatToAdd.name,
+      whatToAdd.title,
+      whatToAdd.abstract,
+      whatToAdd.projection,
+      {extractStyles: whatToAdd.extractStyles},
+    );
+    this.hsAddDataVectorService.fitExtent(layer);
+  }
+
+  /**
+   * Handle adding a WMTS layer to the map
+   */
+  private async handleWmtsLayer(
+    whatToAdd: WhatToAddDescriptor<string>,
+  ): Promise<void> {
+    if (whatToAdd.recordType === 'service') {
+      this.datasetSelect('url');
+    }
+
+    await this.hsAddDataOwsService.connectToOWS({
+      type: 'wmts',
+      uri: decodeURIComponent(whatToAdd.link),
+      layer: whatToAdd.recordType === 'dataset' ? whatToAdd.name : undefined,
+    });
   }
 
   datasetSelect(id_selected: DatasetType): void {
