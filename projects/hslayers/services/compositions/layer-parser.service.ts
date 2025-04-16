@@ -25,7 +25,11 @@ import {
   HsAddDataOwsService,
   HsAddDataVectorService,
 } from 'hslayers-ng/services/add-data';
-import {HsCommonLaymanService, isLaymanUrl} from 'hslayers-ng/common/layman';
+import {
+  HsCommonLaymanLayerService,
+  HsCommonLaymanService,
+  isLaymanUrl,
+} from 'hslayers-ng/common/layman';
 import {HsLanguageService} from 'hslayers-ng/services/language';
 import {HsLogService} from 'hslayers-ng/services/log';
 import {HsMapService} from 'hslayers-ng/services/map';
@@ -33,10 +37,7 @@ import {HsStylerService} from 'hslayers-ng/services/styler';
 import {HsToastService} from 'hslayers-ng/common/toast';
 import {HsVectorLayerOptions} from 'hslayers-ng/types';
 import {SparqlJson} from 'hslayers-ng/common/layers';
-import {
-  setDefinition,
-  setQueryCapabilities,
-} from 'hslayers-ng/common/extensions';
+import {setDefinition} from 'hslayers-ng/common/extensions';
 
 @Injectable({
   providedIn: 'root',
@@ -50,6 +51,7 @@ export class HsCompositionsLayerParserService {
     private hsLog: HsLogService,
     private HsToastService: HsToastService,
     private hsCommonLaymanService: HsCommonLaymanService,
+    private hsCommonLaymanLayerService: HsCommonLaymanLayerService,
     private hsAddDataOwsService: HsAddDataOwsService,
   ) {}
 
@@ -60,6 +62,15 @@ export class HsCompositionsLayerParserService {
    * @param lyr_def - Layer definition object
    */
   async createWFSLayer(lyr_def): Promise<Layer<Source>> {
+    const {name, workspace} = isLaymanUrl(
+      lyr_def.protocol.url,
+      this.hsCommonLaymanService.layman(),
+    )
+      ? await this.hsCommonLaymanLayerService.getLayerWithUUID(
+          lyr_def.name.split('_')[1],
+        )
+      : {name: lyr_def.name, workspace: lyr_def.workspace};
+
     const style = (lyr_def.sld || lyr_def.qml) ?? lyr_def.style;
     const uri = lyr_def.protocol.url.split('?')[0];
     const newLayer = await this.hsAddDataOwsService.connectToOWS({
@@ -78,7 +89,8 @@ export class HsCompositionsLayerParserService {
         ? {
             title: lyr_def.title,
             layer: lyr_def.name,
-            name: lyr_def.name,
+            name: name,
+            workspace: workspace,
             link: uri,
             type: 'wfs',
           }
@@ -135,12 +147,23 @@ export class HsCompositionsLayerParserService {
    * @param lyr_def - Layer definition object
    * @returns Ol Image or Tile layer
    */
-  createWmsLayer(lyr_def) {
+  async createWmsLayer(lyr_def) {
     const params = lyr_def.params;
     const legends = this.getLegends(lyr_def);
     delete params.REQUEST;
     //delete params.FORMAT; Commented, because otherwise when loading from cookie or store, it displays jpeg
     const url = decodeURIComponent(lyr_def.url);
+
+    if (isLaymanUrl(url, this.hsCommonLaymanService.layman())) {
+      return this.createLaymanWmsLayer(lyr_def, url, legends);
+    }
+
+    /***
+     * TODO: REFACTOR USING CONNECT TO OWS
+     * THIS IS USED PROBABLY JUST TO HAVE EASIER WAY TO SET ALL THE COMPOSITION PARAMS
+     * SHOULD BE POSSIBLE TO BE SOVLED BY JUST SPREADING THE  LAYEROPTIONS IN OWS WMS and ADDIG PRIORITY TO OPTIONS
+     *
+     */
     const sourceOptions = {
       url: url,
       attributions: lyr_def.attribution
@@ -151,6 +174,7 @@ export class HsCompositionsLayerParserService {
       projection: lyr_def.projection?.toUpperCase(),
       ratio: lyr_def.ratio,
     };
+
     const source = lyr_def.singleTile
       ? new ImageWMS(sourceOptions)
       : new TileWMS(sourceOptions);
@@ -175,14 +199,58 @@ export class HsCompositionsLayerParserService {
     const new_layer = lyr_def.singleTile
       ? new ImageLayer(layerOptions as ImageOptions<ImageSource>)
       : new Tile(layerOptions as TileOptions<TileSource>);
-
-    setQueryCapabilities(
-      new_layer,
-      !isLaymanUrl(url, this.hsCommonLaymanService.layman()),
-    );
     new_layer.setVisible(lyr_def.visibility);
     this.hsMapService.proxifyLayerLoader(new_layer, !lyr_def.singleTile);
     return new_layer;
+  }
+
+  /**
+   * Create WMS layer from Layman
+   * @param lyr_def - Layer definition object
+   * @param url - URL of the layer
+   * @param legends - Legends of the layer
+   * @returns Ol Image or Tile layer
+   */
+  private async createLaymanWmsLayer(lyr_def, url, legends) {
+    //Query GET /layer to obtain name and workspace of layer
+    const layer = await this.hsCommonLaymanLayerService.getLayerWithUUID(
+      lyr_def.params.LAYERS.split('_')[1],
+      {useCache: true},
+    );
+
+    const newLayer = await this.hsAddDataOwsService.connectToOWS({
+      type: 'wms',
+      uri: url,
+      layer: lyr_def.name,
+      owrCache: false,
+      getOnly: true,
+      layerOptions: {
+        title: lyr_def.title,
+        fromComposition: lyr_def.fromComposition ?? true,
+        maxResolution: lyr_def.maxResolution || Infinity,
+        minResolution: lyr_def.minResolution || 0,
+        showInLayerManager: lyr_def.displayInLayerSwitcher,
+        abstract: lyr_def.name || lyr_def.abstract,
+        base: lyr_def.base,
+        greyscale: lyr_def.greyscale,
+        metadata: lyr_def.metadata,
+        dimensions: lyr_def.dimensions,
+        legends: legends,
+        path: lyr_def.path,
+        opacity: parseFloat(lyr_def.opacity) ?? 1,
+        subLayers: lyr_def.subLayers,
+        // className: lyr_def.greyscale ? 'ol-layer hs-greyscale' : 'ol-layer',
+      },
+      laymanLayer: {
+        title: lyr_def.title,
+        layer: layer.uuid,
+        name: layer.name,
+        workspace: layer.workspace,
+        link: url,
+        type: 'wms',
+      },
+    });
+    return newLayer[0];
   }
 
   /**
