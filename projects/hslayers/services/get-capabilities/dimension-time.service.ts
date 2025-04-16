@@ -125,31 +125,6 @@ export class HsDimensionTimeService {
     if ((layer as HsLayerDescriptor).time) {
       return true;
     }
-    /*
-     * 'dimensions_time' is deprecated
-     * backwards compatibility with HSL < 3.0
-     */
-    if (
-      olLayer.get('dimensions_time') &&
-      Array.isArray(olLayer.get('dimensions_time').timeInterval)
-    ) {
-      this.hsLog.warn(
-        '"dimensions_time" is deprecated, use "dimensions" param with "time" object instead',
-      );
-      const currentDimensions = getDimensions(olLayer);
-      const newTimeDimension = {
-        label: 'time',
-        default: olLayer.get('dimensions_time').value,
-      };
-      if (!currentDimensions) {
-        setDimensions(olLayer, {'time': newTimeDimension});
-      } else {
-        setDimensions(
-          olLayer,
-          Object.assign(currentDimensions, {'time': newTimeDimension}),
-        );
-      }
-    }
     if (getDimensions(olLayer)?.time) {
       return true;
     }
