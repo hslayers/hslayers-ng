@@ -469,6 +469,7 @@ export class HsLayerManagerMetadataService {
             },
           } as unknown as HsWmsLayer);
         }
+        setCacheCapabilities(layer, desc);
         return true;
       }
 
