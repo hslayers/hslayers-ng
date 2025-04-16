@@ -245,7 +245,9 @@ export class HsAddDataCommonFileService extends HsAddDataCommonFileServiceParams
         descriptor = await this.hsCommonLaymanLayerService.describeLayer(
           name,
           this.hsCommonLaymanService.user(),
-          true,
+          {
+            ignoreStatus: true,
+          },
         );
       } catch (error) {
         this.hsLog.error(error);
