@@ -29,6 +29,8 @@ import {
   getExclusive,
   getHsLaymanSynchronizing,
 } from 'hslayers-ng/common/extensions';
+import {takeUntilDestroyed, toSignal} from '@angular/core/rxjs-interop';
+import {filter} from 'rxjs';
 
 @Component({
   selector: 'hs-layer-list-item',
@@ -66,9 +68,22 @@ export class HsLayerListItemComponent implements OnInit {
   isLayerQueryable = computed(() =>
     this.hsLayerListService.isLayerQueryable(this.layer()),
   );
-  showLayerWmsT = computed(() =>
-    this.hsDimensionTimeService.layerIsWmsT(this.layer()),
+
+  layerTimeChanges = toSignal(
+    this.hsDimensionTimeService.layerTimeChanges.pipe(
+      filter(({layer}) => layer.layer === this.layer().layer),
+      takeUntilDestroyed(),
+    ),
   );
+
+  showLayerWmsT = computed(() => {
+    const layer = this.layer();
+    const layerTimeChanges = this.layerTimeChanges();
+    if (layerTimeChanges) {
+      return this.hsDimensionTimeService.layerIsWmsT(layer);
+    }
+    return false;
+  });
 
   constructor(
     public hsConfig: HsConfig,
