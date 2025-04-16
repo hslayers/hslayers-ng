@@ -3,7 +3,7 @@ import {Injectable} from '@angular/core';
 
 import {Feature} from 'ol';
 import {Geometry} from 'ol/geom';
-import {Observable, catchError, lastValueFrom, map, of, timeout} from 'rxjs';
+import {Observable, catchError, map, of, timeout} from 'rxjs';
 import {transformExtent} from 'ol/proj';
 
 import {
@@ -11,11 +11,13 @@ import {
   EndpointErrorHandling,
   HsEndpoint,
   isErrorHandlerFunction,
-  HsLaymanLayerDescriptor,
   HsAddDataHsLaymanLayerDescriptor,
   HsLaymanGetLayer,
 } from 'hslayers-ng/types';
-import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
+import {
+  HsCommonLaymanLayerService,
+  HsCommonLaymanService,
+} from 'hslayers-ng/common/layman';
 import {HsLanguageService} from 'hslayers-ng/services/language';
 import {HsLogService} from 'hslayers-ng/services/log';
 import {HsMapService} from 'hslayers-ng/services/map';
@@ -41,6 +43,7 @@ export class HsLaymanBrowserService {
     private http: HttpClient,
     private log: HsLogService,
     public hsCommonLaymanService: HsCommonLaymanService,
+    private hsCommonLaymanLayerService: HsCommonLaymanLayerService,
     public hsUtilsService: HsUtilsService,
     public hsToastService: HsToastService,
     public hsLanguageService: HsLanguageService,
@@ -291,17 +294,19 @@ export class HsLaymanBrowserService {
       }
     }
     if (lyr.wms.url) {
+      const {type, wms, name, title, editable, workspace, bounding_box} = lyr;
       return {
-        type: lyr.type,
-        link: lyr.wms.url,
-        style,
-        layer: lyr.wms.name,
-        name: lyr.name,
-        title: lyr.title,
+        ...lyr,
+        link: wms.url,
+        layer: wms.name,
         dsType: ds.type,
-        editable: lyr.editable,
-        workspace: lyr.workspace,
-        extent: lyr.bounding_box,
+        extent: bounding_box,
+        style,
+        name,
+        title,
+        editable,
+        workspace,
+        type,
       };
     }
     this.hsToastService.createToastPopupMessage(
