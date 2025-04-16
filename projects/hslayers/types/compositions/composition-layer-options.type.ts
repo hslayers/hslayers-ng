@@ -17,6 +17,7 @@ export type LayerOptions = {
   crs?: string;
   opacity?: number;
   queryable?: boolean;
+  workspace?: string;
   //****WMS****//
 
   /**
