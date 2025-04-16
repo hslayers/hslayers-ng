@@ -239,37 +239,14 @@ export class HsLaymanBrowserService {
     endpoint: HsEndpoint,
     layer: HsAddDataHsLaymanLayerDescriptor,
   ): Promise<HsAddDataHsLaymanLayerDescriptor> {
-    const url = `${endpoint.url}/rest/workspaces/${layer.workspace}/layers/${layer.name}`;
     try {
-      const data: HsLaymanLayerDescriptor = await lastValueFrom(
-        this.http
-          .get<HsLaymanLayerDescriptor>(url, {
-            //timeout: endpoint.canceler.promise,
-            //endpoint,
-            responseType: 'json',
-            withCredentials: true,
-          })
-          .pipe(
-            catchError((e) => {
-              //Layer not found
-              if (e?.error.code == 15) {
-                return of(e?.error);
-              }
-              throw e;
-            }),
-          ),
+      const data = await this.hsCommonLaymanLayerService.describeLayer(
+        layer.name,
+        layer.workspace,
+        {
+          useCache: true,
+        },
       );
-      if (data.code || data.message) {
-        if (data.code != 32) {
-          this.hsToastService.createToastPopupMessage(
-            data.message ?? 'ADDLAYERS.ERROR.errorWhileRequestingLayers',
-            data.detail ?? `${data.code}/${data.sub_code}`,
-            {},
-          );
-        }
-        return;
-      }
-
       layer.type = data?.geodata_type === 'vector' ? ['WMS', 'WFS'] : ['WMS'];
       layer = {...layer, ...data};
       if (layer.thumbnail) {

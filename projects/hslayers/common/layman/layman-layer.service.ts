@@ -75,13 +75,15 @@ export class HsCommonLaymanLayerService {
   async describeLayer(
     layerName: string,
     workspace: string,
-    ignoreStatus?: boolean,
-    useCache = false,
+    options: {
+      ignoreStatus?: boolean;
+      useCache?: boolean;
+    } = {useCache: false},
   ): Promise<HsLaymanLayerDescriptor> {
     const requestKey = `${workspace}/${layerName}`;
 
     // Check if there's a cached response and useCache is true
-    if (useCache && this.layerDescriptorCache.has(requestKey)) {
+    if (options.useCache && this.layerDescriptorCache.has(requestKey)) {
       return this.layerDescriptorCache.get(requestKey);
     }
 
@@ -92,7 +94,7 @@ export class HsCommonLaymanLayerService {
     const desc = this.makeDescribeLayerRequest(
       layerName,
       workspace,
-      ignoreStatus,
+      options.ignoreStatus,
     );
     // Store the promise for the request
     this.pendingRequests.set(requestKey, desc);
