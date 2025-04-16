@@ -33,13 +33,20 @@ import {
   getLegends,
   getMaxResolutionDenominator,
   getMetadata,
+  getName,
   getSubLayers,
+  getWorkspace,
   setAttribution,
   setCacheCapabilities,
   setLegends,
   setMetadata,
   setWmsOriginalExtent,
 } from 'hslayers-ng/common/extensions';
+import {
+  HsCommonLaymanLayerService,
+  HsCommonLaymanService,
+  isLaymanUrl,
+} from 'hslayers-ng/common/layman';
 
 @Injectable({
   providedIn: 'root',
@@ -56,6 +63,8 @@ export class HsLayerManagerMetadataService {
     public hsUrlWmsService: HsUrlWmsService,
     private hsMapService: HsMapService,
     private hsAddDataUrlService: HsAddDataUrlService,
+    private hsCommonLaymanService: HsCommonLaymanService,
+    private hsCommonLaymanLayerService: HsCommonLaymanLayerService,
   ) {}
 
   /**
@@ -439,6 +448,33 @@ export class HsLayerManagerMetadataService {
     }
     //WMS
     else if (this.HsLayerUtilsService.isLayerWMS(layer)) {
+      /**
+       *Fill metadata for Layman WMS (time dimension for now)
+       */
+      if (isLaymanUrl(url, this.hsCommonLaymanService.layman())) {
+        const name = getName(layer);
+        const desc = await this.hsCommonLaymanLayerService.describeLayer(
+          name,
+          getWorkspace(layer) || this.hsCommonLaymanService.user(),
+          {
+            useCache: true,
+          },
+        );
+
+        if (desc.wms.time) {
+          this.HsDimensionTimeService.setupTimeLayer(layerDescriptor, {
+            Dimension: {
+              ...desc.wms.time,
+              name: 'Date',
+            },
+          } as unknown as HsWmsLayer);
+        }
+        return true;
+      }
+
+      /**
+       * Common WMS
+       */
       const wrapper = await this.HsWmsGetCapabilitiesService.request(url);
       if (wrapper.error) {
         this.hsLog.warn('GetCapabilities call invalid', wrapper.response);
