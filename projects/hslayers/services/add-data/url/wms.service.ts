@@ -303,6 +303,17 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
   }
 
   /**
+   * Calculates extent for layer being created
+   */
+  private getBufferExtent(layers: any, options: LayerOptions): number[] {
+    const calculatedExtent = this.getLayerExtent(layers, options.crs);
+    return this.HsLayerUtilsService.bufferExtent(
+      calculatedExtent,
+      this.hsMapService.getCurrentProj(),
+    );
+  }
+
+  /**
    * Get extent for a WMS layer.
    * URL: Single or multiple layer in params.LAYERS
    * CATALOGUE - layer obj
@@ -495,44 +506,50 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
     const source: ImageWMS | TileWMS = this.data.useTiles
       ? new TileWMS(sourceOptions)
       : new ImageWMS(sourceOptions);
-    const metadata =
-      this.hsWmsGetCapabilitiesService.getMetadataObjectWithUrls(layer);
+
     const view = this.hsMapService.getMap().getView();
-    const layerOptions = {
-      title: options.layerName,
-      name: options.layerName,
-      source,
-      minResolution: this.HsLayerUtilsService.calculateResolutionFromScale(
+    const calculatedMinResolution =
+      this.HsLayerUtilsService.calculateResolutionFromScale(
         layer.MinScaleDenominator,
         view,
-      ),
-      maxResolution: this.HsLayerUtilsService.calculateResolutionFromScale(
+      );
+    const calculatedMaxResolution =
+      this.HsLayerUtilsService.calculateResolutionFromScale(
         layer.MaxScaleDenominator,
         view,
-      ),
+      );
+
+    const calculatedMetadata =
+      this.hsWmsGetCapabilitiesService.getMetadataObjectWithUrls(layer);
+
+    const extent = this.getBufferExtent(
+      Object.keys(layer).length > 0 ? layer : sourceOptions.params.LAYERS,
+      options,
+    );
+
+    const layerOptions = {
+      ...options,
+      source,
+      title: options.layerName,
+      name: options.layerName,
+      minResolution: options.minResolution || calculatedMinResolution,
+      maxResolution: options.maxResolution || calculatedMaxResolution,
       removable: true,
-      abstract: layer.Abstract,
-      metadata,
-      extent: this.HsLayerUtilsService.bufferExtent(
-        this.getLayerExtent(
-          //Layer object or layer/s string for WMS from URL
-          Object.keys(layer).length > 0 ? layer : sourceOptions.params.LAYERS,
-          options.crs,
-        ),
-        this.hsMapService.getCurrentProj(),
-      ),
+      abstract: options.abstract || layer.Abstract,
+      metadata: options.metadata || calculatedMetadata,
+      extent: extent,
       path: options.path,
       dimensions: dimensions,
-      legends: legends,
+      legends: options.legends || legends,
       subLayers: options.subLayers,
-      base: this.data.base,
+      base: options.base || this.data.base,
       visible: this.data.visible,
+      /**
+       * Control preventing duplicated extent parsing
+       * during capability attributes parsing
+       */
+      capsExtentSet: !!extent,
     };
-    /**
-     * Control preventing duplicated extent parsing
-     * during capability attributes parsing
-     */
-    layerOptions['capsExtentSet'] = !!layerOptions.extent;
 
     const new_layer = this.data.useTiles
       ? new Tile(layerOptions as TileOptions<TileSource>)
