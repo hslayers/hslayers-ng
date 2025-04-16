@@ -239,6 +239,7 @@ export class HsCompositionsLayerParserService {
         path: lyr_def.path,
         opacity: parseFloat(lyr_def.opacity) ?? 1,
         subLayers: lyr_def.subLayers,
+        workspace: layer.workspace,
         // className: lyr_def.greyscale ? 'ol-layer hs-greyscale' : 'ol-layer',
       },
       laymanLayer: {
