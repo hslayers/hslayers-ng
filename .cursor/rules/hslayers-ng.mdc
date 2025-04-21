@@ -1,0 +1,74 @@
+---
+description: HSLayers-NG Rules
+globs: 
+alwaysApply: true
+---
+# Import Rules for HSLayers-NG
+
+## Secondary Entry Points Pattern
+
+HSLayers-NG uses NgPackagr's secondary entry points pattern for organizing code and optimizing tree-shaking. 
+Keep in minde we only apply these ruls to hslayers-ng components not 3rd party packages such as `rxjs`
+Follow these rules when importing modules:
+
+### Default Import Pattern
+
+Always use the NgPackagr secondary entry point imports:
+
+```typescript
+import {HsCommonEndpointsService} from 'hslayers-ng/services/endpoints';
+import {HsLogService} from 'hslayers-ng/services/log';
+import {HsToastService} from 'hslayers-ng/common/toast';
+import {HsConfig} from 'hslayers-ng/config';
+```
+
+### Exception: Same Entry Point
+
+Only use relative imports when the importing file is in the same entry point as the imported file:
+
+```typescript
+// In projects/hslayers/services/endpoints/endpoint-helper.service.ts
+import {HsCommonEndpointsService} from './endpoints.service';
+```
+
+### Entry Point Structure
+
+Each entry point corresponds to a specific directory structure:
+
+- `hslayers-ng/services/endpoints`
+- `hslayers-ng/services/log`
+- `hslayers-ng/common/toast`
+- `hslayers-ng/config`
+
+### Examples
+
+1. **Importing from another service in a different entry point**:
+   ```typescript
+   // In projects/hslayers/services/map/map.service.ts
+   import {HsCommonEndpointsService} from 'hslayers-ng/services/endpoints';
+   ```
+
+2. **Importing from a component**:
+   ```typescript
+   // In projects/hslayers/components/sidebar/sidebar.component.ts
+   import {HsCommonEndpointsService} from 'hslayers-ng/services/endpoints';
+   ```
+
+3. **Importing from a file in the same entry point**:
+   ```typescript
+   // In projects/hslayers/services/endpoints/endpoint-helper.service.ts
+   import {HsCommonEndpointsService} from './endpoints.service';
+   ```
+
+4. **Importing types**:
+   ```typescript
+   // In projects/hslayers/components/map/map.component.ts
+   import {HsEndpoint} from 'hslayers-ng/types';
+   ```
+
+# Icons 
+- use Fontawesome icons
+- primarily use sold fontawesome icons - fa-solid
+   ```html
+   <i class="fa-solid fa-house"></i>
+   ```
