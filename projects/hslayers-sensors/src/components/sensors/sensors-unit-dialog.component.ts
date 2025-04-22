@@ -11,13 +11,19 @@ import {
   HsDialogComponent,
   HsDialogContainerService,
 } from 'hslayers-ng/common/dialogs';
-import {HsLanguageService} from 'hslayers-ng/services/language';
+import {
+  HsLanguageService,
+  TranslateCustomPipe,
+} from 'hslayers-ng/services/language';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
 
 import {Aggregates, HsSensorsUnitDialogService} from './unit-dialog.service';
 import {CustomInterval, Interval} from './types/interval.type';
 import {LangChangeEvent} from '@ngx-translate/core';
 import {takeUntilDestroyed, toSignal} from '@angular/core/rxjs-interop';
+import {AsyncPipe, KeyValuePipe, NgStyle} from '@angular/common';
+import {NgbDatepickerModule} from '@ng-bootstrap/ng-bootstrap';
+import {FormsModule} from '@angular/forms';
 
 @Component({
   selector: 'hs-sensor-unit',
@@ -36,8 +42,35 @@ import {takeUntilDestroyed, toSignal} from '@angular/core/rxjs-interop';
       animation: fadein 1s ease-out;
       animation-fill-mode: forwards;
     }
+    th,
+    td {
+      padding: 0.25rem 0.5rem;
+      text-align: right;
+      border-bottom: 1px solid #ddd;
+
+      &.title-column {
+        text-align: left;
+      }
+
+      &.color-column {
+        vertical-align: middle;
+        padding: 0 4px;
+
+        .color-indicator {
+          height: 10px;
+          width: 35px;
+        }
+      }
+    }
   `,
-  standalone: false,
+  imports: [
+    TranslateCustomPipe,
+    NgStyle,
+    AsyncPipe,
+    KeyValuePipe,
+    NgbDatepickerModule,
+    FormsModule,
+  ],
 })
 export class HsSensorsUnitDialogComponent implements HsDialogComponent, OnInit {
   customInterval: CustomInterval = {

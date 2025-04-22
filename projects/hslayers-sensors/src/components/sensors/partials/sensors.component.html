@@ -42,8 +42,9 @@
         @for (unit of filterQuery(query); track unit) {
           <li class="list-group-item">
             <!-- TODO: Remove function call from template -->
-            <hs-sensor-unit-list-item [unit]="unit" [expanded]="viewExpanded" [view-mode]="viewMode">
-            </hs-sensor-unit-list-item>
+             @defer {
+               <hs-sensor-unit-list-item [unit]="unit" [expanded]="viewExpanded" [view-mode]="viewMode"/>
+            }
           </li>
         }
       </ul>

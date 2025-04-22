@@ -76,3 +76,4 @@ eraser
 globe
 user
 right-to-bracket
+weight-scale
