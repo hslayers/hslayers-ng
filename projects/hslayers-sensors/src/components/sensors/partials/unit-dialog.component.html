@@ -10,7 +10,7 @@
         <button type="button" class="btn-close" (click)="close()" data-dismiss="modal"
         [attr.aria-label]="'COMMON.close' | translateHs "></button>
       </div>
-      <div class="modal-body py-0" style="max-height: 300px; overflow-y: auto">
+      <div class="modal-body py-0" style="max-height: 400px; overflow-y: auto">
         <div class="container-fluid">
           <div class="row">
             <div class="col-12 position-relative">
@@ -20,32 +20,43 @@
                   <span class="ms-2 hs-loader hs-loader-dark"></span>
                 </div>
               }
-              <div class="hs-chartplace" style="min-height: 50px; max-width: 65vw;">
+              <div class="hs-chartplace" style="min-height: 50px; max-width: 65vw; width: 100%;">
               </div>
             </div>
           </div>
         </div>
         <table class="table table-sm table-striped table-hover">
-          <tr>
-            <th></th>
-            <th>{{'SENSORS.min' | translateHs }}</th>
-            <th>{{'SENSORS.max' | translateHs }}</th>
-            <th>{{'SENSORS.avg' | translateHs }}</th>
-          </tr>
-          @for (unit of getUnitAggregations() | keyvalue; track unit) {
+          <thead>
             <tr>
-              <th class="py-1">{{unit.key}}</th>
+              <th></th>
+              <th></th>
+              <th>{{'SENSORS.min' | translateHs }}</th>
+              <th>{{'SENSORS.max' | translateHs }}</th>
+              <th>{{'SENSORS.avg' | translateHs }}</th>
             </tr>
-            @for (aggr of unit.value; track aggr) {
+          </thead>
+          <tbody>
+            @for (unit of getUnitAggregations() | keyvalue; track unit) {
               <tr>
-                <td class="ps-2">{{aggr.sensor_name}}
-                </td>
-                <td>{{aggr.min}}</td>
-                <td>{{aggr.max}}</td>
-                <td>{{aggr.avg}}</td>
+                <td class="py-1">{{unit.key}}</td>
               </tr>
+              @for (aggr of unit.value; track aggr) {
+                <tr>
+                  <td class="color-column">
+                    <div
+                    class="color-indicator"
+                    [style.background-color]="aggr.color"
+                    ></div>
+                  </td>
+                  <td class="ps-2 title-column">{{aggr.sensor_name}}
+                  </td>
+                  <td>{{aggr.min}}</td>
+                  <td>{{aggr.max}}</td>
+                  <td>{{aggr.avg}}</td>
+                </tr>
+              }
             }
-          }
+          </tbody>
         </table>
       </div>
       <div class="modal-footer" style="padding: 0.2rem 0.3rem;">
@@ -55,7 +66,7 @@
               <!-- TODO: Remove function call from template -->
               @for (interval of getIntervals(); track interval) {
                 <button type="button" class="btn btn-sm"
-                  [ngClass]="{'btn-primary': getCurrentInterval() === interval}"
+                  [class.btn-primary]="getCurrentInterval() === interval"
                   (click)="timeButtonClicked(interval)">
                   {{interval.name | translateHs : 'SENSORS' }}
                   &emsp;<span class="hs-loader" [hidden]="!interval.loading"></span></button>

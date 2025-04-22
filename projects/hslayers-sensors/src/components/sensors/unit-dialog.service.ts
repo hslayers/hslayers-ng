@@ -38,6 +38,29 @@ export class Aggregates {
   providedIn: 'root',
 })
 export class HsSensorsUnitDialogService {
+  readonly COLOR_SCHEME = [
+    '#4c78a8',
+    '#9ecae9',
+    '#f58518',
+    '#ffbf79',
+    '#54a24b',
+    '#88d27a',
+    '#b79a20',
+    '#f2cf5b',
+    '#439894',
+    '#83bcb6',
+    '#e45756',
+    '#ff9d98',
+    '#79706e',
+    '#bab0ac',
+    '#d67195',
+    '#fcbfd2',
+    '#b279a2',
+    '#d6a5c9',
+    '#9e765f',
+    '#d8b5a5',
+  ];
+
   unit: HsSensorUnit[] = [];
   unitDialogVisible: boolean;
   sensorsSelected = signal(new Map<string, SenslogSensor>());
@@ -193,9 +216,8 @@ export class HsSensorsUnitDialogService {
   getTimeForInterval(interval): {from_time; to_time} {
     if (!interval.amount && !interval.unit) {
       return this.getTimeFromCalendarDate(interval);
-    } else {
-      return this.getTimeFromUnitAndAmount(interval);
     }
+    return this.getTimeFromUnitAndAmount(interval);
   }
 
   /**
@@ -359,20 +381,10 @@ export class HsSensorsUnitDialogService {
       'encoding': {
         'color': {
           'field': 'sensor_name',
-          'legend': {
-            'title': multi
-              ? sensorDesc[0]?.unit_description
-              : this.hsLanguageService.getTranslation('SENSORS.sensors'),
-            'labelExpr': "split(datum.value, '_')[0]",
-            'orient': this.hsLayoutService.layoutElement.classList.contains(
-              'hs-mobile-view',
-            )
-              ? 'bottom'
-              : 'right',
-            'direction': 'vertical',
-          },
+          'legend': null,
           'type': 'nominal',
           'sort': 'sensor_id',
+          'scale': {'scheme': 'tableau20'},
         },
         'y': {
           'axis': {
@@ -413,8 +425,6 @@ export class HsSensorsUnitDialogService {
             .join(' || '),
         },
       ];
-      layer['encoding']['color']['legend']['values'] =
-        this.getSensorLegendValues(sensorDesc);
     } else {
       layer.encoding = {
         ...layer.encoding,
@@ -443,12 +453,6 @@ export class HsSensorsUnitDialogService {
         'type': 'temporal',
       },
     };
-  }
-
-  private getSensorLegendValues(sensorDesc): string[] {
-    return Array.isArray(sensorDesc)
-      ? sensorDesc.map((sd) => `${sd.sensor_name}_${sd.unit_id}`)
-      : [`${sensorDesc.sensor_name}_${sensorDesc.unit_id}'`];
   }
 
   /**
@@ -491,22 +495,15 @@ export class HsSensorsUnitDialogService {
   }
 
   getCommonChartDefinitionPart(observations: any[]) {
-    //See https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/flat for flattening array
-    const width = !this.mapServiceDisabled
-      ? document.querySelector('.hs-ol-map').clientWidth
-      : this.dialogElement.nativeElement.offsetWidth;
     return {
-      '$schema': 'https://vega.github.io/schema/vega-lite/v5.json',
+      '$schema': 'https://vega.github.io/schema/vega-lite/v6.json',
       'config': {
         'mark': {
           'tooltip': null,
         },
       },
-      'width': width > 0 ? width * 0.9 : 500,
-      'autosize': {
-        'type': 'fit',
-        'contains': 'padding',
-      },
+      'width': 'container',
+      'height': 175,
       'data':
         observations.length > 0
           ? {
@@ -555,6 +552,7 @@ export class HsSensorsUnitDialogService {
         const layer = [];
         observations = this.getObservations();
 
+        let index = 0;
         unit.forEach((u) => {
           //Can only be an array (emtpy or not) but multiple units are passed only in case comparisonAllowed
           //thus -> SenslogSensor[]
@@ -565,7 +563,9 @@ export class HsSensorsUnitDialogService {
           this.aggregations[u.description] = this.calculateAggregates(
             u,
             observations,
+            index,
           );
+          index += sensorDesc.length;
         });
 
         chartData = {
@@ -653,6 +653,7 @@ export class HsSensorsUnitDialogService {
   private calculateAggregates(
     unit: HsSensorUnit,
     observations: any,
+    index = 0,
   ): Aggregate[] {
     // Create a map of sensor IDs to their observations
     const observationMap = new Map<string, number[]>();
@@ -665,7 +666,7 @@ export class HsSensorsUnitDialogService {
 
     const aggregates: Aggregate[] = unit.sensors
       .filter((s) => this.sensorsSelected().has(s.sensor_id as string))
-      .map((sensor): Aggregate => {
+      .map((sensor, sidx): Aggregate => {
         const observationsForSensor =
           observationMap.get(sensor.sensor_id as string) || [];
         const tmp: Aggregate = {
@@ -674,6 +675,7 @@ export class HsSensorsUnitDialogService {
           avg: 0,
           sensor_id: sensor.sensor_id,
           sensor_name: this.getSensorNameTranslation(sensor.sensor_name),
+          color: this.COLOR_SCHEME[index + sidx],
         };
         if (observationsForSensor.length === 0) {
           return tmp;
@@ -700,7 +702,10 @@ export class HsSensorsUnitDialogService {
    * Translates sensor_name.
    */
   private getSensorNameTranslation(name: string): string {
-    return this.hsLanguageService.getTranslation(`SENSORS.SENSORNAMES.${name}`);
+    const translation = this.hsLanguageService.getTranslation(
+      `SENSORS.SENSORNAMES.${name}`,
+    );
+    return translation.includes('SENSORS.SENSORNAMES') ? name : translation;
   }
 
   /**

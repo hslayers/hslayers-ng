@@ -1,17 +1,18 @@
 import {Component, Input} from '@angular/core';
+import {NgClass} from '@angular/common';
 
 import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
 
 import {HsSensorUnit} from './sensor-unit.class';
 import {HsSensorsService} from './sensors.service';
-import {HsSensorsUnitDialogComponent} from './sensors-unit-dialog.component';
 import {HsSensorsUnitDialogService} from './unit-dialog.service';
 import {SenslogSensor} from './types/senslog-sensor.type';
+import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 
 @Component({
   selector: 'hs-sensor-unit-list-item',
   templateUrl: './partials/unit-list-item.component.html',
-  standalone: false,
+  imports: [TranslateCustomPipe, NgClass],
 })
 export class HsSensorsUnitListItemComponent {
   @Input() unit: HsSensorUnit;
@@ -72,8 +73,11 @@ export class HsSensorsUnitListItemComponent {
    * Display sensors unit dialog
    * @param single Controls whether only one unit is supposed to be selected
    */
-  generateDialog(single = true): void {
+  async generateDialog(single = true): Promise<void> {
     if (!this.hsSensorsUnitDialogService.unitDialogVisible) {
+      const {HsSensorsUnitDialogComponent} = await import(
+        './sensors-unit-dialog.component'
+      );
       this.hsDialogContainerService.create(HsSensorsUnitDialogComponent, {});
     } else {
       this.hsSensorsUnitDialogService.createChart$.next(

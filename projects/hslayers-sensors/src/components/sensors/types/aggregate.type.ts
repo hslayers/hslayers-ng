@@ -4,4 +4,5 @@ export type Aggregate = {
   min;
   avg;
   sensor_name;
+  color: string;
 };
