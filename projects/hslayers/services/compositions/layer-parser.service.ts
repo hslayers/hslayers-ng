@@ -35,7 +35,7 @@ import {HsLogService} from 'hslayers-ng/services/log';
 import {HsMapService} from 'hslayers-ng/services/map';
 import {HsStylerService} from 'hslayers-ng/services/styler';
 import {HsToastService} from 'hslayers-ng/common/toast';
-import {HsVectorLayerOptions} from 'hslayers-ng/types';
+import {HsVectorLayerOptions, OwsConnection} from 'hslayers-ng/types';
 import {SparqlJson} from 'hslayers-ng/common/layers';
 import {setDefinition} from 'hslayers-ng/common/extensions';
 
@@ -85,6 +85,7 @@ export class HsCompositionsLayerParserService {
         fromComposition: true,
         opacity: parseFloat(lyr_def.opacity) ?? 1,
       },
+      connectOptions: {
       laymanLayer: isLaymanUrl(uri, this.hsCommonLaymanService.layman())
         ? {
             title: lyr_def.title,
@@ -95,6 +96,7 @@ export class HsCompositionsLayerParserService {
             type: 'wfs',
           }
         : undefined,
+      },
     });
     newLayer[0].setVisible(lyr_def.visibility);
     return newLayer[0];
@@ -120,6 +122,10 @@ export class HsCompositionsLayerParserService {
           greyscale: lyr_def.greyscale,
           fromComposition: true,
           opacity: parseFloat(lyr_def.opacity) ?? 1,
+        },
+        connectOptions: {
+          base: lyr_def.base,
+          info_format: lyr_def.info_format,
         },
       });
       newLayer[0].setVisible(lyr_def.visibility);
@@ -271,10 +277,12 @@ export class HsCompositionsLayerParserService {
       getOnly: true,
       layerOptions: {
         title: lyr_def.title,
-        base: lyr_def.base,
         greyscale: lyr_def.greyscale,
         fromComposition: true,
         opacity: parseFloat(lyr_def.opacity) ?? 1,
+      },
+      connectOptions: {
+        base: lyr_def.base,
       },
     });
     newLayer[0].setVisible(lyr_def.visibility);

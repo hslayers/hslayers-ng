@@ -483,10 +483,10 @@ export class HsAddDataCatalogueService extends HsAddDataCatalogueParams {
         : whatToAdd.recordType === 'dataset'
           ? whatToAdd.name
           : undefined,
-      layerOptions: {
+      connectOptions: {
+        laymanLayer: isLayman ? whatToAdd : undefined,
         useTiles: options.useTiles,
       },
-      laymanLayer: isLayman ? whatToAdd : undefined,
     });
   }
 
@@ -566,7 +566,9 @@ export class HsAddDataCatalogueService extends HsAddDataCatalogueParams {
         layerOptions: {
           style: whatToAdd.style,
         },
-        laymanLayer: whatToAdd,
+        connectOptions: {
+          laymanLayer: whatToAdd,
+        },
       });
     }
   }
