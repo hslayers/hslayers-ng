@@ -45,7 +45,10 @@ export interface HsAddDataMickaLayerDescriptor
 
   serviceType: string;
   formats: string[];
-  thumbnail: string;
+  thumbnail: {
+    path: string;
+    url: string;
+  };
   mayedit: string;
   public: string;
 }

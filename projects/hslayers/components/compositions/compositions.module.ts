@@ -11,7 +11,6 @@ import {HsClipboardTextComponent} from 'hslayers-ng/common/clipboard-text';
 import {HsCommonUrlModule} from 'hslayers-ng/components/add-data';
 import {HsCompositionsComponent} from './compositions.component';
 import {HsCompositionsDeleteDialogComponent} from './dialogs/delete-dialog.component';
-import {HsCompositionsInfoDialogComponent} from './dialogs/info-dialog.component';
 import {HsCompositionsListItemComponent} from './compositions-list-item.component';
 import {HsCompositionsOverwriteDialogComponent} from './dialogs/overwrite-dialog.component';
 import {HsCompositionsShareDialogComponent} from './dialogs/share-dialog.component';
@@ -30,7 +29,6 @@ import {TranslateCustomPipe} from 'hslayers-ng/services/language';
     HsCompositionsOverwriteDialogComponent,
     HsCompositionsDeleteDialogComponent,
     HsCompositionsShareDialogComponent,
-    HsCompositionsInfoDialogComponent,
     HsCompositionsListItemComponent,
   ],
   imports: [

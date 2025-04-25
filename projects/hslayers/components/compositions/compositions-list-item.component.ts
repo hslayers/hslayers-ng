@@ -2,7 +2,6 @@ import {Component, Input} from '@angular/core';
 
 import {HsCompositionsCatalogueService} from './compositions-catalogue.service';
 import {HsCompositionsDeleteDialogComponent} from './dialogs/delete-dialog.component';
-import {HsCompositionsInfoDialogComponent} from './dialogs/info-dialog.component';
 import {HsCompositionsService} from './compositions.service';
 import {HsCompositionsShareDialogComponent} from './dialogs/share-dialog.component';
 import {HsConfig} from 'hslayers-ng/config';
@@ -139,7 +138,10 @@ export class HsCompositionsListItemComponent {
    * Display composition info dialog
    * @param info - Composition info
    */
-  infoDialogBootstrap(info): void {
+  async infoDialogBootstrap(info): Promise<void> {
+    const {HsCompositionsInfoDialogComponent} = await import(
+      './dialogs/info-dialog.component'
+    );
     this.hsDialogContainerService.create(HsCompositionsInfoDialogComponent, {
       info,
     });
