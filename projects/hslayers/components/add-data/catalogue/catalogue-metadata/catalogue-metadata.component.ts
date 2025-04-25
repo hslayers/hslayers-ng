@@ -1,4 +1,4 @@
-import {Component, computed, input, OnInit, ViewRef} from '@angular/core';
+import {Component, computed, input, ViewRef} from '@angular/core';
 
 import {
   HsAddDataCatalogueMapService,
@@ -26,7 +26,7 @@ import {HsMapService} from 'hslayers-ng/services/map';
   templateUrl: './catalogue-metadata.component.html',
   imports: [HsUiExtensionsRecursiveDdComponent, TranslateCustomPipe],
 })
-export class HsCatalogueMetadataComponent implements HsDialogComponent, OnInit {
+export class HsCatalogueMetadataComponent implements HsDialogComponent {
   data = input<{
     selectedLayer: HsAddDataLayerDescriptor;
     selectedDS: HsEndpoint;
@@ -78,8 +78,8 @@ export class HsCatalogueMetadataComponent implements HsDialogComponent, OnInit {
     return layer.bbox;
   });
 
-  selectedLayerKeys: string[];
   viewRef: ViewRef;
+  excludedKeys: string[] = ['feature', 'thumbnail', 'endpoint'];
 
   constructor(
     public hsConfig: HsConfig,
@@ -88,13 +88,6 @@ export class HsCatalogueMetadataComponent implements HsDialogComponent, OnInit {
     public hsDialogContainerService: HsDialogContainerService,
     private hsMapService: HsMapService,
   ) {}
-
-  ngOnInit(): void {
-    this.selectedLayerKeys = Object.keys(this.selectedLayer());
-    this.selectedLayerKeys = this.selectedLayerKeys.filter(
-      (e) => e !== 'endpoint',
-    );
-  }
 
   /**
    * @param type - Type in which the layer shall be added (WMS, WFS, etc.)
