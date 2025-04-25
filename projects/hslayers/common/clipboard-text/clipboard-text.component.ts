@@ -1,4 +1,10 @@
-import {Component, inject, input} from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  input,
+  signal,
+} from '@angular/core';
 
 import {HsToastService} from 'hslayers-ng/common/toast';
 import {TranslateCustomPipe} from 'hslayers-ng/services/language';
@@ -20,8 +26,9 @@ import {TranslateCustomPipe} from 'hslayers-ng/services/language';
     >
       <i
         class="fa-solid"
-        [class.fa-square-check]="showCheck"
-        [class.fa-copy]="!showCheck"
+        [class.fa-square-check]="showCheck()"
+        [class.fa-copy]="!showCheck()"
+        [class.text-success]="showCheck()"
       ></i>
     </button>
   `,
@@ -32,13 +39,14 @@ import {TranslateCustomPipe} from 'hslayers-ng/services/language';
       width: 100%;
     }
   `,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HsClipboardTextComponent {
   text = input.required<string>();
   anchor = input<boolean>(false);
 
   hsToastService = inject(HsToastService);
-  showCheck = false;
+  showCheck = signal(false);
 
   copyToClipBoard() {
     if (!navigator.clipboard) {
@@ -51,10 +59,10 @@ export class HsClipboardTextComponent {
       );
       return;
     }
-    this.showCheck = true;
+    this.showCheck.set(true);
     navigator.clipboard.writeText(this.text());
     setTimeout(() => {
-      this.showCheck = false;
-    }, 500);
+      this.showCheck.set(false);
+    }, 1000);
   }
 }
