@@ -4,7 +4,6 @@ import {Observable, filter, forkJoin} from 'rxjs';
 
 import {HsCommonEndpointsService} from 'hslayers-ng/services/endpoints';
 import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
-import {HsCompositionsInfoDialogComponent} from './dialogs/info-dialog.component';
 import {HsCompositionsService} from './compositions.service';
 import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
 import {HsEndpoint, HsMapCompositionDescriptor} from 'hslayers-ng/types';
@@ -126,17 +125,25 @@ export class HsCompositionsCatalogueService {
       this.loadFilteredCompositions();
     });
 
-    this.hsCompositionsService.compositionNotFoundAtUrl.subscribe((data) => {
-      this.hsDialogContainerService.create(HsCompositionsInfoDialogComponent, {
-        info: {
-          title: this.hsCompositionsService.translateString(
-            'COMPOSITIONS',
-            'compositionNotFound',
-          ),
-          abstract: data.error.message,
-        },
-      });
-    });
+    this.hsCompositionsService.compositionNotFoundAtUrl.subscribe(
+      async (data) => {
+        const {HsCompositionsInfoDialogComponent} = await import(
+          './dialogs/info-dialog.component'
+        );
+        this.hsDialogContainerService.create(
+          HsCompositionsInfoDialogComponent,
+          {
+            info: {
+              title: this.hsCompositionsService.translateString(
+                'COMPOSITIONS',
+                'compositionNotFound',
+              ),
+              abstract: data.error.message,
+            },
+          },
+        );
+      },
+    );
   }
 
   /**

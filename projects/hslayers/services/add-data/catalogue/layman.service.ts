@@ -252,12 +252,6 @@ export class HsLaymanBrowserService {
       );
       layer.type = data?.geodata_type === 'vector' ? ['WMS', 'WFS'] : ['WMS'];
       layer = {...layer, ...data};
-      if (layer.thumbnail) {
-        /**
-         * TODO LAYMAN: look forr rhumbnail in object not string
-         */
-        layer.thumbnail.url = endpoint.url + layer.thumbnail.url;
-      }
       return layer;
     } catch (e) {
       this.log.error(e);
