@@ -92,15 +92,14 @@ export class HsAddDataOwsService {
 
     let response: Layer<Source>[] = [];
 
-    if (options?.laymanLayer) {
+    this.overwriteServiceDefaults(options?.connectOptions);
+    if (options?.connectOptions?.laymanLayer) {
       /**
        * Create Layaman layer which circumvents getCapabilities request
        */
       const serviceName = `hsAddData${this.hsAddDataUrlService.typeSelected}LaymanService`;
-      response = await this[serviceName].getLayer(
-        options.laymanLayer,
-        options.layerOptions,
-      );
+      const {laymanLayer, ...rest} = options.connectOptions;
+      response = await this[serviceName].getLayer(laymanLayer, rest);
       this.typeService.finalizeLayerRetrieval(response, options?.layerOptions);
     } else {
       /**
@@ -117,7 +116,6 @@ export class HsAddDataOwsService {
         this.hsAddDataCommonService.throwParsingError(wrapper.response);
         return [];
       }
-      this.overwriteServiceDefaults(options?.layerOptions);
       response = await this.typeService.listLayerFromCapabilities(
         wrapper,
         options?.layerOptions,
@@ -179,7 +177,7 @@ export class HsAddDataOwsService {
       owrCache: params.owrCache,
       getOnly: params.getOnly,
       layerOptions: params.layerOptions,
-      laymanLayer: params.laymanLayer,
+      connectOptions: params.connectOptions,
     });
   }
 

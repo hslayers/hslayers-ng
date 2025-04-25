@@ -43,4 +43,8 @@ export type UrlDataObject = {
     trackBy: string;
     nameProperty: string;
   };
+  /**
+   * WMTS
+   */
+  info_format?: string;
 };
