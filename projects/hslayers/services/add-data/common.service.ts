@@ -77,8 +77,17 @@ export class HsAddDataCommonService {
             layer.id?.toString().toLowerCase() ===
               this.layerToSelect.toLowerCase();
       } else {
-        layer.checked =
-          layerName === (this.layerToSelect as string).toLowerCase();
+        const singleLayerSelected = !this.layerToSelect.includes(',');
+
+        /**
+         * If single layer is selected, check if the layer name matches the selected layer
+         * If multiple layers are selected (group), check if the layer name matches any of the selected layers
+         */
+        layer.checked = singleLayerSelected
+          ? layerName === (this.layerToSelect as string).toLowerCase()
+          : (this.layerToSelect as string)
+              .split(',')
+              .some((lt) => layerName === lt.toLowerCase());
       }
     }
   }
