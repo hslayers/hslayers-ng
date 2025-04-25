@@ -16,7 +16,6 @@ import {HsMapService} from 'hslayers-ng/services/map';
   styleUrls: ['./recursive-dd.component.scss'],
   imports: [HsClipboardTextComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
 })
 export class HsUiExtensionsRecursiveDdComponent {
   value = input<any>();

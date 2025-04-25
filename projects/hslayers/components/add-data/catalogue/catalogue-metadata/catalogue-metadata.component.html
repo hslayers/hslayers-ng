@@ -9,15 +9,13 @@
           [attr.aria-label]="'COMMON.close' | translateHs "></button>
       </div>
       <div class="modal-body" style="max-height:400px; overflow-y:auto">
-        @for (key of selectedLayerKeys; track key) {
-        @if (key!=='feature') {
-        <dl>
-          <dt>{{key}}</dt>
-          <hs-widgets-recursive-dd [value]="selectedLayer()[key]">
-          </hs-widgets-recursive-dd>
-        </dl>
+        @if (selectedLayer().thumbnail) {
+        <div class="text-center">
+          <img [src]="selectedLayer().thumbnail.url" class="img-fluid" alt="Thumbnail">
+        </div>
         }
-        }
+        <hs-widgets-recursive-dd [value]="selectedLayer()" [firstLevel]="true" [excludeKeys]="excludedKeys">
+        </hs-widgets-recursive-dd>
       </div>
       <div class="modal-footer">
         @if (addAvailable()) {
