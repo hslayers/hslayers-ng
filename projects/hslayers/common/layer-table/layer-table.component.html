@@ -58,7 +58,7 @@
       <div class="d-flex justify-content-between">
         <th class="border-0">{{ "COMMON.name" | translateHs }}</th>
         @if (type === "arcgis" && data.serviceExpanded) {
-        <button type="button" class="btn btn-sm px-2 border-0 d-flex" (click)="collapseServices()"
+        <button type="button" class="btn btn-sm px-2 border-0 d-flex align-items-baseline gap-1" (click)="collapseServices()"
           [title]="'COMMON.back' | translateHs">
           <i class="fa-solid fa-chevron-left text-black-50"></i>
           <span class="text-black-50 fw-bold">{{
@@ -68,7 +68,7 @@
         }
       </div>
     </thead>
-    @for ( service of data.services; track service.id ) {
+    @for ( service of data.services; track service.name ) {
     <tbody>
       <tr>
         <td>
