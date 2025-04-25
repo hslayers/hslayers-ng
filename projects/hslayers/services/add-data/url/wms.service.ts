@@ -507,7 +507,7 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
       url: this.data.get_map_url,
       attributions,
       projection: this.data.srs,
-      params: {
+      params: options.params || {
         LAYERS:
           this.data.base || this.data.group
             ? this.hsAddDataCommonService.getGroupedLayerNames(
@@ -547,8 +547,15 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
       options,
     );
 
+    /**
+     * Remove non-functional options (those that are passed via options but should not be used in layer options)
+     * Reason for them being there is loading layers from Layman or from compositions
+     */
+    const {useTiles, imageFormat, queryFormat, tileSize, crs, ...lyrOptions} =
+      options;
+
     const layerOptions = {
-      ...options,
+      ...lyrOptions,
       source,
       title: options.layerName,
       name: options.layerName,
