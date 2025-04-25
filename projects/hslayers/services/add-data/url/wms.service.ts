@@ -410,6 +410,21 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
   }
 
   /**
+   * Get layer name for group.
+   * If there is only one checked layer, return its name, otherwise return the group name
+   */
+  getLayerNameForGroup(): string {
+    const layers = this.data.layers;
+    if (this.data.base || this.data.group) {
+      const checkedLayers = layers.filter((l) => l.checked);
+      return checkedLayers.length === 1
+        ? checkedLayers[0].Title
+        : this.data.title.replace(/\//g, '&#47;');
+    }
+    return this.data.title.replace(/\//g, '&#47;');
+  }
+
+  /**
    * Loop through the list of layers and call getLayer.
    * @param checkedOnly - Add all available layers or only checked ones. checkedOnly=false=all
    * @param layerOptions - Optional layer parameters. Used to parse composition layers
@@ -432,7 +447,7 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
         {},
         {
           ...layerOptions,
-          layerName: this.data.title.replace(/\//g, '&#47;'),
+          layerName: this.getLayerNameForGroup(),
           path: this.hsUtilsService.undefineEmptyString(this.data.folder_name),
           imageFormat: this.data.image_format,
           queryFormat: this.data.query_format,
