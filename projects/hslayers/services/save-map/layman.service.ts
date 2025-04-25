@@ -39,6 +39,7 @@ import {
   getSupportedSrsList,
   wfsNotAvailable,
   PostPatchLayerResponse,
+  HsCommonLaymanLayerService,
 } from 'hslayers-ng/common/layman';
 import {HsLanguageService} from 'hslayers-ng/services/language';
 import {HsLogService} from 'hslayers-ng/services/log';
@@ -60,7 +61,6 @@ import {
   setLaymanLayerDescriptor,
 } from 'hslayers-ng/common/extensions';
 import {normalizeSldComparisonOperators} from 'hslayers-ng/services/utils';
-import {HsCommonLaymanLayerService} from 'hslayers-ng/common/layman/layman-layer.service';
 
 @Injectable({
   providedIn: 'root',
