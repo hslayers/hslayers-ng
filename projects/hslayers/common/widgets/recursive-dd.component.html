@@ -1,13 +1,22 @@
 @if (!isIterable()) {
-<dd><hs-clipboard-text [text]="value" /></dd>
+  <dd class="ms-2 text-break">
+    <hs-clipboard-text [text]="value()" />
+  </dd>
 }
-@for (item of entries; track item) {
-<dl>
-  <dt>{{item.key || item[0]}}</dt>
-  <hs-widgets-recursive-dd [value]="item.value || item[1]"></hs-widgets-recursive-dd>
-  @if (item.key==='bbox') {
-  <button (click)="zoomTo(value)" class='btn btn-secondary' i18n>Zoom
-    to</button>
-  }
-</dl>
+@for (item of entries(); track item) {
+  <dl class="border-start ps-3 ms-2 mb-3">
+    <dt class="fw-bold text-primary">{{ item[0] }}</dt>
+    <hs-widgets-recursive-dd [value]="item[1]"></hs-widgets-recursive-dd>
+    @if (item[0] === "bbox") {
+      <div class="mt-1 mb-2 d-flex justify-content-end">
+        <button
+          (click)="zoomTo(item[1])"
+          class="btn btn-sm btn-outline-primary"
+          i18n
+        >
+          <i class="fa-solid fa-magnifying-glass-location me-1"></i>Zoom to
+        </button>
+      </div>
+    }
+  </dl>
 }

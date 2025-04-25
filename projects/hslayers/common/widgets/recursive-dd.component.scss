@@ -1,0 +1,40 @@
+:host {
+  dl {
+    position: relative;
+    transition: all 0.2s;
+    
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.03);
+    }
+    
+    .border-start {
+      border-left-width: 2px !important;
+      border-left-color: #dee2e6 !important;
+    }
+  }
+  
+  dt {
+    margin-top: 0.3rem;
+    font-size: 1rem;
+  }
+  
+  dd {
+    color: #6c757d;
+    margin-bottom: 0.5rem;
+  }
+  
+  // Nested levels styling
+  ::ng-deep {
+    hs-widgets-recursive-dd hs-widgets-recursive-dd {
+      dl {
+        border-left-color: rgba(var(--bs-primary-rgb), 0.2) !important;
+      }
+      
+      hs-widgets-recursive-dd hs-widgets-recursive-dd {
+        dl {
+          border-left-color: rgba(var(--bs-primary-rgb), 0.4) !important;
+        }
+      }
+    }
+  }
+} 
