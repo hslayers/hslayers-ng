@@ -86,16 +86,16 @@ export class HsCompositionsLayerParserService {
         opacity: parseFloat(lyr_def.opacity) ?? 1,
       },
       connectOptions: {
-      laymanLayer: isLaymanUrl(uri, this.hsCommonLaymanService.layman())
-        ? {
-            title: lyr_def.title,
-            layer: lyr_def.name,
-            name: name,
-            workspace: workspace,
-            link: uri,
-            type: 'wfs',
-          }
-        : undefined,
+        laymanLayer: isLaymanUrl(uri, this.hsCommonLaymanService.layman())
+          ? {
+              title: lyr_def.title,
+              layer: lyr_def.name,
+              name: name,
+              workspace: workspace,
+              link: uri,
+              type: 'wfs',
+            }
+          : undefined,
       },
     });
     newLayer[0].setVisible(lyr_def.visibility);
@@ -117,8 +117,6 @@ export class HsCompositionsLayerParserService {
         getOnly: true,
         layerOptions: {
           title: lyr_def.title,
-          info_format: lyr_def.info_format,
-          base: lyr_def.base,
           greyscale: lyr_def.greyscale,
           fromComposition: true,
           opacity: parseFloat(lyr_def.opacity) ?? 1,
@@ -149,42 +147,12 @@ export class HsCompositionsLayerParserService {
   }
 
   /**
-   * Parse definition object to create WMS Ol.layer  (source = ol.source.ImageWMS / ol.source.TileWMS)
+   * Get WMS layer options
    * @param lyr_def - Layer definition object
-   * @returns Ol Image or Tile layer
+   * @returns WMS layer options
    */
-  async createWmsLayer(lyr_def) {
-    const params = lyr_def.params;
-    const legends = this.getLegends(lyr_def);
-    delete params.REQUEST;
-    //delete params.FORMAT; Commented, because otherwise when loading from cookie or store, it displays jpeg
-    const url = decodeURIComponent(lyr_def.url);
-
-    if (isLaymanUrl(url, this.hsCommonLaymanService.layman())) {
-      return this.createLaymanWmsLayer(lyr_def, url, legends);
-    }
-
-    /***
-     * TODO: REFACTOR USING CONNECT TO OWS
-     * THIS IS USED PROBABLY JUST TO HAVE EASIER WAY TO SET ALL THE COMPOSITION PARAMS
-     * SHOULD BE POSSIBLE TO BE SOVLED BY JUST SPREADING THE  LAYEROPTIONS IN OWS WMS and ADDIG PRIORITY TO OPTIONS
-     *
-     */
-    const sourceOptions = {
-      url: url,
-      attributions: lyr_def.attribution
-        ? `<a href="${lyr_def.attribution.OnlineResource}">${lyr_def.attribution.Title}</a>`
-        : undefined,
-      params,
-      crossOrigin: 'anonymous',
-      projection: lyr_def.projection?.toUpperCase(),
-      ratio: lyr_def.ratio,
-    };
-
-    const source = lyr_def.singleTile
-      ? new ImageWMS(sourceOptions)
-      : new TileWMS(sourceOptions);
-    const layerOptions = {
+  private getWmsLayerOptions(lyr_def) {
+    return {
       title: lyr_def.title,
       fromComposition: lyr_def.fromComposition ?? true,
       maxResolution: lyr_def.maxResolution || Infinity,
@@ -195,68 +163,62 @@ export class HsCompositionsLayerParserService {
       greyscale: lyr_def.greyscale,
       metadata: lyr_def.metadata,
       dimensions: lyr_def.dimensions,
-      legends: legends,
+      legends: this.getLegends(lyr_def),
       path: lyr_def.path,
       opacity: parseFloat(lyr_def.opacity) ?? 1,
-      source,
       subLayers: lyr_def.subLayers,
+      useTiles: !lyr_def.singleTile,
       className: lyr_def.greyscale ? 'ol-layer hs-greyscale' : 'ol-layer',
     };
-    const new_layer = lyr_def.singleTile
-      ? new ImageLayer(layerOptions as ImageOptions<ImageSource>)
-      : new Tile(layerOptions as TileOptions<TileSource>);
-    new_layer.setVisible(lyr_def.visibility);
-    this.hsMapService.proxifyLayerLoader(new_layer, !lyr_def.singleTile);
-    return new_layer;
   }
 
   /**
-   * Create WMS layer from Layman
+   * Parse definition object to create WMS Ol.layer  (source = ol.source.ImageWMS / ol.source.TileWMS)
    * @param lyr_def - Layer definition object
-   * @param url - URL of the layer
-   * @param legends - Legends of the layer
    * @returns Ol Image or Tile layer
    */
-  private async createLaymanWmsLayer(lyr_def, url, legends) {
-    //Query GET /layer to obtain name and workspace of layer
-    const layer = await this.hsCommonLaymanLayerService.getLayerWithUUID(
-      lyr_def.params.LAYERS.split('_')[1],
-      {useCache: true},
-    );
+  async createWmsLayer(lyr_def) {
+    const params = lyr_def.params;
+    delete params.REQUEST;
+    //delete params.FORMAT; Commented, because otherwise when loading from cookie or store, it displays jpeg
+    const url = decodeURIComponent(lyr_def.url);
 
-    const newLayer = await this.hsAddDataOwsService.connectToOWS({
+    const owsConnection: OwsConnection = {
       type: 'wms',
       uri: url,
-      layer: lyr_def.name,
       owrCache: false,
       getOnly: true,
-      layerOptions: {
-        title: lyr_def.title,
-        fromComposition: lyr_def.fromComposition ?? true,
-        maxResolution: lyr_def.maxResolution || Infinity,
-        minResolution: lyr_def.minResolution || 0,
-        showInLayerManager: lyr_def.displayInLayerSwitcher,
-        abstract: lyr_def.name || lyr_def.abstract,
-        base: lyr_def.base,
-        greyscale: lyr_def.greyscale,
-        metadata: lyr_def.metadata,
-        dimensions: lyr_def.dimensions,
-        legends: legends,
-        path: lyr_def.path,
-        opacity: parseFloat(lyr_def.opacity) ?? 1,
-        subLayers: lyr_def.subLayers,
-        workspace: layer.workspace,
-        // className: lyr_def.greyscale ? 'ol-layer hs-greyscale' : 'ol-layer',
-      },
-      laymanLayer: {
-        title: lyr_def.title,
-        layer: layer.uuid,
-        name: layer.name,
-        workspace: layer.workspace,
-        link: url,
-        type: 'wms',
-      },
-    });
+      layerOptions: this.getWmsLayerOptions(lyr_def),
+    };
+
+    if (isLaymanUrl(url, this.hsCommonLaymanService.layman())) {
+      //Query GET /layer to obtain name and workspace of layer
+      const layer = await this.hsCommonLaymanLayerService.getLayerWithUUID(
+        lyr_def.params.LAYERS.split('_')[1],
+        {useCache: true},
+      );
+
+      owsConnection.layerOptions.workspace = layer.workspace;
+      owsConnection.connectOptions = {
+        laymanLayer: {
+          title: lyr_def.title,
+          layer: layer.uuid,
+          name: layer.name,
+          workspace: layer.workspace,
+          link: url,
+          type: 'wms',
+        },
+      };
+    } else {
+      owsConnection.layerOptions.params = params;
+      owsConnection.layer = params.LAYERS;
+      //If multiple layers are selected, it is a group
+      owsConnection.connectOptions = {
+        group: params.LAYERS.includes(','),
+      };
+    }
+
+    const newLayer = await this.hsAddDataOwsService.connectToOWS(owsConnection);
     return newLayer[0];
   }
 

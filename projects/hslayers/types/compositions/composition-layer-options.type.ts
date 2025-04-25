@@ -48,6 +48,7 @@ export type LayerOptions = {
   maxResolution?: number;
   minResolution?: number;
   dimensions?: any; //TODO: dimensions type?
+  className?: string;
   //WMTS
   matrixSet?: string;
   format?: string;
