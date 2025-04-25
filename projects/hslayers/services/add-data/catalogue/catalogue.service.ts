@@ -2,7 +2,17 @@ import {Injectable, NgZone} from '@angular/core';
 
 import {Feature} from 'ol';
 import {Geometry} from 'ol/geom';
-import {Observable, Subject, debounceTime, forkJoin, of} from 'rxjs';
+import {
+  Observable,
+  Subject,
+  combineLatest,
+  debounceTime,
+  filter,
+  forkJoin,
+  from,
+  of,
+  switchMap,
+} from 'rxjs';
 
 import {
   DatasetType,
@@ -120,19 +130,25 @@ export class HsAddDataCatalogueService extends HsAddDataCatalogueParams {
       this.queryCatalogs();
       // this.hsMickaFilterService.fillCodesets();
     }
-    this.hsEventBusService.mapExtentChanges.pipe(debounceTime(500)).subscribe({
-      next: () => {
-        if (!this.panelVisible() || this.extentChangeSuppressed) {
-          this.extentChangeSuppressed = false;
-          return;
-        }
-        if (this.data.filterByExtent) {
-          this.zone.run(() => {
-            this.reloadData();
-          });
-        }
-      },
-    });
+    this.hsEventBusService.mapExtentChanges
+      .pipe(
+        debounceTime(500),
+        switchMap(() => from(this.hsAddDataService.datasetTypeSelected)),
+        filter((type) => type == 'catalogue'),
+      )
+      .subscribe({
+        next: () => {
+          if (!this.panelVisible() || this.extentChangeSuppressed) {
+            this.extentChangeSuppressed = false;
+            return;
+          }
+          if (this.data.filterByExtent) {
+            this.zone.run(() => {
+              this.reloadData();
+            });
+          }
+        },
+      });
   }
 
   resetList(): void {
