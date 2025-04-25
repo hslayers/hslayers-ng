@@ -8,18 +8,7 @@ import {
   Tile,
   Vector as VectorLayer,
 } from 'ol/layer';
-import {Options as ImageOptions} from 'ol/layer/BaseImage';
-import {
-  Image as ImageSource,
-  ImageStatic,
-  ImageWMS,
-  Source,
-  Tile as TileSource,
-  TileWMS,
-  Vector as VectorSource,
-  XYZ,
-} from 'ol/source';
-import {Options as TileOptions} from 'ol/layer/BaseTile';
+import {ImageStatic, Source, Vector as VectorSource, XYZ} from 'ol/source';
 
 import {
   HsAddDataOwsService,
