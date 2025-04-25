@@ -1,5 +1,10 @@
-import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
-
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  inject,
+  input,
+} from '@angular/core';
 import {transform} from 'ol/proj';
 
 import {HsClipboardTextComponent} from 'hslayers-ng/common/clipboard-text';
@@ -8,21 +13,35 @@ import {HsMapService} from 'hslayers-ng/services/map';
 @Component({
   selector: 'hs-widgets-recursive-dd',
   templateUrl: './recursive-dd.component.html',
+  styleUrls: ['./recursive-dd.component.scss'],
   imports: [HsClipboardTextComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
 })
 export class HsUiExtensionsRecursiveDdComponent {
-  @Input() value: any;
-  entries;
+  value = input<any>();
+  excludeKeys = input<string[]>([]);
+  firstLevel = input<boolean>(false);
 
-  constructor(public hsMapService: HsMapService) {}
-  isIterable(): boolean {
-    if (this.value && typeof this.value === 'object') {
-      this.entries = Object.entries(this.value);
-      return true;
+  private hsMapService = inject(HsMapService);
+
+  isIterable = computed(() => {
+    return this.value() && typeof this.value() === 'object';
+  });
+
+  entries = computed(() => {
+    if (!this.isIterable()) {
+      return [];
     }
-    return false;
-  }
+
+    if (this.firstLevel()) {
+      // If this is the first level, filter out excluded keys
+      return Object.entries(this.value()).filter(
+        ([key]) => !this.excludeKeys().includes(key),
+      );
+    }
+    return Object.entries(this.value());
+  });
 
   /**
    *
@@ -34,42 +53,37 @@ export class HsUiExtensionsRecursiveDdComponent {
    * ZoomTo / MoveTo to selected layer overview
    * @param bbox - Bounding box of selected layer
    */
-  zoomTo(bbox: string | number[]): void {
-    if (!bbox) {
+  zoomTo(bboxValue: unknown): void {
+    // Type guard to ensure we have a valid bbox
+    if (!bboxValue) {
       return;
     }
-    let b = null;
+
+    const bbox = bboxValue as string | number[];
+
+    let b: string[] | number[] = null;
     if (typeof bbox === 'string') {
       b = bbox.split(' ');
     } else if (Array.isArray(bbox)) {
       b = bbox;
-    }
-    let first_pair = [parseFloat(b[0]), parseFloat(b[1])];
-    let second_pair = [parseFloat(b[2]), parseFloat(b[3])];
-    first_pair = transform(
-      first_pair,
-      'EPSG:4326',
-      this.hsMapService.getMap().getView().getProjection(),
-    );
-    second_pair = transform(
-      second_pair,
-      'EPSG:4326',
-      this.hsMapService.getMap().getView().getProjection(),
-    );
-    if (
-      isNaN(first_pair[0]) ||
-      isNaN(first_pair[1]) ||
-      isNaN(second_pair[0]) ||
-      isNaN(second_pair[1])
-    ) {
+    } else {
+      // Not a valid bbox format
       return;
     }
-    const extent = [
-      first_pair[0],
-      first_pair[1],
-      second_pair[0],
-      second_pair[1],
-    ];
+    let firstPair = [parseFloat(b[0] as string), parseFloat(b[1] as string)];
+    let secondPair = [parseFloat(b[2] as string), parseFloat(b[3] as string)];
+
+    const map = this.hsMapService.getMap();
+    const projection = map.getView().getProjection();
+
+    firstPair = transform(firstPair, 'EPSG:4326', projection);
+    secondPair = transform(secondPair, 'EPSG:4326', projection);
+
+    if (firstPair.some(isNaN) || secondPair.some(isNaN)) {
+      return;
+    }
+
+    const extent = [firstPair[0], firstPair[1], secondPair[0], secondPair[1]];
     this.hsMapService.fitExtent(extent);
   }
 }
