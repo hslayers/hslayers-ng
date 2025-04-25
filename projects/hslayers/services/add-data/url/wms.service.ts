@@ -332,7 +332,12 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
       //Group
       else {
         return this.hsAddDataUrlService.calcCombinedExtent(
-          layers.map((l) => this.getSingleLayerExtent(l, crs)),
+          layers.map((l) => {
+            //Lookup layer in capabilities layers list
+            const layer = this.data.layers.find((layer) => layer.Name === l);
+            //If layer is not found, use the layer name as is
+            return this.getSingleLayerExtent(layer || l, crs);
+          }),
         );
       }
     }
