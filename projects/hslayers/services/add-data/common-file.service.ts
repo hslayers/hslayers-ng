@@ -559,6 +559,7 @@ export class HsAddDataCommonFileService extends HsAddDataCommonFileServiceParams
           type: serviceType,
           projection: data.srs,
           extent: descriptor.bounding_box,
+          workspace: descriptor.workspace,
         },
         group: false,
       },
