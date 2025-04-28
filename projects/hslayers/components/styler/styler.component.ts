@@ -12,7 +12,6 @@ import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {
   HsLayerUtilsService,
-  HsUtilsService,
   normalizeSldComparisonOperators,
 } from 'hslayers-ng/services/utils';
 import {HsPanelBaseComponent} from 'hslayers-ng/common/panels';
@@ -48,7 +47,6 @@ export class HsStylerComponent extends HsPanelBaseComponent {
     public hsEventBusService: HsEventBusService,
     public sanitizer: DomSanitizer,
     public hsLayerUtilsService: HsLayerUtilsService,
-    public hsUtilsService: HsUtilsService,
     public hsSaveMapService: HsSaveMapService,
     public hsDialogContainerService: HsDialogContainerService,
   ) {

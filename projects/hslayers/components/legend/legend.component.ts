@@ -7,7 +7,11 @@ import {Map} from 'ol';
 import {Source} from 'ol/source';
 
 import {HsLanguageService} from 'hslayers-ng/services/language';
-import {HsLayerUtilsService, HsUtilsService} from 'hslayers-ng/services/utils';
+import {
+  debounce,
+  HsLayerUtilsService,
+  instOf,
+} from 'hslayers-ng/services/utils';
 import {HsLegendDescriptor} from './legend-descriptor.interface';
 import {HsLegendService} from './legend.service';
 import {HsMapService} from 'hslayers-ng/services/map';
@@ -28,7 +32,6 @@ export class HsLegendComponent extends HsPanelBaseComponent implements OnInit {
     public hsLegendService: HsLegendService,
     public hsMapService: HsMapService,
     public hsLayerUtilsService: HsLayerUtilsService,
-    public hsUtilsService: HsUtilsService,
     public hsQueuesService: HsQueuesService,
     public hsLanguageService: HsLanguageService,
   ) {
@@ -56,7 +59,7 @@ export class HsLegendComponent extends HsPanelBaseComponent implements OnInit {
       await this.hsLegendService.getLayerLegendDescriptor(layer);
     if (descriptor) {
       const source: any = layer.getSource();
-      if (this.hsUtilsService.instOf(source, InterpolatedSource)) {
+      if (instOf(source, InterpolatedSource)) {
         (source as InterpolatedSource).colorMapChanged
           .pipe(takeUntilDestroyed(this.destroyRef))
           .subscribe(() => {
@@ -68,12 +71,7 @@ export class HsLegendComponent extends HsPanelBaseComponent implements OnInit {
       layer.on('change:visible', (e) => this.layerVisibilityChanged(e));
       if (this.hsLayerUtilsService.isLayerWMS(layer)) {
         layer.getSource()?.on('change', (e) => {
-          this.hsUtilsService.debounce(
-            this.layerSourcePropChanged(e),
-            100,
-            false,
-            this,
-          );
+          debounce(this.layerSourcePropChanged(e), 100, false, this);
         });
       }
     }

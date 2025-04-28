@@ -24,7 +24,10 @@ import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsLanguageService} from 'hslayers-ng/services/language';
 import {HsLayerManagerService} from 'hslayers-ng/services/layer-manager';
-import {HsLayerUtilsService, HsUtilsService} from 'hslayers-ng/services/utils';
+import {
+  HsLayerUtilsService,
+  undefineEmptyString,
+} from 'hslayers-ng/services/utils';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsMapService} from 'hslayers-ng/services/map';
 import {HsToastService} from 'hslayers-ng/common/toast';
@@ -65,7 +68,6 @@ export class HsAddDataVectorFileComponent implements OnInit, AfterViewInit {
     private hsLayoutService: HsLayoutService,
     private hsMapService: HsMapService,
     private hsToastService: HsToastService,
-    private hsUtilsService: HsUtilsService,
   ) {}
 
   ngAfterViewInit(): void {
@@ -216,8 +218,7 @@ export class HsAddDataVectorFileComponent implements OnInit, AfterViewInit {
         }
         //add layman endpoint url as url to allow sync
         if (
-          this.hsUtilsService.undefineEmptyString(this.data.url) ===
-            undefined &&
+          undefineEmptyString(this.data.url) === undefined &&
           this.data.saveToLayman
         ) {
           this.data.url = this.hsCommonLaymanService.layman()?.url;

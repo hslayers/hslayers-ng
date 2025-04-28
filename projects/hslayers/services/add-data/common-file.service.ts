@@ -8,7 +8,6 @@ import {HsAddDataUrlService} from './url/add-data-url.service';
 import {HsLanguageService} from 'hslayers-ng/services/language';
 import {HsLaymanService} from 'hslayers-ng/services/save-map';
 import {HsLogService} from 'hslayers-ng/services/log';
-import {HsUtilsService} from 'hslayers-ng/services/utils';
 
 import {
   HsCommonLaymanLayerService,
@@ -31,7 +30,7 @@ import {
   OverwriteResponse,
   VectorDataObject,
 } from 'hslayers-ng/types';
-
+import {HsProxyService} from 'hslayers-ng/services/utils';
 export type errorMessageOptions = {
   message?: string;
   header?: string;
@@ -63,9 +62,9 @@ export class HsAddDataCommonFileService extends HsAddDataCommonFileServiceParams
     private hsLaymanService: HsLaymanService,
     private hsLog: HsLogService,
     private hsToastService: HsToastService,
-    private hsUtilsService: HsUtilsService,
     private hsCommonLaymanService: HsCommonLaymanService,
     private hsCommonLaymanLayerService: HsCommonLaymanLayerService,
+    private hsProxyService: HsProxyService,
   ) {
     super();
   }
@@ -87,7 +86,7 @@ export class HsAddDataCommonFileService extends HsAddDataCommonFileServiceParams
     if (!url || url === '') {
       return;
     }
-    url = this.hsUtilsService.proxify(url);
+    url = this.hsProxyService.proxify(url);
     try {
       const response = await fetch(url, {
         method: 'GET',

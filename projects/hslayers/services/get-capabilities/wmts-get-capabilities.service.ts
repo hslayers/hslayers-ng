@@ -10,7 +10,7 @@ import {CapabilitiesResponseWrapper} from 'hslayers-ng/types';
 import {HsCapabilityCacheService} from './capability-cache.service';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsMapService} from 'hslayers-ng/services/map';
-import {HsUtilsService} from 'hslayers-ng/services/utils';
+import {getParamsFromUrl, HsProxyService} from 'hslayers-ng/services/utils';
 import {HsWmsGetCapabilitiesService} from './wms-get-capabilities.service';
 import {IGetCapabilities} from './get-capabilities.interface';
 import {getPreferredFormat} from 'hslayers-ng/common/utils';
@@ -22,9 +22,9 @@ export class HsWmtsGetCapabilitiesService implements IGetCapabilities {
     private httpClient: HttpClient,
     public hsEventBusService: HsEventBusService,
     public hsMapService: HsMapService,
-    public hsUtilsService: HsUtilsService,
     public hsWmsGetCapabilitiesService: HsWmsGetCapabilitiesService,
     public hsCapabilityCacheService: HsCapabilityCacheService,
+    private hsProxyService: HsProxyService,
   ) {}
 
   /**
@@ -81,7 +81,7 @@ export class HsWmtsGetCapabilitiesService implements IGetCapabilities {
     owrCache?: boolean,
   ): Promise<CapabilitiesResponseWrapper> {
     service_url = service_url.replace(/&amp;/g, '&');
-    const params = this.hsUtilsService.getParamsFromUrl(service_url);
+    const params = getParamsFromUrl(service_url);
     const path = this.getPathFromUrl(service_url);
     if (params.request == undefined && params.REQUEST == undefined) {
       params.request = 'GetCapabilities';
@@ -102,7 +102,7 @@ export class HsWmtsGetCapabilitiesService implements IGetCapabilities {
       return this.hsCapabilityCacheService.get(url);
     }
     try {
-      url = this.hsUtilsService.proxify(url);
+      url = this.hsProxyService.proxify(url);
       const r = await lastValueFrom(
         this.httpClient
           .get(url, {

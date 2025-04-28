@@ -8,7 +8,7 @@ import {Vector as VectorSource} from 'ol/source';
 import {unByKey} from 'ol/Observable';
 
 import {HsCommonEndpointsService} from 'hslayers-ng/services/endpoints';
-import {HsLayerUtilsService, HsUtilsService} from 'hslayers-ng/services/utils';
+import {debounce, HsLayerUtilsService} from 'hslayers-ng/services/utils';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsMapCompositionDescriptor} from 'hslayers-ng/types';
 import {HsMapService} from 'hslayers-ng/services/map';
@@ -29,7 +29,6 @@ export class HsCompositionsMapService {
     private hsSaveMapService: HsSaveMapService,
     private hsLayerUtilsService: HsLayerUtilsService,
     private hsCommonEndpointsService: HsCommonEndpointsService,
-    private hsUtilsService: HsUtilsService,
   ) {
     this.hsLayoutService.mainpanel$.subscribe((which) => {
       if (this.extentLayer) {
@@ -68,12 +67,7 @@ export class HsCompositionsMapService {
   private addPointerMoveListener() {
     this.pointerMoveListener = this.hsMapService.getMap().on(
       'pointermove',
-      this.hsUtilsService.debounce(
-        (e) => this.mapPointerMoved(e),
-        50,
-        false,
-        this,
-      ),
+      debounce((e) => this.mapPointerMoved(e), 50, false, this),
     );
   }
 

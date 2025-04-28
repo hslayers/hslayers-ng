@@ -3,9 +3,11 @@ import {
   Component,
   DestroyRef,
   ElementRef,
+  Inject,
   Input,
   NgZone,
   OnInit,
+  PLATFORM_ID,
   Signal,
   ViewChild,
   inject,
@@ -31,8 +33,9 @@ import {
   HsOverlayContainerService,
   HsPanelContainerService,
 } from 'hslayers-ng/services/panels';
-import {HsUtilsService} from 'hslayers-ng/services/utils';
 import {safeTakeUntilDestroyed} from './safeTakeUntilDestroyed';
+import {isPlatformBrowser} from '@angular/common';
+import {debounce} from 'hslayers-ng/services/utils';
 
 interface PanState {
   readonly MIN_HEIGHT: number;
@@ -82,13 +85,13 @@ export class HslayersComponent implements AfterViewInit, OnInit {
     public hsConfig: HsConfig,
     private elementRef: ElementRef,
     public HsLayoutService: HsLayoutService,
-    private HsUtilsService: HsUtilsService,
     private hsLog: HsLogService,
     public HsEventBusService: HsEventBusService,
     public HsPanelContainerService: HsPanelContainerService,
     public HsOverlayContainerService: HsOverlayContainerService,
     private hsExternalService: HsExternalService, //Leave this, need to inject somewhere
     private ngZone: NgZone,
+    @Inject(PLATFORM_ID) private platformId: any,
   ) {
     this.sidebarPosition = toSignal(this.HsLayoutService.sidebarPosition);
     this.sidebarVisible = toSignal(this.HsLayoutService.sidebarVisible);
@@ -122,7 +125,7 @@ export class HslayersComponent implements AfterViewInit, OnInit {
     this.HsLayoutService.contentWrapper =
       this.elementRef.nativeElement.querySelector('.hs-content-wrapper');
 
-    if (window.innerWidth < 600 && this.HsUtilsService.runningInBrowser()) {
+    if (window.innerWidth < 600 && isPlatformBrowser(this.platformId)) {
       const viewport = document.querySelector('meta[name="viewport"]');
       viewport.setAttribute(
         'content',
@@ -151,7 +154,7 @@ export class HslayersComponent implements AfterViewInit, OnInit {
 
     window.addEventListener(
       'resize',
-      this.HsUtilsService.debounce(
+      debounce(
         () => {
           this.HsLayoutService.updPanelSpaceWidth();
           this.HsLayoutService.updSidebarPosition();

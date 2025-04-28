@@ -29,7 +29,7 @@ import {
   HsPanelHeaderComponent,
 } from 'hslayers-ng/common/panels';
 import {HsToastService} from 'hslayers-ng/common/toast';
-import {HsUtilsService} from 'hslayers-ng/services/utils';
+import {HsProxyService, instOf} from 'hslayers-ng/services/utils';
 import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 import {
   getDefinition,
@@ -67,7 +67,7 @@ export class HsWfsFilterComponent extends HsPanelBaseComponent {
   hsFiltersService = inject(HsFiltersService);
   hsEventBusService = inject(HsEventBusService);
   hsLayerManagerService = inject(HsLayerManagerService);
-  hsUtilsService = inject(HsUtilsService);
+  hsProxyService = inject(HsProxyService);
   hsLayoutService = inject(HsLayoutService);
   httpClient = inject(HttpClient);
   hsLayerSelectorService = inject(HsLayerSelectorService);
@@ -90,8 +90,8 @@ export class HsWfsFilterComponent extends HsPanelBaseComponent {
         map(() => {
           return this.hsLayerManagerService.data.layers.filter(
             (l: HsLayerDescriptor) =>
-              this.hsUtilsService.instOf(l.layer, VectorLayer) &&
-              this.hsUtilsService.instOf(l.layer.getSource(), VectorSource) &&
+              instOf(l.layer, VectorLayer) &&
+              instOf(l.layer.getSource(), VectorSource) &&
               (getWfsUrl(l.layer) || getDefinition(l.layer)),
           );
         }),
@@ -148,7 +148,7 @@ export class HsWfsFilterComponent extends HsPanelBaseComponent {
       url.searchParams.set('version', '2.0.0');
       url.searchParams.set('typeName', getName(layer.layer));
 
-      const proxifiedUrl = this.hsUtilsService.proxify(url.toString());
+      const proxifiedUrl = this.hsProxyService.proxify(url.toString());
 
       const response = await lastValueFrom(
         this.httpClient.get(proxifiedUrl, {responseType: 'text'}).pipe(

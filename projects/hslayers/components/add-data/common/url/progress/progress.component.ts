@@ -1,7 +1,6 @@
 import {ChangeDetectionStrategy, Component} from '@angular/core';
 
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
-import {HsUtilsService} from 'hslayers-ng/services/utils';
 
 @Component({
   selector: 'hs-url-progress',
@@ -10,8 +9,5 @@ import {HsUtilsService} from 'hslayers-ng/services/utils';
   standalone: false,
 })
 export class HsUrlProgressComponent {
-  constructor(
-    public hsEventBusService: HsEventBusService,
-    public hsUtilsService: HsUtilsService,
-  ) {}
+  constructor(public hsEventBusService: HsEventBusService) {}
 }

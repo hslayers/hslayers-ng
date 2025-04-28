@@ -9,7 +9,7 @@ import {
   HsLayerManagerService,
 } from 'hslayers-ng/services/layer-manager';
 import {HsMapService} from 'hslayers-ng/services/map';
-import {HsUtilsService} from 'hslayers-ng/services/utils';
+import {instOf} from 'hslayers-ng/services/utils';
 import {getBase} from 'hslayers-ng/common/extensions';
 
 export class LayerListItem {
@@ -27,7 +27,6 @@ export class HsLayerShiftingService {
   constructor(
     private hsMapService: HsMapService,
     private hsLayerManagerService: HsLayerManagerService,
-    private hsUtilsService: HsUtilsService,
     private hsEventBusService: HsEventBusService,
     private hsFolderService: HsLayerManagerFolderService,
   ) {}
@@ -75,10 +74,10 @@ export class HsLayerShiftingService {
     layer: LayerListItem | Layer<Source>,
     target: number | LayerListItem | Layer<Source>,
   ): void {
-    if (this.hsUtilsService.instOf(target, LayerListItem)) {
+    if (instOf(target, LayerListItem)) {
       //Wrapped layer provided
       target = (target as LayerListItem).layer.getZIndex();
-    } else if (this.hsUtilsService.instOf(target, Layer)) {
+    } else if (instOf(target, Layer)) {
       //OL layer provided
       target = (target as Layer<Source>).getZIndex();
     }
@@ -127,7 +126,7 @@ export class HsLayerShiftingService {
   private getOlLayer(
     providedLayer: LayerListItem | Layer<Source>,
   ): Layer<Source> {
-    if (this.hsUtilsService.instOf(providedLayer, Layer)) {
+    if (instOf(providedLayer, Layer)) {
       return providedLayer as Layer<Source>;
     }
     return (providedLayer as LayerListItem).layer;

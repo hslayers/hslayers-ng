@@ -5,7 +5,7 @@ import {Geometry} from 'ol/geom';
 
 import {HsFeatureTableService} from './feature-table.service';
 import {HsLanguageService} from 'hslayers-ng/services/language';
-import {HsLayerUtilsService, HsUtilsService} from 'hslayers-ng/services/utils';
+import {HsLayerUtilsService} from 'hslayers-ng/services/utils';
 import {HsMapService} from 'hslayers-ng/services/map';
 
 type Operation = {
@@ -47,7 +47,6 @@ export class HsLayerFeaturesComponent implements OnInit {
   searchedFeatures = '';
   constructor(
     public hsFeatureTableService: HsFeatureTableService,
-    public hsUtilsService: HsUtilsService,
     public hsMapService: HsMapService,
     public hsLanguageService: HsLanguageService,
     public hsLayerUtilsService: HsLayerUtilsService,

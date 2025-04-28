@@ -9,7 +9,7 @@ import {HsConfig} from 'hslayers-ng/config';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsLanguageService} from 'hslayers-ng/services/language';
 import {HsLayerDescriptor, HsLayerLoadProgress} from 'hslayers-ng/types';
-import {HsLayerUtilsService, HsUtilsService} from 'hslayers-ng/services/utils';
+import {HsLayerUtilsService, instOf} from 'hslayers-ng/services/utils';
 import {HsLogService} from 'hslayers-ng/services/log';
 import {HsToastService} from 'hslayers-ng/common/toast';
 import {
@@ -26,7 +26,6 @@ export class HsLayerManagerLoadingProgressService {
     private hsConfig: HsConfig,
     private hsLog: HsLogService,
     private zone: NgZone,
-    private hsUtilsService: HsUtilsService,
     private hsLayerUtilsService: HsLayerUtilsService,
     private hsToastService: HsToastService,
     private hsLanguageService: HsLanguageService,
@@ -91,10 +90,10 @@ export class HsLayerManagerLoadingProgressService {
     if (this.hsLayerUtilsService.isLayerVectorLayer(olLayer, false)) {
       return 'features';
     }
-    if (this.hsUtilsService.instOf(olLayer, ImageLayer)) {
+    if (instOf(olLayer, ImageLayer)) {
       return 'image';
     }
-    if (this.hsUtilsService.instOf(olLayer, Tile)) {
+    if (instOf(olLayer, Tile)) {
       return 'tile';
     }
     return undefined;

@@ -38,7 +38,6 @@ import {
 import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsLogService} from 'hslayers-ng/services/log';
 import {HsToastService} from 'hslayers-ng/common/toast';
-import {HsUtilsService, generateUuid} from 'hslayers-ng/services/utils';
 import {
   HslayersLayerJSON,
   LaymanCompositionDescriptor,
@@ -52,6 +51,7 @@ import {
   setSwipeSide,
 } from 'hslayers-ng/common/extensions';
 import {parseExtent, transformExtentValue} from 'hslayers-ng/common/utils';
+import {HsProxyService, isFunction} from 'hslayers-ng/services/utils';
 
 @Injectable({
   providedIn: 'root',
@@ -83,7 +83,7 @@ export class HsCompositionsParserService {
     private hsMapService: HsMapService,
     private hsConfig: HsConfig,
     private $http: HttpClient,
-    private hsUtilsService: HsUtilsService,
+    private hsProxyService: HsProxyService,
     private hsCompositionsLayerParserService: HsCompositionsLayerParserService,
     private hsDialogContainerService: HsDialogContainerService,
     private hsLayoutService: HsLayoutService,
@@ -108,7 +108,7 @@ export class HsCompositionsParserService {
             this.current_composition_url,
             this.hsCommonLaymanService.layman(),
           );
-          const url = this.hsUtilsService.proxify(
+          const url = this.hsProxyService.proxify(
             this.current_composition_url.replace('/file', ''),
           );
           return this.$http
@@ -154,7 +154,7 @@ export class HsCompositionsParserService {
 
     this.current_composition_url = url;
     url = url.replace(/&amp;/g, '&');
-    url = this.hsUtilsService.proxify(url);
+    url = this.hsProxyService.proxify(url);
     const options = {};
     if (url.includes('.wmc')) {
       pre_parse = (res) => this.parseWMC(res);
@@ -195,7 +195,7 @@ export class HsCompositionsParserService {
     callback,
   ): Promise<void> {
     if (this.checkLoadSuccess(response)) {
-      if (this.hsUtilsService.isFunction(pre_parse)) {
+      if (isFunction(pre_parse)) {
         response = await pre_parse(response);
       }
       /**
@@ -222,7 +222,7 @@ export class HsCompositionsParserService {
       if (loaded && !response.basemapComposition) {
         this.finalizeCompositionLoading(response);
       }
-      if (this.hsUtilsService.isFunction(callback)) {
+      if (isFunction(callback)) {
         callback();
       }
     } else {
@@ -246,7 +246,7 @@ export class HsCompositionsParserService {
           type: type,
           title: layer.title,
           url: link.url,
-          id: generateUuid(),
+          id: crypto.randomUUID(),
         };
       }
     }
@@ -560,7 +560,7 @@ export class HsCompositionsParserService {
    */
   async loadInfo(url: string): Promise<any> {
     url = url.replace(/&amp;/g, '&');
-    url = this.hsUtilsService.proxify(url);
+    url = this.hsProxyService.proxify(url);
     let response;
     if (url.endsWith('.wmc')) {
       response = await lastValueFrom(

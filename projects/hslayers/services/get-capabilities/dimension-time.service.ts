@@ -6,12 +6,8 @@ import {Layer} from 'ol/layer';
 
 import {HsLayerDescriptor, HsWmsLayer} from 'hslayers-ng/types';
 import {HsLogService} from 'hslayers-ng/services/log';
-import {HsUtilsService} from 'hslayers-ng/services/utils';
-import {
-  getDimensions,
-  setDimension,
-  setDimensions,
-} from 'hslayers-ng/common/extensions';
+import {instOf} from 'hslayers-ng/services/utils';
+import {getDimensions, setDimension} from 'hslayers-ng/common/extensions';
 
 @Injectable({
   providedIn: 'root',
@@ -25,10 +21,7 @@ export class HsDimensionTimeService {
     time: string;
   }> = new Subject();
 
-  constructor(
-    public hsLog: HsLogService,
-    public HsUtilsService: HsUtilsService,
-  ) {}
+  constructor(public hsLog: HsLogService) {}
 
   /**
    * Parse interval string to get interval as a number
@@ -166,8 +159,8 @@ export class HsDimensionTimeService {
     let defaultTime;
     let layerParams = {};
 
-    const isTileWms = this.HsUtilsService.instOf(olLayer.getSource(), TileWMS);
-    const isImgWms = this.HsUtilsService.instOf(olLayer.getSource(), ImageWMS);
+    const isTileWms = instOf(olLayer.getSource(), TileWMS);
+    const isImgWms = instOf(olLayer.getSource(), ImageWMS);
 
     if (isTileWms || isImgWms) {
       const src = olLayer.getSource() as TileWMS;

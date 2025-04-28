@@ -9,7 +9,7 @@ import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
 
 import {HsCommonEndpointsService} from 'hslayers-ng/services/endpoints';
 import {HsToastService} from 'hslayers-ng/common/toast';
-import {HsUtilsService} from 'hslayers-ng/services/utils';
+import {HsProxyService} from 'hslayers-ng/services/utils';
 import {HsLanguageService} from 'hslayers-ng/services/language';
 import {HsLogService} from 'hslayers-ng/services/log';
 import {provideHttpClient} from '@angular/common/http';
@@ -19,7 +19,7 @@ describe('HsCommonLaymanService', () => {
   let httpMock: HttpTestingController;
   let endpointsService: jasmine.SpyObj<HsCommonEndpointsService>;
   let toastService: jasmine.SpyObj<HsToastService>;
-  let utilsService: jasmine.SpyObj<HsUtilsService>;
+  let proxyService: jasmine.SpyObj<HsProxyService>;
   let endpoints;
 
   const mockEndpoint = {
@@ -84,7 +84,7 @@ describe('HsCommonLaymanService', () => {
       'createToastPopupMessage',
     ]);
 
-    const utilsSpy = jasmine.createSpyObj('HsUtilsService', [
+    const proxySpy = jasmine.createSpyObj('HsProxyService', [
       'registerLaymanEndpoints',
     ]);
 
@@ -104,7 +104,7 @@ describe('HsCommonLaymanService', () => {
         HsCommonLaymanService,
         {provide: HsCommonEndpointsService, useValue: endpointsSpy},
         {provide: HsToastService, useValue: toastSpy},
-        {provide: HsUtilsService, useValue: utilsSpy},
+        {provide: HsProxyService, useValue: proxySpy},
         {provide: HsLanguageService, useValue: languageSpy},
         {provide: HsLogService, useValue: logSpy},
         provideHttpClient(),
@@ -120,9 +120,9 @@ describe('HsCommonLaymanService', () => {
     toastService = TestBed.inject(
       HsToastService,
     ) as jasmine.SpyObj<HsToastService>;
-    utilsService = TestBed.inject(
-      HsUtilsService,
-    ) as jasmine.SpyObj<HsUtilsService>;
+    proxyService = TestBed.inject(
+      HsProxyService,
+    ) as jasmine.SpyObj<HsProxyService>;
 
     // Allow time for service initialization
     tick(100);
@@ -156,7 +156,7 @@ describe('HsCommonLaymanService', () => {
     });
 
     // Verify the utils service was called to register the endpoint
-    expect(utilsService.registerLaymanEndpoints).toHaveBeenCalledWith(
+    expect(proxyService.registerLaymanEndpoints).toHaveBeenCalledWith(
       mockEndpoint.url,
     );
   }));

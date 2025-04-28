@@ -1,4 +1,4 @@
-import {Injectable, NgZone} from '@angular/core';
+import {Inject, Injectable, NgZone, PLATFORM_ID} from '@angular/core';
 import {lastValueFrom, merge} from 'rxjs';
 
 import {Circle} from 'ol/geom';
@@ -27,7 +27,7 @@ import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
 import {HsDrawServiceParams} from './draw.service.params';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsLanguageService} from 'hslayers-ng/services/language';
-import {HsLayerUtilsService, HsUtilsService} from 'hslayers-ng/services/utils';
+import {HsLayerUtilsService} from 'hslayers-ng/services/utils';
 import {HsLaymanService} from 'hslayers-ng/services/save-map';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsLogService} from 'hslayers-ng/services/log';
@@ -54,6 +54,7 @@ import {
   setWorkspace,
 } from 'hslayers-ng/common/extensions';
 import {takeUntilDestroyed, toObservable} from '@angular/core/rxjs-interop';
+import {isPlatformBrowser} from '@angular/common';
 
 type ActivateParams = {
   onDrawStart?;
@@ -87,13 +88,13 @@ export class HsDrawService extends HsDrawServiceParams {
     public hsLanguageService: HsLanguageService,
     public hsLaymanBrowserService: HsLaymanBrowserService,
     public hsAddDataVectorService: HsAddDataVectorService,
-    public hsUtilsService: HsUtilsService,
     public hsCommonLaymanService: HsCommonLaymanService,
     public hsCommonLaymanLayerService: HsCommonLaymanLayerService,
     public hsToastService: HsToastService,
     public hsAddDataOwsService: HsAddDataOwsService,
     private hsRemoveLayerDialogService: HsRemoveLayerDialogService,
     private zone: NgZone,
+    @Inject(PLATFORM_ID) private platformId: any,
   ) {
     super();
     this.keyUp = this.keyUp.bind(this);
@@ -678,7 +679,7 @@ export class HsDrawService extends HsDrawServiceParams {
 
     this.addHandler(
       interaction.on('drawstart', (e: DrawEvent) => {
-        if (this.hsUtilsService.runningInBrowser()) {
+        if (isPlatformBrowser(this.platformId)) {
           document.addEventListener('keyup', this.keyUp.bind(this, e));
         }
       }),
@@ -693,7 +694,7 @@ export class HsDrawService extends HsDrawServiceParams {
 
     this.addHandler(
       interaction.on('drawend', (e: DrawEvent) => {
-        if (this.hsUtilsService.runningInBrowser()) {
+        if (isPlatformBrowser(this.platformId)) {
           document.removeEventListener('keyup', this.keyUp.bind(this, e));
         }
       }),

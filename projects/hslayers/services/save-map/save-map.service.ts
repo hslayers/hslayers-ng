@@ -14,12 +14,7 @@ import {Feature, Map} from 'ol';
 import {GeoJSON} from 'ol/format';
 import {GeoJSONFeatureCollection} from 'ol/format/GeoJSON';
 import {Geometry} from 'ol/geom';
-import {
-  Image as ImageLayer,
-  Tile,
-  Vector as VectorLayer,
-  Layer,
-} from 'ol/layer';
+import {Image as ImageLayer, Tile, Layer} from 'ol/layer';
 import {Injectable} from '@angular/core';
 import {transformExtent} from 'ol/proj';
 
@@ -32,12 +27,12 @@ import {
   LayerJSON,
   MapComposition,
   SerializedImage,
-  StatusData,
   UserData,
 } from 'hslayers-ng/types';
 import {
   HsLayerUtilsService,
-  HsUtilsService,
+  HsProxyService,
+  instOf,
   normalizeSldComparisonOperators,
 } from 'hslayers-ng/services/utils';
 import {HsLogService} from 'hslayers-ng/services/log';
@@ -64,6 +59,7 @@ import {
   getWorkspace,
 } from 'hslayers-ng/common/extensions';
 import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
+import {getBboxFromObject} from 'hslayers-ng/common/utils';
 
 const LOCAL_STORAGE_EXPIRE = 5000;
 
@@ -74,11 +70,11 @@ export class HsSaveMapService {
   public internalLayers: Layer<Source>[] = [];
   constructor(
     private hsMapService: HsMapService,
-    private hsUtilsService: HsUtilsService,
     private hsLogService: HsLogService,
     private hsLayerUtilsService: HsLayerUtilsService,
     private hsShareThumbnailService: HsShareThumbnailService,
     private hsCommonLaymanService: HsCommonLaymanService,
+    private hsProxyService: HsProxyService,
   ) {}
 
   /**
@@ -89,7 +85,7 @@ export class HsSaveMapService {
    * @returns - JSON object with all required map composition's metadata
    */
   map2json(map: Map, compoData: CompoData, userData: UserData): MapComposition {
-    const bbox = this.hsUtilsService.getBboxFromObject(compoData.bbox);
+    const bbox = getBboxFromObject(compoData.bbox);
     const json: MapComposition = {
       abstract: compoData.abstract,
       title: compoData.name,
@@ -190,7 +186,7 @@ export class HsSaveMapService {
     }
     if (s.getImage() && s.getImage() !== null) {
       const style_img = s.getImage();
-      if (this.hsUtilsService.instOf(style_img, RegularShape)) {
+      if (instOf(style_img, RegularShape)) {
         const regShape = style_img as RegularShape;
         if (regShape.getFill()) {
           ima.fill = regShape.getFill().getColor();
@@ -206,18 +202,18 @@ export class HsSaveMapService {
       }
 
       if (
-        this.hsUtilsService.instOf(style_img, Icon) &&
+        instOf(style_img, Icon) &&
         typeof (style_img as Icon).getSrc() === 'string' &&
         !(style_img as Icon).getSrc().startsWith('data:image')
       ) {
-        ima.src = this.hsUtilsService.proxify((style_img as Icon).getSrc());
+        ima.src = this.hsProxyService.proxify((style_img as Icon).getSrc());
       }
 
-      if (this.hsUtilsService.instOf(style_img, Circle)) {
+      if (instOf(style_img, Circle)) {
         ima.type = 'circle';
       }
 
-      if (this.hsUtilsService.instOf(style_img, Icon)) {
+      if (instOf(style_img, Icon)) {
         ima.type = 'icon';
       }
 
@@ -274,10 +270,7 @@ export class HsSaveMapService {
     }
 
     // HTTPRequest
-    if (
-      this.hsUtilsService.instOf(layer, Tile) ||
-      this.hsUtilsService.instOf(layer, ImageLayer)
-    ) {
+    if (instOf(layer, Tile) || instOf(layer, ImageLayer)) {
       const src = layer.getSource();
       if (layer.getMaxResolution() !== null) {
         json.maxResolution = layer.getMaxResolution();
@@ -289,30 +282,27 @@ export class HsSaveMapService {
       if (getDimensions(layer)) {
         json.dimensions = getDimensions(layer);
       }
-      if (this.hsUtilsService.instOf(src, XYZ)) {
+      if (instOf(src, XYZ)) {
         json.className = this.hsLayerUtilsService
           .getURL(layer)
           .includes('/rest/services')
           ? 'ArcGISRest'
           : 'XYZ';
       }
-      if (
-        this.hsUtilsService.instOf(src, ImageArcGISRest) ||
-        this.hsUtilsService.instOf(src, TileArcGISRest)
-      ) {
+      if (instOf(src, ImageArcGISRest) || instOf(src, TileArcGISRest)) {
         json.className = 'ArcGISRest';
-        json.singleTile = this.hsUtilsService.instOf(src, ImageArcGISRest);
+        json.singleTile = instOf(src, ImageArcGISRest);
         if (getSubLayers(layer)) {
           json.subLayers = getSubLayers(layer);
         }
       }
-      if (this.hsUtilsService.instOf(src, ImageStatic)) {
+      if (instOf(src, ImageStatic)) {
         json.className = 'StaticImage';
         json.extent = (src as ImageStatic).getImageExtent();
       }
       if (this.hsLayerUtilsService.isLayerWMS(layer)) {
         json.className = 'WMS';
-        json.singleTile = this.hsUtilsService.instOf(src, ImageWMS);
+        json.singleTile = instOf(src, ImageWMS);
         const legends = getLegends(layer);
         if (legends) {
           // Convert legends to array if it's a string; if it's empty string, make it []
@@ -345,7 +335,7 @@ export class HsSaveMapService {
         json.attributions = getAttribution(layer);
       }
 
-      if (this.hsUtilsService.instOf(src, WMTS)) {
+      if (instOf(src, WMTS)) {
         const wmts = src as WMTS;
         json.className = 'WMTS';
         json.matrixSet = wmts.getMatrixSet();

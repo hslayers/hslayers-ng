@@ -25,7 +25,7 @@ import {HsLanguageService} from 'hslayers-ng/services/language';
 import {HsLogService} from 'hslayers-ng/services/log';
 import {HsToastService} from 'hslayers-ng/common/toast';
 import {HsCommonEndpointsService} from 'hslayers-ng/services/endpoints';
-import {HsUtilsService} from 'hslayers-ng/services/utils';
+import {HsProxyService} from 'hslayers-ng/services/utils';
 import {parseBase64Style} from './parse-base64-style';
 
 @Injectable({
@@ -34,7 +34,7 @@ import {parseBase64Style} from './parse-base64-style';
 export class HsCommonLaymanService {
   endpointService = inject(HsCommonEndpointsService);
   http = inject(HttpClient);
-  hsUtilsService = inject(HsUtilsService);
+  proxyService = inject(HsProxyService);
   hsToastService = inject(HsToastService);
   hsLanguageService = inject(HsLanguageService);
   hsLog = inject(HsLogService);
@@ -72,7 +72,7 @@ export class HsCommonLaymanService {
     // Register the endpoint with HsUtilsService to avoid circular dependency
     tap((endpoint) => {
       if (endpoint) {
-        this.hsUtilsService.registerLaymanEndpoints(endpoint.url);
+        this.proxyService.registerLaymanEndpoints(endpoint.url);
       }
     }),
     shareReplay(1),

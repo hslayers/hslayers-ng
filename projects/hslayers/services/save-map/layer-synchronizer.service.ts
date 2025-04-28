@@ -1,6 +1,6 @@
 import {Injectable, DestroyRef} from '@angular/core';
 import {filter, switchMap} from 'rxjs/operators';
-import {fromEvent} from 'rxjs';
+import {from, fromEvent} from 'rxjs';
 
 import * as xml2Json from 'xml-js';
 import {Feature} from 'ol';
@@ -21,7 +21,7 @@ import {HsLaymanService} from './layman.service';
 import {HsLogService} from 'hslayers-ng/services/log';
 import {HsMapService} from 'hslayers-ng/services/map';
 import {HsToastService} from 'hslayers-ng/common/toast';
-import {HsUtilsService} from 'hslayers-ng/services/utils';
+import {debounce, instOf} from 'hslayers-ng/services/utils';
 import {
   getDefinition,
   getEventsSuspended,
@@ -41,7 +41,6 @@ export class HsLayerSynchronizerService {
   crs: string;
   syncedLayers: VectorLayer<VectorSource<Feature>>[] = [];
   constructor(
-    private hsUtilsService: HsUtilsService,
     private hsLaymanService: HsLaymanService,
     private hsMapService: HsMapService,
     private hsCommonLaymanService: HsCommonLaymanService,
@@ -104,7 +103,7 @@ export class HsLayerSynchronizerService {
    * @param layer - Layer to add
    */
   addLayer(layer: VectorLayer<VectorSource<Feature>>): void {
-    if (isLayerSynchronizable(layer, this.hsUtilsService)) {
+    if (isLayerSynchronizable(layer, instOf)) {
       this.syncedLayers.push(layer);
       this.startMonitoringIfNeeded(layer);
     }
@@ -244,7 +243,7 @@ export class HsLayerSynchronizerService {
   observeFeature(f: Feature<Geometry>): void {
     f.getGeometry().on(
       'change',
-      this.hsUtilsService.debounce(
+      debounce(
         () => {
           this.handleFeatureChange(f);
         },

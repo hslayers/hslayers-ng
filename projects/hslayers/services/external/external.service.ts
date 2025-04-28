@@ -13,7 +13,11 @@ import {
   DOM_FEATURE_LINKS,
   getDomFeatureLinks,
 } from 'hslayers-ng/common/extensions';
-import {HsLayerUtilsService, HsUtilsService} from 'hslayers-ng/services/utils';
+import {
+  debounce,
+  HsLayerUtilsService,
+  instOf,
+} from 'hslayers-ng/services/utils';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsLogService} from 'hslayers-ng/services/log';
 import {HsMapService} from 'hslayers-ng/services/map';
@@ -41,7 +45,6 @@ export class HsExternalService {
   featureLinks: FeatureDomEventLinkDict = {};
   constructor(
     public hsMapService: HsMapService,
-    public hsUtilsService: HsUtilsService,
     private hsLayerUtilsService: HsLayerUtilsService,
     private hsLog: HsLogService,
     private hsQueryPopupService: HsQueryPopupService,
@@ -84,7 +87,7 @@ export class HsExternalService {
       this.processLinks(layer as VectorLayer<VectorSource<Feature>>);
     }
     (layer as VectorLayer<VectorSource<Feature>>).on('propertychange', (e) => {
-      this.hsUtilsService.debounce(this.layerPropChanged(e), 100, false, this);
+      debounce(this.layerPropChanged(e), 100, false, this);
     });
   }
 
@@ -111,7 +114,7 @@ export class HsExternalService {
           return;
         }
         if (feature.getId() === undefined) {
-          feature.setId(this.hsUtilsService.generateUuid());
+          feature.setId(crypto.randomUUID());
         }
         //We don't want to add handlers with the same feature and domElement twice
         if (
@@ -226,7 +229,7 @@ export class HsExternalService {
       //Filter out possible RenderFeatures
       return featureLike instanceof Feature ? featureLike : undefined;
     }
-    if (this.hsUtilsService.instOf(link.feature, Feature)) {
+    if (instOf(link.feature, Feature)) {
       return link.feature as Feature<Geometry>;
     }
     if (typeof link.feature == 'function') {

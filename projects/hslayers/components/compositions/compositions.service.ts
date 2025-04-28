@@ -19,7 +19,7 @@ import {HsLanguageService} from 'hslayers-ng/services/language';
 import {HsLayerManagerService} from 'hslayers-ng/services/layer-manager';
 import {HsLogService} from 'hslayers-ng/services/log';
 import {HsToastService} from 'hslayers-ng/common/toast';
-import {HsUtilsService} from 'hslayers-ng/services/utils';
+import {HsProxyService} from 'hslayers-ng/services/utils';
 
 @Injectable({
   providedIn: 'root',
@@ -36,7 +36,6 @@ export class HsCompositionsService {
     private hsMapService: HsMapService,
     private hsCompositionsParserService: HsCompositionsParserService,
     private hsConfig: HsConfig,
-    private hsUtilsService: HsUtilsService,
     private HsShareUrlService: HsShareUrlService,
     private hsCompositionsMickaService: HsCompositionsMickaService,
     private hsCompositionsLaymanService: HsCompositionsLaymanService,
@@ -47,6 +46,7 @@ export class HsCompositionsService {
     private hsEventBusService: HsEventBusService,
     private hsToastService: HsToastService,
     private hsLayerManagerService: HsLayerManagerService,
+    private hsProxyService: HsProxyService,
   ) {
     this.hsEventBusService.compositionEdits.subscribe(() => {
       this.hsCompositionsParserService.composition_edited = true;
@@ -155,7 +155,7 @@ export class HsCompositionsService {
     const compositionUrl = permalinkOverride
       ? permalinkOverride.origin + permalinkOverride.pathname
       : `${location.origin}${location.pathname}?composition=${recordLink}`;
-    this.shareId = this.hsUtilsService.generateUuid();
+    this.shareId = crypto.randomUUID();
     const headers = new HttpHeaders().set(
       'Content-Type',
       'text/plain; charset=utf-8',
@@ -181,7 +181,7 @@ export class HsCompositionsService {
    */
   async getShareUrl(): Promise<string> {
     try {
-      return await this.hsUtilsService.shortUrl(
+      return await this.HsShareUrlService.shortUrl(
         this.HsShareUrlService.endpointUrl() +
           '?request=socialshare&id=' +
           this.shareId,
@@ -236,7 +236,7 @@ export class HsCompositionsService {
     const params = `?request=GetRecords&format=text/json&template=report-layman&query=ServiceType like 'CSW' and title like '${
       record.title
     }' and BoundingBox like '${record.bbox.join(' ')}'`;
-    const url = this.hsUtilsService.proxify(record.endpoint.url + params);
+    const url = this.hsProxyService.proxify(record.endpoint.url + params);
 
     try {
       const compositions = await lastValueFrom(
@@ -344,7 +344,7 @@ export class HsCompositionsService {
    */
   async parsePermalinkLayers(permalink: string): Promise<void> {
     await this.hsMapService.loaded();
-    const layersUrl = this.hsUtilsService.proxify(permalink);
+    const layersUrl = this.hsProxyService.proxify(permalink);
     const response: any = await lastValueFrom(this.http.get(layersUrl));
     if (response.success == true) {
       const data: any = {};

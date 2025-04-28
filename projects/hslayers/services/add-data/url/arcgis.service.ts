@@ -20,7 +20,10 @@ import {HsAddDataCommonService} from '../common.service';
 import {HsAddDataUrlService} from './add-data-url.service';
 import {HsArcgisGetCapabilitiesService} from 'hslayers-ng/services/get-capabilities';
 import {HsLanguageService} from 'hslayers-ng/services/language';
-import {HsLayerUtilsService, HsUtilsService} from 'hslayers-ng/services/utils';
+import {
+  HsLayerUtilsService,
+  undefineEmptyString,
+} from 'hslayers-ng/services/utils';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsToastService} from 'hslayers-ng/common/toast';
 import {addAnchors, getPreferredFormat} from 'hslayers-ng/common/utils';
@@ -35,7 +38,6 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
     public hsArcgisGetCapabilitiesService: HsArcgisGetCapabilitiesService,
     public hsLayoutService: HsLayoutService,
     public hsMapService: HsMapService,
-    public hsUtilsService: HsUtilsService,
     public hsAddDataUrlService: HsAddDataUrlService,
     public hsAddDataCommonService: HsAddDataCommonService,
     public hsLayerUtilsService: HsLayerUtilsService,
@@ -217,7 +219,7 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
     const collection = [
       await this.getLayer(checkedLayers, {
         title: this.data.title.replace(/\//g, '&#47;'),
-        path: this.hsUtilsService.undefineEmptyString(this.data.folder_name),
+        path: undefineEmptyString(this.data.folder_name),
         imageFormat: this.data.image_format,
         queryFormat: this.data.query_format,
         tileSize: this.data.tile_size,

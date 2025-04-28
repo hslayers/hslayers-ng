@@ -10,7 +10,6 @@ import {
   getTitle,
 } from 'hslayers-ng/common/extensions';
 import {Feature} from 'ol/index';
-import {HsUtilsService} from 'hslayers-ng/services/utils';
 
 export const PREFER_RESUMABLE_SIZE_LIMIT = 2 * 1024 * 1024; // 2 MB
 export const SUPPORTED_SRS_LIST = [
@@ -157,11 +156,11 @@ export function isLaymanUrl(url: string, layman: HsEndpoint): boolean {
  */
 export function isLayerSynchronizable(
   layer: VectorLayer<VectorSource<Feature>>,
-  utilsService: HsUtilsService,
+  instOf: (obj: any, klass: any) => boolean,
 ): boolean {
   const definition = getDefinition(layer);
   return (
-    utilsService.instOf(layer.getSource(), VectorSource) &&
+    instOf(layer.getSource(), VectorSource) &&
     //Test whether format contains 'wfs' AND does not contain 'external'. Case insensitive
     new RegExp('^(?=.*wfs)(?:(?!external).)*$', 'i').test(
       definition?.format?.toLowerCase(),

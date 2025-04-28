@@ -8,9 +8,7 @@ import {Vector} from 'ol/source';
 import {Vector as VectorLayer} from 'ol/layer';
 
 import {HsLayoutService} from 'hslayers-ng/services/layout';
-import {HsLogService} from 'hslayers-ng/services/log';
 import {HsMapService} from 'hslayers-ng/services/map';
-import {HsUtilsService} from 'hslayers-ng/services/utils';
 import {
   setRemovable,
   setShowInLayerManager,
@@ -47,10 +45,8 @@ export class HsGeolocationService {
    * Turns off position centering while 'following'.
    */
   constructor(
-    public HsMapService: HsMapService,
-    public HsLayoutService: HsLayoutService,
-    public hsLog: HsLogService,
-    public HsUtilsService: HsUtilsService,
+    private HsMapService: HsMapService,
+    private HsLayoutService: HsLayoutService,
   ) {
     this.setAccuracyFeature();
     this.setPositionFeature();

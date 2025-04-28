@@ -8,8 +8,9 @@ import {Vector as VectorSource} from 'ol/source';
 
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsMapService} from 'hslayers-ng/services/map';
-import {HsUtilsService, Measurement} from 'hslayers-ng/services/utils';
+import {formatLength, formatArea, instOf} from 'hslayers-ng/services/utils';
 import {setTitle} from 'hslayers-ng/common/extensions';
+import {Measurement} from 'hslayers-ng/types';
 
 @Injectable({
   providedIn: 'root',
@@ -29,7 +30,6 @@ export class HsMeasureService {
   measuringActivated = false;
   constructor(
     public hsMapService: HsMapService,
-    public HsUtilsService: HsUtilsService,
     public HsEventBusService: HsEventBusService,
   ) {
     this.setMeasureLayer();
@@ -148,17 +148,14 @@ export class HsMeasureService {
 
       for (const sketch of this.sketches) {
         const geom = sketch.getGeometry();
-        if (this.HsUtilsService.instOf(geom, Polygon)) {
+        if (instOf(geom, Polygon)) {
           output = this.addMultiple(
-            this.HsUtilsService.formatArea(
-              geom as Polygon,
-              this.hsMapService.getCurrentProj(),
-            ),
+            formatArea(geom as Polygon, this.hsMapService.getCurrentProj()),
             output,
           );
-        } else if (this.HsUtilsService.instOf(geom, LineString)) {
+        } else if (instOf(geom, LineString)) {
           output = this.addMultiple(
-            this.HsUtilsService.formatLength(
+            formatLength(
               geom as LineString,
               this.hsMapService.getCurrentProj(),
             ),

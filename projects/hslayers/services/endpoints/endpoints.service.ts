@@ -2,14 +2,12 @@ import {inject, Injectable} from '@angular/core';
 
 import {HsConfig} from 'hslayers-ng/config';
 import {HsEndpoint} from 'hslayers-ng/types';
-import {HsUtilsService} from 'hslayers-ng/services/utils';
 import {toSignal} from '@angular/core/rxjs-interop';
 import {of, switchMap} from 'rxjs';
 
 @Injectable({providedIn: 'root'})
 export class HsCommonEndpointsService {
   hsConfig = inject(HsConfig);
-  hsUtilsService = inject(HsUtilsService);
 
   endpoints = toSignal(
     this.hsConfig.configChanges.pipe(switchMap(() => of(this.fillEndpoints()))),
@@ -21,7 +19,7 @@ export class HsCommonEndpointsService {
       (ds) =>
         ({
           url: ds.url,
-          id: this.hsUtilsService.generateUuid(),
+          id: crypto.randomUUID(),
           type: ds.type,
           title: ds.title,
           onError: ds.onError,
