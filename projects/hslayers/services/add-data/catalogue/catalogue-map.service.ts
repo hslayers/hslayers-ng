@@ -8,7 +8,7 @@ import {Vector as VectorSource} from 'ol/source';
 import {unByKey} from 'ol/Observable';
 
 import {HsCommonEndpointsService} from 'hslayers-ng/services/endpoints';
-import {debounce, HsLayerUtilsService} from 'hslayers-ng/services/utils';
+import {debounce, highlightFeatures} from 'hslayers-ng/services/utils';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsLogService} from 'hslayers-ng/services/log';
 import {HsMapCompositionDescriptor} from 'hslayers-ng/types';
@@ -28,7 +28,6 @@ export class HsAddDataCatalogueMapService {
     public hsMapService: HsMapService,
     public hsLogService: HsLogService,
     private hsSaveMapService: HsSaveMapService,
-    public hsLayerUtilsService: HsLayerUtilsService,
     private hsCommonEndpointsService: HsCommonEndpointsService,
     private hsLayoutService: HsLayoutService,
   ) {
@@ -68,10 +67,7 @@ export class HsAddDataCatalogueMapService {
     for (const endpoint of this.hsCommonEndpointsService
       .endpoints()
       .filter((ep) => ep.layers)) {
-      this.hsLayerUtilsService.highlightFeatures(
-        featuresUnderMouse,
-        endpoint.layers,
-      );
+      highlightFeatures(featuresUnderMouse, endpoint.layers);
     }
   }
 

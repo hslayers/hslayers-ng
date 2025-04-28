@@ -5,7 +5,6 @@ import {Feature} from 'ol';
 import {Geometry} from 'ol/geom';
 import {Layer} from 'ol/layer';
 
-import {HsLayerUtilsService} from 'hslayers-ng/services/utils';
 import {HsQueryVectorService} from 'hslayers-ng/services/query';
 import {
   getBase,
@@ -13,7 +12,7 @@ import {
   getTitle,
 } from 'hslayers-ng/common/extensions';
 import {HsFeatureDescriptor} from 'hslayers-ng/types';
-
+import {isLayerVectorLayer, isLayerClustered} from 'hslayers-ng/services/utils';
 @Injectable({
   providedIn: 'root',
 })
@@ -30,10 +29,7 @@ export class HsFeatureTableService {
    * all feature attributes for HTML table
    */
   features: HsFeatureDescriptor[] = [];
-  constructor(
-    private hsLayerUtilsService: HsLayerUtilsService,
-    private hsQueryVectorService: HsQueryVectorService,
-  ) {}
+  constructor(private hsQueryVectorService: HsQueryVectorService) {}
 
   /**
    * Checks if layer is vectorLayer and is visible in layer_manager, to exclude layers, such as, point Clicked
@@ -44,7 +40,7 @@ export class HsFeatureTableService {
   addLayer(layer: Layer<Source>): any {
     if (
       !getBase(layer) &&
-      this.hsLayerUtilsService.isLayerVectorLayer(layer, false) &&
+      isLayerVectorLayer(layer, false) &&
       (getShowInLayerManager(layer) === undefined ||
         getShowInLayerManager(layer) == true)
     ) {
@@ -73,9 +69,7 @@ export class HsFeatureTableService {
    * @param layer - Layer from HsConfig.layersInFeatureTable
    */
   fillFeatureList(layer: Layer<Source>): void {
-    const source: VectorSource = this.hsLayerUtilsService.isLayerClustered(
-      layer,
-    )
+    const source: VectorSource = isLayerClustered(layer)
       ? (layer.getSource() as Cluster<Feature>).getSource()
       : (layer.getSource() as VectorSource);
     this.features = source

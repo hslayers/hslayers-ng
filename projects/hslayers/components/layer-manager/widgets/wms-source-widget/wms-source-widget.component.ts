@@ -10,7 +10,7 @@ import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
 import {HsLayerEditorWidgetBaseComponent} from '../layer-editor-widget-base.component';
 import {HsLayerSelectorService} from 'hslayers-ng/services/layer-manager';
 import {HsLayerShiftingService} from 'hslayers-ng/services/layer-shifting';
-import {HsLayerUtilsService, instOf} from 'hslayers-ng/services/utils';
+import {instOf, isLayerWMS} from 'hslayers-ng/services/utils';
 import {HsMapService} from 'hslayers-ng/services/map';
 import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 
@@ -27,7 +27,6 @@ export class HsWmsSourceWidgetComponent extends HsLayerEditorWidgetBaseComponent
   currentType: string;
   constructor(
     hsLayerSelectorService: HsLayerSelectorService,
-    private hsLayerUtilsService: HsLayerUtilsService,
     private hsMapService: HsMapService,
     private hsLayerShiftingService: HsLayerShiftingService,
     private hsDialogContainerService: HsDialogContainerService,
@@ -38,7 +37,7 @@ export class HsWmsSourceWidgetComponent extends HsLayerEditorWidgetBaseComponent
         this.currentType = instOf(l.layer, ImageLayer) ? 'Image' : 'Tile';
       }),
       map((l) => {
-        return this.hsLayerUtilsService.isLayerWMS(l.layer);
+        return isLayerWMS(l.layer);
       }),
     );
   }

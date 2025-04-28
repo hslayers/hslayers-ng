@@ -4,7 +4,6 @@ import {Feature} from 'ol';
 import {Vector as VectorLayer} from 'ol/layer';
 import {Vector as VectorSource} from 'ol/source';
 
-import {HsLayerUtilsService} from 'hslayers-ng/services/utils';
 import {HsTripPlannerService} from './trip-planner.service';
 
 @Component({
@@ -22,8 +21,5 @@ export class HsTripPlannerLayerSelectorComponent {
 
   layersExpanded: boolean;
 
-  constructor(
-    public HsTripPlannerService: HsTripPlannerService,
-    public HsLayerUtilsService: HsLayerUtilsService,
-  ) {}
+  constructor(public HsTripPlannerService: HsTripPlannerService) {}
 }

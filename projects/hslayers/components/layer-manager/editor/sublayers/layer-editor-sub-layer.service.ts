@@ -2,8 +2,12 @@ import {Injectable} from '@angular/core';
 
 import {HsLayerDescriptor, HsSublayer, HsWmsLayer} from 'hslayers-ng/types';
 import {HsLayerManagerVisibilityService} from 'hslayers-ng/services/layer-manager';
-import {HsLayerUtilsService} from 'hslayers-ng/services/utils';
 import {getCachedCapabilities} from 'hslayers-ng/common/extensions';
+import {
+  getLayerParams,
+  isLayerArcgis,
+  updateLayerParams,
+} from 'hslayers-ng/services/utils';
 
 @Injectable({
   providedIn: 'root',
@@ -16,7 +20,6 @@ export class HsLayerEditorSublayerService {
   sublayers: HsSublayer[] = [];
 
   constructor(
-    private HsLayerUtilsService: HsLayerUtilsService,
     private hsLayerManagerVisibilityService: HsLayerManagerVisibilityService,
   ) {}
 
@@ -96,11 +99,11 @@ export class HsLayerEditorSublayerService {
       console.error('Trying to update sublayer on undefined layer');
       return;
     }
-    const params = this.HsLayerUtilsService.getLayerParams(layer.layer);
+    const params = getLayerParams(layer.layer);
     params.LAYERS = this.constructLayersParam(layer._sublayers);
 
     // Special handling for ArcGIS layers
-    if (this.HsLayerUtilsService.isLayerArcgis(layer.layer)) {
+    if (isLayerArcgis(layer.layer)) {
       params.LAYERS = `show:${params.LAYERS}`;
     }
 
@@ -122,6 +125,6 @@ export class HsLayerEditorSublayerService {
     }
 
     // Update the layer parameters
-    this.HsLayerUtilsService.updateLayerParams(layer.layer, params);
+    updateLayerParams(layer.layer, params);
   }
 }

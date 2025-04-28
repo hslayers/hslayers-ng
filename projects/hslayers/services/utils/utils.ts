@@ -1,7 +1,7 @@
 import {LineString, Polygon} from 'ol/geom';
 import {ProjectionLike, get as getProjection, transform} from 'ol/proj';
-
 import {getArea, getDistance} from 'ol/sphere';
+
 import {Measurement} from 'hslayers-ng/types';
 
 /**
@@ -9,19 +9,17 @@ import {Measurement} from 'hslayers-ng/types';
  * @returns Port number
  */
 export function getPortFromUrl(url: string): string {
-  if (this.runningInBrowser()) {
-    const link = document.createElement('a');
-    link.setAttribute('href', url);
-    if (link.port == '') {
-      if (url.startsWith('https://')) {
-        return '443';
-      }
-      if (url.startsWith('http://')) {
-        return '80';
-      }
+  const link = document.createElement('a');
+  link.setAttribute('href', url);
+  if (link.port == '') {
+    if (url.startsWith('https://')) {
+      return '443';
     }
-    return link.port;
+    if (url.startsWith('http://')) {
+      return '80';
+    }
   }
+  return link.port;
 }
 
 /**

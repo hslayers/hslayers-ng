@@ -18,7 +18,6 @@ import {
   HsLayerManagerService,
   HsLayerManagerUtilsService,
 } from 'hslayers-ng/services/layer-manager';
-import {HsLayerUtilsService} from 'hslayers-ng/services/utils';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsPanelHelpersModule} from 'hslayers-ng/common/panels';
 import {HsStylerService} from 'hslayers-ng/services/styler';
@@ -39,6 +38,7 @@ import {HsLayerEditorService} from './layer-editor.service';
 import {HsLayerEditorWidgetContainerService} from '../widgets/layer-editor-widget-container.service';
 import {HsLayerManagerRemoveLayerDialogComponent} from '../dialogs/remove-layer-dialog.component';
 import {LAYER_EDITOR_WIDGETS} from './widget-config';
+import {layerIsZoomable, layerIsStyleable} from 'hslayers-ng/services/utils';
 
 @Component({
   selector: 'hs-layer-editor',
@@ -60,12 +60,8 @@ export class HsLayerEditorComponent {
   getBase = getBase;
   getGreyscale = getGreyscale;
 
-  layerIsZoomable = computed(() =>
-    this.HsLayerUtilsService.layerIsZoomable(this.olLayer()),
-  );
-  layerIsStyleable = computed(() =>
-    this.HsLayerUtilsService.layerIsStyleable(this.olLayer()),
-  );
+  layerIsZoomable = computed(() => layerIsZoomable(this.olLayer()));
+  layerIsStyleable = computed(() => layerIsStyleable(this.olLayer()));
   isLayerRemovable = computed(() => {
     const layer = this.olLayer();
     return (
@@ -87,7 +83,6 @@ export class HsLayerEditorComponent {
 
   constructor(
     private hsConfig: HsConfig,
-    private HsLayerUtilsService: HsLayerUtilsService,
     private HsStylerService: HsStylerService,
     private HsLayoutService: HsLayoutService,
     private HsLayerEditorService: HsLayerEditorService,

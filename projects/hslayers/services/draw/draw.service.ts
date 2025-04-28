@@ -27,7 +27,6 @@ import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
 import {HsDrawServiceParams} from './draw.service.params';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsLanguageService} from 'hslayers-ng/services/language';
-import {HsLayerUtilsService} from 'hslayers-ng/services/utils';
 import {HsLaymanService} from 'hslayers-ng/services/save-map';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsLogService} from 'hslayers-ng/services/log';
@@ -55,6 +54,7 @@ import {
 } from 'hslayers-ng/common/extensions';
 import {takeUntilDestroyed, toObservable} from '@angular/core/rxjs-interop';
 import {isPlatformBrowser} from '@angular/common';
+import {isLayerClustered, isLayerDrawable} from 'hslayers-ng/services/utils';
 
 type ActivateParams = {
   onDrawStart?;
@@ -76,7 +76,6 @@ export class HsDrawService extends HsDrawServiceParams {
   pendingLayers = this.hsCommonLaymanLayerService.pendingLayers;
   constructor(
     public hsMapService: HsMapService,
-    public hsLayerUtilsService: HsLayerUtilsService,
     public hsEventBusService: HsEventBusService,
     public hsLayoutService: HsLayoutService,
     public hsDialogContainerService: HsDialogContainerService,
@@ -269,9 +268,7 @@ export class HsDrawService extends HsDrawServiceParams {
     }
     this.type = what;
     if (this.selectedLayer) {
-      this.source = this.hsLayerUtilsService.isLayerClustered(
-        this.selectedLayer,
-      )
+      this.source = isLayerClustered(this.selectedLayer)
         ? (this.selectedLayer.getSource() as Cluster<Feature>).getSource() //Is it clustered vector layer?
         : this.selectedLayer.getSource();
     }
@@ -434,7 +431,7 @@ export class HsDrawService extends HsDrawServiceParams {
     if (this.selectedLayer.getSource === undefined) {
       return;
     }
-    this.source = this.hsLayerUtilsService.isLayerClustered(this.selectedLayer)
+    this.source = isLayerClustered(this.selectedLayer)
       ? (this.selectedLayer.getSource() as Cluster<Feature>).getSource()
       : this.selectedLayer.getSource();
 
@@ -506,9 +503,9 @@ export class HsDrawService extends HsDrawServiceParams {
     await this.hsMapService.loaded();
     const drawables = this.hsMapService
       .getLayersArray()
-      .filter((layer: Layer<Source>) =>
-        this.hsLayerUtilsService.isLayerDrawable(layer),
-      ) as VectorLayer<VectorSource<Feature>>[];
+      .filter((layer: Layer<Source>) => isLayerDrawable(layer)) as VectorLayer<
+      VectorSource<Feature>
+    >[];
 
     if (drawables.length == 0 && !this.tmpDrawLayer) {
       this.type = null;
@@ -767,7 +764,7 @@ export class HsDrawService extends HsDrawServiceParams {
    */
   changeSnapSource(layer: VectorLayer<VectorSource<Feature>>): void {
     //isLayerClustered
-    const snapSourceToBeUsed = this.hsLayerUtilsService.isLayerClustered(layer)
+    const snapSourceToBeUsed = isLayerClustered(layer)
       ? (layer.getSource() as Cluster<Feature>).getSource()
       : layer.getSource();
     this.snapLayer = layer;

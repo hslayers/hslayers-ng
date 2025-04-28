@@ -17,7 +17,11 @@ import {
   HsLayerManagerVisibilityService,
   HsLayerSelectorService,
 } from 'hslayers-ng/services/layer-manager';
-import {HsLayerUtilsService, instOf} from 'hslayers-ng/services/utils';
+import {
+  instOf,
+  isLayerIDW,
+  isLayerVectorLayer,
+} from 'hslayers-ng/services/utils';
 import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 import {getBase, setBase} from 'hslayers-ng/common/extensions';
 
@@ -37,7 +41,6 @@ export class HsLayerTypeSwitcherWidgetComponent extends HsLayerEditorWidgetBaseC
   private folderService = inject(HsLayerManagerFolderService);
 
   private hsEventBusService = inject(HsEventBusService);
-  private hsLayerUtilsService = inject(HsLayerUtilsService);
   private hsDialogContainerService = inject(HsDialogContainerService);
   private layerEditorService = inject(HsLayerEditorService);
 
@@ -60,8 +63,8 @@ export class HsLayerTypeSwitcherWidgetComponent extends HsLayerEditorWidgetBaseC
            * Allowed for layers which are not OSM, Vector or IDW
            */
           !instOf(source, OSM) &&
-          !this.hsLayerUtilsService.isLayerIDW(layer.layer) &&
-          !this.hsLayerUtilsService.isLayerVectorLayer(layer.layer)
+          !isLayerIDW(layer.layer) &&
+          !isLayerVectorLayer(layer.layer)
         );
       }),
     );

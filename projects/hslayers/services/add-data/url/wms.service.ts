@@ -30,9 +30,10 @@ import {
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {
   getPortFromUrl,
-  HsLayerUtilsService,
   isOverflown,
   undefineEmptyString,
+  bufferExtent,
+  calculateResolutionFromScale,
 } from 'hslayers-ng/services/utils';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {addAnchors, getPreferredFormat} from 'hslayers-ng/common/utils';
@@ -51,7 +52,6 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
     private hsEventBusService: HsEventBusService,
     private hsAddDataUrlService: HsAddDataUrlService,
     private hsAddDataCommonService: HsAddDataCommonService,
-    private HsLayerUtilsService: HsLayerUtilsService,
   ) {
     this.hsEventBusService.olMapLoads.subscribe((map) => {
       this.data.map_projection = this.hsMapService.map
@@ -311,10 +311,7 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
    */
   private getBufferExtent(layers: any, options: LayerOptions): number[] {
     const calculatedExtent = this.getLayerExtent(layers, options.crs);
-    return this.HsLayerUtilsService.bufferExtent(
-      calculatedExtent,
-      this.hsMapService.getCurrentProj(),
-    );
+    return bufferExtent(calculatedExtent, this.hsMapService.getCurrentProj());
   }
 
   /**
@@ -530,16 +527,14 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
       : new ImageWMS(sourceOptions);
 
     const view = this.hsMapService.getMap().getView();
-    const calculatedMinResolution =
-      this.HsLayerUtilsService.calculateResolutionFromScale(
-        layer.MinScaleDenominator,
-        view,
-      );
-    const calculatedMaxResolution =
-      this.HsLayerUtilsService.calculateResolutionFromScale(
-        layer.MaxScaleDenominator,
-        view,
-      );
+    const calculatedMinResolution = calculateResolutionFromScale(
+      layer.MinScaleDenominator,
+      view,
+    );
+    const calculatedMaxResolution = calculateResolutionFromScale(
+      layer.MaxScaleDenominator,
+      view,
+    );
 
     const calculatedMetadata =
       this.hsWmsGetCapabilitiesService.getMetadataObjectWithUrls(layer);

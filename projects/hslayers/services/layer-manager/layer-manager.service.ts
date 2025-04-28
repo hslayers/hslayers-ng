@@ -29,7 +29,12 @@ import {
   HsLayermanagerFolder,
 } from 'hslayers-ng/types';
 import {HsLayerSelectorService} from './layer-selector.service';
-import {debounce, HsLayerUtilsService} from 'hslayers-ng/services/utils';
+import {
+  debounce,
+  getLayerParams,
+  getLayerTitle,
+  isLayerVectorLayer,
+} from 'hslayers-ng/services/utils';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsLogService} from 'hslayers-ng/services/log';
 import {HsMapService} from 'hslayers-ng/services/map';
@@ -107,7 +112,6 @@ export class HsLayerManagerService {
     public hsLayerEditorVectorLayerService: HsLayerEditorVectorLayerService,
     public hsLayerManagerMetadata: HsLayerManagerMetadataService,
     public hsLayerSelectorService: HsLayerSelectorService,
-    public hsLayerUtilsService: HsLayerUtilsService,
     public hsLayoutService: HsLayoutService,
     public hsLog: HsLogService,
     public hsMapService: HsMapService,
@@ -254,10 +258,7 @@ export class HsLayerManagerService {
     layer.on('change:visible', (e) =>
       this.hsLayerManagerVisibilityService.layerVisibilityChanged(e),
     );
-    if (
-      this.hsLayerUtilsService.isLayerVectorLayer(layer) &&
-      getCluster(layer)
-    ) {
+    if (isLayerVectorLayer(layer) && getCluster(layer)) {
       this.hsLayerEditorVectorLayerService.layersClusteredFromStart.push(layer);
       await this.hsLayerEditorVectorLayerService.cluster(
         true,
@@ -272,7 +273,7 @@ export class HsLayerManagerService {
      * Each layer wrapper is accessible from layer list or folder structure.
      */
     const layerDescriptor: HsLayerDescriptor = {
-      title: this.hsLayerUtilsService.getLayerTitle(layer),
+      title: getLayerTitle(layer),
       abstract: getAbstract(layer),
       layer,
       grayed:
@@ -293,7 +294,7 @@ export class HsLayerManagerService {
 
     layer.on('propertychange', (event) => {
       if (event.key == 'title') {
-        layerDescriptor.title = this.hsLayerUtilsService.getLayerTitle(layer);
+        layerDescriptor.title = getLayerTitle(layer);
       }
       if (event.key == SHOW_IN_LAYER_MANAGER) {
         layerDescriptor.showInLayerManager =
@@ -316,7 +317,7 @@ export class HsLayerManagerService {
       this.data.layers.push(layerDescriptor);
       if (getSubLayers(layer)) {
         /*Need to keep track of original LAYERS value for saving to composition*/
-        const params = this.hsLayerUtilsService.getLayerParams(layer);
+        const params = getLayerParams(layer);
         if (params?.LAYERS) {
           setOrigLayers(layer, params.LAYERS);
         }
@@ -367,7 +368,7 @@ export class HsLayerManagerService {
     //*NOTE Commented out, because the  following references to this.data.baselayer are causing issues.
 
     // if (layer.getVisible() && getBase(layer)) {
-    //   this.data.baselayer = this.HsLayerUtilsService.getLayerTitle(layer);
+    //   this.data.baselayer = getLayerTitle(layer);
     // }
 
     this.folderService.folderAction$.next(this.folderService.sortByZ());
