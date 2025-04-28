@@ -18,7 +18,7 @@ import {
   HsPanelConstructorService,
 } from 'hslayers-ng/services/panel-constructor';
 import {HsSidebarService} from 'hslayers-ng/services/sidebar';
-import {HsUtilsService} from 'hslayers-ng/services/utils';
+import {HsProxyService} from 'hslayers-ng/services/utils';
 import {InterpolatedSource, SPOI, SparqlJson} from 'hslayers-ng/common/layers';
 
 import {PopupWidgetComponent} from './popup-widget.component';
@@ -33,7 +33,7 @@ import {SomeComponent} from './some-panel/some-panel.component';
 export class HslayersAppComponent {
   constructor(
     public hsConfig: HsConfig,
-    private hsUtilsService: HsUtilsService,
+    private hsProxyService: HsProxyService,
     private hsEventBusService: HsEventBusService,
     private httpClient: HttpClient,
     public hsSidebarService: HsSidebarService,
@@ -81,7 +81,7 @@ export class HslayersAppComponent {
       loader: async ({extent, projection}) => {
         interpolatedSource.cancelUrlRequest.next();
         const extentIn4326 = transformExtent(extent, projection, 'EPSG:4326');
-        const url = this.hsUtilsService.proxify(
+        const url = this.hsProxyService.proxify(
           interpolatedSource.createIDWSourceUrl(
             'https://api-agroclimatic.lesprojekt.cz/area/selection/preci/0/{minY}/{maxY}/{minX}/{maxX}/100/random/year/2020/2020/1/5/2020-01-01/2020-01-30/1/1/ERA5-Land',
             extentIn4326,

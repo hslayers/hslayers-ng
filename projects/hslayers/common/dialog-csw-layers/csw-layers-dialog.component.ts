@@ -10,7 +10,7 @@ import {
   HsDialogItem,
 } from 'hslayers-ng/common/dialogs';
 import {HsLayerTableComponent} from 'hslayers-ng/common/layer-table';
-import {HsLayerUtilsService, HsUtilsService} from 'hslayers-ng/services/utils';
+import {HsLayerUtilsService} from 'hslayers-ng/services/utils';
 import {HsMapService} from 'hslayers-ng/services/map';
 import {NgbAccordionModule} from '@ng-bootstrap/ng-bootstrap';
 import {TranslateCustomPipe} from 'hslayers-ng/services/language';
@@ -37,7 +37,6 @@ export class CswLayersDialogComponent implements OnInit, HsDialogComponent {
     public HsDialogContainerService: HsDialogContainerService,
     public hsAddDataUrlService: HsAddDataUrlService,
     public hsAddDataOwsService: HsAddDataOwsService,
-    public hsUtilsService: HsUtilsService,
     public hsLayerUtilsService: HsLayerUtilsService,
     public hsMapService: HsMapService,
   ) {}

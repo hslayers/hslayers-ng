@@ -22,7 +22,6 @@ import {HsLanguageService} from 'hslayers-ng/services/language';
 import {HsLogService} from 'hslayers-ng/services/log';
 import {HsMapService} from 'hslayers-ng/services/map';
 import {HsToastService} from 'hslayers-ng/common/toast';
-import {HsUtilsService} from 'hslayers-ng/services/utils';
 import {addExtentFeature} from 'hslayers-ng/common/utils';
 
 /**
@@ -44,7 +43,6 @@ export class HsLaymanBrowserService {
     private log: HsLogService,
     public hsCommonLaymanService: HsCommonLaymanService,
     private hsCommonLaymanLayerService: HsCommonLaymanLayerService,
-    public hsUtilsService: HsUtilsService,
     public hsToastService: HsToastService,
     public hsLanguageService: HsLanguageService,
     public hsMapService: HsMapService,

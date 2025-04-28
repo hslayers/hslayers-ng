@@ -10,7 +10,7 @@ import {HsCapabilityCacheService} from './capability-cache.service';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsLogService} from 'hslayers-ng/services/log';
 import {HsMapService} from 'hslayers-ng/services/map';
-import {HsUtilsService} from 'hslayers-ng/services/utils';
+import {getParamsFromUrl, HsProxyService} from 'hslayers-ng/services/utils';
 import {IGetCapabilities} from './get-capabilities.interface';
 import {getPreferredFormat} from 'hslayers-ng/common/utils';
 
@@ -20,9 +20,9 @@ export class HsArcgisGetCapabilitiesService implements IGetCapabilities {
     private httpClient: HttpClient,
     public hsEventBusService: HsEventBusService,
     public hsMapService: HsMapService,
-    public hsUtilsService: HsUtilsService,
     public hsLogService: HsLogService,
     public hsCapabilityCacheService: HsCapabilityCacheService,
+    private hsProxyService: HsProxyService,
   ) {}
 
   /**
@@ -79,12 +79,12 @@ export class HsArcgisGetCapabilitiesService implements IGetCapabilities {
     owrCache?: boolean,
   ): Promise<CapabilitiesResponseWrapper> {
     service_url = service_url.replace(/&amp;/g, '&');
-    const params = this.hsUtilsService.getParamsFromUrl(service_url);
+    const params = getParamsFromUrl(service_url);
     const path = this.getPathFromUrl(service_url);
     params.f = 'json';
     let url = [path, this.params2String(params)].join('?');
 
-    url = this.hsUtilsService.proxify(url);
+    url = this.hsProxyService.proxify(url);
 
     if (this.hsCapabilityCacheService.get(url) && !owrCache) {
       return this.hsCapabilityCacheService.get(url);

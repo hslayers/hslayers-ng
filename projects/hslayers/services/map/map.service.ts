@@ -47,7 +47,6 @@ import {HsLanguageService} from 'hslayers-ng/services/language';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsLogService} from 'hslayers-ng/services/log';
 import {HsQueuesService} from 'hslayers-ng/services/queues';
-import {HsUtilsService} from 'hslayers-ng/services/utils';
 import {
   getDimensions,
   getEnableProxy,
@@ -55,6 +54,7 @@ import {
   getRemovable,
   getTitle,
 } from 'hslayers-ng/common/extensions';
+import {HsProxyService, instOf} from 'hslayers-ng/services/utils';
 
 export enum DuplicateHandling {
   AddDuplicate = 0,
@@ -107,12 +107,12 @@ export class HsMapService {
     public hsConfig: HsConfig,
     public hsLayoutService: HsLayoutService,
     private hsLog: HsLogService,
-    public hsUtilsService: HsUtilsService,
     public hsEventBusService: HsEventBusService,
     public hsLanguageService: HsLanguageService,
     private hsQueuesService: HsQueuesService,
     private hsCommonLaymanService: HsCommonLaymanService,
     private rendererFactory: RendererFactory2,
+    private hsProxyService: HsProxyService,
   ) {
     /**
      * Set pure map
@@ -138,7 +138,7 @@ export class HsMapService {
     feature: Feature<Geometry>,
   ): VectorLayer<VectorSource<Feature>> {
     if (typeof feature.getId() == 'undefined') {
-      feature.setId(this.hsUtilsService.generateUuid());
+      feature.setId(crypto.randomUUID());
     }
     const fid = feature.getId();
     if (this.featureLayerMapping[fid]?.length > 0) {
@@ -211,7 +211,7 @@ export class HsMapService {
   getVectorLayers(layersToLookFor: VectorAndSource[]): void {
     const check = (layer) => {
       const source = layer.getSource();
-      if (this.hsUtilsService.instOf(source, Cluster)) {
+      if (instOf(source, Cluster)) {
         layersToLookFor.push({
           layer,
           source,
@@ -220,7 +220,7 @@ export class HsMapService {
           layer,
           source: source.getSource(),
         });
-      } else if (this.hsUtilsService.instOf(source, VectorSource)) {
+      } else if (instOf(source, VectorSource)) {
         layersToLookFor.push({
           layer,
           source,
@@ -228,7 +228,7 @@ export class HsMapService {
       }
     };
     this.map.getLayers().forEach((layer) => {
-      if (this.hsUtilsService.instOf(layer, Group)) {
+      if (instOf(layer, Group)) {
         (layer as Group).getLayers().forEach(check);
       } else {
         check(layer);
@@ -711,36 +711,28 @@ export class HsMapService {
    */
   proxifyLayer(lyr: Layer<Source>): void {
     const source = lyr.getSource();
-    if (
-      [ImageWMS, ImageArcGISRest].some((typ) =>
-        this.hsUtilsService.instOf(source, typ),
-      )
-    ) {
+    if ([ImageWMS, ImageArcGISRest].some((typ) => instOf(source, typ))) {
       this.proxifyLayerLoader(lyr, false);
     }
-    if (this.hsUtilsService.instOf(source, WMTS)) {
+    if (instOf(source, WMTS)) {
       (source as WMTS).setTileLoadFunction((i, s) =>
         this.simpleImageryProxy(i as ImageTile, s),
       );
     }
-    if (
-      [TileWMS, TileArcGISRest].some((typ) =>
-        this.hsUtilsService.instOf(source, typ),
-      )
-    ) {
+    if ([TileWMS, TileArcGISRest].some((typ) => instOf(source, typ))) {
       this.proxifyLayerLoader(lyr, true);
     }
     if (
-      this.hsUtilsService.instOf(source, XYZ) &&
-      !this.hsUtilsService.instOf(source, OSM) &&
+      instOf(source, XYZ) &&
+      !instOf(source, OSM) &&
       (source as XYZ).getUrls().every((url) => !url.includes('openstreetmap'))
     ) {
       this.proxifyLayerLoader(lyr, true);
     }
 
-    if (this.hsUtilsService.instOf(source, Static)) {
+    if (instOf(source, Static)) {
       //NOTE: Using url_ is not nice, but don't see other way, because no setUrl or set('url'.. exists yet
-      (source as any).url_ = this.hsUtilsService.proxify(
+      (source as any).url_ = this.hsProxyService.proxify(
         (source as Static).getUrl(),
       );
     }
@@ -755,7 +747,7 @@ export class HsMapService {
     duplicateHandling?: DuplicateHandling,
   ): boolean {
     if (this.layerAlreadyExists(lyr)) {
-      if (this.hsUtilsService.instOf(lyr.getSource(), OSM)) {
+      if (instOf(lyr.getSource(), OSM)) {
         duplicateHandling = DuplicateHandling.RemoveOriginal;
       }
       switch (duplicateHandling) {
@@ -796,7 +788,7 @@ export class HsMapService {
         lyr.setVisible(this.layerTitleInArray(lyr, visibleOverride));
       }
       const source = lyr.getSource();
-      if (this.hsUtilsService.instOf(source, VectorSource)) {
+      if (instOf(source, VectorSource)) {
         this.getVectorType(lyr);
       }
       this.proxifyLayer(lyr);
@@ -1065,7 +1057,7 @@ export class HsMapService {
       };
 
       (image.getImage() as HTMLImageElement).src =
-        this.hsUtilsService.proxify(src); //Previously urlDecodeComponent was called on src, but it breaks in firefox.
+        this.hsProxyService.proxify(src); //Previously urlDecodeComponent was called on src, but it breaks in firefox.
     });
   }
 

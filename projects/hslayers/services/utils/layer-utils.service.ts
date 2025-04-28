@@ -18,7 +18,6 @@ import {Feature, View} from 'ol';
 import {default as FeatureFormat} from 'ol/format/Feature';
 import {Geometry} from 'ol/geom';
 import {HsLayerDescriptor, HsWmsLayer} from 'hslayers-ng/types';
-import {HsUtilsService} from './utils.service';
 import {
   Image as ImageLayer,
   Layer,
@@ -34,15 +33,13 @@ import {
   getShowInLayerManager,
   getTitle,
 } from 'hslayers-ng/common/extensions';
+import {instOf, isFunction} from './utils';
 
 @Injectable({
   providedIn: 'root',
 })
 export class HsLayerUtilsService {
-  constructor(
-    public HsUtilsService: HsUtilsService,
-    private zone: NgZone,
-  ) {}
+  constructor(private zone: NgZone) {}
 
   /**
    * Determines if layer has properties needed for 'Zoom to layer' function.
@@ -116,19 +113,19 @@ export class HsLayerUtilsService {
 
   getURL(layer: Layer<Source>): string {
     const src = layer.getSource();
-    if (this.HsUtilsService.instOf(src, ImageWMS)) {
+    if (instOf(src, ImageWMS)) {
       return (src as ImageWMS).getUrl();
     }
-    if (this.HsUtilsService.instOf(src, TileArcGISRest)) {
+    if (instOf(src, TileArcGISRest)) {
       return (src as TileArcGISRest).getUrls()[0];
     }
-    if (this.HsUtilsService.instOf(src, TileWMS)) {
+    if (instOf(src, TileWMS)) {
       return (src as TileWMS).getUrls()[0];
     }
-    if (this.HsUtilsService.instOf(src, WMTS)) {
+    if (instOf(src, WMTS)) {
       return (src as WMTS).getUrls()[0];
     }
-    if (this.HsUtilsService.instOf(src, XYZ)) {
+    if (instOf(src, XYZ)) {
       return (src as XYZ).getUrls()[0];
     }
     if ((src as any).getUrl) {
@@ -136,7 +133,7 @@ export class HsLayerUtilsService {
       if (typeof tmpUrl == 'string') {
         return tmpUrl;
       }
-      if (this.HsUtilsService.isFunction(tmpUrl)) {
+      if (isFunction(tmpUrl)) {
         return tmpUrl();
       }
     }
@@ -151,15 +148,15 @@ export class HsLayerUtilsService {
    * @returns True for ol.layer.Tile and ol.layer.Image
    */
   isLayerWMS(layer: Layer<Source>): boolean {
-    const isTileLayer = this.HsUtilsService.instOf(layer, TileLayer);
+    const isTileLayer = instOf(layer, TileLayer);
     const src = layer.getSource();
-    const isTileWMSSource = this.HsUtilsService.instOf(src, TileWMS);
+    const isTileWMSSource = instOf(src, TileWMS);
     if (isTileLayer && isTileWMSSource) {
       return true;
     }
     const src2 = layer.getSource();
-    const isImageLayer = this.HsUtilsService.instOf(layer, ImageLayer);
-    const isImageWMSSource = this.HsUtilsService.instOf(src2, ImageWMS);
+    const isImageLayer = instOf(layer, ImageLayer);
+    const isImageWMSSource = instOf(src2, ImageWMS);
     if (isImageLayer && isImageWMSSource) {
       return true;
     }
@@ -167,9 +164,9 @@ export class HsLayerUtilsService {
   }
 
   isLayerWMTS(layer: Layer<Source>): boolean {
-    const isTileLayer = this.HsUtilsService.instOf(layer, TileLayer);
+    const isTileLayer = instOf(layer, TileLayer);
     const src = layer.getSource();
-    const isWMTSSource = this.HsUtilsService.instOf(src, WMTS);
+    const isWMTSSource = instOf(src, WMTS);
     if (isTileLayer && isWMTSSource) {
       return true;
     }
@@ -177,9 +174,9 @@ export class HsLayerUtilsService {
   }
 
   isLayerXYZ(layer: Layer<Source>): boolean {
-    const isTileLayer = this.HsUtilsService.instOf(layer, TileLayer);
+    const isTileLayer = instOf(layer, TileLayer);
     const src = layer.getSource();
-    const isXYZSource = this.HsUtilsService.instOf(src, XYZ);
+    const isXYZSource = instOf(src, XYZ);
     if (isTileLayer && isXYZSource) {
       return true;
     }
@@ -187,9 +184,9 @@ export class HsLayerUtilsService {
   }
 
   isLayerArcgis(layer: Layer<Source>): boolean {
-    const isTileLayer = this.HsUtilsService.instOf(layer, TileLayer);
+    const isTileLayer = instOf(layer, TileLayer);
     const src = layer.getSource();
-    const isArcgisSource = this.HsUtilsService.instOf(src, TileArcGISRest);
+    const isArcgisSource = instOf(src, TileArcGISRest);
     if (isTileLayer && isArcgisSource) {
       return true;
     }
@@ -197,9 +194,9 @@ export class HsLayerUtilsService {
   }
 
   isLayerIDW(layer: Layer<Source>): boolean {
-    const isImageLayer = this.HsUtilsService.instOf(layer, ImageLayer);
+    const isImageLayer = instOf(layer, ImageLayer);
     const src = layer.getSource();
-    const isIDWSource = this.HsUtilsService.instOf(src, IDW);
+    const isIDWSource = instOf(src, IDW);
     if (isImageLayer && isIDWSource) {
       return true;
     }
@@ -223,22 +220,21 @@ export class HsLayerUtilsService {
    */
   isLayerVectorLayer(layer: BaseLayer, includingClusters = true): boolean {
     if (
-      (this.HsUtilsService.instOf(layer, VectorLayer) ||
-        this.HsUtilsService.instOf(layer, VectorImage)) &&
+      (instOf(layer, VectorLayer) || instOf(layer, VectorImage)) &&
       /**
        * This part is not entirely correct as we cast both VectorLayer and VectorImage
        * as VectorLayer but the differences are not relevant for the sake of the check
        */
       includingClusters
-        ? this.HsUtilsService.instOf(
+        ? instOf(
             (layer as VectorLayer<VectorSource<Feature>>).getSource(),
             Cluster,
           ) ||
-          this.HsUtilsService.instOf(
+          instOf(
             (layer as VectorLayer<VectorSource<Feature>>).getSource(),
             VectorSource,
           )
-        : this.HsUtilsService.instOf(
+        : instOf(
             (layer as VectorLayer<VectorSource<Feature>>).getSource(),
             VectorSource,
           )
@@ -255,7 +251,7 @@ export class HsLayerUtilsService {
    */
   async isLayerGeoJSONSource(layer: Layer<Source>): Promise<boolean> {
     const GeoJSON = (await import('ol/format/GeoJSON')).default;
-    if (this.HsUtilsService.instOf(this.getLayerSourceFormat(layer), GeoJSON)) {
+    if (instOf(this.getLayerSourceFormat(layer), GeoJSON)) {
       return true;
     }
     return false;
@@ -268,9 +264,7 @@ export class HsLayerUtilsService {
    */
   async isLayerTopoJSONSource(layer: Layer<Source>): Promise<boolean> {
     const TopoJSON = (await import('ol/format/TopoJSON')).default;
-    if (
-      this.HsUtilsService.instOf(this.getLayerSourceFormat(layer), TopoJSON)
-    ) {
+    if (instOf(this.getLayerSourceFormat(layer), TopoJSON)) {
       return true;
     }
     return false;
@@ -283,7 +277,7 @@ export class HsLayerUtilsService {
    */
   async isLayerKMLSource(layer: Layer<Source>): Promise<boolean> {
     const KML = (await import('ol/format/KML')).default;
-    if (this.HsUtilsService.instOf(this.getLayerSourceFormat(layer), KML)) {
+    if (instOf(this.getLayerSourceFormat(layer), KML)) {
       return true;
     }
     return false;
@@ -296,7 +290,7 @@ export class HsLayerUtilsService {
    */
   async isLayerGPXSource(layer: Layer<Source>): Promise<boolean> {
     const GPX = (await import('ol/format/GPX')).default;
-    if (this.HsUtilsService.instOf(this.getLayerSourceFormat(layer), GPX)) {
+    if (instOf(this.getLayerSourceFormat(layer), GPX)) {
       return true;
     }
     return false;
@@ -323,26 +317,26 @@ export class HsLayerUtilsService {
 
   getLayerParams(layer: Layer<Source>): Record<string, any> {
     const src = layer.getSource();
-    if (this.HsUtilsService.instOf(src, ImageWMS)) {
+    if (instOf(src, ImageWMS)) {
       return this.getSourceParams(src as ImageWMS);
     }
-    if (this.HsUtilsService.instOf(src, TileWMS)) {
+    if (instOf(src, TileWMS)) {
       return this.getSourceParams(src as TileWMS);
     }
-    if (this.HsUtilsService.instOf(src, TileArcGISRest)) {
+    if (instOf(src, TileArcGISRest)) {
       return this.getSourceParams(src as TileArcGISRest);
     }
   }
 
   updateLayerParams(layer: Layer<Source>, params: any): void {
     const src = layer.getSource();
-    if (this.HsUtilsService.instOf(src, ImageWMS)) {
+    if (instOf(src, ImageWMS)) {
       (src as ImageWMS).updateParams(params);
     }
-    if (this.HsUtilsService.instOf(src, TileWMS)) {
+    if (instOf(src, TileWMS)) {
       (src as TileWMS).updateParams(params);
     }
-    if (this.HsUtilsService.instOf(src, TileArcGISRest)) {
+    if (instOf(src, TileArcGISRest)) {
       (src as TileArcGISRest).updateParams(params);
     }
   }
@@ -457,7 +451,7 @@ export class HsLayerUtilsService {
   isLayerClustered(layer: Layer<Source>): boolean {
     return this.isLayerVectorLayer(layer) &&
       getCluster(layer) &&
-      this.HsUtilsService.instOf(layer.getSource(), Cluster)
+      instOf(layer.getSource(), Cluster)
       ? true
       : false;
   }

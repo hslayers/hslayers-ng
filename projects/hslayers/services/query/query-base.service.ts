@@ -1,5 +1,5 @@
 import {DomSanitizer, SafeHtml} from '@angular/platform-browser';
-import {Injectable, NgZone} from '@angular/core';
+import {Inject, Injectable, NgZone, PLATFORM_ID} from '@angular/core';
 import {Subject} from 'rxjs';
 
 import {Circle as CircleStyle, Fill, Stroke, Style} from 'ol/style';
@@ -18,8 +18,8 @@ import {HsLanguageService} from 'hslayers-ng/services/language';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsMapService} from 'hslayers-ng/services/map';
 import {HsSaveMapService} from 'hslayers-ng/services/save-map';
-import {HsUtilsService} from 'hslayers-ng/services/utils';
 import {HsFeatureDescriptor} from 'hslayers-ng/types';
+import {isPlatformBrowser} from '@angular/common';
 
 export type HsProjectedCoordinatesDescription = {
   /**
@@ -84,11 +84,11 @@ export class HsQueryBaseService {
     private hsConfig: HsConfig,
     private hsLayoutService: HsLayoutService,
     private hsLanguageService: HsLanguageService,
-    private hsUtilsService: HsUtilsService,
     private hsEventBusService: HsEventBusService,
     private hsSaveMapService: HsSaveMapService,
     private domSanitizer: DomSanitizer,
     private zone: NgZone,
+    @Inject(PLATFORM_ID) private platformId: any,
   ) {
     this.vectorSelectorCreated.subscribe((selector) => {
       this.selector = selector;
@@ -156,7 +156,7 @@ export class HsQueryBaseService {
    * @returns HTML frame element, if the app is running in a browser
    */
   getInvisiblePopup(): HTMLIFrameElement {
-    if (this.hsUtilsService.runningInBrowser()) {
+    if (isPlatformBrowser(this.platformId)) {
       return <HTMLIFrameElement>document.getElementById('invisible_popup');
     }
   }

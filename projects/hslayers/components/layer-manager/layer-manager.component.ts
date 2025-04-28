@@ -39,7 +39,6 @@ import {
 } from 'hslayers-ng/services/layer-manager';
 import {HsPanelBaseComponent} from 'hslayers-ng/common/panels';
 import {HsRemoveLayerDialogService} from 'hslayers-ng/common/remove-multiple';
-import {HsUtilsService} from 'hslayers-ng/services/utils';
 import {HslayersService} from 'hslayers-ng/core';
 import {
   getActive,
@@ -126,7 +125,6 @@ export class HsLayerManagerComponent
   layerTooltipDelay = 0;
   constructor(
     public hsCore: HslayersService,
-    public hsUtilsService: HsUtilsService,
     public hsLayerManagerService: HsLayerManagerService,
     public hsEventBusService: HsEventBusService,
     public hsDialogContainerService: HsDialogContainerService,

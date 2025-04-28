@@ -12,7 +12,7 @@ import {unByKey} from 'ol/Observable';
 
 import {HsConfig} from 'hslayers-ng/config';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
-import {HsLayerUtilsService, HsUtilsService} from 'hslayers-ng/services/utils';
+import {HsLayerUtilsService, HsProxyService} from 'hslayers-ng/services/utils';
 import {HsMapService} from 'hslayers-ng/services/map';
 import {HsStylerService} from 'hslayers-ng/services/styler';
 import {setShowInLayerManager, setTitle} from 'hslayers-ng/common/extensions';
@@ -29,12 +29,12 @@ export class HsSearchService {
 
   constructor(
     private http: HttpClient,
-    public hsUtilsService: HsUtilsService,
-    public hsConfig: HsConfig,
-    public hsMapService: HsMapService,
-    public hsStylerService: HsStylerService,
-    public hsEventBusService: HsEventBusService,
-    public hsLayerUtilsService: HsLayerUtilsService,
+    private hsConfig: HsConfig,
+    private hsMapService: HsMapService,
+    private hsStylerService: HsStylerService,
+    private hsEventBusService: HsEventBusService,
+    private hsLayerUtilsService: HsLayerUtilsService,
+    private hsProxyService: HsProxyService,
   ) {
     this.searchResultsLayer = new VectorLayer({
       source: new VectorSource({}),
@@ -76,12 +76,12 @@ export class HsSearchService {
           url = `http://api.geonames.org/searchJSON?&name_startsWith=${query}&username=${this.hsConfig.geonamesUser}`;
         } else {
           //Username will have to be set in proxy
-          url = this.hsUtilsService.proxify(
+          url = this.hsProxyService.proxify(
             `http://api.geonames.org/searchJSON?&name_startsWith=${query}`,
           );
         }
         if (window.location.protocol == 'https:') {
-          url = this.hsUtilsService.proxify(url);
+          url = this.hsProxyService.proxify(url);
         }
       } else if (provider == 'sdi4apps_openapi') {
         url = 'http://portal.sdi4apps.eu/openapi/search?q=' + query;
@@ -255,7 +255,7 @@ export class HsSearchService {
       const feature = new Feature({
         geometry: new Point(this.getResultCoordinate(result)),
         record: result,
-        id: this.hsUtilsService.generateUuid(),
+        id: crypto.randomUUID(),
       });
       feature.setId(feature.get('id'));
       src.addFeature(feature);

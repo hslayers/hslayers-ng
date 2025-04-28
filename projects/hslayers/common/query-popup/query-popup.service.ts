@@ -12,7 +12,7 @@ import {
 import {HsQueryPopupBaseService} from './query-popup-base.service';
 import {HsQueryPopupServiceModel} from './query-popup.service.model';
 import {HsQueryPopupWidgetContainerService} from './query-popup-widget-container.service';
-import {HsUtilsService} from 'hslayers-ng/services/utils';
+import {debounce} from 'hslayers-ng/services/utils';
 
 @Injectable({
   providedIn: 'root',
@@ -24,18 +24,12 @@ export class HsQueryPopupService
   constructor(
     public hsMapService: HsMapService,
     private hsConfig: HsConfig,
-    public hsUtilsService: HsUtilsService,
     public zone: NgZone,
     private HsQueryBaseService: HsQueryBaseService,
     public hsQueryPopupWidgetContainerService: HsQueryPopupWidgetContainerService,
     private hsQueryVectorService: HsQueryVectorService,
   ) {
-    super(
-      hsMapService,
-      hsUtilsService,
-      zone,
-      hsQueryPopupWidgetContainerService,
-    );
+    super(hsMapService, zone, hsQueryPopupWidgetContainerService);
 
     this.hsMapService.loaded().then((map) => {
       if (
@@ -44,12 +38,7 @@ export class HsQueryPopupService
       ) {
         map.on(
           'pointermove',
-          this.hsUtilsService.debounce(
-            (e) => this.preparePopup(e),
-            200,
-            false,
-            this,
-          ),
+          debounce((e) => this.preparePopup(e), 200, false, this),
         );
       } else if (
         this.hsConfig.popUpDisplay &&
@@ -57,12 +46,7 @@ export class HsQueryPopupService
       ) {
         map.on(
           'singleclick',
-          this.hsUtilsService.debounce(
-            (e) => this.preparePopup(e),
-            200,
-            false,
-            this,
-          ),
+          debounce((e) => this.preparePopup(e), 200, false, this),
         );
       }
     });

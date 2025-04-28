@@ -6,7 +6,6 @@ import {HsConfig} from 'hslayers-ng/config';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsLanguageService} from 'hslayers-ng/services/language';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
-import {HsUtilsService} from 'hslayers-ng/services/utils';
 
 @Injectable({
   providedIn: 'root',
@@ -185,7 +184,6 @@ export class HsSidebarService {
     public hsConfig: HsConfig,
     public HsLanguageService: HsLanguageService,
     public HsEventBusService: HsEventBusService,
-    public HsUtilsService: HsUtilsService,
   ) {
     this.buttons = this.buttonsSubject.asObservable();
     this.HsLayoutService.mainpanel$.subscribe((which) => {

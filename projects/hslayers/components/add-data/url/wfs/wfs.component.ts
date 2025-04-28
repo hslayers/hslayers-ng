@@ -5,7 +5,6 @@ import {
   HsAddDataOwsService,
   HsUrlWfsService,
 } from 'hslayers-ng/services/add-data';
-import {HsUtilsService} from 'hslayers-ng/services/utils';
 
 @Component({
   selector: 'hs-url-wfs',
@@ -18,6 +17,5 @@ export class HsUrlWfsComponent {
     public hsUrlWfsService: HsUrlWfsService,
     public hsAddDataOwsService: HsAddDataOwsService,
     public hsAddDataCommonService: HsAddDataCommonService,
-    public hsUtilsService: HsUtilsService,
   ) {}
 }

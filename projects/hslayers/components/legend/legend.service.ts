@@ -16,7 +16,12 @@ import {
 import {Style} from 'ol/style';
 
 import {HsLayerSelectorService} from 'hslayers-ng/services/layer-manager';
-import {HsLayerUtilsService, HsUtilsService} from 'hslayers-ng/services/utils';
+import {
+  getParamsFromUrl,
+  HsLayerUtilsService,
+  HsProxyService,
+  instOf,
+} from 'hslayers-ng/services/utils';
 import {HsLegendDescriptor} from './legend-descriptor.interface';
 import {HsLogService} from 'hslayers-ng/services/log';
 import {HsStylerService, defaultStyle} from 'hslayers-ng/services/styler';
@@ -37,12 +42,12 @@ import {
 })
 export class HsLegendService {
   constructor(
-    public hsUtilsService: HsUtilsService,
     public hsStylerService: HsStylerService,
     private hsLayerUtilsService: HsLayerUtilsService,
     public hsLayerSelectorService: HsLayerSelectorService,
     private hsLog: HsLogService,
     private sanitizer: DomSanitizer,
+    private hsProxyService: HsProxyService,
   ) {
     this.hsLayerSelectorService.layerSelected
       .pipe(filter((layer) => !!layer))
@@ -170,7 +175,7 @@ export class HsLegendService {
     const version = params.VERSION || '1.3.0';
     let source_url = this.hsLayerUtilsService.getURL(layer);
     if (source_url.indexOf('proxy4ows') > -1) {
-      const params = this.hsUtilsService.getParamsFromUrl(source_url);
+      const params = getParamsFromUrl(source_url);
       source_url = params.OWSURL;
     }
     const legendImage = getLegends(layer);
@@ -189,7 +194,7 @@ export class HsLegendService {
         getEnableProxy(layer) === undefined ||
         getEnableProxy(layer) == true
       ) {
-        source_url = this.hsUtilsService.proxify(source_url);
+        source_url = this.hsProxyService.proxify(source_url);
       }
       return source_url;
     }
@@ -267,10 +272,7 @@ export class HsLegendService {
         svg: await this.setSvg(layer),
       };
     }
-    if (
-      this.hsUtilsService.instOf(layer, ImageLayer) &&
-      this.hsUtilsService.instOf(layer.getSource(), Static)
-    ) {
+    if (instOf(layer, ImageLayer) && instOf(layer.getSource(), Static)) {
       return {
         title: getTitle(layer),
         lyr: layer,
@@ -278,7 +280,7 @@ export class HsLegendService {
         visible: layer.getVisible(),
       };
     }
-    if (this.hsUtilsService.instOf(layer.getSource(), XYZ)) {
+    if (instOf(layer.getSource(), XYZ)) {
       return {
         title: getTitle(layer),
         lyr: layer,
@@ -286,7 +288,7 @@ export class HsLegendService {
         visible: layer.getVisible(),
       };
     }
-    if (this.hsUtilsService.instOf(layer.getSource(), InterpolatedSource)) {
+    if (instOf(layer.getSource(), InterpolatedSource)) {
       return this.generateInterpolatedLayerLegend(layer);
     }
     return undefined;

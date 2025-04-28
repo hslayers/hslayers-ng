@@ -11,7 +11,7 @@ import {lastValueFrom} from 'rxjs';
 import {HsLanguageService} from 'hslayers-ng/services/language';
 import {
   HsLayerUtilsService,
-  HsUtilsService,
+  HsProxyService,
   instOf,
 } from 'hslayers-ng/services/utils';
 import {HsLogService} from 'hslayers-ng/services/log';
@@ -37,11 +37,11 @@ export class HsQueryWmsService {
     private hsMapService: HsMapService,
     private hsLayerUtilsService: HsLayerUtilsService,
     private hsLanguageService: HsLanguageService,
-    private hsUtilsService: HsUtilsService,
     private httpClient: HttpClient,
     private hsLogService: HsLogService,
     private hsQueryWmtsService: HsQueryWmtsService,
     private hsQueryBaseService: HsQueryBaseService,
+    private hsProxyService: HsProxyService,
   ) {
     this.hsQueryBaseService.getFeatureInfoStarted.subscribe((evt) => {
       this.infoCounter = 0;
@@ -83,7 +83,7 @@ export class HsQueryWmsService {
       this.hsQueryBaseService.multiWmsQuery = true;
     }
 
-    const req_url = this.hsUtilsService.proxify(url);
+    const req_url = this.hsProxyService.proxify(url);
     const reqHash = this.hsQueryBaseService.currentQuery;
     try {
       const headers = new Headers({'Content-Type': 'text'});

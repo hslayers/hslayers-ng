@@ -1,587 +1,175 @@
-import {HttpClient} from '@angular/common/http';
-import {Inject, Injectable, PLATFORM_ID} from '@angular/core';
-import {isPlatformBrowser} from '@angular/common';
-
 import {LineString, Polygon} from 'ol/geom';
 import {ProjectionLike, get as getProjection, transform} from 'ol/proj';
+
 import {getArea, getDistance} from 'ol/sphere';
-import {lastValueFrom} from 'rxjs';
+import {Measurement} from 'hslayers-ng/types';
 
-import {BoundingBoxObject} from 'hslayers-ng/types';
-import {HsConfig} from 'hslayers-ng/config';
-import {HsLogService} from 'hslayers-ng/services/log';
-
-export type Measurement = {
-  size: number;
-  type: string;
-  unit: string;
-};
-
-@Injectable({
-  providedIn: 'root',
-})
-export class HsUtilsService {
-  private laymanUrl: string;
-
-  constructor(
-    public hsConfig: HsConfig,
-    private http: HttpClient,
-    private LogService: HsLogService,
-    @Inject(PLATFORM_ID) private platformId: any,
-  ) {}
-
-  /**
-   * Register Layman endpoints to avoid proxifying them
-   * @param endpoints - Layman endpoints to register
-   */
-  registerLaymanEndpoints(url: string): void {
-    this.laymanUrl = url;
-  }
-
-  /**
-   * Proxify URL if enabled.
-   * @param url - URL to proxify
-   * @returns Encoded URL with path to hslayers-server proxy or original URL if proxification not needed
-   */
-  proxify(url: string): string {
-    // Early returns for URLs that should never be proxified
-    if (this.shouldSkipProxification(url)) {
-      return url;
-    }
-
-    // Apply proxy if enabled
-    if (
-      this.hsConfig.useProxy === undefined ||
-      this.hsConfig.useProxy === true
-    ) {
-      const proxyPrefix = this.hsConfig.proxyPrefix || '/proxy/';
-      return `${proxyPrefix}${url}`;
-    }
-
-    return url;
-  }
-
-  /**
-   * Checks if URL should skip proxification based on predefined rules
-   * @param url - URL to check
-   * @returns boolean indicating if proxification should be skipped
-   */
-  private shouldSkipProxification(url: string): boolean {
-    // Don't proxify if it's already proxified
-    if (
-      this.hsConfig.proxyPrefix &&
-      url.startsWith(this.hsConfig.proxyPrefix)
-    ) {
-      return true;
-    }
-
-    // Don't proxify Layman endpoints
-    if (this.laymanUrl && url.startsWith(this.laymanUrl)) {
-      return true;
-    }
-
-    // Don't proxify data URLs
-    if (url.startsWith('data:application')) {
-      return true;
-    }
-
-    // Don't proxify if URL is from the same origin
-    if (this.isFromSameOrigin(url)) {
-      return true;
-    }
-
-    return false;
-  }
-
-  /**
-   * Checks if URL is from the same origin as the application
-   * @param url - URL to check
-   * @returns boolean indicating if URL is from the same origin
-   */
-  private isFromSameOrigin(url: string): boolean {
-    const windowUrlPosition = url.indexOf(window.location.origin);
-
-    // Check if URL is not from the same origin (matching original logic)
-    if (
-      windowUrlPosition === -1 ||
-      windowUrlPosition > 7 ||
-      this.getPortFromUrl(url) !== this.getPortFromUrl(window.location.origin)
-    ) {
-      return false;
-    }
-
-    return true;
-  }
-
-  /**
-   * @param url - URL to shorten
-   * @returns Shortened URL
-   * Promise which shortens URL by using some URL shortener.
-   * By default tinyurl is used, but user provided function in config.shortenUrl can be used.
-   * @example
-   * ```typescript
-   * function(url) {
-            return new Promise(function(resolve, reject){
-                $http.get("http://tinyurl.com/api-create.php?url=" + url, {
-                    longUrl: url
-                }).then(function(response) {
-                    resolve(response.data);
-                }).catch(function(err) {
-                    reject()
-                })
-            })
-        }
-   * ```
-   */
-  async shortUrl(url: string): Promise<any> {
-    if (this.hsConfig.shortenUrl != undefined) {
-      return this.hsConfig.shortenUrl(url);
-    }
-    return await lastValueFrom(
-      this.http.get(
-        this.proxify('http://tinyurl.com/api-create.php?url=' + url),
-        {
-          responseType: 'text',
-        },
-      ),
-    );
-  }
-
-  /**
-   * @param url - URL for which to determine port number
-   * @returns Port number
-   */
-  getPortFromUrl(url: string): string {
-    if (this.runningInBrowser()) {
-      const link = document.createElement('a');
-      link.setAttribute('href', url);
-      if (link.port == '') {
-        if (url.startsWith('https://')) {
-          return '443';
-        }
-        if (url.startsWith('http://')) {
-          return '80';
-        }
+/**
+ * @param url - URL for which to determine port number
+ * @returns Port number
+ */
+export function getPortFromUrl(url: string): string {
+  if (this.runningInBrowser()) {
+    const link = document.createElement('a');
+    link.setAttribute('href', url);
+    if (link.port == '') {
+      if (url.startsWith('https://')) {
+        return '443';
       }
-      return link.port;
-    }
-  }
-
-  runningInBrowser(): boolean {
-    return isPlatformBrowser(this.platformId);
-  }
-
-  /**
-   * Parse parameters and their values from URL string
-   * @param str - URL to parse parameters from
-   * @returns Object with parsed parameters as properties
-   */
-  getParamsFromUrl(str: string): any {
-    if (typeof str !== 'string') {
-      return {};
-    }
-
-    if (str.includes('?')) {
-      str = str.substring(str.indexOf('?') + 1);
-    } else {
-      return {};
-    }
-
-    return str
-      .trim()
-      .split('&')
-      .reduce((ret, param) => {
-        if (!param) {
-          return ret;
-        }
-        const parts = param.replace(/\+/g, ' ').split('=');
-        let key = parts[0];
-        let val = parts[1];
-        key = decodeURIComponent(key);
-        // missing `=` should be `null`:
-        // http://w3.org/TR/2012/WD-url-20120524/#collect-url-parameters
-        val = val === undefined ? null : decodeURIComponent(val);
-
-        if (!ret.hasOwnProperty(key)) {
-          ret[key] = val;
-        } else if (Array.isArray(ret[key])) {
-          ret[key].push(val);
-        } else {
-          ret[key] = [ret[key], val];
-        }
-        return ret;
-      }, {});
-  }
-
-  /**
-   * Create encoded URL string from object with parameters
-   * @param params - Parameter object with parameter key-value pairs
-   * @returns Joined encoded URL query string
-   */
-  paramsToURL(params: any): string {
-    const pairs = [];
-    for (const key in params) {
-      if (params.hasOwnProperty(key) && params[key] !== undefined) {
-        pairs.push(
-          encodeURIComponent(key) + '=' + encodeURIComponent(params[key]),
-        );
+      if (url.startsWith('http://')) {
+        return '80';
       }
     }
-    return pairs.join('&');
-  }
-
-  /**
-   * Insert every element in the set of matched elements after the target.
-   * @param newNode - Element to insert
-   * @param referenceNode - Element after which to insert
-   */
-  insertAfter(newNode, referenceNode): void {
-    if (newNode.length !== undefined && newNode.length > 0) {
-      newNode = newNode[0];
-    }
-    referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
-  }
-
-  /**
-   * Create URL string from object with parameters without encoding
-   * @param params - Parameter object with parameter key-value pairs
-   * @returns Joined URL query string
-   */
-  paramsToURLWoEncode(params): string {
-    const pairs = [];
-    for (const key in params) {
-      if (params.hasOwnProperty(key)) {
-        pairs.push(key + '=' + params[key]);
-      }
-    }
-    return pairs.join('&');
-  }
-
-  /**
-   * Returns a function, that, as long as it continues to be
-   * invoked, will not be triggered.
-   * (https://davidwalsh.name/javascript-debounce-function)
-   * @param func - Function to execute with throttling
-   * @param wait - The function will be called after it stops
-   * being called for N milliseconds.
-   * @param immediate - If `immediate` is passed, trigger the
-   * function on the leading edge, instead of the trailing.
-   * @param context - Context element which stores the timeout handle
-   * @returns Returns function which is debounced
-   */
-  debounce(func, wait: number, immediate: boolean, context) {
-    // eslint-disable-next-line @typescript-eslint/no-this-alias
-    context ??= this;
-    return function (...args) {
-      const later = function () {
-        if (!immediate) {
-          func.apply(context, args);
-        }
-        context.timeout = null;
-      };
-      const callNow = immediate && !context.timeout;
-      clearTimeout(context.timeout);
-      context.timeout = setTimeout(later, wait);
-      if (callNow) {
-        func.apply(context, args);
-      }
-    };
-  }
-
-  /**
-   * Generate randomized UUID
-   * @returns Random uuid
-   */
-  generateUuid(): string {
-    return generateUuid();
-  }
-
-  /**
-   * Generates CSS color from given range and value for which to have color
-   * Based on http://stackoverflow.com/a/7419630
-   * This function generates vibrant, "evenly spaced" colours (i.e. no clustering).
-   * This is ideal for creating easily distinguishable vibrant markers in Google Maps and other apps.
-   * Adam Cole, 2011-Sept-14
-   * HSV to RBG adapted from: http://mjijackson.com/2008/02/rgb-to-hsl-and-rgb-to-hsv-color-model-conversion-algorithms-in-javascript
-   * @param numOfSteps - Maximum value which is the last color in rainbow
-   * @param step - Current value to get color for
-   * @param opacity - Opacity from 0 to 1
-   * @returns CSS color string (rgba(0, 0, 0, 1))
-   */
-  rainbow(numOfSteps: number, step: number, opacity: number | string): string {
-    let rgb = [0, 0, 0];
-    const h = step / (numOfSteps * 1.00000001);
-    const i = ~~(h * 4);
-    const f = h * 4 - i;
-    const q = 1 - f;
-    switch (i % 4) {
-      case 2:
-        rgb = [f, 1, 0];
-        break;
-      case 0:
-      default:
-        rgb = [0, f, 1];
-        break;
-      case 3:
-        rgb = [1, q, 0];
-        break;
-      case 1:
-        rgb = [0, 1, q];
-        break;
-    }
-    const [r, g, b] = rgb;
-    const c =
-      'rgba(' +
-      ~~(r * 235) +
-      ',' +
-      ~~(g * 235) +
-      ',' +
-      ~~(b * 235) +
-      ', ' +
-      opacity +
-      ')';
-    return c;
-  }
-
-  /**
-   * Creates a deep copy of the input object
-   * @param from - object to deep copy
-   * @param to - optional target for copy
-   * @returns a deep copy of input object
-   */
-  structuredClone(from, to?) {
-    if (from === null || typeof from !== 'object') {
-      return from;
-    }
-    if (from.constructor != Object && from.constructor != Array) {
-      return from;
-    }
-    if (
-      from.constructor == Date ||
-      from.constructor == RegExp ||
-      from.constructor == Function ||
-      from.constructor == String ||
-      from.constructor == Number ||
-      from.constructor == Boolean
-    ) {
-      return new from.constructor(from);
-    }
-    to = to || new from.constructor();
-    for (const key in from) {
-      to[key] =
-        typeof to[key] == 'undefined'
-          ? this.structuredClone(from[key])
-          : to[key];
-    }
-    return to;
-  }
-
-  /**
-   * Check if object is a function
-   
-   * @returns true when input is a function, false otherwise
-   */
-  isFunction(functionToCheck: any): boolean {
-    return isFunction(functionToCheck);
-  }
-
-  /**
-   * Check if object is plain object (not function, not array, not class)
-   
-   * @returns true when input is plain old JavaScript object, false otherwise
-   */
-  isPOJO(objectToCheck: any): boolean {
-    return (
-      objectToCheck && {}.toString.call(objectToCheck) === '[object Object]'
-    );
-  }
-
-  /**
-   * Remove duplicate items from an array
-   * @param dirtyArray - Array with possible duplicate objects
-   * @param property - Property of objects which must be unique in the new array.
-   * Use dot symbol (".") to denote a property chain in nested object.
-   * Function will return an empty array if it won't find the property in the object.
-   * @returns Array without duplicate objects
-   */
-  removeDuplicates(dirtyArray: any[], property: string): any {
-    const propertyChain = property.split('.');
-    const flatArray = [...dirtyArray];
-    for (const prop of propertyChain) {
-      for (const idx in flatArray) {
-        if (flatArray[idx] === undefined) {
-          this.LogService.error(`Property "${prop}" not found in object.`);
-          return [];
-        }
-        flatArray[idx] =
-          flatArray[idx].get !== undefined
-            ? flatArray[idx].get(
-                prop,
-              ) /* get() is only defined for OL objects */
-            : flatArray[idx][prop]; /* POJO access */
-      }
-    }
-    return dirtyArray.filter((item, position) => {
-      let propertyValue = item;
-      for (const prop of propertyChain) {
-        propertyValue =
-          propertyValue.get !== undefined
-            ? propertyValue.get(prop) /* get() is only defined for OL objects */
-            : propertyValue[prop]; /* POJO access */
-      }
-      return flatArray.indexOf(propertyValue) === position;
-    });
-  }
-
-  hashCode(s: string): number {
-    let hash = 0;
-    if (s.length == 0) {
-      return hash;
-    }
-    for (let i = 0; i < s.length; i++) {
-      const char = s.charCodeAt(i);
-      hash = (hash << 5) - hash + char;
-      hash = hash & hash; // Convert to 32bit integer
-    }
-    return hash;
-  }
-
-  /**
-   * Replaces input string text with replacement text
-   * @param target - Target string
-   * @param search - String to look for
-   * @param replacement - Replacement value
-   * @returns Returns modified string
-   */
-  replaceAll(target: string, search: string, replacement: string): string {
-    return target.replace(new RegExp(search, 'g'), replacement);
-  }
-
-  resolveEsModule(module) {
-    if (module.default) {
-      return module.default;
-    }
-    return module;
-  }
-
-  /**
-   * Replaces first string letter to UpperCase
-   * @param target - Target string
-   * @returns modified string
-   */
-  capitalizeFirstLetter(target: string): string {
-    return target.charAt(0).toUpperCase() + target.slice(1);
-  }
-
-  /**
-   * Transforms string from camelCase to kebab-case
-   */
-  camelToKebab(str) {
-    return str.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
-  }
-
-  /**
-   * Returns undefined if string is undefined or empty
-   */
-  undefineEmptyString(str: string): any {
-    if (str === undefined) {
-      return undefined;
-    }
-    return str.trim() != '' ? str : undefined;
-  }
-
-  isOverflown(element: Element): boolean {
-    return (
-      element.scrollHeight > element.clientHeight ||
-      element.scrollWidth > element.clientWidth
-    );
-  }
-
-  /**
-   * Compute and format line length with correct units (m/km)
-   
-   * @returns numeric length of line with used units
-   */
-  formatLength(line: LineString, sourceProj: ProjectionLike): Measurement {
-    let length = 0;
-    const coordinates = line.getCoordinates();
-    const sourceProjRegistered = getProjection(sourceProj);
-
-    for (let i = 0; i < coordinates.length - 1; ++i) {
-      const c1 = sourceProjRegistered
-        ? transform(coordinates[i], sourceProj, 'EPSG:4326')
-        : coordinates[i];
-      const c2 = sourceProjRegistered
-        ? transform(coordinates[i + 1], sourceProj, 'EPSG:4326')
-        : coordinates[i + 1];
-      length += getDistance(c1, c2);
-    }
-
-    const output = {
-      size: length,
-      type: 'Length',
-      unit: 'm',
-    };
-
-    if (length > 100) {
-      output.size = Math.round((length / 1000) * 100) / 100;
-      output.unit = 'km';
-    } else {
-      output.size = Math.round(length * 100) / 100;
-      output.unit = 'm';
-    }
-    return output;
-  }
-
-  instOf(obj: any, type: any): boolean {
-    return instOf(obj, type);
-  }
-
-  /**
-   * Compute and format polygon area with correct units (m2/km2)
-   * @returns area of polygon with used units
-   */
-  formatArea(polygon: Polygon, sourceProj: ProjectionLike): Measurement {
-    const area = Math.abs(getArea(polygon));
-    const output = {
-      size: area,
-      type: 'Area',
-      unit: 'm',
-    };
-    if (area > 10000) {
-      output.size = Math.round((area / 1000000) * 100) / 100;
-      output.unit = 'km';
-    } else {
-      output.size = Math.round(area * 100) / 100;
-      output.unit = 'm';
-    }
-    return output;
-  }
-
-  /**
-   * Get bounding box from object \{east: value, south: value, west: value, north: value\}
-   * @param bbox - Bounding box
-   * @returns Returns bounding box as number array
-   */
-  getBboxFromObject(bbox: number[] | BoundingBoxObject): number[] {
-    if (bbox && !Array.isArray(bbox)) {
-      return [
-        parseFloat(bbox.east),
-        parseFloat(bbox.south),
-        parseFloat(bbox.west),
-        parseFloat(bbox.north),
-      ];
-    }
-    return bbox as number[];
+    return link.port;
   }
 }
 
-export function generateUuid(): string {
-  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
-    const r = (Math.random() * 16) | 0,
-      v = c == 'x' ? r : (r & 0x3) | 0x8;
-    return v.toString(16);
-  });
+/**
+ * Parse parameters and their values from URL string
+ * @param str - URL to parse parameters from
+ * @returns Object with parsed parameters as properties
+ */
+export function getParamsFromUrl(str: string): any {
+  if (typeof str !== 'string') {
+    return {};
+  }
+
+  if (str.includes('?')) {
+    str = str.substring(str.indexOf('?') + 1);
+  } else {
+    return {};
+  }
+
+  return str
+    .trim()
+    .split('&')
+    .reduce((ret, param) => {
+      if (!param) {
+        return ret;
+      }
+      const parts = param.replace(/\+/g, ' ').split('=');
+      let key = parts[0];
+      let val = parts[1];
+      key = decodeURIComponent(key);
+      // missing `=` should be `null`:
+      // http://w3.org/TR/2012/WD-url-20120524/#collect-url-parameters
+      val = val === undefined ? null : decodeURIComponent(val);
+
+      if (!ret.hasOwnProperty(key)) {
+        ret[key] = val;
+      } else if (Array.isArray(ret[key])) {
+        ret[key].push(val);
+      } else {
+        ret[key] = [ret[key], val];
+      }
+      return ret;
+    }, {});
+}
+
+/**
+ * Create encoded URL string from object with parameters
+ * @param params - Parameter object with parameter key-value pairs
+ * @returns Joined encoded URL query string
+ */
+export function paramsToURL(params: any): string {
+  const pairs = [];
+  for (const key in params) {
+    if (params.hasOwnProperty(key) && params[key] !== undefined) {
+      pairs.push(
+        encodeURIComponent(key) + '=' + encodeURIComponent(params[key]),
+      );
+    }
+  }
+  return pairs.join('&');
+}
+
+/**
+ * Insert every element in the set of matched elements after the target.
+ * @param newNode - Element to insert
+ * @param referenceNode - Element after which to insert
+ */
+export function insertAfter(newNode, referenceNode): void {
+  if (newNode.length !== undefined && newNode.length > 0) {
+    newNode = newNode[0];
+  }
+  referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
+}
+
+/**
+ * Create URL string from object with parameters without encoding
+ * @param params - Parameter object with parameter key-value pairs
+ * @returns Joined URL query string
+ */
+export function paramsToURLWoEncode(params): string {
+  const pairs = [];
+  for (const key in params) {
+    if (params.hasOwnProperty(key)) {
+      pairs.push(key + '=' + params[key]);
+    }
+  }
+  return pairs.join('&');
+}
+
+/**
+ * Returns a function, that, as long as it continues to be
+ * invoked, will not be triggered.
+ * (https://davidwalsh.name/javascript-debounce-function)
+ * @param func - Function to execute with throttling
+ * @param wait - The function will be called after it stops
+ * being called for N milliseconds.
+ * @param immediate - If `immediate` is passed, trigger the
+ * function on the leading edge, instead of the trailing.
+ * @param context - Context element which stores the timeout handle
+ * @returns Returns function which is debounced
+ */
+export function debounce(func, wait: number, immediate: boolean, context) {
+  // eslint-disable-next-line @typescript-eslint/no-this-alias
+  context ??= this;
+  return function (...args) {
+    const later = function () {
+      if (!immediate) {
+        func.apply(context, args);
+      }
+      context.timeout = null;
+    };
+    const callNow = immediate && !context.timeout;
+    clearTimeout(context.timeout);
+    context.timeout = setTimeout(later, wait);
+    if (callNow) {
+      func.apply(context, args);
+    }
+  };
+}
+
+/**
+ * Creates a deep copy of the input object
+ * @param from - object to deep copy
+ * @param to - optional target for copy
+ * @returns a deep copy of input object
+ */
+export function structuredClone(from, to?) {
+  if (from === null || typeof from !== 'object') {
+    return from;
+  }
+  if (from.constructor != Object && from.constructor != Array) {
+    return from;
+  }
+  if (
+    from.constructor == Date ||
+    from.constructor == RegExp ||
+    from.constructor == Function ||
+    from.constructor == String ||
+    from.constructor == Number ||
+    from.constructor == Boolean
+  ) {
+    return new from.constructor(from);
+  }
+  to = to || new from.constructor();
+  for (const key in from) {
+    to[key] =
+      typeof to[key] == 'undefined' ? structuredClone(from[key]) : to[key];
+  }
+  return to;
 }
 
 /**
@@ -593,6 +181,15 @@ export function isFunction(functionToCheck: any): boolean {
   return (
     functionToCheck && {}.toString.call(functionToCheck) === '[object Function]'
   );
+}
+
+/**
+ * Check if object is plain object (not function, not array, not class)
+ 
+ * @returns true when input is plain old JavaScript object, false otherwise
+ */
+export function isPOJO(objectToCheck: any): boolean {
+  return objectToCheck && {}.toString.call(objectToCheck) === '[object Object]';
 }
 
 /**
@@ -623,4 +220,105 @@ function _instanceOf(obj: any, klass: any): boolean {
     obj = Object.getPrototypeOf(obj);
   }
   return false;
+}
+
+/**
+ * Compute and format polygon area with correct units (m2/km2)
+ * @returns area of polygon with used units
+ */
+export function formatArea(
+  polygon: Polygon,
+  sourceProj: ProjectionLike,
+): Measurement {
+  const area = Math.abs(getArea(polygon));
+  const output = {
+    size: area,
+    type: 'Area',
+    unit: 'm',
+  };
+  if (area > 10000) {
+    output.size = Math.round((area / 1000000) * 100) / 100;
+    output.unit = 'km';
+  } else {
+    output.size = Math.round(area * 100) / 100;
+    output.unit = 'm';
+  }
+  return output;
+}
+
+/**
+ * Compute and format line length with correct units (m/km)
+ 
+ * @returns numeric length of line with used units
+ */
+export function formatLength(
+  line: LineString,
+  sourceProj: ProjectionLike,
+): Measurement {
+  let length = 0;
+  const coordinates = line.getCoordinates();
+  const sourceProjRegistered = getProjection(sourceProj);
+
+  for (let i = 0; i < coordinates.length - 1; ++i) {
+    const c1 = sourceProjRegistered
+      ? transform(coordinates[i], sourceProj, 'EPSG:4326')
+      : coordinates[i];
+    const c2 = sourceProjRegistered
+      ? transform(coordinates[i + 1], sourceProj, 'EPSG:4326')
+      : coordinates[i + 1];
+    length += getDistance(c1, c2);
+  }
+
+  const output = {
+    size: length,
+    type: 'Length',
+    unit: 'm',
+  };
+
+  if (length > 100) {
+    output.size = Math.round((length / 1000) * 100) / 100;
+    output.unit = 'km';
+  } else {
+    output.size = Math.round(length * 100) / 100;
+    output.unit = 'm';
+  }
+  return output;
+}
+
+/**
+ * Check if element is overflown
+ * @param element - Element to check
+ * @returns true if element is overflown, false otherwise
+ */
+export function isOverflown(element: Element): boolean {
+  return (
+    element.scrollHeight > element.clientHeight ||
+    element.scrollWidth > element.clientWidth
+  );
+}
+
+/**
+ * Replaces first string letter to UpperCase
+ * @param target - Target string
+ * @returns modified string
+ */
+export function capitalizeFirstLetter(target: string): string {
+  return target.charAt(0).toUpperCase() + target.slice(1);
+}
+
+/**
+ * Transforms string from camelCase to kebab-case
+ */
+export function camelToKebab(str: string): string {
+  return str.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
+}
+
+/**
+ * Returns undefined if string is undefined or empty
+ */
+export function undefineEmptyString(str: string): any {
+  if (str === undefined) {
+    return undefined;
+  }
+  return str.trim() != '' ? str : undefined;
 }

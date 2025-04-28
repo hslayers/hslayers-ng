@@ -16,7 +16,7 @@ import {HsLanguageService} from 'hslayers-ng/services/language';
 import {HsLogService} from 'hslayers-ng/services/log';
 import {HsMapService} from 'hslayers-ng/services/map';
 import {HsToastService} from 'hslayers-ng/common/toast';
-import {HsUtilsService} from 'hslayers-ng/services/utils';
+import {HsProxyService, paramsToURL} from 'hslayers-ng/services/utils';
 import {addExtentFeature} from 'hslayers-ng/common/utils';
 
 @Injectable({providedIn: 'root'})
@@ -27,9 +27,9 @@ export class HsMickaBrowserService {
     private http: HttpClient,
     private log: HsLogService,
     public hsMapService: HsMapService,
-    public hsUtilsService: HsUtilsService,
     public hsToastService: HsToastService,
     public hsLanguageService: HsLanguageService,
+    private hsProxyService: HsProxyService,
   ) {}
 
   /**
@@ -142,7 +142,7 @@ export class HsMickaBrowserService {
     const url =
       endpoint.url +
       '?' +
-      this.hsUtilsService.paramsToURL({
+      paramsToURL({
         request: 'GetRecords',
         format: 'application/json',
         language: endpoint.language,
@@ -152,7 +152,7 @@ export class HsMickaBrowserService {
         start: endpoint.datasourcePaging.start,
         validservice: '>0',
       });
-    return this.hsUtilsService.proxify(url);
+    return this.hsProxyService.proxify(url);
   }
 
   /**

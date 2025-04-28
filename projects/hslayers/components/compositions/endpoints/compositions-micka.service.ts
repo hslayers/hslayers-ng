@@ -9,9 +9,8 @@ import {HsLanguageService} from 'hslayers-ng/services/language';
 import {HsLogService} from 'hslayers-ng/services/log';
 import {HsMapService} from 'hslayers-ng/services/map';
 import {HsToastService} from 'hslayers-ng/common/toast';
-import {HsUtilsService} from 'hslayers-ng/services/utils';
 import {addExtentFeature} from 'hslayers-ng/common/utils';
-
+import {HsProxyService} from 'hslayers-ng/services/utils';
 @Injectable({
   providedIn: 'root',
 })
@@ -19,11 +18,11 @@ export class HsCompositionsMickaService {
   constructor(
     private $http: HttpClient,
     private hsMapService: HsMapService,
-    private hsUtilsService: HsUtilsService,
     private hsToastService: HsToastService,
     private hsLanguageService: HsLanguageService,
     private hsLog: HsLogService,
     private hsCompositionsParserService: HsCompositionsParserService,
+    private hsProxyService: HsProxyService,
   ) {}
 
   /**
@@ -87,7 +86,7 @@ export class HsCompositionsMickaService {
       params.start +
       '&limit=' +
       params.limit;
-    tmp = this.hsUtilsService.proxify(tmp);
+    tmp = this.hsProxyService.proxify(tmp);
     return tmp;
   }
 

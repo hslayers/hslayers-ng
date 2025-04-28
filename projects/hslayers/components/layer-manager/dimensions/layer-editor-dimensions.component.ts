@@ -11,7 +11,7 @@ import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsLayerEditorWidgetBaseComponent} from '../widgets/layer-editor-widget-base.component';
 import {HsLayerSelectorService} from 'hslayers-ng/services/layer-manager';
 import {HsMapService} from 'hslayers-ng/services/map';
-import {HsUtilsService} from 'hslayers-ng/services/utils';
+import {isFunction} from 'hslayers-ng/services/utils';
 import {getDimensions} from 'hslayers-ng/common/extensions';
 
 @Component({
@@ -31,7 +31,6 @@ export class HsLayerEditorDimensionsComponent
     public hsDimensionTimeService: HsDimensionTimeService,
     public hsMapService: HsMapService,
     public hsEventBusService: HsEventBusService,
-    public hsUtilsService: HsUtilsService,
     hsLayerSelectorService: HsLayerSelectorService,
   ) {
     super(hsLayerSelectorService);
@@ -61,7 +60,7 @@ export class HsLayerEditorDimensionsComponent
     if (dimensions && Object.entries(dimensions)) {
       for (const [key, dimension] of <[any, any]>Object.entries(dimensions)) {
         let available = true;
-        if (this.hsUtilsService.isFunction(dimension.availability)) {
+        if (isFunction(dimension.availability)) {
           available = dimension.availability(layer);
         }
         if (available) {

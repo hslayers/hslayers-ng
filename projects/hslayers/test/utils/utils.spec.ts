@@ -236,15 +236,7 @@ describe('HsUtilsService', () => {
     isInstOf = instOf(layer, Point);
     expect(isInstOf).toBe(false);
   });
-  it('try to hash a string', () => {
-    let str = 'This is a string';
-    let hash = hsUtilsService.hashCode(str);
-    expect(hash).toBeGreaterThan(0);
-    expect(hash).toEqual(1599081604);
-    str = '';
-    hash = hsUtilsService.hashCode(str);
-    expect(hash).toEqual(0);
-  });
+
   it('try to replace all string values with replacement', () => {
     const targetStr = 'This is a string, this is a string';
     const regExSearch = 'string';

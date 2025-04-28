@@ -8,7 +8,7 @@ import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsLogService} from 'hslayers-ng/services/log';
-import {HsUtilsService} from 'hslayers-ng/services/utils';
+import {instOf, HsProxyService} from 'hslayers-ng/services/utils';
 import {
   getUnitId,
   setFeatureName,
@@ -21,7 +21,7 @@ import {Vector as VectorSource} from 'ol/source';
 import {WKT} from 'ol/format';
 
 import {HsMapService} from 'hslayers-ng/services/map';
-import {HsSensorUnit} from './sensor-unit.class';
+import {HsSensorUnit, SensorTypes} from './sensor-unit.class';
 import {HsSensorsUnitDialogComponent} from './sensors-unit-dialog.component';
 import {HsSensorsUnitDialogService} from './unit-dialog.service';
 import {SensLogEndpoint} from './types/senslog-endpoint.type';
@@ -47,7 +47,7 @@ export class HsSensorsService {
   hsMapService;
 
   constructor(
-    private hsUtilsService: HsUtilsService,
+    private hsProxyService: HsProxyService,
     private hsConfig: HsConfig,
     private hsLayoutService: HsLayoutService,
     private hsDialogContainerService: HsDialogContainerService,
@@ -216,7 +216,7 @@ export class HsSensorsService {
     //Create/show unit dialog
     if (
       !this.hsDialogContainerService.dialogs.some((d) =>
-        this.hsUtilsService.instOf(d, HsSensorsUnitDialogComponent),
+        instOf(d, HsSensorsUnitDialogComponent),
       )
     ) {
       this.hsDialogContainerService.create(HsSensorsUnitDialogComponent, {});
@@ -243,12 +243,12 @@ export class HsSensorsService {
     );
 
     unit.feature?.set('selected', true);
-    this.hsMapService
-      ? this.hsMapService
-          .getMap()
-          .getView()
-          .fit(unit.feature.getGeometry(), {maxZoom: 16})
-      : null;
+    if (this.hsMapService) {
+      this.hsMapService
+        .getMap()
+        .getView()
+        .fit(unit.feature.getGeometry(), {maxZoom: 16});
+    }
   }
 
   /**
@@ -256,7 +256,7 @@ export class HsSensorsService {
    */
   closeSensorDialog(): void {
     const dialog = this.hsDialogContainerService.dialogs.find((d) =>
-      this.hsUtilsService.instOf(d, HsSensorsUnitDialogComponent),
+      instOf(d, HsSensorsUnitDialogComponent),
     );
     this.hsDialogContainerService.destroy(dialog);
     this.hsSensorsUnitDialogService.unitDialogVisible = false;
@@ -280,7 +280,9 @@ export class HsSensorsService {
       },
       source: new VectorSource({}),
     });
-    this.hsMapService ? this.hsMapService.getMap().addLayer(this.layer) : null;
+    if (this.hsMapService) {
+      this.hsMapService.getMap().addLayer(this.layer);
+    }
   }
 
   /**
@@ -294,7 +296,7 @@ export class HsSensorsService {
           this.createLayer();
         });
     }
-    const url = this.hsUtilsService.proxify(
+    const url = this.hsProxyService.proxify(
       `${this.endpoint.url}/${this.endpoint.liteApiPath}/rest/unit`,
     );
     this.http
@@ -379,10 +381,8 @@ export class HsSensorsService {
               return {name: s.sensor_type};
             });
 
-            unit.sensorTypes = this.hsUtilsService.removeDuplicates(
-              unit.sensorTypes,
-              'name',
-            );
+            unit.sensorTypes = this.getSensorTypes(unit);
+
             unit.sensorTypes.map((sensorType) => {
               sensorType.sensors = unit.sensors.filter(
                 (s) => s.sensor_type == sensorType.name,
@@ -403,6 +403,26 @@ export class HsSensorsService {
           console.error('Unit loading failed', e);
         },
       });
+  }
+
+  /**
+   * Get unique sensor types from unit
+   * @param unit - Unit to get sensor types from
+   * @returns Unique sensor types
+   */
+  getSensorTypes(unit: HsSensorUnit): SensorTypes[] {
+    // Find unique sensor types
+    const uniqueSensorTypesMap = new Map<string, SensorTypes>();
+    for (const sensorType of unit.sensorTypes) {
+      if (!uniqueSensorTypesMap.has(sensorType.name)) {
+        // Create a new object conforming to SensorTypes
+        uniqueSensorTypesMap.set(sensorType.name, {
+          name: sensorType.name,
+          // sensors and expanded will be populated later in getUnits
+        });
+      }
+    }
+    return Array.from(uniqueSensorTypesMap.values());
   }
 
   /**
@@ -451,7 +471,7 @@ export class HsSensorsService {
           user: this.endpoint.user,
         };
     this.http
-      .get(this.hsUtilsService.proxify(url), {
+      .get(this.hsProxyService.proxify(url), {
         params,
       })
       .subscribe((response: any) => {
