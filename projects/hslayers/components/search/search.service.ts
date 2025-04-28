@@ -184,7 +184,6 @@ export class HsSearchService {
       .filter((provider) => provider?.results)) {
       this.hsLayerUtilsService.highlightFeatures(
         featuresUnderMouse as Feature<Geometry>[],
-        this.searchResultsLayer,
         provider.results,
       );
     }

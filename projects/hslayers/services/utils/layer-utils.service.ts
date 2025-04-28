@@ -398,31 +398,31 @@ export class HsLayerUtilsService {
    */
   highlightFeatures(
     featuresUnder: Feature<Geometry>[],
-    layer: VectorLayer<VectorSource<Feature>>,
     list: {featureId?: string; highlighted?: boolean}[],
   ): void {
-    const highlightedFeatures = list
-      .filter((record) => record.highlighted)
-      .map(
-        (record) =>
-          layer.getSource().getFeatureById(record.featureId) as Feature,
-      );
+    const featuresUnderIds = new Set(
+      featuresUnder.map((feature) => feature?.getId()).filter(Boolean),
+    );
 
-    const dontHighlight = highlightedFeatures
-      .filter((feature) => feature && !featuresUnder.includes(feature))
-      .map((f) => f.getId());
-    const highlight = featuresUnder
-      .filter((feature) => feature && !highlightedFeatures.includes(feature))
-      .map((f) => f.getId());
-    if (dontHighlight.length > 0 || highlight.length > 0) {
+    const recordsToUpdate: {record: any; highlight: boolean}[] = [];
+    for (const record of list) {
+      if (!record.featureId) {
+        continue;
+      }
+
+      const shouldBeHighlighted = featuresUnderIds.has(record.featureId);
+
+      // Only update if the highlight state is changing
+      if (record.highlighted !== shouldBeHighlighted) {
+        recordsToUpdate.push({record, highlight: shouldBeHighlighted});
+      }
+    }
+
+    if (recordsToUpdate.length > 0) {
       this.zone.run(() => {
-        for (const record of list) {
-          if (highlight.includes(record.featureId)) {
-            record.highlighted = true;
-          }
-          if (dontHighlight.includes(record.featureId)) {
-            record.highlighted = false;
-          }
+        // Apply all updates in a batch
+        for (const {record, highlight} of recordsToUpdate) {
+          record.highlighted = highlight;
         }
       });
     }
