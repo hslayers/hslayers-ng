@@ -20,10 +20,7 @@ import {HsAddDataCommonService} from '../common.service';
 import {HsAddDataUrlService} from './add-data-url.service';
 import {HsArcgisGetCapabilitiesService} from 'hslayers-ng/services/get-capabilities';
 import {HsLanguageService} from 'hslayers-ng/services/language';
-import {
-  HsLayerUtilsService,
-  undefineEmptyString,
-} from 'hslayers-ng/services/utils';
+import {undefineEmptyString} from 'hslayers-ng/services/utils';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsToastService} from 'hslayers-ng/common/toast';
 import {addAnchors, getPreferredFormat} from 'hslayers-ng/common/utils';
@@ -40,7 +37,6 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
     public hsMapService: HsMapService,
     public hsAddDataUrlService: HsAddDataUrlService,
     public hsAddDataCommonService: HsAddDataCommonService,
-    public hsLayerUtilsService: HsLayerUtilsService,
     public hsToastService: HsToastService,
     private hsLanguageService: HsLanguageService,
   ) {

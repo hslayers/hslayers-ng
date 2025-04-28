@@ -11,7 +11,7 @@ import {Source, Vector as VectorSource} from 'ol/source';
 import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {
-  HsLayerUtilsService,
+  isLayerVectorLayer,
   normalizeSldComparisonOperators,
 } from 'hslayers-ng/services/utils';
 import {HsPanelBaseComponent} from 'hslayers-ng/common/panels';
@@ -46,7 +46,6 @@ export class HsStylerComponent extends HsPanelBaseComponent {
     public hsStylerService: HsStylerService,
     public hsEventBusService: HsEventBusService,
     public sanitizer: DomSanitizer,
-    public hsLayerUtilsService: HsLayerUtilsService,
     public hsSaveMapService: HsSaveMapService,
     public hsDialogContainerService: HsDialogContainerService,
   ) {
@@ -54,10 +53,7 @@ export class HsStylerComponent extends HsPanelBaseComponent {
     this.hsEventBusService.layerSelectedFromUrl
       .pipe(takeUntilDestroyed())
       .subscribe((layer: Layer<Source>) => {
-        if (
-          layer !== null &&
-          this.hsLayerUtilsService.isLayerVectorLayer(layer, false)
-        ) {
+        if (layer !== null && isLayerVectorLayer(layer, false)) {
           this.hsStylerService.fill(
             layer as VectorLayer<VectorSource<Feature>>,
           );

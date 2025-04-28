@@ -25,8 +25,9 @@ import {HsConfig} from 'hslayers-ng/config';
 import {HsLanguageService} from 'hslayers-ng/services/language';
 import {HsLayerManagerService} from 'hslayers-ng/services/layer-manager';
 import {
-  HsLayerUtilsService,
   undefineEmptyString,
+  isLayerClustered,
+  isLayerVectorLayer,
 } from 'hslayers-ng/services/utils';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsMapService} from 'hslayers-ng/services/map';
@@ -35,7 +36,6 @@ import {HsUploadComponent, HsUploadedFiles} from 'hslayers-ng/common/upload';
 import {VectorFileDataType} from '../../common/advanced-options/advanced-options.component';
 import {getShowInLayerManager} from 'hslayers-ng/common/extensions';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
-
 @Component({
   selector: 'hs-file-vector',
   templateUrl: 'vector-file.component.html',
@@ -64,7 +64,6 @@ export class HsAddDataVectorFileComponent implements OnInit, AfterViewInit {
     private hsConfig: HsConfig,
     public hsLanguageService: HsLanguageService,
     private hsLayerManagerService: HsLayerManagerService,
-    private hsLayerUtilsService: HsLayerUtilsService,
     private hsLayoutService: HsLayoutService,
     private hsMapService: HsMapService,
     private hsToastService: HsToastService,
@@ -159,7 +158,7 @@ export class HsAddDataVectorFileComponent implements OnInit, AfterViewInit {
         );
       features = nonJson.features; //proper typing will get rid of this
     }
-    this.hsLayerUtilsService.isLayerClustered(this.data.sourceLayer)
+    isLayerClustered(this.data.sourceLayer)
       ? (this.data.sourceLayer.getSource() as Cluster<Feature>)
           .getSource()
           .addFeatures(features)
@@ -250,7 +249,7 @@ export class HsAddDataVectorFileComponent implements OnInit, AfterViewInit {
         (layer) => {
           const showInLM = getShowInLayerManager(layer.layer);
           return (
-            this.hsLayerUtilsService.isLayerVectorLayer(layer.layer) &&
+            isLayerVectorLayer(layer.layer) &&
             (showInLM || showInLM === undefined)
           );
         },

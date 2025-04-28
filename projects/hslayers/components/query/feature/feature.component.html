@@ -9,7 +9,7 @@
 </div>
 @for (attribute of f.attributes; track attribute) {
   <hs-query-attribute-row [template]="f.hstemplate"
-    [feature]="feature" [attribute]="attribute" [readonly]="readonly">
+    [feature]="feature" [attribute]="attribute" [readonly]="isFeatureRemovable()">
   </hs-query-attribute-row>
 }
 @for (stat of f.stats; track stat) {
@@ -61,7 +61,7 @@
   <div class="justify-content-end" style="padding-left: 10px">
     <div class="mx-1 mb-2 text-end">
       <div class="btn-group">
-        <button [disabled]="readonly" class="btn btn-secondary btn-sm"
+        <button [disabled]="isFeatureRemovable()" class="btn btn-secondary btn-sm"
           (click)="newAttribVisible = !newAttribVisible"><i class="fa-solid fa-square-plus"></i></button>
           <button class="btn btn-secondary btn-sm" (click)="zoomToFeature()"><i class="fa-solid fa-magnifying-glass"></i></button>
           <div class="btn-group" ngbDropdown placement="bottom" display="dynamic">

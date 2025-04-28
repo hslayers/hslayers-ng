@@ -1,4 +1,4 @@
-@let isInvalid = hsLayerUtilsService.layerInvalid(this.layer());
+@let isInvalid = layerInvalid(this.layer());
 <li [id]="layerId()" class="list-group-item hs-lm-item my-2 my-md-0" [attr.data-test]="layer().title" [ngClass]="{
     'hs-lm-detail-activated': isSelected(),
     'grayed': layer().grayed === true

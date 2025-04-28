@@ -5,8 +5,8 @@ import {Geometry} from 'ol/geom';
 
 import {HsFeatureTableService} from './feature-table.service';
 import {HsLanguageService} from 'hslayers-ng/services/language';
-import {HsLayerUtilsService} from 'hslayers-ng/services/utils';
 import {HsMapService} from 'hslayers-ng/services/map';
+import {isLayerClustered} from 'hslayers-ng/services/utils';
 
 type Operation = {
   action: 'zoom to' | 'delete' | 'custom action';
@@ -49,7 +49,6 @@ export class HsLayerFeaturesComponent implements OnInit {
     public hsFeatureTableService: HsFeatureTableService,
     public hsMapService: HsMapService,
     public hsLanguageService: HsLanguageService,
-    public hsLayerUtilsService: HsLayerUtilsService,
   ) {}
 
   /**
@@ -57,7 +56,7 @@ export class HsLayerFeaturesComponent implements OnInit {
    */
   ngOnInit(): void {
     const olLayer = this.layer.lyr;
-    const source = this.hsLayerUtilsService.isLayerClustered(olLayer)
+    const source = isLayerClustered(olLayer)
       ? olLayer.getSource().getSource()
       : olLayer.getSource();
     if (source) {

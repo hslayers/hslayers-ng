@@ -7,7 +7,6 @@ import {Vector as VectorLayer} from 'ol/layer';
 import {HsAddDataOwsService} from 'hslayers-ng/services/add-data';
 import {HsLayerManagerUtilsService} from './layer-manager-utils.service';
 import {HsLayerSelectorService} from './layer-selector.service';
-import {HsLayerUtilsService} from 'hslayers-ng/services/utils';
 import {HsMapService} from 'hslayers-ng/services/map';
 import {
   getCachedCapabilities,
@@ -18,6 +17,13 @@ import {
   setSubLayers,
   setTitle,
 } from 'hslayers-ng/common/extensions';
+import {
+  getURL,
+  isLayerVectorLayer,
+  getLayerParams,
+  updateLayerParams,
+  isLayerClustered,
+} from 'hslayers-ng/services/utils';
 
 @Injectable({
   providedIn: 'root',
@@ -25,7 +31,6 @@ import {
 export class HsLayerManagerCopyLayerService {
   constructor(
     public hsLayerSelectorService: HsLayerSelectorService,
-    public hsLayerUtilsService: HsLayerUtilsService,
     public hsMapService: HsMapService,
     public hsAddDataOwsService: HsAddDataOwsService,
     private hsLayerManagerUtilsService: HsLayerManagerUtilsService,
@@ -37,10 +42,10 @@ export class HsLayerManagerCopyLayerService {
   async copyLayer(newTitle: string): Promise<void> {
     const copyTitle = this.createCopyTitle(newTitle);
     const currentOlLayer = this.hsLayerSelectorService.currentLayer.layer;
-    if (this.hsLayerUtilsService.isLayerVectorLayer(currentOlLayer)) {
+    if (isLayerVectorLayer(currentOlLayer)) {
       this.copyVectorLayer(copyTitle);
     } else {
-      const url = this.hsLayerUtilsService.getURL(currentOlLayer);
+      const url = getURL(currentOlLayer);
       let name = getCachedCapabilities(currentOlLayer)?.Name;
       if (!name || typeof name === 'number') {
         name = getName(currentOlLayer);
@@ -59,19 +64,15 @@ export class HsLayerManagerCopyLayerService {
         layerCopy[0].setProperties(currentOlLayer.getProperties());
         setTitle(layerCopy[0], copyTitle);
         //Currently ticked sub-layers are stored in LAYERS
-        const subLayers =
-          this.hsLayerUtilsService.getLayerParams(currentOlLayer)?.LAYERS;
+        const subLayers = getLayerParams(currentOlLayer)?.LAYERS;
         if (subLayers) {
           setSubLayers(layerCopy[0], subLayers);
         }
-        this.hsLayerUtilsService.updateLayerParams(
-          layerCopy[0],
-          this.hsLayerUtilsService.getLayerParams(currentOlLayer),
-        );
+        updateLayerParams(layerCopy[0], getLayerParams(currentOlLayer));
         // We don't want the default styles to be set which add-data panel does.
         // Otherwise they won't be cleared if the original layer has undefined STYLES
         // Also we have to set LAYERS to currentLayer original values for composition saving
-        this.hsLayerUtilsService.updateLayerParams(layerCopy[0], {
+        updateLayerParams(layerCopy[0], {
           STYLES: null,
           //Object.assign will ignore it if origLayers is undefined.
           LAYERS: getOrigLayers(currentOlLayer),
@@ -87,7 +88,7 @@ export class HsLayerManagerCopyLayerService {
   copyVectorLayer(newTitle: string): void {
     let features;
     const currentOlLayer = this.hsLayerSelectorService.currentLayer.layer;
-    if (this.hsLayerUtilsService.isLayerClustered(currentOlLayer)) {
+    if (isLayerClustered(currentOlLayer)) {
       features = (currentOlLayer.getSource() as Cluster<Feature>)
         .getSource()
         ?.getFeatures();

@@ -8,7 +8,7 @@ import {HsConfig} from 'hslayers-ng/config';
 import {HsLanguageService} from 'hslayers-ng/services/language';
 import {HsLayerEditorWidgetBaseComponent} from './layer-editor-widget-base.component';
 import {HsLayerSelectorService} from 'hslayers-ng/services/layer-manager';
-import {HsLayerUtilsService, instOf} from 'hslayers-ng/services/utils';
+import {instOf, listNumericAttributes} from 'hslayers-ng/services/utils';
 import {InterpolatedSource} from 'hslayers-ng/common/layers';
 
 @Component({
@@ -36,7 +36,6 @@ export class HsIdwWidgetComponent
   constructor(
     public HsLanguageService: HsLanguageService,
     hsLayerSelectorService: HsLayerSelectorService,
-    private hsLayerUtilsService: HsLayerUtilsService,
     public hsConfig: HsConfig,
   ) {
     super(hsLayerSelectorService);
@@ -79,7 +78,7 @@ export class HsIdwWidgetComponent
   }
 
   listNumericAttributes(features: Feature[]): string[] {
-    return this.hsLayerUtilsService.listNumericAttributes(features);
+    return listNumericAttributes(features);
   }
 
   getIdwSource(): InterpolatedSource {

@@ -4,8 +4,8 @@ import {METERS_PER_UNIT} from 'ol/proj';
 
 import {HsLayerEditorWidgetBaseComponent} from './layer-editor-widget-base.component';
 import {HsLayerSelectorService} from 'hslayers-ng/services/layer-manager';
-import {HsLayerUtilsService} from 'hslayers-ng/services/utils';
 import {HsMapService} from 'hslayers-ng/services/map';
+import {calculateResolutionFromScale} from 'hslayers-ng/services/utils';
 
 @Component({
   selector: 'hs-scale-widget',
@@ -17,7 +17,6 @@ export class HsScaleWidgetComponent extends HsLayerEditorWidgetBaseComponent {
 
   constructor(
     hsLayerSelectorService: HsLayerSelectorService,
-    public hsLayerUtilsService: HsLayerUtilsService,
     public hsMapService: HsMapService,
   ) {
     super(hsLayerSelectorService);
@@ -43,7 +42,7 @@ export class HsScaleWidgetComponent extends HsLayerEditorWidgetBaseComponent {
     }
     const layer = this.olLayer;
     layer.setMinResolution(
-      this.hsLayerUtilsService.calculateResolutionFromScale(
+      calculateResolutionFromScale(
         newValue,
         this.hsMapService.getMap().getView(),
       ),
@@ -67,7 +66,7 @@ export class HsScaleWidgetComponent extends HsLayerEditorWidgetBaseComponent {
     }
     const layer = this.olLayer;
     layer.setMaxResolution(
-      this.hsLayerUtilsService.calculateResolutionFromScale(
+      calculateResolutionFromScale(
         newValue,
         this.hsMapService.getMap().getView(),
       ),

@@ -33,15 +33,11 @@ import {HsConfig} from 'hslayers-ng/config';
 import {HsConfirmDialogComponent} from 'hslayers-ng/common/confirm';
 import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
-import {HsLanguageService} from 'hslayers-ng/services/language';
+import {HsLayerSynchronizerService} from 'hslayers-ng/services/save-map';
 import {
-  HsLayerSynchronizerService,
-  HsSaveMapService,
-} from 'hslayers-ng/services/save-map';
-import {
-  HsLayerUtilsService,
   instOf,
   isFunction,
+  isLayerVectorLayer,
 } from 'hslayers-ng/services/utils';
 import {HsLogService} from 'hslayers-ng/services/log';
 import {HsMapService} from 'hslayers-ng/services/map';
@@ -100,17 +96,14 @@ export class HsStylerService {
 
   constructor(
     public hsQueryVectorService: HsQueryVectorService,
-    private hsLayerUtilsService: HsLayerUtilsService,
     private hsEventBusService: HsEventBusService,
     private hsLogService: HsLogService,
     public sanitizer: DomSanitizer,
     private hsMapService: HsMapService,
-    private hsSaveMapService: HsSaveMapService,
     private hsConfig: HsConfig,
     private hsCommonLaymanService: HsCommonLaymanService,
     private hsLayerSynchronizerService: HsLayerSynchronizerService,
     private hsDialogContainerService: HsDialogContainerService,
-    private hsLanguageService: HsLanguageService,
     private hsToastService: HsToastService,
   ) {
     this.pin_white_blue = new Style({
@@ -141,15 +134,11 @@ export class HsStylerService {
     this.hsMapService.loaded().then((map) => {
       for (const layer of this.hsMapService
         .getLayersArray()
-        .filter((layer) =>
-          this.hsLayerUtilsService.isLayerVectorLayer(layer),
-        )) {
+        .filter((layer) => isLayerVectorLayer(layer))) {
         this.initLayerStyle(layer as VectorLayer<VectorSource<Feature>>);
       }
       this.hsEventBusService.layerAdditions.subscribe((layerDescriptor) => {
-        if (
-          this.hsLayerUtilsService.isLayerVectorLayer(layerDescriptor.layer)
-        ) {
+        if (isLayerVectorLayer(layerDescriptor.layer)) {
           this.initLayerStyle(
             layerDescriptor.layer as VectorLayer<VectorSource<Feature>>,
           );

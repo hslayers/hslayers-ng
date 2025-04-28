@@ -1,30 +1,29 @@
-import { ComponentRef, Injectable, Type, ViewContainerRef } from '@angular/core';
+import {ComponentRef, Injectable, Type, ViewContainerRef} from '@angular/core';
 
-import { Layer } from 'ol/layer';
-import { Source } from 'ol/source';
-import { Subject, filter } from 'rxjs';
-import { WMSCapabilities } from 'ol/format';
-import { transformExtent } from 'ol/proj';
+import {Layer} from 'ol/layer';
+import {Source} from 'ol/source';
+import {Subject, filter} from 'rxjs';
+import {WMSCapabilities} from 'ol/format';
+import {transformExtent} from 'ol/proj';
 
-import { HS_PRMS, HsShareUrlService } from 'hslayers-ng/services/share';
-import { HsEventBusService } from 'hslayers-ng/services/event-bus';
-import { HsLayerDescriptor } from 'hslayers-ng/types';
-import { HsLayerEditorComponent } from './layer-editor.component';
-import { HsLayerEditorSublayerService } from './sublayers/layer-editor-sub-layer.service';
-import { HsLayerEditorSublayersComponent } from './sublayers/layer-editor-sublayers.component';
+import {HS_PRMS, HsShareUrlService} from 'hslayers-ng/services/share';
+import {HsEventBusService} from 'hslayers-ng/services/event-bus';
+import {HsLayerDescriptor} from 'hslayers-ng/types';
+import {HsLayerEditorComponent} from './layer-editor.component';
+import {HsLayerEditorSublayerService} from './sublayers/layer-editor-sub-layer.service';
+import {HsLayerEditorSublayersComponent} from './sublayers/layer-editor-sublayers.component';
 import {
   HsLayerEditorVectorLayerService,
   HsLayerManagerMetadataService,
   HsLayerSelectorService,
 } from 'hslayers-ng/services/layer-manager';
-import { HsLayerUtilsService } from 'hslayers-ng/services/utils';
-import { HsLayoutService } from 'hslayers-ng/services/layout';
+import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {
   HsLegendDescriptor,
   HsLegendService,
 } from 'hslayers-ng/components/legend';
-import { HsMapService } from 'hslayers-ng/services/map';
-import { HsWmsGetCapabilitiesService } from 'hslayers-ng/services/get-capabilities';
+import {HsMapService} from 'hslayers-ng/services/map';
+import {HsWmsGetCapabilitiesService} from 'hslayers-ng/services/get-capabilities';
 import {
   getCachedCapabilities,
   getCluster,
@@ -33,6 +32,12 @@ import {
   getWmsOriginalExtent,
   setCluster,
 } from 'hslayers-ng/common/extensions';
+import {
+  getLayerParams,
+  isLayerWMS,
+  isLayerVectorLayer,
+  getURL,
+} from 'hslayers-ng/services/utils';
 
 @Injectable({
   providedIn: 'root',
@@ -53,7 +58,6 @@ export class HsLayerEditorService {
   constructor(
     private HsMapService: HsMapService,
     private HsWmsGetCapabilitiesService: HsWmsGetCapabilitiesService,
-    private HsLayerUtilsService: HsLayerUtilsService,
     private HsLayerEditorVectorLayerService: HsLayerEditorVectorLayerService,
     private HsEventBusService: HsEventBusService,
     private HsLayoutService: HsLayoutService,
@@ -225,17 +229,17 @@ export class HsLayerEditorService {
       this.fitIfExtentSet(extent, layer);
       return true;
     }
-    if (extent === null && this.HsLayerUtilsService.isLayerWMS(layer)) {
+    if (extent === null && isLayerWMS(layer)) {
       /**
        * NOTE:
        * Used when 'queryCapabilities' is set to false on layer. Otherwise set when parsing capabilities
        */
-      const url = this.HsLayerUtilsService.getURL(layer);
+      const url = getURL(layer);
       const wrapper = await this.HsWmsGetCapabilitiesService.request(url);
       const parser = new WMSCapabilities();
       const caps = parser.read(wrapper.response);
       if (Array.isArray(caps.Capability.Layer.Layer)) {
-        const layers = this.HsLayerUtilsService.getLayerParams(layer)?.LAYERS;
+        const layers = getLayerParams(layer)?.LAYERS;
         const foundDefs = caps.Capability.Layer.Layer.map((lyr) =>
           this.HsLayerManagerMetadataService.identifyLayerObject(layers, lyr),
         ).filter((item) => item);
@@ -320,6 +324,6 @@ export class HsLayerEditorService {
    * @param layer - Selected layer
    */
   isLayerVectorLayer(layer: Layer<Source>): boolean {
-    return this.HsLayerUtilsService.isLayerVectorLayer(layer);
+    return isLayerVectorLayer(layer);
   }
 }

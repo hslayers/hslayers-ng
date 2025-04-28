@@ -3,7 +3,7 @@ import {Injectable} from '@angular/core';
 import {HsLayerDescriptor, HsSublayer} from 'hslayers-ng/types';
 import {HsLayerEditorSublayerService} from '../editor/sublayers/layer-editor-sub-layer.service';
 import {HsLayerManagerService} from 'hslayers-ng/services/layer-manager';
-import {HsLayerUtilsService} from 'hslayers-ng/services/utils';
+import {isLayerQueryable} from 'hslayers-ng/services/utils';
 
 @Injectable({
   providedIn: 'root',
@@ -12,7 +12,6 @@ export class HsLayerListService {
   constructor(
     public hsLayerManagerService: HsLayerManagerService,
     public hsLayerEditorSublayerService: HsLayerEditorSublayerService,
-    public hsLayerUtilsService: HsLayerUtilsService,
   ) {}
 
   /**
@@ -66,6 +65,6 @@ export class HsLayerListService {
    * @returns Boolean indicating if the layer is queryable
    */
   isLayerQueryable(layer_container: HsLayerDescriptor): boolean {
-    return this.hsLayerUtilsService.isLayerQueryable(layer_container.layer);
+    return isLayerQueryable(layer_container.layer);
   }
 }

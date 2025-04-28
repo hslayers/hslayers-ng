@@ -9,7 +9,21 @@ import {Layer} from 'ol/layer';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsLayerDescriptor} from 'hslayers-ng/types';
 import {HsLayerSelectorService} from './layer-selector.service';
-import {HsLayerUtilsService} from 'hslayers-ng/services/utils';
+import {
+  isLayerWMS,
+  isLayerGeoJSONSource,
+  isLayerGPXSource,
+  isLayerKMLSource,
+  isLayerTopoJSONSource,
+  isLayerVectorLayer,
+  isLayerWMTS,
+  isLayerArcgis,
+  isLayerIDW,
+  getURL,
+  isLayerXYZ,
+  getLayerParams,
+  isLayerClustered,
+} from 'hslayers-ng/services/utils';
 import {HsLogService} from 'hslayers-ng/services/log';
 import {HsMapService} from 'hslayers-ng/services/map';
 import {getThumbnail, getTitle} from 'hslayers-ng/common/extensions';
@@ -24,7 +38,6 @@ export class HsLayerManagerUtilsService {
 
   constructor(
     private hsConfig: HsConfig,
-    private hsLayerUtilsService: HsLayerUtilsService,
     private hsLayerSelectorService: HsLayerSelectorService,
     private hsMapService: HsMapService,
     private hsLog: HsLogService,
@@ -54,7 +67,7 @@ export class HsLayerManagerUtilsService {
     const geojsonParser = new GeoJSON();
     const olLayer = this.hsLayerSelectorService.currentLayer.layer;
     const geojson = geojsonParser.writeFeatures(
-      (this.hsLayerUtilsService.isLayerClustered(olLayer)
+      (isLayerClustered(olLayer)
         ? (olLayer.getSource() as Cluster<Feature>).getSource()
         : (olLayer.getSource() as VectorSource)
       ).getFeatures(),
@@ -85,35 +98,35 @@ export class HsLayerManagerUtilsService {
    * @returns Short description of source type: 'WMS', 'XYZ', 'vector (GeoJSON)' etc.
    */
   async getLayerSourceType(layer: Layer<Source>): Promise<string> {
-    if (await this.hsLayerUtilsService.isLayerKMLSource(layer)) {
+    if (await isLayerKMLSource(layer)) {
       return `vector (KML)`;
     }
-    if (await this.hsLayerUtilsService.isLayerGPXSource(layer)) {
+    if (await isLayerGPXSource(layer)) {
       return `vector (GPX)`;
     }
-    if (await this.hsLayerUtilsService.isLayerGeoJSONSource(layer)) {
+    if (await isLayerGeoJSONSource(layer)) {
       return `vector (GeoJSON)`;
     }
-    if (await this.hsLayerUtilsService.isLayerTopoJSONSource(layer)) {
+    if (await isLayerTopoJSONSource(layer)) {
       return `vector (TopoJSON)`;
     }
-    if (this.hsLayerUtilsService.isLayerVectorLayer(layer)) {
+    if (isLayerVectorLayer(layer)) {
       return 'vector';
     }
-    if (this.hsLayerUtilsService.isLayerWMTS(layer)) {
+    if (isLayerWMTS(layer)) {
       return 'WMTS';
     }
-    if (this.hsLayerUtilsService.isLayerWMS(layer)) {
+    if (isLayerWMS(layer)) {
       return 'WMS';
     }
-    if (this.hsLayerUtilsService.isLayerXYZ(layer)) {
+    if (isLayerXYZ(layer)) {
       return 'XYZ';
     }
-    if (this.hsLayerUtilsService.isLayerArcgis(layer)) {
+    if (isLayerArcgis(layer)) {
       return 'ArcGIS';
     }
 
-    if (this.hsLayerUtilsService.isLayerIDW(layer)) {
+    if (isLayerIDW(layer)) {
       return 'IDW';
     }
     this.hsLog.warn(
@@ -127,7 +140,7 @@ export class HsLayerManagerUtilsService {
    * @returns URL provided in the layer's source or 'memory'
    */
   getLayerSourceUrl(layer: Layer<Source>): string {
-    const url = this.hsLayerUtilsService.getURL(layer)?.split('?')[0]; //better stripe out any URL params
+    const url = getURL(layer)?.split('?')[0]; //better stripe out any URL params
     if (!url || url.startsWith('data:')) {
       return 'memory';
     }
@@ -135,8 +148,8 @@ export class HsLayerManagerUtilsService {
   }
 
   checkLayerHealth(layer: Layer<Source>): void {
-    if (this.hsLayerUtilsService.isLayerWMS(layer)) {
-      if (this.hsLayerUtilsService.getLayerParams(layer).LAYERS == undefined) {
+    if (isLayerWMS(layer)) {
+      if (getLayerParams(layer).LAYERS == undefined) {
         this.hsLog.warn('Layer', layer, 'is missing LAYERS parameter');
       }
     }

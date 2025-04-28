@@ -17,8 +17,9 @@ import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {
   formatLength,
   formatArea,
-  HsLayerUtilsService,
   instOf,
+  getLayerName,
+  isLayerEditable,
 } from 'hslayers-ng/services/utils';
 import {HsMapService} from 'hslayers-ng/services/map';
 import {HsQueryBaseService} from './query-base.service';
@@ -42,7 +43,6 @@ export class HsQueryVectorService {
     private hsQueryBaseService: HsQueryBaseService,
     private hsMapService: HsMapService,
     private hsConfig: HsConfig,
-    private hsLayerUtilsService: HsLayerUtilsService,
     private hsEventBusService: HsEventBusService,
     private domSanitizer: DomSanitizer,
   ) {
@@ -189,7 +189,7 @@ export class HsQueryVectorService {
    */
   getFeatureLayerName(feature: Feature<Geometry>): string {
     const layer = this.hsMapService.getLayerForFeature(feature);
-    return this.hsLayerUtilsService.getLayerName(layer);
+    return getLayerName(layer);
   }
 
   /**
@@ -264,10 +264,7 @@ export class HsQueryVectorService {
       return false;
     }
     const layer = this.hsMapService.getLayerForFeature(feature);
-    return (
-      instOf(source, VectorSource) &&
-      this.hsLayerUtilsService.isLayerEditable(layer)
-    );
+    return instOf(source, VectorSource) && isLayerEditable(layer);
   }
 
   /**
@@ -326,7 +323,7 @@ export class HsQueryVectorService {
     }
     if (!getFeatures(feature)) {
       const featureDescription: HsFeatureDescriptor = {
-        layer: this.hsLayerUtilsService.getLayerName(layer),
+        layer: getLayerName(layer),
         name: 'Feature',
         attributes: attributes,
         stats: this.addDefaultStats(feature),
