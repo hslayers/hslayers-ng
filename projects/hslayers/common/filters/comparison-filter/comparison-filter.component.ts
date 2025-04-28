@@ -36,7 +36,7 @@ import {CombinationOperator, ComparisonOperator} from 'geostyler-style';
 import {FilterRangeInputComponent} from '../filter-range-input/filter-range-input.component';
 import {HsAttributeSelectorComponent} from './attribute-selector/attribute-selector.component';
 import {HsFiltersService} from '../filters.service';
-import {HsLayerUtilsService} from 'hslayers-ng/services/utils';
+import {listAttributes} from 'hslayers-ng/services/utils';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsStylerPartBaseComponent} from 'hslayers-ng/services/styler';
 import {TranslateCustomPipe} from 'hslayers-ng/services/language';
@@ -109,7 +109,6 @@ export class HsComparisonFilterComponent
   currentAttribute: WritableSignal<WfsFeatureAttribute> = signal(null);
 
   hsFiltersService = inject(HsFiltersService);
-  hsLayerUtilsService = inject(HsLayerUtilsService);
   hsLayoutService = inject(HsLayoutService);
   destroyRef = inject(DestroyRef);
 
@@ -396,7 +395,7 @@ export class HsComparisonFilterComponent
        */
       this.attributes = this.isWfsFilter()
         ? this.hsFiltersService.layerAttributes.map((a) => a.name)
-        : this.hsLayerUtilsService.listAttributes(
+        : listAttributes(
             this.features,
             false,
             this.hsFiltersService.attributesExcludedFromList,

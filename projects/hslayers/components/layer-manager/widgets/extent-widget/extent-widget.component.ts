@@ -3,11 +3,11 @@ import {Observable, map} from 'rxjs';
 
 import {HsLayerEditorWidgetBaseComponent} from '../layer-editor-widget-base.component';
 import {HsLayerSelectorService} from 'hslayers-ng/services/layer-manager';
-import {HsLayerUtilsService} from 'hslayers-ng/services/utils';
 import {
   getWmsOriginalExtent,
   setWmsOriginalExtent,
 } from 'hslayers-ng/common/extensions';
+import {getLayerParams, isLayerWMS} from 'hslayers-ng/services/utils';
 
 @Component({
   selector: 'hs-extent-widget',
@@ -19,16 +19,12 @@ export class HsExtentWidgetComponent extends HsLayerEditorWidgetBaseComponent {
 
   ignoreExtent: boolean;
   isEnabled: Observable<boolean>;
-  constructor(
-    hsLayerSelectorService: HsLayerSelectorService,
-    private hsLayerUtilsService: HsLayerUtilsService,
-  ) {
+  constructor(hsLayerSelectorService: HsLayerSelectorService) {
     super(hsLayerSelectorService);
     this.isEnabled = this.layerDescriptor.pipe(
       map((l) => {
         const originalExtent = getWmsOriginalExtent(l.layer);
-        const isAllowed =
-          originalExtent ?? this.hsLayerUtilsService.isLayerWMS(l.layer);
+        const isAllowed = originalExtent ?? isLayerWMS(l.layer);
         if (isAllowed) {
           const extent = l.layer.getExtent();
           /**
@@ -53,7 +49,7 @@ export class HsExtentWidgetComponent extends HsLayerEditorWidgetBaseComponent {
     this.olLayer.setExtent(
       this.ignoreExtent ? undefined : getWmsOriginalExtent(this.olLayer),
     );
-    const params = this.hsLayerUtilsService.getLayerParams(this.olLayer);
+    const params = getLayerParams(this.olLayer);
     this.olLayer
       .getSource()
       ['updateParams']({...params, ignoreExtent: this.ignoreExtent});

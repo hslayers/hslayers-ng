@@ -8,7 +8,7 @@ import {Vector as VectorSource} from 'ol/source';
 import {unByKey} from 'ol/Observable';
 
 import {HsCommonEndpointsService} from 'hslayers-ng/services/endpoints';
-import {debounce, HsLayerUtilsService} from 'hslayers-ng/services/utils';
+import {debounce, highlightFeatures} from 'hslayers-ng/services/utils';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsMapCompositionDescriptor} from 'hslayers-ng/types';
 import {HsMapService} from 'hslayers-ng/services/map';
@@ -27,7 +27,6 @@ export class HsCompositionsMapService {
     private hsMapService: HsMapService,
     private hsLayoutService: HsLayoutService,
     private hsSaveMapService: HsSaveMapService,
-    private hsLayerUtilsService: HsLayerUtilsService,
     private hsCommonEndpointsService: HsCommonEndpointsService,
   ) {
     this.hsLayoutService.mainpanel$.subscribe((which) => {
@@ -81,10 +80,7 @@ export class HsCompositionsMapService {
     for (const endpoint of this.hsCommonEndpointsService
       .endpoints()
       .filter((ep) => ep.compositions)) {
-      this.hsLayerUtilsService.highlightFeatures(
-        featuresUnderMouse,
-        endpoint.compositions,
-      );
+      highlightFeatures(featuresUnderMouse, endpoint.compositions);
     }
   }
 

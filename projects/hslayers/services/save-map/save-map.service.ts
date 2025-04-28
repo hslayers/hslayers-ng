@@ -30,9 +30,13 @@ import {
   UserData,
 } from 'hslayers-ng/types';
 import {
-  HsLayerUtilsService,
+  getLayerParams,
+  getURL,
   HsProxyService,
   instOf,
+  isLayerClustered,
+  isLayerVectorLayer,
+  isLayerWMS,
   normalizeSldComparisonOperators,
 } from 'hslayers-ng/services/utils';
 import {HsLogService} from 'hslayers-ng/services/log';
@@ -71,7 +75,6 @@ export class HsSaveMapService {
   constructor(
     private hsMapService: HsMapService,
     private hsLogService: HsLogService,
-    private hsLayerUtilsService: HsLayerUtilsService,
     private hsShareThumbnailService: HsShareThumbnailService,
     private hsCommonLaymanService: HsCommonLaymanService,
     private hsProxyService: HsProxyService,
@@ -283,9 +286,7 @@ export class HsSaveMapService {
         json.dimensions = getDimensions(layer);
       }
       if (instOf(src, XYZ)) {
-        json.className = this.hsLayerUtilsService
-          .getURL(layer)
-          .includes('/rest/services')
+        json.className = getURL(layer).includes('/rest/services')
           ? 'ArcGISRest'
           : 'XYZ';
       }
@@ -300,7 +301,7 @@ export class HsSaveMapService {
         json.className = 'StaticImage';
         json.extent = (src as ImageStatic).getImageExtent();
       }
-      if (this.hsLayerUtilsService.isLayerWMS(layer)) {
+      if (isLayerWMS(layer)) {
         json.className = 'WMS';
         json.singleTile = instOf(src, ImageWMS);
         const legends = getLegends(layer);
@@ -318,14 +319,14 @@ export class HsSaveMapService {
         if (src.getProjection()) {
           json.projection = src.getProjection().getCode().toLowerCase();
         }
-        json.params = this.hsLayerUtilsService.getLayerParams(layer);
+        json.params = getLayerParams(layer);
         if (getOrigLayers(layer)) {
           json.params.LAYERS = getOrigLayers(layer);
         }
         json.subLayers = getSubLayers(layer);
         json.metadata.styles = src.get('styles');
       }
-      let url = this.hsLayerUtilsService.getURL(layer);
+      let url = getURL(layer);
       url =
         json.className === 'ArcGISRest'
           ? url.replace('/tile/{z}/{y}/{x}', '')
@@ -347,9 +348,9 @@ export class HsSaveMapService {
     }
 
     // Vector
-    if (this.hsLayerUtilsService.isLayerVectorLayer(layer)) {
+    if (isLayerVectorLayer(layer)) {
       let src = layer.getSource();
-      if (this.hsLayerUtilsService.isLayerClustered(layer)) {
+      if (isLayerClustered(layer)) {
         src = (src as Cluster<Feature>).getSource();
       }
       json.name = getName(layer);

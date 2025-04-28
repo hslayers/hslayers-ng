@@ -10,7 +10,6 @@ import {
   HsLanguageService,
   TranslateCustomPipe,
 } from 'hslayers-ng/services/language';
-import {HsLayerUtilsService} from 'hslayers-ng/services/utils';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {getTitle} from 'hslayers-ng/common/extensions';
 
@@ -61,7 +60,6 @@ export class HsDrawPanelComponent {
 
   constructor(
     public HsDrawService: HsDrawService,
-    public HsLayerUtilsService: HsLayerUtilsService,
     public hsLayoutService: HsLayoutService,
     public HsLanguageService: HsLanguageService,
   ) {}

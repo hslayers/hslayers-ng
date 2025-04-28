@@ -24,7 +24,6 @@ import {
   HsWmsGetCapabilitiesService,
   HsWmtsGetCapabilitiesService,
 } from 'hslayers-ng/services/get-capabilities';
-import {HsLayerUtilsService} from 'hslayers-ng/services/utils';
 import {HsLogService} from 'hslayers-ng/services/log';
 import {HsMapService} from 'hslayers-ng/services/map';
 import {
@@ -47,6 +46,17 @@ import {
   HsCommonLaymanService,
   isLaymanUrl,
 } from 'hslayers-ng/common/layman';
+import {
+  bufferExtent,
+  calculateResolutionFromScale,
+  getLayerParams,
+  getURL,
+  isLayerArcgis,
+  isLayerVectorLayer,
+  isLayerWMS,
+  isLayerWMTS,
+  updateLayerParams,
+} from 'hslayers-ng/services/utils';
 
 @Injectable({
   providedIn: 'root',
@@ -58,7 +68,6 @@ export class HsLayerManagerMetadataService {
     public HsWmsGetCapabilitiesService: HsWmsGetCapabilitiesService,
     private HsArcgisGetCapabilitiesService: HsArcgisGetCapabilitiesService,
     public HsDimensionTimeService: HsDimensionTimeService,
-    public HsLayerUtilsService: HsLayerUtilsService,
     public hsLog: HsLogService,
     public hsUrlWmsService: HsUrlWmsService,
     private hsMapService: HsMapService,
@@ -148,18 +157,12 @@ export class HsLayerManagerMetadataService {
   searchForScaleDenominator(properties: any): number {
     const view = this.hsMapService.getMap().getView();
     let maxResolution = properties.MaxScaleDenominator
-      ? this.HsLayerUtilsService.calculateResolutionFromScale(
-          properties.MaxScaleDenominator,
-          view,
-        )
+      ? calculateResolutionFromScale(properties.MaxScaleDenominator, view)
       : null;
 
     //TODO: Currently we are not using minResolution, but should. That would require rewriting this function to return structure of {minRes, maxRes}
     const minResolution = properties.MinScaleDenominator
-      ? this.HsLayerUtilsService.calculateResolutionFromScale(
-          properties.MinScaleDenominator,
-          view,
-        )
+      ? calculateResolutionFromScale(properties.MinScaleDenominator, view)
       : 0;
 
     const layers = properties.Layer;
@@ -173,20 +176,18 @@ export class HsLayerManagerMetadataService {
           // Set sublayer.maxResolution which is used
           // to display sublayers grayed out or black in layer-editor sublayer tree
           if (sublayer.MaxScaleDenominator) {
-            sublayer.maxResolution =
-              this.HsLayerUtilsService.calculateResolutionFromScale(
-                sublayer.MaxScaleDenominator,
-                view,
-              );
+            sublayer.maxResolution = calculateResolutionFromScale(
+              sublayer.MaxScaleDenominator,
+              view,
+            );
             if (
               maxResolution < sublayer.maxResolution &&
               maxResolution !== null
             ) {
-              maxResolution =
-                this.HsLayerUtilsService.calculateResolutionFromScale(
-                  sublayer.MaxScaleDenominator,
-                  view,
-                );
+              maxResolution = calculateResolutionFromScale(
+                sublayer.MaxScaleDenominator,
+                view,
+              );
             }
           } else if (!sublayer.maxResolution) {
             sublayer.maxResolution = maxResolution ?? Number.MAX_VALUE;
@@ -239,7 +240,7 @@ export class HsLayerManagerMetadataService {
     }
     if (!olLayer.get('capsExtentSet')) {
       this.setWmsCapsExtent(
-        this.HsLayerUtilsService.bufferExtent(
+        bufferExtent(
           this.hsAddDataUrlService.calcCombinedExtent(
             layerObjs.map((lo) => this.getCapsExtent(lo, layerCaps)),
           ),
@@ -295,9 +296,9 @@ export class HsLayerManagerMetadataService {
     }
     if (
       layerObj.queryable &&
-      this.HsLayerUtilsService.getLayerParams(olLayer)?.INFO_FORMAT == undefined
+      getLayerParams(olLayer)?.INFO_FORMAT == undefined
     ) {
-      this.HsLayerUtilsService.updateLayerParams(olLayer, {
+      updateLayerParams(olLayer, {
         //TODO: Hslayers needs to support other formats too
         INFO_FORMAT: 'application/vnd.ogc.gml', //Assumption that this will be supported by the server.
       });
@@ -306,7 +307,7 @@ export class HsLayerManagerMetadataService {
 
     if (!olLayer.get('capsExtentSet')) {
       this.setWmsCapsExtent(
-        this.HsLayerUtilsService.bufferExtent(
+        bufferExtent(
           this.getCapsExtent(layerObj, layerCaps),
           this.hsMapService.getCurrentProj(),
         ),
@@ -367,7 +368,7 @@ export class HsLayerManagerMetadataService {
        * not be set to the layer directly but to a extent cache 'WmsOriginalExtent'.
        * Possible when layer comes from composition
        */
-      const params = this.HsLayerUtilsService.getLayerParams(layer);
+      const params = getLayerParams(layer);
       params.ignoreExtent
         ? this.setExtentAndOriginalExtent(extent, layer)
         : layer.setExtent(extent);
@@ -434,12 +435,12 @@ export class HsLayerManagerMetadataService {
    */
   async queryMetadata(layerDescriptor: HsLayerDescriptor): Promise<boolean> {
     const layer = layerDescriptor.layer;
-    const url = this.HsLayerUtilsService.getURL(layer);
+    const url = getURL(layer);
     if (!url || url.length === 0) {
       return;
     }
     //ArcGIS
-    if (this.HsLayerUtilsService.isLayerArcgis(layer)) {
+    if (isLayerArcgis(layer)) {
       const wrapper = await this.HsArcgisGetCapabilitiesService.request(url);
       if (wrapper.error) {
         return wrapper.response;
@@ -447,7 +448,7 @@ export class HsLayerManagerMetadataService {
       this.parseArcGisCaps(layerDescriptor, wrapper.response);
     }
     //WMS
-    else if (this.HsLayerUtilsService.isLayerWMS(layer)) {
+    else if (isLayerWMS(layer)) {
       /**
        *Fill metadata for Layman WMS (time dimension for now)
        */
@@ -483,7 +484,7 @@ export class HsLayerManagerMetadataService {
       }
       const parser = new WMSCapabilities();
       const caps: WMSGetCapabilitiesResponse = parser.read(wrapper.response);
-      const params = this.HsLayerUtilsService.getLayerParams(layer);
+      const params = getLayerParams(layer);
       const layerNameInParams: string = params.LAYERS;
       this.parseWmsCaps(layerDescriptor, layerNameInParams, caps);
       const sublayers = getSubLayers(layer);
@@ -491,7 +492,7 @@ export class HsLayerManagerMetadataService {
         if (!(Array.isArray(sublayers) && sublayers.length == 0)) {
           /* When capabilities have been queried, it's safe to override LAYERS
             param now to not render the container layer, but sublayers.*/
-          this.HsLayerUtilsService.updateLayerParams(layer, {
+          updateLayerParams(layer, {
             LAYERS: getSubLayers(layer),
           });
         }
@@ -513,7 +514,7 @@ export class HsLayerManagerMetadataService {
       return true;
     }
     //WMTS
-    else if (this.HsLayerUtilsService.isLayerWMTS(layer)) {
+    else if (isLayerWMTS(layer)) {
       const wrapper = await this.HsWmtsGetCapabilitiesService.request(url);
       if (wrapper.error) {
         return wrapper.response;
@@ -529,7 +530,7 @@ export class HsLayerManagerMetadataService {
       return true;
     }
     //WFS and vector
-    else if (this.HsLayerUtilsService.isLayerVectorLayer(layer)) {
+    else if (isLayerVectorLayer(layer)) {
       if (url) {
         const wrapper = await this.HsWfsGetCapabilitiesService.request(url);
         if (wrapper.error) {
@@ -553,7 +554,7 @@ export class HsLayerManagerMetadataService {
 
   parseArcGisCaps(layerDescriptor: HsLayerDescriptor, resp: any) {
     const olLayer = layerDescriptor.layer;
-    const params = this.HsLayerUtilsService.getLayerParams(olLayer);
+    const params = getLayerParams(olLayer);
     const layerName: string = params.LAYERS;
     const legends: string[] = [];
     let layerObj; //Main object representing layer created from capabilities which will be cached

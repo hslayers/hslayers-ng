@@ -9,14 +9,13 @@ import {Layer} from 'ol/layer';
 
 import {HsDownloadDirective} from 'hslayers-ng/common/download';
 import {HsFeatureCommonService, exportFormats} from '../feature-common.service';
-import {HsLayerUtilsService} from 'hslayers-ng/services/utils';
 import {HsMapService} from 'hslayers-ng/services/map';
 import {HsQueryAttributeRowComponent} from '../attribute-row/attribute-row.component';
 import {HsQueryVectorService} from 'hslayers-ng/services/query';
 import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 import {getTitle} from 'hslayers-ng/common/extensions';
 import {HsFeatureDescriptor} from 'hslayers-ng/types';
-
+import {isLayerEditable} from 'hslayers-ng/services/utils';
 @Component({
   selector: 'hs-query-feature',
   templateUrl: './feature.component.html',
@@ -43,7 +42,10 @@ export class HsQueryFeatureComponent implements OnInit {
 
   isFeatureRemovable = computed(() => {
     const layer = this.layer();
-    return this.hsLayerUtilsService.isLayerEditable(layer);
+    if (layer) {
+      return isLayerEditable(layer);
+    }
+    return false;
   });
 
   attributeName = '';
@@ -65,13 +67,10 @@ export class HsQueryFeatureComponent implements OnInit {
   getTitle = getTitle;
   availableLayers: Observable<Layer[]>;
 
-  readonly: boolean;
-
   constructor(
     private hsMapService: HsMapService,
     private hsQueryVectorService: HsQueryVectorService,
     private hsFeatureCommonService: HsFeatureCommonService,
-    private hsLayerUtilsService: HsLayerUtilsService,
     private DestroyRef: DestroyRef,
   ) {}
 
@@ -84,7 +83,6 @@ export class HsQueryFeatureComponent implements OnInit {
           return [];
         }
         const featureLayer = this.layer();
-        this.readonly = !this.hsLayerUtilsService.isLayerEditable(featureLayer);
         return layers.filter((layer) => layer != featureLayer);
       }),
     );

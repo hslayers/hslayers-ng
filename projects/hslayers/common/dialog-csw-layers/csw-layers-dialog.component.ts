@@ -10,7 +10,6 @@ import {
   HsDialogItem,
 } from 'hslayers-ng/common/dialogs';
 import {HsLayerTableComponent} from 'hslayers-ng/common/layer-table';
-import {HsLayerUtilsService} from 'hslayers-ng/services/utils';
 import {HsMapService} from 'hslayers-ng/services/map';
 import {NgbAccordionModule} from '@ng-bootstrap/ng-bootstrap';
 import {TranslateCustomPipe} from 'hslayers-ng/services/language';
@@ -20,6 +19,7 @@ import {
   setSubLayers,
   setTitle,
 } from 'hslayers-ng/common/extensions';
+import {isLayerWMS} from 'hslayers-ng/services/utils';
 
 @Component({
   selector: 'hs-csw-layers-dialog',
@@ -37,7 +37,6 @@ export class CswLayersDialogComponent implements OnInit, HsDialogComponent {
     public HsDialogContainerService: HsDialogContainerService,
     public hsAddDataUrlService: HsAddDataUrlService,
     public hsAddDataOwsService: HsAddDataOwsService,
-    public hsLayerUtilsService: HsLayerUtilsService,
     public hsMapService: HsMapService,
   ) {}
 
@@ -95,7 +94,7 @@ export class CswLayersDialogComponent implements OnInit, HsDialogComponent {
     for (const layer of layers) {
       setFromComposition(layer, true);
       setPath(layer, service.title);
-      if (this.hsLayerUtilsService.isLayerWMS(layer) && !checkedOnly) {
+      if (isLayerWMS(layer) && !checkedOnly) {
         setSubLayers(
           layer,
           layers.map((l) => l.getSource().getParams().LAYERS).join(','),

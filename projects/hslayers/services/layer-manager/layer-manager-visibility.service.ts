@@ -6,10 +6,10 @@ import {Source} from 'ol/source';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsLayerDescriptor, HsTerrainLayerDescriptor} from 'hslayers-ng/types';
-import {HsLayerUtilsService} from 'hslayers-ng/services/utils';
 import {HsLayermanagerDataObject} from './layer-manager.service';
 import {HsMapService} from 'hslayers-ng/services/map';
 import {getBase, getExclusive, getPath} from 'hslayers-ng/common/extensions';
+import {isLayerVectorLayer} from 'hslayers-ng/services/utils';
 
 @Injectable({
   providedIn: 'root',
@@ -24,7 +24,6 @@ export class HsLayerManagerVisibilityService {
   constructor(
     private hsMapService: HsMapService,
     private hsConfig: HsConfig,
-    private hsLayerUtilsService: HsLayerUtilsService,
     private hsEventBusService: HsEventBusService,
   ) {}
 
@@ -84,10 +83,7 @@ export class HsLayerManagerVisibilityService {
         }
       }
     }
-    if (
-      !visibility &&
-      this.hsLayerUtilsService.isLayerVectorLayer(layer.layer, false)
-    ) {
+    if (!visibility && isLayerVectorLayer(layer.layer, false)) {
       this.hsEventBusService.LayerManagerLayerVisibilityChanges.next(layer);
     }
   }

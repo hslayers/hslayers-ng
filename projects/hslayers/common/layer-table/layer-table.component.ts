@@ -18,7 +18,6 @@ import {
   HsLanguageService,
   TranslateCustomPipe,
 } from 'hslayers-ng/services/language';
-import {HsLayerUtilsService} from 'hslayers-ng/services/utils';
 import {HsNestedLayersTableComponent} from './nested-layers-table/nested-layers-table.component';
 import {NgClass, SlicePipe} from '@angular/common';
 
@@ -43,7 +42,6 @@ export class HsLayerTableComponent implements AfterContentInit {
   limitShown = 100;
   constructor(
     public hsAddDataUrlService: HsAddDataUrlService,
-    public hsLayerUtilsService: HsLayerUtilsService,
     public hsAddDataService: HsAddDataService,
     public hsLanguageService: HsLanguageService,
     public hsUrlWmsService: HsUrlWmsService,

@@ -2,7 +2,6 @@ import {Component, OnInit} from '@angular/core';
 
 import {HsConfig} from 'hslayers-ng/config';
 import {HsLanguageService} from 'hslayers-ng/services/language';
-import {HsLayerUtilsService} from 'hslayers-ng/services/utils';
 import {HsMapService} from 'hslayers-ng/services/map';
 import {HsPanelBaseComponent} from 'hslayers-ng/common/panels';
 import {HsTripPlannerService, Waypoint} from './trip-planner.service';
@@ -22,7 +21,6 @@ export class HsTripPlannerComponent
   constructor(
     public hsConfig: HsConfig,
     public hsLanguageService: HsLanguageService,
-    public hsLayerUtilsService: HsLayerUtilsService,
     public hsMapService: HsMapService,
     public hsTripPlannerService: HsTripPlannerService,
   ) {

@@ -9,11 +9,7 @@ import {WMSGetFeatureInfo} from 'ol/format';
 import {lastValueFrom} from 'rxjs';
 
 import {HsLanguageService} from 'hslayers-ng/services/language';
-import {
-  HsLayerUtilsService,
-  HsProxyService,
-  instOf,
-} from 'hslayers-ng/services/utils';
+import {getLayerName, HsProxyService, instOf} from 'hslayers-ng/services/utils';
 import {HsLogService} from 'hslayers-ng/services/log';
 import {HsMapService} from 'hslayers-ng/services/map';
 import {HsQueryBaseService} from 'hslayers-ng/services/query';
@@ -35,7 +31,6 @@ export class HsQueryWmsService {
   infoCounter = 0;
   constructor(
     private hsMapService: HsMapService,
-    private hsLayerUtilsService: HsLayerUtilsService,
     private hsLanguageService: HsLanguageService,
     private httpClient: HttpClient,
     private hsLogService: HsLogService,
@@ -177,7 +172,7 @@ export class HsQueryWmsService {
     for (const feature of response.features) {
       const group = {
         name: 'Feature',
-        layer: this.hsLayerUtilsService.getLayerName(layer),
+        layer: getLayerName(layer),
         attributes: Object.entries(feature.properties).map(([key, value]) => {
           return {
             'name': key,
@@ -226,7 +221,7 @@ export class HsQueryWmsService {
       const geometryName = feature.getGeometryName();
       const group = {
         name: 'Feature',
-        layer: this.hsLayerUtilsService.getLayerName(layer),
+        layer: getLayerName(layer),
         attributes: Object.entries(feature.getProperties())
           .filter((attr) => attr[0] !== geometryName)
           .map(([key, value]) => {

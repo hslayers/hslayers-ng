@@ -9,8 +9,9 @@ import {Source} from 'ol/source';
 import {HsLanguageService} from 'hslayers-ng/services/language';
 import {
   debounce,
-  HsLayerUtilsService,
   instOf,
+  isLayerWMS,
+  isLayerIDW,
 } from 'hslayers-ng/services/utils';
 import {HsLegendDescriptor} from './legend-descriptor.interface';
 import {HsLegendService} from './legend.service';
@@ -18,7 +19,6 @@ import {HsMapService} from 'hslayers-ng/services/map';
 import {HsPanelBaseComponent} from 'hslayers-ng/common/panels';
 import {HsQueuesService} from 'hslayers-ng/services/queues';
 import {InterpolatedSource} from 'hslayers-ng/common/layers';
-
 @Component({
   selector: 'hs-legend',
   templateUrl: './legend.component.html',
@@ -31,7 +31,6 @@ export class HsLegendComponent extends HsPanelBaseComponent implements OnInit {
   constructor(
     public hsLegendService: HsLegendService,
     public hsMapService: HsMapService,
-    public hsLayerUtilsService: HsLayerUtilsService,
     public hsQueuesService: HsQueuesService,
     public hsLanguageService: HsLanguageService,
   ) {
@@ -69,7 +68,7 @@ export class HsLegendComponent extends HsPanelBaseComponent implements OnInit {
       this.layerDescriptors.push(descriptor);
       this.refreshList();
       layer.on('change:visible', (e) => this.layerVisibilityChanged(e));
-      if (this.hsLayerUtilsService.isLayerWMS(layer)) {
+      if (isLayerWMS(layer)) {
         layer.getSource()?.on('change', (e) => {
           debounce(this.layerSourcePropChanged(e), 100, false, this);
         });
@@ -154,7 +153,7 @@ export class HsLegendComponent extends HsPanelBaseComponent implements OnInit {
           if (
             newDescriptor.subLayerLegends != descriptor.subLayerLegends ||
             newDescriptor.title != descriptor.title ||
-            this.hsLayerUtilsService.isLayerIDW(descriptor.lyr)
+            isLayerIDW(descriptor.lyr)
           ) {
             this.layerDescriptors[this.layerDescriptors.indexOf(descriptor)] =
               newDescriptor;

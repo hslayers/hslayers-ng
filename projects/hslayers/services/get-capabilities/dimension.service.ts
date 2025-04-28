@@ -5,7 +5,13 @@ import {Source, Vector as VectorSource, XYZ} from 'ol/source';
 import {HsDimensionDescriptor} from 'hslayers-ng/common/dimensions';
 import {HsDimensionTimeService} from './dimension-time.service';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
-import {HsLayerUtilsService, instOf} from 'hslayers-ng/services/utils';
+import {
+  instOf,
+  hasNestedLayers,
+  isLayerWMS,
+  getLayerParams,
+  updateLayerParams,
+} from 'hslayers-ng/services/utils';
 import {HsLogService} from 'hslayers-ng/services/log';
 import {HsMapService} from 'hslayers-ng/services/map';
 import {HsWmsLayer, WmsDimension} from 'hslayers-ng/types';
@@ -19,7 +25,6 @@ export class HsDimensionService {
     public $log: HsLogService,
     public hsDimensionTimeService: HsDimensionTimeService,
     public hsEventBusService: HsEventBusService,
-    public hsLayerUtilsService: HsLayerUtilsService,
     public hsMapService: HsMapService,
   ) {
     this.hsDimensionTimeService.layerTimeChanges.subscribe(
@@ -71,10 +76,7 @@ export class HsDimensionService {
     if (!Array.isArray(layer.Layer)) {
       return;
     }
-    if (
-      this.hsLayerUtilsService.hasNestedLayers(layer) &&
-      Array.isArray(layer.Layer)
-    ) {
+    if (hasNestedLayers(layer) && Array.isArray(layer.Layer)) {
       for (const sublayer of layer.Layer) {
         this.fillDimensionValues(sublayer);
       }
@@ -103,11 +105,11 @@ export class HsDimensionService {
         ).length > 0 //Dimension also linked to this layer?
       ) {
         const src = layer.getSource();
-        if (this.hsLayerUtilsService.isLayerWMS(layer)) {
-          const params = this.hsLayerUtilsService.getLayerParams(layer);
+        if (isLayerWMS(layer)) {
+          const params = getLayerParams(layer);
           params[dimension.name == 'time' ? 'TIME' : dimension.name] =
             dimension.value;
-          this.hsLayerUtilsService.updateLayerParams(layer, params);
+          updateLayerParams(layer, params);
         } else if (instOf(src, XYZ)) {
           src.refresh();
         } else if (instOf(src, VectorSource)) {

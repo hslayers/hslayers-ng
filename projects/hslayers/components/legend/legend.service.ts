@@ -17,10 +17,13 @@ import {Style} from 'ol/style';
 
 import {HsLayerSelectorService} from 'hslayers-ng/services/layer-manager';
 import {
+  getLayerParams,
   getParamsFromUrl,
-  HsLayerUtilsService,
+  getURL,
   HsProxyService,
   instOf,
+  isLayerVectorLayer,
+  isLayerWMS,
 } from 'hslayers-ng/services/utils';
 import {HsLegendDescriptor} from './legend-descriptor.interface';
 import {HsLogService} from 'hslayers-ng/services/log';
@@ -43,7 +46,6 @@ import {
 export class HsLegendService {
   constructor(
     public hsStylerService: HsStylerService,
-    private hsLayerUtilsService: HsLayerUtilsService,
     public hsLayerSelectorService: HsLayerSelectorService,
     private hsLog: HsLogService,
     private sanitizer: DomSanitizer,
@@ -168,12 +170,12 @@ export class HsLegendService {
     layer_name: string,
     layer: Layer<Source>,
   ): string {
-    if (!this.hsLayerUtilsService.isLayerWMS(layer)) {
+    if (!isLayerWMS(layer)) {
       return '';
     }
-    const params = this.hsLayerUtilsService.getLayerParams(layer);
+    const params = getLayerParams(layer);
     const version = params.VERSION || '1.3.0';
-    let source_url = this.hsLayerUtilsService.getURL(layer);
+    let source_url = getURL(layer);
     if (source_url.indexOf('proxy4ows') > -1) {
       const params = getParamsFromUrl(source_url);
       source_url = params.OWSURL;
@@ -239,10 +241,8 @@ export class HsLegendService {
     if (getBase(layer)) {
       return;
     }
-    if (this.hsLayerUtilsService.isLayerWMS(layer)) {
-      const subLayerLegends = this.hsLayerUtilsService
-        .getLayerParams(layer)
-        .LAYERS?.split(',');
+    if (isLayerWMS(layer)) {
+      const subLayerLegends = getLayerParams(layer).LAYERS?.split(',');
       for (let i = 0; i < subLayerLegends.length; i++) {
         subLayerLegends[i] = this.getLegendUrl(
           layer.getSource(),
@@ -259,7 +259,7 @@ export class HsLegendService {
       };
     }
     if (
-      this.hsLayerUtilsService.isLayerVectorLayer(layer, false) &&
+      isLayerVectorLayer(layer, false) &&
       (getShowInLayerManager(layer) === undefined ||
         getShowInLayerManager(layer) == true)
     ) {

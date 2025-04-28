@@ -7,12 +7,12 @@ import {HsDrawPanelComponent} from '../draw-panel/draw-panel.component';
 import {HsDrawService} from 'hslayers-ng/services/draw';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsGuiOverlayBaseComponent} from 'hslayers-ng/common/panels';
-import {HsLayerUtilsService} from 'hslayers-ng/services/utils';
 import {HsMapService} from 'hslayers-ng/services/map';
 import {Layer} from 'ol/layer';
 import {Source} from 'ol/source';
 import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 import {getTitle} from 'hslayers-ng/common/extensions';
+import {isLayerDrawable} from 'hslayers-ng/services/utils';
 
 @Component({
   selector: 'hs-draw-toolbar',
@@ -56,7 +56,6 @@ export class HsDrawToolbarComponent extends HsGuiOverlayBaseComponent {
   constructor(
     public hsDrawService: HsDrawService,
     private hsMapService: HsMapService,
-    private hsLayerUtilsService: HsLayerUtilsService,
     private hsEventBusService: HsEventBusService,
   ) {
     super();
@@ -65,7 +64,7 @@ export class HsDrawToolbarComponent extends HsGuiOverlayBaseComponent {
      * Add listener for initial layers
      */
     this.hsMapService.getLayersArray().forEach((l) => {
-      if (this.hsLayerUtilsService.isLayerDrawable(l, {checkVisible: false})) {
+      if (isLayerDrawable(l, {checkVisible: false})) {
         this.addVisibilityChangeListener(l);
       }
     });
@@ -75,9 +74,7 @@ export class HsDrawToolbarComponent extends HsGuiOverlayBaseComponent {
      */
     this.hsEventBusService.mapEventHandlersSet.subscribe(() => {
       this.hsMapService.map.getLayers().on('add', (e) => {
-        if (
-          this.hsLayerUtilsService.isLayerDrawable(e.element as Layer<Source>)
-        ) {
+        if (isLayerDrawable(e.element as Layer<Source>)) {
           this.addVisibilityChangeListener(e.element as Layer<Source>);
         }
       });

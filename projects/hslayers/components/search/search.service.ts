@@ -12,7 +12,7 @@ import {unByKey} from 'ol/Observable';
 
 import {HsConfig} from 'hslayers-ng/config';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
-import {HsLayerUtilsService, HsProxyService} from 'hslayers-ng/services/utils';
+import {highlightFeatures, HsProxyService} from 'hslayers-ng/services/utils';
 import {HsMapService} from 'hslayers-ng/services/map';
 import {HsStylerService} from 'hslayers-ng/services/styler';
 import {setShowInLayerManager, setTitle} from 'hslayers-ng/common/extensions';
@@ -33,7 +33,6 @@ export class HsSearchService {
     private hsMapService: HsMapService,
     private hsStylerService: HsStylerService,
     private hsEventBusService: HsEventBusService,
-    private hsLayerUtilsService: HsLayerUtilsService,
     private hsProxyService: HsProxyService,
   ) {
     this.searchResultsLayer = new VectorLayer({
@@ -182,7 +181,7 @@ export class HsSearchService {
     for (const provider of Object.keys(this.providers)
       .map((key) => this.providers[key])
       .filter((provider) => provider?.results)) {
-      this.hsLayerUtilsService.highlightFeatures(
+      highlightFeatures(
         featuresUnderMouse as Feature<Geometry>[],
         provider.results,
       );

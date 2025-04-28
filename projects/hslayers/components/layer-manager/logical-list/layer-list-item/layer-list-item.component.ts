@@ -23,7 +23,6 @@ import {
   HsLayerSelectorService,
 } from 'hslayers-ng/services/layer-manager';
 import {HsLayerManagerTimeEditorComponent} from '../../dimensions/layer-manager-time-editor.component';
-import {HsLayerUtilsService} from 'hslayers-ng/services/utils';
 import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 import {
   getExclusive,
@@ -31,6 +30,7 @@ import {
 } from 'hslayers-ng/common/extensions';
 import {takeUntilDestroyed, toSignal} from '@angular/core/rxjs-interop';
 import {filter} from 'rxjs';
+import {layerInvalid} from 'hslayers-ng/services/utils';
 
 @Component({
   selector: 'hs-layer-list-item',
@@ -62,6 +62,7 @@ export class HsLayerListItemComponent implements OnInit {
 
   getExclusive = getExclusive;
   getHsLaymanSynchronizing = getHsLaymanSynchronizing;
+  layerInvalid = layerInvalid;
 
   layerId = computed(() => this.layer().idString());
 
@@ -90,7 +91,6 @@ export class HsLayerListItemComponent implements OnInit {
     private hsLayerManagerService: HsLayerManagerService,
     private hsLayerSelectorService: HsLayerSelectorService,
     private hsDimensionTimeService: HsDimensionTimeService,
-    public hsLayerUtilsService: HsLayerUtilsService,
     private hsLayerListService: HsLayerListService,
     private hsLayerManagerVisibilityService: HsLayerManagerVisibilityService,
     private hsLayerEditorService: HsLayerEditorService,

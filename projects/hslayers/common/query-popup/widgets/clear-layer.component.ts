@@ -6,10 +6,10 @@ import {Source} from 'ol/source';
 import {HsConfirmDialogComponent} from 'hslayers-ng/common/confirm';
 import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
 import {HsLanguageService} from 'hslayers-ng/services/language';
-import {HsLayerUtilsService} from 'hslayers-ng/services/utils';
 import {HsQueryPopupServiceModel} from '..//query-popup.service.model';
 import {HsQueryPopupWidgetBaseComponent} from '..//query-popup-widget-base.component';
 import {getTitle} from 'hslayers-ng/common/extensions';
+import {isLayerEditable} from 'hslayers-ng/services/utils';
 
 @Component({
   selector: 'hs-clear-layer',
@@ -28,7 +28,6 @@ export class HsClearLayerComponent
   name = 'clear-layer';
   layerDescriptor: any;
   constructor(
-    private hsLayerUtilsService: HsLayerUtilsService,
     private hsDialogContainerService: HsDialogContainerService,
     private hsLanguageService: HsLanguageService,
   ) {
@@ -70,6 +69,6 @@ export class HsClearLayerComponent
    * @returns True if the layer is editable, false otherwise
    */
   isLayerEditable(layer: Layer<Source>): boolean {
-    return this.hsLayerUtilsService.isLayerEditable(layer);
+    return isLayerEditable(layer);
   }
 }

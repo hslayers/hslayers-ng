@@ -15,9 +15,9 @@ import {HsConfig} from 'hslayers-ng/config';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsLanguageService} from 'hslayers-ng/services/language';
 import {
-  HsLayerUtilsService,
   instOf,
   HsProxyService,
+  isLayerDrawable,
 } from 'hslayers-ng/services/utils';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsMapService} from 'hslayers-ng/services/map';
@@ -80,7 +80,6 @@ export class HsTripPlannerService {
     public HsEventBusService: HsEventBusService,
     private HsToastService: HsToastService,
     public HsLanguageService: HsLanguageService,
-    private HsLayerUtilsService: HsLayerUtilsService,
     private HsLayoutService: HsLayoutService,
     private hsConfig: HsConfig,
     private hsProxyService: HsProxyService,
@@ -164,9 +163,7 @@ export class HsTripPlannerService {
           title: 'newLayer',
         },
         ...this.HsMapService.getLayersArray()
-          .filter((layer: Layer<Source>) =>
-            this.HsLayerUtilsService.isLayerDrawable(layer),
-          )
+          .filter((layer: Layer<Source>) => isLayerDrawable(layer))
           .map((layer: VectorLayer<VectorSource<Feature>>) => {
             return {layer, title: getTitle(layer)};
           }),

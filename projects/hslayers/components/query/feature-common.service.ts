@@ -7,11 +7,11 @@ import {Layer} from 'ol/layer';
 import {Source, Vector as VectorSource} from 'ol/source';
 
 import {HsLanguageService} from 'hslayers-ng/services/language';
-import {HsLayerUtilsService} from 'hslayers-ng/services/utils';
 import {HsMapService} from 'hslayers-ng/services/map';
 import {HsQueryVectorService} from 'hslayers-ng/services/query';
 import {HsToastService} from 'hslayers-ng/common/toast';
 import {getTitle} from 'hslayers-ng/common/extensions';
+import {isLayerDrawable} from 'hslayers-ng/services/utils';
 
 export interface exportFormats {
   name: 'WKT' | 'GeoJSON';
@@ -35,7 +35,6 @@ export class HsFeatureCommonService {
     private hsToastService: HsToastService,
     private hsLanguageService: HsLanguageService,
     private hsMapService: HsMapService,
-    private hsLayerUtilsService: HsLayerUtilsService,
   ) {
     this.hsMapService.loaded().then((map) => {
       map.getLayers().on('change:length', () => {
@@ -67,7 +66,7 @@ export class HsFeatureCommonService {
     const layers = this.hsMapService
       .getLayersArray()
       .filter((layer: Layer<Source>) => {
-        return this.hsLayerUtilsService.isLayerDrawable(layer);
+        return isLayerDrawable(layer);
       });
     this.listSubject.next(layers);
   }

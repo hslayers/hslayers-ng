@@ -15,8 +15,9 @@ import {
 } from 'hslayers-ng/common/extensions';
 import {
   debounce,
-  HsLayerUtilsService,
   instOf,
+  isLayerClustered,
+  isLayerVectorLayer,
 } from 'hslayers-ng/services/utils';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsLogService} from 'hslayers-ng/services/log';
@@ -45,7 +46,6 @@ export class HsExternalService {
   featureLinks: FeatureDomEventLinkDict = {};
   constructor(
     public hsMapService: HsMapService,
-    private hsLayerUtilsService: HsLayerUtilsService,
     private hsLog: HsLogService,
     private hsQueryPopupService: HsQueryPopupService,
     private hsQueryBaseService: HsQueryBaseService,
@@ -62,7 +62,7 @@ export class HsExternalService {
   }
 
   layerRemoved(layer: BaseLayer): void {
-    if (this.hsLayerUtilsService.isLayerVectorLayer(layer)) {
+    if (isLayerVectorLayer(layer)) {
       for (const key of Object.keys(this.featureLinks)) {
         const link = this.featureLinks[key];
         if (link.layer == layer) {
@@ -80,7 +80,7 @@ export class HsExternalService {
    * @param layer - OL BaseLayer (superclass of Layer)
    */
   layerAdded(layer: BaseLayer): void {
-    if (!this.hsLayerUtilsService.isLayerVectorLayer(layer)) {
+    if (!isLayerVectorLayer(layer)) {
       return;
     }
     if (getDomFeatureLinks(layer)) {
@@ -98,9 +98,7 @@ export class HsExternalService {
   }
 
   private processLinks(layer: VectorLayer<VectorSource<Feature>>) {
-    const source: VectorSource = this.hsLayerUtilsService.isLayerClustered(
-      layer,
-    )
+    const source: VectorSource = isLayerClustered(layer)
       ? (layer.getSource() as Cluster<Feature>).getSource()
       : layer.getSource();
     for (const link of getDomFeatureLinks(layer)) {
