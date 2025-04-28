@@ -20,7 +20,6 @@ import {HsLayerManagerService} from 'hslayers-ng/services/layer-manager';
 import {HsLogService} from 'hslayers-ng/services/log';
 import {HsToastService} from 'hslayers-ng/common/toast';
 import {HsUtilsService} from 'hslayers-ng/services/utils';
-import {HsLayoutService} from 'hslayers-ng/services/layout';
 
 @Injectable({
   providedIn: 'root',
@@ -48,7 +47,6 @@ export class HsCompositionsService {
     private hsEventBusService: HsEventBusService,
     private hsToastService: HsToastService,
     private hsLayerManagerService: HsLayerManagerService,
-    private hsLayoutService: HsLayoutService,
   ) {
     this.hsEventBusService.compositionEdits.subscribe(() => {
       this.hsCompositionsParserService.composition_edited = true;
@@ -83,21 +81,6 @@ export class HsCompositionsService {
       }
       this.tryParseCompositionFromUrlParam();
     });
-    this.hsEventBusService.vectorQueryFeatureSelection
-      .pipe(filter((e) => this.hsLayoutService.mainpanel == 'compositions'))
-      .subscribe((e) => {
-        for (const endpoint of this.hsCommonEndpointsService.endpoints()) {
-          const record =
-            this.hsCompositionsMapService.getFeatureRecordAndUnhighlight(
-              e.feature,
-              e.selector,
-              endpoint.compositions,
-            );
-          if (record) {
-            this.loadComposition(this.getRecordLink(record));
-          }
-        }
-      });
   }
 
   /**
