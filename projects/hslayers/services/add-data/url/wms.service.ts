@@ -28,7 +28,12 @@ import {
   HsWmsGetCapabilitiesService,
 } from 'hslayers-ng/services/get-capabilities';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
-import {HsLayerUtilsService, HsUtilsService} from 'hslayers-ng/services/utils';
+import {
+  getPortFromUrl,
+  HsLayerUtilsService,
+  isOverflown,
+  undefineEmptyString,
+} from 'hslayers-ng/services/utils';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {addAnchors, getPreferredFormat} from 'hslayers-ng/common/utils';
 
@@ -37,17 +42,16 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
   data: UrlDataObject;
 
   constructor(
-    public hsMapService: HsMapService,
-    public hsWmsGetCapabilitiesService: HsWmsGetCapabilitiesService,
-    public hsDimensionService: HsDimensionService,
-    public hsLayoutService: HsLayoutService,
-    public hsUtilsService: HsUtilsService,
-    public hsConfig: HsConfig,
-    public hsAddDataService: HsAddDataService,
-    public hsEventBusService: HsEventBusService,
-    public hsAddDataUrlService: HsAddDataUrlService,
-    public hsAddDataCommonService: HsAddDataCommonService,
-    public HsLayerUtilsService: HsLayerUtilsService,
+    private hsMapService: HsMapService,
+    private hsWmsGetCapabilitiesService: HsWmsGetCapabilitiesService,
+    private hsDimensionService: HsDimensionService,
+    private hsLayoutService: HsLayoutService,
+    private hsConfig: HsConfig,
+    private hsAddDataService: HsAddDataService,
+    private hsEventBusService: HsEventBusService,
+    private hsAddDataUrlService: HsAddDataUrlService,
+    private hsAddDataCommonService: HsAddDataCommonService,
+    private HsLayerUtilsService: HsLayerUtilsService,
   ) {
     this.hsEventBusService.olMapLoads.subscribe((map) => {
       this.data.map_projection = this.hsMapService.map
@@ -116,7 +120,7 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
     const action = e.target.className.includes('hs-wms-expandedRow')
       ? 'remove'
       : 'add';
-    if (this.hsUtilsService.isOverflown(e.target) || action == 'remove') {
+    if (isOverflown(e.target) || action == 'remove') {
       const selectedRow = e.target.parentElement;
       for (const el of selectedRow.children) {
         el.classList[action]('hs-wms-expandedRow');
@@ -384,9 +388,7 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
     if (this.hsConfig.proxyPrefix === undefined) {
       return url;
     }
-    const proxyPort = parseInt(
-      this.hsUtilsService.getPortFromUrl(this.hsConfig.proxyPrefix),
-    );
+    const proxyPort = parseInt(getPortFromUrl(this.hsConfig.proxyPrefix));
     if (proxyPort > 0) {
       return url.replace(':' + proxyPort.toString(), '');
     }
@@ -453,7 +455,7 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
         {
           ...layerOptions,
           layerName: this.getLayerNameForGroup(),
-          path: this.hsUtilsService.undefineEmptyString(this.data.folder_name),
+          path: undefineEmptyString(this.data.folder_name),
           imageFormat: this.data.image_format,
           queryFormat: this.data.query_format,
           tileSize: this.data.tile_size,
@@ -639,7 +641,7 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
         this.getLayer(layer, {
           ...options.layerOptions,
           layerName: layer.Title.replace(/\//g, '&#47;'),
-          path: this.hsUtilsService.undefineEmptyString(this.data.folder_name),
+          path: undefineEmptyString(this.data.folder_name),
           imageFormat: this.data.image_format,
           queryFormat: this.data.query_format,
           tileSize: this.data.tile_size,

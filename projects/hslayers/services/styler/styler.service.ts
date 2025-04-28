@@ -38,7 +38,11 @@ import {
   HsLayerSynchronizerService,
   HsSaveMapService,
 } from 'hslayers-ng/services/save-map';
-import {HsLayerUtilsService, HsUtilsService} from 'hslayers-ng/services/utils';
+import {
+  HsLayerUtilsService,
+  instOf,
+  isFunction,
+} from 'hslayers-ng/services/utils';
 import {HsLogService} from 'hslayers-ng/services/log';
 import {HsMapService} from 'hslayers-ng/services/map';
 import {HsQueryVectorService} from 'hslayers-ng/services/query';
@@ -96,7 +100,6 @@ export class HsStylerService {
 
   constructor(
     public hsQueryVectorService: HsQueryVectorService,
-    public hsUtilsService: HsUtilsService,
     private hsLayerUtilsService: HsLayerUtilsService,
     private hsEventBusService: HsEventBusService,
     private hsLogService: HsLogService,
@@ -156,7 +159,7 @@ export class HsStylerService {
   }
 
   isVectorLayer(layer: any): boolean {
-    if (this.hsUtilsService.instOf(layer, VectorLayer)) {
+    if (instOf(layer, VectorLayer)) {
       return true;
     }
     return false;
@@ -223,10 +226,7 @@ export class HsStylerService {
       await this.addRule('Cluster');
     }
     let style = layer.getStyle();
-    if (
-      this.hsUtilsService.instOf(layer.getSource(), Cluster) &&
-      this.hsUtilsService.isFunction(style)
-    ) {
+    if (instOf(layer.getSource(), Cluster) && isFunction(style)) {
       style = this.wrapStyleForClusters(style as StyleFunction);
       layer.setStyle(style);
     }
@@ -287,7 +287,7 @@ export class HsStylerService {
         layer.setStyle(parsedStyle.style);
       }
       if (getCluster(layer)) {
-        if (!this.hsUtilsService.instOf(layer.getSource(), Cluster)) {
+        if (!instOf(layer.getSource(), Cluster)) {
           this.hsLogService.warn(
             `Layer ${getTitle(
               layer,
@@ -797,7 +797,7 @@ export class HsStylerService {
     if (!layer) {
       return;
     }
-    if (isLayerSynchronizable(layer, this.hsUtilsService)) {
+    if (isLayerSynchronizable(layer, instOf)) {
       setHsLaymanSynchronizing(layer, true);
     }
     setSld(layer, this.sld());
@@ -816,10 +816,7 @@ export class HsStylerService {
       /* style is a function when text symbolizer is used. We need some hacking 
       for cluster layer in that case to have the correct number of features in 
       cluster display over the label */
-      if (
-        this.hsUtilsService.instOf(this.layer().getSource(), Cluster) &&
-        this.hsUtilsService.isFunction(style)
-      ) {
+      if (instOf(this.layer().getSource(), Cluster) && isFunction(style)) {
         style = this.wrapStyleForClusters(style as StyleFunction);
       }
       this.layer().setStyle(style);

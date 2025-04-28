@@ -14,7 +14,11 @@ import {transform} from 'ol/proj';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsLanguageService} from 'hslayers-ng/services/language';
-import {HsLayerUtilsService, HsUtilsService} from 'hslayers-ng/services/utils';
+import {
+  HsLayerUtilsService,
+  instOf,
+  HsProxyService,
+} from 'hslayers-ng/services/utils';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsMapService} from 'hslayers-ng/services/map';
 import {HsShareUrlService} from 'hslayers-ng/services/share';
@@ -71,7 +75,6 @@ export class HsTripPlannerService {
 
   constructor(
     public HsMapService: HsMapService,
-    public HsUtilsService: HsUtilsService,
     private $http: HttpClient,
     public HsShareUrlService: HsShareUrlService,
     public HsEventBusService: HsEventBusService,
@@ -80,6 +83,7 @@ export class HsTripPlannerService {
     private HsLayerUtilsService: HsLayerUtilsService,
     private HsLayoutService: HsLayoutService,
     private hsConfig: HsConfig,
+    private hsProxyService: HsProxyService,
   ) {
     this.modify = new Modify({
       features: this.movable_features,
@@ -100,7 +104,7 @@ export class HsTripPlannerService {
         this.HsMapService.getMap()
           .getInteractions()
           .getArray()
-          .find((i) => i.getActive() && this.HsUtilsService.instOf(i, Draw))
+          .find((i) => i.getActive() && instOf(i, Draw))
       ) {
         return;
       }
@@ -250,7 +254,7 @@ export class HsTripPlannerService {
           lon: new_cords[0],
           lat: new_cords[1],
           name: 'Waypoint ' + (this.waypoints.length + 1),
-          hash: this.HsUtilsService.hashCode(
+          hash: this.hashCode(
             JSON.stringify('Waypoint ' + this.waypoints.length + Math.random()),
           ),
           routes: {from: null, to: null},
@@ -306,7 +310,7 @@ export class HsTripPlannerService {
       lon,
       lat,
       name: 'Waypoint ' + (this.waypoints.length + 1),
-      hash: this.HsUtilsService.hashCode(
+      hash: this.hashCode(
         JSON.stringify('Waypoint ' + this.waypoints.length + Math.random()),
       ),
       routes: {from: null, to: null},
@@ -316,7 +320,7 @@ export class HsTripPlannerService {
     const feature = new Feature({
       'wp': wp,
       geometry: new Point([x, y]),
-      id: this.HsUtilsService.generateUuid(),
+      id: crypto.randomUUID(),
     }) as Feature<Point>;
     feature.setId(feature.get('id'));
     wp.featureId = feature.getId();
@@ -443,7 +447,7 @@ export class HsTripPlannerService {
       if (wpf.routes.from === null) {
         const wpt = this.waypoints[i + 1];
         wpt.loading = true;
-        const url = this.HsUtilsService.proxify(
+        const url = this.hsProxyService.proxify(
           `https://api.openrouteservice.org/v2/directions/${this.selectedProfile}/geojson`,
         );
         const response = await lastValueFrom(
@@ -522,5 +526,18 @@ export class HsTripPlannerService {
       }
       return distance.toFixed(2) + 'km';
     }
+  }
+
+  hashCode(s: string): number {
+    let hash = 0;
+    if (s.length == 0) {
+      return hash;
+    }
+    for (let i = 0; i < s.length; i++) {
+      const char = s.charCodeAt(i);
+      hash = (hash << 5) - hash + char;
+      hash = hash & hash; // Convert to 32bit integer
+    }
+    return hash;
   }
 }

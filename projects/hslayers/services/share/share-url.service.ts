@@ -12,9 +12,14 @@ import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsLanguageService} from 'hslayers-ng/services/language';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsMapService} from 'hslayers-ng/services/map';
-import {HsUtilsService} from 'hslayers-ng/services/utils';
+import {
+  debounce,
+  HsProxyService,
+  paramsToURLWoEncode,
+} from 'hslayers-ng/services/utils';
 import {MapComposition} from 'hslayers-ng/types';
 import {getShowInLayerManager, getTitle} from 'hslayers-ng/common/extensions';
+import {getBboxFromObject} from 'hslayers-ng/common/utils';
 
 @Injectable({providedIn: 'root'})
 export class HsShareUrlService {
@@ -38,7 +43,6 @@ export class HsShareUrlService {
 
   constructor(
     public hsMapService: HsMapService,
-    public HsUtilsService: HsUtilsService,
     public hsConfig: HsConfig,
     public HsLanguageService: HsLanguageService,
     public HsLayoutService: HsLayoutService,
@@ -47,6 +51,7 @@ export class HsShareUrlService {
     private zone: NgZone,
     private PlatformLocation: PlatformLocation,
     private HttpClient: HttpClient,
+    private hsProxyService: HsProxyService,
   ) {
     this.keepTrackOfGetParams();
     this.hsMapService.loaded().then((map) => {
@@ -145,9 +150,7 @@ export class HsShareUrlService {
    */
   async updatePermalinkComposition(data?: MapComposition): Promise<any> {
     const status_url = this.endpointUrl();
-    const bbox = this.HsUtilsService.getBboxFromObject(
-      this.hsMapService.describeExtent(),
-    );
+    const bbox = getBboxFromObject(this.hsMapService.describeExtent());
     this.data = data ?? {
       ...this.data,
       nativeExtent: transformExtent(
@@ -178,7 +181,7 @@ export class HsShareUrlService {
    * Get actual map state information (visible layers, added layers*, active panel, map center and zoom level), create full Url link and push it in Url bar. (*Added layers are omitted from permalink url).
    */
   update(): void {
-    this.id = this.HsUtilsService.generateUuid();
+    this.id = crypto.randomUUID();
 
     const externalLayers = this.hsMapService
       .getLayersArray()
@@ -222,7 +225,7 @@ export class HsShareUrlService {
    * Update URL params when single HSL app is bootstrapped
    */
   private updateURL() {
-    this.HsUtilsService.debounce(
+    debounce(
       () => {
         //No updates for multi-apps
         if (document.querySelectorAll('hslayers-app').length == 1) {
@@ -288,17 +291,49 @@ export class HsShareUrlService {
   }
 
   /**
+   * @param url - URL to shorten
+   * @returns Shortened URL
+   * Promise which shortens URL by using some URL shortener.
+   * By default tinyurl is used, but user provided function in config.shortenUrl can be used.
+   * @example
+   * ```typescript
+   * function(url) {
+            return new Promise(function(resolve, reject){
+                $http.get("http://tinyurl.com/api-create.php?url=" + url, {
+                    longUrl: url
+                }).then(function(response) {
+                    resolve(response.data);
+                }).catch(function(err) {
+                    reject()
+                })
+            })
+        }
+   * ```
+   */
+  async shortUrl(url: string): Promise<any> {
+    if (this.hsConfig.shortenUrl != undefined) {
+      return this.hsConfig.shortenUrl(url);
+    }
+    return await lastValueFrom(
+      this.HttpClient.get(
+        this.hsProxyService.proxify(
+          'http://tinyurl.com/api-create.php?url=' + url,
+        ),
+        {
+          responseType: 'text',
+        },
+      ),
+    );
+  }
+
+  /**
    * Create URL for PureMap version of map
    * @returns Embedded URL
    */
   getPureMapUrl(): string {
     const params = {};
     params[HS_PRMS.pureMap] = true;
-    return (
-      this.getPermalinkUrl() +
-      '&' +
-      this.HsUtilsService.paramsToURLWoEncode(params)
-    );
+    return this.getPermalinkUrl() + '&' + paramsToURLWoEncode(params);
   }
 
   /**

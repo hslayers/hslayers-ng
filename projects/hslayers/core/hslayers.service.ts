@@ -5,9 +5,9 @@ import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsLogService} from 'hslayers-ng/services/log';
 import {HsMapService} from 'hslayers-ng/services/map';
-import {HsUtilsService} from 'hslayers-ng/services/utils';
 
 import {HsLanguageService} from 'hslayers-ng/services/language';
+import {debounce} from 'hslayers-ng/services/utils';
 
 @Injectable({
   providedIn: 'root',
@@ -25,7 +25,6 @@ export class HslayersService {
     public HsMapService: HsMapService,
     public hsConfig: HsConfig,
     public HsLayoutService: HsLayoutService,
-    public HsUtilsService: HsUtilsService,
     private log: HsLogService,
     public HsEventBusService: HsEventBusService,
   ) {
@@ -67,7 +66,7 @@ export class HslayersService {
    */
   initSizeListeners(): void {
     window.addEventListener('resize', () => {
-      this.HsUtilsService.debounce(
+      debounce(
         function () {
           this.mapSizeUpdates();
           this.HsEventBusService.layoutResizes.next();

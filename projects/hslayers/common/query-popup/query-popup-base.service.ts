@@ -9,7 +9,6 @@ import {HsMapService} from 'hslayers-ng/services/map';
 import {HsPanelItem} from 'hslayers-ng/common/panels';
 import {HsQueryPopupData} from './popup-data';
 import {HsQueryPopupWidgetContainerService} from './query-popup-widget-container.service';
-import {HsUtilsService} from 'hslayers-ng/services/utils';
 import {getName, getPopUp, getTitle} from 'hslayers-ng/common/extensions';
 
 @Injectable({
@@ -18,7 +17,6 @@ import {getName, getPopUp, getTitle} from 'hslayers-ng/common/extensions';
 export class HsQueryPopupBaseService extends HsQueryPopupData {
   constructor(
     public hsMapService: HsMapService,
-    public hsUtilsService: HsUtilsService,
     public zone: NgZone,
     public hsQueryPopupWidgetContainerService: HsQueryPopupWidgetContainerService,
   ) {

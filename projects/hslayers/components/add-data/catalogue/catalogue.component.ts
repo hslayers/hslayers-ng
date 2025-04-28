@@ -19,7 +19,6 @@ import {
 } from 'hslayers-ng/services/language';
 import {HsLaymanService} from 'hslayers-ng/services/save-map';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
-import {HsUtilsService} from 'hslayers-ng/services/utils';
 import {HsPagerModule} from 'hslayers-ng/common/pager';
 import {HsCatalogueListItemComponent} from './catalogue-list-item/catalogue-list-item.component';
 
@@ -55,7 +54,6 @@ export class HsAddDataCatalogueComponent implements OnInit {
     public hsAddDataCatalogueService: HsAddDataCatalogueService,
     public hsAddDataCatalogueMapService: HsAddDataCatalogueMapService,
     public hsLayoutService: HsLayoutService,
-    public hsUtilsService: HsUtilsService,
     public hsLaymanService: HsLaymanService,
     public hsCommonLaymanService: HsCommonLaymanService,
     private hsAddDataService: HsAddDataService,

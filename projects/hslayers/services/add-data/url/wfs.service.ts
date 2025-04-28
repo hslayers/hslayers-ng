@@ -17,16 +17,19 @@ import {
 import {DuplicateHandling, HsMapService} from 'hslayers-ng/services/map';
 import {HsAddDataCommonService} from '../common.service';
 import {HsAddDataUrlService} from './add-data-url.service';
-import {HsConfig} from 'hslayers-ng/config';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsLogService} from 'hslayers-ng/services/log';
-import {HsUtilsService} from 'hslayers-ng/services/utils';
 import {HsWfsGetCapabilitiesService} from 'hslayers-ng/services/get-capabilities';
 
 import {WfsSource} from 'hslayers-ng/common/layers';
 import {setCluster} from 'hslayers-ng/common/extensions';
 import {HsCommonLaymanService, isLaymanUrl} from 'hslayers-ng/common/layman';
+import {
+  HsProxyService,
+  paramsToURLWoEncode,
+  undefineEmptyString,
+} from 'hslayers-ng/services/utils';
 
 type WfsCapabilitiesLayer = {
   Abstract: string;
@@ -63,9 +66,7 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
   });
 
   constructor(
-    private hsConfig: HsConfig,
     private http: HttpClient,
-    public hsUtilsService: HsUtilsService,
     public hsWfsGetCapabilitiesService: HsWfsGetCapabilitiesService,
     private hsLog: HsLogService,
     public hsMapService: HsMapService,
@@ -74,6 +75,7 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
     public hsAddDataCommonService: HsAddDataCommonService,
     private hsAddDataUrlService: HsAddDataUrlService,
     private hsCommonLaymanService: HsCommonLaymanService,
+    private hsProxyService: HsProxyService,
   ) {
     this.setDataToDefault();
   }
@@ -315,7 +317,7 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
         layer.Name;
       const url = [
         this.hsWfsGetCapabilitiesService.service_url().split('?')[0],
-        this.hsUtilsService.paramsToURLWoEncode(params),
+        paramsToURLWoEncode(params),
       ].join('?');
 
       this.parseFeatureCount(url, layer, selectedLayer);
@@ -336,7 +338,7 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
     // Associate the cancel subject with the request URL
     this.requestCancelSubjects.set(url, cancelSubject);
     this.http
-      .get(this.hsUtilsService.proxify(url), {
+      .get(this.hsProxyService.proxify(url), {
         responseType: 'text',
         withCredentials: this.withCredentials(),
       })
@@ -497,7 +499,7 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
     if (!this.data.add_all || layer.checked) {
       const newLayer = this.getLayer(layer, {
         layerName: layer.Name,
-        path: this.hsUtilsService.undefineEmptyString(this.data.folder_name),
+        path: undefineEmptyString(this.data.folder_name),
         crs: this.data.srs,
         sld: style?.includes('StyledLayerDescriptor') ? style : undefined,
         qml: style?.includes('qgis') ? style : undefined,
@@ -547,7 +549,7 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
         data_version: this.data.version,
         output_format: this.data.output_format,
         crs: options.crs,
-        provided_url: this.hsUtilsService.proxify(url),
+        provided_url: this.hsProxyService.proxify(url),
         layer_name: options.layerName,
         featureNS: layer._attributes[Object.keys(layer._attributes)[0]],
         map_projection: this.hsMapService.getMap().getView().getProjection(),

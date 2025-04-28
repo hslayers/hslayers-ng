@@ -8,7 +8,7 @@ import {Layer, Vector as VectorLayer} from 'ol/layer';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsMapService} from 'hslayers-ng/services/map';
 import {HsStylerService} from 'hslayers-ng/services/styler';
-import {HsUtilsService} from 'hslayers-ng/services/utils';
+import {instOf} from 'hslayers-ng/services/utils';
 
 @Injectable({
   providedIn: 'root',
@@ -19,7 +19,6 @@ export class HsLayerEditorVectorLayerService {
     public hsConfig: HsConfig,
     public hsMapService: HsMapService,
     public hsStylerService: HsStylerService,
-    public hsUtilsService: HsUtilsService,
   ) {}
 
   /**
@@ -38,7 +37,7 @@ export class HsLayerEditorVectorLayerService {
     generateStyle: boolean,
   ): Promise<void> {
     if (newValue == true) {
-      if (!this.hsUtilsService.instOf(layer.getSource(), Cluster)) {
+      if (!instOf(layer.getSource(), Cluster)) {
         layer.setSource(this.createClusteredSource(layer, distance));
         if (generateStyle) {
           await this.hsStylerService.styleClusteredLayer(
@@ -49,7 +48,7 @@ export class HsLayerEditorVectorLayerService {
           layer as VectorLayer<VectorSource<Feature>>,
         );
       }
-    } else if (this.hsUtilsService.instOf(layer.getSource(), Cluster)) {
+    } else if (instOf(layer.getSource(), Cluster)) {
       layer.setSource((layer.getSource() as Cluster<Feature>).getSource());
     }
   }

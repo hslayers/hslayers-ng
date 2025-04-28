@@ -15,7 +15,7 @@ import {
   LogicalOperatorType,
 } from 'hslayers-ng/types';
 import {HsToastService} from 'hslayers-ng/common/toast';
-import {HsUtilsService} from 'hslayers-ng/services/utils';
+import {HsProxyService} from 'hslayers-ng/services/utils';
 import {
   getDefinition,
   getName,
@@ -28,9 +28,9 @@ import {
 })
 export class HsFiltersService {
   http = inject(HttpClient);
-  hsUtilsService = inject(HsUtilsService);
   hsToastService = inject(HsToastService);
   hsLanguageService = inject(HsLanguageService);
+  hsProxyService = inject(HsProxyService);
 
   selectedLayer: HsLayerDescriptor;
 
@@ -263,7 +263,7 @@ export class HsFiltersService {
       `valueReference=${attributeName}`,
       'outputFormat=application/json',
     ].join('&');
-    return this.hsUtilsService.proxify(`${baseUrl}?${params.toString()}`);
+    return this.hsProxyService.proxify(`${baseUrl}?${params.toString()}`);
   }
 
   /**

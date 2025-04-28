@@ -8,7 +8,7 @@ import {HsConfig} from 'hslayers-ng/config';
 import {HsLanguageService} from 'hslayers-ng/services/language';
 import {HsLayerEditorWidgetBaseComponent} from './layer-editor-widget-base.component';
 import {HsLayerSelectorService} from 'hslayers-ng/services/layer-manager';
-import {HsLayerUtilsService, HsUtilsService} from 'hslayers-ng/services/utils';
+import {HsLayerUtilsService, instOf} from 'hslayers-ng/services/utils';
 import {InterpolatedSource} from 'hslayers-ng/common/layers';
 
 @Component({
@@ -36,7 +36,6 @@ export class HsIdwWidgetComponent
   constructor(
     public HsLanguageService: HsLanguageService,
     hsLayerSelectorService: HsLayerSelectorService,
-    private hsUtilsService: HsUtilsService,
     private hsLayerUtilsService: HsLayerUtilsService,
     public hsConfig: HsConfig,
   ) {
@@ -45,9 +44,7 @@ export class HsIdwWidgetComponent
 
   ngOnInit(): void {
     super.ngOnInit();
-    if (
-      !this.hsUtilsService.instOf(this.olLayer.getSource(), InterpolatedSource)
-    ) {
+    if (!instOf(this.olLayer.getSource(), InterpolatedSource)) {
       return;
     }
     this.fillAttributes();

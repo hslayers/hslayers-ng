@@ -8,7 +8,7 @@ import {Vector as VectorSource} from 'ol/source';
 import {unByKey} from 'ol/Observable';
 
 import {HsCommonEndpointsService} from 'hslayers-ng/services/endpoints';
-import {HsLayerUtilsService, HsUtilsService} from 'hslayers-ng/services/utils';
+import {debounce, HsLayerUtilsService} from 'hslayers-ng/services/utils';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsLogService} from 'hslayers-ng/services/log';
 import {HsMapCompositionDescriptor} from 'hslayers-ng/types';
@@ -31,7 +31,6 @@ export class HsAddDataCatalogueMapService {
     public hsLayerUtilsService: HsLayerUtilsService,
     private hsCommonEndpointsService: HsCommonEndpointsService,
     private hsLayoutService: HsLayoutService,
-    private hsUtilsService: HsUtilsService,
   ) {
     this.hsLayoutService.mainpanel$.subscribe((which) => {
       if (which === 'addData') {
@@ -55,12 +54,7 @@ export class HsAddDataCatalogueMapService {
     console.log('addPointerMoveListener');
     this.pointerMoveListener = this.hsMapService.getMap().on(
       'pointermove',
-      this.hsUtilsService.debounce(
-        (e) => this.mapPointerMoved(e),
-        50,
-        false,
-        this,
-      ),
+      debounce((e) => this.mapPointerMoved(e), 50, false, this),
     );
   }
 

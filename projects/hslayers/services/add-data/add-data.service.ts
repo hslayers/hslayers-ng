@@ -9,7 +9,6 @@ import {HsCommonEndpointsService} from 'hslayers-ng/services/endpoints';
 import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsMapService} from 'hslayers-ng/services/map';
-import {HsUtilsService} from 'hslayers-ng/services/utils';
 import {getBase} from 'hslayers-ng/common/extensions';
 
 @Injectable({
@@ -23,7 +22,6 @@ export class HsAddDataService {
   datasetTypeSelected = this.datasetSelected.asObservable();
   constructor(
     public hsMapService: HsMapService,
-    public hsUtilsService: HsUtilsService,
     public hsConfig: HsConfig,
     public hsCommonEndpointsService: HsCommonEndpointsService,
     public hsCommonLaymanService: HsCommonLaymanService,

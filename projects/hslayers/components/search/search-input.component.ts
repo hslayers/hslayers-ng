@@ -7,6 +7,7 @@ import {HsConfig} from 'hslayers-ng/config';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsSearchService} from './search.service';
 import {TranslateCustomPipe} from 'hslayers-ng/services/language';
+import {HsMapService} from 'hslayers-ng/services/map';
 
 /**
  * Add search input template to page
@@ -26,6 +27,7 @@ export class HsSearchInputComponent implements OnInit, OnDestroy {
     private hsSearchService: HsSearchService,
     private hsEventBusService: HsEventBusService,
     private hsShareUrlService: HsShareUrlService,
+    private hsMapService: HsMapService,
   ) {
     this.searchResultsReceivedSubscription =
       this.hsEventBusService.searchResultsReceived.subscribe(() => {
@@ -52,7 +54,7 @@ export class HsSearchInputComponent implements OnInit, OnDestroy {
    * Handler of search input, request search service and display results div
    */
   async queryChanged(): Promise<void> {
-    await this.hsSearchService.hsMapService.loaded();
+    await this.hsMapService.loaded();
     if (this.query.length == 0) {
       this.clear();
       return;

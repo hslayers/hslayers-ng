@@ -15,10 +15,8 @@ import {
   getLaymanFriendlyLayerName,
 } from 'hslayers-ng/common/layman';
 import {HsLaymanService} from 'hslayers-ng/services/save-map';
-import {HsLogService} from 'hslayers-ng/services/log';
 import {HsMapService} from 'hslayers-ng/services/map';
 import {HsStylerService} from 'hslayers-ng/services/styler';
-import {HsUtilsService} from 'hslayers-ng/services/utils';
 import {
   OverwriteResponse,
   UpsertLayerObject,
@@ -33,6 +31,7 @@ import {setDefinition} from 'hslayers-ng/common/extensions';
 
 import {HsAddDataVectorUtilsService} from './vector-utils.service';
 import {HsToastService} from 'hslayers-ng/common/toast';
+import {undefineEmptyString, HsProxyService} from 'hslayers-ng/services/utils';
 
 @Injectable({
   providedIn: 'root',
@@ -44,12 +43,11 @@ export class HsAddDataVectorService {
     private hsLaymanService: HsLaymanService,
     private hsCommonLaymanService: HsCommonLaymanService,
     private hsCommonLaymanLayerService: HsCommonLaymanLayerService,
-    private hsLog: HsLogService,
     private hsMapService: HsMapService,
     private hsStylerService: HsStylerService,
-    private hsUtilsService: HsUtilsService,
     private hsAddDataVectorUtilsService: HsAddDataVectorUtilsService,
     private hsToastService: HsToastService,
+    private hsProxyService: HsProxyService,
   ) {}
 
   /**
@@ -90,7 +88,7 @@ export class HsAddDataVectorService {
         so layer synchronizer knows whether to sync
         */
         if (options.saveToLayman) {
-          if (this.hsUtilsService.undefineEmptyString(url) !== undefined) {
+          if (undefineEmptyString(url) !== undefined) {
             setDefinition(lyr, {
               format: 'WFS',
               url: url,
@@ -136,10 +134,10 @@ export class HsAddDataVectorService {
       type?.toLowerCase() != 'wfs' &&
       url !== undefined
     ) {
-      url = this.hsUtilsService.proxify(url);
+      url = this.hsProxyService.proxify(url);
     }
 
-    if (this.hsUtilsService.undefineEmptyString(type) === undefined) {
+    if (undefineEmptyString(type) === undefined) {
       type = this.hsAddDataVectorUtilsService.tryGuessTypeFromNameOrUrl(url);
     }
 
@@ -230,7 +228,7 @@ export class HsAddDataVectorService {
       features: data.saveToLayman ? null : data.features, //Features are being posted to Layman in original CRS and will be fetched later
       geomAttribute: `?${data.geomProperty}`,
       idAttribute: `?${data.idProperty}`,
-      path: this.hsUtilsService.undefineEmptyString(data.folder_name),
+      path: undefineEmptyString(data.folder_name),
       access_rights: data.access_rights,
       workspace: this.hsCommonLaymanService.user(),
       query: data.query,

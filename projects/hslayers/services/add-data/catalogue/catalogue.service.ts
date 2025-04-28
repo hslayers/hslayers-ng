@@ -34,7 +34,6 @@ import {HsLaymanBrowserService} from './layman.service';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsMapService} from 'hslayers-ng/services/map';
 import {HsMickaBrowserService} from './micka.service';
-import {HsUtilsService} from 'hslayers-ng/services/utils';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 
 /**
@@ -87,7 +86,6 @@ export class HsAddDataCatalogueService extends HsAddDataCatalogueParams {
     public hsLaymanBrowserService: HsLaymanBrowserService,
     public hsLayoutService: HsLayoutService,
     public hsCommonEndpointsService: HsCommonEndpointsService,
-    public hsUtilsService: HsUtilsService,
     public hsMapService: HsMapService,
     public hsAddDataCatalogueMapService: HsAddDataCatalogueMapService,
     public hsAddDataService: HsAddDataService,

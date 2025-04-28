@@ -4,7 +4,7 @@ import {Injectable, Type} from '@angular/core';
 import {HsButton} from 'hslayers-ng/types';
 import {HsPanelContainerService} from 'hslayers-ng/services/panels';
 import {HsSidebarService} from 'hslayers-ng/services/sidebar';
-import {HsUtilsService} from 'hslayers-ng/services/utils';
+import {capitalizeFirstLetter} from 'hslayers-ng/services/utils';
 import {skip} from 'rxjs';
 
 @Injectable({
@@ -14,7 +14,6 @@ export class HsPanelConstructorService {
   constructor(
     private hsConfig: HsConfig,
     private HsPanelContainerService: HsPanelContainerService,
-    private hsUtilsService: HsUtilsService,
     private hsSidebarService: HsSidebarService,
   ) {
     this.hsConfig.configChanges.pipe(skip(1)).subscribe(async () => {
@@ -37,9 +36,7 @@ export class HsPanelConstructorService {
    * Create HSLayers panel component based on name string
    */
   private async _createPanel(name: string, data?: any) {
-    const cName = `Hs${this.hsUtilsService.capitalizeFirstLetter(
-      name,
-    )}Component`;
+    const cName = `Hs${capitalizeFirstLetter(name)}Component`;
     let i;
     switch (name) {
       case 'layerManager':

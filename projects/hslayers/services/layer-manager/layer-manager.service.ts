@@ -29,7 +29,7 @@ import {
   HsLayermanagerFolder,
 } from 'hslayers-ng/types';
 import {HsLayerSelectorService} from './layer-selector.service';
-import {HsLayerUtilsService, HsUtilsService} from 'hslayers-ng/services/utils';
+import {debounce, HsLayerUtilsService} from 'hslayers-ng/services/utils';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsLogService} from 'hslayers-ng/services/log';
 import {HsMapService} from 'hslayers-ng/services/map';
@@ -115,7 +115,6 @@ export class HsLayerManagerService {
     public hsAddDataOwsService: HsAddDataOwsService,
     private hsShareUrlService: HsShareUrlService,
     public hsToastService: HsToastService,
-    public hsUtilsService: HsUtilsService,
     public sanitizer: DomSanitizer,
     private hsLayerManagerUtilsService: HsLayerManagerUtilsService,
     private hsLayerManagerVisibilityService: HsLayerManagerVisibilityService,
@@ -219,7 +218,7 @@ export class HsLayerManagerService {
 
     const onResolutionChange = map.getView().on(
       'change:resolution',
-      this.hsUtilsService.debounce(
+      debounce(
         (e) => this.resolutionChangeDebounceCallback(),
         200,
         false,
@@ -282,7 +281,7 @@ export class HsLayerManagerService {
         ),
       visible: layer.getVisible(),
       showInLayerManager,
-      uid: this.hsUtilsService.generateUuid(),
+      uid: crypto.randomUUID(),
       idString() {
         return 'layer' + (this.coded_path || '') + (this.uid || '');
       },

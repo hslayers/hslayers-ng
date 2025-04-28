@@ -7,8 +7,8 @@ import {Stroke, Style, Fill} from 'ol/style';
 import VectorSource from 'ol/source/Vector';
 import VectorLayer from 'ol/layer/Vector';
 
-import {generateUuid} from 'hslayers-ng/services/utils';
 import {getHighlighted} from 'hslayers-ng/common/extensions';
+import {BoundingBoxObject} from 'hslayers-ng/types';
 
 /**
  * @param record - Record of one dataset from Get Records response
@@ -23,7 +23,7 @@ export function addExtentFeature(
     highlighted: false,
     title: record.title || record.name,
     geometry: null,
-    id: generateUuid(),
+    id: crypto.randomUUID(),
   };
   let mapExtent = mapProjection.getExtent();
   if (mapExtent === null) {
@@ -155,4 +155,23 @@ export function createNewExtentLayer(
         : normalStyle;
     },
   });
+}
+
+/**
+ * Get bounding box from object \{east: value, south: value, west: value, north: value\}
+ * @param bbox - Bounding box
+ * @returns Returns bounding box as number array
+ */
+export function getBboxFromObject(
+  bbox: number[] | BoundingBoxObject,
+): number[] {
+  if (bbox && !Array.isArray(bbox)) {
+    return [
+      parseFloat(bbox.east),
+      parseFloat(bbox.south),
+      parseFloat(bbox.west),
+      parseFloat(bbox.north),
+    ];
+  }
+  return bbox as number[];
 }

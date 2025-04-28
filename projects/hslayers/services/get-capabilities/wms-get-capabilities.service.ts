@@ -11,7 +11,7 @@ import {HsCapabilityCacheService} from './capability-cache.service';
 import {HsCommonLaymanService, isLaymanUrl} from 'hslayers-ng/common/layman';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsMapService} from 'hslayers-ng/services/map';
-import {HsUtilsService} from 'hslayers-ng/services/utils';
+import {getParamsFromUrl, HsProxyService} from 'hslayers-ng/services/utils';
 import {IGetCapabilities} from './get-capabilities.interface';
 import {getPreferredFormat} from 'hslayers-ng/common/utils';
 
@@ -21,9 +21,9 @@ export class HsWmsGetCapabilitiesService implements IGetCapabilities {
     private httpClient: HttpClient,
     public hsEventBusService: HsEventBusService,
     public hsMapService: HsMapService,
-    public hsUtilsService: HsUtilsService,
     public hsCommonLaymanService: HsCommonLaymanService,
     private hsCapabilityCacheService: HsCapabilityCacheService,
+    private hsProxyService: HsProxyService,
   ) {}
 
   /**
@@ -80,7 +80,7 @@ export class HsWmsGetCapabilitiesService implements IGetCapabilities {
     owrCache?: boolean,
   ): Promise<CapabilitiesResponseWrapper> {
     service_url = service_url.replace(/&amp;/g, '&');
-    const params = this.hsUtilsService.getParamsFromUrl(service_url);
+    const params = getParamsFromUrl(service_url);
     const path = this.getPathFromUrl(service_url);
     if (params.request === undefined && params.REQUEST === undefined) {
       params.request = 'GetCapabilities';
@@ -97,7 +97,7 @@ export class HsWmsGetCapabilitiesService implements IGetCapabilities {
     }
     let url = [path, this.params2String(params)].join('?');
 
-    url = this.hsUtilsService.proxify(url);
+    url = this.hsProxyService.proxify(url);
 
     if (this.hsCapabilityCacheService.get(url) && !owrCache) {
       return this.hsCapabilityCacheService.get(url);

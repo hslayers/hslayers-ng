@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {inject, Injectable} from '@angular/core';
 
 import WMTSTileGrid from 'ol/tilegrid/WMTS';
 import {Layer} from 'ol/layer';
@@ -6,17 +6,14 @@ import {WMTS} from 'ol/source';
 import {get as getProjection, transform} from 'ol/proj';
 
 import {HsMapService} from 'hslayers-ng/services/map';
-import {HsUtilsService} from 'hslayers-ng/services/utils';
 import {getInfoFormat} from 'hslayers-ng/common/extensions';
+import {paramsToURLWoEncode} from 'hslayers-ng/services/utils';
 
 @Injectable({
   providedIn: 'root',
 })
 export class HsQueryWmtsService {
-  constructor(
-    private hsMapService: HsMapService,
-    private hsUtilsService: HsUtilsService,
-  ) {}
+  hsMapService = inject(HsMapService);
 
   /**
    * Parse request URL
@@ -73,9 +70,7 @@ export class HsQueryWmtsService {
       feature_count: source.getLayer().length,
     };
 
-    const url = [urls, this.hsUtilsService.paramsToURLWoEncode(params)].join(
-      '',
-    );
+    const url = [urls, paramsToURLWoEncode(params)].join('');
     return {
       url: url,
       format: params.INFOFORMAT,

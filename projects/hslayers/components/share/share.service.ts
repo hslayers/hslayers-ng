@@ -17,7 +17,7 @@ import {
   HsShareUrlService,
 } from 'hslayers-ng/services/share';
 import {HsToastService} from 'hslayers-ng/common/toast';
-import {HsUtilsService} from 'hslayers-ng/services/utils';
+import {debounce} from 'hslayers-ng/services/utils';
 import {getShowInLayerManager} from 'hslayers-ng/common/extensions';
 
 @Injectable({
@@ -36,7 +36,6 @@ export class HsShareService {
   constructor(
     public hsConfig: HsConfig,
     public HsShareUrlService: HsShareUrlService,
-    public HsUtilsService: HsUtilsService,
     public HsMapService: HsMapService,
     public HsLayoutService: HsLayoutService,
     public HsSaveMapService: HsSaveMapService,
@@ -100,10 +99,10 @@ export class HsShareService {
       ) {
         this.shareUrlValid = false;
         try {
-          this.pureMapUrl = await this.HsUtilsService.shortUrl(
+          this.pureMapUrl = await this.HsShareUrlService.shortUrl(
             this.HsShareUrlService.getPureMapUrl(),
           );
-          this.permalinkUrl = await this.HsUtilsService.shortUrl(
+          this.permalinkUrl = await this.HsShareUrlService.shortUrl(
             this.HsShareUrlService.getPermalinkUrl(),
           );
           this.getEmbedCode();
@@ -118,7 +117,7 @@ export class HsShareService {
     this.HsEventBusService.olMapLoads.subscribe((map) => {
       map.on(
         'postcompose',
-        this.HsUtilsService.debounce(
+        debounce(
           () => {
             if (this.HsLayoutService.mainpanel == 'share') {
               this.generateThumbnail(
@@ -184,7 +183,7 @@ export class HsShareService {
   async shareOnSocial(newShare: boolean): Promise<void> {
     if (!this.shareUrlValid) {
       if (this.HsShareUrlService.shareId === null || newShare) {
-        this.HsShareUrlService.shareId = this.HsUtilsService.generateUuid();
+        this.HsShareUrlService.shareId = crypto.randomUUID();
       }
       try {
         const endpointUrl = this.HsShareUrlService.endpointUrl();
@@ -207,7 +206,7 @@ export class HsShareService {
           ),
         );
 
-        const shortUrl = await this.HsUtilsService.shortUrl(
+        const shortUrl = await this.HsShareUrlService.shortUrl(
           `${endpointUrl}?request=socialshare&id=${this.HsShareUrlService.shareId}`,
         );
         const shareUrl = shortUrl;
@@ -296,7 +295,7 @@ export class HsShareService {
     saveAsNew: boolean,
   ): Promise<any> {
     if (saveAsNew || compoData.id == '') {
-      compoData.id = this.HsUtilsService.generateUuid();
+      compoData.id = crypto.randomUUID();
     }
     return new Promise(async (resolve, reject) => {
       try {

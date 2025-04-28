@@ -14,7 +14,12 @@ import {toLonLat} from 'ol/proj';
 
 import {HsConfig} from 'hslayers-ng/config';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
-import {HsLayerUtilsService, HsUtilsService} from 'hslayers-ng/services/utils';
+import {
+  formatLength,
+  formatArea,
+  HsLayerUtilsService,
+  instOf,
+} from 'hslayers-ng/services/utils';
 import {HsMapService} from 'hslayers-ng/services/map';
 import {HsQueryBaseService} from './query-base.service';
 import {StyleLike, createDefaultStyle} from 'ol/style/Style';
@@ -38,7 +43,6 @@ export class HsQueryVectorService {
     private hsMapService: HsMapService,
     private hsConfig: HsConfig,
     private hsLayerUtilsService: HsLayerUtilsService,
-    private hsUtilsService: HsUtilsService,
     private hsEventBusService: HsEventBusService,
     private domSanitizer: DomSanitizer,
   ) {
@@ -209,7 +213,7 @@ export class HsQueryVectorService {
     const geom = f.getGeometry();
     const type = geom.getType();
     if (type == 'Polygon') {
-      const area = this.hsUtilsService.formatArea(
+      const area = formatArea(
         geom as Polygon,
         this.hsMapService.getCurrentProj(),
       );
@@ -219,7 +223,7 @@ export class HsQueryVectorService {
       ];
     }
     if (type == 'LineString') {
-      const length = this.hsUtilsService.formatLength(
+      const length = formatLength(
         geom as LineString,
         this.hsMapService.getCurrentProj(),
       );
@@ -243,7 +247,7 @@ export class HsQueryVectorService {
     if (layer == undefined) {
       return;
     }
-    if (this.hsUtilsService.instOf(layer.getSource(), Cluster)) {
+    if (instOf(layer.getSource(), Cluster)) {
       return (layer.getSource() as Cluster<Feature>).getSource();
     }
     return layer.getSource();
@@ -261,7 +265,7 @@ export class HsQueryVectorService {
     }
     const layer = this.hsMapService.getLayerForFeature(feature);
     return (
-      this.hsUtilsService.instOf(source, VectorSource) &&
+      instOf(source, VectorSource) &&
       this.hsLayerUtilsService.isLayerEditable(layer)
     );
   }
@@ -272,7 +276,7 @@ export class HsQueryVectorService {
    */
   removeFeature(feature: Feature<Geometry>): void {
     const source = this.olSource(feature);
-    if (this.hsUtilsService.instOf(source, VectorSource)) {
+    if (instOf(source, VectorSource)) {
       source.removeFeature(feature);
     }
     this.selector.getFeatures().remove(feature);

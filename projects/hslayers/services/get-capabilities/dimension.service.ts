@@ -5,7 +5,7 @@ import {Source, Vector as VectorSource, XYZ} from 'ol/source';
 import {HsDimensionDescriptor} from 'hslayers-ng/common/dimensions';
 import {HsDimensionTimeService} from './dimension-time.service';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
-import {HsLayerUtilsService, HsUtilsService} from 'hslayers-ng/services/utils';
+import {HsLayerUtilsService, instOf} from 'hslayers-ng/services/utils';
 import {HsLogService} from 'hslayers-ng/services/log';
 import {HsMapService} from 'hslayers-ng/services/map';
 import {HsWmsLayer, WmsDimension} from 'hslayers-ng/types';
@@ -21,7 +21,6 @@ export class HsDimensionService {
     public hsEventBusService: HsEventBusService,
     public hsLayerUtilsService: HsLayerUtilsService,
     public hsMapService: HsMapService,
-    public hsUtilsService: HsUtilsService,
   ) {
     this.hsDimensionTimeService.layerTimeChanges.subscribe(
       ({layer: layerDescriptor, time: newTime}) => {
@@ -109,9 +108,9 @@ export class HsDimensionService {
           params[dimension.name == 'time' ? 'TIME' : dimension.name] =
             dimension.value;
           this.hsLayerUtilsService.updateLayerParams(layer, params);
-        } else if (this.hsUtilsService.instOf(src, XYZ)) {
+        } else if (instOf(src, XYZ)) {
           src.refresh();
-        } else if (this.hsUtilsService.instOf(src, VectorSource)) {
+        } else if (instOf(src, VectorSource)) {
           (src as VectorSource).refresh();
         }
         this.hsEventBusService.layermanagerDimensionChanges.next({

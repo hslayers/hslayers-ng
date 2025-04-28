@@ -1,7 +1,6 @@
 import {Component, Input, OnDestroy, OnInit, inject} from '@angular/core';
 import {
   ControlContainer,
-  FormBuilder,
   FormControl,
   FormGroup,
   ReactiveFormsModule,
@@ -12,7 +11,7 @@ import {Source} from 'ol/source';
 
 import {HsMapService} from 'hslayers-ng/services/map';
 import {HsSaveMapService} from 'hslayers-ng/services/save-map';
-import {HsUtilsService} from 'hslayers-ng/services/utils';
+import {debounce} from 'hslayers-ng/services/utils';
 import {
   getBase,
   getShowInLayerManager,
@@ -44,7 +43,7 @@ export class AdvancedOptionsComponent implements OnInit, OnDestroy {
   layers: saveMapLayer[];
   btnSelectDeselectClicked = true;
 
-  postCompose = this.hsUtilsService.debounce(
+  postCompose = debounce(
     () => {
       this.setCurrentBoundingBox();
       this.hsSaveMapService.generateThumbnail(this.thumbnail);
@@ -56,9 +55,7 @@ export class AdvancedOptionsComponent implements OnInit, OnDestroy {
 
   constructor(
     public parentContainer: ControlContainer,
-    private fb: FormBuilder,
     private hsMapService: HsMapService,
-    private hsUtilsService: HsUtilsService,
     private hsSaveMapService: HsSaveMapService,
   ) {}
 

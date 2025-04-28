@@ -1,10 +1,10 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Inject, OnInit, PLATFORM_ID} from '@angular/core';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsMeasureService} from './measure.service';
 import {HsPanelBaseComponent} from 'hslayers-ng/common/panels';
-import {HsUtilsService} from 'hslayers-ng/services/utils';
+import {isPlatformBrowser} from '@angular/common';
 
 @Component({
   selector: 'hs-measure',
@@ -17,7 +17,7 @@ export class HsMeasureComponent extends HsPanelBaseComponent implements OnInit {
   constructor(
     private hsEventBusService: HsEventBusService,
     public hsMeasureService: HsMeasureService,
-    private hsUtilsService: HsUtilsService,
+    @Inject(PLATFORM_ID) private platformId: any,
   ) {
     super();
   }
@@ -26,7 +26,7 @@ export class HsMeasureComponent extends HsPanelBaseComponent implements OnInit {
     super.ngOnInit();
     this.type = 'distance';
 
-    if (this.hsUtilsService.runningInBrowser()) {
+    if (isPlatformBrowser(this.platformId)) {
       document.addEventListener('keyup', (e) => {
         if (e.key == 'Control') {
           //ControlLeft

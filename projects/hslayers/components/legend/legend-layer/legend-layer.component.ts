@@ -5,7 +5,6 @@ import {HsCustomLegendCategory} from '../legend-custom-category.type';
 import {HsLegendDescriptor} from '../legend-descriptor.interface';
 import {HsLegendService} from '../legend.service';
 import {HsStylerService} from 'hslayers-ng/services/styler';
-import {HsUtilsService} from 'hslayers-ng/services/utils';
 
 @Component({
   selector: 'hs-legend-layer',
@@ -24,7 +23,6 @@ export class HsLegendLayerComponent implements OnInit {
   defaultIconHeight = 32;
 
   constructor(
-    public hsUtilsService: HsUtilsService,
     public hsLegendService: HsLegendService,
     public hsStylerService: HsStylerService,
   ) {

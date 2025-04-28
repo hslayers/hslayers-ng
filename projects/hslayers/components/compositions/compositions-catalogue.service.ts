@@ -10,13 +10,13 @@ import {HsEndpoint, HsMapCompositionDescriptor} from 'hslayers-ng/types';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsMapService} from 'hslayers-ng/services/map';
-import {HsUtilsService} from 'hslayers-ng/services/utils';
 import {
   INSPIRETHEMES,
   KEYWORDS,
   SORTBYVALUES,
   TYPES,
 } from './compositions-option-values';
+import {debounce} from 'hslayers-ng/services/utils';
 
 @Injectable({
   providedIn: 'root',
@@ -65,7 +65,6 @@ export class HsCompositionsCatalogueService {
     public hsCompositionsService: HsCompositionsService,
     public hsLayoutService: HsLayoutService,
     public hsCommonEndpointsService: HsCommonEndpointsService,
-    public hsUtilsService: HsUtilsService,
     public hsEventBusService: HsEventBusService,
     public hsDialogContainerService: HsDialogContainerService,
     public hsCommonLaymanService: HsCommonLaymanService,
@@ -84,7 +83,7 @@ export class HsCompositionsCatalogueService {
     this.hsEventBusService.mapExtentChanges
       .pipe(filter(() => this.hsLayoutService.mainpanel === 'compositions'))
       .subscribe(
-        hsUtilsService.debounce(
+        debounce(
           ({map, event, extent}) => {
             if (this.extentChangeSuppressed) {
               this.extentChangeSuppressed = false;
