@@ -1,5 +1,6 @@
 import {Component, computed, OnInit, signal} from '@angular/core';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
+import {filter} from 'rxjs/operators';
 
 import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
 import {HsCompositionsCatalogueService} from './compositions-catalogue.service';
@@ -11,6 +12,8 @@ import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
 import {HsLayerSynchronizerService} from 'hslayers-ng/services/save-map';
 import {HsMapCompositionDescriptor} from 'hslayers-ng/types';
 import {HsPanelBaseComponent} from 'hslayers-ng/common/panels';
+import {HsEventBusService} from 'hslayers-ng/services/event-bus';
+import {HsCommonEndpointsService} from 'hslayers-ng/services/endpoints';
 
 @Component({
   selector: 'hs-compositions',
@@ -36,18 +39,41 @@ export class HsCompositionsComponent
 
   constructor(
     public hsConfig: HsConfig,
+    private hsEventBusService: HsEventBusService,
     private hsCompositionsService: HsCompositionsService,
     private hsCompositionsParserService: HsCompositionsParserService,
     private hsCompositionsMapService: HsCompositionsMapService,
     private hsDialogContainerService: HsDialogContainerService,
     public hsCompositionsCatalogueService: HsCompositionsCatalogueService,
     public hsCommonLaymanService: HsCommonLaymanService,
+    private hsCommonEndpointsService: HsCommonEndpointsService,
     /**
      * Make sure the hsLayerSynchronizerService is available in the setups with add-data
      */
     private hsLayerSynchronizerService: HsLayerSynchronizerService,
   ) {
     super();
+
+    this.hsEventBusService.vectorQueryFeatureSelection
+      .pipe(
+        filter((e) => this.hsLayoutService.mainpanel == 'compositions'),
+        takeUntilDestroyed(),
+      )
+      .subscribe((e) => {
+        for (const endpoint of this.hsCommonEndpointsService.endpoints()) {
+          const record =
+            this.hsCompositionsMapService.getFeatureRecordAndUnhighlight(
+              e.feature,
+              e.selector,
+              endpoint.compositions,
+            );
+          if (record) {
+            this.hsCompositionsService.loadComposition(
+              this.hsCompositionsService.getRecordLink(record),
+            );
+          }
+        }
+      });
   }
 
   ngOnInit(): void {
