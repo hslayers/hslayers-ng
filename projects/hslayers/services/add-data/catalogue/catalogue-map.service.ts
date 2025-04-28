@@ -2,11 +2,9 @@ import {Injectable} from '@angular/core';
 
 import {EventsKey} from 'ol/events';
 import {Feature} from 'ol';
-import {Fill, Stroke, Style} from 'ol/style';
 import {Geometry} from 'ol/geom';
 import {Vector as VectorLayer} from 'ol/layer';
 import {Vector as VectorSource} from 'ol/source';
-import {transform} from 'ol/proj';
 import {unByKey} from 'ol/Observable';
 
 import {HsCommonEndpointsService} from 'hslayers-ng/services/endpoints';
@@ -16,7 +14,8 @@ import {HsLogService} from 'hslayers-ng/services/log';
 import {HsMapCompositionDescriptor} from 'hslayers-ng/types';
 import {HsMapService} from 'hslayers-ng/services/map';
 import {HsSaveMapService} from 'hslayers-ng/services/save-map';
-import {getHighlighted, setHighlighted} from 'hslayers-ng/common/extensions';
+import {setHighlighted} from 'hslayers-ng/common/extensions';
+import {createNewExtentLayer} from 'hslayers-ng/common/utils';
 
 @Injectable({
   providedIn: 'root',
@@ -43,40 +42,17 @@ export class HsAddDataCatalogueMapService {
     });
 
     this.hsMapService.loaded().then((map) => {
-      if (this.hsLayoutService.mainpanel === 'addData') {
-        this.addPointerMoveListener();
-      }
       map.addLayer(this.extentLayer);
       this.hsSaveMapService.internalLayers.push(this.extentLayer);
     });
-
-    this.extentLayer = new VectorLayer({
-      source: new VectorSource(),
-      properties: {
-        title: 'Datasources extents',
-        showInLayerManager: false,
-        removable: false,
-      },
-      style: function (feature, resolution) {
-        return [
-          new Style({
-            stroke: new Stroke({
-              color: '#005CB6',
-              width: getHighlighted(feature as Feature<Geometry>) ? 4 : 1,
-            }),
-            fill: new Fill({
-              color: 'rgba(0, 0, 255, 0.01)',
-            }),
-          }),
-        ];
-      },
-    });
+    this.extentLayer = createNewExtentLayer('Datasources extents');
   }
 
   /**
    * Add debounced pointer move listener
    */
   private addPointerMoveListener() {
+    console.log('addPointerMoveListener');
     this.pointerMoveListener = this.hsMapService.getMap().on(
       'pointermove',
       this.hsUtilsService.debounce(
@@ -100,7 +76,6 @@ export class HsAddDataCatalogueMapService {
       .filter((ep) => ep.layers)) {
       this.hsLayerUtilsService.highlightFeatures(
         featuresUnderMouse,
-        this.extentLayer,
         endpoint.layers,
       );
     }

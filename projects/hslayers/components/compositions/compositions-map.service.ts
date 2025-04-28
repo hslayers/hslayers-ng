@@ -2,7 +2,6 @@ import {Injectable} from '@angular/core';
 
 import {EventsKey} from 'ol/events';
 import {Feature} from 'ol';
-import {Fill, Stroke, Style} from 'ol/style';
 import {Geometry} from 'ol/geom';
 import {Vector as VectorLayer} from 'ol/layer';
 import {Vector as VectorSource} from 'ol/source';
@@ -14,7 +13,8 @@ import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsMapCompositionDescriptor} from 'hslayers-ng/types';
 import {HsMapService} from 'hslayers-ng/services/map';
 import {HsSaveMapService} from 'hslayers-ng/services/save-map';
-import {getHighlighted, setHighlighted} from 'hslayers-ng/common/extensions';
+import {setHighlighted} from 'hslayers-ng/common/extensions';
+import {createNewExtentLayer} from 'hslayers-ng/common/utils';
 
 @Injectable({
   providedIn: 'root',
@@ -49,7 +49,7 @@ export class HsCompositionsMapService {
       }
     });
 
-    this.extentLayer = this.createNewExtentLayer();
+    this.extentLayer = createNewExtentLayer('Composition extents');
     this.hsMapService.loaded().then((map) => {
       if (
         this.hsLayoutService.mainpanel === 'compositions' ||
@@ -78,33 +78,6 @@ export class HsCompositionsMapService {
   }
 
   /**
-   * Create new extent layer
-   */
-  createNewExtentLayer(): VectorLayer<VectorSource<Feature>> {
-    return new VectorLayer({
-      properties: {
-        title: 'Composition extents',
-        showInLayerManager: false,
-        removable: false,
-      },
-      source: new VectorSource(),
-      style: function (feature, resolution) {
-        return [
-          new Style({
-            stroke: new Stroke({
-              color: '#005CB6',
-              width: getHighlighted(feature as Feature<Geometry>) ? 4 : 1,
-            }),
-            fill: new Fill({
-              color: 'rgba(0, 0, 255, 0.01)',
-            }),
-          }),
-        ];
-      },
-    });
-  }
-
-  /**
    * Act on map pointer movement and highlight features under it
    */
   mapPointerMoved(evt) {
@@ -116,7 +89,6 @@ export class HsCompositionsMapService {
       .filter((ep) => ep.compositions)) {
       this.hsLayerUtilsService.highlightFeatures(
         featuresUnderMouse,
-        this.extentLayer,
         endpoint.compositions,
       );
     }

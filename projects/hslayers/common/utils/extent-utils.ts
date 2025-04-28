@@ -3,7 +3,12 @@ import {Geometry} from 'ol/geom';
 import {get as getProjection, transform} from 'ol/proj';
 import {fromExtent as polygonFromExtent} from 'ol/geom/Polygon';
 
+import {Stroke, Style, Fill} from 'ol/style';
+import VectorSource from 'ol/source/Vector';
+import VectorLayer from 'ol/layer/Vector';
+
 import {generateUuid} from 'hslayers-ng/services/utils';
+import {getHighlighted} from 'hslayers-ng/common/extensions';
 
 /**
  * @param record - Record of one dataset from Get Records response
@@ -109,4 +114,45 @@ export function parseExtent(bbox: string | Array<number>): number[][] {
   pairs.push([parseFloat(b[0]), parseFloat(b[1])]);
   pairs.push([parseFloat(b[2]), parseFloat(b[3])]);
   return pairs;
+}
+
+/**
+ * Create new extent layer
+ */
+export function createNewExtentLayer(
+  title: string,
+): VectorLayer<VectorSource<Feature>> {
+  const fill = new Fill({
+    color: 'rgba(0, 0, 255, 0.01)',
+  });
+  // Pre-create styles for highlighted and normal states to avoid recreating them on every render
+  const normalStyle = new Style({
+    stroke: new Stroke({
+      color: '#005CB6',
+      width: 1,
+    }),
+    fill,
+  });
+
+  const highlightedStyle = new Style({
+    stroke: new Stroke({
+      color: '#005CB6',
+      width: 4,
+    }),
+    fill,
+  });
+
+  return new VectorLayer({
+    properties: {
+      title,
+      showInLayerManager: false,
+      removable: false,
+    },
+    source: new VectorSource(),
+    style: function (feature, resolution) {
+      return getHighlighted(feature as Feature<Geometry>)
+        ? highlightedStyle
+        : normalStyle;
+    },
+  });
 }
