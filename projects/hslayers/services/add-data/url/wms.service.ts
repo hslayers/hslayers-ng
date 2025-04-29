@@ -34,9 +34,10 @@ import {
   undefineEmptyString,
   bufferExtent,
   calculateResolutionFromScale,
+  addAnchors,
+  getPreferredFormat,
 } from 'hslayers-ng/services/utils';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
-import {addAnchors, getPreferredFormat} from 'hslayers-ng/common/utils';
 
 @Injectable({providedIn: 'root'})
 export class HsUrlWmsService implements HsUrlTypeServiceModel {
