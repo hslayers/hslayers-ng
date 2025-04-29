@@ -69,7 +69,7 @@ export class HsCommonLaymanService {
           }),
         );
     }),
-    // Register the endpoint with HsUtilsService to avoid circular dependency
+    // Register the endpoint with HsProxyService to avoid circular dependency
     tap((endpoint) => {
       if (endpoint) {
         this.proxyService.registerLaymanEndpoints(endpoint.url);

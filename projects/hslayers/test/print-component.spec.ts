@@ -30,7 +30,6 @@ import {
 } from 'hslayers-ng/components/print';
 import {HsPrintLegendServiceMock} from './print-legend.service.mock';
 import {HsSidebarService} from 'hslayers-ng/services/sidebar';
-import {HsUtilsServiceMock} from './utils/utils.service.mock';
 import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 import {mockHsPrintScaleService} from './print-scale.service.mock';
 import {mockHsPrintService} from './print.service.mock';

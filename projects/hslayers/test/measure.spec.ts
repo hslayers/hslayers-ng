@@ -18,7 +18,6 @@ import {
   HsMeasureComponent,
   HsMeasureService,
 } from 'hslayers-ng/components/measure';
-import {HsUtilsServiceMock} from './utils/utils.service.mock';
 import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 
 describe('HsMeasure', () => {

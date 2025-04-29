@@ -46,12 +46,10 @@ import {HsSaveMapService} from 'hslayers-ng/services/save-map';
 import {HsSaveMapServiceMock} from './save-map.service.mock';
 import {HsStylerModule} from 'hslayers-ng/components/styler';
 import {HsStylerService} from 'hslayers-ng/services/styler';
-import {HsUtilsServiceMock} from './utils/utils.service.mock';
 import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 import {compositionJson} from './data/composition';
 import {compositionsJson} from './data/compositions';
 import {getTitle} from 'hslayers-ng/common/extensions';
-import {mockLayerUtilsService} from './layer-utils.service.mock';
 import {createMockLaymanService} from './common/layman/layman.service.mock';
 import {compositionStyleXml} from './data/composition-style';
 
@@ -66,7 +64,6 @@ class HsCompositionsMickaServiceMock {
 let mockedMapService;
 let hsConfig: HsConfig;
 let CompositionsCatalogueService;
-const layerUtilsMock = mockLayerUtilsService();
 describe('compositions', () => {
   let component: HsCompositionsComponent;
   let fixture: ComponentFixture<HsCompositionsComponent>;
@@ -82,7 +79,6 @@ describe('compositions', () => {
   });
 
   beforeEach(() => {
-    const mockedUtilsService: any = new HsUtilsServiceMock();
     const mockedConfig = new HsConfigMock();
     const mockedMapService: any = new HsMapServiceMock();
     const mockedVectorUtilsService = new HsAddDataVectorUtilsService(null);

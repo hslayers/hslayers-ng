@@ -427,7 +427,6 @@ export class SparqlJson extends Vector {
    * Adam Cole, 2011-Sept-14
    * HSV to RBG adapted from: http://mjijackson.com/2008/02/rgb-to-hsl-and-rgb-to-hsv-color-model-conversion-algorithms-in-javascript
    * based on http://stackoverflow.com/a/7419630
-   * TODO: try inject(HsUtilsService) and call the rainbow() method from there
    */
   rainbow(numOfSteps: number, step: number, opacity: number) {
     let r, g, b;

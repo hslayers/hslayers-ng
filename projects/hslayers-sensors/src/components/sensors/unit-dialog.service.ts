@@ -20,13 +20,13 @@ import {HsConfig} from 'hslayers-ng/config';
 import {HsLanguageService} from 'hslayers-ng/services/language';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsLogService} from 'hslayers-ng/services/log';
-import {HsUtilsService} from 'hslayers-ng/services/utils';
 
 import {Aggregate} from './types/aggregate.type';
 import {CustomInterval, Interval} from './types/interval.type';
 import {HsSensorUnit} from './sensor-unit.class';
 import {SensLogEndpoint} from './types/senslog-endpoint.type';
 import {SenslogSensor} from './types/senslog-sensor.type';
+import {HsProxyService} from 'hslayers-ng/services/utils';
 
 dayjs.extend(objectSupport);
 
@@ -95,13 +95,13 @@ export class HsSensorsUnitDialogService {
   constructor(
     private http: HttpClient,
     private hsConfig: HsConfig,
-    private hsUtilsService: HsUtilsService,
     private hsLogService: HsLogService,
     private hsLanguageService: HsLanguageService,
     private hsLayoutService: HsLayoutService,
     @Optional()
     @Inject('MAPSERVICE_DISABLED')
     public mapServiceDisabled: boolean,
+    private hsProxyService: HsProxyService,
   ) {
     this.currentInterval = this.intervals[2];
     this.useTimeZone.subscribe((value) => {
@@ -284,7 +284,7 @@ export class HsSensorsUnitDialogService {
   ): Promise<boolean> {
     //TODO rewrite by splitting getting the observable and subscribing to results in different functions
     return new Promise((resolve, reject) => {
-      const url = this.hsUtilsService.proxify(
+      const url = this.hsProxyService.proxify(
         `${this.endpoint.url}/${this.endpoint.liteApiPath}/rest/observation`,
       );
       const time = this.getTimeForInterval(interval);
