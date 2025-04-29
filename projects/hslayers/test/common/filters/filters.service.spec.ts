@@ -1,6 +1,5 @@
 import {HsFiltersService} from 'hslayers-ng/common/filters/filters.service';
 import {HsLayerDescriptor, WfsFeatureAttribute} from 'hslayers-ng/types';
-import {HsUtilsService} from 'hslayers-ng/services/utils';
 import {
   HttpTestingController,
   provideHttpClientTesting,
@@ -10,6 +9,7 @@ import {TestBed} from '@angular/core/testing';
 import {Vector as VectorSource} from 'ol/source';
 import {firstValueFrom} from 'rxjs';
 import {provideHttpClient} from '@angular/common/http';
+import {HsProxyService} from 'hslayers-ng/services/utils';
 
 function getMockXmlResponse(): string {
   return `<?xml version="1.0" encoding="UTF-8"?>
@@ -35,25 +35,21 @@ describe('HsFiltersService', () => {
   let service: HsFiltersService;
   let httpMock: HttpTestingController;
   let olLayer: Layer<VectorSource>;
-  let utilsService: jasmine.SpyObj<HsUtilsService>;
+  let proxyService: HsProxyService;
 
   beforeEach(() => {
-    const utilsServiceSpy = jasmine.createSpyObj('HsUtilsService', ['proxify']);
-
     TestBed.configureTestingModule({
       providers: [
         provideHttpClient(),
         provideHttpClientTesting(),
         HsFiltersService,
-        {provide: HsUtilsService, useValue: utilsServiceSpy},
       ],
     });
     service = TestBed.inject(HsFiltersService);
     httpMock = TestBed.inject(HttpTestingController);
-    utilsService = TestBed.inject(
-      HsUtilsService,
-    ) as jasmine.SpyObj<HsUtilsService>;
+    proxyService = TestBed.inject(HsProxyService);
 
+    proxyService.registerLaymanEndpoints('http://test.com/');
     // Create a proper OpenLayers layer
     const vectorSource = new VectorSource();
     olLayer = new Layer({
@@ -68,9 +64,6 @@ describe('HsFiltersService', () => {
     service.selectedLayer = {
       layer: olLayer,
     } as HsLayerDescriptor;
-
-    // Set up utilsService.proxify spy
-    utilsService.proxify.and.callFake((url: string) => url);
   });
 
   afterEach(() => {

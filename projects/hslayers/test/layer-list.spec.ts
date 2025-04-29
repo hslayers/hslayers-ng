@@ -33,17 +33,14 @@ import {
   HsLayerListService,
 } from 'hslayers-ng/components/layer-manager';
 import {HsLayerManagerService} from 'hslayers-ng/services/layer-manager';
-import {HsLayerUtilsService, HsUtilsService} from 'hslayers-ng/services/utils';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsLayoutServiceMock} from './layout.service.mock';
 import {HsMapService} from 'hslayers-ng/services/map';
 import {HsMapServiceMock} from './map.service.mock';
 import {HsPanelHelpersModule} from 'hslayers-ng/common/panels';
 import {HsShareUrlService} from 'hslayers-ng/services/share';
-import {HsUtilsServiceMock} from './utils/utils.service.mock';
 import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 import {mockHsLayerListService} from './layer-manager-layerlist.service.mock';
-import {mockLayerUtilsService} from './layer-utils.service.mock';
 import {wmsGetCapabilitiesResponse} from './data/wms-capabilities';
 
 class emptyMock {
@@ -109,12 +106,9 @@ HsLayerManagerServiceMock.data = {
   folders: signal(new Map([['other', {layers: [layer, layer2], zIndex: 0}]])),
 };
 
-const layerUtilsMock = mockLayerUtilsService();
-
 describe('layermanager-layer-list', () => {
   let component: HsLayerListComponent;
   let fixture: ComponentFixture<HsLayerListComponent>;
-  layerUtilsMock.getLayerParams.and.returnValue(params);
   let hsConfig: HsConfig;
 
   beforeAll(() => {
@@ -131,7 +125,7 @@ describe('layermanager-layer-list', () => {
   beforeEach(() => {
     const mockedConfig = new HsConfigMock();
 
-    const bed = TestBed.configureTestingModule({
+    TestBed.configureTestingModule({
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
       declarations: [],
       imports: [
@@ -156,15 +150,6 @@ describe('layermanager-layer-list', () => {
           },
         },
         {provide: HsWfsGetCapabilitiesService, useValue: new emptyMock()},
-        {provide: HsUtilsService, useValue: new HsUtilsServiceMock()},
-        {
-          provide: HsUtilsService,
-          useValue: new HsUtilsServiceMock(),
-        },
-        {
-          provide: HsLayerUtilsService,
-          useValue: layerUtilsMock,
-        },
         {provide: HsMapService, useValue: new HsMapServiceMock()},
         {
           provide: HsShareUrlService,
