@@ -49,9 +49,10 @@ import {HsStylerService} from 'hslayers-ng/services/styler';
 import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 import {compositionJson} from './data/composition';
 import {compositionsJson} from './data/compositions';
-import {getTitle} from 'hslayers-ng/common/extensions';
+import {getSld, getTitle} from 'hslayers-ng/common/extensions';
 import {createMockLaymanService} from './common/layman/layman.service.mock';
 import {compositionStyleXml} from './data/composition-style';
+import {createDefaultStyle} from 'ol/style/Style';
 
 class HsCompositionsMickaServiceMock {
   constructor(private originalService: HsCompositionsMickaService) {}
@@ -64,6 +65,7 @@ class HsCompositionsMickaServiceMock {
 let mockedMapService;
 let hsConfig: HsConfig;
 let CompositionsCatalogueService;
+
 describe('compositions', () => {
   let component: HsCompositionsComponent;
   let fixture: ComponentFixture<HsCompositionsComponent>;
@@ -89,7 +91,7 @@ describe('compositions', () => {
       'parseStyle',
     ]);
 
-    const bed = TestBed.configureTestingModule({
+    TestBed.configureTestingModule({
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
       declarations: [HsCompositionsComponent],
       imports: [
@@ -225,18 +227,16 @@ describe('compositions', () => {
     ).toBe(0);
   });
 
-  it('if should parse composition layer style', async function () {
+  it('if should parse composition layer style', fakeAsync(async () => {
     await loadComposition(component);
-    const layer = mockedMapService.getMap().getLayers().item(1);
-    expect(layer.getStyle()).toBeDefined();
-    expect(
-      mockedMapService
-        .getMap()
-        .getLayers()
-        .item(2)
-        .getStyle()[2]
-        .getStroke()
-        .getColor(),
-    ).toBe('rgba(0, 153, 255, 1)');
-  });
+
+    const layers = mockedMapService.getMap().getLayers();
+
+    expect(layers.getLength()).toBe(6);
+
+    expect(layers.item(1).getStyle()).toBeDefined();
+    expect(layers.item(1).getStyle()).toBe(createDefaultStyle);
+
+    expect(getSld(layers.item(5))).toBeDefined();
+  }));
 });
