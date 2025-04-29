@@ -25,14 +25,11 @@ import {
 import {HsConfig} from 'hslayers-ng/config';
 import {HsConfigMock} from './config.service.mock';
 import {HsLanguageModule} from 'hslayers-ng/components/language';
-import {HsLayerUtilsService, HsUtilsService} from 'hslayers-ng/services/utils';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsLayoutServiceMock} from './layout.service.mock';
 import {HsMapService} from 'hslayers-ng/services/map';
 import {HsMapServiceMock} from './map.service.mock';
-import {HsUtilsServiceMock} from './utils/utils.service.mock';
 import {HsWmsGetCapabilitiesService} from 'hslayers-ng/services/get-capabilities';
-import {mockLayerUtilsService} from './layer-utils.service.mock';
 import {testingServiceEndpoints} from './data/service-endpoints';
 
 let httpClient;
@@ -75,12 +72,10 @@ describe('HsAddDataUrlComponent', () => {
       providers: [
         {provide: HsMapService, useValue: new HsMapServiceMock()},
         {provide: HsConfig, useValue: mockedConfig},
-        {provide: HsUtilsService, useValue: new HsUtilsServiceMock()},
         {
           provide: HsLayoutService,
           useValue: new HsLayoutServiceMock(mockedConfig),
         },
-        {provide: HsLayerUtilsService, useValue: mockLayerUtilsService()},
         provideHttpClient(withInterceptorsFromDi()),
       ],
     });

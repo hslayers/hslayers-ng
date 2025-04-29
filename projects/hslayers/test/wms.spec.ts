@@ -19,15 +19,12 @@ import {HsCommonEndpointsService} from 'hslayers-ng/services/endpoints';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsConfigMock} from './config.service.mock';
 import {HsLanguageModule} from 'hslayers-ng/components/language';
-import {HsLayerUtilsService, HsUtilsService} from 'hslayers-ng/services/utils';
 import {HsMapService} from 'hslayers-ng/services/map';
 import {HsMapServiceMock} from './map.service.mock';
 import {HsPanelHelpersModule} from 'hslayers-ng/common/panels';
 import {HsUrlWmsComponent} from 'hslayers-ng//components/add-data';
 import {HsUrlWmsService} from 'hslayers-ng/services/add-data';
-import {HsUtilsServiceMock} from './utils/utils.service.mock';
 import {HsWmsGetCapabilitiesService} from 'hslayers-ng/services/get-capabilities';
-import {mockLayerUtilsService} from './layer-utils.service.mock';
 import {testingServiceEndpoints} from './data/service-endpoints';
 
 class HsCommonEndpointsServiceMock {
@@ -75,15 +72,10 @@ describe('add-data-url', () => {
           useValue: new HsConfigMock(),
         },
         {
-          provide: HsUtilsService,
-          useValue: new HsUtilsServiceMock(),
-        },
-        {
           provide: HsCommonEndpointsService,
           useValue: new HsCommonEndpointsServiceMock(),
         },
         {provide: HsMapService, useValue: new HsMapServiceMock()},
-        {provide: HsLayerUtilsService, useValue: mockLayerUtilsService()},
         provideHttpClient(withInterceptorsFromDi()),
       ],
     });

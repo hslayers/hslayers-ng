@@ -8,7 +8,7 @@ import {FormsModule} from '@angular/forms';
 import {provideHttpClient, withInterceptorsFromDi} from '@angular/common/http';
 import {provideHttpClientTesting} from '@angular/common/http/testing';
 
-import {BehaviorSubject, of} from 'rxjs';
+import {of} from 'rxjs';
 import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
 import {Vector as VectorLayer} from 'ol/layer';
 import {Vector as VectorSource} from 'ol/source';
@@ -28,7 +28,6 @@ import {
   HsLanguageService,
   TranslateCustomPipe,
 } from 'hslayers-ng/services/language';
-import {HsLayerUtilsService, HsUtilsService} from 'hslayers-ng/services/utils';
 import {HsLaymanService} from 'hslayers-ng/services/save-map';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsLayoutServiceMock} from './layout.service.mock';
@@ -38,8 +37,6 @@ import {
   HsQueryBaseService,
   HsQueryVectorService,
 } from 'hslayers-ng/services/query';
-import {HsUtilsServiceMock} from './utils/utils.service.mock';
-import {mockLayerUtilsService} from './layer-utils.service.mock';
 import {createMockLaymanService} from './common/layman/layman.service.mock';
 class emptyMock {
   constructor() {}
@@ -111,7 +108,6 @@ describe('HsDrawPanel', () => {
           useValue: new HsLayoutServiceMock(mockedConfig),
         },
         {provide: HsMapService, useValue: new HsMapServiceMock()},
-        {provide: HsLayerUtilsService, useValue: mockLayerUtilsService()},
         {provide: HsConfig, useValue: mockedConfig},
         {provide: HsQueryBaseService, useValue: mockQueryBaseService},
         {provide: HsQueryVectorService, useValue: new HsQueryVectorMock()},
@@ -126,7 +122,6 @@ describe('HsDrawPanel', () => {
         },
         {provide: HsAddDataOwsService, useValue: new emptyMock()},
         {provide: HsAddDataVectorService, useValue: new emptyMock()},
-        {provide: HsUtilsService, useValue: new HsUtilsServiceMock()},
         {
           provide: HsCommonLaymanService,
           useValue: mockedCommonLaymanService,
