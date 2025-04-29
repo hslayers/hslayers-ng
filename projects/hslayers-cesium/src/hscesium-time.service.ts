@@ -7,8 +7,8 @@ import {default as utc} from 'dayjs/plugin/utc';
 import {HsCesiumConfig} from './hscesium-config.service';
 import {HsCesiumLayersService} from './hscesium-layers.service';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
-import {HsUtilsService} from 'hslayers-ng/services/utils';
 import {getTitle} from 'hslayers-ng/common/extensions';
+import {instOf} from 'hslayers-ng/services/utils';
 
 @Injectable({
   providedIn: 'root',
@@ -18,7 +18,6 @@ export class HsCesiumTimeService {
   constructor(
     public HsCesiumLayersService: HsCesiumLayersService,
     public HsEventBusService: HsEventBusService,
-    private hsUtilsService: HsUtilsService,
     private hsCesiumConfig: HsCesiumConfig,
   ) {
     this.hsCesiumConfig.viewerLoaded.subscribe((viewer) => {
@@ -38,12 +37,7 @@ export class HsCesiumTimeService {
         round_time.setSeconds(0);
 
         const layer = this.viewer.imageryLayers.get(i);
-        if (
-          this.hsUtilsService.instOf(
-            layer.imageryProvider,
-            WebMapServiceImageryProvider,
-          )
-        ) {
+        if (instOf(layer.imageryProvider, WebMapServiceImageryProvider)) {
           const prmCache = this.HsCesiumLayersService.findParamCache(layer);
           if (prmCache && this.getTimeParameter(layer)) {
             if (prmCache.dimensions.time) {

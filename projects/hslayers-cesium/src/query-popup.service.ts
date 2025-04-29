@@ -6,7 +6,6 @@ import {
   HsQueryPopupServiceModel,
   HsQueryPopupWidgetContainerService,
 } from 'hslayers-ng/common/query-popup';
-import {HsUtilsService} from 'hslayers-ng/services/utils';
 
 @Injectable({
   providedIn: 'root',
@@ -16,16 +15,10 @@ export class HsCesiumQueryPopupService
   implements HsQueryPopupServiceModel {
   constructor(
     HsMapService: HsMapService,
-    HsUtilsService: HsUtilsService,
     zone: NgZone,
     hsQueryPopupWidgetContainerService: HsQueryPopupWidgetContainerService,
   ) {
-    super(
-      HsMapService,
-      HsUtilsService,
-      zone,
-      hsQueryPopupWidgetContainerService,
-    );
+    super(HsMapService, zone, hsQueryPopupWidgetContainerService);
   }
 
   registerPopup(nativeElement) {

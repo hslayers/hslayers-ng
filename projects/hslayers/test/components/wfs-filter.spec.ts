@@ -7,7 +7,6 @@ import {HsFiltersService} from 'hslayers-ng/common/filters';
 import {HsLayerManagerService} from 'hslayers-ng/services/layer-manager';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsLayoutServiceMock} from '../layout.service.mock';
-import {HsUtilsServiceMock} from '../utils/utils.service.mock';
 import {HsWfsFilterComponent} from 'hslayers-ng/components/wfs-filter/wfs-filter.component';
 import {Point} from 'ol/geom';
 import {Vector as VectorLayer} from 'ol/layer';

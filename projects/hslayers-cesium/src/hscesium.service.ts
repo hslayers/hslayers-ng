@@ -23,7 +23,6 @@ import {HsMapService} from 'hslayers-ng/services/map';
 import {HsOverlayConstructorService} from 'hslayers-ng/services/panel-constructor';
 import {HsQueryPopupComponent} from 'hslayers-ng/common/query-popup';
 import {HsShareUrlService} from 'hslayers-ng/services/share';
-import {HsUtilsService} from 'hslayers-ng/services/utils';
 import {HslayersService} from 'hslayers-ng/core';
 
 import {HsCesiumCameraService} from './hscesium-camera.service';
@@ -32,6 +31,7 @@ import {HsCesiumLayersService} from './hscesium-layers.service';
 import {HsCesiumPickerService} from './picker.service';
 import {HsCesiumQueryPopupService} from './query-popup.service';
 import {HsCesiumTimeService} from './hscesium-time.service';
+import {instOf} from 'hslayers-ng/services/utils';
 
 @Injectable({
   providedIn: 'root',
@@ -54,7 +54,6 @@ export class HsCesiumService {
     public HsCesiumLayersService: HsCesiumLayersService,
     public HsCesiumTimeService: HsCesiumTimeService,
     public HsEventBusService: HsEventBusService,
-    public HsUtilsService: HsUtilsService,
     public hsCesiumConfig: HsCesiumConfig,
     private HsCesiumPicker: HsCesiumPickerService,
     private hsCesiumQueryPopupService: HsCesiumQueryPopupService,
@@ -231,7 +230,7 @@ export class HsCesiumService {
       //Remove overlays registered when init was called last time (when switching between 2D/3D)
       const panelCollection = this.hsOverlayConstructorService.panels();
       for (const p of panelCollection) {
-        if (this.HsUtilsService.instOf(p, HsQueryPopupComponent)) {
+        if (instOf(p, HsQueryPopupComponent)) {
           this.hsOverlayConstructorService.destroy(p);
         }
       }
