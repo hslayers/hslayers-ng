@@ -50,7 +50,6 @@ export class HsAddDataCatalogueMapService {
    * Add debounced pointer move listener
    */
   private addPointerMoveListener() {
-    console.log('addPointerMoveListener');
     this.pointerMoveListener = this.hsMapService.getMap().on(
       'pointermove',
       debounce((e) => this.mapPointerMoved(e), 50, false, this),
