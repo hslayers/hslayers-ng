@@ -417,10 +417,21 @@ export class HsCompositionsLayerParserService {
             this.hsLog.warn('Could not get style from ' + lyr_def.style);
           }
         }
-        Object.assign(
-          options,
-          await this.HsStylerService.parseStyle(lyr_def.style),
+        // Parse the style definition (SLD, QML, or standard style object)
+        const styleType = await this.HsStylerService.guessStyleFormat(
+          lyr_def.style,
         );
+        // Assign the appropriate style property to options
+        if (styleType == 'sld') {
+          options.sld = lyr_def.style;
+        } else if (styleType == 'qml') {
+          options.qml = lyr_def.style;
+        } else {
+          console.warn(
+            `Compositions layer ${lyr_def.title} was provided with unknown style format`,
+            lyr_def.style,
+          );
+        }
         extractStyles = false;
       }
       const title = lyr_def.title || 'Layer';
@@ -486,7 +497,6 @@ export class HsCompositionsLayerParserService {
               visible: lyr_def.visibility,
               path: lyr_def.path,
               fromComposition: lyr_def.fromComposition,
-              style: options.style ?? lyr_def.style,
               sld: options.sld,
               qml: options.qml,
               features,
