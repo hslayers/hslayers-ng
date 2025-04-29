@@ -22,7 +22,6 @@ import {
   WebMercatorTilingScheme,
   createWorldTerrainAsync,
 } from 'cesium';
-import {Coordinate} from 'ol/coordinate';
 import {Feature} from 'ol';
 import {GeoJSON, KML} from 'ol/format';
 import {
@@ -47,9 +46,10 @@ import {get as getProjection, transform} from 'ol/proj';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {
-  HsLayerUtilsService,
-  HsUtilsService,
-  generateUuid,
+  getLayerParams,
+  getParamsFromUrl,
+  instOf,
+  isFunction,
 } from 'hslayers-ng/services/utils';
 import {HsLogService} from 'hslayers-ng/services/log';
 import {HsMapService} from 'hslayers-ng/services/map';
@@ -64,10 +64,9 @@ import {HsCesiumConfig} from './hscesium-config.service';
 import {OlCesiumObjectMapItem} from './ol-cesium-object-map-item.class';
 import {ParamCacheMapItem} from './param-cache-map-item.class';
 
-function MyProxy({proxy, maxResolution, HsUtilsService, projection}) {
+function MyProxy({proxy, maxResolution, projection}) {
   this.proxy = proxy;
   this.maxResolution = maxResolution;
-  this.HsUtilsService = HsUtilsService;
   this.projection = projection;
 }
 
@@ -83,10 +82,8 @@ export class HsCesiumLayersService {
     public hsMapService: HsMapService,
     private hsLog: HsLogService,
     public hsConfig: HsConfig,
-    public HsUtilsService: HsUtilsService,
     public HsEventBusService: HsEventBusService,
     public hsCesiumConfig: HsCesiumConfig,
-    private HsLayerUtilsService: HsLayerUtilsService,
     private httpClient: HttpClient,
   ) {
     this.hsCesiumConfig.viewerLoaded.subscribe((viewer) => {
@@ -112,7 +109,7 @@ export class HsCesiumLayersService {
         ) {
           return blank_url;
         }
-        const params = this.HsUtilsService.getParamsFromUrl(resource);
+        const params = getParamsFromUrl(resource);
         const bbox = params.bbox.split(',');
         const dist = Math.sqrt(
           Math.pow(bbox[0] - bbox[2], 2) + Math.pow(bbox[1] - bbox[3], 2),
@@ -243,7 +240,7 @@ export class HsCesiumLayersService {
     features.forEach((feature) => {
       const featureId = feature.getId();
       if (featureId == undefined) {
-        const id = generateUuid();
+        const id = crypto.randomUUID();
         feature.setId(id);
         feature.set('HsCesiumFeatureId', id);
         return;
@@ -303,7 +300,7 @@ export class HsCesiumLayersService {
   findOlLayer(cs: ImageryLayer | DataSource): Layer<Source> {
     const found = this.ol2CsMappings.filter(
       (m: OlCesiumObjectMapItem) =>
-        m.csObject == cs && this.HsUtilsService.instOf(m.olObject, Layer),
+        m.csObject == cs && instOf(m.olObject, Layer),
     );
     if (found.length > 0) {
       return found[0].olObject;
@@ -313,7 +310,7 @@ export class HsCesiumLayersService {
   findOlSource(cs: ImageryLayer | DataSource): Source {
     const found = this.ol2CsMappings.filter(
       (m: OlCesiumObjectMapItem) =>
-        m.csObject == cs && this.HsUtilsService.instOf(m.olObject, Source),
+        m.csObject == cs && instOf(m.olObject, Source),
     );
     if (found.length > 0) {
       return found[0].olObject;
@@ -334,7 +331,7 @@ export class HsCesiumLayersService {
     });
     ol_layer.on('change:opacity', (e) => {
       const cesiumLayer = this.findCesiumLayer(e.target as Layer<Source>);
-      if (this.HsUtilsService.instOf(cesiumLayer, ImageryLayer)) {
+      if (instOf(cesiumLayer, ImageryLayer)) {
         (<ImageryLayer>cesiumLayer).alpha = ol_layer.getOpacity();
       }
     });
@@ -417,7 +414,7 @@ export class HsCesiumLayersService {
     if (!this.viewer) {
       return;
     }
-    if (this.HsUtilsService.instOf(lyr, Group)) {
+    if (instOf(lyr, Group)) {
       for (const sub_lyr of (<Group>lyr)
         .getLayers()
         .getArray() as Layer<Source>[]) {
@@ -430,23 +427,13 @@ export class HsCesiumLayersService {
           this.hsMapService.visibleLayersInUrl,
         ) || lyr.getVisible(),
       );
-      if (this.HsUtilsService.instOf(lyr, ImageLayer)) {
-        if (
-          this.HsUtilsService.instOf(
-            (lyr as ImageLayer<ImageSource>).getSource(),
-            ImageWMS,
-          )
-        ) {
+      if (instOf(lyr, ImageLayer)) {
+        if (instOf((lyr as ImageLayer<ImageSource>).getSource(), ImageWMS)) {
           this.hsMapService.proxifyLayerLoader(lyr as Layer<Source>, false);
         }
       }
-      if (this.HsUtilsService.instOf(lyr, TileLayer)) {
-        if (
-          this.HsUtilsService.instOf(
-            (lyr as TileLayer<TileSource>).getSource(),
-            TileWMS,
-          )
-        ) {
+      if (instOf(lyr, TileLayer)) {
+        if (instOf((lyr as TileLayer<TileSource>).getSource(), TileWMS)) {
           this.hsMapService.proxifyLayerLoader(lyr as Layer<Source>, true);
         }
       }
@@ -456,15 +443,15 @@ export class HsCesiumLayersService {
       if (!cesium_layer) {
         return;
       }
-      if (this.HsUtilsService.instOf(cesium_layer, ImageryLayer)) {
+      if (instOf(cesium_layer, ImageryLayer)) {
         this.linkOlLayerToCesiumLayer(
           lyr as Layer<Source>,
           cesium_layer as ImageryLayer,
         );
         this.viewer.imageryLayers.add(<ImageryLayer>cesium_layer);
       } else if (
-        (this.HsUtilsService.instOf(cesium_layer, GeoJsonDataSource) ||
-          this.HsUtilsService.instOf(cesium_layer, KmlDataSource)) &&
+        (instOf(cesium_layer, GeoJsonDataSource) ||
+          instOf(cesium_layer, KmlDataSource)) &&
         this.viewer.dataSources
       ) {
         this.viewer.dataSources.add(<DataSource>cesium_layer);
@@ -483,13 +470,13 @@ export class HsCesiumLayersService {
     olLayer: Layer<Source>,
   ): Promise<ImageryLayer | DataSource> {
     const layerSource = olLayer.getSource();
-    if (this.HsUtilsService.instOf(layerSource, OSM)) {
+    if (instOf(layerSource, OSM)) {
       return new ImageryLayer(new OpenStreetMapImageryProvider({}), {
         show: olLayer.getVisible(),
         minimumTerrainLevel: getMinimumTerrainLevel(olLayer) || 1,
       });
     }
-    if (this.HsUtilsService.instOf(layerSource, XYZ)) {
+    if (instOf(layerSource, XYZ)) {
       return new ImageryLayer(
         new UrlTemplateImageryProvider({
           url: (layerSource as XYZ).getUrls()[0],
@@ -499,13 +486,13 @@ export class HsCesiumLayersService {
         },
       );
     }
-    if (this.HsUtilsService.instOf(layerSource, TileWMS)) {
+    if (instOf(layerSource, TileWMS)) {
       return this.createTileProvider(olLayer);
     }
-    if (this.HsUtilsService.instOf(layerSource, ImageWMS)) {
+    if (instOf(layerSource, ImageWMS)) {
       return this.createSingleImageProvider(olLayer as ImageLayer<ImageSource>);
     }
-    if (this.HsUtilsService.instOf(olLayer, VectorLayer)) {
+    if (instOf(olLayer, VectorLayer)) {
       const dataSource = await this.createVectorDataSource(
         olLayer as VectorLayer<VectorSource<Feature>>,
       );
@@ -520,13 +507,13 @@ export class HsCesiumLayersService {
 
   async createVectorDataSource(ol_lyr: VectorLayer<VectorSource<Feature>>) {
     let new_source: DataSource;
-    if (this.HsUtilsService.isFunction(ol_lyr.getSource().getUrl())) {
+    if (isFunction(ol_lyr.getSource().getUrl())) {
       this.hsLog.warn(
         'FeatureUrlFunction is currently not supported in synchronizing features from OL layer to Cesium',
       );
       return;
     }
-    if (this.HsUtilsService.instOf(ol_lyr?.getSource()?.getFormat(), KML)) {
+    if (instOf(ol_lyr?.getSource()?.getFormat(), KML)) {
       const url = <string>ol_lyr.getSource().getUrl();
       new_source = await KmlDataSource.load(url, {
         camera: this.viewer.scene.camera,
@@ -550,9 +537,7 @@ export class HsCesiumLayersService {
 
   createTileProvider(ol_lyr): ImageryLayer {
     const src = ol_lyr.getSource();
-    const params = JSON.parse(
-      JSON.stringify(this.HsLayerUtilsService.getLayerParams(ol_lyr)),
-    );
+    const params = JSON.parse(JSON.stringify(getLayerParams(ol_lyr)));
     params.VERSION = params.VERSION || '1.1.1';
     if (params.VERSION.indexOf('1.1.') == 0) {
       params.CRS = 'EPSG:4326';
@@ -567,7 +552,6 @@ export class HsCesiumLayersService {
         proxy: new MyProxy({
           proxy: this.getProxyFromConfig(),
           maxResolution: ol_lyr.getMaxResolution(),
-          HsUtilsService: this.HsUtilsService,
           projection: this.getProjectionFromParams(params),
         }),
       }),
@@ -624,7 +608,6 @@ export class HsCesiumLayersService {
         proxy: new MyProxy({
           proxy: this.getProxyFromConfig(),
           maxResolution: ol_lyr.getMaxResolution(),
-          HsUtilsService: this.HsUtilsService,
           projection: this.getProjectionFromParams(params),
         }),
       }),

@@ -29,10 +29,8 @@ import {HsPanelHelpersModule} from 'hslayers-ng/common/panels';
 import {HsShareUrlService} from 'hslayers-ng/services/share';
 import {HsStylerService} from 'hslayers-ng/services/styler';
 import {HsStylerServiceMock} from './styler.service.mock';
-import {HsUtilsServiceMock} from './utils/utils.service.mock';
 import {HsWmtsGetCapabilitiesService} from 'hslayers-ng/services/get-capabilities';
 import {getCluster} from 'hslayers-ng/common/extensions';
-import {mockLayerUtilsService} from './layer-utils.service.mock';
 
 class emptyMock {
   constructor() {}

@@ -15,9 +15,9 @@ import {Feature} from 'ol';
 
 import {HsConfig} from 'hslayers-ng/config';
 import {HsMapService} from 'hslayers-ng/services/map';
-import {HsUtilsService} from 'hslayers-ng/services/utils';
 
 import {HsCesiumQueryPopupService} from './query-popup.service';
+import {debounce} from 'hslayers-ng/services/utils';
 
 @Injectable({
   providedIn: 'root',
@@ -29,7 +29,6 @@ export class HsCesiumPickerService {
     private HsCesiumQueryPopupService: HsCesiumQueryPopupService,
     private HsMapService: HsMapService,
     private hsConfig: HsConfig,
-    private hsUtilsService: HsUtilsService,
   ) {}
 
   init(viewer: Viewer) {
@@ -57,7 +56,7 @@ export class HsCesiumPickerService {
     );
     handler.setInputAction((movement) => {
       if (this.hsConfig.popUpDisplay === 'hover') {
-        this.hsUtilsService.debounce(
+        debounce(
           this.handleScreenInteraction,
           200,
           false,
