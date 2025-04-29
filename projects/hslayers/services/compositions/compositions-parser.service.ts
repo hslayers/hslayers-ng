@@ -50,8 +50,12 @@ import {
   setMetadata,
   setSwipeSide,
 } from 'hslayers-ng/common/extensions';
-import {parseExtent, transformExtentValue} from 'hslayers-ng/common/utils';
-import {HsProxyService, isFunction} from 'hslayers-ng/services/utils';
+import {
+  parseExtent,
+  transformExtentValue,
+  HsProxyService,
+  isFunction,
+} from 'hslayers-ng/services/utils';
 
 @Injectable({
   providedIn: 'root',

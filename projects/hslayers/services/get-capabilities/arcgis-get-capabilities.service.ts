@@ -10,9 +10,12 @@ import {HsCapabilityCacheService} from './capability-cache.service';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsLogService} from 'hslayers-ng/services/log';
 import {HsMapService} from 'hslayers-ng/services/map';
-import {getParamsFromUrl, HsProxyService} from 'hslayers-ng/services/utils';
+import {
+  getParamsFromUrl,
+  HsProxyService,
+  getPreferredFormat,
+} from 'hslayers-ng/services/utils';
 import {IGetCapabilities} from './get-capabilities.interface';
-import {getPreferredFormat} from 'hslayers-ng/common/utils';
 
 @Injectable({providedIn: 'root'})
 export class HsArcgisGetCapabilitiesService implements IGetCapabilities {

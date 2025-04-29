@@ -22,7 +22,7 @@ import {HsLanguageService} from 'hslayers-ng/services/language';
 import {HsLogService} from 'hslayers-ng/services/log';
 import {HsMapService} from 'hslayers-ng/services/map';
 import {HsToastService} from 'hslayers-ng/common/toast';
-import {addExtentFeature} from 'hslayers-ng/common/utils';
+import {addExtentFeature} from 'hslayers-ng/services/utils';
 
 /**
  * Layman GET /layers response wrapper with custom HSLayers properties
