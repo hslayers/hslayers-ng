@@ -23,11 +23,7 @@ import {
   HsLayerSynchronizerService,
   HsSaveMapService,
 } from 'hslayers-ng/services/save-map';
-import {
-  HsLayerUtilsService,
-  HsUtilsService,
-  normalizeSldComparisonOperators,
-} from 'hslayers-ng/services/utils';
+import {normalizeSldComparisonOperators} from 'hslayers-ng/services/utils';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsLayoutServiceMock} from './layout.service.mock';
 import {HsMapService} from 'hslayers-ng/services/map';
@@ -36,7 +32,6 @@ import {HsQueryVectorService} from 'hslayers-ng/services/query';
 import {HsSaveMapServiceMock} from './save-map.service.mock';
 import {HsStylerComponent} from 'hslayers-ng/components/styler';
 import {HsStylerService} from 'hslayers-ng/services/styler';
-import {HsUtilsServiceMock} from './utils/utils.service.mock';
 import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 
 class emptyMock {
@@ -103,13 +98,8 @@ describe('HsStyler', () => {
       providers: [
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
-        {
-          provide: HsLayerUtilsService,
-          useValue: new HsLayerUtilsServiceMock(),
-        },
         {provide: HsSaveMapService, useValue: new HsSaveMapServiceMock()},
         {provide: HsMapService, useValue: new HsMapServiceMock()},
-        {provide: HsUtilsService, useValue: new HsUtilsServiceMock()},
         {
           provide: HsLayoutService,
           useValue: new HsLayoutServiceMock(mockedConfig),

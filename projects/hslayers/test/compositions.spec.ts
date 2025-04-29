@@ -34,7 +34,6 @@ import {
 import {HsCompositionsLayerParserService} from 'hslayers-ng/services/compositions';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsConfigMock} from './config.service.mock';
-import {HsLayerUtilsService, HsUtilsService} from 'hslayers-ng/services/utils';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsLayoutServiceMock} from './layout.service.mock';
 import {HsMapService} from 'hslayers-ng/services/map';
@@ -128,14 +127,12 @@ describe('compositions', () => {
           provide: HsSaveMapService,
           useValue: new HsSaveMapServiceMock(),
         },
-        {provide: HsUtilsService, useValue: mockedUtilsService},
         {provide: HsMapService, useValue: mockedMapService},
         {provide: HsConfig, useValue: mockedConfig},
         {
           provide: HsLayoutService,
           useValue: new HsLayoutServiceMock(mockedConfig),
         },
-        {provide: HsLayerUtilsService, useValue: layerUtilsMock},
         HsStylerService,
         HsCompositionsLayerParserService,
         {
@@ -146,11 +143,10 @@ describe('compositions', () => {
             null,
             null,
             null,
-            null,
             mockedMapService,
             mockedStylerService,
-            mockedUtilsService,
             mockedVectorUtilsService,
+            null,
             null,
           ),
         },

@@ -18,16 +18,13 @@ import {HsCommonEndpointsService} from 'hslayers-ng/services/endpoints';
 import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsConfigMock} from './config.service.mock';
-import {HsLayerUtilsService, HsUtilsService} from 'hslayers-ng/services/utils';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsLayoutServiceMock} from './layout.service.mock';
 import {HsMapService} from 'hslayers-ng/services/map';
 import {HsMapServiceMock} from './map.service.mock';
 import {HsUploadComponent} from 'hslayers-ng/common/upload';
-import {HsUtilsServiceMock} from './utils/utils.service.mock';
 import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 import {getTitle} from 'hslayers-ng/common/extensions';
-import {mockLayerUtilsService} from './layer-utils.service.mock';
 import {createMockLaymanService} from './common/layman/layman.service.mock';
 
 class CommonEndpointsServiceMock {
@@ -56,8 +53,7 @@ describe('add-layers-vector', () => {
     const mockedConfig = new HsConfigMock();
 
     mockedMapService = new HsMapServiceMock();
-    const mockedUtilsService: any = new HsUtilsServiceMock();
-    const bed = TestBed.configureTestingModule({
+    TestBed.configureTestingModule({
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
       declarations: [HsAddDataVectorFileComponent, HsUploadComponent],
       imports: [
@@ -69,7 +65,6 @@ describe('add-layers-vector', () => {
       providers: [
         HsAddDataVectorService,
         {provide: HsMapService, useValue: mockedMapService},
-        {provide: HsUtilsService, useValue: mockedUtilsService},
         {provide: HsConfig, useValue: mockedConfig},
         {
           provide: HsLayoutService,
@@ -79,7 +74,6 @@ describe('add-layers-vector', () => {
           provide: HsCommonLaymanService,
           useValue: createMockLaymanService(),
         },
-        {provide: HsLayerUtilsService, useValue: mockLayerUtilsService()},
         {
           provide: HsCommonEndpointsService,
           useValue: new CommonEndpointsServiceMock(),

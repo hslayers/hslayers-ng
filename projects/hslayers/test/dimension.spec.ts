@@ -8,9 +8,6 @@ import {TestBed} from '@angular/core/testing';
 import {HsDimensionTimeService} from 'hslayers-ng//services/get-capabilities';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsEventBusServiceMock} from './event-bus.service.mock';
-import {HsLayerUtilsService, HsUtilsService} from 'hslayers-ng/services/utils';
-import {HsUtilsServiceMock} from './utils/utils.service.mock';
-import {mockLayerUtilsService} from './layer-utils.service.mock';
 
 describe('HsGetCapabilitiesModule', () => {
   beforeAll(() => {
@@ -33,8 +30,6 @@ describe('HsGetCapabilitiesModule', () => {
       providers: [
         HsDimensionTimeService,
         {provide: HsEventBusService, useValue: new HsEventBusServiceMock()},
-        {provide: HsUtilsService, useValue: new HsUtilsServiceMock()},
-        {provide: HsLayerUtilsService, useValue: mockLayerUtilsService()},
       ],
     }); //.compileComponents();
     service = TestBed.inject(HsDimensionTimeService);

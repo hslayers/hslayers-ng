@@ -16,7 +16,6 @@ import {
   HsComparisonFilterComponent,
   HsFiltersService,
 } from 'hslayers-ng/common/filters';
-import {HsLayerUtilsService} from 'hslayers-ng/services/utils';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {Point} from 'ol/geom';
 import {provideHttpClient} from '@angular/common/http';
@@ -73,12 +72,6 @@ class MockHsFiltersService {
   }
 }
 
-class MockHsLayerUtilsService {
-  listAttributes() {
-    return ['attr1', 'attr2'];
-  }
-}
-
 class MockHsLayoutService {
   mainpanel$ = new BehaviorSubject<string>('wfsFilter');
 
@@ -100,7 +93,6 @@ describe('HsComparisonFilterComponent', () => {
         provideHttpClient(),
         provideHttpClientTesting(),
         {provide: HsFiltersService, useClass: MockHsFiltersService},
-        {provide: HsLayerUtilsService, useClass: MockHsLayerUtilsService},
         {provide: HsLayoutService, useClass: MockHsLayoutService},
       ],
     }).compileComponents();

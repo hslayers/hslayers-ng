@@ -8,7 +8,6 @@ import {provideHttpClientTesting} from '@angular/common/http/testing';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsConfigMock} from './config.service.mock';
 import {HsLayerShiftingService} from 'hslayers-ng/services/layer-shifting';
-import {HsLayerUtilsService, HsUtilsService} from 'hslayers-ng/services/utils';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsLayoutServiceMock} from './layout.service.mock';
 import {
@@ -20,9 +19,7 @@ import {
   HsPanelHelpersModule,
 } from 'hslayers-ng/common/panels';
 import {HsSidebarService} from 'hslayers-ng/services/sidebar';
-import {HsUtilsServiceMock} from './utils/utils.service.mock';
 import {TranslateCustomPipe} from 'hslayers-ng/services/language';
-import {mockLayerUtilsService} from './layer-utils.service.mock';
 
 function mockHsLayerShiftingService() {
   return jasmine.createSpyObj('HsLayerShiftingService', [
@@ -70,8 +67,6 @@ describe('HsMapSwipeComponent', () => {
             },
           },
         },
-        {provide: HsLayerUtilsService, useValue: mockLayerUtilsService()},
-        {provide: HsUtilsService, useValue: new HsUtilsServiceMock()},
         {
           provide: HsLayerShiftingService,
           useValue: mockHsLayerShiftingService(),

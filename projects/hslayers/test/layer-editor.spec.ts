@@ -23,7 +23,6 @@ import {HsConfig} from 'hslayers-ng/config';
 import {HsConfigMock} from './config.service.mock';
 import {HsLanguageModule} from 'hslayers-ng/components/language';
 import {HsLayerEditorVectorLayerService} from 'hslayers-ng/services/layer-manager';
-import {HsLayerUtilsService, HsUtilsService} from 'hslayers-ng/services/utils';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsLayoutServiceMock} from './layout.service.mock';
 import {HsPanelHelpersModule} from 'hslayers-ng/common/panels';
@@ -66,7 +65,7 @@ describe('layermanager editor', () => {
   beforeEach(() => {
     const mockedConfig = new HsConfigMock();
 
-    const bed = TestBed.configureTestingModule({
+    TestBed.configureTestingModule({
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
       declarations: [HsClusterWidgetComponent],
       imports: [
@@ -86,11 +85,6 @@ describe('layermanager editor', () => {
           useValue: {
             getParamValue: () => undefined,
           },
-        },
-        {provide: HsUtilsService, useValue: new HsUtilsServiceMock()},
-        {
-          provide: HsLayerUtilsService,
-          useValue: mockLayerUtilsService(),
         },
         {provide: HsStylerService, useValue: new HsStylerServiceMock()},
         {provide: HsConfig, useValue: mockedConfig},

@@ -18,7 +18,6 @@ import {
   HsMeasureComponent,
   HsMeasureService,
 } from 'hslayers-ng/components/measure';
-import {HsUtilsService} from 'hslayers-ng/services/utils';
 import {HsUtilsServiceMock} from './utils/utils.service.mock';
 import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 
@@ -52,7 +51,6 @@ describe('HsMeasure', () => {
           useValue: new HsLayoutServiceMock(mockedConfig),
         },
         {provide: HsMapService, useValue: new HsMapServiceMock()},
-        {provide: HsUtilsService, useValue: new HsUtilsServiceMock()},
         {provide: HsConfig, useValue: mockedConfig},
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),

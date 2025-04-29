@@ -7,7 +7,6 @@ import {HsFiltersService} from 'hslayers-ng/common/filters';
 import {HsLayerManagerService} from 'hslayers-ng/services/layer-manager';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsLayoutServiceMock} from '../layout.service.mock';
-import {HsUtilsService} from 'hslayers-ng/services/utils';
 import {HsUtilsServiceMock} from '../utils/utils.service.mock';
 import {HsWfsFilterComponent} from 'hslayers-ng/components/wfs-filter/wfs-filter.component';
 import {Point} from 'ol/geom';
@@ -72,7 +71,6 @@ describe('HsWfsFilterComponent', () => {
           provide: HsLayoutService,
           useValue: new HsLayoutServiceMock(mockedConfig),
         },
-        {provide: HsUtilsService, useValue: new HsUtilsServiceMock()},
       ],
     }).compileComponents();
 

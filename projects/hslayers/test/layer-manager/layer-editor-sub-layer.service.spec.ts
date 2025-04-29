@@ -1,18 +1,18 @@
 import {TestBed} from '@angular/core/testing';
 
+import {
+  getLayerParams,
+  isLayerArcgis,
+  updateLayerParams,
+} from 'hslayers-ng/services/utils';
+
 import wmsLayers from '../data/wms-layer.json';
 import {HsLayerDescriptor, HsWmsLayer} from 'hslayers-ng/types';
 import {HsLayerEditorSublayerService} from 'hslayers-ng/components/layer-manager';
 import {HsLayerManagerVisibilityService} from 'hslayers-ng/services/layer-manager';
-import {HsLayerUtilsService} from 'hslayers-ng/services/utils';
 import {Tile} from 'ol/layer';
-import {TileWMS} from 'ol/source';
+import {TileArcGISRest, TileWMS} from 'ol/source';
 
-const layerUtilsServiceSpy = jasmine.createSpyObj('HsLayerUtilsService', [
-  'getLayerParams',
-  'updateLayerParams',
-  'isLayerArcgis',
-]);
 const layerManagerVisibilityServiceSpy = jasmine.createSpyObj(
   'HsLayerManagerVisibilityService',
   ['changeLayerVisibility'],
@@ -34,17 +34,30 @@ const olLayer = new Tile({
   }),
 });
 
+const arcgisLayer = new Tile({
+  visible: false,
+  properties: {
+    title: 'ArcGIS Layer',
+  },
+  source: new TileArcGISRest({
+    url: 'https://services.arcgisonline.com/arcgis/rest/services/World_Imagery/MapServer',
+    params: {
+      LAYERS: '0',
+    },
+  }),
+});
+
 describe('HsLayerEditorSublayerService', () => {
   let service: HsLayerEditorSublayerService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
-        {provide: HsLayerUtilsService, useValue: layerUtilsServiceSpy},
         {
           provide: HsLayerManagerVisibilityService,
           useValue: layerManagerVisibilityServiceSpy,
         },
+        HsLayerEditorSublayerService,
       ],
     });
 
@@ -141,23 +154,18 @@ describe('HsLayerEditorSublayerService', () => {
         ],
       };
       service.layer = layer;
-      layerUtilsServiceSpy.getLayerParams.and.returnValue({LAYERS: ''});
-      layerUtilsServiceSpy.isLayerArcgis.and.returnValue(false);
+      const source = layer.layer.getSource() as TileWMS;
 
       service.subLayerSelected();
 
-      expect(layerUtilsServiceSpy.getLayerParams).toHaveBeenCalledWith(
-        layer.layer,
-      );
-      expect(layerUtilsServiceSpy.updateLayerParams).toHaveBeenCalledWith(
-        layer.layer,
-        {LAYERS: 'layer1'},
-      );
+      const params = source.getParams();
+      expect(layer.visible).toBe(true);
+      expect(params.LAYERS).toBe('layer1');
     });
 
     it('should handle ArcGIS layers', () => {
       const layer: HsLayerDescriptor = {
-        layer: olLayer,
+        layer: arcgisLayer,
         visible: true,
         _sublayers: [
           {
@@ -169,15 +177,13 @@ describe('HsLayerEditorSublayerService', () => {
         ],
       };
       service.layer = layer;
-      layerUtilsServiceSpy.getLayerParams.and.returnValue({LAYERS: ''});
-      layerUtilsServiceSpy.isLayerArcgis.and.returnValue(true);
 
       service.subLayerSelected();
 
-      expect(layerUtilsServiceSpy.updateLayerParams).toHaveBeenCalledWith(
-        layer.layer,
-        {LAYERS: 'show:layer1'},
-      );
+      const source = layer.layer.getSource() as TileArcGISRest;
+      const params = source.getParams();
+      expect(layer.visible).toBe(true);
+      expect(params.LAYERS).toBe('show:layer1');
     });
   });
 });

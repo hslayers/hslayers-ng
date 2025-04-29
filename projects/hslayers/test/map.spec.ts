@@ -26,8 +26,6 @@ import {
 import {HsMapService} from 'hslayers-ng/services/map';
 import {HsShareUrlService} from 'hslayers-ng/services/share';
 import {HsShareUrlServiceMock} from './share-url.service.mock';
-import {HsUtilsService} from 'hslayers-ng/services/utils';
-import {HsUtilsServiceMock} from './utils/utils.service.mock';
 
 class emptyMock {
   constructor() {}
@@ -74,7 +72,6 @@ describe('HsMapService', () => {
           useValue: new HsLayoutServiceMock(mockedConfig),
         },
         HsEventBusService,
-        {provide: HsUtilsService, useValue: new HsUtilsServiceMock()},
         {provide: HsConfig, useValue: mockedConfig},
         {provide: HsLanguageService, useValue: mockLanguageService()},
         {

@@ -6,11 +6,8 @@ import {provideHttpClientTesting} from '@angular/common/http/testing';
 import {CustomTranslationService} from 'hslayers-ng/services/language';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsConfigMock} from './config.service.mock';
-import {HsLayerUtilsService, HsUtilsService} from 'hslayers-ng/services/utils';
 import {HsMapHostDirective, HslayersComponent} from 'hslayers-ng/core';
-import {HsUtilsServiceMock} from './utils/utils.service.mock';
 import {TranslateTestingModule} from 'hslayers-ng/components/language';
-import {mockLayerUtilsService} from './layer-utils.service.mock';
 
 describe('HslayersComponent', () => {
   let component: HslayersComponent;
@@ -23,8 +20,6 @@ describe('HslayersComponent', () => {
       imports: [TranslateTestingModule],
       providers: [
         {provide: HsConfig, useValue: new HsConfigMock()},
-        {provide: HsUtilsService, useValue: new HsUtilsServiceMock()},
-        {provide: HsLayerUtilsService, useValue: mockLayerUtilsService},
         CustomTranslationService,
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
