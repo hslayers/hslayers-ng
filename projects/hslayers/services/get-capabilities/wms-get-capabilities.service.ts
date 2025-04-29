@@ -11,9 +11,12 @@ import {HsCapabilityCacheService} from './capability-cache.service';
 import {HsCommonLaymanService, isLaymanUrl} from 'hslayers-ng/common/layman';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsMapService} from 'hslayers-ng/services/map';
-import {getParamsFromUrl, HsProxyService} from 'hslayers-ng/services/utils';
+import {
+  getParamsFromUrl,
+  HsProxyService,
+  getPreferredFormat,
+} from 'hslayers-ng/services/utils';
 import {IGetCapabilities} from './get-capabilities.interface';
-import {getPreferredFormat} from 'hslayers-ng/common/utils';
 
 @Injectable({providedIn: 'root'})
 export class HsWmsGetCapabilitiesService implements IGetCapabilities {

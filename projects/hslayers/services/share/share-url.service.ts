@@ -16,10 +16,10 @@ import {
   debounce,
   HsProxyService,
   paramsToURLWoEncode,
+  getBboxFromObject,
 } from 'hslayers-ng/services/utils';
 import {MapComposition} from 'hslayers-ng/types';
 import {getShowInLayerManager, getTitle} from 'hslayers-ng/common/extensions';
-import {getBboxFromObject} from 'hslayers-ng/common/utils';
 
 @Injectable({providedIn: 'root'})
 export class HsShareUrlService {

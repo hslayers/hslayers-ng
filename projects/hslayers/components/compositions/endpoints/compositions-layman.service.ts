@@ -17,7 +17,7 @@ import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsLanguageService} from 'hslayers-ng/services/language';
 import {HsMapService} from 'hslayers-ng/services/map';
 import {HsToastService} from 'hslayers-ng/common/toast';
-import {addExtentFeature} from 'hslayers-ng/common/utils';
+import {addExtentFeature} from 'hslayers-ng/services/utils';
 
 @Injectable({
   providedIn: 'root',

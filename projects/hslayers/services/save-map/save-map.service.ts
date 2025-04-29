@@ -38,6 +38,7 @@ import {
   isLayerVectorLayer,
   isLayerWMS,
   normalizeSldComparisonOperators,
+  getBboxFromObject,
 } from 'hslayers-ng/services/utils';
 import {HsLogService} from 'hslayers-ng/services/log';
 import {HsMapService} from 'hslayers-ng/services/map';
@@ -63,7 +64,6 @@ import {
   getWorkspace,
 } from 'hslayers-ng/common/extensions';
 import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
-import {getBboxFromObject} from 'hslayers-ng/common/utils';
 
 const LOCAL_STORAGE_EXPIRE = 5000;
 

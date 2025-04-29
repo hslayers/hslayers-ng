@@ -20,7 +20,7 @@ import {HsMapService} from 'hslayers-ng/services/map';
 import {HsAddDataCommonService} from '../common.service';
 import {HsAddDataUrlService} from './add-data-url.service';
 
-import {addAnchors} from 'hslayers-ng/common/utils';
+import {addAnchors} from 'hslayers-ng/services/utils';
 
 @Injectable({providedIn: 'root'})
 export class HsUrlWmtsService implements HsUrlTypeServiceModel {
