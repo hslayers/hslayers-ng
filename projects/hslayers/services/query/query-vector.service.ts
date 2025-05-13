@@ -23,7 +23,7 @@ import {
 } from 'hslayers-ng/services/utils';
 import {HsMapService} from 'hslayers-ng/services/map';
 import {HsQueryBaseService} from './query-base.service';
-import {StyleLike, createDefaultStyle} from 'ol/style/Style';
+import Style, {StyleLike} from 'ol/style/Style';
 import {
   getFeatures,
   getOnFeatureSelected,
@@ -31,6 +31,28 @@ import {
   getVirtualAttributes,
 } from 'hslayers-ng/common/extensions';
 import {HsFeatureAttribute, HsFeatureDescriptor} from 'hslayers-ng/types';
+import {Fill, Stroke} from 'ol/style';
+import CircleStyle from 'ol/style/Circle';
+
+const fill = new Fill({
+  color: 'rgba(51, 153, 204,0.4)',
+});
+const stroke = new Stroke({
+  color: 'rgb(51, 128, 204)',
+  width: 2,
+});
+
+export const defaultSelectStyle = [
+  new Style({
+    image: new CircleStyle({
+      fill: fill,
+      stroke: stroke,
+      radius: 5,
+    }),
+    fill: fill,
+    stroke: stroke,
+  }),
+];
 
 @Injectable({
   providedIn: 'root',
@@ -99,7 +121,7 @@ export class HsQueryVectorService {
         }
         return true;
       },
-      style: style || this.hsConfig.query?.style || createDefaultStyle,
+      style: style || this.hsConfig.query?.style || defaultSelectStyle,
       hitTolerance: this.hsConfig.query?.hitTolerance || 0,
     });
 
