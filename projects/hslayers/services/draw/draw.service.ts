@@ -6,7 +6,7 @@ import {Cluster, Source, Vector as VectorSource} from 'ol/source';
 import {DragBox, Draw, Modify, Snap} from 'ol/interaction';
 import {DrawEvent} from 'ol/interaction/Draw';
 import {EventsKey} from 'ol/events';
-import {Feature} from 'ol';
+import {Feature, MapBrowserEvent} from 'ol';
 import {Layer, Vector as VectorLayer} from 'ol/layer';
 import {fromCircle} from 'ol/geom/Polygon';
 import {platformModifierKeyOnly} from 'ol/events/condition';
@@ -613,7 +613,7 @@ export class HsDrawService extends HsDrawServiceParams {
     const drawInteraction = new Draw({
       source: this.source,
       type: /** GeometryType */ this.type,
-      condition: (e) => {
+      condition: (e: MapBrowserEvent<PointerEvent>) => {
         if (e.originalEvent.buttons === 1) {
           //left click
           return true;
