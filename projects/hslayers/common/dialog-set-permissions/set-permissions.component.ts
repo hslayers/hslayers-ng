@@ -1,4 +1,11 @@
-import {Component, OnInit, ViewRef} from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  OnInit,
+  signal,
+  ViewRef,
+  WritableSignal,
+} from '@angular/core';
 
 import {
   AccessRightsModel,
@@ -23,6 +30,7 @@ import {TranslateCustomPipe} from 'hslayers-ng/services/language';
   selector: 'hs-set-permissions-dialog',
   templateUrl: './set-permissions.component.html',
   imports: [TranslateCustomPipe, HsCommonLaymanAccessRightsComponent],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HsSetPermissionsDialogComponent
   implements HsDialogComponent, OnInit
@@ -47,7 +55,8 @@ export class HsSetPermissionsDialogComponent
     };
   };
   endpoint: HsEndpoint;
-  state: 'idle' | 'loading' | 'success' | 'error' = 'idle';
+  state: WritableSignal<'idle' | 'loading' | 'success' | 'error'> =
+    signal('error');
 
   constructor(
     public hsCommonLaymanService: HsCommonLaymanService,
@@ -99,7 +108,7 @@ export class HsSetPermissionsDialogComponent
    */
   async savePermissions(): Promise<void> {
     let response: PostPatchLayerResponse | any;
-    this.state = 'loading';
+    this.state.set('loading');
     switch (this.data.recordType) {
       case 'layer':
         const layerDesc: UpsertLayerObject = {
@@ -113,10 +122,11 @@ export class HsSetPermissionsDialogComponent
           layerDesc,
         );
         if (response?.error) {
-          this.state = 'error';
-          return;
+          console.error('Error saving layer permissions', response.error);
+          this.state.set('error');
+          break;
         }
-        this.state = 'success';
+        this.state.set('success');
         this.data.onPermissionSaved.service[
           this.data.onPermissionSaved.method
         ]();
@@ -127,10 +137,11 @@ export class HsSetPermissionsDialogComponent
           this.access_rights,
         );
         if (response?.error) {
-          this.state = 'error';
-          return;
+          console.error('Error saving composition permissions', response.error);
+          this.state.set('error');
+          break;
         }
-        this.state = 'success';
+        this.state.set('success');
         this.data.onPermissionSaved.service[
           this.data.onPermissionSaved.method
         ]();
@@ -138,7 +149,7 @@ export class HsSetPermissionsDialogComponent
       default:
     }
     setTimeout(() => {
-      this.state = 'idle';
+      this.state.set('idle');
     }, 3500);
   }
 }
