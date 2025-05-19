@@ -11,7 +11,7 @@
         <hs-layman-access-rights [(access_rights)]="access_rights">
         </hs-layman-access-rights>
         <div class="modal-footer pe-0">
-          @switch (state) {
+          @switch (state()) {
           @case ('idle') {
           <button type="button" class="btn btn-primary" (click)="savePermissions()" data-dismiss="modal">{{'COMMON.save'
             | translateHs }}</button>
@@ -28,11 +28,11 @@
           </button>
           }
           @case ('error') {
-          <button type="button" class="btn btn-outline-danger">{{'COMMON.somethingWentWrong'
-            | translateHs }}<span class="pe-2 hs-loader hs-loader-dark"></span></button>
+          <button type="button" class="btn btn-outline-danger disabled ">{{'COMMON.somethingWentWrong'
+            | translateHs }}</button>
           }
           }
-          @if (state !== 'success') {
+          @if (state() !== 'success') {
           <button type="button" class="btn btn-secondary" (click)="close()" data-dismiss="modal">{{'COMMON.cancel' |
             translateHs }}</button>
           }
