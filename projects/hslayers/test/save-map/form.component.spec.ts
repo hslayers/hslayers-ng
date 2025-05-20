@@ -456,7 +456,7 @@ describe('HsSaveMapFormComponent', () => {
       await fixture.whenStable(); // Wait for stability
       fixture.detectChanges(); // Final detect
       const tooltip = component.contextTooltipText();
-      expect(tooltip.text).toContain('You have no write access');
+      expect(tooltip.text).toContain('SAVECOMPOSITION.form.noWriteAccess');
       expect(tooltip.iconClass).toBe('fa-solid fa-lock');
     }));
 
@@ -475,7 +475,9 @@ describe('HsSaveMapFormComponent', () => {
       await fixture.whenStable(); // Wait for stability
       fixture.detectChanges(); // Final detect
       const tooltip = component.contextTooltipText();
-      expect(tooltip.text).toContain('This is your composition');
+      expect(tooltip.text).toContain(
+        'SAVECOMPOSITION.form.myCompositionExists',
+      );
       expect(tooltip.iconClass).toBe('fa-solid fa-user-pen');
     }));
 
@@ -495,7 +497,7 @@ describe('HsSaveMapFormComponent', () => {
       fixture.detectChanges();
 
       const tooltip = component.contextTooltipText();
-      expect(tooltip.text).toContain('Ready to save as a new composition');
+      expect(tooltip.text).toContain('SAVECOMPOSITION.form.readyToSave');
       expect(tooltip.iconClass).toBe('fa-solid fa-check-circle');
     }));
 
@@ -516,8 +518,7 @@ describe('HsSaveMapFormComponent', () => {
       await fixture.whenStable(); // Wait for stability
       fixture.detectChanges(); // Final detect
       const tooltip = component.contextTooltipText();
-      expect(tooltip.text).toContain('You have write access to update');
-      expect(tooltip.text).toContain('Owned by: otheruser');
+      expect(tooltip.text).toContain('SAVECOMPOSITION.form.ownedBy');
       expect(tooltip.iconClass).toBe('fa-solid fa-pencil');
     }));
 
@@ -543,7 +544,7 @@ describe('HsSaveMapFormComponent', () => {
       fixture.detectChanges();
 
       const tooltip = component.contextTooltipText();
-      expect(tooltip.text).toContain('You have write access to save changes');
+      expect(tooltip.text).toContain('SAVECOMPOSITION.form.writeAccessSave');
       expect(tooltip.iconClass).toBe('fa-solid fa-check-circle');
     }));
   });
