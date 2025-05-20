@@ -9,17 +9,22 @@ import {Measurement} from 'hslayers-ng/types';
  * @returns Port number
  */
 export function getPortFromUrl(url: string): string {
-  const link = document.createElement('a');
-  link.setAttribute('href', url);
-  if (link.port == '') {
-    if (url.startsWith('https://')) {
-      return '443';
+  try {
+    const link = document.createElement('a');
+    link.setAttribute('href', url);
+    if (link.port == '') {
+      if (url.startsWith('https://')) {
+        return '443';
+      }
+      if (url.startsWith('http://')) {
+        return '80';
+      }
     }
-    if (url.startsWith('http://')) {
-      return '80';
-    }
+    return link.port;
+  } catch (e) {
+    console.error('Invalid URL provided to getPortFromUrl:', url);
+    return '';
   }
-  return link.port;
 }
 
 /**
