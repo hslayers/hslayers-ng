@@ -39,8 +39,8 @@ export class HsAddDataOwsService {
   typeService: HsUrlTypeServiceModel;
   typeCapabilitiesService: IGetCapabilities;
 
-  private hsAddDatawmsLaymanService = inject(HsAddDataWmsLaymanService);
-  private hsAddDatawfsLaymanService = inject(HsAddDataWfsLaymanService);
+  private hsAddDataWmsLaymanService = inject(HsAddDataWmsLaymanService);
+  private hsAddDataWfsLaymanService = inject(HsAddDataWfsLaymanService);
 
   constructor(
     public hsAddDataService: HsAddDataService,
@@ -97,9 +97,12 @@ export class HsAddDataOwsService {
       /**
        * Create Layaman layer which circumvents getCapabilities request
        */
-      const serviceName = `hsAddData${this.hsAddDataUrlService.typeSelected}LaymanService`;
+      const service =
+        this.hsAddDataUrlService.typeSelected === 'wms'
+          ? this.hsAddDataWmsLaymanService
+          : this.hsAddDataWfsLaymanService;
       const {laymanLayer, ...rest} = options.connectOptions;
-      response = await this[serviceName].getLayer(laymanLayer, rest);
+      response = await service.getLayer(laymanLayer, rest);
       this.typeService.finalizeLayerRetrieval(response, options?.layerOptions);
     } else {
       /**
