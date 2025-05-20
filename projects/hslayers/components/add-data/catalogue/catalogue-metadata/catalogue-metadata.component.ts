@@ -8,7 +8,7 @@ import {
   HsAddDataLayerDescriptor,
   WhatToAddDescriptor,
   HsEndpoint,
-  HsAddDataHsLaymanLayerDescriptor,
+  HsAddDataLaymanLayerDescriptor,
   HsAddDataMickaLayerDescriptor,
 } from 'hslayers-ng/types';
 import {HsConfig} from 'hslayers-ng/config';
@@ -117,7 +117,7 @@ export class HsCatalogueMetadataComponent implements HsDialogComponent {
 
   private isLaymanLayer(
     layer: HsAddDataLayerDescriptor,
-  ): layer is HsAddDataHsLaymanLayerDescriptor {
+  ): layer is HsAddDataLaymanLayerDescriptor {
     return 'native_bounding_box' in layer;
   }
 
