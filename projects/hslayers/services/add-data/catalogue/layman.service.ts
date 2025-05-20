@@ -11,7 +11,7 @@ import {
   EndpointErrorHandling,
   HsEndpoint,
   isErrorHandlerFunction,
-  HsAddDataHsLaymanLayerDescriptor,
+  HsAddDataLaymanLayerDescriptor,
   HsLaymanGetLayer,
 } from 'hslayers-ng/types';
 import {
@@ -201,7 +201,7 @@ export class HsLaymanBrowserService {
     } else {
       endpoint.datasourcePaging.matched = data.matched;
       endpoint.layers = data.datasets.map((layer) => {
-        const tmp: HsAddDataHsLaymanLayerDescriptor = {
+        const tmp: HsAddDataLaymanLayerDescriptor = {
           title: layer.title,
           name: layer.name,
           id: layer.uuid,
@@ -238,8 +238,8 @@ export class HsLaymanBrowserService {
    */
   async fillLayerMetadata(
     endpoint: HsEndpoint,
-    layer: HsAddDataHsLaymanLayerDescriptor,
-  ): Promise<HsAddDataHsLaymanLayerDescriptor> {
+    layer: HsAddDataLaymanLayerDescriptor,
+  ): Promise<HsAddDataLaymanLayerDescriptor> {
     try {
       const data = await this.hsCommonLaymanLayerService.describeLayer(
         layer.name,
@@ -265,7 +265,7 @@ export class HsLaymanBrowserService {
    */
   async describeWhatToAdd(
     ds: HsEndpoint,
-    layer: HsAddDataHsLaymanLayerDescriptor,
+    layer: HsAddDataLaymanLayerDescriptor,
   ) {
     const lyr = await this.fillLayerMetadata(ds, layer);
     if (!lyr) {

@@ -23,7 +23,7 @@ export interface HsAddLayerDescriptorCommon {
  * Consists of uninon of various stages of Layman layer desriptions
  * - when loaded into add-data catalogue list
  */
-export type HsAddDataHsLaymanLayerDescriptor = HsLaymanLayerDescriptor &
+export type HsAddDataLaymanLayerDescriptor = HsLaymanLayerDescriptor &
   HsLaymanGetLayer &
   HsAddLayerDescriptorCommon;
 
@@ -54,7 +54,7 @@ export interface HsAddDataMickaLayerDescriptor
 }
 
 export type HsAddDataLayerDescriptor =
-  | HsAddDataHsLaymanLayerDescriptor
+  | HsAddDataLaymanLayerDescriptor
   | HsAddDataMickaLayerDescriptor;
 
 /**

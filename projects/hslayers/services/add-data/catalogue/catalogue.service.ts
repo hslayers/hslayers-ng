@@ -16,7 +16,7 @@ import {
 
 import {
   DatasetType,
-  HsAddDataHsLaymanLayerDescriptor,
+  HsAddDataLaymanLayerDescriptor,
   HsAddDataLayerDescriptor,
   HsAddDataMickaLayerDescriptor,
   HsEndpoint,
@@ -421,7 +421,7 @@ export class HsAddDataCatalogueService extends HsAddDataCatalogueParams {
     } else if (ds.type.includes('layman')) {
       whatToAdd = await this.hsLaymanBrowserService.describeWhatToAdd(
         ds,
-        layer as HsAddDataHsLaymanLayerDescriptor,
+        layer as HsAddDataLaymanLayerDescriptor,
       );
     } else {
       whatToAdd = {type: 'none'};

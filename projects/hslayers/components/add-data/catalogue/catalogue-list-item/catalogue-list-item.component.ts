@@ -6,7 +6,7 @@ import {
   HsLaymanBrowserService,
 } from 'hslayers-ng/services/add-data';
 import {
-  HsAddDataHsLaymanLayerDescriptor,
+  HsAddDataLaymanLayerDescriptor,
   HsAddDataLayerDescriptor,
   HsEndpoint,
   WhatToAddDescriptor,
@@ -171,7 +171,7 @@ export class HsCatalogueListItemComponent {
       this.loadingMetadata = true;
       layerWithMetadata = await this.hsLaymanBrowserService.fillLayerMetadata(
         endpoint,
-        layer as HsAddDataHsLaymanLayerDescriptor,
+        layer as HsAddDataLaymanLayerDescriptor,
       );
     }
     //this.metadata = this.hsDatasourcesMetadataService.decomposeMetadata(layer);

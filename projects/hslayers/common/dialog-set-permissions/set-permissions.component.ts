@@ -9,7 +9,7 @@ import {
 
 import {
   AccessRightsModel,
-  HsAddDataHsLaymanLayerDescriptor,
+  HsAddDataLaymanLayerDescriptor,
   HsEndpoint,
   UpsertLayerObject,
 } from 'hslayers-ng/types';
@@ -48,7 +48,7 @@ export class HsSetPermissionsDialogComponent
    */
   data: {
     recordType: string;
-    selectedRecord: HsAddDataHsLaymanLayerDescriptor;
+    selectedRecord: HsAddDataLaymanLayerDescriptor;
     onPermissionSaved: {
       service: any;
       method: string;
