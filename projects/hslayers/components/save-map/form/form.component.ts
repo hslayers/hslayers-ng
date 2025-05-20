@@ -122,28 +122,25 @@ export class HsSaveMapFormComponent {
   contextTooltipText = computed(() => {
     const result = {text: '', iconClass: 'fa-solid fa-circle-info'};
     if (!this.isEditable()) {
-      result.text =
-        'You have no write access to this composition. You can however save it as a new one.';
+      result.text = 'SAVECOMPOSITION.form.noWriteAccess';
       result.iconClass = 'fa-solid fa-lock';
     } else if (this.isMyComposition()) {
       if (this.compositionWithThisNameExists()) {
-        result.text =
-          'This is your composition. You can update it or create a copy with new name.';
+        result.text = 'SAVECOMPOSITION.form.myCompositionExists';
         result.iconClass = 'fa-solid fa-user-pen';
       } else {
-        result.text = 'Ready to save as a new composition.';
+        result.text = 'SAVECOMPOSITION.form.readyToSave';
         result.iconClass = 'fa-solid fa-check-circle';
       }
     } else if (this.isEditable()) {
       if (this.compositionWithThisNameExists()) {
-        result.text =
-          'You have write access to update this composition or save as new.';
+        result.text = 'SAVECOMPOSITION.form.writeAccessExists';
         if (!this.isMyComposition()) {
-          result.text += ` (Owned by: ${this.compoWorkspace()})`;
+          result.text = 'SAVECOMPOSITION.form.ownedBy';
         }
         result.iconClass = 'fa-solid fa-pencil';
       } else {
-        result.text = 'You have write access to save changes.';
+        result.text = 'SAVECOMPOSITION.form.writeAccessSave';
         result.iconClass = 'fa-solid fa-check-circle';
       }
     }

@@ -43,7 +43,7 @@
       "theNumberOfRecords": "Ierakstu skaits tiks aprēķināts pēc iespējas tuvāk izvēlētajam skaitam"
     },
     "FILE": {
-      "onlyOneZipFileCan": "Vienlaikus var augšupielādēt tikai vienu ZIP failu",
+      "onlyOneZipFileCan": "Vienlaikus var augšupielādēt tikai vienu ZIP failu",
       "someOfTheUploadedFiles": "Augšupielādētais fails pārsniedz maksimālo atļauto lielumu 20MB",
       "zipFileCannotBeUploaded": "Arhīva failu nevar augšupielādēt kopā ar parastajiem failiem"
     },
@@ -841,7 +841,13 @@
       "toggleAll": "Pārslēgt visu",
       "userCurrentMapExtent": "Izmantot pašreizējo kartes apmēru",
       "write": "Rakstīt",
-      "saveAsNew": "Izveidot kompozīciju"
+      "saveAsNew": "Izveidot jaunu kompozīciju",
+      "noWriteAccess": "Jums nav atļaujas rediģēt šo kompozīciju. Tomēr varat to saglabāt kā jaunu.",
+      "myCompositionExists": "Šī ir jūsu kompozīcija. Varat to atjaunināt vai izveidot kopiju ar jaunu nosaukumu.",
+      "readyToSave": "Gatavs saglabāšanai kā jauna kompozīcija.",
+      "writeAccessExists": "Varat šo kompozīciju atjaunināt vai saglabāt kā jaunu.",
+      "ownedBy": "Varat šo kompozīciju atjaunināt vai saglabāt kā jaunu. (Īpašnieks: {workspace})",
+      "writeAccessSave": "Jums ir atļauja saglabāt izmaiņas."
     },
     "panelMd": {
       "fillKeywords": "Ievadiet atslēgvārdus",
