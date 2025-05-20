@@ -887,7 +887,13 @@
       "toggleAll": "Toggle all",
       "userCurrentMapExtent": "Use current map extent",
       "write": "Write",
-      "saveAsNew": "Create composition"
+      "saveAsNew": "Create a composition",
+      "noWriteAccess": "You don't have permission to edit this composition. However, you can save it as a new one.",
+      "myCompositionExists": "This is your composition. You can update it or create a copy with a new name.",
+      "readyToSave": "Ready to save as a new composition.",
+      "writeAccessExists": "You can update this composition or save it as a new one.",
+      "ownedBy": "You can update this composition or save it as a new one. (Owner: {workspace})",
+      "writeAccessSave": "You have permission to save changes."
     },
     "panelMd": {
       "fillKeywords": "Fill keywords",
@@ -911,7 +917,13 @@
     "everyone": "Everyone",
     "compositionThumbnail": "Composition thumbnail",
     "perRole": "Per role",
-    "setupAndDownload": "Set up and download composition"
+    "setupAndDownload": "Set up and download composition",
+    "NO_WRITE_ACCESS": "You have no write access to this composition. You can however save it as a new one.",
+    "MY_COMPOSITION_EXISTS": "This is your composition. You can update it or create a copy with new name.",
+    "READY_TO_SAVE": "Ready to save as a new composition.",
+    "WRITE_ACCESS_EXISTS": "You have write access to update this composition or save as new.",
+    "OWNED_BY": " (Owned by: {workspace})",
+    "WRITE_ACCESS_SAVE": "You have write access to save changes."
   },
   "SENSORS": {
     "1D": "1D",

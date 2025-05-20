@@ -110,7 +110,7 @@
       "missingOneOrMore": "Chýba jeden alebo viac súborov Shapefile. Nahrajte súbory s príponami *.shp, *.shx, *.dbf",
       "shapeFile": "Súbory Shapefile (shp+dbf+shx)",
       "SLDStyleFile": "Súbor so štýlmi",
-      "considerUsingZip": "Zvážte použitie formátu „.zip“ pre shapefile súbory väčšie ako 10 MB. Rýchlosť spracovania je podstatne vyššia.",
+      "considerUsingZip": "Zvážte použitie formátu „.zip" pre shapefile súbory väčšie ako 10 MB. Rýchlosť spracovania je podstatne vyššia.",
       "exceedingSize": "Načítavaný súbor Shapefile presahuje odporúčanú veľkosť",
       "neededFiles": "Nahrajte súbory s príponami *.shp, *.shx, *.dbf, alebo súbor ZIP, obsahujúci tieto súbory."
     },
@@ -676,7 +676,7 @@
     "terrains": "Terény",
     "time": {
       "outOfRange": "Vybraný čas je mimo rozsah",
-      "outOfRangeDescription": "Táto vrstva môže zobrazovať rôzne údaje na základe vybratého času. Čas sa môže dostať „mimo rozsah“, keď je synchronizovaný s inou vrstvou, ale táto vrstva pre daný časový úsek nemá žiadne údaje. Kliknutím vyberte platný dátum a čas. Môžete tiež vypnúť synchronizáciu času vo vrstve.",
+      "outOfRangeDescription": "Táto vrstva môže zobrazovať rôzne údaje na základe vybratého času. Čas sa môže dostať „mimo rozsah"", keď je synchronizovaný s inou vrstvou, ale táto vrstva pre daný časový úsek nemá žiadne údaje. Kliknutím vyberte platný dátum a čas. Môžete tiež vypnúť synchronizáciu času vo vrstve.",
       "syncTimes": "Synchronizovať časy",
       "syncTimesTooltip": "Synchronizovať čas všetkých vrstiev",
       "loading": "Načítavajú sa dostupné časy..."
@@ -856,7 +856,13 @@
       "toggleAll": "Prepnúť všetko",
       "userCurrentMapExtent": "Použiť aktuálny rozsah mapy",
       "write": "Zápis",
-      "saveAsNew": "Vytvoriť kompozíciu"
+      "saveAsNew": "Vytvoriť novú kompozíciu",
+      "noWriteAccess": "Nemáte oprávnenie upravovať túto kompozíciu. Môžete ju však uložiť ako novú.",
+      "myCompositionExists": "Toto je vaša kompozícia. Môžete ju aktualizovať alebo vytvoriť kópiu s novým názvom.",
+      "readyToSave": "Pripravené na uloženie ako nová kompozícia.",
+      "writeAccessExists": "Môžete túto kompozíciu aktualizovať alebo uložiť ako novú.",
+      "ownedBy": "Môžete túto kompozíciu aktualizovať alebo uložiť ako novú. (Vlastník: {workspace})",
+      "writeAccessSave": "Máte oprávnenie uložiť zmeny."
     },
     "panelMd": {
       "fillKeywords": "Vyplňte kľúčove slová",

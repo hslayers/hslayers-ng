@@ -40,7 +40,7 @@
   <ng-template #contextTooltipContent>
     <div class="d-flex align-items-center p-1" style="text-align: left;">
       <i [class]="contextTooltipText().iconClass + ' me-2 fs-5'"></i>
-      <span>{{ contextTooltipText().text }}</span>
+      <span>{{ contextTooltipText().text | translateHs:{workspace: compoWorkspace()} }}</span>
     </div>
   </ng-template>
 
