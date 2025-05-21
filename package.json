@@ -112,13 +112,13 @@
     "@frsource/cypress-plugin-visual-regression-diff": "^3.2.14",
     "@types/jasmine": "^5.1.7",
     "@types/jasminewd2": "~2.0.12",
-    "angular-eslint": "^19.3.0",
+    "angular-eslint": "^19.4.0",
     "cypress": "~14.2.1",
     "cypress-real-events": "^1.13.0",
     "cz-conventional-changelog": "^3.3.0",
     "eslint": "^9.18.0",
     "eslint-config-openlayers": "20.0.0",
-    "eslint-import-resolver-typescript": "^4.3.2",
+    "eslint-import-resolver-typescript": "^4.3.5",
     "eslint-plugin-import": "2.31.0",
     "eslint-plugin-jsdoc": "50.6.6",
     "eslint-plugin-prefer-arrow": "1.2.3",
@@ -138,7 +138,7 @@
     "sass": "^1.85.1",
     "ts-node": "^10.9.2",
     "typescript": "~5.8.3",
-    "typescript-eslint": "^8.29.1"
+    "typescript-eslint": "^8.32.1"
   },
   "config": {
     "commitizen": {
