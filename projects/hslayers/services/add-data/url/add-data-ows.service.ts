@@ -95,7 +95,7 @@ export class HsAddDataOwsService {
     this.overwriteServiceDefaults(options?.connectOptions);
     if (options?.connectOptions?.laymanLayer) {
       /**
-       * Create Layaman layer which circumvents getCapabilities request
+       * Create Layman layer which circumvents getCapabilities request
        */
       const service =
         this.hsAddDataUrlService.typeSelected === 'wms'
@@ -139,7 +139,7 @@ export class HsAddDataOwsService {
         this.hsLog.log('Empty response when layer selected');
         this.hsAddDataService.selectType('url');
         /**
-         * Open as a service eg. switcht to URL tab
+         * Open as a service eg. switch to URL tab
          */
         await this.connectToOWS({
           type: typeBeingSelected,

@@ -11,6 +11,8 @@ import {
   NgbProgressbarModule,
   NgbTooltipModule,
 } from '@ng-bootstrap/ng-bootstrap';
+import {takeUntilDestroyed, toSignal} from '@angular/core/rxjs-interop';
+import {filter} from 'rxjs';
 
 import {HsConfig} from 'hslayers-ng/config';
 import {HsDimensionTimeService} from 'hslayers-ng/services/get-capabilities';
@@ -28,8 +30,6 @@ import {
   getExclusive,
   getHsLaymanSynchronizing,
 } from 'hslayers-ng/common/extensions';
-import {takeUntilDestroyed, toSignal} from '@angular/core/rxjs-interop';
-import {filter} from 'rxjs';
 import {layerInvalid} from 'hslayers-ng/services/utils';
 
 @Component({

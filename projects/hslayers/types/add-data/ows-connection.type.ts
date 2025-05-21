@@ -9,7 +9,7 @@ export type LayerConnection = {
   getOnly?: boolean;
   layerOptions?: LayerOptions;
   /**
-   * Specific connection options used when adding layers fron Layman or from compositions
+   * Specific connection options used when adding layers from Layman or from compositions
    * Basically to set properties of DATA object of the corresponding type service
    * NOTE: We can populate this with params that are normally (via catalogue or URL) not used or set by user.
    */

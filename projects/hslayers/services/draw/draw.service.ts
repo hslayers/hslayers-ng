@@ -1,5 +1,7 @@
 import {Inject, Injectable, NgZone, PLATFORM_ID} from '@angular/core';
+import {isPlatformBrowser} from '@angular/common';
 import {lastValueFrom, merge} from 'rxjs';
+import {takeUntilDestroyed, toObservable} from '@angular/core/rxjs-interop';
 
 import {Circle} from 'ol/geom';
 import {Cluster, Source, Vector as VectorSource} from 'ol/source';
@@ -52,8 +54,6 @@ import {
   setTitle,
   setWorkspace,
 } from 'hslayers-ng/common/extensions';
-import {takeUntilDestroyed, toObservable} from '@angular/core/rxjs-interop';
-import {isPlatformBrowser} from '@angular/common';
 import {isLayerClustered, isLayerDrawable} from 'hslayers-ng/services/utils';
 
 type ActivateParams = {

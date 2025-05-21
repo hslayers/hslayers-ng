@@ -1,6 +1,7 @@
 import {DomSanitizer, SafeHtml} from '@angular/platform-browser';
 import {Inject, Injectable, NgZone, PLATFORM_ID} from '@angular/core';
 import {Subject} from 'rxjs';
+import {isPlatformBrowser} from '@angular/common';
 
 import {Circle as CircleStyle, Fill, Stroke, Style} from 'ol/style';
 import {Coordinate, createStringXY, toStringHDMS} from 'ol/coordinate';
@@ -19,7 +20,6 @@ import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsMapService} from 'hslayers-ng/services/map';
 import {HsSaveMapService} from 'hslayers-ng/services/save-map';
 import {HsFeatureDescriptor} from 'hslayers-ng/types';
-import {isPlatformBrowser} from '@angular/common';
 
 export type HsProjectedCoordinatesDescription = {
   /**
