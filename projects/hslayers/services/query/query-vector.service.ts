@@ -3,6 +3,8 @@ import {Injectable} from '@angular/core';
 import {Subject, debounceTime} from 'rxjs';
 
 import * as extent from 'ol/extent';
+import Style, {StyleLike} from 'ol/style/Style';
+import {Circle as CircleStyle, Fill, Stroke} from 'ol/style';
 import {Cluster, Vector as VectorSource} from 'ol/source';
 import {Coordinate} from 'ol/coordinate';
 import {Feature} from 'ol';
@@ -23,7 +25,6 @@ import {
 } from 'hslayers-ng/services/utils';
 import {HsMapService} from 'hslayers-ng/services/map';
 import {HsQueryBaseService} from './query-base.service';
-import Style, {StyleLike} from 'ol/style/Style';
 import {
   getFeatures,
   getOnFeatureSelected,
@@ -31,8 +32,6 @@ import {
   getVirtualAttributes,
 } from 'hslayers-ng/common/extensions';
 import {HsFeatureAttribute, HsFeatureDescriptor} from 'hslayers-ng/types';
-import {Fill, Stroke} from 'ol/style';
-import CircleStyle from 'ol/style/Circle';
 
 const fill = new Fill({
   color: 'rgba(51, 153, 204,0.4)',

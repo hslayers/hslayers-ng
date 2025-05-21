@@ -18,7 +18,7 @@ export class HsAddDataWmsLaymanService {
 
   /**
    * Creates a WMS layer from a layman layer descriptor
-   * NOTE: If catalogueService.addLayerToMap is furthersimplified whatToAdd could be simplified to simple workspace and layer name strings
+   * NOTE: If catalogueService.addLayerToMap is further simplified whatToAdd could be simplified to simple workspace and layer name strings
    * currently for the sake of simplicity we have duplicate source of necessary inputs in whatToAdd and desc.
    */
   async getLayer(whatToAdd: WhatToAddDescriptor, options: LayerOptions) {

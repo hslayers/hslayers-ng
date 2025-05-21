@@ -1,10 +1,10 @@
 import {Component, Inject, OnInit, PLATFORM_ID} from '@angular/core';
+import {isPlatformBrowser} from '@angular/common';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsMeasureService} from './measure.service';
 import {HsPanelBaseComponent} from 'hslayers-ng/common/panels';
-import {isPlatformBrowser} from '@angular/common';
 
 @Component({
   selector: 'hs-measure',

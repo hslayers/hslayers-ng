@@ -20,8 +20,8 @@ import {
   HsDialogContainerService,
   HsLayerOverwriteDialogComponent,
 } from 'hslayers-ng/common/dialogs';
+import {HsProxyService} from 'hslayers-ng/services/utils';
 import {HsToastService} from 'hslayers-ng/common/toast';
-
 import {
   AsyncUpload,
   FileDataObject,
@@ -30,7 +30,7 @@ import {
   OverwriteResponse,
   VectorDataObject,
 } from 'hslayers-ng/types';
-import {HsProxyService} from 'hslayers-ng/services/utils';
+
 export type errorMessageOptions = {
   message?: string;
   header?: string;

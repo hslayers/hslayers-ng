@@ -21,6 +21,7 @@ import {
   startWith,
   timer,
 } from 'rxjs';
+import {isPlatformBrowser} from '@angular/common';
 import {takeUntilDestroyed, toSignal} from '@angular/core/rxjs-interop';
 
 import {HsConfig, HsConfigObject, ToastPosition} from 'hslayers-ng/config';
@@ -34,7 +35,6 @@ import {
   HsPanelContainerService,
 } from 'hslayers-ng/services/panels';
 import {safeTakeUntilDestroyed} from './safeTakeUntilDestroyed';
-import {isPlatformBrowser} from '@angular/common';
 import {debounce} from 'hslayers-ng/services/utils';
 
 interface PanState {
