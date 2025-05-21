@@ -917,13 +917,7 @@
     "everyone": "Everyone",
     "compositionThumbnail": "Composition thumbnail",
     "perRole": "Per role",
-    "setupAndDownload": "Set up and download composition",
-    "NO_WRITE_ACCESS": "You have no write access to this composition. You can however save it as a new one.",
-    "MY_COMPOSITION_EXISTS": "This is your composition. You can update it or create a copy with new name.",
-    "READY_TO_SAVE": "Ready to save as a new composition.",
-    "WRITE_ACCESS_EXISTS": "You have write access to update this composition or save as new.",
-    "OWNED_BY": " (Owned by: {workspace})",
-    "WRITE_ACCESS_SAVE": "You have write access to save changes."
+    "setupAndDownload": "Set up and download composition"
   },
   "SENSORS": {
     "1D": "1D",
