@@ -97,7 +97,7 @@
     "nameAndSRSRequired": "Pre pokračovanie je potrebné pole 'Názov' a 'SRS'!",
     "nameRequired": "Pre pokračovanie je potrebné pole 'Názov'!",
     "none": "Žiadnu (hore)",
-    "OlDoesNotRecognizeProjection": "Ol nerozpoznáva mapové zobrazenie požadovanej vrstvy",
+    "OlDoesNotRecognizeProjection": "OL nerozpoznáva mapové zobrazenie požadovanej vrstvy",
     "queryFormat": "Formát dotazu",
     "Raster image": "Rastrová snímka",
     "rasterImageryWith": "Georeferencované rastrové snímky sú v súčasnosti podporované iba v súradnicových systémoch EPSG:4326 a EPSG:3857. Pred nahraním sa uistite, že vaše dáta spĺňajú tieto požiadavky.",
@@ -106,11 +106,11 @@
     "serviceTypeNotMatching": "Typ služby URL se nezhoduje s vybranou kategóriou",
     "SHP": {
       "loginRequired": "Pred načítaním vrstvy je potrebné prihlásiť sa ",
-      "maximumNumberOf": "Maximálny povolený počet súborov je {{allowed}}, ale vybrané sú{{dĺžka}}",
+      "maximumNumberOf": "Maximálny povolený počet súborov je {{allowed}}, ale vybrané sú {{length}}",
       "missingOneOrMore": "Chýba jeden alebo viac súborov Shapefile. Nahrajte súbory s príponami *.shp, *.shx, *.dbf",
       "shapeFile": "Súbory Shapefile (shp+dbf+shx)",
       "SLDStyleFile": "Súbor so štýlmi",
-      "considerUsingZip": "Zvážte použitie formátu „.zip" pre shapefile súbory väčšie ako 10 MB. Rýchlosť spracovania je podstatne vyššia.",
+      "considerUsingZip": "Zvážte použitie formátu \".zip\" pre shapefile súbory väčšie ako 10 MB. Rýchlosť spracovania je podstatne vyššia.",
       "exceedingSize": "Načítavaný súbor Shapefile presahuje odporúčanú veľkosť",
       "neededFiles": "Nahrajte súbory s príponami *.shp, *.shx, *.dbf, alebo súbor ZIP, obsahujúci tieto súbory."
     },
@@ -676,7 +676,7 @@
     "terrains": "Terény",
     "time": {
       "outOfRange": "Vybraný čas je mimo rozsah",
-      "outOfRangeDescription": "Táto vrstva môže zobrazovať rôzne údaje na základe vybratého času. Čas sa môže dostať „mimo rozsah"", keď je synchronizovaný s inou vrstvou, ale táto vrstva pre daný časový úsek nemá žiadne údaje. Kliknutím vyberte platný dátum a čas. Môžete tiež vypnúť synchronizáciu času vo vrstve.",
+      "outOfRangeDescription": "Táto vrstva môže zobrazovať rôzne údaje na základe vybratého času. Čas sa môže dostať \"mimo rozsah\", keď je synchronizovaný s inou vrstvou, ale táto vrstva pre daný časový úsek nemá žiadne údaje. Kliknutím vyberte platný dátum a čas. Môžete tiež vypnúť synchronizáciu času vo vrstve.",
       "syncTimes": "Synchronizovať časy",
       "syncTimesTooltip": "Synchronizovať čas všetkých vrstiev",
       "loading": "Načítavajú sa dostupné časy..."
