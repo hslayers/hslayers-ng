@@ -112,7 +112,6 @@
     "angular-eslint": "^19.4.0",
     "cypress": "~14.4.0",
     "cypress-real-events": "^1.13.0",
-    "cz-conventional-changelog": "^3.3.0",
     "eslint": "^9.27.0",
     "eslint-config-openlayers": "20.0.0",
     "eslint-import-resolver-typescript": "^4.3.5",
