@@ -1,3 +1,57 @@
+# [16.0.0-next.0](https://github.com/hslayers/hslayers-ng/compare/15.0.1...16.0.0-next.0) (2025-05-22)
+
+
+### Bug Fixes
+
+* **add-data:** Allow selection of all parts of grouped layer ([226f5d4](https://github.com/hslayers/hslayers-ng/commit/226f5d46783bc8f159c30c0667c9d27e1eb789e7))
+* **add-data:** Catalogue filter menu label ([aa7cf79](https://github.com/hslayers/hslayers-ng/commit/aa7cf79f8826da47edc413dcb6681063e189723c))
+* **add-data:** Display proper error message ([0019534](https://github.com/hslayers/hslayers-ng/commit/0019534bd43c46155585260f0ba5c89ba3140d41))
+* **add-data:** Do not cancel new layer addition because of missing layman ep ([f5517ea](https://github.com/hslayers/hslayers-ng/commit/f5517ea176cc21241f337878e6ca8eae0aed3bdc))
+* **add-data:** Do not query data catalogues on mapExtentChanges outside catalogue ([f72b8db](https://github.com/hslayers/hslayers-ng/commit/f72b8dbe81969b37cb1b5084c1e6c9a8afd13959))
+* **add-data:** Extent calculation for WMS layer group ([fbfb12b](https://github.com/hslayers/hslayers-ng/commit/fbfb12bc807977a630b60a9a499455dc2f4b64d9))
+* **add-data:** Finalize layer retrieval for Layman layers ([729fd6c](https://github.com/hslayers/hslayers-ng/commit/729fd6ce5c730540383f1df54b96a6270831fae9))
+* **add-data:** Get endpoint when necessary ([7b7d147](https://github.com/hslayers/hslayers-ng/commit/7b7d147b9c8b8850f8fa467009617433afcd6279))
+* **add-data:** Layman URL WFS adjustments ([538a7ae](https://github.com/hslayers/hslayers-ng/commit/538a7aedafada804f3331c9f577c06f319cd9ae1))
+* **add-data:** Provide workspace parameter for layers loaded from file ([9814233](https://github.com/hslayers/hslayers-ng/commit/98142336206bf5293c7fa91d0c9b9d9467455f43))
+* **add-data:** Track services by name not id which might not be available ([3df0aac](https://github.com/hslayers/hslayers-ng/commit/3df0aac239d2852b0125dfe16114c236c3b20df1))
+* **auth:** Handle current-user error gracefully ([57adee4](https://github.com/hslayers/hslayers-ng/commit/57adee44886cf5dba42844d5f05959b032320e89))
+* **compositions:** Always use credentials to query layman maps ([1116c84](https://github.com/hslayers/hslayers-ng/commit/1116c84ad7657a255b8e5fe1c44f34ed3442f6cc))
+* **compositions:** Do not filter out micka endpoint when 'only mine' is activated ([1055995](https://github.com/hslayers/hslayers-ng/commit/10559958e00f30b015fb5e1ced20f4ffa3d6084e))
+* **compositions:** Filter menu button labels ([c16c759](https://github.com/hslayers/hslayers-ng/commit/c16c759286fc998ed89af649e8ca27f2598e7b0a))
+* **compositions:** Set workspace for Layman WMS layers from composition ([dd6da00](https://github.com/hslayers/hslayers-ng/commit/dd6da0033beb86242eed48b3f08394d458cc3709))
+* **copy:** Not indicating success state - value copied ([bcac46a](https://github.com/hslayers/hslayers-ng/commit/bcac46a2b98bf9fff79832b2b51d8603fc02cb8f))
+* Incorrectly generated auto paths ([0c8c866](https://github.com/hslayers/hslayers-ng/commit/0c8c8663325a38a5e5f42c2d5479051ced726784))
+* **layer-manager:** Fill metadata only if not disabled ([2944180](https://github.com/hslayers/hslayers-ng/commit/29441806e618bfbc1e539a902a532f1f34c794fd))
+* **layermanager:** Reactively evaluation time existence change  on WMS layers ([86b8d1f](https://github.com/hslayers/hslayers-ng/commit/86b8d1fddb5403e06bbb097569db0f5ef08dd848))
+* **layermanager:** Set layer desc to capabilities cache for Layman WMS ([4d4f31f](https://github.com/hslayers/hslayers-ng/commit/4d4f31ff3882c8b337026a4ee8ba67b4fb0de153))
+* **layman:** atLeastVersion util ([b5f0995](https://github.com/hslayers/hslayers-ng/commit/b5f09953ea9229f2acc31538c0bd13e0c0247ef1))
+* More specific event type for draw condition ([cc57f62](https://github.com/hslayers/hslayers-ng/commit/cc57f624a3e8aaf5fa77a3fe1932af724f97f634))
+* normalizeSldComparisonOperators imports ([dedbf8c](https://github.com/hslayers/hslayers-ng/commit/dedbf8c8ee105db9051793d34d1e67aff6a3ea7a))
+* **permissions:** On error - no loader, return to idle after 3.5s ([f429d09](https://github.com/hslayers/hslayers-ng/commit/f429d09f3187b077680c023ecd5e99d4c0956972))
+* **print:** Reflect rxjs change in next() method ([792d7b8](https://github.com/hslayers/hslayers-ng/commit/792d7b8363e9557a66228ef9994a2a90ec62365a))
+* **save-map:** Layman WFS layers should only store url reference of style to composition ([51f7e7d](https://github.com/hslayers/hslayers-ng/commit/51f7e7d6f1315e5cf72589465bf40d011e386651))
+* **save-map:** Use SLD param with file when updating/posting layers with style to Layman ([972a937](https://github.com/hslayers/hslayers-ng/commit/972a937759e667a5337cff7dc6ea7287f0fcd6c9))
+* **styler:** Layman layer SLD syncing indicator ([2935b84](https://github.com/hslayers/hslayers-ng/commit/2935b848207c6eb29a4075055c69f551fd3db89d))
+* **styler:** Remove filter from layman's default SLD ([482e118](https://github.com/hslayers/hslayers-ng/commit/482e11861aed13658249396ae976edeb9083dcca))
+* **types:** Export auth state types ([2d326ca](https://github.com/hslayers/hslayers-ng/commit/2d326ca030327c65e127defc382d5c12d6e05b1e))
+* **types:** Layman descriptor time property should be available on WMS layers ([066acc7](https://github.com/hslayers/hslayers-ng/commit/066acc762533ac461c05367f04c137344d4ed7e9))
+* **wfs:** Only proxify URLs when necessary ([684bd35](https://github.com/hslayers/hslayers-ng/commit/684bd353ec36b0fc8d0708ecfed6fc9d6d712503))
+
+
+### Features
+
+* **add-data:** Separate handler for Layman's WMS layers - without capabilities ([18486c1](https://github.com/hslayers/hslayers-ng/commit/18486c1ddb8459cd9b2ced14c61ba77f1ceb9222))
+* **core:** Use auth interceptor which will log out the user on unauthorized req ([f11169f](https://github.com/hslayers/hslayers-ng/commit/f11169f2b0adcb779cbde805701d83492bdef839))
+* **layman:** Layman layer state service ([8790a90](https://github.com/hslayers/hslayers-ng/commit/8790a902650e23de1151c49a1d7ba6a14aa2325d))
+* **utils:** Separate service for proxify related methods ([ae799ce](https://github.com/hslayers/hslayers-ng/commit/ae799ce395d92128b84f46b0cd27dfd3e08e43a0))
+
+
+### Performance Improvements
+
+* **query:** Less feature to layer searches ([d936d98](https://github.com/hslayers/hslayers-ng/commit/d936d980f11ce8e55130df68248a5706b45792f7))
+
+
+
 ## [15.0.1](https://github.com/hslayers/hslayers-ng/compare/15.0.0...15.0.1) (2025-02-26)
 
 

@@ -183,7 +183,7 @@
         }
       },
       "root": "",
-      "sourceRoot": "projects/",
+      "sourceRoot": "projects/test-app",
       "prefix": "app",
       "architect": {
         "build": {
@@ -344,7 +344,7 @@
         }
       },
       "root": "",
-      "sourceRoot": "projects/",
+      "sourceRoot": "projects/decoupling-test-app",
       "prefix": "app",
       "architect": {
         "build": {
@@ -456,7 +456,7 @@
         }
       },
       "root": "",
-      "sourceRoot": "projects/",
+      "sourceRoot": "projects/hslayers-cesium-app",
       "prefix": "app",
       "architect": {
         "build": {
@@ -630,7 +630,7 @@
         }
       },
       "root": "",
-      "sourceRoot": "projects/",
+      "sourceRoot": "projects/cesium-test-app",
       "prefix": "app",
       "architect": {
         "build": {
