@@ -5,4 +5,4 @@ update-ng:
 	npm run ng update @angular/common @angular/compiler @angular/core @angular/forms @angular/localize @angular/cdk @angular/platform-browser @angular/platform-browser-dynamic @angular/compiler-cli  @angular/cli @angular-builders/custom-webpack ng-packagr
 
 update-eslint:
-	npm run ng update angular-eslint typescript-eslint eslint-import-resolver-typescript eslint-plugin-import eslint-plugin-tsdoc
+	npm run ng update eslint @eslint/compat angular-eslint typescript-eslint eslint-import-resolver-typescript eslint-plugin-import eslint-plugin-tsdoc
