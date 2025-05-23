@@ -1,4 +1,11 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {FormsModule} from '@angular/forms';
 import {NgTemplateOutlet} from '@angular/common';
@@ -75,6 +82,7 @@ export class HsCommonLaymanAccessRightsComponent implements OnInit {
     public hsCommonLaymanService: HsCommonLaymanService,
     private $http: HttpClient,
     private hsLog: HsLogService,
+    private cdr: ChangeDetectorRef,
   ) {}
   async ngOnInit(): Promise<void> {
     this.endpoint = this.hsCommonLaymanService.layman();
@@ -430,6 +438,7 @@ export class HsCommonLaymanAccessRightsComponent implements OnInit {
         );
         this.setAcessRightsFromActor('read', GrantingOptions.PERUSER);
         this.setAcessRightsFromActor('write', GrantingOptions.PERUSER);
+        this.cdr.detectChanges();
       } catch (e) {
         this.hsLog.error(e);
       }
