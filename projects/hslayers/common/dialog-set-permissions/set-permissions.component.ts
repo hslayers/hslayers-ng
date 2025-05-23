@@ -56,7 +56,7 @@ export class HsSetPermissionsDialogComponent
   };
   endpoint: HsEndpoint;
   state: WritableSignal<'idle' | 'loading' | 'success' | 'error'> =
-    signal('error');
+    signal('idle');
 
   constructor(
     public hsCommonLaymanService: HsCommonLaymanService,
