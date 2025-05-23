@@ -76,7 +76,7 @@
       "srsNotSupported": "Atlasītās koordinātu atskaites sistēmas (CRS/SRS) netiek atbalstītas. Lai turpinātu, lūdzu, norādiet failu EPSG: 3857 vai EPSG: 4326 projekcijā.",
       "thereWasErrorWhile": "Parsējot (Capabilities) atbildi no norādītās hipersaites, radās kļūda",
       "urlInvalid": "Nav pieejama vai ari nav derīga pieprasītā slāņa URL adrese!",
-      "unsupportedDatasourceType": "Neatbalstīts datu avota veids"
+      "unsupportedDatasourceType": "Neatbalstīts datu avota veids: {{serviceType}}"
     },
     "externalDataSource": "Ārējais datu avots (hipersaite)",
     "featureCount": "Grafisko objektu skaits",

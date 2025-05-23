@@ -327,7 +327,17 @@ export class HsMickaBrowserService {
           extractStyles: layer.formats[0].toLowerCase() == 'kml',
         };
       } else {
-        alert(`Service type "${layer.serviceType}" not supported.`);
+        this.hsToastService.createToastPopupMessage(
+          'ADDLAYERS.ERROR.errorWhileRequestingLayers',
+          this.hsLanguageService.getTranslation(
+            'ADDLAYERS.ERROR.unsupportedDatasourceType',
+            {serviceType: layer.serviceType},
+          ),
+          {
+            type: 'warning',
+            serviceCalledFrom: 'HsMickaBrowserService',
+          },
+        );
         return false;
       }
     } else if (type == 'dataset') {
