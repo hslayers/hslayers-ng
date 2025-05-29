@@ -435,6 +435,18 @@ export class HsCompositionsLayerParserService {
         extractStyles = false;
       }
       const title = lyr_def.title || 'Layer';
+      let name = lyr_def.name || title;
+      //TODO: Find better way to identify uuid
+      if (name.includes('l_') && name.includes('-') && name.length > 36) {
+        const layerDescriptor =
+          await this.hsCommonLaymanLayerService.getLayerWithUUID(
+            name.split('_')[1],
+          );
+        if (layerDescriptor) {
+          name = layerDescriptor.name;
+        }
+      }
+
       let layer;
       switch (format) {
         case 'ol.format.KML': //backwards compatibility

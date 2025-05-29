@@ -19,7 +19,6 @@ import {transformExtent} from 'ol/proj';
 import {CswLayersDialogComponent} from 'hslayers-ng/common/dialog-csw-layers';
 import {DuplicateHandling, HsMapService} from 'hslayers-ng/services/map';
 import {
-  HsCommonLaymanLayerService,
   HsCommonLaymanService,
   getLaymanFriendlyLayerName,
   isLaymanUrl,
@@ -96,7 +95,6 @@ export class HsCompositionsParserService {
     private hsEventBusService: HsEventBusService,
     private hsLanguageService: HsLanguageService,
     private hsCommonLaymanService: HsCommonLaymanService,
-    private hsCommonLaymanLayerService: HsCommonLaymanLayerService,
     private hsLayerManagerService: HsLayerManagerService,
     private hsToastService: HsToastService,
     private HsLayerManagerVisibilityService: HsLayerManagerVisibilityService,
@@ -790,16 +788,6 @@ export class HsCompositionsParserService {
           resultLayer =
             this.hsCompositionsLayerParserService.createWFSLayer(lyr_def);
         } else {
-          /**
-           * Transform layer uuid to layer name
-           */
-          const layerDescriptor =
-            await this.hsCommonLaymanLayerService.getLayerWithUUID(
-              lyr_def.name.split('_')[1],
-            );
-          if (layerDescriptor) {
-            lyr_def.name = layerDescriptor.name;
-          }
           resultLayer =
             await this.hsCompositionsLayerParserService.createVectorLayer(
               lyr_def,
