@@ -81,7 +81,7 @@ export class HsCommonLaymanLayerService {
     } = {useCache: false},
   ): Promise<HsLaymanLayerDescriptor> {
     const requestKey = `${workspace}/${layerName}`;
-
+    let name = layerName;
     // Check if there's a cached response and useCache is true
     if (options.useCache && this.layerDescriptorCache.has(requestKey)) {
       return this.layerDescriptorCache.get(requestKey);
@@ -91,8 +91,17 @@ export class HsCommonLaymanLayerService {
     if (this.pendingRequests.has(requestKey)) {
       return this.pendingRequests.get(requestKey);
     }
+    //Try to identify whether name is uuid if thats the case get layer descriptor
+    //to get the proper name
+    if (name.includes('l_') && name.includes('-') && name.length > 36) {
+      const layerDescriptor = await this.getLayerWithUUID(name);
+      if (layerDescriptor) {
+        name = layerDescriptor.name;
+      }
+    }
+
     const desc = this.makeDescribeLayerRequest(
-      layerName,
+      name,
       workspace,
       options.ignoreStatus,
     );
