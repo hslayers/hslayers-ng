@@ -49,6 +49,7 @@ import {
   getDefinition,
   getDimensions,
   getGreyscale,
+  getLaymanLayerDescriptor,
   getLegends,
   getMetadata,
   getName,
@@ -353,7 +354,12 @@ export class HsSaveMapService {
       if (isLayerClustered(layer)) {
         src = (src as Cluster<Feature>).getSource();
       }
-      json.name = getName(layer);
+      const layerDescriptor = getLaymanLayerDescriptor(layer);
+      if (layerDescriptor) {
+        json.name = layerDescriptor.wfs.name;
+      } else {
+        json.name = getName(layer);
+      }
       json.className = 'Vector';
       const definition = getDefinition(layer);
       if (definition && definition.url) {
@@ -394,7 +400,8 @@ export class HsSaveMapService {
           '/rest/workspaces/' +
           json.workspace +
           '/layers/' +
-          json.name +
+          //Layer name expected here not uuid that's why not json.name
+          getName(layer) +
           '/style';
       } else {
         if (getSld(layer) != undefined) {
