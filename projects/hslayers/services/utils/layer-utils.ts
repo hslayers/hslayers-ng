@@ -613,5 +613,15 @@ export function bufferExtent(extent: Extent, currentMapProj: Projection) {
     Math.min(pMaxY, transformed[3] + bufferHeight),
   ];
 
+  const [extMinX, extMinY, extMaxX, extMaxY] = extended;
+  // If the extent is geometrically invalid, use the projection bounds
+  if (extMaxX <= extMinX || extMaxY <= extMinY) {
+    console.warn(
+      'Invalid extent geometry detected, using projection bounds:',
+      extended,
+    );
+    return [pMinX, pMinY, pMaxX, pMaxY];
+  }
+
   return transformExtent(extended, 'EPSG:4087', currentMapProj);
 }
