@@ -1,20 +1,44 @@
-.hs-impressum .hs-logo {
-    display: inline-block;
-    width: 10rem;
-    padding-left: 0.5rem;
-    padding-right: 0.5rem;
+.hs-impressum {
+    display: flex;
+  .hs-branding {
+    .hs-logo {
+      max-width: 8rem;
+      height: auto;
+      opacity: 0;
+      transition: opacity 300ms ease;
+
+      &:not(.error) {
+        opacity: 1;
+      }
+
+      &:hover {
+        opacity: 0.8;
+      }
+    }
+
+  }
+
+  .hs-info {
+    .hs-version {
+      font-size: 0.875rem;
+
+      span {
+        color: #495057;
+      }
+
+      .hs-version-link {
+        transition: all 200ms ease;
+
+        &:hover {
+          background: #f8f9fa;
+        }
+      }
+    }
+  }
 }
-.hs-impressum .hs-logo img {
-    width: 100%;
-    filter: grayscale(1);
-    transition: filter 500ms;
-}
-.hs-impressum:hover .hs-logo img {
-    filter: grayscale(0);
-}
-.hs-panelspace:not(.labels) .hs-impressum {
-    display: none;
-}
+
+// Hide impressum in specific contexts
+.hs-panelspace:not(.labels) .hs-impressum,
 .hs-content-wrapper:not(.hs-open) .hs-impressum {
-    display: none;
+  display: none;
 }

@@ -334,7 +334,8 @@
     "property": "Atribút",
     "error": "Chyba",
     "success": "Úspech",
-    "update": "Aktualizovať"
+    "update": "Aktualizovať",
+    "version": "Verzia"
   },
   "COMPOSITIONS": {
     "addByAddress": "Pridať kompozíciu z adresy",

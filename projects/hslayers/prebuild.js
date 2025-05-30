@@ -14,7 +14,7 @@ async function changeImpressumHslVersion() {
 
   let impressumSrc = await readFile('projects/hslayers/components/sidebar/impressum.component.ts', 'utf8')
 
-  impressumSrc = impressumSrc.replace(/this.version.=.'.*?'/, `this.version = '${packageJson.version}\'`);
+  impressumSrc = impressumSrc.replace(/version = signal\('.*?'\)/, `version = signal('${packageJson.version}')`);
   await writeFile(
     'projects/hslayers/components/sidebar/impressum.component.ts',
     impressumSrc

@@ -334,7 +334,8 @@
     "property": "Property",
     "error": "Error",
     "success": "Success",
-    "update": "Update"
+    "update": "Update",
+    "version": "Version"
   },
   "COMPOSITIONS": {
     "addByAddress": "Add composition by address",

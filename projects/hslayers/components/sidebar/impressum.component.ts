@@ -1,22 +1,30 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, computed, signal} from '@angular/core';
 
 import {HsConfig} from 'hslayers-ng/config';
+import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 
 @Component({
   selector: 'hs-impressum',
   templateUrl: './impressum.component.html',
-  standalone: false,
+  imports: [TranslateCustomPipe],
+  standalone: true,
 })
-export class HsImpressumComponent implements OnInit {
-  version = 'dev';
-  logo = '';
-  logoDisabled = false;
-  logoPath: string;
-  constructor(public hsConfig: HsConfig) {
-    this.version = '16.0.0-next.0';
-  }
+export class HsImpressumComponent {
+  version = signal('16.0.0-next.0');
+  logoError = signal(false);
 
-  ngOnInit() {
-    this.logoPath = this.hsConfig.assetsPath + 'img/hslayers-ng-logo.png';
+  logoPath = computed(
+    () => this.hsConfig.assetsPath + 'img/hslayers-ng-logo.png',
+  );
+
+  githubReleaseUrl = computed(
+    () =>
+      `https://github.com/hslayers/hslayers-ng/releases/tag/${this.version()}`,
+  );
+
+  constructor(public hsConfig: HsConfig) {}
+
+  onLogoError(): void {
+    this.logoError.set(true);
   }
 }

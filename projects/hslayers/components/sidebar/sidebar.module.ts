@@ -10,13 +10,13 @@ import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  declarations: [
+  declarations: [HsMiniSidebarComponent, HsSidebarComponent, SortByPipe],
+  imports: [
+    CommonModule,
+    HsPanelHelpersModule,
+    TranslateCustomPipe,
     HsImpressumComponent,
-    HsMiniSidebarComponent,
-    HsSidebarComponent,
-    SortByPipe,
   ],
-  imports: [CommonModule, HsPanelHelpersModule, TranslateCustomPipe],
   exports: [HsMiniSidebarComponent, HsSidebarComponent],
 })
 export class HsSidebarModule {}

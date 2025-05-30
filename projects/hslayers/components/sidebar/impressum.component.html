@@ -1,13 +1,30 @@
-<div class="hs-impressum px-3 pb-2 pt-1">
-  <div>
-    <span class="text-secondary">Powered by</span>
-    <div class="hs-logo">
-      <a href="https://ng.hslayers.org/" target="_blank">
-        <img [src]="logoPath" alt="HSLayers-NG"
-          [hidden]="logoDisabled">
-      </a>
+<div class="hs-impressum position-absolute w-100 bottom-0 flex-column align-items-center">
+    <div class="hs-branding">
+      @if (!logoError()) {
+        <a href="https://ng.hslayers.org/" target="_blank" rel="noopener noreferrer">
+          <img 
+            [src]="logoPath()" 
+            alt="HSLayers-NG"
+            class="hs-logo"
+            (error)="onLogoError()"
+          />
+        </a>
+      } @else {
+        <div class="text-primary fw-bolder fs-4">HSLayers-NG</div>
+      }
     </div>
-    <span class="text-secondary">version <a href="https://github.com/hslayers/hslayers-ng/releases/tag/{{version}}"
-      target="_blank">{{version}}</a></span>
-  </div>
+    
+    <div class="hs-info">
+      <div class="hs-version d-flex align-items-center justify-content-center gap-2">
+        <span>{{'COMMON.version' | translateHs}}</span>
+        <a 
+          [href]="githubReleaseUrl()" 
+          target="_blank" 
+          rel="noopener noreferrer"
+          class="hs-version-link text-primary fw-bolder p-1 text-decoration-none" 
+        >
+          {{ version() }}
+        </a>
+      </div>
+    </div>
 </div>

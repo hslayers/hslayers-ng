@@ -309,7 +309,8 @@
     "thematic": "Tematiskā karte",
     "contains": "satur",
     "property": "Īpašība",
-    "update": "Atjaunināt"
+    "update": "Atjaunināt",
+    "version": "Versija"
   },
   "COMPOSITIONS": {
     "addByAddress": "Pievienot kompozīciju pēc adreses",
