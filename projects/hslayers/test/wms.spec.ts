@@ -107,10 +107,7 @@ describe('add-data-url', () => {
   testingServiceEndpoints.wms.forEach((url, index) => {
     (function (url, index) {
       it(`should parse capabilities ${index}`, (done) => {
-        if (
-          url ==
-          'https://hub.lesprojekt.cz/client/geoserver/viktorie_sloupova/ows'
-        ) {
+        if (url == 'http://localhost:8087/geoserver/layman_wms/ows') {
           return done();
         }
         hsWmsGetCapabilitiesService.request(url).then((capabilities) => {
