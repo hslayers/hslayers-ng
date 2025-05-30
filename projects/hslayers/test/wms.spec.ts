@@ -107,7 +107,7 @@ describe('add-data-url', () => {
   testingServiceEndpoints.wms.forEach((url, index) => {
     (function (url, index) {
       it(`should parse capabilities ${index}`, (done) => {
-        if (url == 'http://localhost:8087/geoserver/layman_wms/ows') {
+        if (url == 'https://watlas.lesprojekt.cz/geoserver/layman_wms/ows') {
           return done();
         }
         hsWmsGetCapabilitiesService.request(url).then((capabilities) => {
