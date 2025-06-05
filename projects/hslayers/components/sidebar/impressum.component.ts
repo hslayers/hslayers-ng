@@ -10,7 +10,7 @@ import {TranslateCustomPipe} from 'hslayers-ng/services/language';
   standalone: true,
 })
 export class HsImpressumComponent {
-  version = signal('16.0.0-next.0');
+  version = signal('16.0.0-next.1');
   logoError = signal(false);
 
   logoPath = computed(

@@ -1,3 +1,17 @@
+# [16.0.0-next.1](https://github.com/hslayers/hslayers-ng/compare/16.0.0-next.0...16.0.0-next.1) (2025-06-04)
+
+
+### Bug Fixes
+
+* **access-rights:** Refresh view on allUsers fetch ([51038c9](https://github.com/hslayers/hslayers-ng/commit/51038c96908ebbede2d1e7d9d32198d599503051))
+* **compositions:** Leaner compositions parser and safer way to parse composition layer name ([5241a96](https://github.com/hslayers/hslayers-ng/commit/5241a96e9bd6a6d417050838713dfa891919aa8c))
+* **permissions:** Start in idle state not error ([cd43aaf](https://github.com/hslayers/hslayers-ng/commit/cd43aaf44f122ed24fca6fc57fc94964dbba3f75))
+* **save-map:** Composition can not include internal layer referenced by workspace and name ([daa6516](https://github.com/hslayers/hslayers-ng/commit/daa6516c216cfc2e6f42f6ba51619bb7c46ce751))
+* **styler:** Use component variable directly not via template let ([0cdca2b](https://github.com/hslayers/hslayers-ng/commit/0cdca2bc4b4959295062808a1a863a0c497aafba))
+* **utils:** Check whether extent is valid ([facc5f0](https://github.com/hslayers/hslayers-ng/commit/facc5f027e12c60bb599e845b767d7997e5f2e58))
+
+
+
 # [16.0.0-next.0](https://github.com/hslayers/hslayers-ng/compare/15.0.1...16.0.0-next.0) (2025-05-22)
 
 
