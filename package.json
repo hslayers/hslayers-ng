@@ -114,7 +114,7 @@
     "cypress-real-events": "^1.13.0",
     "eslint": "^9.27.0",
     "eslint-config-openlayers": "20.0.0",
-    "eslint-import-resolver-typescript": "^4.4.2",
+    "eslint-import-resolver-typescript": "^4.4.3",
     "eslint-plugin-import": "2.31.0",
     "eslint-plugin-jsdoc": "50.7.1",
     "eslint-plugin-prefer-arrow": "1.2.3",
