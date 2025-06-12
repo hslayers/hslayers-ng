@@ -1,10 +1,18 @@
 import {Injectable} from '@angular/core';
 
 import TileGrid from 'ol/tilegrid/TileGrid';
-import {Layer, Tile} from 'ol/layer';
-import {Source, TileArcGISRest, XYZ, Tile as TileSource} from 'ol/source';
+import {Layer, Tile, VectorImage} from 'ol/layer';
+import {
+  Source,
+  TileArcGISRest,
+  XYZ,
+  Tile as TileSource,
+  Vector as VectorSource,
+} from 'ol/source';
 import {Options as TileOptions} from 'ol/layer/BaseTile';
 import {transformExtent} from 'ol/proj';
+import {EsriJSON} from 'ol/format';
+import {tile as tileStrategy} from 'ol/loadingstrategy.js';
 
 import {
   ArcGISRestResponseLayer,
@@ -24,9 +32,11 @@ import {
   undefineEmptyString,
   addAnchors,
   getPreferredFormat,
+  bufferExtent,
 } from 'hslayers-ng/services/utils';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsToastService} from 'hslayers-ng/common/toast';
+import {createXYZ} from 'ol/tilegrid';
 
 @Injectable({providedIn: 'root'})
 export class HsUrlArcGisService implements HsUrlTypeServiceModel {
@@ -56,6 +66,7 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
       tile_size: 512,
       use_resampling: false,
       useTiles: true,
+      title: 'Arcgis layer',
       table: {
         trackBy: 'id',
         nameProperty: 'name',
@@ -120,13 +131,13 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
         .getProjection()
         .getCode()
         .toUpperCase();
+
+      // Determine the layer title with fallback priority
       this.data.title =
-        this.data.title && this.data.title != 'Arcgis layer'
-          ? this.data.title
-          : caps.name ||
-            caps.mapName ||
-            caps.documentInfo?.Title ||
-            'Arcgis layer';
+        caps.name || caps.mapName || caps.documentInfo?.Title || 'Arcgis layer';
+      if (this.data.title === 'Arcgis layer' && caps.supportedQueryFormats) {
+        this.data.title = caps.layers?.[0]?.name;
+      }
       this.data.description = addAnchors(caps.description);
       this.data.version = caps.currentVersion;
       this.data.image_formats = caps.supportedImageFormatTypes
@@ -138,9 +149,15 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
       this.data.srss = caps.spatialReference?.latestWkid
         ? [caps.spatialReference.latestWkid.toString()]
         : [];
-      this.data.services = caps.services?.filter((s: Service) =>
-        this.isValidService(s.type),
-      );
+      this.data.services = caps.services?.reduce((acc, s: Service) => {
+        if (this.isValidService(s.type)) {
+          acc.push({
+            ...s,
+            icon: s.type === 'FeatureServer' ? 'fa-draw-polygon' : 'fa-image',
+          });
+        }
+        return acc;
+      }, []);
 
       /**
        * Prioritize cached tiles eg. ignore layer structure
@@ -152,9 +169,16 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
               name: caps.mapName || caps.name,
               id: 0,
               defaultVisibility: true,
+              icon: 'fa-image',
             },
           ]
         : caps.layers;
+      if (this.data.layers?.length > 0) {
+        this.data.layers = this.data.layers.map((l) => ({
+          ...l,
+          icon: l.type === 'Feature Layer' ? 'fa-draw-polygon' : 'fa-image',
+        }));
+      }
       this.hsAddDataUrlService.searchForChecked(
         this.data.layers ?? this.data.services,
       );
@@ -210,11 +234,20 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
     if (
       this.data.layers === undefined &&
       this.data.services === undefined &&
-      !this.isImageService()
+      !this.isImageService() &&
+      !this.isFeatureService()
     ) {
       return;
     }
-    const checkedLayers = this.data.layers?.filter((l) => l.checked);
+    const checkedLayers =
+      /**
+       * false specificaly no other untruthy values eg undefined,null,0
+       * Used with FeatureServer type which need the list of layers while
+       * Map and Image Servers server all layers when layer id is ommited
+       */
+      checkedOnly === false
+        ? this.data.layers
+        : this.data.layers?.filter((l) => l.checked);
     const collection = [
       await this.getLayer(checkedLayers, {
         title: this.data.title.replace(/\//g, '&#47;'),
@@ -257,8 +290,12 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
   ): Promise<Layer<Source>> {
     const attributions = [];
     const dimensions = {};
-    //Not being used right now
-    // const legends = [];
+
+    if (this.isFeatureService()) {
+      return this.getFeatureLayer(layers, options);
+    }
+
+    // MapServer and ImageServer
     const sourceParams: any = {
       /**
        * Cached tiles or image-service with cached tiles.
@@ -323,6 +360,76 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
       });
     }
     return new Tile(layerParams as TileOptions<TileSource>);
+  }
+
+  /**
+   * Create a vector layer for feature service
+   * @param layers - layers to be displayed
+   * @param options - layer options
+   * @returns vector layer
+   */
+  getFeatureLayer(
+    layers: ArcGISRestResponseLayer[],
+    options: LayerOptions,
+  ): Layer<Source> {
+    const layerIds = layers.length > 0 ? layers.map((l) => l.id) : [0];
+    const queryUrl =
+      layerIds.length === 1
+        ? `${this.data.get_map_url}/${layerIds[0]}/query`
+        : `${this.data.get_map_url}/query`;
+
+    const vectorSource = new VectorSource({
+      format: new EsriJSON(),
+      url: (extent, resolution, projection) => {
+        // ArcGIS Server only wants the numeric portion of the projection ID.
+        if (!resolution) {
+          return `${queryUrl}?f=json`;
+        }
+        const srid = projection
+          .getCode()
+          .split(/:(?=\d+$)/)
+          .pop();
+
+        const params = new URLSearchParams({
+          f: 'json',
+          returnGeometry: 'true',
+          spatialRel: 'esriSpatialRelIntersects',
+          geometry: `${extent.join(',')}`,
+          geometryType: 'esriGeometryEnvelope',
+          inSR: srid,
+          outFields: '*',
+          outSR: srid,
+        });
+        return `${queryUrl}?${params.toString()}`;
+      },
+      strategy: tileStrategy(
+        createXYZ({
+          tileSize: 512,
+        }),
+      ),
+    });
+
+    this.data.extent = bufferExtent(
+      this.transformLayerExtent(this.data.extent, this.data),
+      this.hsMapService.getMap().getView().getProjection(),
+    );
+
+    const layerParams = {
+      opacity: options.opacity ?? 1,
+      properties: {
+        title: options.title,
+        name: options.title,
+        removable: true,
+        path: options.path,
+        base: this.data.base,
+        extent: this.data.extent,
+        showInLayerManager: true,
+        ...options,
+      },
+      source: vectorSource,
+    };
+
+    return new VectorImage(layerParams);
   }
 
   /**
@@ -443,7 +550,11 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
     for (const service of services.filter((s) => s.checked)) {
       this.hsAddDataCommonService.url = originalRestUrl; //Because getLayers clears all params
       await this.expandService(service);
-      const layers = await this.getLayers();
+      const layers = await this.getLayers(
+        !this.isFeatureService(),
+        undefined,
+        undefined,
+      );
       this.addLayers(layers);
     }
   }
@@ -452,6 +563,13 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
    */
   isImageService(): boolean {
     return this.data.get_map_url?.toLowerCase().includes('imageserver');
+  }
+
+  /**
+   * Check if getCapabilities response is Feature service layer
+   */
+  isFeatureService(): boolean {
+    return this.data.get_map_url?.toLowerCase().includes('featureserver');
   }
   /**
    * Check validity of service

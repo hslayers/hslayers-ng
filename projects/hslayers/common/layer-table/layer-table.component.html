@@ -16,7 +16,7 @@
         </td>
         <td hsWmsLayerHighlight style="max-width: 25.375em" class="text-truncate"
           [title]="'Title: ' + layer.Title + '\nName: ' + layer.Name" (click)="hsUrlWmsService.expandTableRow($event)">
-          <span>{{ layer.Title }}</span>
+          <span>{{ layer.Title }}</span>  
         </td>
         <!-- <td style="max-width: 13.75em" class="text-truncate" [title]="layer.Name">{{layer.Name}}</td> -->
         <td hsWmsLayerHighlight style="max-width: 10.875em; width: 30%" class="text-truncate" [title]="layer.Abstract"
@@ -77,6 +77,9 @@
         </td>
         <td (click)="expandService(service)" data-toggle="tooltip"
           [title]="'ADDDATA.requestServiceLayers' | translateHs" style="cursor: pointer">
+          @if(service.icon){
+            <i class="fa-solid px-1" [ngClass]="service.icon" [title]="service.type"></i>
+          }
           {{ service.name }}
           <span style="font-size: x-small"><i class="fa-solid fa-chevron-right"></i></span>
         </td>
@@ -92,6 +95,9 @@
         </td>
         <td hsWmsLayerHighlight (click)="hsUrlWmsService.expandTableRow($event)" class="text-truncate position-relative"
           style="max-width: 45ch">
+          @if(layer.icon){
+            <i class="fa-solid px-1" [ngClass]="layer.icon"></i>
+          }
           <span>{{ layer[data.table.nameProperty] }}</span>
           <span class="hs-loader hs-loader-dark position-absolute end-0 bottom-0 me-3" [hidden]="!layer.loading"></span>
           @if (layer.featureCount === -9999) {
