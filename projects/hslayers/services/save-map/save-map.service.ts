@@ -11,7 +11,7 @@ import {
   Vector as VectorSource,
 } from 'ol/source';
 import {Feature, Map} from 'ol';
-import {GeoJSON} from 'ol/format';
+import {EsriJSON, GeoJSON} from 'ol/format';
 import {GeoJSONFeatureCollection} from 'ol/format/GeoJSON';
 import {Geometry} from 'ol/geom';
 import {Image as ImageLayer, Tile, Layer} from 'ol/layer';
@@ -65,6 +65,7 @@ import {
   getWorkspace,
 } from 'hslayers-ng/common/extensions';
 import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
+import {FeatureUrlFunction} from 'ol/featureloader';
 
 const LOCAL_STORAGE_EXPIRE = 5000;
 
@@ -350,7 +351,8 @@ export class HsSaveMapService {
 
     // Vector
     if (isLayerVectorLayer(layer)) {
-      let src = layer.getSource();
+      let src = layer.getSource() as VectorSource;
+
       if (isLayerClustered(layer)) {
         src = (src as Cluster<Feature>).getSource();
       }
@@ -377,6 +379,19 @@ export class HsSaveMapService {
             url: getWfsUrl(layer),
             format: 'externalWFS',
           };
+        } else if (src.getFormat() instanceof EsriJSON) {
+          /**
+           * ArcGIS Rest feature service
+           */
+          json.className = 'ArcGISRest';
+          json.singleTile = false;
+          const urlFunc = src.getUrl() as FeatureUrlFunction;
+          const serviceUrl = urlFunc(undefined, undefined, undefined);
+          json.url = serviceUrl.split('FeatureServer')[0] + 'FeatureServer';
+          /**
+           * Layer that will be selected to be added
+           */
+          json.subLayers = this.extractLayerIdFromUrl(serviceUrl)?.toString();
         } else {
           try {
             json.features = this.getFeaturesJson(
@@ -391,7 +406,7 @@ export class HsSaveMapService {
       json.minResolution = layer.getMinResolution();
       json.projection = this.hsMapService.getCurrentProj().getCode();
 
-      if (json.protocol.format == 'WFS') {
+      if (json.protocol?.format == 'WFS') {
         /**
          * Do not store style directly in composition for Layman vector layers
          */
@@ -473,5 +488,15 @@ export class HsSaveMapService {
     //TODO: Set the item sooner, so it can be reloaded after accidental browser crash
     // but remove it if leaving the site for good
     localStorage.setItem('hs_layers', JSON.stringify(data));
+  }
+
+  /**
+   * Extract layer ID from FeatureServer URL
+   * @param url - FeatureServer URL (e.g., .../FeatureServer/0/query)
+   * @returns Layer ID number or null if not found
+   */
+  private extractLayerIdFromUrl(url: string): number | null {
+    const match = url.match(/FeatureServer\/(\d+)(?:\/|$)/i);
+    return match ? parseInt(match[1], 10) : null;
   }
 }
