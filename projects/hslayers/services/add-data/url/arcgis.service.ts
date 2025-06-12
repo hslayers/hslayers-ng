@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 
 import TileGrid from 'ol/tilegrid/TileGrid';
+import {createXYZ} from 'ol/tilegrid';
 import {Layer, Tile, VectorImage} from 'ol/layer';
 import {
   Source,
@@ -36,7 +37,6 @@ import {
 } from 'hslayers-ng/services/utils';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsToastService} from 'hslayers-ng/common/toast';
-import {createXYZ} from 'ol/tilegrid';
 
 @Injectable({providedIn: 'root'})
 export class HsUrlArcGisService implements HsUrlTypeServiceModel {
@@ -239,12 +239,13 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
     ) {
       return;
     }
+    /*
+     * - When checkedOnly is explicitly false (not just falsy): use all layers (needed for FeatureServer type)
+     * - Otherwise: only use layers that have been checked by the user
+     * Important because FeatureServer requires explicit layer IDs,
+     * while MapServer and ImageServer can serve all layers when no specific IDs are provided.
+     */
     const checkedLayers =
-      /**
-       * false specificaly no other untruthy values eg undefined,null,0
-       * Used with FeatureServer type which need the list of layers while
-       * Map and Image Servers server all layers when layer id is ommited
-       */
       checkedOnly === false
         ? this.data.layers
         : this.data.layers?.filter((l) => l.checked);
@@ -384,10 +385,10 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
     const vectorSource = new VectorSource({
       format: new EsriJSON(),
       url: (extent, resolution, projection) => {
-        // ArcGIS Server only wants the numeric portion of the projection ID.
         if (!resolution) {
           return `${queryUrl}?f=json`;
         }
+        // ArcGIS Server only wants the numeric portion of the projection ID.
         const srid = projection
           .getCode()
           .split(/:(?=\d+$)/)
@@ -511,9 +512,9 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
     /**
       There are cases when loaded services are loaded from folders,
       problem is that folder name is also included inside the service.name
-      to avoid any uncertainties,lets remove everything starting from '/services/'
+      to avoid any uncertainties, let's remove everything starting from '/services/'
       inside the url and rebuild it. We look for '/services/' to avoid matching
-      domain names that contain 'services' (e.g., services7.arcgis.com)
+      domain names that contain 'services' (e.g. services7.arcgis.com)
      */
     let pathname = originalUrl.pathname;
     if (originalUrl.pathname.includes('services')) {
@@ -553,11 +554,7 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
     for (const service of services.filter((s) => s.checked)) {
       this.hsAddDataCommonService.url = originalRestUrl; //Because getLayers clears all params
       await this.expandService(service);
-      const layers = await this.getLayers(
-        !this.isFeatureService(),
-        undefined,
-        undefined,
-      );
+      const layers = await this.getLayers(!this.isFeatureService());
       this.addLayers(layers);
     }
   }
