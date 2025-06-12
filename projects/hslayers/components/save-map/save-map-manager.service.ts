@@ -392,7 +392,8 @@ export class HsSaveMapManagerService extends HsSaveMapManagerParams {
    * @returns The StatusData object reflecting the outcome
    */
   async processSaveCallback(response): Promise<StatusData> {
-    this.statusData.status = response.status;
+    const res = response.response ?? response;
+    this.statusData.status = res.status;
     this.statusData.error = undefined; // Reset error
     this.statusData.resultCode = undefined; // Reset result code
     this.statusData.overWriteNeeded = false; // Reset overwrite flag
@@ -400,7 +401,7 @@ export class HsSaveMapManagerService extends HsSaveMapManagerParams {
     this.existingComposition.set(undefined);
 
     if (!response.status) {
-      const error = response.error;
+      const error = res.error;
       this.statusData.error = error;
       const errorHeader = 'Error saving composition';
       const errorDetails = error?.['message'] ? [error['message']] : undefined;
