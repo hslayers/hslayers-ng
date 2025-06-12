@@ -397,19 +397,24 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
    * @param service - Service URL
    */
   async expandService(service: Service): Promise<void> {
-    let urlRest = this.hsAddDataCommonService.url.toLowerCase();
+    const originalUrl = new URL(this.hsAddDataCommonService.url);
     /**
       There are cases when loaded services are loaded from folders,
       problem is that folder name is also included inside the service.name
-      to avoid any uncertainties,lets remove everything starting from 'services'
-      inside the url and rebuild it
+      to avoid any uncertainties,lets remove everything starting from '/services/'
+      inside the url and rebuild it. We look for '/services/' to avoid matching
+      domain names that contain 'services' (e.g., services7.arcgis.com)
      */
-    if (urlRest.includes('services')) {
-      urlRest = urlRest.slice(0, urlRest.indexOf('services'));
+    let pathname = originalUrl.pathname;
+    if (originalUrl.pathname.includes('services')) {
+      const firstPart = originalUrl.pathname.slice(
+        0,
+        originalUrl.pathname.indexOf('services'),
+      );
+      const secondPart = ['services', service.name, service.type].join('/');
+      pathname = firstPart + secondPart;
     }
-    this.data.get_map_url =
-      urlRest.replace(/\/?$/, '/') + //add slash if not already there
-      ['services', service.name, service.type].join('/');
+    this.data.get_map_url = new URL(pathname, originalUrl.origin).toString();
     const wrapper = await this.hsArcgisGetCapabilitiesService.request(
       this.data.get_map_url,
     );
