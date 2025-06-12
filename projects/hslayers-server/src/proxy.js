@@ -26,6 +26,7 @@ const cors_proxy = cors_anywhere.createServer({
 });
 const GEONAMES_APIKEY = process.env.HS_GEONAMES_API_KEY || 'hslayersng';
 
+
 export const proxy = createServer((req, res) => {
   try {
     if (req.url == '' || req.url == '/') {
@@ -38,8 +39,8 @@ export const proxy = createServer((req, res) => {
         cors_proxy.emit('request', req, res);
         return
       }
-      // Previously, decoding incoming URL was necessary, but all known clients now send non-encoded requests
-      //req.url = decodeURIComponent(req.url);
+      // Safely handle potentially encoded URLs
+      req.url = safelyDecodeUrl(req.url);
       req.url = encodeUrlPathAndParams(req.url);
       const [base, tld, pathAndQueryParams] = splitUrlAtTld(req.url);
       const params = parseQuerystring(pathAndQueryParams.split('?')[1]);
@@ -139,4 +140,34 @@ export const encodeUrlPathAndParams = (url) => {
     encodedPath.join('/') +
     (Object.keys(params).length == 0 ? '' : '?') +
     encodeQuerystring(params);
+}
+
+/**
+ * Checks if the URL contains valid percent-encoded sequences
+ * @param {string} url URL
+ * @returns {boolean} True if the URL is encoded, false otherwise
+ */
+function isUrlEncoded(url) {
+  // Check if the URL contains valid percent-encoded sequences
+  // This regex matches % followed by two hex digits
+  return /%[0-9A-Fa-f]{2}/.test(url);
+}
+
+/**
+ * Decodes the URL if it contains valid percent-encoded sequences
+ * @param {string} url URL
+ * @returns {string} The decoded URL
+ */
+function safelyDecodeUrl(url) {
+  try {
+    // Only decode if the URL appears to be encoded
+    if (isUrlEncoded(url)) {
+      return decodeURIComponent(url);
+    }
+    return url;
+  } catch (e) {
+    // If decoding fails, return the original URL
+    console.warn('Failed to decode URL:', e);
+    return url;
+  }
 }
