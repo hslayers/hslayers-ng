@@ -290,7 +290,10 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
   ): Promise<Layer<Source>> {
     const attributions = [];
     const dimensions = {};
+    //Not being used right now
+    // const legends = [];
 
+    // Handle FeatureServer
     if (this.isFeatureService()) {
       return this.getFeatureLayer(layers, options);
     }
@@ -533,7 +536,7 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
    * Step back to the top layer of capabilities
    */
   async collapseServices() {
-    this.data.get_map_url = this.hsAddDataCommonService.url.toLowerCase();
+    this.data.get_map_url = this.hsAddDataCommonService.url;
     const wrapper = await this.hsArcgisGetCapabilitiesService.request(
       this.data.get_map_url,
     );
