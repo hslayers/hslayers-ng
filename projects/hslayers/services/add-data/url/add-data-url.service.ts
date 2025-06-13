@@ -20,7 +20,6 @@ export class HsAddDataUrlService {
   typeSelected: AddDataUrlType;
   addingAllowed: boolean;
   connectFromParams = true;
-  addDataCapsParsingError: Subject<any> = new Subject();
 
   constructor(
     public hsLog: HsLogService,

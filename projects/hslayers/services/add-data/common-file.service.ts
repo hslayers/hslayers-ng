@@ -94,19 +94,27 @@ export class HsAddDataCommonFileService extends HsAddDataCommonFileServiceParams
       const contentType = response.headers.get('Content-Type');
       if (response.status === 200) {
         if (contentType.includes('text/html')) {
-          this.hsAddDataUrlService.addDataCapsParsingError.next(
+          this.hsToastService.createToastPopupMessage(
+            'ADDLAYERS.capabilitiesParsingProblem',
             'ERROR.noValidData',
+            {serviceCalledFrom: 'HsAddDataCommonFileService'},
           );
           return;
         }
         return true;
       }
-      this.hsAddDataUrlService.addDataCapsParsingError.next(
+      this.hsToastService.createToastPopupMessage(
+        'ADDLAYERS.capabilitiesParsingProblem',
         response.statusText,
+        {serviceCalledFrom: 'HsAddDataCommonFileService'},
       );
       return;
     } catch (e) {
-      this.hsAddDataUrlService.addDataCapsParsingError.next(e.message);
+      this.hsToastService.createToastPopupMessage(
+        'ADDLAYERS.capabilitiesParsingProblem',
+        e.message,
+        {serviceCalledFrom: 'HsAddDataCommonFileService'},
+      );
       return;
     }
   }

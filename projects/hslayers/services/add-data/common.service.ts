@@ -93,15 +93,26 @@ export class HsAddDataCommonService {
   }
 
   displayParsingError(e: any): void {
+    let errorMessage = 'ADDLAYERS.capabilitiesParsingProblem';
+    const errorDetails = e?.message || e?.toString() || 'Unknown error';
+
     if (e?.status === 401) {
-      this.hsToastService.createToastPopupMessage(
-        'ADDLAYERS.capabilitiesParsingProblem',
-        'ADDLAYERS.unauthorizedAccess',
-        {serviceCalledFrom: 'HsAddDataCommonUrlService'},
-      );
+      errorMessage = 'ADDLAYERS.unauthorizedAccess';
+    } else if (errorDetails && errorDetails.includes('Unsuccessful OAuth2')) {
+      errorMessage = 'COMMON.Authentication failed. Login to the catalogue.';
+    } else if (errorDetails.includes('property')) {
+      errorMessage = 'ADDLAYERS.serviceTypeNotMatching';
+    } else if (errorDetails.startsWith('ADDLAYERS.')) {
+      errorMessage = errorDetails;
     } else {
-      this.hsAddDataUrlService.addDataCapsParsingError.next(e);
+      errorMessage = `ADDLAYERS.${errorDetails}`;
     }
+
+    this.hsToastService.createToastPopupMessage(
+      'ADDLAYERS.capabilitiesParsingProblem',
+      errorMessage,
+      {serviceCalledFrom: 'HsAddDataCommonService', customDelay: 10000},
+    );
   }
 
   throwParsingError(e): void {
