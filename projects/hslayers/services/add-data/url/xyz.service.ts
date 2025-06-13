@@ -12,7 +12,6 @@ import {
 import {DuplicateHandling, HsMapService} from 'hslayers-ng/services/map';
 import {HsAddDataCommonService} from '../common.service';
 import {HsAddDataService} from '../add-data.service';
-import {HsAddDataUrlService} from './add-data-url.service';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 
@@ -25,7 +24,6 @@ export class HsUrlXyzService implements HsUrlTypeServiceModel {
     private hsLayoutService: HsLayoutService,
     private hsAddDataService: HsAddDataService,
     private hsEventBusService: HsEventBusService,
-    private hsAddDataUrlService: HsAddDataUrlService,
     private hsAddDataCommonService: HsAddDataCommonService,
   ) {
     this.hsEventBusService.olMapLoads.subscribe((map) => {
@@ -48,13 +46,15 @@ export class HsUrlXyzService implements HsUrlTypeServiceModel {
     if (!wrapper.response && !wrapper.error) {
       return;
     }
+
+    setTimeout(() => {
+      this.hsAddDataCommonService.loadingInfo = false;
+    }, 750);
     if (wrapper.error) {
       this.hsAddDataCommonService.throwParsingError(wrapper.response.message);
       return;
     }
-    setTimeout(() => {
-      this.hsAddDataCommonService.loadingInfo = false;
-    }, 750);
+
     return undefined;
   }
 

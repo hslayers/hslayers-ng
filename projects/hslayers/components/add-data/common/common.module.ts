@@ -7,7 +7,7 @@ import {EpsgPipe, FilterPipe} from 'hslayers-ng/common/pipes';
 import {HsAddLayerAuthorizedComponent} from './add-layer-authorized/add-layer-authorized.component';
 import {HsAddToMapButtonComponent} from 'hslayers-ng/common/add-to-map';
 import {HsAdvancedOptionsComponent} from './advanced-options/advanced-options.component';
-import {HsGetCapabilitiesErrorComponent} from './capabilities-error-dialog/capabilities-error-dialog.component';
+
 import {HsLaymanCurrentUserComponent} from 'hslayers-ng/common/layman';
 import {HsNewLayerFormComponent} from './new-layer-form/new-layer-form.component';
 import {HsPositionComponent} from './target-position/target-position.component';
@@ -27,7 +27,6 @@ import {TranslateCustomPipe} from 'hslayers-ng/services/language';
     FilterPipe,
   ],
   exports: [
-    HsGetCapabilitiesErrorComponent,
     HsAdvancedOptionsComponent,
     HsSaveToLaymanComponent,
     HsNewLayerFormComponent,
@@ -35,7 +34,6 @@ import {TranslateCustomPipe} from 'hslayers-ng/services/language';
     HsAddLayerAuthorizedComponent,
   ],
   declarations: [
-    HsGetCapabilitiesErrorComponent,
     HsAdvancedOptionsComponent,
     HsSaveToLaymanComponent,
     HsNewLayerFormComponent,

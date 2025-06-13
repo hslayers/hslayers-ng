@@ -6,6 +6,7 @@ import {HsAddDataUrlService} from 'hslayers-ng/services/add-data';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsLanguageService} from 'hslayers-ng/services/language';
 import {HsLogService} from 'hslayers-ng/services/log';
+import {HsToastService} from 'hslayers-ng/common/toast';
 import {UrlDataObject} from 'hslayers-ng/types';
 
 @Injectable({providedIn: 'root'})
@@ -18,6 +19,7 @@ export class HsUrlGeoSparqlService {
     public hsLanguageService: HsLanguageService,
     public hsLog: HsLogService,
     public hsAddDataUrlService: HsAddDataUrlService,
+    private hsToastService: HsToastService,
   ) {
     this.data = {
       table: {
@@ -48,12 +50,14 @@ export class HsUrlGeoSparqlService {
       }
     } catch (e) {
       this.hsLog.warn(e);
-      this.hsAddDataUrlService.addDataCapsParsingError.next(
+      this.hsToastService.createToastPopupMessage(
+        'ADDLAYERS.capabilitiesParsingProblem',
         this.hsLanguageService.getTranslationIgnoreNonExisting(
           'ADDLAYERS.GEOSPARQL',
           'invalidEndpoint',
           null,
         ),
+        {serviceCalledFrom: 'HsUrlGeoSparqlService'},
       );
     }
     return false;

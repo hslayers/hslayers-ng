@@ -13,7 +13,7 @@ import {
 } from 'hslayers-ng/services/add-data';
 import {HsConfirmDialogComponent} from 'hslayers-ng/common/confirm';
 import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
-import {HsGetCapabilitiesErrorComponent} from './common/capabilities-error-dialog/capabilities-error-dialog.component';
+
 import {
   HsLayerSynchronizerService,
   HsLaymanService,
@@ -64,21 +64,6 @@ export class HsAddDataComponent extends HsPanelBaseComponent implements OnInit {
       this.connectServiceFromUrlParam(type as AddDataUrlType),
     );
 
-    this.hsAddDataUrlService.addDataCapsParsingError
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe((e) => {
-        let error = e.toString();
-        if (error?.includes('Unsuccessful OAuth2')) {
-          error = 'COMMON.Authentication failed. Login to the catalogue.';
-        } else if (error.includes('property')) {
-          error = 'ADDLAYERS.serviceTypeNotMatching';
-        } else {
-          error = `ADDLAYERS.${error}`;
-        }
-        this.hsDialogContainerService.create(HsGetCapabilitiesErrorComponent, {
-          error: error,
-        });
-      });
     super.ngOnInit();
   }
 
