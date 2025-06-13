@@ -47,4 +47,10 @@ export type UrlDataObject = {
    * WMTS
    */
   info_format?: string;
+  /**
+   * XYZ Tiles
+   */
+  apiKey?: string;
+  minZoom?: number;
+  maxZoom?: number;
 };

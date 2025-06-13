@@ -30,6 +30,10 @@ export const AddDataUrlValues: Array<{id: AddDataUrlType; text: string}> = [
     text: 'ArcGIS Map Server',
   },
   {
+    id: 'xyz',
+    text: 'XYZ Tiles',
+  },
+  {
     id: 'geosparql',
     text: 'GeoSPARQL',
   },

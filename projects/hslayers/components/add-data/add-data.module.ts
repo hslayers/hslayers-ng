@@ -11,6 +11,7 @@ import {
 } from 'hslayers-ng/common/panels';
 import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 import {HsAddDataCatalogueComponent} from './catalogue/catalogue.component';
+import {HsUrlXyzService} from 'hslayers-ng/services/add-data/url/xyz.service';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -25,6 +26,7 @@ import {HsAddDataCatalogueComponent} from './catalogue/catalogue.component';
     HsAddDataCatalogueComponent,
     HsPanelHeaderComponent,
   ],
+  providers: [HsUrlXyzService],
   exports: [HsAddDataComponent],
 })
 export class HsAddDataModule {}

@@ -9,6 +9,7 @@ import {HsUrlGeoSparqlModule} from './geosparql/geosparql.module';
 import {HsUrlWfsModule} from './wfs/wfs.module';
 import {HsUrlWmsModule} from './wms/wms.module';
 import {HsUrlWmtsModule} from './wmts/wmts.module';
+import {HsUrlXyzModule} from './xyz/xyz.module';
 import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 
 @NgModule({
@@ -24,6 +25,7 @@ import {TranslateCustomPipe} from 'hslayers-ng/services/language';
     HsUrlWfsModule,
     HsUrlWmsModule,
     HsUrlWmtsModule,
+    HsUrlXyzModule,
   ],
   exports: [HsAddDataUrlComponent],
 })
