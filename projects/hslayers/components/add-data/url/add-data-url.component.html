@@ -17,32 +17,31 @@
 
   <div class="w-100 pt-3">
     @if (hsAddDataUrlService.typeSelected === 'arcgis') {
-      <hs-url-arcgis></hs-url-arcgis>
+      <hs-url-arcgis/>
     }
     @if (hsAddDataUrlService.typeSelected === 'wfs') {
-      <hs-url-wfs></hs-url-wfs>
+      <hs-url-wfs/>
     }
     @if (hsAddDataUrlService.typeSelected === 'wms') {
-      <hs-url-wms></hs-url-wms>
+      <hs-url-wms/>
     }
     @if (hsAddDataUrlService.typeSelected === 'wmts') {
-      <hs-url-wmts></hs-url-wmts>
+      <hs-url-wmts/>
+    }
+    @if (hsAddDataUrlService.typeSelected === 'xyz') {
+      <hs-url-xyz/>
     }
     @if (hsAddDataUrlService.typeSelected === 'geosparql') {
-      <hs-url-geosparql></hs-url-geosparql>
+      <hs-url-geosparql/>
     }
     @if (hsAddDataUrlService.typeSelected === 'geojson') {
-      <hs-url-vector
-        [fileType]="hsAddDataUrlService.typeSelected">
-      </hs-url-vector>
+      <hs-url-vector [fileType]="hsAddDataUrlService.typeSelected"/>
     }
     @if (hsAddDataUrlService.typeSelected === 'kml') {
-      <hs-url-vector [fileType]="hsAddDataUrlService.typeSelected">
-      </hs-url-vector>
+      <hs-url-vector [fileType]="hsAddDataUrlService.typeSelected"/>
     }
     @if (hsAddDataUrlService.typeSelected === 'gpx') {
-      <hs-url-vector [fileType]="hsAddDataUrlService.typeSelected">
-      </hs-url-vector>
+      <hs-url-vector [fileType]="hsAddDataUrlService.typeSelected"/>
     }
   </div>
 </div>

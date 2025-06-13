@@ -118,7 +118,8 @@ export function getURL(layer: Layer<Source>): string {
     return (src as WMTS).getUrls()[0];
   }
   if (instOf(src, XYZ)) {
-    return (src as XYZ).getUrls()[0];
+    const urls = (src as XYZ).getUrls();
+    return urls ? urls[0] : '';
   }
   if ((src as any).getUrl) {
     const tmpUrl = (src as any).getUrl();

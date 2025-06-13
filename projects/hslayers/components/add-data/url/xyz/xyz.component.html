@@ -1,0 +1,69 @@
+<div class="d-flex flex-column my-3">
+  <hs-common-url type="xyz" [(url)]="hsAddDataCommonService.url" (connect)="hsAddDataOwsService.connect()">
+  </hs-common-url>
+
+  @if (hsAddDataCommonService.loadingInfo) {
+  <hs-url-progress></hs-url-progress>
+  }
+
+  @if (hsAddDataCommonService.showDetails && !hsAddDataCommonService.loadingInfo) {
+
+
+  <div class="input-group pb-2">
+    <span class="input-group-text control-label">{{'COMMON.title' | translateHs }}</span>
+    <input class="form-control" name="baseTitle" [(ngModel)]="hsUrlXyzService.data.title" />
+  </div>
+
+  <div class="d-flex gap-2 mb-2">
+    <div class="input-group">
+      <span class="input-group-text control-label">{{'COMMON.minZoom' | translateHs }}</span>
+      <input type="number" class="form-control" name="minZoom" min="1" max="22" [(ngModel)]="hsUrlXyzService.data.minZoom" />
+    </div>
+    <div class="input-group">
+      <span class="input-group-text control-label">{{'COMMON.maxZoom' | translateHs }}</span>
+      <input type="number" class="form-control" name="maxZoom" min="1" max="22" [(ngModel)]="hsUrlXyzService.data.maxZoom" />
+    </div>
+  </div>
+
+  <div class="d-flex flex-row justify-content-start align-items-baseline my-2">
+    <span class="control-label input-group-text">{{'COMMON.addAs' | translateHs }}</span>
+    <div class="d-flex flex-fill gap-2 justify-content-end align-items-center">
+      <div class="btn-group ">
+        <button type="button" class="btn btn-sm btn-outline-secondary" (click)="setBase(true)"
+          [ngClass]="{'active':data.base}">
+          {{'COMPOSITONKEYWORDS.Basemap' | translateHs }}
+        </button>
+        <button type="button" class="btn btn-sm btn-outline-secondary " (click)="setBase(false)"
+          [ngClass]="{'active': !data.base}">
+          {{'COMMON.layer' | translateHs }}
+        </button>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="input-group mb-2">
+    <span class="input-group-text control-label">{{'COMMON.apiKey' | translateHs }}</span>
+    <input class="form-control" name="apiKey" [(ngModel)]="hsUrlXyzService.data.apiKey"
+      placeholder="Optional API key" />
+  </div>
+
+  <button type="button" class="btn w-100 btn-outline-secondary dropdown-toggle dropdown-toggle-split mb-2"
+    (click)="advancedPanelVisible = !advancedPanelVisible">
+    {{'COMMON.advancedOptions' | translateHs }}
+  </button>
+
+  @if (advancedPanelVisible) {
+  <div class="form-group" [hidden]="data.base === true">
+    <div class="input-group">
+      <span class="input-group-text control-label">{{'ADDLAYERS.folderName' | translateHs }}</span>
+      <input class="form-control" name="folderName" [(ngModel)]="data.folder_name" />
+    </div>
+  </div>
+
+  <hs-target-position [(addUnder)]="data.add_under"></hs-target-position>
+  }
+
+  <hs-add-to-map (add)="add()" [title]="'ADDLAYERS.addSelected'" />
+  }
+</div>

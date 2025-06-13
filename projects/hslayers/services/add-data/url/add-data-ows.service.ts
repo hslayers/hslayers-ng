@@ -10,6 +10,7 @@ import {HsUrlArcGisService} from './arcgis.service';
 import {HsUrlWfsService} from './wfs.service';
 import {HsUrlWmsService} from './wms.service';
 import {HsUrlWmtsService} from './wmts.service';
+import {HsUrlXyzService} from './xyz.service';
 
 import {
   HsArcgisGetCapabilitiesService,
@@ -31,6 +32,7 @@ import {
 import {HsHistoryListService} from 'hslayers-ng/common/history-list';
 import {HsAddDataWmsLaymanService} from './wms-layman.service';
 import {HsAddDataWfsLaymanService} from './wfs-layman.service';
+import {HsXyzGetCapabilitiesService} from 'hslayers-ng/services/get-capabilities/xyz-get-capabilities.service';
 
 @Injectable({
   providedIn: 'root',
@@ -56,6 +58,8 @@ export class HsAddDataOwsService {
     public hsWmsGetCapabilitiesService: HsWmsGetCapabilitiesService,
     public hsWmtsGetCapabilitiesService: HsWmtsGetCapabilitiesService,
     public hsUrlWmtsService: HsUrlWmtsService,
+    public hsUrlXyzService: HsUrlXyzService,
+    public hsXyzGetCapabilitiesService: HsXyzGetCapabilitiesService,
   ) {
     this.hsAddDataCommonService.serviceLayersCalled.subscribe((url) => {
       this.setUrlAndConnect({uri: url});
@@ -78,6 +82,10 @@ export class HsAddDataOwsService {
         );
         return;
       }
+      this.typeService.data.get_map_url = url;
+      this.hsAddDataUrlService.addingAllowed = true;
+    }
+    if (this.hsAddDataUrlService.typeSelected === 'xyz') {
       this.typeService.data.get_map_url = url;
       this.hsAddDataUrlService.addingAllowed = true;
     }
@@ -213,6 +221,10 @@ export class HsAddDataOwsService {
       case 'arcgis':
         this.typeService = this.hsUrlArcGisService;
         this.typeCapabilitiesService = this.hsArcgisGetCapabilitiesService;
+        return;
+      case 'xyz':
+        this.typeService = this.hsUrlXyzService;
+        this.typeCapabilitiesService = this.hsXyzGetCapabilitiesService;
         return;
       default:
         return;
