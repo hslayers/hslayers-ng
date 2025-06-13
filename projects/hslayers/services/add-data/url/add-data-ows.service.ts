@@ -18,6 +18,7 @@ import {
   HsWmsGetCapabilitiesService,
   HsWmtsGetCapabilitiesService,
   IGetCapabilities,
+  HsXyzGetCapabilitiesService,
 } from 'hslayers-ng/services/get-capabilities';
 import {HsLogService} from 'hslayers-ng/services/log';
 
@@ -32,7 +33,6 @@ import {
 import {HsHistoryListService} from 'hslayers-ng/common/history-list';
 import {HsAddDataWmsLaymanService} from './wms-layman.service';
 import {HsAddDataWfsLaymanService} from './wfs-layman.service';
-import {HsXyzGetCapabilitiesService} from 'hslayers-ng/services/get-capabilities/xyz-get-capabilities.service';
 
 @Injectable({
   providedIn: 'root',

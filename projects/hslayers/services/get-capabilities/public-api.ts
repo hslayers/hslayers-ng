@@ -6,3 +6,4 @@ export * from './get-capabilities.interface';
 export * from './wfs-get-capabilities.service';
 export * from './wms-get-capabilities.service';
 export * from './wmts-get-capabilities.service';
+export * from './xyz-get-capabilities.service';
