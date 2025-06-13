@@ -5,6 +5,7 @@ import {
   HsAddDataOwsService,
   HsUrlXyzService,
 } from 'hslayers-ng/services/add-data';
+
 import {UrlDataObject} from 'hslayers-ng/types';
 
 @Component({

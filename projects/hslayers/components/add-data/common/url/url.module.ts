@@ -11,6 +11,7 @@ import {HsUrlAddComponent} from './add/add.component';
 import {HsUrlDetailsComponent} from './details/details.component';
 import {HsUrlProgressComponent} from './progress/progress.component';
 import {TranslateCustomPipe} from 'hslayers-ng/services/language';
+import {HsAddUrlAsToggleComponent} from './add-as-toggle/add-as-toggle.component';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -29,12 +30,14 @@ import {TranslateCustomPipe} from 'hslayers-ng/services/language';
     HsUrlProgressComponent,
     HsCommonUrlComponent,
     HsUrlDetailsComponent,
+    HsAddUrlAsToggleComponent,
   ],
   declarations: [
     HsUrlAddComponent,
     HsUrlProgressComponent,
     HsCommonUrlComponent,
     HsUrlDetailsComponent,
+    HsAddUrlAsToggleComponent,
   ],
 })
 export class HsCommonUrlModule {}

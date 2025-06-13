@@ -10,11 +10,6 @@ import {HsAddDataCommonService} from 'hslayers-ng/services/add-data';
 @Component({
   selector: 'hs-url-details',
   templateUrl: './details.component.html',
-  styles: `
-    .hs-add-url-wms-addas button {
-      min-width: 5rem;
-    }
-  `,
   standalone: false,
 })
 export class HsUrlDetailsComponent implements AfterContentInit {
@@ -42,5 +37,9 @@ export class HsUrlDetailsComponent implements AfterContentInit {
   setBase(state: boolean) {
     this.data.base = state;
     this.data.group = state || this.data.group;
+  }
+
+  setGroup(state: boolean) {
+    this.data.group = state;
   }
 }
