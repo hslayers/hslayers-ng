@@ -163,7 +163,12 @@
     "addsld": "Přidat soubor SLD",
     "addqml": "Přidat soubor QML",
     "addsldqml": "Přidat soubor SLD/QML",
-    "layerExtentParsingProblem": "Při zpracování rozsahu vybraných vrstev nastal problém"
+    "layerExtentParsingProblem": "Při zpracování rozsahu vybraných vrstev nastal problém",
+    "XYZ": {
+      "apiKeyUsage": "Mám API klíč ",
+      "enterApiKey": "Zadejte API klíč ",
+      "apiKeyParam": "Název parametru"
+    }
   },
   "COMMON": {
     "abstract": "Abstrakt",
@@ -335,7 +340,10 @@
     "error": "Chyba",
     "success": "Úspěch",
     "update": "Aktualizovat",
-    "version": "Verze"
+    "version": "Verze",
+    "apiKey": "Klíč API",
+    "minZoom": "Min. zoom",
+    "maxZoom": "Max zoom"
   },
   "COMPOSITIONS": {
     "addByAddress": "Přidat kompozici z adresy",

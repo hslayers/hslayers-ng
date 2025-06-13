@@ -152,6 +152,11 @@
       "pickIdParamName": "unikālu identifikatoru",
       "pickIdParamPt2": "no vaicātajiem grafiskajiem objektiem?",
       "pickIdParamPt1": "Kurš mainīgais satur"
+    },
+    "XYZ": {
+      "apiKeyUsage": "Man ir API atslēga",
+      "enterApiKey": "Ievadiet API atslēgu",
+      "apiKeyParam": "Parametra nosaukums"
     }
   },
   "COMMON": {
@@ -310,7 +315,10 @@
     "contains": "satur",
     "property": "Īpašība",
     "update": "Atjaunināt",
-    "version": "Versija"
+    "version": "Versija",
+    "apiKey": "API atslēga",
+    "minZoom": "Min. tuvināt",
+    "maxZoom": "Maksimālā tālummaiņa"
   },
   "COMPOSITIONS": {
     "addByAddress": "Pievienot kompozīciju pēc adreses",

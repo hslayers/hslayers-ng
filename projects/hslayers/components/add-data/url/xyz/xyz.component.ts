@@ -34,4 +34,12 @@ export class HsUrlXyzComponent implements OnInit {
     this.data.base = state;
     this.data.group = state || this.data.group;
   }
+
+  setApiKey(state: boolean) {
+    this.data.useApiKey = state;
+    // Clear API key data when disabled
+    if (!state) {
+      this.data.apiKey = '';
+    }
+  }
 }

@@ -163,7 +163,12 @@
     "addsld": "Add SLD file",
     "addqml": "Add QML file",
     "addsldqml": "Add SLD/QML file",
-    "layerExtentParsingProblem": "There was a problem while parsing extents of selected layer(s)"
+    "layerExtentParsingProblem": "There was a problem while parsing extents of selected layer(s)",
+    "XYZ": {
+      "apiKeyUsage": "I have API Key",
+      "enterApiKey": "Enter  API key",
+      "apiKeyParam": "Parameter name"
+    }
   },
   "COMMON": {
     "abstract": "Abstract",
@@ -335,7 +340,10 @@
     "error": "Error",
     "success": "Success",
     "update": "Update",
-    "version": "Version"
+    "version": "Version",
+    "apiKey": "API Key",
+    "minZoom": "Min. zoom",
+    "maxZoom": "Max zoom"
   },
   "COMPOSITIONS": {
     "addByAddress": "Add composition by address",
