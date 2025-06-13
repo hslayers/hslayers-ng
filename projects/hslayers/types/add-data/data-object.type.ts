@@ -51,6 +51,8 @@ export type UrlDataObject = {
    * XYZ Tiles
    */
   apiKey?: string;
+  useApiKey?: boolean;
+  apiKeyParam?: string;
   minZoom?: number;
   maxZoom?: number;
 };

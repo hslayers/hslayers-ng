@@ -42,11 +42,7 @@
 
   </div>
 
-  <div class="input-group mb-2">
-    <span class="input-group-text control-label">{{'COMMON.apiKey' | translateHs }}</span>
-    <input class="form-control" name="apiKey" [(ngModel)]="hsUrlXyzService.data.apiKey"
-      placeholder="Optional API key" />
-  </div>
+
 
   <button type="button" class="btn w-100 btn-outline-secondary dropdown-toggle dropdown-toggle-split mb-2"
     (click)="advancedPanelVisible = !advancedPanelVisible">
@@ -60,6 +56,38 @@
       <input class="form-control" name="folderName" [(ngModel)]="data.folder_name" />
     </div>
   </div>
+
+      <div class="d-flex flex-row justify-content-start align-items-baseline my-2">
+      <span class="control-label input-group-text">{{'ADDLAYERS.XYZ.apiKeyUsage' | translateHs }}</span>
+      <div class="d-flex flex-fill gap-2 justify-content-end align-items-center">
+        <div class="btn-group">
+          <button type="button" class="btn btn-sm btn-outline-secondary" (click)="setApiKey(true)"
+            [ngClass]="{'active': data.useApiKey}">
+            {{'COMMON.yes' | translateHs }}
+          </button>
+          <button type="button" class="btn btn-sm btn-outline-secondary" (click)="setApiKey(false)"
+            [ngClass]="{'active': !data.useApiKey}">
+            {{'COMMON.no' | translateHs }}
+          </button>
+        </div>
+      </div>
+    </div>
+
+    @if (hsUrlXyzService.data.useApiKey) {
+    <div class="d-flex flex-column gap-2 pb-4">
+      <div class="input-group">
+        <span class="input-group-text control-label">{{'ADDLAYERS.XYZ.apiKeyParam' | translateHs }}</span>
+        <input class="form-control" name="apiKeyParam" [(ngModel)]="hsUrlXyzService.data.apiKeyParam" 
+          placeholder="e.g. apikey, access_token, key" />
+      </div>
+      
+      <div class="input-group">
+        <span class="input-group-text control-label">{{'COMMON.apiKey' | translateHs }}</span>
+        <input class="form-control" name="apiKey" [(ngModel)]="hsUrlXyzService.data.apiKey"
+          placeholder="{{'ADDLAYERS.XYZ.enterApiKey' | translateHs }}" />
+      </div>
+    </div>
+    }
 
   <hs-target-position [(addUnder)]="data.add_under"></hs-target-position>
   }

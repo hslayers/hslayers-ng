@@ -91,6 +91,8 @@ export class HsUrlXyzService implements HsUrlTypeServiceModel {
       visible: true,
       useTiles: true,
       apiKey: '',
+      useApiKey: false,
+      apiKeyParam: 'apikey',
       get_map_url: '',
       title: 'XYZ Layer',
       description: '',
@@ -114,9 +116,16 @@ export class HsUrlXyzService implements HsUrlTypeServiceModel {
       throw new Error('No XYZ URL provided');
     }
 
+    // Prepare the URL with API key if needed
+    let tileUrl = this.data.get_map_url;
+    if (this.data.useApiKey && this.data.apiKey && this.data.apiKeyParam) {
+      const separator = tileUrl.includes('?') ? '&' : '?';
+      tileUrl = `${tileUrl}${separator}${this.data.apiKeyParam}=${encodeURIComponent(this.data.apiKey)}`;
+    }
+
     // Create source options based on official OpenLayers documentation
     const sourceOptions: any = {
-      url: this.data.get_map_url,
+      url: tileUrl,
       crossOrigin: 'anonymous',
       projection: 'EPSG:3857', // Default projection for XYZ
       minZoom: this.data.minZoom || 0,
