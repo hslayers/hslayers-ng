@@ -14,18 +14,6 @@ export const AddDataUrlValues: Array<{id: AddDataUrlType; text: string}> = [
     text: 'WFS',
   },
   {
-    id: 'kml',
-    text: 'KML',
-  },
-  {
-    id: 'gpx',
-    text: 'GPX',
-  },
-  {
-    id: 'geojson',
-    text: 'GeoJSON',
-  },
-  {
     id: 'arcgis',
     text: 'ArcGIS Map Server',
   },
@@ -36,5 +24,17 @@ export const AddDataUrlValues: Array<{id: AddDataUrlType; text: string}> = [
   {
     id: 'geosparql',
     text: 'GeoSPARQL',
+  },
+  {
+    id: 'kml',
+    text: 'KML',
+  },
+  {
+    id: 'gpx',
+    text: 'GPX',
+  },
+  {
+    id: 'geojson',
+    text: 'GeoJSON',
   },
 ];

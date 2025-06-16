@@ -6,10 +6,6 @@
           (click)="selectType(type.id)"
           class="btn btn-outline-secondary rounded btn-sm col-sm-3 position-relative flex-grow-1">
           {{type.text}}
-          @if (type.id === 'geosparql') {
-            <span
-            class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-secondary">&beta;</span>
-          }
         </button>
       }
     </div>
