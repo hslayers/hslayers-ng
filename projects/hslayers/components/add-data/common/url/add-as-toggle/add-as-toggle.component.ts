@@ -5,9 +5,11 @@ import {Component, input, output} from '@angular/core';
   standalone: false,
   template: `
     <div
-      class="d-flex flex-row justify-content-start align-items-baseline my-2 rounded border"
+      class="d-flex flex-row justify-content-start align-items-center my-2 rounded border"
     >
-      <span class="control-label input-group-text border-top-0 border-bottom-0">
+      <span
+        class="control-label input-group-text border-top-0 border-bottom-0 border-start-0"
+      >
         {{ 'COMMON.addAs' | translateHs }}
       </span>
       <div
