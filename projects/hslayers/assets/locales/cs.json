@@ -56,7 +56,8 @@
     "URL": {
       "selectAll": "Označit všechny vrstvy",
       "submitLayerName": "Zadejte název vrsty",
-      "submitLayerTitle": "Zadejte titulek vrstvy"
+      "submitLayerTitle": "Zadejte titulek vrstvy",
+      "XYZ Tiles": "XYZ Dlaždice"
     },
     "dialogOverWrite": {
       "overwriteExistingLayer": "Vrstva již existuje!",

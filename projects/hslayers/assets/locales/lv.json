@@ -52,7 +52,8 @@
     "URL": {
       "selectAll": "Izvēlēties visus slāņus",
       "submitLayerName": "Ievadiet slāņa nosaukumu",
-      "submitLayerTitle": "Ievadiet slāņa nosaukumu"
+      "submitLayerTitle": "Ievadiet slāņa nosaukumu",
+      "XYZ Tiles": "XYZ flīzes"
     },
     "dialogOverWrite": {
       "overwriteExistingLayer": "Slānis jau eksistē!",

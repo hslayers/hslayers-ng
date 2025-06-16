@@ -1,7 +1,5 @@
 import {Injectable} from '@angular/core';
 
-import {Subject} from 'rxjs';
-
 import {Layer} from 'ol/layer';
 import {Source} from 'ol/source';
 import {transform} from 'ol/proj';
@@ -181,16 +179,4 @@ export class HsAddDataUrlService {
       this.hsMapService.fitExtent(data.extent);
     }
   }
-
-  types = [
-    {id: 'wms', text: 'WMS'},
-    {id: 'wfs', text: 'WFS'},
-    {id: 'wmts', text: 'WMTS'},
-    {id: 'arcgis', text: 'ArcGIS'},
-    {id: 'xyz', text: 'XYZ Tiles'},
-    {id: 'geosparql', text: 'GeoSPARQL'},
-    {id: 'geojson', text: 'GeoJSON'},
-    {id: 'kml', text: 'KML'},
-    {id: 'gpx', text: 'GPX'},
-  ];
 }
