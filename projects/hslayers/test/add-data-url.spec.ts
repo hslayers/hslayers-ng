@@ -31,6 +31,7 @@ import {HsMapService} from 'hslayers-ng/services/map';
 import {HsMapServiceMock} from './map.service.mock';
 import {HsWmsGetCapabilitiesService} from 'hslayers-ng/services/get-capabilities';
 import {testingServiceEndpoints} from './data/service-endpoints';
+import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 
 let httpClient;
 let hsWmsGetCapabilitiesService;
@@ -61,6 +62,7 @@ describe('HsAddDataUrlComponent', () => {
       imports: [
         CommonModule,
         FormsModule,
+        TranslateCustomPipe,
         HsLanguageModule,
         HsAddDataVectorModule,
         HsUrlArcGisModule,
