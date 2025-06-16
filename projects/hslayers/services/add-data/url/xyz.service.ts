@@ -41,7 +41,7 @@ export class HsUrlXyzService implements HsUrlTypeServiceModel {
    */
   async listLayerFromCapabilities(
     wrapper: CapabilitiesResponseWrapper,
-    options?: LayerOptions,
+    layerOptions?: LayerOptions,
   ): Promise<Layer<Source>[]> {
     if (!wrapper.response && !wrapper.error) {
       return;
@@ -55,6 +55,11 @@ export class HsUrlXyzService implements HsUrlTypeServiceModel {
       return;
     }
 
+    if (this.hsAddDataCommonService.layerToSelect) {
+      const collection = this.getLayers(true, false, layerOptions);
+      return collection;
+    }
+
     return undefined;
   }
 
@@ -66,7 +71,9 @@ export class HsUrlXyzService implements HsUrlTypeServiceModel {
     shallow?: boolean,
     layerOptions?: LayerOptions,
   ): Layer<Source>[] {
-    return [this.getLayer(layerOptions)];
+    const layer = this.getLayer(layerOptions);
+    this.finalizeLayerRetrieval([layer], layerOptions);
+    return [layer];
   }
 
   /**
@@ -116,6 +123,8 @@ export class HsUrlXyzService implements HsUrlTypeServiceModel {
       throw new Error('No XYZ URL provided');
     }
 
+    const title = options?.title || this.data.title;
+
     // Prepare the URL with API key if needed
     let tileUrl = this.data.get_map_url;
     if (this.data.useApiKey && this.data.apiKey && this.data.apiKeyParam) {
@@ -127,32 +136,34 @@ export class HsUrlXyzService implements HsUrlTypeServiceModel {
     const sourceOptions: any = {
       url: tileUrl,
       crossOrigin: 'anonymous',
-      projection: 'EPSG:3857', // Default projection for XYZ
+      projection: 'EPSG:3857',
       minZoom: this.data.minZoom || 0,
       maxZoom: this.data.maxZoom || 18,
       tileSize: [256, 256], // Standard tile size
-      wrapX: true, // Wrap the world horizontally
+      wrapX: true,
     };
 
     const source = new XYZ(sourceOptions);
 
     const layerOptions: TileOptions<XYZ> = {
       source,
-      opacity: 1,
+      opacity: options?.opacity ?? 1,
       visible: this.data.visible,
       minZoom: this.data.minZoom || 0,
       maxZoom: this.data.maxZoom || 18,
+      className: options?.greyscale ? 'ol-layer hs-greyscale' : 'ol-layer',
+      properties: {
+        ...options,
+        title: title,
+        name: title,
+        removable: true,
+        abstract: this.data.description,
+        path: options?.path || this.data.folder_name,
+        base: options?.base || this.data.base,
+      },
     };
 
     const new_layer = new Tile(layerOptions);
-
-    // Set additional properties for HSLayers
-    new_layer.set('title', this.data.title);
-    new_layer.set('name', this.data.title);
-    new_layer.set('removable', true);
-    new_layer.set('abstract', this.data.description);
-    new_layer.set('path', this.data.folder_name);
-    new_layer.set('base', this.data.base);
 
     return new_layer;
   }

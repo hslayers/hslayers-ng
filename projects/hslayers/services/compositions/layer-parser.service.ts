@@ -250,41 +250,32 @@ export class HsCompositionsLayerParserService {
     if (lyr_def.url.includes('/rest/services/')) {
       return await this.createArcGISLayer(lyr_def);
     }
+
     const legends = this.getLegends(lyr_def);
-    const source = new XYZ({
-      url: decodeURIComponent(lyr_def.url),
-      attributions: lyr_def.attribution
-        ? `<a href="${lyr_def.attribution.OnlineResource}">${lyr_def.attribution.Title}</a>`
-        : undefined,
-      crossOrigin: 'anonymous',
-      projection: lyr_def.projection?.toUpperCase(),
-      wrapX: lyr_def.wrapX,
-      //TODO: Add the rest of parameters and describe in the composition schema
-    });
-    const new_layer = new Tile({
-      maxResolution: lyr_def.maxResolution || Infinity,
-      minResolution: lyr_def.minResolution || 0,
-      opacity: parseFloat(lyr_def.opacity) ?? 1,
-      source,
-      className: lyr_def.greyscale ? 'ol-layer hs-greyscale' : 'ol-layer',
-      properties: {
+    const newLayer = await this.hsAddDataOwsService.connectToOWS({
+      type: 'xyz',
+      uri: decodeURIComponent(lyr_def.url),
+      owrCache: false,
+      getOnly: true,
+      layer: lyr_def.title,
+      layerOptions: {
         title: lyr_def.title,
         fromComposition: lyr_def.fromComposition ?? true,
         showInLayerManager: lyr_def.displayInLayerSwitcher,
-        abstract: lyr_def.name || lyr_def.abstract,
-        base: lyr_def.base || lyr_def.url.indexOf('openstreetmap') > -1,
-        greyscale: lyr_def.greyscale,
-        metadata: lyr_def.metadata,
-        dimensions: lyr_def.dimensions,
+        abstract: lyr_def.title || lyr_def.abstract,
+        base: lyr_def.base,
         legends: legends,
         path: lyr_def.path,
+        greyscale: lyr_def.greyscale,
+        opacity: parseFloat(lyr_def.opacity) ?? 1,
+        // minZoom: lyr_def.minZoom,
+        // maxZoom: lyr_def.maxZoom,
+        // dimensions: lyr_def.dimensions,
       },
     });
 
-    new_layer.setVisible(lyr_def.visibility);
-    //TODO: Proxify
-    //OlMap.proxifyLayerLoader(new_layer, !lyr_def.singleTile);
-    return new_layer;
+    newLayer[0].setVisible(lyr_def.visibility);
+    return newLayer[0];
   }
 
   /**
