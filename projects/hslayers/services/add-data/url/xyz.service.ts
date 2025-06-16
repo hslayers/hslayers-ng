@@ -149,8 +149,9 @@ export class HsUrlXyzService implements HsUrlTypeServiceModel {
       source,
       opacity: options?.opacity ?? 1,
       visible: this.data.visible,
-      minZoom: this.data.minZoom || 0,
-      maxZoom: this.data.maxZoom || 18,
+      //Composition doesn't have minZoom and maxZoom, so we use resolution instead
+      minZoom: options?.minResolution || this.data.minZoom || 0,
+      maxZoom: options?.maxResolution || this.data.maxZoom || 18,
       className: options?.greyscale ? 'ol-layer hs-greyscale' : 'ol-layer',
       properties: {
         ...options,

@@ -268,8 +268,8 @@ export class HsCompositionsLayerParserService {
         path: lyr_def.path,
         greyscale: lyr_def.greyscale,
         opacity: parseFloat(lyr_def.opacity) ?? 1,
-        // minZoom: lyr_def.minZoom,
-        // maxZoom: lyr_def.maxZoom,
+        minResolution: lyr_def.minResolution,
+        maxResolution: lyr_def.maxResolution,
         // dimensions: lyr_def.dimensions,
       },
     });
