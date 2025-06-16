@@ -291,6 +291,8 @@ export class HsSaveMapService {
         json.className = getURL(layer).includes('/rest/services')
           ? 'ArcGISRest'
           : 'XYZ';
+        json.maxResolution = layer.get('maxZoom');
+        json.minResolution = layer.get('minZoom');
       }
       if (instOf(src, ImageArcGISRest) || instOf(src, TileArcGISRest)) {
         json.className = 'ArcGISRest';
