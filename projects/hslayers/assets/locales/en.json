@@ -166,7 +166,7 @@
     "layerExtentParsingProblem": "There was a problem while parsing extents of selected layer(s)",
     "XYZ": {
       "apiKeyUsage": "I have API Key",
-      "enterApiKey": "Enter  API key",
+      "enterApiKey": "Enter API key",
       "apiKeyParam": "Parameter name"
     }
   },
@@ -343,7 +343,7 @@
     "version": "Version",
     "apiKey": "API Key",
     "minZoom": "Min. zoom",
-    "maxZoom": "Max zoom"
+    "maxZoom": "Max. zoom"
   },
   "COMPOSITIONS": {
     "addByAddress": "Add composition by address",
