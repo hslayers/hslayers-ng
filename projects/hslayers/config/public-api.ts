@@ -6,3 +6,8 @@ export {
   KeyNumberDict,
   ToastPosition,
 } from './config.service';
+
+export {
+  HsConfigValidationService,
+  ConfigValidationRule,
+} from './config-validation.service';

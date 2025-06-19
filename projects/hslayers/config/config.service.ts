@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {Subject} from 'rxjs';
 
 import {Feature, View} from 'ol';
-import {Group, Layer, Vector as VectorLayer} from 'ol/layer';
+import {Layer, Vector as VectorLayer} from 'ol/layer';
 import {Source, Vector as VectorSource} from 'ol/source';
 
 import {
@@ -13,6 +13,10 @@ import {
   WidgetItem,
 } from 'hslayers-ng/types';
 import {StyleLike} from 'ol/style/Style';
+import {
+  ConfigValidationRule,
+  HsConfigValidationService,
+} from './config-validation.service';
 
 export type ToastPosition =
   | 'top-left'
@@ -262,6 +266,19 @@ export class HsConfigObject {
   pathExclusivity?: boolean;
   ngRouter?: boolean;
 
+  /**
+   * User-defined validation rules to check for configuration conflicts.
+   * These rules will be added to the default validation rules.
+   */
+  configValidationRules?: ConfigValidationRule[];
+
+  /**
+   * Whether to use default validation rules.
+   * Set to false to disable all default validation and only use configValidationRules.
+   * @default true
+   */
+  useDefaultValidationRules?: boolean;
+
   constructor() {
     this.pathExclusivity = false;
     this.panelsEnabled = {
@@ -327,12 +344,31 @@ export class HsConfig extends HsConfigObject {
     {name: 'wifi', url: 'img/icons/wifi8.svg'},
   ];
 
-  constructor() {
+  constructor(private validationService: HsConfigValidationService) {
     super();
   }
 
   private logConfigWarning(message: string) {
     console.warn('HsConfig Warning:', message);
+  }
+
+  /**
+   * Validates configuration for incompatible combinations and logs warnings
+   * @param config - The configuration object to validate
+   * @param userRules - Optional user-defined validation rules
+   * @param useDefaultRules - Whether to use default validation rules
+   */
+  private validateConfigCompatibility(
+    config: HsConfigObject,
+    userRules?: ConfigValidationRule[],
+    useDefaultRules: boolean = true,
+  ): void {
+    const warnings = this.validationService.validateConfiguration(
+      config,
+      userRules,
+      useDefaultRules,
+    );
+    warnings.forEach((warning) => this.logConfigWarning(warning));
   }
 
   /**
@@ -391,6 +427,16 @@ export class HsConfig extends HsConfigObject {
       }
 
       this.checkDeprecatedCesiumConfig(newConfig);
+
+      // Extract validation settings before processing
+      const userValidationRules = newConfig.configValidationRules;
+      const useDefaultRules = newConfig.useDefaultValidationRules ?? true;
+      if (newConfig.configValidationRules) {
+        delete newConfig.configValidationRules;
+      }
+      if (newConfig.useDefaultValidationRules !== undefined) {
+        delete newConfig.useDefaultValidationRules;
+      }
 
       if (newConfig.sidebarPosition === 'bottom') {
         /**Set high enough value to make sure class setting mobile-view is not toggled*/
@@ -451,6 +497,12 @@ export class HsConfig extends HsConfigObject {
         this.assetsPath = '';
       }
       this.assetsPath += this.assetsPath.endsWith('/') ? '' : '/';
+
+      this.validateConfigCompatibility(
+        this,
+        userValidationRules,
+        useDefaultRules,
+      );
 
       this.configChanges.next();
     } catch (e) {
