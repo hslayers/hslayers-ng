@@ -32,11 +32,11 @@
   }
 </ul>
 @if(currentOption === 'everyone') {
-@for (type of rightsOptions; track type) {
-<ng-container
-  *ngTemplateOutlet="accessRightsTpl;context:{accessRights: access_rights, right: type, grantedTo: 'EVERYONE'}">
-</ng-container>
-}
+  @for (type of rightsOptions; track type) {
+    <ng-container
+      *ngTemplateOutlet="accessRightsTpl;context:{accessRights: access_rights, right: type, grantedTo: 'EVERYONE'}">
+    </ng-container>
+  }
 }
 @else if (currentOption === 'perUser'){
 <section class="d-flex">
@@ -70,6 +70,7 @@
 }
 @else {
 <div class="hs-save-map-users-list p-1 my-1" [class.collapsed]="collapsed">
+  @if(allRoles.length > 0) {
   @for (role of allRoles; track role) {
   <div class="d-flex flex-row justify-content-between align-items-start p-1">
     <span class="w-50">{{role.name}}</span>
@@ -79,6 +80,12 @@
       | translateHs :'SAVECOMPOSITION.form' }}</label>
     }
   </div>
+  }}
+  @else {
+    <div class="d-flex flex-column align-items-center py-5 px-2">
+      <i class="fa-solid fa-triangle-exclamation text-secondary fs-1 opacity-75"></i>
+      <span class="text-center fs-2 text-secondary opacity-75">{{'SAVECOMPOSITION.form.noRoles' | translateHs}}</span>
+    </div>
   }
 </div>
 }

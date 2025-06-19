@@ -857,7 +857,8 @@
       "readyToSave": "Gatavs saglabāšanai kā jauna kompozīcija.",
       "writeAccessExists": "Varat šo kompozīciju atjaunināt vai saglabāt kā jaunu.",
       "ownedBy": "Varat šo kompozīciju atjaunināt vai saglabāt kā jaunu. (Īpašnieks: {workspace})",
-      "writeAccessSave": "Jums ir atļauja saglabāt izmaiņas."
+      "writeAccessSave": "Jums ir atļauja saglabāt izmaiņas.",
+      "noRoles": "Nevar atrast lietotāja lomas"
     },
     "panelMd": {
       "fillKeywords": "Ievadiet atslēgvārdus",
