@@ -215,14 +215,18 @@ export class HsCommonLaymanAccessRightsComponent implements OnInit {
             //Add current user as he has got to retain both read and write rights
             {name: this.hsCommonLaymanService.user(), read: true, write: true},
           ];
-    this.access_rights[`access_rights.${type}`] = source
-      .reduce((acc, curr) => {
-        if (curr[type]) {
-          acc.push(curr['name']);
-        }
-        return acc;
-      }, [] as string[])
-      .join(',');
+    //If all users/roles have access rights, set to EVERYONE
+    const everyone = source.every((u) => u[type]);
+    this.access_rights[`access_rights.${type}`] = everyone
+      ? 'EVERYONE'
+      : source
+          .reduce((acc, curr) => {
+            if (curr[type]) {
+              acc.push(curr['name']);
+            }
+            return acc;
+          }, [] as string[])
+          .join(',');
     this.access_rights_changed.emit(this.access_rights);
   }
 
