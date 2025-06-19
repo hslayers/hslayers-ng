@@ -39,7 +39,7 @@ export class HsConfigMock extends HsConfig {
   ];
 
   constructor() {
-    super();
+    super(undefined);
   }
 
   override update?(config: any): void {
