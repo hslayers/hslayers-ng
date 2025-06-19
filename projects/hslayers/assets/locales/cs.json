@@ -903,7 +903,8 @@
       "readyToSave": "Připraveno k uložení jako nová kompozice.",
       "writeAccessExists": "Můžete tuto kompozici aktualizovat nebo uložit jako novou.",
       "ownedBy": "Můžete tuto kompozici aktualizovat nebo uložit jako novou. (Vlastník: {workspace})",
-      "writeAccessSave": "Máte oprávnění uložit změny."
+      "writeAccessSave": "Máte oprávnění uložit změny.",
+      "noRoles": "Nebyly nalezeny žádné uživatelské role"
     },
     "panelMd": {
       "fillKeywords": "Vyplňte klíčová slova",

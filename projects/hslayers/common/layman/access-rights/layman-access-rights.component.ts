@@ -101,7 +101,7 @@ export class HsCommonLaymanAccessRightsComponent implements OnInit {
     if (readAccess.length > 1 || writeAccess.length > 1) {
       //Uppercase entry = role permissions
       this.currentOption = [...readAccess, ...writeAccess].find(
-        (item) => item === item.toUpperCase(),
+        (item) => item === item.toUpperCase() && item !== 'EVERYONE',
       )
         ? GrantingOptions.PERROLE
         : GrantingOptions.PERUSER;
@@ -250,6 +250,7 @@ export class HsCommonLaymanAccessRightsComponent implements OnInit {
    * @param option - Access granting option
    */
   async changeGrantingOptions(option: GrantingOptions): Promise<void> {
+    this.currentOption = option;
     if (option == GrantingOptions.PERUSER) {
       await this.getAllUsers();
     } else if (option == GrantingOptions.PERROLE) {
@@ -275,7 +276,7 @@ export class HsCommonLaymanAccessRightsComponent implements OnInit {
       this.access_rights[AccessRights.WRITE] =
         rights.write > 1 ? 'EVERYONE' : 'private';
     }
-    this.currentOption = option;
+    this.cdr.detectChanges();
   }
 
   /**
@@ -316,33 +317,32 @@ export class HsCommonLaymanAccessRightsComponent implements OnInit {
       const read = access_rights[AccessRights.READ].split(',');
       const write = access_rights[AccessRights.WRITE].split(',');
 
-      this.allRoles = await lastValueFrom(
-        of(this.allRoles).pipe(
-          switchMap((roles) =>
-            roles.length === 0
-              ? this.$http.get<string[]>(url, {withCredentials: true}).pipe(
-                  catchError((error) => {
-                    console.warn('Could not get roles  list', error);
-                    return of([]);
-                  }),
-                )
-              : of(roles.map((r) => r.name)),
+      try {
+        this.allRoles = await lastValueFrom(
+          of(this.allRoles).pipe(
+            switchMap((roles) =>
+              roles.length === 0
+                ? this.$http.get<string[]>(url, {withCredentials: true})
+                : of(roles.map((r) => r.name)),
+            ),
+            map((roles: string[]) => {
+              return roles
+                .filter((r) => r !== 'EVERYONE')
+                .map((r) => {
+                  return {
+                    name: r,
+                    read: this.roleHasAccess(r, read, 'read'),
+                    write: this.roleHasAccess(r, write, 'write'),
+                  };
+                });
+            }),
           ),
-          map((roles: string[]) => {
-            return roles
-              .filter((r) => r !== 'EVERYONE')
-              .map((r) => {
-                return {
-                  name: r,
-                  read: this.roleHasAccess(r, read, 'read'),
-                  write: this.roleHasAccess(r, write, 'write'),
-                };
-              });
-          }),
-        ),
-      );
-      this.setAcessRightsFromActor('read', GrantingOptions.PERROLE);
-      this.setAcessRightsFromActor('write', GrantingOptions.PERROLE);
+        );
+        this.setAcessRightsFromActor('read', GrantingOptions.PERROLE);
+        this.setAcessRightsFromActor('write', GrantingOptions.PERROLE);
+      } catch (error) {
+        console.warn('Could not get roles list', error);
+      }
     }
   }
 

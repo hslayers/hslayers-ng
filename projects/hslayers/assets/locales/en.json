@@ -902,7 +902,8 @@
       "readyToSave": "Ready to save as a new composition.",
       "writeAccessExists": "You can update this composition or save it as a new one.",
       "ownedBy": "You can update this composition or save it as a new one. (Owner: {workspace})",
-      "writeAccessSave": "You have permission to save changes."
+      "writeAccessSave": "You have permission to save changes.",
+      "noRoles": "No user roles could be found"
     },
     "panelMd": {
       "fillKeywords": "Fill keywords",
