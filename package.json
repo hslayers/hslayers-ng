@@ -57,7 +57,7 @@
     "@angular/localize": "^20.0.4",
     "@angular/platform-browser": "^20.0.4",
     "@angular/platform-browser-dynamic": "^20.0.4",
-    "@ng-bootstrap/ng-bootstrap": "^18.0.0",
+    "@ng-bootstrap/ng-bootstrap": "^19.0.0",
     "@ngx-translate/core": "^16.0.3",
     "@ngx-translate/http-loader": "^16.0.0",
     "@popperjs/core": "^2.11.7",
