@@ -6,16 +6,23 @@
     "declarationMap": true,
     "inlineSources": true,
     "types": [],
-    "moduleResolution": "node16",
+    "moduleResolution": "bundler",
     "experimentalDecorators": true,
     "module": "Node16",
     "allowSyntheticDefaultImports": true,
     "resolveJsonModule": true,
     "esModuleInterop": true,
-    "lib": ["dom", "ES2023"],
+    "lib": [
+      "dom",
+      "ES2023"
+    ],
     "paths": {
-      "hslayers-ng": ["./dist/hslayers"],
-      "hslayers-ng/*": ["./dist/hslayers/*"]
+      "hslayers-ng": [
+        "./dist/hslayers"
+      ],
+      "hslayers-ng/*": [
+        "./dist/hslayers/*"
+      ]
     }
   },
   "angularCompilerOptions": {

@@ -1,4 +1,3 @@
-import {CommonModule} from '@angular/common';
 import {Component, Input, inject} from '@angular/core';
 import {Filter} from 'hslayers-ng/types';
 import {HsAddFilterButtonComponent} from './add-filter-button/add-filter-button.component';
@@ -11,11 +10,10 @@ import {TranslateCustomPipe} from 'hslayers-ng/services/language';
   selector: 'hs-filter',
   templateUrl: './filter.component.html',
   imports: [
-    CommonModule,
     HsComparisonFilterComponent,
     HsAddFilterButtonComponent,
-    TranslateCustomPipe,
-  ],
+    TranslateCustomPipe
+],
   styles: `
     :host {
       flex: 1 1 auto;
