@@ -109,10 +109,10 @@
     "@frsource/cypress-plugin-visual-regression-diff": "^3.2.14",
     "@types/jasmine": "^5.1.8",
     "@types/jasminewd2": "~2.0.12",
-    "angular-eslint": "^19.4.0",
+    "angular-eslint": "^20.1.1",
     "cypress": "~14.4.0",
     "cypress-real-events": "^1.13.0",
-    "eslint": "^9.27.0",
+    "eslint": "^9.28.0",
     "eslint-config-openlayers": "20.0.0",
     "eslint-import-resolver-typescript": "^4.4.3",
     "eslint-plugin-import": "2.31.0",
@@ -134,7 +134,7 @@
     "sass": "^1.89.0",
     "ts-node": "^10.9.2",
     "typescript": "~5.8.3",
-    "typescript-eslint": "^8.32.1"
+    "typescript-eslint": "^8.33.1"
   },
   "browser": {
     "timers": false,
