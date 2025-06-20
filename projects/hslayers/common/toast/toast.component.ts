@@ -1,5 +1,4 @@
 import {Component, computed, input} from '@angular/core';
-import {CommonModule} from '@angular/common';
 import {toSignal} from '@angular/core/rxjs-interop';
 
 import {HsToastService} from './toast.service';
@@ -9,7 +8,7 @@ import {HsConfig, ToastPosition} from 'hslayers-ng/config';
 @Component({
   selector: 'hs-toast',
   standalone: true,
-  imports: [CommonModule, HsToastItemComponent],
+  imports: [HsToastItemComponent],
   template: `
     @for (toast of hsToastService.toasts; track toast) {
       <hs-toast-item
