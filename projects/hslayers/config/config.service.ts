@@ -164,9 +164,9 @@ export class HsConfigObject {
 
   /**
    * Controls where toast notifications are anchored to
-   * @default 'map' - anchors toasts to the map container
    * 'screen' - anchors toasts to the viewport
    * 'map' - anchors toasts to the map container
+   * @default 'map' - anchors toasts to the map container
    */
   toastAnchor?: 'screen' | 'map' = 'map';
   /**
@@ -270,11 +270,11 @@ export class HsConfigObject {
    * User-defined validation rules to check for configuration conflicts.
    * These rules will be added to the default validation rules.
    */
-  HsConfigValidationRules?: HsConfigValidationRule[];
+  configValidationRules?: HsConfigValidationRule[];
 
   /**
    * Whether to use default validation rules.
-   * Set to false to disable all default validation and only use HsConfigValidationRules.
+   * Set to false to disable all default validation and only use configValidationRules.
    * @default true
    */
   useDefaultValidationRules?: boolean;
@@ -311,7 +311,7 @@ export class HsConfigObject {
       defaultViewButton: true,
       mapControls: true,
       basemapGallery: false,
-      // Says whether it should be activated by default. Is overriden by url param
+      // Says whether it should be activated by default. Is overridden by url param
       mapSwipe: false,
       queryPopup: true,
     };
@@ -429,10 +429,10 @@ export class HsConfig extends HsConfigObject {
       this.checkDeprecatedCesiumConfig(newConfig);
 
       // Extract validation settings before processing
-      const userValidationRules = newConfig.HsConfigValidationRules;
+      const userValidationRules = newConfig.configValidationRules;
       const useDefaultRules = newConfig.useDefaultValidationRules ?? true;
-      if (newConfig.HsConfigValidationRules) {
-        delete newConfig.HsConfigValidationRules;
+      if (newConfig.configValidationRules) {
+        delete newConfig.configValidationRules;
       }
       if (newConfig.useDefaultValidationRules !== undefined) {
         delete newConfig.useDefaultValidationRules;
