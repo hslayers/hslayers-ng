@@ -9,5 +9,5 @@ export {
 
 export {
   HsConfigValidationService,
-  ConfigValidationRule,
+  HsConfigValidationRule,
 } from './config-validation.service';
