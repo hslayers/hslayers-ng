@@ -1,10 +1,11 @@
 import {
-  ChangeDetectorRef,
   Component,
   EventEmitter,
   Input,
   OnInit,
   Output,
+  signal,
+  WritableSignal,
 } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {FormsModule} from '@angular/forms';
@@ -73,8 +74,8 @@ export class HsCommonLaymanAccessRightsComponent implements OnInit {
   currentOption: string = GrantingOptions.EVERYONE;
   rightsOptions: AccessRightsType[] = ['read', 'write'];
 
-  allUsers: LaymanUser[] = [];
-  allRoles: LaymanRole[] = [];
+  allUsers: WritableSignal<LaymanUser[]> = signal<LaymanUser[]>(undefined);
+  allRoles: WritableSignal<LaymanRole[]> = signal<LaymanRole[]>(undefined);
 
   userSearch: string;
   endpoint: HsEndpoint;
@@ -82,7 +83,6 @@ export class HsCommonLaymanAccessRightsComponent implements OnInit {
     public hsCommonLaymanService: HsCommonLaymanService,
     private $http: HttpClient,
     private hsLog: HsLogService,
-    private cdr: ChangeDetectorRef,
   ) {}
   async ngOnInit(): Promise<void> {
     this.endpoint = this.hsCommonLaymanService.layman();
@@ -123,10 +123,10 @@ export class HsCommonLaymanAccessRightsComponent implements OnInit {
      * Value to be set.
      * Negative of value of bigger part of the users
      */
-    const value =
-      this.allUsers.length / 2 >= this.allUsers.filter((u) => u[type]).length;
+    const allUsers = this.allUsers();
+    const value = allUsers.length / 2 >= allUsers.filter((u) => u[type]).length;
 
-    this.allUsers.forEach((user) => {
+    allUsers.forEach((user) => {
       const isCurrentUser = user.name === this.hsCommonLaymanService.user();
       //Value for current user won't be changed
       user[type] = isCurrentUser ? user[type] : value;
@@ -209,9 +209,9 @@ export class HsCommonLaymanAccessRightsComponent implements OnInit {
   ): void {
     const source =
       actor === GrantingOptions.PERUSER
-        ? this.allUsers
+        ? this.allUsers()
         : [
-            ...this.allRoles,
+            ...this.allRoles(),
             //Add current user as he has got to retain both read and write rights
             {name: this.hsCommonLaymanService.user(), read: true, write: true},
           ];
@@ -239,7 +239,7 @@ export class HsCommonLaymanAccessRightsComponent implements OnInit {
     actor: T,
   ): T extends GrantingOptions.PERUSER ? LaymanUser : LaymanRole {
     const source =
-      actor === GrantingOptions.PERUSER ? this.allUsers : this.allRoles;
+      actor === GrantingOptions.PERUSER ? this.allUsers() : this.allRoles();
     return source.find(
       (u: any) => u.name === name,
     ) as T extends GrantingOptions.PERUSER ? LaymanUser : LaymanRole;
@@ -260,8 +260,8 @@ export class HsCommonLaymanAccessRightsComponent implements OnInit {
       //READ
       const actor =
         this.currentOption == GrantingOptions.PERROLE
-          ? this.allRoles
-          : this.allUsers;
+          ? this.allRoles()
+          : this.allUsers();
       const rights = actor.reduce(
         (acc, curr) => {
           acc.read += curr['read'] ? 1 : 0;
@@ -276,7 +276,6 @@ export class HsCommonLaymanAccessRightsComponent implements OnInit {
       this.access_rights[AccessRights.WRITE] =
         rights.write > 1 ? 'EVERYONE' : 'private';
     }
-    this.cdr.detectChanges();
   }
 
   /**
@@ -291,7 +290,9 @@ export class HsCommonLaymanAccessRightsComponent implements OnInit {
     //Switching from users table
     if (this.currentOption === GrantingOptions.PERUSER) {
       //Users with the role
-      const usersWithRole = this.allUsers.filter((u) => u.role.includes(role));
+      const usersWithRole = this.allUsers().filter((u) =>
+        u.role.includes(role),
+      );
       //Users of that role with access
       const usersWithRoleAndAccess = usersWithRole.filter((u) => u[type]);
       return (
@@ -299,7 +300,7 @@ export class HsCommonLaymanAccessRightsComponent implements OnInit {
         (usersWithRoleAndAccess.length !== 0 &&
           usersWithRoleAndAccess.length >= usersWithRole.length / 2) ||
         //Or all users has access
-        this.allUsers.filter((u) => u[type]).length === this.allUsers.length
+        this.allUsers().filter((u) => u[type]).length === this.allUsers().length
       );
     }
     //Switching from 'everyone' tab or opening role tab first
@@ -318,10 +319,10 @@ export class HsCommonLaymanAccessRightsComponent implements OnInit {
       const write = access_rights[AccessRights.WRITE].split(',');
 
       try {
-        this.allRoles = await lastValueFrom(
-          of(this.allRoles).pipe(
+        const roles = await lastValueFrom(
+          of(this.allRoles()).pipe(
             switchMap((roles) =>
-              roles.length === 0
+              !roles || roles.length === 0
                 ? this.$http.get<string[]>(url, {withCredentials: true})
                 : of(roles.map((r) => r.name)),
             ),
@@ -338,10 +339,12 @@ export class HsCommonLaymanAccessRightsComponent implements OnInit {
             }),
           ),
         );
+        this.allRoles.set(roles);
         this.setAcessRightsFromActor('read', GrantingOptions.PERROLE);
         this.setAcessRightsFromActor('write', GrantingOptions.PERROLE);
       } catch (error) {
         console.warn('Could not get roles list', error);
+        this.allRoles.set([]);
       }
     }
   }
@@ -397,7 +400,7 @@ export class HsCommonLaymanAccessRightsComponent implements OnInit {
   ): boolean {
     if (this.currentOption === GrantingOptions.PERROLE) {
       return (
-        this.allRoles.every((r) => r[type]) ||
+        this.allRoles().every((r) => r[type]) ||
         user.role?.some((r) => rights.includes(r))
       );
     }
@@ -414,10 +417,10 @@ export class HsCommonLaymanAccessRightsComponent implements OnInit {
       const write = access_rights[AccessRights.WRITE].split(',');
 
       try {
-        this.allUsers = await lastValueFrom(
-          of(this.allUsers).pipe(
+        const users = await lastValueFrom(
+          of(this.allUsers()).pipe(
             switchMap((users) =>
-              users.length === 0 ? this.fetchUsers() : of(users),
+              !users || users.length === 0 ? this.fetchUsers() : of(users),
             ),
             map((res: LaymanUser[]) => {
               return res.map((user) => {
@@ -440,11 +443,12 @@ export class HsCommonLaymanAccessRightsComponent implements OnInit {
             }),
           ),
         );
+        this.allUsers.set(users);
         this.setAcessRightsFromActor('read', GrantingOptions.PERUSER);
         this.setAcessRightsFromActor('write', GrantingOptions.PERUSER);
-        this.cdr.detectChanges();
       } catch (e) {
         this.hsLog.error(e);
+        this.allUsers.set([]);
       }
     }
   }
@@ -466,7 +470,7 @@ export class HsCommonLaymanAccessRightsComponent implements OnInit {
    * Refresh user list, when searching for specific user
    */
   refreshList(): void {
-    this.allUsers = Array.from(this.allUsers);
+    this.allUsers.set(Array.from(this.allUsers()));
   }
 
   /**
