@@ -14,7 +14,7 @@ import {
 } from 'hslayers-ng/types';
 import {StyleLike} from 'ol/style/Style';
 import {
-  HsConfigValidationRule ,
+  HsConfigValidationRule,
   HsConfigValidationService,
 } from './config-validation.service';
 
@@ -270,11 +270,11 @@ export class HsConfigObject {
    * User-defined validation rules to check for configuration conflicts.
    * These rules will be added to the default validation rules.
    */
-  HsConfigValidationRule s?: HsConfigValidationRule [];
+  HsConfigValidationRules?: HsConfigValidationRule[];
 
   /**
    * Whether to use default validation rules.
-   * Set to false to disable all default validation and only use HsConfigValidationRule s.
+   * Set to false to disable all default validation and only use HsConfigValidationRules.
    * @default true
    */
   useDefaultValidationRules?: boolean;
@@ -360,7 +360,7 @@ export class HsConfig extends HsConfigObject {
    */
   private validateConfigCompatibility(
     config: HsConfigObject,
-    userRules?: HsConfigValidationRule [],
+    userRules?: HsConfigValidationRule[],
     useDefaultRules: boolean = true,
   ): void {
     const warnings = this.validationService.validateConfiguration(
@@ -429,10 +429,10 @@ export class HsConfig extends HsConfigObject {
       this.checkDeprecatedCesiumConfig(newConfig);
 
       // Extract validation settings before processing
-      const userValidationRules = newConfig.HsConfigValidationRule s;
+      const userValidationRules = newConfig.HsConfigValidationRules;
       const useDefaultRules = newConfig.useDefaultValidationRules ?? true;
-      if (newConfig.HsConfigValidationRule s) {
-        delete newConfig.HsConfigValidationRule s;
+      if (newConfig.HsConfigValidationRules) {
+        delete newConfig.HsConfigValidationRules;
       }
       if (newConfig.useDefaultValidationRules !== undefined) {
         delete newConfig.useDefaultValidationRules;
