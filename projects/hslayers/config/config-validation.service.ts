@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 
-export type ConfigValidationRule = {
+export type HsConfigValidationRule  = {
   condition: (config: any) => boolean;
   message: string;
 };
@@ -12,7 +12,7 @@ export class HsConfigValidationService {
   /**
    * Default validation rules for detecting incompatible configuration combinations
    */
-  private readonly defaultValidationRules: ConfigValidationRule[] = [
+  private readonly defaultValidationRules: HsConfigValidationRule [] = [
     {
       condition: (config) =>
         config.defaultComposition &&
@@ -37,14 +37,14 @@ export class HsConfigValidationService {
    */
   validateConfiguration(
     config: any,
-    userRules?: ConfigValidationRule[],
+    userRules?: HsConfigValidationRule [],
     useDefaultRules: boolean = true,
   ): string[] {
     const warnings: string[] = [];
 
     try {
       // Start with default rules if enabled
-      const allRules: ConfigValidationRule[] = useDefaultRules
+      const allRules: HsConfigValidationRule [] = useDefaultRules
         ? [...this.defaultValidationRules]
         : [];
 
