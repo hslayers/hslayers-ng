@@ -1,6 +1,11 @@
 import {Injectable} from '@angular/core';
 
-export type HsConfigValidationRule  = {
+/**
+ * Type for validation rules
+ * @param condition - Condition function that should return true in case of conflict.
+ * @param message - The message to display if the condition is true (conflict found)
+ */
+export type HsConfigValidationRule = {
   condition: (config: any) => boolean;
   message: string;
 };
@@ -12,7 +17,7 @@ export class HsConfigValidationService {
   /**
    * Default validation rules for detecting incompatible configuration combinations
    */
-  private readonly defaultValidationRules: HsConfigValidationRule [] = [
+  private readonly defaultValidationRules: HsConfigValidationRule[] = [
     {
       condition: (config) =>
         config.defaultComposition &&
@@ -37,14 +42,14 @@ export class HsConfigValidationService {
    */
   validateConfiguration(
     config: any,
-    userRules?: HsConfigValidationRule [],
+    userRules?: HsConfigValidationRule[],
     useDefaultRules: boolean = true,
   ): string[] {
     const warnings: string[] = [];
 
     try {
       // Start with default rules if enabled
-      const allRules: HsConfigValidationRule [] = useDefaultRules
+      const allRules: HsConfigValidationRule[] = useDefaultRules
         ? [...this.defaultValidationRules]
         : [];
 
