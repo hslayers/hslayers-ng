@@ -177,10 +177,10 @@ describe('HsCommonLaymanAccessRightsComponent', () => {
     req.flush(mockUsersFromLayman);
     tick(2000);
     // Check that users are set correctly
-    expect(component.allUsers.length).toEqual(3);
+    expect(component.allUsers().length).toEqual(3);
     expect(component.currentOption).toEqual('perUser');
-    expect(component.allUsers[1].read).toBeTruthy();
-    expect(component.allUsers[1].write).toBeFalsy();
+    expect(component.allUsers()[1].read).toBeTruthy();
+    expect(component.allUsers()[1].write).toBeFalsy();
   }));
 
   it('should create and initialize with default state - per user from Wagtail', fakeAsync(() => {
@@ -195,9 +195,9 @@ describe('HsCommonLaymanAccessRightsComponent', () => {
     req.flush(mockedUsersFromWagtail);
     tick(2000);
     // Check that users are set correctly
-    expect(component.allUsers.length).toEqual(3);
+    expect(component.allUsers().length).toEqual(3);
     expect(component.currentOption).toEqual('perUser');
-    expect(component.allUsers[0].role).toHaveSize(2);
+    expect(component.allUsers()[0].role).toHaveSize(2);
   }));
 
   it('should create and initialize with default state (per role) and parse to users', fakeAsync(() => {
@@ -219,7 +219,7 @@ describe('HsCommonLaymanAccessRightsComponent', () => {
     // Simulate a successful response with mockRoles
     req.flush(['MODERATORS', 'EDITORS', 'EVERYONE']);
     tick(1000);
-    expect(component.allRoles.length).toEqual(2);
+    expect(component.allRoles().length).toEqual(2);
     expect(component.currentOption).toEqual('perRole');
 
     component.changeGrantingOptions(GrantingOptions.PERUSER);
@@ -229,9 +229,9 @@ describe('HsCommonLaymanAccessRightsComponent', () => {
     // Simulate a successful response with mockUsers
     userReq.flush(mockedUsersFromWagtail);
     tick(2000);
-    expect(component.allUsers.length).toEqual(3);
+    expect(component.allUsers().length).toEqual(3);
     expect(component.currentOption).toEqual('perUser');
-    expect(component.allUsers[0].role).toHaveSize(2);
+    expect(component.allUsers()[0].role).toHaveSize(2);
   }));
 
   it('Should identify user based on role and grant access', () => {
@@ -240,7 +240,7 @@ describe('HsCommonLaymanAccessRightsComponent', () => {
       'access_rights.read': '',
     };
     component.endpoint = (commonLaymanMock as any).layman();
-    component.allRoles = parsedRoles;
+    component.allRoles.set(parsedRoles);
     component.currentOption = GrantingOptions.PERROLE;
     //Set up role based access rights
     component.setAcessRightsFromActor('write', GrantingOptions.PERROLE);
@@ -257,7 +257,7 @@ describe('HsCommonLaymanAccessRightsComponent', () => {
   it('should automatically grant read access when granting write ', fakeAsync(() => {
     component.access_rights = perUserAccessRights;
     fixture.detectChanges();
-    component.allRoles = parsedRoles;
+    component.allRoles.set(parsedRoles);
     component.endpoint = commonLaymanMock.layman();
 
     // Expect an HTTP GET request to be made to the Layman URL
@@ -266,16 +266,16 @@ describe('HsCommonLaymanAccessRightsComponent', () => {
     // Simulate a successful response with mockUsers
     userReq.flush(mockedUsersFromWagtail);
     tick(1000);
-    expect(component.allUsers.length).toEqual(3);
+    expect(component.allUsers().length).toEqual(3);
     expect(component.currentOption).toEqual('perUser');
-    expect(component.allUsers[2].read).toBeFalse();
+    expect(component.allUsers()[2].read).toBeFalse();
 
-    component.allUsers[2].write = true; //Input click
+    component.allUsers()[2].write = true; //Input click
     component.rightsChangedPerActor('write', 'ales', GrantingOptions.PERUSER, {
       target: {checked: true},
     });
 
-    expect(component.allUsers[2].read).toBeTrue();
-    expect(component.allUsers[2].write).toBeTrue();
+    expect(component.allUsers()[2].read).toBeTrue();
+    expect(component.allUsers()[2].write).toBeTrue();
   }));
 });
