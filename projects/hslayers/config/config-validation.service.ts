@@ -41,7 +41,7 @@ export class HsConfigValidationService {
    * @param useDefaultRules - Whether to include default validation rules (default: true)
    * @returns Array of warning messages for detected conflicts
    */
-  validateConfiguration(
+  validate(
     config: HsConfigObject,
     userRules?: HsConfigValidationRule[],
     useDefaultRules: boolean = true,

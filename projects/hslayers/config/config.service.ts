@@ -363,7 +363,7 @@ export class HsConfig extends HsConfigObject {
     userRules?: HsConfigValidationRule[],
     useDefaultRules: boolean = true,
   ): void {
-    const warnings = this.validationService.validateConfiguration(
+    const warnings = this.validationService.validate(
       config,
       userRules,
       useDefaultRules,
