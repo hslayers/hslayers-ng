@@ -1,4 +1,5 @@
 import {Injectable} from '@angular/core';
+import {HsConfigObject} from './config.service';
 
 /**
  * Type for validation rules
@@ -6,7 +7,7 @@ import {Injectable} from '@angular/core';
  * @param message - The message to display if the condition is true (conflict found)
  */
 export type HsConfigValidationRule = {
-  condition: (config: any) => boolean;
+  condition: (config: HsConfigObject) => boolean;
   message: string;
 };
 
@@ -41,7 +42,7 @@ export class HsConfigValidationService {
    * @returns Array of warning messages for detected conflicts
    */
   validateConfiguration(
-    config: any,
+    config: HsConfigObject,
     userRules?: HsConfigValidationRule[],
     useDefaultRules: boolean = true,
   ): string[] {
