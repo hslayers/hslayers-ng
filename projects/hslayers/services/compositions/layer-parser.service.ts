@@ -2,13 +2,8 @@ import {Injectable} from '@angular/core';
 
 import {Feature} from 'ol';
 import {GeoJSON} from 'ol/format';
-import {
-  Image as ImageLayer,
-  Layer,
-  Tile,
-  Vector as VectorLayer,
-} from 'ol/layer';
-import {ImageStatic, Source, Vector as VectorSource, XYZ} from 'ol/source';
+import {Image as ImageLayer, Layer, Vector as VectorLayer} from 'ol/layer';
+import {ImageStatic, Source, Vector as VectorSource} from 'ol/source';
 
 import {
   HsAddDataOwsService,
@@ -51,44 +46,48 @@ export class HsCompositionsLayerParserService {
    * @param lyr_def - Layer definition object
    */
   async createWFSLayer(lyr_def): Promise<Layer<Source>> {
-    const {name, workspace} = isLaymanUrl(
-      lyr_def.protocol.url,
-      this.hsCommonLaymanService.layman(),
-    )
-      ? await this.hsCommonLaymanLayerService.getLayerWithUUID(
-          lyr_def.name.split('_')[1],
-        )
-      : {name: lyr_def.name, workspace: lyr_def.workspace};
+    try {
+      const {name, workspace} = isLaymanUrl(
+        lyr_def.protocol.url,
+        this.hsCommonLaymanService.layman(),
+      )
+        ? await this.hsCommonLaymanLayerService.getLayerWithUUID(
+            lyr_def.name.split('_')[1],
+          )
+        : {name: lyr_def.name, workspace: lyr_def.workspace};
 
-    const style = (lyr_def.sld || lyr_def.qml) ?? lyr_def.style;
-    const uri = lyr_def.protocol.url.split('?')[0];
-    const newLayer = await this.hsAddDataOwsService.connectToOWS({
-      type: 'wfs',
-      uri,
-      layer: lyr_def.name,
-      owrCache: false,
-      getOnly: true,
-      layerOptions: {
-        style: style,
-        path: lyr_def.path,
-        fromComposition: true,
-        opacity: parseFloat(lyr_def.opacity) ?? 1,
-      },
-      connectOptions: {
-        laymanLayer: isLaymanUrl(uri, this.hsCommonLaymanService.layman())
-          ? {
-              title: lyr_def.title,
-              layer: lyr_def.name,
-              name: name,
-              workspace: workspace,
-              link: uri,
-              type: 'wfs',
-            }
-          : undefined,
-      },
-    });
-    newLayer[0].setVisible(lyr_def.visibility);
-    return newLayer[0];
+      const style = (lyr_def.sld || lyr_def.qml) ?? lyr_def.style;
+      const uri = lyr_def.protocol.url.split('?')[0];
+      const newLayer = await this.hsAddDataOwsService.connectToOWS({
+        type: 'wfs',
+        uri,
+        layer: lyr_def.name,
+        owrCache: false,
+        getOnly: true,
+        layerOptions: {
+          style: style,
+          path: lyr_def.path,
+          fromComposition: true,
+          opacity: parseFloat(lyr_def.opacity) ?? 1,
+        },
+        connectOptions: {
+          laymanLayer: isLaymanUrl(uri, this.hsCommonLaymanService.layman())
+            ? {
+                title: lyr_def.title,
+                layer: lyr_def.name,
+                name: name,
+                workspace: workspace,
+                link: uri,
+                type: 'wfs',
+              }
+            : undefined,
+        },
+      });
+      newLayer[0].setVisible(lyr_def.visibility);
+      return newLayer[0];
+    } catch (error) {
+      return undefined;
+    }
   }
 
   /**
@@ -167,48 +166,53 @@ export class HsCompositionsLayerParserService {
    * @returns Ol Image or Tile layer
    */
   async createWmsLayer(lyr_def) {
-    const params = lyr_def.params;
-    delete params.REQUEST;
-    //delete params.FORMAT; Commented, because otherwise when loading from cookie or store, it displays jpeg
-    const url = decodeURIComponent(lyr_def.url);
+    try {
+      const params = lyr_def.params;
+      delete params.REQUEST;
+      //delete params.FORMAT; Commented, because otherwise when loading from cookie or store, it displays jpeg
+      const url = decodeURIComponent(lyr_def.url);
 
-    const owsConnection: OwsConnection = {
-      type: 'wms',
-      uri: url,
-      owrCache: false,
-      getOnly: true,
-      layerOptions: this.getWmsLayerOptions(lyr_def),
-    };
-
-    if (isLaymanUrl(url, this.hsCommonLaymanService.layman())) {
-      //Query GET /layer to obtain name and workspace of layer
-      const layer = await this.hsCommonLaymanLayerService.getLayerWithUUID(
-        lyr_def.params.LAYERS.split('_')[1],
-        {useCache: true},
-      );
-
-      owsConnection.layerOptions.workspace = layer.workspace;
-      owsConnection.connectOptions = {
-        laymanLayer: {
-          title: lyr_def.title,
-          layer: layer.uuid,
-          name: layer.name,
-          workspace: layer.workspace,
-          link: url,
-          type: 'wms',
-        },
+      const owsConnection: OwsConnection = {
+        type: 'wms',
+        uri: url,
+        owrCache: false,
+        getOnly: true,
+        layerOptions: this.getWmsLayerOptions(lyr_def),
       };
-    } else {
-      owsConnection.layerOptions.params = params;
-      owsConnection.layer = params.LAYERS;
-      //If multiple layers are selected, it is a group
-      owsConnection.connectOptions = {
-        group: params.LAYERS.includes(','),
-      };
+
+      if (isLaymanUrl(url, this.hsCommonLaymanService.layman())) {
+        //Query GET /layer to obtain name and workspace of layer
+        const layer = await this.hsCommonLaymanLayerService.getLayerWithUUID(
+          lyr_def.params.LAYERS.split('_')[1],
+          {useCache: true},
+        );
+
+        owsConnection.layerOptions.workspace = layer.workspace;
+        owsConnection.connectOptions = {
+          laymanLayer: {
+            title: lyr_def.title,
+            layer: layer.uuid,
+            name: layer.name,
+            workspace: layer.workspace,
+            link: url,
+            type: 'wms',
+          },
+        };
+      } else {
+        owsConnection.layerOptions.params = params;
+        owsConnection.layer = params.LAYERS;
+        //If multiple layers are selected, it is a group
+        owsConnection.connectOptions = {
+          group: params.LAYERS.includes(','),
+        };
+      }
+
+      const newLayer =
+        await this.hsAddDataOwsService.connectToOWS(owsConnection);
+      return newLayer[0];
+    } catch (error) {
+      return undefined;
     }
-
-    const newLayer = await this.hsAddDataOwsService.connectToOWS(owsConnection);
-    return newLayer[0];
   }
 
   /**
@@ -217,27 +221,31 @@ export class HsCompositionsLayerParserService {
    * @returns Ol Image or Tile layer
    */
   async createArcGISLayer(lyr_def) {
-    const newLayer = await this.hsAddDataOwsService.connectToOWS({
-      type: 'arcgis',
-      uri: lyr_def.url.split('tile/{z}/{y}/{x}')[0],
-      /**
-       * Allows sublayer definition in compositions as
-       */
-      layer: lyr_def.subLayers?.split(',') || lyr_def.title,
-      owrCache: false,
-      getOnly: true,
-      layerOptions: {
-        title: lyr_def.title,
-        greyscale: lyr_def.greyscale,
-        fromComposition: true,
-        opacity: parseFloat(lyr_def.opacity) ?? 1,
-      },
-      connectOptions: {
-        base: lyr_def.base,
-      },
-    });
-    newLayer[0].setVisible(lyr_def.visibility);
-    return newLayer[0];
+    try {
+      const newLayer = await this.hsAddDataOwsService.connectToOWS({
+        type: 'arcgis',
+        uri: lyr_def.url.split('tile/{z}/{y}/{x}')[0],
+        /**
+         * Allows sublayer definition in compositions as
+         */
+        layer: lyr_def.subLayers?.split(',') || lyr_def.title,
+        owrCache: false,
+        getOnly: true,
+        layerOptions: {
+          title: lyr_def.title,
+          greyscale: lyr_def.greyscale,
+          fromComposition: true,
+          opacity: parseFloat(lyr_def.opacity) ?? 1,
+        },
+        connectOptions: {
+          base: lyr_def.base,
+        },
+      });
+      newLayer[0].setVisible(lyr_def.visibility);
+      return newLayer[0];
+    } catch (error) {
+      return undefined;
+    }
   }
 
   /**
@@ -246,36 +254,40 @@ export class HsCompositionsLayerParserService {
    * @returns Ol Image or Tile layer
    */
   async createXYZLayer(lyr_def) {
-    lyr_def.url = decodeURIComponent(lyr_def.url);
-    if (lyr_def.url.includes('/rest/services/')) {
-      return await this.createArcGISLayer(lyr_def);
+    try {
+      lyr_def.url = decodeURIComponent(lyr_def.url);
+      if (lyr_def.url.includes('/rest/services/')) {
+        return await this.createArcGISLayer(lyr_def);
+      }
+
+      const legends = this.getLegends(lyr_def);
+      const newLayer = await this.hsAddDataOwsService.connectToOWS({
+        type: 'xyz',
+        uri: decodeURIComponent(lyr_def.url),
+        owrCache: false,
+        getOnly: true,
+        layer: lyr_def.title,
+        layerOptions: {
+          title: lyr_def.title,
+          fromComposition: lyr_def.fromComposition ?? true,
+          showInLayerManager: lyr_def.displayInLayerSwitcher,
+          abstract: lyr_def.title || lyr_def.abstract,
+          base: lyr_def.base,
+          legends: legends,
+          path: lyr_def.path,
+          greyscale: lyr_def.greyscale,
+          opacity: parseFloat(lyr_def.opacity) ?? 1,
+          minResolution: lyr_def.minResolution,
+          maxResolution: lyr_def.maxResolution,
+          // dimensions: lyr_def.dimensions,
+        },
+      });
+
+      newLayer[0].setVisible(lyr_def.visibility);
+      return newLayer[0];
+    } catch (error) {
+      return undefined;
     }
-
-    const legends = this.getLegends(lyr_def);
-    const newLayer = await this.hsAddDataOwsService.connectToOWS({
-      type: 'xyz',
-      uri: decodeURIComponent(lyr_def.url),
-      owrCache: false,
-      getOnly: true,
-      layer: lyr_def.title,
-      layerOptions: {
-        title: lyr_def.title,
-        fromComposition: lyr_def.fromComposition ?? true,
-        showInLayerManager: lyr_def.displayInLayerSwitcher,
-        abstract: lyr_def.title || lyr_def.abstract,
-        base: lyr_def.base,
-        legends: legends,
-        path: lyr_def.path,
-        greyscale: lyr_def.greyscale,
-        opacity: parseFloat(lyr_def.opacity) ?? 1,
-        minResolution: lyr_def.minResolution,
-        maxResolution: lyr_def.maxResolution,
-        // dimensions: lyr_def.dimensions,
-      },
-    });
-
-    newLayer[0].setVisible(lyr_def.visibility);
-    return newLayer[0];
   }
 
   /**
@@ -284,39 +296,43 @@ export class HsCompositionsLayerParserService {
    * @returns OL Image or Tile layer
    */
   createStaticImageLayer(lyr_def) {
-    const legends = this.getLegends(lyr_def);
-    const source = new ImageStatic({
-      url: decodeURIComponent(lyr_def.url),
-      attributions: lyr_def.attribution
-        ? `<a href="${lyr_def.attribution.OnlineResource}">${lyr_def.attribution.Title}</a>`
-        : undefined,
-      imageExtent: lyr_def.extent,
-      crossOrigin: 'anonymous',
-      projection: lyr_def.projection?.toUpperCase(),
-      //TODO: Add the rest of parameters and describe in the composition schema
-    });
-    const new_layer = new ImageLayer({
-      maxResolution: lyr_def.maxResolution || Infinity,
-      minResolution: lyr_def.minResolution || 0,
-      className: lyr_def.greyscale ? 'ol-layer hs-greyscale' : 'ol-layer',
-      opacity: parseFloat(lyr_def.opacity) ?? 1,
-      source,
-      properties: {
-        title: lyr_def.title,
-        fromComposition: lyr_def.fromComposition ?? true,
-        showInLayerManager: lyr_def.displayInLayerSwitcher,
-        abstract: lyr_def.name || lyr_def.abstract,
-        base: lyr_def.base,
-        greyscale: lyr_def.greyscale,
-        metadata: lyr_def.metadata,
-        dimensions: lyr_def.dimensions,
-        legends: legends,
-        path: lyr_def.path,
-      },
-    });
+    try {
+      const legends = this.getLegends(lyr_def);
+      const source = new ImageStatic({
+        url: decodeURIComponent(lyr_def.url),
+        attributions: lyr_def.attribution
+          ? `<a href="${lyr_def.attribution.OnlineResource}">${lyr_def.attribution.Title}</a>`
+          : undefined,
+        imageExtent: lyr_def.extent,
+        crossOrigin: 'anonymous',
+        projection: lyr_def.projection?.toUpperCase(),
+        //TODO: Add the rest of parameters and describe in the composition schema
+      });
+      const new_layer = new ImageLayer({
+        maxResolution: lyr_def.maxResolution || Infinity,
+        minResolution: lyr_def.minResolution || 0,
+        className: lyr_def.greyscale ? 'ol-layer hs-greyscale' : 'ol-layer',
+        opacity: parseFloat(lyr_def.opacity) ?? 1,
+        source,
+        properties: {
+          title: lyr_def.title,
+          fromComposition: lyr_def.fromComposition ?? true,
+          showInLayerManager: lyr_def.displayInLayerSwitcher,
+          abstract: lyr_def.name || lyr_def.abstract,
+          base: lyr_def.base,
+          greyscale: lyr_def.greyscale,
+          metadata: lyr_def.metadata,
+          dimensions: lyr_def.dimensions,
+          legends: legends,
+          path: lyr_def.path,
+        },
+      });
 
-    new_layer.setVisible(lyr_def.visibility);
-    return new_layer;
+      new_layer.setVisible(lyr_def.visibility);
+      return new_layer;
+    } catch (error) {
+      return undefined;
+    }
   }
 
   /**
@@ -326,35 +342,39 @@ export class HsCompositionsLayerParserService {
   async createSparqlLayer(
     lyr_def,
   ): Promise<VectorLayer<VectorSource<Feature>>> {
-    const url = decodeURIComponent(lyr_def.protocol.url);
-    const definition: any = {};
-    definition.url = url;
-    definition.format = 'Sparql';
+    try {
+      const url = decodeURIComponent(lyr_def.protocol.url);
+      const definition: any = {};
+      definition.url = url;
+      definition.format = 'Sparql';
 
-    let style = null;
-    if (lyr_def.style) {
-      style = (await this.HsStylerService.parseStyle(lyr_def.style)).style;
+      let style = null;
+      if (lyr_def.style) {
+        style = (await this.HsStylerService.parseStyle(lyr_def.style)).style;
+      }
+
+      const src = new SparqlJson({
+        geomAttribute: '?geom',
+        url: url,
+        category: 'http://www.openvoc.eu/poi#categoryWaze',
+        projection: 'EPSG:3857',
+      });
+
+      const lyr = new VectorLayer({
+        properties: {
+          title: lyr_def.title,
+          fromComposition: lyr_def.fromComposition ?? true,
+          definition,
+        },
+        source: src,
+        opacity: parseFloat(lyr_def.opacity) ?? 1,
+        style: style,
+      });
+      lyr.setVisible(lyr_def.visibility);
+      return lyr;
+    } catch (error) {
+      return undefined;
     }
-
-    const src = new SparqlJson({
-      geomAttribute: '?geom',
-      url: url,
-      category: 'http://www.openvoc.eu/poi#categoryWaze',
-      projection: 'EPSG:3857',
-    });
-
-    const lyr = new VectorLayer({
-      properties: {
-        title: lyr_def.title,
-        fromComposition: lyr_def.fromComposition ?? true,
-        definition,
-      },
-      source: src,
-      opacity: parseFloat(lyr_def.opacity) ?? 1,
-      style: style,
-    });
-    lyr.setVisible(lyr_def.visibility);
-    return lyr;
   }
 
   /**

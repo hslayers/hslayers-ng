@@ -789,9 +789,7 @@ export class HsCompositionsParserService {
             this.hsCompositionsLayerParserService.createWFSLayer(lyr_def);
         } else {
           resultLayer =
-            await this.hsCompositionsLayerParserService.createVectorLayer(
-              lyr_def,
-            );
+            this.hsCompositionsLayerParserService.createVectorLayer(lyr_def);
         }
         break;
       default:
@@ -804,8 +802,9 @@ export class HsCompositionsParserService {
         }
         return;
     }
+    //Resolve promise if needed
+    resultLayer = await resultLayer;
     if (resultLayer) {
-      resultLayer = await resultLayer; //createWMTSLayer returns Promise which needs to be resolved first
       setMetadata(resultLayer, lyr_def.metadata);
       setSwipeSide(resultLayer, lyr_def.swipeSide);
       setIgnorePathZIndex(resultLayer, true);
