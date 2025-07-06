@@ -1,3 +1,9 @@
+# Future
+
+### Bug Fixes
+
+* Check if URL is encoded ([cfd7274](https://github.com/hslayers/hslayers-ng/commit/cfd7274c26238807c8359a65696f537564c9292a))
+
 # 2.0.0 (2024-02-12)
 
 All CommonJS modules transformed to ES modules

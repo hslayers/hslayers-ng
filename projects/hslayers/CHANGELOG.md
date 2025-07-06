@@ -1,3 +1,27 @@
+# [16.0.0-next.2](https://github.com/hslayers/hslayers-ng/compare/16.0.0-next.1...16.0.0-next.2) (2025-07-04)
+
+
+### Bug Fixes
+
+* **access-rights:** Use EVERYONE if all users has access ([7dd7e64](https://github.com/hslayers/hslayers-ng/commit/7dd7e643c0c3cecec68c48840056b6051baeb7ec))
+* **add-data:** Do not lowercase arcgis service url ([e3769d2](https://github.com/hslayers/hslayers-ng/commit/e3769d2419cd073053fa53cd310790b359c83bf3))
+* **add-data:** Services in ARCGisREST domain name should not be modified ([846f308](https://github.com/hslayers/hslayers-ng/commit/846f308267d0418c94a353bd6fbcae0008a4dbae))
+* **compositions:** Do not fail whole composition loading if some layers are corrupted ([5f51e92](https://github.com/hslayers/hslayers-ng/commit/5f51e92c939df02f3cdc552b9533e3220bfeca93))
+* **config:** Fix variable name corrupted by replace function ([d0ebd45](https://github.com/hslayers/hslayers-ng/commit/d0ebd45698ccd84bdb60c1a371401c72f527934e))
+* Imports of new services ([626fef4](https://github.com/hslayers/hslayers-ng/commit/626fef46b762b95a0fcbb9498b859823ed5f1e16))
+* **save-map:** Process compo save with correct response obj ([960e45a](https://github.com/hslayers/hslayers-ng/commit/960e45a6b3baa9f5ec112b5849f921632f3c9ff1))
+
+
+### Features
+
+* **add-data:** Allow XYZ layer to be added via URL ([3768a43](https://github.com/hslayers/hslayers-ng/commit/3768a434580abc87b817f5de88763bca3d9f5a5e))
+* **add-data:** Feature server ArcGis service support ([e8046ee](https://github.com/hslayers/hslayers-ng/commit/e8046eeeb47c471879c6ecc370a7006929de9878))
+* **compositions:** Allow saving of ArcGis Feature layers to compositions ([4191483](https://github.com/hslayers/hslayers-ng/commit/4191483f84e2a1a72a46fb487894fcc38c8c47d1))
+* **compositions:** Use max/minResolution to store max/minZoom in composition for XYZ layer ([cdb2632](https://github.com/hslayers/hslayers-ng/commit/cdb2632734c32c8fbec65ff5cdf7af4189e8e61f))
+* **config:** Config verification ([80677af](https://github.com/hslayers/hslayers-ng/commit/80677afe3ab526634e8f2ebd1a6f3cc72f74db66))
+
+
+
 # [16.0.0-next.1](https://github.com/hslayers/hslayers-ng/compare/16.0.0-next.0...16.0.0-next.1) (2025-06-04)
 
 
