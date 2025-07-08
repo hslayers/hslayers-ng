@@ -1,4 +1,4 @@
-# [16.0.0-next.2](https://github.com/hslayers/hslayers-ng/compare/16.0.0-next.1...16.0.0-next.2) (2025-07-04)
+# [16.0.0-next.2](https://github.com/hslayers/hslayers-ng/compare/16.0.0-next.1...16.0.0-next.2) (2025-07-07)
 
 
 ### Bug Fixes
