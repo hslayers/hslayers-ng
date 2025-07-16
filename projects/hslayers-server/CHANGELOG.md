@@ -1,6 +1,6 @@
 # Next
 
-Minimum required Node versions increased to 20.10 and 22.0
+Minimum required Node versions increased to 20.19 and 22.12
 
 ### Bug Fixes
 

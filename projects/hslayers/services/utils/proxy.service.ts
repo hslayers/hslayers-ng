@@ -54,22 +54,18 @@ export class HsProxyService {
     ) {
       return true;
     }
-
     // Don't proxify Layman endpoints
     if (this.laymanUrl && url.startsWith(this.laymanUrl)) {
       return true;
     }
-
     // Don't proxify data URLs
     if (url.startsWith('data:application')) {
       return true;
     }
-
     // Don't proxify if URL is from the same origin
     if (this.isFromSameOrigin(url)) {
       return true;
     }
-
     return false;
   }
 
@@ -79,8 +75,9 @@ export class HsProxyService {
    * @returns boolean indicating if URL is from the same origin
    */
   private isFromSameOrigin(url: string): boolean {
+    console.log('🚀 ~ proxy.service.ts:78 ~ HsProxyService ~ isFromSameOrigin ~ url:', url, window.location.origin);
     const windowUrlPosition = url.indexOf(window.location.origin);
-
+    console.log('🚀 ~ proxy.service.ts:79 ~ isFromSameOrigin ~ windowUrlPosition:', windowUrlPosition);
     // Check if URL is not from the same origin (matching original logic)
     if (
       windowUrlPosition === -1 ||
@@ -89,7 +86,6 @@ export class HsProxyService {
     ) {
       return false;
     }
-
     return true;
   }
 }

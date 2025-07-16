@@ -442,6 +442,7 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
     if (this.data.layers === undefined) {
       return;
     }
+    console.log('🚀 ~ wms.service.ts:443 ~ data.layers:', this.data.layers);
     const collection = [];
     //Limit visible layers to 10 to not freeze accidentally
     this.data.visible = checkedOnly
@@ -503,6 +504,7 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
     }
 
     const {styles, legends} = this.getLayerStyles(layer);
+    console.log('🚀 ~ wms.service.ts:527 ~ getLayer ~ data.get_map_url:', this.data.get_map_url);
     const sourceOptions = {
       url: this.data.get_map_url,
       attributions,
@@ -551,11 +553,11 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
      */
     const {useTiles, imageFormat, queryFormat, tileSize, crs, ...lyrOptions} =
       options;
-
+    console.log('🚀 ~ wms.service.ts:556 ~ getLayer ~ options:', options);
     const layerOptions = {
       ...lyrOptions,
       source,
-      title: options.layerName,
+      title: options.title ?? options.layerName,
       name: options.layerName,
       minResolution: options.minResolution || calculatedMinResolution,
       maxResolution: options.maxResolution || calculatedMaxResolution,
@@ -575,6 +577,7 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
        */
       capsExtentSet: !!extent,
     };
+    console.log('🚀 ~ wms.service.ts:580 ~ getLayer ~ layerOptions:', layerOptions);
 
     const new_layer = this.data.useTiles
       ? new Tile(layerOptions as TileOptions<TileSource>)

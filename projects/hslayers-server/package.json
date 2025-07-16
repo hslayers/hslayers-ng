@@ -19,7 +19,7 @@
   "main": "server.js",
   "type": "module",
   "engines": {
-    "node": "^20.10.0 || >= 22.0.0"
+    "node": "^20.19.0 || >= 22.12.0"
   },
   "scripts": {
     "start": "node server.js",
@@ -34,7 +34,7 @@
     "connect-sqlite3": "^0.9.11",
     "cors": "^2.8.5",
     "cors-anywhere": "^0.4.4",
-    "dotenv": "^16.4.0",
+    "dotenv": "^17.2.0",
     "express": "^5.1.0",
     "express-session": "^1.17.2",
     "got": "^14.0.0",
@@ -44,11 +44,11 @@
     "passport-oauth2": "^1.6.1",
     "passport-oauth2-middleware": "^1.0.3",
     "pug": "^3.0.2",
-    "yargs": "^17.3.1"
+    "yargs": "^18.0.0"
   },
   "devDependencies": {
     "chai": "^5.0.0",
-    "eslint-plugin-mocha": "^10.2.0",
+    "eslint-plugin-mocha": "^11.1.0",
     "mocha": "^11.0.0",
     "mocha-reporter-gha": "^1.1.1"
   }

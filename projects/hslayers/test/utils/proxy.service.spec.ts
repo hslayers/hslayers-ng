@@ -20,7 +20,7 @@ describe('HsProxyService', () => {
     expect(service).toBeTruthy();
   });
 
-  it('check if url gets proxified correctlys', () => {
+  it('check if url gets proxified correctly', () => {
     const urlWMS = 'http://gisserver.domain.com/request=GetFeatureInfo';
     const simpleUrl = 'http://gisserver.domain.com';
     const base64Url =

@@ -253,6 +253,7 @@ export class HsLayerManagerService {
     suspendEvents?: boolean,
   ): Promise<void> {
     const layer = e.element;
+    console.log('🚀 ~ layer-manager.service.ts:258 ~ layer:', layer);
     this.hsLayerManagerUtilsService.checkLayerHealth(layer);
     const showInLayerManager = getShowInLayerManager(layer) ?? true;
     layer.on('change:visible', (e) =>
@@ -323,6 +324,7 @@ export class HsLayerManagerService {
         }
       }
       if (getQueryCapabilities(layer) !== false) {
+        console.log('🚀 ~ layer-manager.service.ts:327 ~ getQueryCapabilities:', getQueryCapabilities(layer));
         const que = this.hsQueuesService.ensureQueue(
           'wmsGetCapabilities',
           1,

@@ -137,7 +137,7 @@ export function isLaymanUrl(url: string, layman: HsEndpoint): boolean {
 
   /**
    *If url includes layman-proxy its for sure from layman
-   *additionaly it allows loading of vector layers saved on production
+   *additionally it allows loading of vector layers saved on production
    *using layman-proxy in dev env
    */
   if (url.includes('layman-proxy')) {
@@ -146,6 +146,7 @@ export function isLaymanUrl(url: string, layman: HsEndpoint): boolean {
   const laymanUrl = layman.type.includes('wagtail')
     ? layman.url.split('layman-proxy')[0]
     : layman.url;
+  console.log('🚀 ~ layman-utils.ts:144 ~ isLaymanUrl ~ url:', laymanUrl, url);
   return url.includes(laymanUrl);
 }
 
