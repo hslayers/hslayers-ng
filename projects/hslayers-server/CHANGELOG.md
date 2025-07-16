@@ -16,6 +16,7 @@ Minimum required Node versions increased to 20.10 and 22.0
 
 ### Package Updates
 * `better-sqlite3` from 9.3.0 to 12.2.0
+* `express` from 4.17.3 to 5.1.0
 * `got` from 13.0.0 to 14.0.0
 * `http-proxy-middleware` from 2.0.1 to 3.0.0
 

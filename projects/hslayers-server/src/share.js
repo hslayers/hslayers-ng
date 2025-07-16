@@ -10,7 +10,7 @@ const __dirname = dirname(__filename);
 const share = express();
 
 // parse incoming POST requests body to JSON
-share.use(express.json());
+share.use(express.json({ limit: process.env.PAYLOAD_LIMIT ? process.env.PAYLOAD_LIMIT : '100kb' }));
 // handle CORS
 share.use(cors())
 share.set('view engine', 'pug')
@@ -51,11 +51,7 @@ share.get('/', context => {
 });
 
 // handle POST requests
-share.post('/', express.json({
-  limit: process.env.PAYLOAD_LIMIT ? process.env.PAYLOAD_LIMIT : '100kb',
-  strict: false,
-  type: '*/*'
-}), context => {
+share.post('/', context => {
   if (context.body && context.body.request) {
     switch (context.body.request.toLowerCase()) {
       case 'save':
