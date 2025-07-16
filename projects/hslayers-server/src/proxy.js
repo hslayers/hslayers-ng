@@ -3,6 +3,7 @@ import cors_anywhere from 'cors-anywhere';
 import { encode as encodeQuerystring, parse as parseQuerystring } from 'node:querystring';
 import { createServer } from 'node:http';
 import { networkInterfaces } from 'node:os';
+import packageJson from '../package.json' with { type: 'json'};
 
 // Listen on a specific host via the HOST environment variable
 const host = process.env.HOST || '0.0.0.0';
@@ -30,7 +31,9 @@ const GEONAMES_APIKEY = process.env.HS_GEONAMES_API_KEY || 'hslayersng';
 export const proxy = createServer((req, res) => {
   try {
     if (req.url == '' || req.url == '/') {
-      res.write('HSLayers server proxy<br />');
+      res.setHeader('Content-Type', 'text/html; charset=utf-8');
+      res.write('hslayers-server proxy<br>');
+      res.write('version: ' + packageJson.version + '<br>');
       res.write(`${getIP()}:${port}`);
       res.end();
     } else {
@@ -148,7 +151,6 @@ export const encodeUrlPathAndParams = (url) => {
  * @returns {boolean} True if the URL is encoded, false otherwise
  */
 function isUrlEncoded(url) {
-  // Check if the URL contains valid percent-encoded sequences
   // This regex matches % followed by two hex digits
   return /%[0-9A-Fa-f]{2}/.test(url);
 }
