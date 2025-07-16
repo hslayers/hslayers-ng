@@ -1,4 +1,4 @@
-# Next
+# 3.0.0 (2025-07-16)
 
 Minimum required Node versions increased to 20.19 and 22.12
 
@@ -16,9 +16,11 @@ Minimum required Node versions increased to 20.19 and 22.12
 
 ### Package Updates
 * `better-sqlite3` from 9.3.0 to 12.2.0
+* `dotenv` from 16.4.0 to 17.2.0
 * `express` from 4.17.3 to 5.1.0
 * `got` from 13.0.0 to 14.0.0
 * `http-proxy-middleware` from 2.0.1 to 3.0.0
+* `yargs` from 17.3.1 to 18.0.0
 
 # 2.0.0 (2024-02-12)
 
