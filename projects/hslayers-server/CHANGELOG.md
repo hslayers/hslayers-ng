@@ -1,8 +1,23 @@
-# Future
+# Next
+
+Minimum required Node versions increased to 20.10 and 22.0
 
 ### Bug Fixes
 
 * Check if URL is encoded ([cfd7274](https://github.com/hslayers/hslayers-ng/commit/cfd7274c26238807c8359a65696f537564c9292a))
+* Do not publish tests to npm ([9148b1b](https://github.com/hslayers/hslayers-ng/commit/9148b1b7062ff724d70cb0dfc19794713aa2d7f0))
+
+### Features
+* Expose version via GET request ([8a69838](https://github.com/hslayers/hslayers-ng/commit/8a698386da6ce0b74d8c6e5e8b7322384f43b7b3))
+* Delete auth cookie on logout ([90fde8f](https://github.com/hslayers/hslayers-ng/commit/90fde8fdcf272d62df9ef28fb7dcfa2ce5a1ce62))
+
+### Refactoring
+* Switch "assert" to import attributes ([dd2ac8a](https://github.com/hslayers/hslayers-ng/commit/dd2ac8a93aefb72fdcfd11203980fe68a58f47a2))
+
+### Package Updates
+* `better-sqlite3` from 9.3.0 to 12.2.0
+* `got` from 13.0.0 to 14.0.0
+* `http-proxy-middleware` from 2.0.1 to 3.0.0
 
 # 2.0.0 (2024-02-12)
 
