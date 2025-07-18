@@ -44,7 +44,7 @@ export class HsSaveMapComponent extends HsPanelBaseComponent implements OnInit {
     this.hsLayoutService.mainpanel$
       .pipe(
         takeUntilDestroyed(this.destroyRef),
-        filter((panel) => panel.name !== 'saveMap'),
+        filter((panel) => panel !== 'saveMap'),
       )
       .subscribe((panel) => {
         this.localDownload = false;

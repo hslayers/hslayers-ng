@@ -5,6 +5,7 @@ export {
   MapSwipeOptions,
   KeyNumberDict,
   ToastPosition,
+  DefaultPanel,
 } from './config.service';
 
 export {

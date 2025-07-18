@@ -1,7 +1,7 @@
 import {BehaviorSubject, Observable, Subject, delay, map, skip} from 'rxjs';
 import {ElementRef, Injectable, Type, ViewContainerRef} from '@angular/core';
 
-import {HsConfig} from 'hslayers-ng/config';
+import {HsConfig, DefaultPanel} from 'hslayers-ng/config';
 import {HsLogService} from 'hslayers-ng/services/log';
 
 export class HsLayoutParams {
@@ -102,7 +102,7 @@ export class HsLayoutService extends HsLayoutParams {
 
   sidebarPosition$ = new BehaviorSubject('left');
   sidebarVisible$ = new BehaviorSubject(true);
-  mainpanel$ = new BehaviorSubject(undefined);
+  mainpanel$: BehaviorSubject<DefaultPanel> = new BehaviorSubject(undefined);
 
   layoutLoads: Subject<{element: any; innerElement: string}> = new Subject();
 
