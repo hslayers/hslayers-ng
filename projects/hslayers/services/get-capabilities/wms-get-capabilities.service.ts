@@ -83,7 +83,6 @@ export class HsWmsGetCapabilitiesService implements IGetCapabilities {
     owrCache?: boolean,
   ): Promise<CapabilitiesResponseWrapper> {
     service_url = service_url.replace(/&amp;/g, '&');
-    console.log('🚀 ~ wms-get-capabilities.service.ts:86 ~ service_url:', service_url);
     const params = getParamsFromUrl(service_url);
     const path = this.getPathFromUrl(service_url);
     if (params.request === undefined && params.REQUEST === undefined) {
@@ -100,7 +99,6 @@ export class HsWmsGetCapabilitiesService implements IGetCapabilities {
       params.version = '1.3.0';
     }
     let url = [path, this.params2String(params)].join('?');
-    console.log('🚀 ~ wms-get-capabilities.service.ts:103 ~ url:', url);
 
     url = this.hsProxyService.proxify(url);
 

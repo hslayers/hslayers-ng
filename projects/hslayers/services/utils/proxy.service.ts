@@ -75,9 +75,7 @@ export class HsProxyService {
    * @returns boolean indicating if URL is from the same origin
    */
   private isFromSameOrigin(url: string): boolean {
-    console.log('🚀 ~ proxy.service.ts:78 ~ HsProxyService ~ isFromSameOrigin ~ url:', url, window.location.origin);
     const windowUrlPosition = url.indexOf(window.location.origin);
-    console.log('🚀 ~ proxy.service.ts:79 ~ isFromSameOrigin ~ windowUrlPosition:', windowUrlPosition);
     // Check if URL is not from the same origin (matching original logic)
     if (
       windowUrlPosition === -1 ||

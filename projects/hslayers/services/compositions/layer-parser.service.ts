@@ -166,13 +166,11 @@ export class HsCompositionsLayerParserService {
    * @returns Ol Image or Tile layer
    */
   async createWmsLayer(lyr_def) {
-    console.log('🚀 ~ layer-parser.service.ts:169 ~ createWmsLayer ~ lyr_def:', lyr_def.title, lyr_def.url);
     try {
       const params = lyr_def.params;
       delete params.REQUEST;
       //delete params.FORMAT; Commented, because otherwise when loading from cookie or store, it displays jpeg
       const url = decodeURIComponent(lyr_def.url);
-      console.log('🚀 ~ layer-parser.service.ts:175 ~ createWmsLayer ~ url:', url);
 
       const owsConnection: OwsConnection = {
         type: 'wms',
@@ -183,7 +181,6 @@ export class HsCompositionsLayerParserService {
       };
 
       if (isLaymanUrl(url, this.hsCommonLaymanService.layman())) {
-        console.log('🚀 ~ layer-parser.service.ts:184 ~ createWmsLayer ~ isLaymanUrl:', true);
         //Query GET /layer to obtain name and workspace of layer
         const layer = await this.hsCommonLaymanLayerService.getLayerWithUUID(
           lyr_def.params.LAYERS.split('_')[1],

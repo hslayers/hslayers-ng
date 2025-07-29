@@ -71,7 +71,6 @@ export class HsAddDataOwsService {
     await this.setTypeServices();
 
     const url = this.hsAddDataCommonService.url;
-    console.log('🚀 ~ add-data-ows.service.ts:74 ~ connect ~ url:', url);
     if (!url || url === '') {
       return;
     }
@@ -103,7 +102,6 @@ export class HsAddDataOwsService {
 
     this.overwriteServiceDefaults(options?.connectOptions);
     if (options?.connectOptions?.laymanLayer) {
-      console.log('🚀 ~ add-data-ows.service.ts:105 ~ connect ~ laymanLayer:', true);
       /**
        * Create Layman layer which circumvents getCapabilities request
        */
@@ -122,7 +120,6 @@ export class HsAddDataOwsService {
         url,
         options?.owrCache,
       );
-      console.log('🚀 ~ add-data-ows.service.ts:125 ~ connect ~ wrapper:', wrapper);
       if (
         typeof wrapper.response === 'string' &&
         wrapper.response?.includes('Unsuccessful OAuth2')
@@ -134,7 +131,6 @@ export class HsAddDataOwsService {
         wrapper,
         options?.layerOptions,
       );
-      console.log('🚀 ~ add-data-ows.service.ts:137 ~ connect ~ response:', response);
     }
 
     if (!options?.getOnly) {
@@ -188,7 +184,6 @@ export class HsAddDataOwsService {
   async setUrlAndConnect(params: OwsConnection): Promise<Layer<Source>[]> {
     this.hsAddDataCommonService.layerToSelect = params.layer;
     this.hsAddDataCommonService.updateUrl(params.uri);
-    console.log('🚀 ~ add-data-ows.service.ts:194 ~ setUrlAndConnect ~ uri:', params.uri);
     return await this.connect({
       owrCache: params.owrCache,
       getOnly: params.getOnly,

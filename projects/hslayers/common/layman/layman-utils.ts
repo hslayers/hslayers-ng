@@ -146,7 +146,6 @@ export function isLaymanUrl(url: string, layman: HsEndpoint): boolean {
   const laymanUrl = layman.type.includes('wagtail')
     ? layman.url.split('layman-proxy')[0]
     : layman.url;
-  console.log('🚀 ~ layman-utils.ts:144 ~ isLaymanUrl ~ url:', laymanUrl, url);
   return url.includes(laymanUrl);
 }
 

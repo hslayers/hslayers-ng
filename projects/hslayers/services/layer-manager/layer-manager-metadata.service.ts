@@ -437,7 +437,6 @@ export class HsLayerManagerMetadataService {
   async queryMetadata(layerDescriptor: HsLayerDescriptor): Promise<boolean> {
     const layer = layerDescriptor.layer;
     const url = getURL(layer);
-    console.log('🚀 ~ layer-manager-metadata.service.ts:439 ~ queryMetadata ~ layer:', getTitle(layer), url);
     if (!url || url.length === 0) {
       return;
     }

@@ -711,7 +711,6 @@ export class HsMapService {
    */
   proxifyLayer(lyr: Layer<Source>): void {
     const source = lyr.getSource();
-    console.log('🚀 ~ map.service.ts:714 ~ proxifyLayer ~ source:', lyr.get('title'), source);
     if ([ImageWMS, ImageArcGISRest].some((typ) => instOf(source, typ))) {
       this.proxifyLayerLoader(lyr, false);
     }

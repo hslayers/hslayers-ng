@@ -157,10 +157,8 @@ export class HsCompositionsParserService {
     }
 
     this.current_composition_url = url;
-    console.log('🚀 ~ compositions-parser.service.ts:156 ~ current_composition_url:', this.current_composition_url);
     url = url.replace(/&amp;/g, '&');
     url = this.hsProxyService.proxify(url);
-    console.log('🚀 ~ compositions-parser.service.ts:163 ~ url:', url);
     const options = {};
     if (url.includes('.wmc')) {
       pre_parse = (res) => this.parseWMC(res);
@@ -176,7 +174,6 @@ export class HsCompositionsParserService {
       },
     );
     if (data) {
-      console.log('🚀 ~ compositions-parser.service.ts:179 ~ data:', data);
       if (data.file) {
         // Layman composition wrapper
         return this.loadUrl(data.file.url, overwrite, callback, pre_parse);
@@ -201,7 +198,6 @@ export class HsCompositionsParserService {
     overwrite: boolean,
     callback,
   ): Promise<void> {
-    console.log('🚀 ~ compositions-parser.service.ts:204 ~ url + response:', url, response);
     if (this.checkLoadSuccess(response)) {
       if (isFunction(pre_parse)) {
         response = await pre_parse(response);
@@ -424,7 +420,6 @@ export class HsCompositionsParserService {
 
     // CSW serviceType compositions
     const layers = await this.jsonToLayers(obj);
-    console.log('🚀 ~ compositions-parser.service.ts:426 ~ layers:', layers);
 
     const confirmed = obj.services
       ? await this.hsDialogContainerService
@@ -724,7 +719,6 @@ export class HsCompositionsParserService {
     }
     const baselayersOnTop = j.layers[0]?.base;
     for (const lyr_def of j.layers) {
-      console.log('🚀 ~ compositions-parser.service.ts:726 ~ jsonToLayers ~ lyr_def:', lyr_def);
       const layer = await this.jsonToLayer(lyr_def);
       if (layer == undefined) {
         if (
@@ -766,7 +760,6 @@ export class HsCompositionsParserService {
    */
   async jsonToLayer(lyr_def: HslayersLayerJSON): Promise<any> {
     let resultLayer;
-    console.log('🚀 ~ compositions-parser.service.ts:769 ~ jsonToLayer ~ className:', lyr_def.className);
     switch (lyr_def.className) {
       case 'HSLayers.Layer.WMS': //backwards compatibility
       case 'WMS':
@@ -811,7 +804,6 @@ export class HsCompositionsParserService {
     }
     //Resolve promise if needed
     resultLayer = await resultLayer;
-    console.log('🚀 ~ compositions-parser.service.ts:808 ~ jsonToLayer ~ resultLayer:', resultLayer);
     if (resultLayer) {
       setMetadata(resultLayer, lyr_def.metadata);
       setSwipeSide(resultLayer, lyr_def.swipeSide);
