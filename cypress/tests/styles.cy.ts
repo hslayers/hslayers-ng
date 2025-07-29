@@ -26,8 +26,7 @@ describe('Hslayers application', () => {
     cy.get('hs-symbolizer').should('have.length', 1);
     cy.get('hs-symbolizer hs-mark-symbolizer').should('exist');
     cy.get('hs-symbolizer hs-mark-symbolizer select:first').should(
-      'have.attr',
-      'ng-reflect-model',
+      'have.value',
       'circle',
     );
   });
