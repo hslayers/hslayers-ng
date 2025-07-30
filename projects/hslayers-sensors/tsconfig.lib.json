@@ -6,12 +6,9 @@
     "declarationMap": true,
     "inlineSources": true,
     "types": [],
-    "moduleResolution": "bundler",
     "experimentalDecorators": true,
-    "module": "Node16",
     "allowSyntheticDefaultImports": true,
     "resolveJsonModule": true,
-    "esModuleInterop": true,
     "lib": [
       "dom",
       "ES2023"
@@ -28,6 +25,7 @@
   "angularCompilerOptions": {
     "skipTemplateCodegen": true,
     "strictMetadataEmit": true,
+    "strictInjectionParameters": true,
     "enableResourceInlining": true
   },
   "exclude": ["**/*.spec.ts", "**/*.d.ts"]
