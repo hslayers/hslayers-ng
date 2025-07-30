@@ -4,7 +4,7 @@ import {filter} from 'rxjs';
 
 import ImageWrapper from 'ol/Image';
 import RenderFeature from 'ol/render/Feature';
-import projx from 'proj4';
+import proj4 from 'proj4';
 import {
   Cluster,
   ImageArcGISRest,
@@ -66,8 +66,6 @@ type VectorAndSource = {
   source: VectorSource | Cluster<Feature>;
   layer: VectorLayer<VectorSource<Feature>>;
 };
-
-const proj4 = projx.default ?? projx;
 
 @Injectable({
   providedIn: 'root',
