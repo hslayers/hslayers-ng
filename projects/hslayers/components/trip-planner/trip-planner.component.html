@@ -8,13 +8,13 @@
     <div class="card-body d-flex flex-column px-3">
       <hs-trip-planner-layer-selector
         usage="route"
-        [label]="'TRIP_PLANNER.routerLayer' | translateHs"
+        [label]="'TRIP_PLANNER.routerLayer' | translate"
         [selectedWrapper]="hsTripPlannerService.selectedLayerWrapper.route"
         >
       </hs-trip-planner-layer-selector>
       <hs-trip-planner-layer-selector
         usage="waypoints"
-        [label]="'TRIP_PLANNER.waypointLayer' | translateHs"
+        [label]="'TRIP_PLANNER.waypointLayer' | translate"
         [selectedWrapper]="hsTripPlannerService.selectedLayerWrapper.waypoints"
         >
       </hs-trip-planner-layer-selector>
@@ -49,7 +49,7 @@
               class="p-1"
               (click)="hsTripPlannerService.removeWaypoint(waypoint)"
               data-toggle="tooltip"
-              [title]="'TRIP_PLANNER.removeWaypoint' | translateHs"
+              [title]="'TRIP_PLANNER.removeWaypoint' | translate"
               >
               <i class="fa-solid fa-xmark" style="color: rgb(228, 99, 99)"></i>
             </a>
@@ -58,17 +58,17 @@
       }
       @if (hsTripPlannerService.waypoints.length === 0) {
         <div class="alert alert-primary" role="alert">
-          {{ "TRIP_PLANNER.waypointDrawingHint" | translateHs }}
+          {{ "TRIP_PLANNER.waypointDrawingHint" | translate }}
         </div>
       } @else {
         <a class="accordion align-self-end btn btn-danger btn-sm m-2" (click)="hsTripPlannerService.clearAll()">{{
-          "TRIP_PLANNER.clearWaypoints" | translateHs
+          "TRIP_PLANNER.clearWaypoints" | translate
         }}</a>
       }
       <br />
       <div class="d-flex flex-row">
         <div class="p-1 flex-grow-1">
-          <strong>{{ "TRIP_PLANNER.totalDistance" | translateHs }}:</strong>
+          <strong>{{ "TRIP_PLANNER.totalDistance" | translate }}:</strong>
         </div>
         <div class="p-1">
           {{ totalDistance()

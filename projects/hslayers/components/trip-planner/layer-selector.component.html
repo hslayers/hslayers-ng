@@ -12,7 +12,7 @@
       [attr.aria-expanded]="layersExpanded">
       @if (selectedWrapper !== undefined) {
         <div class="text-truncate">
-          {{selectedWrapper.title | translateHs : 'LAYERS' }}
+          {{'LAYERS.' + selectedWrapper.title | translate }}
         </div>
       }
     </button>
@@ -20,9 +20,10 @@
       <div class="d-flex align-items-center w-100 flex-column">
         @for (layer of HsTripPlannerService.vectorLayers; track layer) {
           <a class="dropdown-item text-truncate"
-            data-toggle="tooltip" [title]="layer.title | translateHs : 'LAYERS'"
-            (click)="HsTripPlannerService.selectLayer(layer, usage); layersExpanded = false">{{layer.title |
-          translateHs : 'LAYERS' }}</a>
+            data-toggle="tooltip" [title]="'LAYERS.' + layer.title | translate"
+            (click)="HsTripPlannerService.selectLayer(layer, usage); layersExpanded = false">
+            {{'LAYERS.' + layer.title | translate }}
+          </a>
         }
       </div>
     </div>

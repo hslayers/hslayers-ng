@@ -3,30 +3,30 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">
-                    <span>{{'COMPOSITIONS.dialogShare.shareMap' | translateHs }}</span> {{data.title}}
+                    <span>{{'COMPOSITIONS.dialogShare.shareMap' | translate }}</span> {{data.title}}
                 </h4>
                 <button type="button" (click)="close()" class="btn-close" data-dismiss="modal"
-                    [attr.aria-label]="'COMMON.close' | translateHs ">
+                    [attr.aria-label]="'COMMON.close' | translate ">
                 </button>
             </div>
             <div class="modal-body" style="max-height: 600px; overflow-y: auto">
                 <div class="row">
-                    <div class="col-md-3"><b>{{'COMMON.abstract' | translateHs }}</b></div>
+                    <div class="col-md-3"><b>{{'COMMON.abstract' | translate }}</b></div>
                     <div class="col-md-9">{{data.abstract}}</div>
                 </div>
                 <div class="row">
-                    <div class="col-md-3"><b>{{'COMMON.url' | translateHs }}</b></div>
+                    <div class="col-md-3"><b>{{'COMMON.url' | translate }}</b></div>
                     <div class="col-md-9"><hs-clipboard-text [text]="data.url" [anchor]="true" /></div>
                 </div>
             </div>
             <div class="modal-footer">
                 <div class="btn-group" role="group">
                     <button class="btn btn-secondary" (click)="shareOnSocial()">
-                        <i class="fa-solid fa-share-nodes"></i> {{'COMMON.share' | translateHs }}
+                        <i class="fa-solid fa-share-nodes"></i> {{'COMMON.share' | translate }}
                     </button>
                 </div>
                 <button type="button" class="btn btn-secondary" (click)="close()" data-dismiss="modal">{{'COMMON.close'
-                    | translateHs }}</button>
+                    | translate }}</button>
             </div>
         </div>
     </div>

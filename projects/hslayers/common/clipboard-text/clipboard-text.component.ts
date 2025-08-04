@@ -21,7 +21,7 @@ import {TranslateCustomPipe} from 'hslayers-ng/services/language';
     <button
       class="btn btn-sm text-secondary"
       data-toggle="tooltip"
-      [title]="'COMMON.copyToClipboard' | translateHs"
+      [title]="'COMMON.copyToClipboard' | translate"
       (click)="copyToClipBoard()"
     >
       <i

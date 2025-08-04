@@ -7,7 +7,7 @@
     @if (hsAddDataCommonFileService.loadingToLayman && hsAddDataCommonFileService.readingData) {
     <span>&emsp;{{'COMMON.reading'
       |
-      translateHs }}</span>
+      translate }}</span>
     }
     @if (hsAddDataCommonFileService.loadingToLayman && (hsAddDataCommonFileService.asyncLoading ||
     hsAddDataCommonFileService.readingData)) {
@@ -18,7 +18,7 @@
   </hs-add-to-map>
   } @else {
   <div class="alert alert-warning d-flex align-items-center mt-2 justify-content-between">
-    <p class="m-0"> {{'ADDLAYERS.SHP.loginRequired' | translateHs }}</p>
+    <p class="m-0"> {{'ADDLAYERS.SHP.loginRequired' | translate }}</p>
     <hs-layman-current-user></hs-layman-current-user>
   </div>
   }

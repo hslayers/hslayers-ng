@@ -2,28 +2,28 @@
 
   <hs-symbolizer-color-picker [symbolizer]="symbolizer" attribute="color" opacityAttribute="fillOpacity"
     [class.disabled]="symbolizer.graphicFill !== undefined" (changes)="emitChange()"
-    [label]="'STYLER.fillColor' | translateHs">
+    [label]="'STYLER.fillColor' | translate">
     @if (symbolizer.graphicFill !== undefined) {
       <span class="badge bg-warning mt-2"
-      [title]="'STYLER.warningFillNotVisualizedDueToGraphic' | translateHs  ">!</span>
+      [title]="'STYLER.warningFillNotVisualizedDueToGraphic' | translate  ">!</span>
     }
   </hs-symbolizer-color-picker>
 
   <hs-symbolizer-slider [symbolizer]="symbolizer" attribute="fillOpacity" (changes)="emitChange()" step="0.05" min="0"
-  max="1" [label]="'STYLER.opacity' | translateHs "></hs-symbolizer-slider>
+  max="1" [label]="'STYLER.opacity' | translate "></hs-symbolizer-slider>
 
   <hs-symbolizer-color-picker [symbolizer]="symbolizer" attribute="outlineColor" opacityAttribute="outlineOpacity"
-    (changes)="emitChange()" [label]="'STYLER.outlineColor' | translateHs ">
+    (changes)="emitChange()" [label]="'STYLER.outlineColor' | translate ">
   </hs-symbolizer-color-picker>
 
   <hs-symbolizer-slider [symbolizer]="symbolizer" attribute="outlineOpacity" (changes)="emitChange()" step="0.05"
-  min="0" max="1" [label]="'STYLER.outlineOpacity' | translateHs "></hs-symbolizer-slider>
+  min="0" max="1" [label]="'STYLER.outlineOpacity' | translate "></hs-symbolizer-slider>
 
   <hs-symbolizer-slider [symbolizer]="symbolizer" attribute="outlineWidth" (changes)="emitChange()" step="0.1" min="0"
-  max="20" [label]="'STYLER.outlineWidth' | translateHs  "></hs-symbolizer-slider>
+  max="20" [label]="'STYLER.outlineWidth' | translate  "></hs-symbolizer-slider>
 
   <div class="d-flex flex-row justify-content-end">
-    <div class="p-1 flex-grow-1">{{'STYLER.graphicFill' | translateHs}}:</div>
+    <div class="p-1 flex-grow-1">{{'STYLER.graphicFill' | translate}}:</div>
     <div class="p-1">
       <div class="btn-group">
         <div ngbDropdown class="btn-group d-inline-block" role="group" #graphicFillMenu="ngbDropdown"
@@ -33,10 +33,10 @@
           </button>
           <div ngbDropdownMenu aria-labelledby="dropdownAddFillSymbolizer">
             <button ngbDropdownItem (click)="addSymbolizer('graphicFill', 'Mark'); graphicFillMenu.close()">
-              {{'STYLER.mark' | translateHs }}
+              {{'STYLER.mark' | translate }}
             </button>
             <button ngbDropdownItem (click)="addSymbolizer('graphicFill', 'Icon'); graphicFillMenu.close()">
-              {{'STYLER.icon' | translateHs }}
+              {{'STYLER.icon' | translate }}
             </button>
           </div>
         </div>

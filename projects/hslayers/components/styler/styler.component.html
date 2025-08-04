@@ -2,16 +2,16 @@
 <div class="card hs-main-panel" [ngClass]="panelWidthClass">
   <hs-panel-header name="styler" [panelTabs]="'styler'">
     <button mainButton class="btn btn-sm btn-outline-primary border-0 align-items-center d-flex gap-2"
-      [title]="'STYLER.clear' | translateHs" (click)="clear()"> {{'COMMON.reset' | translateHs}}
+      [title]="'STYLER.clear' | translate" (click)="clear()"> {{'COMMON.reset' | translate}}
       <i class="fa-solid fa-rotate-right"></i>
     </button>
     <extra-buttons>
       <a class="dropdown-item" download="style.sld" [hsDownload]="sldForDownload()" mimeType="text/plain"
         [href]="downloadData" (downloadPrepared)="downloadData = $event">
-        <i class="fa-solid fa-download"></i>{{'STYLER.downloadSld' | translateHs}}
+        <i class="fa-solid fa-download"></i>{{'STYLER.downloadSld' | translate}}
       </a>
       <a class="dropdown-item" (click)="uploadSld()" [ngClass]="uploaderVisible ? 'text-primary opacity-100' : ''">
-        <i class="fa-solid fa-upload"></i>{{'STYLER.uploadStyleFile' | translateHs}}
+        <i class="fa-solid fa-upload"></i>{{'STYLER.uploadStyleFile' | translate}}
       </a>
     </extra-buttons>
   </hs-panel-header>
@@ -29,28 +29,28 @@
     @if (hsStylerService.styleObject) {
     <div class="form-floating pb-1">
       <input type="text" class="form-control" id="hs-styler-style-title"
-        [placeholder]="'STYLER.styleName' | translateHs" [(ngModel)]="hsStylerService.styleObject.name">
-      <label for="hs-styler-style-title">{{'STYLER.styleName' | translateHs}}</label>
+        [placeholder]="'STYLER.styleName' | translate" [(ngModel)]="hsStylerService.styleObject.name">
+      <label for="hs-styler-style-title">{{'STYLER.styleName' | translate}}</label>
     </div>
     }
     <div class="d-flex flex-row justify-content-end">
-      <div class="p-1 flex-grow-1">{{'STYLER.rules' | translateHs }}:</div>
+      <div class="p-1 flex-grow-1">{{'STYLER.rules' | translate }}:</div>
       <div class="p-1">
         <div ngbDropdown class="d-inline-block" display="dynamic" placement="bottom-right">
-          <button class="btn btn-outline-primary btn-sm" [title]="'STYLER.addRule' | translateHs" id="dropdownAddRule"
+          <button class="btn btn-outline-primary btn-sm" [title]="'STYLER.addRule' | translate" id="dropdownAddRule"
             ngbDropdownToggle>
             <span class="fa-solid fa-plus"></span>
           </button>
           <div ngbDropdownMenu aria-labelledby="dropdownAddRule">
             <button ngbDropdownItem (click)="hsStylerService.addRule('Simple')">
-              {{'STYLER.simpleRule' | translateHs }}
+              {{'STYLER.simpleRule' | translate }}
             </button>
             <button ngbDropdownItem (click)="hsStylerService.addRule('Cluster')">
-              {{'STYLER.clusterRule' | translateHs }}
+              {{'STYLER.clusterRule' | translate }}
             </button>
             <button ngbDropdownItem
               (click)="hsStylerService.colorMapDialogVisible = !hsStylerService.colorMapDialogVisible">
-              {{'STYLER.colorMap' | translateHs }}
+              {{'STYLER.colorMap' | translate }}
             </button>
           </div>
         </div>
@@ -75,15 +75,15 @@
     <div class="d-flex justify-content-end">
       @if (!hsStylerService.syncing()) {
       <div class="p-1 m-0 btn bg-danger bg-opacity-25 btn-sm py-0" role="alert">
-        {{'COMMON.unsavedChanges' | translateHs}} <button class="btn btn-primary btn-sm m-1"
-          (click)="hsStylerService.setSldQml()" data-toggle="tooltip" [title]="'STYLER.unsavedChanges' | translateHs">
+        {{'COMMON.unsavedChanges' | translate}} <button class="btn btn-primary btn-sm m-1"
+          (click)="hsStylerService.setSldQml()" data-toggle="tooltip" [title]="'STYLER.unsavedChanges' | translate">
           <i class="fa-solid fa-floppy-disk"></i>
         </button>
       </div>
       } @else {
       <div class="d-flex align-items-center p-2 bg-secondary text-white rounded btn">
         <span class="hs-loader hs-loader-dark"></span>
-        {{'COMMON.savingChanges' | translateHs}}
+        {{'COMMON.savingChanges' | translate}}
       </div>
       }
     </div>

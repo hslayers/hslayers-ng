@@ -9,7 +9,7 @@
     [disabled]="!attributeControl.value">
     @for (op of operators | async; track op.alias) {
     <option [value]="op.alias">
-      {{op.alias | translateHs : 'COMMON'}}
+      {{'COMMON.' + op.alias | translate}}
     </option>
     }
   </select>
@@ -58,7 +58,7 @@
     class="loading-overlay position-absolute top-0 start-0 w-100 h-100 d-flex justify-content-center align-items-center">
     <div class="text-center bg-secondary-subtle d-flex p-1 px-3 rounded-5 text-center">
       <span class="hs-loader hs-loader-dark"></span>
-      <div class="small text-muted">{{'FILTERS.loadingAttributeValues' | translateHs}}...</div>
+      <div class="small text-muted">{{'FILTERS.loadingAttributeValues' | translate}}...</div>
     </div>
   </div>
   }
@@ -67,11 +67,11 @@
 <div class="comparison-filter-value-source btn-group w-100 p-1 d-flex justify-content-end">
   <button type="button" class="btn btn-sm btn-outline-secondary p-1 border-0 rounded-0 w-25 flex-grow-0"
     [class.active]="valueSource() === 'value'" (click)="toggleValueSource('value')">
-    {{'COMMON.value' | translateHs}}
+    {{'COMMON.value' | translate}}
   </button>
   <button type="button" class="btn btn-sm btn-outline-secondary p-1 border-0 rounded-0 w-25 flex-grow-0"
     [class.active]="valueSource() === 'property'" (click)="toggleValueSource('property')">
-    {{'COMMON.property' | translateHs}}
+    {{'COMMON.property' | translate}}
   </button>
 </div>
 }

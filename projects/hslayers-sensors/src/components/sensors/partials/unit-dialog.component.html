@@ -4,11 +4,11 @@
     <div class="modal-content">
       <div class="modal-header" style="padding: 0.2rem 0.3rem;">
         <h4 class="modal-title">
-          {{'SENSORS.sensorUnit' | translateHs }} {{getUnitDescription()}}
+          {{'SENSORS.sensorUnit' | translate }} {{getUnitDescription()}}
           <!-- TODO: Remove function call from template -->
         </h4>
         <button type="button" class="btn-close" (click)="close()" data-dismiss="modal"
-        [attr.aria-label]="'COMMON.close' | translateHs "></button>
+        [attr.aria-label]="'COMMON.close' | translate "></button>
       </div>
       <div class="modal-body py-0" style="max-height: 400px; overflow-y: auto">
         <div class="container-fluid">
@@ -30,9 +30,9 @@
             <tr>
               <th></th>
               <th></th>
-              <th>{{'SENSORS.min' | translateHs }}</th>
-              <th>{{'SENSORS.max' | translateHs }}</th>
-              <th>{{'SENSORS.avg' | translateHs }}</th>
+              <th>{{'SENSORS.min' | translate }}</th>
+              <th>{{'SENSORS.max' | translate }}</th>
+              <th>{{'SENSORS.avg' | translate }}</th>
             </tr>
           </thead>
           <tbody>
@@ -68,7 +68,7 @@
                 <button type="button" class="btn btn-sm"
                   [class.btn-primary]="getCurrentInterval() === interval"
                   (click)="timeButtonClicked(interval)">
-                  {{interval.name | translateHs : 'SENSORS' }}
+                  {{'SENSORS.' + interval.name | translate }}
                   &emsp;<span class="hs-loader" [hidden]="!interval.loading"></span></button>
                 }
               </div>
@@ -78,7 +78,7 @@
               <div class="m-1">
                 <div class="input-group flex-nowrap">
                   <input type="text" style="width: 6em;" ngbDatepicker
-                    [placeholder]="'COMMON.from' | translateHs" #d="ngbDatepicker"
+                    [placeholder]="'COMMON.from' | translate" #d="ngbDatepicker"
                     [(ngModel)]="customInterval.fromTime" (dateSelect)="customIntervalChanged()" />
                   <button class="btn btn-sm  btn-outline-secondary" (click)="d.toggle()" type="button"><i
                   class="fa-solid fa-calendar"></i></button>
@@ -87,7 +87,7 @@
               <div class="m-1">
                 <div class="input-group flex-nowrap">
                   <input type="text" style="width: 6em;text-transform:capitalize" ngbDatepicker
-                    [placeholder]="'COMMON.to' | translateHs" #d2="ngbDatepicker"
+                    [placeholder]="'COMMON.to' | translate" #d2="ngbDatepicker"
                     [(ngModel)]="customInterval.toTime" (dateSelect)="customIntervalChanged()" />
                   <button class="btn btn-sm btn-outline-secondary" (click)="d2.toggle()" type="button"><i
                   class="fa-solid fa-calendar"></i></button>

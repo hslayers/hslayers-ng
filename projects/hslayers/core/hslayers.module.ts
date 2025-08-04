@@ -1,6 +1,11 @@
 import {CommonModule} from '@angular/common';
 import {NgModule} from '@angular/core';
-import {provideHttpClient, withInterceptors} from '@angular/common/http';
+import {
+  HttpClient,
+  provideHttpClient,
+  withInterceptors,
+} from '@angular/common/http';
+import {provideTranslateService, TranslateLoader} from '@ngx-translate/core';
 
 import {HsDialogContainerComponent} from 'hslayers-ng/common/dialogs';
 import {HsLayoutHostDirective} from './layout.directive';
@@ -11,6 +16,8 @@ import {HsSidebarModule} from 'hslayers-ng/components/sidebar';
 import {HslayersComponent} from './hslayers.component';
 import {HsToastComponent} from 'hslayers-ng/common/toast';
 import {HsAuthInterceptor} from './auth.interceptor';
+import {WebpackTranslateLoader} from 'hslayers-ng/services/language';
+import {HsConfig} from 'hslayers-ng/config';
 
 @NgModule({
   declarations: [HsMapHostDirective, HslayersComponent, HsLayoutHostDirective],
@@ -23,6 +30,15 @@ import {HsAuthInterceptor} from './auth.interceptor';
     HsDialogContainerComponent,
   ],
   exports: [HslayersComponent],
-  providers: [provideHttpClient(withInterceptors([HsAuthInterceptor]))],
+  providers: [
+    provideHttpClient(withInterceptors([HsAuthInterceptor])),
+    provideTranslateService({
+      loader: {
+        provide: TranslateLoader,
+        useClass: WebpackTranslateLoader,
+        deps: [HsConfig, HttpClient],
+      },
+    }),
+  ],
 })
 export class HslayersModule {}

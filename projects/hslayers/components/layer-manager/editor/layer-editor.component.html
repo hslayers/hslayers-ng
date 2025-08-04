@@ -12,12 +12,12 @@
       <div class="btn-group m-auto d-flex w-75">
         <button class="btn btn-sm btn-outline-primary  w-50" (click)="HsLayerManagerService.setGreyscale(currLayer)"
           [ngClass]="{'active' : !getGreyscale(currLayer.layer)}" data-toggle="tooltip"
-          [title]="'LAYERMANAGER.layerEditor.zoomToLayer' | translateHs  ">{{'COMMON.color' |
-          translateHs }}</button>
+          [title]="'LAYERMANAGER.layerEditor.zoomToLayer' | translate  ">{{'COMMON.color' |
+          translate }}</button>
         <button class="btn btn-sm btn-outline-primary  w-50" (click)="HsLayerManagerService.setGreyscale(currLayer)"
           [ngClass]="{'active' : getGreyscale(currLayer.layer)}" data-toggle="tooltip"
-          [title]="'LAYERMANAGER.layerEditor.styleLayer' | translateHs  ">{{'LAYERMANAGER.baseMapGallery.greyscale'
-          | translateHs }}</button>
+          [title]="'LAYERMANAGER.layerEditor.styleLayer' | translate  ">{{'LAYERMANAGER.baseMapGallery.greyscale'
+          | translate }}</button>
       </div>
       }
     </div>
@@ -27,39 +27,39 @@
   @if (currLayer?.settings) {
   <div class="card-footer">
     <div class="form-group" [hidden]="!layer_renamer_visible()">
-      <label>{{'COMMON.title' | translateHs }}</label>
+      <label>{{'COMMON.title' | translate }}</label>
       <div class="input-group">
         <input type="text" class="form-control" [(ngModel)]="layerTitle" name="title">
         <button [hidden]="!titleUnsaved()" (click)="saveTitle()" class="btn btn-outline-secondary" type="button"><i
             class="fa-solid fa-floppy-disk"></i></button>
       </div>
     </div>
-    <div class="btn-group" role="group" [attr.aria-label]="'LAYERMANAGER.editorButtons' | translateHs  ">
+    <div class="btn-group" role="group" [attr.aria-label]="'LAYERMANAGER.editorButtons' | translate  ">
       <button class="btn btn-primary" (click)="zoomToLayer()" [disabled]="!layerIsZoomable()" data-toggle="tooltip"
-        [title]="'LAYERMANAGER.layerEditor.zoomToLayer' | translateHs  ">
+        [title]="'LAYERMANAGER.layerEditor.zoomToLayer' | translate  ">
         <i class="fa-solid fa-magnifying-glass"></i>
       </button>
       @if (wfsFilterEnabled()) {
       <button class="btn btn-primary" (click)="openWfsFilter()" data-toggle="tooltip"
-        [title]="'SIDEBAR.descriptions.WFS_FILTER' | translateHs  ">
+        [title]="'SIDEBAR.descriptions.WFS_FILTER' | translate  ">
         <i class="fa-solid fa-filter"></i>
       </button>
       }
       <button class="btn btn-primary" (click)="styleLayer()" [disabled]="!layerIsStyleable()" data-toggle="tooltip"
-        [title]="'LAYERMANAGER.layerEditor.styleLayer' | translateHs  "><i class="fa-solid fa-paintbrush"></i></button>
+        [title]="'LAYERMANAGER.layerEditor.styleLayer' | translate  "><i class="fa-solid fa-paintbrush"></i></button>
       <button class="btn btn-primary" (click)="toggleLayerRename()" data-toggle="tooltip"
-        [title]="'COMMON.renameLayer' | translateHs  "><i class="fa-solid fa-font"></i></button>
+        [title]="'COMMON.renameLayer' | translate  "><i class="fa-solid fa-font"></i></button>
       @if (isVectorLayer()) {
       <button class="btn btn-primary" (click)="createSaveDialog()" data-toggle="tooltip"
-        [title]="'LAYERMANAGER.layerEditor.savegeojson' | translateHs  ">
+        [title]="'LAYERMANAGER.layerEditor.savegeojson' | translate  ">
         <i class="fa-solid fa-floppy-disk"></i>
       </button>
       }
       <button class="btn btn-primary" (click)="copyLayer()" data-toggle="tooltip"
-        [title]="'COMMON.copyLayer' | translateHs  "><i class="fa-solid fa-copy"></i></button>
+        [title]="'COMMON.copyLayer' | translate  "><i class="fa-solid fa-copy"></i></button>
       @if (isLayerRemovable()) {
       <button class="btn btn-danger" (click)="removeLayer()" data-toggle="tooltip"
-        [title]="'COMMON.removeLayer' | translateHs  "><i class="fa-solid fa-trash"></i></button>
+        [title]="'COMMON.removeLayer' | translate  "><i class="fa-solid fa-trash"></i></button>
       }
 
     </div>

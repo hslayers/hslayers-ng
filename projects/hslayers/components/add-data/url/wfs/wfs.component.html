@@ -12,8 +12,8 @@
       <div class="card-title text-center fw-bold">{{title}}</div>
       <div class="form-floating mb-2">
         <input class="form-control" [(ngModel)]="hsUrlWfsService.data.folder_name" name="hs-addData-wfs-folder"
-          [placeholder]="'ADDLAYERS.folderName' | translateHs " />
-        <label for="hs-addData-wfs-folder">{{'ADDLAYERS.folderName' | translateHs }}</label>
+          [placeholder]="'ADDLAYERS.folderName' | translate " />
+        <label for="hs-addData-wfs-folder">{{'ADDLAYERS.folderName' | translate }}</label>
       </div>
       <ul class="list-group">
         <hs-layer-table [type]="'wfs'" [injectedService]="hsUrlWfsService"> </hs-layer-table>
@@ -24,7 +24,7 @@
             </hs-url-add>
             @if (hsUrlWfsService.loadingFeatures) {
               <button
-                class="btn btn-primary w-75">{{'ADDLAYERS.loadingFeaturePleaseWait' | translateHs
+                class="btn btn-primary w-75">{{'ADDLAYERS.loadingFeaturePleaseWait' | translate
                 }}&emsp;<span class="ms-2 hs-loader"></span></button>
               }
             </div>

@@ -10,17 +10,17 @@
 
 
   <div class="input-group pb-2">
-    <span class="input-group-text control-label">{{'COMMON.title' | translateHs }}</span>
+    <span class="input-group-text control-label">{{'COMMON.title' | translate }}</span>
     <input class="form-control" name="baseTitle" [(ngModel)]="hsUrlXyzService.data.title" />
   </div>
 
   <div class="d-flex gap-2 mb-2">
     <div class="input-group">
-      <span class="input-group-text control-label">{{'COMMON.minZoom' | translateHs }}</span>
+      <span class="input-group-text control-label">{{'COMMON.minZoom' | translate }}</span>
       <input type="number" class="form-control" name="minZoom" min="1" max="22" [(ngModel)]="hsUrlXyzService.data.minZoom" />
     </div>
     <div class="input-group">
-      <span class="input-group-text control-label">{{'COMMON.maxZoom' | translateHs }}</span>
+      <span class="input-group-text control-label">{{'COMMON.maxZoom' | translate }}</span>
       <input type="number" class="form-control" name="maxZoom" min="1" max="22" [(ngModel)]="hsUrlXyzService.data.maxZoom" />
     </div>
   </div>
@@ -34,28 +34,28 @@
 
   <button type="button" class="btn w-100 btn-outline-secondary dropdown-toggle dropdown-toggle-split mb-2"
     (click)="advancedPanelVisible = !advancedPanelVisible">
-    {{'COMMON.advancedOptions' | translateHs }}
+    {{'COMMON.advancedOptions' | translate }}
   </button>
 
   @if (advancedPanelVisible) {
   <div class="form-group" [hidden]="data.base === true">
     <div class="input-group">
-      <span class="input-group-text control-label">{{'ADDLAYERS.folderName' | translateHs }}</span>
+      <span class="input-group-text control-label">{{'ADDLAYERS.folderName' | translate }}</span>
       <input class="form-control" name="folderName" [(ngModel)]="data.folder_name" />
     </div>
   </div>
 
       <div class="d-flex flex-row justify-content-start align-items-baseline my-2 border rounded">
-      <span class="control-label input-group-text border-start-0 border-top-0 border-bottom-0">{{'ADDLAYERS.XYZ.apiKeyUsage' | translateHs }}</span>
+      <span class="control-label input-group-text border-start-0 border-top-0 border-bottom-0">{{'ADDLAYERS.XYZ.apiKeyUsage' | translate }}</span>
       <div class="d-flex flex-fill gap-2 justify-content-end align-items-center">
         <div class="btn-group">
           <button type="button" class="btn btn-sm btn-outline-secondary" (click)="setApiKey(true)"
             [ngClass]="{'active': data.useApiKey}">
-            {{'COMMON.yes' | translateHs }}
+            {{'COMMON.yes' | translate }}
           </button>
           <button type="button" class="btn btn-sm btn-outline-secondary" (click)="setApiKey(false)"
             [ngClass]="{'active': !data.useApiKey}">
-            {{'COMMON.no' | translateHs }}
+            {{'COMMON.no' | translate }}
           </button>
         </div>
       </div>
@@ -64,15 +64,15 @@
     @if (hsUrlXyzService.data.useApiKey) {
     <div class="d-flex flex-column gap-2 pb-4">
       <div class="input-group">
-        <span class="input-group-text control-label">{{'ADDLAYERS.XYZ.apiKeyParam' | translateHs }}</span>
+        <span class="input-group-text control-label">{{'ADDLAYERS.XYZ.apiKeyParam' | translate }}</span>
         <input class="form-control" name="apiKeyParam" [(ngModel)]="hsUrlXyzService.data.apiKeyParam" 
           placeholder="e.g. apikey, access_token, key" />
       </div>
       
       <div class="input-group">
-        <span class="input-group-text control-label">{{'COMMON.apiKey' | translateHs }}</span>
+        <span class="input-group-text control-label">{{'COMMON.apiKey' | translate }}</span>
         <input class="form-control" name="apiKey" [(ngModel)]="hsUrlXyzService.data.apiKey"
-          placeholder="{{'ADDLAYERS.XYZ.enterApiKey' | translateHs }}" />
+          placeholder="{{'ADDLAYERS.XYZ.enterApiKey' | translate }}" />
       </div>
     </div>
     }

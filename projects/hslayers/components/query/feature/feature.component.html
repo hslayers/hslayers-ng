@@ -3,7 +3,7 @@
   <div class="row">
     <div class="col-12 m-2"><strong>{{f.name}} @if (f.layer) {
       <span>{{'QUERY.feature.inLayer' |
-      translateHs }}</span>
+      translate }}</span>
     }
   {{f.layer}}</strong></div>
 </div>
@@ -22,17 +22,17 @@
     <div class="form-floating mb-3">
       <input class="form-control" [placeholder]="attributeName" [(ngModel)]="attributeName"
         name="hs-add-feature-attribute-name">
-      <label for="hs-add-feature-attribute-name">{{'QUERY.feature.attributeName' | translateHs }}</label>
+      <label for="hs-add-feature-attribute-name">{{'QUERY.feature.attributeName' | translate }}</label>
     </div>
     <div class="form-floating mb-3" [hidden]="!(attributeName && newAttribVisible)">
       <input class="form-control" [placeholder]="attributeValue" [(ngModel)]="attributeValue"
         name="hs-add-feature-attribute-value">
-      <label for="hs-add-feature-attribute-value">{{'QUERY.feature.attributeValue' | translateHs }}</label>
+      <label for="hs-add-feature-attribute-value">{{'QUERY.feature.attributeValue' | translate }}</label>
     </div>
     <div class="row justify-content-end" [hidden]="!(attributeName && attributeValue && newAttribVisible)">
       <button class="btn btn-primary btn-sm w-auto d-flex gap-2 mx-2"
         (click)="saveNewAttribute(attributeName,attributeValue)">{{'COMMON.save'
-        | translateHs}}<i class="fa-solid fa-floppy-disk"></i></button>
+        | translate}}<i class="fa-solid fa-floppy-disk"></i></button>
       </div>
     </div>
   }
@@ -42,14 +42,14 @@
   <div [hidden]="!editType" class="row p-2 ">
     <div class="d-flex w-100 input-group input-group-sm align-items-baseline">
       <label for="selectedLayer" class="px-2">{{translateString('QUERY.feature',editType+'Feature')}}
-      {{'COMMON.into' | translateHs }}:</label>
-      <select class="form-control text-truncate" [title]="'ADDLAYERS.Vector.chooseLayer' | translateHs  "
+      {{'COMMON.into' | translate }}:</label>
+      <select class="form-control text-truncate" [title]="'ADDLAYERS.Vector.chooseLayer' | translate  "
         [(ngModel)]="selectedLayer" name="selectedLayer">
         <option [ngValue]="null" [disabled]="true" selected hidden> {{'ADDLAYERS.Vector.chooseLayer' |
-        translateHs }}</option>
+        translate }}</option>
         @for (layer of availableLayers | async; track layer) {
           <option [ngValue]="layer">
-          {{getTitle(layer) | translateHs : 'LAYERS' }}</option>
+          {{'LAYERS.' + getTitle(layer) | translate }}</option>
         }
       </select>
       <button class="btn btn-primary btn-sm" (click)="moveOrCopyFeature()" [disabled]="!selectedLayer"><i
@@ -69,14 +69,14 @@
             class="fa-solid fa-gears"></i></button>
             <div ngbDropdownMenu [ngClass]="{'show': editMenuVisible}">
               <a class="dropdown-item" (click)="editTypeSelected('copy')">{{'QUERY.feature.copyFeature' |
-              translateHs }}</a>
+              translate }}</a>
               <a class="dropdown-item" (click)="editTypeSelected('move')">{{'QUERY.feature.moveFeature' |
-              translateHs }}</a>
+              translate }}</a>
             </div>
           </div>
           <div class="btn-group" ngbDropdown placement="bottom" display="dynamic">
             <button ngbDropdownToggle class="btn btn-secondary btn-sm rounded-0" type="button"
-              (click)="toggleExportMenu()" [title]="'QUERY.downloadAs' | translateHs  "><i
+              (click)="toggleExportMenu()" [title]="'QUERY.downloadAs' | translate  "><i
             class="fa-solid fa-download"></i></button>
             <div ngbDropdownMenu [ngClass]="{'show': exportMenuVisible}">
               @for (format of exportFormats; track format) {

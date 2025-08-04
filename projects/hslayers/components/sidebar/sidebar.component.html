@@ -1,7 +1,7 @@
 <div class="card hs-sidebar-list hs-main-panel list-group">
   @if (HsLayoutService.minisidebar) {
   <hs-panel-header class="sidebar-header w-100" name="additional"
-    [title]="'SIDEBAR.additionalPanels' | translateHs "></hs-panel-header>
+    [title]="'SIDEBAR.additionalPanels' | translate "></hs-panel-header>
   }
 
   @if (HsLayoutService.sidebarToggleable && {position: HsLayoutService.sidebarPosition | async}; as sidebar) {
@@ -15,17 +15,17 @@
   <span class="hs-sidebar-item list-group-item h-100 d-flex align-items-center flex-fill"
     [attr.data-cy]="button.panel" [hidden]="!button.visible" (click)="HsSidebarService.buttonClicked(button)"
     [ngClass]="{'active': HsLayoutService.mainpanel === button.panel,  'hs-panel-hidden' : !button.fits}"
-    [class.language]="button.panel === 'language'" [title]="button.description | translateHs">
+    [class.language]="button.panel === 'language'" [title]="button.description | translate">
     <!-- TODO: Remove function call from template -->
     @if (button.icon) {
     <i class="menu-icon fa-solid {{button.icon}}" data-toggle="tooltip" data-container="body" data-placement="auto"></i>
     }
     @if (button.content) {
     <span data-toggle="tooltip" class="hs-sidebar-item-content" data-container="body" data-placement="auto" 
-      [title]="button.description | translateHs ">{{button.content()}}</span>
+      [title]="button.description | translate ">{{button.content()}}</span>
     }
     <span class="hs-sidebar-item-title">{{button.title |
-      translateHs }}</span>
+      translate }}</span>
   </span>
   }
   <!-- TODO: Remove function call from template -->
@@ -35,7 +35,7 @@
     [ngClass]="{'active': HsLayoutService.mainpanel === 'sidebar'}">
     <i class="menu-icon fa-solid fa-equals" data-toggle="tooltip" data-container="body" data-placement="auto"
       title="Menu"></i>
-    <span class="hs-sidebar-item-title">{{miniSidebarButton.title | translateHs }}</span>
+    <span class="hs-sidebar-item-title">{{miniSidebarButton.title | translate }}</span>
   </span>
   }
 </div>

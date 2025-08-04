@@ -2,7 +2,7 @@
   <div class="form-group">
     <div class="form-inline">
       <label class="control-label" style="width: 100%; justify-content: left">{{
-      "LAYERMANAGER.layerEditor.interpolatedAttribute" | translateHs }}:</label>
+      "LAYERMANAGER.layerEditor.interpolatedAttribute" | translate }}:</label>
       <select class="form-control form-select" style="width: 100%" [(ngModel)]="weightAttribute"
         name="hs-idw-widget-interpolated-attribute" (change)="setWeight()">
         @for (attr of attributes; track attr) {
@@ -16,7 +16,7 @@
     [colorMaps]="colorMaps"></hs-colormap-picker>
     <div class="form-check">
       <label class="form-check-label" [for]="'hs-idw-widget-reversed' + hsConfig.id">
-        {{ "COMMON.reversed" | translateHs }}
+        {{ "COMMON.reversed" | translate }}
       </label>
       <input class="form-check-input" type="checkbox" (change)="setColorMap()" [(ngModel)]="reversed"
         [id]="'hs-idw-widget-reversed' + hsConfig.id">
@@ -24,12 +24,12 @@
     <div class="row g-3 pt-3">
       <div class="col-md-6">
         <label class="form-label" for="hsIdwMin">{{
-        "LAYERMANAGER.layerEditor.min" | translateHs }}:</label>
+        "LAYERMANAGER.layerEditor.min" | translate }}:</label>
         <input class="form-control inline" (change)="setBounds()" [(ngModel)]="min" name="hsIdwMin" id="hsIdwMin" />
       </div>
       <div class="col-md-6">
         <label class="form-label" for="hsIdwMax">{{
-        "LAYERMANAGER.layerEditor.max" | translateHs }}:</label>
+        "LAYERMANAGER.layerEditor.max" | translate }}:</label>
         <input class="form-control" (change)="setBounds()" [(ngModel)]="max" name="hsIdwMax" for="hsIdwMax" />
       </div>
     </div>

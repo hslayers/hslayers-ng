@@ -13,20 +13,20 @@
         <ul class="nav nav-tabs justify-content-end">
           <li class="nav-item">
             <a class="nav-link text-secondary" [ngClass]="{'active': uploadType === 'new'}"
-            (click)="setUploadType('new')">{{'LAYERS.newLayer' | translateHs }}</a>
+            (click)="setUploadType('new')">{{'LAYERS.newLayer' | translate }}</a>
           </li>
           <li class="nav-item">
             <a class="nav-link text-secondary" [ngClass]="{'active': uploadType === 'existing'}"
-            (click)="setUploadType('existing')">{{'LAYERS.existingLayer' | translateHs }}</a>
+            (click)="setUploadType('existing')">{{'LAYERS.existingLayer' | translate }}</a>
           </li>
         </ul>
       </div>
       <div [hidden]="uploadType === 'new'">
         <div class="form-group my-3">
-          <label class="capabilities_label control-label">{{'LAYERS.existingLayer' | translateHs }}</label>
+          <label class="capabilities_label control-label">{{'LAYERS.existingLayer' | translate }}</label>
           <select class="hsl-custom-select" name="sourceLayer" [(ngModel)]="data.sourceLayer" style="flex-grow: 1;">
             <option [ngValue]="null" [disabled]="true" selected hidden> {{'ADDLAYERS.Vector.chooseLayer' |
-            translateHs }}</option>
+            translate }}</option>
             @for (lyr of data.vectorLayers; track lyr) {
               <option [ngValue]="lyr.layer">{{ lyr.title }} </option>
             }

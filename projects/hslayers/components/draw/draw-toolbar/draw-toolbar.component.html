@@ -7,7 +7,7 @@
   <i class="fa-solid" [ngClass]="{
         'fa-pencil': !drawToolbarExpanded,
         'fa-xmark': drawToolbarExpanded,
-      }" data-toggle="tooltip" [title]="'PANEL_HEADER.draw' | translateHs"></i>
+      }" data-toggle="tooltip" [title]="'PANEL_HEADER.draw' | translate"></i>
 </button>
 
 @if (drawToolbarExpanded) {
@@ -24,12 +24,12 @@
         : { right: 0 }
     ">
   <button class="btn btn-secondary" (click)="hsDrawService.removeLastPoint()" data-toggle="tooltip"
-    [title]="'DRAW.drawToolbar.removeLastPoint' | translateHs">
+    [title]="'DRAW.drawToolbar.removeLastPoint' | translate">
     <i class="fa-solid fa-eraser"></i>
   </button>
 
   <button class="btn btn-secondary" (click)="finishDrawing()" data-toggle="tooltip"
-    [title]="'DRAW.drawToolbar.finishFeature' | translateHs">
+    [title]="'DRAW.drawToolbar.finishFeature' | translate">
     <i class="fa-solid fa-square-check"></i>
   </button>
 </div>

@@ -2,14 +2,14 @@
     <div class="modal-dialog" style="max-width: 65em;">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">{{'COMPOSITIONS.cswDialog.loadComposition' | translateHs }}
+                <h4 class="modal-title">{{'COMPOSITIONS.cswDialog.loadComposition' | translate }}
                 </h4>
                 <button type="button" (click)="close()" class="btn-close" data-dismiss="modal"
-                    [attr.aria-label]="'COMMON.close' | translateHs ">
+                    [attr.aria-label]="'COMMON.close' | translate ">
                 </button>
             </div>
             <p class="py-3 text-danger m-auto w-75 ps-3">
-                {{'COMPOSITIONS.cswDialog.infoText' | translateHs }}
+                {{'COMPOSITIONS.cswDialog.infoText' | translate }}
             </p>
             <div class="modal-body w-75 mh-75" style="max-height: 75vh; overflow-y: auto; margin:auto">
                 <div ngbAccordion [closeOthers]="true" #acc="ngbAccordion" (show)="beforeChange($event)">
@@ -23,13 +23,13 @@
                                 <span class="ml-auto pe-3">
                                     <i class="fa-solid fa-trash text-secondary" role="button"
                                         (click)="$event.stopPropagation();removeService(service)"
-                                        [title]="'COMMON.delete' | translateHs"></i>
+                                        [title]="'COMMON.delete' | translate"></i>
                                 </span>
                             </button>
                             } @else {
                             <button
                                 class="accordion-button justify-content-between">{{'COMPOSITIONS.cswDialog.servicesLoading'
-                                | translateHs}}&emsp;<span class="hs-loader ml-auto"></span></button>
+                                | translate}}&emsp;<span class="hs-loader ml-auto"></span></button>
                             }
                         </div>
                         <div ngbAccordionCollapse>
@@ -47,15 +47,14 @@
                 </div>
             </div>
             <div class="w-75 mh-75 m-auto p-3" [hidden]="layersString.length === 0">
-                {{'COMPOSITIONS.cswDialog.otherLayers' | translateHs }}: {{layersString}}
+                {{'COMPOSITIONS.cswDialog.otherLayers' | translate }}: {{layersString}}
             </div>
 
             <div class="modal-footer">
                 <button (click)="addLayers()" [disabled]="!servicesLoaded" type="button" class="btn btn-primary"
-                    data-dismiss="modal">{{'COMMON.addLayers' |
-                    translateHs }}</button>
+                    data-dismiss="modal">{{'COMMON.addLayers' | translate }}</button>
                 <button (click)="close()" type="button" class="btn btn-primary" data-dismiss="modal">{{'COMMON.cancel'
-                    | translateHs }}</button>
+                    | translate }}</button>
             </div>
         </div>
     </div>

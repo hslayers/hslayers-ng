@@ -1,15 +1,9 @@
 import * as merge from 'deepmerge';
-import {
-  FakeMissingTranslationHandler,
-  TranslateDefaultParser,
-  TranslateFakeCompiler,
-  TranslateLoader,
-  TranslateService,
-} from '@ngx-translate/core';
+import {TranslateLoader} from '@ngx-translate/core';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsLogService} from 'hslayers-ng/services/log';
 import {HttpClient} from '@angular/common/http';
-import {Injectable, signal} from '@angular/core';
+import {Injectable, signal, inject} from '@angular/core';
 import {Observable, forkJoin, interval, of, throwError} from 'rxjs';
 import {catchError, filter, map, switchMap, take} from 'rxjs/operators';
 
@@ -26,15 +20,13 @@ export class WebpackTranslateLoader implements TranslateLoader {
    */
   loadedLanguages = signal<Record<string, boolean>>({});
   /**
-   * List of languages loaded using APP_INITALIZATOR token
+   * List of languages loaded using APP_INITIALIZER token
    * Considered as fully loaded from the start eg. no reload is necessary to load translation overrides
    */
-  loadedViaInitializator: string[] = [];
-  constructor(
-    private hsConfig: HsConfig,
-    private hsLog: HsLogService,
-    private httpClient: HttpClient,
-  ) {}
+  loadedViaInitializer: string[] = [];
+  private hsConfig = inject(HsConfig);
+  private hsLog = inject(HsLogService);
+  private httpClient = inject(HttpClient);
 
   /**
    * Loads the translations for a given language.
@@ -113,27 +105,5 @@ export class WebpackTranslateLoader implements TranslateLoader {
     this.hsLog.log(`Locales files cannot be loaded. ${message}`);
     this.hsLog.error(error);
     return throwError(() => error);
-  }
-}
-
-/**
- * Custom translation service that uses WebpackTranslateLoader to load translations.
- */
-@Injectable({
-  providedIn: 'root',
-})
-export class CustomTranslationService extends TranslateService {
-  constructor(hsConfig: HsConfig, hsLog: HsLogService, httpClient: HttpClient) {
-    super(
-      null,
-      new WebpackTranslateLoader(hsConfig, hsLog, httpClient),
-      new TranslateFakeCompiler(),
-      new TranslateDefaultParser(),
-      new FakeMissingTranslationHandler(),
-      false,
-      true,
-      false,
-      null,
-    );
   }
 }

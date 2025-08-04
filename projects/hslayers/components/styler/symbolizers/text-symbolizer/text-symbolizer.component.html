@@ -1,6 +1,6 @@
 <form class="form">
   <div class="d-flex flex-row">
-    <div class="p-1 w-25">{{'STYLER.template' | translateHs}}:</div>
+    <div class="p-1 w-25">{{'STYLER.template' | translate}}:</div>
     <div class="p-1 w-75">
       <input class="form-control form-select-sm" [ngModelOptions]="{standalone: true}" [(ngModel)]="symbolizer.label"
         (change)="emitChange()" />
@@ -8,10 +8,10 @@
   </div>
 
   <hs-symbolizer-color-picker [symbolizer]="symbolizer" attribute="color" opacityAttribute="opacity"
-  (changes)="emitChange()" [label]="'STYLER.textColor' | translateHs"></hs-symbolizer-color-picker>
+  (changes)="emitChange()" [label]="'STYLER.textColor' | translate"></hs-symbolizer-color-picker>
 
   <div class="d-flex flex-row">
-    <div class="p-1 w-25">{{'STYLER.font' | translateHs}}:</div>
+    <div class="p-1 w-25">{{'STYLER.font' | translate}}:</div>
     <div class="p-1 w-75">
       <select class="form-control form-select-sm form-select" (change)="emitChange()"
         [ngModelOptions]="{standalone: true}" [(ngModel)]="symbolizer.font" multiple>
@@ -23,7 +23,7 @@
   </div>
 
   <div class="d-flex flex-row">
-    <div class="p-1 w-25">{{'STYLER.textSize' | translateHs}}:</div>
+    <div class="p-1 w-25">{{'STYLER.textSize' | translate}}:</div>
     <div class="p-1 w-75">
       <input class="form-control form-select-sm" [ngModelOptions]="{standalone: true}" [(ngModel)]="symbolizer.size"
         (change)="emitChange()" />
@@ -31,8 +31,8 @@
   </div>
 
   <div class="d-flex flex-row">
-    <div class="p-1 w-25 mt-2">{{'STYLER.justify' | translateHs}}:</div>
-    <span class="badge bg-warning mt-2" [title]="'STYLER.warningAttribNotStoredNotVisualized' | translateHs">!</span>
+    <div class="p-1 w-25 mt-2">{{'STYLER.justify' | translate}}:</div>
+    <span class="badge bg-warning mt-2" [title]="'STYLER.warningAttribNotStoredNotVisualized' | translate">!</span>
     <div class="p-1 w-75">
       <select class="form-control form-select-sm form-select" [(ngModel)]="symbolizer.justify" (change)="emitChange()"
         [ngModelOptions]="{standalone: true}">
@@ -44,8 +44,8 @@
   </div>
 
   <div class="d-flex flex-row">
-    <div class="p-1 w-25 mt-2">{{'STYLER.transform' | translateHs}}:</div>
-    <span class="badge bg-warning mt-2" [title]="'STYLER.warningAttribNotStoredNotVisualized' | translateHs">!</span>
+    <div class="p-1 w-25 mt-2">{{'STYLER.transform' | translate}}:</div>
+    <span class="badge bg-warning mt-2" [title]="'STYLER.warningAttribNotStoredNotVisualized' | translate">!</span>
     <div class="p-1 w-75">
       <select class="form-control form-select-sm form-select" [(ngModel)]="symbolizer.transform" (change)="emitChange()"
         [ngModelOptions]="{standalone: true}">
@@ -57,7 +57,7 @@
   </div>
 
   <div class="d-flex flex-row">
-    <div class="p-1 w-25 mt-2">{{'STYLER.fontStyle' | translateHs}}:</div>
+    <div class="p-1 w-25 mt-2">{{'STYLER.fontStyle' | translate}}:</div>
     <div class="p-1 w-75">
       <select class="form-control form-select-sm form-select" [(ngModel)]="symbolizer.fontStyle" (change)="emitChange()"
         [ngModelOptions]="{standalone: true}">
@@ -69,7 +69,7 @@
   </div>
 
   <div class="d-flex flex-row">
-    <div class="p-1 w-25 mt-2">{{'STYLER.fontWeight' | translateHs}}:</div>
+    <div class="p-1 w-25 mt-2">{{'STYLER.fontWeight' | translate}}:</div>
     <div class="p-1 w-75">
       <select class="form-control form-select-sm form-select" [(ngModel)]="symbolizer.fontWeight"
         (change)="emitChange()" [ngModelOptions]="{standalone: true}">
@@ -81,17 +81,17 @@
   </div>
 
   <hs-symbolizer-slider [symbolizer]="symbolizer" attribute="opacity" (changes)="emitChange()" step="0.05" min="0"
-    max="1" [label]="'STYLER.opacity' | translateHs"
-  [warning]="'STYLER.warningAttribNotStoredVisualized' | translateHs"></hs-symbolizer-slider>
+    max="1" [label]="'STYLER.opacity' | translate"
+  [warning]="'STYLER.warningAttribNotStoredVisualized' | translate"></hs-symbolizer-slider>
 
   <hs-symbolizer-color-picker [symbolizer]="symbolizer" attribute="haloColor" (changes)="emitChange()"
-  [label]="'STYLER.haloColor' | translateHs"></hs-symbolizer-color-picker>
+  [label]="'STYLER.haloColor' | translate"></hs-symbolizer-color-picker>
 
   <hs-symbolizer-slider [symbolizer]="symbolizer" attribute="haloWidth" (changes)="emitChange()" step="1" min="0"
-  max="20" [label]="'STYLER.haloWidth' | translateHs"></hs-symbolizer-slider>
+  max="20" [label]="'STYLER.haloWidth' | translate"></hs-symbolizer-slider>
 
   <div class="d-flex flex-row">
-    <div class="p-1 w-25">{{'STYLER.offsetX' | translateHs}}:</div>
+    <div class="p-1 w-25">{{'STYLER.offsetX' | translate}}:</div>
     <div class="p-1 w-75">
       @if (symbolizer.offset !== undefined) {
         <input class="w-100" type="range" step="1" min="-40" max="40" [ngModelOptions]="{standalone: true}"
@@ -101,7 +101,7 @@
   </div>
 
   <div class="d-flex flex-row">
-    <div class="p-1 w-25">{{'STYLER.offsetY' | translateHs}}:</div>
+    <div class="p-1 w-25">{{'STYLER.offsetY' | translate}}:</div>
     <div class="p-1 w-75">
       @if (symbolizer.offset !== undefined) {
         <input class="w-100" type="range" step="1" min="-40" max="40" [ngModelOptions]="{standalone: true}"
@@ -111,11 +111,11 @@
   </div>
 
   <hs-symbolizer-slider [symbolizer]="symbolizer" attribute="rotate" (changes)="emitChange()" step="1" min="0" max="360"
-  [label]="'STYLER.rotation' | translateHs"></hs-symbolizer-slider>
+  [label]="'STYLER.rotation' | translate"></hs-symbolizer-slider>
 
   <div class="d-flex flex-row">
-    <div class="p-1 w-25 mt-2">{{'STYLER.anchor' | translateHs}}:</div>
-    <span class="badge bg-warning mt-2" [title]="'STYLER.warningAttribStoredNotVisualized' | translateHs">!</span>
+    <div class="p-1 w-25 mt-2">{{'STYLER.anchor' | translate}}:</div>
+    <span class="badge bg-warning mt-2" [title]="'STYLER.warningAttribStoredNotVisualized' | translate">!</span>
     <div class="p-1 w-75">
       <select class="form-control form-select-sm form-select" [(ngModel)]="symbolizer.anchor" (change)="emitChange()"
         [ngModelOptions]="{standalone: true}">

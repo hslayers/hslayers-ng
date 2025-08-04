@@ -10,7 +10,7 @@ import {Component, input, output} from '@angular/core';
       <span
         class="control-label input-group-text border-top-0 border-bottom-0 border-start-0"
       >
-        {{ 'COMMON.addAs' | translateHs }}
+        {{ 'COMMON.addAs' | translate }}
       </span>
       <div
         class="d-flex flex-fill gap-2 justify-content-end align-items-center"
@@ -23,7 +23,7 @@ import {Component, input, output} from '@angular/core';
             (click)="setBase(true)"
             [ngClass]="{active: isBase()}"
           >
-            {{ 'COMPOSITONKEYWORDS.Basemap' | translateHs }}
+            {{ 'COMPOSITONKEYWORDS.Basemap' | translate }}
           </button>
           <button
             type="button"
@@ -31,7 +31,7 @@ import {Component, input, output} from '@angular/core';
             (click)="setBase(false)"
             [ngClass]="{active: !isBase()}"
           >
-            {{ 'COMMON.layer' | translateHs }}
+            {{ 'COMMON.layer' | translate }}
           </button>
         </div>
 
@@ -44,7 +44,7 @@ import {Component, input, output} from '@angular/core';
               (click)="setGroup(true)"
               [ngClass]="{active: isGroup()}"
             >
-              {{ 'COMMON.group' | translateHs }}
+              {{ 'COMMON.group' | translate }}
             </button>
             <button
               type="button"
@@ -53,7 +53,7 @@ import {Component, input, output} from '@angular/core';
               [ngClass]="{active: !isGroup()}"
               [disabled]="isBase() === true"
             >
-              {{ 'COMMON.separateLayers' | translateHs }}
+              {{ 'COMMON.separateLayers' | translate }}
             </button>
           </div>
         }

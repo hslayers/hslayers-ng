@@ -3,7 +3,7 @@
     @if (data.group === true || type !== 'wms') {
     <div class="input-group"
       style="box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;">
-      <span class="input-group-text control-label">{{'COMMON.title' | translateHs }}</span>
+      <span class="input-group-text control-label">{{'COMMON.title' | translate }}</span>
       <input class="form-control" name="baseTitle" [(ngModel)]="data.title" />
     </div>
     }
@@ -19,12 +19,12 @@
 
   <button type="button" class="btn w-100 btn-outline-secondary dropdown-toggle dropdown-toggle-split mb-2"
     (click)="advancedPanelVisible = !advancedPanelVisible">
-    {{'COMMON.advancedOptions' | translateHs }}
+    {{'COMMON.advancedOptions' | translate }}
   </button>
   @if (advancedPanelVisible) {
   <div class="form-group mt-1" [hidden]="type === 'arcgis' && !data.get_map_url?.includes('image')">
     <div class="input-group">
-      <span class="input-group-text control-label">{{'ADDLAYERS.imageFormat' | translateHs }}</span>
+      <span class="input-group-text control-label">{{'ADDLAYERS.imageFormat' | translate }}</span>
       <select class="form-control form-select" name="imageFormat" [(ngModel)]="data.image_format">
         @for (format of data.image_formats; track format) {
         <option>{{format}}</option>
@@ -34,7 +34,7 @@
   </div>
   <div class="form-group">
     <div class="input-group">
-      <span class="input-group-text control-label">{{'ADDLAYERS.queryFormat' | translateHs }}</span>
+      <span class="input-group-text control-label">{{'ADDLAYERS.queryFormat' | translate }}</span>
       <select class="form-control form-select" name="queryFormat" [(ngModel)]="data.query_format">
         @for (format of data.query_formats; track format) {
         <option>{{format}}</option>
@@ -44,7 +44,7 @@
   </div>
   <div class="form-group" [hidden]="!data.srs || data.srs.toUpperCase() === data.map_projection">
     <div class="input-group">
-      <span class="input-group-text control-label">{{'ADDLAYERS.srs' | translateHs }}</span>
+      <span class="input-group-text control-label">{{'ADDLAYERS.srs' | translate }}</span>
       <select class="form-control form-select form-select" name="srs" [(ngModel)]="data.srs" (change)="srsChanged()">
         @for (epsg of data.srss | slice:0:50; track $index) {
         <option [ngValue]="epsg">{{epsg | epsg}}</option>
@@ -54,13 +54,13 @@
   </div>
   <div class="form-group" [hidden]="data.base === true">
     <div class="input-group">
-      <span class="input-group-text control-label">{{'ADDLAYERS.folderName' | translateHs }}</span>
+      <span class="input-group-text control-label">{{'ADDLAYERS.folderName' | translate }}</span>
       <input class="form-control" name="folderName" [(ngModel)]="data.folder_name" />
     </div>
   </div>
   @if (type === 'wms' || type === 'arcgis') {
   <p class="col-sm-12 alert alert-danger" [hidden]="!data.use_resampling">
-    {{'ADDLAYERS.mapAndLayerProjection' | translateHs }}
+    {{'ADDLAYERS.mapAndLayerProjection' | translate }}
   </p>
   }
   <div class="form-group">
@@ -68,20 +68,20 @@
       @if (type === 'wms') {
       <label class="capabilities_label control-label"> <input type="checkbox" class="me-1 checkbox-lg" name="useTiles"
           [(ngModel)]="data.useTiles" />
-        {{'ADDLAYERS.useTiles' | translateHs }}
+        {{'ADDLAYERS.useTiles' | translate }}
       </label>
       }
     </div>
   </div>
   @if (type === 'wms' || type === 'arcgis') {
   <p class="col-sm-12 alert alert-warning" [hidden]="data.useTiles">
-    {{'ADDLAYERS.considerUsingTiles' | translateHs }}
+    {{'ADDLAYERS.considerUsingTiles' | translate }}
   </p>
   }
   @if (type === 'wms') {
   <div class="form-group">
     <div class="input-group">
-      <span class="input-group-text control-label">{{'ADDLAYERS.tileSize' | translateHs }}</span>
+      <span class="input-group-text control-label">{{'ADDLAYERS.tileSize' | translate }}</span>
       <input class="form-control" name="tileSize" [(ngModel)]="data.tile_size" />
     </div>
   </div>

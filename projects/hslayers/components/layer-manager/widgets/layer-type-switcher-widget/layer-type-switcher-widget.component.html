@@ -3,7 +3,7 @@
     @for (t of types; track t) {
       <button class="btn btn-sm btn-outline-primary w-50" style="min-width: 7rem;"
         (click)="changeLayerType(t)" [ngClass]="{'btn-primary active': currentType() === t }">
-        {{t | translateHs : 'COMMON' }}
+        {{'COMMON.' + t | translate }}
       </button>
     }
   </div>

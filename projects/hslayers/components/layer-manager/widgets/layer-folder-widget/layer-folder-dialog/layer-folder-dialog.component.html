@@ -3,10 +3,10 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title d-flex">
-                    {{'LAYERMANAGER.layerEditor.pickOrCreate' | translateHs}}
+                    {{'LAYERMANAGER.layerEditor.pickOrCreate' | translate}}
                 </h4>
                 <button type="button" (click)="no()" class="btn-close" data-dismiss="modal"
-                    [attr.aria-label]="'COMMON.close' | translateHs "></button>
+                    [attr.aria-label]="'COMMON.close' | translate "></button>
             </div>
             <div class="modal-body d-flex flex-column align-items-center m-auto my-2">
                 @for(folder of availableFolders(); track $index)
@@ -16,23 +16,23 @@
                         [formControl]="pathControl" [value]="folder" [id]="'hs-move-to-folder-option-' + $index">
                     <label class="form-check-label text-truncate" style="width: 35ch;"
                         [for]="'hs-move-to-folder-option-' + $index">
-                        {{folder| translateHs : 'LAYERMANAGER' }}
+                        {{'LAYERMANAGER.' + folder | translate }}
                     </label>
                 </div>
                 }
                 <div class="border border-bottom-0 border-secondary-subtle d-block my-2 w-100"></div>
                 <input #pathInput [formControl]="pathControl" class="form-control m-auto" type="text"
-                    placeholder="{{'LAYERMANAGER.layerEditor.typeFolderName' | translateHs}}"
+                    placeholder="{{'LAYERMANAGER.layerEditor.typeFolderName' | translate}}"
                     aria-describedby="hs-move-to-folder-btn">
             </div>
             <div class="modal-footer">
                 <button class="btn btn-primary" style="width: 10rem;" type="button" id="hs-move-to-folder-btn"
                     (click)="yes()" [disabled]="!pathControl.valid">{{
                     'LAYERMANAGER.move' |
-                    translateHs}}</button>
+                    translate}}</button>
                 <button type="button" class="btn btn-secondary compositions-btn-cancel"
-                    [title]="'COMMON.back' | translateHs" (click)="no()" data-dismiss="modal">{{'COMMON.back' |
-                    translateHs
+                    [title]="'COMMON.back' | translate" (click)="no()" data-dismiss="modal">{{
+                    'COMMON.back' | translate
                     }}</button>
             </div>
         </div>

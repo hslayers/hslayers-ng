@@ -9,8 +9,7 @@
     }
     @if (!layerAvailable) {
     <span class="badge rounded-pill w-auto" [class.bg-danger]="layer().wfsWmsStatus === 'NOT_AVAILABLE'"
-      [class.bg-warning]="layer().wfsWmsStatus === 'PREPARING'"> {{layer().wfsWmsStatus | translateHs:{ 'module'
-      :'COMMON'} }}</span>
+      [class.bg-warning]="layer().wfsWmsStatus === 'PREPARING'"> {{'COMMON.' + layer().wfsWmsStatus | translate }}</span>
     }
   </div>
   @if (hsAddDataCatalogueService.selectedLayer?.id === layer().id) {
@@ -22,7 +21,7 @@
           <i class="fa-solid fa-plus icon-primary"></i>
           @if (layerAvailable) {
           <span class="ms-1">{{'COMMON.addToMap' |
-            translateHs }}</span>
+            translate }}</span>
           }
         </button>
         @if (layerAvailable) {
@@ -35,22 +34,22 @@
       </div>
       <a class="btn btn-sm border-0" (click)="showMetadata()">
         <i class="fa-solid fa-circle-info icon-primary"></i><span class="ms-1">{{'COMMON.metadata' |
-          translateHs }}</span>
+          translate }}</span>
       </a>
       <a class="btn btn-sm border-0" (click)="$event.stopPropagation();showPermissions()" data-toggle="tooltip"
         data-placement="bottom"
-        [title]="layer().editable ? '' : 'DATASOURCE_SELECTOR.datasourceListItem.notAllowedToEditLayer' | translateHs ">
+        [title]="layer().editable ? '' : 'DATASOURCE_SELECTOR.datasourceListItem.notAllowedToEditLayer' | translate ">
         <i class="fa-solid fa-lock icon-primary" [ngClass]="{'text-muted': !layer().editable}"
           [ngStyle]="{'cursor' : layer().editable ? 'pointer' : 'default'}"></i>@if (layer().editable) {
-        <span class="ms-1">{{'COMMON.setPermissions' | translateHs }}</span>
+        <span class="ms-1">{{'COMMON.setPermissions' | translate }}</span>
         }
       </a>
       <a class="btn btn-sm border-0" (click)="$event.stopPropagation();removeLayer()" data-toggle="tooltip"
         data-placement="bottom"
-        [title]="editable ? '' : 'DATASOURCE_SELECTOR.datasourceListItem.notAllowedToEditLayer' | translateHs ">
+        [title]="editable ? '' : 'DATASOURCE_SELECTOR.datasourceListItem.notAllowedToEditLayer' | translate ">
         <i class="fa-solid fa-trash text-danger" [ngClass]="editable ? 'text-danger' : 'text-muted'"
           [ngStyle]="{'cursor' : editable ? 'pointer' : 'default'}"></i>@if (editable) {
-        <span class="ms-1">{{'COMMON.removeLayer' | translateHs }}</span>
+        <span class="ms-1">{{'COMMON.removeLayer' | translate }}</span>
         }
       </a>
     </div>
@@ -61,14 +60,14 @@
       <!-- TODO: Remove function call from template -->
       <a class="btn btn-sm border-0 btn-secondary"
         [href]='hsAddDataCatalogueService.layerDownload(layer().endpoint, layer())' data-toggle="tooltip"
-        [title]="'COMMON.download' | translateHs "><i class="fa-solid fa-download"></i></a>
+        [title]="'COMMON.download' | translate "><i class="fa-solid fa-download"></i></a>
     </div>
   </div>
 </div>
 <div>
   <div [hidden]="!loadingInfo" class="list-group-item text-primary text-center py-2">
     <span class="pe-2 hs-loader hs-loader-dark"></span>
-    &emsp;{{'ADDDATA.CATALOGUE.loading' | translateHs }}
+    &emsp;{{'ADDDATA.CATALOGUE.loading' | translate }}
   </div>
   <div class="card bg-light align-items-center"
     [hidden]="!selectTypeToAddLayerVisible || loadingInfo || hsAddDataCatalogueService.selectedLayer?.id !== layer().id">
@@ -76,7 +75,7 @@
       <div class="px-3 py-2">
         <span class="btn btn-sm disabled border-0" disabled="true" aria-disabled="true">{{
           'COMMON.addAs' |
-          translateHs }}&nbsp;</span>
+          translate }}&nbsp;</span>
         <div class="btn-group btn-group-toggle h-100 pe-2 align-items-center" data-toggle="buttons">
           @for (type of whatToAddTypes; track type) {
           <label class="btn btn-sm btn-outline-secondary" style="width:6em" (click)="selectTypeAndAdd(type,$event)">
@@ -86,11 +85,11 @@
         </div>
         <a class="btn btn-sm border-0 px-0" style="margin-top: -1rem;"
           (click)="$event.stopPropagation();toggleExplanations()"
-          [title]="'DATASOURCE_SELECTOR.datasourceListItem.whatDoesItMean' | translateHs "> 
+          [title]="'DATASOURCE_SELECTOR.datasourceListItem.whatDoesItMean' | translate "> 
           <i class="fa-solid fa-circle-question text-primary"></i>
         </a>
       </div>
-      <a class="btn btn-sm border-0" [title]="'COMMON.close' | translateHs "
+      <a class="btn btn-sm border-0" [title]="'COMMON.close' | translate "
         (click)="$event.stopPropagation();abortAdd()" [hidden]="!selectTypeToAddLayerVisible">
         <i class="fa-solid fa-xmark text-danger"></i>
       </a>
@@ -99,7 +98,7 @@
       <ul class="ms-auto p-2 list-unstyled" [hidden]="!explanationsVisible">
         @for (type of whatToAddTypes; track type) {
         <li class="text-secondary small">
-          {{type}} &ndash; {{type | translateHs : 'ADDDATA.CATALOGUE.DESC' }}
+          {{type}} &ndash; {{'ADDDATA.CATALOGUE.DESC.' + type | translate }}
         </li>
         }
       </ul>

@@ -9,18 +9,18 @@ import {TranslateCustomPipe} from 'hslayers-ng/services/language';
     <button
       class="btn btn-primary w-100"
       [disabled]="disabled"
-      [title]="title | translateHs"
+      [title]="title | translate"
       (click)="addLayer()"
       [ngClass]="classes"
     >
       @if (!loading) {
         <span class="d-flex justify-content-center align-items-baseline gap-1">
-          <i class="fa-solid fa-plus"> </i>{{ 'COMMON.addToMap' | translateHs }}
+          <i class="fa-solid fa-plus"> </i>{{ 'COMMON.addToMap' | translate }}
         </span>
       } @else {
         <span>
           <span class="hs-loader"></span>&emsp;
-          {{ 'COMMON.uploading' | translateHs }}
+          {{ 'COMMON.uploading' | translate }}
         </span>
       }
       <ng-content></ng-content>

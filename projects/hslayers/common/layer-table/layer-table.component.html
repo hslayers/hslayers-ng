@@ -3,9 +3,9 @@
   <table class="table table-sm table-striped table-bordered hs-url-table">
     <thead class="bg-secondary text-light">
       <th style="width: 1.5em">&nbsp;</th>
-      <th>{{ "COMMON.title" | translateHs }}</th>
-      <!-- <th style="width:30%">{{'COMMON.name' | translateHs }}</th> -->
-      <th>{{ "COMMON.abstract" | translateHs }}</th>
+      <th>{{ "COMMON.title" | translate }}</th>
+      <!-- <th style="width:30%">{{'COMMON.name' | translate }}</th> -->
+      <th>{{ "COMMON.abstract" | translate }}</th>
     </thead>
     @for ( layer of data.layers | slice: 0 : limitShown; track layer.Name ) {
     <tbody>
@@ -29,7 +29,7 @@
         <td colspan="3">
           <div class="d-flex align-items-baseline px-2 w-100">
             <div class="d-flex align-items-baseline" style="flex-grow: 1">
-              <label class="control-label">{{ "COMMON.style" | translateHs }}:</label>
+              <label class="control-label">{{ "COMMON.style" | translate }}:</label>
               <select class="form-control form-select-sm form-select" [(ngModel)]="layer.styleSelected"
                 [ngModelOptions]="{ standalone: true }">
                 @for (style of layer.Style; track $index) {
@@ -56,13 +56,13 @@
     <thead>
       <th class="border-0" style="width: 1em">&nbsp;</th>
       <div class="d-flex justify-content-between">
-        <th class="border-0">{{ "COMMON.name" | translateHs }}</th>
+        <th class="border-0">{{ "COMMON.name" | translate }}</th>
         @if (type === "arcgis" && data.serviceExpanded) {
         <button type="button" class="btn btn-sm px-2 border-0 d-flex align-items-baseline gap-1" (click)="collapseServices()"
-          [title]="'COMMON.back' | translateHs">
+          [title]="'COMMON.back' | translate">
           <i class="fa-solid fa-chevron-left text-black-50"></i>
           <span class="text-black-50 fw-bold">{{
-            "COMMON.back" | translateHs
+            "COMMON.back" | translate
             }}</span>
         </button>
         }
@@ -76,7 +76,7 @@
             style="cursor: pointer" [(ngModel)]="service.checked" />
         </td>
         <td (click)="expandService(service)" data-toggle="tooltip"
-          [title]="'ADDDATA.requestServiceLayers' | translateHs" style="cursor: pointer">
+          [title]="'ADDDATA.requestServiceLayers' | translate" style="cursor: pointer">
           @if(service.icon){
             <i class="fa-solid px-1" [ngClass]="service.icon" [title]="service.type"></i>
           }
@@ -101,20 +101,20 @@
           <span>{{ layer[data.table.nameProperty] }}</span>
           <span class="hs-loader hs-loader-dark position-absolute end-0 bottom-0 me-3" [hidden]="!layer.loading"></span>
           @if (layer.featureCount === -9999) {
-          <span style="transform: translateY(50%)" [title]="'ADDLAYERS.WFS.featureCountError' | translateHs"
+          <span style="transform: translateY(50%)" [title]="'ADDLAYERS.WFS.featureCountError' | translate"
             class="align-items-center bottom-50 d-flex end-0 h-75 me-3 p-2 position-absolute rounded-1 text-bg-warning">i</span>
           }
           @if (layer.checked && type === "wmts") {
           <div class="d-flex flex-row justify-content-end align-items-baseline mt-1">
-            {{ "COMMON.addAs" | translateHs }}
+            {{ "COMMON.addAs" | translate }}
             <div class="btn-group ms-2">
               <button type="button" class="btn btn-sm btn-light btn-outline-secondary" (click)="layer.base = true"
                 [ngClass]="{ active: layer.base }">
-                {{ "COMPOSITONKEYWORDS.Basemap" | translateHs }}
+                {{ "COMPOSITONKEYWORDS.Basemap" | translate }}
               </button>
               <button type="button" class="btn btn-sm btn-light btn-outline-secondary" (click)="layer.base = false"
                 [ngClass]="{ active: !layer.base }">
-                {{ "COMMON.layer" | translateHs }}
+                {{ "COMMON.layer" | translate }}
               </button>
             </div>
           </div>
@@ -123,9 +123,9 @@
           <div class="alert alert-primary d-flex m-1" role="alert">
             <div class="w-100">
               <p class="mb-0" style="white-space: normal" [hidden]="!layer.limitFeatureCount">
-                {{ "ADDLAYERS.WFS.selectedLayerContains" | translateHs }}
+                {{ "ADDLAYERS.WFS.selectedLayerContains" | translate }}
                 {{ layer.featureCount }}
-                {{ "ADDLAYERS.WFS.loadingToManyAtOnce" | translateHs }}
+                {{ "ADDLAYERS.WFS.loadingToManyAtOnce" | translate }}
               </p>
             </div>
           </div>
@@ -141,11 +141,11 @@
     <span> {{ getLimitTextTranslation() }}</span>
     <div class="btn-group ms-2">
       <button type="button" class="btn btn-sm btn-light btn-outline-secondary" (click)="limitShown = limitShown + 100">
-        {{ "ADDDATA.CATALOGUE.showNext100" | translateHs }}
+        {{ "ADDDATA.CATALOGUE.showNext100" | translate }}
       </button>
       <button type="button" class="btn btn-sm btn-light btn-outline-secondary"
         (click)="limitShown = data.layers.length">
-        {{ "ADDDATA.CATALOGUE.showAll" | translateHs }}
+        {{ "ADDDATA.CATALOGUE.showAll" | translate }}
       </button>
     </div>
   </div>

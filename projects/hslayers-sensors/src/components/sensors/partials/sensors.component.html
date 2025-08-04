@@ -6,26 +6,26 @@
     }
     <div class="card-body">
       <p [hidden]="hsSensorsService.unitInUrl"> <input type="text" class="form-control"
-      [placeholder]="'COMMON.filter' | translateHs " [(ngModel)]="query.description"></p>
+      [placeholder]="'COMMON.filter' | translate " [(ngModel)]="query.description"></p>
       <div class="container">
         <div class="row" style="width: 662;">
           <div class="col-9">
             <button type="button" class="btn btn-sm" (click)="toggleComparisonAllowed()"
               [hidden]="hsSensorsService.unitInUrl"
               [ngClass]="hsSensorsUnitDialogService.comparisonAllowed  ? 'hs-checkmark' : 'hs-uncheckmark'">
-              <span class="ps-2">{{'SENSORS.comparison' | translateHs }}</span>
+              <span class="ps-2">{{'SENSORS.comparison' | translate }}</span>
             </button>
             <ul class="nav flex-column flex-sm-row" role="tablist">
               <!--<li class="nav-item">
               <a class="nav-link" ng-class="{'btn-primary': viewMode == 'sensors'}"
                 aria-controls="context" role="tab" data-toggle="tab" ng-click="setViewMode('sensors')"
-                >{{'SENSORS.sensors' | translateHs }}
+                >{{'SENSORS.sensors' | translate }}
               </a>
             </li>
             <li>
               <a class="nav-link" ng-class="{'btn-primary': viewMode == 'phenomena'}"
                 aria-controls="context" role="tab" data-toggle="tab" ng-click="setViewMode('phenomena')"
-                >{{'SENSORS.phenomena' | translateHs }}
+                >{{'SENSORS.phenomena' | translate }}
               </a>
             </li>-->
           </ul><!-- Tab panes -->
@@ -51,7 +51,7 @@
     }
     @else {
     <div class="alert alert-warning m-2 text-center" role="alert">
-      {{'SENSORS.noUnitsFound' | translateHs}}
+      {{'SENSORS.noUnitsFound' | translate}}
     </div>
     }
   </div>

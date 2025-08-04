@@ -9,13 +9,13 @@
     <div class="input-group input-group-sm">
       <span class="input-group-text" style="background-color: #FFFFFF;" [innerHtml]="svg">&#64;</span>
       <input type="text" class="form-control" (change)="hsStylerService.save();"
-        [placeholder]="'STYLER.untitledRule' | translateHs " [(ngModel)]="rule.name">
+        [placeholder]="'STYLER.untitledRule' | translate " [(ngModel)]="rule.name">
     </div>
   </div>
   <div>
     <span class="glyphicon m-2" [ngClass]="ruleVisible ? 'fa-solid fa-chevron-right' : 'fa-solid fa-chevron-down'"></span>
     <button class="btn btn-danger btn-sm me-0" (click)="hsStylerService.removeRule(rule)" data-toggle="tooltip"
-      [title]="'STYLER.removeRule' | translateHs  ">
+      [title]="'STYLER.removeRule' | translate  ">
       <i class="fa-solid fa-trash"></i>
     </button>
   </div>

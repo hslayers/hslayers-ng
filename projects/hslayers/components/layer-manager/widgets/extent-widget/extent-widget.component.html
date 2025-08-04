@@ -4,10 +4,10 @@
       <input id="hs-layer-extent-toggle" name="layer-extent-toggle" class="form-check-input" type="checkbox"
         (change)="toggleIgnoreExtent()" [checked]="ignoreExtent" />
       <label for="hs-layer-extent-toggle" class="form-check-label">{{
-        "LAYERMANAGER.layerEditor.ignoreExtent" | translateHs
+        "LAYERMANAGER.layerEditor.ignoreExtent" | translate
       }}</label>
       <i style="vertical-align: top;" class="fa-solid fa-circle-info hs-lm-queryable"
-        [title]="'LAYERMANAGER.layerEditor.ignoreExtentInfo' | translateHs  "
+        [title]="'LAYERMANAGER.layerEditor.ignoreExtentInfo' | translate  "
       (click)="$event.stopPropagation()"></i>
     </div>
   </div>

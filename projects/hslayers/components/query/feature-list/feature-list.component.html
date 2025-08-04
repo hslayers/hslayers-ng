@@ -4,10 +4,10 @@
       <div class="d-flex align-items-baseline w-100">
         <div class="d-flex align-items-baseline" style="flex: 1;">
           <p class="m-0" [ngStyle]="{'flex' : hsQueryBaseService.features.length > 1 ? '' : '1'}">
-            {{'QUERY.featuresSelected' | translateHs }}{{hsQueryBaseService.features.length}}
+            {{'QUERY.featuresSelected' | translate }}{{hsQueryBaseService.features.length}}
           </p>
           <button type="button" class="btn dropdown-toggle border-0 ms-2"
-            [title]="'HISTORY.toggleDropdown' | translateHs  "
+            [title]="'HISTORY.toggleDropdown' | translate  "
             (click)="selectedFeaturesVisible = !selectedFeaturesVisible">
           </button>
         </div>
@@ -18,14 +18,14 @@
                 (click)="toggleEditMenu()"><i class="fa-solid fa-gears"></i></button>
               <div ngbDropdownMenu [ngClass]="{'show': editMenuVisible}">
                 <a class="dropdown-item" (click)="editTypeSelected('copy')">{{'QUERY.feature.copyFeatures' |
-                  translateHs }}</a>
+                  translate }}</a>
                 <a class="dropdown-item" (click)="editTypeSelected('move')">{{'QUERY.feature.moveFeatures' |
-                  translateHs }}</a>
+                  translate }}</a>
               </div>
             </div>
             <div class="btn-group" ngbDropdown placement="bottom" display="dynamic">
               <button ngbDropdownToggle class="btn btn-secondary btn-sm rounded-0" type="button"
-                [title]="'QUERY.downloadAs' | translateHs  " (click)="toggleExportMenu()"><i
+                [title]="'QUERY.downloadAs' | translate  " (click)="toggleExportMenu()"><i
                 class="fa-solid fa-download"></i></button>
               <div ngbDropdownMenu [ngClass]="{'show': exportMenuVisible}">
                 @for (format of exportFormats; track format) {
@@ -38,7 +38,7 @@
               </div>
             </div>
             <button type="button" class="btn-danger btn btn-sm border-0"
-              [title]="'QUERY.deleteAllSelected' | translateHs  " (click)="removeAllSelectedFeatures()">
+              [title]="'QUERY.deleteAllSelected' | translate  " (click)="removeAllSelectedFeatures()">
               <i class="fa-solid fa-trash"></i>
             </button>
           </div>
@@ -48,14 +48,14 @@
         <div class="d-flex p-2 w-100">
           <div class="d-flex w-100 input-group input-group-sm align-items-baseline">
             <label for="selectedLayer" class="px-2">{{translateString('QUERY.feature',editType+'Features')}}
-            {{'COMMON.into' | translateHs }}:</label>
+            {{'COMMON.into' | translate }}:</label>
             <select class="form-control text-truncate" [(ngModel)]="selectedLayer" name="selectedLayer"
-              [title]="'ADDLAYERS.Vector.chooseLayer' | translateHs  ">
+              [title]="'ADDLAYERS.Vector.chooseLayer' | translate  ">
               <option [ngValue]="null" [disabled]="true" selected hidden> {{'ADDLAYERS.Vector.chooseLayer' |
-              translateHs }}</option>
+              translate }}</option>
               @for (layer of hsFeatureCommonService.availableLayer$ | async; track layer) {
                 <option [ngValue]="layer">
-                {{getTitle(layer) | translateHs : 'LAYERS' }}</option>
+                {{'LAYERS.' + getTitle(layer) | translate }}</option>
               }
             </select>
             <button class="btn btn-primary btn-sm" (click)="moveOrCopyFeature()" [disabled]="!selectedLayer"><i

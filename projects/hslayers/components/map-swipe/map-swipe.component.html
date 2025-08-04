@@ -4,13 +4,13 @@
     <button type="button" class="btn btn-sm hs-lm-item-visibility m-0 p-0"
       (click)="changeLayerVisibility(layer);$event.stopPropagation()"
     [ngClass]="layer.visible ? 'hs-checkmark' : 'hs-uncheckmark'"></button>
-    <p class="m-0 ps-1">{{layer.title | translateHs : 'LAYERS' }}</p>
+    <p class="m-0 ps-1">{{'LAYERS.' + layer.title | translate }}</p>
   </div>
 </ng-template>
 <!-- List placeholder template -->
 <ng-template #listPlaceholder>
   <div class="p-2" style="border: 1px solid #ddd; text-align: center; color: rgba(0,0,0,0.3);">
-    {{'MAP_SWIPE.noLayers' | translateHs }}
+    {{'MAP_SWIPE.noLayers' | translate }}
   </div>
 </ng-template>
 
@@ -20,7 +20,7 @@
     </hs-panel-header>
     <div class="card-body m-2">
       <div class="alert alert-info ps-2 text-center" role="alert">
-        {{'MAP_SWIPE.dndLayers' | translateHs }}
+        {{'MAP_SWIPE.dndLayers' | translate }}
       </div>
       <div class="d-flex justify-content-between gap-2 mb-2">
         <div class="btn-group align-items-center d-flex flex-grow-1" data-toggle="buttons">
@@ -28,19 +28,19 @@
             <button class="btn btn-sm  text-truncate h-100" type="button"
               (click)="setOrientation()" [disabled]="!hsMapSwipeService.swipeControlActive"
               [ngClass]="hsMapSwipeService.orientation === swipeOption ? 'btn-primary' : 'btn-secondary'">
-              {{swipeOption | translateHs :'MAP_SWIPE' }}
+              {{'MAP_SWIPE.' + swipeOption | translate }}
             </button>
           }
         </div>
         <div class="btn-group">
           <button class="btn btn-sm btn-secondary hs-map-swipe-reset" type="button" (click)="resetSwipePos()"
-            style="max-width: 15ch;" [title]="'MAP_SWIPE.resetSlider' | translateHs"
+            style="max-width: 15ch;" [title]="'MAP_SWIPE.resetSlider' | translate"
             [disabled]="!hsMapSwipeService.swipeControlActive">
             <i class="fa-solid fa-rotate-right"></i>
           </button>
           <button class="btn btn-sm" type="button" (click)="setControl()"
             [ngClass]="hsMapSwipeService.swipeControlActive ? 'active btn-danger' : 'btn-primary'">
-            {{getEnabledButtonString() | translateHs }}
+            {{getEnabledButtonString() | translate }}
           </button>
         </div>
       </div>
@@ -49,7 +49,7 @@
           <table class="table table-sm table-striped table-borderless p-1" style="table-layout: fixed;">
             <tbody>
               <tr style="text-align: center;">
-                <th colspan="2">{{'MAP_SWIPE.entireMap' | translateHs }}</th>
+                <th colspan="2">{{'MAP_SWIPE.entireMap' | translate }}</th>
               </tr>
               <tr class="mb-1">
                 <td colspan="2" cdkDropList #entireMapList="cdkDropList" (cdkDropListExited)="placeholders.entire = true"
@@ -70,11 +70,11 @@
               </tr>
               <tr style="text-align: center;">
                 @if (hsMapSwipeService.orientation === 'vertical') {
-                  <th>{{'MAP_SWIPE.leftSide' | translateHs }}</th>
-                  <th>{{'MAP_SWIPE.rightSide' | translateHs }}</th>
+                  <th>{{'MAP_SWIPE.leftSide' | translate }}</th>
+                  <th>{{'MAP_SWIPE.rightSide' | translate }}</th>
                 } @else {
-                  <th>{{'MAP_SWIPE.top' | translateHs }}</th>
-                  <th>{{'MAP_SWIPE.bottom' | translateHs }}</th>
+                  <th>{{'MAP_SWIPE.top' | translate }}</th>
+                  <th>{{'MAP_SWIPE.bottom' | translate }}</th>
                 }
               </tr>
               <tr>

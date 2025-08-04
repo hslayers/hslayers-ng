@@ -11,7 +11,7 @@ import {TranslateCustomPipe} from 'hslayers-ng/services/language';
     <div class="nav-item" [hidden]="(isVisible$ | async) === false">
       <button
         class="btn hs-toolbar-button btn-light text-secondary"
-        [title]="'TOOLBAR.measureLinesAndPolygon' | translateHs"
+        [title]="'TOOLBAR.measureLinesAndPolygon' | translate"
         (click)="measureButtonClicked()"
       >
         <i class="fa-solid fa-ruler"></i>

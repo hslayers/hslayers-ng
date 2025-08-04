@@ -1,12 +1,10 @@
-import {Injectable} from '@angular/core';
+import {Injectable, inject} from '@angular/core';
 import {lastValueFrom} from 'rxjs';
 
-import {
-  CustomTranslationService,
-  WebpackTranslateLoader,
-} from './custom-translate.service';
+import {WebpackTranslateLoader} from './custom-translate.service';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsLogService} from 'hslayers-ng/services/log';
+import {TranslateService} from '@ngx-translate/core';
 
 const DEFAULT_LANG = 'en' as const;
 
@@ -24,14 +22,14 @@ export class HsLanguageService {
    */
   langFromCMS: boolean;
 
-  constructor(
-    private translationService: CustomTranslationService,
-    private hsConfig: HsConfig,
-    private hsLog: HsLogService,
-  ) {
+  private translationService = inject(TranslateService);
+  private hsConfig = inject(HsConfig);
+  private hsLog = inject(HsLogService);
+
+  constructor() {
     this.hsConfig.configChanges.subscribe(() => {
       const translator = this.translationService;
-      if (!translator.defaultLang) {
+      if (!translator.getFallbackLang()) {
         // When config fetched via initializer service this gets in front of core service init method
         this.initLanguages();
       }
@@ -48,10 +46,12 @@ export class HsLanguageService {
       const currentLoader = translator.currentLoader as WebpackTranslateLoader;
       if (
         this.hsConfig.translationOverrides != undefined &&
-        !currentLoader.loadedViaInitializator.includes(translator.currentLang)
+        !currentLoader.loadedViaInitializer.includes(
+          translator.getCurrentLang(),
+        )
       ) {
-        if (translator?.currentLang) {
-          translator.reloadLang(translator.currentLang);
+        if (translator?.getCurrentLang()) {
+          translator.reloadLang(translator.getCurrentLang());
         }
       }
     });
@@ -65,7 +65,7 @@ export class HsLanguageService {
       ? this.hsConfig.enabledLanguages.split(',').map((lang) => lang.trim())
       : ['en', 'cs', 'sk'];
     this.translationService.addLangs(languages);
-    this.translationService.setDefaultLang('en');
+    this.translationService.setFallbackLang('en');
     const langToUse = this.getLangToUse();
     this.setLanguage(langToUse);
   }
@@ -76,7 +76,7 @@ export class HsLanguageService {
    */
   setLanguage(lang: string, retryCount = 0): void {
     this.getTranslator().use(lang);
-    if (this.getTranslator().currentLang !== lang) {
+    if (this.getTranslator().getCurrentLang() !== lang) {
       if (retryCount < 5) {
         this.hsLog.warn(
           `Setting language to: ${lang} failed. Retrying (${
@@ -95,7 +95,7 @@ export class HsLanguageService {
     this.language = lang;
   }
 
-  getTranslator(): CustomTranslationService {
+  getTranslator(): TranslateService {
     return this.translationService;
   }
 
@@ -152,7 +152,7 @@ export class HsLanguageService {
    */
   async awaitTranslation(str: string, params?: any): Promise<string> {
     const translator = this.translationService;
-    const lang = translator.currentLang;
+    const lang = translator.getCurrentLang();
     const MAX_CONFIG_POLLS = 10;
     let counter = 0;
     while (
@@ -212,6 +212,6 @@ export class HsLanguageService {
       this.translationService.getLangs().includes(documentLang);
     return this.langFromCMS
       ? documentLang
-      : this.hsConfig.language || this.translationService.getDefaultLang();
+      : this.hsConfig.language || this.translationService.getFallbackLang();
   }
 }

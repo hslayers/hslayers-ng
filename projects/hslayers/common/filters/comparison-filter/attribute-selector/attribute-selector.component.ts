@@ -27,7 +27,7 @@ import {TranslateCustomPipe} from 'hslayers-ng/services/language';
       [disabled]="disabled"
     >
       <option [ngValue]="null" [disabled]="true" hidden>
-        {{ 'FILTERS.pickAnAttribute' | translateHs }}
+        {{ 'FILTERS.pickAnAttribute' | translate }}
       </option>
       @for (attr of attributes(); track attr) {
         <option [ngValue]="attr">{{ attr }}</option>

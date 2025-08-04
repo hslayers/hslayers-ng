@@ -7,7 +7,7 @@
           <span class="fa-solid fa-rotate fa-spin"></span>
         </div>
         <div class="text-truncate">
-          <div class="hs-info-composition-title">{{'COMMON.loading' | translateHs }}: </div>
+          <div class="hs-info-composition-title">{{'COMMON.loading' | translate }}: </div>
           @for (layer of layer_loading; track $index) {
             <span>{{layer}} </span>
           }
@@ -18,21 +18,21 @@
       <div class="hs-info-composition" style="max-width: max-content;"
         >
         <div class="hs-info-composition-container">
-          <div class="hs-info-composition-title" [title]="'INFOCOMPONENT.viewComposeAndAnalyse' | translateHs ">
-          {{'INFOCOMPONENT.newMap' | translateHs }}</div>
+          <div class="hs-info-composition-title" [title]="'INFOCOMPONENT.viewComposeAndAnalyse' | translate ">
+          {{'INFOCOMPONENT.newMap' | translate }}</div>
         </div>
       </div>
     }
 
     <div class="hs-info-composition-edited" [hidden]="!composition_edited">
-      <span>{{'INFOCOMPONENT.youHaveUnsavedChanges' | translateHs }}</span>
+      <span>{{'INFOCOMPONENT.youHaveUnsavedChanges' | translate }}</span>
     </div>
 
     @if (compositionLoaded()) {
       <div class="hs-info-composition">
         <div class="hs-info-composition-container">
           <div class="hs-info-composition-title-container">
-            <div class="hs-info-composition-title">{{ 'COMMON.composition' | translateHs}}</div>
+            <div class="hs-info-composition-title">{{ 'COMMON.composition' | translate}}</div>
             <span class="text-truncate">: {{composition_title}}</span>
           </div>
           <div class="hs-info-composition-abstract text-truncate">{{composition_abstract}}</div>
