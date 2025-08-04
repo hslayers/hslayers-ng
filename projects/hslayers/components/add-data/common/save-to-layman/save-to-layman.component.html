@@ -1,25 +1,25 @@
 @if (data.type !== 'shp' && !data.type.includes('raster') ) {
 <div class="d-flex flex-row justify-content-between align-items-baseline mb-1 ps-4">
   <div>
-    {{'ADDDATA.saveToCatalogue' | translateHs }}
+    {{'ADDDATA.saveToCatalogue' | translate }}
     <a class="btn btn-sm border-0" (click)="$event.stopPropagation();toggleDescVisibility()"
-      [title]="'ADDDATA.saveToDbExplanation' | translateHs ">
+      [title]="'ADDDATA.saveToDbExplanation' | translate ">
       <i class="fa-solid fa-circle-info text-primary"></i>
     </a>
   </div>
   <div class="btn-group ms-2">
     <button type="button" class="btn btn-light  btn-outline-secondary" (click)="setSaveToLayman(true)"
       [ngClass]="{'active':data.saveToLayman}">
-      {{'COMMON.yes' | translateHs }}
+      {{'COMMON.yes' | translate }}
     </button>
     <button type="button" class="btn btn-light  btn-outline-secondary" (click)="setSaveToLayman(false)"
       [ngClass]="{'active': !data.saveToLayman}">
-      {{'COMMON.no' | translateHs }}
+      {{'COMMON.no' | translate }}
     </button>
   </div>
 </div>
 <div class="mb-1 ps-4 fst-italic text-secondary" [hidden]="!descriptionVisible">
-  {{'ADDDATA.saveToDbExplanation' | translateHs }}
+  {{'ADDDATA.saveToDbExplanation' | translate }}
 </div>
 }
 <div class="ps-4 mt-3">

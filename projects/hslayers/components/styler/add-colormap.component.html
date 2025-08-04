@@ -1,7 +1,7 @@
 <div class="form-group ps-2">
   <div class="form-inline">
     <label class="control-label" style="width: 100%; justify-content: left">{{
-      "LAYERMANAGER.layerEditor.interpolatedAttribute" | translateHs }}:</label>
+      "LAYERMANAGER.layerEditor.interpolatedAttribute" | translate }}:</label>
 
     <select class="form-control form-select" style="width: 100%" [(ngModel)]="weightAttribute"
       [ngModelOptions]="{standalone: true}" (change)="changeAttrib()">
@@ -17,7 +17,7 @@
 
   <div class="pb-3 pt-2 d-flex flex-column">
     <label class="form-label">{{
-      "LAYERMANAGER.layerEditor.nrOfCategories" | translateHs }}: {{categories}}</label>
+      "LAYERMANAGER.layerEditor.nrOfCategories" | translate }}: {{categories}}</label>
     <input type="range" min="4" max="16" step="1" class="inline mt-0" [(ngModel)]="categories"
       name="hs-colormap-categories" />
   </div>
@@ -25,23 +25,23 @@
   <div class="row g-3">
     <div class="col-md-6">
       <label class="form-label">{{
-        "LAYERMANAGER.layerEditor.min" | translateHs }}:</label>
+        "LAYERMANAGER.layerEditor.min" | translate }}:</label>
       <input class="form-control inline" [(ngModel)]="min" name="hsIdwMin" />
 
     </div>
     <div class="col-md-6">
       <label class="form-label">{{
-        "LAYERMANAGER.layerEditor.max" | translateHs }}:</label>
+        "LAYERMANAGER.layerEditor.max" | translate }}:</label>
       <input class="form-control" [(ngModel)]="max" name="hsIdwMax" />
     </div>
   </div>
 
   <div class="row g-3 p-2">
     <div class="col-md-6">
-      <button (click)="save()" class="btn btn-primary">{{"COMMON.apply" | translateHs }}</button>
+      <button (click)="save()" class="btn btn-primary">{{"COMMON.apply" | translate }}</button>
     </div>
     <div class="col-md-6">
-      <button (click)="cancel()" class="btn btn-outline-secondary">{{"COMMON.close" | translateHs }}</button>
+      <button (click)="cancel()" class="btn btn-outline-secondary">{{"COMMON.close" | translate }}</button>
     </div>
   </div>
 </div>

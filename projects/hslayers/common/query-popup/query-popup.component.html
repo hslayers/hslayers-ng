@@ -1,7 +1,7 @@
 <div [ngStyle]="popupVisible()" class="hs-hover-popup">
   <div class="card">
     <a class="p-1" (click)="data.service.closePopup()" data-toggle="tooltip"
-      [title]="'QUERY.featurePopup.closePopup' | translateHs">
+      [title]="'QUERY.featurePopup.closePopup' | translate">
       <i class="fa-solid fa-xmark"></i>
     </a>
     @for (layerDesc of data.service.featureLayersUnderMouse; track $index) {

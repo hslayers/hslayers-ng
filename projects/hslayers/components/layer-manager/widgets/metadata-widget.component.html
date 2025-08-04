@@ -5,13 +5,13 @@
       <div class="pt-2">
         @for (metadataUrl of metadataService.metadataArray(descriptor.layer); track metadataUrl) {
           <a class="card-href"
-            [href]="metadataUrl.onlineResource" target="_blank" [title]="'COMMON.metadata' | translateHs">
+            [href]="metadataUrl.onlineResource" target="_blank" [title]="'COMMON.metadata' | translate">
             <span [hidden]="!metadataUrl.type">
-              {{ "LAYERMANAGER.layerEditor.metadataOfLayer" | translateHs }}
+              {{ "LAYERMANAGER.layerEditor.metadataOfLayer" | translate }}
               {{ metadataUrl.type }}
             </span>
             <span [hidden]="metadataUrl.type">
-              {{ "LAYERMANAGER.layerEditor.metadataOfService" | translateHs }}
+              {{ "LAYERMANAGER.layerEditor.metadataOfService" | translate }}
             </span>
           </a>
         }
@@ -20,14 +20,14 @@
       @if (hasCopyright(descriptor.layer)) {
         <div>
           <a class="card-href" [href]="getAttribution(descriptor.layer.layer).onlineResource" target="_blank"
-            [title]="'LAYERMANAGER.layerEditor.copyright' | translateHs">
-          {{ "LAYERMANAGER.layerEditor.copyright" | translateHs }}</a>
+            [title]="'LAYERMANAGER.layerEditor.copyright' | translate">
+          {{ "LAYERMANAGER.layerEditor.copyright" | translate }}</a>
         </div>
       }
     </div>
   }
   <div class="form-group" [hidden]="!abstract">
-    <label>{{ "COMMON.abstract" | translateHs }}</label>
+    <label>{{ "COMMON.abstract" | translate }}</label>
     <p [innerHtml]="
         HsLayerManagerService.makeSafeAndTranslate('LAYERS', abstract)
       "></p><!-- TODO: Remove function call from template -->

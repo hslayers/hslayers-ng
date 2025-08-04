@@ -1,6 +1,6 @@
 <div class="form-inline hs-colorMap-picker-container position-relative py-1">
     <label class="control-label" style="width: 100%; justify-content: left">{{
-        "LAYERMANAGER.layerEditor.colorMap" | translateHs }}:</label>
+        "LAYERMANAGER.layerEditor.colorMap" | translate }}:</label>
     <div class="form-control form-select hs-colorMap-picker-select d-flex justify-content-between"
         (click)="menuVisible = !menuVisible" style="width: 100%" tabindex="0">
         <ng-container *ngTemplateOutlet="colorMapRow;context:{cm: _colorMap}"></ng-container>

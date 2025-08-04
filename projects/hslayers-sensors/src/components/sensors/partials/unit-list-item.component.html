@@ -4,7 +4,7 @@
     @for (sensorType of unit.sensorTypes; track sensorType) {
       <div class="list-group-item p-1">
         <a (click)="sensorType.expanded = !sensorType.expanded" class="hs-sensor-type"
-          style="line-height: 2em;">{{sensorType.name | translateHs : 'SENSORS.SENSORNAMES' }}
+          style="line-height: 2em;">{{'SENSORS.SENSORNAMES.' + sensorType.name | translate }}
         </a>
         <ul class="list-group" [hidden]="!sensorType.expanded">
           @for (sensor of sensorType.sensors; track sensor) {
@@ -17,13 +17,13 @@
                 <div class="d-flex align-items-center p-0 flex-grow-1 hs-lm-item-title">
                   @if (viewMode === 'sensornames') {
                     <a class="hs-sensor" (click)="sensorClicked(sensor)">
-                      <b>{{sensor.sensor_name | translateHs : 'SENSORS.SENSORNAMES' }}</b></a>
+                      <b>{{'SENSORS.SENSORNAMES.' + sensor.sensor_name | translate }}</b></a>
                     }
                     @if (viewMode === 'sensors') {
                       <a class="hs-sensor" (click)="sensorClicked(sensor)">
-                        <b>{{sensor.sensor_name | translateHs : 'SENSORS.SENSORNAMES' }}</b><span
+                        <b>{{'SENSORS.SENSORNAMES.' + sensor.sensor_name | translate }}</b><span
                         class="ms-1">{{'SENSORS.measure' |
-                      translateHs }}</span> {{sensor.phenomenon_name}}</a>
+                      translate }}</span> {{sensor.phenomenon_name}}</a>
                     }
                     @if (viewMode === 'phenomena') {
                       <a class="hs-sensor" (click)="sensorClicked(sensor)">
@@ -32,7 +32,7 @@
                   </div>
                   <div class="p-0">
                     <span class="badge bg-dark rounded-pill">{{sensor.lastObservationValue}} {{sensor.uom}}
-                      <br><small>{{'SENSORS.at' | translateHs }}
+                      <br><small>{{'SENSORS.at' | translate }}
                     {{sensor.lastObservationTimestamp}}</small></span>
                   </div>
                 </div>

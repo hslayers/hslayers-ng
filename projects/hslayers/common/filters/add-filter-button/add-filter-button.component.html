@@ -1,13 +1,13 @@
 @if (!rule()) {
   <div class="p-1">
     <div ngbDropdown class="d-inline-block" #menu="ngbDropdown">
-      <button class="btn btn-outline-primary btn-sm" [title]="'STYLER.addFilter' | translateHs" ngbDropdownToggle>
+      <button class="btn btn-outline-primary btn-sm" [title]="'STYLER.addFilter' | translate" ngbDropdownToggle>
         <span class="fa-solid fa-plus"></span>
       </button>
       <div ngbDropdownMenu>
         @for (filter of filterOptions; track filter) {
           <button ngbDropdownItem (click)="emitClick(filter); menu.close()">
-            {{ filter | translateHs : 'STYLER' }}
+            {{ 'STYLER.' + filter | translate }}
           </button>
         }
       </div>
@@ -18,7 +18,7 @@
     @for (filter of filterOptions; track filter) {
       <button class="btn btn-sm btn-outline-primary hs-add-filter-tab w-25 rounded-0"
         [class.text-bg-primary]="filter === activeTab" (click)="emitClick(filter)">
-        {{ filter | translateHs : 'STYLER' }}
+        {{ 'STYLER.' + filter | translate }}
       </button>
     }
   </div>

@@ -2,20 +2,20 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">{{'COMMON.warning' | translateHs }}</h4>
+                <h4 class="modal-title">{{'COMMON.warning' | translate }}</h4>
                 <button type="button" (click)="close()" class="btn-close" data-dismiss="modal"
-                    [attr.aria-label]="'COMMON.close' | translateHs">
+                    [attr.aria-label]="'COMMON.close' | translate">
                 </button>
             </div>
             <div class="modal-body" style="max-height: 600px; overflow-y: auto">
-                <br>{{'COMMON.name' | translateHs }}: <b>{{data.composition_title}}</b>
+                <br>{{'COMMON.name' | translate }}: <b>{{data.composition_title}}</b>
                 <hr>
-                <br>{{data.message | translateHs}}
-                <br>{{'COMPOSITIONS.dialogWarning.toContinue' | translateHs }}
+                <br>{{data.message | translate}}
+                <br>{{'COMPOSITIONS.dialogWarning.toContinue' | translate }}
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary compositions-btn-warning" (click)="close()"
-                    data-dismiss="modal">{{'COMMON.ignoreAndContinue' | translateHs }}</button>
+                    data-dismiss="modal">{{'COMMON.ignoreAndContinue' | translate }}</button>
             </div>
         </div>
     </div>

@@ -1,12 +1,12 @@
 @if (HsQueryBaseService.features.length === 0) {
   <div class="alert alert-info w-75 m-auto mt-3 text-center" role="alert"
     >
-    {{'DRAW.featureEditor.selectFeatureToEdit' | translateHs }}
+    {{'DRAW.featureEditor.selectFeatureToEdit' | translate }}
   </div>
 } @else {
   <span class="w-75 text-center bg-primary text-white p-2 rounded mb-2" style="--bs-bg-opacity: .8;"><span
-  class="text-decoration-underline">{{'DRAW.featureEditor.selectedFeature' | translateHs }}</span>
-{{'DRAW.featureEditor.featureCanBeEditedbyOptions' | translateHs }}:</span>
+  class="text-decoration-underline">{{'DRAW.featureEditor.selectedFeature' | translate }}</span>
+{{'DRAW.featureEditor.featureCanBeEditedbyOptions' | translate }}:</span>
 <div class="rounded-0 my-1 draw-buttons d-flex justify-content-center">
   @for (option of editOptions; track option) {
     <button class="btn btn-sm btn-light btn-outline-primary"
@@ -19,31 +19,31 @@
   <div class="d-flex flex-column align-items-center my-3 w-75 bg-secondary"
     style="--bs-bg-opacity: .02;">
     <div class="d-flex flex-column align-items-center border border-start-0 border-end-0 py-3 w-100">
-      {{'DRAW.featureEditor.drawNewFeature' | translateHs }}
+      {{'DRAW.featureEditor.drawNewFeature' | translate }}
       @if (selectedType !== 'split') {
         <button class="w-50 btn btn-sm btn-light btn-outline-primary"
           (click)="setType('Polygon')" [ngClass]="{active: HsDrawService.type==='Polygon' }"
-          [title]="'COMMON.polygon' | translateHs ">
+          [title]="'COMMON.polygon' | translate ">
           <i class="fa-solid fa-draw-polygon"></i>
         </button>
       }
       @if (selectedType === 'split') {
         <button class="w-50 btn btn-sm btn-light btn-outline-primary"
           [ngClass]="{active: HsDrawService.type==='LineString' }" (click)="setType('LineString')"
-          data-toggle="tooltip" [title]="'COMMON.line' | translateHs ">
+          data-toggle="tooltip" [title]="'COMMON.line' | translate ">
           <i class="fa-solid fa-slash"></i>
         </button>
       }
-      <span class="py-1"> {{'DRAW.featureEditor.orSelectOne' | translateHs }}
+      <span class="py-1"> {{'DRAW.featureEditor.orSelectOne' | translate }}
       </span>
       <button class="w-50 btn btn-sm btn-light btn-outline-primary" [ngClass]="{active: !HsDrawService.type }"
-        (click)="setType(HsDrawService.type)" data-toggle="tooltip" [title]="'COMMON.line' | translateHs ">
+        (click)="setType(HsDrawService.type)" data-toggle="tooltip" [title]="'COMMON.line' | translate ">
         <i class="fa-solid fa-arrow-pointer"></i>
       </button>
     </div>
     @if (selectedType) {
       <button class="btn btn-primary m-2 w-100" (click)="modify(selectedType)"
-        [disabled]="HsQueryBaseService.features.length < 2">{{'COMMON.continue' | translateHs }}:
+        [disabled]="HsQueryBaseService.features.length < 2">{{'COMMON.continue' | translate }}:
         {{HsLanguageService.getTranslationIgnoreNonExisting('DRAW.featureEditor.editOptions',selectedType,
       undefined)}}</button>
     }

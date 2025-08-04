@@ -4,7 +4,7 @@
     @if(hsQueryBaseService.featureInfoHtmls.length > 0) {
     <div ngbDropdown>
       <button ngbDropdownToggle class="btn btn-light w-100 rounded-0">
-        {{'QUERY.featureInfo' | translateHs }}
+        {{'QUERY.featureInfo' | translate }}
       </button>
       @for (html of hsQueryBaseService.featureInfoHtmls; track html) {
       <div ngbDropdownMenu class="position-relative w-100 px-1 mt-1" [innerHtml]="html"></div>

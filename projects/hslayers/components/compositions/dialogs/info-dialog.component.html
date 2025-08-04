@@ -4,12 +4,12 @@
       <div class="modal-header">
         <h4 class="modal-title" style="overflow-wrap: anywhere;"> {{data.info.title}} </h4>
         <button type="button" (click)="close()" class="btn-close" data-dismiss="modal"
-          [attr.aria-label]="'COMMON.close' | translateHs ">
+          [attr.aria-label]="'COMMON.close' | translate ">
         </button>
       </div>
       <div class="modal-body" style="max-height: 600px; overflow-y: auto">
         <div class="row" style="text-align: justify; text-justify: inter-word;">
-          <div class="col-md-3"><b>{{'COMMON.abstract' | translateHs }}</b></div>
+          <div class="col-md-3"><b>{{'COMMON.abstract' | translate }}</b></div>
           <div class="col-md-9">{{data.info.abstract}}</div>
         </div>
         @if (data.info.keywords) {
@@ -18,7 +18,7 @@
           <div>
             @if (first) {
             <div class="row">
-              <div class="col-md-3"><b>{{'COMMON.keywords' | translateHs }}</b></div>
+              <div class="col-md-3"><b>{{'COMMON.keywords' | translate }}</b></div>
               <div class="col-md-9">{{keyword}}</div>
             </div>
             }
@@ -34,14 +34,14 @@
         }
         @if (data.info.thumbnail) {
         <div class="row">
-          <div class="col-md-3"><b>{{'COMMON.thumbnail' | translateHs }}</b></div>
+          <div class="col-md-3"><b>{{'COMMON.thumbnail' | translate }}</b></div>
           <div class="col-md-9"><img [src]="data.info.thumbnail.url ? data.info.thumbnail.url : data.info.thumbnail">
           </div>
         </div>
         }
         @if (data.info.url && data.info) {
         <div class="row">
-          <div class="col-md-3"><b>{{'COMMON.url' | translateHs }}</b></div>
+          <div class="col-md-3"><b>{{'COMMON.url' | translate }}</b></div>
           <div class="col-md-9 ">
             <hs-clipboard-text [text]="data.info.url" />
           </div>
@@ -49,13 +49,13 @@
         }
         @if (data.info.srs) {
         <div class="row">
-          <div class="col-md-3"><b>{{'ADDLAYERS.srs' | translateHs }}</b></div>
+          <div class="col-md-3"><b>{{'ADDLAYERS.srs' | translate }}</b></div>
           <div class="col-md-9">{{data.info.srs}}</div>
         </div>
         }
         @if (data.info.extent) {
         <div class="row">
-          <div class="col-md-3"><b>{{'COMMON.extent' | translateHs }}</b></div>
+          <div class="col-md-3"><b>{{'COMMON.extent' | translate }}</b></div>
           <div class="col-md-9" style="word-break:break-all">{{data.info.extent}}</div>
         </div>
         }
@@ -65,7 +65,7 @@
           <div>
             @if (first) {
             <div class="row">
-              <div class="col-md-3"><b>{{'COMMON.layers' | translateHs }}</b></div>
+              <div class="col-md-3"><b>{{'COMMON.layers' | translate }}</b></div>
               <div class="col-md-9">{{layer.title}}</div>
             </div>
             }
@@ -81,7 +81,7 @@
         }
         <!-- <div *ngIf="data.info.metadata">
           <div class="row">
-            <div class="col"><b>{{'COMPOSITIONS.dialogInfo.metadataAboutMetadata' | translateHs }}</b></div>
+            <div class="col"><b>{{'COMPOSITIONS.dialogInfo.metadataAboutMetadata' | translate }}</b></div>
           </div>
           <div *ngFor="let metadata of data.info.metadata | keyvalue">
             <div class="row" *ngIf="metadata.value">
@@ -92,7 +92,7 @@
         </div> -->
         @if (data.info.contactAddress || data.info.contactPersonPrimary) {
         <div class="row">
-          <div class="col"><b>{{'COMMON.contactInformation' | translateHs }}</b></div>
+          <div class="col"><b>{{'COMMON.contactInformation' | translate }}</b></div>
         </div>
         }
         @if (data.info.contactAddress) {
@@ -131,7 +131,7 @@
           full metadata record <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
         }
         <button class="btn btn-secondary" (click)="close()" data-dismiss="modal">{{'COMMON.close' |
-          translateHs }}</button>
+          translate }}</button>
       </div>
     </div>
   </div>

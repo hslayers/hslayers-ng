@@ -35,14 +35,14 @@ import {getBase} from 'hslayers-ng/common/extensions';
         <div class="modal-content">
           <div class="modal-header">
             <h4 class="modal-title text-truncate">
-              {{ title | async | translateHs: 'LAYERS' }}
+              {{ 'LAYERS.' + (title | async) | translate }}
             </h4>
             <button
               type="button"
               (click)="close()"
               class="btn-close"
               data-dismiss="modal"
-              [attr.aria-label]="'COMMON.close' | translateHs"
+              [attr.aria-label]="'COMMON.close' | translate"
             ></button>
           </div>
           <div class="modal-body" style="overflow-y:auto">

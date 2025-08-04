@@ -2,7 +2,7 @@
   <div>
     <!-- TODO: Remove function call from template -->
     <p style="text-align: center; font-weight: bold">
-      {{'LAYERMANAGER.dimensions' | translateHs }}
+      {{'LAYERMANAGER.dimensions' | translate }}
     </p>
     @for (dimension of dimensions; track $index) {
       <div class="form-inline">
@@ -21,7 +21,7 @@
         }
         <!-- Time slider replaced by layermanger-time-editor component -->
         <div class="form-group" [hidden]="!dimensionIsTime(dimension)">
-          <label>{{'COMMON.date' | translateHs }}</label>
+          <label>{{'COMMON.date' | translate }}</label>
         </div>
         @if (dimension.type === 'datetime' || dimension.type === 'date') {
           <div class="input-group flex-fill">

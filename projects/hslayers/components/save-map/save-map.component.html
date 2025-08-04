@@ -3,7 +3,7 @@
   <hs-panel-header name="saveMap" [panelTabs]="'SAVECOMPOSITION'">
     @if (isAuthenticated() ) {
     <button mainButton class="btn btn-sm btn-outline-primary border-0 align-items-center d-flex gap-2"
-      (click)="saveCompoJson()"> {{'COMMON.download' | translateHs}}
+      (click)="saveCompoJson()"> {{'COMMON.download' | translate}}
       <i class="fa-solid fa-floppy-disk"></i>
     </button>
     }
@@ -16,11 +16,11 @@
     } @else {
     <div class="alert alert-info text-gray mt-5 d-flex flex-column align-items-center gap-3 text-center ">
       <i class="fa-solid fa-lock fs-1"></i>
-      {{'SAVECOMPOSITION.panelMd.youAreNotAuthorized' | translateHs }}
+      {{'SAVECOMPOSITION.panelMd.youAreNotAuthorized' | translate }}
       <hs-layman-current-user class="d-block" />
       <div class="divider"></div>
       <button mainButton type="button" class="btn btn-sm btn-outline-primary border-0 align-items-center d-flex gap-2"
-        (click)="localDownload = !localDownload"> {{'SAVECOMPOSITION.setupAndDownload' | translateHs}}
+        (click)="localDownload = !localDownload"> {{'SAVECOMPOSITION.setupAndDownload' | translate}}
         <i class="fa-solid fa-floppy-disk"></i>
       </button>
     </div>

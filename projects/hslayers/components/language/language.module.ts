@@ -17,27 +17,18 @@ import {
 } from 'hslayers-ng/common/panels';
 import {WebpackTranslateLoader} from 'hslayers-ng/services/language';
 
-export function getWebpackTranslateLoader(
-  hsConfig: HsConfig,
-  hsLog: HsLogService,
-  httpClient: HttpClient,
-): WebpackTranslateLoader {
-  return new WebpackTranslateLoader(hsConfig, hsLog, httpClient);
-}
-
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   declarations: [HsLanguageComponent],
   imports: [
     FormsModule,
     CommonModule,
-    TranslateModule,
     HsPanelHelpersModule,
     HsPanelHeaderComponent,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
-        useFactory: getWebpackTranslateLoader,
+        useClass: WebpackTranslateLoader,
         multi: false,
         deps: [HsConfig, HttpClient],
       },

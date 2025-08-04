@@ -18,7 +18,7 @@
       <td colspan="3">
         <div class="d-flex align-items-baseline px-2 w-100">
           <div class="d-flex align-items-baseline" style="flex-grow: 1;">
-            <label class="control-label">{{'COMMON.style' | translateHs }}:</label>
+            <label class="control-label">{{'COMMON.style' | translate }}:</label>
             <select class="form-control form-select-sm form-select" [(ngModel)]="sub_layer.styleSelected"
               [ngModelOptions]="{standalone: true}">
               @for (style of sub_layer.Style; track style) {
@@ -49,8 +49,8 @@
               </select>
             </div>
             } @else {
-            <span class="text-muted">{{'ADDLAYERS.unknownDimesion'|
-              translateHs }}: {{dimension.name}}</span>
+            <span class="text-muted">{{'ADDLAYERS.unknownDimesion'
+            | translate }}: {{dimension.name}}</span>
             }
           </div>
           }

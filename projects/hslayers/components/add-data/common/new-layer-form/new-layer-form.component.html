@@ -1,16 +1,16 @@
 <div>
 
   <div class="form-floating mb-3">
-    <input [placeholder]="'ADDDATA.URL.submitLayerName' | translateHs  " class="form-control" name="name"
+    <input [placeholder]="'ADDDATA.URL.submitLayerName' | translate  " class="form-control" name="name"
       [(ngModel)]="data.name" (ngModelChange)="data.title = data.name" />
-    <label for="name" class="capabilities_label control-label">{{'COMMON.name' | translateHs }}</label>
+    <label for="name" class="capabilities_label control-label">{{'COMMON.name' | translate }}</label>
 
   </div>
   <div class="form-floating mb-3">
-    <textarea class="form-control" id='hs-ows-abstract' [placeholder]="'COMMON.fillInDescriptive' | translateHs  "
+    <textarea class="form-control" id='hs-ows-abstract' [placeholder]="'COMMON.fillInDescriptive' | translate  "
       name="abstract" [(ngModel)]="data.abstract">
     </textarea>
-    <label for="absctract" class="capabilities_label control-label">{{'COMMON.abstract' | translateHs }}</label>
+    <label for="absctract" class="capabilities_label control-label">{{'COMMON.abstract' | translate }}</label>
 
   </div>
   <div class="d-flex w-100 flex-column">
@@ -22,11 +22,11 @@
            <option [ngValue]="epsg">{{epsg | epsg}}
         }
       </select>
-      <label for="hs-add-data-crs">{{'ADDLAYERS.srs' | translateHs }}</label>
+      <label for="hs-add-data-crs">{{'ADDLAYERS.srs' | translate }}</label>
     </div>
     }
   </div>
-  <p [hidden]="data?.srs"><sub class="text-danger">{{'ADDLAYERS.Vector.note' | translateHs }}</sub></p>
+  <p [hidden]="data?.srs"><sub class="text-danger">{{'ADDLAYERS.Vector.note' | translate }}</sub></p>
 
   @if (hsAddDataCommonFileService.isAuthenticated() && data.saveAvailable) {
   <!-- TODO: Remove function call from template -->
@@ -34,20 +34,20 @@
   }
   @if (data.type === 'shp' || data.type.includes('raster') || data.type === 'geojson') {
   <div class="d-flex justify-content-between align-items-center">
-    <p class="ps-4">{{'ADDLAYERS.SHP.SLDStyleFile' | translateHs }}</p>
+    <p class="ps-4">{{'ADDLAYERS.SHP.SLDStyleFile' | translate }}</p>
     <label class="dropzone-label">
       <input name="file" type="file" style="position: fixed;" [accept]="allowedStyles.list" class="inputfile"
         (change)="read({fileList: $event.target.files, uploader: 'style', dropped: false})" id="style">
       <label for="style" class="p-2 rounded" style="font-size: 1em;"
         [ngClass]="data.serializedStyle ? 'bg-success' : 'bg-primary'">
-        <i class="fa-solid fa-cloud-arrow-up p-2"></i>{{data.serializedStyle?.name ?? allowedStyles.title |translateHs}}</label>
+        <i class="fa-solid fa-cloud-arrow-up p-2"></i>{{data.serializedStyle?.name ?? allowedStyles.title |translate}}</label>
     </label>
   </div>
   }
 
   <button type="button" class="btn w-100 mt-2 btn-outline-secondary dropdown-toggle dropdown-toggle-split"
     (click)="advancedPanelVisible = !advancedPanelVisible">
-    {{'COMMON.advancedOptions' | translateHs }}
+    {{'COMMON.advancedOptions' | translate }}
   </button>
   @if (advancedPanelVisible) {
   <hs-advanced-options [data]="data"></hs-advanced-options>

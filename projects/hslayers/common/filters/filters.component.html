@@ -9,7 +9,7 @@
         {{hsFiltersService.humanReadableLogOp(rule.filter[0])}}<!-- TODO: Remove function call from template -->
       </div>
       <hs-add-filter-button (clicks)="add($event.type, true)"></hs-add-filter-button>
-      <button class="btn btn-outline-danger btn-sm m-1" [title]="'STYLER.removeFilter' | translateHs"
+      <button class="btn btn-outline-danger btn-sm m-1" [title]="'STYLER.removeFilter' | translate"
         (click)="remove()">
         <span class="fa-solid fa-trash"></span>
       </button>

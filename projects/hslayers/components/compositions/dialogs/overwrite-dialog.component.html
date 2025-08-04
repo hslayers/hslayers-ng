@@ -2,22 +2,22 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title">{{'COMPOSITIONS.dialogoverwriteConfirm.whatDoYouWant' | translateHs }}
+        <h4 class="modal-title">{{'COMPOSITIONS.dialogoverwriteConfirm.whatDoYouWant' | translate }}
         </h4>
         <button type="button" (click)="close()" class="btn-close" data-dismiss="modal"
-          [attr.aria-label]="'COMMON.close' | translateHs ">
+          [attr.aria-label]="'COMMON.close' | translate ">
         </button>
       </div>
       <div class="container py-2 gap-2 d-flex flex-column" style="max-height: 600px; overflow-y: auto">
         <div class="row">
           <div class="col-5" style="text-align: right;">
-          {{'COMPOSITIONS.dialogoverwriteConfirm.youAreOpeningMap' | translateHs }}:</div>
+          {{'COMPOSITIONS.dialogoverwriteConfirm.youAreOpeningMap' | translate }}:</div>
           <div class="fw-bold col-5 flex-grow-1">{{data.title}}</div>
         </div>
         @if (data.workspace) {
           <div class="row">
             <div class="col-5" style="text-align: right;">
-              {{'COMMON.createdBy' | translateHs }}:
+              {{'COMMON.createdBy' | translate }}:
             </div>
             <div class="col-5 flex-grow-1">
               {{data.workspace}}
@@ -26,7 +26,7 @@
         }
         <div class="row">
           <div class="col-5" style="text-align: right;">
-            {{'COMMON.abstract' | translateHs }}:
+            {{'COMMON.abstract' | translate }}:
           </div>
           <div class="col-5 flex-grow-1">
             {{data.abstract}}
@@ -34,7 +34,7 @@
         </div>
         <div class="row">
           <div class="col-5" style="text-align: right;">
-            {{'COMMON.date' | translateHs }}:
+            {{'COMMON.date' | translate }}:
           </div>
           <div class="col-5">
             {{data.date}}
@@ -44,19 +44,19 @@
       </div>
       <div class="modal-footer flex-nowrap">
         <button type="button" class="btn btn-primary compositions-btn-overwrite align-self-stretch"
-          (click)="overwrite()" data-dismiss="modal">{{'SAVECOMPOSITION.form.overwrite' | translateHs
+          (click)="overwrite()" data-dismiss="modal">{{'SAVECOMPOSITION.form.overwrite' | translate
         }}</button>
         <button type="button" class="btn btn-primary compositions-btn-add" (click)="add();"
           data-dismiss="modal">{{'COMPOSITIONS.dialogoverwriteConfirm.mergeCompositions' |
-        translateHs}}</button>
+        translate}}</button>
         @if (hsCompositionParserService.composition_edited) {
           <button type="button"
             class="btn btn-primary compositions-btn-save" (click)="save()" style="white-space: break-spaces;"
             data-dismiss="modal">{{'COMPOSITIONS.dialogoverwriteConfirm.saveChangesFirst' |
-          translateHs}}</button>
+          translate}}</button>
         }
         <button type="button" class="btn btn-secondary compositions-btn-cancel align-self-stretch"
-        (click)="close()" data-dismiss="modal">{{'COMMON.cancel' | translateHs }}</button>
+        (click)="close()" data-dismiss="modal">{{'COMMON.cancel' | translate }}</button>
       </div>
     </div>
   </div>

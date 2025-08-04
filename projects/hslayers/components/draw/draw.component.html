@@ -2,7 +2,7 @@
 <div class="card hs-main-panel" [ngClass]="panelWidthClass">
   <hs-panel-header name="draw" [selectedTab$]="selectedOption" [panelTabs]="'draw,edit'">
     <button mainButton class="btn btn-sm" style="cursor: help" data-toggle="tooltip"
-      [title]="'DRAW.drawInfo' | translateHs ">
+      [title]="'DRAW.drawInfo' | translate ">
       <i class="fa-solid fa-circle-question"></i>
     </button>
   </hs-panel-header>
@@ -26,11 +26,11 @@
       <ol>
         @for (layer of HsDrawService.pendingLayers(); track layer) {
         <li>
-          {{'DRAW.loadingLayer' | translateHs }} <strong>{{layer}}</strong>
+          {{'DRAW.loadingLayer' | translate }} <strong>{{layer}}</strong>
         </li>
         }
       </ol>
-      {{'DRAW.longerLoading' | translateHs }}
+      {{'DRAW.longerLoading' | translate }}
       <div class="d-flex justify-content-center pt-3">
         <span class="hs-loader hs-loader-dark"></span>
       </div>

@@ -4,17 +4,17 @@
     </hs-panel-header>
     <div class="card-body p-2">
       <div class="mb-2">
-        {{'MEASURE.multipleShapes' | translateHs }}
+        {{'MEASURE.multipleShapes' | translate }}
         <div class="btn-group btn-group-toggle">
           <label class="btn btn-sm btn-secondary" [ngClass]="{'active': hsMeasureService.data.multipleShapeMode === true}"
             for="hs-measure-multiple-true">
-            {{'COMMON.on' | translateHs | uppercase}}
+            {{'COMMON.on' | translate | uppercase}}
             <input type="radio" name="multiple" id="hs-measure-multiple-true" [value]="true"
               [(ngModel)]="hsMeasureService.data.multipleShapeMode">
           </label>
           <label class="btn btn-sm btn-secondary"
             [ngClass]="{'active': hsMeasureService.data.multipleShapeMode === false}" for="hs-measure-multiple-false">
-            {{'COMMON.off' | translateHs | uppercase}}
+            {{'COMMON.off' | translate | uppercase}}
             <input type="radio" name="multiple" id="hs-measure-multiple-false" [value]="false"
               [(ngModel)]="hsMeasureService.data.multipleShapeMode">
           </label>
@@ -22,17 +22,17 @@
       </div>
       <div class="btn-group btn-group-toggle mb-2">
         <label class="btn btn-secondary" [ngClass]="{'active': type === 'distance'}" for="hs-measure-distance">
-          {{'COMMON.distance' | translateHs }}
+          {{'COMMON.distance' | translate }}
           <input type="radio" name="type" id="hs-measure-distance" value="distance" [(ngModel)]="type"
             (ngModelChange)="changeMeasureParams()">
         </label>
         <label class="btn btn-secondary" [ngClass]="{'active': type === 'area'}" for="hs-measure-area">
-          {{'COMMON.area' | translateHs }}
+          {{'COMMON.area' | translate }}
           <input type="radio" name="type" id="hs-measure-area" value="area" [(ngModel)]="type"
             (ngModelChange)="changeMeasureParams()">
         </label>
       </div>
-      <button class="btn btn-secondary float-end" (click)="clearAll()">{{'COMMON.clear' | translateHs
+      <button class="btn btn-secondary float-end" (click)="clearAll()">{{'COMMON.clear' | translate
       }}</button>
       <ul class="list-group">
         @for (measurement of hsMeasureService.data.measurements; track measurement) {

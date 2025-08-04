@@ -7,7 +7,7 @@
           type="button"
           disabled>
           <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
-          <span>{{'AUTH.signingIn' | translateHs }}</span>
+          <span>{{'AUTH.signingIn' | translate }}</span>
         </button>
       } @else {
         <button 
@@ -15,7 +15,7 @@
           (click)="login()"
           type="button">
           <i class="fa-solid fa-sign-in-alt me-2"></i>
-          {{'COMPOSITIONS.loginToCatalogue' | translateHs }}
+          {{'COMPOSITIONS.loginToCatalogue' | translate }}
         </button>
       }
     } @else {
@@ -36,14 +36,14 @@
               </div>
               <div>
                 <h6 class="mb-0">{{hsCommonLaymanService.user()}}</h6>
-                <small class="text-muted">{{'AUTH.loggedIn' | translateHs }}</small>
+                <small class="text-muted">{{'AUTH.loggedIn' | translate }}</small>
               </div>
             </div>
           </div>
           <div class="p-2">
             <button ngbDropdownItem (click)="logout()" class="text-danger">
               <i class="fa-solid fa-sign-out-alt me-2"></i>
-              {{'AUTH.Logout' | translateHs }}
+              {{'AUTH.Logout' | translate }}
             </button>
           </div>
         </div>

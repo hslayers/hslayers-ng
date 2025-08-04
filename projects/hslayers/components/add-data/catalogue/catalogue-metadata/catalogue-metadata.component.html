@@ -3,10 +3,10 @@
     <div class="modal-content">
       <div class="modal-header">
         <h4 class="modal-title">
-          {{'DATASOURCE_SELECTOR.metadataFor' | translateHs }} {{ selectedLayer().title}}
+          {{'DATASOURCE_SELECTOR.metadataFor' | translate }} {{ selectedLayer().title}}
         </h4>
         <button type="button" (click)="close()" class="btn-close" data-dismiss="modal"
-          [attr.aria-label]="'COMMON.close' | translateHs "></button>
+          [attr.aria-label]="'COMMON.close' | translate "></button>
       </div>
       <div class="modal-body" style="max-height:400px; overflow-y:auto">
         @if (selectedLayer().thumbnail) {
@@ -23,7 +23,7 @@
           @for (type of availableTypes(); track type) {
           <button type="button" class="btn btn-primary ms-2 d-flex gap-2 align-items-center"
             (click)="addLayerToMap(type)" data-dismiss="modal">
-            <span class="fa-solid fa-plus"></span><span>{{'DATASOURCE_SELECTOR.addToMapAs' | translateHs }}
+            <span class="fa-solid fa-plus"></span><span>{{'DATASOURCE_SELECTOR.addToMapAs' | translate }}
               {{type}}</span>
           </button>
           }
@@ -32,7 +32,7 @@
         <div class="d-flex w-100 justify-content-between">
           @if (metadataUrl()) {
           <a target="_blank" [href]="metadataUrl()" class="btn btn-primary"
-            (click)="close()">{{'DATASOURCE_SELECTOR.seeFullRecord' | translateHs}} <i
+            (click)="close()">{{'DATASOURCE_SELECTOR.seeFullRecord' | translate}} <i
               class="fa-solid fa-up-right-from-square"></i></a>
           }
           <div class="d-flex gap-2">
@@ -45,10 +45,10 @@
             <button type="button" class="btn btn-success" [hidden]="bbox() === undefined"
               (click)="zoomTo()">{{'LAYERMANAGER.layerEditor.zoomToLayer'
               |
-              translateHs }}</button>
+              translate }}</button>
             <button type="button" class="btn btn-secondary" (click)="close()" data-dismiss="modal"
-              [title]="'COMMON.close' | translateHs ">
-              {{'COMMON.close' | translateHs }}
+              [title]="'COMMON.close' | translate ">
+              {{'COMMON.close' | translate }}
             </button>
           </div>
         </div>

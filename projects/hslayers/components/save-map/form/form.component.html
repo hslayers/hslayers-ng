@@ -3,24 +3,24 @@
   <div class="hs-form-thumbnail-container d-flex flex-reverse align-items-center mb-3 justify-content-between">
     <hs-layman-current-user class="d-block pb-5" />
     <img #compositionThumbnail class="hs-stc-thumbnail img-thumbnail mt-1 d-block"
-      [alt]="'SAVECOMPOSITION.compositionThumbnail' | translateHs " width="200" height="200">
+      [alt]="'SAVECOMPOSITION.compositionThumbnail' | translate " width="200" height="200">
   </div>
 
   <div class="form-floating mb-2">
     <input type="text" class="form-control" formControlName="name"
       [class.is-invalid]="hsSaveMapManagerService.compoData.controls.name.invalid  && compoForm.submitted"
-      name="hs-save-map-name" [placeholder]="'COMMON.name' | translateHs  ">
-    <label for="hs-save-map-name">{{'COMMON.name' | translateHs }} *</label>
+      name="hs-save-map-name" [placeholder]="'COMMON.name' | translate  ">
+    <label for="hs-save-map-name">{{'COMMON.name' | translate }} *</label>
   </div>
   <div class="form-floating mb-2">
     <textarea formControlName="abstract" class="form-control" name="hs-save-map-abstract"
       [class.is-invalid]="hsSaveMapManagerService.compoData.controls.abstract.invalid  && compoForm.submitted"
-      [placeholder]="'COMMON.abstract' | translateHs  "></textarea>
-    <label for="hs-save-map-abstract">{{'COMMON.abstract' | translateHs }} *</label>
+      [placeholder]="'COMMON.abstract' | translate  "></textarea>
+    <label for="hs-save-map-abstract">{{'COMMON.abstract' | translate }} *</label>
   </div>
   <div class="form-floating mb-2">
-    <input type="text" class="form-control" name="hs-save-map-keywords" [placeholder]="'COMMON.keywords' | translateHs">
-    <label for="hs-save-map-keywords">{{'COMMON.keywords' | translateHs }}</label>
+    <input type="text" class="form-control" name="hs-save-map-keywords" [placeholder]="'COMMON.keywords' | translate">
+    <label for="hs-save-map-keywords">{{'COMMON.keywords' | translate }}</label>
   </div>
 
   @if(!local()) {
@@ -31,7 +31,7 @@
 
   <div class="mb-2 d-flex justify-content-center">
     <button type="button" class="btn btn-secondary me-2 w-50 dropdown-toggle" id="stc-advanced-options"
-      (click)="setExtraFormTo('advancedOptions')">{{'COMMON.advancedOptions' | translateHs }}</button>
+      (click)="setExtraFormTo('advancedOptions')">{{'COMMON.advancedOptions' | translate }}</button>
   </div>
   <hs-save-map-advanced-options [thumbnail]="compositionThumbnail"
     [hidden]="extraFormOpened !== 'advancedOptions'"></hs-save-map-advanced-options>
@@ -40,7 +40,7 @@
   <ng-template #contextTooltipContent>
     <div class="d-flex align-items-center p-1" style="text-align: left;">
       <i [class]="contextTooltipText().iconClass + ' me-2 fs-5'"></i>
-      <span>{{ contextTooltipText().text | translateHs:{workspace: compoWorkspace()} }}</span>
+      <span>{{ contextTooltipText().text | translate:{workspace: compoWorkspace()} }}</span>
     </div>
   </ng-template>
 
@@ -50,7 +50,7 @@
     @if(local()) {
     <button mainButton type="button" class="btn btn-sm btn-outline-primary border-0 align-items-center d-flex gap-2"
       (click)="download.emit()">
-      {{'COMMON.download' | translateHs}}
+      {{'COMMON.download' | translate}}
       <i class="fa-solid fa-floppy-disk"></i>
     </button>
     }
@@ -68,19 +68,19 @@
       @case ('overwrite') {
       <button type="button" class="btn btn-warning" (click)="initiateSave(false)" id="btn-overwrite">
         <i class="fa-solid fa-rotate-right me-1"></i>
-        {{'COMMON.update' | translateHs }}
+        {{'COMMON.update' | translate }}
       </button>
       }
       @case ('rename') {
       <button type="button" class="btn btn-success" id="btn-create-new" (click)="rename()">
         <i class="fa-solid fa-pencil me-1"></i>
-        {{'SAVECOMPOSITION.form.changeName' | translateHs }}
+        {{'SAVECOMPOSITION.form.changeName' | translate }}
       </button>
       }
       @case ('save') {
       <button type="submit" class="btn btn-success" id="btn-create-new">
         <i class="fa-solid fa-plus me-1"></i>
-        {{'SAVECOMPOSITION.form.saveAsNew' | translateHs }}
+        {{'SAVECOMPOSITION.form.saveAsNew' | translate }}
       </button>
       }
       }

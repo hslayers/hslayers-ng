@@ -4,20 +4,20 @@
       <div class="modal-header d-flex flex-column" style="height: auto">
         <div class="d-flex w-100 align-items-center">
           <h4 class="modal-title">
-            {{'COMMON.newDrawingLayer' | translateHs }}
+            {{'COMMON.newDrawingLayer' | translate }}
           </h4>
           <button type="button" (click)="cancel()" class="btn-close" data-dismiss="modal"
-            [attr.aria-label]="'COMMON.close' | translateHs ">
+            [attr.aria-label]="'COMMON.close' | translate ">
           </button>
         </div>
         <p class="m-0 p-0" style="font-size: 0.75rem; color: red;">
-        {{'DRAW.drawLayerMetadata.layerWillBeAdded' | translateHs }}</p>
+        {{'DRAW.drawLayerMetadata.layerWillBeAdded' | translate }}</p>
       </div>
       @if (!hsCommonLaymanService.isAuthenticated() && hsDrawService.laymanEndpoint !== undefined) {
         <div
           class="alert alert-danger" role="alert">
           <p class="text-center">
-            {{'DRAW.notAuthorized' | translateHs }}
+            {{'DRAW.notAuthorized' | translate }}
           </p>
           <hs-layman-current-user/>
         </div>
@@ -27,11 +27,11 @@
           >
           <button type="button" class="btn btn-sm rounded  hs-toolbar-button" (click)="type = 'draw'"
             [ngClass]="type === 'draw' ? 'btn-primary' : 'btn-secondary'">
-            {{'DRAW.drawToolbar.addDrawLayer' | translateHs }}
+            {{'DRAW.drawToolbar.addDrawLayer' | translate }}
           </button>
           <button type="button" class="btn ms-1 btn-sm rounded hs-toolbar-button" (click)="type = 'layman'"
             [ngClass]="type === 'layman' ? 'btn-primary' : 'btn-secondary'">
-            {{'DRAW.drawLayerMetadata.loadServerLayers' | translateHs }}
+            {{'DRAW.drawLayerMetadata.loadServerLayers' | translate }}
           </button>
         </div>
       }
@@ -40,31 +40,31 @@
           <form>
             <div class="form-floating mb-3">
               <input class="form-control" [(ngModel)]="title" (ngModelChange)="titleChanged()" name="title"
-                [placeholder]="'DRAW.drawLayerMetadata.layerTitle' | translateHs " />
+                [placeholder]="'DRAW.drawLayerMetadata.layerTitle' | translate " />
               <label for="title" class="control-label">{{'DRAW.drawLayerMetadata.layerTitle' |
-              translateHs }}</label>
+              translate }}</label>
             </div>
             @if (hsCommonLaymanService.isAuthenticated()) {
               <hs-layman-access-rights [(access_rights)]="access_rights"/>
             }
             <div class="flex-row w-75 align-items-center" style="display: flex;">
               <a class="p-1 mb-1" (click)="folderVisible = !folderVisible">{{'COMMON.advancedOptions' |
-              translateHs }}</a>
+              translate }}</a>
             </div>
             <div [hidden]="!folderVisible">
-              <div class="form-floating mb-3" [title]="'DRAW.drawLayerMetadata.nameOfFolder' | translateHs ">
+              <div class="form-floating mb-3" [title]="'DRAW.drawLayerMetadata.nameOfFolder' | translate ">
                 <input class="form-control" [(ngModel)]="path" (ngModelChange)="pathChanged()" name="path"
-                  [placeholder]="'COMMON.folder' | translateHs " />
-                <label for="path" class="control-label">{{'COMMON.folder' | translateHs
+                  [placeholder]="'COMMON.folder' | translate " />
+                <label for="path" class="control-label">{{'COMMON.folder' | translate
                 }}</label>
               </div>
               <div class="card">
-                <h5 class="card-header">{{'DRAW.drawLayerMetadata.defaultAttributes' | translateHs}}</h5>
+                <h5 class="card-header">{{'DRAW.drawLayerMetadata.defaultAttributes' | translate}}</h5>
                 <div class="card-body">
                   <table class="table table-condensed">
                     <tr>
-                      <th>{{'COMMON.attribute' | translateHs }}</th>
-                      <th>{{'DRAW.drawLayerMetadata.defaultValue' | translateHs }}
+                      <th>{{'COMMON.attribute' | translate }}</th>
+                      <th>{{'DRAW.drawLayerMetadata.defaultValue' | translate }}
                       </th>
                     </tr>
                     @for (attr of attributes; track attr) {
@@ -89,7 +89,7 @@
                 >
                 <div class=" bg-primary w-100 text-light m-0 p-1">
                   <div class="d-flex justify-content-between m-1">
-                    {{'DRAW.serverLayers' | translateHs }}
+                    {{'DRAW.serverLayers' | translate }}
                     <span (click)="onlyMineFilterVisible = !onlyMineFilterVisible" style="cursor: pointer;">
                       <i class="fa-solid fa-gears"></i>
                     </span>
@@ -100,7 +100,7 @@
                       <label class="m-0">
                         <input type="checkbox" name="onlyMine" [(ngModel)]="hsDrawService.onlyMine"
                           (ngModelChange)="hsDrawService.fillDrawableLayers(); onlyMineFilterVisible = !onlyMineFilterVisible">
-                        {{'COMPOSITIONS.onlyMine' | translateHs }}
+                        {{'COMPOSITIONS.onlyMine' | translate }}
                       </label>
                     </div>
                   }
@@ -113,7 +113,7 @@
                       <b><a data-toggle="tooltip" [title]="layer.description">{{layer.title}}</a></b>
                       <span class="float-right">
                         <button type="button" class="btn btn-sm btn-primary" (click)="selectLayer(layer)"
-                          data-toggle="tooltip" [title]="'COMMON.addToMap' | translateHs "><i
+                          data-toggle="tooltip" [title]="'COMMON.addToMap' | translate "><i
                         class="fa-solid fa-plus"></i></button>
                       </span>
                     </li>
@@ -128,11 +128,11 @@
         @if (type === 'draw') {
           <button type="button" class="btn btn-primary" data-dismiss="modal"
             (click)="confirm()" data-test="Confirm add layer">{{'DRAW.drawToolbar.addLayer' |
-          translateHs}}</button>
+          translate}}</button>
         }
         <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="cancel()"
           data-test="Cancel add layer">{{'COMMON.cancel'
-        | translateHs }}</button>
+        | translate }}</button>
       </div>
     </div>
   </div>

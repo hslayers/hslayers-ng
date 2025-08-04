@@ -2,24 +2,24 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title">{{'COMMON.renameLayer' | translateHs}}</h4>
+        <h4 class="modal-title">{{'COMMON.renameLayer' | translate}}</h4>
         <button type="button" (click)="close()" class="btn-close" data-dismiss="modal"
-          [attr.aria-label]="'COMMON.close' | translateHs ">
+          [attr.aria-label]="'COMMON.close' | translate ">
         </button>
       </div>
       <div class="modal-body" style="overflow-y:auto">
         <div class="form-floating m-2">
-          <input class="form-control" name="name" [(ngModel)]="newLayerName" [placeholder]="'COMMON.name' | translateHs"
+          <input class="form-control" name="name" [(ngModel)]="newLayerName" [placeholder]="'COMMON.name' | translate"
             (keyup)="handleKeyUp($event)" />
-          <label for="name" class="capabilities_label control-label">{{'COMMON.name' | translateHs}}</label>
+          <label for="name" class="capabilities_label control-label">{{'COMMON.name' | translate}}</label>
         </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-primary compositions-btn-overwrite" (click)="continue()"
-          data-dismiss="modal" [disabled]="!newLayerName">{{'COMMON.continue' | translateHs }}</button>
+          data-dismiss="modal" [disabled]="!newLayerName">{{'COMMON.continue' | translate }}</button>
 
         <button type="button" class="btn btn-secondary compositions-btn-cancel" (click)="close()"
-          data-dismiss="modal">{{'COMMON.cancel' | translateHs }}</button>
+          data-dismiss="modal">{{'COMMON.cancel' | translate }}</button>
       </div>
     </div>
   </div>

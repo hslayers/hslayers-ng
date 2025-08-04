@@ -3,22 +3,20 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">
-                    {{data.title | translateHs}}
+                    {{data.title | translate}}
                 </h4>
                 <button type="button" (click)="no()" class="btn-close" data-dismiss="modal"
-                    [attr.aria-label]="'COMMON.close' | translateHs "></button>
+                    [attr.aria-label]="'COMMON.close' | translate "></button>
             </div>
             <div class="modal-body" style="overflow-y:auto">
-                <p class="fw-bold h6">{{data.message | translateHs}}</p>
-                <p class="h6 small">{{data.note | translateHs}}</p>
+                <p class="fw-bold h6">{{data.message | translate}}</p>
+                <p class="h6 small">{{data.note | translate}}</p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" (click)="yes()" [title]="'COMMON.yes' | translateHs"
-                    data-dismiss="modal">{{'COMMON.yes' |
-                    translateHs}}</button>
+                <button type="button" class="btn btn-primary" (click)="yes()" [title]="'COMMON.yes' | translate"
+                    data-dismiss="modal">{{'COMMON.yes' | translate}}</button>
                 <button type="button" class="btn btn-secondary compositions-btn-cancel"
-                    [title]="'COMMON.no' | translateHs" (click)="no()" data-dismiss="modal">{{'COMMON.no' |
-                    translateHs }}</button>
+                    [title]="'COMMON.no' | translate" (click)="no()" data-dismiss="modal">{{'COMMON.no' | translate }}</button>
             </div>
         </div>
     </div>

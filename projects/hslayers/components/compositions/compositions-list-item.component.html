@@ -4,32 +4,32 @@
   <div class="btn-group w-100 align-items-center" role="group">
     <a class="btn btn-sm border-0" (click)="$event.stopPropagation();openComposition(composition)">
       <i class="fa-solid fa-map icon-primary"></i><span class="ms-1">{{'COMMON.open' |
-    translateHs }}</span>
+    translate }}</span>
   </a>
   <a class="btn btn-sm border-0" (click)="$event.stopPropagation();detailComposition(composition)">
     <i class="fa-solid fa-circle-info icon-primary"></i><span class="ms-1">{{'COMMON.metadata' |
-  translateHs }}</span>
+  translate }}</span>
 </a>
 <a class="btn btn-sm border-0" (click)="$event.stopPropagation();shareComposition(composition)">
   <i class="fa-solid fa-share-nodes icon-primary"></i><span class="ms-1">{{'COMMON.share' |
-translateHs }}</span>
+translate }}</span>
 </a>
 @if (hsCommonLaymanService.isAuthenticated()) {
   <a class="btn btn-sm border-0" (click)="$event.stopPropagation();showPermissions(composition)"
     data-toggle="tooltip" data-placement="bottom"
-    [title]="composition.editable ? '' : 'COMPOSITIONS.notAllowedToEditLayer' | translateHs ">
+    [title]="composition.editable ? '' : 'COMPOSITIONS.notAllowedToEditLayer' | translate ">
     <i class="fa-solid fa-lock icon-primary" [ngClass]="{'text-muted': !composition.editable}"
     [ngStyle]="{'cursor' : composition.editable ? 'pointer' : 'default'}"></i><span
     [hidden]="!composition.editable" class="ms-1">{{'COMMON.setPermissions' |
-  translateHs }}</span>
+  translate }}</span>
 </a>
 <a class="btn btn-sm border-0" (click)="$event.stopPropagation();confirmDelete(composition)"
   data-toggle="tooltip" data-placement="bottom"
-  [title]="composition.editable ? '' : 'COMPOSITIONS.notAllowedToEditLayer' | translateHs ">
+  [title]="composition.editable ? '' : 'COMPOSITIONS.notAllowedToEditLayer' | translate ">
   <i class="fa-solid fa-trash icon-primary" [ngClass]="{'text-muted': !composition.editable}"
   [ngStyle]="{'cursor' : composition.editable ? 'pointer' : 'default'}"></i><span
   [hidden]="!composition.editable" class="ms-1">{{'COMMON.delete' |
-translateHs }}</span>
+translate }}</span>
 </a>
 }
 </div>

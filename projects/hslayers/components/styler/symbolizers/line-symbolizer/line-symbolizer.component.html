@@ -1,21 +1,21 @@
 <form class="form">
   <hs-symbolizer-color-picker [symbolizer]="symbolizer" attribute="color" opacityAttribute="opacity"
-  (changes)="emitChange()" [label]="'STYLER.color' | translateHs  "></hs-symbolizer-color-picker>
+  (changes)="emitChange()" [label]="'STYLER.color' | translate  "></hs-symbolizer-color-picker>
 
   <hs-symbolizer-slider [symbolizer]="symbolizer" attribute="opacity" (changes)="emitChange()" step="0.05" min="0"
-  max="1" [label]="'STYLER.opacity' | translateHs  "></hs-symbolizer-slider>
+  max="1" [label]="'STYLER.opacity' | translate  "></hs-symbolizer-slider>
 
   <hs-symbolizer-slider [symbolizer]="symbolizer" attribute="width" (changes)="emitChange()" step="0.1" min="0" max="20"
-  [label]="'STYLER.width' | translateHs  "></hs-symbolizer-slider>
+  [label]="'STYLER.width' | translate  "></hs-symbolizer-slider>
 
   <div class="d-flex flex-row flex-wrap">
-    <div class="p-1 flex-grow-1 mt-2">{{'STYLER.dashPattern' | translateHs }}:</div>
+    <div class="p-1 flex-grow-1 mt-2">{{'STYLER.dashPattern' | translate }}:</div>
     @for (dash of symbolizer.dasharray; track dash; let i = $index) {
       <input class="form-control me-1 form-select-sm" style="width: 3em"
         [ngModelOptions]="{standalone: true}"
         [(ngModel)]="symbolizer.dasharray[i]" (change)="emitChange()" />
     }
-    <div class="btn-group" role="group" [attr.aria-label]="'STYLER.dashPattern' | translateHs  ">
+    <div class="btn-group" role="group" [attr.aria-label]="'STYLER.dashPattern' | translate  ">
       <button class="btn btn-outline-primary btn-sm" (click)="addDashItem()">
         <span class="fa-solid fa-plus"></span>
       </button>
@@ -26,11 +26,11 @@
   </div>
 
   <hs-symbolizer-slider [symbolizer]="symbolizer" attribute="blur" (changes)="emitChange()" step="0.1" min="0" max="20"
-    [label]="'STYLER.blur' | translateHs  " [warning]="'STYLER.warningAttribNotStoredNotVisualized' | translateHs  ">
+    [label]="'STYLER.blur' | translate  " [warning]="'STYLER.warningAttribNotStoredNotVisualized' | translate  ">
   </hs-symbolizer-slider>
 
   <div class="d-flex flex-row">
-    <div class="p-1 w-25 mt-2">{{'STYLER.cap' | translateHs }}:</div>
+    <div class="p-1 w-25 mt-2">{{'STYLER.cap' | translate }}:</div>
     <div class="p-1 w-75">
       <select class="form-control form-select-sm form-select" [(ngModel)]="symbolizer.cap" (change)="emitChange()"
         [ngModelOptions]="{standalone: true}">
@@ -42,11 +42,11 @@
   </div>
 
   <hs-symbolizer-slider [symbolizer]="symbolizer" attribute="gapWidth" (changes)="emitChange()" step="1" min="0"
-    max="10" [label]="'STYLER.gapWidth' | translateHs  "
-  [warning]="'STYLER.warningAttribNotStoredNotVisualized' | translateHs  "></hs-symbolizer-slider>
+    max="10" [label]="'STYLER.gapWidth' | translate  "
+  [warning]="'STYLER.warningAttribNotStoredNotVisualized' | translate  "></hs-symbolizer-slider>
 
   <div class="d-flex flex-row">
-    <div class="p-1 w-25 mt-2">{{'STYLER.join' | translateHs }}:</div>
+    <div class="p-1 w-25 mt-2">{{'STYLER.join' | translate }}:</div>
     <div class="p-1 w-75">
       <select class="form-control form-select-sm form-select" [(ngModel)]="symbolizer.join" (change)="emitChange()"
         [ngModelOptions]="{standalone: true}">
@@ -58,26 +58,26 @@
   </div>
 
   <hs-symbolizer-slider [symbolizer]="symbolizer" attribute="miterLimit" (changes)="emitChange()" step="1" min="0"
-    max="90" [label]="'STYLER.miterLimit' | translateHs  "
-  [warning]="'STYLER.warningAttribNotStoredNotVisualized' | translateHs  "></hs-symbolizer-slider>
+    max="90" [label]="'STYLER.miterLimit' | translate  "
+  [warning]="'STYLER.warningAttribNotStoredNotVisualized' | translate  "></hs-symbolizer-slider>
 
   <hs-symbolizer-slider [symbolizer]="symbolizer" attribute="perpendicularOffset" (changes)="emitChange()" step="1"
-    min="0" max="20" [label]="'STYLER.perpendicularOffset' | translateHs  "
-  [warning]="'STYLER.warningAttribStoredNotVisualized' | translateHs  "></hs-symbolizer-slider>
+    min="0" max="20" [label]="'STYLER.perpendicularOffset' | translate  "
+  [warning]="'STYLER.warningAttribStoredNotVisualized' | translate  "></hs-symbolizer-slider>
 
   <hs-symbolizer-slider [symbolizer]="symbolizer" attribute="roundLimit" (changes)="emitChange()" step="1" min="0"
-    max="90" [label]="'STYLER.roundLimit' | translateHs  "
-  [warning]="'STYLER.warningAttribNotStoredNotVisualized' | translateHs  "></hs-symbolizer-slider>
+    max="90" [label]="'STYLER.roundLimit' | translate  "
+  [warning]="'STYLER.warningAttribNotStoredNotVisualized' | translate  "></hs-symbolizer-slider>
 
   <hs-symbolizer-slider [symbolizer]="symbolizer" attribute="spacing" (changes)="emitChange()" step="1" min="0" max="20"
-    [label]="'STYLER.spacing' | translateHs  " [warning]="'STYLER.warningAttribNotStoredNotVisualized' | translateHs  ">
+    [label]="'STYLER.spacing' | translate  " [warning]="'STYLER.warningAttribNotStoredNotVisualized' | translate  ">
   </hs-symbolizer-slider>
 
   <div class="d-flex flex-row justify-content-end">
     <div class="p-1 flex-grow-1 mt-2">
-      {{'STYLER.graphicFill' | translateHs }}:
+      {{'STYLER.graphicFill' | translate }}:
     </div>
-    <span class="badge bg-warning mt-2" [title]="'STYLER.warningAttribStoredNotVisualized' | translateHs  ">!</span>
+    <span class="badge bg-warning mt-2" [title]="'STYLER.warningAttribStoredNotVisualized' | translate  ">!</span>
     <div class="p-1">
       <div class="btn-group">
         <div ngbDropdown #graphicLineMenu="ngbDropdown" class="d-inline-block" placement="top-right">
@@ -86,10 +86,10 @@
           </button>
           <div ngbDropdownMenu aria-labelledby="dropdownAddFillSymbolizer">
             <button ngbDropdownItem (click)="addSymbolizer('graphicFill', 'Mark')">
-              {{'STYLER.mark' | translateHs }}
+              {{'STYLER.mark' | translate }}
             </button>
             <button ngbDropdownItem (click)="addSymbolizer('graphicFill', 'Icon')">
-              {{'STYLER.icon' | translateHs }}
+              {{'STYLER.icon' | translate }}
             </button>
           </div>
         </div>
@@ -119,9 +119,9 @@
 
   <div class="d-flex flex-row justify-content-end">
     <div class="p-1 flex-grow-1 mt-2">
-      {{'STYLER.graphicStroke' | translateHs }}:
+      {{'STYLER.graphicStroke' | translate }}:
     </div>
-    <span class="badge bg-warning mt-2" [title]="'STYLER.warningAttribStoredNotVisualized' | translateHs  ">!</span>
+    <span class="badge bg-warning mt-2" [title]="'STYLER.warningAttribStoredNotVisualized' | translate  ">!</span>
     <div class="p-1">
       <div class="btn-group me-3">
         <div ngbDropdown #graphicStrokeMenu="ngbDropdown" class="d-inline-block" placement="top-right">
@@ -130,10 +130,10 @@
           </button>
           <div ngbDropdownMenu aria-labelledby="dropdownAddStrokeSymbolizer">
             <button ngbDropdownItem (click)="addSymbolizer('graphicStroke', 'Mark')">
-              {{'STYLER.mark' | translateHs }}
+              {{'STYLER.mark' | translate }}
             </button>
             <button ngbDropdownItem (click)="addSymbolizer('graphicStroke', 'Icon')">
-              {{'STYLER.icon' | translateHs }}
+              {{'STYLER.icon' | translate }}
             </button>
           </div>
         </div>

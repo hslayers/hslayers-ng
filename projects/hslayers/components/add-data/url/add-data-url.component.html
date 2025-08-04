@@ -5,7 +5,7 @@
         <button [ngClass]="{'active': type.id === hsAddDataUrlService.typeSelected }"
           (click)="selectType(type.id)"
           class="btn btn-outline-secondary rounded btn-sm col-sm-3 position-relative flex-grow-1">
-          {{ type.text | translateHs : "ADDDATA.URL"}}
+          {{ 'ADDDATA.URL.' + type.text | translate}}
         </button>
       }
     </div>

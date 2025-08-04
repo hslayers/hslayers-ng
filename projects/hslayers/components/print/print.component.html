@@ -2,7 +2,7 @@
   <div class="card hs-main-panel" [ngClass]="panelWidthClass" #hsPrint>
     <hs-panel-header name="print" [panelTabs]="'PRINT'">
       <button mainButton class="btn btn-sm btn-outline-primary border-0" (click)="setToDefault()"
-        [title]="'COMMON.resetToDefault' | translateHs "> {{'COMMON.reset' | translateHs}}
+        [title]="'COMMON.resetToDefault' | translate "> {{'COMMON.reset' | translate}}
         <i class="fa-solid fa-redo"></i>
       </button>
     </hs-panel-header>
@@ -10,8 +10,8 @@
       <div class="card-body">
         <div class="form-floating mb-2">
           <input type="text" class="form-control" id="print-title" [(ngModel)]="print.titleObj.text"
-            [placeholder]="'COMMON.title' | translateHs " />
-          <label for="print-title" class="control-label">{{'COMMON.title' | translateHs
+            [placeholder]="'COMMON.title' | translate " />
+          <label for="print-title" class="control-label">{{'COMMON.title' | translate
           }}</label>
         </div>
         <div class="d-flex justify-content-around mb-2">
@@ -19,24 +19,24 @@
             <input type="checkbox" class="form-check-input" [(ngModel)]="print.legendObj.include"
               name="includeLegend" id="includeLegend">
             <label class="form-check-label pt-1" for="includeLegend" style="cursor:pointer">{{'COMMON.legend' |
-            translateHs }}</label>
+            translate }}</label>
           </div>
           <div class="form-check border-0">
             <input type="checkbox" class="form-check-input" [(ngModel)]="print.imprintObj.include"
               name="includeImprint" id="includeImprint">
             <label class="form-check-label pt-1" for="includeImprint" style="cursor:pointer">{{'PRINT.imprint' |
-            translateHs }}</label>
+            translate }}</label>
           </div>
           <div class="form-check border-0">
             <input type="checkbox" class="form-check-input" [(ngModel)]="print.scaleObj.include"
               name="includeScale" id="includeScale">
             <label class="form-check-label pt-1" for="includeScale" style="cursor:pointer">{{'COMMON.scale' |
-            translateHs }}</label>
+            translate }}</label>
           </div>
         </div>
         <button type="button" class="btn w-100 mb-2 btn-outline-secondary dropdown-toggle dropdown-toggle-split"
           (click)="setStylerVisible('title')" [disabled]="!print.titleObj.text">
-          {{'PRINT.titleStylingOptions' | translateHs }}
+          {{'PRINT.titleStylingOptions' | translate }}
         </button>
         @if (getStylerVisible('title')) {
           <hs-print-text-styler [textStyle]="print.titleObj.textStyle"
@@ -46,7 +46,7 @@
         }
         <button type="button" [disabled]="!print.legendObj.include" (click)="setStylerVisible('legend')"
           class="btn w-100 mb-2 btn-outline-secondary dropdown-toggle dropdown-toggle-split">
-          {{'PRINT.legendStylingOptions' | translateHs }}
+          {{'PRINT.legendStylingOptions' | translate }}
         </button>
         @if (getStylerVisible('legend') && print.legendObj.include) {
           <hs-print-legend-styler
@@ -56,7 +56,7 @@
         }
         <button [disabled]="!print.imprintObj.include" type="button" (click)="setStylerVisible('imprint')"
           class="btn w-100 mb-2 btn-outline-secondary dropdown-toggle dropdown-toggle-split">
-          {{'PRINT.imprintStylingOptions' | translateHs }}
+          {{'PRINT.imprintStylingOptions' | translate }}
         </button>
         @if (getStylerVisible('imprint') && print.imprintObj.include) {
           <hs-print-imprint-styler
@@ -66,7 +66,7 @@
         }
         <button [disabled]="!print.scaleObj.include" type="button" (click)="setStylerVisible('scale')"
           class="btn w-100 mb-2 btn-outline-secondary dropdown-toggle dropdown-toggle-split">
-          {{'PRINT.scaleStylingOptions' | translateHs }}
+          {{'PRINT.scaleStylingOptions' | translate }}
         </button>
         @if (getStylerVisible('scale') && print.scaleObj.include) {
           <hs-print-scale-styler
@@ -77,16 +77,16 @@
         @if (!isLoading()) {
           <div class="mb-2 mt-2 d-flex justify-content-start">
             <button type="button" class="btn btn-primary me-2 w-50" (click)="printLayout(true)">{{'COMMON.print' |
-            translateHs }}</button>
+            translate }}</button>
             <button type="button" class="btn btn-secondary w-50" (click)="printLayout(false)">{{'COMMON.preview' |
-            translateHs }}</button>
+            translate }}</button>
             <button class="btn btn-secondary ms-2" (click)="download()" data-toggle="tooltip"
-              [title]="'COMMON.downloadAsPng' | translateHs"><i class="fa-solid fa-download"></i></button>
+              [title]="'COMMON.downloadAsPng' | translate"><i class="fa-solid fa-download"></i></button>
             </div>
           }
           @if (isLoading()) {
             <div class="d-flex justify-content-center btn-group w-75 m-auto">
-              <button class="btn btn-primary w-75">{{'ADDDATA.CATALOGUE.loading' | translateHs
+              <button class="btn btn-primary w-75">{{'ADDDATA.CATALOGUE.loading' | translate
                 }}...<span class="hs-loader ms-2"></span></button>
                 <button class="btn btn-secondary" (click)="cancelLoading()">&#10006;
                 </button>

@@ -7,16 +7,16 @@
   <!-- Layer selection dropdown with floating label -->
   <div class="m-3 form-floating">
     <select id="layerSelect" class="form-select" [ngModel]="selectedLayer()" (ngModelChange)="selectLayer($event)">
-      <option [ngValue]="null">{{ 'WFS_FILTER.noLayerSelected' | translateHs }}</option>
+      <option [ngValue]="null">{{ 'WFS_FILTER.noLayerSelected' | translate }}</option>
       @for (layer of availableLayers(); track layer) {
       <option [ngValue]="layer">
         {{ layer.title }}
       </option>
       }
     </select>
-    <label class="ms-2" for="layerSelect">{{ 'WFS_FILTER.layerToFilter' | translateHs }}</label>
+    <label class="ms-2" for="layerSelect">{{ 'WFS_FILTER.layerToFilter' | translate }}</label>
     @if(!selectedLayer()){
-    <p style="text-align: end;" class="m-0 p-1 small text-secondary">{{ 'WFS_FILTER.selectLayerToStart' | translateHs }}</p>
+    <p style="text-align: end;" class="m-0 p-1 small text-secondary">{{ 'WFS_FILTER.selectLayerToStart' | translate }}</p>
     }
   </div>
 
@@ -35,7 +35,7 @@
           <!-- Apply Filters button -->
           @if(rule()?.filter){
           <button class="btn btn-primary mt-3 align-self-end" (click)="applyFilters()">
-            {{ 'WFS_FILTER.applyFilters' | translateHs }}
+            {{ 'WFS_FILTER.applyFilters' | translate }}
           </button>
           }
         </div>
@@ -47,14 +47,14 @@
   <div class="d-flex flex-column gap-2 gap-4 justify-content-center mt-5 px-3 py-4">
     <div class="d-flex justify-content-center">
       <div class="w-75">
-        <h4>{{ 'WFS_FILTER.noWfsLayersAvailable' | translateHs }}</h4>
-        <p>{{ 'WFS_FILTER.addWfsLayerFirst' | translateHs }}</p>
+        <h4>{{ 'WFS_FILTER.noWfsLayersAvailable' | translate }}</h4>
+        <p>{{ 'WFS_FILTER.addWfsLayerFirst' | translate }}</p>
       </div>
       <i class="fa-solid fa-layer-group mb-3 text-muted" style="font-size: 48px"></i>
     </div>
     <!-- Button to open the Add Data panel -->
     <button class="btn btn-primary w-50 m-auto" (click)="openAddDataPanel()">
-      {{ 'WFS_FILTER.addWfsLayer' | translateHs }}
+      {{ 'WFS_FILTER.addWfsLayer' | translate }}
     </button>
   </div>
   }

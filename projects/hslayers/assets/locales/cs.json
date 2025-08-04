@@ -902,7 +902,7 @@
       "myCompositionExists": "Toto je vaše kompozice. Můžete ji aktualizovat nebo vytvořit kopii s novým názvem.",
       "readyToSave": "Připraveno k uložení jako nová kompozice.",
       "writeAccessExists": "Můžete tuto kompozici aktualizovat nebo uložit jako novou.",
-      "ownedBy": "Můžete tuto kompozici aktualizovat nebo uložit jako novou. (Vlastník: {workspace})",
+      "ownedBy": "Můžete tuto kompozici aktualizovat nebo uložit jako novou. (Vlastník: {{workspace}})",
       "writeAccessSave": "Máte oprávnění uložit změny.",
       "noRoles": "Nebyly nalezeny žádné uživatelské role"
     },

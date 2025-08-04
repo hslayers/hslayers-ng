@@ -4,34 +4,34 @@
         <button mainButton class="btn btn-sm btn-outline-primary border-0 align-items-center d-flex gap-2"
             [class.text-bg-primary]="physicalLayerListEnabled()"
             (click)="togglePhysicalLayerList()" [title]="'LAYERMANAGER.enablePhysicalLayerList' |
-        translateHs"> {{'COMMON.reorder' | translateHs}}
+        translate"> {{'COMMON.reorder' | translate}}
             <i class="fa-solid fa-layer-group"></i>
         </button>
         <extra-buttons>
             <a class="dropdown-item" (click)="removeMultipleLayers()">
                 <i class="fa-solid fa-trash"></i>&nbsp;{{'DRAW.removeMultipleLayers'
-                | translateHs }}
+                | translate }}
             </a>
             <a class="dropdown-item" (click)="removeAllLayers()">
                 <i class="fa-solid fa-trash"></i>&nbsp;{{'LAYERMANAGER.dialogRemoveAll.removeAllAdded'
                 |
-                translateHs }}
+                translate }}
             </a>
             <a class="dropdown-item" (click)="hsCore.resetMap()">
                 <i class="fa-solid fa-rotate-right"></i>&nbsp;{{'LAYERMANAGER.resetMap' |
-                translateHs }}
+                translate }}
             </a>
             @if(hsLayerManagerService.data.layers?.length > 0 && !physicalLayerListEnabled()){
             <a class="dropdown-item" (click)="toggleVisibilityForAll()">
                 <i class="fa-solid fa-check-circle" [ngClass]="allLayersVisible ? 'hs-checkmark' : 'hs-uncheckmark'"></i>
-                {{'LAYERMANAGER.toggleAllLayerVisibility'|translateHs}}
+                {{'LAYERMANAGER.toggleAllLayerVisibility'|translate}}
             </a>
             }
         </extra-buttons>
     </hs-panel-header>
     <div class="card-body hs-lm-panel">
         <div><input #filterInput type="text" class="form-control hs-filter"
-                [placeholder]="'COMMON.filter' | translateHs" name="hs-layermanager-layer-filter">
+                [placeholder]="'COMMON.filter' | translate" name="hs-layermanager-layer-filter">
         </div>
 
         <!-- BASEMAP LAYERS -->
@@ -42,7 +42,7 @@
                 <div class="d-flex">
                     <div class="p-0 flex-grow-1 hs-lm-item-title">
                         <span class="align-middle" style="line-height: 2em;">{{'LAYERMANAGER.baselayers' |
-                            translateHs}}</span>
+                            translate}}</span>
                     </div>
                     <div class="p-0">
                         <button type="button" class="btn btn-sm hs-btn-baselayers" (click)="changeBaseLayerVisibility()"
@@ -65,12 +65,12 @@
                     <div class="align-items-center p-0 flex-grow-1 hs-lm-item-title" style="cursor:context-menu"
                         [ngClass]="{'fw-bold': layer.active, 'text-muted': layer.grayed}"
                         [ngbTooltip]="layer.abstract ? abstractTooltip : ''" [closeDelay]="layerTooltipDelay">
-                        {{layer.title | translateHs : 'LAYERS' }}
+                        {{'LAYERS.' + layer.title | translate }}
                     </div>
                     <!-- (click)="hsLayerManagerService.toggleLayerEditor(layer,'settings')" -->
                     <div class="ps-1 info_btn text-secondary dropdown-toggle" style="cursor: pointer;"
                         >
-                        <span class="fa-solid fa-gears" [title]="'COMMON.info' | translateHs"
+                        <span class="fa-solid fa-gears" [title]="'COMMON.info' | translate"
                             data-toggle="tooltip" data-container="body" data-placement="auto"></span>
                     </div>
                 </div>
@@ -89,7 +89,7 @@
                 <div class="d-flex">
                     <div class="p-0 flex-grow-1 hs-lm-item-title" [ngClass]="{'text-muted': cesium }">
                         <span class="align-middle" style="line-height: 2em;">{{ 'LAYERMANAGER.terrains' |
-                            translateHs}}</span>
+                            translate}}</span>
                     </div>
                 </div>
             </li>
@@ -113,7 +113,7 @@
                     <div class="align-items-center p-0 flex-grow-1 hs-lm-item-title" style="cursor:context-menu"
                         [ngClass]="{'fw-bold': layer.active, 'text-muted': layer.grayed}"
                         [ngbTooltip]="layer.abstract ? abstractTooltip : ''" [closeDelay]="layerTooltipDelay">
-                        {{layer.title | translateHs : 'LAYERS' }}
+                        {{'LAYERS.' + layer.title | translate }}
                     </div>
                 </div>
             </li>
@@ -128,7 +128,7 @@
             @if(!hsLayoutService.componentEnabled('basemapGallery')){
             <li class="hs-lm-header hs-lm-item list-group-item-primary hs-lm-map-content-header list-group-item"
                 style="margin-bottom: 0.2em;">
-                <span class="align-middle" style="line-height: 2em;">{{ 'LAYERMANAGER.mapContent' | translateHs}}</span>
+                <span class="align-middle" style="line-height: 2em;">{{ 'LAYERMANAGER.mapContent' | translate}}</span>
             </li>
             }
             @if(!physicalLayerListEnabled()){
@@ -139,7 +139,7 @@
                 <li class="list-group-item hs-lm-layerlist-header list-group-item-primary"
                     (click)="entry.value.visible = !entry.value.visible">
                     <span class="mx-2 fa-solid fa-chevron-down" style="min-width: 1rem; transition: transform 0.3s ease;" [class.rotate-n90]="!entry.value.visible "></span>
-                    <span>{{entry.key | translateHs : 'LAYERMANAGER' }}&nbsp;</span>
+                    <span>{{'LAYERMANAGER.' + entry.key | translate }}&nbsp;</span>
                 </li>
                 }
                 <div [hidden]="!entry.value.visible">

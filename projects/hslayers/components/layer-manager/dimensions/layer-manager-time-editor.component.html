@@ -12,16 +12,16 @@
         </span>
       } @else {
         <span class="bg-warning text-dark" data-toggle="tooltip" data-container="body" data-placement="auto"
-          [ngbTooltip]="'LAYERMANAGER.time.outOfRangeDescription' | translateHs  "
+          [ngbTooltip]="'LAYERMANAGER.time.outOfRangeDescription' | translate  "
           [closeDelay]="hsConfig.layerTooltipDelay || 0">
-          {{'LAYERMANAGER.time.outOfRange' | translateHs }}
+          {{'LAYERMANAGER.time.outOfRange' | translate }}
         </span>
       }
     </button>
   } @else {
     <div class="spinner-border spinner-border-sm text-info" role="status">
-      <span class="visually-hidden">{{'COMMON.loading' | translateHs }}</span>
-      </div>&nbsp;<span class="text-muted">{{'LAYERMANAGER.time.loading'| translateHs }}</span>
+      <span class="visually-hidden">{{'COMMON.loading' | translate }}</span>
+      </div>&nbsp;<span class="text-muted">{{'LAYERMANAGER.time.loading'| translate }}</span>
   }
   <select #hstimeselector [hidden]="!selectVisible" [(ngModel)]="currentTime" (change)="selectTime();hideTimeSelect();"
     (blur)="hideTimeSelect()">
@@ -38,8 +38,8 @@
 <div class="p-0">
   <button type="button" class="hs-timeSync-toggle btn px-0 py-md-1 py-2 me-1"
     [ngClass]="{'btn-info text-white': timesInSync, 'text-secondary': !timesInSync}" (click)="synchronizeTimes()"
-    [title]="'LAYERMANAGER.time.syncTimesTooltip' | translateHs  ">
+    [title]="'LAYERMANAGER.time.syncTimesTooltip' | translate  ">
     <i class="fa-solid fa-clock-rotate-left"></i>
-    <span class="visually-hidden">{{'LAYERMANAGER.time.syncTimes' | translateHs }}</span>
+    <span class="visually-hidden">{{'LAYERMANAGER.time.syncTimes' | translate }}</span>
   </button>
 </div>

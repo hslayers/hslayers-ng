@@ -2,9 +2,9 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title">{{'COMMON.selectAndSavePermissions' | translateHs}}: {{data.selectedRecord.name}}</h4>
+        <h4 class="modal-title">{{'COMMON.selectAndSavePermissions' | translate}}: {{data.selectedRecord.name}}</h4>
         <button type="button" (click)="close()" class="btn-close" data-dismiss="modal"
-          [attr.aria-label]="'COMMON.close' | translateHs ">
+          [attr.aria-label]="'COMMON.close' | translate ">
         </button>
       </div>
       <div class="modal-body" style="overflow-y:auto">
@@ -14,27 +14,27 @@
           @switch (state()) {
           @case ('idle') {
           <button type="button" class="btn btn-primary" (click)="savePermissions()" data-dismiss="modal">{{'COMMON.save'
-            | translateHs }}</button>
+            | translate }}</button>
           }
           @case ('loading') {
           <button type="button" class="btn btn-outline-primary disabled">{{'COMMON.saving'
-            | translateHs }}<span class="pe-2 hs-loader hs-loader-dark"></span></button>
+            | translate }}<span class="pe-2 hs-loader hs-loader-dark"></span></button>
           }
           @case ('success') {
           <button (click)="close()" type="button"
-            class="btn btn-success align-items-center d-flex justify-content-around gap-2">{{'COMMON.done' |
-            translateHs }}
+            class="btn btn-success align-items-center d-flex justify-content-around gap-2">{{'COMMON.done'
+            | translate }}
             <i class="fa-solid fa-square-check"></i>
           </button>
           }
           @case ('error') {
           <button type="button" class="btn btn-outline-danger disabled ">{{'COMMON.somethingWentWrong'
-            | translateHs }}</button>
+            | translate }}</button>
           }
           }
           @if (state() !== 'success') {
-          <button type="button" class="btn btn-secondary" (click)="close()" data-dismiss="modal">{{'COMMON.cancel' |
-            translateHs }}</button>
+          <button type="button" class="btn btn-secondary" (click)="close()" data-dismiss="modal">{{'COMMON.cancel'
+            | translate }}</button>
           }
         </div>
       </div>

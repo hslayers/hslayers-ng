@@ -1,11 +1,11 @@
 @if (isEnabled | async) {
   <div class="pb-1 border-bottom">
     <p style="text-align: center; font-weight: bold">
-      {{ "COMMON.folder" | translateHs }}
+      {{ "COMMON.folder" | translate }}
     </p>
     <div class="d-flex justify-content-between align-items-center">
       <button type="button" class="btn btn-outline-primary flex-fill" (click)="createDialog()">
-        {{'LAYERMANAGER.layerEditor.moveToNewFolder' | translateHs}}
+        {{'LAYERMANAGER.layerEditor.moveToNewFolder' | translate}}
       </button>
     </div>
   </div>
