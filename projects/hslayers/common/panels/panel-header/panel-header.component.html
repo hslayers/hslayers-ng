@@ -4,7 +4,7 @@
   <li class="nav-item" (click)="tabClicked(tab)" style="max-height:103%">
     <a [class.active]="(selectedTab$ | async) === tab" style="margin-top: 2px;"
       class="active align-items-center d-flex h-100 justify-content-center nav-link" aria-current="page">
-      {{translationModule + (translationModule && translationModule.length > 0 ? '.': '') + tab | translate }}
+      {{translationModule + (translationModule && translationModule.length > 0 ? '.': '') + tab | translate : {fallbackValue: tab} }}
     </a>
   </li>
   }

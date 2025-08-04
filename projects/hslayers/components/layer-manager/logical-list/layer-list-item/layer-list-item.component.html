@@ -14,7 +14,7 @@
     <div class="align-items-center p-0 hs-lm-item-title flex-grow-1" (click)="toggleSublayers()"
       style="word-break:break-word;" [ngClass]="{'hover': layer().hasSublayers === true}"
       [ngbTooltip]="layer().abstract ? abstractTooltip : ''" [closeDelay]="hsConfig.layerTooltipDelay || 0">
-      {{ 'LAYERS.' + layer().title | translate }}
+      {{ 'LAYERS.' + layer().title | translate : {fallbackValue: layer().title} }}
     </div>
     @if (layer().hasSublayers) {
     <div class="hs-sublayer-toggle p-0 me-1 ms-1 info_btn" style="flex-grow: 100; align-self: center;"

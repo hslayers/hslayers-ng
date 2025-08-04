@@ -55,7 +55,7 @@
               translate }}</option>
               @for (layer of hsFeatureCommonService.availableLayer$ | async; track layer) {
                 <option [ngValue]="layer">
-                {{'LAYERS.' + getTitle(layer) | translate }}</option>
+                {{'LAYERS.' + getTitle(layer) | translate : {fallbackValue: getTitle(layer)} }}</option>
               }
             </select>
             <button class="btn btn-primary btn-sm" (click)="moveOrCopyFeature()" [disabled]="!selectedLayer"><i

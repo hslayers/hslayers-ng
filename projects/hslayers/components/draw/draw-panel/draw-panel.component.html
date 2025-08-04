@@ -32,7 +32,7 @@
               translate }}</label>
             @for (layer of HsDrawService.drawableLayers; track layer) {
             <a class="dropdown-item text-truncate" data-toggle="tooltip"
-              [title]="'LAYERS.' + getTitle(layer) | translate " (click)="selectLayer(layer)">{{getTitle(layer) |
+              [title]="'LAYERS.' + getTitle(layer) | translate : {fallbackValue: getTitle(layer)} " (click)="selectLayer(layer)">{{getTitle(layer) |
               translate }}</a>
             }<!-- TODO: Remove function call from template -->
           </div>
@@ -57,8 +57,8 @@
               }
             </div>
             @for (layer of HsDrawService.drawableLaymanLayers; track layer) {
-            <a class="dropdown-item text-truncate" data-toggle="tooltip" [title]="'LAYERS.' + layer.title | translate "
-              (click)="selectLayer(layer)">{{'LAYERS.' + layer.title | translate }}</a>
+            <a class="dropdown-item text-truncate" data-toggle="tooltip" [title]="'LAYERS.' + layer.title | translate : {fallbackValue: layer.title} "
+              (click)="selectLayer(layer)">{{'LAYERS.' + layer.title | translate : {fallbackValue: layer.title} }}</a>
             }
           </div>
           }
@@ -163,8 +163,8 @@
             <div class="d-flex align-items-center w-100 flex-column">
               @for (layer of HsDrawService.drawableLayers; track layer) {
               <a class="dropdown-item text-truncate" data-toggle="tooltip"
-                [title]="'LAYERS.' + getTitle(layer) | translate " (click)="changeSnapSource(layer)">{{'LAYERS.' + getTitle(layer)
-                | translate }}</a>
+                [title]="'LAYERS.' + getTitle(layer) | translate : {fallbackValue: getTitle(layer)} " (click)="changeSnapSource(layer)">{{'LAYERS.' + getTitle(layer)
+                | translate : {fallbackValue: getTitle(layer)} }}</a>
               }<!-- TODO: Remove function call from template -->
             </div>
           </div>

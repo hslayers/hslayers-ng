@@ -3,8 +3,9 @@
     <hs-panel-header name="layerManager" [panelTabs]="'LM'">
         <button mainButton class="btn btn-sm btn-outline-primary border-0 align-items-center d-flex gap-2"
             [class.text-bg-primary]="physicalLayerListEnabled()"
-            (click)="togglePhysicalLayerList()" [title]="'LAYERMANAGER.enablePhysicalLayerList' |
-        translate"> {{'COMMON.reorder' | translate}}
+            (click)="togglePhysicalLayerList()" [title]="'LAYERMANAGER.enablePhysicalLayerList'
+            | translate">
+            {{'COMMON.reorder' | translate}}
             <i class="fa-solid fa-layer-group"></i>
         </button>
         <extra-buttons>
@@ -14,12 +15,11 @@
             </a>
             <a class="dropdown-item" (click)="removeAllLayers()">
                 <i class="fa-solid fa-trash"></i>&nbsp;{{'LAYERMANAGER.dialogRemoveAll.removeAllAdded'
-                |
-                translate }}
+                | translate }}
             </a>
             <a class="dropdown-item" (click)="hsCore.resetMap()">
-                <i class="fa-solid fa-rotate-right"></i>&nbsp;{{'LAYERMANAGER.resetMap' |
-                translate }}
+                <i class="fa-solid fa-rotate-right"></i>&nbsp;{{'LAYERMANAGER.resetMap'
+                | translate }}
             </a>
             @if(hsLayerManagerService.data.layers?.length > 0 && !physicalLayerListEnabled()){
             <a class="dropdown-item" (click)="toggleVisibilityForAll()">
@@ -41,8 +41,9 @@
             <li class="list-group-item hs-lm-item hs-lm-header clearfix list-group-item-primary">
                 <div class="d-flex">
                     <div class="p-0 flex-grow-1 hs-lm-item-title">
-                        <span class="align-middle" style="line-height: 2em;">{{'LAYERMANAGER.baselayers' |
-                            translate}}</span>
+                        <span class="align-middle" style="line-height: 2em;">
+                            {{'LAYERMANAGER.baselayers' | translate}}
+                        </span>
                     </div>
                     <div class="p-0">
                         <button type="button" class="btn btn-sm hs-btn-baselayers" (click)="changeBaseLayerVisibility()"
@@ -65,7 +66,7 @@
                     <div class="align-items-center p-0 flex-grow-1 hs-lm-item-title" style="cursor:context-menu"
                         [ngClass]="{'fw-bold': layer.active, 'text-muted': layer.grayed}"
                         [ngbTooltip]="layer.abstract ? abstractTooltip : ''" [closeDelay]="layerTooltipDelay">
-                        {{'LAYERS.' + layer.title | translate }}
+                        {{'LAYERS.' + layer.title | translate : {fallbackValue: layer.title} }}
                     </div>
                     <!-- (click)="hsLayerManagerService.toggleLayerEditor(layer,'settings')" -->
                     <div class="ps-1 info_btn text-secondary dropdown-toggle" style="cursor: pointer;"
@@ -88,8 +89,9 @@
                 [ngClass]="cesium ? 'list-group-item-primary' : 'list-group-item-dark'">
                 <div class="d-flex">
                     <div class="p-0 flex-grow-1 hs-lm-item-title" [ngClass]="{'text-muted': cesium }">
-                        <span class="align-middle" style="line-height: 2em;">{{ 'LAYERMANAGER.terrains' |
-                            translate}}</span>
+                        <span class="align-middle" style="line-height: 2em;">
+                            {{ 'LAYERMANAGER.terrains' | translate}}
+                        </span>
                     </div>
                 </div>
             </li>
@@ -113,7 +115,7 @@
                     <div class="align-items-center p-0 flex-grow-1 hs-lm-item-title" style="cursor:context-menu"
                         [ngClass]="{'fw-bold': layer.active, 'text-muted': layer.grayed}"
                         [ngbTooltip]="layer.abstract ? abstractTooltip : ''" [closeDelay]="layerTooltipDelay">
-                        {{'LAYERS.' + layer.title | translate }}
+                        {{'LAYERS.' + layer.title | translate : {fallbackValue: layer.title} }}
                     </div>
                 </div>
             </li>
