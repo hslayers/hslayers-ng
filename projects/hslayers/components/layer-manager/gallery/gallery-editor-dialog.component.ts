@@ -35,7 +35,7 @@ import {getBase} from 'hslayers-ng/common/extensions';
         <div class="modal-content">
           <div class="modal-header">
             <h4 class="modal-title text-truncate">
-              {{ 'LAYERS.' + (title | async) | translate }}
+              {{ 'LAYERS.' + (title | async) | translate : {fallbackValue: (title | async)} }}
             </h4>
             <button
               type="button"

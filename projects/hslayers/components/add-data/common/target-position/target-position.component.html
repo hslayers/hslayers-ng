@@ -5,7 +5,7 @@
       <option [ngValue]="null" selected>{{'ADDLAYERS.none' | translate }}</option>
       @for (layer of hsLayerManagerService.data.layers | filter: layerInManager; track layer) {
       <option [ngValue]="layer.layer">
-        {{'LAYERS.' + layer.title | translate }}</option>
+        {{'LAYERS.' + layer.title | translate : {fallbackValue: layer.title} }}</option>
       }
     </select>
   </div>

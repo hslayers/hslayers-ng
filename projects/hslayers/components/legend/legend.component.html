@@ -15,7 +15,7 @@
       <li class="list-group-item" [hidden]="!hsLegendService.legendValid(layer)">
         <!-- TODO: Remove function call from template -->
         <div>
-          {{'LAYERS.' + layer.title | translate }}
+          {{'LAYERS.' + layer.title | translate : {fallbackValue: layer.title} }}
           <hs-legend-layer [layer]="layer"></hs-legend-layer>
         </div>
       </li>

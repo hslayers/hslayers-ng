@@ -9,7 +9,7 @@
             class="d-flex align-items-center justify-content-between p-0 hs-lm-item-title flex-grow-1"
             style="word-break: break-all; cursor: move"
             >
-            <p class="m-0">{{ 'LAYERS.' + layer.title | translate }}</p>
+            <p class="m-0">{{ 'LAYERS.' + layer.title | translate : {fallbackValue: layer.title} }}</p>
             <i class="fa-solid fa-up-down-left-right text-secondary me-1"></i>
           </div>
         </div>

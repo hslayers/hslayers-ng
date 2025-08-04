@@ -35,8 +35,8 @@
         <label class="form-check-label d-flex align-items-center w-100 p-2">
           <input type="checkbox" [value]="layer.layer" (change)="onChecklistChange($event.target.checked, layer)"
             class="form-check-input me-2 mt-0" [checked]="layer.checked">
-          <span class="text-truncate flex-grow-1" [title]="'LAYERS.' + layer.title | translate">
-            {{'LAYERS.' + layer.title | translate }}
+          <span class="text-truncate flex-grow-1" [title]="'LAYERS.' + layer.title | translate : {fallbackValue: layer.title} ">
+            {{'LAYERS.' + layer.title | translate : {fallbackValue: layer.title} }}
           </span>
           @if(layer.base) {
           <i class="fa-solid fa-map-location-dot text-secondary" [title]="'COMMON.base' | translate"></i>

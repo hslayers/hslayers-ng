@@ -6,14 +6,19 @@ import {
   withInterceptorsFromDi,
 } from '@angular/common/http';
 import {provideHttpClientTesting} from '@angular/common/http/testing';
-import {provideTranslateService, TranslateLoader} from '@ngx-translate/core';
+import {
+  provideMissingTranslationHandler,
+  provideTranslateService,
+  TranslateLoader,
+} from '@ngx-translate/core';
 
 import {HsConfig} from 'hslayers-ng/config';
 import {HsConfigMock} from './config.service.mock';
+import {HsLogService} from 'hslayers-ng/services/log';
 import {HsMapHostDirective, HslayersComponent} from 'hslayers-ng/core';
+import {HsMissingTranslationHandler} from 'hslayers-ng/services/language/missing-translation.service';
 import {TranslateTestingModule} from 'hslayers-ng/components/language';
 import {WebpackTranslateLoader} from 'hslayers-ng/services/language';
-import {HsLogService} from 'hslayers-ng/services/log';
 
 describe('HslayersComponent', () => {
   let component: HslayersComponent;
@@ -32,6 +37,9 @@ describe('HslayersComponent', () => {
             useClass: WebpackTranslateLoader,
             deps: [HsConfig, HsLogService, HttpClient],
           },
+          missingTranslationHandler: provideMissingTranslationHandler(
+            HsMissingTranslationHandler,
+          ),
         }),
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),

@@ -5,12 +5,17 @@ import {
   provideHttpClient,
   withInterceptors,
 } from '@angular/common/http';
-import {provideTranslateService, TranslateLoader} from '@ngx-translate/core';
+import {
+  provideMissingTranslationHandler,
+  provideTranslateService,
+  TranslateLoader,
+} from '@ngx-translate/core';
 
 import {HsDialogContainerComponent} from 'hslayers-ng/common/dialogs';
 import {HsLayoutHostDirective} from './layout.directive';
 import {HsMapComponent} from './map/map.component';
 import {HsMapHostDirective} from './map-host.directive';
+import {HsMissingTranslationHandler} from 'hslayers-ng/services/language/missing-translation.service';
 import {HsPanelHelpersModule} from 'hslayers-ng/common/panels';
 import {HsSidebarModule} from 'hslayers-ng/components/sidebar';
 import {HslayersComponent} from './hslayers.component';
@@ -38,6 +43,9 @@ import {HsConfig} from 'hslayers-ng/config';
         useClass: WebpackTranslateLoader,
         deps: [HsConfig, HttpClient],
       },
+      missingTranslationHandler: provideMissingTranslationHandler(
+        HsMissingTranslationHandler,
+      ),
     }),
   ],
 })

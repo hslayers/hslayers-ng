@@ -1,12 +1,12 @@
 <div class="form-group">
   @if (layerDescriptor | async; as descriptor) {
   <small class="text-secondary">
-    {{ 'LAYERMANAGER.layerEditor.' + descriptor.type | translate }}
+    {{ 'LAYERMANAGER.layerEditor.' + descriptor.type | translate : {fallbackValue: descriptor.type} }}
     {{ "LAYERMANAGER.layerEditor.layerFrom" | translate }}
     <div class="mw-100 d-flex align-items-center justify-content-between">
       @if (descriptor.source === "memory") {
       <span class="text-truncate">
-        {{ 'LAYERMANAGER.layerEditor.' + descriptor.source | translate }}
+        {{ 'LAYERMANAGER.layerEditor.memory' | translate }}
       </span>
       }
       @else{<hs-clipboard-text [text]="descriptor.source" />}
