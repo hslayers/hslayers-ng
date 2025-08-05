@@ -11,6 +11,7 @@ import {
 } from '@angular/core';
 import {Observable, filter, map, startWith} from 'rxjs';
 import {takeUntilDestroyed, toObservable} from '@angular/core/rxjs-interop';
+import {TranslatePipe} from '@ngx-translate/core';
 
 import {
   HsDialogComponent,
@@ -19,7 +20,6 @@ import {
 import {HsLayerDescriptor} from 'hslayers-ng/types';
 import {HsLayerEditorService} from '../editor/layer-editor.service';
 import {HsLayerManagerService} from 'hslayers-ng/services/layer-manager';
-import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 import {getBase} from 'hslayers-ng/common/extensions';
 
 @Component({
@@ -52,7 +52,7 @@ import {getBase} from 'hslayers-ng/common/extensions';
       </div>
     </div>
   `,
-  imports: [CommonModule, TranslateCustomPipe, AsyncPipe],
+  imports: [CommonModule, TranslatePipe, AsyncPipe],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HsGalleryEditorDialogComponent

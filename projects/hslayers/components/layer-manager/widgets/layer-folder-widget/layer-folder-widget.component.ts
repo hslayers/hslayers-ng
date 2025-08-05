@@ -2,13 +2,13 @@ import {AsyncPipe} from '@angular/common';
 import {ChangeDetectionStrategy, Component, inject} from '@angular/core';
 import {Observable, map} from 'rxjs';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
+import {TranslatePipe} from '@ngx-translate/core';
 
 import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
 import {
   HsLayerManagerFolderService,
   HsLayerSelectorService,
 } from 'hslayers-ng/services/layer-manager';
-import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 import {getBase, setPath} from 'hslayers-ng/common/extensions';
 
 import {HsLayerEditorWidgetBaseComponent} from '../layer-editor-widget-base.component';
@@ -16,7 +16,7 @@ import {LayerFolderWidgetDialogComponent} from './layer-folder-dialog/layer-fold
 
 @Component({
   selector: 'hs-layer-folder-widget',
-  imports: [AsyncPipe, TranslateCustomPipe],
+  imports: [AsyncPipe, TranslatePipe],
   templateUrl: './layer-folder-widget.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

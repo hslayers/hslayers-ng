@@ -1,12 +1,11 @@
 import {CommonModule} from '@angular/common';
+import {DragDropModule} from '@angular/cdk/drag-drop';
 import {FormsModule} from '@angular/forms';
 import {NgModule} from '@angular/core';
-
-import {DragDropModule} from '@angular/cdk/drag-drop';
+import {TranslatePipe} from '@ngx-translate/core';
 
 import {HsMapSwipeComponent} from './map-swipe.component';
 import {HsPanelHeaderComponent} from 'hslayers-ng/common/panels';
-import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 
 @NgModule({
   declarations: [HsMapSwipeComponent],
@@ -14,7 +13,7 @@ import {TranslateCustomPipe} from 'hslayers-ng/services/language';
     CommonModule,
     HsPanelHeaderComponent,
     FormsModule,
-    TranslateCustomPipe,
+    TranslatePipe,
     DragDropModule,
   ],
   exports: [HsMapSwipeComponent],

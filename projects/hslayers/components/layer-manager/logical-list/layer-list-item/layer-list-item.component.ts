@@ -13,6 +13,7 @@ import {
 } from '@ng-bootstrap/ng-bootstrap';
 import {takeUntilDestroyed, toSignal} from '@angular/core/rxjs-interop';
 import {filter} from 'rxjs';
+import {TranslatePipe} from '@ngx-translate/core';
 
 import {HsConfig} from 'hslayers-ng/config';
 import {HsDimensionTimeService} from 'hslayers-ng/services/get-capabilities';
@@ -25,7 +26,6 @@ import {
   HsLayerSelectorService,
 } from 'hslayers-ng/services/layer-manager';
 import {HsLayerManagerTimeEditorComponent} from '../../dimensions/layer-manager-time-editor.component';
-import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 import {
   getExclusive,
   getHsLaymanSynchronizing,
@@ -39,7 +39,7 @@ import {layerInvalid} from 'hslayers-ng/services/utils';
     CommonModule,
     NgbTooltipModule,
     NgbProgressbarModule,
-    TranslateCustomPipe,
+    TranslatePipe,
     HsLayerManagerTimeEditorComponent,
   ],
 })

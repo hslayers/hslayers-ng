@@ -3,13 +3,13 @@ import {FormsModule} from '@angular/forms';
 import {NgModule} from '@angular/core';
 
 import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
+import {TranslatePipe} from '@ngx-translate/core';
 
 import {HsPagerComponent} from './pager.component';
-import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 
 @NgModule({
   declarations: [HsPagerComponent],
-  imports: [CommonModule, TranslateCustomPipe, FormsModule, NgbDropdownModule],
+  imports: [CommonModule, TranslatePipe, FormsModule, NgbDropdownModule],
   exports: [HsPagerComponent],
 })
 export class HsPagerModule {}

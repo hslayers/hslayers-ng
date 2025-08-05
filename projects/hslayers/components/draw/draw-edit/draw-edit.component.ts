@@ -1,5 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {NgClass} from '@angular/common';
+import {TranslatePipe} from '@ngx-translate/core';
 
 import * as polygonClipping from 'polygon-clipping';
 import polygonSplitter from 'polygon-splitter';
@@ -10,10 +11,7 @@ import {Vector as VectorLayer} from 'ol/layer';
 
 import {HsDrawService} from 'hslayers-ng/services/draw';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
-import {
-  HsLanguageService,
-  TranslateCustomPipe,
-} from 'hslayers-ng/services/language';
+import {HsLanguageService} from 'hslayers-ng/services/language';
 import {HsLogService} from 'hslayers-ng/services/log';
 import {HsMapService} from 'hslayers-ng/services/map';
 import {
@@ -32,7 +30,7 @@ declare type HsModifyOperations =
 @Component({
   selector: 'hs-draw-edit',
   templateUrl: './draw-edit.component.html',
-  imports: [NgClass, TranslateCustomPipe],
+  imports: [NgClass, TranslatePipe],
 })
 export class HsDrawEditComponent implements OnDestroy, OnInit {
   vectorQueryFeatureSubscription;

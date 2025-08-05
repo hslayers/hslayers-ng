@@ -30,17 +30,17 @@ import {
   tap,
 } from 'rxjs';
 import {Vector as VectorSource} from 'ol/source';
-import {WfsFeatureAttribute, Filter} from 'hslayers-ng/types';
+import {takeUntilDestroyed, toSignal} from '@angular/core/rxjs-interop';
+import {TranslatePipe} from '@ngx-translate/core';
 
 import {CombinationOperator, ComparisonOperator} from 'geostyler-style';
 import {FilterRangeInputComponent} from '../filter-range-input/filter-range-input.component';
 import {HsAttributeSelectorComponent} from './attribute-selector/attribute-selector.component';
 import {HsFiltersService} from '../filters.service';
-import {listAttributes} from 'hslayers-ng/services/utils';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsStylerPartBaseComponent} from 'hslayers-ng/services/styler';
-import {TranslateCustomPipe} from 'hslayers-ng/services/language';
-import {takeUntilDestroyed, toSignal} from '@angular/core/rxjs-interop';
+import {listAttributes} from 'hslayers-ng/services/utils';
+import {WfsFeatureAttribute, Filter} from 'hslayers-ng/types';
 
 interface Operator {
   value: string;
@@ -57,7 +57,7 @@ interface FilterWithArgs {
     NgClass,
     ReactiveFormsModule,
     FormsModule,
-    TranslateCustomPipe,
+    TranslatePipe,
     AsyncPipe,
     FilterRangeInputComponent,
     HsAttributeSelectorComponent,

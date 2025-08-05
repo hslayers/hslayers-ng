@@ -1,4 +1,5 @@
 import {Component, Input, inject, viewChild} from '@angular/core';
+import {TranslatePipe} from '@ngx-translate/core';
 
 import {FilterType, HsLayerDescriptor} from 'hslayers-ng/types';
 import {HsAddFilterButtonComponent} from './add-filter-button/add-filter-button.component';
@@ -7,14 +8,13 @@ import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsFilterComponent} from './filter.component';
 import {HsFiltersService} from './filters.service';
 import {HsStylerPartBaseComponent} from 'hslayers-ng/services/styler';
-import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 
 @Component({
   selector: 'hs-filters',
   templateUrl: './filters.component.html',
   imports: [
     HsAddFilterButtonComponent,
-    TranslateCustomPipe,
+    TranslatePipe,
     HsFilterComponent,
     HsComparisonFilterComponent,
   ],

@@ -1,14 +1,15 @@
 import {By} from '@angular/platform-browser';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {DebugElement} from '@angular/core';
+import {TranslatePipe} from '@ngx-translate/core';
+import {provideHttpClient} from '@angular/common/http';
+import {provideHttpClientTesting} from '@angular/common/http/testing';
+
 import {
   HsAddFilterButtonComponent,
   HsFiltersComponent,
   HsFiltersService,
 } from 'hslayers-ng/common/filters';
-import {TranslateCustomPipe} from 'hslayers-ng/services/language';
-import {provideHttpClient} from '@angular/common/http';
-import {provideHttpClientTesting} from '@angular/common/http/testing';
 
 describe('CommonFiltersComponent', () => {
   let component: HsFiltersComponent;
@@ -22,11 +23,7 @@ describe('CommonFiltersComponent', () => {
         provideHttpClientTesting(),
         HsFiltersService,
       ],
-      imports: [
-        TranslateCustomPipe,
-        HsFiltersComponent,
-        HsAddFilterButtonComponent,
-      ],
+      imports: [TranslatePipe, HsFiltersComponent, HsAddFilterButtonComponent],
     }).compileComponents();
 
     fixture = TestBed.createComponent(HsFiltersComponent);

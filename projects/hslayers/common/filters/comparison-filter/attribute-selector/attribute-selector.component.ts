@@ -5,11 +5,11 @@ import {
   NG_VALUE_ACCESSOR,
   ReactiveFormsModule,
 } from '@angular/forms';
-import {TranslateCustomPipe} from 'hslayers-ng/services/language';
+import {TranslatePipe} from '@ngx-translate/core';
 
 @Component({
   selector: 'hs-filters-attribute-selector',
-  imports: [FormsModule, ReactiveFormsModule, TranslateCustomPipe],
+  imports: [FormsModule, ReactiveFormsModule, TranslatePipe],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,

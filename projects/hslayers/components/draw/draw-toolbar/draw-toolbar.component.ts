@@ -2,15 +2,16 @@ import {CommonModule} from '@angular/common';
 import {Component} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
+import {TranslatePipe} from '@ngx-translate/core';
+
+import {Layer} from 'ol/layer';
+import {Source} from 'ol/source';
 
 import {HsDrawPanelComponent} from '../draw-panel/draw-panel.component';
 import {HsDrawService} from 'hslayers-ng/services/draw';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsGuiOverlayBaseComponent} from 'hslayers-ng/common/panels';
 import {HsMapService} from 'hslayers-ng/services/map';
-import {Layer} from 'ol/layer';
-import {Source} from 'ol/source';
-import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 import {getTitle} from 'hslayers-ng/common/extensions';
 import {isLayerDrawable} from 'hslayers-ng/services/utils';
 
@@ -44,7 +45,7 @@ import {isLayerDrawable} from 'hslayers-ng/services/utils';
     CommonModule,
     FormsModule,
     NgbDropdownModule,
-    TranslateCustomPipe,
+    TranslatePipe,
     HsDrawPanelComponent,
   ],
 })

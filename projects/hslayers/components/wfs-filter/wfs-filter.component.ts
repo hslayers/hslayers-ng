@@ -15,6 +15,7 @@ import * as olFormatFilter from 'ol/format/filter';
 import {Vector as VectorLayer} from 'ol/layer';
 import {Vector as VectorSource} from 'ol/source';
 import {catchError, filter, lastValueFrom, map, switchMap, tap} from 'rxjs';
+import {TranslatePipe} from '@ngx-translate/core';
 
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsFiltersComponent, HsFiltersService} from 'hslayers-ng/common/filters';
@@ -30,7 +31,6 @@ import {
 } from 'hslayers-ng/common/panels';
 import {HsToastService} from 'hslayers-ng/common/toast';
 import {HsProxyService, instOf} from 'hslayers-ng/services/utils';
-import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 import {
   getDefinition,
   getName,
@@ -54,7 +54,7 @@ import {
     FormsModule,
     AsyncPipe,
     HsPanelHeaderComponent,
-    TranslateCustomPipe,
+    TranslatePipe,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

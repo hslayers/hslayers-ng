@@ -1,6 +1,7 @@
 import {CommonModule} from '@angular/common';
 import {Component} from '@angular/core';
 import {Observable, map, tap} from 'rxjs';
+import {TranslatePipe} from '@ngx-translate/core';
 
 import {Image as ImageLayer, Tile} from 'ol/layer';
 import {ImageWMS, TileWMS} from 'ol/source';
@@ -12,11 +13,10 @@ import {HsLayerSelectorService} from 'hslayers-ng/services/layer-manager';
 import {HsLayerShiftingService} from 'hslayers-ng/services/layer-shifting';
 import {instOf, isLayerWMS} from 'hslayers-ng/services/utils';
 import {HsMapService} from 'hslayers-ng/services/map';
-import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 
 @Component({
   selector: 'hs-wms-source-widget',
-  imports: [CommonModule, TranslateCustomPipe],
+  imports: [CommonModule, TranslatePipe],
   templateUrl: './wms-source-widget.component.html',
 })
 export class HsWmsSourceWidgetComponent extends HsLayerEditorWidgetBaseComponent {

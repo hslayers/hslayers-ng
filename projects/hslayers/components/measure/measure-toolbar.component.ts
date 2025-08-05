@@ -1,9 +1,9 @@
 import {AsyncPipe} from '@angular/common';
 import {Component} from '@angular/core';
 import {of} from 'rxjs';
+import {TranslatePipe} from '@ngx-translate/core';
 
 import {HsGuiOverlayBaseComponent} from 'hslayers-ng/common/panels';
-import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 
 @Component({
   selector: 'hs-measure-toolbar',
@@ -18,7 +18,7 @@ import {TranslateCustomPipe} from 'hslayers-ng/services/language';
       </button>
     </div>
   `,
-  imports: [TranslateCustomPipe, AsyncPipe],
+  imports: [TranslatePipe, AsyncPipe],
 })
 export class HsMeasureToolbarComponent extends HsGuiOverlayBaseComponent {
   constructor() {

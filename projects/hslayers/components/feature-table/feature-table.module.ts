@@ -2,6 +2,7 @@ import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
+import {TranslatePipe} from '@ngx-translate/core';
 
 import {HsFeatureFilterPipe} from './feature-filter.pipe';
 import {HsFeatureTableComponent} from './feature-table.component';
@@ -10,7 +11,6 @@ import {
   HsPanelHeaderComponent,
   HsPanelHelpersModule,
 } from 'hslayers-ng/common/panels';
-import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -23,7 +23,7 @@ import {TranslateCustomPipe} from 'hslayers-ng/services/language';
     CommonModule,
     FormsModule,
     HsPanelHelpersModule,
-    TranslateCustomPipe,
+    TranslatePipe,
     NgbDropdownModule,
     HsPanelHeaderComponent,
   ],

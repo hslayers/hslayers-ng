@@ -1,12 +1,12 @@
 import {Component, computed, signal} from '@angular/core';
+import {TranslatePipe} from '@ngx-translate/core';
 
 import {HsConfig} from 'hslayers-ng/config';
-import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 
 @Component({
   selector: 'hs-impressum',
   templateUrl: './impressum.component.html',
-  imports: [TranslateCustomPipe],
+  imports: [TranslatePipe],
   standalone: true,
 })
 export class HsImpressumComponent {

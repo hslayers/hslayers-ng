@@ -1,12 +1,12 @@
 import {CommonModule} from '@angular/common';
 import {NgModule} from '@angular/core';
+import {TranslatePipe} from '@ngx-translate/core';
 
 import {ColormapPickerComponent} from './colormap-picker.component';
-import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 
 @NgModule({
   declarations: [ColormapPickerComponent],
-  imports: [CommonModule, TranslateCustomPipe],
+  imports: [CommonModule, TranslatePipe],
   exports: [ColormapPickerComponent],
 })
 export class HsColormapPickerModule {}

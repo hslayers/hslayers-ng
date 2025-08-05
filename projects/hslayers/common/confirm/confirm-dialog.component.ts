@@ -1,16 +1,16 @@
 import {Component, ViewRef} from '@angular/core';
+import {TranslatePipe} from '@ngx-translate/core';
 
 import {
   HsDialogComponent,
   HsDialogContainerService,
   HsDialogItem,
 } from 'hslayers-ng/common/dialogs';
-import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 
 @Component({
   selector: 'hs-confirm-dialog',
   templateUrl: './confirm-dialog.component.html',
-  imports: [TranslateCustomPipe],
+  imports: [TranslatePipe],
 })
 export class HsConfirmDialogComponent implements HsDialogComponent {
   dialogItem: HsDialogItem;

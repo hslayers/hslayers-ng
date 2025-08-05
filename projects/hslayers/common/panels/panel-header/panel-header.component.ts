@@ -16,13 +16,11 @@ import {
 } from '@angular/core';
 import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
 import {tap} from 'rxjs/operators';
-
-import {
-  HsLanguageService,
-  TranslateCustomPipe,
-} from 'hslayers-ng/services/language';
-import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
+import {TranslatePipe} from '@ngx-translate/core';
+
+import {HsLanguageService} from 'hslayers-ng/services/language';
+import {HsLayoutService} from 'hslayers-ng/services/layout';
 
 export function toArray(panels: string) {
   return panels.split(',');
@@ -31,7 +29,7 @@ export function toArray(panels: string) {
 @Component({
   selector: 'hs-panel-header',
   templateUrl: './panel-header.component.html',
-  imports: [TranslateCustomPipe, NgbDropdownModule, AsyncPipe],
+  imports: [TranslatePipe, NgbDropdownModule, AsyncPipe],
   changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrl: './panel-header.component.scss',
 })

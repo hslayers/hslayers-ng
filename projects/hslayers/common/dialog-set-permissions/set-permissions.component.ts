@@ -6,6 +6,7 @@ import {
   ViewRef,
   WritableSignal,
 } from '@angular/core';
+import {TranslatePipe} from '@ngx-translate/core';
 
 import {
   AccessRightsModel,
@@ -24,12 +25,11 @@ import {
   HsDialogItem,
 } from 'hslayers-ng/common/dialogs';
 import {HsLaymanService} from 'hslayers-ng/services/save-map';
-import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 
 @Component({
   selector: 'hs-set-permissions-dialog',
   templateUrl: './set-permissions.component.html',
-  imports: [TranslateCustomPipe, HsCommonLaymanAccessRightsComponent],
+  imports: [TranslatePipe, HsCommonLaymanAccessRightsComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HsSetPermissionsDialogComponent

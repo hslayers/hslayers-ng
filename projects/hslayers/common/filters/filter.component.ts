@@ -1,10 +1,11 @@
 import {Component, Input, inject} from '@angular/core';
+import {TranslatePipe} from '@ngx-translate/core';
+
 import {Filter} from 'hslayers-ng/types';
 import {HsAddFilterButtonComponent} from './add-filter-button/add-filter-button.component';
 import {HsComparisonFilterComponent} from './comparison-filter/comparison-filter.component';
 import {HsFiltersService} from './filters.service';
 import {HsStylerPartBaseComponent} from 'hslayers-ng/services/styler';
-import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 
 @Component({
   selector: 'hs-filter',
@@ -12,8 +13,8 @@ import {TranslateCustomPipe} from 'hslayers-ng/services/language';
   imports: [
     HsComparisonFilterComponent,
     HsAddFilterButtonComponent,
-    TranslateCustomPipe
-],
+    TranslatePipe,
+  ],
   styles: `
     :host {
       flex: 1 1 auto;

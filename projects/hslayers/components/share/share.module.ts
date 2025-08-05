@@ -6,13 +6,13 @@ import {
 } from '@angular/common';
 import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
 import {FormsModule} from '@angular/forms';
+import {TranslatePipe} from '@ngx-translate/core';
 
 import {
   HsPanelHeaderComponent,
   HsPanelHelpersModule,
 } from 'hslayers-ng/common/panels';
 import {HsShareComponent} from './share.component';
-import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -21,7 +21,7 @@ import {TranslateCustomPipe} from 'hslayers-ng/services/language';
     CommonModule,
     FormsModule,
     HsPanelHelpersModule,
-    TranslateCustomPipe,
+    TranslatePipe,
     HsPanelHeaderComponent,
   ],
   exports: [HsShareComponent],

@@ -11,12 +11,12 @@ import {HttpClient} from '@angular/common/http';
 import {FormsModule} from '@angular/forms';
 import {NgTemplateOutlet} from '@angular/common';
 import {Observable, catchError, lastValueFrom, map, of, switchMap} from 'rxjs';
+import {TranslatePipe} from '@ngx-translate/core';
 
 import {AccessRightsModel, HsEndpoint} from 'hslayers-ng/types';
 import {HsCommonLaymanService} from '../layman.service';
 import {HsLogService} from 'hslayers-ng/services/log';
 import {LaymanUser} from '../types/layman-user.type';
-import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 import {FilterPipe} from 'hslayers-ng/common/pipes';
 
 export enum GrantingOptions {
@@ -57,7 +57,7 @@ export type AccessRightsType = 'read' | 'write';
 @Component({
   selector: 'hs-layman-access-rights',
   templateUrl: './layman-access-rights.component.html',
-  imports: [TranslateCustomPipe, FilterPipe, FormsModule, NgTemplateOutlet],
+  imports: [TranslatePipe, FilterPipe, FormsModule, NgTemplateOutlet],
 })
 export class HsCommonLaymanAccessRightsComponent implements OnInit {
   @Input() access_rights: AccessRightsModel;

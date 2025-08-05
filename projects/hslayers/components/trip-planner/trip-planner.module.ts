@@ -2,6 +2,7 @@ import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
+import {TranslatePipe} from '@ngx-translate/core';
 
 import {
   HsPanelHeaderComponent,
@@ -10,7 +11,6 @@ import {
 import {HsTripPlannerComponent} from './trip-planner.component';
 import {HsTripPlannerLayerSelectorComponent} from './layer-selector.component';
 import {HsTripPlannerProfileSelectorComponent} from './route-profile-selector.component';
-import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -22,7 +22,7 @@ import {TranslateCustomPipe} from 'hslayers-ng/services/language';
   imports: [
     FormsModule,
     CommonModule,
-    TranslateCustomPipe,
+    TranslatePipe,
     HsPanelHelpersModule,
     HsPanelHeaderComponent,
     NgbDropdownModule,

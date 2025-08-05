@@ -4,6 +4,7 @@ import {FormsModule} from '@angular/forms';
 import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
 import {Observable, map} from 'rxjs';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
+import {TranslatePipe} from '@ngx-translate/core';
 
 import {Layer} from 'ol/layer';
 
@@ -12,7 +13,6 @@ import {HsFeatureCommonService, exportFormats} from '../feature-common.service';
 import {HsMapService} from 'hslayers-ng/services/map';
 import {HsQueryAttributeRowComponent} from '../attribute-row/attribute-row.component';
 import {HsQueryVectorService} from 'hslayers-ng/services/query';
-import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 import {getTitle} from 'hslayers-ng/common/extensions';
 import {HsFeatureDescriptor} from 'hslayers-ng/types';
 import {isLayerEditable} from 'hslayers-ng/services/utils';
@@ -20,7 +20,7 @@ import {isLayerEditable} from 'hslayers-ng/services/utils';
   selector: 'hs-query-feature',
   templateUrl: './feature.component.html',
   imports: [
-    TranslateCustomPipe,
+    TranslatePipe,
     AsyncPipe,
     FormsModule,
     NgbDropdownModule,

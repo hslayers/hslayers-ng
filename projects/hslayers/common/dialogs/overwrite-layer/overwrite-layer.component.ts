@@ -1,16 +1,16 @@
 import {Component, ViewRef} from '@angular/core';
+import {TranslatePipe} from '@ngx-translate/core';
 
 import {FileDataObject, VectorDataObject} from 'hslayers-ng/types';
 import {HsDialogComponent} from '../dialog-component.interface';
 import {HsDialogContainerService} from '../dialog-container.service';
 import {HsDialogItem} from '../dialog-item';
 import {HsRenameLayerDialogComponent} from '../rename-layer/rename-layer.component';
-import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 
 @Component({
   selector: 'hs-layer-overwrite-dialog',
   templateUrl: './overwrite-layer.component.html',
-  imports: [TranslateCustomPipe],
+  imports: [TranslatePipe],
 })
 export class HsLayerOverwriteDialogComponent implements HsDialogComponent {
   dialogItem: HsDialogItem;

@@ -12,6 +12,7 @@ import {
 import {FormsModule} from '@angular/forms';
 import {provideHttpClient, withInterceptorsFromDi} from '@angular/common/http';
 import {provideHttpClientTesting} from '@angular/common/http/testing';
+import {TranslatePipe} from '@ngx-translate/core';
 
 import {Tile as TileLayer} from 'ol/layer';
 import {TileWMS} from 'ol/source';
@@ -32,7 +33,6 @@ import {
   HsPanelHeaderComponent,
   HsPanelHelpersModule,
 } from 'hslayers-ng/common/panels';
-import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 import {mockLayerUtilsService} from './layer-utils.service.mock';
 
 const layerUtilsMock = mockLayerUtilsService();
@@ -64,7 +64,7 @@ describe('HsLegendComponent', () => {
       imports: [
         HsPanelHelpersModule,
         HsPanelHeaderComponent,
-        TranslateCustomPipe,
+        TranslatePipe,
         FormsModule,
       ],
       providers: [

@@ -1,6 +1,7 @@
 import {AsyncPipe, NgClass} from '@angular/common';
 import {Component, Signal, inject, signal} from '@angular/core';
 import {Observable, map} from 'rxjs';
+import {TranslatePipe} from '@ngx-translate/core';
 
 import {OSM} from 'ol/source';
 
@@ -22,14 +23,13 @@ import {
   isLayerIDW,
   isLayerVectorLayer,
 } from 'hslayers-ng/services/utils';
-import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 import {getBase, setBase} from 'hslayers-ng/common/extensions';
 
 type layerType = 'base' | 'thematic';
 
 @Component({
   selector: 'hs-layer-type-switcher-widget',
-  imports: [NgClass, AsyncPipe, TranslateCustomPipe],
+  imports: [NgClass, AsyncPipe, TranslatePipe],
   templateUrl: './layer-type-switcher-widget.component.html',
 })
 export class HsLayerTypeSwitcherWidgetComponent extends HsLayerEditorWidgetBaseComponent {

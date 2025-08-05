@@ -6,6 +6,7 @@ import {
   NgbAccordionModule,
   NgbDropdownModule,
 } from '@ng-bootstrap/ng-bootstrap';
+import {TranslatePipe} from '@ngx-translate/core';
 
 import {HsClipboardTextComponent} from 'hslayers-ng/common/clipboard-text';
 import {HsCommonUrlModule} from 'hslayers-ng/components/add-data';
@@ -20,7 +21,6 @@ import {
   HsPanelHeaderComponent,
   HsPanelHelpersModule,
 } from 'hslayers-ng/common/panels';
-import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -35,7 +35,7 @@ import {TranslateCustomPipe} from 'hslayers-ng/services/language';
     CommonModule,
     FormsModule,
     HsPanelHelpersModule,
-    TranslateCustomPipe,
+    TranslatePipe,
     NgbDropdownModule,
     NgbAccordionModule,
     HsLaymanCurrentUserComponent,

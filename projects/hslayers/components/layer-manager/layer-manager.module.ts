@@ -8,6 +8,7 @@ import {
   NgbProgressbarModule,
   NgbTooltipModule,
 } from '@ng-bootstrap/ng-bootstrap';
+import {TranslatePipe} from '@ngx-translate/core';
 
 import {FilterPipe} from 'hslayers-ng/common/pipes';
 import {HsClipboardTextComponent} from 'hslayers-ng/common/clipboard-text';
@@ -35,7 +36,6 @@ import {
 import {HsScaleWidgetComponent} from './widgets/scale-widget.component';
 import {HsTypeWidgetComponent} from './widgets/type-widget.component';
 import {HsWmsSourceWidgetComponent} from './widgets/wms-source-widget/wms-source-widget.component';
-import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -58,7 +58,7 @@ import {TranslateCustomPipe} from 'hslayers-ng/services/language';
   ],
   imports: [
     HsLayerListComponent,
-    TranslateCustomPipe,
+    TranslatePipe,
     CommonModule,
     FormsModule,
     HsPanelHelpersModule,

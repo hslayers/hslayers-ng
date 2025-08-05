@@ -16,9 +16,11 @@ import {HsConfig} from 'hslayers-ng/config';
 import {HsConfigMock} from './config.service.mock';
 import {HsLogService} from 'hslayers-ng/services/log';
 import {HsMapHostDirective, HslayersComponent} from 'hslayers-ng/core';
-import {HsMissingTranslationHandler} from 'hslayers-ng/services/language/missing-translation.service';
+import {
+  HsMissingTranslationHandler,
+  WebpackTranslateLoader,
+} from 'hslayers-ng/services/language';
 import {TranslateTestingModule} from 'hslayers-ng/components/language';
-import {WebpackTranslateLoader} from 'hslayers-ng/services/language';
 
 describe('HslayersComponent', () => {
   let component: HslayersComponent;

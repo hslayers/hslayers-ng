@@ -6,6 +6,7 @@ import {FormsModule} from '@angular/forms';
 import {Subject} from 'rxjs';
 import {debounceTime, takeUntil} from 'rxjs/operators';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
+import {TranslatePipe} from '@ngx-translate/core';
 
 import Popup from 'ol-popup';
 
@@ -23,13 +24,12 @@ import {
 import {HsQueryDefaultInfoPanelBodyComponent} from './default-info-panel-body/default-info-panel-body.component';
 import {HsQueryWmsService} from './query-wms.service';
 import {QUERY_INFO_PANEL} from './query.tokens';
-import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 
 @Component({
   selector: 'hs-query',
   templateUrl: './query.component.html',
   imports: [
-    TranslateCustomPipe,
+    TranslatePipe,
     HsPanelHeaderComponent,
     AsyncPipe,
     NgClass,

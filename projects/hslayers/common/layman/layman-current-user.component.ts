@@ -3,17 +3,17 @@ import {AsyncPipe} from '@angular/common';
 
 import {map} from 'rxjs';
 import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
+import {TranslatePipe} from '@ngx-translate/core';
 
 import {HsCommonLaymanService} from './layman.service';
 import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsToastService} from 'hslayers-ng/common/toast';
-import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 
 @Component({
   selector: 'hs-layman-current-user',
   templateUrl: './layman-current-user.component.html',
-  imports: [AsyncPipe, TranslateCustomPipe, NgbDropdownModule],
+  imports: [AsyncPipe, TranslatePipe, NgbDropdownModule],
   styles: `
     .user-auth-container {
       .user-dropdown {

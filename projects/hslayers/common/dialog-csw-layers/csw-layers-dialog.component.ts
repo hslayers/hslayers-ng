@@ -1,4 +1,6 @@
 import {Component, Input, OnInit, ViewRef} from '@angular/core';
+import {NgbAccordionModule} from '@ng-bootstrap/ng-bootstrap';
+import {TranslatePipe} from '@ngx-translate/core';
 
 import {
   HsAddDataOwsService,
@@ -11,8 +13,6 @@ import {
 } from 'hslayers-ng/common/dialogs';
 import {HsLayerTableComponent} from 'hslayers-ng/common/layer-table';
 import {HsMapService} from 'hslayers-ng/services/map';
-import {NgbAccordionModule} from '@ng-bootstrap/ng-bootstrap';
-import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 import {
   setFromComposition,
   setPath,
@@ -25,7 +25,7 @@ import {isLayerWMS} from 'hslayers-ng/services/utils';
   selector: 'hs-csw-layers-dialog',
   templateUrl: './csw-layers-dialog.component.html',
   styleUrls: ['./csw-layers-dialog.component.scss'],
-  imports: [TranslateCustomPipe, NgbAccordionModule, HsLayerTableComponent],
+  imports: [TranslatePipe, NgbAccordionModule, HsLayerTableComponent],
 })
 export class CswLayersDialogComponent implements OnInit, HsDialogComponent {
   dialogItem: HsDialogItem;

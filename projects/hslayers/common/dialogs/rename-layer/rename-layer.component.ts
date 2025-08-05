@@ -1,7 +1,6 @@
 import {Component, OnInit, ViewRef} from '@angular/core';
 import {FormsModule} from '@angular/forms';
-
-import {TranslateCustomPipe} from 'hslayers-ng/services/language';
+import {TranslatePipe} from '@ngx-translate/core';
 
 import {HsDialogComponent} from '../dialog-component.interface';
 import {HsDialogContainerService} from '../dialog-container.service';
@@ -10,7 +9,7 @@ import {HsDialogItem} from '../dialog-item';
 @Component({
   selector: 'hs-rename-layer-dialog',
   templateUrl: './rename-layer.component.html',
-  imports: [TranslateCustomPipe, FormsModule],
+  imports: [TranslatePipe, FormsModule],
 })
 export class HsRenameLayerDialogComponent implements HsDialogComponent, OnInit {
   dialogItem: HsDialogItem;

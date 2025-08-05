@@ -17,13 +17,11 @@ import {FormControl, ReactiveFormsModule, Validators} from '@angular/forms';
 import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
 import {Observable, debounceTime, filter, fromEvent} from 'rxjs';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
+import {TranslatePipe} from '@ngx-translate/core';
 
 import {Layer} from 'ol/layer';
 
-import {
-  HsLanguageService,
-  TranslateCustomPipe,
-} from 'hslayers-ng/services/language';
+import {HsLanguageService} from 'hslayers-ng/services/language';
 
 import {
   HsDialogComponent,
@@ -38,7 +36,7 @@ import {getPath} from 'hslayers-ng/common/extensions';
 
 @Component({
   selector: 'hs-layer-folder-widget-dialog',
-  imports: [TranslateCustomPipe, ReactiveFormsModule, NgbDropdownModule],
+  imports: [TranslatePipe, ReactiveFormsModule, NgbDropdownModule],
   templateUrl: './layer-folder-dialog.component.html',
   styles: `
     .hs-folder-widget-dialog-list * {

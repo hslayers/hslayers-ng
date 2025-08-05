@@ -8,6 +8,7 @@ import {FormsModule} from '@angular/forms';
 import {Subject} from 'rxjs';
 import {provideHttpClient, withInterceptorsFromDi} from '@angular/common/http';
 import {provideHttpClientTesting} from '@angular/common/http/testing';
+import {TranslatePipe} from '@ngx-translate/core';
 
 import {Map} from 'ol';
 import {Vector as VectorLayer} from 'ol/layer';
@@ -29,7 +30,6 @@ import {HsMapService} from 'hslayers-ng/services/map';
 import {HsMapServiceMock} from './map.service.mock';
 
 import {HsSaveMapManagerServiceMock} from './save-map-manager.service.mock';
-import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 import {createMockLaymanService} from './common/layman/layman.service.mock';
 import {
   HsSaveMapComponent,
@@ -77,7 +77,7 @@ describe('HsSaveMap', () => {
     TestBed.configureTestingModule({
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
       declarations: [HsSaveMapComponent],
-      imports: [FormsModule, TranslateCustomPipe],
+      imports: [FormsModule, TranslatePipe],
       providers: [
         HsLaymanService,
         {

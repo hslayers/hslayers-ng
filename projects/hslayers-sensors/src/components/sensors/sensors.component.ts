@@ -1,22 +1,23 @@
 import {Component, OnInit, ViewRef} from '@angular/core';
 import {AsyncPipe, NgClass} from '@angular/common';
+import {FormsModule} from '@angular/forms';
+import {TranslatePipe} from '@ngx-translate/core';
+
 import {
   HsPanelBaseComponent,
   HsPanelHeaderComponent,
 } from 'hslayers-ng/common/panels';
-import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 
 import {HsSensorUnit} from './sensor-unit.class';
 import {HsSensorsService} from './sensors.service';
 import {HsSensorsUnitDialogService} from './unit-dialog.service';
-import {FormsModule} from '@angular/forms';
 import {HsSensorsUnitListItemComponent} from './sensors-unit-list-item.component';
 
 @Component({
   selector: 'hs-sensors',
   templateUrl: './partials/sensors.component.html',
   imports: [
-    TranslateCustomPipe,
+    TranslatePipe,
     HsPanelHeaderComponent,
     AsyncPipe,
     FormsModule,
