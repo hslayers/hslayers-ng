@@ -5,13 +5,13 @@ import {
   input,
   signal,
 } from '@angular/core';
+import {TranslatePipe} from '@ngx-translate/core';
 
 import {HsToastService} from 'hslayers-ng/common/toast';
-import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 
 @Component({
   selector: 'hs-clipboard-text',
-  imports: [TranslateCustomPipe],
+  imports: [TranslatePipe],
   template: `
     @if (anchor()) {
       <a class="flex-fill text-truncate" href="text()">{{ text() }}</a>

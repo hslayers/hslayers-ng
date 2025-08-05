@@ -1,6 +1,7 @@
 import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
+import {TranslatePipe} from '@ngx-translate/core';
 
 import {
   HsPanelHeaderComponent,
@@ -9,7 +10,6 @@ import {
 import {HsSearchComponent} from './search.component';
 import {HsSearchInputComponent} from './search-input.component';
 import {HsSearchResultsComponent} from './search-results.component';
-import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -18,7 +18,7 @@ import {TranslateCustomPipe} from 'hslayers-ng/services/language';
     FormsModule,
     CommonModule,
     HsPanelHelpersModule,
-    TranslateCustomPipe,
+    TranslatePipe,
     HsPanelHeaderComponent,
     HsSearchInputComponent,
     HsSearchResultsComponent,

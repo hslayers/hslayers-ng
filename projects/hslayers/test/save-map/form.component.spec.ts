@@ -11,6 +11,7 @@ import {Subject, of, Observable} from 'rxjs';
 import {provideHttpClient, withInterceptorsFromDi} from '@angular/common/http';
 import {provideHttpClientTesting} from '@angular/common/http/testing';
 import {NgbTooltipModule} from '@ng-bootstrap/ng-bootstrap';
+import {TranslatePipe} from '@ngx-translate/core';
 
 import {
   AccessRightsModel,
@@ -30,7 +31,6 @@ import {
 } from 'hslayers-ng/common/layman';
 import {HsCompositionsParserService} from 'hslayers-ng/services/compositions';
 import {HsToastService} from 'hslayers-ng/common/toast';
-import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 import {HsSaveMapManagerServiceMock} from '../save-map-manager.service.mock';
 
 // Helper function to create mock compositions
@@ -154,7 +154,7 @@ describe('HsSaveMapFormComponent', () => {
         FormsModule,
         ReactiveFormsModule,
         NgbTooltipModule,
-        TranslateCustomPipe,
+        TranslatePipe,
         HsSaveMapFormComponent, // Component under test
         HsLaymanCurrentUserComponent,
         HsCommonLaymanAccessRightsComponent,

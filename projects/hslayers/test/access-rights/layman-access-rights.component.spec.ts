@@ -11,7 +11,8 @@ import {
 } from '@angular/common/http/testing';
 import {NO_ERRORS_SCHEMA, signal} from '@angular/core';
 import {provideHttpClient, withInterceptorsFromDi} from '@angular/common/http';
-import {BehaviorSubject, of} from 'rxjs';
+import {of} from 'rxjs';
+import {TranslatePipe} from '@ngx-translate/core';
 
 import {
   AccessRights,
@@ -20,7 +21,6 @@ import {
 } from 'hslayers-ng/common/layman/access-rights/layman-access-rights.component';
 import {FilterPipe} from 'hslayers-ng/common/pipes';
 import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
-import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 
 const mockUsersFromLayman = [
   {
@@ -136,7 +136,7 @@ describe('HsCommonLaymanAccessRightsComponent', () => {
 
     await TestBed.configureTestingModule({
       schemas: [NO_ERRORS_SCHEMA],
-      imports: [CommonModule, TranslateCustomPipe, FilterPipe],
+      imports: [CommonModule, TranslatePipe, FilterPipe],
       providers: [
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),

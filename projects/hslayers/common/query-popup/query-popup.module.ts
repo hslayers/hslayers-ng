@@ -1,6 +1,7 @@
 import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
+import {TranslatePipe} from '@ngx-translate/core';
 
 import {HsClearLayerComponent} from './widgets/clear-layer.component';
 import {HsDownloadDirective} from 'hslayers-ng/common/download';
@@ -13,7 +14,6 @@ import {
 } from 'hslayers-ng/common/panels';
 import {HsQueryPopupComponent} from './query-popup.component';
 import {HsQueryPopupWidgetBaseComponent} from './query-popup-widget-base.component';
-import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -29,7 +29,7 @@ import {TranslateCustomPipe} from 'hslayers-ng/services/language';
     CommonModule,
     HsPanelHelpersModule,
     FormsModule,
-    TranslateCustomPipe,
+    TranslatePipe,
     HsDownloadDirective,
     HsPanelHeaderComponent,
   ],

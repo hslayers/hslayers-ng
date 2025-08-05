@@ -1,6 +1,7 @@
 import {AfterContentInit, Component, Input} from '@angular/core';
-
 import {FormsModule} from '@angular/forms';
+import {NgClass, SlicePipe} from '@angular/common';
+import {TranslatePipe} from '@ngx-translate/core';
 
 import {
   AddDataUrlType,
@@ -14,18 +15,14 @@ import {
   HsAddDataUrlService,
   HsUrlWmsService,
 } from 'hslayers-ng/services/add-data';
-import {
-  HsLanguageService,
-  TranslateCustomPipe,
-} from 'hslayers-ng/services/language';
+import {HsLanguageService} from 'hslayers-ng/services/language';
 import {HsNestedLayersTableComponent} from './nested-layers-table/nested-layers-table.component';
-import {NgClass, SlicePipe} from '@angular/common';
 
 @Component({
   selector: 'hs-layer-table',
   templateUrl: './layer-table.component.html',
   imports: [
-    TranslateCustomPipe,
+    TranslatePipe,
     FormsModule,
     SlicePipe,
     NgClass,

@@ -1,12 +1,12 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {Subscription} from 'rxjs';
+import {TranslatePipe} from '@ngx-translate/core';
 
 import {HS_PRMS, HsShareUrlService} from 'hslayers-ng/services/share';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsSearchService} from './search.service';
-import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 import {HsMapService} from 'hslayers-ng/services/map';
 
 /**
@@ -15,7 +15,7 @@ import {HsMapService} from 'hslayers-ng/services/map';
 @Component({
   selector: 'hs-search-input',
   templateUrl: './search-input.component.html',
-  imports: [FormsModule, TranslateCustomPipe],
+  imports: [FormsModule, TranslatePipe],
 })
 export class HsSearchInputComponent implements OnInit, OnDestroy {
   query = '';

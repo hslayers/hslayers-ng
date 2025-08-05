@@ -1,6 +1,7 @@
 import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
+import {TranslatePipe} from '@ngx-translate/core';
 
 import {HsAddDataCommonModule} from '../common/common.module';
 import {HsAddDataVectorFileComponent} from './vector-file/vector-file.component';
@@ -9,14 +10,13 @@ import {HsAddToMapButtonComponent} from 'hslayers-ng/common/add-to-map';
 import {HsCommonUrlModule} from '../common/url/url.module';
 import {HsLaymanCurrentUserComponent} from 'hslayers-ng/common/layman';
 import {HsUploadModule} from 'hslayers-ng/common/upload';
-import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   imports: [
     CommonModule,
     FormsModule,
-    TranslateCustomPipe,
+    TranslatePipe,
     HsAddDataCommonModule,
     HsCommonUrlModule,
     HsLaymanCurrentUserComponent,

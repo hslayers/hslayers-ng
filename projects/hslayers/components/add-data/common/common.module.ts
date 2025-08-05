@@ -2,24 +2,23 @@ import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {NgbProgressbarModule} from '@ng-bootstrap/ng-bootstrap';
+import {TranslatePipe} from '@ngx-translate/core';
 
 import {EpsgPipe, FilterPipe} from 'hslayers-ng/common/pipes';
 import {HsAddLayerAuthorizedComponent} from './add-layer-authorized/add-layer-authorized.component';
 import {HsAddToMapButtonComponent} from 'hslayers-ng/common/add-to-map';
 import {HsAdvancedOptionsComponent} from './advanced-options/advanced-options.component';
-
 import {HsLaymanCurrentUserComponent} from 'hslayers-ng/common/layman';
 import {HsNewLayerFormComponent} from './new-layer-form/new-layer-form.component';
 import {HsPositionComponent} from './target-position/target-position.component';
 import {HsSaveToLaymanComponent} from './save-to-layman/save-to-layman.component';
-import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   imports: [
     CommonModule,
     FormsModule,
-    TranslateCustomPipe,
+    TranslatePipe,
     HsLaymanCurrentUserComponent,
     NgbProgressbarModule,
     HsAddToMapButtonComponent,

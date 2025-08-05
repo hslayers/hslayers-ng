@@ -14,6 +14,7 @@ import {FormsModule} from '@angular/forms';
 import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
 import {provideHttpClient, withInterceptorsFromDi} from '@angular/common/http';
 import {provideHttpClientTesting} from '@angular/common/http/testing';
+import {TranslatePipe} from '@ngx-translate/core';
 
 import {Image as ImageLayer} from 'ol/layer';
 import {ImageWMS} from 'ol/source';
@@ -39,7 +40,6 @@ import {HsMapService} from 'hslayers-ng/services/map';
 import {HsMapServiceMock} from './map.service.mock';
 import {HsPanelHelpersModule} from 'hslayers-ng/common/panels';
 import {HsShareUrlService} from 'hslayers-ng/services/share';
-import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 import {mockHsLayerListService} from './layer-manager-layerlist.service.mock';
 import {wmsGetCapabilitiesResponse} from './data/wms-capabilities';
 
@@ -132,7 +132,7 @@ describe('layermanager-layer-list', () => {
         HsPanelHelpersModule,
         FormsModule,
         NgbDropdownModule,
-        TranslateCustomPipe,
+        TranslatePipe,
         HsLayerListComponent,
       ],
       providers: [

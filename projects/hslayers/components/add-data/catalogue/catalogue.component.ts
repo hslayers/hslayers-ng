@@ -1,6 +1,7 @@
 import {Component, computed, OnInit, signal} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
+import {TranslatePipe} from '@ngx-translate/core';
 
 import {
   HsAddDataCatalogueMapService,
@@ -13,10 +14,7 @@ import {
   HsLaymanCurrentUserComponent,
 } from 'hslayers-ng/common/layman';
 import {HsConfig} from 'hslayers-ng/config';
-import {
-  HsLanguageService,
-  TranslateCustomPipe,
-} from 'hslayers-ng/services/language';
+import {HsLanguageService} from 'hslayers-ng/services/language';
 import {HsLaymanService} from 'hslayers-ng/services/save-map';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsPagerModule} from 'hslayers-ng/common/pager';
@@ -29,7 +27,7 @@ import {HsCatalogueListItemComponent} from './catalogue-list-item/catalogue-list
     FormsModule,
     HsPagerModule,
     NgbDropdownModule,
-    TranslateCustomPipe,
+    TranslatePipe,
     HsCatalogueListItemComponent,
     HsLaymanCurrentUserComponent,
   ],

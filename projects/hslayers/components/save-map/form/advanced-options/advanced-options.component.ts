@@ -8,6 +8,7 @@ import {
 
 import {Layer} from 'ol/layer';
 import {Source} from 'ol/source';
+import {TranslatePipe} from '@ngx-translate/core';
 
 import {HsMapService} from 'hslayers-ng/services/map';
 import {HsSaveMapService} from 'hslayers-ng/services/save-map';
@@ -17,7 +18,6 @@ import {
   getShowInLayerManager,
   getTitle,
 } from 'hslayers-ng/common/extensions';
-import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 
 export type saveMapLayer = {
   checked: boolean;
@@ -35,7 +35,7 @@ export type saveMapLayer = {
       useFactory: () => inject(ControlContainer, {skipSelf: true}),
     },
   ],
-  imports: [TranslateCustomPipe, ReactiveFormsModule],
+  imports: [TranslatePipe, ReactiveFormsModule],
 })
 export class AdvancedOptionsComponent implements OnInit, OnDestroy {
   @Input() thumbnail: HTMLImageElement;

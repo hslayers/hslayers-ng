@@ -8,6 +8,7 @@ import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
 import {provideHttpClient, withInterceptorsFromDi} from '@angular/common/http';
 import {provideHttpClientTesting} from '@angular/common/http/testing';
+import {TranslatePipe} from '@ngx-translate/core';
 
 import {Circle, Fill, Stroke, Style} from 'ol/style';
 import {Feature} from 'ol';
@@ -29,7 +30,6 @@ import {
 import {HsMapService} from 'hslayers-ng/services/map';
 import {HsMapServiceMock} from './map.service.mock';
 import {HsPanelHelpersModule} from 'hslayers-ng/common/panels';
-import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 import {getCluster, setCluster} from 'hslayers-ng/common/extensions';
 
 describe('HsLegendLayerComponent', () => {
@@ -59,7 +59,7 @@ describe('HsLegendLayerComponent', () => {
         HsLegendLayerVectorComponent,
         HsLegendLayerStaticComponent,
       ],
-      imports: [HsPanelHelpersModule, FormsModule, TranslateCustomPipe],
+      imports: [HsPanelHelpersModule, FormsModule, TranslatePipe],
       providers: [
         HsLegendService,
         {provide: HsConfig, useValue: mockedConfig},

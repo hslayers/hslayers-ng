@@ -2,6 +2,7 @@ import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {provideHttpClient, withInterceptorsFromDi} from '@angular/common/http';
+import {TranslatePipe} from '@ngx-translate/core';
 
 import {FilterPipe} from 'hslayers-ng/common/pipes';
 import {HsLegendComponent} from './legend.component';
@@ -12,7 +13,6 @@ import {
   HsPanelHeaderComponent,
   HsPanelHelpersModule,
 } from 'hslayers-ng/common/panels';
-import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   declarations: [
@@ -26,7 +26,7 @@ import {TranslateCustomPipe} from 'hslayers-ng/services/language';
     FormsModule,
     HsPanelHelpersModule,
     FilterPipe,
-    TranslateCustomPipe,
+    TranslatePipe,
     HsPanelHeaderComponent,
   ],
   exports: [HsLegendComponent, HsLegendLayerComponent],

@@ -1,6 +1,7 @@
 import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
+import {TranslatePipe} from '@ngx-translate/core';
 
 import {HsAddDataUrlComponent} from './add-data-url.component';
 import {HsAddDataVectorModule} from '../vector/vector.module';
@@ -10,7 +11,6 @@ import {HsUrlWfsModule} from './wfs/wfs.module';
 import {HsUrlWmsModule} from './wms/wms.module';
 import {HsUrlWmtsModule} from './wmts/wmts.module';
 import {HsUrlXyzModule} from './xyz/xyz.module';
-import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -18,7 +18,7 @@ import {TranslateCustomPipe} from 'hslayers-ng/services/language';
   imports: [
     CommonModule,
     FormsModule,
-    TranslateCustomPipe,
+    TranslatePipe,
     HsAddDataVectorModule,
     HsUrlArcGisModule,
     HsUrlGeoSparqlModule,

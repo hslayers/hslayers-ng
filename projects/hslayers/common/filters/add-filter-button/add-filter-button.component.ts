@@ -7,6 +7,8 @@ import {
   inject,
   input,
 } from '@angular/core';
+import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
+import {TranslatePipe} from '@ngx-translate/core';
 import {Rule} from 'geostyler-style';
 
 import {
@@ -15,13 +17,11 @@ import {
   LogicalOperatorType,
 } from 'hslayers-ng/types';
 import {HsFiltersService} from '../filters.service';
-import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
-import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 
 @Component({
   selector: 'hs-add-filter-button',
   templateUrl: './add-filter-button.component.html',
-  imports: [TranslateCustomPipe, NgbDropdownModule],
+  imports: [TranslatePipe, NgbDropdownModule],
 })
 export class HsAddFilterButtonComponent implements OnChanges {
   @Output() clicks = new EventEmitter();

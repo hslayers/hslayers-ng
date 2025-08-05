@@ -1,5 +1,6 @@
 import {Component, Input} from '@angular/core';
 import {NgClass} from '@angular/common';
+import {TranslatePipe} from '@ngx-translate/core';
 
 import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
 
@@ -7,12 +8,11 @@ import {HsSensorUnit} from './sensor-unit.class';
 import {HsSensorsService} from './sensors.service';
 import {HsSensorsUnitDialogService} from './unit-dialog.service';
 import {SenslogSensor} from './types/senslog-sensor.type';
-import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 
 @Component({
   selector: 'hs-sensor-unit-list-item',
   templateUrl: './partials/unit-list-item.component.html',
-  imports: [TranslateCustomPipe, NgClass],
+  imports: [TranslatePipe, NgClass],
 })
 export class HsSensorsUnitListItemComponent {
   @Input() unit: HsSensorUnit;

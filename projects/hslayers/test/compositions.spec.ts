@@ -17,6 +17,7 @@ import {provideHttpClientTesting} from '@angular/common/http/testing';
 
 import {of} from 'rxjs';
 import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
+import {TranslatePipe} from '@ngx-translate/core';
 
 import {
   HsAddDataVectorService,
@@ -46,7 +47,6 @@ import {HsSaveMapService} from 'hslayers-ng/services/save-map';
 import {HsSaveMapServiceMock} from './save-map.service.mock';
 import {HsStylerModule} from 'hslayers-ng/components/styler';
 import {HsStylerService} from 'hslayers-ng/services/styler';
-import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 import {compositionJson} from './data/composition';
 import {compositionsJson} from './data/compositions';
 import {getSld, getTitle} from 'hslayers-ng/common/extensions';
@@ -98,7 +98,7 @@ describe('compositions', () => {
         CommonModule,
         HsPanelHelpersModule,
         FormsModule,
-        TranslateCustomPipe,
+        TranslatePipe,
         HsStylerModule,
         NgbDropdownModule,
         HsPanelHeaderComponent,

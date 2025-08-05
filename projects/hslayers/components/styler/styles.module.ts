@@ -5,6 +5,7 @@ import {FormsModule} from '@angular/forms';
 
 import {ColorSketchModule} from 'ngx-color/sketch';
 import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
+import {TranslatePipe} from '@ngx-translate/core';
 
 import {HsAddColormapComponent} from './add-colormap.component';
 import {HsColorPickerComponent} from './symbolizers/color-picker/color-picker.component';
@@ -31,7 +32,7 @@ import {HsSymbolizerComponent} from './symbolizers/symbolizer.component';
 import {HsSymbolizerListItemComponent} from './symbolizers/symbolizer-list-item/symbolizer-list-item.component';
 import {HsTextSymbolizerComponent} from './symbolizers/text-symbolizer/text-symbolizer.component';
 import {HsUploadModule} from 'hslayers-ng/common/upload';
-import {TranslateCustomPipe} from 'hslayers-ng/services/language';
+
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   declarations: [
@@ -58,7 +59,7 @@ import {TranslateCustomPipe} from 'hslayers-ng/services/language';
     HsPanelHelpersModule,
     FormsModule,
     NgbDropdownModule,
-    TranslateCustomPipe,
+    TranslatePipe,
     HsUploadModule,
     HsDownloadDirective,
     DragDropModule,

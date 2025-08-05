@@ -2,6 +2,7 @@ import {CommonModule} from '@angular/common';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {DragDropModule} from '@angular/cdk/drag-drop';
 import {FormsModule} from '@angular/forms';
+import {TranslatePipe} from '@ngx-translate/core';
 import {provideHttpClient, withInterceptorsFromDi} from '@angular/common/http';
 import {provideHttpClientTesting} from '@angular/common/http/testing';
 
@@ -19,7 +20,6 @@ import {
   HsPanelHelpersModule,
 } from 'hslayers-ng/common/panels';
 import {HsSidebarService} from 'hslayers-ng/services/sidebar';
-import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 
 function mockHsLayerShiftingService() {
   return jasmine.createSpyObj('HsLayerShiftingService', [
@@ -46,7 +46,7 @@ describe('HsMapSwipeComponent', () => {
       imports: [
         HsPanelHelpersModule,
         HsPanelHeaderComponent,
-        TranslateCustomPipe,
+        TranslatePipe,
         FormsModule,
         DragDropModule,
         CommonModule,

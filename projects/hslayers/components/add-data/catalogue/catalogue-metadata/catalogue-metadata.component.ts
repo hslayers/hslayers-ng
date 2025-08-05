@@ -1,4 +1,7 @@
 import {Component, computed, input, ViewRef} from '@angular/core';
+import {TranslatePipe} from '@ngx-translate/core';
+
+import {transform} from 'ol/proj';
 
 import {
   HsAddDataCatalogueMapService,
@@ -17,14 +20,12 @@ import {
   HsDialogContainerService,
 } from 'hslayers-ng/common/dialogs';
 import {HsUiExtensionsRecursiveDdComponent} from 'hslayers-ng/common/widgets';
-import {TranslateCustomPipe} from 'hslayers-ng/services/language';
-import {transform} from 'ol/proj';
 import {HsMapService} from 'hslayers-ng/services/map';
 
 @Component({
   selector: 'hs-catalogue-metadata',
   templateUrl: './catalogue-metadata.component.html',
-  imports: [HsUiExtensionsRecursiveDdComponent, TranslateCustomPipe],
+  imports: [HsUiExtensionsRecursiveDdComponent, TranslatePipe],
 })
 export class HsCatalogueMetadataComponent implements HsDialogComponent {
   data = input<{

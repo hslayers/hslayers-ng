@@ -3,6 +3,7 @@ import {FormsModule} from '@angular/forms';
 import {NgClass} from '@angular/common';
 import {map} from 'rxjs';
 import {toObservable} from '@angular/core/rxjs-interop';
+import {TranslatePipe} from '@ngx-translate/core';
 
 import {Feature} from 'ol';
 import {Vector as VectorLayer} from 'ol/layer';
@@ -21,7 +22,6 @@ import {
 import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsPanelHelpersModule} from 'hslayers-ng/common/panels';
 import {HsStylerService} from 'hslayers-ng/services/styler';
-import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 import {
   getBase,
   getGreyscale,
@@ -43,7 +43,7 @@ import {layerIsZoomable, layerIsStyleable} from 'hslayers-ng/services/utils';
 @Component({
   selector: 'hs-layer-editor',
   templateUrl: './layer-editor.component.html',
-  imports: [NgClass, FormsModule, TranslateCustomPipe, HsPanelHelpersModule],
+  imports: [NgClass, FormsModule, TranslatePipe, HsPanelHelpersModule],
 })
 export class HsLayerEditorComponent {
   layer = input.required<HsLayerDescriptor>();

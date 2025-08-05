@@ -6,15 +6,13 @@ import {
   ViewRef,
 } from '@angular/core';
 import {combineLatest, map, startWith} from 'rxjs';
+import {TranslatePipe} from '@ngx-translate/core';
 
 import {
   HsDialogComponent,
   HsDialogContainerService,
 } from 'hslayers-ng/common/dialogs';
-import {
-  HsLanguageService,
-  TranslateCustomPipe,
-} from 'hslayers-ng/services/language';
+import {HsLanguageService} from 'hslayers-ng/services/language';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
 
 import {Aggregates, HsSensorsUnitDialogService} from './unit-dialog.service';
@@ -64,7 +62,7 @@ import {FormsModule} from '@angular/forms';
     }
   `,
   imports: [
-    TranslateCustomPipe,
+    TranslatePipe,
     NgStyle,
     AsyncPipe,
     KeyValuePipe,

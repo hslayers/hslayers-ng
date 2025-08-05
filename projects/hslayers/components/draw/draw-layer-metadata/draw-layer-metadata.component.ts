@@ -1,6 +1,10 @@
 import {Component, Input, OnInit, ViewRef} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {NgClass} from '@angular/common';
+import {TranslatePipe} from '@ngx-translate/core';
+
+import {FeatureLike} from 'ol/Feature';
+import {VectorSourceEvent} from 'ol/source/Vector';
 
 import {AccessRightsModel} from 'hslayers-ng/types';
 import {
@@ -16,7 +20,6 @@ import {
   getLaymanFriendlyLayerName,
 } from 'hslayers-ng/common/layman';
 import {HsMapService} from 'hslayers-ng/services/map';
-import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 import {
   getEditor,
   getPath,
@@ -27,8 +30,6 @@ import {
   setPath,
   setTitle,
 } from 'hslayers-ng/common/extensions';
-import {VectorSourceEvent} from 'ol/source/Vector';
-import {FeatureLike} from 'ol/Feature';
 
 @Component({
   selector: 'hs-draw-layer-metadata',
@@ -36,7 +37,7 @@ import {FeatureLike} from 'ol/Feature';
   imports: [
     NgClass,
     FormsModule,
-    TranslateCustomPipe,
+    TranslatePipe,
     HsLaymanCurrentUserComponent,
     HsCommonLaymanAccessRightsComponent,
   ],

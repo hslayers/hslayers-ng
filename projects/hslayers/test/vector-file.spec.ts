@@ -7,6 +7,7 @@ import {CUSTOM_ELEMENTS_SCHEMA, signal} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
+import {TranslatePipe} from '@ngx-translate/core';
 import {provideHttpClient, withInterceptorsFromDi} from '@angular/common/http';
 import {provideHttpClientTesting} from '@angular/common/http/testing';
 
@@ -23,7 +24,6 @@ import {HsLayoutServiceMock} from './layout.service.mock';
 import {HsMapService} from 'hslayers-ng/services/map';
 import {HsMapServiceMock} from './map.service.mock';
 import {HsUploadComponent} from 'hslayers-ng/common/upload';
-import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 import {getTitle} from 'hslayers-ng/common/extensions';
 import {createMockLaymanService} from './common/layman/layman.service.mock';
 
@@ -56,12 +56,7 @@ describe('add-layers-vector', () => {
     TestBed.configureTestingModule({
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
       declarations: [HsAddDataVectorFileComponent, HsUploadComponent],
-      imports: [
-        CommonModule,
-        FormsModule,
-        NgbDropdownModule,
-        TranslateCustomPipe,
-      ],
+      imports: [CommonModule, FormsModule, NgbDropdownModule, TranslatePipe],
       providers: [
         HsAddDataVectorService,
         {provide: HsMapService, useValue: mockedMapService},

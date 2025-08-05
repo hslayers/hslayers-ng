@@ -7,6 +7,7 @@ import {provideHttpClientTesting} from '@angular/common/http/testing';
 
 import {ColorSketchModule} from 'ngx-color/sketch';
 import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
+import {TranslatePipe} from '@ngx-translate/core';
 
 import {HsConfig} from 'hslayers-ng/config';
 import {HsConfigMock} from './config.service.mock';
@@ -30,7 +31,6 @@ import {
 } from 'hslayers-ng/components/print';
 import {HsPrintLegendServiceMock} from './print-legend.service.mock';
 import {HsSidebarService} from 'hslayers-ng/services/sidebar';
-import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 import {mockHsPrintScaleService} from './print-scale.service.mock';
 import {mockHsPrintService} from './print.service.mock';
 
@@ -53,7 +53,7 @@ describe('HsPrintComponent', () => {
         HsPrintImprintStylerComponent,
         HsPanelHelpersModule,
         HsPanelHeaderComponent,
-        TranslateCustomPipe,
+        TranslatePipe,
         ColorSketchModule,
         NgbDropdownModule,
       ],

@@ -5,6 +5,7 @@ import {
 import {CUSTOM_ELEMENTS_SCHEMA, signal, WritableSignal} from '@angular/core';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
+import {TranslatePipe} from '@ngx-translate/core';
 import {provideHttpClient, withInterceptorsFromDi} from '@angular/common/http';
 import {provideHttpClientTesting} from '@angular/common/http/testing';
 
@@ -32,7 +33,6 @@ import {HsQueryVectorService} from 'hslayers-ng/services/query';
 import {HsSaveMapServiceMock} from './save-map.service.mock';
 import {HsStylerComponent} from 'hslayers-ng/components/styler';
 import {HsStylerService} from 'hslayers-ng/services/styler';
-import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 
 class emptyMock {
   constructor() {}
@@ -94,7 +94,7 @@ describe('HsStyler', () => {
     TestBed.configureTestingModule({
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
       declarations: [HsStylerComponent],
-      imports: [FormsModule, TranslateCustomPipe, HsDownloadDirective],
+      imports: [FormsModule, TranslatePipe, HsDownloadDirective],
       providers: [
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),

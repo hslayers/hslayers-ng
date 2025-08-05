@@ -5,6 +5,7 @@ import {
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
+import {TranslatePipe} from '@ngx-translate/core';
 import {provideHttpClient, withInterceptorsFromDi} from '@angular/common/http';
 import {provideHttpClientTesting} from '@angular/common/http/testing';
 
@@ -18,7 +19,6 @@ import {
   HsMeasureComponent,
   HsMeasureService,
 } from 'hslayers-ng/components/measure';
-import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 
 describe('HsMeasure', () => {
   beforeAll(() => {
@@ -42,7 +42,7 @@ describe('HsMeasure', () => {
     TestBed.configureTestingModule({
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
       declarations: [HsMeasureComponent],
-      imports: [FormsModule, TranslateCustomPipe],
+      imports: [FormsModule, TranslatePipe],
       providers: [
         HsMeasureService,
         {

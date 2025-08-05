@@ -1,19 +1,19 @@
 import {Component, ViewRef} from '@angular/core';
+import {KeyValuePipe} from '@angular/common';
+import {TranslatePipe} from '@ngx-translate/core';
 
 import {HsCompositionsService} from '../compositions.service';
 import {
   HsDialogComponent,
   HsDialogContainerService,
 } from 'hslayers-ng/common/dialogs';
-import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 import {HsClipboardTextComponent} from 'hslayers-ng/common/clipboard-text';
-import {KeyValuePipe} from '@angular/common';
 
 @Component({
   selector: 'hs-compositions-info-dialog',
   templateUrl: './info-dialog.component.html',
   standalone: true,
-  imports: [TranslateCustomPipe, HsClipboardTextComponent, KeyValuePipe],
+  imports: [TranslatePipe, HsClipboardTextComponent, KeyValuePipe],
 })
 export class HsCompositionsInfoDialogComponent implements HsDialogComponent {
   viewRef: ViewRef;

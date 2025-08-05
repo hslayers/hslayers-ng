@@ -2,14 +2,12 @@ import {AsyncPipe, NgClass} from '@angular/common';
 import {Component, input} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
+import {TranslatePipe} from '@ngx-translate/core';
 
 import {Circle, Fill, Stroke, Style} from 'ol/style';
 
 import {HsDrawService} from 'hslayers-ng/services/draw';
-import {
-  HsLanguageService,
-  TranslateCustomPipe,
-} from 'hslayers-ng/services/language';
+import {HsLanguageService} from 'hslayers-ng/services/language';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {getTitle} from 'hslayers-ng/common/extensions';
 
@@ -24,7 +22,7 @@ interface DrawToolDefinition {
   templateUrl: './draw-panel.component.html',
   imports: [
     AsyncPipe,
-    TranslateCustomPipe,
+    TranslatePipe,
     NgClass,
     FormsModule,
     NgbDropdownModule,

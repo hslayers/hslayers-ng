@@ -1,3 +1,4 @@
+import {AsyncPipe} from '@angular/common';
 import {
   Component,
   computed,
@@ -7,8 +8,11 @@ import {
   Output,
   EventEmitter,
 } from '@angular/core';
+import {NgbTooltipModule} from '@ng-bootstrap/ng-bootstrap';
 import {toSignal} from '@angular/core/rxjs-interop';
 import {startWith, Observable, map, debounceTime} from 'rxjs';
+import {TranslatePipe} from '@ngx-translate/core';
+import {ReactiveFormsModule} from '@angular/forms';
 
 import {AccessRightsModel} from 'hslayers-ng/types';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
@@ -19,11 +23,7 @@ import {
   HsLaymanCurrentUserComponent,
 } from 'hslayers-ng/common/layman';
 import {HsCompositionsParserService} from 'hslayers-ng/services/compositions';
-import {AsyncPipe} from '@angular/common';
-import {NgbTooltipModule} from '@ng-bootstrap/ng-bootstrap';
-import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 import {AdvancedOptionsComponent} from './advanced-options/advanced-options.component';
-import {ReactiveFormsModule} from '@angular/forms';
 
 @Component({
   selector: 'hs-save-map-form',
@@ -32,7 +32,7 @@ import {ReactiveFormsModule} from '@angular/forms';
     AsyncPipe,
     ReactiveFormsModule,
     NgbTooltipModule,
-    TranslateCustomPipe,
+    TranslatePipe,
     AdvancedOptionsComponent,
     HsCommonLaymanAccessRightsComponent,
     HsLaymanCurrentUserComponent,

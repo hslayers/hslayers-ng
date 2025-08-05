@@ -7,6 +7,7 @@ import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
 import {provideHttpClient, withInterceptorsFromDi} from '@angular/common/http';
 import {provideHttpClientTesting} from '@angular/common/http/testing';
+import {TranslatePipe} from '@ngx-translate/core';
 
 import {of} from 'rxjs';
 import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
@@ -24,10 +25,7 @@ import {HsConfig} from 'hslayers-ng/config';
 import {HsConfigMock} from './config.service.mock';
 import {HsDrawPanelComponent} from 'hslayers-ng/components/draw';
 import {HsDrawService} from 'hslayers-ng/services/draw';
-import {
-  HsLanguageService,
-  TranslateCustomPipe,
-} from 'hslayers-ng/services/language';
+import {HsLanguageService} from 'hslayers-ng/services/language';
 import {HsLaymanService} from 'hslayers-ng/services/save-map';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsLayoutServiceMock} from './layout.service.mock';
@@ -96,7 +94,7 @@ describe('HsDrawPanel', () => {
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
       imports: [
         FormsModule,
-        TranslateCustomPipe,
+        TranslatePipe,
         NgbDropdownModule,
         HsDrawPanelComponent,
       ],

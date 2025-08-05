@@ -2,6 +2,7 @@ import {AsyncPipe, NgClass, NgStyle, SlicePipe} from '@angular/common';
 import {Component} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
+import {TranslatePipe} from '@ngx-translate/core';
 
 import {Feature, getUid} from 'ol';
 import {Geometry} from 'ol/geom';
@@ -15,14 +16,13 @@ import {
   HsQueryVectorService,
 } from 'hslayers-ng/services/query';
 import {HsQueryFeatureComponent} from '../feature/feature.component';
-import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 import {getTitle} from 'hslayers-ng/common/extensions';
 
 @Component({
   selector: 'hs-query-feature-list',
   templateUrl: './feature-list.component.html',
   imports: [
-    TranslateCustomPipe,
+    TranslatePipe,
     AsyncPipe,
     FormsModule,
     NgbDropdownModule,

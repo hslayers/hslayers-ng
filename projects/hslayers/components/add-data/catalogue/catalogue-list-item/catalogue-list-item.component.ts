@@ -1,5 +1,6 @@
-import {Component, computed, input, Input, OnInit} from '@angular/core';
+import {Component, computed, input} from '@angular/core';
 import {NgClass, NgStyle} from '@angular/common';
+import {TranslatePipe} from '@ngx-translate/core';
 
 import {
   HsAddDataCatalogueService,
@@ -17,7 +18,6 @@ import {HsLogService} from 'hslayers-ng/services/log';
 import {HsRemoveLayerDialogService} from 'hslayers-ng/common/remove-multiple';
 import {HsSetPermissionsDialogComponent} from 'hslayers-ng/common/dialog-set-permissions';
 import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
-import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 
 @Component({
   selector: 'hs-catalogue-list-item',
@@ -30,7 +30,7 @@ import {TranslateCustomPipe} from 'hslayers-ng/services/language';
       }
     `,
   ],
-  imports: [NgClass, NgStyle, TranslateCustomPipe],
+  imports: [NgClass, NgStyle, TranslatePipe],
 })
 export class HsCatalogueListItemComponent {
   layer = input<HsAddDataLayerDescriptor>();

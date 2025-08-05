@@ -7,6 +7,7 @@ import {
 import {CommonModule} from '@angular/common';
 
 import {NgbDropdown, NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
+import {TranslatePipe} from '@ngx-translate/core';
 
 import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
 import {HsGalleryEditorDialogComponent} from './gallery-editor-dialog.component';
@@ -17,14 +18,13 @@ import {
   HsLayerManagerVisibilityService,
   HsLayerSelectorService,
 } from 'hslayers-ng/services/layer-manager';
-import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 import {getBase} from 'hslayers-ng/common/extensions';
 
 @Component({
   selector: 'hs-layer-manager-gallery',
   templateUrl: './layer-manager-gallery.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [CommonModule, TranslateCustomPipe, NgbDropdownModule],
+  imports: [CommonModule, TranslatePipe, NgbDropdownModule],
 })
 export class HsLayerManagerGalleryComponent extends HsGuiOverlayBaseComponent {
   @ViewChild('galleryDropdown', {static: false}) dropdown: NgbDropdown;

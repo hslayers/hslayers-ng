@@ -1,6 +1,6 @@
 import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {TranslatePipe} from '@ngx-translate/core';
 
 import {HsLaymanCurrentUserComponent} from 'hslayers-ng/common/layman';
 import {
@@ -8,7 +8,6 @@ import {
   HsPanelHelpersModule,
 } from 'hslayers-ng/common/panels';
 import {HsSaveMapComponent} from './save-map.component';
-import {TranslateCustomPipe} from 'hslayers-ng/services/language';
 import {HsSaveMapFormComponent} from './form/form.component';
 
 @NgModule({
@@ -17,7 +16,7 @@ import {HsSaveMapFormComponent} from './form/form.component';
   imports: [
     CommonModule,
     HsPanelHelpersModule,
-    TranslateCustomPipe,
+    TranslatePipe,
     HsLaymanCurrentUserComponent,
     HsPanelHeaderComponent,
     HsSaveMapFormComponent,
