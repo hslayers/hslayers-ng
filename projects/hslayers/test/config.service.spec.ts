@@ -2,13 +2,14 @@ import {HsConfig, HsConfigObject} from 'hslayers-ng/config';
 import {OSM, TileWMS} from 'ol/source';
 import {TestBed} from '@angular/core/testing';
 import {Tile} from 'ol/layer';
+import {provideTranslateService} from '@ngx-translate/core';
 
 describe('HsConfig', () => {
   let service: HsConfig;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [HsConfig],
+      providers: [HsConfig, provideTranslateService()],
     });
     service = TestBed.inject(HsConfig);
   });

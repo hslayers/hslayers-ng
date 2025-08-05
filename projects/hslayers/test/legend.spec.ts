@@ -12,7 +12,7 @@ import {
 import {FormsModule} from '@angular/forms';
 import {provideHttpClient, withInterceptorsFromDi} from '@angular/common/http';
 import {provideHttpClientTesting} from '@angular/common/http/testing';
-import {TranslatePipe} from '@ngx-translate/core';
+import {provideTranslateService, TranslatePipe} from '@ngx-translate/core';
 
 import {Tile as TileLayer} from 'ol/layer';
 import {TileWMS} from 'ol/source';
@@ -76,6 +76,7 @@ describe('HsLegendComponent', () => {
         },
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
+        provideTranslateService(),
       ],
     });
     //bed.compileComponents();

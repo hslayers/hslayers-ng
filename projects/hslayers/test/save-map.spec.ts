@@ -8,7 +8,7 @@ import {FormsModule} from '@angular/forms';
 import {Subject} from 'rxjs';
 import {provideHttpClient, withInterceptorsFromDi} from '@angular/common/http';
 import {provideHttpClientTesting} from '@angular/common/http/testing';
-import {TranslatePipe} from '@ngx-translate/core';
+import {provideTranslateService, TranslatePipe} from '@ngx-translate/core';
 
 import {Map} from 'ol';
 import {Vector as VectorLayer} from 'ol/layer';
@@ -105,6 +105,7 @@ describe('HsSaveMap', () => {
         {provide: HsMapService, useValue: new HsMapServiceMock()},
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
+        provideTranslateService(),
       ],
     }); //.compileComponents();
     fixture = TestBed.createComponent(HsSaveMapComponent);
