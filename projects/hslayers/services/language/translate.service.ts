@@ -14,7 +14,7 @@ import {catchError, filter, map, switchMap, take} from 'rxjs/operators';
 @Injectable({
   providedIn: 'root',
 })
-export class WebpackTranslateLoader implements TranslateLoader {
+export class HsTranslateLoader implements TranslateLoader {
   /**
    * Map to keep track of loaded languages
    */

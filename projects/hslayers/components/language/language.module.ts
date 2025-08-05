@@ -15,7 +15,7 @@ import {
   HsPanelHeaderComponent,
   HsPanelHelpersModule,
 } from 'hslayers-ng/common/panels';
-import {WebpackTranslateLoader} from 'hslayers-ng/services/language';
+import {HsTranslateLoader} from 'hslayers-ng/services/language';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -28,7 +28,7 @@ import {WebpackTranslateLoader} from 'hslayers-ng/services/language';
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
-        useClass: WebpackTranslateLoader,
+        useClass: HsTranslateLoader,
         multi: false,
         deps: [HsConfig, HttpClient],
       },

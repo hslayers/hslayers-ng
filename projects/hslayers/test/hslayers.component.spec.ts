@@ -18,7 +18,7 @@ import {HsLogService} from 'hslayers-ng/services/log';
 import {HsMapHostDirective, HslayersComponent} from 'hslayers-ng/core';
 import {
   HsMissingTranslationHandler,
-  WebpackTranslateLoader,
+  HsTranslateLoader,
 } from 'hslayers-ng/services/language';
 import {TranslateTestingModule} from 'hslayers-ng/components/language';
 
@@ -36,7 +36,7 @@ describe('HslayersComponent', () => {
         provideTranslateService({
           loader: {
             provide: TranslateLoader,
-            useClass: WebpackTranslateLoader,
+            useClass: HsTranslateLoader,
             deps: [HsConfig, HsLogService, HttpClient],
           },
           missingTranslationHandler: provideMissingTranslationHandler(

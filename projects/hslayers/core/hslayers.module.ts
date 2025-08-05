@@ -15,13 +15,15 @@ import {HsDialogContainerComponent} from 'hslayers-ng/common/dialogs';
 import {HsLayoutHostDirective} from './layout.directive';
 import {HsMapComponent} from './map/map.component';
 import {HsMapHostDirective} from './map-host.directive';
-import {HsMissingTranslationHandler} from 'hslayers-ng/services/language/missing-translation.service';
 import {HsPanelHelpersModule} from 'hslayers-ng/common/panels';
 import {HsSidebarModule} from 'hslayers-ng/components/sidebar';
 import {HslayersComponent} from './hslayers.component';
 import {HsToastComponent} from 'hslayers-ng/common/toast';
 import {HsAuthInterceptor} from './auth.interceptor';
-import {WebpackTranslateLoader} from 'hslayers-ng/services/language';
+import {
+  HsMissingTranslationHandler,
+  HsTranslateLoader,
+} from 'hslayers-ng/services/language';
 import {HsConfig} from 'hslayers-ng/config';
 
 @NgModule({
@@ -40,7 +42,7 @@ import {HsConfig} from 'hslayers-ng/config';
     provideTranslateService({
       loader: {
         provide: TranslateLoader,
-        useClass: WebpackTranslateLoader,
+        useClass: HsTranslateLoader,
         deps: [HsConfig, HttpClient],
       },
       missingTranslationHandler: provideMissingTranslationHandler(
