@@ -38,7 +38,7 @@
     "dayjs": "^1.0.0",
     "deepmerge": "^4.0.0",
     "geostyler-legend": "^5.0.0",
-    "geostyler-openlayers-parser": "git+https://github.com/LESPROJEKT/geostyler-openlayers-parser.git#semver:v5.1.2-hsl",
+    "geostyler-openlayers-parser": "git+https://github.com/LESPROJEKT/geostyler-openlayers-parser.git#semver:v5.1.2-hsl.1",
     "geostyler-qgis-parser": "^4.0.0",
     "geostyler-sld-parser": "7.2.1",
     "geostyler-style": "^10.0.0",
