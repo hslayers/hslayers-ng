@@ -3,7 +3,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <h4 class="modal-title d-flex">
-          {{data.title | translate : {fallbackValue: data.title} }}
+          {{data.title | translate }}
           @if (!data.multiple) {
           <span class="text-truncate d-inline-block">:
             {{data.items[0].displayTitle}}</span>
@@ -27,11 +27,11 @@
           </div>
         </div>
         @if (deleteFrom && deleteFrom !== 'map') {
-        <p class="h6 small">{{data.note | translate : {fallbackValue: data.note} }}</p>
+        <p class="h6 small">{{data.note | translate }}</p>
         }
         @if (deleteFrom && data.multiple) {
         <div>
-          <p class="fw-bold h6">{{data.message | translate : {fallbackValue: data.message} }}</p>
+          <p class="fw-bold h6">{{data.message | translate }}</p>
           @if (data.items?.length > 0) {
           <div style="max-height: 65vh;">
             <div class="d-flex w-100 justify-content-center">
