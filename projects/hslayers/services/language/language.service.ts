@@ -1,7 +1,7 @@
 import {Injectable, inject} from '@angular/core';
 import {lastValueFrom} from 'rxjs';
 
-import {WebpackTranslateLoader} from './custom-translate.service';
+import {HsTranslateLoader} from './translate.service';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsLogService} from 'hslayers-ng/services/log';
 import {TranslateService} from '@ngx-translate/core';
@@ -43,7 +43,7 @@ export class HsLanguageService {
       if (this.hsConfig.language) {
         this.setLanguage(this.hsConfig.language);
       }
-      const currentLoader = translator.currentLoader as WebpackTranslateLoader;
+      const currentLoader = translator.currentLoader as HsTranslateLoader;
       if (
         this.hsConfig.translationOverrides != undefined &&
         !currentLoader.loadedViaInitializer.includes(
@@ -156,7 +156,7 @@ export class HsLanguageService {
     const MAX_CONFIG_POLLS = 10;
     let counter = 0;
     while (
-      !(translator.currentLoader as WebpackTranslateLoader).loadedLanguages()[
+      !(translator.currentLoader as HsTranslateLoader).loadedLanguages()[
         lang
       ] &&
       counter++ < MAX_CONFIG_POLLS
