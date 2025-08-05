@@ -7,19 +7,21 @@ import {
   tick,
 } from '@angular/core/testing';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {provideHttpClient} from '@angular/common/http';
+import {provideHttpClientTesting} from '@angular/common/http/testing';
+import {provideTranslateService} from '@ngx-translate/core';
 
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
 import {Feature} from 'ol';
+import {Point} from 'ol/geom';
+
 import {Filter, WfsFeatureAttribute} from 'hslayers-ng/types';
 import {
   HsComparisonFilterComponent,
   HsFiltersService,
 } from 'hslayers-ng/common/filters';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
-import {Point} from 'ol/geom';
-import {provideHttpClient} from '@angular/common/http';
-import {provideHttpClientTesting} from '@angular/common/http/testing';
 
 class MockHsFiltersService {
   selectedLayer = {
@@ -92,6 +94,7 @@ describe('HsComparisonFilterComponent', () => {
       providers: [
         provideHttpClient(),
         provideHttpClientTesting(),
+        provideTranslateService(),
         {provide: HsFiltersService, useClass: MockHsFiltersService},
         {provide: HsLayoutService, useClass: MockHsLayoutService},
       ],

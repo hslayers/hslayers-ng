@@ -14,6 +14,7 @@ import {Vector as VectorSource} from 'ol/source';
 import {WfsFeatureAttribute} from 'hslayers-ng/types';
 import {provideHttpClient} from '@angular/common/http';
 import {provideHttpClientTesting} from '@angular/common/http/testing';
+import {provideTranslateService} from '@ngx-translate/core';
 
 const HsLayerManagerServiceMock: jasmine.SpyObj<HsLayerManagerService> = {
   ...jasmine.createSpyObj('HsLayerManagerService', [
@@ -63,6 +64,7 @@ describe('HsWfsFilterComponent', () => {
       providers: [
         provideHttpClient(),
         provideHttpClientTesting(),
+        provideTranslateService(),
         {provide: HsEventBusService, useValue: new HsEventBusServiceMock()},
         {provide: HsFiltersService, useClass: MockHsFiltersService},
         {provide: HsLayerManagerService, useValue: HsLayerManagerServiceMock},

@@ -1,14 +1,17 @@
-import {HsFiltersService} from 'hslayers-ng/common/filters/filters.service';
-import {HsLayerDescriptor, WfsFeatureAttribute} from 'hslayers-ng/types';
 import {
   HttpTestingController,
   provideHttpClientTesting,
 } from '@angular/common/http/testing';
-import {Layer} from 'ol/layer';
 import {TestBed} from '@angular/core/testing';
-import {Vector as VectorSource} from 'ol/source';
 import {firstValueFrom} from 'rxjs';
+import {provideTranslateService} from '@ngx-translate/core';
 import {provideHttpClient} from '@angular/common/http';
+
+import {Layer} from 'ol/layer';
+import {Vector as VectorSource} from 'ol/source';
+
+import {HsFiltersService} from 'hslayers-ng/common/filters/filters.service';
+import {HsLayerDescriptor, WfsFeatureAttribute} from 'hslayers-ng/types';
 import {HsProxyService} from 'hslayers-ng/services/utils';
 
 function getMockXmlResponse(): string {
@@ -42,6 +45,7 @@ describe('HsFiltersService', () => {
       providers: [
         provideHttpClient(),
         provideHttpClientTesting(),
+        provideTranslateService(),
         HsFiltersService,
       ],
     });

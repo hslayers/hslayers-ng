@@ -3,6 +3,7 @@ import {TestBed} from '@angular/core/testing';
 import {of, scan, share} from 'rxjs';
 import {provideHttpClient, withInterceptorsFromDi} from '@angular/common/http';
 import {provideHttpClientTesting} from '@angular/common/http/testing';
+import {provideTranslateService} from '@ngx-translate/core';
 import {toSignal} from '@angular/core/rxjs-interop';
 
 import ImageLayer from 'ol/layer/Image';
@@ -66,6 +67,7 @@ describe('HsLayerManagerFolderService', () => {
         {provide: HsLayerManagerService, useValue: HsLayerManagerServiceMock},
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
+        provideTranslateService(),
       ],
     });
     hsConfig = TestBed.inject(HsConfig);

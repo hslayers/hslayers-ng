@@ -11,7 +11,7 @@ import {Subject, of, Observable} from 'rxjs';
 import {provideHttpClient, withInterceptorsFromDi} from '@angular/common/http';
 import {provideHttpClientTesting} from '@angular/common/http/testing';
 import {NgbTooltipModule} from '@ng-bootstrap/ng-bootstrap';
-import {TranslatePipe} from '@ngx-translate/core';
+import {provideTranslateService, TranslatePipe} from '@ngx-translate/core';
 
 import {
   AccessRightsModel,
@@ -170,6 +170,7 @@ describe('HsSaveMapFormComponent', () => {
         {provide: HsToastService, useClass: MockHsToastService},
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
+        provideTranslateService(),
       ],
     }).compileComponents();
 

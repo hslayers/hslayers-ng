@@ -8,7 +8,7 @@ import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
 import {provideHttpClient, withInterceptorsFromDi} from '@angular/common/http';
 import {provideHttpClientTesting} from '@angular/common/http/testing';
-import {TranslatePipe} from '@ngx-translate/core';
+import {provideTranslateService, TranslatePipe} from '@ngx-translate/core';
 
 import {Circle, Fill, Stroke, Style} from 'ol/style';
 import {Feature} from 'ol';
@@ -70,6 +70,7 @@ describe('HsLegendLayerComponent', () => {
         },
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
+        provideTranslateService(),
       ],
     }).compileComponents();
   });

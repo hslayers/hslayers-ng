@@ -17,7 +17,7 @@ import {provideHttpClientTesting} from '@angular/common/http/testing';
 
 import {of} from 'rxjs';
 import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
-import {TranslatePipe} from '@ngx-translate/core';
+import {provideTranslateService, TranslatePipe} from '@ngx-translate/core';
 
 import {
   HsAddDataVectorService,
@@ -160,6 +160,7 @@ describe('compositions', () => {
         },
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
+        provideTranslateService(),
       ],
     });
     hsConfig = TestBed.inject(HsConfig);

@@ -12,7 +12,7 @@ import {
 import {NO_ERRORS_SCHEMA, signal} from '@angular/core';
 import {provideHttpClient, withInterceptorsFromDi} from '@angular/common/http';
 import {of} from 'rxjs';
-import {TranslatePipe} from '@ngx-translate/core';
+import {provideTranslateService, TranslatePipe} from '@ngx-translate/core';
 
 import {
   AccessRights,
@@ -140,6 +140,7 @@ describe('HsCommonLaymanAccessRightsComponent', () => {
       providers: [
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
+        provideTranslateService(),
         {provide: HsCommonLaymanService, useValue: mockLaymanService},
       ],
     }).compileComponents();

@@ -14,7 +14,7 @@ import {FormsModule} from '@angular/forms';
 import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
 import {provideHttpClient, withInterceptorsFromDi} from '@angular/common/http';
 import {provideHttpClientTesting} from '@angular/common/http/testing';
-import {TranslatePipe} from '@ngx-translate/core';
+import {provideTranslateService, TranslatePipe} from '@ngx-translate/core';
 
 import {Image as ImageLayer} from 'ol/layer';
 import {ImageWMS} from 'ol/source';
@@ -165,6 +165,7 @@ describe('layermanager-layer-list', () => {
         {provide: HsLayerManagerService, useValue: HsLayerManagerServiceMock},
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
+        provideTranslateService(),
       ],
     });
     //bed.compileComponents();
