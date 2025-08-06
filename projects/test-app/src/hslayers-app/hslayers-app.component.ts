@@ -386,8 +386,8 @@ export class HslayersAppComponent {
       //   url: 'https://hub.lesprojekt.cz/rest/workspaces/leitnerfilip/maps/corine_layerorder/file',
       //   default: 'CORINE Land Cover 2006',
       // },
-      defaultComposition:
-        'https://atlas2.kraj-lbc.cz/layman-proxy/rest/workspaces/fzadrazil/maps/lesni_plochy',
+      /*defaultComposition:
+        'https://atlas2.kraj-lbc.cz/rest/workspaces/fzadrazil/maps/lesni_plochy',*/
       panelWidths: {
         custom: 555,
         print: 500,
@@ -405,12 +405,12 @@ export class HslayersAppComponent {
       datasources: [
         {
           title: 'Layman',
-          url: 'https://atlas2.kraj-lbc.cz/layman-proxy',
+          url: 'http://localhost:8087',
           type: 'layman',
         },
         {
           title: 'Micka',
-          url: 'https://atlas2.kraj-lbc.cz/micka/csw',
+          url: 'https://hub4everybody.com/micka/csw',
           language: 'eng',
           type: 'micka',
         },
@@ -482,7 +482,7 @@ export class HslayersAppComponent {
       shareServiceUrl: 'http://localhost:8086',
       popUpDisplay: 'hover',
       errorToastDuration: 5000,
-      /*default_layers: [
+      default_layers: [
         new Tile({
           source: new OSM(),
           visible: true,
@@ -693,7 +693,7 @@ export class HslayersAppComponent {
         opticalMap,
         idwLayer,
         idwVectorLayer,
-      ],*/
+      ],
       timeDisplayFormat: 'dd.MM.yyyy.',
       additionalLanguages: {
         'la': 'Lingua Latina',
