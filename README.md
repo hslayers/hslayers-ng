@@ -19,6 +19,7 @@ This is a monorepo for developing HSLayers-NG [Angular](https://angular.io/guide
 | 13               | 17.x                | 5.3         | ^8.2
 | 14               | 18.x                | 5.3         | ^9.2.2
 | 15               | 19.x                | 5.3         | ^10.4
+| 16               | 20.x                | 5.3         | ^10.5
 
 It contains source code of libraries which need to be used in an existing Angular based container project:
 + [hslayers](./projects/hslayers) - core components and services for map application based on OpenLayers + Angular + [Bootstrap](https://getbootstrap.com/),
@@ -36,7 +37,7 @@ Configuration for these applications can be provided through global `hslayersNgC
 
 ## Integration
 HSLayers-NG can be integrated into larger systems.
-See [crx-hslayers](https://github.com/hslayers/crx-hslayers) for an actively maintained widget for Wagtail/CodeRed CMS. Check [hub4everybody.com](https://hub4everybody.com/) to see, what you can achieve with this integration.
+Check [hub4everybody.com](https://hub4everybody.com/) to see, what you can achieve with such integration.
 
 ## Development
 ### Development server
