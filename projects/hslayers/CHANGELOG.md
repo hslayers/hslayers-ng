@@ -1,3 +1,44 @@
+# [16.0.0-next.3](https://github.com/hslayers/hslayers-ng/compare/16.0.0-next.2...16.0.0-next.3) (2025-08-06)
+
+
+### Bug Fixes
+
+* **layout:** Add type for mainpanel$ & fix wrong panel as object expectation in save map ([5d9f29d](https://github.com/hslayers/hslayers-ng/commit/5d9f29d5ca385bf7b5bd154aea4019050e5f8a1f))
+* **test:** avoid relying on ng-reflect-* attribute ([2cb197a](https://github.com/hslayers/hslayers-ng/commit/2cb197a0b0ccb1cf0e4b158b053fc14fb7e38b15))
+* **test:** Provide TranslateService in spec files ([a675b94](https://github.com/hslayers/hslayers-ng/commit/a675b94f2930781d0bc843dcf9f63475d9870233))
+
+
+* !refactor(i18n): Upgrade ngx-translate to v17 ([4223b25](https://github.com/hslayers/hslayers-ng/commit/4223b2550bdd44b9697a42fbecf77025dc36fdc1))
+* !build(server): Update dotenv, yargs and more ([370360e](https://github.com/hslayers/hslayers-ng/commit/370360ee6bd8b3488d1fc21cd20b7daaebf83cca))
+
+
+### Features
+
+* **i18n:** Provide HsMissingTranslationHandler ([d3af681](https://github.com/hslayers/hslayers-ng/commit/d3af681b076dce7f843fcb25b7bc1a824c944904))
+* **server:** Expose version via GET request ([8a69838](https://github.com/hslayers/hslayers-ng/commit/8a698386da6ce0b74d8c6e5e8b7322384f43b7b3))
+
+
+### BREAKING CHANGES
+
+* `TranslateCustomPipe` removed in favour of external `TranslatePipe`, thus all occurrences of `translateHs` must be changed to `translate` with proper import.
+* `TranslateCustomService` removed
+* `WebpackTranslateLoader` renamed to `HsTranslateLoader` and must be provided in `providers` array as:
+```
+provideTranslateService({
+          loader: {
+            provide: TranslateLoader,
+            useClass: HsTranslateLoader,
+            deps: [HsConfig, HsLogService, HttpClient],
+          },
+          missingTranslationHandler: provideMissingTranslationHandler(
+            HsMissingTranslationHandler,
+          ),
+        }),
+```
+* Minimum Node versions increased to 20.19 and 22.12
+
+
+
 # [16.0.0-next.2](https://github.com/hslayers/hslayers-ng/compare/16.0.0-next.1...16.0.0-next.2) (2025-07-07)
 
 
