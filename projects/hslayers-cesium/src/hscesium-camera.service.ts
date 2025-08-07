@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {Injectable, inject} from '@angular/core';
 
 import {
   Cartesian2,
@@ -30,12 +30,12 @@ export class CesiumCameraServiceParams {
   providedIn: 'root',
 })
 export class HsCesiumCameraService extends CesiumCameraServiceParams {
-  constructor(
-    private hsLog: HsLogService,
-    public HsMapService: HsMapService,
-    public hsConfig: HsConfig,
-    private hsCesiumConfig: HsCesiumConfig,
-  ) {
+  private hsLog = inject(HsLogService);
+  hsMapService = inject(HsMapService);
+  hsConfig = inject(HsConfig);
+  private hsCesiumConfig = inject(HsCesiumConfig);
+
+  constructor() {
     super();
     this.hsCesiumConfig.viewerLoaded.subscribe((viewer) => {
       this.viewer = viewer;
@@ -259,7 +259,7 @@ export class HsCesiumCameraService extends CesiumCameraServiceParams {
 
   setExtentEqualToOlExtent(view) {
     try {
-      const ol_ext = view.calculateExtent(this.HsMapService.getMap().getSize());
+      const ol_ext = view.calculateExtent(this.hsMapService.getMap().getSize());
       const trans_ext = transformExtent(
         ol_ext,
         view.getProjection(),
@@ -328,7 +328,8 @@ export class HsCesiumCameraService extends CesiumCameraServiceParams {
   calcDistanceForResolution(resolution, latitude) {
     const canvas = this.viewer.scene.canvas;
     const fov = (<PerspectiveFrustum>this.viewer.camera.frustum).fov;
-    const metersPerUnit = this.HsMapService.getMap()
+    const metersPerUnit = this.hsMapService
+      .getMap()
       .getView()
       .getProjection()
       .getMetersPerUnit();
@@ -363,7 +364,7 @@ export class HsCesiumCameraService extends CesiumCameraServiceParams {
 
   fixMorphs(viewer) {
     viewer.camera.moveEnd.addEventListener((e) => {
-      if (!this.HsMapService.visible) {
+      if (!this.hsMapService.visible) {
         const center = this.getCameraCenterInLngLat();
         if (center === null || center[0] == 0 || center[1] == 0) {
           return;

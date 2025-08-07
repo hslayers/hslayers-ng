@@ -1,12 +1,17 @@
+import {AsyncPipe, KeyValuePipe, NgStyle} from '@angular/common';
 import {
   ChangeDetectorRef,
   Component,
   ElementRef,
   OnInit,
   ViewRef,
+  inject,
 } from '@angular/core';
+import {FormsModule} from '@angular/forms';
+import {LangChangeEvent, TranslatePipe} from '@ngx-translate/core';
+import {NgbDatepickerModule} from '@ng-bootstrap/ng-bootstrap';
 import {combineLatest, map, startWith} from 'rxjs';
-import {TranslatePipe} from '@ngx-translate/core';
+import {takeUntilDestroyed, toSignal} from '@angular/core/rxjs-interop';
 
 import {
   HsDialogComponent,
@@ -17,11 +22,6 @@ import {HsLayoutService} from 'hslayers-ng/services/layout';
 
 import {Aggregates, HsSensorsUnitDialogService} from './unit-dialog.service';
 import {CustomInterval, Interval} from './types/interval.type';
-import {LangChangeEvent} from '@ngx-translate/core';
-import {takeUntilDestroyed, toSignal} from '@angular/core/rxjs-interop';
-import {AsyncPipe, KeyValuePipe, NgStyle} from '@angular/common';
-import {NgbDatepickerModule} from '@ng-bootstrap/ng-bootstrap';
-import {FormsModule} from '@angular/forms';
 
 @Component({
   selector: 'hs-sensor-unit',
@@ -71,6 +71,13 @@ import {FormsModule} from '@angular/forms';
   ],
 })
 export class HsSensorsUnitDialogComponent implements HsDialogComponent, OnInit {
+  private hsLayoutService = inject(HsLayoutService);
+  private hsDialogContainerService = inject(HsDialogContainerService);
+  hsSensorsUnitDialogService = inject(HsSensorsUnitDialogService);
+  private hsLanguageService = inject(HsLanguageService);
+  private cdr = inject(ChangeDetectorRef);
+  elementRef = inject(ElementRef);
+
   customInterval: CustomInterval = {
     name: 'Custom',
     fromTime: new Date(),
@@ -101,14 +108,7 @@ export class HsSensorsUnitDialogComponent implements HsDialogComponent, OnInit {
   viewRef: ViewRef;
   data: any;
 
-  constructor(
-    private hsLayoutService: HsLayoutService,
-    private hsDialogContainerService: HsDialogContainerService,
-    public hsSensorsUnitDialogService: HsSensorsUnitDialogService,
-    private hsLanguageService: HsLanguageService,
-    private cdr: ChangeDetectorRef,
-    public elementRef: ElementRef,
-  ) {
+  constructor() {
     this.hsSensorsUnitDialogService.dialogElement = this.elementRef;
   }
 

@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, inject} from '@angular/core';
 
 import {
   Cartesian3,
@@ -29,13 +29,13 @@ import {HslayersCesiumComponent} from 'hslayers-cesium/src/hscesium.component';
   standalone: false,
 })
 export class AppComponent implements OnInit {
-  constructor(
-    public hsConfig: HsConfig,
-    private hsCesiumConfig: HsCesiumConfig,
-    private hsLayoutService: HsLayoutService,
-    private hsOverlayConstructorService: HsOverlayConstructorService,
-    private hsPanelConstructorService: HsPanelConstructorService,
-  ) {
+  hsConfig = inject(HsConfig);
+  private hsCesiumConfig = inject(HsCesiumConfig);
+  private hsLayoutService = inject(HsLayoutService);
+  private hsOverlayConstructorService = inject(HsOverlayConstructorService);
+  private hsPanelConstructorService = inject(HsPanelConstructorService);
+
+  constructor() {
     const polygon25d = new VectorLayer({
       properties: {
         title: '2.5D polygon surface',

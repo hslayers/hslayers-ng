@@ -1,6 +1,7 @@
-import {Component, ElementRef, OnInit} from '@angular/core';
-
 import * as proj from 'ol/proj';
+
+import {Component, ElementRef, OnInit, inject} from '@angular/core';
+
 import {
   BingMaps,
   ImageArcGISRest,
@@ -40,15 +41,16 @@ import {SparqlJson} from 'hslayers-ng/common/layers';
   standalone: false,
 })
 export class AppComponent implements OnInit {
+  private elementRef = inject(ElementRef);
+  hsConfig = inject(HsConfig);
+  private hsCesiumConfig = inject(HsCesiumConfig);
+  private hsLayoutService = inject(HsLayoutService);
+  private hsOverlayConstructorService = inject(HsOverlayConstructorService);
+  private hsPanelConstructorService = inject(HsPanelConstructorService);
+
   id = '';
-  constructor(
-    private elementRef: ElementRef,
-    public hsConfig: HsConfig,
-    private hsCesiumConfig: HsCesiumConfig,
-    private hsLayoutService: HsLayoutService,
-    private hsOverlayConstructorService: HsOverlayConstructorService,
-    private hsPanelConstructorService: HsPanelConstructorService,
-  ) {
+
+  constructor() {
     const w: any = window;
     w.ol = {
       layer: {

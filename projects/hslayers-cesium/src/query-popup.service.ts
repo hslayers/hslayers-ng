@@ -1,10 +1,8 @@
-import {Injectable, NgZone} from '@angular/core';
+import {Injectable} from '@angular/core';
 
-import {HsMapService} from 'hslayers-ng/services/map';
 import {
   HsQueryPopupBaseService,
   HsQueryPopupServiceModel,
-  HsQueryPopupWidgetContainerService,
 } from 'hslayers-ng/common/query-popup';
 
 @Injectable({
@@ -12,15 +10,8 @@ import {
 })
 export class HsCesiumQueryPopupService
   extends HsQueryPopupBaseService
-  implements HsQueryPopupServiceModel {
-  constructor(
-    HsMapService: HsMapService,
-    zone: NgZone,
-    hsQueryPopupWidgetContainerService: HsQueryPopupWidgetContainerService,
-  ) {
-    super(HsMapService, zone, hsQueryPopupWidgetContainerService);
-  }
-
+  implements HsQueryPopupServiceModel
+{
   registerPopup(nativeElement) {
     nativeElement.style.position = 'absolute';
     this.hoverPopup = nativeElement;

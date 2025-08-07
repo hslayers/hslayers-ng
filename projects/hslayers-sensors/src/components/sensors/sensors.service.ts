@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 import {HttpClient} from '@angular/common/http';
-import {Inject, Injectable, Optional, inject} from '@angular/core';
+import {Injectable, inject} from '@angular/core';
 import {Subject, concatMap, debounceTime, map, take} from 'rxjs';
 
 import {HsConfig} from 'hslayers-ng/config';
@@ -34,6 +34,18 @@ const VISUALIZED_ATTR = 'Visualized attribute';
   providedIn: 'root',
 })
 export class HsSensorsService {
+  private hsProxyService = inject(HsProxyService);
+  private hsConfig = inject(HsConfig);
+  private hsLayoutService = inject(HsLayoutService);
+  private hsDialogContainerService = inject(HsDialogContainerService);
+  private http = inject(HttpClient);
+  private hsEventBusService = inject(HsEventBusService);
+  private hsSensorsUnitDialogService = inject(HsSensorsUnitDialogService);
+  private hsLog = inject(HsLogService);
+  mapServiceDisabled = inject<boolean>('MAPSERVICE_DISABLED' as any, {
+    optional: true,
+  })!;
+
   units: HsSensorUnit[] = [];
   layer = null;
   endpoint: SensLogEndpoint;
@@ -46,20 +58,9 @@ export class HsSensorsService {
 
   hsMapService;
 
-  constructor(
-    private hsProxyService: HsProxyService,
-    private hsConfig: HsConfig,
-    private hsLayoutService: HsLayoutService,
-    private hsDialogContainerService: HsDialogContainerService,
-    private http: HttpClient,
-    private hsEventBusService: HsEventBusService,
-    private hsSensorsUnitDialogService: HsSensorsUnitDialogService,
-    private hsLog: HsLogService,
-    @Optional()
-    @Inject('MAPSERVICE_DISABLED')
-    public mapServiceDisabled: boolean,
-    @Optional() @Inject('HsQueryVectorService') hsQueryVectorService,
-  ) {
+  constructor() {
+    const mapServiceDisabled = this.mapServiceDisabled;
+
     const urlParams = new URLSearchParams(location.search);
     this.unitInUrl = parseInt(urlParams.get('unit_id'));
 

@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewRef} from '@angular/core';
+import {Component, OnInit, ViewRef, inject} from '@angular/core';
 import {AsyncPipe, NgClass} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {TranslatePipe} from '@ngx-translate/core';
@@ -26,18 +26,14 @@ import {HsSensorsUnitListItemComponent} from './sensors-unit-list-item.component
   ],
 })
 export class HsSensorsComponent extends HsPanelBaseComponent implements OnInit {
+  hsSensorsService = inject(HsSensorsService);
+  hsSensorsUnitDialogService = inject(HsSensorsUnitDialogService);
+
   viewMode = 'sensors';
   viewExpanded = false;
   query: any = {description: ''};
   viewRef: ViewRef;
   name = 'sensors';
-
-  constructor(
-    public hsSensorsService: HsSensorsService,
-    public hsSensorsUnitDialogService: HsSensorsUnitDialogService,
-  ) {
-    super();
-  }
 
   ngOnInit(): void {
     super.ngOnInit();

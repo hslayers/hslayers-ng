@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {Injectable, inject} from '@angular/core';
 import {Subject} from 'rxjs';
 
 import {
@@ -23,13 +23,12 @@ import {debounce} from 'hslayers-ng/services/utils';
   providedIn: 'root',
 })
 export class HsCesiumPickerService {
+  private hsCesiumQueryPopupService = inject(HsCesiumQueryPopupService);
+  private hsMapService = inject(HsMapService);
+  private hsConfig = inject(HsConfig);
+
   viewer: Viewer;
   cesiumPositionClicked: Subject<any> = new Subject();
-  constructor(
-    private HsCesiumQueryPopupService: HsCesiumQueryPopupService,
-    private HsMapService: HsMapService,
-    private hsConfig: HsConfig,
-  ) {}
 
   init(viewer: Viewer) {
     const handler = new ScreenSpaceEventHandler(this.viewer.scene.canvas);
@@ -91,15 +90,15 @@ export class HsCesiumPickerService {
       if (button == 'left' && pickedObject?.id?.onclick) {
         pickedObject.id.onclick(pickedObject.id);
       }
-      const featureLike = this.HsMapService.getFeatureById(
+      const featureLike = this.hsMapService.getFeatureById(
         (pickedObject.id as Entity).properties.HsCesiumFeatureId.getValue(),
       );
-      this.HsCesiumQueryPopupService.fillFeatures([
+      this.hsCesiumQueryPopupService.fillFeatures([
         featureLike instanceof Feature ? featureLike : null,
       ]);
-      this.HsCesiumQueryPopupService.showPopup({pixel: movement.position});
+      this.hsCesiumQueryPopupService.showPopup({pixel: movement.position});
       return;
     }
-    this.HsCesiumQueryPopupService.fillFeatures([]);
+    this.hsCesiumQueryPopupService.fillFeatures([]);
   }
 }

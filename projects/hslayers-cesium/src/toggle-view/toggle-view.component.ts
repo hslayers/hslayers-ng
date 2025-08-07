@@ -1,5 +1,5 @@
 import {AsyncPipe, NgClass} from '@angular/common';
-import {Component} from '@angular/core';
+import {Component, inject} from '@angular/core';
 import {TranslatePipe} from '@ngx-translate/core';
 
 import {HsGuiOverlayBaseComponent} from 'hslayers-ng/common/panels';
@@ -12,9 +12,8 @@ import {HsCesiumService} from '../hscesium.service';
   imports: [AsyncPipe, TranslatePipe, NgClass],
 })
 export class HsToggleViewComponent extends HsGuiOverlayBaseComponent {
-  constructor(public hsCesiumService: HsCesiumService) {
-    super();
-  }
+  hsCesiumService = inject(HsCesiumService);
+
   name = 'toggleViewToolbar';
 
   /**

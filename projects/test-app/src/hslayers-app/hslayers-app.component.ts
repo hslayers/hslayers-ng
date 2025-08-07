@@ -1,5 +1,6 @@
-import {Component} from '@angular/core';
+import {Component, inject} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
+import {catchError, lastValueFrom, takeUntil} from 'rxjs';
 
 import {Circle, Fill, Stroke, Style} from 'ol/style';
 import {Feature} from 'ol';
@@ -7,7 +8,6 @@ import {GeoJSON} from 'ol/format';
 import {Image as ImageLayer, Vector as VectorLayer, Tile} from 'ol/layer';
 import {OSM, TileWMS, Vector as VectorSource, XYZ} from 'ol/source';
 import {Point} from 'ol/geom';
-import {catchError, lastValueFrom, takeUntil} from 'rxjs';
 import {transformExtent} from 'ol/proj';
 
 import {HsConfig} from 'hslayers-ng/config';
@@ -31,16 +31,16 @@ import {SomeComponent} from './some-panel/some-panel.component';
   standalone: false,
 })
 export class HslayersAppComponent {
-  constructor(
-    public hsConfig: HsConfig,
-    private hsProxyService: HsProxyService,
-    private hsEventBusService: HsEventBusService,
-    private httpClient: HttpClient,
-    public hsSidebarService: HsSidebarService,
-    public hsPanelConstructorService: HsPanelConstructorService,
-    public hsLayoutService: HsLayoutService,
-    private hsOverlayConstructorService: HsOverlayConstructorService,
-  ) {
+  hsConfig = inject(HsConfig);
+  private hsProxyService = inject(HsProxyService);
+  private hsEventBusService = inject(HsEventBusService);
+  private httpClient = inject(HttpClient);
+  hsSidebarService = inject(HsSidebarService);
+  hsPanelConstructorService = inject(HsPanelConstructorService);
+  hsLayoutService = inject(HsLayoutService);
+  private hsOverlayConstructorService = inject(HsOverlayConstructorService);
+
+  constructor() {
     /* Create new panel and its button in the sidebar */
     this.hsPanelConstructorService.createPanelAndButton(
       SomeComponent,
