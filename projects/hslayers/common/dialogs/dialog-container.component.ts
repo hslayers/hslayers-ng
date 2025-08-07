@@ -19,24 +19,25 @@ import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
   imports: [HsDialogHostDirective],
 })
 export class HsDialogContainerComponent implements OnInit, OnDestroy {
+  hsDialogContainerService = inject(HsDialogContainerService);
+
   @ViewChild(HsDialogHostDirective, {static: true})
   dialogHost: HsDialogHostDirective;
   interval: any;
   private destroyRef = inject(DestroyRef);
-  constructor(public HsDialogContainerService: HsDialogContainerService) {}
 
   ngOnDestroy(): void {
-    this.HsDialogContainerService.cleanup();
+    this.hsDialogContainerService.cleanup();
   }
 
   ngOnInit(): void {
-    this.HsDialogContainerService.dialogObserver
+    this.hsDialogContainerService.dialogObserver
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((item: HsDialogItem) => {
         this.loadDialog(item);
       });
 
-    this.HsDialogContainerService.dialogDestroyObserver
+    this.hsDialogContainerService.dialogDestroyObserver
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((item: HsDialogComponent) => {
         this.destroyDialog(item);
@@ -66,7 +67,7 @@ export class HsDialogContainerComponent implements OnInit, OnDestroy {
       (<HsDialogComponent>componentRef.instance).data = dialogItem.data;
     }
     (<HsDialogComponent>componentRef.instance).dialogItem = dialogItem;
-    this.HsDialogContainerService.dialogs.push(
+    this.hsDialogContainerService.dialogs.push(
       componentRef.instance as HsDialogComponent,
     );
   }

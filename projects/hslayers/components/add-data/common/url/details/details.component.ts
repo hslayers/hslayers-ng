@@ -1,4 +1,4 @@
-import {AfterContentInit, Component, Input} from '@angular/core';
+import {AfterContentInit, Component, Input, inject} from '@angular/core';
 
 import {
   AddDataUrlType,
@@ -13,13 +13,15 @@ import {HsAddDataCommonService} from 'hslayers-ng/services/add-data';
   standalone: false,
 })
 export class HsUrlDetailsComponent implements AfterContentInit {
+  hsAddDataCommonService = inject(HsAddDataCommonService);
+
   @Input() injectedService: HsUrlTypeServiceModel;
   @Input() type: AddDataUrlType;
 
   data: UrlDataObject;
   getDimensionValues: any;
   advancedPanelVisible = false;
-  constructor(public hsAddDataCommonService: HsAddDataCommonService) {}
+
   ngAfterContentInit(): void {
     this.data = this.injectedService.data;
     if (this.type == 'wms') {

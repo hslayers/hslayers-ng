@@ -1,8 +1,15 @@
+import colormap from 'colormap';
+
 import {DomSanitizer} from '@angular/platform-browser';
-import {computed, Injectable, signal, WritableSignal} from '@angular/core';
+import {
+  computed,
+  Injectable,
+  signal,
+  WritableSignal,
+  inject,
+} from '@angular/core';
 import {Subject} from 'rxjs';
 
-import colormap from 'colormap';
 import {Cluster, Vector as VectorSource} from 'ol/source';
 import {
   ConstructorParams,
@@ -60,6 +67,17 @@ import {
   providedIn: 'root',
 })
 export class HsStylerService {
+  hsQueryVectorService = inject(HsQueryVectorService);
+  private hsEventBusService = inject(HsEventBusService);
+  private hsLogService = inject(HsLogService);
+  sanitizer = inject(DomSanitizer);
+  private hsMapService = inject(HsMapService);
+  private hsConfig = inject(HsConfig);
+  private hsCommonLaymanService = inject(HsCommonLaymanService);
+  private hsLayerSynchronizerService = inject(HsLayerSynchronizerService);
+  private hsDialogContainerService = inject(HsDialogContainerService);
+  private hsToastService = inject(HsToastService);
+
   layer: WritableSignal<VectorLayer<VectorSource<Feature>>> = signal(null);
   layerBeingMonitored: boolean;
   onSet: Subject<VectorLayer<VectorSource<Feature>>> = new Subject();
@@ -94,18 +112,7 @@ export class HsStylerService {
   //in order to be able to sync layer style and sld prop
   sldParsingError = false;
 
-  constructor(
-    public hsQueryVectorService: HsQueryVectorService,
-    private hsEventBusService: HsEventBusService,
-    private hsLogService: HsLogService,
-    public sanitizer: DomSanitizer,
-    private hsMapService: HsMapService,
-    private hsConfig: HsConfig,
-    private hsCommonLaymanService: HsCommonLaymanService,
-    private hsLayerSynchronizerService: HsLayerSynchronizerService,
-    private hsDialogContainerService: HsDialogContainerService,
-    private hsToastService: HsToastService,
-  ) {
+  constructor() {
     this.pin_white_blue = new Style({
       image: new Icon({
         src: this.hsConfig.assetsPath + 'img/pin_white_blue32.png',

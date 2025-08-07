@@ -5,6 +5,7 @@ import {
   Input,
   OnDestroy,
   Output,
+  inject,
 } from '@angular/core';
 import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
 
@@ -13,14 +14,14 @@ import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
   standalone: true,
 })
 export class HsDownloadDirective implements OnDestroy {
+  private domSanitizer = inject(DomSanitizer);
+
   @Input() hsDownload = '';
   @Input() mimeType = '';
   @Output() downloadPrepared = new EventEmitter<SafeResourceUrl>();
 
   private exportedHref: SafeResourceUrl | null = null;
   private blobUrl: string | null = null;
-
-  constructor(private domSanitizer: DomSanitizer) {}
 
   /**
    * Clean up any created object URLs when the directive is destroyed

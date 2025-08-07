@@ -5,10 +5,7 @@ import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {TranslatePipe} from '@ngx-translate/core';
 
 import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
-import {
-  HsLayerManagerFolderService,
-  HsLayerSelectorService,
-} from 'hslayers-ng/services/layer-manager';
+import {HsLayerManagerFolderService} from 'hslayers-ng/services/layer-manager';
 import {getBase, setPath} from 'hslayers-ng/common/extensions';
 
 import {HsLayerEditorWidgetBaseComponent} from '../layer-editor-widget-base.component';
@@ -26,9 +23,8 @@ export class HsLayerFolderWidgetComponent extends HsLayerEditorWidgetBaseCompone
   hsDialogContainerService = inject(HsDialogContainerService);
   folderService = inject(HsLayerManagerFolderService);
 
-  constructor(hsLayerSelectorService: HsLayerSelectorService) {
-    super(hsLayerSelectorService);
-
+  constructor() {
+    super();
     this.isEnabled = this.layerDescriptor.pipe(
       takeUntilDestroyed(),
       map((layer) => {

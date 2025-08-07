@@ -2,7 +2,6 @@ import {Component} from '@angular/core';
 import {Observable, map} from 'rxjs';
 
 import {HsLayerEditorWidgetBaseComponent} from '../layer-editor-widget-base.component';
-import {HsLayerSelectorService} from 'hslayers-ng/services/layer-manager';
 import {
   getWmsOriginalExtent,
   setWmsOriginalExtent,
@@ -16,11 +15,11 @@ import {getLayerParams, isLayerWMS} from 'hslayers-ng/services/utils';
 })
 export class HsExtentWidgetComponent extends HsLayerEditorWidgetBaseComponent {
   name = 'extent-widget';
-
   ignoreExtent: boolean;
   isEnabled: Observable<boolean>;
-  constructor(hsLayerSelectorService: HsLayerSelectorService) {
-    super(hsLayerSelectorService);
+
+  constructor() {
+    super();
     this.isEnabled = this.layerDescriptor.pipe(
       map((l) => {
         const originalExtent = getWmsOriginalExtent(l.layer);

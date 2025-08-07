@@ -1,4 +1,4 @@
-import {Component, computed, OnInit, signal} from '@angular/core';
+import {Component, computed, OnInit, signal, inject} from '@angular/core';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {filter} from 'rxjs/operators';
 
@@ -24,6 +24,20 @@ export class HsCompositionsComponent
   extends HsPanelBaseComponent
   implements OnInit
 {
+  hsConfig = inject(HsConfig);
+  private hsEventBusService = inject(HsEventBusService);
+  private hsCompositionsService = inject(HsCompositionsService);
+  private hsCompositionsParserService = inject(HsCompositionsParserService);
+  private hsCompositionsMapService = inject(HsCompositionsMapService);
+  private hsDialogContainerService = inject(HsDialogContainerService);
+  hsCompositionsCatalogueService = inject(HsCompositionsCatalogueService);
+  hsCommonLaymanService = inject(HsCommonLaymanService);
+  private hsCommonEndpointsService = inject(HsCommonEndpointsService);
+  /*
+   * Make sure the hsLayerSynchronizerService is available in the setups with add-data
+   */
+  private hsLayerSynchronizerService = inject(HsLayerSynchronizerService);
+
   keywordsVisible = false;
   themesVisible = false;
   urlToAdd = '';
@@ -37,21 +51,7 @@ export class HsCompositionsComponent
   loadFilteredCompositions: any;
   name = 'compositions';
 
-  constructor(
-    public hsConfig: HsConfig,
-    private hsEventBusService: HsEventBusService,
-    private hsCompositionsService: HsCompositionsService,
-    private hsCompositionsParserService: HsCompositionsParserService,
-    private hsCompositionsMapService: HsCompositionsMapService,
-    private hsDialogContainerService: HsDialogContainerService,
-    public hsCompositionsCatalogueService: HsCompositionsCatalogueService,
-    public hsCommonLaymanService: HsCommonLaymanService,
-    private hsCommonEndpointsService: HsCommonEndpointsService,
-    /**
-     * Make sure the hsLayerSynchronizerService is available in the setups with add-data
-     */
-    private hsLayerSynchronizerService: HsLayerSynchronizerService,
-  ) {
+  constructor() {
     super();
 
     this.hsEventBusService.vectorQueryFeatureSelection

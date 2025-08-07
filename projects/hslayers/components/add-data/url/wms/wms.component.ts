@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, inject} from '@angular/core';
 
 import {
   HsAddDataCommonService,
@@ -12,9 +12,7 @@ import {
   standalone: false,
 })
 export class HsUrlWmsComponent {
-  constructor(
-    public hsAddDataCommonService: HsAddDataCommonService,
-    public hsAddDataOwsService: HsAddDataOwsService,
-    public hsUrlWmsService: HsUrlWmsService,
-  ) {}
+  hsAddDataCommonService = inject(HsAddDataCommonService);
+  hsAddDataOwsService = inject(HsAddDataOwsService);
+  hsUrlWmsService = inject(HsUrlWmsService);
 }

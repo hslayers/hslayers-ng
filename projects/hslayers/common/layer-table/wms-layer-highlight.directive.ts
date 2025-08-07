@@ -1,4 +1,4 @@
-import {Directive, ElementRef, HostBinding} from '@angular/core';
+import {Directive, ElementRef, HostBinding, inject} from '@angular/core';
 import {isOverflown} from 'hslayers-ng/services/utils';
 
 @Directive({
@@ -6,9 +6,11 @@ import {isOverflown} from 'hslayers-ng/services/utils';
   standalone: true,
 })
 export class WmsLayerHighlightDirective {
+  private elRef = inject(ElementRef);
+
   @HostBinding('class.hs-wms-highlighted') highlighted = false;
 
-  constructor(private elRef: ElementRef) {
+  constructor() {
     setTimeout(() => {
       this.highlighted = isOverflown(this.elRef.nativeElement);
     }, 500);

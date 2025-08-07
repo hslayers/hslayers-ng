@@ -1,4 +1,4 @@
-import {Component, ViewRef} from '@angular/core';
+import {Component, ViewRef, inject} from '@angular/core';
 
 import {
   HsDialogComponent,
@@ -11,8 +11,9 @@ import {
   standalone: false,
 })
 export class HsCopyLayerDialogComponent implements HsDialogComponent {
+  hsDialogContainerService = inject(HsDialogContainerService);
+
   dialogItem: HsDialogItem;
-  constructor(public HsDialogContainerService: HsDialogContainerService) {}
   viewRef: ViewRef;
   data: {
     title: string;
@@ -21,7 +22,7 @@ export class HsCopyLayerDialogComponent implements HsDialogComponent {
   };
 
   yes(): void {
-    this.HsDialogContainerService.destroy(this);
+    this.hsDialogContainerService.destroy(this);
     this.dialogItem.resolve({
       confirmed: 'yes',
       layerTitle: this.data.layerTitle,
@@ -29,7 +30,7 @@ export class HsCopyLayerDialogComponent implements HsDialogComponent {
   }
 
   no(): void {
-    this.HsDialogContainerService.destroy(this);
+    this.hsDialogContainerService.destroy(this);
     this.dialogItem.resolve('no');
   }
 }

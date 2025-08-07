@@ -1,5 +1,5 @@
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {Injectable} from '@angular/core';
+import {Injectable, inject} from '@angular/core';
 
 import {Feature} from 'ol';
 import {Geometry} from 'ol/geom';
@@ -28,16 +28,17 @@ import {jsonGetFeatureInfo} from 'hslayers-ng/common/get-feature-info';
   providedIn: 'root',
 })
 export class HsQueryWmsService {
+  private hsMapService = inject(HsMapService);
+  private hsLanguageService = inject(HsLanguageService);
+  private httpClient = inject(HttpClient);
+  private hsLogService = inject(HsLogService);
+  private hsQueryWmtsService = inject(HsQueryWmtsService);
+  private hsQueryBaseService = inject(HsQueryBaseService);
+  private hsProxyService = inject(HsProxyService);
+
   infoCounter = 0;
-  constructor(
-    private hsMapService: HsMapService,
-    private hsLanguageService: HsLanguageService,
-    private httpClient: HttpClient,
-    private hsLogService: HsLogService,
-    private hsQueryWmtsService: HsQueryWmtsService,
-    private hsQueryBaseService: HsQueryBaseService,
-    private hsProxyService: HsProxyService,
-  ) {
+
+  constructor() {
     this.hsQueryBaseService.getFeatureInfoStarted.subscribe((evt) => {
       this.infoCounter = 0;
       this.hsMapService.getLayersArray().forEach((layer: Layer<Source>) => {

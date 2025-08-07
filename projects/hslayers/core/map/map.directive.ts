@@ -1,9 +1,9 @@
-import {Directive, ViewContainerRef} from '@angular/core';
+import { Directive, ViewContainerRef, inject } from '@angular/core';
 
 @Directive({
   selector: '[map]',
   standalone: true,
 })
 export class HsMapDirective {
-  constructor(public viewContainerRef: ViewContainerRef) {}
+  viewContainerRef = inject(ViewContainerRef);
 }

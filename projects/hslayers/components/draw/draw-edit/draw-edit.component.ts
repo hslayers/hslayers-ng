@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit, inject} from '@angular/core';
 import {NgClass} from '@angular/common';
 import {TranslatePipe} from '@ngx-translate/core';
 
@@ -33,6 +33,15 @@ declare type HsModifyOperations =
   imports: [NgClass, TranslatePipe],
 })
 export class HsDrawEditComponent implements OnDestroy, OnInit {
+  hsDrawService = inject(HsDrawService);
+  hsQueryBaseService = inject(HsQueryBaseService);
+  hsQueryVectorService = inject(HsQueryVectorService);
+  hsLanguageService = inject(HsLanguageService);
+  private hsLog = inject(HsLogService);
+  hsMapService = inject(HsMapService);
+  hsToastService = inject(HsToastService);
+  hsEventBusService = inject(HsEventBusService);
+
   vectorQueryFeatureSubscription;
   editOptions = ['difference', 'union', 'intersection', 'split'] as const;
   selectedType: (typeof this.editOptions)[number];
@@ -48,28 +57,17 @@ export class HsDrawEditComponent implements OnDestroy, OnInit {
     source: new Vector({}),
   });
 
-  constructor(
-    public HsDrawService: HsDrawService,
-    public HsQueryBaseService: HsQueryBaseService,
-    public HsQueryVectorService: HsQueryVectorService,
-    public HsLanguageService: HsLanguageService,
-    private hsLog: HsLogService,
-    public hsMapService: HsMapService,
-    public hsToastService: HsToastService,
-    public hsEventBusService: HsEventBusService,
-  ) {}
-
   async ngOnInit(): Promise<void> {
-    if (this.HsDrawService.selectedLayer) {
-      this.HsDrawService.previouslySelected = this.HsDrawService.selectedLayer;
+    if (this.hsDrawService.selectedLayer) {
+      this.hsDrawService.previouslySelected = this.hsDrawService.selectedLayer;
     } else {
-      this.HsDrawService.previouslySelected = null;
+      this.hsDrawService.previouslySelected = null;
     }
 
     await this.hsMapService.loaded();
     this.hsMapService.getMap().addLayer(this.editLayer);
     this.checkFeatureGeometryType(
-      this.HsQueryVectorService.selector.getFeatures().getArray()[0],
+      this.hsQueryVectorService.selector.getFeatures().getArray()[0],
     );
     this.vectorQueryFeatureSubscription =
       this.hsEventBusService.vectorQueryFeatureSelection.subscribe((data) => {
@@ -88,11 +86,11 @@ export class HsDrawEditComponent implements OnDestroy, OnInit {
             if (selectorFeatures[2].getGeometry().getType() == 'LineString') {
               data.selector.getFeatures().remove(selectorFeatures[1]);
               this.hsToastService.createToastPopupMessage(
-                this.HsLanguageService.getTranslation(
+                this.hsLanguageService.getTranslation(
                   'DRAW.featureEditor.featureEditor',
                   undefined,
                 ),
-                this.HsLanguageService.getTranslation(
+                this.hsLanguageService.getTranslation(
                   'DRAW.featureEditor.onlyOneSplitLine',
                   undefined,
                 ),
@@ -119,16 +117,16 @@ export class HsDrawEditComponent implements OnDestroy, OnInit {
   ngOnDestroy() {
     this.hsMapService.loaded().then((map) => {
       map.removeLayer(this.editLayer);
-      this.setType(this.HsDrawService.type);
+      this.setType(this.hsDrawService.type);
       //Timeout necessary because setType triggers async deactivateDrawing
       //HsDrawService.draw needs to be null in order to change draw source properly
       setTimeout(() => {
-        if (this.HsDrawService.previouslySelected) {
-          this.HsDrawService.selectedLayer =
-            this.HsDrawService.previouslySelected;
-          this.HsDrawService.changeDrawSource();
+        if (this.hsDrawService.previouslySelected) {
+          this.hsDrawService.selectedLayer =
+            this.hsDrawService.previouslySelected;
+          this.hsDrawService.changeDrawSource();
         } else {
-          this.HsDrawService.fillDrawableLayers();
+          this.hsDrawService.fillDrawableLayers();
         }
       });
       this.vectorQueryFeatureSubscription.unsubscribe();
@@ -146,7 +144,7 @@ export class HsDrawEditComponent implements OnDestroy, OnInit {
     const isValidType = feature.getGeometry().getType() == 'Polygon';
     if (!isValidType) {
       this.hsToastService.createToastPopupMessage(
-        this.HsLanguageService.getTranslation(
+        this.hsLanguageService.getTranslation(
           'DRAW.featureEditor.featureEditor',
           undefined,
         ),
@@ -162,12 +160,12 @@ export class HsDrawEditComponent implements OnDestroy, OnInit {
    * Selects geometry operation (one of editOptions)
    */
   selectGeomOperation(option): void {
-    const features = this.HsQueryVectorService.selector.getFeatures();
+    const features = this.hsQueryVectorService.selector.getFeatures();
     this.selectedType = option;
 
-    if (this.HsDrawService.draw) {
+    if (this.hsDrawService.draw) {
       const drawTypeRequired = option == 'split' ? 'LineString' : 'Polygon';
-      if (this.HsDrawService.type != drawTypeRequired) {
+      if (this.hsDrawService.type != drawTypeRequired) {
         this.setType(drawTypeRequired);
       }
     }
@@ -199,8 +197,8 @@ export class HsDrawEditComponent implements OnDestroy, OnInit {
    */
   deselectMultiple(index = 1): void {
     this.hsToastService.createToastPopupMessage(
-      this.HsLanguageService.getTranslation('DRAW.featureEditor.featureEditor'),
-      this.HsLanguageService.getTranslation(
+      this.hsLanguageService.getTranslation('DRAW.featureEditor.featureEditor'),
+      this.hsLanguageService.getTranslation(
         'DRAW.featureEditor.onlyOneFeatureToEdit',
         undefined,
       ),
@@ -210,13 +208,13 @@ export class HsDrawEditComponent implements OnDestroy, OnInit {
     );
     setTimeout(() => {
       try {
-        const feature = this.HsQueryBaseService.selector
+        const feature = this.hsQueryBaseService.selector
           .getFeatures()
           .getArray()[index];
-        this.HsQueryBaseService.clear('features');
-        this.HsQueryBaseService.selector.getFeatures().clear();
-        this.HsQueryBaseService.selector.getFeatures().push(feature);
-        this.HsQueryVectorService.createFeatureAttributeList();
+        this.hsQueryBaseService.clear('features');
+        this.hsQueryBaseService.selector.getFeatures().clear();
+        this.hsQueryBaseService.selector.getFeatures().push(feature);
+        this.hsQueryVectorService.createFeatureAttributeList();
       } catch (error) {
         this.hsLog.error(error);
       }
@@ -231,14 +229,14 @@ export class HsDrawEditComponent implements OnDestroy, OnInit {
       if (this.selectedType == 'split') {
         const features = this.editLayer.getSource().getFeatures();
         if (features.length > 1) {
-          this.HsQueryVectorService.removeFeature(features[0]);
+          this.hsQueryVectorService.removeFeature(features[0]);
 
           this.hsToastService.createToastPopupMessage(
-            this.HsLanguageService.getTranslation(
+            this.hsLanguageService.getTranslation(
               'DRAW.featureEditor.featureEditor',
               undefined,
             ),
-            this.HsLanguageService.getTranslation(
+            this.hsLanguageService.getTranslation(
               'DRAW.featureEditor.onlyOneSplitLine',
               undefined,
             ),
@@ -249,26 +247,26 @@ export class HsDrawEditComponent implements OnDestroy, OnInit {
         }
       }
 
-      this.HsDrawService.addFeatureToSelector(e.feature);
+      this.hsDrawService.addFeatureToSelector(e.feature);
     });
   }
 
   selectionMenuToggled(): void {
-    this.setType(this.HsDrawService.type);
+    this.setType(this.hsDrawService.type);
     this.editLayer.getSource().clear();
   }
 
   setType(what): void {
-    this.HsDrawService.selectedLayer = this.editLayer;
+    this.hsDrawService.selectedLayer = this.editLayer;
 
-    this.HsQueryBaseService.selector.setActive(
-      what === this.HsDrawService.type,
+    this.hsQueryBaseService.selector.setActive(
+      what === this.hsDrawService.type,
     );
-    this.HsDrawService.modify.setActive(what === this.HsDrawService.type);
+    this.hsDrawService.modify.setActive(what === this.hsDrawService.type);
 
-    const type = this.HsDrawService.setType(what);
+    const type = this.hsDrawService.setType(what);
     if (type) {
-      this.HsDrawService.activateDrawing({onDrawEnd: (e) => this.onDrawEnd(e)});
+      this.hsDrawService.activateDrawing({onDrawEnd: (e) => this.onDrawEnd(e)});
     }
     if (this.selectedType == 'split' && this.features.length > 1) {
       this.deselectMultiple(0);
@@ -276,7 +274,7 @@ export class HsDrawEditComponent implements OnDestroy, OnInit {
   }
 
   translateString(module: string, text: string): string {
-    return this.HsLanguageService.getTranslationIgnoreNonExisting(module, text);
+    return this.hsLanguageService.getTranslationIgnoreNonExisting(module, text);
   }
 
   /**
@@ -290,7 +288,7 @@ export class HsDrawEditComponent implements OnDestroy, OnInit {
   }
 
   get features() {
-    return this.HsQueryBaseService.features;
+    return this.hsQueryBaseService.features;
   }
 
   /**
@@ -353,11 +351,11 @@ export class HsDrawEditComponent implements OnDestroy, OnInit {
       this.resetState();
     } else {
       this.hsToastService.createToastPopupMessage(
-        this.HsLanguageService.getTranslation(
+        this.hsLanguageService.getTranslation(
           'DRAW.featureEditor.featureEditor',
           undefined,
         ),
-        this.HsLanguageService.getTranslation(
+        this.hsLanguageService.getTranslation(
           'DRAW.featureEditor.noIntersection',
           undefined,
         ),
@@ -374,7 +372,7 @@ export class HsDrawEditComponent implements OnDestroy, OnInit {
     for (let i = 0; i <= featuresLength; i++) {
       //Remove all but the first (edited) features
       if (features.length != 1) {
-        this.HsQueryVectorService.removeFeature(
+        this.hsQueryVectorService.removeFeature(
           features[features.length - 1].feature, //pop() ??
         );
       }
@@ -396,7 +394,7 @@ export class HsDrawEditComponent implements OnDestroy, OnInit {
       layer.getSource().addFeature(feature);
     }
     for (const feature of this.features) {
-      this.HsQueryVectorService.removeFeature(feature.feature);
+      this.hsQueryVectorService.removeFeature(feature.feature);
     }
     this.resetState();
   }
@@ -417,7 +415,7 @@ export class HsDrawEditComponent implements OnDestroy, OnInit {
       }
 
       for (const feature of this.features) {
-        this.HsQueryVectorService.removeFeature(feature.feature);
+        this.hsQueryVectorService.removeFeature(feature.feature);
       }
     }
     this.resetState();
@@ -425,9 +423,9 @@ export class HsDrawEditComponent implements OnDestroy, OnInit {
 
   resetState() {
     this.editLayer.getSource().clear();
-    this.setType(this.HsDrawService.type);
-    this.HsQueryBaseService.clear('features');
-    this.HsQueryBaseService.selector.getFeatures().clear();
-    this.HsQueryBaseService.selector.setActive(true);
+    this.setType(this.hsDrawService.type);
+    this.hsQueryBaseService.clear('features');
+    this.hsQueryBaseService.selector.getFeatures().clear();
+    this.hsQueryBaseService.selector.setActive(true);
   }
 }

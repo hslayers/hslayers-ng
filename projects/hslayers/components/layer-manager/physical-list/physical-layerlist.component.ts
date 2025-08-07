@@ -4,6 +4,7 @@ import {
   Component,
   OnDestroy,
   OnInit,
+  inject,
 } from '@angular/core';
 
 import {Subscription} from 'rxjs';
@@ -19,12 +20,11 @@ import {HsLayerShiftingService} from 'hslayers-ng/services/layer-shifting';
   standalone: false,
 })
 export class HsLayerPhysicalListComponent implements OnDestroy, OnInit {
+  private hsEventBusService = inject(HsEventBusService);
+  private hsLayerShiftingService = inject(HsLayerShiftingService);
+
   layerManagerUpdatesSubscription: Subscription;
   layerShiftingAppRef;
-  constructor(
-    private hsEventBusService: HsEventBusService,
-    private hsLayerShiftingService: HsLayerShiftingService,
-  ) {}
 
   ngOnInit(): void {
     this.layerShiftingAppRef = this.hsLayerShiftingService;

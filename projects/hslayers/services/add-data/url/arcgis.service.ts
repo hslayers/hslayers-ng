@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {Injectable, inject} from '@angular/core';
 
 import TileGrid from 'ol/tilegrid/TileGrid';
 import {createXYZ} from 'ol/tilegrid';
@@ -40,19 +40,19 @@ import {HsToastService} from 'hslayers-ng/common/toast';
 
 @Injectable({providedIn: 'root'})
 export class HsUrlArcGisService implements HsUrlTypeServiceModel {
-  data: UrlDataObject;
+  hsArcgisGetCapabilitiesService = inject(HsArcgisGetCapabilitiesService);
+  hsLayoutService = inject(HsLayoutService);
+  hsMapService = inject(HsMapService);
+  hsAddDataUrlService = inject(HsAddDataUrlService);
+  hsAddDataCommonService = inject(HsAddDataCommonService);
+  hsToastService = inject(HsToastService);
+  private hsLanguageService = inject(HsLanguageService);
 
+  data: UrlDataObject;
   hasCachedTiles = false;
   tileGrid: TileGrid;
-  constructor(
-    public hsArcgisGetCapabilitiesService: HsArcgisGetCapabilitiesService,
-    public hsLayoutService: HsLayoutService,
-    public hsMapService: HsMapService,
-    public hsAddDataUrlService: HsAddDataUrlService,
-    public hsAddDataCommonService: HsAddDataCommonService,
-    public hsToastService: HsToastService,
-    private hsLanguageService: HsLanguageService,
-  ) {
+
+  constructor() {
     this.setDataToDefault();
   }
 

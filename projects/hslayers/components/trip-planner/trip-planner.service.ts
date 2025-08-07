@@ -1,5 +1,5 @@
 import {HttpClient} from '@angular/common/http';
-import {Injectable} from '@angular/core';
+import {Injectable, inject} from '@angular/core';
 import {catchError, lastValueFrom, of, timeout} from 'rxjs';
 
 import {Collection, Feature} from 'ol';
@@ -55,6 +55,16 @@ export function getWaypoint(feature: Feature<Geometry>): Waypoint {
   providedIn: 'root',
 })
 export class HsTripPlannerService {
+  hsMapService = inject(HsMapService);
+  private $http = inject(HttpClient);
+  hsShareUrlService = inject(HsShareUrlService);
+  hsEventBusService = inject(HsEventBusService);
+  private hsToastService = inject(HsToastService);
+  hsLanguageService = inject(HsLanguageService);
+  private hsLayoutService = inject(HsLayoutService);
+  private hsConfig = inject(HsConfig);
+  private hsProxyService = inject(HsProxyService);
+
   waypointRouteStyle;
   waypoints: Waypoint[] = [];
   trip: any = {};
@@ -73,23 +83,13 @@ export class HsTripPlannerService {
   } = {};
   selectedProfile: RouteProfile = profiles[0];
 
-  constructor(
-    public HsMapService: HsMapService,
-    private $http: HttpClient,
-    public HsShareUrlService: HsShareUrlService,
-    public HsEventBusService: HsEventBusService,
-    private HsToastService: HsToastService,
-    public HsLanguageService: HsLanguageService,
-    private HsLayoutService: HsLayoutService,
-    private hsConfig: HsConfig,
-    private hsProxyService: HsProxyService,
-  ) {
+  constructor() {
     this.modify = new Modify({
       features: this.movable_features,
     });
 
-    this.HsEventBusService.mapClicked.subscribe(({coordinates}) => {
-      if (this.HsLayoutService.mainpanel != 'tripPlanner') {
+    this.hsEventBusService.mapClicked.subscribe(({coordinates}) => {
+      if (this.hsLayoutService.mainpanel != 'tripPlanner') {
         return;
       }
       if (!this.waypointLayer) {
@@ -100,7 +100,8 @@ export class HsTripPlannerService {
       }
       //Don't add waypoints when drawing and measuring
       if (
-        this.HsMapService.getMap()
+        this.hsMapService
+          .getMap()
           .getInteractions()
           .getArray()
           .find((i) => i.getActive() && instOf(i, Draw))
@@ -115,7 +116,7 @@ export class HsTripPlannerService {
       });
     });
 
-    this.HsMapService.loaded().then((map) => {
+    this.hsMapService.loaded().then((map) => {
       (feature, resolution) => {
         return [
           new Style({
@@ -156,13 +157,14 @@ export class HsTripPlannerService {
   }
 
   async fillVectorLayers(): Promise<void> {
-    this.HsMapService.loaded().then((map) => {
+    this.hsMapService.loaded().then((map) => {
       this.vectorLayers = [
         {
           layer: null,
           title: 'newLayer',
         },
-        ...this.HsMapService.getLayersArray()
+        ...this.hsMapService
+          .getLayersArray()
           .filter((layer: Layer<Source>) => isLayerDrawable(layer))
           .map((layer: VectorLayer<VectorSource<Feature>>) => {
             return {layer, title: getTitle(layer)};
@@ -191,12 +193,12 @@ export class HsTripPlannerService {
     });
     setTitle(
       this.waypointLayer,
-      this.HsLanguageService.getTranslation(
+      this.hsLanguageService.getTranslation(
         'TRIP_PLANNER.waypoints',
         undefined,
       ),
     );
-    this.HsMapService.getMap().addLayer(this.waypointLayer);
+    this.hsMapService.getMap().addLayer(this.waypointLayer);
   }
 
   createRouteLayer(): void {
@@ -207,12 +209,12 @@ export class HsTripPlannerService {
     });
     setTitle(
       this.routeLayer,
-      this.HsLanguageService.getTranslation(
+      this.hsLanguageService.getTranslation(
         'TRIP_PLANNER.travelRoute',
         undefined,
       ),
     );
-    this.HsMapService.getMap().addLayer(this.routeLayer);
+    this.hsMapService.getMap().addLayer(this.routeLayer);
   }
 
   /**
@@ -244,7 +246,7 @@ export class HsTripPlannerService {
       for (const feature of this.waypointSource.getFeatures()) {
         const new_cords = transform(
           feature.getGeometry().getCoordinates(),
-          this.HsMapService.getCurrentProj().getCode(),
+          this.hsMapService.getCurrentProj().getCode(),
           'EPSG:4326',
         );
         const wp: Waypoint = {
@@ -340,7 +342,7 @@ export class HsTripPlannerService {
       this.removeRoutesForWaypoint(wp);
       const new_cords = transform(
         feature.getGeometry().getCoordinates(),
-        this.HsMapService.getCurrentProj().getCode(),
+        this.hsMapService.getCurrentProj().getCode(),
         'EPSG:4326',
       );
       wp.lon = new_cords[0];
@@ -458,26 +460,26 @@ export class HsTripPlannerService {
             .pipe(
               timeout(10000),
               catchError((e) => {
-                let title = this.HsLanguageService.getTranslation(
+                let title = this.hsLanguageService.getTranslation(
                   'TRIP_PLANNER.serviceDown',
                   undefined,
                 );
                 if (e.status == 404) {
                   if (e.error?.error?.code == 2010) {
-                    title = this.HsLanguageService.getTranslation(
+                    title = this.hsLanguageService.getTranslation(
                       'TRIP_PLANNER.noRoutablePoint',
                       undefined,
                     );
                   } else {
-                    title = this.HsLanguageService.getTranslation(
+                    title = this.hsLanguageService.getTranslation(
                       'TRIP_PLANNER.missingAuth',
                       undefined,
                     );
                   }
                 }
-                this.HsToastService.createToastPopupMessage(
+                this.hsToastService.createToastPopupMessage(
                   title,
-                  this.HsLanguageService.getTranslationIgnoreNonExisting(
+                  this.hsLanguageService.getTranslationIgnoreNonExisting(
                     'ERRORMESSAGES',
                     e.error?.error?.message ?? e.message,
                     {url},
@@ -499,7 +501,7 @@ export class HsTripPlannerService {
         const features = format.readFeatures(response);
         features[0]
           .getGeometry()
-          .transform('EPSG:4326', this.HsMapService.getCurrentProj());
+          .transform('EPSG:4326', this.hsMapService.getCurrentProj());
         wpf.routes.from = features[0];
         wpt.routes.to = features[0];
         if (this.routeAdded !== undefined) {

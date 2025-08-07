@@ -23,6 +23,18 @@ import {getShowInLayerManager, getTitle} from 'hslayers-ng/common/extensions';
 
 @Injectable({providedIn: 'root'})
 export class HsShareUrlService {
+  hsMapService = inject(HsMapService);
+  hsConfig = inject(HsConfig);
+  hsLanguageService = inject(HsLanguageService);
+  hsLayoutService = inject(HsLayoutService);
+  hsEventBusService = inject(HsEventBusService);
+  private location = inject(Location);
+  private zone = inject(NgZone);
+  private platformLocation = inject(PlatformLocation);
+  private httpClient = inject(HttpClient);
+  private hsProxyService = inject(HsProxyService);
+  private destroyRef = inject(DestroyRef);
+
   current_url = '';
   params = {};
   customParams = {};
@@ -39,30 +51,18 @@ export class HsShareUrlService {
   data: MapComposition;
 
   public browserUrlUpdated: Subject<string> = new Subject();
-  private destroyRef = inject(DestroyRef);
 
-  constructor(
-    public hsMapService: HsMapService,
-    public hsConfig: HsConfig,
-    public HsLanguageService: HsLanguageService,
-    public HsLayoutService: HsLayoutService,
-    public HsEventBusService: HsEventBusService,
-    private Location: Location,
-    private zone: NgZone,
-    private PlatformLocation: PlatformLocation,
-    private HttpClient: HttpClient,
-    private hsProxyService: HsProxyService,
-  ) {
+  constructor() {
     this.keepTrackOfGetParams();
     this.hsMapService.loaded().then((map) => {
       if (this.url_generation) {
         //FIXME : always true
-        this.HsEventBusService.mapExtentChanges
+        this.hsEventBusService.mapExtentChanges
           .pipe(debounceTime(200), takeUntilDestroyed(this.destroyRef))
           .subscribe({
             next: () => {
               this.zone.run(() => {
-                if (this.HsLayoutService.mainpanel == 'share') {
+                if (this.hsLayoutService.mainpanel == 'share') {
                   this.updatePermalinkComposition();
                 } else {
                   this.updateViewParamsInUrl(true);
@@ -87,8 +87,8 @@ export class HsShareUrlService {
         });
 
         const lang = this.getParamValue(HS_PRMS.lang);
-        if (lang && !this.HsLanguageService.langFromCMS) {
-          this.HsLanguageService.setLanguage(lang);
+        if (lang && !this.hsLanguageService.langFromCMS) {
+          this.hsLanguageService.setLanguage(lang);
         }
         const view = this.getParamValue(HS_PRMS.view);
         // this.hsMapService.visible = !(view == '3d');
@@ -161,7 +161,7 @@ export class HsShareUrlService {
       extent: bbox,
     };
     await lastValueFrom(
-      this.HttpClient.post(
+      this.httpClient.post(
         status_url,
         JSON.stringify({
           data: this.data,
@@ -197,14 +197,14 @@ export class HsShareUrlService {
     // );
     // const addedLayersJson = this.HsSaveMapService.layers2json(addedLayers);
 
-    const pnlMain = this.HsLayoutService.mainpanel;
+    const pnlMain = this.hsLayoutService.mainpanel;
     this.push(HS_PRMS.panel, pnlMain == 'share' ? 'layerManager' : pnlMain);
 
-    if (this.HsLanguageService.language) {
-      this.push(HS_PRMS.lang, this.HsLanguageService.language);
+    if (this.hsLanguageService.language) {
+      this.push(HS_PRMS.lang, this.hsLanguageService.language);
     }
     this.push(HS_PRMS.visibleLayers, visibleLayers.join(';'));
-    if (this.HsLayoutService.puremapApp) {
+    if (this.hsLayoutService.puremapApp) {
       this.push(HS_PRMS.pureMap, 'true');
     }
     for (const [key, value] of Object.entries(this.customParams)) {
@@ -236,11 +236,11 @@ export class HsShareUrlService {
             })
             .map((dic) => `${dic.key}=${encodeURIComponent(dic.value)}`)
             .join('&');
-          const baseHref = this.PlatformLocation.getBaseHrefFromDOM();
+          const baseHref = this.platformLocation.getBaseHrefFromDOM();
           if (locationPath.startsWith(baseHref)) {
             locationPath = locationPath.substring(baseHref.length);
           }
-          this.Location.replaceState(locationPath, paramsSerialized);
+          this.location.replaceState(locationPath, paramsSerialized);
           this.browserUrlUpdated.next(this.getPermalinkUrl());
         }
       },
@@ -259,7 +259,9 @@ export class HsShareUrlService {
     this.push(HS_PRMS.x, view.getCenter()[0]);
     this.push(HS_PRMS.y, view.getCenter()[1]);
     this.push(HS_PRMS.zoom, view.getZoom());
-    standalone && this.updateURL();
+    if (standalone) {
+      this.updateURL();
+    }
   }
 
   /**
@@ -315,7 +317,7 @@ export class HsShareUrlService {
       return this.hsConfig.shortenUrl(url);
     }
     return await lastValueFrom(
-      this.HttpClient.get(
+      this.httpClient.get(
         this.hsProxyService.proxify(
           'http://tinyurl.com/api-create.php?url=' + url,
         ),

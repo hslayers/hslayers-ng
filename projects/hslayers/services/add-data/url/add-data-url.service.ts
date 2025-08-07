@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {Injectable, inject} from '@angular/core';
 
 import {Layer} from 'ol/layer';
 import {Source} from 'ol/source';
@@ -15,17 +15,15 @@ import {HsToastService} from 'hslayers-ng/common/toast';
   providedIn: 'root',
 })
 export class HsAddDataUrlService {
+  hsLog = inject(HsLogService);
+  hsLanguageService = inject(HsLanguageService);
+  hsLayoutService = inject(HsLayoutService);
+  private hsMapService = inject(HsMapService);
+  private hsToastService = inject(HsToastService);
+
   typeSelected: AddDataUrlType;
   addingAllowed: boolean;
   connectFromParams = true;
-
-  constructor(
-    public hsLog: HsLogService,
-    public hsLanguageService: HsLanguageService,
-    public hsLayoutService: HsLayoutService,
-    private hsMapService: HsMapService,
-    private hsToastService: HsToastService,
-  ) {}
 
   /**
    * Selects a service layer to be added (WMS | WMTS | ArcGIS Map Server)

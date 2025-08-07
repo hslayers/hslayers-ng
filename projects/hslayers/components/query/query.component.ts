@@ -38,28 +38,24 @@ import {QUERY_INFO_PANEL} from './query.tokens';
   ],
 })
 export class HsQueryComponent extends HsPanelBaseComponent implements OnInit {
-  popup = new Popup();
-  popupOpens: Subject<any> = new Subject();
-  name = 'query';
-  //To deactivate queries (unsubscribe subscribers) per app
-  queryDeactivator = new Subject<void>();
-
+  hsQueryBaseService = inject(HsQueryBaseService);
+  private hsMapService = inject(HsMapService);
+  private hsLog = inject(HsLogService);
+  private hsQueryVectorService = inject(HsQueryVectorService);
+  private hsDrawService = inject(HsDrawService);
+  private hsQueryWmsService = inject(HsQueryWmsService);
   // Inject QUERY_INFO_PANEL if available, otherwise fallback to HsQueryDefaultInfoPanelBodyComponent
   infoPanelComponent =
     inject(QUERY_INFO_PANEL, {optional: true}) ||
     HsQueryDefaultInfoPanelBodyComponent;
   injector = inject(Injector);
 
-  constructor(
-    public hsQueryBaseService: HsQueryBaseService,
-    private hsMapService: HsMapService,
-    private hsLog: HsLogService,
-    private hsQueryVectorService: HsQueryVectorService,
-    private hsDrawService: HsDrawService,
-    private hsQueryWmsService: HsQueryWmsService,
-  ) {
-    super();
-  }
+  popup = new Popup();
+  popupOpens: Subject<any> = new Subject();
+  name = 'query';
+  //To deactivate queries (unsubscribe subscribers) per app
+  queryDeactivator = new Subject<void>();
+
   async ngOnInit() {
     super.ngOnInit();
     this.popupOpens

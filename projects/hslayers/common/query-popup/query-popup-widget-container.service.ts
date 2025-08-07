@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {Injectable, inject} from '@angular/core';
 import {ReplaySubject} from 'rxjs';
 
 import {HsClearLayerComponent} from './widgets/clear-layer.component';
@@ -14,16 +14,14 @@ import {WidgetItem} from 'hslayers-ng/types';
   providedIn: 'root',
 })
 export class HsQueryPopupWidgetContainerService extends HsPanelContainerService {
+  private hsConfig = inject(HsConfig);
+
   queryPopupWidgets: WidgetItem[] = [
     {name: 'layer-name', component: HsLayerNameComponent},
     {name: 'feature-info', component: HsFeatureInfoComponent},
     {name: 'clear-layer', component: HsClearLayerComponent},
     {name: 'dynamic-text', component: HsDynamicTextComponent},
   ];
-
-  constructor(private hsConfig: HsConfig) {
-    super();
-  }
 
   cleanup() {
     console.warn('TODO: HsQueryPopupWidgetContainerService cleanup');

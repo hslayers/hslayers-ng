@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Component, EventEmitter, Input, Output, inject} from '@angular/core';
 
 import {Layer} from 'ol/layer';
 import {Source} from 'ol/source';
@@ -12,10 +12,10 @@ import {HsLayerManagerService} from 'hslayers-ng/services/layer-manager';
   standalone: false,
 })
 export class HsPositionComponent {
+  hsLayerManagerService = inject(HsLayerManagerService);
+
   @Input() addUnder: Layer<Source> | null;
   @Output() addUnderChange = new EventEmitter<Layer<Source> | null>();
-
-  constructor(public hsLayerManagerService: HsLayerManagerService) {}
 
   updateChanges(): void {
     this.addUnderChange.next(this.addUnder);

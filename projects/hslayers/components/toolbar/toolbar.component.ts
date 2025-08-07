@@ -1,4 +1,4 @@
-import {Component, OnDestroy} from '@angular/core';
+import {Component, OnDestroy, inject} from '@angular/core';
 
 import {Subscription} from 'rxjs';
 
@@ -15,17 +15,18 @@ export class HsToolbarComponent
   extends HsGuiOverlayBaseComponent
   implements OnDestroy
 {
+  hsEventBusService = inject(HsEventBusService);
+  hsToolbarPanelContainerService = inject(HsToolbarPanelContainerService);
+
   name = 'toolbar';
   collapsed = false;
   composition_title: any;
   composition_abstract: any;
   mapResetsSubscription: Subscription;
-  constructor(
-    public HsEventBusService: HsEventBusService,
-    public HsToolbarPanelContainerService: HsToolbarPanelContainerService,
-  ) {
+
+  constructor() {
     super();
-    this.mapResetsSubscription = this.HsEventBusService.mapResets.subscribe(
+    this.mapResetsSubscription = this.hsEventBusService.mapResets.subscribe(
       () => {
         setTimeout(() => {
           delete this.composition_title;
@@ -34,6 +35,7 @@ export class HsToolbarComponent
       },
     );
   }
+
   ngOnDestroy(): void {
     this.mapResetsSubscription.unsubscribe();
   }

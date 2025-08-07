@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {Injectable, inject} from '@angular/core';
 
 import {Cluster, Source, Vector as VectorSource} from 'ol/source';
 import {Feature} from 'ol';
@@ -17,6 +17,8 @@ import {isLayerVectorLayer, isLayerClustered} from 'hslayers-ng/services/utils';
   providedIn: 'root',
 })
 export class HsFeatureTableService {
+  private hsQueryVectorService = inject(HsQueryVectorService);
+
   /**
    * Trigger for reverse sorting
    */
@@ -29,7 +31,6 @@ export class HsFeatureTableService {
    * all feature attributes for HTML table
    */
   features: HsFeatureDescriptor[] = [];
-  constructor(private hsQueryVectorService: HsQueryVectorService) {}
 
   /**
    * Checks if layer is vectorLayer and is visible in layer_manager, to exclude layers, such as, point Clicked
@@ -171,9 +172,12 @@ export class HsFeatureTableService {
    */
   sortFeaturesBy(valueName): void {
     if (this.features !== undefined && this.features.length > 1) {
-      this.lastSortValue === valueName //if last sort by value is the same as current sort table list in reverse
-        ? (this.sortReverse = !this.sortReverse)
-        : (this.sortReverse = false);
+      // If last sort by value is the same as current, reverse the sort order
+      if (this.lastSortValue === valueName) {
+        this.sortReverse = !this.sortReverse;
+      } else {
+        this.sortReverse = false;
+      }
       this.features = this.features.sort((a, b) =>
         this.sortFeatures(a, b, valueName),
       );
@@ -216,7 +220,9 @@ export class HsFeatureTableService {
     if (typeof aFeature == 'number' && typeof bFeature == 'number') {
       position = aFeature - bFeature;
     }
-    this.sortReverse ? (position = position * -1) : position;
+    if (this.sortReverse) {
+      position = position * -1;
+    }
     this.lastSortValue = valueName;
     return position;
   }

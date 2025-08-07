@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {Injectable, inject} from '@angular/core';
 
 import {from, takeUntil} from 'rxjs';
 
@@ -15,14 +15,12 @@ import {xPos, yPos} from './types/xy-positions.type';
   providedIn: 'root',
 })
 export class HsPrintService {
-  constructor(
-    private hsMapService: HsMapService,
-    private hsShareThumbnailService: HsShareThumbnailService,
-    private hsPrintLegendService: HsPrintLegendService,
-    private hsPrintScaleService: HsPrintScaleService,
-    private hsPrintTitleService: HsPrintTitleService,
-    private hsPrintImprintService: HsPrintImprintService,
-  ) {}
+  private hsMapService = inject(HsMapService);
+  private hsShareThumbnailService = inject(HsShareThumbnailService);
+  private hsPrintLegendService = inject(HsPrintLegendService);
+  private hsPrintScaleService = inject(HsPrintScaleService);
+  private hsPrintTitleService = inject(HsPrintTitleService);
+  private hsPrintImprintService = inject(HsPrintImprintService);
 
   /**
    * Print styled print layout

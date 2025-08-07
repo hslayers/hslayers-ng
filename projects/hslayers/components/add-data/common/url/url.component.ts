@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Component, EventEmitter, Input, Output, inject} from '@angular/core';
 
 import {HsHistoryListService} from 'hslayers-ng/common/history-list';
 
@@ -8,6 +8,8 @@ import {HsHistoryListService} from 'hslayers-ng/common/history-list';
   standalone: false,
 })
 export class HsCommonUrlComponent {
+  private historyListService = inject(HsHistoryListService);
+
   items;
   what;
   @Input() type: any;
@@ -17,7 +19,7 @@ export class HsCommonUrlComponent {
   @Output() urlChange = new EventEmitter<any>();
   @Output() connect = new EventEmitter<any>();
 
-  constructor(private historyListService: HsHistoryListService) {
+  constructor() {
     this.items = this.historyListService.readSourceHistory(this.what);
   }
 

@@ -1,7 +1,7 @@
 import 'share-api-polyfill';
 
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {Injectable} from '@angular/core';
+import {Injectable, inject} from '@angular/core';
 import {lastValueFrom} from 'rxjs';
 
 import {CompoData, MapComposition} from 'hslayers-ng/types';
@@ -24,6 +24,18 @@ import {getShowInLayerManager} from 'hslayers-ng/common/extensions';
   providedIn: 'root',
 })
 export class HsShareService {
+  hsConfig = inject(HsConfig);
+  hsShareUrlService = inject(HsShareUrlService);
+  hsMapService = inject(HsMapService);
+  hsLayoutService = inject(HsLayoutService);
+  hsSaveMapService = inject(HsSaveMapService);
+  hsEventBusService = inject(HsEventBusService);
+  hsLanguageService = inject(HsLanguageService);
+  hsToastService = inject(HsToastService);
+  hsLogService = inject(HsLogService);
+  private httpClient = inject(HttpClient);
+  hsShareThumbnailService = inject(HsShareThumbnailService);
+
   pureMapUrl = '';
   permalinkUrl = '';
   shareLink = 'permalink';
@@ -33,20 +45,9 @@ export class HsShareService {
   abstract = '';
   shareUrl = '';
   thumbnail: string;
-  constructor(
-    public hsConfig: HsConfig,
-    public HsShareUrlService: HsShareUrlService,
-    public HsMapService: HsMapService,
-    public HsLayoutService: HsLayoutService,
-    public HsSaveMapService: HsSaveMapService,
-    public HsEventBusService: HsEventBusService,
-    public HsLanguageService: HsLanguageService,
-    public HsToastService: HsToastService,
-    public HsLogService: HsLogService,
-    private HttpClient: HttpClient,
-    public HsShareThumbnailService: HsShareThumbnailService,
-  ) {
-    this.HsEventBusService.compositionLoads.subscribe((data) => {
+
+  constructor() {
+    this.hsEventBusService.compositionLoads.subscribe((data) => {
       if (data.data) {
         data = data.data;
 
@@ -58,17 +59,18 @@ export class HsShareService {
       }
     });
 
-    this.HsLayoutService.mainpanel$.subscribe(async (which) => {
-      if (this.HsLayoutService.mainpanel == 'share') {
+    this.hsLayoutService.mainpanel$.subscribe(async (which) => {
+      if (this.hsLayoutService.mainpanel == 'share') {
         this.generateThumbnail(
-          this.HsLayoutService.contentWrapper.querySelector(
+          this.hsLayoutService.contentWrapper.querySelector(
             '.hs-permalink-thumbnail',
           ),
           false,
         );
 
-        this.HsShareUrlService.statusSaving = true;
-        const layers = this.HsMapService.getLayersArray()
+        this.hsShareUrlService.statusSaving = true;
+        const layers = this.hsMapService
+          .getLayersArray()
           .filter(
             (l) =>
               getShowInLayerManager(l) == undefined || getShowInLayerManager(l),
@@ -77,51 +79,51 @@ export class HsShareService {
             return a.getZIndex() - b.getZIndex();
           });
         try {
-          const bbox = this.HsMapService.describeExtent();
-          const data = this.HsSaveMapService.map2json(
-            this.HsMapService.getMap(),
+          const bbox = this.hsMapService.describeExtent();
+          const data = this.hsSaveMapService.map2json(
+            this.hsMapService.getMap(),
             {layers, bbox},
             {},
           );
-          await this.HsShareUrlService.updatePermalinkComposition(data);
+          await this.hsShareUrlService.updatePermalinkComposition(data);
         } catch (ex) {
-          this.HsShareUrlService.statusSaving = false;
-          this.HsLogService.error('Error saving permalink layers.', ex);
+          this.hsShareUrlService.statusSaving = false;
+          this.hsLogService.error('Error saving permalink layers.', ex);
           throw ex;
         }
       }
     });
 
-    this.HsShareUrlService.browserUrlUpdated.subscribe(async (url) => {
+    this.hsShareUrlService.browserUrlUpdated.subscribe(async (url) => {
       if (
-        this.HsLayoutService.mainpanel == 'share' ||
-        this.HsLayoutService.mainpanel == 'shareMap'
+        this.hsLayoutService.mainpanel == 'share' ||
+        this.hsLayoutService.mainpanel == 'shareMap'
       ) {
         this.shareUrlValid = false;
         try {
-          this.pureMapUrl = await this.HsShareUrlService.shortUrl(
-            this.HsShareUrlService.getPureMapUrl(),
+          this.pureMapUrl = await this.hsShareUrlService.shortUrl(
+            this.hsShareUrlService.getPureMapUrl(),
           );
-          this.permalinkUrl = await this.HsShareUrlService.shortUrl(
-            this.HsShareUrlService.getPermalinkUrl(),
+          this.permalinkUrl = await this.hsShareUrlService.shortUrl(
+            this.hsShareUrlService.getPermalinkUrl(),
           );
           this.getEmbedCode();
         } catch (ex) {
-          this.HsLogService.log('Error creating short URL', ex);
-          this.pureMapUrl = this.HsShareUrlService.getPureMapUrl();
+          this.hsLogService.log('Error creating short URL', ex);
+          this.pureMapUrl = this.hsShareUrlService.getPureMapUrl();
           this.permalinkUrl = url;
         }
       }
     });
 
-    this.HsEventBusService.olMapLoads.subscribe((map) => {
+    this.hsEventBusService.olMapLoads.subscribe((map) => {
       map.on(
         'postcompose',
         debounce(
           () => {
-            if (this.HsLayoutService.mainpanel == 'share') {
+            if (this.hsLayoutService.mainpanel == 'share') {
               this.generateThumbnail(
-                this.HsLayoutService.contentWrapper.querySelector(
+                this.hsLayoutService.contentWrapper.querySelector(
                   '.hs-permalink-thumbnail',
                 ),
                 false,
@@ -182,21 +184,21 @@ export class HsShareService {
    */
   async shareOnSocial(newShare: boolean): Promise<void> {
     if (!this.shareUrlValid) {
-      if (this.HsShareUrlService.shareId === null || newShare) {
-        this.HsShareUrlService.shareId = crypto.randomUUID();
+      if (this.hsShareUrlService.shareId === null || newShare) {
+        this.hsShareUrlService.shareId = crypto.randomUUID();
       }
       try {
-        const endpointUrl = this.HsShareUrlService.endpointUrl();
+        const endpointUrl = this.hsShareUrlService.endpointUrl();
         const headers = new HttpHeaders().set(
           'Content-Type',
           'text/plain; charset=utf-8',
         );
         await lastValueFrom(
-          this.HttpClient.post(
+          this.httpClient.post(
             endpointUrl,
             JSON.stringify({
               request: 'socialShare',
-              id: this.HsShareUrlService.shareId,
+              id: this.hsShareUrlService.shareId,
               url: encodeURIComponent(this.getShareUrl()),
               title: this.title,
               description: this.abstract,
@@ -206,14 +208,14 @@ export class HsShareService {
           ),
         );
 
-        const shortUrl = await this.HsShareUrlService.shortUrl(
-          `${endpointUrl}?request=socialshare&id=${this.HsShareUrlService.shareId}`,
+        const shortUrl = await this.hsShareUrlService.shortUrl(
+          `${endpointUrl}?request=socialshare&id=${this.hsShareUrlService.shareId}`,
         );
         const shareUrl = shortUrl;
         this.openInShareApi(this.title, this.abstract, shareUrl);
         this.shareUrlValid = true;
       } catch (ex) {
-        this.HsLogService.log('Error creating short URL', ex);
+        this.hsLogService.log('Error creating short URL', ex);
       }
     } else {
       this.openInShareApi(this.title, this.abstract, this.getShareUrl());
@@ -231,12 +233,12 @@ export class HsShareService {
         console.log(response);
       })
       .catch((error) => {
-        this.HsToastService.createToastPopupMessage(
-          this.HsLanguageService.getTranslation(
+        this.hsToastService.createToastPopupMessage(
+          this.hsLanguageService.getTranslation(
             'COMPOSITIONS.errorWhileSharingOnSocialNetwork',
             undefined,
           ),
-          this.HsLanguageService.getTranslationIgnoreNonExisting(
+          this.hsLanguageService.getTranslationIgnoreNonExisting(
             'ERRORMESSAGES',
             error,
             undefined,
@@ -258,7 +260,7 @@ export class HsShareService {
       return;
     }
     $element.setAttribute('crossOrigin', 'Anonymous');
-    const map = this.HsMapService.getMap();
+    const map = this.hsMapService.getMap();
     if (newRender) {
       map.once('postcompose', () => this.rendered($element, newRender));
       map.renderSync();
@@ -268,7 +270,7 @@ export class HsShareService {
   }
 
   rendered($element, newRender?): void {
-    this.thumbnail = this.HsShareThumbnailService.rendered($element, newRender);
+    this.thumbnail = this.hsShareThumbnailService.rendered($element, newRender);
   }
 
   private isCanvasTainted(canvas: HTMLCanvasElement): boolean {
@@ -300,7 +302,7 @@ export class HsShareService {
     return new Promise(async (resolve, reject) => {
       try {
         const response = await lastValueFrom(
-          this.HttpClient.post(this.HsShareUrlService.endpointUrl(), {
+          this.httpClient.post(this.hsShareUrlService.endpointUrl(), {
             data: compositionJson,
             permanent: true,
             id: compoData.id,

@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input, inject} from '@angular/core';
 
 import {HsTripPlannerService} from './trip-planner.service';
 import {RouteProfile} from './ors-profiles.const';
@@ -9,8 +9,8 @@ import {RouteProfile} from './ors-profiles.const';
   standalone: false,
 })
 export class HsTripPlannerProfileSelectorComponent {
+  hsTripPlannerService = inject(HsTripPlannerService);
+
   @Input() selectedProfile: RouteProfile;
   profilesExpanded: boolean;
-
-  constructor(public hsTripPlannerService: HsTripPlannerService) {}
 }

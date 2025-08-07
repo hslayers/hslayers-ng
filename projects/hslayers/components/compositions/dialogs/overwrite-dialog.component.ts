@@ -1,4 +1,4 @@
-import {Component, ViewRef} from '@angular/core';
+import {Component, ViewRef, inject} from '@angular/core';
 
 import {HsCompositionsParserService} from 'hslayers-ng/services/compositions';
 import {HsCompositionsService} from '../compositions.service';
@@ -16,26 +16,24 @@ import {HsSaveMapManagerService} from 'hslayers-ng/components/save-map';
 export class HsCompositionsOverwriteDialogComponent
   implements HsDialogComponent
 {
+  hsDialogContainerService = inject(HsDialogContainerService);
+  hsCompositionsService = inject(HsCompositionsService);
+  hsSaveMapManagerService = inject(HsSaveMapManagerService);
+  hsCompositionParserService = inject(HsCompositionsParserService);
+
   viewRef: ViewRef;
   data: any;
 
-  constructor(
-    public HsDialogContainerService: HsDialogContainerService,
-    public HsCompositionsService: HsCompositionsService,
-    public HsSaveMapManagerService: HsSaveMapManagerService,
-    public hsCompositionParserService: HsCompositionsParserService,
-  ) {}
-
   close(): void {
-    this.HsDialogContainerService.destroy(this);
+    this.hsDialogContainerService.destroy(this);
   }
 
   /**
    * Load new composition without saving old composition
    */
   overwrite() {
-    this.HsCompositionsService.loadComposition(
-      this.HsCompositionsService.compositionToLoad.url,
+    this.hsCompositionsService.loadComposition(
+      this.hsCompositionsService.compositionToLoad.url,
       true,
     );
     this.close();
@@ -45,7 +43,7 @@ export class HsCompositionsOverwriteDialogComponent
    * Save currently loaded composition first
    */
   save() {
-    this.HsSaveMapManagerService.openPanel(null);
+    this.hsSaveMapManagerService.openPanel(null);
     this.close();
   }
 
@@ -53,8 +51,8 @@ export class HsCompositionsOverwriteDialogComponent
    * Load new composition (with service_parser Load function) and merge it with old composition
    */
   add() {
-    this.HsCompositionsService.loadComposition(
-      this.HsCompositionsService.compositionToLoad.url,
+    this.hsCompositionsService.loadComposition(
+      this.hsCompositionsService.compositionToLoad.url,
       false,
     );
     this.close();

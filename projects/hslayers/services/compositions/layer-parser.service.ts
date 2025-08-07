@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {Injectable, inject} from '@angular/core';
 
 import {Feature} from 'ol';
 import {GeoJSON} from 'ol/format';
@@ -27,17 +27,15 @@ import {setDefinition} from 'hslayers-ng/common/extensions';
   providedIn: 'root',
 })
 export class HsCompositionsLayerParserService {
-  constructor(
-    private hsMapService: HsMapService,
-    private HsAddDataVectorService: HsAddDataVectorService,
-    private HsStylerService: HsStylerService,
-    private HsLanguageService: HsLanguageService,
-    private hsLog: HsLogService,
-    private HsToastService: HsToastService,
-    private hsCommonLaymanService: HsCommonLaymanService,
-    private hsCommonLaymanLayerService: HsCommonLaymanLayerService,
-    private hsAddDataOwsService: HsAddDataOwsService,
-  ) {}
+  private hsMapService = inject(HsMapService);
+  private hsAddDataVectorService = inject(HsAddDataVectorService);
+  private hsStylerService = inject(HsStylerService);
+  private hsLanguageService = inject(HsLanguageService);
+  private hsLog = inject(HsLogService);
+  private hsToastService = inject(HsToastService);
+  private hsCommonLaymanService = inject(HsCommonLaymanService);
+  private hsCommonLaymanLayerService = inject(HsCommonLaymanLayerService);
+  private hsAddDataOwsService = inject(HsAddDataOwsService);
 
   /**
    * Initiate creation of WFS layer through HsUrlWfsService
@@ -117,12 +115,12 @@ export class HsCompositionsLayerParserService {
       newLayer[0].setVisible(lyr_def.visibility);
       return newLayer[0];
     } catch (error) {
-      this.HsToastService.createToastPopupMessage(
-        this.HsLanguageService.getTranslation(
+      this.hsToastService.createToastPopupMessage(
+        this.hsLanguageService.getTranslation(
           'ADDLAYERS.capabilitiesParsingProblem',
           undefined,
         ),
-        this.HsLanguageService.getTranslationIgnoreNonExisting(
+        this.hsLanguageService.getTranslationIgnoreNonExisting(
           'ERRORMESSAGES',
           error,
         ),
@@ -350,7 +348,7 @@ export class HsCompositionsLayerParserService {
 
       let style = null;
       if (lyr_def.style) {
-        style = (await this.HsStylerService.parseStyle(lyr_def.style)).style;
+        style = (await this.hsStylerService.parseStyle(lyr_def.style)).style;
       }
 
       const src = new SparqlJson({
@@ -429,7 +427,7 @@ export class HsCompositionsLayerParserService {
           }
         }
         // Parse the style definition (SLD, QML, or standard style object)
-        const styleType = await this.HsStylerService.guessStyleFormat(
+        const styleType = await this.hsStylerService.guessStyleFormat(
           lyr_def.style,
         );
         // Assign the appropriate style property to options
@@ -462,7 +460,7 @@ export class HsCompositionsLayerParserService {
       switch (format) {
         case 'ol.format.KML': //backwards compatibility
         case 'KML':
-          layer = await this.HsAddDataVectorService.createVectorLayer(
+          layer = await this.hsAddDataVectorService.createVectorLayer(
             'kml',
             lyr_def.protocol.url,
             lyr_def.name || title,
@@ -474,7 +472,7 @@ export class HsCompositionsLayerParserService {
           break;
         case 'ol.format.GeoJSON': //backwards compatibility
         case 'GeoJSON':
-          layer = await this.HsAddDataVectorService.createVectorLayer(
+          layer = await this.hsAddDataVectorService.createVectorLayer(
             'geojson',
             lyr_def.protocol.url,
             lyr_def.name || title,
@@ -486,7 +484,7 @@ export class HsCompositionsLayerParserService {
           break;
         case 'hs.format.WFS': //backwards compatibility
         case 'WFS':
-          layer = await this.HsAddDataVectorService.createVectorLayer(
+          layer = await this.hsAddDataVectorService.createVectorLayer(
             'wfs',
             lyr_def.protocol.url,
             //lyr_def.protocol.LAYERS
@@ -508,7 +506,7 @@ export class HsCompositionsLayerParserService {
                 featureProjection: this.hsMapService.getCurrentProj(),
               })
             : undefined;
-          layer = await this.HsAddDataVectorService.createVectorLayer(
+          layer = await this.hsAddDataVectorService.createVectorLayer(
             '',
             undefined,
             lyr_def.name || title,

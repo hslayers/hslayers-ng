@@ -1,5 +1,5 @@
 import {DomSanitizer, SafeHtml} from '@angular/platform-browser';
-import {Injectable, Signal} from '@angular/core';
+import {Injectable, Signal, inject} from '@angular/core';
 import {
   Observable,
   filter as rxjsFilter,
@@ -99,32 +99,36 @@ export class HsLayermanagerDataObject {
   providedIn: 'root',
 })
 export class HsLayerManagerService {
+  hsConfig = inject(HsConfig);
+  hsDimensionTimeService = inject(HsDimensionTimeService);
+  hsEventBusService = inject(HsEventBusService);
+  hsLanguageService = inject(HsLanguageService);
+  hsLayerEditorVectorLayerService = inject(HsLayerEditorVectorLayerService);
+  hsLayerManagerMetadata = inject(HsLayerManagerMetadataService);
+  hsLayerSelectorService = inject(HsLayerSelectorService);
+  hsLayoutService = inject(HsLayoutService);
+  hsLog = inject(HsLogService);
+  hsMapService = inject(HsMapService);
+  hsQueuesService = inject(HsQueuesService);
+  hsAddDataOwsService = inject(HsAddDataOwsService);
+  private hsShareUrlService = inject(HsShareUrlService);
+  hsToastService = inject(HsToastService);
+  sanitizer = inject(DomSanitizer);
+  private hsLayerManagerUtilsService = inject(HsLayerManagerUtilsService);
+  private hsLayerManagerVisibilityService = inject(
+    HsLayerManagerVisibilityService,
+  );
+  private folderService = inject(HsLayerManagerFolderService);
+  private hsLoadingProgressService = inject(
+    HsLayerManagerLoadingProgressService,
+  );
+
   data = new HsLayermanagerDataObject();
   timer: any;
   zIndexValue = 0;
 
   mapEventHandlers: EventsKey[];
-  constructor(
-    public hsConfig: HsConfig,
-    public hsDimensionTimeService: HsDimensionTimeService,
-    public hsEventBusService: HsEventBusService,
-    public hsLanguageService: HsLanguageService,
-    public hsLayerEditorVectorLayerService: HsLayerEditorVectorLayerService,
-    public hsLayerManagerMetadata: HsLayerManagerMetadataService,
-    public hsLayerSelectorService: HsLayerSelectorService,
-    public hsLayoutService: HsLayoutService,
-    public hsLog: HsLogService,
-    public hsMapService: HsMapService,
-    public hsQueuesService: HsQueuesService,
-    public hsAddDataOwsService: HsAddDataOwsService,
-    private hsShareUrlService: HsShareUrlService,
-    public hsToastService: HsToastService,
-    public sanitizer: DomSanitizer,
-    private hsLayerManagerUtilsService: HsLayerManagerUtilsService,
-    private hsLayerManagerVisibilityService: HsLayerManagerVisibilityService,
-    private folderService: HsLayerManagerFolderService,
-    private hsLoadingProgressService: HsLayerManagerLoadingProgressService,
-  ) {
+  constructor() {
     //Keeps 'data' object intact and in one place while allowing to split method between more services
     this.hsLayerManagerVisibilityService.data = this.data;
     this.folderService.data = this.data;

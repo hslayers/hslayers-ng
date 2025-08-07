@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, inject} from '@angular/core';
 
 import {AddDataUrlType, SERVICES_SUPPORTED_BY_URL} from 'hslayers-ng/types';
 import {AddDataUrlValues} from './add-data-url-values';
@@ -20,19 +20,17 @@ import {HsShareUrlService} from 'hslayers-ng/services/share';
   standalone: false,
 })
 export class HsAddDataUrlComponent implements OnInit {
-  types: {id: AddDataUrlType; text: string}[];
+  hsConfig = inject(HsConfig);
+  hsLanguageService = inject(HsLanguageService);
+  hsShareUrlService = inject(HsShareUrlService);
+  hsLog = inject(HsLogService);
+  hsLayoutService = inject(HsLayoutService);
+  hsAddDataCommonService = inject(HsAddDataCommonService);
+  hsAddDataOwsService = inject(HsAddDataOwsService);
+  hsAddDataUrlService = inject(HsAddDataUrlService);
+  hsDialogContainerService = inject(HsDialogContainerService);
 
-  constructor(
-    public hsConfig: HsConfig,
-    public hsLanguageService: HsLanguageService,
-    public hsShareUrlService: HsShareUrlService,
-    public hsLog: HsLogService,
-    public hsLayoutService: HsLayoutService,
-    public hsAddDataCommonService: HsAddDataCommonService,
-    public hsAddDataOwsService: HsAddDataOwsService,
-    public hsAddDataUrlService: HsAddDataUrlService,
-    public hsDialogContainerService: HsDialogContainerService,
-  ) {}
+  types: {id: AddDataUrlType; text: string}[];
 
   ngOnInit() {
     if (Array.isArray(this.hsConfig.connectTypes)) {

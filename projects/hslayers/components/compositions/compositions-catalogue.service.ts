@@ -1,4 +1,4 @@
-import {Injectable, NgZone} from '@angular/core';
+import {Injectable, NgZone, inject} from '@angular/core';
 
 import {Observable, filter, forkJoin} from 'rxjs';
 
@@ -22,6 +22,15 @@ import {debounce} from 'hslayers-ng/services/utils';
   providedIn: 'root',
 })
 export class HsCompositionsCatalogueService {
+  hsMapService = inject(HsMapService);
+  hsCompositionsService = inject(HsCompositionsService);
+  hsLayoutService = inject(HsLayoutService);
+  hsCommonEndpointsService = inject(HsCommonEndpointsService);
+  hsEventBusService = inject(HsEventBusService);
+  hsDialogContainerService = inject(HsDialogContainerService);
+  hsCommonLaymanService = inject(HsCommonLaymanService);
+  private _zone = inject(NgZone);
+
   compositionEntries: HsMapCompositionDescriptor[] = [];
   /**
    *List of sort by values (currently hard-coded selection),that will be applied in compositions lookup
@@ -60,16 +69,7 @@ export class HsCompositionsCatalogueService {
   loadCompositionsQuery: any;
   endpoints: HsEndpoint[] = this.hsCommonEndpointsService.endpoints();
   extentChangeSuppressed = false;
-  constructor(
-    public hsMapService: HsMapService,
-    public hsCompositionsService: HsCompositionsService,
-    public hsLayoutService: HsLayoutService,
-    public hsCommonEndpointsService: HsCommonEndpointsService,
-    public hsEventBusService: HsEventBusService,
-    public hsDialogContainerService: HsDialogContainerService,
-    public hsCommonLaymanService: HsCommonLaymanService,
-    private _zone: NgZone,
-  ) {
+  constructor() {
     this.hsLayoutService.mainpanel$.subscribe((which) => {
       if (
         this.hsLayoutService.mainpanel === 'compositions' ||
@@ -164,9 +164,11 @@ export class HsCompositionsCatalogueService {
         observables.push(this.loadCompositionFromEndpoint(endpoint));
       }
       this.loadCompositionsQuery = forkJoin(observables).subscribe(() => {
-        suspendLimitCalculation
-          ? this.createCompositionList()
-          : this.calculateEndpointLimits();
+        if (suspendLimitCalculation) {
+          this.createCompositionList();
+        } else {
+          this.calculateEndpointLimits();
+        }
       });
     });
   }

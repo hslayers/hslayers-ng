@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, ViewRef} from '@angular/core';
+import {Component, Input, OnInit, ViewRef, inject} from '@angular/core';
 import {NgbAccordionModule} from '@ng-bootstrap/ng-bootstrap';
 import {TranslatePipe} from '@ngx-translate/core';
 
@@ -28,20 +28,19 @@ import {isLayerWMS} from 'hslayers-ng/services/utils';
   imports: [TranslatePipe, NgbAccordionModule, HsLayerTableComponent],
 })
 export class CswLayersDialogComponent implements OnInit, HsDialogComponent {
+  hsDialogContainerService = inject(HsDialogContainerService);
+  hsAddDataUrlService = inject(HsAddDataUrlService);
+  hsAddDataOwsService = inject(HsAddDataOwsService);
+  hsMapService = inject(HsMapService);
+
   dialogItem: HsDialogItem;
   viewRef: ViewRef;
   @Input() data: any;
   servicesLoaded = false;
   layersString: string;
-  constructor(
-    public HsDialogContainerService: HsDialogContainerService,
-    public hsAddDataUrlService: HsAddDataUrlService,
-    public hsAddDataOwsService: HsAddDataOwsService,
-    public hsMapService: HsMapService,
-  ) {}
 
   close(): void {
-    this.HsDialogContainerService.destroy(this);
+    this.hsDialogContainerService.destroy(this);
     this.dialogItem.resolve(false);
   }
 
@@ -119,7 +118,7 @@ export class CswLayersDialogComponent implements OnInit, HsDialogComponent {
       layers = this.setLayerParams(layers, service, checkedOnly);
       service.typeService.addLayers(layers);
     }
-    this.HsDialogContainerService.destroy(this);
+    this.hsDialogContainerService.destroy(this);
     this.dialogItem.resolve(true);
   }
 

@@ -5,6 +5,7 @@ import {
   Input,
   Output,
   forwardRef,
+  inject,
 } from '@angular/core';
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
 
@@ -35,6 +36,8 @@ type hsStylerColorMapsKeyValue = {
   standalone: false,
 })
 export class ColormapPickerComponent implements ControlValueAccessor {
+  private hsStylerService = inject(HsStylerService);
+
   @Input() height?: string = '50vh';
   _colorMaps: hsStylerColorMaps;
   //Value propagated to ngModel
@@ -44,8 +47,6 @@ export class ColormapPickerComponent implements ControlValueAccessor {
   menuVisible = false;
   // eslint-disable-next-line @angular-eslint/no-output-native
   @Output() change = new EventEmitter<string>();
-
-  constructor(private hsStylerService: HsStylerService) {}
 
   get colorMaps(): hsStylerColorMaps {
     if (!this._colorMaps) {

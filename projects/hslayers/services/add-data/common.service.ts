@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {Injectable, inject} from '@angular/core';
 
 import {Subject} from 'rxjs';
 
@@ -12,6 +12,13 @@ import {OwsType} from 'hslayers-ng/types';
 
 @Injectable({providedIn: 'root'})
 export class HsAddDataCommonService {
+  hsMapService = inject(HsMapService);
+  hsAddDataUrlService = inject(HsAddDataUrlService);
+  hsToastService = inject(HsToastService);
+  hsAddDataService = inject(HsAddDataService);
+  hsDimensionService = inject(HsDimensionService);
+  hsEventBusService = inject(HsEventBusService);
+
   layerToSelect: string | string[];
   loadingInfo = false;
   showDetails = false;
@@ -20,14 +27,8 @@ export class HsAddDataCommonService {
   //TODO: all dimension related things need to be refactored into separate module
   getDimensionValues = this.hsDimensionService.getDimensionValues;
   serviceLayersCalled: Subject<string> = new Subject();
-  constructor(
-    public hsMapService: HsMapService,
-    public hsAddDataUrlService: HsAddDataUrlService,
-    public hsToastService: HsToastService,
-    public hsAddDataService: HsAddDataService,
-    public hsDimensionService: HsDimensionService,
-    public hsEventBusService: HsEventBusService,
-  ) {
+
+  constructor() {
     this.hsEventBusService.cancelAddDataUrlRequest.subscribe(() => {
       this.clearParams();
     });
@@ -175,7 +176,9 @@ export class HsAddDataCommonService {
           baseNameParts.push(layer[property]);
         } else if (layer.Layer) {
           const nested = this.getGroupedLayerNames(layer.Layer, property);
-          nested.length > 0 ? baseNameParts.push(nested) : null;
+          if (nested.length > 0) {
+            baseNameParts.push(nested);
+          }
         }
       }
     } else {

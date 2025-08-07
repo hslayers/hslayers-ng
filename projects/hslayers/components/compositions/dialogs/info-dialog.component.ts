@@ -1,4 +1,4 @@
-import {Component, ViewRef} from '@angular/core';
+import {Component, ViewRef, inject} from '@angular/core';
 import {KeyValuePipe} from '@angular/common';
 import {TranslatePipe} from '@ngx-translate/core';
 
@@ -16,6 +16,9 @@ import {HsClipboardTextComponent} from 'hslayers-ng/common/clipboard-text';
   imports: [TranslatePipe, HsClipboardTextComponent, KeyValuePipe],
 })
 export class HsCompositionsInfoDialogComponent implements HsDialogComponent {
+  hsDialogContainerService = inject(HsDialogContainerService);
+  hsCompositionsService = inject(HsCompositionsService);
+
   viewRef: ViewRef;
   data: {
     info: {
@@ -33,12 +36,8 @@ export class HsCompositionsInfoDialogComponent implements HsDialogComponent {
       [key: string]: any;
     };
   };
-  constructor(
-    public HsDialogContainerService: HsDialogContainerService,
-    public HsCompositionsService: HsCompositionsService,
-  ) {}
 
   close(): void {
-    this.HsDialogContainerService.destroy(this);
+    this.hsDialogContainerService.destroy(this);
   }
 }

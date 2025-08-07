@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, inject} from '@angular/core';
 
 import {HsLanguageService} from 'hslayers-ng/services/language';
 import {HsLayerDescriptor} from 'hslayers-ng/types';
@@ -6,7 +6,6 @@ import {HsLayerEditorWidgetBaseComponent} from './layer-editor-widget-base.compo
 import {
   HsLayerManagerMetadataService,
   HsLayerManagerService,
-  HsLayerSelectorService,
 } from 'hslayers-ng/services/layer-manager';
 import {
   getAbstract,
@@ -20,17 +19,12 @@ import {
   standalone: false,
 })
 export class HsMetadataWidgetComponent extends HsLayerEditorWidgetBaseComponent {
+  hsLanguageService = inject(HsLanguageService);
+  metadataService = inject(HsLayerManagerMetadataService);
+  hsLayerManagerService = inject(HsLayerManagerService);
+
   name = 'metadata-widget';
   getAttribution = getAttribution;
-
-  constructor(
-    public HsLanguageService: HsLanguageService,
-    hsLayerSelectorService: HsLayerSelectorService,
-    public metadataService: HsLayerManagerMetadataService,
-    public HsLayerManagerService: HsLayerManagerService,
-  ) {
-    super(hsLayerSelectorService);
-  }
 
   /**
    * Determines if layer has copyright information available

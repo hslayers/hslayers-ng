@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input, inject} from '@angular/core';
 import {take} from 'rxjs';
 
 import {IconSymbolizer} from 'geostyler-style';
@@ -14,13 +14,11 @@ import {SymbolizerIcon} from 'hslayers-ng/config';
   standalone: false,
 })
 export class HsIconSymbolizerComponent extends HsStylerPartBaseComponent {
+  private hsDialogContainerService = inject(HsDialogContainerService);
+
   @Input() symbolizer: IconSymbolizer;
   @Input() submenu = false;
   selectedIcon?: SymbolizerIcon;
-
-  constructor(private hsDialogContainerService: HsDialogContainerService) {
-    super();
-  }
 
   anchors = [
     'center',

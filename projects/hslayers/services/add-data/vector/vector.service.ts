@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {Injectable, inject} from '@angular/core';
 
 import {Feature} from 'ol';
 import {Layer, Vector as VectorLayer} from 'ol/layer';
@@ -37,29 +37,26 @@ import {undefineEmptyString, HsProxyService} from 'hslayers-ng/services/utils';
   providedIn: 'root',
 })
 export class HsAddDataVectorService {
-  constructor(
-    private hsAddDataCommonFileService: HsAddDataCommonFileService,
-    private hsAddDataService: HsAddDataService,
-    private hsLaymanService: HsLaymanService,
-    private hsCommonLaymanService: HsCommonLaymanService,
-    private hsCommonLaymanLayerService: HsCommonLaymanLayerService,
-    private hsMapService: HsMapService,
-    private hsStylerService: HsStylerService,
-    private hsAddDataVectorUtilsService: HsAddDataVectorUtilsService,
-    private hsToastService: HsToastService,
-    private hsProxyService: HsProxyService,
-  ) {}
+  private hsAddDataCommonFileService = inject(HsAddDataCommonFileService);
+  private hsAddDataService = inject(HsAddDataService);
+  private hsLaymanService = inject(HsLaymanService);
+  private hsCommonLaymanService = inject(HsCommonLaymanService);
+  private hsCommonLaymanLayerService = inject(HsCommonLaymanLayerService);
+  private hsMapService = inject(HsMapService);
+  private hsStylerService = inject(HsStylerService);
+  private hsAddDataVectorUtilsService = inject(HsAddDataVectorUtilsService);
+  private hsToastService = inject(HsToastService);
+  private hsProxyService = inject(HsProxyService);
 
   /**
    * Load non-wms OWS data and create layer
    * @param type - Type of data to load (supports Kml, Geojson, Wfs and Sparql)
    * @param url - Url of data/service localization
-   
    * @param title - Title of new layer
    * @param abstract - Abstract of new layer
-   
    * @param srs - EPSG code of selected projection (eg. "EPSG:4326")
    * @param options - Other options
+   * @param addUnder - Layer to add new layer under
    * @returns Promise which return OpenLayers vector layer
    */
   addVectorLayer(
@@ -113,7 +110,7 @@ export class HsAddDataVectorService {
    * Load non-wms OWS data and create layer
    * @param type - Type of data to load (supports KML, GeoJSON, WFS and SPARQL)
    * @param url - Url of data/service localization
-   
+   * @param name - Name of new layer
    * @param title - Title of new layer
    * @param abstract - Abstract of new layer
    * @param srs - EPSG code of selected projection (eg. "EPSG:4326")

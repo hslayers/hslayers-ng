@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {Injectable, inject} from '@angular/core';
 
 import {Layer} from 'ol/layer';
 import {Source} from 'ol/source';
@@ -15,17 +15,16 @@ import {isLayerVectorLayer} from 'hslayers-ng/services/utils';
   providedIn: 'root',
 })
 export class HsLayerManagerVisibilityService {
+  private hsMapService = inject(HsMapService);
+  private hsConfig = inject(HsConfig);
+  private hsEventBusService = inject(HsEventBusService);
+
   /**
    * Store if baselayers are visible (more precisely one of baselayers)
    */
   baselayersVisible = true;
   currentResolution: number;
   data: HsLayermanagerDataObject;
-  constructor(
-    private hsMapService: HsMapService,
-    private hsConfig: HsConfig,
-    private hsEventBusService: HsEventBusService,
-  ) {}
 
   layerVisibilityChanged(e) {
     if (getBase(e.target) != true) {

@@ -1,5 +1,5 @@
 import {HttpClient} from '@angular/common/http';
-import {Injectable} from '@angular/core';
+import {Injectable, inject} from '@angular/core';
 
 import {Observable, catchError, lastValueFrom, map, of, timeout} from 'rxjs';
 import {transformExtent} from 'ol/proj';
@@ -23,15 +23,13 @@ import {addExtentFeature} from 'hslayers-ng/services/utils';
   providedIn: 'root',
 })
 export class HsCompositionsLaymanService {
-  constructor(
-    private $http: HttpClient,
-    private hsCommonLaymanService: HsCommonLaymanService,
-    private hsCompositionsParserService: HsCompositionsParserService,
-    private hsEventBusService: HsEventBusService,
-    private hsToastService: HsToastService,
-    private hsLanguageService: HsLanguageService,
-    private hsMapService: HsMapService,
-  ) {}
+  private $http = inject(HttpClient);
+  private hsCommonLaymanService = inject(HsCommonLaymanService);
+  private hsCompositionsParserService = inject(HsCompositionsParserService);
+  private hsEventBusService = inject(HsEventBusService);
+  private hsToastService = inject(HsToastService);
+  private hsLanguageService = inject(HsLanguageService);
+  private hsMapService = inject(HsMapService);
 
   /**
    * Load composition list from the external Layman server

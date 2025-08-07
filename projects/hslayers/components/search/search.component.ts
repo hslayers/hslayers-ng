@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit, inject} from '@angular/core';
 
 import {Subscription} from 'rxjs';
 
@@ -16,17 +16,17 @@ export class HsSearchComponent
   extends HsPanelBaseComponent
   implements OnInit, OnDestroy
 {
+  private hsEventBusService = inject(HsEventBusService);
+  private hsConfig = inject(HsConfig);
+  hsLanguageService = inject(HsLanguageService);
+
   replace = false;
   clearVisible = false;
   searchInputVisible: boolean;
   searchResultsReceivedSubscription: Subscription;
   name = 'search';
 
-  constructor(
-    private hsEventBusService: HsEventBusService,
-    private hsConfig: HsConfig,
-    public hsLanguageService: HsLanguageService,
-  ) {
+  constructor() {
     super();
     this.searchResultsReceivedSubscription =
       this.hsEventBusService.searchResultsReceived.subscribe(() => {
@@ -40,8 +40,7 @@ export class HsSearchComponent
 
   ngOnInit(): void {
     super.ngOnInit();
-    window.innerWidth < this.hsConfig.mobileBreakpoint
-      ? (this.searchInputVisible = false)
-      : (this.searchInputVisible = true);
+    this.searchInputVisible =
+      window.innerWidth >= this.hsConfig.mobileBreakpoint;
   }
 }

@@ -1,4 +1,4 @@
-import {Component, computed, OnInit, signal} from '@angular/core';
+import {Component, computed, OnInit, signal, inject} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
 import {TranslatePipe} from '@ngx-translate/core';
@@ -33,6 +33,15 @@ import {HsCatalogueListItemComponent} from './catalogue-list-item/catalogue-list
   ],
 })
 export class HsAddDataCatalogueComponent implements OnInit {
+  hsLanguageService = inject(HsLanguageService);
+  hsConfig = inject(HsConfig);
+  hsAddDataCatalogueService = inject(HsAddDataCatalogueService);
+  hsAddDataCatalogueMapService = inject(HsAddDataCatalogueMapService);
+  hsLayoutService = inject(HsLayoutService);
+  hsLaymanService = inject(HsLaymanService);
+  hsCommonLaymanService = inject(HsCommonLaymanService);
+  private hsAddDataService = inject(HsAddDataService);
+
   types: any[];
   data: any;
   advancedSearch: boolean;
@@ -46,16 +55,7 @@ export class HsAddDataCatalogueComponent implements OnInit {
   readonly dataTypes = ['all', 'service', 'dataset'];
   readonly sortbyTypes = ['date', 'title', 'bbox'];
 
-  constructor(
-    public hsLanguageService: HsLanguageService,
-    public hsConfig: HsConfig,
-    public hsAddDataCatalogueService: HsAddDataCatalogueService,
-    public hsAddDataCatalogueMapService: HsAddDataCatalogueMapService,
-    public hsLayoutService: HsLayoutService,
-    public hsLaymanService: HsLaymanService,
-    public hsCommonLaymanService: HsCommonLaymanService,
-    private hsAddDataService: HsAddDataService,
-  ) {
+  constructor() {
     this.advancedSearch = false;
   }
 

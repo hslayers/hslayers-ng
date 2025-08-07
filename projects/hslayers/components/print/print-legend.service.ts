@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {Injectable, inject} from '@angular/core';
 import {Observable, Subject, Subscription} from 'rxjs';
 
 import {Feature} from 'ol';
@@ -26,13 +26,13 @@ export class PrintLegendParams {
   providedIn: 'root',
 })
 export class HsPrintLegendService extends PrintLegendParams {
-  constructor(
-    private hsMapService: HsMapService,
-    private hsLegendService: HsLegendService,
-    private hsLegendLayerStaticService: HsLegendLayerStaticService,
-    private hsLanguageService: HsLanguageService,
-    private hsShareThumbnailService: HsShareThumbnailService,
-  ) {
+  private hsMapService = inject(HsMapService);
+  private hsLegendService = inject(HsLegendService);
+  private hsLegendLayerStaticService = inject(HsLegendLayerStaticService);
+  private hsLanguageService = inject(HsLanguageService);
+  private hsShareThumbnailService = inject(HsShareThumbnailService);
+
+  constructor() {
     super();
     this.cancelRequest.subscribe(() => {
       this.loadingExternalImages = false;
@@ -42,6 +42,7 @@ export class HsPrintLegendService extends PrintLegendParams {
       }
     });
   }
+
   /**
    * Convert svg to image
    * @param svgSource - Svg source
@@ -259,7 +260,8 @@ export class HsPrintLegendService extends PrintLegendParams {
    */
   private legendToSvg(source: string, layerTitle: string): string {
     const heightRegex = /height="([0-9]+)"/;
-    const height = Number(source.match(heightRegex)[1]) ?? 70;
+    const match = source.match(heightRegex);
+    const height = match && match[1] ? Number(match[1]) : 70;
     const svgSource = `<svg xmlns='http://www.w3.org/2000/svg' width='${
       this.legendWidth
     }' height='${height + 12}px'>

@@ -24,6 +24,8 @@ import {Kinds} from '../symbolizers/symbolizer-kind.enum';
   standalone: false,
 })
 export class HsRuleComponent extends HsStylerPartBaseComponent {
+  hsStylerService = inject(HsStylerService);
+
   @Input() rule;
   @Output() changes = new EventEmitter<void>();
   @ViewChild('addSymMenu') menuRef;
@@ -32,9 +34,6 @@ export class HsRuleComponent extends HsStylerPartBaseComponent {
 
   filtersVisible = false;
   scalesVisible = false;
-  constructor(public hsStylerService: HsStylerService) {
-    super();
-  }
   async addSymbolizer(kind: SymbolizerKind): Promise<void> {
     const symbolizer = {kind, color: '#000000'};
     if (kind === Kinds.text) {

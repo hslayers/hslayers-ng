@@ -1,5 +1,12 @@
 import {AsyncPipe, NgClass} from '@angular/common';
-import {Component, DestroyRef, OnInit, computed, input} from '@angular/core';
+import {
+  Component,
+  DestroyRef,
+  OnInit,
+  computed,
+  input,
+  inject,
+} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
 import {Observable, map} from 'rxjs';
@@ -30,6 +37,11 @@ import {isLayerEditable} from 'hslayers-ng/services/utils';
   ],
 })
 export class HsQueryFeatureComponent implements OnInit {
+  private hsMapService = inject(HsMapService);
+  private hsQueryVectorService = inject(HsQueryVectorService);
+  private hsFeatureCommonService = inject(HsFeatureCommonService);
+  private destroyRef = inject(DestroyRef);
+
   feature = input<HsFeatureDescriptor>();
 
   olFeature = computed(() => {
@@ -67,16 +79,9 @@ export class HsQueryFeatureComponent implements OnInit {
   getTitle = getTitle;
   availableLayers: Observable<Layer[]>;
 
-  constructor(
-    private hsMapService: HsMapService,
-    private hsQueryVectorService: HsQueryVectorService,
-    private hsFeatureCommonService: HsFeatureCommonService,
-    private DestroyRef: DestroyRef,
-  ) {}
-
   ngOnInit(): void {
     this.availableLayers = this.hsFeatureCommonService.availableLayer$.pipe(
-      takeUntilDestroyed(this.DestroyRef),
+      takeUntilDestroyed(this.destroyRef),
       map((layers) => {
         if (!this.olFeature()) {
           //Feature from WMS getFeatureInfo

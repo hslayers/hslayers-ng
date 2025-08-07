@@ -1,11 +1,10 @@
-import {Injectable, NgZone} from '@angular/core';
+import {Injectable, NgZone, inject} from '@angular/core';
 
 import {Feature} from 'ol';
 import {Geometry} from 'ol/geom';
 import {
   Observable,
   Subject,
-  combineLatest,
   debounceTime,
   filter,
   forkJoin,
@@ -78,21 +77,21 @@ class HsAddDataCatalogueParams {
   providedIn: 'root',
 })
 export class HsAddDataCatalogueService extends HsAddDataCatalogueParams {
-  constructor(
-    public hsConfig: HsConfig,
-    public hsAddDataVectorService: HsAddDataVectorService,
-    public hsEventBusService: HsEventBusService,
-    public hsMickaBrowserService: HsMickaBrowserService,
-    public hsLaymanBrowserService: HsLaymanBrowserService,
-    public hsLayoutService: HsLayoutService,
-    public hsCommonEndpointsService: HsCommonEndpointsService,
-    public hsMapService: HsMapService,
-    public hsAddDataCatalogueMapService: HsAddDataCatalogueMapService,
-    public hsAddDataService: HsAddDataService,
-    private zone: NgZone,
-    public hsCommonLaymanService: HsCommonLaymanService,
-    public hsAddDataOwsService: HsAddDataOwsService,
-  ) {
+  hsConfig = inject(HsConfig);
+  hsAddDataVectorService = inject(HsAddDataVectorService);
+  hsEventBusService = inject(HsEventBusService);
+  hsMickaBrowserService = inject(HsMickaBrowserService);
+  hsLaymanBrowserService = inject(HsLaymanBrowserService);
+  hsLayoutService = inject(HsLayoutService);
+  hsCommonEndpointsService = inject(HsCommonEndpointsService);
+  hsMapService = inject(HsMapService);
+  hsAddDataCatalogueMapService = inject(HsAddDataCatalogueMapService);
+  hsAddDataService = inject(HsAddDataService);
+  private zone = inject(NgZone);
+  hsCommonLaymanService = inject(HsCommonLaymanService);
+  hsAddDataOwsService = inject(HsAddDataOwsService);
+
+  constructor() {
     super();
     this.hsLayoutService.mainpanel$.subscribe((which) => {
       if (this.panelVisible()) {
@@ -191,9 +190,11 @@ export class HsAddDataCatalogueService extends HsAddDataCatalogueParams {
           }
         }
         this.catalogQuery = forkJoin(observables).subscribe(() => {
-          suspendLimitCalculation
-            ? this.createLayerList()
-            : this.calculateEndpointLimits();
+          if (suspendLimitCalculation) {
+            this.createLayerList();
+          } else {
+            this.calculateEndpointLimits();
+          }
         });
       });
     }

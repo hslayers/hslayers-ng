@@ -1,5 +1,5 @@
 import {HttpClient} from '@angular/common/http';
-import {Injectable} from '@angular/core';
+import {Injectable, inject} from '@angular/core';
 import {Subject} from 'rxjs';
 
 import {Feature} from 'ol';
@@ -21,20 +21,20 @@ import {setShowInLayerManager, setTitle} from 'hslayers-ng/common/extensions';
   providedIn: 'root',
 })
 export class HsSearchService {
+  private http = inject(HttpClient);
+  private hsConfig = inject(HsConfig);
+  private hsMapService = inject(HsMapService);
+  private hsStylerService = inject(HsStylerService);
+  private hsEventBusService = inject(HsEventBusService);
+  private hsProxyService = inject(HsProxyService);
+
   formatWKT = new WKT();
   canceler: Subject<any> = new Subject();
   searchResultsLayer: VectorLayer<VectorSource<Feature>>;
   pointerMoveEventKey;
   providers: {[key: string]: any} = {};
 
-  constructor(
-    private http: HttpClient,
-    private hsConfig: HsConfig,
-    private hsMapService: HsMapService,
-    private hsStylerService: HsStylerService,
-    private hsEventBusService: HsEventBusService,
-    private hsProxyService: HsProxyService,
-  ) {
+  constructor() {
     this.searchResultsLayer = new VectorLayer({
       source: new VectorSource({}),
       style: this.hsStylerService.pin_white_blue_highlight,

@@ -1,4 +1,4 @@
-import {Injectable, NgZone} from '@angular/core';
+import {Injectable, NgZone, inject} from '@angular/core';
 import {Observable, merge} from 'rxjs';
 import {buffer, filter, first, map, switchMap, take} from 'rxjs/operators';
 
@@ -35,6 +35,17 @@ export enum SwipeSide {
   providedIn: 'root',
 })
 export class HsMapSwipeService {
+  private hsMapService = inject(HsMapService);
+  private hsConfig = inject(HsConfig);
+  private hsLayerShiftingService = inject(HsLayerShiftingService);
+  private hsEventBusService = inject(HsEventBusService);
+  private hsLayerManagerService = inject(HsLayerManagerService);
+  private hsShareUrlService = inject(HsShareUrlService);
+  private hsLayoutService = inject(HsLayoutService);
+  private hsLayerEditorService = inject(HsLayerEditorService);
+  private hsLog = inject(HsLogService);
+  private zone = inject(NgZone);
+
   swipeCtrl: SwipeControl;
   rightLayers: LayerListItem[] = [];
   leftLayers: LayerListItem[] = [];
@@ -44,18 +55,8 @@ export class HsMapSwipeService {
   swipeControlActive: boolean;
   orientation: 'vertical' | 'horizontal';
   orientationVertical = true;
-  constructor(
-    private hsMapService: HsMapService,
-    private hsConfig: HsConfig,
-    private hsLayerShiftingService: HsLayerShiftingService,
-    private hsEventBusService: HsEventBusService,
-    private hsLayerManagerService: HsLayerManagerService,
-    private hsShareUrlService: HsShareUrlService,
-    private hsLayoutService: HsLayoutService,
-    private hsLayerEditorService: HsLayerEditorService,
-    private hsLog: HsLogService,
-    private zone: NgZone,
-  ) {
+
+  constructor() {
     this.swipeCtrl = null;
     this.rightLayers = [];
     this.leftLayers = [];
@@ -257,9 +258,11 @@ export class HsMapSwipeService {
       );
       if (layerFound !== undefined) {
         this.setLayerActive(layerFound);
-        this.wasMoved
-          ? this.moveSwipeLayer(layerFound)
-          : this.addSwipeLayer(layerFound);
+        if (this.wasMoved) {
+          this.moveSwipeLayer(layerFound);
+        } else {
+          this.addSwipeLayer(layerFound);
+        }
         this.checkForMissingLayers();
       } else {
         this.removeCompletely(l);

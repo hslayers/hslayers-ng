@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {Injectable, inject} from '@angular/core';
 import {Subject} from 'rxjs';
 
 import {Cluster, Source, Vector as VectorSource} from 'ol/source';
@@ -32,16 +32,13 @@ import {getThumbnail, getTitle} from 'hslayers-ng/common/extensions';
   providedIn: 'root',
 })
 export class HsLayerManagerUtilsService {
+  private hsConfig = inject(HsConfig);
+  private hsLayerSelectorService = inject(HsLayerSelectorService);
+  private hsMapService = inject(HsMapService);
+  private hsLog = inject(HsLogService);
+
   currentLayer: HsLayerDescriptor;
-
   layerSelected: Subject<HsLayerDescriptor> = new Subject();
-
-  constructor(
-    private hsConfig: HsConfig,
-    private hsLayerSelectorService: HsLayerSelectorService,
-    private hsMapService: HsMapService,
-    private hsLog: HsLogService,
-  ) {}
 
   /**
    * DEPRECATED?

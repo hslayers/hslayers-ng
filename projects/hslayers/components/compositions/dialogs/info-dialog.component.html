@@ -85,7 +85,7 @@
           </div>
           <div *ngFor="let metadata of data.info.metadata | keyvalue">
             <div class="row" *ngIf="metadata.value">
-              <div class="col-md-3"><b>{{HsCompositionsService.translateString('COMPOSITIONS.dialogInfo.metadata', metadata.key)}}</b></div>
+              <div class="col-md-3"><b>{{hsCompositionsService.translateString('COMPOSITIONS.dialogInfo.metadata', metadata.key)}}</b></div>
               <div class="col-md-9" style="overflow-wrap: break-word">{{metadata.value}}</div>
             </div>
           </div>
@@ -101,7 +101,7 @@
           <div>
             @if (data.value) {
             <div class="row">
-              <div class="col-md-4"><b>{{HsCompositionsService.translateString('SAVECOMPOSITION.form',
+              <div class="col-md-4"><b>{{hsCompositionsService.translateString('SAVECOMPOSITION.form',
                   data.key)}}</b></div>
               <div class="col-md-8">{{data.value}}</div>
             </div>
@@ -116,7 +116,7 @@
           @if (data.value) {
           <div class="row">
             <div class="col-md-4" style="word-break:break-all">
-              <b>{{HsCompositionsService.translateString('SAVECOMPOSITION.form', data.key)}}</b>
+              <b>{{hsCompositionsService.translateString('SAVECOMPOSITION.form', data.key)}}</b>
             </div>
             <div class="col-md-8">{{data.value}}</div>
           </div>

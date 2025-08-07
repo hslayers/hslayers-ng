@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {Injectable, inject} from '@angular/core';
 
 import {HsConfig} from 'hslayers-ng/config';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
@@ -13,6 +13,13 @@ import {debounce} from 'hslayers-ng/services/utils';
   providedIn: 'root',
 })
 export class HslayersService {
+  private hsLanguageService = inject(HsLanguageService);
+  hsMapService = inject(HsMapService);
+  hsConfig = inject(HsConfig);
+  hsLayoutService = inject(HsLayoutService);
+  private log = inject(HsLogService);
+  hsEventBusService = inject(HsEventBusService);
+
   embeddedEnabled = true;
   //TODO: remove
   //config: any;
@@ -20,34 +27,27 @@ export class HslayersService {
   //TODO: remove
   //missingLRFunctionsWarned: any;
 
-  constructor(
-    private hsLanguageService: HsLanguageService,
-    public HsMapService: HsMapService,
-    public hsConfig: HsConfig,
-    public HsLayoutService: HsLayoutService,
-    private log: HsLogService,
-    public HsEventBusService: HsEventBusService,
-  ) {
-    this.HsLayoutService.layoutLoads.subscribe(({element, innerElement}) => {
+  constructor() {
+    this.hsLayoutService.layoutLoads.subscribe(({element, innerElement}) => {
       // Initialization function for HSLayers elements and their sizes.
       // Stores element and container references and sets event listeners for map resizing.
       if (
         window.innerWidth < this.hsConfig.mobileBreakpoint ||
         this.hsConfig.sidebarClosed
       ) {
-        this.HsLayoutService.sidebarExpanded = false;
-        this.HsLayoutService.sidebarLabels = false;
+        this.hsLayoutService.sidebarExpanded = false;
+        this.hsLayoutService.sidebarLabels = false;
       } else {
-        this.HsLayoutService.sidebarExpanded = true;
+        this.hsLayoutService.sidebarExpanded = true;
       }
       const translateService = this.hsLanguageService.getTranslator();
-      if (!translateService.defaultLang) {
+      if (!translateService.getFallbackLang()) {
         this.hsLanguageService.initLanguages();
       }
       if (this.initCalled) {
         return;
       }
-      this.HsMapService.loaded().then(() => {
+      this.hsMapService.loaded().then(() => {
         this.initSizeListeners();
         setTimeout(() => {
           this.mapSizeUpdates();
@@ -56,7 +56,7 @@ export class HslayersService {
       });
     });
 
-    this.HsEventBusService.mapSizeUpdates.subscribe(() => {
+    this.hsEventBusService.mapSizeUpdates.subscribe(() => {
       this.mapSizeUpdates();
     });
   }
@@ -69,7 +69,7 @@ export class HslayersService {
       debounce(
         function () {
           this.mapSizeUpdates();
-          this.HsEventBusService.layoutResizes.next();
+          this.hsEventBusService.layoutResizes.next();
         },
         300,
         false,
@@ -82,19 +82,19 @@ export class HslayersService {
    * Update map size.
    */
   mapSizeUpdates(): void {
-    const map = this.HsMapService.mapElement;
+    const map = this.hsMapService.mapElement;
     if (map === null) {
       return;
     }
-    if (this.HsMapService.map) {
-      this.HsMapService.map.updateSize();
+    if (this.hsMapService.map) {
+      this.hsMapService.map.updateSize();
       if (
         window.innerWidth < this.hsConfig.mobileBreakpoint ||
-        this.HsLayoutService.mainpanel
+        this.hsLayoutService.mainpanel
       ) {
-        this.HsLayoutService.sidebarLabels = false;
+        this.hsLayoutService.sidebarLabels = false;
       } else {
-        this.HsLayoutService.sidebarLabels = true;
+        this.hsLayoutService.sidebarLabels = true;
       }
     } else {
       this.log.log('Map not yet initialized!');
@@ -104,14 +104,14 @@ export class HslayersService {
       width: map.offsetWidth,
       height: map.offsetHeight,
     };
-    this.HsEventBusService.sizeChanges.next(neededSize);
+    this.hsEventBusService.sizeChanges.next(neededSize);
   }
 
   /**
    * Do complete reset of map (view, layers) according to app config
    */
   resetMap(): void {
-    this.HsMapService.reset();
-    this.HsEventBusService.mapResets.next();
+    this.hsMapService.reset();
+    this.hsEventBusService.mapResets.next();
   }
 }

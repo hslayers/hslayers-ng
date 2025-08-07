@@ -1,4 +1,10 @@
-import {ChangeDetectionStrategy, Component, Input, OnInit} from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  OnInit,
+  inject,
+} from '@angular/core';
 import {DomSanitizer, SafeHtml} from '@angular/platform-browser';
 
 import {Feature} from 'ol';
@@ -18,16 +24,14 @@ export class HsDynamicTextComponent
   extends HsQueryPopupWidgetBaseComponent
   implements OnInit
 {
+  private sanitizer = inject(DomSanitizer);
+
   layerDescriptor: any;
   name = 'dynamic-text';
 
   @Input() data: {
     layerDescriptor: HsLayerDescriptor;
   };
-
-  constructor(private sanitizer: DomSanitizer) {
-    super();
-  }
 
   ngOnInit(): void {
     this.layerDescriptor = this.data.layerDescriptor;

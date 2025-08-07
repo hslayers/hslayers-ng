@@ -1,8 +1,7 @@
-import {Component} from '@angular/core';
+import {Component, inject} from '@angular/core';
 
 import {HsLayerEditorService} from '../editor/layer-editor.service';
 import {HsLayerEditorWidgetBaseComponent} from './layer-editor-widget-base.component';
-import {HsLayerSelectorService} from 'hslayers-ng/services/layer-manager';
 
 @Component({
   selector: 'hs-legend-widget',
@@ -10,11 +9,7 @@ import {HsLayerSelectorService} from 'hslayers-ng/services/layer-manager';
   standalone: false,
 })
 export class HsLegendWidgetComponent extends HsLayerEditorWidgetBaseComponent {
+  hsLayerEditorService = inject(HsLayerEditorService);
+
   name = 'legend-widget';
-  constructor(
-    hsLayerSelectorService: HsLayerSelectorService,
-    public HsLayerEditorService: HsLayerEditorService,
-  ) {
-    super(hsLayerSelectorService);
-  }
 }

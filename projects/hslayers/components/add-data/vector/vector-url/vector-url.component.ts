@@ -18,17 +18,16 @@ import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
   standalone: false,
 })
 export class HsAddDataVectorUrlComponent implements OnInit {
+  hsHistoryListService = inject(HsHistoryListService);
+  hsAddDataVectorService = inject(HsAddDataVectorService);
+  hsAddDataCommonFileService = inject(HsAddDataCommonFileService);
+  hsLayoutService = inject(HsLayoutService);
+
   @Input() fileType: 'geojson' | 'kml' | 'gpx';
 
   data: VectorDataObject;
   private destroyRef = inject(DestroyRef);
 
-  constructor(
-    public hsHistoryListService: HsHistoryListService,
-    public hsAddDataVectorService: HsAddDataVectorService,
-    public hsAddDataCommonFileService: HsAddDataCommonFileService,
-    public hsLayoutService: HsLayoutService,
-  ) {}
   connect = async (): Promise<void> => {
     const obtainable = await this.hsAddDataCommonFileService.isUrlObtainable(
       this.data.url,

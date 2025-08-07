@@ -5,6 +5,7 @@ import {
   OnChanges,
   Output,
   SimpleChanges,
+  inject,
 } from '@angular/core';
 import {HsHistoryListService} from './history-list.service';
 
@@ -14,13 +15,14 @@ import {HsHistoryListService} from './history-list.service';
   standalone: false,
 })
 export class HsHistoryListComponent implements OnChanges {
+  hsHistoryListService = inject(HsHistoryListService);
+
   @Input() what: string; //input
 
   @Output() historyUrlSelected = new EventEmitter<string>(); //output
   items: Array<string>;
-  constructor(public HsHistoryListService: HsHistoryListService) {}
   ngOnChanges(changes: SimpleChanges): void {
-    this.items = this.HsHistoryListService.readSourceHistory(
+    this.items = this.hsHistoryListService.readSourceHistory(
       changes.what.currentValue,
     );
   }

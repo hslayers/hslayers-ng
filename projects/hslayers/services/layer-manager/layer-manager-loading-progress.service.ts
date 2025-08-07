@@ -1,4 +1,4 @@
-import {Injectable, NgZone} from '@angular/core';
+import {Injectable, NgZone, inject} from '@angular/core';
 import {Subject, buffer, debounceTime, pairwise} from 'rxjs';
 
 import {Cluster, Source} from 'ol/source';
@@ -22,14 +22,12 @@ import {
   providedIn: 'root',
 })
 export class HsLayerManagerLoadingProgressService {
-  constructor(
-    private hsConfig: HsConfig,
-    private hsLog: HsLogService,
-    private zone: NgZone,
-    private hsToastService: HsToastService,
-    private hsLanguageService: HsLanguageService,
-    private hsEventBusService: HsEventBusService,
-  ) {}
+  private hsConfig = inject(HsConfig);
+  private hsLog = inject(HsLogService);
+  private zone = inject(NgZone);
+  private hsToastService = inject(HsToastService);
+  private hsLanguageService = inject(HsLanguageService);
+  private hsEventBusService = inject(HsEventBusService);
 
   /**
    * Create events for checking whether the layer is being loaded or is loaded

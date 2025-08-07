@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, ViewRef} from '@angular/core';
+import {Component, Input, OnInit, ViewRef, inject} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {NgClass} from '@angular/common';
 import {TranslatePipe} from '@ngx-translate/core';
@@ -45,6 +45,11 @@ import {
 export class HsDrawLayerMetadataDialogComponent
   implements HsDialogComponent, OnInit
 {
+  hsMapService = inject(HsMapService);
+  hsDialogContainerService = inject(HsDialogContainerService);
+  hsCommonLaymanService = inject(HsCommonLaymanService);
+  hsDrawService = inject(HsDrawService);
+
   @Input() data: object;
 
   newLayerPath: string;
@@ -64,13 +69,6 @@ export class HsDrawLayerMetadataDialogComponent
   tmpFeatures: FeatureLike[] = [];
   viewRef: ViewRef;
 
-  constructor(
-    public HsMapService: HsMapService,
-    public HsDialogContainerService: HsDialogContainerService,
-    public hsCommonLaymanService: HsCommonLaymanService,
-    public hsDrawService: HsDrawService,
-  ) {}
-
   ngOnInit(): void {
     this.title = getTitle(this.layer) || '';
     this.path = getPath(this.layer) || '';
@@ -89,9 +87,9 @@ export class HsDrawLayerMetadataDialogComponent
 
       setName(this.layer, getLaymanFriendlyLayerName(getTitle(this.layer)));
       const tmpLayer =
-        this.HsMapService.findLayerByTitle('tmpDrawLayer') || null;
+        this.hsMapService.findLayerByTitle('tmpDrawLayer') || null;
       if (tmpLayer) {
-        this.HsMapService.getMap().removeLayer(tmpLayer);
+        this.hsMapService.getMap().removeLayer(tmpLayer);
       }
 
       this.attributes.forEach((a) => {
@@ -123,12 +121,12 @@ export class HsDrawLayerMetadataDialogComponent
         const event = this.getFeatureEvent();
         this.layer.getSource().dispatchEvent(event);
         this.hsDrawService.tmpDrawLayer = false;
-        this.HsDialogContainerService.destroy(this);
+        this.hsDialogContainerService.destroy(this);
       });
     } catch (error) {
       console.error('Error in confirm method:', error);
       this.hsDrawService.tmpDrawLayer = false;
-      this.HsDialogContainerService.destroy(this);
+      this.hsDialogContainerService.destroy(this);
     }
   }
 
@@ -146,7 +144,7 @@ export class HsDrawLayerMetadataDialogComponent
 
   cancel(): void {
     this.hsDrawService.selectedLayer = this.hsDrawService.previouslySelected;
-    this.HsDialogContainerService.destroy(this);
+    this.hsDialogContainerService.destroy(this);
   }
 
   pathChanged(): void {
@@ -159,6 +157,6 @@ export class HsDrawLayerMetadataDialogComponent
 
   selectLayer(layer): void {
     this.hsDrawService.selectLayer(layer);
-    this.HsDialogContainerService.destroy(this);
+    this.hsDialogContainerService.destroy(this);
   }
 }

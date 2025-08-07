@@ -1,16 +1,16 @@
 import {CookieService} from 'ngx-cookie-service';
-import {Injectable} from '@angular/core';
+import {Injectable, inject} from '@angular/core';
 
 @Injectable({
   providedIn: 'root',
 })
 export class HsHistoryListService {
-  items: any = {};
+  private cookieService = inject(CookieService);
 
-  constructor(private CookieService: CookieService) {}
+  items: any = {};
   readSourceHistory(forWhat: string): Array<string> {
     if (forWhat !== undefined) {
-      let sourceString = this.CookieService.get(`last${forWhat}Sources`);
+      let sourceString = this.cookieService.get(`last${forWhat}Sources`);
       if (sourceString !== undefined) {
         this.items[forWhat] = {
           history: [],
@@ -45,7 +45,7 @@ export class HsHistoryListService {
     }
     if (!this.items[forWhat]?.history?.includes(url)) {
       this.items[forWhat].history.push(url);
-      this.CookieService.set(
+      this.cookieService.set(
         `last${forWhat}Sources`,
         JSON.stringify(this.items[forWhat].history),
       );

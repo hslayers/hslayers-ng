@@ -1,4 +1,10 @@
-import {ChangeDetectionStrategy, Component, Input, OnInit} from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  OnInit,
+  inject,
+} from '@angular/core';
 
 import {Feature} from 'ol';
 import {Geometry} from 'ol/geom';
@@ -27,6 +33,10 @@ export class HsFeatureInfoComponent
   extends HsQueryPopupWidgetBaseComponent
   implements OnInit
 {
+  private hsLanguageService = inject(HsLanguageService);
+  private hsQueryVectorService = inject(HsQueryVectorService);
+  private hsDialogContainerService = inject(HsDialogContainerService);
+
   layerDescriptor: any;
   attributesForHover: any[] = [];
   name = 'feature-info';
@@ -35,14 +45,6 @@ export class HsFeatureInfoComponent
     attributesForHover: any[];
     service: HsQueryPopupServiceModel;
   };
-
-  constructor(
-    private hsLanguageService: HsLanguageService,
-    private hsQueryVectorService: HsQueryVectorService,
-    private hsDialogContainerService: HsDialogContainerService,
-  ) {
-    super();
-  }
   ngOnInit(): void {
     this.layerDescriptor = this.data.layerDescriptor;
     this.attributesForHover = this.data.attributesForHover;

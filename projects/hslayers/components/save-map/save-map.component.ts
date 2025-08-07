@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, inject} from '@angular/core';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 
 import {HsCommonEndpointsService} from 'hslayers-ng/services/endpoints';
@@ -24,20 +24,17 @@ import {filter} from 'rxjs';
   standalone: false,
 })
 export class HsSaveMapComponent extends HsPanelBaseComponent implements OnInit {
+  private hsConfig = inject(HsConfig);
+  private hsSaveMapManagerService = inject(HsSaveMapManagerService);
+  private hsCommonLaymanService = inject(HsCommonLaymanService);
+  private hsCommonEndpointsService = inject(HsCommonEndpointsService);
+  private hsSaveMapService = inject(HsSaveMapService);
+
   name = 'saveMap';
 
   isAuthenticated = this.hsCommonLaymanService.isAuthenticated;
   localDownload = false;
 
-  constructor(
-    private hsConfig: HsConfig,
-    private hsSaveMapManagerService: HsSaveMapManagerService,
-    private hsCommonLaymanService: HsCommonLaymanService,
-    private hsCommonEndpointsService: HsCommonEndpointsService,
-    private hsSaveMapService: HsSaveMapService,
-  ) {
-    super();
-  }
   ngOnInit() {
     super.ngOnInit();
 

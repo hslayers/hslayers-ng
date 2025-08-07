@@ -1,4 +1,4 @@
-import {Component, ViewRef} from '@angular/core';
+import {Component, ViewRef, inject} from '@angular/core';
 import {TranslatePipe} from '@ngx-translate/core';
 
 import {HsDialogComponent} from '../dialog-component.interface';
@@ -9,12 +9,12 @@ import {HsDialogContainerService} from '../dialog-container.service';
   imports: [TranslatePipe],
 })
 export class HsCompositionsWarningDialogComponent implements HsDialogComponent {
+  hsDialogContainerService = inject(HsDialogContainerService);
+
   viewRef: ViewRef;
   data: any;
 
-  constructor(public HsDialogContainerService: HsDialogContainerService) {}
-
   close(): void {
-    this.HsDialogContainerService.destroy(this);
+    this.hsDialogContainerService.destroy(this);
   }
 }

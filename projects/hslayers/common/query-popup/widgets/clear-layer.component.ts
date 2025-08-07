@@ -1,4 +1,10 @@
-import {ChangeDetectionStrategy, Component, Input, OnInit} from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  OnInit,
+  inject,
+} from '@angular/core';
 
 import {Layer} from 'ol/layer';
 import {Source} from 'ol/source';
@@ -21,18 +27,15 @@ export class HsClearLayerComponent
   extends HsQueryPopupWidgetBaseComponent
   implements OnInit
 {
+  private hsDialogContainerService = inject(HsDialogContainerService);
+  private hsLanguageService = inject(HsLanguageService);
+
   @Input() data: {
     layerDescriptor: any;
     service: HsQueryPopupServiceModel;
   };
   name = 'clear-layer';
   layerDescriptor: any;
-  constructor(
-    private hsDialogContainerService: HsDialogContainerService,
-    private hsLanguageService: HsLanguageService,
-  ) {
-    super();
-  }
   ngOnInit(): void {
     this.layerDescriptor = this.data.layerDescriptor;
   }

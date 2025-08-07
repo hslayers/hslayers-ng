@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {Injectable, inject} from '@angular/core';
 
 import {Control, ScaleLine} from 'ol/control';
 
@@ -14,13 +14,14 @@ import {ScaleObj} from './types/scale-object.type';
   providedIn: 'root',
 })
 export class HsPrintScaleService {
+  private hsMapService = inject(HsMapService);
+  private hsPrintLegendService = inject(HsPrintLegendService);
+
   defaultScaleLine: Control = null;
   scaleBarCSS = SCALE_BAR_CLASSES;
   scaleLineCSS = SCALE_LINE_CLASSES;
-  constructor(
-    private hsMapService: HsMapService,
-    private hsPrintLegendService: HsPrintLegendService,
-  ) {
+
+  constructor() {
     this.hsMapService.loaded().then(() => {
       this.defaultScaleLine = this.getMapScale();
     });

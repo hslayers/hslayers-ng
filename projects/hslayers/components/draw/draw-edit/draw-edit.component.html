@@ -1,4 +1,4 @@
-@if (HsQueryBaseService.features.length === 0) {
+@if (hsQueryBaseService.features.length === 0) {
   <div class="alert alert-info w-75 m-auto mt-3 text-center" role="alert"
     >
     {{'DRAW.featureEditor.selectFeatureToEdit' | translate }}
@@ -11,7 +11,7 @@
   @for (option of editOptions; track option) {
     <button class="btn btn-sm btn-light btn-outline-primary"
       [ngClass]="{active: selectedType === option }" (click)="selectGeomOperation(option)">
-      {{HsLanguageService.getTranslationIgnoreNonExisting('DRAW.featureEditor.editOptions',option, undefined)}}
+      {{hsLanguageService.getTranslationIgnoreNonExisting('DRAW.featureEditor.editOptions',option, undefined)}}
     </button>
   }
 </div>
@@ -22,29 +22,29 @@
       {{'DRAW.featureEditor.drawNewFeature' | translate }}
       @if (selectedType !== 'split') {
         <button class="w-50 btn btn-sm btn-light btn-outline-primary"
-          (click)="setType('Polygon')" [ngClass]="{active: HsDrawService.type==='Polygon' }"
+          (click)="setType('Polygon')" [ngClass]="{active: hsDrawService.type==='Polygon' }"
           [title]="'COMMON.polygon' | translate ">
           <i class="fa-solid fa-draw-polygon"></i>
         </button>
       }
       @if (selectedType === 'split') {
         <button class="w-50 btn btn-sm btn-light btn-outline-primary"
-          [ngClass]="{active: HsDrawService.type==='LineString' }" (click)="setType('LineString')"
+          [ngClass]="{active: hsDrawService.type==='LineString' }" (click)="setType('LineString')"
           data-toggle="tooltip" [title]="'COMMON.line' | translate ">
           <i class="fa-solid fa-slash"></i>
         </button>
       }
       <span class="py-1"> {{'DRAW.featureEditor.orSelectOne' | translate }}
       </span>
-      <button class="w-50 btn btn-sm btn-light btn-outline-primary" [ngClass]="{active: !HsDrawService.type }"
-        (click)="setType(HsDrawService.type)" data-toggle="tooltip" [title]="'COMMON.line' | translate ">
+      <button class="w-50 btn btn-sm btn-light btn-outline-primary" [ngClass]="{active: !hsDrawService.type }"
+        (click)="setType(hsDrawService.type)" data-toggle="tooltip" [title]="'COMMON.line' | translate ">
         <i class="fa-solid fa-arrow-pointer"></i>
       </button>
     </div>
     @if (selectedType) {
       <button class="btn btn-primary m-2 w-100" (click)="modify(selectedType)"
-        [disabled]="HsQueryBaseService.features.length < 2">{{'COMMON.continue' | translate }}:
-        {{HsLanguageService.getTranslationIgnoreNonExisting('DRAW.featureEditor.editOptions',selectedType,
+        [disabled]="hsQueryBaseService.features.length < 2">{{'COMMON.continue' | translate }}:
+        {{hsLanguageService.getTranslationIgnoreNonExisting('DRAW.featureEditor.editOptions',selectedType,
       undefined)}}</button>
     }
   </div>

@@ -1,5 +1,5 @@
 import {CommonModule} from '@angular/common';
-import {Component, Input} from '@angular/core';
+import {Component, Input, inject} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {TranslatePipe} from '@ngx-translate/core';
 
@@ -17,16 +17,14 @@ import {LegendObj} from '../types/legend-object.type';
   imports: [CommonModule, FormsModule, TranslatePipe, ColorSketchModule],
 })
 export class HsPrintLegendStylerComponent {
+  hsLanguageService = inject(HsLanguageService);
+  private hsColorPickerService = inject(HsColorPickerService);
+
   bcColor: string;
   fillPickerVisible = false;
   positionOptions = POSITION_OPTIONS;
   legendWidths = CANVAS_SIZES;
   @Input() legendObj: LegendObj;
-
-  constructor(
-    public hsLanguageService: HsLanguageService,
-    private hsColorPickerService: HsColorPickerService,
-  ) {}
 
   /**
    * Triggered when color picker value has been selected

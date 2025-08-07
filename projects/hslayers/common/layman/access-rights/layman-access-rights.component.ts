@@ -6,6 +6,7 @@ import {
   Output,
   signal,
   WritableSignal,
+  inject,
 } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {FormsModule} from '@angular/forms';
@@ -60,6 +61,10 @@ export type AccessRightsType = 'read' | 'write';
   imports: [TranslatePipe, FilterPipe, FormsModule, NgTemplateOutlet],
 })
 export class HsCommonLaymanAccessRightsComponent implements OnInit {
+  hsCommonLaymanService = inject(HsCommonLaymanService);
+  private $http = inject(HttpClient);
+  private hsLog = inject(HsLogService);
+
   @Input() access_rights: AccessRightsModel;
   defaultAccessRights: AccessRightsModel;
   @Input() collapsed: boolean = false;
@@ -79,11 +84,6 @@ export class HsCommonLaymanAccessRightsComponent implements OnInit {
 
   userSearch: string;
   endpoint: HsEndpoint;
-  constructor(
-    public hsCommonLaymanService: HsCommonLaymanService,
-    private $http: HttpClient,
-    private hsLog: HsLogService,
-  ) {}
   async ngOnInit(): Promise<void> {
     this.endpoint = this.hsCommonLaymanService.layman();
     this.defaultAccessRights = JSON.parse(JSON.stringify(this.access_rights));

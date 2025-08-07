@@ -1,7 +1,7 @@
 <div #hslayout class="hs-layout hsl hs-page-wrapper"
   style="display:block; position: relative; width: 100%; height: 100%; min-height: inherit !important;  max-height:100vh;">
   <div class="hs-content-wrapper d-flex w-100 h-100" [ngClass]="{
-            'hs-open': HsLayoutService.sidebarExpanded && sidebarVisible, 
+            'hs-open': hsLayoutService.sidebarExpanded && sidebarVisible, 
             'hs-sb-right': sidebarPosition() === 'right' && sidebarVisible, 
             'hs-sb-left': sidebarPosition() === 'left' && sidebarVisible, 
             'hs-sb-bottom': sidebarPosition() === 'bottom'
@@ -10,23 +10,23 @@
     <div class="hs-map-space d-flex">
       <hs-map class="hs-flex-fill d-flex"/>
       <ng-template hsMapHost></ng-template>
-      <hs-panel-container [service]="HsOverlayContainerService"></hs-panel-container>
+      <hs-panel-container [service]="hsOverlayContainerService"></hs-panel-container>
     </div>
     <div class="hs-panelspace buttons" [hidden]="!sidebarVisible()"
-      [ngClass]="{'labels': HsLayoutService.sidebarLabels}">
+      [ngClass]="{'labels': hsLayoutService.sidebarLabels}">
       <div class="hs-panelspace-expander-container bg-white d-none d-mw-md-block w-100">
         <span class="hs-panelspace-expander bg-transparent text-primary py-0 w-100"
-          [ngClass]="{'disabled': !(HsLayoutService.sidebarExpanded && sidebarVisible)}">
+          [ngClass]="{'disabled': !(hsLayoutService.sidebarExpanded && sidebarVisible)}">
           <div class="drag-handle pt-1"></div>
         </span>
       </div>
       <div class="hs-panelspace-wrapper me-1 d-block">
         <hs-sidebar class="border-0" />
         <div class="hs-panelplace">
-          @if (HsLayoutService.mainpanel === 'sidebar') {
+          @if (hsLayoutService.mainpanel === 'sidebar') {
           <hs-mini-sidebar />
           }
-          <hs-panel-container [service]="HsPanelContainerService" class="hs-panelplace">
+          <hs-panel-container [service]="hsPanelContainerService" class="hs-panelplace">
           </hs-panel-container>
         </div>
       </div>

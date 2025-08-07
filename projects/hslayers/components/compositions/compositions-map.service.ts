@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {Injectable, inject} from '@angular/core';
 
 import {EventsKey} from 'ol/events';
 import {Feature} from 'ol';
@@ -23,15 +23,15 @@ import {setHighlighted} from 'hslayers-ng/common/extensions';
   providedIn: 'root',
 })
 export class HsCompositionsMapService {
+  private hsMapService = inject(HsMapService);
+  private hsLayoutService = inject(HsLayoutService);
+  private hsSaveMapService = inject(HsSaveMapService);
+  private hsCommonEndpointsService = inject(HsCommonEndpointsService);
+
   extentLayer: VectorLayer<VectorSource<Feature>>;
   pointerMoveListener: EventsKey;
 
-  constructor(
-    private hsMapService: HsMapService,
-    private hsLayoutService: HsLayoutService,
-    private hsSaveMapService: HsSaveMapService,
-    private hsCommonEndpointsService: HsCommonEndpointsService,
-  ) {
+  constructor() {
     this.hsLayoutService.mainpanel$.subscribe((which) => {
       if (this.extentLayer) {
         if (

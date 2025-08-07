@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {Injectable, inject} from '@angular/core';
 import {Subject, debounceTime} from 'rxjs';
 
 import {HsConfig} from 'hslayers-ng/config';
@@ -48,6 +48,9 @@ type FolderAction =
   providedIn: 'root',
 })
 export class HsLayerManagerFolderService {
+  private hsLanguageService = inject(HsLanguageService);
+  private hsConfig = inject(HsConfig);
+
   private sortDebounceTime = 300;
   private sortSubject = new Subject<void>();
 
@@ -55,10 +58,8 @@ export class HsLayerManagerFolderService {
   folderAction$ = new Subject<FolderAction>();
 
   data: HsLayermanagerDataObject;
-  constructor(
-    private hsLanguageService: HsLanguageService,
-    private hsConfig: HsConfig,
-  ) {
+
+  constructor() {
     this.sortSubject.pipe(debounceTime(this.sortDebounceTime)).subscribe(() => {
       this.folderAction$.next(this.sortByZ({debounce: false}));
     });

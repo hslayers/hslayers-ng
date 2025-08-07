@@ -9,6 +9,7 @@ import {
   ViewChild,
   inject,
 } from '@angular/core';
+import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 
 import {ReplaySubject} from 'rxjs';
 
@@ -18,7 +19,6 @@ import {HsPanelComponent} from './panel-component.interface';
 import {HsPanelContainerServiceInterface} from './panel-container.service.interface';
 import {HsPanelHostDirective} from './panel-host.directive';
 import {HsPanelItem} from './panel-item';
-import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'hs-panel-container',
@@ -26,6 +26,9 @@ import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
   standalone: false,
 })
 export class HsPanelContainerComponent implements OnInit, OnDestroy {
+  private hsConfig = inject(HsConfig);
+  private hsLog = inject(HsLogService);
+
   @ViewChild(HsPanelHostDirective, {static: true})
   panelHost: HsPanelHostDirective;
   /**
@@ -46,11 +49,6 @@ export class HsPanelContainerComponent implements OnInit, OnDestroy {
   @Output() init = new EventEmitter<void>();
   interval: any;
   private destroyRef = inject(DestroyRef);
-
-  constructor(
-    private hsConfig: HsConfig,
-    private hsLog: HsLogService,
-  ) {}
 
   ngOnDestroy(): void {
     if (this.service.panelObserver && this.reusePanelObserver !== true) {

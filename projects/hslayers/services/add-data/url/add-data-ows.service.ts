@@ -38,29 +38,28 @@ import {HsAddDataWfsLaymanService} from './wfs-layman.service';
   providedIn: 'root',
 })
 export class HsAddDataOwsService {
-  typeService: HsUrlTypeServiceModel;
-  typeCapabilitiesService: IGetCapabilities;
-
+  hsAddDataService = inject(HsAddDataService);
+  hsAddDataCommonService = inject(HsAddDataCommonService);
+  hsAddDataUrlService = inject(HsAddDataUrlService);
+  hsHistoryListService = inject(HsHistoryListService);
+  hsLog = inject(HsLogService);
+  hsArcgisGetCapabilitiesService = inject(HsArcgisGetCapabilitiesService);
+  hsUrlArcGisService = inject(HsUrlArcGisService);
+  hsUrlWfsService = inject(HsUrlWfsService);
+  hsWfsGetCapabilitiesService = inject(HsWfsGetCapabilitiesService);
+  hsUrlWmsService = inject(HsUrlWmsService);
+  hsWmsGetCapabilitiesService = inject(HsWmsGetCapabilitiesService);
+  hsWmtsGetCapabilitiesService = inject(HsWmtsGetCapabilitiesService);
+  hsUrlWmtsService = inject(HsUrlWmtsService);
+  hsUrlXyzService = inject(HsUrlXyzService);
+  hsXyzGetCapabilitiesService = inject(HsXyzGetCapabilitiesService);
   private hsAddDataWmsLaymanService = inject(HsAddDataWmsLaymanService);
   private hsAddDataWfsLaymanService = inject(HsAddDataWfsLaymanService);
 
-  constructor(
-    public hsAddDataService: HsAddDataService,
-    public hsAddDataCommonService: HsAddDataCommonService,
-    public hsAddDataUrlService: HsAddDataUrlService,
-    public hsHistoryListService: HsHistoryListService,
-    public hsLog: HsLogService,
-    public hsArcgisGetCapabilitiesService: HsArcgisGetCapabilitiesService,
-    public hsUrlArcGisService: HsUrlArcGisService,
-    public hsUrlWfsService: HsUrlWfsService,
-    public hsWfsGetCapabilitiesService: HsWfsGetCapabilitiesService,
-    public hsUrlWmsService: HsUrlWmsService,
-    public hsWmsGetCapabilitiesService: HsWmsGetCapabilitiesService,
-    public hsWmtsGetCapabilitiesService: HsWmtsGetCapabilitiesService,
-    public hsUrlWmtsService: HsUrlWmtsService,
-    public hsUrlXyzService: HsUrlXyzService,
-    public hsXyzGetCapabilitiesService: HsXyzGetCapabilitiesService,
-  ) {
+  typeService: HsUrlTypeServiceModel;
+  typeCapabilitiesService: IGetCapabilities;
+
+  constructor() {
     this.hsAddDataCommonService.serviceLayersCalled.subscribe((url) => {
       this.setUrlAndConnect({uri: url});
     });

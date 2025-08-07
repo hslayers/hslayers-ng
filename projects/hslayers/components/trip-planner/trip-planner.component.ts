@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, inject} from '@angular/core';
 
 import {HsConfig} from 'hslayers-ng/config';
 import {HsLanguageService} from 'hslayers-ng/services/language';
@@ -16,16 +16,13 @@ export class HsTripPlannerComponent
   extends HsPanelBaseComponent
   implements OnInit
 {
+  hsConfig = inject(HsConfig);
+  hsLanguageService = inject(HsLanguageService);
+  hsMapService = inject(HsMapService);
+  hsTripPlannerService = inject(HsTripPlannerService);
+
   name = 'tripPlanner';
 
-  constructor(
-    public hsConfig: HsConfig,
-    public hsLanguageService: HsLanguageService,
-    public hsMapService: HsMapService,
-    public hsTripPlannerService: HsTripPlannerService,
-  ) {
-    super();
-  }
   async ngOnInit(): Promise<void> {
     super.ngOnInit();
     if (this.hsConfig.default_layers === undefined) {

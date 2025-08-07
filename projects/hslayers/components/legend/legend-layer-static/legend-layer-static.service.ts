@@ -1,5 +1,5 @@
 import {DomSanitizer} from '@angular/platform-browser';
-import {Injectable} from '@angular/core';
+import {Injectable, inject} from '@angular/core';
 
 import {Layer} from 'ol/layer';
 import {Source} from 'ol/source';
@@ -11,7 +11,7 @@ import {getLegends} from 'hslayers-ng/common/extensions';
   providedIn: 'root',
 })
 export class HsLegendLayerStaticService {
-  constructor(private sanitizer: DomSanitizer) {}
+  private sanitizer = inject(DomSanitizer);
 
   fillContent(lyr: Layer<Source>): LayerLegend {
     const layerLegend: LayerLegend = {};

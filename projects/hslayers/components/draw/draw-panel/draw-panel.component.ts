@@ -1,5 +1,5 @@
 import {AsyncPipe, NgClass} from '@angular/common';
-import {Component, input} from '@angular/core';
+import {Component, input, inject} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
 import {TranslatePipe} from '@ngx-translate/core';
@@ -20,15 +20,13 @@ interface DrawToolDefinition {
 @Component({
   selector: 'hs-draw-panel',
   templateUrl: './draw-panel.component.html',
-  imports: [
-    AsyncPipe,
-    TranslatePipe,
-    NgClass,
-    FormsModule,
-    NgbDropdownModule,
-  ],
+  imports: [AsyncPipe, TranslatePipe, NgClass, FormsModule, NgbDropdownModule],
 })
 export class HsDrawPanelComponent {
+  hsDrawService = inject(HsDrawService);
+  hsLayoutService = inject(HsLayoutService);
+  hsLanguageService = inject(HsLanguageService);
+
   inToolbar = input<boolean>(false);
 
   onFeatureSelected: any;
@@ -56,39 +54,33 @@ export class HsDrawPanelComponent {
     },
   ];
 
-  constructor(
-    public HsDrawService: HsDrawService,
-    public hsLayoutService: HsLayoutService,
-    public HsLanguageService: HsLanguageService,
-  ) {}
-
   translateString(module: string, text: string): string {
-    return this.HsLanguageService.getTranslationIgnoreNonExisting(module, text);
+    return this.hsLanguageService.getTranslationIgnoreNonExisting(module, text);
   }
 
   changeSnapSource(layer): void {
-    this.HsDrawService.changeSnapSource(layer);
+    this.hsDrawService.changeSnapSource(layer);
   }
 
   setType(what): void {
-    const type = this.HsDrawService.setType(what);
+    const type = this.hsDrawService.setType(what);
     if (type) {
       this.activateDrawing(this.hsLayoutService.mainpanel === 'draw');
     }
   }
 
   activateDrawing(withStyle?): void {
-    this.HsDrawService.activateDrawing({
+    this.hsDrawService.activateDrawing({
       changeStyle: withStyle ? () => this.changeStyle() : undefined,
     });
   }
 
   selectLayer(layer): void {
-    this.HsDrawService.selectLayer(layer);
+    this.hsDrawService.selectLayer(layer);
   }
 
   updateStyle(): void {
-    this.HsDrawService.updateStyle(() => this.changeStyle());
+    this.hsDrawService.updateStyle(() => this.changeStyle());
   }
 
   /**

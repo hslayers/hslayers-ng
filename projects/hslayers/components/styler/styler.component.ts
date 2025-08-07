@@ -1,5 +1,5 @@
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
-import {Component, computed} from '@angular/core';
+import {Component, computed, inject} from '@angular/core';
 import {DomSanitizer} from '@angular/platform-browser';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 
@@ -27,6 +27,12 @@ import {HsUploadedFiles} from 'hslayers-ng/common/upload';
   standalone: false,
 })
 export class HsStylerComponent extends HsPanelBaseComponent {
+  hsStylerService = inject(HsStylerService);
+  hsEventBusService = inject(HsEventBusService);
+  sanitizer = inject(DomSanitizer);
+  hsSaveMapService = inject(HsSaveMapService);
+  hsDialogContainerService = inject(HsDialogContainerService);
+
   layerTitle: string;
   uploaderVisible = false;
 
@@ -42,13 +48,7 @@ export class HsStylerComponent extends HsPanelBaseComponent {
   name = 'styler';
   colormaps = Object.keys(colorScales);
 
-  constructor(
-    public hsStylerService: HsStylerService,
-    public hsEventBusService: HsEventBusService,
-    public sanitizer: DomSanitizer,
-    public hsSaveMapService: HsSaveMapService,
-    public hsDialogContainerService: HsDialogContainerService,
-  ) {
+  constructor() {
     super();
     this.hsEventBusService.layerSelectedFromUrl
       .pipe(takeUntilDestroyed())

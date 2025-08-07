@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {Injectable, inject} from '@angular/core';
 
 import {Layer} from 'ol/layer';
 import {Source} from 'ol/source';
@@ -23,13 +23,12 @@ export class LayerListItem {
   providedIn: 'root',
 })
 export class HsLayerShiftingService {
+  private hsMapService = inject(HsMapService);
+  private hsLayerManagerService = inject(HsLayerManagerService);
+  private hsEventBusService = inject(HsEventBusService);
+  private hsFolderService = inject(HsLayerManagerFolderService);
+
   layersCopy: LayerListItem[] = [];
-  constructor(
-    private hsMapService: HsMapService,
-    private hsLayerManagerService: HsLayerManagerService,
-    private hsEventBusService: HsEventBusService,
-    private hsFolderService: HsLayerManagerFolderService,
-  ) {}
 
   /**
    * Function by which to filter the displayed layers.

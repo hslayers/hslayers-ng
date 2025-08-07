@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, inject} from '@angular/core';
 import {KeyValuePipe, NgClass} from '@angular/common';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 
@@ -24,13 +24,13 @@ import {setHighlighted} from 'hslayers-ng/common/extensions';
   `,
 })
 export class HsSearchResultsComponent {
+  private hsEventBusService = inject(HsEventBusService);
+  hsSearchService = inject(HsSearchService);
+
   searchResultsVisible: boolean;
   fcode_zoom_map: any;
 
-  constructor(
-    private hsEventBusService: HsEventBusService,
-    public hsSearchService: HsSearchService,
-  ) {
+  constructor() {
     this.hsEventBusService.searchResultsReceived
       .pipe(takeUntilDestroyed())
       .subscribe(() => {

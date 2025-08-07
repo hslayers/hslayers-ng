@@ -1,5 +1,5 @@
 import {HttpClient} from '@angular/common/http';
-import {Injectable} from '@angular/core';
+import {Injectable, inject} from '@angular/core';
 
 import {Observable, catchError, map, of, timeout} from 'rxjs';
 
@@ -14,15 +14,13 @@ import {addExtentFeature, HsProxyService} from 'hslayers-ng/services/utils';
   providedIn: 'root',
 })
 export class HsCompositionsMickaService {
-  constructor(
-    private $http: HttpClient,
-    private hsMapService: HsMapService,
-    private hsToastService: HsToastService,
-    private hsLanguageService: HsLanguageService,
-    private hsLog: HsLogService,
-    private hsCompositionsParserService: HsCompositionsParserService,
-    private hsProxyService: HsProxyService,
-  ) {}
+  private $http = inject(HttpClient);
+  private hsMapService = inject(HsMapService);
+  private hsToastService = inject(HsToastService);
+  private hsLanguageService = inject(HsLanguageService);
+  private hsLog = inject(HsLogService);
+  private hsCompositionsParserService = inject(HsCompositionsParserService);
+  private hsProxyService = inject(HsProxyService);
 
   /**
    * Get Micka compositions query URL

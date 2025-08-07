@@ -1,5 +1,5 @@
 import {BehaviorSubject, Observable, Subject, take} from 'rxjs';
-import {Injectable} from '@angular/core';
+import {Injectable, inject} from '@angular/core';
 
 import {HsButton} from 'hslayers-ng/types';
 import {HsConfig} from 'hslayers-ng/config';
@@ -11,6 +11,11 @@ import {HsLayoutService} from 'hslayers-ng/services/layout';
   providedIn: 'root',
 })
 export class HsSidebarService {
+  hsLayoutService = inject(HsLayoutService);
+  hsConfig = inject(HsConfig);
+  hsLanguageService = inject(HsLanguageService);
+  hsEventBusService = inject(HsEventBusService);
+
   buttonDefinition = {
     'mapSwipe': {
       panel: 'mapSwipe',
@@ -74,7 +79,7 @@ export class HsSidebarService {
       title: 'PANEL_HEADER.LANGUAGE',
       description: 'SIDEBAR.descriptions.LANGUAGE',
       content: () => {
-        return this.HsLanguageService.getCurrentLanguageCode().toUpperCase();
+        return this.hsLanguageService.getCurrentLanguageCode().toUpperCase();
       },
     },
     'share': {
@@ -172,30 +177,25 @@ export class HsSidebarService {
   importantButtons: HsButton[];
   sidebarLoad: Subject<void> = new Subject();
 
-  destroy(): void {
-    /**
-     * Clean up/reset buttons entries
-     */
-    this.buttonsSubject.next([]);
-  }
-
-  constructor(
-    public HsLayoutService: HsLayoutService,
-    public hsConfig: HsConfig,
-    public HsLanguageService: HsLanguageService,
-    public HsEventBusService: HsEventBusService,
-  ) {
+  constructor() {
     this.buttons = this.buttonsSubject.asObservable();
-    this.HsLayoutService.mainpanel$.subscribe((which) => {
+    this.hsLayoutService.mainpanel$.subscribe((which) => {
       /* NOTE: WE used to update map size only 'if (!HsLayoutService.sidebarExpanded) {' 
       but that leads to blank margin between map and window border 
       (see https://github.com/hslayers/hslayers-ng/issues/1107). Using timer to take
       into account sidebar width changing animation. 
       */
       setTimeout(() => {
-        this.HsEventBusService.mapSizeUpdates.next();
+        this.hsEventBusService.mapSizeUpdates.next();
       }, 550);
     });
+  }
+
+  destroy(): void {
+    /**
+     * Clean up/reset buttons entries
+     */
+    this.buttonsSubject.next([]);
   }
 
   prepareForTemplate(buttons: HsButton[]): HsButton[] {
@@ -213,7 +213,7 @@ export class HsSidebarService {
   }
 
   setButtonVisibility(buttons: HsButton[]) {
-    if (this.HsLayoutService.layoutElement == undefined) {
+    if (this.hsLayoutService.layoutElement == undefined) {
       setTimeout(() => this.setButtonVisibility(buttons), 100);
       return;
     }
@@ -227,7 +227,7 @@ export class HsSidebarService {
       button.fits = this.fitsSidebar(button);
     }
     if (!this.unimportantExist) {
-      this.HsLayoutService.minisidebar = this.importantButtons.some(
+      this.hsLayoutService.minisidebar = this.importantButtons.some(
         (b) => b.fits == false,
       );
     }
@@ -241,7 +241,7 @@ export class HsSidebarService {
        */
       if (
         button.condition &&
-        this.HsLayoutService.componentEnabled(`${button.panel}Toolbar`)
+        this.hsLayoutService.componentEnabled(`${button.panel}Toolbar`)
       ) {
         return;
       }
@@ -268,14 +268,14 @@ export class HsSidebarService {
     }
 
     this.unimportantExist = buttons.some((b) => b.important == false);
-    this.HsLayoutService.minisidebar = this.unimportantExist;
+    this.hsLayoutService.minisidebar = this.unimportantExist;
   }
 
   buttonClicked(button: HsButton): void {
     if (button.click) {
       button.click();
     } else {
-      this.HsLayoutService.setMainPanel(button.panel, true);
+      this.hsLayoutService.setMainPanel(button.panel, true);
     }
   }
 
@@ -285,7 +285,7 @@ export class HsSidebarService {
     }
     for (const button of buttons) {
       if (
-        this.HsLayoutService.getPanelEnableState(button.panel) &&
+        this.hsLayoutService.getPanelEnableState(button.panel) &&
         this.checkConfigurableButtons(button)
       ) {
         if (!this.visibleButtons.includes(button.panel)) {
@@ -324,15 +324,15 @@ export class HsSidebarService {
   fitsSidebar(button: HsButton): boolean {
     const mobileBreakpoint = this.hsConfig.mobileBreakpoint;
     const dimensionToCheck =
-      this.HsLayoutService.layoutElement.clientWidth > mobileBreakpoint
+      this.hsLayoutService.layoutElement.clientWidth > mobileBreakpoint
         ? 'clientHeight'
         : 'clientWidth';
-    this.HsLayoutService.sidebarToggleable =
+    this.hsLayoutService.sidebarToggleable =
       this.hsConfig.sidebarToggleable &&
-      this.HsLayoutService.layoutElement.clientWidth > mobileBreakpoint;
+      this.hsLayoutService.layoutElement.clientWidth > mobileBreakpoint;
     let maxNumberOfButtons =
       dimensionToCheck == 'clientHeight'
-        ? Math.floor(this.HsLayoutService.layoutElement[dimensionToCheck] / 65)
+        ? Math.floor(this.hsLayoutService.layoutElement[dimensionToCheck] / 65)
         : 6;
     maxNumberOfButtons =
       dimensionToCheck == 'clientHeight'

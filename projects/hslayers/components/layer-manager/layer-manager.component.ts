@@ -5,6 +5,7 @@ import {
   OnInit,
   ViewChild,
   signal,
+  inject,
 } from '@angular/core';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 
@@ -56,6 +57,17 @@ export class HsLayerManagerComponent
   extends HsPanelBaseComponent
   implements OnInit, AfterViewInit
 {
+  hsCore = inject(HslayersService);
+  hsLayerManagerService = inject(HsLayerManagerService);
+  hsEventBusService = inject(HsEventBusService);
+  hsDialogContainerService = inject(HsDialogContainerService);
+  hsConfig = inject(HsConfig);
+  hsLayerListService = inject(HsLayerListService);
+  private hsRemoveLayerDialogService = inject(HsRemoveLayerDialogService);
+  hsLayerSelectorService = inject(HsLayerSelectorService);
+  hsLayerManagerVisibilityService = inject(HsLayerManagerVisibilityService);
+  private hsCommonLaymanService = inject(HsCommonLaymanService);
+
   @ViewChild('filterInput', {static: false}) filterInput: ElementRef;
 
   filteredBaselayers$: Observable<HsLayerDescriptor[]>;
@@ -123,18 +135,8 @@ export class HsLayerManagerComponent
   getThumbnail = getThumbnail;
   name = 'layerManager';
   layerTooltipDelay = 0;
-  constructor(
-    public hsCore: HslayersService,
-    public hsLayerManagerService: HsLayerManagerService,
-    public hsEventBusService: HsEventBusService,
-    public hsDialogContainerService: HsDialogContainerService,
-    public hsConfig: HsConfig,
-    public hsLayerListService: HsLayerListService,
-    private HsRemoveLayerDialogService: HsRemoveLayerDialogService,
-    public hsLayerSelectorService: HsLayerSelectorService,
-    public hsLayerManagerVisibilityService: HsLayerManagerVisibilityService,
-    private hsCommonLaymanService: HsCommonLaymanService,
-  ) {
+
+  constructor() {
     super();
     this.cesiumActive$ = merge(
       this.hsEventBusService.cesiumLoads.pipe(
@@ -347,7 +349,7 @@ export class HsLayerManagerComponent
    * Creates remove-layer dialog which allows for single/multiple layer removal
    */
   removeMultipleLayers() {
-    this.HsRemoveLayerDialogService.removeMultipleLayers(
+    this.hsRemoveLayerDialogService.removeMultipleLayers(
       this.hsLayerManagerService.data.layers
         .filter((layer) => layer.showInLayerManager)
         .map((l) => {

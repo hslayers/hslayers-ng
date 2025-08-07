@@ -1,5 +1,5 @@
 /* eslint-disable no-eq-null */
-import {Injectable, Renderer2, RendererFactory2} from '@angular/core';
+import {Injectable, Renderer2, RendererFactory2, inject} from '@angular/core';
 import {filter} from 'rxjs';
 
 import ImageWrapper from 'ol/Image';
@@ -71,6 +71,16 @@ type VectorAndSource = {
   providedIn: 'root',
 })
 export class HsMapService {
+  hsConfig = inject(HsConfig);
+  hsLayoutService = inject(HsLayoutService);
+  private hsLog = inject(HsLogService);
+  hsEventBusService = inject(HsEventBusService);
+  hsLanguageService = inject(HsLanguageService);
+  private hsQueuesService = inject(HsQueuesService);
+  private hsCommonLaymanService = inject(HsCommonLaymanService);
+  private rendererFactory = inject(RendererFactory2);
+  private hsProxyService = inject(HsProxyService);
+
   map: Map;
   mapElement?: any;
   renderer?: Renderer2;
@@ -101,17 +111,8 @@ export class HsMapService {
    * Keeps track of zoomWithModifier listener so it's not registered multiple times when using router
    */
   zoomWithModifierListener;
-  constructor(
-    public hsConfig: HsConfig,
-    public hsLayoutService: HsLayoutService,
-    private hsLog: HsLogService,
-    public hsEventBusService: HsEventBusService,
-    public hsLanguageService: HsLanguageService,
-    private hsQueuesService: HsQueuesService,
-    private hsCommonLaymanService: HsCommonLaymanService,
-    private rendererFactory: RendererFactory2,
-    private hsProxyService: HsProxyService,
-  ) {
+
+  constructor() {
     /**
      * Set pure map
      */

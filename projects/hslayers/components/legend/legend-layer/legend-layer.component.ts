@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, signal} from '@angular/core';
+import {Component, Input, OnInit, signal, inject} from '@angular/core';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 
 import {HsCustomLegendCategory} from '../legend-custom-category.type';
@@ -12,6 +12,9 @@ import {HsStylerService} from 'hslayers-ng/services/styler';
   standalone: false,
 })
 export class HsLegendLayerComponent implements OnInit {
+  hsLegendService = inject(HsLegendService);
+  hsStylerService = inject(HsStylerService);
+
   @Input() layer: HsLegendDescriptor;
 
   legendCategories: HsCustomLegendCategory[];
@@ -22,10 +25,7 @@ export class HsLegendLayerComponent implements OnInit {
    */
   defaultIconHeight = 32;
 
-  constructor(
-    public hsLegendService: HsLegendService,
-    public hsStylerService: HsStylerService,
-  ) {
+  constructor() {
     this.hsStylerService.onSet
       .pipe(takeUntilDestroyed())
       .subscribe(async (layer) => {

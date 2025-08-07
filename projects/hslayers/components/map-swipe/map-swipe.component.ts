@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, inject} from '@angular/core';
 
 import {
   CdkDragDrop,
@@ -20,19 +20,15 @@ import {HsPanelBaseComponent} from 'hslayers-ng/common/panels';
   standalone: false,
 })
 export class HsMapSwipeComponent extends HsPanelBaseComponent {
+  hsMapSwipeService = inject(HsMapSwipeService);
+  private hsLayerShiftingService = inject(HsLayerShiftingService);
+
   swipeSide = SwipeSide;
   placeholders = {
     entire: true,
     left: true,
     right: true,
   };
-  constructor(
-    public hsMapSwipeService: HsMapSwipeService,
-    private hsLayerShiftingService: HsLayerShiftingService,
-  ) {
-    super();
-  }
-
   name = 'mapSwipe';
   swipeOptions = ['vertical', 'horizontal'];
 

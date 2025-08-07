@@ -1,5 +1,5 @@
 import {CommonModule} from '@angular/common';
-import {Component} from '@angular/core';
+import {Component, inject} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
 import {TranslatePipe} from '@ngx-translate/core';
@@ -50,17 +50,17 @@ import {isLayerDrawable} from 'hslayers-ng/services/utils';
   ],
 })
 export class HsDrawToolbarComponent extends HsGuiOverlayBaseComponent {
+  hsDrawService = inject(HsDrawService);
+  private hsMapService = inject(HsMapService);
+  private hsEventBusService = inject(HsEventBusService);
+
   drawToolbarExpanded = false;
   onlyMineFilterVisible = false;
   name = 'drawToolbar';
   getTitle = getTitle;
-  constructor(
-    public hsDrawService: HsDrawService,
-    private hsMapService: HsMapService,
-    private hsEventBusService: HsEventBusService,
-  ) {
-    super();
 
+  constructor() {
+    super();
     /**
      * Add listener for initial layers
      */

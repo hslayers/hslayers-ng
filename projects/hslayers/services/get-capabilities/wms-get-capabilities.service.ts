@@ -1,10 +1,10 @@
 import {HttpClient} from '@angular/common/http';
-import {Injectable} from '@angular/core';
+import {Injectable, inject} from '@angular/core';
+import {lastValueFrom, takeUntil} from 'rxjs';
 
 import {Layer, Tile} from 'ol/layer';
 import {Source, TileWMS} from 'ol/source';
 import {WMSCapabilities} from 'ol/format';
-import {lastValueFrom, takeUntil} from 'rxjs';
 
 import {CapabilitiesResponseWrapper, Metadata} from 'hslayers-ng/types';
 import {HsCapabilityCacheService} from './capability-cache.service';
@@ -20,14 +20,12 @@ import {IGetCapabilities} from './get-capabilities.interface';
 
 @Injectable({providedIn: 'root'})
 export class HsWmsGetCapabilitiesService implements IGetCapabilities {
-  constructor(
-    private httpClient: HttpClient,
-    public hsEventBusService: HsEventBusService,
-    public hsMapService: HsMapService,
-    public hsCommonLaymanService: HsCommonLaymanService,
-    private hsCapabilityCacheService: HsCapabilityCacheService,
-    private hsProxyService: HsProxyService,
-  ) {}
+  private httpClient = inject(HttpClient);
+  hsEventBusService = inject(HsEventBusService);
+  hsMapService = inject(HsMapService);
+  hsCommonLaymanService = inject(HsCommonLaymanService);
+  private hsCapabilityCacheService = inject(HsCapabilityCacheService);
+  private hsProxyService = inject(HsProxyService);
 
   /**
    * Get WMS service location without parameters from URL string

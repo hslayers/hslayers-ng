@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, inject} from '@angular/core';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 
 import BaseLayer from 'ol/layer/Base';
@@ -25,17 +25,14 @@ import {InterpolatedSource} from 'hslayers-ng/common/layers';
   standalone: false,
 })
 export class HsLegendComponent extends HsPanelBaseComponent implements OnInit {
+  hsLegendService = inject(HsLegendService);
+  hsMapService = inject(HsMapService);
+  hsQueuesService = inject(HsQueuesService);
+  hsLanguageService = inject(HsLanguageService);
+
   layerDescriptors = [];
   titleSearch = '';
   name = 'legend';
-  constructor(
-    public hsLegendService: HsLegendService,
-    public hsMapService: HsMapService,
-    public hsQueuesService: HsQueuesService,
-    public hsLanguageService: HsLanguageService,
-  ) {
-    super();
-  }
 
   ngOnInit(): void {
     this.hsMapService.loaded().then((map) => {

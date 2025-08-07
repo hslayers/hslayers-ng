@@ -14,31 +14,29 @@ import {HsSidebarService} from 'hslayers-ng/services/sidebar';
   standalone: false,
 })
 export class HsMiniSidebarComponent implements OnInit {
+  hsSidebarService = inject(HsSidebarService);
+  hsLayoutService = inject(HsLayoutService);
+  hsConfig = inject(HsConfig);
+  private hsEventBusService = inject(HsEventBusService);
+
   buttons: HsButton[] = [];
   miniSidebarButton: {title: string};
   private destroyRef = inject(DestroyRef);
 
   isVisible: Observable<boolean>;
 
-  constructor(
-    public HsSidebarService: HsSidebarService,
-    public HsLayoutService: HsLayoutService,
-    public HsConfig: HsConfig,
-    private HsEventBusService: HsEventBusService,
-  ) {}
-
   ngOnInit() {
-    this.HsSidebarService.buttons
+    this.hsSidebarService.buttons
       .pipe(takeUntilDestroyed(this.destroyRef))
       .pipe(startWith([]), delay(0))
       .subscribe((buttons) => {
-        this.buttons = this.HsSidebarService.prepareForTemplate(buttons);
+        this.buttons = this.hsSidebarService.prepareForTemplate(buttons);
       });
     this.miniSidebarButton = {
       title: 'SIDEBAR.additionalPanels',
     };
 
-    this.isVisible = this.HsLayoutService.mainpanel$.pipe(
+    this.isVisible = this.hsLayoutService.mainpanel$.pipe(
       map((which) => {
         return which == 'sidebar';
       }),
@@ -50,18 +48,18 @@ export class HsMiniSidebarComponent implements OnInit {
    * subset of important ones
    */
   toggleUnimportant(): void {
-    this.HsSidebarService.showUnimportant =
-      !this.HsSidebarService.showUnimportant;
+    this.hsSidebarService.showUnimportant =
+      !this.hsSidebarService.showUnimportant;
   }
 
   /**
    * Toggle sidebar mode between expanded and narrow
    */
   toggleSidebar(): void {
-    this.HsLayoutService.sidebarExpanded =
-      !this.HsLayoutService.sidebarExpanded;
+    this.hsLayoutService.sidebarExpanded =
+      !this.hsLayoutService.sidebarExpanded;
     setTimeout(() => {
-      this.HsEventBusService.mapSizeUpdates.next();
+      this.hsEventBusService.mapSizeUpdates.next();
     }, 110);
   }
 }

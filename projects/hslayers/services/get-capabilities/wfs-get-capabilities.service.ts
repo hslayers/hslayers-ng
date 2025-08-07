@@ -1,5 +1,5 @@
 import {HttpClient} from '@angular/common/http';
-import {Injectable, WritableSignal, signal} from '@angular/core';
+import {Injectable, WritableSignal, signal, inject} from '@angular/core';
 
 import {lastValueFrom, takeUntil} from 'rxjs';
 
@@ -12,14 +12,13 @@ import {HsCommonLaymanService, isLaymanUrl} from 'hslayers-ng/common/layman';
 
 @Injectable({providedIn: 'root'})
 export class HsWfsGetCapabilitiesService implements IGetCapabilities {
+  private httpClient = inject(HttpClient);
+  private hsEventBusService = inject(HsEventBusService);
+  private hsCapabilityCacheService = inject(HsCapabilityCacheService);
+  private hsCommonLaymanService = inject(HsCommonLaymanService);
+  private hsProxyService = inject(HsProxyService);
+
   service_url: WritableSignal<string> = signal('');
-  constructor(
-    private httpClient: HttpClient,
-    private hsEventBusService: HsEventBusService,
-    private hsCapabilityCacheService: HsCapabilityCacheService,
-    private hsCommonLaymanService: HsCommonLaymanService,
-    private hsProxyService: HsProxyService,
-  ) {}
 
   /**
    * Get WFS service location without parameters from url string

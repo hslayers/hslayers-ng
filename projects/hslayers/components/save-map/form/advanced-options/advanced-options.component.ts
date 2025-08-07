@@ -38,6 +38,10 @@ export type saveMapLayer = {
   imports: [TranslatePipe, ReactiveFormsModule],
 })
 export class AdvancedOptionsComponent implements OnInit, OnDestroy {
+  parentContainer = inject(ControlContainer);
+  private hsMapService = inject(HsMapService);
+  private hsSaveMapService = inject(HsSaveMapService);
+
   @Input() thumbnail: HTMLImageElement;
 
   layers: saveMapLayer[];
@@ -52,12 +56,6 @@ export class AdvancedOptionsComponent implements OnInit, OnDestroy {
     false,
     this,
   );
-
-  constructor(
-    public parentContainer: ControlContainer,
-    private hsMapService: HsMapService,
-    private hsSaveMapService: HsSaveMapService,
-  ) {}
 
   get parentFormGroup() {
     return this.parentContainer.control as FormGroup;

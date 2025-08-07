@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component, OnInit, inject} from '@angular/core';
 
 import {AddDataFileType} from 'hslayers-ng/types';
 import {DEFAULT_SHP_LOAD_TYPE} from '../../enums/load-types.const';
@@ -21,21 +21,13 @@ export class HsFileShpComponent
   extends HsAddDataFileBaseComponent
   implements OnInit, AfterViewInit
 {
+  hsFileService = inject(HsFileService);
+  hsAddDataCommonService = inject(HsAddDataCommonService);
+  hsAddDataCommonFileService = inject(HsAddDataCommonFileService);
+  hsLayoutService = inject(HsLayoutService);
+  hsConfig = inject(HsConfig);
+
   fileType: AddDataFileType = 'shp';
-  constructor(
-    public hsFileService: HsFileService,
-    public hsAddDataCommonService: HsAddDataCommonService,
-    public hsAddDataCommonFileService: HsAddDataCommonFileService,
-    public hsLayoutService: HsLayoutService,
-    public hsConfig: HsConfig,
-  ) {
-    super(
-      hsAddDataCommonService,
-      hsAddDataCommonFileService,
-      hsLayoutService,
-      hsConfig,
-    );
-  }
 
   ngAfterViewInit(): void {
     this.fileInput = this.hsUploadComponent.getFileInput();

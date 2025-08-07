@@ -1,8 +1,9 @@
-import {Injectable, DestroyRef} from '@angular/core';
-import {filter, switchMap} from 'rxjs/operators';
-import {from, fromEvent} from 'rxjs';
-
 import * as xml2Json from 'xml-js';
+
+import {Injectable, DestroyRef, inject} from '@angular/core';
+import {filter, switchMap} from 'rxjs/operators';
+import {fromEvent} from 'rxjs';
+
 import {Feature} from 'ol';
 import {Geometry} from 'ol/geom';
 import {ObjectEvent} from 'ol/Object';
@@ -37,20 +38,21 @@ import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
   providedIn: 'root',
 })
 export class HsLayerSynchronizerService {
+  private hsLaymanService = inject(HsLaymanService);
+  private hsMapService = inject(HsMapService);
+  private hsCommonLaymanService = inject(HsCommonLaymanService);
+  private hsCommonLaymanLayerService = inject(HsCommonLaymanLayerService);
+  private hsToastService = inject(HsToastService);
+  private hsLanguageService = inject(HsLanguageService);
+  private hsLogService = inject(HsLogService);
+  private hsEventBusService = inject(HsEventBusService);
+  private destroyRef = inject(DestroyRef);
+
   debounceInterval = 1000;
   crs: string;
   syncedLayers: VectorLayer<VectorSource<Feature>>[] = [];
-  constructor(
-    private hsLaymanService: HsLaymanService,
-    private hsMapService: HsMapService,
-    private hsCommonLaymanService: HsCommonLaymanService,
-    private hsCommonLaymanLayerService: HsCommonLaymanLayerService,
-    private hsToastService: HsToastService,
-    private hsLanguageService: HsLanguageService,
-    private hsLogService: HsLogService,
-    private hsEventBusService: HsEventBusService,
-    private destroyRef: DestroyRef,
-  ) {
+
+  constructor() {
     this.hsMapService.loaded().then((map) => {
       const layerAdded = (e) => this.addLayer(e.element);
       map.getLayers().on('add', layerAdded);

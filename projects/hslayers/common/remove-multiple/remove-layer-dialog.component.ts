@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewRef} from '@angular/core';
+import {Component, OnInit, ViewRef, inject} from '@angular/core';
 
 import {Layer} from 'ol/layer';
 
@@ -43,6 +43,11 @@ export type HsRmLayerDialogResponse = {
   standalone: false,
 })
 export class HsRmLayerDialogComponent implements HsDialogComponent, OnInit {
+  hsDialogContainerService = inject(HsDialogContainerService);
+  service = inject(HsRemoveLayerDialogService);
+  private hsLanguageService = inject(HsLanguageService);
+  private commonLaymanService = inject(HsCommonLaymanService);
+
   dialogItem: HsDialogItem;
   _selectAll = false;
   isAuthenticated: boolean;
@@ -50,13 +55,6 @@ export class HsRmLayerDialogComponent implements HsDialogComponent, OnInit {
   deleteFrom: (typeof this.data)['deleteFromOptions'][number];
 
   deleteAllowed = false;
-
-  constructor(
-    public HsDialogContainerService: HsDialogContainerService,
-    public service: HsRemoveLayerDialogService,
-    private hsLanguageService: HsLanguageService,
-    private commonLaymanService: HsCommonLaymanService,
-  ) {}
   viewRef: ViewRef;
   /**
    * @param deleteFromOptions - From where the layer should be deleted eg. map, catalogue map&catalogue
@@ -84,12 +82,12 @@ export class HsRmLayerDialogComponent implements HsDialogComponent, OnInit {
     }
   }
   yes(): void {
-    this.HsDialogContainerService.destroy(this);
+    this.hsDialogContainerService.destroy(this);
     this.dialogItem.resolve({value: 'yes', type: this.deleteFrom});
   }
 
   no(): void {
-    this.HsDialogContainerService.destroy(this);
+    this.hsDialogContainerService.destroy(this);
     this.dialogItem.resolve({value: 'no'});
   }
 

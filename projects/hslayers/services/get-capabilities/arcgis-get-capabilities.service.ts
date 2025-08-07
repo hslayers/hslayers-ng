@@ -1,5 +1,5 @@
 import {HttpClient} from '@angular/common/http';
-import {Injectable} from '@angular/core';
+import {Injectable, inject} from '@angular/core';
 
 import {Layer, Tile} from 'ol/layer';
 import {Source, TileWMS} from 'ol/source';
@@ -19,14 +19,12 @@ import {IGetCapabilities} from './get-capabilities.interface';
 
 @Injectable({providedIn: 'root'})
 export class HsArcgisGetCapabilitiesService implements IGetCapabilities {
-  constructor(
-    private httpClient: HttpClient,
-    public hsEventBusService: HsEventBusService,
-    public hsMapService: HsMapService,
-    public hsLogService: HsLogService,
-    public hsCapabilityCacheService: HsCapabilityCacheService,
-    private hsProxyService: HsProxyService,
-  ) {}
+  private httpClient = inject(HttpClient);
+  hsEventBusService = inject(HsEventBusService);
+  hsMapService = inject(HsMapService);
+  hsLogService = inject(HsLogService);
+  hsCapabilityCacheService = inject(HsCapabilityCacheService);
+  private hsProxyService = inject(HsProxyService);
 
   /**
    * Get WMS service location without parameters from url string

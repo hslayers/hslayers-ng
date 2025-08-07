@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {Injectable, inject} from '@angular/core';
 
 import {Cluster, Vector as VectorSource} from 'ol/source';
 import {Feature} from 'ol';
@@ -29,12 +29,10 @@ import {
   providedIn: 'root',
 })
 export class HsLayerManagerCopyLayerService {
-  constructor(
-    public hsLayerSelectorService: HsLayerSelectorService,
-    public hsMapService: HsMapService,
-    public hsAddDataOwsService: HsAddDataOwsService,
-    private hsLayerManagerUtilsService: HsLayerManagerUtilsService,
-  ) {}
+  hsLayerSelectorService = inject(HsLayerSelectorService);
+  hsMapService = inject(HsMapService);
+  hsAddDataOwsService = inject(HsAddDataOwsService);
+  private hsLayerManagerUtilsService = inject(HsLayerManagerUtilsService);
 
   /**
     Creates a copy of the currentLayer

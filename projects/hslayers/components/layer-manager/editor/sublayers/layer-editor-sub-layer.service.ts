@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {Injectable, inject} from '@angular/core';
 
 import {HsLayerDescriptor, HsSublayer, HsWmsLayer} from 'hslayers-ng/types';
 import {HsLayerManagerVisibilityService} from 'hslayers-ng/services/layer-manager';
@@ -13,15 +13,13 @@ import {
   providedIn: 'root',
 })
 export class HsLayerEditorSublayerService {
+  private hsLayerManagerVisibilityService = inject(
+    HsLayerManagerVisibilityService,
+  );
+
   layer: HsLayerDescriptor;
-
   populatedLayers: Array<any> = [];
-
   sublayers: HsSublayer[] = [];
-
-  constructor(
-    private hsLayerManagerVisibilityService: HsLayerManagerVisibilityService,
-  ) {}
 
   getSubLayers(layer: HsLayerDescriptor): HsSublayer[] {
     return layer ? this.populateSubLayers(layer) : [];

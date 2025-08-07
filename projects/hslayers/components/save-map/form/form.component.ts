@@ -39,6 +39,9 @@ import {AdvancedOptionsComponent} from './advanced-options/advanced-options.comp
   ],
 })
 export class HsSaveMapFormComponent {
+  hsSaveMapManagerService = inject(HsSaveMapManagerService);
+  private hsLayoutService = inject(HsLayoutService);
+
   @Output() download = new EventEmitter<void>();
   private hsCommonLaymanService = inject(HsCommonLaymanService);
   private hsCompositionsParserService = inject(HsCompositionsParserService);
@@ -152,10 +155,7 @@ export class HsSaveMapFormComponent {
 
   isVisible: Observable<boolean>;
 
-  constructor(
-    public hsSaveMapManagerService: HsSaveMapManagerService,
-    private hsLayoutService: HsLayoutService,
-  ) {
+  constructor() {
     this.isVisible = this.hsLayoutService.mainpanel$.pipe(
       startWith(this.hsLayoutService.mainpanel),
       map((panel) => {

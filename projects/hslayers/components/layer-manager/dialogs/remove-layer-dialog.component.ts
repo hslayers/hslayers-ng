@@ -1,4 +1,4 @@
-import {Component, Input, ViewRef} from '@angular/core';
+import {Component, Input, ViewRef, inject} from '@angular/core';
 
 import {
   HsDialogComponent,
@@ -16,28 +16,26 @@ import {HsMapService} from 'hslayers-ng/services/map';
 export class HsLayerManagerRemoveLayerDialogComponent
   implements HsDialogComponent
 {
+  hsDialogContainerService = inject(HsDialogContainerService);
+  hsEventBusService = inject(HsEventBusService);
+  hsDrawService = inject(HsDrawService);
+  hsMapService = inject(HsMapService);
+
   @Input() data: any;
   viewRef: ViewRef;
 
-  constructor(
-    public HsDialogContainerService: HsDialogContainerService,
-    public HsEventBusService: HsEventBusService,
-    public HsDrawService: HsDrawService,
-    public HsMapService: HsMapService,
-  ) {}
-
   removeLayer(): void {
-    if (this.HsDrawService.selectedLayer == this.data.olLayer) {
-      this.HsDrawService.selectedLayer = null;
+    if (this.hsDrawService.selectedLayer == this.data.olLayer) {
+      this.hsDrawService.selectedLayer = null;
     }
-    this.HsMapService.getMap().removeLayer(this.data.olLayer);
-    this.HsDrawService.fillDrawableLayers();
+    this.hsMapService.getMap().removeLayer(this.data.olLayer);
+    this.hsDrawService.fillDrawableLayers();
 
-    this.HsEventBusService.layerManagerUpdates.next(null);
+    this.hsEventBusService.layerManagerUpdates.next(null);
     this.close();
   }
 
   close(): void {
-    this.HsDialogContainerService.destroy(this);
+    this.hsDialogContainerService.destroy(this);
   }
 }

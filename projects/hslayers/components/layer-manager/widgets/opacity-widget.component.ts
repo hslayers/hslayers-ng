@@ -1,8 +1,7 @@
-import {Component} from '@angular/core';
+import {Component, inject} from '@angular/core';
 
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsLayerEditorWidgetBaseComponent} from './layer-editor-widget-base.component';
-import {HsLayerSelectorService} from 'hslayers-ng/services/layer-manager';
 
 @Component({
   selector: 'hs-opacity-widget',
@@ -10,13 +9,9 @@ import {HsLayerSelectorService} from 'hslayers-ng/services/layer-manager';
   standalone: false,
 })
 export class HsOpacityWidgetComponent extends HsLayerEditorWidgetBaseComponent {
+  private hsEventBusService = inject(HsEventBusService);
+
   name = 'opacity-widget';
-  constructor(
-    hsLayerSelectorService: HsLayerSelectorService,
-    private hsEventBusService: HsEventBusService,
-  ) {
-    super(hsLayerSelectorService);
-  }
 
   /**
    * Set selected layer's opacity and emits "compositionchanged"

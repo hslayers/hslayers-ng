@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, inject} from '@angular/core';
 import {map} from 'rxjs/operators';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 
@@ -12,6 +12,8 @@ import {getTitle} from 'hslayers-ng/common/extensions';
   standalone: false,
 })
 export class HsInfoComponent extends HsGuiOverlayBaseComponent {
+  private hsEventBusService = inject(HsEventBusService);
+
   /**
    * Store if composition is loaded
    */
@@ -32,7 +34,8 @@ export class HsInfoComponent extends HsGuiOverlayBaseComponent {
     takeUntilDestroyed(this.destroyRef),
   );
   name = 'info';
-  constructor(private hsEventBusService: HsEventBusService) {
+
+  constructor() {
     super();
     this.hsEventBusService.compositionLoads
       .pipe(takeUntilDestroyed())

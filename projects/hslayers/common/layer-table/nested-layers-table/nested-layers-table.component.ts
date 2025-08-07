@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Component, EventEmitter, Input, Output, inject} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {TranslatePipe} from '@ngx-translate/core';
 
@@ -11,11 +11,11 @@ import {WmsLayerHighlightDirective} from '../wms-layer-highlight.directive';
   imports: [FormsModule, TranslatePipe, WmsLayerHighlightDirective],
 })
 export class HsNestedLayersTableComponent {
+  hsUrlWmsService = inject(HsUrlWmsService);
+
   @Input() layers;
 
-  @Output() layerChecked = new EventEmitter<string>(); //output
-
-  constructor(public hsUrlWmsService: HsUrlWmsService) {}
+  @Output() layerChecked = new EventEmitter<string>();
 
   checked(layer): void {
     this.layerChecked.emit(layer);

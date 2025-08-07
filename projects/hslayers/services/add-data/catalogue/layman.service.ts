@@ -1,5 +1,5 @@
 import {HttpClient} from '@angular/common/http';
-import {Injectable} from '@angular/core';
+import {Injectable, inject} from '@angular/core';
 
 import {Feature} from 'ol';
 import {Geometry} from 'ol/geom';
@@ -36,17 +36,15 @@ export interface HsLaymanGetLayersWrapper {
 
 @Injectable({providedIn: 'root'})
 export class HsLaymanBrowserService {
-  httpCall;
+  private http = inject(HttpClient);
+  private log = inject(HsLogService);
+  hsCommonLaymanService = inject(HsCommonLaymanService);
+  private hsCommonLaymanLayerService = inject(HsCommonLaymanLayerService);
+  hsToastService = inject(HsToastService);
+  hsLanguageService = inject(HsLanguageService);
+  hsMapService = inject(HsMapService);
 
-  constructor(
-    private http: HttpClient,
-    private log: HsLogService,
-    public hsCommonLaymanService: HsCommonLaymanService,
-    private hsCommonLaymanLayerService: HsCommonLaymanLayerService,
-    public hsToastService: HsToastService,
-    public hsLanguageService: HsLanguageService,
-    public hsMapService: HsMapService,
-  ) {}
+  httpCall;
 
   /**
    * Loads datasets metadata from Layman

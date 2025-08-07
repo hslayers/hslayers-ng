@@ -16,7 +16,6 @@ import {
   HsLayerManagerLoadingProgressService,
   HsLayerManagerService,
   HsLayerManagerVisibilityService,
-  HsLayerSelectorService,
 } from 'hslayers-ng/services/layer-manager';
 import {
   instOf,
@@ -39,7 +38,6 @@ export class HsLayerTypeSwitcherWidgetComponent extends HsLayerEditorWidgetBaseC
   );
   private loadingProgressSerice = inject(HsLayerManagerLoadingProgressService);
   private folderService = inject(HsLayerManagerFolderService);
-
   private hsEventBusService = inject(HsEventBusService);
   private hsDialogContainerService = inject(HsDialogContainerService);
   private layerEditorService = inject(HsLayerEditorService);
@@ -51,9 +49,8 @@ export class HsLayerTypeSwitcherWidgetComponent extends HsLayerEditorWidgetBaseC
 
   typeChanged$: Observable<void>;
 
-  constructor(hsLayerSelectorService: HsLayerSelectorService) {
-    super(hsLayerSelectorService);
-
+  constructor() {
+    super();
     this.isEnabled = this.layerDescriptor.pipe(
       map((layer) => {
         const source = layer.layer.getSource();
