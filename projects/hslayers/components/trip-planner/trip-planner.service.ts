@@ -117,7 +117,7 @@ export class HsTripPlannerService {
     });
 
     this.hsMapService.loaded().then((map) => {
-      (feature, resolution) => {
+      this.waypointRouteStyle = (feature, resolution) => {
         return [
           new Style({
             fill: new Fill({
