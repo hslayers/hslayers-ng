@@ -1,5 +1,5 @@
 import {HttpClient} from '@angular/common/http';
-import {Injectable} from '@angular/core';
+import {Injectable, inject} from '@angular/core';
 import {lastValueFrom} from 'rxjs';
 
 import dayjs from 'dayjs';
@@ -74,18 +74,19 @@ function MyProxy({proxy, maxResolution, projection}) {
   providedIn: 'root',
 })
 export class HsCesiumLayersService {
+  hsMapService = inject(HsMapService);
+  private hsLog = inject(HsLogService);
+  hsConfig = inject(HsConfig);
+  hsEventBusService = inject(HsEventBusService);
+  hsCesiumConfig = inject(HsCesiumConfig);
+  private httpClient = inject(HttpClient);
+
   layersToBeDeleted = [];
   viewer: Viewer;
   ol2CsMappings: Array<OlCesiumObjectMapItem> = [];
   paramCaches: Array<ParamCacheMapItem> = [];
-  constructor(
-    public hsMapService: HsMapService,
-    private hsLog: HsLogService,
-    public hsConfig: HsConfig,
-    public HsEventBusService: HsEventBusService,
-    public hsCesiumConfig: HsCesiumConfig,
-    private httpClient: HttpClient,
-  ) {
+
+  constructor() {
     this.hsCesiumConfig.viewerLoaded.subscribe((viewer) => {
       this.viewer = viewer;
       this.ol2CsMappings = [];
@@ -149,7 +150,7 @@ export class HsCesiumLayersService {
   }
 
   async setupEvents() {
-    this.HsEventBusService.LayerManagerBaseLayerVisibilityChanges.subscribe(
+    this.hsEventBusService.LayerManagerBaseLayerVisibilityChanges.subscribe(
       async (data) => {
         if (this.viewer.isDestroyed() || data?.type != 'terrain') {
           return;

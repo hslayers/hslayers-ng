@@ -1,6 +1,7 @@
-import {Injectable} from '@angular/core';
-
 import dayjs from 'dayjs';
+
+import {Injectable, inject} from '@angular/core';
+
 import {Viewer, WebMapServiceImageryProvider} from 'cesium';
 import {default as utc} from 'dayjs/plugin/utc';
 
@@ -14,12 +15,13 @@ import {instOf} from 'hslayers-ng/services/utils';
   providedIn: 'root',
 })
 export class HsCesiumTimeService {
+  hsCesiumLayersService = inject(HsCesiumLayersService);
+  hsEventBusService = inject(HsEventBusService);
+  private hsCesiumConfig = inject(HsCesiumConfig);
+
   viewer: Viewer;
-  constructor(
-    public HsCesiumLayersService: HsCesiumLayersService,
-    public HsEventBusService: HsEventBusService,
-    private hsCesiumConfig: HsCesiumConfig,
-  ) {
+
+  constructor() {
     this.hsCesiumConfig.viewerLoaded.subscribe((viewer) => {
       this.viewer = viewer;
       this.monitorTimeLine();
@@ -38,7 +40,7 @@ export class HsCesiumTimeService {
 
         const layer = this.viewer.imageryLayers.get(i);
         if (instOf(layer.imageryProvider, WebMapServiceImageryProvider)) {
-          const prmCache = this.HsCesiumLayersService.findParamCache(layer);
+          const prmCache = this.hsCesiumLayersService.findParamCache(layer);
           if (prmCache && this.getTimeParameter(layer)) {
             if (prmCache.dimensions.time) {
               let min_dist = Number.MAX_VALUE;
@@ -66,7 +68,7 @@ export class HsCesiumTimeService {
             );
             if (diff > 1000 * 60) {
               //console.log('Was', prmCache.parameters[this.getTimeParameter(layer)], 'New', round_time)
-              this.HsCesiumLayersService.changeLayerParam(
+              this.hsCesiumLayersService.changeLayerParam(
                 layer,
                 this.getTimeParameter(layer),
                 round_time.toISOString(),
@@ -76,9 +78,9 @@ export class HsCesiumTimeService {
           }
         }
       }
-      this.HsCesiumLayersService.removeLayersWithOldParams();
+      this.hsCesiumLayersService.removeLayersWithOldParams();
       if (something_changed) {
-        this.HsEventBusService.cesiumTimeLayerChanges.next(
+        this.hsEventBusService.cesiumTimeLayerChanges.next(
           this.getLayerListTimes(),
         );
       }
@@ -92,12 +94,12 @@ export class HsCesiumTimeService {
     const tmp = [];
     for (let i = 0; i < this.viewer.imageryLayers.length; i++) {
       const layer = this.viewer.imageryLayers.get(i);
-      const prmCache = this.HsCesiumLayersService.findParamCache(layer);
+      const prmCache = this.hsCesiumLayersService.findParamCache(layer);
       if (prmCache) {
         const t = new Date(prmCache.parameters[this.getTimeParameter(layer)]);
         dayjs.extend(utc);
         tmp.push({
-          name: getTitle(this.HsCesiumLayersService.findOlLayer(layer)),
+          name: getTitle(this.hsCesiumLayersService.findOlLayer(layer)),
           time: dayjs.utc(t).format('DD-MM-YYYY HH:mm'),
         });
       }

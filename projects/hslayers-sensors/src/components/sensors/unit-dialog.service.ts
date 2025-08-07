@@ -8,7 +8,7 @@ import {
   tap,
   timer,
 } from 'rxjs';
-import {ElementRef, Inject, Injectable, Optional, signal} from '@angular/core';
+import {ElementRef, Injectable, signal, inject} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 
@@ -38,6 +38,16 @@ export class Aggregates {
   providedIn: 'root',
 })
 export class HsSensorsUnitDialogService {
+  private http = inject(HttpClient);
+  private hsConfig = inject(HsConfig);
+  private hsLogService = inject(HsLogService);
+  private hsLanguageService = inject(HsLanguageService);
+  private hsLayoutService = inject(HsLayoutService);
+  mapServiceDisabled = inject<boolean>('MAPSERVICE_DISABLED' as any, {
+    optional: true,
+  })!;
+  private hsProxyService = inject(HsProxyService);
+
   readonly COLOR_SCHEME = [
     '#4c78a8',
     '#9ecae9',
@@ -92,17 +102,7 @@ export class HsSensorsUnitDialogService {
    */
   comparisonAllowed = false;
 
-  constructor(
-    private http: HttpClient,
-    private hsConfig: HsConfig,
-    private hsLogService: HsLogService,
-    private hsLanguageService: HsLanguageService,
-    private hsLayoutService: HsLayoutService,
-    @Optional()
-    @Inject('MAPSERVICE_DISABLED')
-    public mapServiceDisabled: boolean,
-    private hsProxyService: HsProxyService,
-  ) {
+  constructor() {
     this.currentInterval = this.intervals[2];
     this.useTimeZone.subscribe((value) => {
       this.timeFormat = value ? 'HH:mm:ssZ' : 'HH:mm:ss';

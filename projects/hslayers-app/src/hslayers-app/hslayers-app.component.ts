@@ -1,4 +1,7 @@
 import * as proj from 'ol/proj';
+
+import {Component, ElementRef, inject} from '@angular/core';
+
 import {
   BingMaps,
   ImageArcGISRest,
@@ -11,7 +14,6 @@ import {
   XYZ,
 } from 'ol/source';
 import {Circle, Fill, Icon, Stroke, Style} from 'ol/style';
-import {Component, ElementRef} from '@angular/core';
 import {GeoJSON} from 'ol/format';
 import {
   Group,
@@ -35,13 +37,14 @@ import {SparqlJson} from 'hslayers-ng/common/layers';
   standalone: false,
 })
 export class HslayersAppComponent {
+  hsConfig = inject(HsConfig);
+  private elementRef = inject(ElementRef);
+  private hsOverlayConstructorService = inject(HsOverlayConstructorService);
+  private hsPanelConstructorService = inject(HsPanelConstructorService);
+
   id;
-  constructor(
-    public HsConfig: HsConfig,
-    private elementRef: ElementRef,
-    private HsOverlayConstructorService: HsOverlayConstructorService,
-    private HsPanelConstructorService: HsPanelConstructorService,
-  ) {
+
+  constructor() {
     const w: any = window;
     w.ol = {
       layer: {
@@ -83,19 +86,19 @@ export class HslayersAppComponent {
     }
     if (w['hslayersNgConfig' + this.id]) {
       const cfg = eval('w.hslayersNgConfig' + this.id + '(w.ol)');
-      this.HsConfig.update(cfg);
+      this.hsConfig.update(cfg);
     } else if (w.hslayersNgConfig) {
-      this.HsConfig.update(w.hslayersNgConfig(w.ol));
+      this.hsConfig.update(w.hslayersNgConfig(w.ol));
     }
     /**
      * Create panel components
      */
-    this.HsPanelConstructorService.createActivePanels();
+    this.hsPanelConstructorService.createActivePanels();
 
     /**
      * Create GUI overlay
      */
-    this.HsOverlayConstructorService.createGuiOverlay();
+    this.hsOverlayConstructorService.createGuiOverlay();
   }
   title = 'hslayers-workspace';
 }

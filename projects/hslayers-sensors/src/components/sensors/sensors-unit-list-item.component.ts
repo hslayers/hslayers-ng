@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input, inject} from '@angular/core';
 import {NgClass} from '@angular/common';
 import {TranslatePipe} from '@ngx-translate/core';
 
@@ -15,15 +15,13 @@ import {SenslogSensor} from './types/senslog-sensor.type';
   imports: [TranslatePipe, NgClass],
 })
 export class HsSensorsUnitListItemComponent {
+  private hsSensorsService = inject(HsSensorsService);
+  private hsDialogContainerService = inject(HsDialogContainerService);
+  private hsSensorsUnitDialogService = inject(HsSensorsUnitDialogService);
+
   @Input() unit: HsSensorUnit;
   @Input() expanded: boolean;
   @Input('view-mode') viewMode: string;
-
-  constructor(
-    private hsSensorsService: HsSensorsService,
-    private hsDialogContainerService: HsDialogContainerService,
-    private hsSensorsUnitDialogService: HsSensorsUnitDialogService,
-  ) {}
 
   /**
    * When unit is clicked, create a dialog window for
