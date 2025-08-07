@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {Injectable, inject} from '@angular/core';
 import {Subject} from 'rxjs';
 
 import {Feature, View} from 'ol';
@@ -335,6 +335,8 @@ export class HsConfigObject {
   providedIn: 'root',
 })
 export class HsConfig extends HsConfigObject {
+  private validationService = inject(HsConfigValidationService);
+
   id: string;
   configChanges?: Subject<void> = new Subject();
   private defaultSymbolizerIcons? = [
@@ -343,10 +345,6 @@ export class HsConfig extends HsConfigObject {
     {name: 'information', url: 'img/icons/information78.svg'},
     {name: 'wifi', url: 'img/icons/wifi8.svg'},
   ];
-
-  constructor(private validationService: HsConfigValidationService) {
-    super();
-  }
 
   private logConfigWarning(message: string) {
     console.warn('HsConfig Warning:', message);

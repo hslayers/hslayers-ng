@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {Injectable, inject} from '@angular/core';
 
 import {BehaviorSubject, Subject} from 'rxjs';
 import {Layer} from 'ol/layer';
@@ -15,17 +15,16 @@ import {getBase} from 'hslayers-ng/common/extensions';
   providedIn: 'root',
 })
 export class HsAddDataService {
+  hsMapService = inject(HsMapService);
+  hsConfig = inject(HsConfig);
+  hsCommonEndpointsService = inject(HsCommonEndpointsService);
+  hsCommonLaymanService = inject(HsCommonLaymanService);
+
   sidebarLoad: Subject<void> = new Subject();
   datasetSelected: BehaviorSubject<DatasetType> = new BehaviorSubject(
     undefined,
   );
   datasetTypeSelected = this.datasetSelected.asObservable();
-  constructor(
-    public hsMapService: HsMapService,
-    public hsConfig: HsConfig,
-    public hsCommonEndpointsService: HsCommonEndpointsService,
-    public hsCommonLaymanService: HsCommonLaymanService,
-  ) {}
 
   addLayer(layer: Layer<Source>, underLayer?: Layer<Source>): void {
     if (underLayer) {

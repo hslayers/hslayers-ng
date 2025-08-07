@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input, inject} from '@angular/core';
 
 import {HsCompositionsCatalogueService} from './compositions-catalogue.service';
 import {HsCompositionsDeleteDialogComponent} from './dialogs/delete-dialog.component';
@@ -18,18 +18,18 @@ import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
   standalone: false,
 })
 export class HsCompositionsListItemComponent {
+  private hsCompositionsService = inject(HsCompositionsService);
+  private hsToastService = inject(HsToastService);
+  private hsDialogContainerService = inject(HsDialogContainerService);
+  private hsConfig = inject(HsConfig);
+  private hsLanguageService = inject(HsLanguageService);
+  private hsCompositionsCatalogueService = inject(
+    HsCompositionsCatalogueService,
+  );
+  hsCommonLaymanService = inject(HsCommonLaymanService);
+
   @Input() composition: HsMapCompositionDescriptor;
   @Input() selectedCompId: string;
-
-  constructor(
-    private hsCompositionsService: HsCompositionsService,
-    private hsToastService: HsToastService,
-    private hsDialogContainerService: HsDialogContainerService,
-    private hsConfig: HsConfig,
-    private hsLanguageService: HsLanguageService,
-    private hsCompositionsCatalogueService: HsCompositionsCatalogueService,
-    public hsCommonLaymanService: HsCommonLaymanService,
-  ) {}
 
   /**
    * Load selected composition

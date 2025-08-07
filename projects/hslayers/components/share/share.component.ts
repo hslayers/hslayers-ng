@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, inject} from '@angular/core';
 
 import {HsConfig} from 'hslayers-ng/config';
 import {HsLanguageService} from 'hslayers-ng/services/language';
@@ -13,25 +13,22 @@ import {HslayersService} from 'hslayers-ng/core';
   standalone: false,
 })
 export class HsShareComponent extends HsPanelBaseComponent implements OnInit {
+  hsShareService = inject(HsShareService);
+  hsShareUrlService = inject(HsShareUrlService);
+  hsCore = inject(HslayersService);
+  hsLanguageService = inject(HsLanguageService);
+  private hsConfig = inject(HsConfig);
+
   new_share = false;
   name = 'share';
   app: string;
-  constructor(
-    public HsShareService: HsShareService,
-    public HsShareUrlService: HsShareUrlService,
-    public HsCore: HslayersService,
-    public hsLanguageService: HsLanguageService,
-    private hsConfig: HsConfig,
-  ) {
-    super();
-  }
 
   /**
    * Create Iframe tag for embedded map
    * @returns Iframe tag with src attribute on embed Url and default width and height (1000x700px)
    */
   updateEmbedCode(): string {
-    return this.HsShareService.getEmbedCode();
+    return this.hsShareService.getEmbedCode();
   }
 
   /**
@@ -39,21 +36,21 @@ export class HsShareComponent extends HsPanelBaseComponent implements OnInit {
    * @returns Right share Url
    */
   getShareUrl(): string {
-    return this.HsShareService.getShareUrl();
+    return this.hsShareService.getShareUrl();
   }
 
   /**
    * Set share Url state invalid
    */
   invalidateShareUrl(): void {
-    this.HsShareService.invalidateShareUrl();
+    this.hsShareService.invalidateShareUrl();
   }
 
   /**
    * Create share post on selected social network
    */
   shareOnSocial(): void {
-    this.HsShareService.shareOnSocial(this.new_share);
+    this.hsShareService.shareOnSocial(this.new_share);
   }
 
   ngOnInit() {

@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input, inject} from '@angular/core';
 
 import {FileDataObject} from 'hslayers-ng/types';
 import {HsAddDataCommonFileService} from 'hslayers-ng/services/add-data';
@@ -10,12 +10,10 @@ import {HsLaymanService} from 'hslayers-ng/services/save-map';
   standalone: false,
 })
 export class HsAddLayerAuthorizedComponent {
-  @Input() data: FileDataObject;
+  hsAddDataCommonFileService = inject(HsAddDataCommonFileService);
+  hsLaymanService = inject(HsLaymanService);
 
-  constructor(
-    public hsAddDataCommonFileService: HsAddDataCommonFileService,
-    public hsLaymanService: HsLaymanService,
-  ) {}
+  @Input() data: FileDataObject;
 
   async add(): Promise<void> {
     await this.hsAddDataCommonFileService.addAsService(this.data);

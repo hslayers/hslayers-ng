@@ -1,4 +1,4 @@
-import {Injectable, NgZone} from '@angular/core';
+import {Injectable, NgZone, inject} from '@angular/core';
 import {ReplaySubject} from 'rxjs';
 
 import {Feature} from 'ol';
@@ -15,13 +15,11 @@ import {getName, getPopUp, getTitle} from 'hslayers-ng/common/extensions';
   providedIn: 'root',
 })
 export class HsQueryPopupBaseService extends HsQueryPopupData {
-  constructor(
-    public hsMapService: HsMapService,
-    public zone: NgZone,
-    public hsQueryPopupWidgetContainerService: HsQueryPopupWidgetContainerService,
-  ) {
-    super();
-  }
+  hsMapService = inject(HsMapService);
+  zone = inject(NgZone);
+  hsQueryPopupWidgetContainerService = inject(
+    HsQueryPopupWidgetContainerService,
+  );
 
   /**
    * Fill features for the popup

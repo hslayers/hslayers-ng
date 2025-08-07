@@ -1,4 +1,4 @@
-import {Component, computed, input, ViewRef} from '@angular/core';
+import {Component, computed, input, ViewRef, inject} from '@angular/core';
 import {TranslatePipe} from '@ngx-translate/core';
 
 import {transform} from 'ol/proj';
@@ -28,6 +28,12 @@ import {HsMapService} from 'hslayers-ng/services/map';
   imports: [HsUiExtensionsRecursiveDdComponent, TranslatePipe],
 })
 export class HsCatalogueMetadataComponent implements HsDialogComponent {
+  hsConfig = inject(HsConfig);
+  hsAddDataCatalogueService = inject(HsAddDataCatalogueService);
+  hsAddDataCatalogueMapService = inject(HsAddDataCatalogueMapService);
+  hsDialogContainerService = inject(HsDialogContainerService);
+  private hsMapService = inject(HsMapService);
+
   data = input<{
     selectedLayer: HsAddDataLayerDescriptor;
     selectedDS: HsEndpoint;
@@ -81,14 +87,6 @@ export class HsCatalogueMetadataComponent implements HsDialogComponent {
 
   viewRef: ViewRef;
   excludedKeys: string[] = ['feature', 'thumbnail', 'endpoint'];
-
-  constructor(
-    public hsConfig: HsConfig,
-    public hsAddDataCatalogueService: HsAddDataCatalogueService,
-    public hsAddDataCatalogueMapService: HsAddDataCatalogueMapService,
-    public hsDialogContainerService: HsDialogContainerService,
-    private hsMapService: HsMapService,
-  ) {}
 
   /**
    * @param type - Type in which the layer shall be added (WMS, WFS, etc.)

@@ -3,7 +3,6 @@ import {
   Component,
   DestroyRef,
   ElementRef,
-  Inject,
   Input,
   NgZone,
   OnInit,
@@ -52,6 +51,18 @@ interface PanState {
   standalone: false,
 })
 export class HslayersComponent implements AfterViewInit, OnInit {
+  hsConfig = inject(HsConfig);
+  private elementRef = inject(ElementRef);
+  hsLayoutService = inject(HsLayoutService);
+  private hsLog = inject(HsLogService);
+  hsEventBusService = inject(HsEventBusService);
+  hsPanelContainerService = inject(HsPanelContainerService);
+  hsOverlayContainerService = inject(HsOverlayContainerService);
+  private hsExternalService = inject(HsExternalService);
+  private ngZone = inject(NgZone);
+  private platformId = inject(PLATFORM_ID);
+  private destroyRef = inject(DestroyRef);
+
   @Input() config: HsConfigObject;
   @Input() id: string;
   @ViewChild('hslayout') hslayout: ElementRef;
@@ -60,8 +71,6 @@ export class HslayersComponent implements AfterViewInit, OnInit {
 
   sidebarPosition: Signal<string>;
   sidebarVisible: Signal<boolean>;
-
-  private destroyRef = inject(DestroyRef);
 
   private panState: PanState = {
     /**
@@ -81,23 +90,13 @@ export class HslayersComponent implements AfterViewInit, OnInit {
   private mapSpace: HTMLElement;
 
   toastPosition: Signal<ToastPosition>;
-  constructor(
-    public hsConfig: HsConfig,
-    private elementRef: ElementRef,
-    public HsLayoutService: HsLayoutService,
-    private hsLog: HsLogService,
-    public HsEventBusService: HsEventBusService,
-    public HsPanelContainerService: HsPanelContainerService,
-    public HsOverlayContainerService: HsOverlayContainerService,
-    private hsExternalService: HsExternalService, //Leave this, need to inject somewhere
-    private ngZone: NgZone,
-    @Inject(PLATFORM_ID) private platformId: any,
-  ) {
-    this.sidebarPosition = toSignal(this.HsLayoutService.sidebarPosition);
-    this.sidebarVisible = toSignal(this.HsLayoutService.sidebarVisible);
+
+  constructor() {
+    this.sidebarPosition = toSignal(this.hsLayoutService.sidebarPosition);
+    this.sidebarVisible = toSignal(this.hsLayoutService.sidebarVisible);
 
     this.toastPosition = toSignal(
-      this.HsLayoutService.sidebarPosition$.pipe(
+      this.hsLayoutService.sidebarPosition$.pipe(
         combineLatestWith(
           this.hsConfig.configChanges.pipe(startWith(this.hsConfig)),
         ),
@@ -119,10 +118,10 @@ export class HslayersComponent implements AfterViewInit, OnInit {
       this.hsConfig.setAppId(this.id);
     }
 
-    this.HsLayoutService.layoutElement =
+    this.hsLayoutService.layoutElement =
       this.elementRef.nativeElement.querySelector('.hs-layout');
 
-    this.HsLayoutService.contentWrapper =
+    this.hsLayoutService.contentWrapper =
       this.elementRef.nativeElement.querySelector('.hs-content-wrapper');
 
     if (window.innerWidth < 600 && isPlatformBrowser(this.platformId)) {
@@ -137,18 +136,18 @@ export class HslayersComponent implements AfterViewInit, OnInit {
     //   this.HsLayoutService.scrollTo(this.elementRef);
     // }
 
-    this.HsLayoutService.layoutLoads.next({
+    this.hsLayoutService.layoutLoads.next({
       element: this.elementRef.nativeElement,
       innerElement: '.hs-map-space',
     });
-    this.HsLayoutService.mapSpaceRef.next(this.mapHost.viewContainerRef);
+    this.hsLayoutService.mapSpaceRef.next(this.mapHost.viewContainerRef);
 
-    this.HsLayoutService.sidebarPosition
+    this.hsLayoutService.sidebarPosition
       .pipe(delay(0), takeUntilDestroyed(this.destroyRef))
       .subscribe((position) => {
         if (position === 'left') {
-          this.HsLayoutService.contentWrapper.classList.add('flex-reverse');
-          this.HsLayoutService.sidebarRight = false;
+          this.hsLayoutService.contentWrapper.classList.add('flex-reverse');
+          this.hsLayoutService.sidebarRight = false;
         }
       });
 
@@ -156,8 +155,8 @@ export class HslayersComponent implements AfterViewInit, OnInit {
       'resize',
       debounce(
         () => {
-          this.HsLayoutService.updPanelSpaceWidth();
-          this.HsLayoutService.updSidebarPosition();
+          this.hsLayoutService.updPanelSpaceWidth();
+          this.hsLayoutService.updSidebarPosition();
         },
         50,
         false,
@@ -167,7 +166,7 @@ export class HslayersComponent implements AfterViewInit, OnInit {
   }
 
   async ngAfterViewInit() {
-    this.HsLayoutService.layoutElement = this.hslayout.nativeElement;
+    this.hsLayoutService.layoutElement = this.hslayout.nativeElement;
     const hsapp = this.elementRef.nativeElement;
     hsapp.style.overflow = 'hidden';
 
@@ -208,11 +207,11 @@ export class HslayersComponent implements AfterViewInit, OnInit {
       }
     }
 
-    this.mapSpace = this.HsLayoutService.contentWrapper.querySelector(
+    this.mapSpace = this.hsLayoutService.contentWrapper.querySelector(
       '.hs-map-space',
     ) as HTMLElement;
 
-    this.panelSpace = this.HsLayoutService.contentWrapper.querySelector(
+    this.panelSpace = this.hsLayoutService.contentWrapper.querySelector(
       '.hs-panelspace',
     ) as HTMLElement;
 
@@ -222,7 +221,7 @@ export class HslayersComponent implements AfterViewInit, OnInit {
 
       this.ngZone.runOutsideAngular(() => {
         const panRecognizer = new Hammer(
-          this.HsLayoutService.layoutElement.querySelector(
+          this.hsLayoutService.layoutElement.querySelector(
             '.hs-panelspace-expander',
           ),
           {
@@ -318,7 +317,7 @@ export class HslayersComponent implements AfterViewInit, OnInit {
       .pipe(safeTakeUntilDestroyed(this.destroyRef))
       .subscribe(() => {
         this.ngZone.run(() => {
-          this.HsEventBusService.mapSizeUpdates.next();
+          this.hsEventBusService.mapSizeUpdates.next();
           this.panState.isProcessing = false;
         });
       });

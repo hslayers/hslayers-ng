@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnInit, inject} from '@angular/core';
 
 import {Feature} from 'ol';
 import {Geometry} from 'ol/geom';
@@ -36,6 +36,10 @@ type Operation = {
   standalone: false,
 })
 export class HsLayerFeaturesComponent implements OnInit {
+  hsFeatureTableService = inject(HsFeatureTableService);
+  hsMapService = inject(HsMapService);
+  hsLanguageService = inject(HsLanguageService);
+
   /**
    * Input layer from HsConfig.layersInFeatureTable property array
    */
@@ -45,11 +49,6 @@ export class HsLayerFeaturesComponent implements OnInit {
    */
   showFeatureStats = false;
   searchedFeatures = '';
-  constructor(
-    public hsFeatureTableService: HsFeatureTableService,
-    public hsMapService: HsMapService,
-    public hsLanguageService: HsLanguageService,
-  ) {}
 
   /**
    * Activate listeners for any layer source changes to update the html table

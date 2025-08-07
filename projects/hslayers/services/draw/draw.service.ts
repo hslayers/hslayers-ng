@@ -1,4 +1,4 @@
-import {Inject, Injectable, NgZone, PLATFORM_ID} from '@angular/core';
+import {Injectable, NgZone, PLATFORM_ID, inject} from '@angular/core';
 import {isPlatformBrowser} from '@angular/common';
 import {lastValueFrom, merge} from 'rxjs';
 import {takeUntilDestroyed, toObservable} from '@angular/core/rxjs-interop';
@@ -71,30 +71,30 @@ export const TMP_LAYER_TITLE = 'tmpDrawLayer';
   providedIn: 'root',
 })
 export class HsDrawService extends HsDrawServiceParams {
-  isAuthenticated = this.hsCommonLaymanService.isAuthenticated;
+  hsMapService = inject(HsMapService);
+  hsEventBusService = inject(HsEventBusService);
+  hsLayoutService = inject(HsLayoutService);
+  hsDialogContainerService = inject(HsDialogContainerService);
+  hsLogService = inject(HsLogService);
+  hsConfig = inject(HsConfig);
+  hsQueryBaseService = inject(HsQueryBaseService);
+  hsQueryVectorService = inject(HsQueryVectorService);
+  hsLaymanService = inject(HsLaymanService);
+  hsLanguageService = inject(HsLanguageService);
+  hsLaymanBrowserService = inject(HsLaymanBrowserService);
+  hsAddDataVectorService = inject(HsAddDataVectorService);
+  hsCommonLaymanService = inject(HsCommonLaymanService);
+  hsCommonLaymanLayerService = inject(HsCommonLaymanLayerService);
+  hsToastService = inject(HsToastService);
+  hsAddDataOwsService = inject(HsAddDataOwsService);
+  private hsRemoveLayerDialogService = inject(HsRemoveLayerDialogService);
+  private zone = inject(NgZone);
+  private platformId = inject(PLATFORM_ID);
 
+  isAuthenticated = this.hsCommonLaymanService.isAuthenticated;
   pendingLayers = this.hsCommonLaymanLayerService.pendingLayers;
-  constructor(
-    public hsMapService: HsMapService,
-    public hsEventBusService: HsEventBusService,
-    public hsLayoutService: HsLayoutService,
-    public hsDialogContainerService: HsDialogContainerService,
-    public hsLogService: HsLogService,
-    public hsConfig: HsConfig,
-    public hsQueryBaseService: HsQueryBaseService,
-    public hsQueryVectorService: HsQueryVectorService,
-    public hsLaymanService: HsLaymanService,
-    public hsLanguageService: HsLanguageService,
-    public hsLaymanBrowserService: HsLaymanBrowserService,
-    public hsAddDataVectorService: HsAddDataVectorService,
-    public hsCommonLaymanService: HsCommonLaymanService,
-    public hsCommonLaymanLayerService: HsCommonLaymanLayerService,
-    public hsToastService: HsToastService,
-    public hsAddDataOwsService: HsAddDataOwsService,
-    private hsRemoveLayerDialogService: HsRemoveLayerDialogService,
-    private zone: NgZone,
-    @Inject(PLATFORM_ID) private platformId: any,
-  ) {
+
+  constructor() {
     super();
     this.keyUp = this.keyUp.bind(this);
     this.hsMapService.loaded().then((map) => {

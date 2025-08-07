@@ -22,6 +22,10 @@ import {HsToastService} from 'hslayers-ng/common/toast';
   standalone: false,
 })
 export class RasterTimeseriesComponent implements OnInit {
+  private fb = inject(FormBuilder);
+  private hsToastService = inject(HsToastService);
+  private hsAddDataCommonFileService = inject(HsAddDataCommonFileService);
+
   @Input() data: FileDataObject;
 
   @ViewChild('acc') accordion: NgbAccordionDirective;
@@ -48,11 +52,7 @@ export class RasterTimeseriesComponent implements OnInit {
     },
   ];
 
-  constructor(
-    private fb: FormBuilder,
-    private hsToastService: HsToastService,
-    private hsAddDataCommonFileService: HsAddDataCommonFileService,
-  ) {
+  constructor() {
     this.form = this.fb.group({
       /* Regex string encoding of date pattern used in file name  */
       regex: ['', Validators.required],

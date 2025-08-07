@@ -1,3 +1,5 @@
+import {Injectable, inject} from '@angular/core';
+
 import {Circle, Icon, RegularShape, Style} from 'ol/style';
 import {
   Cluster,
@@ -10,12 +12,12 @@ import {
   XYZ,
   Vector as VectorSource,
 } from 'ol/source';
-import {Feature, Map} from 'ol';
 import {EsriJSON, GeoJSON} from 'ol/format';
+import {Feature, Map} from 'ol';
+import {FeatureUrlFunction} from 'ol/featureloader';
 import {GeoJSONFeatureCollection} from 'ol/format/GeoJSON';
 import {Geometry} from 'ol/geom';
 import {Image as ImageLayer, Tile, Layer} from 'ol/layer';
-import {Injectable} from '@angular/core';
 import {transformExtent} from 'ol/proj';
 
 import {
@@ -65,7 +67,6 @@ import {
   getWorkspace,
 } from 'hslayers-ng/common/extensions';
 import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
-import {FeatureUrlFunction} from 'ol/featureloader';
 
 const LOCAL_STORAGE_EXPIRE = 5000;
 
@@ -73,14 +74,13 @@ const LOCAL_STORAGE_EXPIRE = 5000;
   providedIn: 'root',
 })
 export class HsSaveMapService {
+  private hsMapService = inject(HsMapService);
+  private hsLogService = inject(HsLogService);
+  private hsShareThumbnailService = inject(HsShareThumbnailService);
+  private hsCommonLaymanService = inject(HsCommonLaymanService);
+  private hsProxyService = inject(HsProxyService);
+
   public internalLayers: Layer<Source>[] = [];
-  constructor(
-    private hsMapService: HsMapService,
-    private hsLogService: HsLogService,
-    private hsShareThumbnailService: HsShareThumbnailService,
-    private hsCommonLaymanService: HsCommonLaymanService,
-    private hsProxyService: HsProxyService,
-  ) {}
 
   /**
    * Create JSON object, which stores information about composition, user, map state and map layers (including layer data)

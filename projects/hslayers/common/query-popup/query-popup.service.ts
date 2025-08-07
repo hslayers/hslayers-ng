@@ -1,4 +1,4 @@
-import {Injectable, NgZone} from '@angular/core';
+import {Injectable, NgZone, inject} from '@angular/core';
 
 import {Feature, Map, Overlay} from 'ol';
 import {Geometry} from 'ol/geom';
@@ -21,16 +21,15 @@ export class HsQueryPopupService
   extends HsQueryPopupBaseService
   implements HsQueryPopupServiceModel
 {
-  constructor(
-    public hsMapService: HsMapService,
-    private hsConfig: HsConfig,
-    public zone: NgZone,
-    private HsQueryBaseService: HsQueryBaseService,
-    public hsQueryPopupWidgetContainerService: HsQueryPopupWidgetContainerService,
-    private hsQueryVectorService: HsQueryVectorService,
-  ) {
-    super(hsMapService, zone, hsQueryPopupWidgetContainerService);
+  hsMapService: HsMapService;
+  private hsConfig = inject(HsConfig);
+  zone: NgZone;
+  private hsQueryBaseService = inject(HsQueryBaseService);
+  hsQueryPopupWidgetContainerService: HsQueryPopupWidgetContainerService;
+  private hsQueryVectorService = inject(HsQueryVectorService);
 
+  constructor() {
+    super();
     this.hsMapService.loaded().then((map) => {
       if (
         this.hsConfig.popUpDisplay &&
@@ -79,12 +78,12 @@ export class HsQueryPopupService
       return;
     }
     if (
-      !this.HsQueryBaseService.queryActive &&
+      !this.hsQueryBaseService.queryActive &&
       this.hsConfig.popUpDisplay === 'click'
     ) {
       return;
     }
-    let tmpFeatures = this.HsQueryBaseService.getFeaturesUnderMouse(
+    let tmpFeatures = this.hsQueryBaseService.getFeaturesUnderMouse(
       e.map,
       e.pixel,
     );

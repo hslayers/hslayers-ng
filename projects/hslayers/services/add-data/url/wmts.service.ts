@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {Injectable, inject} from '@angular/core';
 
 import WMTS, {optionsFromCapabilities} from 'ol/source/WMTS';
 import {Extent} from 'ol/extent';
@@ -24,14 +24,14 @@ import {addAnchors} from 'hslayers-ng/services/utils';
 
 @Injectable({providedIn: 'root'})
 export class HsUrlWmtsService implements HsUrlTypeServiceModel {
+  hsMapService = inject(HsMapService);
+  hsLayoutService = inject(HsLayoutService);
+  hsAddDataUrlService = inject(HsAddDataUrlService);
+  hsAddDataCommonService = inject(HsAddDataCommonService);
+
   data: UrlDataObject;
 
-  constructor(
-    public hsMapService: HsMapService,
-    public hsLayoutService: HsLayoutService,
-    public hsAddDataUrlService: HsAddDataUrlService,
-    public hsAddDataCommonService: HsAddDataCommonService,
-  ) {
+  constructor() {
     this.setDataToDefault();
   }
 

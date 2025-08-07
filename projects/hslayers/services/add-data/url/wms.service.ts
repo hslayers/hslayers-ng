@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {Injectable, inject} from '@angular/core';
 
 import ImageSource from 'ol/source/Image';
 import TileSource from 'ol/source/Tile';
@@ -41,19 +41,19 @@ import {HsLayoutService} from 'hslayers-ng/services/layout';
 
 @Injectable({providedIn: 'root'})
 export class HsUrlWmsService implements HsUrlTypeServiceModel {
+  private hsMapService = inject(HsMapService);
+  private hsWmsGetCapabilitiesService = inject(HsWmsGetCapabilitiesService);
+  private hsDimensionService = inject(HsDimensionService);
+  private hsLayoutService = inject(HsLayoutService);
+  private hsConfig = inject(HsConfig);
+  private hsAddDataService = inject(HsAddDataService);
+  private hsEventBusService = inject(HsEventBusService);
+  private hsAddDataUrlService = inject(HsAddDataUrlService);
+  private hsAddDataCommonService = inject(HsAddDataCommonService);
+
   data: UrlDataObject;
 
-  constructor(
-    private hsMapService: HsMapService,
-    private hsWmsGetCapabilitiesService: HsWmsGetCapabilitiesService,
-    private hsDimensionService: HsDimensionService,
-    private hsLayoutService: HsLayoutService,
-    private hsConfig: HsConfig,
-    private hsAddDataService: HsAddDataService,
-    private hsEventBusService: HsEventBusService,
-    private hsAddDataUrlService: HsAddDataUrlService,
-    private hsAddDataCommonService: HsAddDataCommonService,
-  ) {
+  constructor() {
     this.hsEventBusService.olMapLoads.subscribe((map) => {
       this.data.map_projection = this.hsMapService.map
         .getView()

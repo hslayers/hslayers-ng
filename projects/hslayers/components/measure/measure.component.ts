@@ -1,4 +1,4 @@
-import {Component, Inject, OnInit, PLATFORM_ID} from '@angular/core';
+import {Component, OnInit, PLATFORM_ID, inject} from '@angular/core';
 import {isPlatformBrowser} from '@angular/common';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 
@@ -12,20 +12,16 @@ import {HsPanelBaseComponent} from 'hslayers-ng/common/panels';
   standalone: false,
 })
 export class HsMeasureComponent extends HsPanelBaseComponent implements OnInit {
+  private hsEventBusService = inject(HsEventBusService);
+  hsMeasureService = inject(HsMeasureService);
+  private platformId = inject(PLATFORM_ID);
+
   type: string;
   name = 'measure';
-  constructor(
-    private hsEventBusService: HsEventBusService,
-    public hsMeasureService: HsMeasureService,
-    @Inject(PLATFORM_ID) private platformId: any,
-  ) {
-    super();
-  }
 
   ngOnInit() {
     super.ngOnInit();
     this.type = 'distance';
-
     if (isPlatformBrowser(this.platformId)) {
       document.addEventListener('keyup', (e) => {
         if (e.key == 'Control') {

@@ -1,4 +1,4 @@
-import {Component, ViewRef} from '@angular/core';
+import {Component, ViewRef, inject} from '@angular/core';
 
 import {HsConfig, SymbolizerIcon} from 'hslayers-ng/config';
 import {
@@ -14,14 +14,12 @@ import {HsIconSymbolizerComponent} from '../icon-symbolizer/icon-symbolizer.comp
   standalone: false,
 })
 export class HsSelectIconDialogComponent implements HsDialogComponent {
+  private hsDialogContainerService = inject(HsDialogContainerService);
+  hsConfig = inject(HsConfig);
+
   dialogItem?: HsDialogItem;
   viewRef: ViewRef;
   data: HsIconSymbolizerComponent;
-
-  constructor(
-    private hsDialogContainerService: HsDialogContainerService,
-    public hsConfig: HsConfig,
-  ) {}
 
   cancel(): void {
     this.data.selectedIcon = null;

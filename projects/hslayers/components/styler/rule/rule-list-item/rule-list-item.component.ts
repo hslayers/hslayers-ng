@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnInit, inject} from '@angular/core';
 import {DomSanitizer, SafeHtml} from '@angular/platform-browser';
 
 import LegendRenderer from 'geostyler-legend/dist/LegendRenderer/LegendRenderer';
@@ -13,14 +13,12 @@ import {HsStylerService} from 'hslayers-ng/services/styler';
   standalone: false,
 })
 export class HsRuleListItemComponent implements OnInit {
+  hsStylerService = inject(HsStylerService);
+  private sanitizer = inject(DomSanitizer);
+
   @Input() rule: any;
   ruleVisible = false;
   svg: SafeHtml;
-
-  constructor(
-    public hsStylerService: HsStylerService,
-    private sanitizer: DomSanitizer,
-  ) {}
 
   ngOnInit(): void {
     this.generateLegend();

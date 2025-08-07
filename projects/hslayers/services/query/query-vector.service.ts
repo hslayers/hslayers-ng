@@ -1,5 +1,5 @@
 import {DomSanitizer, SafeHtml} from '@angular/platform-browser';
-import {Injectable} from '@angular/core';
+import {Injectable, inject} from '@angular/core';
 import {Subject, debounceTime} from 'rxjs';
 
 import * as extent from 'ol/extent';
@@ -57,16 +57,17 @@ export const defaultSelectStyle = [
   providedIn: 'root',
 })
 export class HsQueryVectorService {
+  private hsQueryBaseService = inject(HsQueryBaseService);
+  private hsMapService = inject(HsMapService);
+  private hsConfig = inject(HsConfig);
+  private hsEventBusService = inject(HsEventBusService);
+  private domSanitizer = inject(DomSanitizer);
+
   featureRemovals: Subject<Feature<Geometry>> = new Subject();
   selector: Select = null;
   private setSelectorTrigger = new Subject<void>();
-  constructor(
-    private hsQueryBaseService: HsQueryBaseService,
-    private hsMapService: HsMapService,
-    private hsConfig: HsConfig,
-    private hsEventBusService: HsEventBusService,
-    private domSanitizer: DomSanitizer,
-  ) {
+
+  constructor() {
     this.hsQueryBaseService.getFeatureInfoStarted.subscribe((evt) => {
       this.hsQueryBaseService.clear('features');
       if (!this.hsQueryBaseService.queryActive) {

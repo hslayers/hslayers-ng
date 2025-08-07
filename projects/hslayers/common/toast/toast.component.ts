@@ -1,4 +1,4 @@
-import {Component, computed, input} from '@angular/core';
+import {Component, computed, input, inject} from '@angular/core';
 import {toSignal} from '@angular/core/rxjs-interop';
 
 import {HsToastService} from './toast.service';
@@ -28,12 +28,10 @@ import {HsConfig, ToastPosition} from 'hslayers-ng/config';
   },
 })
 export class HsToastComponent {
-  position = input<ToastPosition>('bottom-center');
+  hsToastService = inject(HsToastService);
+  private hsConfig = inject(HsConfig);
 
-  constructor(
-    public hsToastService: HsToastService,
-    private hsConfig: HsConfig,
-  ) {}
+  position = input<ToastPosition>('bottom-center');
 
   /**
    * Signal that tracks config changes

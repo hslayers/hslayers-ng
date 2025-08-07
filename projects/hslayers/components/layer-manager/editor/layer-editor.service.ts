@@ -1,4 +1,10 @@
-import {ComponentRef, Injectable, Type, ViewContainerRef} from '@angular/core';
+import {
+  ComponentRef,
+  Injectable,
+  Type,
+  ViewContainerRef,
+  inject,
+} from '@angular/core';
 
 import {Layer} from 'ol/layer';
 import {Source} from 'ol/source';
@@ -43,6 +49,19 @@ import {
   providedIn: 'root',
 })
 export class HsLayerEditorService {
+  private hsMapService = inject(HsMapService);
+  private hsWmsGetCapabilitiesService = inject(HsWmsGetCapabilitiesService);
+  private hsLayerEditorVectorLayerService = inject(
+    HsLayerEditorVectorLayerService,
+  );
+  private hsEventBusService = inject(HsEventBusService);
+  private hsLayoutService = inject(HsLayoutService);
+  private hsLegendService = inject(HsLegendService);
+  private hsLayerSelectorService = inject(HsLayerSelectorService);
+  private hsLayerManagerMetadataService = inject(HsLayerManagerMetadataService);
+  private hsLayerEditorSublayerService = inject(HsLayerEditorSublayerService);
+  private hsShareUrlService = inject(HsShareUrlService);
+
   legendDescriptor: HsLegendDescriptor;
 
   layerTitleChange: Subject<{
@@ -55,23 +74,12 @@ export class HsLayerEditorService {
 
   sublayerEditorComponent: ComponentRef<HsLayerEditorSublayersComponent>;
 
-  constructor(
-    private HsMapService: HsMapService,
-    private HsWmsGetCapabilitiesService: HsWmsGetCapabilitiesService,
-    private HsLayerEditorVectorLayerService: HsLayerEditorVectorLayerService,
-    private HsEventBusService: HsEventBusService,
-    private HsLayoutService: HsLayoutService,
-    private HsLegendService: HsLegendService,
-    private HsLayerSelectorService: HsLayerSelectorService,
-    private HsLayerManagerMetadataService: HsLayerManagerMetadataService,
-    private HsLayerEditorSublayerService: HsLayerEditorSublayerService,
-    private hsShareUrlService: HsShareUrlService,
-  ) {
-    this.HsLayerSelectorService.layerSelected
+  constructor() {
+    this.hsLayerSelectorService.layerSelected
       .pipe(filter((layer) => !!layer))
       .subscribe(async (layer) => {
         this.legendDescriptor =
-          await this.HsLegendService.getLayerLegendDescriptor(layer.layer);
+          await this.hsLegendService.getLayerLegendDescriptor(layer.layer);
       });
   }
 
@@ -157,7 +165,7 @@ export class HsLayerEditorService {
       !getCachedCapabilities(layer.layer) &&
       getQueryCapabilities(layer.layer) !== false
     ) {
-      this.HsLayerManagerMetadataService.fillMetadata(layer);
+      this.hsLayerManagerMetadataService.fillMetadata(layer);
     }
 
     if (toToggle === 'sublayers' && !layer.hasSublayers) {
@@ -165,7 +173,7 @@ export class HsLayerEditorService {
     }
 
     if (toToggle === 'settings') {
-      if (this.HsLayerSelectorService.currentLayer !== layer) {
+      if (this.hsLayerSelectorService.currentLayer !== layer) {
         this.setCurrentLayer(layer);
         layer.settings = true;
         return true;
@@ -174,11 +182,11 @@ export class HsLayerEditorService {
       this.setCurrentLayer(undefined);
       return false;
     }
-    const currentLayer = this.HsLayerEditorSublayerService.layer;
+    const currentLayer = this.hsLayerEditorSublayerService.layer;
 
     if (currentLayer === layer) {
       // If the same layer is clicked again, deselect it
-      this.HsLayerEditorSublayerService.layer = null;
+      this.hsLayerEditorSublayerService.layer = null;
       layer.sublayers = false;
     } else {
       // If a different layer is clicked
@@ -187,7 +195,7 @@ export class HsLayerEditorService {
         currentLayer.sublayers = false;
       }
       // Select the new layer
-      this.HsLayerEditorSublayerService.layer = layer;
+      this.hsLayerEditorSublayerService.layer = layer;
       layer.sublayers = true;
     }
 
@@ -201,7 +209,7 @@ export class HsLayerEditorService {
    */
   setCurrentLayer(layer: HsLayerDescriptor | undefined): void {
     this.updateGetParam(layer?.title);
-    this.HsLayerSelectorService.select(layer);
+    this.hsLayerSelectorService.select(layer);
   }
 
   private updateGetParam(title: string | undefined) {
@@ -235,13 +243,13 @@ export class HsLayerEditorService {
        * Used when 'queryCapabilities' is set to false on layer. Otherwise set when parsing capabilities
        */
       const url = getURL(layer);
-      const wrapper = await this.HsWmsGetCapabilitiesService.request(url);
+      const wrapper = await this.hsWmsGetCapabilitiesService.request(url);
       const parser = new WMSCapabilities();
       const caps = parser.read(wrapper.response);
       if (Array.isArray(caps.Capability.Layer.Layer)) {
         const layers = getLayerParams(layer)?.LAYERS;
         const foundDefs = caps.Capability.Layer.Layer.map((lyr) =>
-          this.HsLayerManagerMetadataService.identifyLayerObject(layers, lyr),
+          this.hsLayerManagerMetadataService.identifyLayerObject(layers, lyr),
         ).filter((item) => item);
         const foundDef = foundDefs.length > 0 ? foundDefs[0] : null;
         if (foundDef) {
@@ -274,15 +282,15 @@ export class HsLayerEditorService {
     }
     if (newValue != undefined) {
       setCluster(layer, newValue);
-      this.HsLayerEditorVectorLayerService.cluster(
+      this.hsLayerEditorVectorLayerService.cluster(
         newValue,
         layer,
         distance,
-        !this.HsLayerEditorVectorLayerService.layersClusteredFromStart.includes(
+        !this.hsLayerEditorVectorLayerService.layersClusteredFromStart.includes(
           layer,
         ),
       );
-      this.HsEventBusService.compositionEdits.next();
+      this.hsEventBusService.compositionEdits.next();
     } else {
       return getCluster(layer);
     }
@@ -298,7 +306,7 @@ export class HsLayerEditorService {
       if (!(!layer.getExtent() && getWmsOriginalExtent(layer))) {
         layer.setExtent(extent);
       }
-      this.HsMapService.fitExtent(extent);
+      this.hsMapService.fitExtent(extent);
     }
   }
 
@@ -306,16 +314,16 @@ export class HsLayerEditorService {
     return transformExtent(
       extent,
       'EPSG:4326',
-      this.HsMapService.getCurrentProj(),
+      this.hsMapService.getCurrentProj(),
     );
   }
 
   legendVisible(): boolean {
     const legendDescriptor = this.legendDescriptor;
     return (
-      this.HsLegendService.legendValid(legendDescriptor) &&
+      this.hsLegendService.legendValid(legendDescriptor) &&
       (getInlineLegend(legendDescriptor.lyr) ||
-        !this.HsLayoutService.panelEnabled('legend'))
+        !this.hsLayoutService.panelEnabled('legend'))
     );
   }
 

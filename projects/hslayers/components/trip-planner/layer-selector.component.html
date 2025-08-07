@@ -8,7 +8,7 @@
         d-flex
         align-items-center
         mw-100
-      " aria-haspopup="true" (click)="layersExpanded = !layersExpanded; HsTripPlannerService.fillVectorLayers() "
+      " aria-haspopup="true" (click)="layersExpanded = !layersExpanded; hsTripPlannerService.fillVectorLayers() "
       [attr.aria-expanded]="layersExpanded">
       @if (selectedWrapper !== undefined) {
         <div class="text-truncate">
@@ -18,10 +18,10 @@
     </button>
     <div ngbDropdownMenu [ngClass]="{'show': layersExpanded}" style="transform: translateX(25%); width: 15em">
       <div class="d-flex align-items-center w-100 flex-column">
-        @for (layer of HsTripPlannerService.vectorLayers; track layer) {
+        @for (layer of hsTripPlannerService.vectorLayers; track layer) {
           <a class="dropdown-item text-truncate"
             data-toggle="tooltip" [title]="'LAYERS.' + layer.title | translate : {fallbackValue: layer.title} "
-            (click)="HsTripPlannerService.selectLayer(layer, usage); layersExpanded = false">
+            (click)="hsTripPlannerService.selectLayer(layer, usage); layersExpanded = false">
             {{'LAYERS.' + layer.title | translate : {fallbackValue: layer.title} }}
           </a>
         }

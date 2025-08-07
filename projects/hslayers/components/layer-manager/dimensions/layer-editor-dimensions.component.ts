@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, inject} from '@angular/core';
 import {filter, merge} from 'rxjs';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 
@@ -9,7 +9,6 @@ import {
 } from 'hslayers-ng/services/get-capabilities';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsLayerEditorWidgetBaseComponent} from '../widgets/layer-editor-widget-base.component';
-import {HsLayerSelectorService} from 'hslayers-ng/services/layer-manager';
 import {HsMapService} from 'hslayers-ng/services/map';
 import {isFunction} from 'hslayers-ng/services/utils';
 import {getDimensions} from 'hslayers-ng/common/extensions';
@@ -23,18 +22,16 @@ export class HsLayerEditorDimensionsComponent
   extends HsLayerEditorWidgetBaseComponent
   implements OnInit
 {
+  hsDimensionService = inject(HsDimensionService);
+  hsDimensionTimeService = inject(HsDimensionTimeService);
+  hsMapService = inject(HsMapService);
+  hsEventBusService = inject(HsEventBusService);
+
   name = 'dimensions';
   dimensions: Array<HsDimensionDescriptor> = [];
 
-  constructor(
-    public hsDimensionService: HsDimensionService,
-    public hsDimensionTimeService: HsDimensionTimeService,
-    public hsMapService: HsMapService,
-    public hsEventBusService: HsEventBusService,
-    hsLayerSelectorService: HsLayerSelectorService,
-  ) {
-    super(hsLayerSelectorService);
-
+  constructor() {
+    super();
     merge(
       this.hsEventBusService.layerDimensionDefinitionChanges.pipe(
         filter((layer) => layer === this.olLayer),

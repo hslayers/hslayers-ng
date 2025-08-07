@@ -27,18 +27,14 @@ import {getBase} from 'hslayers-ng/common/extensions';
   imports: [CommonModule, TranslatePipe, NgbDropdownModule],
 })
 export class HsLayerManagerGalleryComponent extends HsGuiOverlayBaseComponent {
+  hsLayerManagerService = inject(HsLayerManagerService);
+  private hsLayerSelectorService = inject(HsLayerSelectorService);
+  hsLayerManagerVisibilityService = inject(HsLayerManagerVisibilityService);
+
   @ViewChild('galleryDropdown', {static: false}) dropdown: NgbDropdown;
   name = 'basemapGallery';
 
   private hsDialogContainerService = inject(HsDialogContainerService);
-
-  constructor(
-    public hsLayerManagerService: HsLayerManagerService,
-    private hsLayerSelectorService: HsLayerSelectorService,
-    public hsLayerManagerVisibilityService: HsLayerManagerVisibilityService,
-  ) {
-    super();
-  }
 
   toggleBasemap(layer?: HsLayerDescriptor): void {
     if (layer) {

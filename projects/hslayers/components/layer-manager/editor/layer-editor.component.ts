@@ -46,11 +46,21 @@ import {layerIsZoomable, layerIsStyleable} from 'hslayers-ng/services/utils';
   imports: [NgClass, FormsModule, TranslatePipe, HsPanelHelpersModule],
 })
 export class HsLayerEditorComponent {
+  private hsConfig = inject(HsConfig);
+  private hsStylerService = inject(HsStylerService);
+  private hsLayoutService = inject(HsLayoutService);
+  private hsLayerEditorService = inject(HsLayerEditorService);
+  private hsEventBusService = inject(HsEventBusService);
+  private hsDialogContainerService = inject(HsDialogContainerService);
+  private hsLayerManagerUtilsService = inject(HsLayerManagerUtilsService);
+  private hsLayerManagerCopyLayerService = inject(
+    HsLayerManagerCopyLayerService,
+  );
+  hsLayerManagerService = inject(HsLayerManagerService);
+  hsWidgetContainerService = inject(HsLayerEditorWidgetContainerService);
+
   layer = input.required<HsLayerDescriptor>();
   olLayer = computed(() => this.layer()?.layer || undefined);
-
-  HsLayerManagerService = inject(HsLayerManagerService);
-  hsWidgetContainerService = inject(HsLayerEditorWidgetContainerService);
 
   layerNodeAvailable = signal(false);
   layer_renamer_visible = signal(false);
@@ -61,7 +71,7 @@ export class HsLayerEditorComponent {
   getGreyscale = getGreyscale;
 
   layerIsZoomable = computed(() => layerIsZoomable(this.olLayer()));
-  layerIsStyleable = computed(() => layerIsStyleable(this.olLayer()));
+  layerIsStylable = computed(() => layerIsStyleable(this.olLayer()));
   isLayerRemovable = computed(() => {
     const layer = this.olLayer();
     return (
@@ -69,7 +79,7 @@ export class HsLayerEditorComponent {
     );
   });
   isVectorLayer = computed(() =>
-    this.HsLayerEditorService.isLayerVectorLayer(this.olLayer()),
+    this.hsLayerEditorService.isLayerVectorLayer(this.olLayer()),
   );
   wfsFilterEnabled = computed(() => {
     return (
@@ -81,16 +91,7 @@ export class HsLayerEditorComponent {
 
   titleUnsaved = computed(() => this.layerTitle() != getTitle(this.olLayer()));
 
-  constructor(
-    private hsConfig: HsConfig,
-    private HsStylerService: HsStylerService,
-    private HsLayoutService: HsLayoutService,
-    private HsLayerEditorService: HsLayerEditorService,
-    private HsEventBusService: HsEventBusService,
-    private HsDialogContainerService: HsDialogContainerService,
-    private hsLayerManagerUtilsService: HsLayerManagerUtilsService,
-    private hsLayerManagerCopyLayerService: HsLayerManagerCopyLayerService,
-  ) {
+  constructor() {
     toObservable(this.layer)
       .pipe(
         map((layer) => {
@@ -126,7 +127,7 @@ export class HsLayerEditorComponent {
    * @returns an empty promise
    */
   async createSaveDialog() {
-    const dialog = this.HsDialogContainerService.create(
+    const dialog = this.hsDialogContainerService.create(
       HsConfirmDialogComponent,
       {
         message: 'LAYERMANAGER.layerEditor.savegeojson',
@@ -146,7 +147,7 @@ export class HsLayerEditorComponent {
    * @returns a promise
    */
   zoomToLayer(): Promise<any> {
-    return this.HsLayerEditorService.zoomToLayer(this.olLayer());
+    return this.hsLayerEditorService.zoomToLayer(this.olLayer());
   }
 
   /**
@@ -154,8 +155,8 @@ export class HsLayerEditorComponent {
    */
   styleLayer() {
     const layer = this.olLayer();
-    this.HsStylerService.layer.set(layer as VectorLayer<VectorSource<Feature>>);
-    this.HsLayoutService.setMainPanel('styler');
+    this.hsStylerService.layer.set(layer as VectorLayer<VectorSource<Feature>>);
+    this.hsLayoutService.setMainPanel('styler');
   }
 
   /**
@@ -167,7 +168,7 @@ export class HsLayerEditorComponent {
   }
 
   removeLayer(): void {
-    this.HsDialogContainerService.create(
+    this.hsDialogContainerService.create(
       HsLayerManagerRemoveLayerDialogComponent,
       {olLayer: this.olLayer()},
     );
@@ -181,18 +182,18 @@ export class HsLayerEditorComponent {
     if (layer == undefined) {
       return;
     }
-    this.HsLayerEditorService.layerTitleChange.next({
+    this.hsLayerEditorService.layerTitleChange.next({
       newTitle: this.layerTitle(),
       oldTitle: getTitle(layer),
       layer,
     });
     setTitle(layer, this.layerTitle());
-    this.HsEventBusService.layerManagerUpdates.next(null);
+    this.hsEventBusService.layerManagerUpdates.next(null);
     this.toggleLayerRename();
   }
 
   async copyLayer(): Promise<void> {
-    const dialog = this.HsDialogContainerService.create(
+    const dialog = this.hsDialogContainerService.create(
       HsCopyLayerDialogComponent,
       {
         message: 'LAYERMANAGER.layerEditor.copyLayer',
@@ -211,6 +212,6 @@ export class HsLayerEditorComponent {
    * layer will be automatically selected via hsLayerSelectorService
    */
   openWfsFilter() {
-    this.HsLayoutService.setMainPanel('wfsFilter');
+    this.hsLayoutService.setMainPanel('wfsFilter');
   }
 }

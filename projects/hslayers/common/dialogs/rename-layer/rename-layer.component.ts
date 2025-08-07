@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewRef} from '@angular/core';
+import {Component, OnInit, ViewRef, inject} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {TranslatePipe} from '@ngx-translate/core';
 
@@ -12,6 +12,8 @@ import {HsDialogItem} from '../dialog-item';
   imports: [TranslatePipe, FormsModule],
 })
 export class HsRenameLayerDialogComponent implements HsDialogComponent, OnInit {
+  hsDialogContainerService = inject(HsDialogContainerService);
+
   dialogItem: HsDialogItem;
   viewRef: ViewRef;
   newLayerName: string;
@@ -19,7 +21,6 @@ export class HsRenameLayerDialogComponent implements HsDialogComponent, OnInit {
     currentName: string;
   };
 
-  constructor(public hsDialogContainerService: HsDialogContainerService) {}
   ngOnInit(): void {
     this.newLayerName = this.data.currentName;
   }

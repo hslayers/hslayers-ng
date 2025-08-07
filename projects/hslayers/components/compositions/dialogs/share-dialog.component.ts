@@ -1,4 +1,4 @@
-import {Component, ViewRef} from '@angular/core';
+import {Component, ViewRef, inject} from '@angular/core';
 
 import {
   HsDialogComponent,
@@ -11,20 +11,18 @@ import {HsShareService} from 'hslayers-ng/components/share';
   standalone: false,
 })
 export class HsCompositionsShareDialogComponent implements HsDialogComponent {
+  hsDialogContainerService = inject(HsDialogContainerService);
+  hsShareService = inject(HsShareService);
+
   viewRef: ViewRef;
   data: {url; title; abstract};
 
-  constructor(
-    public HsDialogContainerService: HsDialogContainerService,
-    public HsShareService: HsShareService,
-  ) {}
-
   close(): void {
-    this.HsDialogContainerService.destroy(this);
+    this.hsDialogContainerService.destroy(this);
   }
 
   shareOnSocial() {
-    this.HsShareService.openInShareApi(
+    this.hsShareService.openInShareApi(
       this.data.title,
       this.data.abstract,
       this.data.url,

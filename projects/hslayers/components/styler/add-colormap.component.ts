@@ -1,4 +1,11 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  inject,
+} from '@angular/core';
 
 import {Feature} from 'ol';
 import {Vector as VectorLayer} from 'ol/layer';
@@ -14,6 +21,9 @@ import {listNumericAttributes} from 'hslayers-ng/services/utils';
   standalone: false,
 })
 export class HsAddColormapComponent implements OnInit {
+  hsLanguageService = inject(HsLanguageService);
+  private hsStylerService = inject(HsStylerService);
+
   name = 'add-colormap';
   @Input() layer: VectorLayer<VectorSource<Feature>>;
   weightAttribute: string;
@@ -23,11 +33,6 @@ export class HsAddColormapComponent implements OnInit {
   max: number | string = '';
   categories: number = 10;
   @Output() canceled = new EventEmitter<void>();
-
-  constructor(
-    public HsLanguageService: HsLanguageService,
-    private hsStylerService: HsStylerService,
-  ) {}
 
   ngOnInit(): void {
     const src = this.layer.getSource();

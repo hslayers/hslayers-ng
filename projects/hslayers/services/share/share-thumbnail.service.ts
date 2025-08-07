@@ -1,4 +1,4 @@
-import {Injectable, Renderer2, RendererFactory2} from '@angular/core';
+import {Injectable, Renderer2, RendererFactory2, inject} from '@angular/core';
 
 import {HsConfig} from 'hslayers-ng/config';
 import {HsLogService} from 'hslayers-ng/services/log';
@@ -8,16 +8,18 @@ import {HsMapService} from 'hslayers-ng/services/map';
   providedIn: 'root',
 })
 export class HsShareThumbnailService {
+  hsMapService = inject(HsMapService);
+  hsLogService = inject(HsLogService);
+  private hsConfig = inject(HsConfig);
+
   private readonly THUMBNAIL_SIZE = 200;
   private readonly SCALE_FACTOR = 2.5;
 
   private renderer: Renderer2;
-  constructor(
-    public HsMapService: HsMapService,
-    public HsLogService: HsLogService,
-    rendererFactory: RendererFactory2,
-    private hsConfig: HsConfig,
-  ) {
+
+  constructor() {
+    const rendererFactory = inject(RendererFactory2);
+
     this.renderer = rendererFactory.createRenderer(null, null);
   }
 
@@ -41,9 +43,9 @@ export class HsShareThumbnailService {
     }
 
     const canvasLayers =
-      this.HsMapService.mapElement.querySelectorAll('.ol-layer canvas');
+      this.hsMapService.mapElement.querySelectorAll('.ol-layer canvas');
     if (canvasLayers.length === 0) {
-      this.HsLogService.warn('No canvas layers found to generate thumbnail.');
+      this.hsLogService.warn('No canvas layers found to generate thumbnail.');
       // Optionally set a default image or return early
       $element.setAttribute(
         'src',
@@ -139,12 +141,12 @@ export class HsShareThumbnailService {
       //this.data.thumbnail
       thumbnail = targetCanvas.toDataURL('image/jpeg', 0.85);
     } catch (e) {
-      this.HsLogService.log(
+      this.hsLogService.log(
         'catch, is tainted?',
         this.isCanvasTainted(targetCanvas),
       );
       //console.log(targetCanvas);
-      this.HsLogService.warn(e);
+      this.hsLogService.warn(e);
       $element.setAttribute(
         'src',
         this.hsConfig.assetsPath + 'img/notAvailable.png',

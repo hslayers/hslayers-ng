@@ -1,5 +1,5 @@
 import {HttpClient} from '@angular/common/http';
-import {Injectable} from '@angular/core';
+import {Injectable, inject} from '@angular/core';
 
 import {Layer, Tile} from 'ol/layer';
 import {Source, WMTS} from 'ol/source';
@@ -20,15 +20,14 @@ import {IGetCapabilities} from './get-capabilities.interface';
 
 @Injectable({providedIn: 'root'})
 export class HsWmtsGetCapabilitiesService implements IGetCapabilities {
+  private httpClient = inject(HttpClient);
+  hsEventBusService = inject(HsEventBusService);
+  hsMapService = inject(HsMapService);
+  hsWmsGetCapabilitiesService = inject(HsWmsGetCapabilitiesService);
+  hsCapabilityCacheService = inject(HsCapabilityCacheService);
+  private hsProxyService = inject(HsProxyService);
+
   service_url: any;
-  constructor(
-    private httpClient: HttpClient,
-    public hsEventBusService: HsEventBusService,
-    public hsMapService: HsMapService,
-    public hsWmsGetCapabilitiesService: HsWmsGetCapabilitiesService,
-    public hsCapabilityCacheService: HsCapabilityCacheService,
-    private hsProxyService: HsProxyService,
-  ) {}
 
   /**
    * Get WMTS service location without parameters from URL string

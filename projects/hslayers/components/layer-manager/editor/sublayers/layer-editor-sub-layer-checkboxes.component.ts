@@ -1,4 +1,4 @@
-import {Component, OnInit, computed, input} from '@angular/core';
+import {Component, OnInit, computed, input, inject} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {NgClass} from '@angular/common';
 
@@ -13,6 +13,10 @@ import {HsSublayer} from 'hslayers-ng/types';
   imports: [FormsModule, NgClass],
 })
 export class HsLayerEditorSubLayerCheckboxesComponent implements OnInit {
+  private hsLayerEditorSublayerService = inject(HsLayerEditorSublayerService);
+  hsLayerManagerVisibilityService = inject(HsLayerManagerVisibilityService);
+  private hsConfig = inject(HsConfig);
+
   parent = input<HsSublayer>();
   subLayer = input.required<HsSublayer>();
 
@@ -28,12 +32,6 @@ export class HsLayerEditorSubLayerCheckboxesComponent implements OnInit {
 
   app: string;
   expanded = false;
-
-  constructor(
-    private hsLayerEditorSublayerService: HsLayerEditorSublayerService,
-    public hsLayerManagerVisibilityService: HsLayerManagerVisibilityService,
-    private hsConfig: HsConfig,
-  ) {}
 
   ngOnInit() {
     this.app = this.hsConfig.id;

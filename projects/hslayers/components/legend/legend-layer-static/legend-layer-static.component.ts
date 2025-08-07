@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnInit, inject} from '@angular/core';
 
 import {HsLegendDescriptor} from '../legend-descriptor.interface';
 import {HsLegendLayerStaticService} from './legend-layer-static.service';
@@ -11,10 +11,10 @@ import {getLegends} from 'hslayers-ng/common/extensions';
   standalone: false,
 })
 export class HsLegendLayerStaticComponent implements OnInit {
+  private hsLegendLayerStaticService = inject(HsLegendLayerStaticService);
+
   @Input() layer: HsLegendDescriptor;
   layerLegend: LayerLegend = {};
-
-  constructor(private hsLegendLayerStaticService: HsLegendLayerStaticService) {}
 
   ngOnInit(): void {
     if (getLegends(this.layer.lyr)) {

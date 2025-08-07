@@ -1,5 +1,5 @@
 import {NgStyle} from '@angular/common';
-import {Component, Input} from '@angular/core';
+import {Component, Input, inject} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {TranslatePipe} from '@ngx-translate/core';
 
@@ -22,6 +22,9 @@ export enum ColorPickers {
   imports: [NgStyle, FormsModule, TranslatePipe, ColorSketchModule],
 })
 export class HsPrintTextStylerComponent {
+  private hsColorPickerService = inject(HsColorPickerService);
+  private hsLanguageService = inject(HsLanguageService);
+
   @Input() textStyle: TextStyle;
   @Input() objectName: string;
   fillPickerVisible = false;
@@ -30,10 +33,6 @@ export class HsPrintTextStylerComponent {
   backgroundColor = 'white';
   stylingOptions = TEXT_STYLING_OPTIONS;
   positionOptions = POSITION_OPTIONS;
-  constructor(
-    private hsColorPickerService: HsColorPickerService,
-    private hsLanguageService: HsLanguageService,
-  ) {}
 
   /**
    * Triggered when color picker value has been selected

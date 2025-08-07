@@ -1,5 +1,5 @@
 import {HttpClient} from '@angular/common/http';
-import {computed, Injectable} from '@angular/core';
+import {computed, Injectable, inject} from '@angular/core';
 import {Subject, finalize, takeUntil} from 'rxjs';
 
 import * as xml2Json from 'xml-js';
@@ -53,6 +53,17 @@ export type HsWfsCapabilitiesLayer = WfsCapabilitiesLayer & {
   providedIn: 'root',
 })
 export class HsUrlWfsService implements HsUrlTypeServiceModel {
+  private http = inject(HttpClient);
+  hsWfsGetCapabilitiesService = inject(HsWfsGetCapabilitiesService);
+  private hsLog = inject(HsLogService);
+  hsMapService = inject(HsMapService);
+  hsEventBusService = inject(HsEventBusService);
+  hsLayoutService = inject(HsLayoutService);
+  hsAddDataCommonService = inject(HsAddDataCommonService);
+  private hsAddDataUrlService = inject(HsAddDataUrlService);
+  private hsCommonLaymanService = inject(HsCommonLaymanService);
+  private hsProxyService = inject(HsProxyService);
+
   data: UrlDataObject;
   definedProjections: string[];
   loadingFeatures: boolean;
@@ -65,18 +76,7 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
     return isLaymanUrl(url, this.hsCommonLaymanService.layman());
   });
 
-  constructor(
-    private http: HttpClient,
-    public hsWfsGetCapabilitiesService: HsWfsGetCapabilitiesService,
-    private hsLog: HsLogService,
-    public hsMapService: HsMapService,
-    public hsEventBusService: HsEventBusService,
-    public hsLayoutService: HsLayoutService,
-    public hsAddDataCommonService: HsAddDataCommonService,
-    private hsAddDataUrlService: HsAddDataUrlService,
-    private hsCommonLaymanService: HsCommonLaymanService,
-    private hsProxyService: HsProxyService,
-  ) {
+  constructor() {
     this.setDataToDefault();
   }
 

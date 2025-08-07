@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, inject} from '@angular/core';
 import {Observable, of, switchMap} from 'rxjs';
 
 import {
@@ -21,7 +21,6 @@ import {
 import {HsPanelBaseComponent} from 'hslayers-ng/common/panels';
 import {HsRemoveLayerDialogService} from 'hslayers-ng/common/remove-multiple';
 import {HsShareUrlService} from 'hslayers-ng/services/share';
-import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'hs-add-data',
@@ -29,20 +28,20 @@ import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
   standalone: false,
 })
 export class HsAddDataComponent extends HsPanelBaseComponent implements OnInit {
+  hsAddDataService = inject(HsAddDataService);
+  hsShareUrlService = inject(HsShareUrlService);
+  hsAddDataUrlService = inject(HsAddDataUrlService);
+  private hsDialogContainerService = inject(HsDialogContainerService);
+  hsAddDataCatalogueService = inject(HsAddDataCatalogueService);
+  private hsRemoveLayerDialogService = inject(HsRemoveLayerDialogService);
+  private hsLaymanService = inject(HsLaymanService);
+  /*
+   * Make sure the hsLayerSynchronizerService is available in the setups with add-data
+   */
+  private hsLayerSynchronizerService = inject(HsLayerSynchronizerService);
+
   layersAvailable: Observable<boolean>;
-  constructor(
-    public hsAddDataService: HsAddDataService,
-    public hsShareUrlService: HsShareUrlService,
-    public hsAddDataUrlService: HsAddDataUrlService,
-    private hsDialogContainerService: HsDialogContainerService,
-    public hsAddDataCatalogueService: HsAddDataCatalogueService,
-    private hsRemoveLayerDialogService: HsRemoveLayerDialogService,
-    private hsLaymanService: HsLaymanService,
-    /**
-     * Make sure the hsLayerSynchronizerService is available in the setups with add-data
-     */
-    private hsLayerSynchronizerService: HsLayerSynchronizerService,
-  ) {
+  constructor() {
     super();
     this.layersAvailable =
       this.hsAddDataCatalogueService.addDataCatalogueLoaded.pipe(

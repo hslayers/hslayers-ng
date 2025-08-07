@@ -1,4 +1,5 @@
-import {Injectable} from '@angular/core';
+import {Injectable, inject} from '@angular/core';
+
 import {Layer} from 'ol/layer';
 import {Source, Vector as VectorSource, XYZ} from 'ol/source';
 
@@ -21,12 +22,12 @@ import {getDimensions} from 'hslayers-ng/common/extensions';
   providedIn: 'root',
 })
 export class HsDimensionService {
-  constructor(
-    public $log: HsLogService,
-    public hsDimensionTimeService: HsDimensionTimeService,
-    public hsEventBusService: HsEventBusService,
-    public hsMapService: HsMapService,
-  ) {
+  $log = inject(HsLogService);
+  hsDimensionTimeService = inject(HsDimensionTimeService);
+  hsEventBusService = inject(HsEventBusService);
+  hsMapService = inject(HsMapService);
+
+  constructor() {
     this.hsDimensionTimeService.layerTimeChanges.subscribe(
       ({layer: layerDescriptor, time: newTime}) => {
         const dimensions = getDimensions(layerDescriptor.layer);

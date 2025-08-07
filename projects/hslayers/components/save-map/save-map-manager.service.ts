@@ -9,7 +9,13 @@ import {
 } from 'rxjs';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {HttpClient} from '@angular/common/http';
-import {Injectable, signal, Signal, WritableSignal} from '@angular/core';
+import {
+  Injectable,
+  signal,
+  Signal,
+  WritableSignal,
+  inject,
+} from '@angular/core';
 
 import {
   AccessRightsModel,
@@ -85,6 +91,18 @@ export class HsSaveMapManagerParams {
   providedIn: 'root',
 })
 export class HsSaveMapManagerService extends HsSaveMapManagerParams {
+  private hsMapService = inject(HsMapService);
+  private hsSaveMapService = inject(HsSaveMapService);
+  private http = inject(HttpClient);
+  private hsShareService = inject(HsShareService);
+  private hsLaymanService = inject(HsLaymanService);
+  private hsLayoutService = inject(HsLayoutService);
+  private hsEventBusService = inject(HsEventBusService);
+  private hsLogService = inject(HsLogService);
+  private hsCompositionsParserService = inject(HsCompositionsParserService);
+  private hsCommonLaymanService = inject(HsCommonLaymanService);
+  private hsToastService = inject(HsToastService);
+
   private mapResets = this.hsEventBusService.mapResets.pipe(
     filter(() => {
       return (
@@ -135,22 +153,6 @@ export class HsSaveMapManagerService extends HsSaveMapManagerParams {
   });
 
   currentCompositionEditable: WritableSignal<boolean> = signal(false);
-
-  constructor(
-    private hsMapService: HsMapService,
-    private hsSaveMapService: HsSaveMapService,
-    private http: HttpClient,
-    private hsShareService: HsShareService,
-    private hsLaymanService: HsLaymanService,
-    private hsLayoutService: HsLayoutService,
-    private hsEventBusService: HsEventBusService,
-    private hsLogService: HsLogService,
-    private hsCompositionsParserService: HsCompositionsParserService,
-    private hsCommonLaymanService: HsCommonLaymanService,
-    private hsToastService: HsToastService,
-  ) {
-    super();
-  }
 
   parseAccessRights(metadata: LaymanCompositionDescriptor): string {
     this.currentCompositionEditable.set(true);

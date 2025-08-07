@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component} from '@angular/core';
+import {ChangeDetectionStrategy, Component, inject} from '@angular/core';
 
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 
@@ -9,5 +9,5 @@ import {HsEventBusService} from 'hslayers-ng/services/event-bus';
   standalone: false,
 })
 export class HsUrlProgressComponent {
-  constructor(public hsEventBusService: HsEventBusService) {}
+  hsEventBusService = inject(HsEventBusService);
 }

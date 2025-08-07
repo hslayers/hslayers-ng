@@ -15,6 +15,8 @@ import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 export class HsLayerEditorWidgetBaseComponent
   implements HsPanelComponent, OnInit
 {
+  hsLayerSelectorService = inject(HsLayerSelectorService);
+
   /**
    * This could be used to enable/disable widgets by name on HsConfig level
    */
@@ -28,7 +30,7 @@ export class HsLayerEditorWidgetBaseComponent
   baseComponentInitRun = false;
   destroyRef = inject(DestroyRef);
 
-  constructor(public hsLayerSelectorService: HsLayerSelectorService) {
+  constructor() {
     this.layerDescriptor.subscribe((descriptor) => {
       this.olLayer = descriptor?.layer;
     });

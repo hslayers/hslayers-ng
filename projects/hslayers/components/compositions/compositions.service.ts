@@ -1,9 +1,9 @@
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {Injectable} from '@angular/core';
+import {Injectable, inject} from '@angular/core';
 
 import {Feature} from 'ol';
 import {Geometry} from 'ol/geom';
-import {Observable, Subject, filter, lastValueFrom, pipe} from 'rxjs';
+import {Observable, Subject, lastValueFrom} from 'rxjs';
 
 import {DuplicateHandling, HsMapService} from 'hslayers-ng/services/map';
 import {HS_PRMS, HsShareUrlService} from 'hslayers-ng/services/share';
@@ -25,29 +25,29 @@ import {HsProxyService} from 'hslayers-ng/services/utils';
   providedIn: 'root',
 })
 export class HsCompositionsService {
+  private http = inject(HttpClient);
+  private hsMapService = inject(HsMapService);
+  private hsCompositionsParserService = inject(HsCompositionsParserService);
+  private hsConfig = inject(HsConfig);
+  private HsShareUrlService = inject(HsShareUrlService);
+  private hsCompositionsMickaService = inject(HsCompositionsMickaService);
+  private hsCompositionsLaymanService = inject(HsCompositionsLaymanService);
+  private hsLanguageService = inject(HsLanguageService);
+  private $log = inject(HsLogService);
+  private hsCommonEndpointsService = inject(HsCommonEndpointsService);
+  private hsCompositionsMapService = inject(HsCompositionsMapService);
+  private hsEventBusService = inject(HsEventBusService);
+  private hsToastService = inject(HsToastService);
+  private hsLayerManagerService = inject(HsLayerManagerService);
+  private hsProxyService = inject(HsProxyService);
+
   data: any = {};
   compositionToLoad: {url: string; title: string};
   notSavedOrEditedCompositionLoading: Subject<{url: string; record?: any}> =
     new Subject();
   compositionNotFoundAtUrl: Subject<any> = new Subject();
   shareId: string;
-  constructor(
-    private http: HttpClient,
-    private hsMapService: HsMapService,
-    private hsCompositionsParserService: HsCompositionsParserService,
-    private hsConfig: HsConfig,
-    private HsShareUrlService: HsShareUrlService,
-    private hsCompositionsMickaService: HsCompositionsMickaService,
-    private hsCompositionsLaymanService: HsCompositionsLaymanService,
-    private hsLanguageService: HsLanguageService,
-    private $log: HsLogService,
-    private hsCommonEndpointsService: HsCommonEndpointsService,
-    private hsCompositionsMapService: HsCompositionsMapService,
-    private hsEventBusService: HsEventBusService,
-    private hsToastService: HsToastService,
-    private hsLayerManagerService: HsLayerManagerService,
-    private hsProxyService: HsProxyService,
-  ) {
+  constructor() {
     this.hsEventBusService.compositionEdits.subscribe(() => {
       this.hsCompositionsParserService.composition_edited = true;
     });
@@ -58,9 +58,11 @@ export class HsCompositionsService {
     });
 
     const permalink = this.HsShareUrlService.getParamValue(HS_PRMS.permalink);
-    permalink
-      ? this.parsePermalinkLayers(permalink)
-      : this.tryParseCompositionFromUrlParam();
+    if (permalink) {
+      this.parsePermalinkLayers(permalink);
+    } else {
+      this.tryParseCompositionFromUrlParam();
+    }
 
     if (this.hsConfig.base_layers && !permalink) {
       this.loadBaseLayersComposition();

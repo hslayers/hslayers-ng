@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {Injectable, inject} from '@angular/core';
 
 import {HsLayerDescriptor, HsSublayer} from 'hslayers-ng/types';
 import {HsLayerEditorSublayerService} from '../editor/sublayers/layer-editor-sub-layer.service';
@@ -9,10 +9,8 @@ import {isLayerQueryable} from 'hslayers-ng/services/utils';
   providedIn: 'root',
 })
 export class HsLayerListService {
-  constructor(
-    public hsLayerManagerService: HsLayerManagerService,
-    public hsLayerEditorSublayerService: HsLayerEditorSublayerService,
-  ) {}
+  hsLayerManagerService = inject(HsLayerManagerService);
+  hsLayerEditorSublayerService = inject(HsLayerEditorSublayerService);
 
   /**
    * Controls state of layer's sublayers checkboxes with layer visibility changes

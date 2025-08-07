@@ -1,24 +1,20 @@
 import {HttpClient} from '@angular/common/http';
-import {Injectable, WritableSignal, signal} from '@angular/core';
-
-import {lastValueFrom, takeUntil} from 'rxjs';
+import {Injectable, WritableSignal, signal, inject} from '@angular/core';
 
 import {CapabilitiesResponseWrapper} from 'hslayers-ng/types';
 import {HsCapabilityCacheService} from './capability-cache.service';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
-import {getParamsFromUrl, HsProxyService} from 'hslayers-ng/services/utils';
+import {HsProxyService} from 'hslayers-ng/services/utils';
 import {IGetCapabilities} from './get-capabilities.interface';
 
 @Injectable({providedIn: 'root'})
 export class HsXyzGetCapabilitiesService implements IGetCapabilities {
-  service_url: WritableSignal<string> = signal('');
+  private httpClient = inject(HttpClient);
+  private hsEventBusService = inject(HsEventBusService);
+  private hsCapabilityCacheService = inject(HsCapabilityCacheService);
+  private hsProxyService = inject(HsProxyService);
 
-  constructor(
-    private httpClient: HttpClient,
-    private hsEventBusService: HsEventBusService,
-    private hsCapabilityCacheService: HsCapabilityCacheService,
-    private hsProxyService: HsProxyService,
-  ) {}
+  service_url: WritableSignal<string> = signal('');
 
   /**
    * Get XYZ service location without parameters from url string

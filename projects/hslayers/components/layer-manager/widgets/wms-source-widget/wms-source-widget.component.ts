@@ -1,5 +1,5 @@
 import {CommonModule} from '@angular/common';
-import {Component} from '@angular/core';
+import {Component, inject} from '@angular/core';
 import {Observable, map, tap} from 'rxjs';
 import {TranslatePipe} from '@ngx-translate/core';
 
@@ -20,18 +20,17 @@ import {HsMapService} from 'hslayers-ng/services/map';
   templateUrl: './wms-source-widget.component.html',
 })
 export class HsWmsSourceWidgetComponent extends HsLayerEditorWidgetBaseComponent {
+  private hsMapService = inject(HsMapService);
+  private hsLayerShiftingService = inject(HsLayerShiftingService);
+  private hsDialogContainerService = inject(HsDialogContainerService);
+
   name = 'wms-source-widget';
   isEnabled: Observable<boolean>;
 
   options = ['Tile', 'Image'];
   currentType: string;
-  constructor(
-    hsLayerSelectorService: HsLayerSelectorService,
-    private hsMapService: HsMapService,
-    private hsLayerShiftingService: HsLayerShiftingService,
-    private hsDialogContainerService: HsDialogContainerService,
-  ) {
-    super(hsLayerSelectorService);
+  constructor() {
+    super();
     this.isEnabled = this.layerDescriptor.pipe(
       tap((l) => {
         this.currentType = instOf(l.layer, ImageLayer) ? 'Image' : 'Tile';

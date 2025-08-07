@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, inject} from '@angular/core';
 
 import {
   HsAddDataCommonFileService,
@@ -15,6 +15,13 @@ import {HsUrlGeoSparqlService} from './geosparql.service';
   standalone: false,
 })
 export class HsUrlGeoSparqlComponent {
+  hsAddDataCommonService = inject(HsAddDataCommonService);
+  hsAddDataCommonFileService = inject(HsAddDataCommonFileService);
+  hsAddDataVectorService = inject(HsAddDataVectorService);
+  hsHistoryListService = inject(HsHistoryListService);
+  hsLayoutService = inject(HsLayoutService);
+  hsUrlGeoSparqlService = inject(HsUrlGeoSparqlService);
+
   querySuccessful: boolean;
   showDetails: boolean;
   validEndpoint: boolean;
@@ -30,14 +37,7 @@ export class HsUrlGeoSparqlComponent {
     url?: string;
   };
 
-  constructor(
-    public hsAddDataCommonService: HsAddDataCommonService,
-    public hsAddDataCommonFileService: HsAddDataCommonFileService,
-    public hsAddDataVectorService: HsAddDataVectorService,
-    public hsHistoryListService: HsHistoryListService,
-    public hsLayoutService: HsLayoutService,
-    public hsUrlGeoSparqlService: HsUrlGeoSparqlService,
-  ) {
+  constructor() {
     this.data = {
       type: 'sparql',
     };

@@ -1,5 +1,6 @@
+import {Injectable, inject} from '@angular/core';
+
 import {Extent} from 'ol/extent';
-import {Injectable} from '@angular/core';
 import {Layer} from 'ol/layer';
 import {Source} from 'ol/source';
 import {WMSCapabilities, WMTSCapabilities} from 'ol/format';
@@ -34,7 +35,6 @@ import {
   getMetadata,
   getName,
   getSubLayers,
-  getTitle,
   getWorkspace,
   setAttribution,
   setCacheCapabilities,
@@ -63,19 +63,19 @@ import {
   providedIn: 'root',
 })
 export class HsLayerManagerMetadataService {
-  constructor(
-    public HsWmtsGetCapabilitiesService: HsWmtsGetCapabilitiesService,
-    public HsWfsGetCapabilitiesService: HsWfsGetCapabilitiesService,
-    public HsWmsGetCapabilitiesService: HsWmsGetCapabilitiesService,
-    private HsArcgisGetCapabilitiesService: HsArcgisGetCapabilitiesService,
-    public HsDimensionTimeService: HsDimensionTimeService,
-    public hsLog: HsLogService,
-    public hsUrlWmsService: HsUrlWmsService,
-    private hsMapService: HsMapService,
-    private hsAddDataUrlService: HsAddDataUrlService,
-    private hsCommonLaymanService: HsCommonLaymanService,
-    private hsCommonLaymanLayerService: HsCommonLaymanLayerService,
-  ) {}
+  hsWmtsGetCapabilitiesService = inject(HsWmtsGetCapabilitiesService);
+  hsWfsGetCapabilitiesService = inject(HsWfsGetCapabilitiesService);
+  hsWmsGetCapabilitiesService = inject(HsWmsGetCapabilitiesService);
+  private hsArcgisGetCapabilitiesService = inject(
+    HsArcgisGetCapabilitiesService,
+  );
+  hsDimensionTimeService = inject(HsDimensionTimeService);
+  hsLog = inject(HsLogService);
+  hsUrlWmsService = inject(HsUrlWmsService);
+  private hsMapService = inject(HsMapService);
+  private hsAddDataUrlService = inject(HsAddDataUrlService);
+  private hsCommonLaymanService = inject(HsCommonLaymanService);
+  private hsCommonLaymanLayerService = inject(HsCommonLaymanLayerService);
 
   /**
    * Recursive callback which identifies object representing added layer in WMS getCapabilities structure.
@@ -285,7 +285,7 @@ export class HsLayerManagerMetadataService {
       (layerObj.Dimension as WmsDimension)?.name === 'time' ||
       (layerObj.Dimension as WmsDimension[])?.find((dim) => dim.name === 'time')
     ) {
-      this.HsDimensionTimeService.setupTimeLayer(layerDescriptor, layerObj);
+      this.hsDimensionTimeService.setupTimeLayer(layerDescriptor, layerObj);
     }
     if (layerObj.Layer && getSubLayers(olLayer)) {
       layerObj.maxResolution = this.searchForScaleDenominator(layerObj);
@@ -370,9 +370,11 @@ export class HsLayerManagerMetadataService {
        * Possible when layer comes from composition
        */
       const params = getLayerParams(layer);
-      params.ignoreExtent
-        ? this.setExtentAndOriginalExtent(extent, layer)
-        : layer.setExtent(extent);
+      if (params.ignoreExtent) {
+        this.setExtentAndOriginalExtent(extent, layer);
+      } else {
+        layer.setExtent(extent);
+      }
     }
   }
 
@@ -442,7 +444,7 @@ export class HsLayerManagerMetadataService {
     }
     //ArcGIS
     if (isLayerArcgis(layer)) {
-      const wrapper = await this.HsArcgisGetCapabilitiesService.request(url);
+      const wrapper = await this.hsArcgisGetCapabilitiesService.request(url);
       if (wrapper.error) {
         return wrapper.response;
       }
@@ -464,7 +466,7 @@ export class HsLayerManagerMetadataService {
         );
 
         if (desc.wms.time) {
-          this.HsDimensionTimeService.setupTimeLayer(layerDescriptor, {
+          this.hsDimensionTimeService.setupTimeLayer(layerDescriptor, {
             Dimension: {
               ...desc.wms.time,
               name: 'Date',
@@ -478,7 +480,7 @@ export class HsLayerManagerMetadataService {
       /**
        * Common WMS
        */
-      const wrapper = await this.HsWmsGetCapabilitiesService.request(url);
+      const wrapper = await this.hsWmsGetCapabilitiesService.request(url);
       if (wrapper.error) {
         this.hsLog.warn('GetCapabilities call invalid', wrapper.response);
         return wrapper.response;
@@ -516,7 +518,7 @@ export class HsLayerManagerMetadataService {
     }
     //WMTS
     else if (isLayerWMTS(layer)) {
-      const wrapper = await this.HsWmtsGetCapabilitiesService.request(url);
+      const wrapper = await this.hsWmtsGetCapabilitiesService.request(url);
       if (wrapper.error) {
         return wrapper.response;
       }
@@ -533,7 +535,7 @@ export class HsLayerManagerMetadataService {
     //WFS and vector
     else if (isLayerVectorLayer(layer)) {
       if (url) {
-        const wrapper = await this.HsWfsGetCapabilitiesService.request(url);
+        const wrapper = await this.hsWfsGetCapabilitiesService.request(url);
         if (wrapper.error) {
           return wrapper.response;
         }

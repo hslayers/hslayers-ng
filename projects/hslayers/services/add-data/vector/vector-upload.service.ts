@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {Injectable, inject} from '@angular/core';
 
 import {Feature} from 'ol';
 import {Projection, get as getProjection} from 'ol/proj';
@@ -13,6 +13,10 @@ import {HsAddDataVectorUtilsService} from './vector-utils.service';
   providedIn: 'root',
 })
 export class HsAddDataVectorUploadService {
+  private hsLog = inject(HsLogService);
+  private hsMapService = inject(HsMapService);
+  private hsAddDataVectorUtilsService = inject(HsAddDataVectorUtilsService);
+
   readUploadedFileAsText = (inputFile: any) => {
     const temporaryFileReader = new FileReader();
     return new Promise((resolve, reject) => {
@@ -39,12 +43,6 @@ export class HsAddDataVectorUploadService {
       temporaryFileReader.readAsDataURL(inputFile);
     });
   };
-
-  constructor(
-    private hsLog: HsLogService,
-    private hsMapService: HsMapService,
-    private hsAddDataVectorUtilsService: HsAddDataVectorUtilsService,
-  ) {}
 
   /**
    * Create a object containing data from XML dataset

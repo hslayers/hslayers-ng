@@ -1,4 +1,4 @@
-import {AfterContentInit, Component, Input} from '@angular/core';
+import {AfterContentInit, Component, Input, inject} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {NgClass, SlicePipe} from '@angular/common';
 import {TranslatePipe} from '@ngx-translate/core';
@@ -30,6 +30,12 @@ import {HsNestedLayersTableComponent} from './nested-layers-table/nested-layers-
   ],
 })
 export class HsLayerTableComponent implements AfterContentInit {
+  hsAddDataUrlService = inject(HsAddDataUrlService);
+  hsAddDataService = inject(HsAddDataService);
+  hsLanguageService = inject(HsLanguageService);
+  hsUrlWmsService = inject(HsUrlWmsService);
+  hsAddDataCommonService = inject(HsAddDataCommonService);
+
   @Input() injectedService: HsUrlTypeServiceModel;
   @Input() type: AddDataUrlType;
 
@@ -37,13 +43,6 @@ export class HsLayerTableComponent implements AfterContentInit {
   checkedSubLayers = {};
   getDimensionValues: any;
   limitShown = 100;
-  constructor(
-    public hsAddDataUrlService: HsAddDataUrlService,
-    public hsAddDataService: HsAddDataService,
-    public hsLanguageService: HsLanguageService,
-    public hsUrlWmsService: HsUrlWmsService,
-    public hsAddDataCommonService: HsAddDataCommonService,
-  ) {}
 
   ngAfterContentInit(): void {
     this.data = this.injectedService.data;

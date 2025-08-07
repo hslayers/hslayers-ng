@@ -30,6 +30,11 @@ import {HsUploadComponent} from 'hslayers-ng/common/upload';
   standalone: false,
 })
 export class HsAddDataFileBaseComponent implements OnInit, AfterViewInit {
+  hsAddDataCommonService = inject(HsAddDataCommonService);
+  hsAddDataCommonFileService = inject(HsAddDataCommonFileService);
+  hsLayoutService = inject(HsLayoutService);
+  hsConfig = inject(HsConfig);
+
   app: string;
   data: FileDataObject;
   fileInput: ElementRef;
@@ -38,12 +43,6 @@ export class HsAddDataFileBaseComponent implements OnInit, AfterViewInit {
   private destroyRef = inject(DestroyRef);
 
   @ViewChild(HsUploadComponent) hsUploadComponent: HsUploadComponent;
-  constructor(
-    public hsAddDataCommonService: HsAddDataCommonService,
-    public hsAddDataCommonFileService: HsAddDataCommonFileService,
-    public hsLayoutService: HsLayoutService,
-    public hsConfig: HsConfig,
-  ) {}
 
   clearInput(): void {
     if (this.fileInput) {

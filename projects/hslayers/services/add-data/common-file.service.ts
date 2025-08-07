@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {Injectable, inject} from '@angular/core';
 
 import {Subject} from 'rxjs';
 
@@ -53,21 +53,17 @@ export class HsAddDataCommonFileServiceParams {
 
 @Injectable({providedIn: 'root'})
 export class HsAddDataCommonFileService extends HsAddDataCommonFileServiceParams {
-  constructor(
-    private hsAddDataOwsService: HsAddDataOwsService,
-    private hsAddDataUrlService: HsAddDataUrlService,
-    private hsAddDataService: HsAddDataService,
-    private hsDialogContainerService: HsDialogContainerService,
-    private hsLanguageService: HsLanguageService,
-    private hsLaymanService: HsLaymanService,
-    private hsLog: HsLogService,
-    private hsToastService: HsToastService,
-    private hsCommonLaymanService: HsCommonLaymanService,
-    private hsCommonLaymanLayerService: HsCommonLaymanLayerService,
-    private hsProxyService: HsProxyService,
-  ) {
-    super();
-  }
+  private hsAddDataOwsService = inject(HsAddDataOwsService);
+  private hsAddDataUrlService = inject(HsAddDataUrlService);
+  private hsAddDataService = inject(HsAddDataService);
+  private hsDialogContainerService = inject(HsDialogContainerService);
+  private hsLanguageService = inject(HsLanguageService);
+  private hsLaymanService = inject(HsLaymanService);
+  private hsLog = inject(HsLogService);
+  private hsToastService = inject(HsToastService);
+  private hsCommonLaymanService = inject(HsCommonLaymanService);
+  private hsCommonLaymanLayerService = inject(HsCommonLaymanLayerService);
+  private hsProxyService = inject(HsProxyService);
 
   /**
    * Clear service param values to default values

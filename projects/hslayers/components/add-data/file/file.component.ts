@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, inject} from '@angular/core';
 
 import {AddDataFileType, FILES_SUPPORTED} from 'hslayers-ng/types';
 import {AddDataFileValues} from './file-type-values';
@@ -11,13 +11,13 @@ import {HsLanguageService} from 'hslayers-ng/services/language';
   standalone: false,
 })
 export class HsAddDataFileComponent {
+  hsConfig = inject(HsConfig);
+  hsLanguageService = inject(HsLanguageService);
+
   typeSelected: AddDataFileType;
   types: {id: AddDataFileType; text: string}[];
 
-  constructor(
-    public hsConfig: HsConfig,
-    public hsLanguageService: HsLanguageService,
-  ) {
+  constructor() {
     if (Array.isArray(this.hsConfig.uploadTypes)) {
       this.types = this.hsConfig.uploadTypes
         .filter((type) => FILES_SUPPORTED.includes(type))

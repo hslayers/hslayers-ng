@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {Injectable, inject} from '@angular/core';
 
 import {FileDataObject} from 'hslayers-ng/types';
 import {HsAddDataCommonFileService} from 'hslayers-ng/services/add-data';
@@ -7,11 +7,10 @@ import {HsUploadedFiles} from 'hslayers-ng/common/upload';
 
 @Injectable({providedIn: 'root'})
 export class HsFileService {
+  hsLanguageService = inject(HsLanguageService);
+  hsAddDataCommonFileService = inject(HsAddDataCommonFileService);
+
   fileUploadErrorHeader = 'ADDLAYERS.couldNotUploadSelectedFile';
-  constructor(
-    public hsLanguageService: HsLanguageService,
-    public hsAddDataCommonFileService: HsAddDataCommonFileService,
-  ) {}
 
   async read(evt: HsUploadedFiles, readAsText: boolean = false): Promise<void> {
     const filesRead = [];

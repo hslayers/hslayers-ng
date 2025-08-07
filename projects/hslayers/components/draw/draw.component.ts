@@ -1,6 +1,6 @@
 import {AsyncPipe, NgClass} from '@angular/common';
 import {BehaviorSubject} from 'rxjs';
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, inject} from '@angular/core';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {TranslatePipe} from '@ngx-translate/core';
 
@@ -30,23 +30,20 @@ import {HsDrawPanelComponent} from './draw-panel/draw-panel.component';
   ],
 })
 export class HsDrawComponent extends HsPanelBaseComponent implements OnInit {
+  hsDrawService = inject(HsDrawService);
+  hsDialogContainerService = inject(HsDialogContainerService);
+
   name = 'draw';
   selectedOption = new BehaviorSubject('draw');
-  constructor(
-    public HsDrawService: HsDrawService,
-    public HsDialogContainerService: HsDialogContainerService,
-  ) {
-    super();
-  }
 
   ngOnInit(): void {
-    this.HsDrawService.layerMetadataDialog
+    this.hsDrawService.layerMetadataDialog
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(async () => {
         const {HsDrawLayerMetadataDialogComponent} = await import(
           './draw-layer-metadata/draw-layer-metadata.component'
         );
-        this.HsDialogContainerService.create(
+        this.hsDialogContainerService.create(
           HsDrawLayerMetadataDialogComponent,
           {},
         );
@@ -56,7 +53,7 @@ export class HsDrawComponent extends HsPanelBaseComponent implements OnInit {
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((option) => {
         if (option == 'edit') {
-          this.HsDrawService.setType(this.HsDrawService.type);
+          this.hsDrawService.setType(this.hsDrawService.type);
         }
       });
   }

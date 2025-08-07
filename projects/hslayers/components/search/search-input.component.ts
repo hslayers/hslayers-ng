@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit, inject} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {Subscription} from 'rxjs';
 import {TranslatePipe} from '@ngx-translate/core';
@@ -18,17 +18,17 @@ import {HsMapService} from 'hslayers-ng/services/map';
   imports: [FormsModule, TranslatePipe],
 })
 export class HsSearchInputComponent implements OnInit, OnDestroy {
+  private hsConfig = inject(HsConfig);
+  private hsSearchService = inject(HsSearchService);
+  private hsEventBusService = inject(HsEventBusService);
+  private hsShareUrlService = inject(HsShareUrlService);
+  private hsMapService = inject(HsMapService);
+
   query = '';
   searchInputVisible: boolean;
   clearVisible = false;
   searchResultsReceivedSubscription: Subscription;
-  constructor(
-    private hsConfig: HsConfig,
-    private hsSearchService: HsSearchService,
-    private hsEventBusService: HsEventBusService,
-    private hsShareUrlService: HsShareUrlService,
-    private hsMapService: HsMapService,
-  ) {
+  constructor() {
     this.searchResultsReceivedSubscription =
       this.hsEventBusService.searchResultsReceived.subscribe(() => {
         this.clearVisible = true;

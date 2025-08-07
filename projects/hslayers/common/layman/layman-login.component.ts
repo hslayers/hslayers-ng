@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, ViewRef} from '@angular/core';
+import {Component, Input, OnInit, ViewRef, inject} from '@angular/core';
 import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {TranslatePipe} from '@ngx-translate/core';
@@ -15,17 +15,17 @@ import {
   imports: [TranslatePipe],
 })
 export class HsLaymanLoginComponent implements HsDialogComponent, OnInit {
+  hsCommonLaymanService = inject(HsCommonLaymanService);
+  hsDialogContainerService = inject(HsDialogContainerService);
+  private sanitizer = inject(DomSanitizer);
+
   @Input() data: {
     url: string;
   };
   viewRef: ViewRef;
   url: SafeResourceUrl;
-  constructor(
-    public HsCommonLaymanService: HsCommonLaymanService,
-    public HsDialogContainerService: HsDialogContainerService,
-    private sanitizer: DomSanitizer,
-  ) {
-    this.HsCommonLaymanService.layman$
+  constructor() {
+    this.hsCommonLaymanService.layman$
       .pipe(takeUntilDestroyed())
       .subscribe(() => {
         this.close();
@@ -36,6 +36,6 @@ export class HsLaymanLoginComponent implements HsDialogComponent, OnInit {
     this.url = this.sanitizer.bypassSecurityTrustResourceUrl(this.data.url);
   }
   close(): void {
-    this.HsDialogContainerService.destroy(this);
+    this.hsDialogContainerService.destroy(this);
   }
 }

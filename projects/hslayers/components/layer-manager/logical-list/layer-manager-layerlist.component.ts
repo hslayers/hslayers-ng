@@ -1,5 +1,5 @@
 import {AsyncPipe} from '@angular/common';
-import {Component, Input} from '@angular/core';
+import {Component, Input, inject} from '@angular/core';
 import {Observable, map} from 'rxjs';
 import {combineLatestWith, filter, startWith} from 'rxjs/operators';
 import {toObservable} from '@angular/core/rxjs-interop';
@@ -15,14 +15,14 @@ import {HsLayerManagerService} from 'hslayers-ng/services/layer-manager';
   imports: [HsLayerListItemComponent, AsyncPipe],
 })
 export class HsLayerListComponent {
+  hsConfig = inject(HsConfig);
+  hsLayerManagerService = inject(HsLayerManagerService);
+
   @Input({required: true}) folder: string;
 
   filteredLayers: Observable<HsLayerDescriptor[]>;
 
-  constructor(
-    public hsConfig: HsConfig,
-    public hsLayerManagerService: HsLayerManagerService,
-  ) {
+  constructor() {
     this.filteredLayers = this.hsLayerManagerService.data.filter.pipe(
       startWith(''),
       combineLatestWith(

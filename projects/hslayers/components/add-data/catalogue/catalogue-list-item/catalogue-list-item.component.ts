@@ -1,4 +1,4 @@
-import {Component, computed, input} from '@angular/core';
+import {Component, computed, input, inject} from '@angular/core';
 import {NgClass, NgStyle} from '@angular/common';
 import {TranslatePipe} from '@ngx-translate/core';
 
@@ -33,6 +33,14 @@ import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
   imports: [NgClass, NgStyle, TranslatePipe],
 })
 export class HsCatalogueListItemComponent {
+  private hsDatasourcesMetadataService = inject(HsCatalogueMetadataService);
+  hsAddDataCatalogueService = inject(HsAddDataCatalogueService);
+  private hsDialogContainerService = inject(HsDialogContainerService);
+  private hsLaymanBrowserService = inject(HsLaymanBrowserService);
+  private hsLog = inject(HsLogService);
+  private hsRemoveLayerDialogService = inject(HsRemoveLayerDialogService);
+  private hsCommonLaymanService = inject(HsCommonLaymanService);
+
   layer = input<HsAddDataLayerDescriptor>();
 
   title = computed(() => this.layer().title);
@@ -58,16 +66,6 @@ export class HsCatalogueListItemComponent {
   loadingInfo = false;
 
   loadingMetadata = false;
-
-  constructor(
-    private hsDatasourcesMetadataService: HsCatalogueMetadataService,
-    public hsAddDataCatalogueService: HsAddDataCatalogueService,
-    private hsDialogContainerService: HsDialogContainerService,
-    private hsLaymanBrowserService: HsLaymanBrowserService,
-    private hsLog: HsLogService,
-    private hsRemoveLayerDialogService: HsRemoveLayerDialogService,
-    private hsCommonLaymanService: HsCommonLaymanService,
-  ) {}
 
   /**
    * Toggle add layer options

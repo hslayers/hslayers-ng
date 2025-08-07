@@ -10,11 +10,11 @@
       </form>
       @if (currLayer.visible && getBase(currLayer.layer)) {
       <div class="btn-group m-auto d-flex w-75">
-        <button class="btn btn-sm btn-outline-primary  w-50" (click)="HsLayerManagerService.setGreyscale(currLayer)"
+        <button class="btn btn-sm btn-outline-primary  w-50" (click)="hsLayerManagerService.setGreyscale(currLayer)"
           [ngClass]="{'active' : !getGreyscale(currLayer.layer)}" data-toggle="tooltip"
           [title]="'LAYERMANAGER.layerEditor.zoomToLayer' | translate  ">{{'COMMON.color' |
           translate }}</button>
-        <button class="btn btn-sm btn-outline-primary  w-50" (click)="HsLayerManagerService.setGreyscale(currLayer)"
+        <button class="btn btn-sm btn-outline-primary  w-50" (click)="hsLayerManagerService.setGreyscale(currLayer)"
           [ngClass]="{'active' : getGreyscale(currLayer.layer)}" data-toggle="tooltip"
           [title]="'LAYERMANAGER.layerEditor.styleLayer' | translate  ">{{'LAYERMANAGER.baseMapGallery.greyscale'
           | translate }}</button>
@@ -45,7 +45,7 @@
         <i class="fa-solid fa-filter"></i>
       </button>
       }
-      <button class="btn btn-primary" (click)="styleLayer()" [disabled]="!layerIsStyleable()" data-toggle="tooltip"
+      <button class="btn btn-primary" (click)="styleLayer()" [disabled]="!layerIsStylable()" data-toggle="tooltip"
         [title]="'LAYERMANAGER.layerEditor.styleLayer' | translate  "><i class="fa-solid fa-paintbrush"></i></button>
       <button class="btn btn-primary" (click)="toggleLayerRename()" data-toggle="tooltip"
         [title]="'COMMON.renameLayer' | translate  "><i class="fa-solid fa-font"></i></button>

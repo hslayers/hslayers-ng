@@ -4,7 +4,7 @@
     </hs-panel-header>
     <div class="card-body">
       <ul class="m-3 list-group m-auto w-75 py-md-2">
-        @for (lang of available_languages; track lang) {
+        @for (lang of availableLanguages; track lang) {
           <button class="btn m-2 m-md-1 p-4 p-md-2"
             [ngClass]="isCurrentLang(lang.key) ? ' btn-primary' : ' btn-secondary'"
           (click)="setLanguage(lang.key)">{{lang.name}}</button>

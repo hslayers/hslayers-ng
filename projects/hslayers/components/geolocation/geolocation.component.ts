@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 
 import {HsGeolocationService} from './geolocation.service';
 import {HsGuiOverlayBaseComponent} from 'hslayers-ng/common/panels';
@@ -11,13 +11,11 @@ export class HsGeolocationComponent
   extends HsGuiOverlayBaseComponent
   implements OnInit
 {
+  private hsGeolocationService = inject(HsGeolocationService);
+
   collapsed: boolean;
 
   name = 'geolocationButton';
-
-  constructor(private hsGeolocationService: HsGeolocationService) {
-    super();
-  }
   ngOnInit(): void {
     this.collapsed = true;
     super.ngOnInit();

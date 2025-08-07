@@ -5,6 +5,7 @@ import {
   signal,
   ViewRef,
   WritableSignal,
+  inject,
 } from '@angular/core';
 import {TranslatePipe} from '@ngx-translate/core';
 
@@ -35,6 +36,10 @@ import {HsLaymanService} from 'hslayers-ng/services/save-map';
 export class HsSetPermissionsDialogComponent
   implements HsDialogComponent, OnInit
 {
+  hsCommonLaymanService = inject(HsCommonLaymanService);
+  private hsDialogContainerService = inject(HsDialogContainerService);
+  private hsLaymanService = inject(HsLaymanService);
+
   dialogItem: HsDialogItem;
   viewRef: ViewRef;
   access_rights: AccessRightsModel = {
@@ -57,12 +62,6 @@ export class HsSetPermissionsDialogComponent
   endpoint: HsEndpoint;
   state: WritableSignal<'idle' | 'loading' | 'success' | 'error'> =
     signal('idle');
-
-  constructor(
-    public hsCommonLaymanService: HsCommonLaymanService,
-    private hsDialogContainerService: HsDialogContainerService,
-    private hsLaymanService: HsLaymanService,
-  ) {}
 
   ngOnInit(): void {
     // Can set permission for Layman endpoint only

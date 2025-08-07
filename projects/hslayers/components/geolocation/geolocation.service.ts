@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {Injectable, inject} from '@angular/core';
 
 import {Circle, Fill, Stroke, Style} from 'ol/style';
 import {Circle as CircleGeom, Point} from 'ol/geom';
@@ -19,6 +19,9 @@ import {
   providedIn: 'root',
 })
 export class HsGeolocationService {
+  private hsMapService = inject(HsMapService);
+  private hsLayoutService = inject(HsLayoutService);
+
   /**
    * Represents geolocation state (on/off)
    */
@@ -44,17 +47,14 @@ export class HsGeolocationService {
   /**
    * Turns off position centering while 'following'.
    */
-  constructor(
-    private HsMapService: HsMapService,
-    private HsLayoutService: HsLayoutService,
-  ) {
+  constructor() {
     this.setAccuracyFeature();
     this.setPositionFeature();
     this.setStyle();
 
-    this.HsMapService.loaded().then((map) => {
+    this.hsMapService.loaded().then((map) => {
       this.geolocation = new Geolocation({
-        projection: this.HsMapService.getCurrentProj(),
+        projection: this.hsMapService.getCurrentProj(),
         trackingOptions: {
           enableHighAccuracy: true,
         },
@@ -92,7 +92,7 @@ export class HsGeolocationService {
     const rotate = this.getRotate();
     rotate.element.classList.add('hidden');
     this.geolocation.setTracking(false);
-    this.HsMapService.getMap().getView().setRotation(0);
+    this.hsMapService.getMap().getView().setRotation(0);
   }
 
   /**
@@ -102,8 +102,8 @@ export class HsGeolocationService {
   async toggleTracking(): Promise<void> {
     if (this.clicked) {
       this.cancelClick = true;
-      if (this.HsLayoutService.sidebarPosition$.getValue() == 'bottom') {
-        this.HsLayoutService.contentWrapper
+      if (this.hsLayoutService.sidebarPosition$.getValue() == 'bottom') {
+        this.hsLayoutService.contentWrapper
           .querySelector('.hs-locationButton')
           .dispatchEvent(new Event('dblclick'));
       }
@@ -132,7 +132,7 @@ export class HsGeolocationService {
       } else {
         const position = this.geolocation.getPosition();
         if (position) {
-          this.HsMapService.getMap().getView().setCenter(position);
+          this.hsMapService.getMap().getView().setCenter(position);
         }
       }
 
@@ -147,7 +147,7 @@ export class HsGeolocationService {
    */
   stopLocalization(): void {
     this.localization = false;
-    this.HsMapService.getMap().removeLayer(this.position_layer);
+    this.hsMapService.getMap().removeLayer(this.position_layer);
     this.stopTracking();
     if (this.trackOrientation) {
       this.toggleOrientation();
@@ -163,10 +163,11 @@ export class HsGeolocationService {
       this.localization = true;
       this.geolocation.once('change:position', () => {
         this.setNewPosition();
-        this.HsMapService.getMap()
+        this.hsMapService
+          .getMap()
           .getView()
           .setCenter(this.geolocation.getPosition());
-        this.HsMapService.getMap().addLayer(this.position_layer);
+        this.hsMapService.getMap().addLayer(this.position_layer);
         this.position_layer.setZIndex(99);
 
         //stop tracking position
@@ -180,7 +181,7 @@ export class HsGeolocationService {
    */
   isCentered(): any {
     return (
-      JSON.stringify(this.HsMapService.getMap().getView().getCenter()) ===
+      JSON.stringify(this.hsMapService.getMap().getView().getCenter()) ===
       JSON.stringify(this.positionFeature.getGeometry().getCoordinates())
     );
   }
@@ -194,12 +195,12 @@ export class HsGeolocationService {
     this.accuracyFeature
       .getGeometry()
       .setCenterAndRadius(position, this.geolocation.getAccuracy());
-    this.HsMapService.getMap().getView().setCenter(position);
+    this.hsMapService.getMap().getView().setCenter(position);
   }
 
   toggleOrientation(): void {
     this.trackOrientation = !this.trackOrientation;
-    this.HsLayoutService.contentWrapper
+    this.hsLayoutService.contentWrapper
       .querySelector('button.ol-rotate')
       .classList.toggle('active');
 
@@ -211,7 +212,7 @@ export class HsGeolocationService {
       window.addEventListener('deviceorientation', this.orientationListener);
     } else {
       window.removeEventListener('deviceorientation', this.orientationListener);
-      const view = this.HsMapService.getMap().getView();
+      const view = this.hsMapService.getMap().getView();
       view.setRotation(0);
     }
   }
@@ -221,7 +222,8 @@ export class HsGeolocationService {
    */
   handleOrientation(event: DeviceOrientationEvent) {
     const alpha = event.alpha ?? 0;
-    this.HsMapService.getMap()
+    this.hsMapService
+      .getMap()
       .getView()
       .setRotation((360 - alpha) * (Math.PI / 180));
   }
@@ -230,7 +232,7 @@ export class HsGeolocationService {
    * Get map rotate control
    */
   private getRotate(): any {
-    for (const control of this.HsMapService.getMap().getControls().getArray()) {
+    for (const control of this.hsMapService.getMap().getControls().getArray()) {
       if (control instanceof Rotate) {
         return control;
       }

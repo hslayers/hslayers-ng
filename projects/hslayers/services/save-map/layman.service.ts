@@ -1,7 +1,8 @@
-import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {computed, Injectable} from '@angular/core';
-
 import Resumable from 'resumablejs';
+
+import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {computed, Injectable, inject} from '@angular/core';
+
 import {
   Observable,
   Subscription,
@@ -66,6 +67,14 @@ import {normalizeSldComparisonOperators} from 'hslayers-ng/services/utils';
   providedIn: 'root',
 })
 export class HsLaymanService implements HsSaverService {
+  private http = inject(HttpClient);
+  private hsMapService = inject(HsMapService);
+  private hsLogService = inject(HsLogService);
+  private hsToastService = inject(HsToastService);
+  private hsLanguageService = inject(HsLanguageService);
+  private hsCommonLaymanService = inject(HsCommonLaymanService);
+  private hsCommonLaymanLayerService = inject(HsCommonLaymanLayerService);
+
   crs: string;
   totalProgress = 0;
   deleteQuery: Subscription;
@@ -76,16 +85,6 @@ export class HsLaymanService implements HsSaverService {
     }
     return SUPPORTED_SRS_LIST;
   });
-
-  constructor(
-    private http: HttpClient,
-    private hsMapService: HsMapService,
-    private hsLogService: HsLogService,
-    private hsToastService: HsToastService,
-    private hsLanguageService: HsLanguageService,
-    private hsCommonLaymanService: HsCommonLaymanService,
-    private hsCommonLaymanLayerService: HsCommonLaymanLayerService,
-  ) {}
 
   /**
    * Update composition's access rights

@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input, inject} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {TranslatePipe} from '@ngx-translate/core';
 
@@ -13,13 +13,11 @@ import {ScaleObj} from '../types/scale-object.type';
   imports: [FormsModule, TranslatePipe],
 })
 export class HsPrintScaleStylerComponent {
+  private hsPrintScaleService = inject(HsPrintScaleService);
+  private hsLanguageService = inject(HsLanguageService);
+
   @Input() scaleObj: ScaleObj;
   stylingOptions = SCALE_STYLING_OPTIONS;
-
-  constructor(
-    private hsPrintScaleService: HsPrintScaleService,
-    private hsLanguageService: HsLanguageService,
-  ) {}
 
   /**
    * Triggered when scale object values have been changed

@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {Injectable, inject} from '@angular/core';
 
 import {Circle, LineString, Point, Polygon} from 'ol/geom';
 import {Cluster, Source, Vector as VectorSource} from 'ol/source';
@@ -14,12 +14,11 @@ import {instOf} from 'hslayers-ng/services/utils';
   providedIn: 'root',
 })
 export class HsLayerEditorVectorLayerService {
+  hsConfig = inject(HsConfig);
+  hsMapService = inject(HsMapService);
+  hsStylerService = inject(HsStylerService);
+
   layersClusteredFromStart = [];
-  constructor(
-    public hsConfig: HsConfig,
-    public hsMapService: HsMapService,
-    public hsStylerService: HsStylerService,
-  ) {}
 
   /**
    * Convert layer to clustered state where its source gets nested in another

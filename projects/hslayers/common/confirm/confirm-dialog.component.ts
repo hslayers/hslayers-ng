@@ -1,4 +1,4 @@
-import {Component, ViewRef} from '@angular/core';
+import {Component, ViewRef, inject} from '@angular/core';
 import {TranslatePipe} from '@ngx-translate/core';
 
 import {
@@ -13,18 +13,19 @@ import {
   imports: [TranslatePipe],
 })
 export class HsConfirmDialogComponent implements HsDialogComponent {
+  hsDialogContainerService = inject(HsDialogContainerService);
+
   dialogItem: HsDialogItem;
-  constructor(public HsDialogContainerService: HsDialogContainerService) {}
   viewRef: ViewRef;
   data: any;
 
   yes(): void {
-    this.HsDialogContainerService.destroy(this);
+    this.hsDialogContainerService.destroy(this);
     this.dialogItem.resolve('yes');
   }
 
   no(): void {
-    this.HsDialogContainerService.destroy(this);
+    this.hsDialogContainerService.destroy(this);
     this.dialogItem.resolve('no');
   }
 }

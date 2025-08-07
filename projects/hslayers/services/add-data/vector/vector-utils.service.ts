@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {Injectable, inject} from '@angular/core';
 
 import {Projection, get as getProjection} from 'ol/proj';
 import {PROJECTIONS as epsg4326Aliases} from 'ol/proj/epsg4326';
@@ -9,7 +9,8 @@ import {HsLaymanService} from 'hslayers-ng/services/save-map';
   providedIn: 'root',
 })
 export class HsAddDataVectorUtilsService {
-  constructor(private hsLaymanService: HsLaymanService) {}
+  private hsLaymanService = inject(HsLaymanService);
+
   /**
    * Tries to guess file type based on the file extension
    * @param extension - Parsed file extension from uploaded file

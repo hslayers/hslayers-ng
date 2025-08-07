@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, inject} from '@angular/core';
 
 import {Feature} from 'ol';
 import {Vector as VectorLayer} from 'ol/layer';
@@ -19,16 +19,13 @@ export class HsFeatureTableComponent
   extends HsPanelBaseComponent
   implements OnInit
 {
+  private hsFeatureTableService = inject(HsFeatureTableService);
+  private hsConfig = inject(HsConfig);
+  private hsMapService = inject(HsMapService);
+  private hsSidebarService = inject(HsSidebarService);
+
   layers: VectorLayer<VectorSource<Feature>>[] = [];
   name = 'feature-table';
-  constructor(
-    private hsFeatureTableService: HsFeatureTableService,
-    private hsConfig: HsConfig,
-    private hsMapService: HsMapService,
-    private hsSidebarService: HsSidebarService,
-  ) {
-    super();
-  }
 
   ngOnInit(): void {
     this.hsSidebarService.addButton({

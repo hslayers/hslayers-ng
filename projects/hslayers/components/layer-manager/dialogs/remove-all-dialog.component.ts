@@ -1,4 +1,4 @@
-import {Component, Input, ViewRef} from '@angular/core';
+import {Component, Input, ViewRef, inject} from '@angular/core';
 
 import {HsCompositionsParserService} from 'hslayers-ng/services/compositions';
 import {
@@ -24,16 +24,14 @@ import {
 export class HsLayerManagerRemoveAllDialogComponent
   implements HsDialogComponent
 {
+  hsLayerManagerService = inject(HsLayerManagerService);
+  hsDialogContainerService = inject(HsDialogContainerService);
+  hsEventBusService = inject(HsEventBusService);
+  hsCompositionsParserService = inject(HsCompositionsParserService);
+  private hsMapService = inject(HsMapService);
+
   @Input() data: any;
   viewRef: ViewRef;
-
-  constructor(
-    public HsLayerManagerService: HsLayerManagerService,
-    public HsDialogContainerService: HsDialogContainerService,
-    public HsEventBusService: HsEventBusService,
-    public hsCompositionsParserService: HsCompositionsParserService,
-    private hsMapService: HsMapService,
-  ) {}
 
   /**
    * Remove all non-base layers that were added to the map by user.
@@ -60,10 +58,10 @@ export class HsLayerManagerRemoveAllDialogComponent
       this.hsMapService.getMap().removeLayer(to_be_removed.shift());
     }
 
-    this.HsEventBusService.addedLayersRemoved.next();
+    this.hsEventBusService.addedLayersRemoved.next();
 
     if (reloadComposition) {
-      this.HsEventBusService.compositionLoadStarts.next(
+      this.hsEventBusService.compositionLoadStarts.next(
         this.data.composition_id,
       );
     }
@@ -71,6 +69,6 @@ export class HsLayerManagerRemoveAllDialogComponent
   }
 
   close(): void {
-    this.HsDialogContainerService.destroy(this);
+    this.hsDialogContainerService.destroy(this);
   }
 }

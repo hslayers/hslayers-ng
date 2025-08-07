@@ -1,5 +1,5 @@
 import {CommonModule, NgClass} from '@angular/common';
-import {Component, Input, OnInit, ViewChild} from '@angular/core';
+import {Component, Input, OnInit, ViewChild, inject} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {NgbTooltipModule} from '@ng-bootstrap/ng-bootstrap';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
@@ -25,6 +25,11 @@ import {HsLayoutService} from 'hslayers-ng/services/layout';
   ],
 })
 export class HsLayerManagerTimeEditorComponent implements OnInit {
+  hsEventBusService = inject(HsEventBusService);
+  hsDimensionTimeService = inject(HsDimensionTimeService);
+  hsLayoutService = inject(HsLayoutService);
+  hsConfig = inject(HsConfig);
+
   @Input() layer: HsLayerDescriptor;
 
   availableTimes: Array<string>;
@@ -41,12 +46,7 @@ export class HsLayerManagerTimeEditorComponent implements OnInit {
   timeDisplayFormat = 'yyyy-MM-dd HH:mm:ss z';
   timesInSync: boolean;
 
-  constructor(
-    public hsEventBusService: HsEventBusService,
-    public hsDimensionTimeService: HsDimensionTimeService,
-    public hsLayoutService: HsLayoutService,
-    public hsConfig: HsConfig,
-  ) {
+  constructor() {
     this.hsDimensionTimeService.layerTimeChanges
       .pipe(takeUntilDestroyed())
       .subscribe(({layer: layerDescriptor, time}) => {

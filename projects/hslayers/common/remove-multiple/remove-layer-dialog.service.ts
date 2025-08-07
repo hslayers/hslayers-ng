@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {Injectable, inject} from '@angular/core';
 
 import {Layer} from 'ol/layer';
 import {Source} from 'ol/source';
@@ -26,14 +26,12 @@ export type RemoveLayerWrapper = {
   providedIn: 'root',
 })
 export class HsRemoveLayerDialogService {
-  constructor(
-    private hsMapService: HsMapService,
-    private hsToastService: HsToastService,
-    private hsLanguageService: HsLanguageService,
-    private hsLaymanService: HsLaymanService,
-    private hsCommonLaymanService: HsCommonLaymanService,
-    private hsDialogContainerService: HsDialogContainerService,
-  ) {}
+  private hsMapService = inject(HsMapService);
+  private hsToastService = inject(HsToastService);
+  private hsLanguageService = inject(HsLanguageService);
+  private hsLaymanService = inject(HsLaymanService);
+  private hsCommonLaymanService = inject(HsCommonLaymanService);
+  private hsDialogContainerService = inject(HsDialogContainerService);
 
   /**
    * Create a remove layer wrapper

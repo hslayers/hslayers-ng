@@ -1,11 +1,11 @@
-import {HsQueryPopupService} from 'hslayers-ng/common/query-popup';
 import {
   Injectable,
   Injector,
   inject,
   runInInjectionContext,
 } from '@angular/core';
-import {filter, firstValueFrom, map, take, tap} from 'rxjs';
+import {filter, firstValueFrom, map, take} from 'rxjs';
+import {toObservable} from '@angular/core/rxjs-interop';
 
 import {HsConfig} from 'hslayers-ng/config';
 import {
@@ -13,31 +13,29 @@ import {
   HsPanelContainerService,
   HsToolbarPanelContainerService,
 } from 'hslayers-ng/services/panels';
-import {toObservable} from '@angular/core/rxjs-interop';
+import {HsQueryPopupService} from 'hslayers-ng/common/query-popup';
 
 @Injectable({
   providedIn: 'root',
 })
 export class HsOverlayConstructorService extends HsPanelContainerService {
+  private hsConfig = inject(HsConfig);
+  private hsToolbarPanelContainerService = inject(
+    HsToolbarPanelContainerService,
+  );
+  private hsOverlayContainerService = inject(HsOverlayContainerService);
+  private hsQueryPopupService = inject(HsQueryPopupService);
+
   private injector = inject(Injector);
 
   panels$ = toObservable(this.hsToolbarPanelContainerService.panels);
-
-  constructor(
-    private hsConfig: HsConfig,
-    private hsToolbarPanelContainerService: HsToolbarPanelContainerService,
-    private HsOverlayContainerService: HsOverlayContainerService,
-    private hsQueryPopupService: HsQueryPopupService,
-  ) {
-    super();
-  }
 
   /**
    * Create GUI component based on name string.
    */
   private async _createGuiComponent(
     name: string,
-    service: HsPanelContainerService = this.HsOverlayContainerService,
+    service: HsPanelContainerService = this.hsOverlayContainerService,
   ) {
     const cName = `Hs${this.capitalizeFirstLetter(name)}Component`;
     const data =

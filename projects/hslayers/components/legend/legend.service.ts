@@ -1,5 +1,5 @@
 import {DomSanitizer, SafeHtml} from '@angular/platform-browser';
-import {Injectable} from '@angular/core';
+import {Injectable, inject} from '@angular/core';
 
 import LegendRenderer from 'geostyler-legend/dist/LegendRenderer/LegendRenderer';
 import {Feature} from 'ol';
@@ -44,13 +44,13 @@ import {
   providedIn: 'root',
 })
 export class HsLegendService {
-  constructor(
-    public hsStylerService: HsStylerService,
-    public hsLayerSelectorService: HsLayerSelectorService,
-    private hsLog: HsLogService,
-    private sanitizer: DomSanitizer,
-    private hsProxyService: HsProxyService,
-  ) {
+  hsStylerService = inject(HsStylerService);
+  hsLayerSelectorService = inject(HsLayerSelectorService);
+  private hsLog = inject(HsLogService);
+  private sanitizer = inject(DomSanitizer);
+  private hsProxyService = inject(HsProxyService);
+
+  constructor() {
     this.hsLayerSelectorService.layerSelected
       .pipe(filter((layer) => !!layer))
       .subscribe(async (layer) => {

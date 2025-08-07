@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input, inject} from '@angular/core';
 
 import {HsAddDataUrlService} from 'hslayers-ng/services/add-data';
 import {HsUrlTypeServiceModel, Service} from 'hslayers-ng/types';
@@ -9,13 +9,13 @@ import {HsUrlTypeServiceModel, Service} from 'hslayers-ng/types';
   standalone: false,
 })
 export class HsUrlAddComponent {
+  hsAddDataUrlService = inject(HsAddDataUrlService);
+
   @Input() services?: Service[];
 
   @Input() layers: {name: string; checked: boolean}[];
   @Input() injectedService: HsUrlTypeServiceModel;
   _selectAll = true;
-
-  constructor(public hsAddDataUrlService: HsAddDataUrlService) {}
 
   /**
    * Select all records from service.

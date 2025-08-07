@@ -16,33 +16,30 @@ import {HsSidebarService} from 'hslayers-ng/services/sidebar';
   standalone: false,
 })
 export class HsSidebarComponent implements OnInit, OnDestroy {
-  configChangesSubscription: Subscription;
-
-  buttons: HsButton[] = [];
-  miniSidebarButton: {title: string};
+  hsLayoutService = inject(HsLayoutService);
+  hsSidebarService = inject(HsSidebarService);
+  hsShareUrlService = inject(HsShareUrlService);
+  hsConfig = inject(HsConfig);
+  private hsEventBusService = inject(HsEventBusService);
   private destroyRef = inject(DestroyRef);
 
+  configChangesSubscription: Subscription;
+  buttons: HsButton[] = [];
+  miniSidebarButton: {title: string};
   sidebarPosition: string;
-  constructor(
-    public HsLayoutService: HsLayoutService,
-    public HsSidebarService: HsSidebarService,
-    public HsShareUrlService: HsShareUrlService,
-    public HsConfig: HsConfig,
-    private HsEventBusService: HsEventBusService,
-  ) {}
 
   ngOnDestroy(): void {
-    this.HsSidebarService.destroy();
+    this.hsSidebarService.destroy();
   }
 
   ngOnInit(): void {
-    const panel = this.HsShareUrlService.getParamValue(HS_PRMS.panel);
-    this.HsSidebarService.buttons
+    const panel = this.hsShareUrlService.getParamValue(HS_PRMS.panel);
+    this.hsSidebarService.buttons
       .pipe(debounceTime(500), takeUntilDestroyed(this.destroyRef))
       .subscribe((buttons) => {
-        this.buttons = this.HsSidebarService.prepareForTemplate(buttons);
-        this.HsSidebarService.setPanelState(this.buttons);
-        this.HsSidebarService.setButtonVisibility(this.buttons);
+        this.buttons = this.hsSidebarService.prepareForTemplate(buttons);
+        this.hsSidebarService.setPanelState(this.buttons);
+        this.hsSidebarService.setButtonVisibility(this.buttons);
       });
     this.miniSidebarButton = {
       title: 'SIDEBAR.additionalPanels',
@@ -50,29 +47,29 @@ export class HsSidebarComponent implements OnInit, OnDestroy {
     if (panel) {
       setTimeout(() => {
         //Without timeout we get ExpressionChangedAfterItHasBeenCheckedError
-        if (!this.HsLayoutService.minisidebar) {
-          this.HsLayoutService.setMainPanel(panel);
+        if (!this.hsLayoutService.minisidebar) {
+          this.hsLayoutService.setMainPanel(panel);
         }
       });
     }
-    this.HsEventBusService.layoutResizes
+    this.hsEventBusService.layoutResizes
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(() => {
-        this.HsSidebarService.setButtonVisibility(this.buttons);
+        this.hsSidebarService.setButtonVisibility(this.buttons);
       });
-    this.HsConfig.configChanges
+    this.hsConfig.configChanges
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(() => {
         this.refreshButtons();
       });
-    this.HsSidebarService.sidebarLoad.next();
+    this.hsSidebarService.sidebarLoad.next();
   }
 
   /**
    * Refresh buttons array. Remove disabled ones and add the ones that were enabled
    */
   refreshButtons() {
-    const disabledPanels = Object.entries(this.HsConfig.panelsEnabled).reduce(
+    const disabledPanels = Object.entries(this.hsConfig.panelsEnabled).reduce(
       (acc, [panel, isEnabled]) => (isEnabled ? [...acc, panel] : acc),
       [],
     );
@@ -88,7 +85,7 @@ export class HsSidebarComponent implements OnInit, OnDestroy {
     /**
      * Add panels that were enabled
      */
-    const toBeActivated = Object.entries(this.HsConfig.panelsEnabled)
+    const toBeActivated = Object.entries(this.hsConfig.panelsEnabled)
       .reduce(
         (acc, [panel, isEnabled]) => (isEnabled ? [...acc, panel] : acc),
         [],
@@ -100,9 +97,9 @@ export class HsSidebarComponent implements OnInit, OnDestroy {
       );
 
     for (const b of toBeActivated) {
-      filteredButtons.push(this.HsSidebarService.buttonDefinition[b]);
+      filteredButtons.push(this.hsSidebarService.buttonDefinition[b]);
     }
-    this.HsSidebarService.buttonsSubject.next(filteredButtons);
+    this.hsSidebarService.buttonsSubject.next(filteredButtons);
   }
 
   /**
@@ -110,9 +107,9 @@ export class HsSidebarComponent implements OnInit, OnDestroy {
    */
   private resloveBtnWithCondition(panel: string) {
     return !(
-      this.HsConfig.componentsEnabled['guiOverlay'] &&
-      this.HsConfig.componentsEnabled['toolbar'] &&
-      this.HsConfig.componentsEnabled[`${panel}Toolbar`]
+      this.hsConfig.componentsEnabled['guiOverlay'] &&
+      this.hsConfig.componentsEnabled['toolbar'] &&
+      this.hsConfig.componentsEnabled[`${panel}Toolbar`]
     );
   }
 
@@ -121,19 +118,19 @@ export class HsSidebarComponent implements OnInit, OnDestroy {
    * subset of important ones
    */
   toggleUnimportant(): void {
-    this.HsSidebarService.showUnimportant =
-      !this.HsSidebarService.showUnimportant;
+    this.hsSidebarService.showUnimportant =
+      !this.hsSidebarService.showUnimportant;
   }
 
   /**
    * Toggle sidebar mode between expanded and narrow
    */
   toggleSidebar(): void {
-    this.HsLayoutService.sidebarExpanded =
-      !this.HsLayoutService.sidebarExpanded;
-    this.HsLayoutService.updPanelSpaceWidth();
+    this.hsLayoutService.sidebarExpanded =
+      !this.hsLayoutService.sidebarExpanded;
+    this.hsLayoutService.updPanelSpaceWidth();
     setTimeout(() => {
-      this.HsEventBusService.mapSizeUpdates.next();
+      this.hsEventBusService.mapSizeUpdates.next();
     }, 110);
   }
 }

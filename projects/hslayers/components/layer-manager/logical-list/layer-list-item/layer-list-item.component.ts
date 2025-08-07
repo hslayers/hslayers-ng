@@ -6,6 +6,7 @@ import {
   computed,
   input,
   viewChild,
+  inject,
 } from '@angular/core';
 import {
   NgbProgressbarModule,
@@ -44,6 +45,16 @@ import {layerInvalid} from 'hslayers-ng/services/utils';
   ],
 })
 export class HsLayerListItemComponent implements OnInit {
+  hsConfig = inject(HsConfig);
+  private hsLayerManagerService = inject(HsLayerManagerService);
+  private hsLayerSelectorService = inject(HsLayerSelectorService);
+  private hsDimensionTimeService = inject(HsDimensionTimeService);
+  private hsLayerListService = inject(HsLayerListService);
+  private hsLayerManagerVisibilityService = inject(
+    HsLayerManagerVisibilityService,
+  );
+  private hsLayerEditorService = inject(HsLayerEditorService);
+
   layer = input.required<HsLayerDescriptor>();
 
   isSelected = computed(
@@ -85,16 +96,6 @@ export class HsLayerListItemComponent implements OnInit {
     }
     return false;
   });
-
-  constructor(
-    public hsConfig: HsConfig,
-    private hsLayerManagerService: HsLayerManagerService,
-    private hsLayerSelectorService: HsLayerSelectorService,
-    private hsDimensionTimeService: HsDimensionTimeService,
-    private hsLayerListService: HsLayerListService,
-    private hsLayerManagerVisibilityService: HsLayerManagerVisibilityService,
-    private hsLayerEditorService: HsLayerEditorService,
-  ) {}
 
   ngOnInit() {
     /**

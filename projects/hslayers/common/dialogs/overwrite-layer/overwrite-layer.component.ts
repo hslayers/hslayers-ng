@@ -1,4 +1,4 @@
-import {Component, ViewRef} from '@angular/core';
+import {Component, ViewRef, inject} from '@angular/core';
 import {TranslatePipe} from '@ngx-translate/core';
 
 import {FileDataObject, VectorDataObject} from 'hslayers-ng/types';
@@ -13,14 +13,14 @@ import {HsRenameLayerDialogComponent} from '../rename-layer/rename-layer.compone
   imports: [TranslatePipe],
 })
 export class HsLayerOverwriteDialogComponent implements HsDialogComponent {
+  hsDialogContainerService = inject(HsDialogContainerService);
+
   dialogItem: HsDialogItem;
   viewRef: ViewRef;
   data: {
     dataObj: FileDataObject | VectorDataObject;
     repetive: boolean;
   };
-
-  constructor(public hsDialogContainerService: HsDialogContainerService) {}
 
   /**
    * Close the dialog

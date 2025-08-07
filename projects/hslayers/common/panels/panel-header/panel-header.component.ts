@@ -1,4 +1,4 @@
-import {AsyncPipe, NgClass} from '@angular/common';
+import {AsyncPipe} from '@angular/common';
 
 import {BehaviorSubject} from 'rxjs';
 import {
@@ -34,6 +34,11 @@ export function toArray(panels: string) {
   styleUrl: './panel-header.component.scss',
 })
 export class HsPanelHeaderComponent implements OnInit {
+  hsLayoutService = inject(HsLayoutService);
+  private hsLanguageService = inject(HsLanguageService);
+  private elementRef = inject(ElementRef);
+  private cdr = inject(ChangeDetectorRef);
+
   @ViewChild('extraButtonsContainer', {static: true})
   extraButtons: ElementRef;
   active: string;
@@ -50,13 +55,6 @@ export class HsPanelHeaderComponent implements OnInit {
 
   @Output() tabSelected = new EventEmitter<string>();
   @Input() selectedTab$: BehaviorSubject<string>;
-
-  constructor(
-    public HsLayoutService: HsLayoutService,
-    private hsLanguageService: HsLanguageService,
-    private ElementRef: ElementRef,
-    private cdr: ChangeDetectorRef,
-  ) {}
 
   ngOnInit() {
     if (!this.selectedTab$) {

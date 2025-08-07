@@ -20,11 +20,11 @@
   }
   }
   }
-  @if (HsDrawService.pendingLayers.length > 0) {
+  @if (hsDrawService.pendingLayers.length > 0) {
   <div class="m-auto w-100 p-3">
     <div class="alert alert-warning text-justify">
       <ol>
-        @for (layer of HsDrawService.pendingLayers(); track layer) {
+        @for (layer of hsDrawService.pendingLayers(); track layer) {
         <li>
           {{'DRAW.loadingLayer' | translate }} <strong>{{layer}}</strong>
         </li>

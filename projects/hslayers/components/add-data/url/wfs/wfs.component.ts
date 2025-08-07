@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, inject} from '@angular/core';
 
 import {
   HsAddDataCommonService,
@@ -12,10 +12,9 @@ import {
   standalone: false,
 })
 export class HsUrlWfsComponent {
-  title = ''; //FIXME: unused
-  constructor(
-    public hsUrlWfsService: HsUrlWfsService,
-    public hsAddDataOwsService: HsAddDataOwsService,
-    public hsAddDataCommonService: HsAddDataCommonService,
-  ) {}
+  hsUrlWfsService = inject(HsUrlWfsService);
+  hsAddDataOwsService = inject(HsAddDataOwsService);
+  hsAddDataCommonService = inject(HsAddDataCommonService);
+
+  title = '';
 }

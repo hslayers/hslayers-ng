@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, inject} from '@angular/core';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 
 import {HsConfig} from 'hslayers-ng/config';
@@ -14,24 +14,24 @@ export class HsLanguageComponent
   extends HsPanelBaseComponent
   implements OnInit
 {
-  available_languages: any;
-  name = 'language';
-  constructor(
-    private hsLanguageService: HsLanguageService,
-    private hsConfig: HsConfig,
-  ) {
-    super();
+  private hsLanguageService = inject(HsLanguageService);
+  private hsConfig = inject(HsConfig);
 
+  availableLanguages: any;
+  name = 'language';
+
+  constructor() {
+    super();
     this.hsConfig.configChanges.pipe(takeUntilDestroyed()).subscribe(() => {
       if (this.hsConfig.additionalLanguages) {
-        this.available_languages =
+        this.availableLanguages =
           this.hsLanguageService.listAvailableLanguages();
       }
     });
   }
 
   ngOnInit(): void {
-    this.available_languages = this.hsLanguageService.listAvailableLanguages();
+    this.availableLanguages = this.hsLanguageService.listAvailableLanguages();
     super.ngOnInit();
   }
 

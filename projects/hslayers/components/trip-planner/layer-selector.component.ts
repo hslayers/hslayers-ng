@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input, inject} from '@angular/core';
 
 import {Feature} from 'ol';
 import {Vector as VectorLayer} from 'ol/layer';
@@ -12,6 +12,8 @@ import {HsTripPlannerService} from './trip-planner.service';
   standalone: false,
 })
 export class HsTripPlannerLayerSelectorComponent {
+  hsTripPlannerService = inject(HsTripPlannerService);
+
   @Input() label: string;
   @Input() usage: 'route' | 'waypoints';
   @Input() selectedWrapper: {
@@ -20,6 +22,4 @@ export class HsTripPlannerLayerSelectorComponent {
   };
 
   layersExpanded: boolean;
-
-  constructor(public HsTripPlannerService: HsTripPlannerService) {}
 }

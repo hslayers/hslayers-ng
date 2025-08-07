@@ -8,6 +8,7 @@ import {
   ViewChild,
   inject,
 } from '@angular/core';
+import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 
 import {Cluster} from 'ol/source';
 import {Feature} from 'ol';
@@ -35,13 +36,24 @@ import {HsToastService} from 'hslayers-ng/common/toast';
 import {HsUploadComponent, HsUploadedFiles} from 'hslayers-ng/common/upload';
 import {VectorFileDataType} from '../../common/advanced-options/advanced-options.component';
 import {getShowInLayerManager} from 'hslayers-ng/common/extensions';
-import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
+
 @Component({
   selector: 'hs-file-vector',
   templateUrl: 'vector-file.component.html',
   standalone: false,
 })
 export class HsAddDataVectorFileComponent implements OnInit, AfterViewInit {
+  private hsAddDataVectorService = inject(HsAddDataVectorService);
+  private hsAddDataVectorUploadService = inject(HsAddDataVectorUploadService);
+  hsAddDataCommonFileService = inject(HsAddDataCommonFileService);
+  private hsCommonLaymanService = inject(HsCommonLaymanService);
+  private hsConfig = inject(HsConfig);
+  hsLanguageService = inject(HsLanguageService);
+  private hsLayerManagerService = inject(HsLayerManagerService);
+  private hsLayoutService = inject(HsLayoutService);
+  private hsMapService = inject(HsMapService);
+  private hsToastService = inject(HsToastService);
+
   @Input() fileType: 'geojson' | 'kml' | 'gpx';
 
   @ViewChild(HsUploadComponent) hsUploadComponent: HsUploadComponent;
@@ -55,19 +67,6 @@ export class HsAddDataVectorFileComponent implements OnInit, AfterViewInit {
     'access_rights.read': 'EVERYONE',
   };
   private destroyRef = inject(DestroyRef);
-
-  constructor(
-    private hsAddDataVectorService: HsAddDataVectorService,
-    private hsAddDataVectorUploadService: HsAddDataVectorUploadService,
-    public hsAddDataCommonFileService: HsAddDataCommonFileService,
-    private hsCommonLaymanService: HsCommonLaymanService,
-    private hsConfig: HsConfig,
-    public hsLanguageService: HsLanguageService,
-    private hsLayerManagerService: HsLayerManagerService,
-    private hsLayoutService: HsLayoutService,
-    private hsMapService: HsMapService,
-    private hsToastService: HsToastService,
-  ) {}
 
   ngAfterViewInit(): void {
     this.fileInput = this.hsUploadComponent.getFileInput();
@@ -158,11 +157,13 @@ export class HsAddDataVectorFileComponent implements OnInit, AfterViewInit {
         );
       features = nonJson.features; //proper typing will get rid of this
     }
-    isLayerClustered(this.data.sourceLayer)
-      ? (this.data.sourceLayer.getSource() as Cluster<Feature>)
-          .getSource()
-          .addFeatures(features)
-      : this.data.sourceLayer.getSource().addFeatures(features);
+    if (isLayerClustered(this.data.sourceLayer)) {
+      (this.data.sourceLayer.getSource() as Cluster<Feature>)
+        .getSource()
+        .addFeatures(features);
+    } else {
+      this.data.sourceLayer.getSource().addFeatures(features);
+    }
   }
 
   handleFileUpload(evt: HsUploadedFiles): void {
@@ -170,9 +171,12 @@ export class HsAddDataVectorFileComponent implements OnInit, AfterViewInit {
       const uploadedData =
         await this.hsAddDataVectorUploadService.readUploadedFile(f);
       if (uploadedData !== undefined && !uploadedData.error) {
-        uploadedData.url !== undefined
-          ? (this.data.base64url = uploadedData.url)
-          : ((this.data.url = undefined), (this.data.base64url = undefined));
+        if (uploadedData.url !== undefined) {
+          this.data.base64url = uploadedData.url;
+        } else {
+          this.data.url = undefined;
+          this.data.base64url = undefined;
+        }
 
         this.data.name =
           uploadedData.name !== undefined ? uploadedData.name : '';

@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, inject} from '@angular/core';
 
 import colorScales from 'colormap/colorScale';
 import {Feature} from 'ol';
@@ -7,7 +7,6 @@ import {Vector as VectorSource} from 'ol/source';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsLanguageService} from 'hslayers-ng/services/language';
 import {HsLayerEditorWidgetBaseComponent} from './layer-editor-widget-base.component';
-import {HsLayerSelectorService} from 'hslayers-ng/services/layer-manager';
 import {instOf, listNumericAttributes} from 'hslayers-ng/services/utils';
 import {InterpolatedSource} from 'hslayers-ng/common/layers';
 
@@ -24,6 +23,9 @@ export class HsIdwWidgetComponent
   extends HsLayerEditorWidgetBaseComponent
   implements OnInit
 {
+  hsLanguageService = inject(HsLanguageService);
+  hsConfig = inject(HsConfig);
+
   weightAttribute: string;
   attributes: string[];
   name = 'idw-widget';
@@ -32,14 +34,6 @@ export class HsIdwWidgetComponent
   reversed: boolean;
   min: number | string = '';
   max: number | string = '';
-
-  constructor(
-    public HsLanguageService: HsLanguageService,
-    hsLayerSelectorService: HsLayerSelectorService,
-    public hsConfig: HsConfig,
-  ) {
-    super(hsLayerSelectorService);
-  }
 
   ngOnInit(): void {
     super.ngOnInit();

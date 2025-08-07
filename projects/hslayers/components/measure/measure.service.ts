@@ -1,8 +1,9 @@
+import {Injectable, inject} from '@angular/core';
+
 import {Draw} from 'ol/interaction';
 import {Feature} from 'ol';
 import {Fill, Stroke, Style} from 'ol/style';
 import {Geometry, LineString, Polygon} from 'ol/geom';
-import {Injectable} from '@angular/core';
 import {Vector as VectorLayer} from 'ol/layer';
 import {Vector as VectorSource} from 'ol/source';
 
@@ -16,6 +17,9 @@ import {Measurement} from 'hslayers-ng/types';
   providedIn: 'root',
 })
 export class HsMeasureService {
+  hsMapService = inject(HsMapService);
+  hsEventBusService = inject(HsEventBusService);
+
   draw: Draw;
   data = {
     measurements: [],
@@ -28,10 +32,8 @@ export class HsMeasureService {
   lastMeasurementId: number;
   measureVector: VectorLayer<VectorSource<Feature>>;
   measuringActivated = false;
-  constructor(
-    public hsMapService: HsMapService,
-    public HsEventBusService: HsEventBusService,
-  ) {
+
+  constructor() {
     this.setMeasureLayer();
     setTitle(this.measureVector, 'Measurement sketches');
   }
@@ -135,7 +137,7 @@ export class HsMeasureService {
       map.removeLayer(this.measureVector);
     });
     this.measuringActivated = false;
-    this.HsEventBusService.measurementEnds.next(); //better emit drawingEnds here
+    this.hsEventBusService.measurementEnds.next(); //better emit drawingEnds here
   }
 
   /**
@@ -195,7 +197,11 @@ export class HsMeasureService {
       const arr = [val1, val2];
       for (let i = 0; i < arr.length; i++) {
         if (arr[i].unit == 'm') {
-          type == 'length' ? (arr[i].size /= 1000) : (arr[i].size /= 1000000);
+          if (type == 'length') {
+            arr[i].size /= 1000;
+          } else {
+            arr[i].size /= 1000000;
+          }
         }
       }
       value = Math.round((arr[0].size + arr[1].size) * 100) / 100;
@@ -222,7 +228,7 @@ export class HsMeasureService {
     this.hsMapService.getMap().addInteraction(this.draw);
 
     this.draw.on('drawstart', (evt) => {
-      this.HsEventBusService.measurementStarts.next();
+      this.hsEventBusService.measurementStarts.next();
       if (this.data.multipleShapeMode) {
         if (!Array.isArray(this.sketches)) {
           this.sketches = [];
@@ -243,7 +249,7 @@ export class HsMeasureService {
     });
 
     this.draw.on('drawend', (evt) => {
-      this.HsEventBusService.measurementEnds.next();
+      this.hsEventBusService.measurementEnds.next();
     });
   }
 }

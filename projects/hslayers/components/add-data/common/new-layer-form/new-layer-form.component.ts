@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnInit, inject} from '@angular/core';
 
 import {FileDataObject} from 'hslayers-ng/types';
 import {HsAddDataCommonFileService} from 'hslayers-ng/services/add-data';
@@ -12,6 +12,10 @@ import {HsUploadedFiles} from 'hslayers-ng/common/upload';
   standalone: false,
 })
 export class HsNewLayerFormComponent implements OnInit {
+  hsAddDataCommonFileService = inject(HsAddDataCommonFileService);
+  private hsFileService = inject(HsFileService);
+  hsLaymanService = inject(HsLaymanService);
+
   advancedPanelVisible = false;
   @Input() data: FileDataObject;
 
@@ -19,11 +23,6 @@ export class HsNewLayerFormComponent implements OnInit {
     list: string;
     title: string;
   };
-  constructor(
-    public hsAddDataCommonFileService: HsAddDataCommonFileService,
-    private hsFileService: HsFileService,
-    public hsLaymanService: HsLaymanService,
-  ) {}
 
   ngOnInit() {
     this.allowedStyles = {

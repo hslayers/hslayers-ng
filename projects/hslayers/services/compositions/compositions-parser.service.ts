@@ -1,7 +1,8 @@
-import {HttpClient} from '@angular/common/http';
-import {Injectable} from '@angular/core';
-
 import * as xml2Json from 'xml-js';
+
+import {HttpClient} from '@angular/common/http';
+import {Injectable, inject} from '@angular/core';
+
 import {Layer} from 'ol/layer';
 import {
   Observable,
@@ -61,6 +62,25 @@ import {
   providedIn: 'root',
 })
 export class HsCompositionsParserService {
+  private hsMapService = inject(HsMapService);
+  private hsConfig = inject(HsConfig);
+  private $http = inject(HttpClient);
+  private hsProxyService = inject(HsProxyService);
+  private hsCompositionsLayerParserService = inject(
+    HsCompositionsLayerParserService,
+  );
+  private hsDialogContainerService = inject(HsDialogContainerService);
+  private hsLayoutService = inject(HsLayoutService);
+  private $log = inject(HsLogService);
+  private hsEventBusService = inject(HsEventBusService);
+  private hsLanguageService = inject(HsLanguageService);
+  private hsCommonLaymanService = inject(HsCommonLaymanService);
+  private hsLayerManagerService = inject(HsLayerManagerService);
+  private hsToastService = inject(HsToastService);
+  private hsLayerManagerVisibilityService = inject(
+    HsLayerManagerVisibilityService,
+  );
+
   /**
    * Layman composition record
    * holds access_rights
@@ -83,22 +103,9 @@ export class HsCompositionsParserService {
     suspendZoomingToExtent: false,
     suspendPanelChange: false,
   };
-  constructor(
-    private hsMapService: HsMapService,
-    private hsConfig: HsConfig,
-    private $http: HttpClient,
-    private hsProxyService: HsProxyService,
-    private hsCompositionsLayerParserService: HsCompositionsLayerParserService,
-    private hsDialogContainerService: HsDialogContainerService,
-    private hsLayoutService: HsLayoutService,
-    private $log: HsLogService,
-    private hsEventBusService: HsEventBusService,
-    private hsLanguageService: HsLanguageService,
-    private hsCommonLaymanService: HsCommonLaymanService,
-    private hsLayerManagerService: HsLayerManagerService,
-    private hsToastService: HsToastService,
-    private HsLayerManagerVisibilityService: HsLayerManagerVisibilityService,
-  ) {
+  constructor() {
+    const $log = this.$log;
+
     /**
      * Composition opened -> request its descriptor
      * in order to get access_rights and workspace properties
@@ -122,9 +129,9 @@ export class HsCompositionsParserService {
             })
             .pipe(
               catchError((e) => {
-                fromLayman
-                  ? $log.error('Could not get composition metadata')
-                  : undefined;
+                if (fromLayman) {
+                  $log.error('Could not get composition metadata');
+                }
                 return of(e);
               }),
             );
@@ -451,7 +458,7 @@ export class HsCompositionsParserService {
             take(1),
           )
           .subscribe((currentBaseLayer) => {
-            this.HsLayerManagerVisibilityService.changeBaseLayerVisibility(
+            this.hsLayerManagerVisibilityService.changeBaseLayerVisibility(
               true,
               currentBaseLayer,
             );
@@ -492,7 +499,7 @@ export class HsCompositionsParserService {
                     lyr,
                     true,
                   );
-                this.HsLayerManagerVisibilityService.changeBaseLayerVisibility(
+                this.hsLayerManagerVisibilityService.changeBaseLayerVisibility(
                   true,
                   layerDescriptor,
                 );
@@ -634,9 +641,11 @@ export class HsCompositionsParserService {
       });
     }
     if (keywordsInfo !== undefined) {
-      Array.isArray(keywordsInfo)
-        ? (infoDetails.keywords = keywordsInfo.map((kw) => kw._text))
-        : (infoDetails.keywords = keywordsInfo._text);
+      if (Array.isArray(keywordsInfo)) {
+        infoDetails.keywords = keywordsInfo.map((kw) => kw._text);
+      } else {
+        infoDetails.keywords = keywordsInfo._text;
+      }
     }
     return infoDetails;
   }

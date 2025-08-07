@@ -1,5 +1,5 @@
 import {HttpClient} from '@angular/common/http';
-import {Injectable} from '@angular/core';
+import {Injectable, inject} from '@angular/core';
 
 import {catchError, map, timeout} from 'rxjs/operators';
 import {of} from 'rxjs';
@@ -24,16 +24,14 @@ import {
 
 @Injectable({providedIn: 'root'})
 export class HsMickaBrowserService {
-  httpCall;
+  private http = inject(HttpClient);
+  private log = inject(HsLogService);
+  hsMapService = inject(HsMapService);
+  hsToastService = inject(HsToastService);
+  hsLanguageService = inject(HsLanguageService);
+  private hsProxyService = inject(HsProxyService);
 
-  constructor(
-    private http: HttpClient,
-    private log: HsLogService,
-    public hsMapService: HsMapService,
-    public hsToastService: HsToastService,
-    public hsLanguageService: HsLanguageService,
-    private hsProxyService: HsProxyService,
-  ) {}
+  httpCall;
 
   /**
    * @param dataset - Configuration of selected datasource (from app config)
@@ -53,7 +51,6 @@ export class HsMickaBrowserService {
   ): any {
     const url = this.createRequestUrl(endpoint, data, textField);
     endpoint.datasourcePaging.loaded = false;
-
     endpoint.httpCall = this.http
       .get(url, {
         responseType: 'json',

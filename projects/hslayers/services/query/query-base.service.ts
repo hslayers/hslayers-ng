@@ -1,5 +1,5 @@
 import {DomSanitizer, SafeHtml} from '@angular/platform-browser';
-import {Inject, Injectable, NgZone, PLATFORM_ID} from '@angular/core';
+import {Injectable, NgZone, PLATFORM_ID, inject} from '@angular/core';
 import {Subject} from 'rxjs';
 import {isPlatformBrowser} from '@angular/common';
 
@@ -46,6 +46,16 @@ export type HsCoordinateDescription = {
   providedIn: 'root',
 })
 export class HsQueryBaseService {
+  private hsMapService = inject(HsMapService);
+  private hsConfig = inject(HsConfig);
+  private hsLayoutService = inject(HsLayoutService);
+  private hsLanguageService = inject(HsLanguageService);
+  private hsEventBusService = inject(HsEventBusService);
+  private hsSaveMapService = inject(HsSaveMapService);
+  private domSanitizer = inject(DomSanitizer);
+  private zone = inject(NgZone);
+  private platformId = inject(PLATFORM_ID);
+
   attributes = [];
   features: HsFeatureDescriptor[] = [];
   featureInfoHtmls: SafeHtml[] = [];
@@ -79,17 +89,7 @@ export class HsQueryBaseService {
   multiWmsQuery = false;
   wmsFeatureInfoLoading = false;
 
-  constructor(
-    private hsMapService: HsMapService,
-    private hsConfig: HsConfig,
-    private hsLayoutService: HsLayoutService,
-    private hsLanguageService: HsLanguageService,
-    private hsEventBusService: HsEventBusService,
-    private hsSaveMapService: HsSaveMapService,
-    private domSanitizer: DomSanitizer,
-    private zone: NgZone,
-    @Inject(PLATFORM_ID) private platformId: any,
-  ) {
+  constructor() {
     this.vectorSelectorCreated.subscribe((selector) => {
       this.selector = selector;
     });

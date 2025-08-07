@@ -1,4 +1,4 @@
-import {Component, computed, signal} from '@angular/core';
+import {Component, computed, signal, inject} from '@angular/core';
 import {TranslatePipe} from '@ngx-translate/core';
 
 import {HsConfig} from 'hslayers-ng/config';
@@ -10,6 +10,8 @@ import {HsConfig} from 'hslayers-ng/config';
   standalone: true,
 })
 export class HsImpressumComponent {
+  hsConfig = inject(HsConfig);
+
   version = signal('16.0.0-next.3');
   logoError = signal(false);
 
@@ -21,8 +23,6 @@ export class HsImpressumComponent {
     () =>
       `https://github.com/hslayers/hslayers-ng/releases/tag/${this.version()}`,
   );
-
-  constructor(public hsConfig: HsConfig) {}
 
   onLogoError(): void {
     this.logoError.set(true);

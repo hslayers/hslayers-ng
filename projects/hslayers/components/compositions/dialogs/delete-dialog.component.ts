@@ -1,4 +1,4 @@
-import {Component, ViewRef} from '@angular/core';
+import {Component, ViewRef, inject} from '@angular/core';
 
 import {HsCompositionsService} from '../compositions.service';
 import {
@@ -11,16 +11,14 @@ import {
   standalone: false,
 })
 export class HsCompositionsDeleteDialogComponent implements HsDialogComponent {
+  hsDialogContainerService = inject(HsDialogContainerService);
+  hsCompositionsService = inject(HsCompositionsService);
+
   viewRef: ViewRef;
   data: any;
 
-  constructor(
-    public HsDialogContainerService: HsDialogContainerService,
-    public HsCompositionsService: HsCompositionsService,
-  ) {}
-
   close(): void {
-    this.HsDialogContainerService.destroy(this);
+    this.hsDialogContainerService.destroy(this);
   }
 
   /**
@@ -28,7 +26,7 @@ export class HsCompositionsDeleteDialogComponent implements HsDialogComponent {
    * Delete selected composition from project (including deletion from composition server, useful for user created compositions)
    */
   async delete(composition): Promise<void> {
-    await this.HsCompositionsService.deleteComposition(composition);
+    await this.hsCompositionsService.deleteComposition(composition);
     this.close();
   }
 }

@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {Injectable, inject} from '@angular/core';
 import {Subject} from 'rxjs';
 
 import {ImageWMS, Source, TileWMS} from 'ol/source';
@@ -13,6 +13,8 @@ import {getDimensions, setDimension} from 'hslayers-ng/common/extensions';
   providedIn: 'root',
 })
 export class HsDimensionTimeService {
+  hsLog = inject(HsLogService);
+
   /**
    * To communicate changes between this service and HsDimensionService
    */
@@ -20,8 +22,6 @@ export class HsDimensionTimeService {
     layer: HsLayerDescriptor;
     time: string;
   }> = new Subject();
-
-  constructor(public hsLog: HsLogService) {}
 
   /**
    * Parse interval string to get interval as a number

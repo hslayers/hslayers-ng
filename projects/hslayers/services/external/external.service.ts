@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {Injectable, inject} from '@angular/core';
 
 import BaseLayer from 'ol/layer/Base';
 import {Cluster, Source, Vector as VectorSource} from 'ol/source';
@@ -43,15 +43,16 @@ export interface FeatureDomEventLinkDict {
   providedIn: 'root',
 })
 export class HsExternalService {
+  hsMapService = inject(HsMapService);
+  private hsLog = inject(HsLogService);
+  private hsQueryPopupService = inject(HsQueryPopupService);
+  private hsQueryBaseService = inject(HsQueryBaseService);
+  private hsQueryVectorService = inject(HsQueryVectorService);
+  private hsLayoutService = inject(HsLayoutService);
+
   featureLinks: FeatureDomEventLinkDict = {};
-  constructor(
-    public hsMapService: HsMapService,
-    private hsLog: HsLogService,
-    private hsQueryPopupService: HsQueryPopupService,
-    private hsQueryBaseService: HsQueryBaseService,
-    private hsQueryVectorService: HsQueryVectorService,
-    private hsLayoutService: HsLayoutService,
-  ) {
+
+  constructor() {
     this.hsMapService.loaded().then((map) => {
       for (const layer of map.getLayers().getArray()) {
         this.layerAdded(layer as Layer<Source>);

@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {Injectable, inject} from '@angular/core';
 
 import {EventsKey} from 'ol/events';
 import {Feature} from 'ol';
@@ -24,16 +24,16 @@ import {setHighlighted} from 'hslayers-ng/common/extensions';
   providedIn: 'root',
 })
 export class HsAddDataCatalogueMapService {
+  hsMapService = inject(HsMapService);
+  hsLogService = inject(HsLogService);
+  private hsSaveMapService = inject(HsSaveMapService);
+  private hsCommonEndpointsService = inject(HsCommonEndpointsService);
+  private hsLayoutService = inject(HsLayoutService);
+
   extentLayer: VectorLayer<VectorSource<Feature>>;
   pointerMoveListener: EventsKey;
 
-  constructor(
-    public hsMapService: HsMapService,
-    public hsLogService: HsLogService,
-    private hsSaveMapService: HsSaveMapService,
-    private hsCommonEndpointsService: HsCommonEndpointsService,
-    private hsLayoutService: HsLayoutService,
-  ) {
+  constructor() {
     this.hsLayoutService.mainpanel$.subscribe((which) => {
       if (which === 'addData') {
         this.addPointerMoveListener();

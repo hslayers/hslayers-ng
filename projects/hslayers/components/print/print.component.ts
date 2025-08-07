@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, inject} from '@angular/core';
 
 import {HsPanelBaseComponent} from 'hslayers-ng/common/panels';
 import {HsPrintLegendService} from './print-legend.service';
@@ -13,6 +13,10 @@ import {Styler} from './types/styler.type';
   standalone: false,
 })
 export class HsPrintComponent extends HsPanelBaseComponent implements OnInit {
+  private hsPrintService = inject(HsPrintService);
+  private hsPrintScaleService = inject(HsPrintScaleService);
+  private hsPrintLegendService = inject(HsPrintLegendService);
+
   name = 'print';
   stylers: Styler[] = [
     {name: 'title', visible: false},
@@ -21,14 +25,6 @@ export class HsPrintComponent extends HsPanelBaseComponent implements OnInit {
     {name: 'scale', visible: false},
   ];
   print: PrintModel;
-
-  constructor(
-    private hsPrintService: HsPrintService,
-    private hsPrintScaleService: HsPrintScaleService,
-    private hsPrintLegendService: HsPrintLegendService,
-  ) {
-    super();
-  }
 
   ngOnInit(): void {
     this.setToDefault();

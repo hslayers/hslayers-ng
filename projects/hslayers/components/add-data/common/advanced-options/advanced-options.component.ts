@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnInit, inject} from '@angular/core';
 
 import {
   FileDataObject,
@@ -17,10 +17,11 @@ export type VectorFileDataType = IntersectWithTooltip<
   standalone: false,
 })
 export class HsAdvancedOptionsComponent implements OnInit {
+  private hsAddDataVectorService = inject(HsAddDataVectorService);
+
   @Input() data: VectorFileDataType;
 
   isKml: boolean;
-  constructor(private hsAddDataVectorService: HsAddDataVectorService) {}
   ngOnInit(): void {
     this.isKml = this.hsAddDataVectorService.isKml(
       this.data.type,

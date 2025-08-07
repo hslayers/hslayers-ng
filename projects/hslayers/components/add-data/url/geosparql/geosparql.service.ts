@@ -1,5 +1,5 @@
 import {HttpClient} from '@angular/common/http';
-import {Injectable} from '@angular/core';
+import {Injectable, inject} from '@angular/core';
 import {lastValueFrom, takeUntil} from 'rxjs';
 
 import {HsAddDataUrlService} from 'hslayers-ng/services/add-data';
@@ -11,16 +11,16 @@ import {UrlDataObject} from 'hslayers-ng/types';
 
 @Injectable({providedIn: 'root'})
 export class HsUrlGeoSparqlService {
+  httpClient = inject(HttpClient);
+  hsEventBusService = inject(HsEventBusService);
+  hsLanguageService = inject(HsLanguageService);
+  hsLog = inject(HsLogService);
+  hsAddDataUrlService = inject(HsAddDataUrlService);
+  private hsToastService = inject(HsToastService);
+
   data: UrlDataObject;
 
-  constructor(
-    public httpClient: HttpClient,
-    public hsEventBusService: HsEventBusService,
-    public hsLanguageService: HsLanguageService,
-    public hsLog: HsLogService,
-    public hsAddDataUrlService: HsAddDataUrlService,
-    private hsToastService: HsToastService,
-  ) {
+  constructor() {
     this.data = {
       table: {
         trackBy: 'id',

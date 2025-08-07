@@ -5,6 +5,7 @@ import {
   OnDestroy,
   OnInit,
   ViewRef,
+  inject,
 } from '@angular/core';
 
 import {BehaviorSubject} from 'rxjs';
@@ -45,6 +46,14 @@ import {getFeatures} from 'hslayers-ng/common/extensions';
 export class HsQueryPopupComponent
   implements OnDestroy, HsDialogComponent, AfterViewInit, OnInit
 {
+  private hsEventBusService = inject(HsEventBusService);
+  private hsMapService = inject(HsMapService);
+  private elementRef = inject(ElementRef);
+  hsQueryPopupWidgetContainerService = inject(
+    HsQueryPopupWidgetContainerService,
+  );
+  private hsConfig = inject(HsConfig);
+
   getFeatures = getFeatures;
   attributesForHover = [];
   dialogItem?: HsDialogItem;
@@ -54,16 +63,8 @@ export class HsQueryPopupComponent
   };
   isVisible$ = new BehaviorSubject(true);
 
-  constructor(
-    private hsEventBusService: HsEventBusService,
-    private hsMapService: HsMapService,
-    private ElementRef: ElementRef,
-    public hsQueryPopupWidgetContainerService: HsQueryPopupWidgetContainerService,
-    private hsConfig: HsConfig,
-  ) {}
-
   ngAfterViewInit(): void {
-    this.data.service.registerPopup(this.ElementRef.nativeElement);
+    this.data.service.registerPopup(this.elementRef.nativeElement);
   }
 
   ngOnInit() {

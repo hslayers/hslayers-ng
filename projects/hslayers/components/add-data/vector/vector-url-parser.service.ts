@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {Injectable, inject} from '@angular/core';
 
 import {HsAddDataVectorService} from 'hslayers-ng/services/add-data';
 import {HsMapService} from 'hslayers-ng/services/map';
@@ -8,11 +8,11 @@ import {HsShareUrlService} from 'hslayers-ng/services/share';
   providedIn: 'root',
 })
 export class HsVectorUrlParserService {
-  constructor(
-    public hsMapService: HsMapService,
-    public hsShareUrlService: HsShareUrlService,
-    public hsAddDataVectorService: HsAddDataVectorService,
-  ) {
+  hsMapService = inject(HsMapService);
+  hsShareUrlService = inject(HsShareUrlService);
+  hsAddDataVectorService = inject(HsAddDataVectorService);
+
+  constructor() {
     this.hsMapService.loaded().then((map) => {
       this.checkUrlParamsAndAdd();
     });

@@ -1,4 +1,4 @@
-import {Component, computed, input} from '@angular/core';
+import {Component, computed, input, inject} from '@angular/core';
 
 import {HsLayerDescriptor} from 'hslayers-ng/types';
 import {HsLayerEditorSubLayerCheckboxesComponent} from './layer-editor-sub-layer-checkboxes.component';
@@ -17,12 +17,10 @@ import {HsLayerEditorSublayerService} from './layer-editor-sub-layer.service';
   imports: [HsLayerEditorSubLayerCheckboxesComponent],
 })
 export class HsLayerEditorSublayersComponent {
+  private hsLayerEditorSublayerService = inject(HsLayerEditorSublayerService);
+
   layer = input.required<HsLayerDescriptor>();
   subLayers = computed(() =>
-    this.HsLayerEditorSublayerService.getSubLayers(this.layer()),
+    this.hsLayerEditorSublayerService.getSubLayers(this.layer()),
   );
-
-  constructor(
-    private HsLayerEditorSublayerService: HsLayerEditorSublayerService,
-  ) {}
 }

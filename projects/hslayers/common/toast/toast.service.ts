@@ -1,4 +1,4 @@
-import {Injectable, TemplateRef, signal} from '@angular/core';
+import {Injectable, TemplateRef, signal, inject} from '@angular/core';
 
 import {HsConfig} from 'hslayers-ng/config';
 import {HsLanguageService} from 'hslayers-ng/services/language';
@@ -46,12 +46,10 @@ export type customToastOptions = {
   providedIn: 'root',
 })
 export class HsToastService {
-  private toastsSignal = signal<Toast[]>([]);
+  hsLanguageService = inject(HsLanguageService);
+  private hsConfig = inject(HsConfig);
 
-  constructor(
-    public HsLanguageService: HsLanguageService,
-    private hsConfig: HsConfig,
-  ) {}
+  private toastsSignal = signal<Toast[]>([]);
 
   get toasts() {
     return this.toastsSignal();
@@ -108,11 +106,11 @@ export class HsToastService {
     this.show(
       options.disableLocalization
         ? text
-        : this.HsLanguageService.getTranslation(text, undefined),
+        : this.hsLanguageService.getTranslation(text, undefined),
       {
         header: options.disableLocalization
           ? header
-          : this.HsLanguageService.getTranslation(header, undefined),
+          : this.hsLanguageService.getTranslation(header, undefined),
         delay:
           options.customDelay || (this.hsConfig.errorToastDuration ?? 7000),
         autohide: true,
@@ -120,7 +118,7 @@ export class HsToastService {
         serviceCalledFrom: options.serviceCalledFrom,
         details:
           options.details?.map((detail) =>
-            this.HsLanguageService.getTranslation(detail, undefined),
+            this.hsLanguageService.getTranslation(detail, undefined),
           ) || [],
       },
     );

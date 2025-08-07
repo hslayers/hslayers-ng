@@ -1,5 +1,11 @@
 import {BehaviorSubject, Observable, Subject, delay, map, skip} from 'rxjs';
-import {ElementRef, Injectable, Type, ViewContainerRef} from '@angular/core';
+import {
+  ElementRef,
+  Injectable,
+  Type,
+  ViewContainerRef,
+  inject,
+} from '@angular/core';
 
 import {HsConfig, DefaultPanel} from 'hslayers-ng/config';
 import {HsLogService} from 'hslayers-ng/services/log';
@@ -83,6 +89,9 @@ export class HsLayoutParams {
   providedIn: 'root',
 })
 export class HsLayoutService extends HsLayoutParams {
+  hsConfig = inject(HsConfig);
+  $log = inject(HsLogService);
+
   mapSpaceRef: BehaviorSubject<ViewContainerRef> = new BehaviorSubject(
     undefined,
   );
@@ -106,10 +115,7 @@ export class HsLayoutService extends HsLayoutParams {
 
   layoutLoads: Subject<{element: any; innerElement: string}> = new Subject();
 
-  constructor(
-    public hsConfig: HsConfig,
-    public $log: HsLogService,
-  ) {
+  constructor() {
     super();
     Object.defineProperty(this, 'panelListElement', {
       get: function () {

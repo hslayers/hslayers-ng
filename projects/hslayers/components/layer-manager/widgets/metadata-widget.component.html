@@ -29,7 +29,7 @@
   <div class="form-group" [hidden]="!abstract">
     <label>{{ "COMMON.abstract" | translate }}</label>
     <p [innerHtml]="
-        HsLayerManagerService.makeSafeAndTranslate('LAYERS', abstract)
+        hsLayerManagerService.makeSafeAndTranslate('LAYERS', abstract)
       "></p><!-- TODO: Remove function call from template -->
   </div>
 }

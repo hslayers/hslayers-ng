@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, inject} from '@angular/core';
 import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
 import {TranslatePipe} from '@ngx-translate/core';
 
@@ -11,8 +11,9 @@ import {HsQueryFeatureListComponent} from '../feature-list/feature-list.componen
   imports: [HsQueryFeatureListComponent, NgbDropdownModule, TranslatePipe],
 })
 export class HsQueryDefaultInfoPanelBodyComponent implements OnInit {
+  hsQueryBaseService = inject(HsQueryBaseService);
+
   featureInfoExpanded: boolean;
-  constructor(public hsQueryBaseService: HsQueryBaseService) {}
   ngOnInit(): void {
     this.featureInfoExpanded = true;
   }

@@ -5,6 +5,7 @@ import {
   NgZone,
   OnDestroy,
   ViewChild,
+  inject,
 } from '@angular/core';
 
 import {Subscription} from 'rxjs';
@@ -24,56 +25,57 @@ import {HslayersService} from '../hslayers.service';
   imports: [HsMapDirective],
 })
 export class HsMapComponent implements AfterViewInit, OnDestroy {
+  hsMapService = inject(HsMapService);
+  hslayersService = inject(HslayersService);
+  hsConfig = inject(HsConfig);
+  hsEventBusService = inject(HsEventBusService);
+  private hsLayoutService = inject(HsLayoutService);
+  private hsShareUrlService = inject(HsShareUrlService);
+  private zone = inject(NgZone);
+
   @ViewChild('map') map: ElementRef;
 
   unregisterMapSyncCenterHandlerSubscription: Subscription;
-  constructor(
-    public HsMapService: HsMapService,
-    public HslayersService: HslayersService,
-    public HsConfig: HsConfig,
-    public HsEventBusService: HsEventBusService,
-    private HsLayoutService: HsLayoutService,
-    private HsShareUrlService: HsShareUrlService,
-    private zone: NgZone,
-  ) {
+
+  constructor() {
     this.unregisterMapSyncCenterHandlerSubscription =
-      this.HsEventBusService.mapCenterSynchronizations.subscribe((data) => {
+      this.hsEventBusService.mapCenterSynchronizations.subscribe((data) => {
         this.onCenterSync(data);
       });
   }
 
   ngAfterViewInit(): void {
-    const visibleLayersParam = this.HsShareUrlService.getParamValue(
+    const visibleLayersParam = this.hsShareUrlService.getParamValue(
       HS_PRMS.visibleLayers,
     );
-    this.HsMapService.permalink = this.HsShareUrlService.getParamValue(
+    this.hsMapService.permalink = this.hsShareUrlService.getParamValue(
       HS_PRMS.permalink,
     );
-    this.HsMapService.externalCompositionId =
-      this.HsShareUrlService.getParamValue(HS_PRMS.composition) ||
-      this.HsConfig.defaultComposition;
+    this.hsMapService.externalCompositionId =
+      this.hsShareUrlService.getParamValue(HS_PRMS.composition) ||
+      this.hsConfig.defaultComposition;
 
     if (visibleLayersParam) {
-      this.HsMapService.visibleLayersInUrl = visibleLayersParam.split(';');
+      this.hsMapService.visibleLayersInUrl = visibleLayersParam.split(';');
     }
 
     this.zone.runOutsideAngular(() =>
-      this.HsMapService.init(this.map.nativeElement),
+      this.hsMapService.init(this.map.nativeElement),
     );
 
     if (
-      this.HsShareUrlService.getParamValue(HS_PRMS.pureMap) ||
-      this.HsConfig.pureMap == true
+      this.hsShareUrlService.getParamValue(HS_PRMS.pureMap) ||
+      this.hsConfig.pureMap == true
     ) {
-      this.HsLayoutService.puremapApp = true;
+      this.hsLayoutService.puremapApp = true;
     }
 
-    this.HsMapService.getMap().updateSize();
+    this.hsMapService.getMap().updateSize();
   }
 
   ngOnDestroy(): void {
     this.unregisterMapSyncCenterHandlerSubscription.unsubscribe();
-    this.HsMapService.getMap().getInteractions().clear();
+    this.hsMapService.getMap().getInteractions().clear();
   }
 
   /**
@@ -86,9 +88,9 @@ export class HsMapComponent implements AfterViewInit, OnDestroy {
     if (!center) {
       return;
     }
-    const toProj = this.HsMapService.getCurrentProj();
+    const toProj = this.hsMapService.getCurrentProj();
     const transformed = transform([center[0], center[1]], 'EPSG:4326', toProj);
-    this.HsMapService.moveToAndZoom(
+    this.hsMapService.moveToAndZoom(
       transformed[0],
       transformed[1],
       this.zoomForResolution(center[2]),

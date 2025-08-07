@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {Injectable, inject} from '@angular/core';
 
 import {HsPrintLegendService} from './print-legend.service';
 import {HsShareThumbnailService} from 'hslayers-ng/services/share';
@@ -9,10 +9,8 @@ import {TextStyle} from './types/text-style.type';
   providedIn: 'root',
 })
 export class HsPrintImprintService {
-  constructor(
-    private hsPrintLegendService: HsPrintLegendService,
-    private hsShareThumbnailService: HsShareThumbnailService,
-  ) {}
+  private hsPrintLegendService = inject(HsPrintLegendService);
+  private hsShareThumbnailService = inject(HsShareThumbnailService);
 
   /**
    * Draw imprint canvas

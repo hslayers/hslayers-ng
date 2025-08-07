@@ -1,5 +1,5 @@
 import {HsConfig} from 'hslayers-ng/config';
-import {Injectable, Type} from '@angular/core';
+import {Injectable, Type, inject} from '@angular/core';
 
 import {HsButton} from 'hslayers-ng/types';
 import {HsPanelContainerService} from 'hslayers-ng/services/panels';
@@ -11,11 +11,11 @@ import {skip} from 'rxjs';
   providedIn: 'root',
 })
 export class HsPanelConstructorService {
-  constructor(
-    private hsConfig: HsConfig,
-    private HsPanelContainerService: HsPanelContainerService,
-    private hsSidebarService: HsSidebarService,
-  ) {
+  private hsConfig = inject(HsConfig);
+  private hsPanelContainerService = inject(HsPanelContainerService);
+  private hsSidebarService = inject(HsSidebarService);
+
+  constructor() {
     this.hsConfig.configChanges.pipe(skip(1)).subscribe(async () => {
       /**
        * Create panels activated after app init. Buttons are handled in sidebarService
@@ -24,7 +24,7 @@ export class HsPanelConstructorService {
         (acc, [panel, isEnabled]) => (isEnabled ? [...acc, panel] : acc),
         [],
       );
-      const created = this.HsPanelContainerService.panels().map((p) => p.name);
+      const created = this.hsPanelContainerService.panels().map((p) => p.name);
       const toBeCreated = activePanels.filter((p) => !created.includes(p));
       for (const panel of toBeCreated) {
         await this._createPanel(panel);
@@ -94,7 +94,7 @@ export class HsPanelConstructorService {
       default:
         break;
     }
-    this.HsPanelContainerService.create(i[cName], data || {});
+    this.hsPanelContainerService.create(i[cName], data || {});
   }
 
   /**
@@ -129,7 +129,7 @@ export class HsPanelConstructorService {
     buttonDefinition: HsButton,
     data?: any,
   ) {
-    this.HsPanelContainerService.create(component, data || {});
+    this.hsPanelContainerService.create(component, data || {});
     this.hsSidebarService.addButton(buttonDefinition);
   }
 

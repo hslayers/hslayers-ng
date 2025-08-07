@@ -1,5 +1,5 @@
 import {BehaviorSubject, Observable} from 'rxjs';
-import {Injectable} from '@angular/core';
+import {Injectable, inject} from '@angular/core';
 
 import {Feature} from 'ol';
 import {Geometry} from 'ol/geom';
@@ -25,22 +25,21 @@ export interface exportFormats {
   providedIn: 'root',
 })
 export class HsFeatureCommonService {
+  private hsQueryVectorService = inject(HsQueryVectorService);
+  private hsToastService = inject(HsToastService);
+  private hsLanguageService = inject(HsLanguageService);
+  private hsMapService = inject(HsMapService);
+
   listSubject = new BehaviorSubject<Layer<Source>[]>([] as Layer<Source>[]);
 
   availableLayer$: Observable<Layer<Source>[]> =
     this.listSubject.asObservable();
 
-  constructor(
-    private hsQueryVectorService: HsQueryVectorService,
-    private hsToastService: HsToastService,
-    private hsLanguageService: HsLanguageService,
-    private hsMapService: HsMapService,
-  ) {
+  constructor() {
     this.hsMapService.loaded().then((map) => {
       map.getLayers().on('change:length', () => {
         this.updateLayerList();
       });
-
       this.updateLayerList();
     });
   }

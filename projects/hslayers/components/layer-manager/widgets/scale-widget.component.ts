@@ -1,9 +1,8 @@
-import {Component} from '@angular/core';
+import {Component, inject} from '@angular/core';
 
 import {METERS_PER_UNIT} from 'ol/proj';
 
 import {HsLayerEditorWidgetBaseComponent} from './layer-editor-widget-base.component';
-import {HsLayerSelectorService} from 'hslayers-ng/services/layer-manager';
 import {HsMapService} from 'hslayers-ng/services/map';
 import {calculateResolutionFromScale} from 'hslayers-ng/services/utils';
 
@@ -13,14 +12,9 @@ import {calculateResolutionFromScale} from 'hslayers-ng/services/utils';
   standalone: false,
 })
 export class HsScaleWidgetComponent extends HsLayerEditorWidgetBaseComponent {
-  name = 'scale-widget';
+  hsMapService = inject(HsMapService);
 
-  constructor(
-    hsLayerSelectorService: HsLayerSelectorService,
-    public hsMapService: HsMapService,
-  ) {
-    super(hsLayerSelectorService);
-  }
+  name = 'scale-widget';
 
   /**
    * Test if selected layer has min and max resolution set
