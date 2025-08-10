@@ -103,7 +103,7 @@ describe('HsStyler', () => {
         {provide: HsMapService, useValue: new HsMapServiceMock()},
         {
           provide: HsLayoutService,
-          useValue: new HsLayoutServiceMock(mockedConfig),
+          useValue: new HsLayoutServiceMock(),
         },
         {provide: HsQueryVectorService, useValue: new emptyMock()},
         {provide: HsEventBusService, useValue: new HsEventBusServiceMock()},

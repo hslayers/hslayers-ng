@@ -66,7 +66,7 @@ describe('HsLegendLayerComponent', () => {
         {provide: HsMapService, useValue: new HsMapServiceMock()},
         {
           provide: HsLayoutService,
-          useValue: new HsLayoutServiceMock(mockedConfig),
+          useValue: new HsLayoutServiceMock(),
         },
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),

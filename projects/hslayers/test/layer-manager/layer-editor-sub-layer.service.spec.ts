@@ -1,11 +1,5 @@
 import {TestBed} from '@angular/core/testing';
 
-import {
-  getLayerParams,
-  isLayerArcgis,
-  updateLayerParams,
-} from 'hslayers-ng/services/utils';
-
 import wmsLayers from '../data/wms-layer.json';
 import {HsLayerDescriptor, HsWmsLayer} from 'hslayers-ng/types';
 import {HsLayerEditorSublayerService} from 'hslayers-ng/components/layer-manager';

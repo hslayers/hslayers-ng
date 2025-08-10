@@ -1,6 +1,5 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {Feature} from 'ol';
-import {HsConfigMock} from '../config.service.mock';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsEventBusServiceMock} from '../event-bus.service.mock';
 import {HsFiltersService} from 'hslayers-ng/common/filters';
@@ -57,8 +56,6 @@ describe('HsWfsFilterComponent', () => {
   let filtersService: MockHsFiltersService;
 
   beforeEach(async () => {
-    const mockedConfig = new HsConfigMock();
-
     await TestBed.configureTestingModule({
       imports: [HsWfsFilterComponent],
       providers: [
@@ -70,7 +67,7 @@ describe('HsWfsFilterComponent', () => {
         {provide: HsLayerManagerService, useValue: HsLayerManagerServiceMock},
         {
           provide: HsLayoutService,
-          useValue: new HsLayoutServiceMock(mockedConfig),
+          useValue: new HsLayoutServiceMock(),
         },
       ],
     }).compileComponents();

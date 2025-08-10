@@ -96,7 +96,7 @@ describe('HsSaveMap', () => {
         {provide: HsDialogContainerService, useValue: new emptyMock()},
         {
           provide: HsLayoutService,
-          useValue: new HsLayoutServiceMock(mockedConfig),
+          useValue: new HsLayoutServiceMock(),
         },
         {
           provide: HsCommonLaymanService,

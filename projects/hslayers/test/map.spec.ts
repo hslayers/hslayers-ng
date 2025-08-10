@@ -69,7 +69,7 @@ describe('HsMapService', () => {
         HsMapService,
         {
           provide: HsLayoutService,
-          useValue: new HsLayoutServiceMock(mockedConfig),
+          useValue: new HsLayoutServiceMock(),
         },
         HsEventBusService,
         {provide: HsConfig, useValue: mockedConfig},

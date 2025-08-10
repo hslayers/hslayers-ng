@@ -103,7 +103,7 @@ describe('HsDrawPanel', () => {
         HsLanguageService,
         {
           provide: HsLayoutService,
-          useValue: new HsLayoutServiceMock(mockedConfig),
+          useValue: new HsLayoutServiceMock(),
         },
         {provide: HsMapService, useValue: new HsMapServiceMock()},
         {provide: HsConfig, useValue: mockedConfig},
