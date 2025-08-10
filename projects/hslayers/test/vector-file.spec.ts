@@ -63,7 +63,7 @@ describe('add-layers-vector', () => {
         {provide: HsConfig, useValue: mockedConfig},
         {
           provide: HsLayoutService,
-          useValue: new HsLayoutServiceMock(mockedConfig),
+          useValue: new HsLayoutServiceMock(),
         },
         {
           provide: HsCommonLaymanService,

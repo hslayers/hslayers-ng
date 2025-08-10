@@ -83,7 +83,7 @@ describe('compositions', () => {
   beforeEach(() => {
     const mockedConfig = new HsConfigMock();
     const mockedMapService: any = new HsMapServiceMock();
-    const mockedVectorUtilsService = new HsAddDataVectorUtilsService(null);
+    const mockedVectorUtilsService = new HsAddDataVectorUtilsService();
     const mockedCommonLaymanService = createMockLaymanService(undefined, {
       getStyleFromUrl: async () => compositionStyleXml,
     });
@@ -109,15 +109,7 @@ describe('compositions', () => {
         {
           provide: HsCompositionsMickaService,
           useValue: new HsCompositionsMickaServiceMock(
-            new HsCompositionsMickaService(
-              null,
-              null,
-              null,
-              null,
-              null,
-              null,
-              null,
-            ),
+            new HsCompositionsMickaService(),
           ),
         },
         HsCompositionsMapService,
@@ -129,24 +121,13 @@ describe('compositions', () => {
         {provide: HsConfig, useValue: mockedConfig},
         {
           provide: HsLayoutService,
-          useValue: new HsLayoutServiceMock(mockedConfig),
+          useValue: new HsLayoutServiceMock(),
         },
         HsStylerService,
         HsCompositionsLayerParserService,
         {
           provide: HsAddDataVectorService,
-          useValue: new HsAddDataVectorService(
-            null,
-            null,
-            null,
-            null,
-            null,
-            mockedMapService,
-            mockedStylerService,
-            mockedVectorUtilsService,
-            null,
-            null,
-          ),
+          useValue: new HsAddDataVectorService(),
         },
         {
           provide: HsCommonEndpointsService,

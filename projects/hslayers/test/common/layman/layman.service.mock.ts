@@ -1,7 +1,6 @@
 import {signal} from '@angular/core';
 import {of} from 'rxjs';
 import {HsEndpoint} from 'hslayers-ng/types';
-import {toObservable} from '@angular/core/rxjs-interop';
 
 // Default mock endpoint data
 export const mockEndpoint = {

@@ -1,4 +1,3 @@
-import {Feature} from 'ol';
 import {LineString, Point, Polygon} from 'ol/geom';
 import {Vector as VectorLayer} from 'ol/layer';
 

@@ -60,7 +60,7 @@ describe('HsPrintComponent', () => {
       providers: [
         {
           provide: HsLayoutService,
-          useValue: new HsLayoutServiceMock(mockedConfig),
+          useValue: new HsLayoutServiceMock(),
         },
         {
           provide: HsSidebarService,
