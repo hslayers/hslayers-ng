@@ -433,6 +433,7 @@ export class HsCompositionsLayerParserService {
         // Assign the appropriate style property to options
         if (styleType == 'sld') {
           options.sld = lyr_def.style;
+          console.warn(lyr_def.title, 'GUESSED AS SLD');
         } else if (styleType == 'qml') {
           options.qml = lyr_def.style;
         } else {

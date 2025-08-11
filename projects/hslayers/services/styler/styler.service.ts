@@ -304,7 +304,7 @@ export class HsStylerService {
       sld = await this.olStyleToSld(style as StyleLike);
       setSld(layer, sld);
     } else {
-      this.hsLogService.error(
+      this.hsLogService.warn(
         `Unexpected style definition for layer ${getTitle(layer)}`,
       );
     }
