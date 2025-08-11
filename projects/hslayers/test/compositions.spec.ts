@@ -1,9 +1,6 @@
 /* eslint-disable prefer-arrow-callback */
-import {
-  BrowserDynamicTestingModule,
-  platformBrowserDynamicTesting,
-} from '@angular/platform-browser-dynamic/testing';
-import {CUSTOM_ELEMENTS_SCHEMA, signal} from '@angular/core';
+// Remove unused import
+import {CUSTOM_ELEMENTS_SCHEMA, Injectable, signal} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {
   ComponentFixture,
@@ -19,10 +16,7 @@ import {of} from 'rxjs';
 import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
 import {provideTranslateService, TranslatePipe} from '@ngx-translate/core';
 
-import {
-  HsAddDataVectorService,
-  HsAddDataVectorUtilsService,
-} from 'hslayers-ng/services/add-data';
+import {HsAddDataVectorService} from 'hslayers-ng/services/add-data';
 import {HsCommonEndpointsService} from 'hslayers-ng/services/endpoints';
 import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
 import {
@@ -53,22 +47,28 @@ import {getSld, getTitle} from 'hslayers-ng/common/extensions';
 import {createMockLaymanService} from './common/layman/layman.service.mock';
 import {compositionStyleXml} from './data/composition-style';
 import {createDefaultStyle} from 'ol/style/Style';
+// Remove unused imports for test environment initialization
+import {HsEndpoint} from 'hslayers-ng/types';
+import {
+  BrowserDynamicTestingModule,
+  platformBrowserDynamicTesting,
+} from '@angular/platform-browser-dynamic/testing';
 
-class HsCompositionsMickaServiceMock {
-  constructor(private originalService: HsCompositionsMickaService) {}
-  loadList(ds, params) {
-    this.originalService.compositionsReceived(ds, compositionsJson);
+@Injectable()
+class HsCompositionsMickaServiceMock extends HsCompositionsMickaService {
+  override loadList(ds: HsEndpoint, _params?: unknown) {
+    this.compositionsReceived(ds, compositionsJson);
     return of(ds);
   }
 }
-
 let mockedMapService;
 let hsConfig: HsConfig;
-let CompositionsCatalogueService;
+let CompositionsCatalogueService: HsCompositionsCatalogueService;
 
 describe('compositions', () => {
   let component: HsCompositionsComponent;
   let fixture: ComponentFixture<HsCompositionsComponent>;
+
   beforeAll(() => {
     TestBed.resetTestEnvironment();
     TestBed.initTestEnvironment(
@@ -83,7 +83,6 @@ describe('compositions', () => {
   beforeEach(() => {
     const mockedConfig = new HsConfigMock();
     const mockedMapService: any = new HsMapServiceMock();
-    const mockedVectorUtilsService = new HsAddDataVectorUtilsService();
     const mockedCommonLaymanService = createMockLaymanService(undefined, {
       getStyleFromUrl: async () => compositionStyleXml,
     });
@@ -105,12 +104,9 @@ describe('compositions', () => {
       ],
       providers: [
         HsCompositionsService,
-        HsCompositionsCatalogueService,
         {
           provide: HsCompositionsMickaService,
-          useValue: new HsCompositionsMickaServiceMock(
-            new HsCompositionsMickaService(),
-          ),
+          useClass: HsCompositionsMickaServiceMock,
         },
         HsCompositionsMapService,
         {
@@ -127,7 +123,7 @@ describe('compositions', () => {
         HsCompositionsLayerParserService,
         {
           provide: HsAddDataVectorService,
-          useValue: new HsAddDataVectorService(),
+          useClass: HsAddDataVectorService,
         },
         {
           provide: HsCommonEndpointsService,
@@ -164,9 +160,9 @@ describe('compositions', () => {
   });
 
   it('compositions list should load', fakeAsync(() => {
-    spyOn(CompositionsCatalogueService, 'clearLoadedData').and.returnValue(
-      true,
-    );
+    spyOn(CompositionsCatalogueService, 'clearLoadedData').and.callFake(() => {
+      return true;
+    });
     CompositionsCatalogueService.filterByExtent = false;
     const ds: any = {
       url: 'https://watlas.lesprojekt.cz/micka/csw',
