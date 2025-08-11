@@ -1,3 +1,10 @@
+# [16.0.0-next.4](https://github.com/hslayers/hslayers-ng/compare/16.0.0-next.2...16.0.0-next.4) (2025-08-11)
+
+
+### Bug Fixes
+
+* **build:** Specify correct deps versions ([e7d4d73](https://github.com/hslayers/hslayers-ng/commit/e7d4d7399ff3bddf1bf460b8b3012223d3ff34b5))
+
 # [16.0.0-next.3](https://github.com/hslayers/hslayers-ng/compare/16.0.0-next.2...16.0.0-next.3) (2025-08-06)
 
 
