@@ -1,6 +1,6 @@
 import {BehaviorSubject, Subject} from 'rxjs';
-import {HsConfigMock} from './config.service.mock';
 import {inject} from '@angular/core';
+import {HsConfig} from 'hslayers-ng/config';
 
 export class HsLayoutServiceMock {
   panel_statuses = {};
@@ -19,38 +19,7 @@ export class HsLayoutServiceMock {
    */
   _puremapApp = new BehaviorSubject(false);
 
-  // Add missing hsConfig property
-  hsConfig = {
-    panelWidths: {
-      default: 425,
-    },
-    configChanges: new Subject(),
-    mobileBreakpoint: 767,
-    sidebarClosed: false,
-    panelsEnabled: {
-      legend: true,
-      measure: true,
-      query: true,
-      compositions: true,
-      draw: true,
-      layerManager: true,
-      featureTable: true,
-      print: true,
-      saveMap: true,
-      language: true,
-      share: true,
-      sensors: true,
-      search: true,
-      tripPlanner: true,
-      addData: true,
-      mapSwipe: true,
-      wfsFilter: true,
-    },
-    assetsPath: '/assets',
-    id: 'testapp',
-  };
-
-  constructor() {}
+  hsConfig = inject(HsConfig);
 
   componentEnabled() {
     return true;

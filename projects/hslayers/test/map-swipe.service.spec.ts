@@ -54,7 +54,7 @@ describe('HsMapSwipeService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
-        {provide: HsConfig, useValue: new HsConfigMock()},
+        {provide: HsConfig, useClass: HsConfigMock},
         {provide: HsMapService, useValue: new HsMapServiceMock()},
         {provide: HsToastService, useValue: new HsToastServiceMock()},
         {

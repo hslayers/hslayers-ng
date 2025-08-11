@@ -81,7 +81,6 @@ describe('compositions', () => {
   });
 
   beforeEach(() => {
-    const mockedConfig = new HsConfigMock();
     const mockedMapService: any = new HsMapServiceMock();
     const mockedCommonLaymanService = createMockLaymanService(undefined, {
       getStyleFromUrl: async () => compositionStyleXml,
@@ -114,10 +113,10 @@ describe('compositions', () => {
           useValue: new HsSaveMapServiceMock(),
         },
         {provide: HsMapService, useValue: mockedMapService},
-        {provide: HsConfig, useValue: mockedConfig},
+        {provide: HsConfig, useClass: HsConfigMock},
         {
           provide: HsLayoutService,
-          useValue: new HsLayoutServiceMock(),
+          useClass: HsLayoutServiceMock,
         },
         HsStylerService,
         HsCompositionsLayerParserService,

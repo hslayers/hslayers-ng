@@ -1,6 +1,9 @@
+import {Injectable} from '@angular/core';
+import {HsConfig} from 'hslayers-ng/config';
 import {Subject} from 'rxjs';
 
-export class HsConfigMock {
+@Injectable()
+export class HsConfigMock extends HsConfig {
   reverseLayerList: boolean;
   panelsEnabled = {
     legend: false,
@@ -37,23 +40,23 @@ export class HsConfigMock {
     {name: 'wifi', url: 'img/icons/wifi8.svg'},
   ];
 
-  update?(config: any): void {
+  override update?(config: any): void {
     Object.assign(this, config);
     this.configChanges.next();
   }
 
-  updateComponentsEnabled?(config: any): any {
+  override updateComponentsEnabled?(config: any): any {
     return {...this.componentsEnabled, ...config?.componentsEnabled};
   }
 
-  updateSymbolizers?(config: any): any {
+  override updateSymbolizers?(config: any): any {
     return this.symbolizerIcons.map((val) => ({
       ...val,
       url: (config.assetsPath ?? '') + val.url,
     }));
   }
 
-  checkDeprecatedCesiumConfig?(config: any): void {
+  override checkDeprecatedCesiumConfig?(config: any): void {
     // Mock implementation
   }
 }

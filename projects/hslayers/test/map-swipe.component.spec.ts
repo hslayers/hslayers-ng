@@ -39,7 +39,7 @@ describe('HsMapSwipeComponent', () => {
   let fixture: ComponentFixture<HsMapSwipeComponent>;
 
   beforeEach(async () => {
-    const mockedConfig = new HsConfigMock();
+    
 
     await TestBed.configureTestingModule({
       declarations: [HsMapSwipeComponent],
@@ -53,10 +53,10 @@ describe('HsMapSwipeComponent', () => {
       ],
       providers: [
         HsMapSwipeService,
-        {provide: HsConfig, useValue: mockedConfig},
+        {provide: HsConfig, useClass: HsConfigMock},
         {
           provide: HsLayoutService,
-          useValue: new HsLayoutServiceMock(),
+          useClass: HsLayoutServiceMock,
         },
         {
           provide: HsSidebarService,

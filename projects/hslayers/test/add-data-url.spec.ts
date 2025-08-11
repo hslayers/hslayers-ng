@@ -54,7 +54,6 @@ describe('HsAddDataUrlComponent', () => {
   beforeEach(() => {
     originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
     jasmine.DEFAULT_TIMEOUT_INTERVAL = 20000;
-    const mockedConfig = new HsConfigMock();
 
     const bed = TestBed.configureTestingModule({
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -73,10 +72,10 @@ describe('HsAddDataUrlComponent', () => {
       ],
       providers: [
         {provide: HsMapService, useValue: new HsMapServiceMock()},
-        {provide: HsConfig, useValue: mockedConfig},
+        {provide: HsConfig, useClass: HsConfigMock},
         {
           provide: HsLayoutService,
-          useValue: new HsLayoutServiceMock(),
+          useClass: HsLayoutServiceMock,
         },
         provideHttpClient(withInterceptorsFromDi()),
       ],

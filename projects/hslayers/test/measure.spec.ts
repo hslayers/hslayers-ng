@@ -37,7 +37,7 @@ describe('HsMeasure', () => {
   let service: HsMeasureService;
 
   beforeEach(() => {
-    const mockedConfig = new HsConfigMock();
+    
 
     TestBed.configureTestingModule({
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -47,10 +47,10 @@ describe('HsMeasure', () => {
         HsMeasureService,
         {
           provide: HsLayoutService,
-          useValue: new HsLayoutServiceMock(),
+          useClass: HsLayoutServiceMock,
         },
         {provide: HsMapService, useValue: new HsMapServiceMock()},
-        {provide: HsConfig, useValue: mockedConfig},
+        {provide: HsConfig, useClass: HsConfigMock},
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
       ],

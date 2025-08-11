@@ -8,7 +8,7 @@ describe('AppComponent', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [HslayersAppComponent],
-      providers: [{provide: HsConfig, useValue: new HsConfigMock()}],
+      providers: [{provide: HsConfig, useClass: HsConfigMock}],
     }).compileComponents();
   }));
 

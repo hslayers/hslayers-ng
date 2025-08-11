@@ -49,7 +49,7 @@ describe('HsLegendLayerComponent', () => {
   let fixture: ComponentFixture<HsLegendLayerComponent>;
   let service: HsLegendService;
   beforeEach(async () => {
-    const mockedConfig = new HsConfigMock();
+    
 
     TestBed.configureTestingModule({
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -62,11 +62,11 @@ describe('HsLegendLayerComponent', () => {
       imports: [HsPanelHelpersModule, FormsModule, TranslatePipe],
       providers: [
         HsLegendService,
-        {provide: HsConfig, useValue: mockedConfig},
+        {provide: HsConfig, useClass: HsConfigMock},
         {provide: HsMapService, useValue: new HsMapServiceMock()},
         {
           provide: HsLayoutService,
-          useValue: new HsLayoutServiceMock(),
+          useClass: HsLayoutServiceMock,
         },
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),

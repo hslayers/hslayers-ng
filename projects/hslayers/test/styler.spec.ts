@@ -67,7 +67,7 @@ describe('HsStyler', () => {
   let component: HsStylerComponent;
   let service: HsStylerService;
   beforeEach(() => {
-    const mockedConfig = new HsConfigMock();
+    
 
     layer = signal(
       new VectorLayer({
@@ -103,11 +103,11 @@ describe('HsStyler', () => {
         {provide: HsMapService, useValue: new HsMapServiceMock()},
         {
           provide: HsLayoutService,
-          useValue: new HsLayoutServiceMock(),
+          useClass: HsLayoutServiceMock,
         },
         {provide: HsQueryVectorService, useValue: new emptyMock()},
         {provide: HsEventBusService, useValue: new HsEventBusServiceMock()},
-        {provide: HsConfig, useValue: mockedConfig},
+        {provide: HsConfig, useClass: HsConfigMock},
         {
           provide: HsLayerSynchronizerService,
           useValue: new HsLayerSynchronizerServiceMock(),

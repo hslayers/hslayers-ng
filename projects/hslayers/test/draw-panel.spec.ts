@@ -86,8 +86,6 @@ describe('HsDrawPanel', () => {
   let component: HsDrawPanelComponent;
   let service: HsDrawService;
   beforeEach(() => {
-    const mockedConfig = new HsConfigMock();
-
     const mockedCommonLaymanService = createMockLaymanService(undefined, {});
 
     TestBed.configureTestingModule({
@@ -103,10 +101,10 @@ describe('HsDrawPanel', () => {
         HsLanguageService,
         {
           provide: HsLayoutService,
-          useValue: new HsLayoutServiceMock(),
+          useClass: HsLayoutServiceMock,
         },
         {provide: HsMapService, useValue: new HsMapServiceMock()},
-        {provide: HsConfig, useValue: mockedConfig},
+        {provide: HsConfig, useClass: HsConfigMock},
         {provide: HsQueryBaseService, useValue: mockQueryBaseService},
         {provide: HsQueryVectorService, useValue: new HsQueryVectorMock()},
         {provide: HsLaymanService, useValue: mockLaymanService},

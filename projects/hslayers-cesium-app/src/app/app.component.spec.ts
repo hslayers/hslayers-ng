@@ -13,7 +13,7 @@ describe('AppComponent', () => {
     TestBed.configureTestingModule({
       declarations: [AppComponent],
       providers: [
-        {provide: HsConfig, useValue: new HsConfigMock()},
+        {provide: HsConfig, useClass: HsConfigMock},
         {provide: HsCesiumConfig, useValue: new HsCesiumConfigMock()},
       ],
     }).compileComponents();
