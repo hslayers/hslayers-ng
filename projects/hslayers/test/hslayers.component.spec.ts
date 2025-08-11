@@ -32,7 +32,7 @@ describe('HslayersComponent', () => {
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
       imports: [TranslateTestingModule],
       providers: [
-        {provide: HsConfig, useValue: new HsConfigMock()},
+        {provide: HsConfig, useClass: HsConfigMock},
         provideTranslateService({
           loader: {
             provide: TranslateLoader,

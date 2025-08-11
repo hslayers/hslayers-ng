@@ -63,7 +63,7 @@ describe('HsLayerManagerFolderService', () => {
     TestBed.configureTestingModule({
       imports: [],
       providers: [
-        {provide: HsConfig, useValue: new HsConfigMock()},
+        {provide: HsConfig, useClass: HsConfigMock},
         {provide: HsLayerManagerService, useValue: HsLayerManagerServiceMock},
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),

@@ -58,7 +58,7 @@ describe('HsMapService', () => {
     );
   });
   beforeEach(() => {
-    const mockedConfig = new HsConfigMock();
+    
 
     TestBed.configureTestingModule({
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -69,10 +69,10 @@ describe('HsMapService', () => {
         HsMapService,
         {
           provide: HsLayoutService,
-          useValue: new HsLayoutServiceMock(),
+          useClass: HsLayoutServiceMock,
         },
         HsEventBusService,
-        {provide: HsConfig, useValue: mockedConfig},
+        {provide: HsConfig, useClass: HsConfigMock},
         {provide: HsLanguageService, useValue: mockLanguageService()},
         {
           provide: HsCommonLaymanService,

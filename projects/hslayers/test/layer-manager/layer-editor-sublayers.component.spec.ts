@@ -35,7 +35,7 @@ describe('HsLayerEditorSubLayerCheckboxesComponent', () => {
           provide: HsLayerManagerVisibilityService,
           useValue: layerManagerVisibilityServiceSpy,
         },
-        {provide: HsConfig, useValue: new HsConfigMock()},
+        {provide: HsConfig, useClass: HsConfigMock},
       ],
     }).compileComponents();
 

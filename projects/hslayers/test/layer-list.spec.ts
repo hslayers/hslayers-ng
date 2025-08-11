@@ -123,8 +123,6 @@ describe('layermanager-layer-list', () => {
   });
 
   beforeEach(() => {
-    const mockedConfig = new HsConfigMock();
-
     TestBed.configureTestingModule({
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
       declarations: [],
@@ -157,10 +155,10 @@ describe('layermanager-layer-list', () => {
             getParamValue: () => undefined,
           },
         },
-        {provide: HsConfig, useValue: mockedConfig},
+        {provide: HsConfig, useClass: HsConfigMock},
         {
           provide: HsLayoutService,
-          useValue: new HsLayoutServiceMock(),
+          useClass: HsLayoutServiceMock,
         },
         {provide: HsLayerManagerService, useValue: HsLayerManagerServiceMock},
         provideHttpClient(withInterceptorsFromDi()),

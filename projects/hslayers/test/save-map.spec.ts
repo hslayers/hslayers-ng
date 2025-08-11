@@ -72,7 +72,7 @@ describe('HsSaveMap', () => {
   let service: HsLaymanService;
 
   beforeEach(() => {
-    const mockedConfig = new HsConfigMock();
+    
 
     TestBed.configureTestingModule({
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -88,7 +88,7 @@ describe('HsSaveMap', () => {
           provide: HsEventBusService,
           useValue: new HsEventBusServiceMock(),
         },
-        {provide: HsConfig, useValue: mockedConfig},
+        {provide: HsConfig, useClass: HsConfigMock},
         {
           provide: HsCommonEndpointsService,
           useValue: new CommonEndpointsServiceMock(),
@@ -96,7 +96,7 @@ describe('HsSaveMap', () => {
         {provide: HsDialogContainerService, useValue: new emptyMock()},
         {
           provide: HsLayoutService,
-          useValue: new HsLayoutServiceMock(),
+          useClass: HsLayoutServiceMock,
         },
         {
           provide: HsCommonLaymanService,

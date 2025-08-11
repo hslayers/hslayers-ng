@@ -51,8 +51,6 @@ describe('HsLegendComponent', () => {
   let component: HsLegendComponent;
   let fixture: ComponentFixture<HsLegendComponent>;
   beforeEach(() => {
-    const mockedConfig = new HsConfigMock();
-
     const bed = TestBed.configureTestingModule({
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
       declarations: [
@@ -68,11 +66,11 @@ describe('HsLegendComponent', () => {
         FormsModule,
       ],
       providers: [
-        {provide: HsConfig, useValue: mockedConfig},
+        {provide: HsConfig, useClass: HsConfigMock},
         {provide: HsMapService, useValue: new HsMapServiceMock()},
         {
           provide: HsLayoutService,
-          useValue: new HsLayoutServiceMock(),
+          useClass: HsLayoutServiceMock,
         },
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),

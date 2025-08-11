@@ -67,7 +67,7 @@ describe('HsWfsFilterComponent', () => {
         {provide: HsLayerManagerService, useValue: HsLayerManagerServiceMock},
         {
           provide: HsLayoutService,
-          useValue: new HsLayoutServiceMock(),
+          useClass: HsLayoutServiceMock,
         },
       ],
     }).compileComponents();

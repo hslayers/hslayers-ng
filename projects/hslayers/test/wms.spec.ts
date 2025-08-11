@@ -69,7 +69,7 @@ describe('add-data-url', () => {
         HsUrlWmsService,
         {
           provide: HsConfig,
-          useValue: new HsConfigMock(),
+          useClass: HsConfigMock,
         },
         {
           provide: HsCommonEndpointsService,
