@@ -82,7 +82,7 @@ export class HsTranslateLoader implements TranslateLoader {
   private loadTranslations(lang: string): Observable<any> {
     const requests: Observable<any>[] = [
       this.httpClient
-        .get(`${this.hsConfig.assetsPath}/locales/${lang}.json`)
+        .get(`${this.hsConfig.assetsPath}locales/${lang}.json`)
         .pipe(catchError((error) => this.handleTranslationError(error, lang))),
       of(this.hsConfig.translationOverrides?.[lang] ?? {}),
     ];
