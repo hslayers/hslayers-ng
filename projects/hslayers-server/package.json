@@ -9,7 +9,7 @@
     "layman",
     "proxy"
   ],
-  "homepage": "https://ng.hslayers.org/",
+  "homepage": "https://github.com/hslayers/hslayers-ng",
   "bugs": "https://github.com/hslayers/hslayers-ng/issues",
   "repository": {
     "type": "git",
