@@ -103,7 +103,7 @@
     "@angular/cli": "^20.2.0",
     "@angular/compiler-cli": "^20.2.1",
     "@compodoc/compodoc": "^1.1.26",
-    "@cypress/schematic": "^3.0.0",
+    "@cypress/schematic": "^4.1.1",
     "@eslint/compat": "^1.3.2",
     "@fortawesome/fontawesome-free": "^7.0.0",
     "@frsource/cypress-plugin-visual-regression-diff": "^3.2.14",
