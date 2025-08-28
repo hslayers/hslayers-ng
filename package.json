@@ -99,7 +99,7 @@
   "devDependencies": {
     "@angular-builders/custom-webpack": "^20.0.0",
     "@angular-devkit/build-angular": "^20.2.0",
-    "@angular-devkit/schematics": "^20.2.0",
+    "@angular-devkit/schematics": "^20.2.1",
     "@angular/cli": "^20.2.0",
     "@angular/compiler-cli": "^20.2.1",
     "@compodoc/compodoc": "^1.1.26",
