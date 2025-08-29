@@ -61,5 +61,8 @@
   },
   "dependencies": {
     "tslib": "^2.0.0"
+  },
+  "overrides": {
+    "geostyler-openlayers-parser": "$geostyler-openlayers-parser"
   }
 }
