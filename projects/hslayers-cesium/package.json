@@ -22,16 +22,19 @@
   "license": "MIT",
   "scripts": {},
   "peerDependencies": {
-    "@angular/common": "^19.0.0",
-    "@angular/core": "^19.0.0",
-    "@angular/forms": "^19.0.0",
-    "@angular/localize": "^19.0.0",
-    "@ngx-translate/core": "^16.0.0",
-    "@ngx-translate/http-loader": "^16.0.0",
-    "cesium": "^1.116.0",
-    "hslayers-ng": "^15.0.0"
+    "@angular/common": "^20.0.0",
+    "@angular/core": "^20.0.0",
+    "@angular/forms": "^20.0.0",
+    "@angular/localize": "^20.0.0",
+    "@ngx-translate/core": "^17.0.0",
+    "@ngx-translate/http-loader": "^17.0.0",
+    "cesium": "^1.132.0",
+    "hslayers-ng": "^16.0.0"
   },
   "dependencies": {
     "tslib": "^2.0.0"
+  },
+  "overrides": {
+    "geostyler-openlayers-parser": "git+https://github.com/LESPROJEKT/geostyler-openlayers-parser.git#semver:v5.1.2-hsl.1"
   }
 }
