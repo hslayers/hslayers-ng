@@ -26,7 +26,7 @@ export class HsMissingTranslationHandler implements MissingTranslationHandler {
       `Missing translation for key: ${params.key} and params: ${JSON.stringify(params.interpolateParams)}`,
     );
 
-    // Return just the key
-    return params.key;
+    // Return last part of the key (SIDNENAV.PANEL.Info -> Info) or the key itself if single part key
+    return String(params.key).split('.').pop();
   }
 }
