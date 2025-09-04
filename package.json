@@ -131,7 +131,7 @@
     "ng-packagr": "^20.2.0",
     "prettier": "^3.6.2",
     "puppeteer": "^24.18.0",
-    "sass": "^1.91.0",
+    "sass": "^1.92.0",
     "ts-node": "^10.9.2",
     "typescript": "~5.9.2",
     "typescript-eslint": "^8.41.0"
