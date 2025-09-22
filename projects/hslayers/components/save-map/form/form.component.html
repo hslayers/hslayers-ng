@@ -5,7 +5,12 @@
     <img #compositionThumbnail class="hs-stc-thumbnail img-thumbnail mt-1 d-block"
       [alt]="'SAVECOMPOSITION.compositionThumbnail' | translate " width="200" height="200">
   </div>
-
+  <div class="form-floating mb-2">
+    <input type="text" class="form-control" formControlName="title"
+      [class.is-invalid]="hsSaveMapManagerService.compoData.controls.title.invalid  && compoForm.submitted"
+      name="hs-save-map-titlse" [placeholder]="'COMMON.title' | translate  ">
+    <label for="hs-save-map-name">{{'COMMON.title' | translate }} *</label>
+  </div>
   <div class="form-floating mb-2">
     <input type="text" class="form-control" formControlName="name"
       [class.is-invalid]="hsSaveMapManagerService.compoData.controls.name.invalid  && compoForm.submitted"
