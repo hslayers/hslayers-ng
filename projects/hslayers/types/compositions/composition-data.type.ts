@@ -1,10 +1,11 @@
-import {Layer} from 'ol/layer';
+import { Layer } from "ol/layer";
 
-import {AccessRightsModel} from '../access-rights.model';
-import {BoundingBoxObject} from '../bounding-box-object.type';
+import { AccessRightsModel } from "../access-rights.model";
+import { BoundingBoxObject } from "../bounding-box-object.type";
 
 export type CompoData = {
   name?: string;
+  title?: string;
   abstract?: string;
   keywords?: string;
   layers?: Layer[];

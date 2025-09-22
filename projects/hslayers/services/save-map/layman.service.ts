@@ -131,6 +131,7 @@ export class HsLaymanService implements HsSaverService {
       'blob.json',
     );
     formdata.append('name', compoData.name);
+    formdata.append('title', compoData.title);
     formdata.append('abstract', compoData.abstract);
     formdata.append('access_rights.read', rights.read);
     formdata.append('access_rights.write', rights.write);

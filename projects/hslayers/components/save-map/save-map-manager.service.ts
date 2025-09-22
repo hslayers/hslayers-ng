@@ -54,6 +54,10 @@ export class HsSaveMapManagerParams {
   };
 
   compoData = new FormGroup({
+    title: new FormControl('', {
+      validators: Validators.required,
+      nonNullable: true,
+    }),
     name: new FormControl('', {
       validators: Validators.required,
       nonNullable: true,
@@ -139,6 +143,7 @@ export class HsSaveMapManagerService extends HsSaveMapManagerParams {
           workspace: workspace,
           //NOTE: Keep name last so its valueChange subscription has access to updated values
           name: compositionData.name,
+          title: compositionData.title,
           access_rights: this._access_rights,
         });
       }),
@@ -222,7 +227,12 @@ export class HsSaveMapManagerService extends HsSaveMapManagerParams {
   async save(
     saveAsNew: boolean,
     endpoint: HsEndpoint,
-  ): Promise<{status: boolean; response?: any; error?: any; reason?: string}> {
+  ): Promise<{
+    status: boolean;
+    response?: any;
+    error?: any;
+    reason?: string;
+  }> {
     const compoDataValue = this.compoData.value;
     const tempCompoData: CompoData = {
       ...compoDataValue,
