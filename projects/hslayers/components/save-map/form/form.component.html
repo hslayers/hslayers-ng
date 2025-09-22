@@ -7,19 +7,19 @@
   </div>
   <div class="form-floating mb-2">
     <input type="text" class="form-control" formControlName="title"
-      [class.is-invalid]="hsSaveMapManagerService.compoData.controls.title.invalid  && compoForm.submitted"
+      [class.is-invalid]="hsSaveMapManagerService.compoData.controls.title.invalid  && compoForm.touched"
       name="hs-save-map-titlse" [placeholder]="'COMMON.title' | translate  ">
     <label for="hs-save-map-name">{{'COMMON.title' | translate }} *</label>
   </div>
   <div class="form-floating mb-2">
     <input type="text" class="form-control" formControlName="name"
-      [class.is-invalid]="hsSaveMapManagerService.compoData.controls.name.invalid  && compoForm.submitted"
+      [class.is-invalid]="hsSaveMapManagerService.compoData.controls.name.invalid  && compoForm.touched"
       name="hs-save-map-name" [placeholder]="'COMMON.name' | translate  ">
     <label for="hs-save-map-name">{{'COMMON.name' | translate }} *</label>
   </div>
   <div class="form-floating mb-2">
     <textarea formControlName="abstract" class="form-control" name="hs-save-map-abstract"
-      [class.is-invalid]="hsSaveMapManagerService.compoData.controls.abstract.invalid  && compoForm.submitted"
+      [class.is-invalid]="hsSaveMapManagerService.compoData.controls.abstract.invalid  && compoForm.touched"
       [placeholder]="'COMMON.abstract' | translate  "></textarea>
     <label for="hs-save-map-abstract">{{'COMMON.abstract' | translate }} *</label>
   </div>
