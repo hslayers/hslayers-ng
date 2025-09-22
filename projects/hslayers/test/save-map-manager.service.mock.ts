@@ -26,6 +26,10 @@ export class HsSaveMapManagerServiceMock extends HsSaveMapManagerParams {
 
   // Re-declare compoData as it's defined in the base class but needs initialization here
   compoData = new FormGroup({
+    title: new FormControl('', {
+      validators: Validators.required,
+      nonNullable: true,
+    }),
     name: new FormControl('', {
       validators: Validators.required,
       nonNullable: true,
