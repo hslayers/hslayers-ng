@@ -9,7 +9,7 @@ import {
   EventEmitter,
 } from '@angular/core';
 import {NgbTooltipModule} from '@ng-bootstrap/ng-bootstrap';
-import {toSignal} from '@angular/core/rxjs-interop';
+import {takeUntilDestroyed, toSignal} from '@angular/core/rxjs-interop';
 import {startWith, Observable, map, debounceTime} from 'rxjs';
 import {TranslatePipe} from '@ngx-translate/core';
 import {ReactiveFormsModule} from '@angular/forms';
@@ -18,6 +18,7 @@ import {AccessRightsModel} from 'hslayers-ng/types';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsSaveMapManagerService} from '../save-map-manager.service';
 import {
+  getLaymanFriendlyLayerName,
   HsCommonLaymanAccessRightsComponent,
   HsCommonLaymanService,
   HsLaymanCurrentUserComponent,
@@ -73,6 +74,7 @@ export class HsSaveMapFormComponent {
     },
   );
 
+  showNameInput = signal(false);
   compoName = toSignal(
     this.hsSaveMapManagerService.compoData.controls.name.valueChanges.pipe(
       startWith(this.hsSaveMapManagerService.compoData.controls.name.value),
@@ -122,6 +124,10 @@ export class HsSaveMapFormComponent {
     return ['save'];
   });
 
+  canRename = computed(() => {
+    return this.availableActions().includes('rename');
+  });
+
   contextTooltipText = computed(() => {
     const result = {text: '', iconClass: 'fa-solid fa-circle-info'};
     if (!this.isEditable()) {
@@ -162,6 +168,23 @@ export class HsSaveMapFormComponent {
         return panel === 'saveMap';
       }),
     );
+
+    this.hsSaveMapManagerService.compoData.controls.title.valueChanges
+      .pipe(debounceTime(250), takeUntilDestroyed())
+      .subscribe((title) => {
+        /**
+         * Update name only if user is not editing the composition
+         * or if the composition is not editable
+         */
+        const shouldUpdateName =
+          !this.showNameInput() &&
+          (!this.currentComposition() || !this.isEditable());
+        if (shouldUpdateName) {
+          this.hsSaveMapManagerService.compoData.patchValue({
+            name: getLaymanFriendlyLayerName(title),
+          });
+        }
+      });
   }
 
   /**
@@ -196,9 +219,12 @@ export class HsSaveMapFormComponent {
    * Visual clue for user to rename the composition
    */
   rename(): void {
-    this.hsLayoutService.layoutElement
-      .querySelector('[name="hs-save-map-name"]')
-      .focus();
+    this.showNameInput.set(true);
+    setTimeout(() => {
+      this.hsLayoutService.layoutElement
+        .querySelector('[name="hs-save-map-name"]')
+        .focus();
+    }, 100);
   }
 
   /**

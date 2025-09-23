@@ -11,12 +11,14 @@
       name="hs-save-map-titlse" [placeholder]="'COMMON.title' | translate  ">
     <label for="hs-save-map-name">{{'COMMON.title' | translate }} *</label>
   </div>
+  @if(showNameInput()) {
   <div class="form-floating mb-2">
     <input type="text" class="form-control" formControlName="name"
       [class.is-invalid]="hsSaveMapManagerService.compoData.controls.name.invalid  && compoForm.touched"
       name="hs-save-map-name" [placeholder]="'COMMON.name' | translate  ">
     <label for="hs-save-map-name">{{'COMMON.name' | translate }} *</label>
   </div>
+  }
   <div class="form-floating mb-2">
     <textarea formControlName="abstract" class="form-control" name="hs-save-map-abstract"
       [class.is-invalid]="hsSaveMapManagerService.compoData.controls.abstract.invalid  && compoForm.touched"
@@ -70,16 +72,16 @@
     <div class="d-flex gap-2 flex-wrap justify-content-end flex-fill">
       @for(action of availableActions(); track action) {
       @switch (action) {
-      @case ('overwrite') {
-      <button type="button" class="btn btn-warning" (click)="initiateSave(false)" id="btn-overwrite">
-        <i class="fa-solid fa-rotate-right me-1"></i>
-        {{'COMMON.update' | translate }}
-      </button>
-      }
       @case ('rename') {
       <button type="button" class="btn btn-success" id="btn-create-new" (click)="rename()">
         <i class="fa-solid fa-pencil me-1"></i>
         {{'SAVECOMPOSITION.form.changeName' | translate }}
+      </button>
+      }
+      @case ('overwrite') {
+      <button type="button" class="btn btn-warning" (click)="initiateSave(false)" id="btn-overwrite">
+        <i class="fa-solid fa-rotate-right me-1"></i>
+        {{'COMMON.update' | translate }}
       </button>
       }
       @case ('save') {
