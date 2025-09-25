@@ -98,7 +98,7 @@
   },
   "devDependencies": {
     "@angular-builders/custom-webpack": "^20.0.0",
-    "@angular-devkit/build-angular": "^20.3.2",
+    "@angular-devkit/build-angular": "^20.3.3",
     "@angular-devkit/schematics": "^20.3.2",
     "@angular/cli": "^20.3.2",
     "@angular/compiler-cli": "^20.3.1",
