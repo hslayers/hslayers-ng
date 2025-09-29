@@ -8,12 +8,16 @@
         </button>
       </div>
       <div class="modal-body" style="max-height: 600px; overflow-y: auto">
-        <div class="row" style="text-align: justify; text-justify: inter-word;">
+        <div class="row py-1" style="text-align: justify; text-justify: inter-word;">
+          <div class="col-md-3"><b>{{'COMMON.name' | translate }}</b></div>
+          <div class="col-md-9">{{data.info.name}}</div>
+        </div>
+        <div class="row py-1" style="text-align: justify; text-justify: inter-word;">
           <div class="col-md-3"><b>{{'COMMON.abstract' | translate }}</b></div>
           <div class="col-md-9">{{data.info.abstract}}</div>
         </div>
         @if (data.info.keywords) {
-        <div>
+        <div class="py-1">
           @for (keyword of data.info.keywords; track keyword; let first = $first) {
           <div>
             @if (first) {
@@ -33,14 +37,14 @@
         </div>
         }
         @if (data.info.thumbnail) {
-        <div class="row">
+        <div class="row py-1">
           <div class="col-md-3"><b>{{'COMMON.thumbnail' | translate }}</b></div>
           <div class="col-md-9"><img [src]="data.info.thumbnail.url ? data.info.thumbnail.url : data.info.thumbnail">
           </div>
         </div>
         }
         @if (data.info.url && data.info) {
-        <div class="row">
+        <div class="row py-1">
           <div class="col-md-3"><b>{{'COMMON.url' | translate }}</b></div>
           <div class="col-md-9 ">
             <hs-clipboard-text [text]="data.info.url" />
@@ -48,19 +52,19 @@
         </div>
         }
         @if (data.info.srs) {
-        <div class="row">
+        <div class="row py-1">
           <div class="col-md-3"><b>{{'ADDLAYERS.srs' | translate }}</b></div>
           <div class="col-md-9">{{data.info.srs}}</div>
         </div>
         }
         @if (data.info.extent) {
-        <div class="row">
+        <div class="row py-1">
           <div class="col-md-3"><b>{{'COMMON.extent' | translate }}</b></div>
           <div class="col-md-9" style="word-break:break-all">{{data.info.extent}}</div>
         </div>
         }
         @if (data.info.layers) {
-        <div>
+        <div class="py-1">
           @for (layer of data.info.layers; track layer; let first = $first) {
           <div>
             @if (first) {
@@ -91,7 +95,7 @@
           </div>
         </div> -->
         @if (data.info.contactAddress || data.info.contactPersonPrimary) {
-        <div class="row">
+        <div class="row py-1">
           <div class="col"><b>{{'COMMON.contactInformation' | translate }}</b></div>
         </div>
         }
