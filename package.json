@@ -110,7 +110,7 @@
     "@types/jasmine": "^5.1.9",
     "@types/jasminewd2": "~2.0.12",
     "angular-eslint": "^20.3.0",
-    "cypress": "^15.2.0",
+    "cypress": "^15.3.0",
     "cypress-real-events": "^1.15.0",
     "eslint": "^9.36.0",
     "eslint-config-openlayers": "20.0.0",
