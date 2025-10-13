@@ -41,6 +41,7 @@ import {
   wfsNotAvailable,
   PostPatchLayerResponse,
   HsCommonLaymanLayerService,
+  isAtLeastVersions,
 } from 'hslayers-ng/common/layman';
 import {HsLanguageService} from 'hslayers-ng/services/language';
 import {HsLogService} from 'hslayers-ng/services/log';
@@ -588,7 +589,10 @@ export class HsLaymanService implements HsSaverService {
         'First feature found has no ID. Falling back to layer name for featureType.',
       );
     }
-    return `l_${getLaymanLayerDescriptor(layer).uuid}`;
+    const desc = getLaymanLayerDescriptor(layer);
+    return isAtLeastVersions(this.hsCommonLaymanService.layman(), '2.0')
+      ? `l_${desc.uuid}`
+      : desc.name;
   }
 
   /**
@@ -609,11 +613,23 @@ export class HsLaymanService implements HsSaverService {
       const srsName = this.hsMapService.getCurrentProj().getCode();
       const featureType = this.getFeatureType(add, upd, del, layer);
 
+      const isAtLeast20 = isAtLeastVersions(
+        this.hsCommonLaymanService.layman(),
+        '2.0',
+      );
+      const featurePrefix = isAtLeast20
+        ? 'layman'
+        : getWorkspace(layer) || this.hsCommonLaymanService.user();
+
+      const featureNS = isAtLeast20
+        ? 'http://layman'
+        : 'http://' + getWorkspace(layer) || this.hsCommonLaymanService.user();
+
       const {default: WFS} = await import('ol/format/WFS');
       const wfsFormat = new WFS();
       const options = {
-        featureNS: 'http://layman',
-        featurePrefix: 'layman',
+        featureNS: featureNS,
+        featurePrefix: featurePrefix,
         featureType: String(featureType), // Ensure featureType is a string for WFS options
         srsName,
         nativeElements: null,
@@ -715,7 +731,13 @@ export class HsLaymanService implements HsSaverService {
     const filter: string = source.get('filter');
     const srsName = this.hsMapService.getCurrentProj().getCode();
     const workspace = getWorkspace(layer);
-    const laymanUuid = `l_${desc.uuid}`;
+    //Backwards compatibility for Layman version less than 2.0
+    const laymanUuid = isAtLeastVersions(
+      this.hsCommonLaymanService.layman(),
+      '2.0',
+    )
+      ? `l_${desc.uuid}`
+      : desc.name;
 
     let body: string;
     if (filter) {
