@@ -21,11 +21,6 @@ export class HsMissingTranslationHandler implements MissingTranslationHandler {
       return (params.interpolateParams as any).fallbackValue;
     }
 
-    // Log the missing translation for debugging, but only if fallbackValue is not provided
-    console.warn(
-      `Missing translation for key: ${params.key} and params: ${JSON.stringify(params.interpolateParams)}`,
-    );
-
     // Return last part of the key (SIDNENAV.PANEL.Info -> Info) or the key itself if single part key
     return String(params.key).split('.').pop();
   }
