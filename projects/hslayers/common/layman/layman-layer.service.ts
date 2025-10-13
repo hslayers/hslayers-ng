@@ -7,6 +7,7 @@ import {HsCommonLaymanService} from './layman.service';
 import {HsLaymanGetLayer, HsLaymanLayerDescriptor} from 'hslayers-ng/types';
 import {
   getLaymanFriendlyLayerName,
+  isAtLeastVersions,
   layerParamPendingOrStarting,
   wfsFailed,
 } from './layman-utils';
@@ -104,7 +105,22 @@ export class HsCommonLaymanLayerService {
       name,
       workspace,
       options.ignoreStatus,
-    );
+    ).then((response) => {
+      if (
+        !response ||
+        isAtLeastVersions(this.hsCommonLaymanService.layman(), '2.0')
+      ) {
+        return response;
+      }
+      console.log(
+        'Layman version is less than 2.0, returning response',
+        response,
+      );
+      //Fill missing fields
+      response.wfs!.name = response.name;
+      response.wms!.name = response.name;
+      return response;
+    });
     // Store the promise for the request
     this.pendingRequests.set(requestKey, desc);
 

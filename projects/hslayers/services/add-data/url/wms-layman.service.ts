@@ -66,6 +66,7 @@ export class HsAddDataWmsLaymanService {
         crs: this.mapService.getMap().getView().getProjection().getCode(),
         subLayers: '',
         queryable: true,
+        workspace: desc.workspace,
       },
     );
     return [layer];

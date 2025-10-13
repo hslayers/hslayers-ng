@@ -80,6 +80,8 @@ export class HsCommonLaymanService {
 
   readonly layman = toSignal(this.layman$);
 
+  readonly version = computed(() => this.layman()?.version);
+
   // Action streams
   login$ = new Subject<void>();
   logout$ = new Subject<void>();
