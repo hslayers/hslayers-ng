@@ -1,16 +1,17 @@
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 import {
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
-  OnDestroy,
   OnInit,
   inject,
 } from '@angular/core';
 
-import {Subscription} from 'rxjs';
+import {buffer, debounceTime} from 'rxjs';
 
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsLayerShiftingService} from 'hslayers-ng/services/layer-shifting';
+import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'hs-layermanager-physical-layer-list',
@@ -19,32 +20,43 @@ import {HsLayerShiftingService} from 'hslayers-ng/services/layer-shifting';
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: false,
 })
-export class HsLayerPhysicalListComponent implements OnDestroy, OnInit {
+export class HsLayerPhysicalListComponent implements OnInit {
   private hsEventBusService = inject(HsEventBusService);
   private hsLayerShiftingService = inject(HsLayerShiftingService);
+  private cdr = inject(ChangeDetectorRef);
 
-  layerManagerUpdatesSubscription: Subscription;
   layerShiftingAppRef;
 
-  ngOnInit(): void {
-    this.layerShiftingAppRef = this.hsLayerShiftingService;
-    this.hsLayerShiftingService.fillLayers();
-    this.layerManagerUpdatesSubscription =
-      this.hsEventBusService.layerManagerUpdates.subscribe((layer) => {
+  constructor() {
+    this.hsEventBusService.layerManagerUpdates
+      .pipe(
+        buffer(
+          // In case 100ms has passed without another emit => close buffer and emit value
+          this.hsEventBusService.layerManagerUpdates.pipe(debounceTime(100)),
+        ),
+        takeUntilDestroyed(),
+      )
+      .subscribe((layers) => {
         this.hsLayerShiftingService.fillLayers();
-        if (layer !== undefined) {
-          const layerFound = this.hsLayerShiftingService.layersCopy.find(
-            (wrapper) => wrapper.layer == layer,
-          );
-          if (layerFound !== undefined) {
-            layerFound.active = true;
-          }
+        //No layers or multiple eg. reset/multi removal.
+        if (layers.length === 0 || layers.length > 1) {
+          this.cdr.markForCheck();
+          return;
+        }
+        //Single layer most likely moved.
+        const layer = layers[0];
+        const layerFound = this.hsLayerShiftingService.layersCopy.find(
+          (wrapper) => wrapper.layer == layer,
+        );
+        if (layerFound !== undefined) {
+          layerFound.active = true;
         }
       });
   }
 
-  ngOnDestroy(): void {
-    this.layerManagerUpdatesSubscription.unsubscribe();
+  ngOnInit(): void {
+    this.layerShiftingAppRef = this.hsLayerShiftingService;
+    this.hsLayerShiftingService.fillLayers();
   }
 
   drop(event: CdkDragDrop<any[]>): void {
