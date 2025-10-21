@@ -252,7 +252,7 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
     const collection = [
       await this.getLayer(checkedLayers, {
         title: this.data.title.replace(/\//g, '&#47;'),
-        path: undefineEmptyString(this.data.folder_name),
+        path: undefineEmptyString(this.data.folder_name) || layerOptions?.path,
         imageFormat: this.data.image_format,
         queryFormat: this.data.query_format,
         tileSize: this.data.tile_size,
