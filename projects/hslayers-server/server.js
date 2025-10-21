@@ -3,6 +3,7 @@ require('dotenv').config();
 const yargs = require('yargs');
 const path = require('path');
 const fs = require("fs");
+const VERSION = require('./version');
 
 let envExists = fs.existsSync('.env');
 if (!envExists)
@@ -48,3 +49,5 @@ if (argv.layman) {
   else
     require('./src/layman');
 }
+
+console.log('🧭 Starting HSLayers server version', VERSION.VERSION, '...');

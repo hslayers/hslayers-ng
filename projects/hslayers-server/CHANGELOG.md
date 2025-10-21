@@ -1,3 +1,19 @@
+# 1.6.0 (2025-10-22)
+Backport of issues fixed in 2.0.0 and 3.0.0 versions. Enforced by environments, where upgrade of Node to a current version is not feasible.
+
+### Bug fixes
+
+* Check if URL is encoded
+* Do not send X-Forwarded-* headers via proxy
+* Don't encode+decode tinyurl requests
+* Fix querystring parsing
+* Re-send also multiple search-params in URL
+
+### Features
+* Expose version via GET request
+* Log hslayers-server version on startup
+
+
 # 1.5.3 (2023-11-10)
 
 ### Bug Fixes

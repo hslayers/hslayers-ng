@@ -1,5 +1,7 @@
 require("dotenv").config();
 
+const VERSION = require('../version');
+
 const querystring = require("node:querystring");
 // Listen on a specific host via the HOST environment variable
 const host = process.env.HOST || "0.0.0.0";
@@ -18,6 +20,8 @@ const cors_proxy = require("cors-anywhere").createServer({
       secureOptions: 1 << 2,
     },
   },
+  // Remove X-Forwarded-* headers since some map servers (ArcGIS) use it to generate URLs in capabilities and 'xfwd' option does not guarantee that
+  removeHeaders: ['x-forwarded-for', 'x-forwarded-host', 'x-forwarded-site', 'x-forwarder-server']
 });
 const GEONAMES_APIKEY = process.env.HS_GEONAMES_API_KEY || "hslayersng";
 
@@ -25,21 +29,22 @@ require("http")
   .createServer((req, res) => {
     try {
       if (req.url == "" || req.url == "/") {
-        res.write("HSLayers server proxy<br />");
+        res.setHeader('Content-Type', 'text/html; charset=utf-8');
+        res.write('hslayers-server proxy<br>');
+        res.write('version: ' + VERSION.VERSION + '<br>');
         res.write(`${getIP()}:${port}`);
         res.end();
       } else {
-        req.url = decodeURIComponent(req.url);
+        // tinyurl requests are encoded on client
+        if (req.url.includes('http://tinyurl.com/api-create.php')) {
+          cors_proxy.emit('request', req, res);
+          return;
+        }
+        // Previously, decoding incoming URL was necessary, but all known clients now send non-encoded requests
+        //req.url = decodeURIComponent(req.url);
+        req.url = encodeUrlPathAndParams(req.url);
         const [base, tld, pathAndQueryParams] = splitUrlAtTld(req.url);
-        const encodedPath = pathAndQueryParams.split("?")[0].split("/").map(segment => encodeURIComponent(segment))
         const params = querystring.parse(pathAndQueryParams.split("?")[1]);
-        req.url =
-          base +
-          "." +
-          tld +
-          encodedPath.join("/") +
-          (Object.keys(params).length == 0 ? "" : "?") +
-          querystring.encode(params);
         if (base.includes("api.geonames") && tld === "org" && pathAndQueryParams.startsWith("searchJSON")) {
           if (
             typeof params.provider == "undefined" ||
@@ -53,13 +58,12 @@ require("http")
         if (base.includes("api.openrouteservice") && tld == "org") {
           req.headers.authorization = process.env.OPENROUTESERVICE_API_KEY;
         }
-
         cors_proxy.emit("request", req, res);
       }
     } catch (ex) {
       res.writeHead(500, { "Content-Type": "text/plain" });
       res.write("Invalid request");
-      res.write(ex);
+      res.write(ex.message || ex);
       res.end();
     }
   })
@@ -104,7 +108,7 @@ function splitUrlAtTld(url) {
     const parts = url.split(tldWithPort);
 
     // Remove the leading dot from the TLD
-    const cleanedTLD = tldWithPort.slice(1);
+    const cleanedTLD = tldWithPort.slice(1).replace('/', '');
 
     return [
       parts[0], // Everything before the TLD with port
@@ -119,4 +123,24 @@ function splitUrlAtTld(url) {
       "",
     ];
   }
+}
+
+/**
+ * Takes a decoded URL, splits it into parts and encodes its path and search strings
+ * but leaves the host name untouched
+ * @param {string} url URL
+ * @returns partially encoded URL
+ */
+function encodeUrlPathAndParams(url) {
+  const [base, tld, pathAndQueryParams] = splitUrlAtTld(url);
+  const encodedPath = pathAndQueryParams.split('?')[0].split('/').map(segment => encodeURIComponent(segment));
+  const queryParams = pathAndQueryParams.split('?').slice(1).join('?');
+  const params = querystring.parse(queryParams);
+  return base +
+    '.' +
+    tld +
+    '/' +
+    encodedPath.join('/') +
+    (Object.keys(params).length == 0 ? '' : '?') +
+    querystring.encode(params);
 }
