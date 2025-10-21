@@ -234,6 +234,7 @@ export class HsCompositionsLayerParserService {
           greyscale: lyr_def.greyscale,
           fromComposition: true,
           opacity: parseFloat(lyr_def.opacity) ?? 1,
+          path: lyr_def.path,
         },
         connectOptions: {
           base: lyr_def.base,
