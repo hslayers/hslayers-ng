@@ -92,26 +92,37 @@ export function getSupportedSrsList(ep: HsEndpoint) {
  * @param version - Version which the endpoint version will be compared with
  */
 export function isAtLeastVersions(ep: HsEndpoint, version: string): boolean {
-  const epVerParts = ep.version.split('.').map((part) => parseInt(part, 10));
-  const compareVerParts = version.split('.').map((part) => parseInt(part, 10));
-
-  const maxLength = Math.max(epVerParts.length, compareVerParts.length);
-
-  for (let i = 0; i < maxLength; i++) {
-    const epSegment = epVerParts[i] || 0;
-    const compareSegment = compareVerParts[i] || 0;
-
-    //If epSegment is greater than compareSegment, return true
-    if (epSegment > compareSegment) {
-      return true;
-    }
-    //If epSegment is less than compareSegment, return false
-    if (epSegment < compareSegment) {
+  try {
+    if (!ep.version) {
+      console.warn('Endpoint version not set, returning false');
       return false;
     }
-  }
+    const epVerParts = ep.version.split('.').map((part) => parseInt(part, 10));
+    const compareVerParts = version
+      .split('.')
+      .map((part) => parseInt(part, 10));
 
-  return true; // Versions are equal or epVer is longer with trailing zeros
+    const maxLength = Math.max(epVerParts.length, compareVerParts.length);
+
+    for (let i = 0; i < maxLength; i++) {
+      const epSegment = epVerParts[i] || 0;
+      const compareSegment = compareVerParts[i] || 0;
+
+      //If epSegment is greater than compareSegment, return true
+      if (epSegment > compareSegment) {
+        return true;
+      }
+      //If epSegment is less than compareSegment, return false
+      if (epSegment < compareSegment) {
+        return false;
+      }
+    }
+
+    return true; // Versions are equal or epVer is longer with trailing zeros
+  } catch (error) {
+    console.warn('Error comparing versions, returning false', error);
+    return false;
+  }
 }
 
 /**
