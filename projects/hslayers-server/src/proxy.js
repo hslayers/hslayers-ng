@@ -2,6 +2,8 @@ require("dotenv").config();
 
 const VERSION = require('../version');
 
+const yargs = require('yargs');
+const argv = yargs.argv;
 const querystring = require("node:querystring");
 // Listen on a specific host via the HOST environment variable
 const host = process.env.HOST || "0.0.0.0";
@@ -28,6 +30,25 @@ const GEONAMES_APIKEY = process.env.HS_GEONAMES_API_KEY || "hslayersng";
 require("http")
   .createServer((req, res) => {
     try {
+      if (argv.verbose) {
+        console.log('Request URL: ' + req.url);
+        console.log('Request headers: ' + JSON.stringify(req.headers));
+        console.log('Request method: ' + req.method);
+        console.log('Request body: ' + req.body);
+        console.log('Request query: ' + req.query);
+        console.log('Request params: ' + req.params);
+        console.log('Request path: ' + req.path);
+        console.log('Request protocol: ' + req.protocol);
+        console.log('Request hostname: ' + req.hostname);
+        console.log('Request ip: ' + req.ip);
+        console.log('Request port: ' + req.port);
+        console.log('Request secure: ' + req.secure);
+        console.log('Request xhr: ' + req.xhr);
+        console.log('Request base: ' + req.base);
+        console.log('--------------------------------');
+      }
+      // Remove any proxy prefix from the URL like /proxy/ or /hslayers-server/proxy/
+      req.url = req.url.replace(/^.*?(\/https?)/, '$1');
       if (req.url == "" || req.url == "/") {
         res.setHeader('Content-Type', 'text/html; charset=utf-8');
         res.write('hslayers-server proxy<br>');
@@ -61,6 +82,17 @@ require("http")
         cors_proxy.emit("request", req, res);
       }
     } catch (ex) {
+      if (argv.verbose) {
+        console.error(ex);
+        console.error(ex.stack);
+        console.error(ex.message);
+        console.error(ex.name);
+        console.error(ex.code);
+        console.error(ex.syscall);
+        console.error(ex.address);
+        console.error(ex.port);
+        console.error('--------------------------------');
+      }
       res.writeHead(500, { "Content-Type": "text/plain" });
       res.write("Invalid request");
       res.write(ex.message || ex);

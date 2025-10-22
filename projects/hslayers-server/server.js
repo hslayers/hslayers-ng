@@ -34,6 +34,12 @@ const argv = yargs
     type: 'boolean',
     default: false
   })
+  .option('verbose', {
+    alias: 'v',
+    description: 'Verbose output',
+    type: 'boolean',
+    default: false
+  })
   .help()
   .alias('help', 'h').argv;
 

@@ -1,3 +1,13 @@
+# 1.6.3 (2025-10-22)
+
+### Bug Fixes
+* Throw away proxy prefix
+
+# 1.6.2 (2025-10-22)
+
+### Features
+* Add verbose option
+
 # 1.6.0 (2025-10-22)
 Backport of issues fixed in 2.0.0 and 3.0.0 versions. Enforced by environments, where upgrade of Node to a current version is not feasible.
 
