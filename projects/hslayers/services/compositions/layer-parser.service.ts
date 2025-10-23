@@ -144,7 +144,7 @@ export class HsCompositionsLayerParserService {
       maxResolution: lyr_def.maxResolution || Infinity,
       minResolution: lyr_def.minResolution || 0,
       showInLayerManager: lyr_def.displayInLayerSwitcher,
-      abstract: lyr_def.name || lyr_def.abstract,
+      abstract: lyr_def.abstract || lyr_def.name,
       base: lyr_def.base,
       greyscale: lyr_def.greyscale,
       metadata: lyr_def.metadata,
@@ -207,6 +207,8 @@ export class HsCompositionsLayerParserService {
 
       const newLayer =
         await this.hsAddDataOwsService.connectToOWS(owsConnection);
+      newLayer[0].setVisible(lyr_def.visibility);
+
       return newLayer[0];
     } catch (error) {
       this.hsLog.error(error);

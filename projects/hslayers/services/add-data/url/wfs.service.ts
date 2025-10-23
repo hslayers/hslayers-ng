@@ -499,7 +499,9 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
     if (!this.data.add_all || layer.checked) {
       const newLayer = this.getLayer(layer, {
         layerName: layer.Name,
-        path: undefineEmptyString(this.data.folder_name),
+        path:
+          undefineEmptyString(this.data.folder_name) ||
+          options.layerOptions?.path,
         crs: this.data.srs,
         sld: style?.includes('StyledLayerDescriptor') ? style : undefined,
         qml: style?.includes('qgis') ? style : undefined,

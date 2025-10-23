@@ -453,7 +453,8 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
         {
           ...layerOptions,
           layerName: this.getLayerNameForGroup(),
-          path: undefineEmptyString(this.data.folder_name),
+          path:
+            undefineEmptyString(this.data.folder_name) || layerOptions?.path,
           imageFormat: this.data.image_format,
           queryFormat: this.data.query_format,
           tileSize: this.data.tile_size,
@@ -636,7 +637,9 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
         this.getLayer(layer, {
           ...options.layerOptions,
           layerName: layer.Title.replace(/\//g, '&#47;'),
-          path: undefineEmptyString(this.data.folder_name),
+          path:
+            undefineEmptyString(this.data.folder_name) ||
+            options.layerOptions?.path,
           imageFormat: this.data.image_format,
           queryFormat: this.data.query_format,
           tileSize: this.data.tile_size,
