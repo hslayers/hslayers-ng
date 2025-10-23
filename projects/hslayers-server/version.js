@@ -1,1 +1,1 @@
-exports.VERSION = '1.6.3';
+exports.VERSION = '1.6.4';

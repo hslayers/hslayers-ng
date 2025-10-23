@@ -1,3 +1,8 @@
+# 1.6.4 (2025-10-23)
+
+### Features
+* Improve verbose logs and proxy info
+
 # 1.6.3 (2025-10-22)
 
 ### Bug Fixes

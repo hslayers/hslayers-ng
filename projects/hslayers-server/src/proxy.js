@@ -34,26 +34,18 @@ require("http")
         console.log('Request URL: ' + req.url);
         console.log('Request headers: ' + JSON.stringify(req.headers));
         console.log('Request method: ' + req.method);
-        console.log('Request body: ' + req.body);
-        console.log('Request query: ' + req.query);
-        console.log('Request params: ' + req.params);
-        console.log('Request path: ' + req.path);
-        console.log('Request protocol: ' + req.protocol);
-        console.log('Request hostname: ' + req.hostname);
-        console.log('Request ip: ' + req.ip);
-        console.log('Request port: ' + req.port);
-        console.log('Request secure: ' + req.secure);
-        console.log('Request xhr: ' + req.xhr);
-        console.log('Request base: ' + req.base);
+        console.log('Request statusCode: ' + req.statusCode);
+        console.log('Request statusMessage: ' + req.statusMessage);
         console.log('--------------------------------');
       }
       // Remove any proxy prefix from the URL like /proxy/ or /hslayers-server/proxy/
-      req.url = req.url.replace(/^.*?(\/https?)/, '$1');
-      if (req.url == "" || req.url == "/") {
+      req.url = req.url.replace(/^.*?(\/https?:)/, '$1');
+      if (!req.url.includes('http://') && !req.url.includes('https://')) {
         res.setHeader('Content-Type', 'text/html; charset=utf-8');
         res.write('hslayers-server proxy<br>');
         res.write('version: ' + VERSION.VERSION + '<br>');
-        res.write(`${getIP()}:${port}`);
+        res.write('proxy url: ' + `${getIP()}:${port}` + '<br>');
+        res.write('requested url: ' + req.url);
         res.end();
       } else {
         // tinyurl requests are encoded on client
