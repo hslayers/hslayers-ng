@@ -154,12 +154,14 @@ describe('Layman Utils', () => {
       version: '',
     };
 
-    it('should return full list for version 1.16.0 or higher', () => {
+    it('should return full list for version 2.2.0 or higher', () => {
       ep.version = '1.15.9';
       expect(getSupportedSrsList(ep)).toEqual(SUPPORTED_SRS_LIST.slice(0, 2));
       ep.version = '1.16.0';
-      expect(getSupportedSrsList(ep)).toEqual(SUPPORTED_SRS_LIST);
+      expect(getSupportedSrsList(ep)).toEqual(SUPPORTED_SRS_LIST.slice(0, 8));
       ep.version = '2.0.0';
+      expect(getSupportedSrsList(ep)).toEqual(SUPPORTED_SRS_LIST.slice(0, 8));
+      ep.version = '2.2.0';
       expect(getSupportedSrsList(ep)).toEqual(SUPPORTED_SRS_LIST);
     });
   });
