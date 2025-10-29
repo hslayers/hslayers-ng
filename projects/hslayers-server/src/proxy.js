@@ -39,7 +39,12 @@ export const proxy = createServer((req, res) => {
     console.log('Request statusMessage: ' + req.statusMessage);
   }
   try {
-    if (req.url == '' || req.url == '/') {
+    // Remove any proxy prefix from the URL like /proxy/ or /hslayers-server/proxy/
+    req.url = req.url.replace(/^.*?(\/https?:)/, '$1');
+    if (argv.verbose) {
+      console.log('Request URL after removing proxy prefix: ' + req.url);
+    }
+    if (!req.url.includes('http://') && !req.url.includes('https://')) {
       res.setHeader('Content-Type', 'text/html; charset=utf-8');
       res.write('hslayers-server proxy<br>');
       res.write('version: ' + packageJson.version + '<br>');
