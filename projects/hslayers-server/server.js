@@ -1,10 +1,10 @@
 #!/usr/bin/env node
 import 'dotenv/config';
-import yargs from 'yargs';
 import path from 'node:path';
 import { existsSync, mkdirSync } from 'node:fs';
 
 import packageJson from './package.json' with { type: 'json'};
+import { argv } from './src/config.js';
 
 let envExists = existsSync('.env');
 if (!envExists)
@@ -15,28 +15,6 @@ let dbdir = path.dirname(process.env.DB_PATH);
 if (!existsSync(dbdir)) {
   mkdirSync(dbdir);
 }
-
-const argv = yargs(process.argv.slice(2))
-  .option('proxy', {
-    alias: 'p',
-    description: 'Execute proxy service',
-    type: 'boolean',
-    default: true
-  })
-  .option('share', {
-    alias: 's',
-    description: 'Execute map share service',
-    type: 'boolean',
-    default: true
-  })
-  .option('layman', {
-    alias: 'l',
-    description: 'Execute Layman client service',
-    type: 'boolean',
-    default: false
-  })
-  .help()
-  .alias('help', 'h').argv;
 
 if (argv.proxy) {
   import('./src/proxy.js');
@@ -50,4 +28,4 @@ if (argv.layman) {
   else
     import('./src/layman.js');
 }
-console.log('🧭 Starting HSLayers server version', packageJson.version, '...');
+console.log('🧭 Starting HSLayers server version', packageJson.version, argv.verbose ? 'with verbose output...' : '...');

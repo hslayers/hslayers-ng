@@ -1,3 +1,41 @@
+# 3.1.0 (2025-xx-yy)
+
+### Bug fixes
+
+
+### Features
+
+
+# 1.6.4 (2025-10-23)
+
+### Features
+* Improve verbose logs and proxy info
+
+# 1.6.3 (2025-10-22)
+
+### Bug Fixes
+* Throw away proxy prefix
+
+# 1.6.2 (2025-10-22)
+
+### Features
+* Add verbose option
+
+# 1.6.0 (2025-10-22)
+Backport of issues fixed in 2.0.0 and 3.0.0 versions. Enforced by environments, where upgrade of Node to a current version is not feasible.
+
+### Bug fixes
+
+* Check if URL is encoded
+* Do not send X-Forwarded-* headers via proxy
+* Don't encode+decode tinyurl requests
+* Fix querystring parsing
+* Re-send also multiple search-params in URL
+
+### Features
+* Expose version via GET request
+* Log hslayers-server version on startup
+
 # 3.0.0 (2025-07-16)
 
 Minimum required Node versions increased to 20.19 and 22.12
