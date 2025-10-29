@@ -1,10 +1,10 @@
 # 3.1.0 (2025-xx-yy)
 
 ### Bug fixes
-
+* Throw away proxy prefix
 
 ### Features
-
+* Add verbose option (`-v` or `--verbose`)
 
 # 1.6.4 (2025-10-23)
 
