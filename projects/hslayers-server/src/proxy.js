@@ -4,6 +4,7 @@ import { encode as encodeQuerystring, parse as parseQuerystring } from 'node:que
 import { createServer } from 'node:http';
 import { networkInterfaces } from 'node:os';
 import packageJson from '../package.json' with { type: 'json'};
+import { argv } from './config.js';
 
 // Listen on a specific host via the HOST environment variable
 const host = process.env.HOST || '0.0.0.0';
@@ -29,22 +30,37 @@ const GEONAMES_APIKEY = process.env.HS_GEONAMES_API_KEY || 'hslayersng';
 
 
 export const proxy = createServer((req, res) => {
+  if (argv.verbose) {
+    console.log('--------------------------------');
+    console.log('Request URL: ' + req.url);
+    console.log('Request headers: ' + JSON.stringify(req.headers));
+    console.log('Request method: ' + req.method);
+    console.log('Request statusCode: ' + req.statusCode);
+    console.log('Request statusMessage: ' + req.statusMessage);
+  }
   try {
     if (req.url == '' || req.url == '/') {
       res.setHeader('Content-Type', 'text/html; charset=utf-8');
       res.write('hslayers-server proxy<br>');
       res.write('version: ' + packageJson.version + '<br>');
-      res.write(`${getIP()}:${port}`);
+      res.write('proxy url: ' + `${getIP()}:${port}` + '<br>');
+      res.write('requested url: ' + req.url + '<br>');
       res.end();
     } else {
       // tinyurl requests are encoded on client
       if (req.url.includes('http://tinyurl.com/api-create.php')) {
         cors_proxy.emit('request', req, res);
-        return
+        return;
       }
       // Safely handle potentially encoded URLs
       req.url = safelyDecodeUrl(req.url);
+      if (argv.verbose) {
+        console.log('Request URL after decoding: ' + req.url);
+      }
       req.url = encodeUrlPathAndParams(req.url);
+      if (argv.verbose) {
+        console.log('Request URL after encoding: ' + req.url);
+      }
       const [base, tld, pathAndQueryParams] = splitUrlAtTld(req.url);
       const params = parseQuerystring(pathAndQueryParams.split('?')[1]);
       if (base.includes('api.geonames') && tld === 'org' && pathAndQueryParams.startsWith('searchJSON')) {
@@ -63,9 +79,19 @@ export const proxy = createServer((req, res) => {
       cors_proxy.emit('request', req, res);
     }
   } catch (ex) {
+    if (argv.verbose) {
+      console.error(ex);
+      console.error(ex.stack);
+      console.error(ex.message);
+      console.error(ex.name);
+      console.error(ex.code);
+      console.error(ex.syscall);
+      console.error(ex.address);
+      console.error(ex.port);
+    }
     res.writeHead(500, { 'Content-Type': 'text/plain' });
     res.write('Invalid request');
-    res.write(ex);
+    res.write(ex.message || ex);
     res.end();
   }
 })
