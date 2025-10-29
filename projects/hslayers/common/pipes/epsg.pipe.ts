@@ -15,6 +15,8 @@ export class EpsgPipe implements PipeTransform {
     ['EPSG:3035', 'ETRS89-extended / LAEA Europe'],
     ['EPSG:3059', 'ETRS89 / UTM zone 59N'],
     ['EPSG:4258', 'ETRS89'],
+    ['EPSG:32718', 'WGS 84 / UTM zone 18S'],
+    ['EPSG:9377', 'MAGNA-SIRGAS 2018 / Origen-Nacional'],
   ]);
   constructor() {}
 

@@ -21,6 +21,8 @@ export const SUPPORTED_SRS_LIST = [
   'EPSG:3034',
   'EPSG:3035',
   'EPSG:3059',
+  'EPSG:32718',
+  'EPSG:9377',
 ];
 
 /**
@@ -81,8 +83,11 @@ export function wfsFailed(descr: HsLaymanLayerDescriptor) {
 }
 
 export function getSupportedSrsList(ep: HsEndpoint) {
-  if (isAtLeastVersions(ep, '1.16.0')) {
+  if (isAtLeastVersions(ep, '2.2.0')) {
     return SUPPORTED_SRS_LIST;
+  }
+  if (isAtLeastVersions(ep, '1.16.0')) {
+    return SUPPORTED_SRS_LIST.slice(0, 8);
   }
   return SUPPORTED_SRS_LIST.slice(0, 2);
 }
