@@ -1,5 +1,6 @@
 import 'dotenv/config';
 import cors_anywhere from 'cors-anywhere';
+import escape from 'escape-html';
 import { encode as encodeQuerystring, parse as parseQuerystring } from 'node:querystring';
 import { createServer } from 'node:http';
 import { networkInterfaces } from 'node:os';
@@ -49,7 +50,7 @@ export const proxy = createServer((req, res) => {
       res.write('hslayers-server proxy<br>');
       res.write('version: ' + packageJson.version + '<br>');
       res.write('proxy url: ' + `${getIP()}:${port}` + '<br>');
-      res.write('requested url: ' + req.url + '<br>');
+      res.write('requested url (escaped): ' + escape(req.url) + '<br>');
       res.end();
     } else {
       // tinyurl requests are encoded on client
@@ -95,8 +96,8 @@ export const proxy = createServer((req, res) => {
       console.error(ex.port);
     }
     res.writeHead(500, { 'Content-Type': 'text/plain' });
-    res.write('Invalid request');
-    res.write(ex.message || ex);
+    res.write('Invalid request\r\n');
+    res.write(ex.message + '\r\n');
     res.end();
   }
 })
