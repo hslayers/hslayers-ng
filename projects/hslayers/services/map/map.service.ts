@@ -4,7 +4,6 @@ import {filter} from 'rxjs';
 
 import ImageWrapper from 'ol/Image';
 import RenderFeature from 'ol/render/Feature';
-import proj4 from 'proj4';
 import {
   Cluster,
   ImageArcGISRest,
@@ -37,7 +36,7 @@ import {Geometry} from 'ol/geom';
 import {Group, Layer, Tile, Vector as VectorLayer} from 'ol/layer';
 import {Projection, transform, transformExtent} from 'ol/proj';
 import {platformModifierKeyOnly as platformModifierKeyOnlyCondition} from 'ol/events/condition';
-import {register} from 'ol/proj/proj4';
+import {registerHslayersProj4Defs} from './projections';
 
 import {BoundingBoxObject} from 'hslayers-ng/types';
 import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
@@ -503,93 +502,7 @@ export class HsMapService {
 
     this.repopulateLayers(this.visibleLayersInUrl);
 
-    proj4.defs(
-      'EPSG:3035',
-      '+proj=laea +lat_0=52 +lon_0=10 +x_0=4321000 +y_0=3210000 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs +type=crs +axis=neu',
-    );
-    proj4.defs(
-      'http://www.opengis.net/gml/srs/epsg.xml#3035',
-      proj4.defs('EPSG:3035'),
-    );
-
-    proj4.defs(
-      'EPSG:5514',
-      '+proj=krovak +lat_0=49.5 +lon_0=24.83333333333333 +alpha=30.28813972222222 +k=0.9999 +x_0=0 +y_0=0 +ellps=bessel +towgs84=542.5,89.2,456.9,5.517,2.275,5.516,6.96 +units=m +no_defs',
-    );
-    proj4.defs(
-      'http://www.opengis.net/gml/srs/epsg.xml#5514',
-      proj4.defs('EPSG:5514'),
-    );
-
-    proj4.defs(
-      'EPSG:4258',
-      '+proj=longlat +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +no_defs',
-    );
-    proj4.defs(
-      'http://www.opengis.net/gml/srs/epsg.xml#4258',
-      proj4.defs('EPSG:4258'),
-    );
-
-    proj4.defs(
-      'EPSG:32633',
-      '+proj=utm +zone=33 +datum=WGS84 +units=m +no_defs +type=crs',
-    );
-    proj4.defs(
-      'http://www.opengis.net/gml/srs/epsg.xml#32633',
-      proj4.defs('EPSG:32633'),
-    );
-    proj4.defs(
-      'EPSG:32634',
-      '+proj=utm +zone=34 +datum=WGS84 +units=m +no_defs +type=crs',
-    );
-    proj4.defs(
-      'http://www.opengis.net/gml/srs/epsg.xml#32634',
-      proj4.defs('EPSG:32634'),
-    );
-
-    proj4.defs(
-      'EPSG:3995',
-      '+proj=stere +lat_0=90 +lat_ts=71 +lon_0=0 +k=1 +x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs',
-    );
-    proj4.defs(
-      'http://www.opengis.net/gml/srs/epsg.xml#3995',
-      proj4.defs('EPSG:3995'),
-    );
-    proj4.defs(
-      'EPSG:3031',
-      '+proj=stere +lat_0=-90 +lat_ts=-71 +lon_0=0 +k=1 +x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs',
-    );
-    proj4.defs(
-      'http://www.opengis.net/gml/srs/epsg.xml#3031',
-      proj4.defs('EPSG:3031'),
-    );
-
-    proj4.defs(
-      'EPSG:4087',
-      '+proj=eqc +lat_ts=0 +lat_0=0 +lon_0=0 +x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs +type=crs',
-    );
-    proj4.defs(
-      'http://www.opengis.net/gml/srs/epsg.xml#4087',
-      proj4.defs('EPSG:4087'),
-    );
-
-    proj4.defs(
-      'EPSG:32718',
-      '+proj=utm +zone=18 +south +datum=WGS84 +units=m +no_defs +type=crs',
-    );
-    proj4.defs(
-      'http://www.opengis.net/gml/srs/epsg.xml#32718',
-      proj4.defs('EPSG:32718'),
-    );
-    proj4.defs(
-      'EPSG:9377',
-      '+proj=tmerc +lat_0=4 +lon_0=-73 +k=0.9992 +x_0=5000000 +y_0=2000000 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs +type=crs',
-    );
-    proj4.defs(
-      'http://www.opengis.net/gml/srs/epsg.xml#9377',
-      proj4.defs('EPSG:9377'),
-    );
-    register(proj4);
+    registerHslayersProj4Defs();
 
     if (this.hsConfig.componentsEnabled?.mapControls == false) {
       this.removeAllControls();
