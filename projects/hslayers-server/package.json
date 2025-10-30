@@ -35,6 +35,7 @@
     "cors": "^2.8.5",
     "cors-anywhere": "^0.4.4",
     "dotenv": "^17.2.0",
+    "escape-html": "^1.0.3",
     "express": "^5.1.0",
     "express-session": "^1.17.2",
     "got": "^14.0.0",
