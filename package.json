@@ -78,7 +78,7 @@
     "ngx-color": "^10.1.0",
     "ngx-cookie-service": "^20.1.1",
     "ol": "^10.5.0",
-    "ol-ext": "^4.0.35",
+    "ol-ext": "^4.0.36",
     "ol-popup": "^4.0.0, ^5.0.0",
     "papaparse": "^5.5.3",
     "passport-oauth2-middleware": "^1.0.3",
