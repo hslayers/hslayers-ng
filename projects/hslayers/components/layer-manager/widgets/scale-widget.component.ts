@@ -1,30 +1,88 @@
-import {Component, inject} from '@angular/core';
+import {Component, inject, signal, WritableSignal, OnInit} from '@angular/core';
 
 import {METERS_PER_UNIT} from 'ol/proj';
 
 import {HsLayerEditorWidgetBaseComponent} from './layer-editor-widget-base.component';
 import {HsMapService} from 'hslayers-ng/services/map';
 import {calculateResolutionFromScale} from 'hslayers-ng/services/utils';
+import {HsLanguageService} from 'hslayers-ng/services/language';
 
 @Component({
   selector: 'hs-scale-widget',
   templateUrl: './scale-widget.component.html',
   standalone: false,
 })
-export class HsScaleWidgetComponent extends HsLayerEditorWidgetBaseComponent {
+export class HsScaleWidgetComponent
+  extends HsLayerEditorWidgetBaseComponent
+  implements OnInit {
   hsMapService = inject(HsMapService);
+  hsLanguageService = inject(HsLanguageService);
 
   name = 'scale-widget';
+
+  scaleEnabled: WritableSignal<boolean> = signal(false);
+
+  ngOnInit() {
+    super.ngOnInit();
+    this.scaleEnabled.set(this.isScaleVisible());
+
+    // Store initial valid values if they exist
+    this.storeLastValidScaleValues();
+  }
+
+  toggle() {
+    this.scaleEnabled.update((value) => !value);
+
+    if (!this.scaleEnabled()) {
+      this.storeLastValidScaleValues();
+      this.minResolution = 0;
+      this.maxResolution = Infinity;
+    } else {
+      this.restoreLastValidScaleValues();
+    }
+  }
+
+  private storeLastValidScaleValues() {
+    if (!this.olLayer) {
+      return;
+    }
+
+    if (this.minResolutionValid()) {
+      const currentMinScale = this.minResolution;
+      if (currentMinScale && currentMinScale !== 0) {
+        this.olLayer.set('lastValidMinResolution', currentMinScale);
+      }
+    }
+
+    if (this.maxResolutionValid()) {
+      const currentMaxScale = this.maxResolution;
+      if (currentMaxScale && currentMaxScale !== Infinity) {
+        this.olLayer.set('lastValidMaxResolution', currentMaxScale);
+      }
+    }
+  }
+
+  private restoreLastValidScaleValues() {
+    if (!this.olLayer) {
+      return;
+    }
+
+    const lastValidMin = this.olLayer.get('lastValidMinResolution');
+    const lastValidMax = this.olLayer.get('lastValidMaxResolution');
+
+    this.minResolution = lastValidMin ?? 0;
+    this.maxResolution = lastValidMax ?? Infinity;
+  }
+
+  placeholder = this.hsLanguageService.getTranslation('COMMON.infinity');
 
   /**
    * Test if selected layer has min and max resolution set
    */
   isScaleVisible(): boolean {
-    const layer = this.olLayer;
-    if (layer == undefined) {
-      return false;
-    }
-    return this.minResolutionValid() || this.maxResolutionValid();
+    return (
+      !!this.olLayer && (this.minResolutionValid() || this.maxResolutionValid())
+    );
   }
 
   /**
@@ -35,12 +93,14 @@ export class HsScaleWidgetComponent extends HsLayerEditorWidgetBaseComponent {
       return;
     }
     const layer = this.olLayer;
-    layer.setMinResolution(
-      calculateResolutionFromScale(
-        newValue,
-        this.hsMapService.getMap().getView(),
-      ),
+    const resolution = calculateResolutionFromScale(
+      newValue,
+      this.hsMapService.getMap().getView(),
     );
+    layer.setMinResolution(resolution);
+    if (newValue && newValue != 0) {
+      layer.set('lastValidMinResolution', newValue);
+    }
   }
 
   get minResolution() {
@@ -59,12 +119,14 @@ export class HsScaleWidgetComponent extends HsLayerEditorWidgetBaseComponent {
       return;
     }
     const layer = this.olLayer;
-    layer.setMaxResolution(
-      calculateResolutionFromScale(
-        newValue,
-        this.hsMapService.getMap().getView(),
-      ),
+    const resolution = calculateResolutionFromScale(
+      newValue,
+      this.hsMapService.getMap().getView(),
     );
+    layer.setMaxResolution(resolution);
+    if (newValue && newValue != Infinity) {
+      layer.set('lastValidMaxResolution', newValue);
+    }
   }
 
   get maxResolution() {
@@ -84,23 +146,12 @@ export class HsScaleWidgetComponent extends HsLayerEditorWidgetBaseComponent {
   }
 
   minResolutionValid(): boolean {
-    const layer = this.olLayer;
-    if (layer == undefined) {
-      return false;
-    }
-    return (
-      layer.getMinResolution() != undefined && layer.getMinResolution() != 0
-    );
+    const minRes = this.olLayer?.getMinResolution();
+    return minRes !== undefined && minRes !== 0;
   }
 
   maxResolutionValid(): boolean {
-    const layer = this.olLayer;
-    if (layer == undefined) {
-      return false;
-    }
-    return (
-      layer.getMaxResolution() != undefined &&
-      layer.getMaxResolution() != Infinity
-    );
+    const maxRes = this.olLayer?.getMaxResolution();
+    return maxRes !== undefined && maxRes !== Infinity;
   }
 }
