@@ -344,7 +344,8 @@
     "version": "Verzia",
     "apiKey": "API Kľúč",
     "minZoom": "Min. zoom",
-    "maxZoom": "Max. zoom"
+    "maxZoom": "Max. zoom",
+    "infinity": "Žiadne obmedzenia"
   },
   "COMPOSITIONS": {
     "addByAddress": "Pridať kompozíciu z adresy",

@@ -343,7 +343,8 @@
     "version": "Version",
     "apiKey": "API Key",
     "minZoom": "Min. zoom",
-    "maxZoom": "Max. zoom"
+    "maxZoom": "Max. zoom",
+    "infinity": "No constrains"
   },
   "COMPOSITIONS": {
     "addByAddress": "Add composition by address",
