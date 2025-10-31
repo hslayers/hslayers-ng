@@ -1,18 +1,26 @@
-<div class="d-flex flex-row" style="border-bottom: 1px solid rgba(0, 0, 0, 0.125)">
-  <!-- Cluster features checkbox  -->
-  @if (isVectorLayer()) {
-    <div class="form-check flex-fill"><!-- TODO: Remove function call from template -->
-      <input name="layer-cluster" class="form-check-input" type="checkbox" [(ngModel)]="cluster" />
-      <label class="form-check-label">{{
-        "LAYERMANAGER.layerEditor.cluster" | translate
-      }}</label>
+@if (isVectorLayer()) {
+<div class="hs-widget-cluster">
+  <div class="hs-widget-header">
+    <div class="form-check">
+      <input name="layer-cluster" class="form-check-input" type="checkbox" [(ngModel)]="cluster"
+        [id]="'cluster-toggle-' + name" />
+      <label class="form-check-label" [for]="'cluster-toggle-' + name">
+        {{ "LAYERMANAGER.layerEditor.cluster" | translate }}
+      </label>
     </div>
-  }
+  </div>
+
   @if (cluster) {
-    <div class="form-group flex-fill">
-      <label>{{ "COMMON.distance" | translate }}</label>
+  <div class="hs-widget-content">
+    <div class="hs-cluster-distance">
+      <div class="d-flex justify-content-between align-items-center mb-1">
+        <label class="small text-muted mb-0">{{ "COMMON.distance" | translate }}</label>
+        <span class="badge bg-primary">{{ distance.value }}</span>
+      </div>
       <input name="layer-cluster-distance" type="range" min="0" max="100" step="1" [(ngModel)]="distance.value"
-        (change)="changeDistance()" style="width: 100%; height: 21px" />
+        (change)="changeDistance()" class="form-range" />
     </div>
+  </div>
   }
 </div>
+}
