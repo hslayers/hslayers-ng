@@ -104,7 +104,7 @@
     "@angular/compiler-cli": "^20.3.9",
     "@compodoc/compodoc": "^1.1.30",
     "@cypress/schematic": "^4.1.4",
-    "@eslint/compat": "^1.4.0",
+    "@eslint/compat": "^1.4.1",
     "@fortawesome/fontawesome-free": "^7.1.0",
     "@frsource/cypress-plugin-visual-regression-diff": "^3.2.14",
     "@types/jasmine": "^5.1.12",
