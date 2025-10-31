@@ -356,6 +356,8 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
         dimensions,
         ...options,
       },
+      minResolution: options.minResolution,
+      maxResolution: options.maxResolution,
       source,
     };
     if (!this.isImageService()) {

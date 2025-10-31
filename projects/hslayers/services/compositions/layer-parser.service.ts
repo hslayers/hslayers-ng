@@ -66,6 +66,8 @@ export class HsCompositionsLayerParserService {
           style: style,
           path: lyr_def.path,
           fromComposition: true,
+          minResolution: lyr_def.minResolution,
+          maxResolution: lyr_def.maxResolution,
           opacity: parseFloat(lyr_def.opacity) ?? 1,
         },
         connectOptions: {
@@ -105,6 +107,9 @@ export class HsCompositionsLayerParserService {
           title: lyr_def.title,
           greyscale: lyr_def.greyscale,
           fromComposition: true,
+          minResolution: lyr_def.minResolution,
+          maxResolution: lyr_def.maxResolution,
+          path: lyr_def.path,
           opacity: parseFloat(lyr_def.opacity) ?? 1,
         },
         connectOptions: {
@@ -237,6 +242,8 @@ export class HsCompositionsLayerParserService {
           fromComposition: true,
           opacity: parseFloat(lyr_def.opacity) ?? 1,
           path: lyr_def.path,
+          minResolution: lyr_def.minResolution,
+          maxResolution: lyr_def.maxResolution,
         },
         connectOptions: {
           base: lyr_def.base,
@@ -367,6 +374,8 @@ export class HsCompositionsLayerParserService {
           fromComposition: lyr_def.fromComposition ?? true,
           definition,
         },
+        minResolution: lyr_def.minResolution,
+        maxResolution: lyr_def.maxResolution,
         source: src,
         opacity: parseFloat(lyr_def.opacity) ?? 1,
         style: style,
@@ -415,6 +424,13 @@ export class HsCompositionsLayerParserService {
           lyr_def.workspace ||
           lyr_def.protocol?.url.split('geoserver/')[1].split('/')[0],
       };
+
+      if (lyr_def.minResolution) {
+        options.minResolution = lyr_def.minResolution;
+      }
+      if (lyr_def.maxResolution) {
+        options.maxResolution = lyr_def.maxResolution;
+      }
       let extractStyles = true;
       if (lyr_def.style) {
         if (

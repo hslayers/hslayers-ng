@@ -537,6 +537,7 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
     const layerExtent = manyFeatures
       ? this.getLayerExtent(layer, options.crs)
       : undefined;
+    const featureNS = layer._attributes?.[Object.keys(layer._attributes)[0]];
     const new_layer = new VectorLayer({
       properties: {
         name: options.layerName,
@@ -553,7 +554,7 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
         crs: options.crs,
         provided_url: this.hsProxyService.proxify(url),
         layer_name: options.layerName,
-        featureNS: layer._attributes[Object.keys(layer._attributes)[0]],
+        featureNS: featureNS,
         map_projection: this.hsMapService.getMap().getView().getProjection(),
         layerExtent: layerExtent,
         withCredentials: this.withCredentials(),
@@ -562,6 +563,13 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
       opacity: options.opacity ?? 1,
       //Used to determine whether its URL WFS service when saving to compositions
     });
+    if (options.minResolution) {
+      new_layer.setMinResolution(options.minResolution);
+    }
+    if (options.maxResolution) {
+      new_layer.setMaxResolution(options.maxResolution);
+    }
+
     if (this.hsAddDataCommonService.layerToSelect) {
       layer.olLayer = new_layer;
     }
