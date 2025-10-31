@@ -22,6 +22,8 @@ export class VectorLayerDescriptor {
     queryCapabilities: boolean;
     sld: string;
     qml: string;
+    minResolution?: number;
+    maxResolution?: number;
   };
 
   constructor(
@@ -58,6 +60,13 @@ export class VectorLayerDescriptor {
       qml: options.qml,
       style: options.style,
     };
+
+    if (options.minResolution) {
+      this.layerParams.minResolution = options.minResolution;
+    }
+    if (options.maxResolution) {
+      this.layerParams.maxResolution = options.maxResolution;
+    }
 
     switch (type ? type.toLowerCase() : '') {
       case 'kml':
