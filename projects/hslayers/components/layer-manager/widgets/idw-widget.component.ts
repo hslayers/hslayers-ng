@@ -13,6 +13,38 @@ import {InterpolatedSource} from 'hslayers-ng/common/layers';
 @Component({
   selector: 'hs-idw-widget',
   templateUrl: './idw-widget.component.html',
+  styleUrls: ['./layer-editor-widgets.component.scss'],
+  styles: [
+    `
+      .hs-widget-idw .form-label {
+        font-size: 0.8125rem;
+        font-weight: 500;
+      }
+
+      .hs-widget-idw .form-select-sm,
+      .hs-widget-idw .form-control-sm {
+        font-size: 0.8125rem;
+      }
+
+      .hs-widget-idw hs-colormap-picker {
+        display: block;
+        width: 100%;
+      }
+
+      .hs-widget-idw .row .col-6 {
+        padding-left: 0.25rem;
+        padding-right: 0.25rem;
+      }
+
+      .hs-widget-idw .row .col-6:first-child {
+        padding-left: 0.75rem;
+      }
+
+      .hs-widget-idw .row .col-6:last-child {
+        padding-right: 0.75rem;
+      }
+    `,
+  ],
   standalone: false,
 })
 /**

@@ -1,12 +1,14 @@
 @if (isEnabled | async) {
-  <div class="pb-1 border-bottom">
-    <p style="text-align: center; font-weight: bold">
-      {{ "COMMON.folder" | translate }}
-    </p>
-    <div class="d-flex justify-content-between align-items-center">
-      <button type="button" class="btn btn-outline-primary flex-fill" (click)="createDialog()">
-        {{'LAYERMANAGER.layerEditor.moveToNewFolder' | translate}}
-      </button>
-    </div>
+<div class="hs-widget-folder">
+  <div class="hs-widget-header-title">
+    <i class="fa-solid fa-folder me-2"></i>
+    <span>{{ "COMMON.folder" | translate }}</span>
   </div>
+  <div class="hs-widget-content-simple">
+    <button type="button" class="btn btn-outline-primary btn-sm w-100" (click)="createDialog()">
+      <i class="fa-solid fa-folder-arrow-up me-1"></i>
+      {{'LAYERMANAGER.layerEditor.moveToNewFolder' | translate}}
+    </button>
+  </div>
+</div>
 }

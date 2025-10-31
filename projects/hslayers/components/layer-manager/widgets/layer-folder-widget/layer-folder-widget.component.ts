@@ -15,6 +15,21 @@ import {LayerFolderWidgetDialogComponent} from './layer-folder-dialog/layer-fold
   selector: 'hs-layer-folder-widget',
   imports: [AsyncPipe, TranslatePipe],
   templateUrl: './layer-folder-widget.component.html',
+  styleUrls: ['../layer-editor-widgets.component.scss'],
+  styles: [
+    `
+      .hs-widget-folder .btn {
+        font-size: 0.875rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .hs-widget-folder .btn i {
+        font-size: 0.8125rem;
+      }
+    `,
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HsLayerFolderWidgetComponent extends HsLayerEditorWidgetBaseComponent {

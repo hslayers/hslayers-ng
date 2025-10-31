@@ -1,14 +1,11 @@
-@if (olLayer) {
-  <div>
-    @if (hsLayerEditorService.legendVisible()) {
-      <div><!-- TODO: Remove function call from template -->
-        <p style="text-align: center; font-weight: bold">
-          {{ "COMMON.legend" | translate }}
-        </p>
-        <hs-legend-layer [layer]="hsLayerEditorService.legendDescriptor">
-        </hs-legend-layer>
-        <hr />
-      </div>
-    }
+@if (olLayer && hsLayerEditorService.legendVisible()) {
+<div class="hs-widget-legend">
+  <div class="hs-widget-header-title">
+    <i class="fa-solid fa-map-signs me-2"></i>
+    <span>{{ "COMMON.legend" | translate }}</span>
   </div>
+  <div class="hs-widget-content-simple">
+    <hs-legend-layer [layer]="hsLayerEditorService.legendDescriptor" />
+  </div>
+</div>
 }

@@ -11,6 +11,26 @@ import {getLayerParams, isLayerWMS} from 'hslayers-ng/services/utils';
 @Component({
   selector: 'hs-extent-widget',
   templateUrl: './extent-widget.component.html',
+  styleUrls: ['../layer-editor-widgets.component.scss'],
+  styles: [
+    `
+      .hs-widget-extent .form-check {
+        display: flex;
+        align-items: center;
+      }
+
+      .hs-widget-extent .form-check .fa-circle-info {
+        cursor: help;
+        font-size: 0.875rem;
+        opacity: 0.6;
+        transition: opacity 0.2s ease;
+      }
+
+      .hs-widget-extent .form-check .fa-circle-info:hover {
+        opacity: 1;
+      }
+    `,
+  ],
   standalone: false,
 })
 export class HsExtentWidgetComponent extends HsLayerEditorWidgetBaseComponent {

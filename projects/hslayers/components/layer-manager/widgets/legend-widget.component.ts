@@ -6,6 +6,15 @@ import {HsLayerEditorWidgetBaseComponent} from './layer-editor-widget-base.compo
 @Component({
   selector: 'hs-legend-widget',
   templateUrl: './legend-widget.component.html',
+  styleUrls: ['./layer-editor-widgets.component.scss'],
+  styles: [
+    `
+      .hs-widget-legend hs-legend-layer {
+        display: block;
+        width: 100%;
+      }
+    `,
+  ],
   standalone: false,
 })
 export class HsLegendWidgetComponent extends HsLayerEditorWidgetBaseComponent {

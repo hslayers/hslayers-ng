@@ -10,6 +10,37 @@ import {HsLayerEditorWidgetBaseComponent} from './layer-editor-widget-base.compo
 @Component({
   selector: 'hs-cluster-widget',
   templateUrl: './cluster-widget.component.html',
+  styleUrls: ['./layer-editor-widgets.component.scss'],
+  styles: [
+    `
+      .hs-cluster-distance .badge {
+        font-size: 0.75rem;
+        padding: 0.25rem 0.5rem;
+        min-width: 2.5rem;
+        text-align: center;
+      }
+
+      .hs-cluster-distance .form-range {
+        cursor: pointer;
+      }
+
+      .hs-cluster-distance .form-range::-webkit-slider-thumb {
+        transition: all 0.2s ease;
+      }
+
+      .hs-cluster-distance .form-range::-moz-range-thumb {
+        transition: all 0.2s ease;
+      }
+
+      .hs-cluster-distance .form-range:hover::-webkit-slider-thumb {
+        transform: scale(1.1);
+      }
+
+      .hs-cluster-distance .form-range:hover::-moz-range-thumb {
+        transform: scale(1.1);
+      }
+    `,
+  ],
   standalone: false,
 })
 export class HsClusterWidgetComponent

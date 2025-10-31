@@ -10,11 +10,73 @@ import {HsLanguageService} from 'hslayers-ng/services/language';
 @Component({
   selector: 'hs-scale-widget',
   templateUrl: './scale-widget.component.html',
+  styleUrls: ['./layer-editor-widgets.component.scss'],
+  styles: [
+    `
+      .hs-scale-inputs {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+      }
+
+      .hs-scale-input-group {
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+      }
+
+      .hs-scale-input-group label {
+        margin-bottom: 0;
+        font-size: 0.8125rem;
+        font-weight: 500;
+      }
+
+      .hs-scale-input-group .input-group-text {
+        font-size: 0.8125rem;
+        font-weight: 500;
+        min-width: 2rem;
+        justify-content: center;
+        background-color: rgba(0, 0, 0, 0.04);
+        border-color: rgba(0, 0, 0, 0.15);
+      }
+
+      .hs-scale-input-group .form-control {
+        font-size: 0.8125rem;
+      }
+
+      .hs-scale-input-group .form-control:focus {
+        box-shadow: 0 0 0 0.2rem rgba(var(--bs-primary-rgb), 0.25);
+      }
+
+      .hs-scale-summary {
+        margin-top: 0.75rem;
+        padding: 0.5rem 0.625rem;
+        background: rgba(var(--bs-primary-rgb), 0.08);
+        border-radius: 0.25rem;
+        font-size: 0.8125rem;
+        color: var(--bs-primary);
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+      }
+
+      .hs-scale-summary i {
+        font-size: 0.75rem;
+        opacity: 0.8;
+      }
+
+      .hs-scale-summary .mx-1 {
+        opacity: 0.6;
+        font-weight: 400;
+      }
+    `,
+  ],
   standalone: false,
 })
 export class HsScaleWidgetComponent
   extends HsLayerEditorWidgetBaseComponent
-  implements OnInit {
+  implements OnInit
+{
   hsMapService = inject(HsMapService);
   hsLanguageService = inject(HsLanguageService);
 
