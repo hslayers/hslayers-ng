@@ -102,7 +102,7 @@
     "@angular-devkit/schematics": "^20.3.8",
     "@angular/cli": "^20.3.8",
     "@angular/compiler-cli": "^20.3.9",
-    "@compodoc/compodoc": "^1.1.30",
+    "@compodoc/compodoc": "^1.1.31",
     "@cypress/schematic": "^4.1.4",
     "@eslint/compat": "^1.4.1",
     "@fortawesome/fontawesome-free": "^7.1.0",
