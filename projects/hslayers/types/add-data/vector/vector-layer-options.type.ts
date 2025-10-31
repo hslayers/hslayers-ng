@@ -23,4 +23,6 @@ export type HsVectorLayerOptions = {
   sld?: string;
   qml?: string;
   saveToLayman?: boolean;
+  minResolution?: number;
+  maxResolution?: number;
 };

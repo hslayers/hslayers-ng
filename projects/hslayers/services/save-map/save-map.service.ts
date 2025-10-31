@@ -274,15 +274,18 @@ export class HsSaveMapService {
       };
     }
 
+    const maxResolution = layer.getMaxResolution();
+    const minResolution = layer.getMinResolution();
+    if (maxResolution !== undefined) {
+      json.maxResolution = maxResolution;
+    }
+    if (minResolution !== undefined) {
+      json.minResolution = minResolution;
+    }
+
     // HTTPRequest
     if (instOf(layer, Tile) || instOf(layer, ImageLayer)) {
       const src = layer.getSource();
-      if (layer.getMaxResolution() !== null) {
-        json.maxResolution = layer.getMaxResolution();
-      }
-      if (layer.getMinResolution() !== null) {
-        json.minResolution = layer.getMinResolution();
-      }
       json.displayInLayerSwitcher = getShowInLayerManager(layer);
       if (getDimensions(layer)) {
         json.dimensions = getDimensions(layer);
@@ -291,8 +294,16 @@ export class HsSaveMapService {
         json.className = getURL(layer).includes('/rest/services')
           ? 'ArcGISRest'
           : 'XYZ';
-        json.maxResolution = layer.get('maxZoom');
-        json.minResolution = layer.get('minZoom');
+        if (json.className === 'XYZ') {
+          const maxZoom = layer.get('maxZoom');
+          const minZoom = layer.get('minZoom');
+          if (maxZoom !== undefined) {
+            json.maxResolution = maxZoom;
+          }
+          if (minZoom !== undefined) {
+            json.minResolution = minZoom;
+          }
+        }
       }
       if (instOf(src, ImageArcGISRest) || instOf(src, TileArcGISRest)) {
         json.className = 'ArcGISRest';
@@ -404,8 +415,6 @@ export class HsSaveMapService {
           }
         }
       }
-      json.maxResolution = layer.getMaxResolution();
-      json.minResolution = layer.getMinResolution();
       json.projection = this.hsMapService.getCurrentProj().getCode();
 
       if (json.protocol?.format == 'WFS') {
