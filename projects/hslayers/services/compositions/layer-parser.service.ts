@@ -12,6 +12,7 @@ import {
 import {
   HsCommonLaymanLayerService,
   HsCommonLaymanService,
+  isAtLeastVersions,
   isLaymanUrl,
 } from 'hslayers-ng/common/layman';
 import {HsLanguageService} from 'hslayers-ng/services/language';
@@ -183,7 +184,10 @@ export class HsCompositionsLayerParserService {
         layerOptions: this.getWmsLayerOptions(lyr_def),
       };
 
-      if (isLaymanUrl(url, this.hsCommonLaymanService.layman())) {
+      if (
+        isLaymanUrl(url, this.hsCommonLaymanService.layman()) &&
+        isAtLeastVersions(this.hsCommonLaymanService.layman(), '2.0')
+      ) {
         //Query GET /layer to obtain name and workspace of layer
         const layer = await this.hsCommonLaymanLayerService.getLayerWithUUID(
           lyr_def.params.LAYERS.split('_')[1],
