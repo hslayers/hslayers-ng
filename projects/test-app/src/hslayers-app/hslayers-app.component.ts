@@ -555,6 +555,8 @@ export class HslayersAppComponent {
             },
             editor: {editable: false},
             path: 'User generated',
+            maxResolution: 5000,
+            minResolution: 5500,
           },
           style: new Style({
             image: new Circle({
@@ -572,6 +574,8 @@ export class HslayersAppComponent {
         }),
         new VectorLayer({
           visible: true,
+          maxResolution: 50,
+          minResolution: 45,
           properties: {
             title: 'Polygons',
             synchronize: false,
