@@ -14,9 +14,12 @@ import {HsAddDataCommonService} from '../common.service';
 import {HsAddDataService} from '../add-data.service';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
+import {HsConfig} from 'hslayers-ng/config';
+import {getFromComposition} from 'hslayers-ng/common/extensions';
 
 @Injectable({providedIn: 'root'})
 export class HsUrlXyzService implements HsUrlTypeServiceModel {
+  private hsConfig = inject(HsConfig);
   private hsMapService = inject(HsMapService);
   private hsLayoutService = inject(HsLayoutService);
   private hsAddDataService = inject(HsAddDataService);
@@ -179,6 +182,19 @@ export class HsUrlXyzService implements HsUrlTypeServiceModel {
     this.hsAddDataCommonService.clearParams();
     this.setDataToDefault();
     this.hsAddDataCommonService.setPanelToCatalogue();
-    this.hsLayoutService.setMainPanel('layerManager');
+
+    if (collection.length == 0) {
+      return;
+    }
+
+    const fromComposition = collection.some((layer) =>
+      getFromComposition(layer),
+    );
+    const shouldOpenLayerManager =
+      !fromComposition ||
+      (fromComposition && this.hsConfig.open_lm_after_comp_loaded);
+    if (shouldOpenLayerManager) {
+      this.hsLayoutService.setMainPanel('layerManager');
+    }
   }
 }

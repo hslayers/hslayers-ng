@@ -38,6 +38,7 @@ import {
   getPreferredFormat,
 } from 'hslayers-ng/services/utils';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
+import {getFromComposition} from 'hslayers-ng/common/extensions';
 
 @Injectable({providedIn: 'root'})
 export class HsUrlWmsService implements HsUrlTypeServiceModel {
@@ -409,7 +410,18 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
     this.hsAddDataCommonService.clearParams();
     this.setDataToDefault();
     this.hsAddDataCommonService.setPanelToCatalogue();
-    if (collection.length > 0) {
+
+    if (collection.length == 0) {
+      return;
+    }
+
+    const fromComposition = collection.some((layer) =>
+      getFromComposition(layer),
+    );
+    const shouldOpenLayerManager =
+      !fromComposition ||
+      (fromComposition && this.hsConfig.open_lm_after_comp_loaded);
+    if (shouldOpenLayerManager) {
       this.hsLayoutService.setMainPanel('layerManager');
     }
   }
