@@ -75,14 +75,14 @@ import {HsLanguageService} from 'hslayers-ng/services/language';
 })
 export class HsScaleWidgetComponent
   extends HsLayerEditorWidgetBaseComponent
-  implements OnInit
-{
+  implements OnInit {
   hsMapService = inject(HsMapService);
   hsLanguageService = inject(HsLanguageService);
 
   name = 'scale-widget';
 
   scaleEnabled: WritableSignal<boolean> = signal(false);
+  suppressCacheUpdate: boolean = false;
 
   ngOnInit() {
     super.ngOnInit();
@@ -95,12 +95,15 @@ export class HsScaleWidgetComponent
   toggle() {
     this.scaleEnabled.update((value) => !value);
 
-    if (!this.scaleEnabled()) {
+    if (this.scaleEnabled()) {
+      this.restoreLastValidScaleValues();
+    } else {
+      // Suppress cache update to avoid clearing cache
+      this.suppressCacheUpdate = true;
       this.storeLastValidScaleValues();
       this.minResolution = 0;
       this.maxResolution = Infinity;
-    } else {
-      this.restoreLastValidScaleValues();
+      this.suppressCacheUpdate = false;
     }
   }
 
@@ -155,13 +158,19 @@ export class HsScaleWidgetComponent
       return;
     }
     const layer = this.olLayer;
+    const value = newValue ?? 0;
+
     const resolution = calculateResolutionFromScale(
-      newValue,
+      value,
       this.hsMapService.getMap().getView(),
     );
     layer.setMinResolution(resolution);
-    if (newValue && newValue != 0) {
-      layer.set('lastValidMinResolution', newValue);
+    if (!this.suppressCacheUpdate) {
+      if (value === 0) {
+        layer.unset('lastValidMinResolution', true);
+      } else {
+        layer.set('lastValidMinResolution', value);
+      }
     }
   }
 
@@ -181,13 +190,18 @@ export class HsScaleWidgetComponent
       return;
     }
     const layer = this.olLayer;
+    const value = newValue ?? Infinity;
     const resolution = calculateResolutionFromScale(
-      newValue,
+      value,
       this.hsMapService.getMap().getView(),
     );
     layer.setMaxResolution(resolution);
-    if (newValue && newValue != Infinity) {
-      layer.set('lastValidMaxResolution', newValue);
+    if (!this.suppressCacheUpdate) {
+      if (value === Infinity) {
+        layer.unset('lastValidMaxResolution');
+      } else {
+        layer.set('lastValidMaxResolution', value);
+      }
     }
   }
 
