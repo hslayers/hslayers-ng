@@ -610,7 +610,8 @@
       "max": "Maks.",
       "min": "Min.",
       "interpolatedAttribute": "Interpolējamais atribūts",
-      "nrOfCategories": "Kategoriju skaits"
+      "nrOfCategories": "Kategoriju skaits",
+      "scale": "Mēroga ierobežojumi"
     },
     "layerList": {
       "layerIsQueryable": "Šis slānis ir vaicājams",

@@ -647,7 +647,8 @@
       "typeFolderName": "Zadejte název nové složky",
       "pickOrCreate": "Vyberte nebo vytvořte novou složku",
       "moveToNewFolder": "Přesunout vrstvu do složky",
-      "nrOfCategories": "Počet kategorií"
+      "nrOfCategories": "Počet kategorií",
+      "scale": "Měřítková omezení"
     },
     "layerList": {
       "layerIsQueryable": "Tato vrstva je dotazovatelná",
