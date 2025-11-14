@@ -87,33 +87,34 @@ export class HsArcgisGetCapabilitiesService implements IGetCapabilities {
 
     url = this.hsProxyService.proxify(url);
 
-    if (this.hsCapabilityCacheService.get(url) && !owrCache) {
-      return this.hsCapabilityCacheService.get(url);
-    }
-    try {
-      const r = await lastValueFrom(
-        this.httpClient
-          .get(url, {
-            responseType: 'json',
-            observe: 'response', // Set observe to 'response' to get headers as well
-          })
-          .pipe(takeUntil(this.hsEventBusService.cancelAddDataUrlRequest)),
-      );
-      const wrap = {response: r.body};
-      this.hsCapabilityCacheService.set(url, wrap);
-      return wrap;
-    } catch (e) {
-      const contentType = e.headers.get('Content-Type');
-      if (contentType?.includes('text/html')) {
-        return {
-          error: true,
-          response: {
-            message: 'ERROR.noValidData',
-          },
-        };
-      }
-      return {response: e, error: true};
-    }
+    return this.hsCapabilityCacheService.getOrFetch(
+      url,
+      async () => {
+        try {
+          const r = await lastValueFrom(
+            this.httpClient
+              .get(url, {
+                responseType: 'json',
+                observe: 'response', // Set observe to 'response' to get headers as well
+              })
+              .pipe(takeUntil(this.hsEventBusService.cancelAddDataUrlRequest)),
+          );
+          return {response: r.body};
+        } catch (e) {
+          const contentType = e.headers?.get('Content-Type');
+          if (contentType?.includes('text/html')) {
+            return {
+              error: true,
+              response: {
+                message: 'ERROR.noValidData',
+              },
+            };
+          }
+          return {response: e, error: true};
+        }
+      },
+      owrCache,
+    );
   }
 
   /**

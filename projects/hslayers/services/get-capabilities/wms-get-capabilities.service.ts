@@ -100,41 +100,42 @@ export class HsWmsGetCapabilitiesService implements IGetCapabilities {
 
     url = this.hsProxyService.proxify(url);
 
-    if (this.hsCapabilityCacheService.get(url) && !owrCache) {
-      return this.hsCapabilityCacheService.get(url);
-    }
-    try {
-      const withCredentials = isLaymanUrl(
-        url,
-        this.hsCommonLaymanService.layman(),
-      );
-      const r = await lastValueFrom(
-        this.httpClient
-          .get(url, {
-            responseType: 'text',
-            withCredentials,
-            observe: 'response', // Set observe to 'response' to get headers as well
-          })
-          .pipe(takeUntil(this.hsEventBusService.cancelAddDataUrlRequest)),
-      );
-      const contentType = r.headers.get('Content-Type');
-      if (contentType?.includes('text/html')) {
-        return {
-          error: true,
-          response: {
-            message: 'ERROR.noValidData',
-          },
-        };
-      }
-      const wrap = {response: r.body};
-      this.hsCapabilityCacheService.set(url, wrap);
-      return wrap;
-    } catch (e) {
-      return {
-        response: e,
-        error: true,
-      };
-    }
+    return this.hsCapabilityCacheService.getOrFetch(
+      url,
+      async () => {
+        try {
+          const withCredentials = isLaymanUrl(
+            url,
+            this.hsCommonLaymanService.layman(),
+          );
+          const r = await lastValueFrom(
+            this.httpClient
+              .get(url, {
+                responseType: 'text',
+                withCredentials,
+                observe: 'response', // Set observe to 'response' to get headers as well
+              })
+              .pipe(takeUntil(this.hsEventBusService.cancelAddDataUrlRequest)),
+          );
+          const contentType = r.headers.get('Content-Type');
+          if (contentType?.includes('text/html')) {
+            return {
+              error: true,
+              response: {
+                message: 'ERROR.noValidData',
+              },
+            };
+          }
+          return {response: r.body};
+        } catch (e) {
+          return {
+            response: e,
+            error: true,
+          };
+        }
+      },
+      owrCache,
+    );
   }
 
   /**

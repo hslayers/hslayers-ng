@@ -100,37 +100,39 @@ export class HsWmtsGetCapabilitiesService implements IGetCapabilities {
     }
     let url = [path, this.params2String(params)].join('?');
 
-    if (this.hsCapabilityCacheService.get(url) && !owrCache) {
-      return this.hsCapabilityCacheService.get(url);
-    }
-    try {
-      url = this.hsProxyService.proxify(url);
-      const r = await lastValueFrom(
-        this.httpClient
-          .get(url, {
-            responseType: 'text',
-            observe: 'response', // Set observe to 'response' to get headers as well
-          })
-          .pipe(takeUntil(this.hsEventBusService.cancelAddDataUrlRequest)),
-      );
-      const contentType = r.headers.get('Content-Type');
-      if (contentType?.includes('text/html')) {
-        return {
-          error: true,
-          response: {
-            message: 'ERROR.noValidData',
-          },
-        };
-      }
-      const wrap = {response: r.body};
-      this.hsCapabilityCacheService.set(url, wrap);
-      return wrap;
-    } catch (error) {
-      return {
-        response: error,
-        error: true,
-      };
-    }
+    url = this.hsProxyService.proxify(url);
+
+    return this.hsCapabilityCacheService.getOrFetch(
+      url,
+      async () => {
+        try {
+          const r = await lastValueFrom(
+            this.httpClient
+              .get(url, {
+                responseType: 'text',
+                observe: 'response', // Set observe to 'response' to get headers as well
+              })
+              .pipe(takeUntil(this.hsEventBusService.cancelAddDataUrlRequest)),
+          );
+          const contentType = r.headers.get('Content-Type');
+          if (contentType?.includes('text/html')) {
+            return {
+              error: true,
+              response: {
+                message: 'ERROR.noValidData',
+              },
+            };
+          }
+          return {response: r.body};
+        } catch (error) {
+          return {
+            response: error,
+            error: true,
+          };
+        }
+      },
+      owrCache,
+    );
   }
 
   /**

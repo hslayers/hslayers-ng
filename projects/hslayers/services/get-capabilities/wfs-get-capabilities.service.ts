@@ -93,50 +93,53 @@ export class HsWfsGetCapabilitiesService implements IGetCapabilities {
     let url = [path, this.params2String(params)].join('?');
 
     url = this.hsProxyService.proxify(url);
-    if (this.hsCapabilityCacheService.get(url) && !owrCache) {
-      return this.hsCapabilityCacheService.get(url);
-    }
-    try {
-      const withCredentials = isLaymanUrl(
-        url,
-        this.hsCommonLaymanService.layman(),
-      );
-      let r = await lastValueFrom(
-        this.httpClient
-          .get(url, {
-            responseType: 'text',
-            observe: 'response', // Set observe to 'response' to get headers as well
-            withCredentials,
-          })
-          .pipe(takeUntil(this.hsEventBusService.cancelAddDataUrlRequest)),
-      );
-      /**
-       * Retry with different version number
-       */
-      if (r.body.includes('ServiceException')) {
-        r = await lastValueFrom(
-          this.httpClient
-            .get(url.replace('version=2.0.0', 'version=1.1.0'), {
-              responseType: 'text',
-              observe: 'response', // Set observe to 'response' to get headers as well
-            })
-            .pipe(takeUntil(this.hsEventBusService.cancelAddDataUrlRequest)),
-        );
-      }
-      const contentType = r.headers.get('Content-Type');
-      if (contentType?.includes('text/html')) {
-        return {
-          error: true,
-          response: {
-            message: 'ERROR.noValidData',
-          },
-        };
-      }
-      const wrap = {response: r.body};
-      this.hsCapabilityCacheService.set(url, wrap);
-      return wrap;
-    } catch (e) {
-      return {response: e, error: true};
-    }
+    return this.hsCapabilityCacheService.getOrFetch(
+      url,
+      async () => {
+        try {
+          const withCredentials = isLaymanUrl(
+            url,
+            this.hsCommonLaymanService.layman(),
+          );
+          let r = await lastValueFrom(
+            this.httpClient
+              .get(url, {
+                responseType: 'text',
+                observe: 'response', // Set observe to 'response' to get headers as well
+                withCredentials,
+              })
+              .pipe(takeUntil(this.hsEventBusService.cancelAddDataUrlRequest)),
+          );
+          /**
+           * Retry with different version number
+           */
+          if (r.body.includes('ServiceException')) {
+            r = await lastValueFrom(
+              this.httpClient
+                .get(url.replace('version=2.0.0', 'version=1.1.0'), {
+                  responseType: 'text',
+                  observe: 'response', // Set observe to 'response' to get headers as well
+                })
+                .pipe(
+                  takeUntil(this.hsEventBusService.cancelAddDataUrlRequest),
+                ),
+            );
+          }
+          const contentType = r.headers.get('Content-Type');
+          if (contentType?.includes('text/html')) {
+            return {
+              error: true,
+              response: {
+                message: 'ERROR.noValidData',
+              },
+            };
+          }
+          return {response: r.body};
+        } catch (e) {
+          return {response: e, error: true};
+        }
+      },
+      owrCache,
+    );
   }
 }

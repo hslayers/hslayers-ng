@@ -83,39 +83,38 @@ export class HsXyzGetCapabilitiesService implements IGetCapabilities {
       };
     }
 
-    // Check cache
-    if (this.hsCapabilityCacheService.get(service_url) && !owrCache) {
-      return this.hsCapabilityCacheService.get(service_url);
-    }
-
-    try {
-      // Create a mock capabilities response
-      const mockCapabilities = {
-        Service: {
-          Title: 'XYZ Tile Service',
-          Abstract: 'XYZ Tile Service',
-        },
-        Capability: {
-          Layer: {
-            Title: 'XYZ Layer',
-            Name: 'xyz_layer',
-            Abstract: 'XYZ Tile Layer',
-            BoundingBox: [-180, -90, 180, 90],
-            Style: [
-              {
-                Name: 'default',
-                Title: 'Default',
+    return this.hsCapabilityCacheService.getOrFetch(
+      service_url,
+      async () => {
+        try {
+          // Create a mock capabilities response
+          const mockCapabilities = {
+            Service: {
+              Title: 'XYZ Tile Service',
+              Abstract: 'XYZ Tile Service',
+            },
+            Capability: {
+              Layer: {
+                Title: 'XYZ Layer',
+                Name: 'xyz_layer',
+                Abstract: 'XYZ Tile Layer',
+                BoundingBox: [-180, -90, 180, 90],
+                Style: [
+                  {
+                    Name: 'default',
+                    Title: 'Default',
+                  },
+                ],
               },
-            ],
-          },
-        },
-      };
+            },
+          };
 
-      const wrap = {response: mockCapabilities};
-      this.hsCapabilityCacheService.set(service_url, wrap);
-      return wrap;
-    } catch (e) {
-      return {response: e, error: true};
-    }
+          return {response: mockCapabilities};
+        } catch (e) {
+          return {response: e, error: true};
+        }
+      },
+      owrCache,
+    );
   }
 }
