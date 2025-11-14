@@ -646,7 +646,8 @@
       "typeFolderName": "Type new folder name",
       "pickOrCreate": "Pick or create new folder",
       "moveToNewFolder": "Move layer to folder",
-      "nrOfCategories": "Number of categories"
+      "nrOfCategories": "Number of categories",
+      "scale": "Scale restrictions"
     },
     "layerList": {
       "layerIsQueryable": "This layer is queryable",
