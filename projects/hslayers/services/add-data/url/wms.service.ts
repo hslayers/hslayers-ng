@@ -536,7 +536,8 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
       },
       crossOrigin: 'anonymous',
     };
-    const source: ImageWMS | TileWMS = this.data.useTiles
+    const tiled = options.useTiles ?? this.data.useTiles;
+    const source: ImageWMS | TileWMS = tiled
       ? new TileWMS(sourceOptions)
       : new ImageWMS(sourceOptions);
 
@@ -588,10 +589,10 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
       capsExtentSet: !!extent,
     };
 
-    const new_layer = this.data.useTiles
+    const new_layer = tiled
       ? new Tile(layerOptions as TileOptions<TileSource>)
       : new ImageLayer(layerOptions as ImageOptions<ImageSource>);
-    this.hsMapService.proxifyLayerLoader(new_layer, this.data.useTiles);
+    this.hsMapService.proxifyLayerLoader(new_layer, tiled);
     return new_layer;
   }
 
