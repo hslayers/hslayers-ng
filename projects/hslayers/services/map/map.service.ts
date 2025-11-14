@@ -998,7 +998,13 @@ export class HsMapService {
         });
       }
       (src as TileImage).setTileLoadFunction(async (tile: ImageTile, url) => {
-        const que = this.hsQueuesService.ensureQueue('tileLoad', 6, 2500);
+        const concurrency =
+          this.hsConfig.loadingQueueConcurrency?.tileLoad ?? 6;
+        const que = this.hsQueuesService.ensureQueue(
+          'tileLoad',
+          concurrency,
+          2500,
+        );
         que.push(async (cb) => {
           await this.simpleImageryProxy(tile, url);
           cb(null);
@@ -1011,7 +1017,12 @@ export class HsMapService {
            * No timeout for this que as non tiled images may in some cases take really long to load and thus
            * block all the rest of the functionality that depends on http requests for the whole duration
            */
-          const que = this.hsQueuesService.ensureQueue('imageLoad', 4);
+          const concurrency =
+            this.hsConfig.loadingQueueConcurrency?.imageLoad ?? 4;
+          const que = this.hsQueuesService.ensureQueue(
+            'imageLoad',
+            concurrency,
+          );
           que.push(async (cb) => {
             await this.simpleImageryProxy(image, url);
             cb(null);

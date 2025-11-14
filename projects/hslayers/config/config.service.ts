@@ -279,6 +279,15 @@ export class HsConfigObject {
    */
   useDefaultValidationRules?: boolean;
 
+  /**
+   * Controls the concurrency of the loading queues for tile and image loads
+   * @default {tileLoad: 6, imageLoad: 4}
+   */
+  loadingQueueConcurrency?: {
+    tileLoad?: number;
+    imageLoad?: number;
+  };
+
   constructor() {
     this.pathExclusivity = false;
     this.panelsEnabled = {
