@@ -126,7 +126,11 @@ export class HsLayerManagerMetadataService {
     try {
       await this.queryMetadata(layerDescriptor);
     } catch (error) {
-      this.hsLog.warn(`Error while querying metadata ${error}`);
+      if (error instanceof Error) {
+        this.hsLog.warn(`Error while querying metadata ${error.message}`);
+      } else {
+        this.hsLog.warn(`Error while querying metadata ${error}`);
+      }
     }
     const subLayers = getCachedCapabilities(layer)?.Layer;
     if (subLayers != undefined && subLayers.length > 1) {
