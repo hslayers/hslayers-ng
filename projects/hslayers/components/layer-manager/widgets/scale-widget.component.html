@@ -35,7 +35,7 @@
       </div>
     </div>
 
-    @if (minResolutionValid() && maxResolutionValid()) {
+    @if (isScaleVisible()) {
     <div class="hs-scale-summary">
       <i class="fa-solid fa-ruler-horizontal me-1"></i>
       <span>{{ "COMMON.from" | translate }} 1:{{ minResolution }}</span>
