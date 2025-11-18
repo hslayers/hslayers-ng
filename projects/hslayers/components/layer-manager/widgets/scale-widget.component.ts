@@ -142,7 +142,7 @@ export class HsScaleWidgetComponent
   placeholder = this.hsLanguageService.getTranslation('COMMON.infinity');
 
   /**
-   * Test if selected layer has min and max resolution set
+   * Test if selected layer has min or max resolution set
    */
   isScaleVisible(): boolean {
     return (
