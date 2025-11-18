@@ -232,6 +232,9 @@ export class HslayersComponent implements AfterViewInit, OnInit {
               touchCallout: 'none',
               contentZooming: 'none',
               tapHighlightColor: 'rgba(0,0,0,0)',
+              touchSelect: 'none',
+              userDrag: 'none',
+              userSelect: 'none',
             },
           },
         );

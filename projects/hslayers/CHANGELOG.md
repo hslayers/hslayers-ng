@@ -1,7 +1,36 @@
+# [16.1.0](https://github.com/hslayers/hslayers-ng/compare/16.0.0...16.1.0) (2025-11-18)
+
+This minor release fixes a bunch of bugs and adds a basic level of backwards compatibility between HSLayers-NG and [Layman](https://github.com/LayerManager/layman) 1.x ([69945ca](https://github.com/hslayers/hslayers-ng/commit/69945ca49a472362754b8d91ff6814792831fd8b)). With HSLayers-NG 16.1 it should be safe to read Layman data (open layer, open composition), but writing Layman data (change permissions, upload dataset, save composition) is not guaranteed to work. Please file any issues regarding read access to Layman data. Beside that, HSLayers-NG also keeps on track with [Layman 2.2](https://github.com/LayerManager/layman/releases/tag/v2.2.0) and we are adding support for EPSG:32718 & EPSG:9377 spatial reference systems in this release.
+
+### Bug Fixes
+
+* **add-data:** honor open_lm_after_comp_loaded setting ([f6cd89d](https://github.com/hslayers/hslayers-ng/commit/f6cd89d9257ff2f3507e3d3bd60b992aaf0b1b61))
+* **add-data:** Use layman wms pipeline only for endpoints of version 2.0 and above ([69945ca](https://github.com/hslayers/hslayers-ng/commit/69945ca49a472362754b8d91ff6814792831fd8b))
+* **compositions:** Parse folder name for ArcGIS layers ([fbcffe0](https://github.com/hslayers/hslayers-ng/commit/fbcffe0ccf50ed4cceea9de1b44d2e364f3f8d71))
+* **compositions:** Unresolved compo properties ([1ad609e](https://github.com/hslayers/hslayers-ng/commit/1ad609e3e6ae3441a8974d512ea6498da245dc92))
+* **getcapabilities:** Deduplicate concurrent get capabilities requests ([c015113](https://github.com/hslayers/hslayers-ng/commit/c01511358c2601bc9c6e7e487444cc3863755357))
+* **language:** Return last part of the key (SIDENAV.PANEL.Info -> Info) or the key itself if single part key for missing translations ([2e2880c](https://github.com/hslayers/hslayers-ng/commit/2e2880c19e5616fdce924e4eb89a93548cda724a))
+* **layermanager:** Refresh physical layer list on updates ([c58c8e0](https://github.com/hslayers/hslayers-ng/commit/c58c8e01dcb7276b88bfe458087193dd4a5e5133)), closes [#5907](https://github.com/hslayers/hslayers-ng/issues/5907)
+* **layermanager:** Removing scale value should set 0/Infinity ([9de2c6d](https://github.com/hslayers/hslayers-ng/commit/9de2c6dfcb617d7fa501844ab82d164f833af610))
+* **layman:** handle version check gracefully ([ff09b81](https://github.com/hslayers/hslayers-ng/commit/ff09b81488534e6984d0e90d8efa59f266207809))
+* **layman:** Update test case ([efcff21](https://github.com/hslayers/hslayers-ng/commit/efcff218a6af52d688167c5f271fc66c8c115ea6))
+* **savemap:** Show validation errors on touched ([6c61f1d](https://github.com/hslayers/hslayers-ng/commit/6c61f1dafa408220b1646ce216a39babbbdf1715))
+* **wms:** Honor tiled setting from composition ([0b98c79](https://github.com/hslayers/hslayers-ng/commit/0b98c79181c5dd99b3a0585a642e965c8f5ccbac))
+
+
+### Features
+
+* **compositions:** Show name in info-dialog ([8e53eda](https://github.com/hslayers/hslayers-ng/commit/8e53eda29f4dd624aa8eb8ff646ef6c93bff23e5))
+* **config:** Configurable tile and image load concurrency ([6a2e4c7](https://github.com/hslayers/hslayers-ng/commit/6a2e4c73ab7ba0f18bb9ec119140f51cfda5f73c))
+* **layman:** register EPSG:32718 & EPSG:9377 ([6fb9acb](https://github.com/hslayers/hslayers-ng/commit/6fb9acb5df4d47267f52e638bd53ea51d41505fe))
+
+
+
 # [16.0.0](https://github.com/hslayers/hslayers-ng/compare/15.0.1...16.0.0) (2025-09-01)
 
 ### BREAKING CHANGES
 
+* **Support Layman 2**. A new major version of [Layman](https://github.com/LayerManager/layman) has been released. HSLayers-NG keeps on track, so since HSLayers-NG 16.0 we support [Layman 2.x](https://github.com/LayerManager/layman/releases/tag/v2.0.0). At the same time, we drop most of the legacy code, so if you want to be sure your HSLayers-Layman integration works with Layman 1.x, stick on HSLayers-NG 15.0 for now. Some level of backwards compatibility might come in next minor releases of HSLayers-NG.
 * !refactor(i18n): Upgrade ngx-translate to v17 ([4223b25](https://github.com/hslayers/hslayers-ng/commit/4223b2550bdd44b9697a42fbecf77025dc36fdc1))
 * `TranslateCustomPipe` removed in favour of external `TranslatePipe`, thus all occurrences of `translateHs` must be changed to `translate` with proper import.
 * `TranslateCustomService` removed
