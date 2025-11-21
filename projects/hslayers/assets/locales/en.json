@@ -922,7 +922,8 @@
     "removeLayerError": "Layer {{layer}} was not deleted from the database. {{error}}",
     "saveOrOverwrite": "Composition with this name was created by another user",
     "syncErrorDialog": {
-      "errorWhenSyncing": "Error when syncing"
+      "errorWhenSyncing": "Error when syncing",
+      "layerReadOnly": "Layer {{layer}} is read-only! Seems like you donn't have enough permissions."
     },
     "writeAccessRights": "Write access rights",
     "perUser": "Per user",

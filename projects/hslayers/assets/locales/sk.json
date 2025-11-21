@@ -892,7 +892,8 @@
     "removeLayerError": "Vrstva '{{layer}}' nebola odstránená z databáze. {{error}}",
     "saveOrOverwrite": "Kompozíciu s týmto názvom vytvoril iný používateľ",
     "syncErrorDialog": {
-      "errorWhenSyncing": "Chyba pri synchronizácii"
+      "errorWhenSyncing": "Chyba pri synchronizácii",
+      "layerReadOnly": "Vrstva {{vrstva}} je len na čítanie! \nZdá sa, že nemáte dostatočné povolenia."
     },
     "writeAccessRights": "Právo zápisu",
     "everyone": "Každý",

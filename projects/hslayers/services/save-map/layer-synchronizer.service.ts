@@ -28,6 +28,7 @@ import {
   getEventsSuspended,
   getName,
   getWorkspace,
+  setEditor,
   setEventsSuspended,
   setHsLaymanSynchronizing,
   setLaymanLayerDescriptor,
@@ -300,7 +301,7 @@ export class HsLayerSynchronizerService {
         .sync({add, upd, del, layer})
         .then((response: string) => {
           if (response?.includes('Exception')) {
-            this.displaySyncErrorDialog(response);
+            this.displaySyncErrorDialog(response, layer);
             setHsLaymanSynchronizing(layer, false);
             return;
           }
@@ -327,16 +328,30 @@ export class HsLayerSynchronizerService {
    * Display error dialog on synchronization failure
    * @param error - Error captured
    */
-  displaySyncErrorDialog(error: string): void {
+  displaySyncErrorDialog(
+    error: string,
+    layer: VectorLayer<VectorSource<Feature>>,
+  ): void {
     const exception: xml2Json.Element | xml2Json.ElementCompact =
       xml2Json.xml2js(error, {compact: true});
+    let text =
+      exception['ows:ExceptionReport']['ows:Exception']['ows:ExceptionText']
+        ._text;
+
+    if (text.includes('is read-only')) {
+      text = this.hsLanguageService.getTranslation(
+        'SAVECOMPOSITION.syncErrorDialog.layerReadOnly',
+        {layer: layer.get('title')},
+      );
+      setEditor(layer, {editable: false});
+    }
+
     this.hsToastService.createToastPopupMessage(
       this.hsLanguageService.getTranslation(
         'SAVECOMPOSITION.syncErrorDialog.errorWhenSyncing',
         undefined,
       ),
-      exception['ows:ExceptionReport']['ows:Exception']['ows:ExceptionText']
-        ._text,
+      text,
       {
         disableLocalization: true,
         serviceCalledFrom: 'HsLayerSynchronizerService',

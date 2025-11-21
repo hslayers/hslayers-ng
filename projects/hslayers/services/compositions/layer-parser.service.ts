@@ -487,7 +487,7 @@ export class HsCompositionsLayerParserService {
           layer = await this.hsAddDataVectorService.createVectorLayer(
             'kml',
             lyr_def.protocol.url,
-            lyr_def.name || title,
+            name,
             title,
             lyr_def.abstract,
             lyr_def.projection?.toUpperCase(),
@@ -499,7 +499,7 @@ export class HsCompositionsLayerParserService {
           layer = await this.hsAddDataVectorService.createVectorLayer(
             'geojson',
             lyr_def.protocol.url,
-            lyr_def.name || title,
+            name,
             title,
             lyr_def.abstract,
             lyr_def.projection?.toUpperCase(),
@@ -512,7 +512,7 @@ export class HsCompositionsLayerParserService {
             'wfs',
             lyr_def.protocol.url,
             //lyr_def.protocol.LAYERS
-            lyr_def.name || title,
+            name,
             title,
             lyr_def.abstract,
             lyr_def.projection?.toUpperCase(),
@@ -533,7 +533,7 @@ export class HsCompositionsLayerParserService {
           layer = await this.hsAddDataVectorService.createVectorLayer(
             '',
             undefined,
-            lyr_def.name || title,
+            name,
             title,
             lyr_def.abstract,
             lyr_def.projection?.toUpperCase(),

@@ -923,7 +923,8 @@
     "removeLayerError": "Vrstva '{{layer}}' nebyla odstraněna z databáze. {{error}}",
     "saveOrOverwrite": "Kompozici s tímto názvem vytvořil jiný uživatel",
     "syncErrorDialog": {
-      "errorWhenSyncing": "Chyba při synchronizaci"
+      "errorWhenSyncing": "Chyba při synchronizaci",
+      "layerReadOnly": "Vrstva {{layer}} je pouze pro čtení! \nZdá se, že nemáte dostatečná oprávnění."
     },
     "writeAccessRights": "Právo zápisu",
     "everyone": "Každý",

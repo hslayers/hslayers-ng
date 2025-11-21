@@ -877,7 +877,8 @@
     "removeLayerError": "Slānis {{layer}} netika izdzēsts no datubāzes. {{error}}",
     "saveOrOverwrite": "Kompozīciju ar šādu nosaukumu izveidoja cits lietotājs",
     "syncErrorDialog": {
-      "errorWhenSyncing": "Sinhronizējot radās kļūda"
+      "errorWhenSyncing": "Sinhronizējot radās kļūda",
+      "layerReadOnly": "Slānis {{layer}} ir tikai lasāms! \nŠķiet, ka jums nav pietiekami daudz atļauju."
     },
     "writeAccessRights": "Rakstīšanas piekļuves tiesības",
     "everyone": "Visi",
