@@ -1,7 +1,8 @@
-# 3.1.0 (2025-xx-yy)
+# 3.1.0 (2025-11-25)
 
 ### Bug fixes
 * Throw away proxy prefix
+* Don't publish any .db to npm
 
 ### Features
 * Add verbose option (`-v` or `--verbose`)
