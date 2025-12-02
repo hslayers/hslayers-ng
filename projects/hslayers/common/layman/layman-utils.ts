@@ -10,6 +10,7 @@ import {
   getTitle,
 } from 'hslayers-ng/common/extensions';
 import {Feature} from 'ol/index';
+import {HsConfig} from 'hslayers-ng/config';
 
 export const PREFER_RESUMABLE_SIZE_LIMIT = 2 * 1024 * 1024; // 2 MB
 export const SUPPORTED_SRS_LIST = [
@@ -158,4 +159,54 @@ export function isLayerSynchronizable(
       definition?.format?.toLowerCase(),
     )
   );
+}
+
+/**
+ * Check if the URL matches any exception patterns
+ * @param url - URL to be checked
+ * @returns true if the URL matches an exception pattern
+ */
+export function isLaymanUrlException(
+  url: string,
+  exceptions: HsConfig['laymanUrlExceptions'],
+): boolean {
+  if (!exceptions) {
+    return false;
+  }
+
+  // Check startsWith patterns
+  if (exceptions.startsWith?.length) {
+    for (const pattern of exceptions.startsWith) {
+      if (url.startsWith(pattern)) {
+        return true;
+      }
+    }
+  }
+
+  // Check includes patterns
+  if (exceptions.includes?.length) {
+    for (const pattern of exceptions.includes) {
+      if (url.includes(pattern)) {
+        return true;
+      }
+    }
+  }
+
+  // Check regex patterns
+  if (exceptions.regex?.length) {
+    for (const pattern of exceptions.regex) {
+      try {
+        const regex = new RegExp(pattern);
+        if (regex.test(url)) {
+          return true;
+        }
+      } catch (e) {
+        this.hsLog.warn(
+          `Invalid regex pattern in laymanUrlExceptions: ${pattern}`,
+        );
+      }
+    }
+  }
+
+  return false;
 }
