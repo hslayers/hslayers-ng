@@ -206,6 +206,55 @@ export class HsCommonLaymanService {
   );
 
   /**
+   * Check if the URL matches any exception patterns
+   * @param url - URL to be checked
+   * @param _laymanUrl - Layman endpoint URL (reserved for future use)
+   * @returns true if the URL matches an exception pattern
+   */
+  private isLaymanUrlException(url: string, _laymanUrl: string): boolean {
+    const exceptions = this.hsConfig.laymanUrlExceptions;
+    if (!exceptions) {
+      return false;
+    }
+
+    // Check startsWith patterns
+    if (exceptions.startsWith?.length) {
+      for (const pattern of exceptions.startsWith) {
+        if (url.startsWith(pattern)) {
+          return true;
+        }
+      }
+    }
+
+    // Check includes patterns
+    if (exceptions.includes?.length) {
+      for (const pattern of exceptions.includes) {
+        if (url.includes(pattern)) {
+          return true;
+        }
+      }
+    }
+
+    // Check regex patterns
+    if (exceptions.regex?.length) {
+      for (const pattern of exceptions.regex) {
+        try {
+          const regex = new RegExp(pattern);
+          if (regex.test(url)) {
+            return true;
+          }
+        } catch (e) {
+          this.hsLog.warn(
+            `Invalid regex pattern in laymanUrlExceptions: ${pattern}`,
+          );
+        }
+      }
+    }
+
+    return false;
+  }
+
+  /**
    * Check wether provided url belongs to Layman endpoint
    * @param url - URL to be checked
    * @param layman - Layman endpoint
@@ -218,7 +267,7 @@ export class HsCommonLaymanService {
     /**
      * If the URL is marked as an exception, return false
      */
-    if (this.hsConfig.isLaymanUrlException?.(url, layman.url)) {
+    if (this.isLaymanUrlException(url, layman.url)) {
       return false;
     }
     /**

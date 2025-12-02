@@ -429,7 +429,7 @@ describe('HsCommonLaymanService', () => {
     expect(service.user()).toBeUndefined();
   }));
 
-  fdescribe('isLaymanUrl', () => {
+  describe('isLaymanUrl', () => {
     const laymanEp: HsEndpoint = {
       type: 'layman',
       title: 'layman',
@@ -496,12 +496,9 @@ describe('HsCommonLaymanService', () => {
       expect(service.isLaymanUrl('', laymanEp)).toBeFalse();
     });
 
-    it('should honor isLaymanUrlException when provided', () => {
-      service.hsConfig.isLaymanUrlException = (
-        url: string,
-        laymanUrl: string,
-      ) => {
-        return url.includes('/geoserver/');
+    it('should honor laymanUrlExceptions with includes pattern', () => {
+      service.hsConfig.laymanUrlExceptions = {
+        includes: ['/geoserver/'],
       };
 
       expect(
@@ -509,6 +506,52 @@ describe('HsCommonLaymanService', () => {
           'https://comunidad-project.eu/geoserver/Caldas/wms',
           laymanEp,
         ),
+      ).toBeFalse();
+    });
+
+    it('should honor laymanUrlExceptions with startsWith pattern', () => {
+      service.hsConfig.laymanUrlExceptions = {
+        startsWith: ['https://external-service.com'],
+      };
+
+      expect(
+        service.isLaymanUrl('https://external-service.com/api/data', laymanEp),
+      ).toBeFalse();
+    });
+
+    it('should honor laymanUrlExceptions with regex pattern', () => {
+      service.hsConfig.laymanUrlExceptions = {
+        regex: ['/geoserver/.*/wms'],
+      };
+
+      expect(
+        service.isLaymanUrl(
+          'https://example.com/geoserver/workspace/wms',
+          laymanEp,
+        ),
+      ).toBeFalse();
+    });
+
+    it('should honor laymanUrlExceptions with multiple patterns', () => {
+      service.hsConfig.laymanUrlExceptions = {
+        startsWith: ['https://external.com'],
+        includes: ['/geoserver/', '/mapserver/'],
+        regex: ['/wms\\?.*version=1\\.1\\.0/'],
+      };
+
+      // Test startsWith
+      expect(
+        service.isLaymanUrl('https://external.com/api', laymanEp),
+      ).toBeFalse();
+
+      // Test includes
+      expect(
+        service.isLaymanUrl('https://example.com/geoserver/data', laymanEp),
+      ).toBeFalse();
+
+      // Test regex
+      expect(
+        service.isLaymanUrl('https://example.com/wms?version=1.1.0', laymanEp),
       ).toBeFalse();
     });
   });

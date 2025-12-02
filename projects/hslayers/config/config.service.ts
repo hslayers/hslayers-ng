@@ -289,11 +289,24 @@ export class HsConfigObject {
   };
 
   /**
-   * Optional function to mark URLs that should NOT be treated as Layman,
+   * Configuration to mark URLs that should NOT be treated as Layman,
    * even if the generic detection says they are.
-   * If it returns true, the URL is treated as non-Layman.
+   * If any condition matches, the URL is treated as non-Layman.
    */
-  isLaymanUrlException?: (url: string, laymanUrl: string) => boolean;
+  laymanUrlExceptions?: {
+    /**
+     * Array of strings. If the URL starts with any of these strings, it's treated as non-Layman.
+     */
+    startsWith?: string[];
+    /**
+     * Array of strings. If the URL includes any of these strings, it's treated as non-Layman.
+     */
+    includes?: string[];
+    /**
+     * Array of regex pattern strings. If the URL matches any of these patterns, it's treated as non-Layman.
+     */
+    regex?: string[];
+  };
 
   constructor() {
     this.pathExclusivity = false;
