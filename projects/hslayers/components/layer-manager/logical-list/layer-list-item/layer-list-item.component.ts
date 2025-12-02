@@ -13,7 +13,7 @@ import {
   NgbTooltipModule,
 } from '@ng-bootstrap/ng-bootstrap';
 import {takeUntilDestroyed, toSignal} from '@angular/core/rxjs-interop';
-import {filter} from 'rxjs';
+import {filter, startWith} from 'rxjs';
 import {TranslatePipe} from '@ngx-translate/core';
 
 import {HsConfig} from 'hslayers-ng/config';
@@ -84,6 +84,9 @@ export class HsLayerListItemComponent implements OnInit {
   layerTimeChanges = toSignal(
     this.hsDimensionTimeService.layerTimeChanges.pipe(
       filter(({layer}) => layer.layer === this.layer().layer),
+      //When list is recreated on panel toggle we dont automatically get
+      //update so check all layers to make sure we display time editor if necessary
+      startWith(true),
       takeUntilDestroyed(),
     ),
   );
