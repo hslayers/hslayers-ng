@@ -13,10 +13,14 @@ import {HsProxyService} from 'hslayers-ng/services/utils';
 import {HsLanguageService} from 'hslayers-ng/services/language';
 import {HsLogService} from 'hslayers-ng/services/log';
 import {provideHttpClient} from '@angular/common/http';
+import {HsEndpoint} from 'hslayers-ng/types';
+import {HsConfig} from 'hslayers-ng/config';
+import {HsConfigMock} from 'hslayers-ng/test/config.service.mock';
 
 describe('HsCommonLaymanService', () => {
   let service: HsCommonLaymanService;
   let httpMock: HttpTestingController;
+  let hsConfig: HsConfig;
   let endpointsService: jasmine.SpyObj<HsCommonEndpointsService>;
   let toastService: jasmine.SpyObj<HsToastService>;
   let proxyService: jasmine.SpyObj<HsProxyService>;
@@ -107,6 +111,7 @@ describe('HsCommonLaymanService', () => {
         {provide: HsProxyService, useValue: proxySpy},
         {provide: HsLanguageService, useValue: languageSpy},
         {provide: HsLogService, useValue: logSpy},
+        {provide: HsConfig, useValue: HsConfigMock},
         provideHttpClient(),
         provideHttpClientTesting(),
       ],
@@ -114,6 +119,7 @@ describe('HsCommonLaymanService', () => {
 
     service = TestBed.inject(HsCommonLaymanService);
     httpMock = TestBed.inject(HttpTestingController);
+    hsConfig = TestBed.inject(HsConfig);
     endpointsService = TestBed.inject(
       HsCommonEndpointsService,
     ) as jasmine.SpyObj<HsCommonEndpointsService>;
@@ -422,4 +428,88 @@ describe('HsCommonLaymanService', () => {
     expect(service.isAuthenticated()).toBeFalse();
     expect(service.user()).toBeUndefined();
   }));
+
+  fdescribe('isLaymanUrl', () => {
+    const laymanEp: HsEndpoint = {
+      type: 'layman',
+      title: 'layman',
+      url: 'http://layman.domain/layman',
+      version: '1.0.0',
+    };
+    const wagtailEp: HsEndpoint = {
+      type: 'layman-wagtail',
+      title: 'wagtail',
+      url: 'http://wagtail.domain/layman-proxy/',
+      version: '1.0.0',
+    };
+    const undefinedEp = undefined as unknown as HsEndpoint;
+    const nullEp = null as unknown as HsEndpoint;
+
+    beforeEach(fakeAsync(() => {
+      handleUserRequest();
+      tick(100);
+    }));
+
+    it('should return false if endpoint is null or undefined', () => {
+      expect(service.isLaymanUrl('http://some.url', undefinedEp)).toBeFalse();
+      expect(service.isLaymanUrl('http://some.url', nullEp)).toBeFalse();
+    });
+
+    it('should return true if url includes layman-proxy', () => {
+      expect(
+        service.isLaymanUrl('http://any.domain/layman-proxy/wms', laymanEp),
+      ).toBeTrue();
+      expect(
+        service.isLaymanUrl('http://any.domain/layman-proxy/wms', wagtailEp),
+      ).toBeTrue();
+    });
+
+    it('should return true if url includes standard layman endpoint url', () => {
+      expect(
+        service.isLaymanUrl(
+          'http://layman.domain/layman/wms?service=wms',
+          laymanEp,
+        ),
+      ).toBeTrue();
+      expect(
+        service.isLaymanUrl('http://other.domain/layman/wms', laymanEp),
+      ).toBeFalse();
+    });
+
+    it('should return true if url includes base wagtail endpoint url (before layman-proxy)', () => {
+      // Wagtail uses the part before layman-proxy for the check if layman-proxy isn't present
+      expect(
+        service.isLaymanUrl('http://wagtail.domain/some/path', wagtailEp),
+      ).toBeTrue();
+      expect(
+        service.isLaymanUrl('http://other.domain/some/path', wagtailEp),
+      ).toBeFalse();
+    });
+
+    it('should return false for non-layman URLs', () => {
+      expect(
+        service.isLaymanUrl('http://other.service/wms', laymanEp),
+      ).toBeFalse();
+      expect(
+        service.isLaymanUrl('http://other.service/wms', wagtailEp),
+      ).toBeFalse();
+      expect(service.isLaymanUrl('', laymanEp)).toBeFalse();
+    });
+
+    it('should honor isLaymanUrlException when provided', () => {
+      service.hsConfig.isLaymanUrlException = (
+        url: string,
+        laymanUrl: string,
+      ) => {
+        return url.includes('/geoserver/');
+      };
+
+      expect(
+        service.isLaymanUrl(
+          'https://comunidad-project.eu/geoserver/Caldas/wms',
+          laymanEp,
+        ),
+      ).toBeFalse();
+    });
+  });
 });

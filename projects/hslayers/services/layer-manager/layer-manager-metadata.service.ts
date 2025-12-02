@@ -45,7 +45,6 @@ import {
 import {
   HsCommonLaymanLayerService,
   HsCommonLaymanService,
-  isLaymanUrl,
 } from 'hslayers-ng/common/layman';
 import {
   bufferExtent,
@@ -459,7 +458,12 @@ export class HsLayerManagerMetadataService {
       /**
        *Fill metadata for Layman WMS (time dimension for now)
        */
-      if (isLaymanUrl(url, this.hsCommonLaymanService.layman())) {
+      if (
+        this.hsCommonLaymanService.isLaymanUrl(
+          url,
+          this.hsCommonLaymanService.layman(),
+        )
+      ) {
         const name = getName(layer);
         const desc = await this.hsCommonLaymanLayerService.describeLayer(
           name,

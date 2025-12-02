@@ -13,7 +13,6 @@ import {
   HsCommonLaymanLayerService,
   HsCommonLaymanService,
   isAtLeastVersions,
-  isLaymanUrl,
 } from 'hslayers-ng/common/layman';
 import {HsLanguageService} from 'hslayers-ng/services/language';
 import {HsLogService} from 'hslayers-ng/services/log';
@@ -46,7 +45,7 @@ export class HsCompositionsLayerParserService {
    */
   async createWFSLayer(lyr_def): Promise<Layer<Source>> {
     try {
-      const {name, workspace} = isLaymanUrl(
+      const {name, workspace} = this.hsCommonLaymanService.isLaymanUrl(
         lyr_def.protocol.url,
         this.hsCommonLaymanService.layman(),
       )
@@ -72,7 +71,10 @@ export class HsCompositionsLayerParserService {
           opacity: parseFloat(lyr_def.opacity) ?? 1,
         },
         connectOptions: {
-          laymanLayer: isLaymanUrl(uri, this.hsCommonLaymanService.layman())
+          laymanLayer: this.hsCommonLaymanService.isLaymanUrl(
+            uri,
+            this.hsCommonLaymanService.layman(),
+          )
             ? {
                 title: lyr_def.title,
                 layer: lyr_def.name,
@@ -185,7 +187,10 @@ export class HsCompositionsLayerParserService {
       };
 
       if (
-        isLaymanUrl(url, this.hsCommonLaymanService.layman()) &&
+        this.hsCommonLaymanService.isLaymanUrl(
+          url,
+          this.hsCommonLaymanService.layman(),
+        ) &&
         isAtLeastVersions(this.hsCommonLaymanService.layman(), '2.0')
       ) {
         //Query GET /layer to obtain name and workspace of layer

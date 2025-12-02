@@ -22,7 +22,6 @@ import {DuplicateHandling, HsMapService} from 'hslayers-ng/services/map';
 import {
   HsCommonLaymanService,
   getLaymanFriendlyLayerName,
-  isLaymanUrl,
 } from 'hslayers-ng/common/layman';
 import {HsCompositionsLayerParserService} from './layer-parser.service';
 import {
@@ -115,7 +114,7 @@ export class HsCompositionsParserService {
       this.hsEventBusService.compositionLoads.pipe(
         filter((data) => data.error === undefined),
         switchMap((_) => {
-          const fromLayman = isLaymanUrl(
+          const fromLayman = this.hsCommonLaymanService.isLaymanUrl(
             this.current_composition_url,
             this.hsCommonLaymanService.layman(),
           );
@@ -172,8 +171,10 @@ export class HsCompositionsParserService {
       options['responseType'] = 'text';
     }
     options['withCredentials'] =
-      isLaymanUrl(url, this.hsCommonLaymanService.layman()) &&
-      this.hsCommonLaymanService.isAuthenticated();
+      this.hsCommonLaymanService.isLaymanUrl(
+        url,
+        this.hsCommonLaymanService.layman(),
+      ) && this.hsCommonLaymanService.isAuthenticated();
 
     const data: any = await lastValueFrom(this.$http.get(url, options)).catch(
       (e) => {

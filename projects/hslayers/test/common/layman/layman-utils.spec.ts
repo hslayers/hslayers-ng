@@ -6,7 +6,6 @@ import {
   wfsFailed,
   getSupportedSrsList,
   isAtLeastVersions,
-  isLaymanUrl,
   SUPPORTED_SRS_LIST,
 } from 'hslayers-ng/common/layman';
 
@@ -163,62 +162,6 @@ describe('Layman Utils', () => {
       expect(getSupportedSrsList(ep)).toEqual(SUPPORTED_SRS_LIST.slice(0, 8));
       ep.version = '2.2.0';
       expect(getSupportedSrsList(ep)).toEqual(SUPPORTED_SRS_LIST);
-    });
-  });
-
-  describe('isLaymanUrl', () => {
-    const laymanEp: HsEndpoint = {
-      type: 'layman',
-      title: 'layman',
-      url: 'http://layman.domain/layman',
-      version: '1.0.0',
-    };
-    const wagtailEp: HsEndpoint = {
-      type: 'layman-wagtail',
-      title: 'wagtail',
-      url: 'http://wagtail.domain/layman-proxy/',
-      version: '1.0.0',
-    };
-    const undefinedEp = undefined as unknown as HsEndpoint;
-    const nullEp = null as unknown as HsEndpoint;
-
-    it('should return false if endpoint is null or undefined', () => {
-      expect(isLaymanUrl('http://some.url', undefinedEp)).toBeFalse();
-      expect(isLaymanUrl('http://some.url', nullEp)).toBeFalse();
-    });
-
-    it('should return true if url includes layman-proxy', () => {
-      expect(
-        isLaymanUrl('http://any.domain/layman-proxy/wms', laymanEp),
-      ).toBeTrue();
-      expect(
-        isLaymanUrl('http://any.domain/layman-proxy/wms', wagtailEp),
-      ).toBeTrue();
-    });
-
-    it('should return true if url includes standard layman endpoint url', () => {
-      expect(
-        isLaymanUrl('http://layman.domain/layman/wms?service=wms', laymanEp),
-      ).toBeTrue();
-      expect(
-        isLaymanUrl('http://other.domain/layman/wms', laymanEp),
-      ).toBeFalse();
-    });
-
-    it('should return true if url includes base wagtail endpoint url (before layman-proxy)', () => {
-      // Wagtail uses the part before layman-proxy for the check if layman-proxy isn't present
-      expect(
-        isLaymanUrl('http://wagtail.domain/some/path', wagtailEp),
-      ).toBeTrue();
-      expect(
-        isLaymanUrl('http://other.domain/some/path', wagtailEp),
-      ).toBeFalse();
-    });
-
-    it('should return false for non-layman URLs', () => {
-      expect(isLaymanUrl('http://other.service/wms', laymanEp)).toBeFalse();
-      expect(isLaymanUrl('http://other.service/wms', wagtailEp)).toBeFalse();
-      expect(isLaymanUrl('', laymanEp)).toBeFalse();
     });
   });
 });

@@ -24,7 +24,7 @@ import {HsWfsGetCapabilitiesService} from 'hslayers-ng/services/get-capabilities
 
 import {WfsSource} from 'hslayers-ng/common/layers';
 import {setCluster} from 'hslayers-ng/common/extensions';
-import {HsCommonLaymanService, isLaymanUrl} from 'hslayers-ng/common/layman';
+import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
 import {
   HsProxyService,
   paramsToURLWoEncode,
@@ -73,7 +73,10 @@ export class HsUrlWfsService implements HsUrlTypeServiceModel {
 
   withCredentials = computed(() => {
     const url = this.hsWfsGetCapabilitiesService.service_url();
-    return isLaymanUrl(url, this.hsCommonLaymanService.layman());
+    return this.hsCommonLaymanService.isLaymanUrl(
+      url,
+      this.hsCommonLaymanService.layman(),
+    );
   });
 
   constructor() {

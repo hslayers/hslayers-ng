@@ -8,7 +8,7 @@ import {WMSCapabilities} from 'ol/format';
 
 import {CapabilitiesResponseWrapper, Metadata} from 'hslayers-ng/types';
 import {HsCapabilityCacheService} from './capability-cache.service';
-import {HsCommonLaymanService, isLaymanUrl} from 'hslayers-ng/common/layman';
+import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsMapService} from 'hslayers-ng/services/map';
 import {
@@ -104,7 +104,7 @@ export class HsWmsGetCapabilitiesService implements IGetCapabilities {
       url,
       async () => {
         try {
-          const withCredentials = isLaymanUrl(
+          const withCredentials = this.hsCommonLaymanService.isLaymanUrl(
             url,
             this.hsCommonLaymanService.layman(),
           );

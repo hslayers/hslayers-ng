@@ -288,6 +288,13 @@ export class HsConfigObject {
     imageLoad?: number;
   };
 
+  /**
+   * Optional function to mark URLs that should NOT be treated as Layman,
+   * even if the generic detection says they are.
+   * If it returns true, the URL is treated as non-Layman.
+   */
+  isLaymanUrlException?: (url: string, laymanUrl: string) => boolean;
+
   constructor() {
     this.pathExclusivity = false;
     this.panelsEnabled = {

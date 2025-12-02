@@ -27,6 +27,7 @@ import {HsToastService} from 'hslayers-ng/common/toast';
 import {HsCommonEndpointsService} from 'hslayers-ng/services/endpoints';
 import {HsProxyService} from 'hslayers-ng/services/utils';
 import {parseBase64Style} from './parse-base64-style';
+import {HsConfig} from 'hslayers-ng/config';
 
 @Injectable({
   providedIn: 'root',
@@ -38,6 +39,7 @@ export class HsCommonLaymanService {
   hsToastService = inject(HsToastService);
   hsLanguageService = inject(HsLanguageService);
   hsLog = inject(HsLogService);
+  hsConfig = inject(HsConfig);
 
   private readonly MAX_USER_POLL_ATTEMPTS = 7;
   private readonly USER_POLL_DELAY = 2500;
@@ -202,6 +204,36 @@ export class HsCommonLaymanService {
       this.authState$.pipe(map(() => false)),
     ).pipe(startWith(false), distinctUntilChanged(), shareReplay(1)),
   );
+
+  /**
+   * Check wether provided url belongs to Layman endpoint
+   * @param url - URL to be checked
+   * @param layman - Layman endpoint
+   */
+  isLaymanUrl(url: string, layman: HsEndpoint): boolean {
+    if (!layman) {
+      return false;
+    }
+
+    /**
+     * If the URL is marked as an exception, return false
+     */
+    if (this.hsConfig.isLaymanUrlException?.(url, layman.url)) {
+      return false;
+    }
+    /**
+     *If url includes layman-proxy its for sure from layman
+     *additionally it allows loading of vector layers saved on production
+     *using layman-proxy in dev env
+     */
+    if (url.includes('layman-proxy')) {
+      return true;
+    }
+    const laymanUrl = layman.type.includes('wagtail')
+      ? layman.url.split('layman-proxy')[0]
+      : layman.url;
+    return url.includes(laymanUrl);
+  }
 
   /**
    * Get current user from layman endpoint

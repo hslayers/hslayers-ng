@@ -8,7 +8,7 @@ import {HsCapabilityCacheService} from './capability-cache.service';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {getParamsFromUrl, HsProxyService} from 'hslayers-ng/services/utils';
 import {IGetCapabilities} from './get-capabilities.interface';
-import {HsCommonLaymanService, isLaymanUrl} from 'hslayers-ng/common/layman';
+import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
 
 @Injectable({providedIn: 'root'})
 export class HsWfsGetCapabilitiesService implements IGetCapabilities {
@@ -97,7 +97,7 @@ export class HsWfsGetCapabilitiesService implements IGetCapabilities {
       url,
       async () => {
         try {
-          const withCredentials = isLaymanUrl(
+          const withCredentials = this.hsCommonLaymanService.isLaymanUrl(
             url,
             this.hsCommonLaymanService.layman(),
           );

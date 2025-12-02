@@ -12,7 +12,6 @@ import {Vector as VectorSource} from 'ol/source';
 
 import {
   HsCommonLaymanService,
-  isLaymanUrl,
   isLayerSynchronizable,
   HsCommonLaymanLayerService,
 } from 'hslayers-ng/common/layman';
@@ -184,7 +183,7 @@ export class HsLayerSynchronizerService {
       return false;
     }
     const laymanEp = this.hsCommonLaymanService?.layman();
-    return isLaymanUrl(definitionUrl, laymanEp);
+    return this.hsCommonLaymanService.isLaymanUrl(definitionUrl, laymanEp);
   }
 
   /**
