@@ -101,7 +101,7 @@ export class HsStylerService {
     }
     const layerSyncing = getHsLaymanSynchronizingSignal(layer)();
     if (!layerSyncing) {
-      this.unsavedChange = false;
+      this.unsavedChange = this.changesStore.has(getUid(layer));
     }
     return layerSyncing;
   });

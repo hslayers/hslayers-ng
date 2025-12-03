@@ -28,8 +28,8 @@
     }
     @if (hsStylerService.styleObject) {
     <div class="form-floating pb-1">
-      <input type="text" class="form-control" id="hs-styler-style-title"
-        [placeholder]="'STYLER.styleName' | translate" [(ngModel)]="hsStylerService.styleObject.name">
+      <input type="text" class="form-control" id="hs-styler-style-title" [placeholder]="'STYLER.styleName' | translate"
+        [(ngModel)]="hsStylerService.styleObject.name">
       <label for="hs-styler-style-title">{{'STYLER.styleName' | translate}}</label>
     </div>
     }
@@ -70,7 +70,7 @@
     }
   </div>
   <div class="card-footer bg-white px-1 border-0">
-    @if (hsStylerService.isAuthenticated && hsStylerService
+    @if (hsStylerService.isAuthenticated() && hsStylerService
     .unsavedChange) {
     <div class="d-flex justify-content-end">
       @if (!hsStylerService.syncing()) {
