@@ -8,7 +8,10 @@ import {EpsgPipe, FilterPipe} from 'hslayers-ng/common/pipes';
 import {HsAddLayerAuthorizedComponent} from './add-layer-authorized/add-layer-authorized.component';
 import {HsAddToMapButtonComponent} from 'hslayers-ng/common/add-to-map';
 import {HsAdvancedOptionsComponent} from './advanced-options/advanced-options.component';
-import {HsLaymanCurrentUserComponent} from 'hslayers-ng/common/layman';
+import {
+  HsCommonLaymanAccessRightsComponent,
+  HsLaymanCurrentUserComponent,
+} from 'hslayers-ng/common/layman';
 import {HsNewLayerFormComponent} from './new-layer-form/new-layer-form.component';
 import {HsPositionComponent} from './target-position/target-position.component';
 import {HsSaveToLaymanComponent} from './save-to-layman/save-to-layman.component';
@@ -24,6 +27,7 @@ import {HsSaveToLaymanComponent} from './save-to-layman/save-to-layman.component
     HsAddToMapButtonComponent,
     EpsgPipe,
     FilterPipe,
+    HsCommonLaymanAccessRightsComponent,
   ],
   exports: [
     HsAdvancedOptionsComponent,

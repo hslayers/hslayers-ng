@@ -19,8 +19,8 @@
       <select class="form-select rounded-0" id="hs-add-data-crs" [(ngModel)]="data.srs" name="srs"
         [ngClass]="data?.srs ? 'is-valid mb-2' : 'is-invalid'" aria-label="CRS floating label select">
         @for (epsg of hsLaymanService.supportedCRRList(); track epsg) {
-           <option [ngValue]="epsg">{{epsg | epsg}}
-        }
+        <option [ngValue]="epsg">{{epsg | epsg}}
+          }
       </select>
       <label for="hs-add-data-crs">{{'ADDLAYERS.srs' | translate }}</label>
     </div>
@@ -29,8 +29,7 @@
   <p [hidden]="data?.srs"><sub class="text-danger">{{'ADDLAYERS.Vector.note' | translate }}</sub></p>
 
   @if (hsAddDataCommonFileService.isAuthenticated() && data.saveAvailable) {
-  <!-- TODO: Remove function call from template -->
-  <hs-save-to-layman [data]="data"></hs-save-to-layman>
+  <hs-save-to-layman [data]="data" />
   }
   @if (data.type === 'shp' || data.type.includes('raster') || data.type === 'geojson') {
   <div class="d-flex justify-content-between align-items-center">
@@ -40,7 +39,8 @@
         (change)="read({fileList: $event.target.files, uploader: 'style', dropped: false})" id="style">
       <label for="style" class="p-2 rounded" style="font-size: 1em;"
         [ngClass]="data.serializedStyle ? 'bg-success' : 'bg-primary'">
-        <i class="fa-solid fa-cloud-arrow-up p-2"></i>{{data.serializedStyle?.name ?? allowedStyles.title |translate}}</label>
+        <i class="fa-solid fa-cloud-arrow-up p-2"></i>{{data.serializedStyle?.name ?? allowedStyles.title
+        |translate}}</label>
     </label>
   </div>
   }
