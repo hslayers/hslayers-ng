@@ -343,8 +343,10 @@ export class HsAddDataCommonFileService extends HsAddDataCommonFileServiceParams
     formData.append('file', zipFile, files[0].name.split('.')[0] + '.zip');
     if (sld) {
       formData.append(
-        'sld',
-        new Blob([sld.content], {type: sld.type}),
+        'style',
+        new Blob([sld.content], {
+          type: sld.type?.length > 0 ? sld.type : 'application/octet-stream',
+        }),
         sld.name,
       );
     }
