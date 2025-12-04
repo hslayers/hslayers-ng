@@ -76,7 +76,11 @@ export function layerParamPendingOrStarting(
   descr: HsLaymanLayerDescriptor,
   param: string,
 ) {
-  return descr[param]?.status == 'PENDING' || descr[param]?.status == 'STARTED';
+  return (
+    descr[param]?.status == 'PENDING' ||
+    descr[param]?.status == 'STARTED' ||
+    descr[param]?.status == 'SUCCESS'
+  );
 }
 
 export function wfsFailed(descr: HsLaymanLayerDescriptor) {
