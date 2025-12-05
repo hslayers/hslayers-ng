@@ -70,7 +70,7 @@ export interface HsLaymanLayerDescriptor extends HsLaymanLayerBase {
   };
   style?: {
     url?: string;
-    type?: string;
+    type?: 'sld' | 'qml';
     status?: StatusStateType;
     error?: any;
   };

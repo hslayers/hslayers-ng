@@ -292,6 +292,7 @@ export class HsLaymanBrowserService {
         dsType: ds.type,
         extent: bounding_box,
         style,
+        styleType: lyr.style?.type,
         name,
         title,
         editable,

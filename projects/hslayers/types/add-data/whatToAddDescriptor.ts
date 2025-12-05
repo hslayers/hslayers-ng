@@ -10,6 +10,7 @@ export type WhatToAddDescriptorBase = {
   editable?: boolean;
   workspace?: string;
   style?: string;
+  styleType?: 'sld' | 'qml';
   recordType?: string;
   //Layman layer descriptor only
   extent?: number[];

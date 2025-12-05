@@ -4,6 +4,7 @@ import {Feature} from 'ol';
 import {Layer, Vector as VectorLayer} from 'ol/layer';
 import {Source, Vector as VectorSource} from 'ol/source';
 import {get as getProjection} from 'ol/proj';
+import {createDefaultStyle} from 'ol/style/Style';
 
 import {HsAddDataCommonFileService} from '../common-file.service';
 import {HsAddDataService} from '../add-data.service';
@@ -16,7 +17,7 @@ import {
 } from 'hslayers-ng/common/layman';
 import {HsLaymanService} from 'hslayers-ng/services/save-map';
 import {HsMapService} from 'hslayers-ng/services/map';
-import {HsStylerService} from 'hslayers-ng/services/styler';
+import {defaultStyle, HsStylerService} from 'hslayers-ng/services/styler';
 import {
   OverwriteResponse,
   UpsertLayerObject,
@@ -166,12 +167,26 @@ export class HsAddDataVectorService {
         ? new sourceDescriptor.sourceClass(sourceDescriptor.sourceParams)
         : new sourceDescriptor.sourceClass(sourceDescriptor);
     descriptor.layerParams.source = src;
-    Object.assign(
-      descriptor.layerParams,
-      await this.hsStylerService.parseStyle(
-        (options.sld || options.qml) ?? options.style,
-      ),
-    );
+
+    /**
+     * Same as with parseStyle but we want to prevent
+     * passing SLD/QML with already parsed style to not interfere with initLayerStyle
+     * and to not parse it twice
+     */
+    const style = (options.sld || options.qml) ?? options.style;
+    const styleType = this.hsStylerService.guessStyleFormat(style);
+
+    if (style) {
+      if (typeof styleType == 'string') {
+        descriptor.layerParams[styleType] = style as string;
+        descriptor.layerParams.style = undefined;
+      } else {
+        descriptor.layerParams.style = {style};
+      }
+    } else {
+      descriptor.layerParams.style = createDefaultStyle;
+      descriptor.layerParams.sld = defaultStyle;
+    }
     return new VectorLayer(descriptor.layerParams);
   }
 

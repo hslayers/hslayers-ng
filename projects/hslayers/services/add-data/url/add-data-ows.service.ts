@@ -109,7 +109,10 @@ export class HsAddDataOwsService {
           ? this.hsAddDataWmsLaymanService
           : this.hsAddDataWfsLaymanService;
       const {laymanLayer, ...rest} = options.connectOptions;
-      response = await service.getLayer(laymanLayer, rest);
+      response = await service.getLayer(laymanLayer, {
+        ...rest,
+        ...options?.layerOptions,
+      });
       this.typeService.finalizeLayerRetrieval(response, options?.layerOptions);
     } else {
       /**

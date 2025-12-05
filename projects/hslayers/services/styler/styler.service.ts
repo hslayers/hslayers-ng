@@ -338,7 +338,7 @@ export class HsStylerService {
     return {style};
   }
 
-  guessStyleFormat(style: any): 'qml' | 'sld' {
+  guessStyleFormat(style: any): 'qml' | 'sld' | undefined {
     if (typeof style == 'string') {
       if ((style as string).includes('StyledLayerDescriptor')) {
         return 'sld';
@@ -347,6 +347,7 @@ export class HsStylerService {
         return 'qml';
       }
     }
+    return undefined;
   }
 
   /**

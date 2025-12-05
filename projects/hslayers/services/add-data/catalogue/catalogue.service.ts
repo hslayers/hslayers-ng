@@ -20,6 +20,7 @@ import {
   HsAddDataMickaLayerDescriptor,
   HsEndpoint,
   WhatToAddDescriptor,
+  OwsConnection,
 } from 'hslayers-ng/types';
 import {HsAddDataCatalogueMapService} from './catalogue-map.service';
 import {HsAddDataOwsService} from '../url/add-data-ows.service';
@@ -548,7 +549,6 @@ export class HsAddDataCatalogueService extends HsAddDataCatalogueParams {
         whatToAdd.abstract,
         whatToAdd.projection,
         {
-          extractStyles: whatToAdd.extractStyles,
           workspace: whatToAdd.workspace,
           style: whatToAdd.style,
           saveToLayman: true,
@@ -558,17 +558,25 @@ export class HsAddDataCatalogueService extends HsAddDataCatalogueParams {
       this.datasetSelect('catalogue');
     } else {
       // Layman layers without write access
-      await this.hsAddDataOwsService.connectToOWS({
+      const params: OwsConnection = {
         type: 'wfs',
         uri: whatToAdd.link,
         layer: whatToAdd.layer, // basically not used in this case
-        layerOptions: {
-          style: whatToAdd.style,
-        },
+        layerOptions: {},
         connectOptions: {
           laymanLayer: whatToAdd,
         },
-      });
+      };
+      //Set property sld/qml based on the type - conent is fetched style string
+      if (whatToAdd.styleType) {
+        params.layerOptions[whatToAdd.styleType] = whatToAdd.style;
+      }
+      //Unexpected as layman whatToAdd is expected to have styleType
+      //keeping for backwards compatibility and as fallback
+      else {
+        params.layerOptions.style = whatToAdd.style;
+      }
+      await this.hsAddDataOwsService.connectToOWS(params);
     }
   }
 

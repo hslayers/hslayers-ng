@@ -55,6 +55,17 @@ export class HsCompositionsLayerParserService {
         : {name: lyr_def.name, workspace: lyr_def.workspace};
 
       const style = (lyr_def.sld || lyr_def.qml) ?? lyr_def.style;
+      const styleType = this.hsStylerService.guessStyleFormat(style);
+
+      const layerOptions = {
+        path: lyr_def.path,
+        fromComposition: true,
+        minResolution: lyr_def.minResolution || 0,
+        maxResolution: lyr_def.maxResolution || Infinity,
+        opacity: parseFloat(lyr_def.opacity) ?? 1,
+      };
+      layerOptions[styleType] = style;
+
       const uri = lyr_def.protocol.url.split('?')[0];
       const newLayer = await this.hsAddDataOwsService.connectToOWS({
         type: 'wfs',
@@ -62,14 +73,7 @@ export class HsCompositionsLayerParserService {
         layer: lyr_def.name,
         owrCache: false,
         getOnly: true,
-        layerOptions: {
-          style: style,
-          path: lyr_def.path,
-          fromComposition: true,
-          minResolution: lyr_def.minResolution || 0,
-          maxResolution: lyr_def.maxResolution || Infinity,
-          opacity: parseFloat(lyr_def.opacity) ?? 1,
-        },
+        layerOptions,
         connectOptions: {
           laymanLayer: this.hsCommonLaymanService.isLaymanUrl(
             uri,
@@ -455,9 +459,7 @@ export class HsCompositionsLayerParserService {
           }
         }
         // Parse the style definition (SLD, QML, or standard style object)
-        const styleType = await this.hsStylerService.guessStyleFormat(
-          lyr_def.style,
-        );
+        const styleType = this.hsStylerService.guessStyleFormat(lyr_def.style);
         // Assign the appropriate style property to options
         if (styleType == 'sld') {
           options.sld = lyr_def.style;
