@@ -1,3 +1,27 @@
+# [16.2.0](https://github.com/hslayers/hslayers-ng/compare/16.1.0...16.2.0) (2025-12-07)
+
+Fix build-related issue with hslayers-app.
+
+### Bug Fixes
+
+* **add-data:** Correct style property and file type ([890e779](https://github.com/hslayers/hslayers-ng/commit/890e77933bbe0c93c373260d5eb3e5e998d96856))
+* **add-data:** Missing layman access rights import ([70d6200](https://github.com/hslayers/hslayers-ng/commit/70d620040a6768123c70a0c8af08971528e20fa2))
+* **add-data:** Read value of layerIsAvailable signal ([ffa6550](https://github.com/hslayers/hslayers-ng/commit/ffa6550c2ba54744d7c72fe7598dac1292819d35))
+* **addlayers:** WFS style loading ([7c170cb](https://github.com/hslayers/hslayers-ng/commit/7c170cb794ca5b934f28b3e547196029790c98f3))
+* **compositions:** Fallback for max and min resolutions ([023b9a7](https://github.com/hslayers/hslayers-ng/commit/023b9a758fef44f21bcd1ba2cad3f9b4799c43ea))
+* **compositions:** Use parsed layer name for layman vectors from compositions ([eb6d2ca](https://github.com/hslayers/hslayers-ng/commit/eb6d2ca7d3402df1a97d0fdfc3f5dcb8da936695))
+* **draw:** Do not fill layers on map load ([271a847](https://github.com/hslayers/hslayers-ng/commit/271a8479abd2ced68cbc27481c08332e77f39585))
+* **layermanager:** Time editor visibility ([2109a04](https://github.com/hslayers/hslayers-ng/commit/2109a046f7cf80cbb0fdd0c76b32f5de30c81f41))
+* **layman:** Retry describeLayer on success status ([fb7309e](https://github.com/hslayers/hslayers-ng/commit/fb7309ec83fb9b4e383813bab65700690823114d))
+* **styler:** Indicate style change after upload, read signal value ([ad0aa0b](https://github.com/hslayers/hslayers-ng/commit/ad0aa0bcc23b70f0589dbd192afdedab24c185d9))
+
+
+### Features
+
+* **config:** isLaymanUrlException ([5d58b7c](https://github.com/hslayers/hslayers-ng/commit/5d58b7cec39f9c654c55ed2635efba3454bd16e9))
+
+
+
 # [16.1.0](https://github.com/hslayers/hslayers-ng/compare/16.0.0...16.1.0) (2025-11-18)
 
 This minor release fixes a bunch of bugs and adds a basic level of backwards compatibility between HSLayers-NG and [Layman](https://github.com/LayerManager/layman) 1.x ([69945ca](https://github.com/hslayers/hslayers-ng/commit/69945ca49a472362754b8d91ff6814792831fd8b)). With HSLayers-NG 16.1 it should be safe to read Layman data (open layer, open composition), but writing Layman data (change permissions, upload dataset, save composition) is not guaranteed to work. Please file any issues regarding read access to Layman data. Beside that, HSLayers-NG also keeps on track with [Layman 2.2](https://github.com/LayerManager/layman/releases/tag/v2.2.0) and we are adding support for EPSG:32718 & EPSG:9377 spatial reference systems in this release.
@@ -14,7 +38,7 @@ This minor release fixes a bunch of bugs and adds a basic level of backwards com
 * **layermanager:** Removing scale value should set 0/Infinity ([9de2c6d](https://github.com/hslayers/hslayers-ng/commit/9de2c6dfcb617d7fa501844ab82d164f833af610))
 * **layman:** handle version check gracefully ([ff09b81](https://github.com/hslayers/hslayers-ng/commit/ff09b81488534e6984d0e90d8efa59f266207809))
 * **layman:** Update test case ([efcff21](https://github.com/hslayers/hslayers-ng/commit/efcff218a6af52d688167c5f271fc66c8c115ea6))
-* **savemap:** Show validation errors on touched ([6c61f1d](https://github.com/hslayers/hslayers-ng/commit/6c61f1dafa408220b1646ce216a39babbbdf1715))
+* **save-map:** Show validation errors on touched ([6c61f1d](https://github.com/hslayers/hslayers-ng/commit/6c61f1dafa408220b1646ce216a39babbbdf1715))
 * **wms:** Honor tiled setting from composition ([0b98c79](https://github.com/hslayers/hslayers-ng/commit/0b98c79181c5dd99b3a0585a642e965c8f5ccbac))
 
 
@@ -69,7 +93,7 @@ provideTranslateService({
 * **compositions:** Set workspace for Layman WMS layers from composition ([dd6da00](https://github.com/hslayers/hslayers-ng/commit/dd6da0033beb86242eed48b3f08394d458cc3709))
 * **copy:** Not indicating success state - value copied ([bcac46a](https://github.com/hslayers/hslayers-ng/commit/bcac46a2b98bf9fff79832b2b51d8603fc02cb8f))
 * Incorrectly generated auto paths ([0c8c866](https://github.com/hslayers/hslayers-ng/commit/0c8c8663325a38a5e5f42c2d5479051ced726784))
-* **layer-manager:** Fill metadata only if not disabled ([2944180](https://github.com/hslayers/hslayers-ng/commit/29441806e618bfbc1e539a902a532f1f34c794fd))
+* **layermanager:** Fill metadata only if not disabled ([2944180](https://github.com/hslayers/hslayers-ng/commit/29441806e618bfbc1e539a902a532f1f34c794fd))
 * **layermanager:** Reactively evaluation time existence change  on WMS layers ([86b8d1f](https://github.com/hslayers/hslayers-ng/commit/86b8d1fddb5403e06bbb097569db0f5ef08dd848))
 * **layermanager:** Set layer desc to capabilities cache for Layman WMS ([4d4f31f](https://github.com/hslayers/hslayers-ng/commit/4d4f31ff3882c8b337026a4ee8ba67b4fb0de153))
 * **layman:** atLeastVersion util ([b5f0995](https://github.com/hslayers/hslayers-ng/commit/b5f09953ea9229f2acc31538c0bd13e0c0247ef1))
