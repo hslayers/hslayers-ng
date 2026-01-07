@@ -120,5 +120,40 @@ export function registerHslayersProj4Defs(): void {
     proj4.defs('EPSG:9377'),
   );
 
+  proj4.defs(
+    'EPSG:32719',
+    '+proj=utm +zone=19 +south +datum=WGS84 +units=m +no_defs +type=crs',
+  );
+  proj4.defs(
+    'http://www.opengis.net/gml/srs/epsg.xml#32719',
+    proj4.defs('EPSG:32719'),
+  );
+
+  proj4.defs(
+    'EPSG:32635',
+    '+proj=utm +zone=35 +datum=WGS84 +units=m +no_defs +type=crs',
+  );
+  proj4.defs(
+    'http://www.opengis.net/gml/srs/epsg.xml#32635',
+    proj4.defs('EPSG:32635'),
+  );
+
+  proj4.defs(
+    'EPSG:32636',
+    '+proj=utm +zone=36 +datum=WGS84 +units=m +no_defs +type=crs',
+  );
+  proj4.defs(
+    'http://www.opengis.net/gml/srs/epsg.xml#32636',
+    proj4.defs('EPSG:32636'),
+  );
+  proj4.defs(
+    'EPSG:32637',
+    '+proj=utm +zone=37 +datum=WGS84 +units=m +no_defs +type=crs',
+  );
+  proj4.defs(
+    'http://www.opengis.net/gml/srs/epsg.xml#32637',
+    proj4.defs('EPSG:32637'),
+  );
+
   register(proj4);
 }
