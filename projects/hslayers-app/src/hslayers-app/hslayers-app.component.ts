@@ -24,11 +24,25 @@ import {
 import {View} from 'ol';
 import {register as projRegister} from 'ol/proj/proj4';
 
-import {HsConfig} from 'hslayers-ng/config';
-import {HsOverlayConstructorService} from 'hslayers-ng/services/panel-constructor';
-import {HsPanelConstructorService} from 'hslayers-ng/services/panel-constructor';
-import {InterpolatedSource} from 'hslayers-ng/common/layers';
-import {SparqlJson} from 'hslayers-ng/common/layers';
+import {HsConfig, HsConfigObject} from 'hslayers-ng/config';
+import {
+  HsOverlayConstructorService,
+  HsPanelConstructorService,
+} from 'hslayers-ng/services/panel-constructor';
+import {InterpolatedSource, SparqlJson} from 'hslayers-ng/common/layers';
+import {
+  HsLayerManagerService,
+  HsLayerManagerVisibilityService,
+} from 'hslayers-ng/services/layer-manager';
+import {HsLayerDescriptor} from 'hslayers-ng/types';
+
+export type HslayersNgExternalApi = {
+  changeLayerVisibility: (
+    layerDescriptor: HsLayerDescriptor,
+    visible: boolean,
+  ) => void;
+  getLayerByTitle: (title: string) => HsLayerDescriptor | undefined;
+};
 
 @Component({
   selector: 'hslayers-app',
@@ -41,11 +55,19 @@ export class HslayersAppComponent {
   private elementRef = inject(ElementRef);
   private hsOverlayConstructorService = inject(HsOverlayConstructorService);
   private hsPanelConstructorService = inject(HsPanelConstructorService);
+  private hsLayerManagerService = inject(HsLayerManagerService);
+  private hsLayerManagerVisibilityService = inject(
+    HsLayerManagerVisibilityService,
+  );
 
   id;
 
   constructor() {
-    const w: any = window;
+    const w = window as unknown as Record<string, unknown> & {
+      ol?: unknown;
+      hslayersNgConfig?: (ol: unknown) => HsConfigObject;
+      hslayersNg?: HslayersNgExternalApi;
+    };
     w.ol = {
       layer: {
         Tile,
@@ -84,6 +106,22 @@ export class HslayersAppComponent {
     if (this.elementRef.nativeElement.id) {
       this.id = this.elementRef.nativeElement.id;
     }
+
+    const api: HslayersNgExternalApi = {
+      changeLayerVisibility: (layerDescriptor, visible) => {
+        if (layerDescriptor) {
+          this.hsLayerManagerVisibilityService.changeLayerVisibility(
+            visible,
+            layerDescriptor,
+          );
+        }
+      },
+      getLayerByTitle: (title) =>
+        this.hsLayerManagerService.getLayerByTitle(title),
+    };
+
+    w[`hslayersNg${this.id || ''}`] = api;
+
     if (w['hslayersNgConfig' + this.id]) {
       const cfg = eval('w.hslayersNgConfig' + this.id + '(w.ol)');
       this.hsConfig.update(cfg);
