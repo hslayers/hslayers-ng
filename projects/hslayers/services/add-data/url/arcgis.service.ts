@@ -71,6 +71,7 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
         trackBy: 'id',
         nameProperty: 'name',
       },
+      base: false,
     };
   }
 
