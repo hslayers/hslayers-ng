@@ -135,6 +135,11 @@ export class HsMapService {
   getLayerForFeature(
     feature: Feature<Geometry>,
   ): VectorLayer<VectorSource<Feature>> {
+    if (!instOf(feature, Feature)) {
+      this.hsLog.error('Feature is not an instance of Feature');
+      console.error(feature);
+      return undefined;
+    }
     if (typeof feature.getId() == 'undefined') {
       feature.setId(crypto.randomUUID());
     }

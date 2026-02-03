@@ -516,6 +516,7 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
     }
 
     const {styles, legends} = this.getLayerStyles(layer);
+    const queryable = layer.queryable ?? options.queryable;
     const sourceOptions = {
       url: this.data.get_map_url,
       attributions,
@@ -528,7 +529,7 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
                 'Name',
               )
             : layer.Name,
-        INFO_FORMAT: layer.queryable ? options.queryFormat : undefined,
+        INFO_FORMAT: queryable ? options.queryFormat : undefined,
         FORMAT: options.imageFormat,
         VERSION: this.data.version,
         STYLES: styles,

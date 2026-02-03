@@ -5,7 +5,7 @@ import {Feature} from 'ol';
 import {Geometry} from 'ol/geom';
 import {Image as ImageLayer, Layer, Tile} from 'ol/layer';
 import {ImageWMS, Source, TileWMS, WMTS} from 'ol/source';
-import {WMSGetFeatureInfo} from 'ol/format';
+import {GeoJSON, WMSGetFeatureInfo} from 'ol/format';
 import {lastValueFrom} from 'rxjs';
 
 import {HsLanguageService} from 'hslayers-ng/services/language';
@@ -156,7 +156,8 @@ export class HsQueryWmsService {
       }
     }
     if (infoFormat.includes('json')) {
-      this.parseJSONResponse(JSON.parse(response), layer);
+      const parsed = JSON.parse(response) as jsonGetFeatureInfo;
+      this.parseJSONResponse(parsed, layer);
     }
     this.infoCounter--;
     if (this.infoCounter === 0) {
@@ -165,22 +166,27 @@ export class HsQueryWmsService {
   }
 
   /**
-   * Parse Information from JSON based GetFeatureInfo response.
-   * @param response - jsonGetFeatureInfo
-   * @param layer - Target layer
+   * Parse information from a GetFeatureInfo response with INFO_FORMAT containing
+   * 'json' (e.g. application/json). The response is a GeoJSON-like object;
+   * features are converted to OpenLayers Feature instances for the query panel.
+   * @param response - Parsed GetFeatureInfo JSON body (GeoJSON FeatureCollection-like)
+   * @param layer - Target WMS layer
    */
-  parseJSONResponse(response: jsonGetFeatureInfo, layer: Layer<Source>) {
-    for (const feature of response.features) {
+  parseJSONResponse(response: jsonGetFeatureInfo, layer: Layer<Source>): void {
+    const geojsonFormat = new GeoJSON();
+    for (const geojsonFeature of response.features ?? []) {
+      const properties = geojsonFeature.properties ?? {};
+      const olFeature = geojsonFormat.readFeature(
+        geojsonFeature,
+      ) as Feature<Geometry>;
       const group = {
         name: 'Feature',
         layer: getLayerName(layer),
-        attributes: Object.entries(feature.properties).map(([key, value]) => {
-          return {
-            'name': key,
-            'value': value,
-          };
-        }),
-        feature: feature,
+        attributes: Object.entries(properties).map(([key, value]) => ({
+          name: key,
+          value,
+        })),
+        feature: olFeature,
         stats: [],
       };
       this.hsQueryBaseService.setFeatures(group);
