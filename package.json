@@ -100,7 +100,7 @@
     "@angular-builders/custom-webpack": "^20.0.0",
     "@angular-devkit/build-angular": "^20.3.10",
     "@angular-devkit/schematics": "^20.3.10",
-    "@angular/cli": "^20.3.13",
+    "@angular/cli": "^21.1.3",
     "@angular/compiler-cli": "^20.3.12",
     "@compodoc/compodoc": "^1.1.30",
     "@cypress/schematic": "^4.1.4",
