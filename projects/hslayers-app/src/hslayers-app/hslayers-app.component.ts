@@ -21,7 +21,7 @@ import {
   Tile,
   Vector as VectorLayer,
 } from 'ol/layer';
-import {View} from 'ol';
+import {Map, View} from 'ol';
 import {register as projRegister} from 'ol/proj/proj4';
 
 import {HsConfig, HsConfigObject} from 'hslayers-ng/config';
@@ -35,6 +35,8 @@ import {
   HsLayerManagerVisibilityService,
 } from 'hslayers-ng/services/layer-manager';
 import {HsLayerDescriptor} from 'hslayers-ng/types';
+import {HsEventBusService} from 'hslayers-ng/services/event-bus';
+import {HsMapService} from 'hslayers-ng/services/map';
 
 export type HslayersNgExternalApi = {
   changeLayerVisibility: (
@@ -42,6 +44,8 @@ export type HslayersNgExternalApi = {
     visible: boolean,
   ) => void;
   getLayerByTitle: (title: string) => HsLayerDescriptor | undefined;
+  getMap: () => Map;
+  eventBus: HsEventBusService;
 };
 
 @Component({
@@ -59,6 +63,8 @@ export class HslayersAppComponent {
   private hsLayerManagerVisibilityService = inject(
     HsLayerManagerVisibilityService,
   );
+  private hsEventBusService = inject(HsEventBusService);
+  private hsMapService = inject(HsMapService);
 
   id;
 
@@ -118,6 +124,8 @@ export class HslayersAppComponent {
       },
       getLayerByTitle: (title) =>
         this.hsLayerManagerService.getLayerByTitle(title),
+      eventBus: this.hsEventBusService,
+      getMap: () => this.hsMapService.getMap(),
     };
 
     w[`hslayersNg${this.id || ''}`] = api;
@@ -137,6 +145,15 @@ export class HslayersAppComponent {
      * Create GUI overlay
      */
     this.hsOverlayConstructorService.createGuiOverlay();
+
+    window.dispatchEvent(
+      new CustomEvent('hslayers.app.loaded', {
+        detail: {
+          element: this.elementRef.nativeElement,
+          api,
+        },
+      }),
+    );
   }
   title = 'hslayers-workspace';
 }
