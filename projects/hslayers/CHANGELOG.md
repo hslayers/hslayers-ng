@@ -1,3 +1,19 @@
+# [16.3.0](https://github.com/hslayers/hslayers-ng/compare/16.2.0...16.3.0) (2026-02-09)
+
+
+### Bug Fixes
+
+* **add-data:** ArcGIS layers base property not honored ([add04d0](https://github.com/hslayers/hslayers-ng/commit/add04d0f4584f54907d094238e395e6ecd3ca7f1))
+* parse JSON WMS FeatureInfo ([58ad146](https://github.com/hslayers/hslayers-ng/commit/58ad1465efa1389d62a246b09e0fda23f29e59e3))
+
+
+### Features
+
+* **hslayers-app:** expose OL map and EventBus services ([2b5cf8d](https://github.com/hslayers/hslayers-ng/commit/2b5cf8db94c08ee2d8b16551b8dcff8fb2ab1bb5))
+* support EPSG:32719, EPSG:32635, EPSG:32636, EPSG:32637 ([90dcd2e](https://github.com/hslayers/hslayers-ng/commit/90dcd2e4a011cf76d43ab374a39a212ec10d2ba8))
+
+
+
 # [16.2.0](https://github.com/hslayers/hslayers-ng/compare/16.1.0...16.2.0) (2025-12-07)
 
 Fix build-related issue with hslayers-app.
