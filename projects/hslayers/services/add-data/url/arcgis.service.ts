@@ -63,6 +63,7 @@ export class HsUrlArcGisService implements HsUrlTypeServiceModel {
     this.data = {
       serviceExpanded: false,
       map_projection: '',
+      queryable: true,
       tile_size: 512,
       use_resampling: false,
       useTiles: true,

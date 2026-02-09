@@ -34,6 +34,7 @@ import {
   getMaxResolutionDenominator,
   getMetadata,
   getName,
+  getQueryable,
   getSubLayers,
   getWorkspace,
   setAttribution,
@@ -299,6 +300,7 @@ export class HsLayerManagerMetadataService {
       );
     }
     if (
+      getQueryable(olLayer) &&
       layerObj.queryable &&
       getLayerParams(olLayer)?.INFO_FORMAT == undefined
     ) {

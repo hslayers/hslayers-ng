@@ -345,7 +345,8 @@
     "apiKey": "Klíč API",
     "minZoom": "Min. zoom",
     "maxZoom": "Max. zoom",
-    "infinity": "Žádná omezení"
+    "infinity": "Žádná omezení",
+    "queryable": "Dotazovatelné"
   },
   "COMPOSITIONS": {
     "addByAddress": "Přidat kompozici z adresy",

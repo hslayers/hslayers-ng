@@ -320,7 +320,8 @@
     "apiKey": "API atslēga",
     "minZoom": "Min. tuvināt",
     "maxZoom": "Maksimālā tālummaiņa",
-    "infinity": "Nav ierobežojumu"
+    "infinity": "Nav ierobežojumu",
+    "queryable": "Pieprasāms"
   },
   "COMPOSITIONS": {
     "addByAddress": "Pievienot kompozīciju pēc adreses",

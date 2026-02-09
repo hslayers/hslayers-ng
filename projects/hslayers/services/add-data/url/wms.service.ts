@@ -72,6 +72,7 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
     this.data = {
       add_under: null,
       map_projection: '',
+      queryable: true,
       tile_size: 512,
       use_resampling: false,
       useTiles: true,
@@ -469,6 +470,7 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
             undefineEmptyString(this.data.folder_name) || layerOptions?.path,
           imageFormat: this.data.image_format,
           queryFormat: this.data.query_format,
+          queryable: this.data.queryable,
           tileSize: this.data.tile_size,
           crs: this.data.srs,
           subLayers: '',
@@ -516,7 +518,12 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
     }
 
     const {styles, legends} = this.getLayerStyles(layer);
-    const queryable = layer.queryable ?? options.queryable;
+
+    //Use queriable value or existance of queryFormat if both are undefined
+    const hasQueryable = layer.queryable ?? options.queryable;
+    const queryable =
+      hasQueryable !== undefined ? hasQueryable : !!options.queryFormat;
+
     const sourceOptions = {
       url: this.data.get_map_url,
       attributions,
@@ -656,6 +663,7 @@ export class HsUrlWmsService implements HsUrlTypeServiceModel {
             options.layerOptions?.path,
           imageFormat: this.data.image_format,
           queryFormat: this.data.query_format,
+          queryable: this.data.queryable,
           tileSize: this.data.tile_size,
           crs: this.data.srs,
         }),

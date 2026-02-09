@@ -23,6 +23,7 @@ export type UrlDataObject = {
   map_projection?: string;
   output_format?: string;
   output_formats?: Array<string>;
+  queryable?: boolean;
   query_format?: string;
   query_formats?: Array<string>;
   resample_warning?: boolean;

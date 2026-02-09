@@ -345,7 +345,8 @@
     "apiKey": "API Kľúč",
     "minZoom": "Min. zoom",
     "maxZoom": "Max. zoom",
-    "infinity": "Žiadne obmedzenia"
+    "infinity": "Žiadne obmedzenia",
+    "queryable": "Dotazovateľné"
   },
   "COMPOSITIONS": {
     "addByAddress": "Pridať kompozíciu z adresy",

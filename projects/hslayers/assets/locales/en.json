@@ -344,7 +344,8 @@
     "apiKey": "API Key",
     "minZoom": "Min. zoom",
     "maxZoom": "Max. zoom",
-    "infinity": "No constrains"
+    "infinity": "No constrains",
+    "queryable": "Queryable"
   },
   "COMPOSITIONS": {
     "addByAddress": "Add composition by address",

@@ -8,13 +8,8 @@
     </div>
     }
 
-    <hs-add-as-toggle
-      [isBase]="data.base"
-      [isGroup]="data.group"
-      [showGroupToggle]="type === 'wms'"
-      (baseChange)="setBase($event)"
-      (groupChange)="setGroup($event)"
-    ></hs-add-as-toggle>
+    <hs-add-as-toggle [isBase]="data.base" [isGroup]="data.group" [showGroupToggle]="type === 'wms'"
+      (baseChange)="setBase($event)" (groupChange)="setGroup($event)"></hs-add-as-toggle>
   </div>
 
   <button type="button" class="btn w-100 btn-outline-secondary dropdown-toggle dropdown-toggle-split mb-2"
@@ -32,6 +27,13 @@
       </select>
     </div>
   </div>
+  <div class="form-group capabilities_input">
+    <label class="capabilities_label control-label d-flex gap-2">
+      <input type="checkbox" class="me-1 checkbox-lg" name="queryable" [(ngModel)]="data.queryable" />
+      {{'COMMON.queryable' | translate }}
+    </label>
+  </div>
+  @if (data.queryable && data.query_formats?.length) {
   <div class="form-group">
     <div class="input-group">
       <span class="input-group-text control-label">{{'ADDLAYERS.queryFormat' | translate }}</span>
@@ -42,6 +44,7 @@
       </select>
     </div>
   </div>
+  }
   <div class="form-group" [hidden]="!data.srs || data.srs.toUpperCase() === data.map_projection">
     <div class="input-group">
       <span class="input-group-text control-label">{{'ADDLAYERS.srs' | translate }}</span>

@@ -40,6 +40,7 @@ export class HsAddDataWmsLaymanService {
     this.wmsService.data.version = '1.3.0';
     this.wmsService.data.visible = true;
     this.wmsService.data.base = false;
+    this.wmsService.data.group = false;
 
     const layer = this.wmsService.getLayer(
       {
