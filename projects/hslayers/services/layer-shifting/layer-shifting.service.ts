@@ -9,7 +9,11 @@ import {
   HsLayerManagerService,
 } from 'hslayers-ng/services/layer-manager';
 import {HsMapService} from 'hslayers-ng/services/map';
-import {instOf} from 'hslayers-ng/services/utils';
+import {
+  getMaxLayerZIndex,
+  getMinLayerZIndex,
+  instOf,
+} from 'hslayers-ng/services/utils';
 import {getBase} from 'hslayers-ng/common/extensions';
 
 export class LayerListItem {
@@ -132,25 +136,18 @@ export class HsLayerShiftingService {
   }
 
   /**
-   * Gets all layer ZIndex values from the layer list
-   * @returns Returns array of ZIndex values
-   */
-  private zIndexList(): number[] {
-    return this.getMapLayers().map((lyr) => lyr.getZIndex() || 0);
-  }
-  /**
-   * Gets maximum value from ZIndex value array
-   * @returns Returns max ZIndex value
+   * Gets maximum z-index among overlay layers.
    */
   getMaxZ(): number {
-    return Math.max(...this.zIndexList());
+    const layers = this.getMapLayers();
+    return getMaxLayerZIndex(layers, 0);
   }
   /**
-   * Gets minimum value from ZIndex value array
-   * @returns Returns min ZIndex value
+   * Gets minimum z-index among overlay layers.
    */
   getMinZ(): number {
-    return Math.min(...this.zIndexList());
+    const layers = this.getMapLayers();
+    return getMinLayerZIndex(layers) ?? 0;
   }
 
   /**

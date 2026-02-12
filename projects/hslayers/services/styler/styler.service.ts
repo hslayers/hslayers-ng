@@ -233,16 +233,23 @@ export class HsStylerService {
    * vector layer added without SLD by rewriting its default value
    */
   private trySyncingStyleToLayman(layer: VectorLayer<VectorSource<Feature>>) {
-    if (this.hsLayerSynchronizerService.syncedLayers.includes(layer)) {
-      awaitLayerSync(layer).then(() => {
-        setSld(
-          layer,
-          getSld(layer).replace(
-            '<NamedLayer>',
-            '<NamedLayer>' + '<!-- This will be removed by parser -->',
-          ),
-        );
-      });
+    try {
+      if (this.hsLayerSynchronizerService.syncedLayers.includes(layer)) {
+        awaitLayerSync(layer).then(() => {
+          const sld = getSld(layer);
+          if (sld) {
+            setSld(
+              layer,
+              sld.replace(
+                '<NamedLayer>',
+                '<NamedLayer>' + '<!-- This will be removed by parser -->',
+              ),
+            );
+          }
+        });
+      }
+    } catch (error) {
+      this.hsLogService.error(error);
     }
   }
 
@@ -273,6 +280,7 @@ export class HsStylerService {
      * SLD or QML style definition AND style def is undefined or default (eg. no custom StyleLike definition)
      */
     if ((sld || qml) && (!style || style == createDefaultStyle)) {
+      const dstyle = style == createDefaultStyle;
       const parsedStyle = await this.parseStyle(sld ?? qml);
       if (parsedStyle.sld !== sld) {
         sld = parsedStyle.sld;
@@ -296,7 +304,9 @@ export class HsStylerService {
         //await is necessary because of consecutive code (this.fill())
         await this.styleClusteredLayer(layer);
       }
-      this.trySyncingStyleToLayman(layer);
+      if (dstyle) {
+        this.trySyncingStyleToLayman(layer);
+      }
     } else if (style && !sld && !qml) {
       /*
        * OL StyleLike definition

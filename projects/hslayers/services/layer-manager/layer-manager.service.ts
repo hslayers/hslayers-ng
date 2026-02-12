@@ -33,7 +33,11 @@ import {
   debounce,
   getLayerParams,
   getLayerTitle,
+  getLayerZIndex,
+  getMaxLayerZIndex,
+  getMinLayerZIndex,
   isLayerVectorLayer,
+  shiftLayersZIndex,
 } from 'hslayers-ng/services/utils';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsLogService} from 'hslayers-ng/services/log';
@@ -543,38 +547,58 @@ export class HsLayerManagerService {
     }
   }
 
-  /**
-   * Sets zIndex of layer being added to be the highest among layers in same path
-   * @param layer - layer being added
-   */
   private setPathMaxZIndex(layer: Layer<Source>): void {
-    let pathLayers;
-    if (getBase(layer)) {
-      pathLayers = this.data.baselayers;
-    } else {
-      let path = getPath(layer);
-      //If not set it'll be assigned inside populateFolders function as 'other'
-      path = path ?? 'other';
+    const pathLayers = getBase(layer)
+      ? this.data.baselayers
+      : this.data.layers.filter(
+          (descriptor) =>
+            getPath(descriptor.layer) == (getPath(layer) ?? 'other'),
+        );
 
-      pathLayers = this.data.layers.filter(
-        (layer) => getPath(layer.layer) == path,
-      );
+    if (pathLayers.length === 0) {
+      return;
     }
 
-    if (pathLayers.length > 0) {
-      //Get max available index value
-      const maxPathZIndex = Math.max(
-        ...pathLayers.map((lyr) => lyr.layer.getZIndex() || 0),
-      );
+    const maxPathZIndex = Math.max(
+      ...pathLayers.map((descriptor) => getLayerZIndex(descriptor.layer)),
+    );
+    const targetZIndex = maxPathZIndex + 1;
+    layer.setZIndex(targetZIndex);
 
-      layer.setZIndex(maxPathZIndex + 1);
-      //Increase zIndex of the layer that are supposed to be rendered above inserted
-      for (const lyr of this.data.layers.filter(
-        (lyr) => lyr.layer.getZIndex() >= layer.getZIndex(),
-      )) {
-        lyr.layer.setZIndex(lyr.layer.getZIndex() + 1);
+    //Increase zIndex of the layers that are supposed to be rendered above inserted
+    for (const descriptor of this.data.layers) {
+      if (getLayerZIndex(descriptor.layer) >= targetZIndex) {
+        descriptor.layer.setZIndex(getLayerZIndex(descriptor.layer) + 1);
       }
     }
+  }
+
+  /**
+   * When adding a base layer from composition (asCallback false), place it below any existing
+   * overlay layers: on top of other base layers, or at 0 if none. Shifts overlay layers up if needed.
+   */
+  private applyBaseLayerZIndexFromComposition(layer: Layer<Source>): void {
+    const baseLayers = this.data.baselayers.map((ld) => ld.layer);
+    const overlayLayers = this.data.layers.map((ld) => ld.layer);
+
+    const hasBaseLayers = baseLayers.length > 0;
+    const minOverlayZ = getMinLayerZIndex(overlayLayers);
+    const newBaseZ = hasBaseLayers
+      ? getMaxLayerZIndex(baseLayers) + 1
+      : minOverlayZ !== undefined
+        ? minOverlayZ - 1
+        : 0;
+
+    if (hasBaseLayers && minOverlayZ !== undefined && newBaseZ >= minOverlayZ) {
+      const shift = newBaseZ - minOverlayZ + 1;
+      shiftLayersZIndex(overlayLayers, shift);
+      this.zIndexValue = Math.max(
+        this.zIndexValue,
+        getMaxLayerZIndex(overlayLayers, 0) + 1,
+      );
+    }
+
+    layer.setZIndex(newBaseZ);
   }
 
   /**
@@ -586,6 +610,10 @@ export class HsLayerManagerService {
   applyZIndex(layer: Layer<Source>, asCallback?: boolean): void {
     if (asCallback && getShowInLayerManager(layer) !== false) {
       this.setPathMaxZIndex(layer);
+    }
+
+    if (!asCallback && getBase(layer)) {
+      this.applyBaseLayerZIndexFromComposition(layer);
     }
 
     if (layer.getZIndex() == undefined) {

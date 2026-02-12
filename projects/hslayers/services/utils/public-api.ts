@@ -1,4 +1,5 @@
 export * from './layer-utils';
+export * from './layer-z-index.utils';
 export * from './normalize-sld';
 export * from './proxy.service';
 export * from './utils';

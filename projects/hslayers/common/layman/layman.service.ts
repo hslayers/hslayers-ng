@@ -378,7 +378,7 @@ export class HsCommonLaymanService {
 
   async getStyleFromUrl(styleUrl: string): Promise<string> {
     try {
-      return await lastValueFrom(
+      const response = await lastValueFrom(
         this.http
           .get(styleUrl, {
             headers: new HttpHeaders().set('Content-Type', 'text'),
@@ -387,8 +387,10 @@ export class HsCommonLaymanService {
           })
           .pipe(map((response) => parseBase64Style(response))),
       );
+      return response;
     } catch (ex) {
       this.hsLog.error(ex);
+      return undefined;
     }
   }
 }
