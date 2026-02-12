@@ -146,14 +146,14 @@ export class HsDrawService extends HsDrawServiceParams {
 
     toObservable(this.hsCommonLaymanService.isAuthenticated)
       .pipe(takeUntilDestroyed())
-      .subscribe((isAuthenticated) => {
+      .subscribe((_isAuthenticated) => {
         this.fillDrawableLayers();
         //When metadata dialog window opened. Layer is being added
         if (this.selectedLayer && this.tmpDrawLayer) {
           setWorkspace(this.selectedLayer, this.hsCommonLaymanService.user());
           setDefinition(this.selectedLayer, {
-            format: isAuthenticated ? 'WFS' : null,
-            url: isAuthenticated
+            format: _isAuthenticated ? 'WFS' : null,
+            url: _isAuthenticated
               ? this.hsCommonLaymanService.layman()?.url + '/wfs'
               : null,
           });
@@ -222,8 +222,8 @@ export class HsDrawService extends HsDrawServiceParams {
     setEditor(drawLayer, {editable: true});
     setPath(drawLayer, this.hsConfig.defaultDrawLayerPath || 'User generated');
     setDefinition(drawLayer, {
-      format: this.isAuthenticated ? 'WFS' : null,
-      url: this.isAuthenticated ? layman.url + '/wfs' : null,
+      format: this.isAuthenticated() ? 'WFS' : null,
+      url: this.isAuthenticated() ? layman.url + '/wfs' : null,
     });
     setWorkspace(drawLayer, this.hsCommonLaymanService.user());
     this.tmpDrawLayer = true;
