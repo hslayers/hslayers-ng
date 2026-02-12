@@ -73,14 +73,18 @@ export class HsQueryBaseService {
   currentQuery: string = null;
 
   popupClassname = '';
-  nonQueryablePanels = [
+  private defaultNonQueryablePanels = [
     'measure',
     'compositions',
     'analysis',
     'sensors',
-    // 'draw',
     'tripPlanner',
   ];
+
+  get nonQueryablePanels(): string[] {
+    const additional = this.hsConfig.additionalNonQueryablePanels ?? [];
+    return [...this.defaultNonQueryablePanels, ...additional];
+  }
   getFeatureInfoStarted: Subject<any> = new Subject();
   getFeatureInfoCollected: Subject<number[] | void> = new Subject();
   queryStatusChanges: Subject<boolean> = new Subject();

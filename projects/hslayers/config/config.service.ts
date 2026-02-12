@@ -214,6 +214,11 @@ export class HsConfigObject {
   };
   query?: {multi?: boolean; style?: StyleLike; hitTolerance?: number};
   /**
+   * Panel names to add to the default non-queryable panels list.
+   * Default non-queryable panels: measure, compositions, analysis, sensors, tripPlanner.
+   */
+  additionalNonQueryablePanels?: string[];
+  /**
    * Configures visibility of clicked point feature.
    *   - `'hidden'` - Hides clicked point feature at all times
    *   - `'notWithin'` - Hides clicked point feature in case it would overlap with other features
