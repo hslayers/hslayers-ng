@@ -17,44 +17,10 @@ import {SomeComponent} from './some-panel/some-panel.component';
 import {symbolizerIcons} from './symbolizer-icons';
 import {Tile} from 'ol/layer';
 import {OSM} from 'ol/source';
-import VectorSource from 'ol/source/Vector';
-import VectorLayer from 'ol/layer/Vector';
-import GeoJSON from 'ol/format/GeoJSON.js';
 /**
  * Boolean flag to control whether to include default layers in the app.
  */
 const WITH_LAYERS = true;
-
-const geojsonObject = {
-  'type': 'FeatureCollection',
-  'crs': {
-    'type': 'name',
-    'properties': {
-      'name': 'EPSG:3857',
-    },
-  },
-  'features': [
-    {
-      'type': 'Feature',
-      'geometry': {
-        'type': 'Point',
-        'coordinates': [-8419714.8225833, 560297.9906615],
-      },
-    },
-  ],
-};
-
-const vectorSource = new VectorSource({
-  features: new GeoJSON().readFeatures(geojsonObject),
-});
-
-const vectorLayer = new VectorLayer({
-  source: vectorSource,
-  properties: {
-    title: 'Sample GeoJSON layer',
-    removable: false,
-  },
-});
 
 @Component({
   selector: 'hslayers-app',
@@ -154,7 +120,6 @@ export class HslayersAppComponent {
             removable: false,
           },
         }),
-        vectorLayer,
         ...(defaultLayersResult?.defaultLayers || []),
       ],
       layersInFeatureTable: defaultLayersResult?.layersInFeatureTable || [],
