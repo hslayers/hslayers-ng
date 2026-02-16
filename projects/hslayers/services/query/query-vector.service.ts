@@ -121,7 +121,16 @@ export class HsQueryVectorService {
         }
         return true;
       },
-      style: style || this.hsConfig.query?.style || defaultSelectStyle,
+      /**
+       * Consider "null" a valid value since this allows
+       * interaction to not apply any style changes for selected features
+       */
+      style:
+        style !== undefined
+          ? style
+          : this.hsConfig.query?.style !== undefined
+            ? this.hsConfig.query?.style
+            : defaultSelectStyle,
       hitTolerance: this.hsConfig.query?.hitTolerance || 0,
     });
 
