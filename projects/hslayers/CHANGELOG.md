@@ -1,3 +1,18 @@
+# [16.4.0](https://github.com/hslayers/hslayers-ng/compare/16.3.0...16.4.0) (2026-02-19)
+
+
+### Bug Fixes
+
+* **draw:** read signal value not signal itself ([1256904](https://github.com/hslayers/hslayers-ng/commit/1256904119b93e0dbfb0a7479c4c4dc76793a524))
+* when adding a base layer from composition, place it below any existing overlay ([9710d52](https://github.com/hslayers/hslayers-ng/commit/9710d52da18ab5b65aaccb955b504538a1df1409))
+
+
+### Features
+
+* **config:** additionalNonQueryablePanels ([5c6acbb](https://github.com/hslayers/hslayers-ng/commit/5c6acbb3a1108b1ef9d224c78f8591a247d5c2b3))
+
+
+
 # [16.3.0](https://github.com/hslayers/hslayers-ng/compare/16.2.0...16.3.0) (2026-02-09)
 
 

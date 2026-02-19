@@ -12,7 +12,7 @@ import {HsConfig} from 'hslayers-ng/config';
 export class HsImpressumComponent {
   hsConfig = inject(HsConfig);
 
-  version = signal('16.3.0');
+  version = signal('16.4.0');
   logoError = signal(false);
 
   logoPath = computed(
