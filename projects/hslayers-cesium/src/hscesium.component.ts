@@ -57,7 +57,7 @@ export class HslayersCesiumComponent implements AfterViewInit {
       .pipe(
         takeUntilDestroyed(this.destroyRef),
         /**
-         * Resize immidiatelly only in case cesium is visible
+         * Resize immediately only in case cesium is visible
          */
         filter((size) => this.hsCesiumService.visible),
       )
