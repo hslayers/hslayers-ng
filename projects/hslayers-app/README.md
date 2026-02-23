@@ -41,7 +41,7 @@ Bootstrap also needs some JS code to do its work, so import it if you need:
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
 ```
 
-Alternatively, you can use CDN service like UNPKG to get the code. In that case, just include styles like:
+Alternatively, you can use CDN service like UNPKG or jsDelivr to get the code. In that case, just include styles like:
 ```html
 <link rel="stylesheet" href="https://unpkg.com/hslayers-ng-app@16.4.0/styles.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" crossorigin="anonymous">
