@@ -1,4 +1,4 @@
-# [16.4.0](https://github.com/hslayers/hslayers-ng/compare/16.3.0...16.4.0) (2026-02-19)
+# [16.4.0](https://github.com/hslayers/hslayers-ng/compare/16.3.0...16.4.0) (2026-02-23)
 
 
 ### Bug Fixes
