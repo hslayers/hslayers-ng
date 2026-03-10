@@ -2,7 +2,11 @@ import {
   BrowserDynamicTestingModule,
   platformBrowserDynamicTesting,
 } from '@angular/platform-browser-dynamic/testing';
-import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
+import {
+  CUSTOM_ELEMENTS_SCHEMA,
+  provideZoneChangeDetection,
+  NgModule,
+} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
@@ -36,11 +40,14 @@ import {testingServiceEndpoints} from './data/service-endpoints';
 let httpClient;
 let hsWmsGetCapabilitiesService;
 
+@NgModule({providers: [provideZoneChangeDetection()]})
+export class ZoneChangeDetectionModule {}
+
 describe('HsAddDataUrlComponent', () => {
   beforeAll(() => {
     TestBed.resetTestEnvironment();
     TestBed.initTestEnvironment(
-      BrowserDynamicTestingModule,
+      [ZoneChangeDetectionModule, BrowserDynamicTestingModule],
       platformBrowserDynamicTesting(),
       {
         teardown: {destroyAfterEach: false},

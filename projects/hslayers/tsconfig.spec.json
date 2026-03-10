@@ -6,6 +6,6 @@
     "typeRoots": ["../../node_modules/@types"],
     "resolveJsonModule": true
   },
-  "files": ["test/test.ts"],
+  "files": ["test/test.ts", "test/polyfills.ts"],
   "include": ["test/**/*.spec.ts", "test/**/*.d.ts"]
 }

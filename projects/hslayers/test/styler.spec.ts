@@ -2,7 +2,13 @@ import {
   BrowserDynamicTestingModule,
   platformBrowserDynamicTesting,
 } from '@angular/platform-browser-dynamic/testing';
-import {CUSTOM_ELEMENTS_SCHEMA, signal, WritableSignal} from '@angular/core';
+import {
+  CUSTOM_ELEMENTS_SCHEMA,
+  signal,
+  WritableSignal,
+  provideZoneChangeDetection,
+  NgModule,
+} from '@angular/core';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
 import {provideTranslateService, TranslatePipe} from '@ngx-translate/core';
@@ -49,13 +55,16 @@ class HsLayerSynchronizerServiceMock {
   constructor() {}
 }
 
+@NgModule({providers: [provideZoneChangeDetection()]})
+export class ZoneChangeDetectionModule {}
+
 describe('HsStyler', () => {
   let layer: WritableSignal<VectorLayer<VectorSource<Feature>>>;
 
   beforeAll(() => {
     TestBed.resetTestEnvironment();
     TestBed.initTestEnvironment(
-      BrowserDynamicTestingModule,
+      [ZoneChangeDetectionModule, BrowserDynamicTestingModule],
       platformBrowserDynamicTesting(),
       {
         teardown: {destroyAfterEach: false},
@@ -67,8 +76,6 @@ describe('HsStyler', () => {
   let component: HsStylerComponent;
   let service: HsStylerService;
   beforeEach(() => {
-    
-
     layer = signal(
       new VectorLayer({
         properties: {title: 'Point'},

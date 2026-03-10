@@ -1,4 +1,4 @@
-import {enableProdMode} from '@angular/core';
+import {enableProdMode, provideZoneChangeDetection} from '@angular/core';
 import {platformBrowserDynamic} from '@angular/platform-browser-dynamic';
 
 import {AppModule} from './hslayers-app/hslayers-app.module';
@@ -13,7 +13,10 @@ setTimeout(() => {
   const hslayersApps = document.querySelectorAll('hslayers-app');
 
   hslayersApps.forEach(() => {
-    const bootstrap = () => platform.bootstrapModule(AppModule);
+    const bootstrap = () =>
+      platform.bootstrapModule(AppModule, {
+        applicationProviders: [provideZoneChangeDetection()],
+      });
     bootstrap().catch((err) => console.log('bootstrap', err));
   });
 }, 0);

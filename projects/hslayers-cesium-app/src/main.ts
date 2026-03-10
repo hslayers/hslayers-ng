@@ -1,4 +1,4 @@
-import {enableProdMode} from '@angular/core';
+import {enableProdMode, provideZoneChangeDetection} from '@angular/core';
 import {platformBrowserDynamic} from '@angular/platform-browser-dynamic';
 
 import {AppModule} from './app/app.module';
@@ -13,7 +13,10 @@ setTimeout(() => {
   const hslayerCesiumApps = document.querySelectorAll('hslayers-cesium-app');
 
   hslayerCesiumApps.forEach(() => {
-    const bootstrap = () => platform.bootstrapModule(AppModule);
+    const bootstrap = () =>
+      platform.bootstrapModule(AppModule, {
+        applicationProviders: [provideZoneChangeDetection()],
+      });
     bootstrap().catch((err) => console.log('bootstrap', err));
   });
 }, 0);

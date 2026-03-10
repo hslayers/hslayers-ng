@@ -1,6 +1,4 @@
 // This file is required by karma.conf.js and loads recursively all the .spec and framework files
-import '@angular/localize/init';
-import 'zone.js';
 import 'zone.js/testing';
 import {
   BrowserDynamicTestingModule,

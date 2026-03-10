@@ -2,7 +2,12 @@ import {
   BrowserDynamicTestingModule,
   platformBrowserDynamicTesting,
 } from '@angular/platform-browser-dynamic/testing';
-import {CUSTOM_ELEMENTS_SCHEMA, signal} from '@angular/core';
+import {
+  CUSTOM_ELEMENTS_SCHEMA,
+  signal,
+  provideZoneChangeDetection,
+  NgModule,
+} from '@angular/core';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
 import {Subject} from 'rxjs';
@@ -55,11 +60,14 @@ class CommonEndpointsServiceMock {
   endpoints = signal([]);
 }
 
+@NgModule({providers: [provideZoneChangeDetection()]})
+export class ZoneChangeDetectionModule {}
+
 describe('HsSaveMap', () => {
   beforeAll(() => {
     TestBed.resetTestEnvironment();
     TestBed.initTestEnvironment(
-      BrowserDynamicTestingModule,
+      [ZoneChangeDetectionModule, BrowserDynamicTestingModule],
       platformBrowserDynamicTesting(),
       {
         teardown: {destroyAfterEach: false},
@@ -72,8 +80,6 @@ describe('HsSaveMap', () => {
   let service: HsLaymanService;
 
   beforeEach(() => {
-    
-
     TestBed.configureTestingModule({
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
       declarations: [HsSaveMapComponent],

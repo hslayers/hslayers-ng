@@ -1,6 +1,12 @@
 /* eslint-disable prefer-arrow-callback */
 // Remove unused import
-import {CUSTOM_ELEMENTS_SCHEMA, Injectable, signal} from '@angular/core';
+import {
+  CUSTOM_ELEMENTS_SCHEMA,
+  Injectable,
+  signal,
+  provideZoneChangeDetection,
+  NgModule,
+} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {
   ComponentFixture,
@@ -65,6 +71,9 @@ let mockedMapService;
 let hsConfig: HsConfig;
 let CompositionsCatalogueService: HsCompositionsCatalogueService;
 
+@NgModule({providers: [provideZoneChangeDetection()]})
+export class ZoneChangeDetectionModule {}
+
 describe('compositions', () => {
   let component: HsCompositionsComponent;
   let fixture: ComponentFixture<HsCompositionsComponent>;
@@ -72,7 +81,7 @@ describe('compositions', () => {
   beforeAll(() => {
     TestBed.resetTestEnvironment();
     TestBed.initTestEnvironment(
-      BrowserDynamicTestingModule,
+      [ZoneChangeDetectionModule, BrowserDynamicTestingModule],
       platformBrowserDynamicTesting(),
       {
         teardown: {destroyAfterEach: false},
@@ -204,16 +213,18 @@ describe('compositions', () => {
     ).toBe(0);
   });
 
-  it('if should parse composition layer style', fakeAsync(async () => {
+  it('should parse composition layer style', fakeAsync(async () => {
     await loadComposition(component);
 
     const layers = mockedMapService.getMap().getLayers();
 
-    expect(layers.getLength()).toBe(6);
+    // 8 layers are expected: 6 layers from composition + Point clicked + Composition extents
+    expect(layers.getLength()).toBe(8);
 
-    expect(layers.item(1).getStyle()).toBeDefined();
-    expect(layers.item(1).getStyle()).toBe(createDefaultStyle);
+    // item index is shifted by 2 because of Point clicked and Composition extents layers
+    expect(layers.item(3).getStyle()).toBeDefined();
+    expect(layers.item(3).getStyle()).toBe(createDefaultStyle);
 
-    expect(getSld(layers.item(5))).toBeDefined();
+    expect(getSld(layers.item(7))).toBeDefined();
   }));
 });
