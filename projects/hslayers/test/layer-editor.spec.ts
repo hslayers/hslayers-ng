@@ -2,7 +2,11 @@ import {
   BrowserDynamicTestingModule,
   platformBrowserDynamicTesting,
 } from '@angular/platform-browser-dynamic/testing';
-import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
+import {
+  CUSTOM_ELEMENTS_SCHEMA,
+  provideZoneChangeDetection,
+  NgModule,
+} from '@angular/core';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
 import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
@@ -36,6 +40,9 @@ class emptyMock {
   constructor() {}
 }
 
+@NgModule({providers: [provideZoneChangeDetection()]})
+export class ZoneChangeDetectionModule {}
+
 describe('layermanager editor', () => {
   let component: HsLayerEditorComponent;
   let fixture: ComponentFixture<HsLayerEditorComponent>;
@@ -52,7 +59,7 @@ describe('layermanager editor', () => {
     });
     TestBed.resetTestEnvironment();
     TestBed.initTestEnvironment(
-      BrowserDynamicTestingModule,
+      [ZoneChangeDetectionModule, BrowserDynamicTestingModule],
       platformBrowserDynamicTesting(),
       {
         teardown: {destroyAfterEach: false},

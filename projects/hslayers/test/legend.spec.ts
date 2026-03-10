@@ -2,7 +2,11 @@ import {
   BrowserDynamicTestingModule,
   platformBrowserDynamicTesting,
 } from '@angular/platform-browser-dynamic/testing';
-import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
+import {
+  CUSTOM_ELEMENTS_SCHEMA,
+  provideZoneChangeDetection,
+  NgModule,
+} from '@angular/core';
 import {
   ComponentFixture,
   TestBed,
@@ -36,11 +40,14 @@ import {
 import {mockLayerUtilsService} from './layer-utils.service.mock';
 
 const layerUtilsMock = mockLayerUtilsService();
+@NgModule({providers: [provideZoneChangeDetection()]})
+export class ZoneChangeDetectionModule {}
+
 describe('HsLegendComponent', () => {
   beforeAll(() => {
     TestBed.resetTestEnvironment();
     TestBed.initTestEnvironment(
-      BrowserDynamicTestingModule,
+      [ZoneChangeDetectionModule, BrowserDynamicTestingModule],
       platformBrowserDynamicTesting(),
       {
         teardown: {destroyAfterEach: false},

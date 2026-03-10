@@ -2,18 +2,25 @@ import {
   BrowserDynamicTestingModule,
   platformBrowserDynamicTesting,
 } from '@angular/platform-browser-dynamic/testing';
-import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
+import {
+  CUSTOM_ELEMENTS_SCHEMA,
+  provideZoneChangeDetection,
+  NgModule,
+} from '@angular/core';
 import {TestBed} from '@angular/core/testing';
 
 import {HsDimensionTimeService} from 'hslayers-ng//services/get-capabilities';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsEventBusServiceMock} from './event-bus.service.mock';
 
+@NgModule({providers: [provideZoneChangeDetection()]})
+export class ZoneChangeDetectionModule {}
+
 describe('HsGetCapabilitiesModule', () => {
   beforeAll(() => {
     TestBed.resetTestEnvironment();
     TestBed.initTestEnvironment(
-      BrowserDynamicTestingModule,
+      [ZoneChangeDetectionModule, BrowserDynamicTestingModule],
       platformBrowserDynamicTesting(),
       {
         teardown: {destroyAfterEach: false},

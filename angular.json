@@ -151,16 +151,16 @@
           }
         },
         "extract-i18n": {
-          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "builder": "@angular/build:extract-i18n",
           "options": {
             "buildTarget": "hslayers-app:build"
           }
         },
         "test": {
-          "builder": "@angular-devkit/build-angular:karma",
+          "builder": "@angular/build:karma",
           "options": {
             "main": "projects/hslayers-app/test/test.ts",
-            "polyfills": "projects/hslayers-app/src/polyfills.ts",
+            "polyfills": ["projects/hslayers-app/src/polyfills.ts"],
             "tsConfig": "projects/hslayers-app/tsconfig.spec.json",
             "karmaConfig": "projects/hslayers-app/karma.conf.js",
             "assets": [
@@ -281,16 +281,16 @@
           }
         },
         "extract-i18n": {
-          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "builder": "@angular/build:extract-i18n",
           "options": {
             "buildTarget": "test-app:build"
           }
         },
         "test": {
-          "builder": "@angular-devkit/build-angular:karma",
+          "builder": "@angular/build:karma",
           "options": {
             "main": "projects/test-app/test/test.ts",
-            "polyfills": "projects/test-app/src/polyfills.ts",
+            "polyfills": ["projects/test-app/src/polyfills.ts"],
             "tsConfig": "projects/test-app/tsconfig.spec.json",
             "karmaConfig": "projects/test-app/karma.conf.js",
             "assets": [
@@ -424,16 +424,16 @@
           }
         },
         "extract-i18n": {
-          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "builder": "@angular/build:extract-i18n",
           "options": {
             "buildTarget": "decoupling-test-app:build"
           }
         },
         "test": {
-          "builder": "@angular-devkit/build-angular:karma",
+          "builder": "@angular/build:karma",
           "options": {
             "main": "projects/decoupling-test-app/test/test.ts",
-            "polyfills": "projects/decoupling-test-app/src/polyfills.ts",
+            "polyfills": ["projects/decoupling-test-app/src/polyfills.ts"],
             "tsConfig": "projects/decoupling-test-app/tsconfig.spec.json",
             "karmaConfig": "projects/decoupling-test-app/karma.conf.js",
             "assets": [
@@ -465,7 +465,7 @@
             "outputPath": "dist/hslayers-cesium-app",
             "index": "projects/hslayers-cesium-app/src/index.html",
             "main": "projects/hslayers-cesium-app/src/main.ts",
-            "polyfills": "projects/hslayers-cesium-app/src/polyfills.ts",
+            "polyfills": ["projects/hslayers-cesium-app/src/polyfills.ts"],
             "tsConfig": "projects/hslayers-cesium-app/tsconfig.app.json",
             "aot": true,
             "assets": [
@@ -598,16 +598,16 @@
           }
         },
         "extract-i18n": {
-          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "builder": "@angular/build:extract-i18n",
           "options": {
             "buildTarget": "hslayers-cesium-app:build"
           }
         },
         "test": {
-          "builder": "@angular-devkit/build-angular:karma",
+          "builder": "@angular/build:karma",
           "options": {
             "main": "projects/hslayers-cesium-app/test/test.ts",
-            "polyfills": "projects/hslayers-cesium-app/src/polyfills.ts",
+            "polyfills": ["projects/hslayers-cesium-app/src/polyfills.ts"],
             "tsConfig": "projects/hslayers-cesium-app/tsconfig.spec.json",
             "karmaConfig": "projects/hslayers-cesium-app/karma.conf.js",
             "assets": [
@@ -642,7 +642,7 @@
             "outputPath": "dist/cesium-test-app",
             "index": "projects/cesium-test-app/src/index.html",
             "main": "projects/cesium-test-app/src/main.ts",
-            "polyfills": "projects/cesium-test-app/src/polyfills.ts",
+            "polyfills": ["projects/cesium-test-app/src/polyfills.ts"],
             "tsConfig": "projects/cesium-test-app/tsconfig.app.json",
             "aot": true,
             "allowedCommonJsDependencies": [
@@ -746,16 +746,16 @@
           }
         },
         "extract-i18n": {
-          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "builder": "@angular/build:extract-i18n",
           "options": {
             "buildTarget": "cesium-test-app:build"
           }
         },
         "test": {
-          "builder": "@angular-devkit/build-angular:karma",
+          "builder": "@angular/build:karma",
           "options": {
             "main": "projects/cesium-test-app/test/test.ts",
-            "polyfills": "projects/cesium-test-app/src/polyfills.ts",
+            "polyfills": ["projects/cesium-test-app/src/polyfills.ts"],
             "tsConfig": "projects/cesium-test-app/tsconfig.spec.json",
             "karmaConfig": "projects/cesium-test-app/karma.conf.js",
             "assets": [
@@ -777,7 +777,7 @@
       "prefix": "lib",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "builder": "@angular/build:ng-packagr",
           "options": {
             "tsConfig": "projects/hslayers/tsconfig.lib.json",
             "project": "projects/hslayers/ng-package.json"
@@ -789,9 +789,10 @@
           }
         },
         "test": {
-          "builder": "@angular-devkit/build-angular:karma",
+          "builder": "@angular/build:karma",
           "options": {
             "main": "projects/hslayers/test/test.ts",
+            "polyfills": ["projects/hslayers/test/polyfills.ts"],
             "tsConfig": "projects/hslayers/tsconfig.spec.json",
             "karmaConfig": "projects/hslayers/karma.conf.js"
           }
@@ -805,7 +806,7 @@
       "prefix": "lib",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "builder": "@angular/build:ng-packagr",
           "options": {
             "tsConfig": "projects/hslayers-sensors/tsconfig.lib.json",
             "project": "projects/hslayers-sensors/ng-package.json"
@@ -825,7 +826,7 @@
       "prefix": "lib",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "builder": "@angular/build:ng-packagr",
           "options": {
             "tsConfig": "projects/hslayers-cesium/tsconfig.lib.json",
             "project": "projects/hslayers-cesium/ng-package.json"
@@ -837,7 +838,7 @@
           }
         },
         "test": {
-          "builder": "@angular-devkit/build-angular:karma",
+          "builder": "@angular/build:karma",
           "options": {
             "main": "projects/hslayers-cesium/test/test.ts",
             "tsConfig": "projects/hslayers-cesium/tsconfig.spec.json",

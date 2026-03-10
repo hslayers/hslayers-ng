@@ -3,7 +3,12 @@ import {
   BrowserDynamicTestingModule,
   platformBrowserDynamicTesting,
 } from '@angular/platform-browser-dynamic/testing';
-import {CUSTOM_ELEMENTS_SCHEMA, signal} from '@angular/core';
+import {
+  CUSTOM_ELEMENTS_SCHEMA,
+  signal,
+  provideZoneChangeDetection,
+  NgModule,
+} from '@angular/core';
 import {
   ComponentFixture,
   TestBed,
@@ -106,6 +111,9 @@ HsLayerManagerServiceMock.data = {
   folders: signal(new Map([['other', {layers: [layer, layer2], zIndex: 0}]])),
 };
 
+@NgModule({providers: [provideZoneChangeDetection()]})
+export class ZoneChangeDetectionModule {}
+
 describe('layermanager-layer-list', () => {
   let component: HsLayerListComponent;
   let fixture: ComponentFixture<HsLayerListComponent>;
@@ -114,7 +122,7 @@ describe('layermanager-layer-list', () => {
   beforeAll(() => {
     TestBed.resetTestEnvironment();
     TestBed.initTestEnvironment(
-      BrowserDynamicTestingModule,
+      [ZoneChangeDetectionModule, BrowserDynamicTestingModule],
       platformBrowserDynamicTesting(),
       {
         teardown: {destroyAfterEach: false},
