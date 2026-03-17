@@ -15,6 +15,7 @@ import Feature from 'ol/Feature';
 import Geometry from 'ol/geom/Geometry';
 import Icon from 'ol/style/Icon';
 import Layer from 'ol/layer/Layer';
+// eslint-disable-next-line import/no-duplicates
 import Style from 'ol/style/Style';
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
@@ -482,7 +483,10 @@ export class HsStylerService {
       const {OlStyleParser} = await import('geostyler-openlayers-parser');
       const parser = new OlStyleParser();
 
-      const {output: geoStylerStyle} = await parser.readStyle(style);
+      //TODO: What to do with StyleFunction?
+      const {output: geoStylerStyle} = await parser.readStyle(
+        style as Style | Style[],
+      );
       const sldParser = new SLDParser({sldVersion: '1.0.0'});
       const {output: sld} = await sldParser.writeStyle(geoStylerStyle);
       return sld;
