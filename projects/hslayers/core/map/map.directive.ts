@@ -1,4 +1,4 @@
-import { Directive, ViewContainerRef, inject } from '@angular/core';
+import {Directive, ViewContainerRef, inject} from '@angular/core';
 
 @Directive({
   selector: '[map]',

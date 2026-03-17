@@ -2,12 +2,12 @@ import {ApplicationRef, DoBootstrap, NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 
 import {AppComponent} from './app.component';
-import {HsCesiumModule} from 'hslayers-cesium';
+import {HslayersCesiumComponent} from 'hslayers-cesium';
 import {HslayersModule} from 'hslayers-ng/core';
 
 @NgModule({
   declarations: [AppComponent],
-  imports: [BrowserModule, HslayersModule, HsCesiumModule],
+  imports: [BrowserModule, HslayersModule, HslayersCesiumComponent],
   providers: [],
 })
 export class AppModule implements DoBootstrap {

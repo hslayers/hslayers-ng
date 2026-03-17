@@ -2,7 +2,6 @@
  * Public API Surface of hslayers-cesium
  */
 
-export * from './hscesium.module';
 export * from './hscesium.component';
 export * from './hscesium.service';
 export * from './hscesium-time.service';

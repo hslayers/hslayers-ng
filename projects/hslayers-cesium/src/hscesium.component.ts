@@ -16,7 +16,6 @@ import {HsToggleViewComponent} from './toggle-view/toggle-view.component';
   selector: 'hs-cesium',
   templateUrl: './hscesium.component.html',
   styleUrl: './hscesium.component.scss',
-  standalone: false,
 })
 export class HslayersCesiumComponent implements AfterViewInit {
   hsCesiumService = inject(HsCesiumService);
