@@ -1,17 +1,21 @@
 import {Injectable, inject} from '@angular/core';
 
-import {Draw} from 'ol/interaction';
-import {Feature} from 'ol';
-import {Fill, Stroke, Style} from 'ol/style';
-import {Geometry, LineString, Polygon} from 'ol/geom';
-import {Vector as VectorLayer} from 'ol/layer';
-import {Vector as VectorSource} from 'ol/source';
+import Draw from 'ol/interaction/Draw';
+import Feature from 'ol/Feature';
+import Fill from 'ol/style/Fill';
+import Geometry from 'ol/geom/Geometry';
+import LineString from 'ol/geom/LineString';
+import Polygon from 'ol/geom/Polygon';
+import Stroke from 'ol/style/Stroke';
+import Style from 'ol/style/Style';
+import VectorLayer from 'ol/layer/Vector';
+import VectorSource from 'ol/source/Vector';
 
+import {formatLength, formatArea, instOf} from 'hslayers-ng/services/utils';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsMapService} from 'hslayers-ng/services/map';
-import {formatLength, formatArea, instOf} from 'hslayers-ng/services/utils';
-import {setTitle} from 'hslayers-ng/common/extensions';
 import {Measurement} from 'hslayers-ng/types';
+import {setTitle} from 'hslayers-ng/common/extensions';
 
 @Injectable({
   providedIn: 'root',

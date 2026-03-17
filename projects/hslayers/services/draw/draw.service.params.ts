@@ -1,11 +1,17 @@
-import {Subject} from 'rxjs';
 import {Signal} from '@angular/core';
+import {Subject} from 'rxjs';
 
-import {Collection, Feature} from 'ol';
-import {DragBox, Draw, Modify, Snap} from 'ol/interaction';
+import Collection from 'ol/Collection';
+import DragBox from 'ol/interaction/DragBox';
+import Draw from 'ol/interaction/Draw';
+import Feature from 'ol/Feature';
+import Layer from 'ol/layer/Layer';
+import Modify from 'ol/interaction/Modify';
+import Snap from 'ol/interaction/Snap';
+import Source from 'ol/source/Source';
+import VectorLayer from 'ol/layer/Vector';
+import VectorSource from 'ol/source/Vector';
 import {EventsKey} from 'ol/events';
-import {Layer, Vector as VectorLayer} from 'ol/layer';
-import {Source, Vector as VectorSource} from 'ol/source';
 
 export class HsDrawServiceParams {
   drawableLayers: Array<Layer<Source>> = [];

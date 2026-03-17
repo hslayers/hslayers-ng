@@ -2,26 +2,26 @@ import * as proj from 'ol/proj';
 
 import {Component, ElementRef, OnInit, inject} from '@angular/core';
 
-import {
-  BingMaps,
-  ImageArcGISRest,
-  ImageWMS,
-  OSM,
-  TileArcGISRest,
-  TileWMS,
-  Vector,
-  WMTS,
-  XYZ,
-} from 'ol/source';
-import {Circle, Fill, Icon, Stroke, Style} from 'ol/style';
-import {GeoJSON} from 'ol/format';
-import {
-  Group,
-  Image as ImageLayer,
-  Tile,
-  Vector as VectorLayer,
-} from 'ol/layer';
-import {View} from 'ol';
+import BingMaps from 'ol/source/BingMaps';
+import Circle from 'ol/style/Circle';
+import Fill from 'ol/style/Fill';
+import GeoJSON from 'ol/format/GeoJSON';
+import Group from 'ol/layer/Group';
+import Icon from 'ol/style/Icon';
+import ImageArcGISRest from 'ol/source/ImageArcGISRest';
+import ImageLayer from 'ol/layer/Image';
+import ImageWMS from 'ol/source/ImageWMS';
+import OSM from 'ol/source/OSM';
+import Stroke from 'ol/style/Stroke';
+import Style from 'ol/style/Style';
+import Tile from 'ol/layer/Tile';
+import TileArcGISRest from 'ol/source/TileArcGISRest';
+import TileWMS from 'ol/source/TileWMS';
+import Vector from 'ol/source/Vector';
+import VectorLayer from 'ol/layer/Vector';
+import View from 'ol/View';
+import WMTS from 'ol/source/WMTS';
+import XYZ from 'ol/source/XYZ';
 import {register as projRegister} from 'ol/proj/proj4';
 
 import {HsCesiumConfig, HslayersCesiumComponent} from 'hslayers-cesium';

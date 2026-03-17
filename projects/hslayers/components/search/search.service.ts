@@ -2,17 +2,18 @@ import {HttpClient} from '@angular/common/http';
 import {Injectable, inject} from '@angular/core';
 import {Subject} from 'rxjs';
 
-import {Feature} from 'ol';
-import {Geometry, Point} from 'ol/geom';
-import {Vector as VectorLayer} from 'ol/layer';
-import {Vector as VectorSource} from 'ol/source';
-import {WKT} from 'ol/format';
+import Feature from 'ol/Feature';
+import Geometry from 'ol/geom/Geometry';
+import Point from 'ol/geom/Point';
+import VectorLayer from 'ol/layer/Vector';
+import VectorSource from 'ol/source/Vector';
+import WKT from 'ol/format/WKT';
 import {transform} from 'ol/proj';
 import {unByKey} from 'ol/Observable';
 
+import {highlightFeatures, HsProxyService} from 'hslayers-ng/services/utils';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
-import {highlightFeatures, HsProxyService} from 'hslayers-ng/services/utils';
 import {HsMapService} from 'hslayers-ng/services/map';
 import {HsStylerService} from 'hslayers-ng/services/styler';
 import {setShowInLayerManager, setTitle} from 'hslayers-ng/common/extensions';

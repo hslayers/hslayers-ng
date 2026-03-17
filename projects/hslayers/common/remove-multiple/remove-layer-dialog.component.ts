@@ -1,7 +1,8 @@
 import {Component, OnInit, ViewRef, inject} from '@angular/core';
 
-import {Layer} from 'ol/layer';
+import Layer from 'ol/layer/Layer';
 
+import {getName, getTitle} from 'hslayers-ng/common/extensions';
 import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
 import {
   HsDialogComponent,
@@ -13,7 +14,6 @@ import {
   HsRemoveLayerDialogService,
   RemoveLayerWrapper,
 } from './remove-layer-dialog.service';
-import {getName, getTitle} from 'hslayers-ng/common/extensions';
 
 /**
  * Both catalogue and mapcatalogue will remove layer from  map as well.
@@ -21,6 +21,7 @@ import {getName, getTitle} from 'hslayers-ng/common/extensions';
  * string - Name param from Layman layer descriptor. Not all layers are guaranteed to be in map
  * Layer<Source> - OL layer. Layers already in map
  */
+
 export type HsRmLayerDialogDeleteOptions = 'map' | 'catalogue' | 'mapcatalogue';
 
 export type HsRmLayerDialogResponse = {

@@ -1,9 +1,10 @@
 import BaseLayer from 'ol/layer/Base';
+import Feature from 'ol/Feature';
+import Geometry from 'ol/geom/Geometry';
+import Group from 'ol/layer/Group';
+import Layer from 'ol/layer/Layer';
+import Source from 'ol/source/Source';
 import {Extent} from 'ol/extent';
-import {Feature} from 'ol';
-import {Geometry} from 'ol/geom';
-import {Group, Layer} from 'ol/layer';
-import {Source} from 'ol/source';
 import {signal, WritableSignal, isSignal} from '@angular/core';
 
 import {

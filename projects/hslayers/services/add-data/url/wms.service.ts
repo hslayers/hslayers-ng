@@ -1,13 +1,17 @@
 import {Injectable, inject} from '@angular/core';
 
+import ImageLayer from 'ol/layer/Image';
 import ImageSource from 'ol/source/Image';
+import ImageWMS from 'ol/source/ImageWMS';
+import Layer from 'ol/layer/Layer';
+import Source from 'ol/source/Source';
+import Tile from 'ol/layer/Tile';
 import TileSource from 'ol/source/Tile';
-import {Image as ImageLayer, Layer, Tile} from 'ol/layer';
-import {Options as ImageOptions} from 'ol/layer/BaseImage';
-import {ImageWMS, Source, TileWMS} from 'ol/source';
-import {Options as TileOptions} from 'ol/layer/BaseTile';
-import {WMSCapabilities} from 'ol/format';
+import TileWMS from 'ol/source/TileWMS';
+import WMSCapabilities from 'ol/format/WMSCapabilities';
 import {get, transformExtent} from 'ol/proj';
+import {Options as ImageOptions} from 'ol/layer/BaseImage';
+import {Options as TileOptions} from 'ol/layer/BaseTile';
 
 import {
   AddLayersRecursivelyOptions,
@@ -19,15 +23,7 @@ import {
   UrlDataObject,
 } from 'hslayers-ng/types';
 import {DuplicateHandling, HsMapService} from 'hslayers-ng/services/map';
-import {HsAddDataCommonService} from '../common.service';
-import {HsAddDataService} from '../add-data.service';
-import {HsAddDataUrlService} from './add-data-url.service';
-import {HsConfig} from 'hslayers-ng/config';
-import {
-  HsDimensionService,
-  HsWmsGetCapabilitiesService,
-} from 'hslayers-ng/services/get-capabilities';
-import {HsEventBusService} from 'hslayers-ng/services/event-bus';
+import {getFromComposition} from 'hslayers-ng/common/extensions';
 import {
   getPortFromUrl,
   isOverflown,
@@ -37,8 +33,16 @@ import {
   addAnchors,
   getPreferredFormat,
 } from 'hslayers-ng/services/utils';
+import {HsAddDataCommonService} from '../common.service';
+import {HsAddDataService} from '../add-data.service';
+import {HsAddDataUrlService} from './add-data-url.service';
+import {HsConfig} from 'hslayers-ng/config';
+import {
+  HsDimensionService,
+  HsWmsGetCapabilitiesService,
+} from 'hslayers-ng/services/get-capabilities';
+import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
-import {getFromComposition} from 'hslayers-ng/common/extensions';
 
 @Injectable({providedIn: 'root'})
 export class HsUrlWmsService implements HsUrlTypeServiceModel {

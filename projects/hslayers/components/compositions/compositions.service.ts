@@ -1,8 +1,8 @@
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Injectable, inject} from '@angular/core';
 
-import {Feature} from 'ol';
-import {Geometry} from 'ol/geom';
+import Feature from 'ol/Feature';
+import Geometry from 'ol/geom/Geometry';
 import {Observable, Subject, lastValueFrom} from 'rxjs';
 
 import {DuplicateHandling, HsMapService} from 'hslayers-ng/services/map';
@@ -18,8 +18,8 @@ import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsLanguageService} from 'hslayers-ng/services/language';
 import {HsLayerManagerService} from 'hslayers-ng/services/layer-manager';
 import {HsLogService} from 'hslayers-ng/services/log';
-import {HsToastService} from 'hslayers-ng/common/toast';
 import {HsProxyService} from 'hslayers-ng/services/utils';
+import {HsToastService} from 'hslayers-ng/common/toast';
 
 @Injectable({
   providedIn: 'root',

@@ -1,6 +1,6 @@
-import {Feature} from 'ol';
-import {Geometry} from 'ol/geom';
-import {Vector as VectorSource} from 'ol/source';
+import Feature from 'ol/Feature';
+import Geometry from 'ol/geom/Geometry';
+import VectorSource from 'ol/source/Vector';
 
 import {HsVectorLayerOptions} from './vector-layer-options.type';
 import {SparqlJson} from 'hslayers-ng/common/layers';

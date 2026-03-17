@@ -1,8 +1,9 @@
 import {Injectable, inject} from '@angular/core';
 
-import {Layer} from 'ol/layer';
-import {Source} from 'ol/source';
+import Layer from 'ol/layer/Layer';
+import Source from 'ol/source/Source';
 
+import {getDefinition, getName} from 'hslayers-ng/common/extensions';
 import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
 import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
 import {HsLanguageService} from 'hslayers-ng/services/language';
@@ -14,7 +15,6 @@ import {
   HsRmLayerDialogResponse,
 } from './remove-layer-dialog.component';
 import {HsToastService} from 'hslayers-ng/common/toast';
-import {getDefinition, getName} from 'hslayers-ng/common/extensions';
 
 export type RemoveLayerWrapper = {
   layer: Layer<Source> | string;

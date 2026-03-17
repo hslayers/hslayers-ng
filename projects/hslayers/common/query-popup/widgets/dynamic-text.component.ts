@@ -7,12 +7,12 @@ import {
 } from '@angular/core';
 import {DomSanitizer, SafeHtml} from '@angular/platform-browser';
 
-import {Feature} from 'ol';
-import {Geometry} from 'ol/geom';
+import Feature from 'ol/Feature';
+import Geometry from 'ol/geom/Geometry';
 
+import {getPopUp} from 'hslayers-ng/common/extensions';
 import {HsLayerDescriptor} from 'hslayers-ng/types';
 import {HsQueryPopupWidgetBaseComponent} from '../query-popup-widget-base.component';
-import {getPopUp} from 'hslayers-ng/common/extensions';
 
 @Component({
   selector: 'hs-dynamic-text',

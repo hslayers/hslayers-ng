@@ -1,11 +1,12 @@
 import {TestBed} from '@angular/core/testing';
 
+import Tile from 'ol/layer/Tile';
+import TileArcGISRest from 'ol/source/TileArcGISRest';
+import TileWMS from 'ol/source/TileWMS';
 import wmsLayers from '../data/wms-layer.json';
 import {HsLayerDescriptor, HsWmsLayer} from 'hslayers-ng/types';
 import {HsLayerEditorSublayerService} from 'hslayers-ng/components/layer-manager';
 import {HsLayerManagerVisibilityService} from 'hslayers-ng/services/layer-manager';
-import {Tile} from 'ol/layer';
-import {TileArcGISRest, TileWMS} from 'ol/source';
 
 const layerManagerVisibilityServiceSpy = jasmine.createSpyObj(
   'HsLayerManagerVisibilityService',

@@ -1,7 +1,7 @@
 import {Injectable, inject} from '@angular/core';
 
-import {Layer} from 'ol/layer';
-import {Source} from 'ol/source';
+import Layer from 'ol/layer/Layer';
+import Source from 'ol/source/Source';
 import {transform} from 'ol/proj';
 
 import {AddDataUrlType, UrlDataObject} from 'hslayers-ng/types';

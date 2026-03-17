@@ -2,23 +2,24 @@ import {Component, OnInit, inject} from '@angular/core';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 
 import BaseLayer from 'ol/layer/Base';
-import {Layer} from 'ol/layer';
-import {Map} from 'ol';
-import {Source} from 'ol/source';
+import Layer from 'ol/layer/Layer';
+import Map from 'ol/Map';
+import Source from 'ol/source/Source';
 
-import {HsLanguageService} from 'hslayers-ng/services/language';
 import {
   debounce,
   instOf,
   isLayerWMS,
   isLayerIDW,
 } from 'hslayers-ng/services/utils';
+import {HsLanguageService} from 'hslayers-ng/services/language';
 import {HsLegendDescriptor} from './legend-descriptor.interface';
 import {HsLegendService} from './legend.service';
 import {HsMapService} from 'hslayers-ng/services/map';
 import {HsPanelBaseComponent} from 'hslayers-ng/common/panels';
 import {HsQueuesService} from 'hslayers-ng/services/queues';
 import {InterpolatedSource} from 'hslayers-ng/common/layers';
+
 @Component({
   selector: 'hs-legend',
   templateUrl: './legend.component.html',

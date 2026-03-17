@@ -1,11 +1,11 @@
 import {Component, inject, signal, WritableSignal, OnInit} from '@angular/core';
 
-import {METERS_PER_UNIT} from 'ol/proj';
+import {METERS_PER_UNIT} from 'ol/proj/Units';
 
-import {HsLayerEditorWidgetBaseComponent} from './layer-editor-widget-base.component';
-import {HsMapService} from 'hslayers-ng/services/map';
 import {calculateResolutionFromScale} from 'hslayers-ng/services/utils';
 import {HsLanguageService} from 'hslayers-ng/services/language';
+import {HsLayerEditorWidgetBaseComponent} from './layer-editor-widget-base.component';
+import {HsMapService} from 'hslayers-ng/services/map';
 
 @Component({
   selector: 'hs-scale-widget',

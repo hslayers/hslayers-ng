@@ -1,5 +1,8 @@
+import Feature from 'ol/Feature';
+import Point from 'ol/geom/Point';
+import VectorLayer from 'ol/layer/Vector';
+import VectorSource from 'ol/source/Vector';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
-import {Feature} from 'ol';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsEventBusServiceMock} from '../event-bus.service.mock';
 import {HsFiltersService} from 'hslayers-ng/common/filters';
@@ -7,13 +10,10 @@ import {HsLayerManagerService} from 'hslayers-ng/services/layer-manager';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsLayoutServiceMock} from '../layout.service.mock';
 import {HsWfsFilterComponent} from 'hslayers-ng/components/wfs-filter/wfs-filter.component';
-import {Point} from 'ol/geom';
-import {Vector as VectorLayer} from 'ol/layer';
-import {Vector as VectorSource} from 'ol/source';
-import {WfsFeatureAttribute} from 'hslayers-ng/types';
 import {provideHttpClient} from '@angular/common/http';
 import {provideHttpClientTesting} from '@angular/common/http/testing';
 import {provideTranslateService} from '@ngx-translate/core';
+import {WfsFeatureAttribute} from 'hslayers-ng/types';
 
 const HsLayerManagerServiceMock: jasmine.SpyObj<HsLayerManagerService> = {
   ...jasmine.createSpyObj('HsLayerManagerService', [

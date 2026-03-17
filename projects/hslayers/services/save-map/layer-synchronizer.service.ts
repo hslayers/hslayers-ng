@@ -1,26 +1,15 @@
 import * as xml2Json from 'xml-js';
 
-import {Injectable, DestroyRef, inject} from '@angular/core';
 import {filter, switchMap} from 'rxjs/operators';
 import {fromEvent} from 'rxjs';
+import {Injectable, DestroyRef, inject} from '@angular/core';
 
-import {Feature} from 'ol';
-import {Geometry} from 'ol/geom';
+import Feature from 'ol/Feature';
+import Geometry from 'ol/geom/Geometry';
+import VectorLayer from 'ol/layer/Vector';
+import VectorSource from 'ol/source/Vector';
 import {ObjectEvent} from 'ol/Object';
-import {Vector as VectorLayer} from 'ol/layer';
-import {Vector as VectorSource} from 'ol/source';
 
-import {
-  HsCommonLaymanService,
-  isLayerSynchronizable,
-  HsCommonLaymanLayerService,
-} from 'hslayers-ng/common/layman';
-import {HsEventBusService} from 'hslayers-ng/services/event-bus';
-import {HsLanguageService} from 'hslayers-ng/services/language';
-import {HsLaymanService} from './layman.service';
-import {HsLogService} from 'hslayers-ng/services/log';
-import {HsMapService} from 'hslayers-ng/services/map';
-import {HsToastService} from 'hslayers-ng/common/toast';
 import {debounce, instOf} from 'hslayers-ng/services/utils';
 import {
   getDefinition,
@@ -32,6 +21,17 @@ import {
   setHsLaymanSynchronizing,
   setLaymanLayerDescriptor,
 } from 'hslayers-ng/common/extensions';
+import {
+  HsCommonLaymanService,
+  isLayerSynchronizable,
+  HsCommonLaymanLayerService,
+} from 'hslayers-ng/common/layman';
+import {HsEventBusService} from 'hslayers-ng/services/event-bus';
+import {HsLanguageService} from 'hslayers-ng/services/language';
+import {HsLaymanService} from './layman.service';
+import {HsLogService} from 'hslayers-ng/services/log';
+import {HsMapService} from 'hslayers-ng/services/map';
+import {HsToastService} from 'hslayers-ng/common/toast';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 
 @Injectable({

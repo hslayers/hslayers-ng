@@ -1,22 +1,25 @@
 import {Injectable, NgZone, inject} from '@angular/core';
 import {Subject, buffer, debounceTime, pairwise} from 'rxjs';
 
-import {Cluster, Source} from 'ol/source';
-import {Feature} from 'ol';
-import {Image as ImageLayer, Layer, Tile} from 'ol/layer';
+import Cluster from 'ol/source/Cluster';
+import Feature from 'ol/Feature';
+import ImageLayer from 'ol/layer/Image';
+import Layer from 'ol/layer/Layer';
+import Source from 'ol/source/Source';
+import Tile from 'ol/layer/Tile';
 
-import {HsConfig} from 'hslayers-ng/config';
-import {HsEventBusService} from 'hslayers-ng/services/event-bus';
-import {HsLanguageService} from 'hslayers-ng/services/language';
-import {HsLayerDescriptor, HsLayerLoadProgress} from 'hslayers-ng/types';
-import {instOf, isLayerVectorLayer} from 'hslayers-ng/services/utils';
-import {HsLogService} from 'hslayers-ng/services/log';
-import {HsToastService} from 'hslayers-ng/common/toast';
 import {
   getBase,
   getShowInLayerManager,
   getTitle,
 } from 'hslayers-ng/common/extensions';
+import {HsConfig} from 'hslayers-ng/config';
+import {HsEventBusService} from 'hslayers-ng/services/event-bus';
+import {HsLanguageService} from 'hslayers-ng/services/language';
+import {HsLayerDescriptor, HsLayerLoadProgress} from 'hslayers-ng/types';
+import {HsLogService} from 'hslayers-ng/services/log';
+import {HsToastService} from 'hslayers-ng/common/toast';
+import {instOf, isLayerVectorLayer} from 'hslayers-ng/services/utils';
 
 @Injectable({
   providedIn: 'root',

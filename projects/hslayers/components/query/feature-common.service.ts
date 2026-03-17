@@ -1,16 +1,17 @@
 import {BehaviorSubject, Observable} from 'rxjs';
 import {Injectable, inject} from '@angular/core';
 
-import {Feature} from 'ol';
-import {Geometry} from 'ol/geom';
-import {Layer} from 'ol/layer';
-import {Source, Vector as VectorSource} from 'ol/source';
+import Feature from 'ol/Feature';
+import Geometry from 'ol/geom/Geometry';
+import Layer from 'ol/layer/Layer';
+import Source from 'ol/source/Source';
+import VectorSource from 'ol/source/Vector';
 
+import {getTitle} from 'hslayers-ng/common/extensions';
 import {HsLanguageService} from 'hslayers-ng/services/language';
 import {HsMapService} from 'hslayers-ng/services/map';
 import {HsQueryVectorService} from 'hslayers-ng/services/query';
 import {HsToastService} from 'hslayers-ng/common/toast';
-import {getTitle} from 'hslayers-ng/common/extensions';
 import {isLayerDrawable} from 'hslayers-ng/services/utils';
 
 export interface exportFormats {

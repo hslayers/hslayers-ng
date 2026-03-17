@@ -1,7 +1,7 @@
 import {Component, Input, OnInit, inject} from '@angular/core';
 
-import {Feature} from 'ol';
-import {Geometry} from 'ol/geom';
+import Feature from 'ol/Feature';
+import Geometry from 'ol/geom/Geometry';
 
 import {HsFeatureTableService} from './feature-table.service';
 import {HsLanguageService} from 'hslayers-ng/services/language';

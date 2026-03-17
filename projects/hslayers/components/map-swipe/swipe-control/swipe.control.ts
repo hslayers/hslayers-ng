@@ -2,9 +2,9 @@
  * Original code from https://github.com/Viglino/ol-ext/blob/master/src/control/Swipe.js
  */
 
-import {Control} from 'ol/control';
-import {Layer} from 'ol/layer';
-import {Source} from 'ol/source';
+import Control from 'ol/control/Control';
+import Layer from 'ol/layer/Layer';
+import Source from 'ol/source/Source';
 
 import {LayerListItem} from 'hslayers-ng/services/layer-shifting';
 
@@ -16,6 +16,7 @@ import {LayerListItem} from 'hslayers-ng/services/layer-shifting';
  *  @param position - position property of the swipe [0,1], default 0.5
  *  @param orientation - orientation property (vertical|horizontal), default vertical
  */
+
 export type SwipeControlOptions = {
   leftLayers?: LayerListItem[];
   rightLayers?: LayerListItem[];

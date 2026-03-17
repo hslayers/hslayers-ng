@@ -6,9 +6,15 @@ import {
   inject,
 } from '@angular/core';
 
-import {Feature} from 'ol';
-import {Geometry} from 'ol/geom';
+import Feature from 'ol/Feature';
+import Geometry from 'ol/geom/Geometry';
 
+import {
+  getFeatureLabel,
+  getFeatureName,
+  getFeatureTitle,
+  getFeatures,
+} from 'hslayers-ng/common/extensions';
 import {HsConfirmDialogComponent} from 'hslayers-ng/common/confirm';
 import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
 import {HsLanguageService} from 'hslayers-ng/services/language';
@@ -16,12 +22,6 @@ import {HsLayerDescriptor} from 'hslayers-ng/types';
 import {HsQueryPopupServiceModel} from '../query-popup.service.model';
 import {HsQueryPopupWidgetBaseComponent} from '../query-popup-widget-base.component';
 import {HsQueryVectorService} from 'hslayers-ng/services/query';
-import {
-  getFeatureLabel,
-  getFeatureName,
-  getFeatureTitle,
-  getFeatures,
-} from 'hslayers-ng/common/extensions';
 
 @Component({
   selector: 'hs-feature-info',

@@ -2,6 +2,7 @@ import {
   BrowserDynamicTestingModule,
   platformBrowserDynamicTesting,
 } from '@angular/platform-browser-dynamic/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {
   CUSTOM_ELEMENTS_SCHEMA,
   signal,
@@ -9,17 +10,20 @@ import {
   provideZoneChangeDetection,
   NgModule,
 } from '@angular/core';
-import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
-import {provideTranslateService, TranslatePipe} from '@ngx-translate/core';
 import {provideHttpClient, withInterceptorsFromDi} from '@angular/common/http';
 import {provideHttpClientTesting} from '@angular/common/http/testing';
+import {provideTranslateService, TranslatePipe} from '@ngx-translate/core';
 
-import {Circle, Fill, Stroke, Style} from 'ol/style';
-import {Feature} from 'ol';
-import {Point, Polygon} from 'ol/geom';
-import {Vector as VectorLayer} from 'ol/layer';
-import {Vector as VectorSource} from 'ol/source';
+import Circle from 'ol/style/Circle';
+import Feature from 'ol/Feature';
+import Fill from 'ol/style/Fill';
+import Point from 'ol/geom/Point';
+import Polygon from 'ol/geom/Polygon';
+import Stroke from 'ol/style/Stroke';
+import Style from 'ol/style/Style';
+import VectorLayer from 'ol/layer/Vector';
+import VectorSource from 'ol/source/Vector';
 
 import {HsConfig} from 'hslayers-ng/config';
 import {HsConfigMock} from './config.service.mock';
@@ -30,7 +34,6 @@ import {
   HsLayerSynchronizerService,
   HsSaveMapService,
 } from 'hslayers-ng/services/save-map';
-import {normalizeSldComparisonOperators} from 'hslayers-ng/services/utils';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsLayoutServiceMock} from './layout.service.mock';
 import {HsMapService} from 'hslayers-ng/services/map';
@@ -39,6 +42,7 @@ import {HsQueryVectorService} from 'hslayers-ng/services/query';
 import {HsSaveMapServiceMock} from './save-map.service.mock';
 import {HsStylerComponent} from 'hslayers-ng/components/styler';
 import {HsStylerService} from 'hslayers-ng/services/styler';
+import {normalizeSldComparisonOperators} from 'hslayers-ng/services/utils';
 
 class emptyMock {
   constructor() {}

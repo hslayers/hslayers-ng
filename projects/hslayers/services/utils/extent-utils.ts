@@ -1,19 +1,22 @@
 import Feature from 'ol/Feature';
-import {Geometry} from 'ol/geom';
+import Geometry from 'ol/geom/Geometry';
 import {get as getProjection, transform} from 'ol/proj';
 import {fromExtent as polygonFromExtent} from 'ol/geom/Polygon';
 
-import {Stroke, Style, Fill} from 'ol/style';
-import VectorSource from 'ol/source/Vector';
+import Fill from 'ol/style/Fill';
+import Stroke from 'ol/style/Stroke';
+import Style from 'ol/style/Style';
 import VectorLayer from 'ol/layer/Vector';
+import VectorSource from 'ol/source/Vector';
 
-import {getHighlighted} from 'hslayers-ng/common/extensions';
 import {BoundingBoxObject} from 'hslayers-ng/types';
+import {getHighlighted} from 'hslayers-ng/common/extensions';
 
 /**
  * @param record - Record of one dataset from Get Records response
  * Create extent features for displaying extent of loaded dataset records in map
  */
+
 export function addExtentFeature(
   record,
   mapProjection,

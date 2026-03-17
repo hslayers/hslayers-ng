@@ -1,11 +1,14 @@
 import {Injectable, inject} from '@angular/core';
 
-import {Feature} from 'ol';
-import {Layer, Vector as VectorLayer} from 'ol/layer';
-import {Source, Vector as VectorSource} from 'ol/source';
-import {get as getProjection} from 'ol/proj';
+import Feature from 'ol/Feature';
+import Layer from 'ol/layer/Layer';
+import Source from 'ol/source/Source';
+import VectorLayer from 'ol/layer/Vector';
+import VectorSource from 'ol/source/Vector';
 import {createDefaultStyle} from 'ol/style/Style';
+import {get as getProjection} from 'ol/proj';
 
+import {defaultStyle, HsStylerService} from 'hslayers-ng/services/styler';
 import {HsAddDataCommonFileService} from '../common-file.service';
 import {HsAddDataService} from '../add-data.service';
 import {
@@ -17,7 +20,6 @@ import {
 } from 'hslayers-ng/common/layman';
 import {HsLaymanService} from 'hslayers-ng/services/save-map';
 import {HsMapService} from 'hslayers-ng/services/map';
-import {defaultStyle, HsStylerService} from 'hslayers-ng/services/styler';
 import {
   OverwriteResponse,
   UpsertLayerObject,

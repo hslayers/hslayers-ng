@@ -1,7 +1,7 @@
-import {Feature} from 'ol';
-import {Geometry} from 'ol/geom';
-import {Layer} from 'ol/layer';
-import {Source} from 'ol/source';
+import Feature from 'ol/Feature';
+import Geometry from 'ol/geom/Geometry';
+import Layer from 'ol/layer/Layer';
+import Source from 'ol/source/Source';
 
 export type DOMFeatureLink = {
   domSelector: string;

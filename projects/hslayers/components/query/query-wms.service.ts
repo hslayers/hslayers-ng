@@ -1,19 +1,19 @@
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Injectable, inject} from '@angular/core';
 
-import {Feature} from 'ol';
-import {Geometry} from 'ol/geom';
-import {Image as ImageLayer, Layer, Tile} from 'ol/layer';
-import {ImageWMS, Source, TileWMS, WMTS} from 'ol/source';
-import {GeoJSON, WMSGetFeatureInfo} from 'ol/format';
+import Feature from 'ol/Feature';
+import GeoJSON from 'ol/format/GeoJSON';
+import Geometry from 'ol/geom/Geometry';
+import ImageLayer from 'ol/layer/Image';
+import ImageWMS from 'ol/source/ImageWMS';
+import Layer from 'ol/layer/Layer';
+import Source from 'ol/source/Source';
+import Tile from 'ol/layer/Tile';
+import TileWMS from 'ol/source/TileWMS';
+import WMSGetFeatureInfo from 'ol/format/WMSGetFeatureInfo';
+import WMTS from 'ol/source/WMTS';
 import {lastValueFrom} from 'rxjs';
 
-import {HsLanguageService} from 'hslayers-ng/services/language';
-import {getLayerName, HsProxyService, instOf} from 'hslayers-ng/services/utils';
-import {HsLogService} from 'hslayers-ng/services/log';
-import {HsMapService} from 'hslayers-ng/services/map';
-import {HsQueryBaseService} from 'hslayers-ng/services/query';
-import {HsQueryWmtsService} from './query-wmts.service';
 import {
   getBase,
   getFeatureInfoLang,
@@ -22,6 +22,12 @@ import {
   getPopupClass,
   getQueryFilter,
 } from 'hslayers-ng/common/extensions';
+import {getLayerName, HsProxyService, instOf} from 'hslayers-ng/services/utils';
+import {HsLanguageService} from 'hslayers-ng/services/language';
+import {HsLogService} from 'hslayers-ng/services/log';
+import {HsMapService} from 'hslayers-ng/services/map';
+import {HsQueryBaseService} from 'hslayers-ng/services/query';
+import {HsQueryWmtsService} from './query-wmts.service';
 import {jsonGetFeatureInfo} from 'hslayers-ng/common/get-feature-info';
 
 @Injectable({

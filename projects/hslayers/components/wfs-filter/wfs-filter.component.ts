@@ -12,11 +12,19 @@ import {HttpClient} from '@angular/common/http';
 import {takeUntilDestroyed, toSignal} from '@angular/core/rxjs-interop';
 
 import * as olFormatFilter from 'ol/format/filter';
-import {Vector as VectorLayer} from 'ol/layer';
-import {Vector as VectorSource} from 'ol/source';
+import VectorLayer from 'ol/layer/Vector';
+import VectorSource from 'ol/source/Vector';
 import {catchError, filter, lastValueFrom, map, switchMap, tap} from 'rxjs';
 import {TranslatePipe} from '@ngx-translate/core';
 
+import {
+  getDefinition,
+  getName,
+  getWfsAttributes,
+  getWfsUrl,
+  getWorkspace,
+  setWfsAttributes,
+} from 'hslayers-ng/common/extensions';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsFiltersComponent, HsFiltersService} from 'hslayers-ng/common/filters';
 import {HsLayerDescriptor, WfsFeatureAttribute} from 'hslayers-ng/types';
@@ -29,16 +37,8 @@ import {
   HsPanelBaseComponent,
   HsPanelHeaderComponent,
 } from 'hslayers-ng/common/panels';
-import {HsToastService} from 'hslayers-ng/common/toast';
 import {HsProxyService, instOf} from 'hslayers-ng/services/utils';
-import {
-  getDefinition,
-  getName,
-  getWfsAttributes,
-  getWfsUrl,
-  getWorkspace,
-  setWfsAttributes,
-} from 'hslayers-ng/common/extensions';
+import {HsToastService} from 'hslayers-ng/common/toast';
 
 @Component({
   selector: 'hs-wfs-filter',

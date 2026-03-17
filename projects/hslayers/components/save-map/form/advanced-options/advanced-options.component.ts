@@ -6,18 +6,18 @@ import {
   ReactiveFormsModule,
 } from '@angular/forms';
 
-import {Layer} from 'ol/layer';
-import {Source} from 'ol/source';
+import Layer from 'ol/layer/Layer';
+import Source from 'ol/source/Source';
 import {TranslatePipe} from '@ngx-translate/core';
 
-import {HsMapService} from 'hslayers-ng/services/map';
-import {HsSaveMapService} from 'hslayers-ng/services/save-map';
 import {debounce} from 'hslayers-ng/services/utils';
 import {
   getBase,
   getShowInLayerManager,
   getTitle,
 } from 'hslayers-ng/common/extensions';
+import {HsMapService} from 'hslayers-ng/services/map';
+import {HsSaveMapService} from 'hslayers-ng/services/save-map';
 
 export type saveMapLayer = {
   checked: boolean;

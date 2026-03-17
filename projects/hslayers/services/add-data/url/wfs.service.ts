@@ -1,10 +1,11 @@
-import {HttpClient} from '@angular/common/http';
 import {computed, Injectable, inject} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
 import {Subject, finalize, takeUntil} from 'rxjs';
 
+import Layer from 'ol/layer/Layer';
+import Source from 'ol/source/Source';
+import VectorLayer from 'ol/layer/Vector';
 import * as xml2Json from 'xml-js';
-import {Layer, Vector as VectorLayer} from 'ol/layer';
-import {Source} from 'ol/source';
 import {get, transformExtent} from 'ol/proj';
 
 import {
@@ -22,14 +23,14 @@ import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsLogService} from 'hslayers-ng/services/log';
 import {HsWfsGetCapabilitiesService} from 'hslayers-ng/services/get-capabilities';
 
-import {WfsSource} from 'hslayers-ng/common/layers';
-import {setCluster} from 'hslayers-ng/common/extensions';
 import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
 import {
   HsProxyService,
   paramsToURLWoEncode,
   undefineEmptyString,
 } from 'hslayers-ng/services/utils';
+import {setCluster} from 'hslayers-ng/common/extensions';
+import {WfsSource} from 'hslayers-ng/common/layers';
 
 type WfsCapabilitiesLayer = {
   Abstract: string;

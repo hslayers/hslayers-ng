@@ -1,5 +1,5 @@
-import {Feature} from 'ol';
-import {Geometry} from 'ol/geom';
+import Feature from 'ol/Feature';
+import Geometry from 'ol/geom/Geometry';
 import {SenslogResponse} from './types/senslog-response.type';
 import {SenslogSensor} from './types/senslog-sensor.type';
 

@@ -3,7 +3,8 @@ import * as xml2Json from 'xml-js';
 import {HttpClient} from '@angular/common/http';
 import {Injectable, inject} from '@angular/core';
 
-import {Layer} from 'ol/layer';
+import Layer from 'ol/layer/Layer';
+import Source from 'ol/source/Source';
 import {
   Observable,
   catchError,
@@ -14,11 +15,17 @@ import {
   switchMap,
   take,
 } from 'rxjs';
-import {Source} from 'ol/source';
 import {transformExtent} from 'ol/proj';
 
 import {CswLayersDialogComponent} from 'hslayers-ng/common/dialog-csw-layers';
 import {DuplicateHandling, HsMapService} from 'hslayers-ng/services/map';
+import {
+  getTitle,
+  setFromBaseComposition,
+  setIgnorePathZIndex,
+  setMetadata,
+  setSwipeSide,
+} from 'hslayers-ng/common/extensions';
 import {
   HsCommonLaymanService,
   getLaymanFriendlyLayerName,
@@ -35,21 +42,14 @@ import {
   HsLayerManagerService,
   HsLayerManagerVisibilityService,
 } from 'hslayers-ng/services/layer-manager';
-import {HsLayoutService} from 'hslayers-ng/services/layout';
-import {HsLogService} from 'hslayers-ng/services/log';
-import {HsToastService} from 'hslayers-ng/common/toast';
 import {
   HslayersLayerJSON,
   LaymanCompositionDescriptor,
   SERVICES_SUPPORTED_BY_URL,
 } from 'hslayers-ng/types';
-import {
-  getTitle,
-  setFromBaseComposition,
-  setIgnorePathZIndex,
-  setMetadata,
-  setSwipeSide,
-} from 'hslayers-ng/common/extensions';
+import {HsLayoutService} from 'hslayers-ng/services/layout';
+import {HsLogService} from 'hslayers-ng/services/log';
+import {HsToastService} from 'hslayers-ng/common/toast';
 import {
   parseExtent,
   transformExtentValue,

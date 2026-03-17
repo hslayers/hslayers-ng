@@ -1,6 +1,6 @@
-import {Feature} from 'ol';
-import {Geometry} from 'ol/geom';
-import {Style} from 'ol/style';
+import Feature from 'ol/Feature';
+import Geometry from 'ol/geom/Geometry';
+import Style from 'ol/style/Style';
 import {StyleFunction} from 'ol/style/Style';
 
 import {AccessRightsModel} from '../../access-rights.model';

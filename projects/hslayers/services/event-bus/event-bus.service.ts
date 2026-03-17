@@ -1,11 +1,15 @@
 import {BehaviorSubject, ReplaySubject, Subject} from 'rxjs';
 import {Injectable} from '@angular/core';
 
-import {Feature, Map, MapBrowserEvent} from 'ol';
-import {Geometry} from 'ol/geom';
-import {Layer, Vector as VectorLayer} from 'ol/layer';
-import {Select} from 'ol/interaction';
-import {Source, Vector as VectorSource} from 'ol/source';
+import Feature from 'ol/Feature';
+import Geometry from 'ol/geom/Geometry';
+import Layer from 'ol/layer/Layer';
+import Map from 'ol/Map';
+import MapBrowserEvent from 'ol/MapBrowserEvent';
+import Select from 'ol/interaction/Select';
+import Source from 'ol/source/Source';
+import VectorLayer from 'ol/layer/Vector';
+import VectorSource from 'ol/source/Vector';
 
 import {
   ClickedCoordinates,
@@ -26,6 +30,7 @@ import {HsDimensionDescriptor} from 'hslayers-ng/common/dimensions';
  * @example
  * HsEventBusService.layerLoaded.next();
  */
+
 @Injectable({
   providedIn: 'root',
 })

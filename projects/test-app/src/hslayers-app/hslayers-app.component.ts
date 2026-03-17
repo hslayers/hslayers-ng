@@ -8,18 +8,19 @@ import {
   HsOverlayConstructorService,
   HsPanelConstructorService,
 } from 'hslayers-ng/services/panel-constructor';
-import {HsSidebarService} from 'hslayers-ng/services/sidebar';
 import {HsProxyService} from 'hslayers-ng/services/utils';
+import {HsSidebarService} from 'hslayers-ng/services/sidebar';
 
 import {createDefaultLayers} from './default-layers';
 import {PopupWidgetComponent} from './popup-widget.component';
 import {SomeComponent} from './some-panel/some-panel.component';
 import {symbolizerIcons} from './symbolizer-icons';
-import {Tile} from 'ol/layer';
-import {OSM} from 'ol/source';
+import Tile from 'ol/layer/Tile';
+import OSM from 'ol/source/OSM';
 /**
  * Boolean flag to control whether to include default layers in the app.
  */
+
 const WITH_LAYERS = true;
 
 @Component({

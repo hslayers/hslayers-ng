@@ -1,14 +1,19 @@
 import {Injectable, inject} from '@angular/core';
 import {Subject} from 'rxjs';
 
-import {Cluster, Source, Vector as VectorSource} from 'ol/source';
-import {Feature} from 'ol';
-import {GeoJSON} from 'ol/format';
-import {Layer} from 'ol/layer';
+import Cluster from 'ol/source/Cluster';
+import Feature from 'ol/Feature';
+import GeoJSON from 'ol/format/GeoJSON';
+import Layer from 'ol/layer/Layer';
+import Source from 'ol/source/Source';
+import VectorSource from 'ol/source/Vector';
 
+import {getThumbnail, getTitle} from 'hslayers-ng/common/extensions';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsLayerDescriptor} from 'hslayers-ng/types';
 import {HsLayerSelectorService} from './layer-selector.service';
+import {HsLogService} from 'hslayers-ng/services/log';
+import {HsMapService} from 'hslayers-ng/services/map';
 import {
   isLayerWMS,
   isLayerGeoJSONSource,
@@ -24,9 +29,6 @@ import {
   getLayerParams,
   isLayerClustered,
 } from 'hslayers-ng/services/utils';
-import {HsLogService} from 'hslayers-ng/services/log';
-import {HsMapService} from 'hslayers-ng/services/map';
-import {getThumbnail, getTitle} from 'hslayers-ng/common/extensions';
 
 @Injectable({
   providedIn: 'root',

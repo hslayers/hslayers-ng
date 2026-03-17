@@ -1,6 +1,7 @@
 import {Injectable, inject} from '@angular/core';
 import {Subject} from 'rxjs';
 
+import Feature from 'ol/Feature';
 import {
   Cartographic,
   Entity,
@@ -11,13 +12,12 @@ import {
   Viewer,
   defined,
 } from 'cesium';
-import {Feature} from 'ol';
 
 import {HsConfig} from 'hslayers-ng/config';
 import {HsMapService} from 'hslayers-ng/services/map';
 
-import {HsCesiumQueryPopupService} from './query-popup.service';
 import {debounce} from 'hslayers-ng/services/utils';
+import {HsCesiumQueryPopupService} from './query-popup.service';
 
 @Injectable({
   providedIn: 'root',

@@ -2,13 +2,16 @@ import {Component, OnDestroy, OnInit, inject} from '@angular/core';
 import {NgClass} from '@angular/common';
 import {TranslatePipe} from '@ngx-translate/core';
 
+import Feature from 'ol/Feature';
+import LineString from 'ol/geom/LineString';
+import Polygon from 'ol/geom/Polygon';
 import * as polygonClipping from 'polygon-clipping';
 import polygonSplitter from 'polygon-splitter';
-import {Feature} from 'ol';
-import {LineString, Polygon, SimpleGeometry} from 'ol/geom';
-import {Vector} from 'ol/source';
-import {Vector as VectorLayer} from 'ol/layer';
+import SimpleGeometry from 'ol/geom/SimpleGeometry';
+import Vector from 'ol/source/Vector';
+import VectorLayer from 'ol/layer/Vector';
 
+import {defaultStyle} from 'hslayers-ng/services/styler';
 import {HsDrawService} from 'hslayers-ng/services/draw';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsLanguageService} from 'hslayers-ng/services/language';
@@ -19,7 +22,6 @@ import {
   HsQueryVectorService,
 } from 'hslayers-ng/services/query';
 import {HsToastService} from 'hslayers-ng/common/toast';
-import {defaultStyle} from 'hslayers-ng/services/styler';
 
 declare type HsModifyOperations =
   | 'difference'

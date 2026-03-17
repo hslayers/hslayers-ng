@@ -2,22 +2,23 @@ import {
   BrowserDynamicTestingModule,
   platformBrowserDynamicTesting,
 } from '@angular/platform-browser-dynamic/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {
   CUSTOM_ELEMENTS_SCHEMA,
   provideZoneChangeDetection,
   NgModule,
 } from '@angular/core';
-import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
 import {provideHttpClient, withInterceptorsFromDi} from '@angular/common/http';
 import {provideHttpClientTesting} from '@angular/common/http/testing';
 import {provideTranslateService, TranslatePipe} from '@ngx-translate/core';
 
-import {of} from 'rxjs';
+import VectorLayer from 'ol/layer/Vector';
+import VectorSource from 'ol/source/Vector';
 import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
-import {Vector as VectorLayer} from 'ol/layer';
-import {Vector as VectorSource} from 'ol/source';
+import {of} from 'rxjs';
 
+import {createMockLaymanService} from './common/layman/layman.service.mock';
 import {
   HsAddDataOwsService,
   HsAddDataVectorService,
@@ -39,7 +40,7 @@ import {
   HsQueryBaseService,
   HsQueryVectorService,
 } from 'hslayers-ng/services/query';
-import {createMockLaymanService} from './common/layman/layman.service.mock';
+
 class emptyMock {
   constructor() {}
 }

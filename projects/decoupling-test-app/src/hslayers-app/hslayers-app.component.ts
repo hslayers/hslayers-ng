@@ -1,11 +1,13 @@
 import {Component} from '@angular/core';
 
-import {Feature} from 'ol';
-import {GeoJSON} from 'ol/format';
-import {OSM, Vector as VectorSource, XYZ} from 'ol/source';
-import {Point} from 'ol/geom';
-import {Tile} from 'ol/layer';
-import {Vector as VectorLayer} from 'ol/layer';
+import Feature from 'ol/Feature';
+import GeoJSON from 'ol/format/GeoJSON';
+import OSM from 'ol/source/OSM';
+import Point from 'ol/geom/Point';
+import Tile from 'ol/layer/Tile';
+import VectorLayer from 'ol/layer/Vector';
+import VectorSource from 'ol/source/Vector';
+import XYZ from 'ol/source/XYZ';
 
 import {HsConfig} from 'hslayers-ng/config';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';

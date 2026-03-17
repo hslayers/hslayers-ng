@@ -1,6 +1,8 @@
-import {Feature} from 'ol';
-import {Layer, Vector as VectorLayer} from 'ol/layer';
-import {Source, Vector as VectorSource} from 'ol/source';
+import Feature from 'ol/Feature';
+import Layer from 'ol/layer/Layer';
+import Source from 'ol/source/Source';
+import VectorLayer from 'ol/layer/Vector';
+import VectorSource from 'ol/source/Vector';
 
 import {AccessRightsModel} from '../../access-rights.model';
 import {HsLayerDescriptor} from '../../layer-manager/layer-descriptor.interface';

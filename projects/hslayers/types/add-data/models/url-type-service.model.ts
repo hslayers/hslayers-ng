@@ -1,5 +1,5 @@
-import {Layer} from 'ol/layer';
-import {Source} from 'ol/source';
+import Layer from 'ol/layer/Layer';
+import Source from 'ol/source/Source';
 
 import {AddLayersRecursivelyOptions} from '../recursive-options.type';
 import {CapabilitiesResponseWrapper} from '../../get-capabilities/capabilities-response-wrapper';

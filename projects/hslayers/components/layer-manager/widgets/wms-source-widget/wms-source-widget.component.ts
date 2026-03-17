@@ -3,16 +3,18 @@ import {Component, inject} from '@angular/core';
 import {Observable, map, tap} from 'rxjs';
 import {TranslatePipe} from '@ngx-translate/core';
 
-import {Image as ImageLayer, Tile} from 'ol/layer';
-import {ImageWMS, TileWMS} from 'ol/source';
+import ImageLayer from 'ol/layer/Image';
+import ImageWMS from 'ol/source/ImageWMS';
+import Tile from 'ol/layer/Tile';
+import TileWMS from 'ol/source/TileWMS';
 
 import {HsConfirmDialogComponent} from 'hslayers-ng/common/confirm';
 import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
 import {HsLayerEditorWidgetBaseComponent} from '../layer-editor-widget-base.component';
 import {HsLayerSelectorService} from 'hslayers-ng/services/layer-manager';
 import {HsLayerShiftingService} from 'hslayers-ng/services/layer-shifting';
-import {instOf, isLayerWMS} from 'hslayers-ng/services/utils';
 import {HsMapService} from 'hslayers-ng/services/map';
+import {instOf, isLayerWMS} from 'hslayers-ng/services/utils';
 
 @Component({
   selector: 'hs-wms-source-widget',

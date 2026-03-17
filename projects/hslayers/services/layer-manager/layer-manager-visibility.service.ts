@@ -1,14 +1,14 @@
 import {Injectable, inject} from '@angular/core';
 
-import {Layer} from 'ol/layer';
-import {Source} from 'ol/source';
+import Layer from 'ol/layer/Layer';
+import Source from 'ol/source/Source';
 
+import {getBase, getExclusive, getPath} from 'hslayers-ng/common/extensions';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsLayerDescriptor, HsTerrainLayerDescriptor} from 'hslayers-ng/types';
 import {HsLayermanagerDataObject} from './layer-manager.service';
 import {HsMapService} from 'hslayers-ng/services/map';
-import {getBase, getExclusive, getPath} from 'hslayers-ng/common/extensions';
 import {isLayerVectorLayer} from 'hslayers-ng/services/utils';
 
 @Injectable({

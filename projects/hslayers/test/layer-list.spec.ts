@@ -4,25 +4,25 @@ import {
   platformBrowserDynamicTesting,
 } from '@angular/platform-browser-dynamic/testing';
 import {
-  CUSTOM_ELEMENTS_SCHEMA,
-  signal,
-  provideZoneChangeDetection,
-  NgModule,
-} from '@angular/core';
-import {
   ComponentFixture,
   TestBed,
   fakeAsync,
   tick,
 } from '@angular/core/testing';
+import {
+  CUSTOM_ELEMENTS_SCHEMA,
+  signal,
+  provideZoneChangeDetection,
+  NgModule,
+} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
 import {provideHttpClient, withInterceptorsFromDi} from '@angular/common/http';
 import {provideHttpClientTesting} from '@angular/common/http/testing';
 import {provideTranslateService, TranslatePipe} from '@ngx-translate/core';
 
-import {Image as ImageLayer} from 'ol/layer';
-import {ImageWMS} from 'ol/source';
+import ImageLayer from 'ol/layer/Image';
+import ImageWMS from 'ol/source/ImageWMS';
 
 import {HsAddDataOwsService} from 'hslayers-ng/services/add-data';
 import {

@@ -1,20 +1,22 @@
 import {HttpClient} from '@angular/common/http';
 import {Injectable, inject} from '@angular/core';
 
-import {Layer, Tile} from 'ol/layer';
-import {Source, TileWMS} from 'ol/source';
+import Layer from 'ol/layer/Layer';
+import Source from 'ol/source/Source';
+import Tile from 'ol/layer/Tile';
+import TileWMS from 'ol/source/TileWMS';
 import {lastValueFrom, takeUntil} from 'rxjs';
 
 import {CapabilitiesResponseWrapper} from 'hslayers-ng/types';
-import {HsCapabilityCacheService} from './capability-cache.service';
-import {HsEventBusService} from 'hslayers-ng/services/event-bus';
-import {HsLogService} from 'hslayers-ng/services/log';
-import {HsMapService} from 'hslayers-ng/services/map';
 import {
   getParamsFromUrl,
   HsProxyService,
   getPreferredFormat,
 } from 'hslayers-ng/services/utils';
+import {HsCapabilityCacheService} from './capability-cache.service';
+import {HsEventBusService} from 'hslayers-ng/services/event-bus';
+import {HsLogService} from 'hslayers-ng/services/log';
+import {HsMapService} from 'hslayers-ng/services/map';
 import {IGetCapabilities} from './get-capabilities.interface';
 
 @Injectable({providedIn: 'root'})

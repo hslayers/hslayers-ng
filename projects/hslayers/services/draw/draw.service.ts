@@ -3,17 +3,39 @@ import {isPlatformBrowser} from '@angular/common';
 import {lastValueFrom, merge} from 'rxjs';
 import {takeUntilDestroyed, toObservable} from '@angular/core/rxjs-interop';
 
-import {Circle} from 'ol/geom';
-import {Cluster, Source, Vector as VectorSource} from 'ol/source';
-import {DragBox, Draw, Modify, Snap} from 'ol/interaction';
+import Circle from 'ol/geom/Circle';
+import Cluster from 'ol/source/Cluster';
+import DragBox from 'ol/interaction/DragBox';
+import Draw from 'ol/interaction/Draw';
+import Feature from 'ol/Feature';
+import Layer from 'ol/layer/Layer';
+import MapBrowserEvent from 'ol/MapBrowserEvent';
+import Modify from 'ol/interaction/Modify';
+import Snap from 'ol/interaction/Snap';
+import Source from 'ol/source/Source';
+import VectorLayer from 'ol/layer/Vector';
+import VectorSource from 'ol/source/Vector';
 import {DrawEvent} from 'ol/interaction/Draw';
 import {EventsKey} from 'ol/events';
-import {Feature, MapBrowserEvent} from 'ol';
-import {Layer, Vector as VectorLayer} from 'ol/layer';
 import {fromCircle} from 'ol/geom/Polygon';
 import {platformModifierKeyOnly} from 'ol/events/condition';
 import {unByKey} from 'ol/Observable';
 
+import {defaultStyle} from 'hslayers-ng/services/styler';
+import {
+  getEditor,
+  getName,
+  getSld,
+  getTitle,
+  setDefinition,
+  setEditor,
+  setPath,
+  setRemovable,
+  setShowInLayerManager,
+  setSld,
+  setTitle,
+  setWorkspace,
+} from 'hslayers-ng/common/extensions';
 import {
   HsAddDataOwsService,
   HsAddDataVectorService,
@@ -39,21 +61,6 @@ import {
 } from 'hslayers-ng/services/query';
 import {HsRemoveLayerDialogService} from 'hslayers-ng/common/remove-multiple';
 import {HsToastService} from 'hslayers-ng/common/toast';
-import {defaultStyle} from 'hslayers-ng/services/styler';
-import {
-  getEditor,
-  getName,
-  getSld,
-  getTitle,
-  setDefinition,
-  setEditor,
-  setPath,
-  setRemovable,
-  setShowInLayerManager,
-  setSld,
-  setTitle,
-  setWorkspace,
-} from 'hslayers-ng/common/extensions';
 import {isLayerClustered, isLayerDrawable} from 'hslayers-ng/services/utils';
 
 type ActivateParams = {

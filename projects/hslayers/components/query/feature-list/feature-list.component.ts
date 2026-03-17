@@ -4,9 +4,11 @@ import {FormsModule} from '@angular/forms';
 import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
 import {TranslatePipe} from '@ngx-translate/core';
 
-import {Feature, getUid} from 'ol';
-import {Geometry} from 'ol/geom';
+import Feature from 'ol/Feature';
+import Geometry from 'ol/geom/Geometry';
+import {getUid} from 'ol/util';
 
+import {getTitle} from 'hslayers-ng/common/extensions';
 import {HsConfirmDialogComponent} from 'hslayers-ng/common/confirm';
 import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
 import {HsDownloadDirective} from 'hslayers-ng/common/download';
@@ -16,7 +18,6 @@ import {
   HsQueryVectorService,
 } from 'hslayers-ng/services/query';
 import {HsQueryFeatureComponent} from '../feature/feature.component';
-import {getTitle} from 'hslayers-ng/common/extensions';
 
 @Component({
   selector: 'hs-query-feature-list',

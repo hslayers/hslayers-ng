@@ -3,6 +3,22 @@ import {Injectable, inject} from '@angular/core';
 import {lastValueFrom} from 'rxjs';
 
 import dayjs from 'dayjs';
+import Feature from 'ol/Feature';
+import GeoJSON from 'ol/format/GeoJSON';
+import Group from 'ol/layer/Group';
+import ImageLayer from 'ol/layer/Image';
+import ImageSource from 'ol/source/Image';
+import ImageWMS from 'ol/source/ImageWMS';
+import KML from 'ol/format/KML';
+import Layer from 'ol/layer/Layer';
+import OSM from 'ol/source/OSM';
+import Source from 'ol/source/Source';
+import TileLayer from 'ol/layer/Tile';
+import TileSource from 'ol/source/Tile';
+import TileWMS from 'ol/source/TileWMS';
+import VectorLayer from 'ol/layer/Vector';
+import VectorSource from 'ol/source/Vector';
+import XYZ from 'ol/source/XYZ';
 import {
   ArcGISTiledElevationTerrainProvider,
   Cartesian3,
@@ -22,43 +38,24 @@ import {
   WebMercatorTilingScheme,
   createWorldTerrainAsync,
 } from 'cesium';
-import {Feature} from 'ol';
-import {GeoJSON, KML} from 'ol/format';
-import {
-  Group,
-  Image as ImageLayer,
-  Layer,
-  Tile as TileLayer,
-  Vector as VectorLayer,
-} from 'ol/layer';
-import {
-  Image as ImageSource,
-  ImageWMS,
-  OSM,
-  Source,
-  Tile as TileSource,
-  TileWMS,
-  Vector as VectorSource,
-  XYZ,
-} from 'ol/source';
 import {get as getProjection, transform} from 'ol/proj';
 
-import {HsConfig} from 'hslayers-ng/config';
-import {HsEventBusService} from 'hslayers-ng/services/event-bus';
+import {
+  getDimensions,
+  getMinimumTerrainLevel,
+  getTitle,
+} from 'hslayers-ng/common/extensions';
 import {
   getLayerParams,
   getParamsFromUrl,
   instOf,
   isFunction,
 } from 'hslayers-ng/services/utils';
+import {HsConfig} from 'hslayers-ng/config';
+import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsLogService} from 'hslayers-ng/services/log';
 import {HsMapService} from 'hslayers-ng/services/map';
 import {HsTerrainLayerDescriptor} from 'hslayers-ng/types';
-import {
-  getDimensions,
-  getMinimumTerrainLevel,
-  getTitle,
-} from 'hslayers-ng/common/extensions';
 
 import {HsCesiumConfig} from './hscesium-config.service';
 import {OlCesiumObjectMapItem} from './ol-cesium-object-map-item.class';

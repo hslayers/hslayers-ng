@@ -1,7 +1,7 @@
 import {Component, DestroyRef, Input, OnInit, inject} from '@angular/core';
 
-import {Layer} from 'ol/layer';
-import {Source} from 'ol/source';
+import Layer from 'ol/layer/Layer';
+import Source from 'ol/source/Source';
 
 import {
   HsAddDataCommonFileService,
@@ -9,8 +9,8 @@ import {
 } from 'hslayers-ng/services/add-data';
 import {HsHistoryListService} from 'hslayers-ng/common/history-list';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
-import {VectorDataObject} from 'hslayers-ng/types';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
+import {VectorDataObject} from 'hslayers-ng/types';
 
 @Component({
   selector: 'hs-url-vector',

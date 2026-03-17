@@ -1,6 +1,6 @@
+import Layer from 'ol/layer/Layer';
+import Source from 'ol/source/Source';
 import {HsSublayer} from './hs-sublayer.interface';
-import {Layer} from 'ol/layer';
-import {Source} from 'ol/source';
 import {Subject} from 'rxjs';
 
 export type HsLayerTimeDescriptor = {

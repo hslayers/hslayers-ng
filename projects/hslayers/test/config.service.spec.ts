@@ -1,8 +1,9 @@
+import OSM from 'ol/source/OSM';
+import Tile from 'ol/layer/Tile';
+import TileWMS from 'ol/source/TileWMS';
 import {HsConfig, HsConfigObject} from 'hslayers-ng/config';
-import {OSM, TileWMS} from 'ol/source';
-import {TestBed} from '@angular/core/testing';
-import {Tile} from 'ol/layer';
 import {provideTranslateService} from '@ngx-translate/core';
+import {TestBed} from '@angular/core/testing';
 
 describe('HsConfig', () => {
   let service: HsConfig;

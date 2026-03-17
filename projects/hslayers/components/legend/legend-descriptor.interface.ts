@@ -1,7 +1,7 @@
 import {SafeHtml} from '@angular/platform-browser';
 
-import {Layer} from 'ol/layer';
-import {Source} from 'ol/source';
+import Layer from 'ol/layer/Layer';
+import Source from 'ol/source/Source';
 
 export interface HsLegendDescriptor {
   autoLegend?: boolean;

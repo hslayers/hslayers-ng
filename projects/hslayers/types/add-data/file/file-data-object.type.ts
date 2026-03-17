@@ -1,5 +1,5 @@
-import {Layer} from 'ol/layer';
-import {Source} from 'ol/source';
+import Layer from 'ol/layer/Layer';
+import Source from 'ol/source/Source';
 
 import {FileFormDataObject} from './file-form-data.type';
 import {IntersectWithTooltip} from '../../type-intersection.type';

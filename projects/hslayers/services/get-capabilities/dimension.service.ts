@@ -1,11 +1,17 @@
 import {Injectable, inject} from '@angular/core';
 
-import {Layer} from 'ol/layer';
-import {Source, Vector as VectorSource, XYZ} from 'ol/source';
+import Layer from 'ol/layer/Layer';
+import Source from 'ol/source/Source';
+import VectorSource from 'ol/source/Vector';
+import XYZ from 'ol/source/XYZ';
 
+import {getDimensions} from 'hslayers-ng/common/extensions';
 import {HsDimensionDescriptor} from 'hslayers-ng/common/dimensions';
 import {HsDimensionTimeService} from './dimension-time.service';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
+import {HsLogService} from 'hslayers-ng/services/log';
+import {HsMapService} from 'hslayers-ng/services/map';
+import {HsWmsLayer, WmsDimension} from 'hslayers-ng/types';
 import {
   instOf,
   hasNestedLayers,
@@ -13,10 +19,6 @@ import {
   getLayerParams,
   updateLayerParams,
 } from 'hslayers-ng/services/utils';
-import {HsLogService} from 'hslayers-ng/services/log';
-import {HsMapService} from 'hslayers-ng/services/map';
-import {HsWmsLayer, WmsDimension} from 'hslayers-ng/types';
-import {getDimensions} from 'hslayers-ng/common/extensions';
 
 @Injectable({
   providedIn: 'root',

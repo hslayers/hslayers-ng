@@ -1,25 +1,29 @@
 import {DomSanitizer, SafeHtml} from '@angular/platform-browser';
 import {Injectable, NgZone, PLATFORM_ID, inject} from '@angular/core';
-import {Subject} from 'rxjs';
 import {isPlatformBrowser} from '@angular/common';
+import {Subject} from 'rxjs';
 
-import {Circle as CircleStyle, Fill, Stroke, Style} from 'ol/style';
+import CircleStyle from 'ol/style/Circle';
+import Feature from 'ol/Feature';
+import Fill from 'ol/style/Fill';
+import Map from 'ol/Map';
+import Point from 'ol/geom/Point';
+import Select from 'ol/interaction/Select';
+import Stroke from 'ol/style/Stroke';
+import Style from 'ol/style/Style';
+import Vector from 'ol/source/Vector';
+import VectorLayer from 'ol/layer/Vector';
 import {Coordinate, createStringXY, toStringHDMS} from 'ol/coordinate';
-import {Feature, Map} from 'ol';
 import {FeatureLike} from 'ol/Feature';
-import {Point} from 'ol/geom';
-import {Select} from 'ol/interaction';
-import {Vector} from 'ol/source';
-import {Vector as VectorLayer} from 'ol/layer';
 import {transform} from 'ol/proj';
 
 import {HsConfig} from 'hslayers-ng/config';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
+import {HsFeatureDescriptor} from 'hslayers-ng/types';
 import {HsLanguageService} from 'hslayers-ng/services/language';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsMapService} from 'hslayers-ng/services/map';
 import {HsSaveMapService} from 'hslayers-ng/services/save-map';
-import {HsFeatureDescriptor} from 'hslayers-ng/types';
 
 export type HsProjectedCoordinatesDescription = {
   /**

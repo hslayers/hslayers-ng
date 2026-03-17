@@ -1,8 +1,9 @@
+import Feature from 'ol/Feature';
+import GeoJSON from 'ol/format/GeoJSON';
+import Point from 'ol/geom/Point';
+import Vector from 'ol/source/Vector';
+import WKT from 'ol/format/WKT';
 import * as xml2Json from 'xml-js';
-import {Feature} from 'ol';
-import {GeoJSON, WKT} from 'ol/format';
-import {Point} from 'ol/geom';
-import {Vector} from 'ol/source';
 import {get as getProjection, transform} from 'ol/proj';
 
 export type SparqlOptions = {

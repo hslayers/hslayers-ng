@@ -2,18 +2,18 @@ import {
   BrowserDynamicTestingModule,
   platformBrowserDynamicTesting,
 } from '@angular/platform-browser-dynamic/testing';
+import {CommonModule} from '@angular/common';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {
   CUSTOM_ELEMENTS_SCHEMA,
   provideZoneChangeDetection,
   NgModule,
 } from '@angular/core';
-import {CommonModule} from '@angular/common';
-import {ComponentFixture, TestBed} from '@angular/core/testing';
 
 import Feature from 'ol/Feature';
 import Point from 'ol/geom/Point';
-import {Vector as VectorLayer} from 'ol/layer';
-import {Vector as VectorSource} from 'ol/source';
+import VectorLayer from 'ol/layer/Vector';
+import VectorSource from 'ol/source/Vector';
 
 import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
 import {HsConfig} from 'hslayers-ng/config';

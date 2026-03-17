@@ -2,21 +2,21 @@ import {
   BrowserDynamicTestingModule,
   platformBrowserDynamicTesting,
 } from '@angular/platform-browser-dynamic/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {
   CUSTOM_ELEMENTS_SCHEMA,
   signal,
   provideZoneChangeDetection,
   NgModule,
 } from '@angular/core';
-import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
-import {Subject} from 'rxjs';
 import {provideHttpClient, withInterceptorsFromDi} from '@angular/common/http';
 import {provideHttpClientTesting} from '@angular/common/http/testing';
 import {provideTranslateService, TranslatePipe} from '@ngx-translate/core';
+import {Subject} from 'rxjs';
 
-import {Map} from 'ol';
-import {Vector as VectorLayer} from 'ol/layer';
+import Map from 'ol/Map';
+import VectorLayer from 'ol/layer/Vector';
 
 import {HsCommonEndpointsService} from 'hslayers-ng/services/endpoints';
 import {
@@ -34,12 +34,12 @@ import {HsLayoutServiceMock} from './layout.service.mock';
 import {HsMapService} from 'hslayers-ng/services/map';
 import {HsMapServiceMock} from './map.service.mock';
 
-import {HsSaveMapManagerServiceMock} from './save-map-manager.service.mock';
 import {createMockLaymanService} from './common/layman/layman.service.mock';
 import {
   HsSaveMapComponent,
   HsSaveMapManagerService,
 } from 'hslayers-ng/components/save-map';
+import {HsSaveMapManagerServiceMock} from './save-map-manager.service.mock';
 
 class emptyMock {
   constructor() {}

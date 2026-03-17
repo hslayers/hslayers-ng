@@ -4,12 +4,15 @@ import {FormsModule} from '@angular/forms';
 import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
 import {TranslatePipe} from '@ngx-translate/core';
 
-import {Circle, Fill, Stroke, Style} from 'ol/style';
+import Circle from 'ol/style/Circle';
+import Fill from 'ol/style/Fill';
+import Stroke from 'ol/style/Stroke';
+import Style from 'ol/style/Style';
 
+import {getTitle} from 'hslayers-ng/common/extensions';
 import {HsDrawService} from 'hslayers-ng/services/draw';
 import {HsLanguageService} from 'hslayers-ng/services/language';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
-import {getTitle} from 'hslayers-ng/common/extensions';
 
 interface DrawToolDefinition {
   type: string;

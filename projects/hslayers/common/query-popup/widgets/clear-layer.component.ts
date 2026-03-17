@@ -6,15 +6,15 @@ import {
   inject,
 } from '@angular/core';
 
-import {Layer} from 'ol/layer';
-import {Source} from 'ol/source';
+import Layer from 'ol/layer/Layer';
+import Source from 'ol/source/Source';
 
+import {getTitle} from 'hslayers-ng/common/extensions';
 import {HsConfirmDialogComponent} from 'hslayers-ng/common/confirm';
 import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
 import {HsLanguageService} from 'hslayers-ng/services/language';
 import {HsQueryPopupServiceModel} from '..//query-popup.service.model';
 import {HsQueryPopupWidgetBaseComponent} from '..//query-popup-widget-base.component';
-import {getTitle} from 'hslayers-ng/common/extensions';
 import {isLayerEditable} from 'hslayers-ng/services/utils';
 
 @Component({

@@ -1,7 +1,7 @@
+import Feature from 'ol/Feature';
+import Geometry from 'ol/geom/Geometry';
 import * as loadingStrategy from 'ol/loadingstrategy';
-import {Feature} from 'ol';
-import {Geometry} from 'ol/geom';
-import {Vector as VectorSource} from 'ol/source';
+import VectorSource from 'ol/source/Vector';
 import {get as getProj} from 'ol/proj';
 
 export class VectorSourceFromUrl extends VectorSource {

@@ -1,5 +1,5 @@
-import {Layer} from 'ol/layer';
-import {Source} from 'ol/source';
+import Layer from 'ol/layer/Layer';
+import Source from 'ol/source/Source';
 
 export type UrlDataObject = {
   add_all?: boolean;

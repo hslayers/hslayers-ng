@@ -6,30 +6,12 @@ import {
   inject,
 } from '@angular/core';
 
-import {Layer} from 'ol/layer';
-import {Source} from 'ol/source';
+import Layer from 'ol/layer/Layer';
+import Source from 'ol/source/Source';
+import WMSCapabilities from 'ol/format/WMSCapabilities';
 import {Subject, filter} from 'rxjs';
-import {WMSCapabilities} from 'ol/format';
 import {transformExtent} from 'ol/proj';
 
-import {HS_PRMS, HsShareUrlService} from 'hslayers-ng/services/share';
-import {HsEventBusService} from 'hslayers-ng/services/event-bus';
-import {HsLayerDescriptor} from 'hslayers-ng/types';
-import {HsLayerEditorComponent} from './layer-editor.component';
-import {HsLayerEditorSublayerService} from './sublayers/layer-editor-sub-layer.service';
-import {HsLayerEditorSublayersComponent} from './sublayers/layer-editor-sublayers.component';
-import {
-  HsLayerEditorVectorLayerService,
-  HsLayerManagerMetadataService,
-  HsLayerSelectorService,
-} from 'hslayers-ng/services/layer-manager';
-import {HsLayoutService} from 'hslayers-ng/services/layout';
-import {
-  HsLegendDescriptor,
-  HsLegendService,
-} from 'hslayers-ng/components/legend';
-import {HsMapService} from 'hslayers-ng/services/map';
-import {HsWmsGetCapabilitiesService} from 'hslayers-ng/services/get-capabilities';
 import {
   getCachedCapabilities,
   getCluster,
@@ -44,6 +26,24 @@ import {
   isLayerVectorLayer,
   getURL,
 } from 'hslayers-ng/services/utils';
+import {HS_PRMS, HsShareUrlService} from 'hslayers-ng/services/share';
+import {HsEventBusService} from 'hslayers-ng/services/event-bus';
+import {HsLayerDescriptor} from 'hslayers-ng/types';
+import {HsLayerEditorComponent} from './layer-editor.component';
+import {HsLayerEditorSublayersComponent} from './sublayers/layer-editor-sublayers.component';
+import {HsLayerEditorSublayerService} from './sublayers/layer-editor-sub-layer.service';
+import {
+  HsLayerEditorVectorLayerService,
+  HsLayerManagerMetadataService,
+  HsLayerSelectorService,
+} from 'hslayers-ng/services/layer-manager';
+import {HsLayoutService} from 'hslayers-ng/services/layout';
+import {
+  HsLegendDescriptor,
+  HsLegendService,
+} from 'hslayers-ng/components/legend';
+import {HsMapService} from 'hslayers-ng/services/map';
+import {HsWmsGetCapabilitiesService} from 'hslayers-ng/services/get-capabilities';
 
 @Injectable({
   providedIn: 'root',

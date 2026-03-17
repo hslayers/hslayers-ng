@@ -3,23 +3,27 @@ import {
   BrowserDynamicTestingModule,
   platformBrowserDynamicTesting,
 } from '@angular/platform-browser-dynamic/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {
   CUSTOM_ELEMENTS_SCHEMA,
   provideZoneChangeDetection,
   NgModule,
 } from '@angular/core';
-import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
 import {provideHttpClient, withInterceptorsFromDi} from '@angular/common/http';
 import {provideHttpClientTesting} from '@angular/common/http/testing';
 import {provideTranslateService, TranslatePipe} from '@ngx-translate/core';
 
-import {Circle, Fill, Stroke, Style} from 'ol/style';
-import {Feature} from 'ol';
-import {Point} from 'ol/geom';
-import {Vector as VectorLayer} from 'ol/layer';
-import {Vector as VectorSource} from 'ol/source';
+import Circle from 'ol/style/Circle';
+import Feature from 'ol/Feature';
+import Fill from 'ol/style/Fill';
+import Point from 'ol/geom/Point';
+import Stroke from 'ol/style/Stroke';
+import Style from 'ol/style/Style';
+import VectorLayer from 'ol/layer/Vector';
+import VectorSource from 'ol/source/Vector';
 
+import {getCluster, setCluster} from 'hslayers-ng/common/extensions';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsConfigMock} from './config.service.mock';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
@@ -34,7 +38,6 @@ import {
 import {HsMapService} from 'hslayers-ng/services/map';
 import {HsMapServiceMock} from './map.service.mock';
 import {HsPanelHelpersModule} from 'hslayers-ng/common/panels';
-import {getCluster, setCluster} from 'hslayers-ng/common/extensions';
 
 @NgModule({providers: [provideZoneChangeDetection()]})
 export class ZoneChangeDetectionModule {}

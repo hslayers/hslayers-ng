@@ -9,9 +9,8 @@ import {
 } from '@angular/core';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 
-import {Layer} from 'ol/layer';
-import {Observable, fromEvent, merge, of, throwError, timer} from 'rxjs';
-import {Source} from 'ol/source';
+import Layer from 'ol/layer/Layer';
+import Source from 'ol/source/Source';
 import {
   catchError,
   debounce,
@@ -25,7 +24,14 @@ import {
   switchMap,
   take,
 } from 'rxjs/operators';
+import {Observable, fromEvent, merge, of, throwError, timer} from 'rxjs';
 
+import {
+  getActive,
+  getAttribution,
+  getThumbnail,
+  getTitle,
+} from 'hslayers-ng/common/extensions';
 import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
@@ -38,15 +44,9 @@ import {
   HsLayerManagerVisibilityService,
   HsLayerSelectorService,
 } from 'hslayers-ng/services/layer-manager';
+import {HslayersService} from 'hslayers-ng/core';
 import {HsPanelBaseComponent} from 'hslayers-ng/common/panels';
 import {HsRemoveLayerDialogService} from 'hslayers-ng/common/remove-multiple';
-import {HslayersService} from 'hslayers-ng/core';
-import {
-  getActive,
-  getAttribution,
-  getThumbnail,
-  getTitle,
-} from 'hslayers-ng/common/extensions';
 
 @Component({
   selector: 'hs-layer-manager',

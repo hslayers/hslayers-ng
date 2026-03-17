@@ -1,5 +1,7 @@
-import {LineString, Point, Polygon} from 'ol/geom';
-import {Vector as VectorLayer} from 'ol/layer';
+import LineString from 'ol/geom/LineString';
+import Point from 'ol/geom/Point';
+import Polygon from 'ol/geom/Polygon';
+import VectorLayer from 'ol/layer/Vector';
 
 import {
   instOf,

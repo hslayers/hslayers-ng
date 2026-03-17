@@ -1,8 +1,11 @@
 import {Injectable, NgZone, inject} from '@angular/core';
 
-import {Feature, Map, Overlay} from 'ol';
-import {Geometry} from 'ol/geom';
+import Feature from 'ol/Feature';
+import Geometry from 'ol/geom/Geometry';
+import Map from 'ol/Map';
+import Overlay from 'ol/Overlay';
 
+import {debounce} from 'hslayers-ng/services/utils';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsMapService} from 'hslayers-ng/services/map';
 import {
@@ -12,7 +15,6 @@ import {
 import {HsQueryPopupBaseService} from './query-popup-base.service';
 import {HsQueryPopupServiceModel} from './query-popup.service.model';
 import {HsQueryPopupWidgetContainerService} from './query-popup-widget-container.service';
-import {debounce} from 'hslayers-ng/services/utils';
 
 @Injectable({
   providedIn: 'root',
