@@ -21,6 +21,7 @@ HSLayers-NG is a library which extends OpenLayers functionality by providing a f
 | 14               | 18.x                | 5.3         | ^9.2.2
 | 15               | 19.x                | 5.3         | ^10.4
 | 16               | 20.x                | 5.3         | ^10.5
+| 17               | 21.x                | 5.3         | ^10.8
 
 ## Demo
 
@@ -46,7 +47,7 @@ It will install hslayers-ng for the default application specified in your angula
 `ng add hslayers-ng --project myProject`
 
 Add peer dependencies if not installed automatically by npm:
-`npm i bootstrap@^5.3 ol@^10.5.0 @angular/cdk@^20 @angular/common@^20 @angular/core@^20 @angular/forms@^20 @angular/compiler@^20 @angular/platform-browser@^20 @angular/platform-browser-dynamic@^20 @angular/localize@^20 @ngx-translate/core@^17 @ngx-translate/http-loader@^17 deepmerge@^4.0.0 dayjs@^1.0.0 @ng-bootstrap/ng-bootstrap@^19 ol-popup@^5.0.0 proj4@^2.19.0 share-api-polyfill@^1.0.0 rxjs@^7.8.0 zone.js@~0.15.0 xml-js@^1.6.11 ngx-cookie-service@^20 geostyler-style@^10.0.0 geostyler-sld-parser@^7 geostyler-openlayers-parser@^5 geostyler-legend@5 geostyler-qgis-parser@^4 ngx-color@^10 queue@^7 resumablejs@^1 jszip@^3 polygon-splitter@^0.0.11 polygon-clipping@^0.15.3 @popperjs/core@^2 ol-ext@^4 big.js@^7 hammerjs@2`
+`npm i bootstrap@^5.3 ol@^10.8.0 @angular/cdk@^21 @angular/common@^21 @angular/core@^21 @angular/forms@^21 @angular/compiler@^21 @angular/platform-browser@^21 @angular/platform-browser-dynamic@^21 @angular/localize@^21 @ngx-translate/core@^17 @ngx-translate/http-loader@^17 deepmerge@^4.0.0 dayjs@^1.0.0 @ng-bootstrap/ng-bootstrap@^20 ol-popup@^5.0.0 proj4@^2.19.0 share-api-polyfill@^1.0.0 rxjs@^7.8.0 zone.js@~0.16.0 xml-js@^1.6.11 ngx-cookie-service@^21 geostyler-style@^11.0.0 geostyler-sld-parser@^8 geostyler-openlayers-parser@^5 geostyler-legend@5 geostyler-qgis-parser@^4 ngx-color@^10 queue@^7 resumablejs@^1 jszip@^3 polygon-splitter@^0.0.11 polygon-clipping@^0.15.3 @popperjs/core@^2 ol-ext@^4 big.js@^7 hammerjs@2`
 
 For using hslayers-ng prebuilt bundle including Angular, Bootstrap and other dependencies by loading it through `<script>` tags see: [Hslayers-ng application](https://github.com/hslayers/hslayers-ng/tree/develop/projects/hslayers-app)
 
@@ -56,7 +57,7 @@ Configuring hslayers-ng is described in more depth in the [wiki](https://github.
 
 ### HsConfig service
 Use HsConfig service injected in your component to set applications layers, looks and behavior. See full list of [config options](https://github.com/hslayers/hslayers-ng/wiki/App-config-parameters)
-```
+```typescript
   import {Vector as VectorSource} from 'ol/source';
   import {Vector as VectorLayer} from 'ol/layer';
   import {HsConfig} from 'hslayers-ng/config';
@@ -97,7 +98,7 @@ To run:
 To use this proxy in HSLayers-NG application, you have to set the proxyPrefix parameter in the app config 
 which specifies the proxy url, eg.
 
-```
+```typescript
  proxyPrefix: window.location.hostname.includes('localhost')
         ? `${window.location.protocol}//${window.location.hostname}:8085/`
         : '/proxy/'

@@ -13,7 +13,7 @@ npm i hslayers-cesium
 
 Import HsCesiumModule and add it to your AppModules imports:
 
-```
+```typescript
 import {HsCesiumModule} from 'hslayers-cesium';
 
 @NgModule({
@@ -24,13 +24,13 @@ import {HsCesiumModule} from 'hslayers-cesium';
 
 In your component attach the HslayersCesiumComponent to HSlayers-NG:
 
-```
+```typescript
  constructor(
     public hsCesiumConfig: HsCesiumConfig,
     private hsLayoutService: HsLayoutService
   ) {
     ...  
-ngOnInit(): void {
+  ngOnInit(): void {
     this.hsLayoutService.mapSpaceRef.subscribe((mapSpace) => {
       if (mapSpace?.viewContainerRef) {
         mapSpace.viewContainerRef.createComponent(HslayersCesiumComponent);
@@ -41,14 +41,14 @@ ngOnInit(): void {
 
 Set path to cesium assets in hsCesiumConfig:
 
-```
+```typescript
     this.hsCesiumConfig.update({
       cesiumBase: 'assets/cesium/',
 ```
 
 In your angular.json file copy cesium assets to the previously mentioned directory (See [example](https://github.com/hslayers/examples/blob/master/angular.json)):
 
-```
+```json
  "assets": [
               {
                 "glob": "**/*",
@@ -81,7 +81,7 @@ Use custom-webpack builder which is needed for Cesium
 
 In angular.json
 
-```
+```json
   "architect": {
         "build": {
           "builder": "@angular-builders/custom-webpack:browser",
@@ -97,7 +97,7 @@ In angular.json
 
 custom-webpack.config.js contents:
 
-```
+```javascript
 module.exports = {
   node: {
     // Resolve node module use of fs
