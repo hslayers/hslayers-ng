@@ -1,7 +1,7 @@
 import {Component, OnInit, inject} from '@angular/core';
 
-import {Cluster} from 'ol/source';
-import {Feature} from 'ol';
+import Cluster from 'ol/source/Cluster';
+import Feature from 'ol/Feature';
 
 import {HsConfig} from 'hslayers-ng/config';
 import {HsLayerEditorService} from '../editor/layer-editor.service';

@@ -1,6 +1,6 @@
-import {Layer} from 'ol/layer';
-import {Map} from 'ol';
-import {Source} from 'ol/source';
+import Layer from 'ol/layer/Layer';
+import Map from 'ol/Map';
+import Source from 'ol/source/Source';
 
 export class HsMapServiceMock {
   map = new Map({

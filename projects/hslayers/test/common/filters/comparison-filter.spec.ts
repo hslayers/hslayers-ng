@@ -11,10 +11,10 @@ import {provideHttpClient} from '@angular/common/http';
 import {provideHttpClientTesting} from '@angular/common/http/testing';
 import {provideTranslateService} from '@ngx-translate/core';
 
+import Feature from 'ol/Feature';
+import Point from 'ol/geom/Point';
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
-import {Feature} from 'ol';
-import {Point} from 'ol/geom';
 
 import {Filter, WfsFeatureAttribute} from 'hslayers-ng/types';
 import {

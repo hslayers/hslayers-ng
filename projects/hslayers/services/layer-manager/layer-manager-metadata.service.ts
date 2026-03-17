@@ -1,9 +1,10 @@
 import {Injectable, inject} from '@angular/core';
 
+import Layer from 'ol/layer/Layer';
+import Source from 'ol/source/Source';
+import WMSCapabilities from 'ol/format/WMSCapabilities';
+import WMTSCapabilities from 'ol/format/WMTSCapabilities';
 import {Extent} from 'ol/extent';
-import {Layer} from 'ol/layer';
-import {Source} from 'ol/source';
-import {WMSCapabilities, WMTSCapabilities} from 'ol/format';
 import {get as getProjection, transformExtent} from 'ol/proj';
 
 import {
@@ -15,18 +16,16 @@ import {
   WmsDimension,
 } from 'hslayers-ng/types';
 import {
-  HsAddDataUrlService,
-  HsUrlWmsService,
-} from 'hslayers-ng/services/add-data';
-import {
-  HsArcgisGetCapabilitiesService,
-  HsDimensionTimeService,
-  HsWfsGetCapabilitiesService,
-  HsWmsGetCapabilitiesService,
-  HsWmtsGetCapabilitiesService,
-} from 'hslayers-ng/services/get-capabilities';
-import {HsLogService} from 'hslayers-ng/services/log';
-import {HsMapService} from 'hslayers-ng/services/map';
+  bufferExtent,
+  calculateResolutionFromScale,
+  getLayerParams,
+  getURL,
+  isLayerArcgis,
+  isLayerVectorLayer,
+  isLayerWMS,
+  isLayerWMTS,
+  updateLayerParams,
+} from 'hslayers-ng/services/utils';
 import {
   getAttribution,
   getCachedCapabilities,
@@ -44,20 +43,22 @@ import {
   setWmsOriginalExtent,
 } from 'hslayers-ng/common/extensions';
 import {
+  HsAddDataUrlService,
+  HsUrlWmsService,
+} from 'hslayers-ng/services/add-data';
+import {
+  HsArcgisGetCapabilitiesService,
+  HsDimensionTimeService,
+  HsWfsGetCapabilitiesService,
+  HsWmsGetCapabilitiesService,
+  HsWmtsGetCapabilitiesService,
+} from 'hslayers-ng/services/get-capabilities';
+import {
   HsCommonLaymanLayerService,
   HsCommonLaymanService,
 } from 'hslayers-ng/common/layman';
-import {
-  bufferExtent,
-  calculateResolutionFromScale,
-  getLayerParams,
-  getURL,
-  isLayerArcgis,
-  isLayerVectorLayer,
-  isLayerWMS,
-  isLayerWMTS,
-  updateLayerParams,
-} from 'hslayers-ng/services/utils';
+import {HsLogService} from 'hslayers-ng/services/log';
+import {HsMapService} from 'hslayers-ng/services/map';
 
 @Injectable({
   providedIn: 'root',

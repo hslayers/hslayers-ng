@@ -1,7 +1,7 @@
 import {Injectable, NgZone, inject} from '@angular/core';
 
-import {Feature} from 'ol';
-import {Geometry} from 'ol/geom';
+import Feature from 'ol/Feature';
+import Geometry from 'ol/geom/Geometry';
 import {
   Observable,
   Subject,
@@ -39,6 +39,7 @@ import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 /**
  * Options for adding catalogue layer to map
  */
+
 export type AddCatalogueLayerOptions = {
   useTiles?: boolean;
 };

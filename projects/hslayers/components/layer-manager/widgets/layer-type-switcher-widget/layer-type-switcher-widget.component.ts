@@ -3,8 +3,9 @@ import {Component, Signal, inject, signal} from '@angular/core';
 import {Observable, map} from 'rxjs';
 import {TranslatePipe} from '@ngx-translate/core';
 
-import {OSM} from 'ol/source';
+import OSM from 'ol/source/OSM';
 
+import {getBase, setBase} from 'hslayers-ng/common/extensions';
 import {HsConfirmDialogComponent} from 'hslayers-ng/common/confirm';
 import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
@@ -22,7 +23,6 @@ import {
   isLayerIDW,
   isLayerVectorLayer,
 } from 'hslayers-ng/services/utils';
-import {getBase, setBase} from 'hslayers-ng/common/extensions';
 
 type layerType = 'base' | 'thematic';
 

@@ -9,19 +9,19 @@ import {
 } from '@angular/core';
 import {TestBed} from '@angular/core/testing';
 
-import {Cluster, ImageWMS, OSM, TileWMS, Vector, WMTS} from 'ol/source';
-import {Image as ImageLayer, Tile, Vector as VectorLayer} from 'ol/layer';
+import Cluster from 'ol/source/Cluster';
+import ImageLayer from 'ol/layer/Image';
+import ImageWMS from 'ol/source/ImageWMS';
+import OSM from 'ol/source/OSM';
+import Tile from 'ol/layer/Tile';
+import TileWMS from 'ol/source/TileWMS';
+import Vector from 'ol/source/Vector';
+import VectorLayer from 'ol/layer/Vector';
+import WMTS from 'ol/source/WMTS';
 
 import {HsLanguageService} from 'hslayers-ng/services/language';
 import {HsMapService} from 'hslayers-ng/services/map';
 import {HsMapServiceMock} from './map.service.mock';
-import {
-  setCluster,
-  setEditor,
-  setName,
-  setShowInLayerManager,
-  setTitle,
-} from 'hslayers-ng/common/extensions';
 import {
   isLayerClustered,
   layerIsStyleable,
@@ -37,6 +37,13 @@ import {
   isLayerWMS,
   isLayerQueryable,
 } from 'hslayers-ng/services/utils';
+import {
+  setCluster,
+  setEditor,
+  setName,
+  setShowInLayerManager,
+  setTitle,
+} from 'hslayers-ng/common/extensions';
 
 function mockLanguageService() {
   return jasmine.createSpyObj('HsLanguageService', [

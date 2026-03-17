@@ -10,13 +10,23 @@ import {
 } from 'rxjs';
 import {toSignal} from '@angular/core/rxjs-interop';
 
+import Layer from 'ol/layer/Layer';
+import OlMap from 'ol/Map';
+import Source from 'ol/source/Source';
 import {CollectionEvent} from 'ol/Collection';
 import {EventsKey} from 'ol/events';
-import {Layer} from 'ol/layer';
-import {Map as OlMap} from 'ol';
-import {Source} from 'ol/source';
 import {unByKey} from 'ol/Observable';
 
+import {
+  debounce,
+  getLayerParams,
+  getLayerTitle,
+  getLayerZIndex,
+  getMaxLayerZIndex,
+  getMinLayerZIndex,
+  isLayerVectorLayer,
+  shiftLayersZIndex,
+} from 'hslayers-ng/services/utils';
 import {HS_PRMS, HsShareUrlService} from 'hslayers-ng/services/share';
 import {HsAddDataOwsService} from 'hslayers-ng/services/add-data';
 import {HsConfig} from 'hslayers-ng/config';
@@ -29,16 +39,6 @@ import {
   HsLayermanagerFolder,
 } from 'hslayers-ng/types';
 import {HsLayerSelectorService} from './layer-selector.service';
-import {
-  debounce,
-  getLayerParams,
-  getLayerTitle,
-  getLayerZIndex,
-  getMaxLayerZIndex,
-  getMinLayerZIndex,
-  isLayerVectorLayer,
-  shiftLayersZIndex,
-} from 'hslayers-ng/services/utils';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsLogService} from 'hslayers-ng/services/log';
 import {HsMapService} from 'hslayers-ng/services/map';

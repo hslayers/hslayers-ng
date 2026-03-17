@@ -1,5 +1,12 @@
 import {Component, Input, ViewRef, inject} from '@angular/core';
 
+import Layer from 'ol/layer/Layer';
+import Source from 'ol/source/Source';
+import {
+  getBase,
+  getRemovable,
+  getShowInLayerManager,
+} from 'hslayers-ng/common/extensions';
 import {HsCompositionsParserService} from 'hslayers-ng/services/compositions';
 import {
   HsDialogComponent,
@@ -8,13 +15,6 @@ import {
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsLayerManagerService} from 'hslayers-ng/services/layer-manager';
 import {HsMapService} from 'hslayers-ng/services/map';
-import {Layer} from 'ol/layer';
-import {Source} from 'ol/source';
-import {
-  getBase,
-  getRemovable,
-  getShowInLayerManager,
-} from 'hslayers-ng/common/extensions';
 
 @Component({
   selector: 'hs-layermanager-remove-all-dialog',

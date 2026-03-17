@@ -1,34 +1,20 @@
 import {DomSanitizer, SafeHtml} from '@angular/platform-browser';
 import {Injectable, inject} from '@angular/core';
 
+import Feature from 'ol/Feature';
+import ImageLayer from 'ol/layer/Image';
+import Layer from 'ol/layer/Layer';
 import LegendRenderer from 'geostyler-legend/dist/LegendRenderer/LegendRenderer';
-import {Feature} from 'ol';
+import Source from 'ol/source/Source';
+import Static from 'ol/source/ImageStatic';
+import Style from 'ol/style/Style';
+import VectorLayer from 'ol/layer/Vector';
+import VectorSource from 'ol/source/Vector';
+import XYZ from 'ol/source/XYZ';
 import {Style as GeoStylerStyle} from 'geostyler-style';
-import {Image as ImageLayer, Layer, Vector as VectorLayer} from 'ol/layer';
 import {OlStyleParser} from 'geostyler-openlayers-parser';
 import {SldStyleParser as SLDParser} from 'geostyler-sld-parser';
-import {
-  Source,
-  ImageStatic as Static,
-  Vector as VectorSource,
-  XYZ,
-} from 'ol/source';
-import {Style} from 'ol/style';
 
-import {HsLayerSelectorService} from 'hslayers-ng/services/layer-manager';
-import {
-  getLayerParams,
-  getParamsFromUrl,
-  getURL,
-  HsProxyService,
-  instOf,
-  isLayerVectorLayer,
-  isLayerWMS,
-} from 'hslayers-ng/services/utils';
-import {HsLegendDescriptor} from './legend-descriptor.interface';
-import {HsLogService} from 'hslayers-ng/services/log';
-import {HsStylerService, defaultStyle} from 'hslayers-ng/services/styler';
-import {InterpolatedSource} from 'hslayers-ng/common/layers';
 import {filter} from 'rxjs';
 import {
   getAutoLegend,
@@ -39,6 +25,20 @@ import {
   getSld,
   getTitle,
 } from 'hslayers-ng/common/extensions';
+import {
+  getLayerParams,
+  getParamsFromUrl,
+  getURL,
+  HsProxyService,
+  instOf,
+  isLayerVectorLayer,
+  isLayerWMS,
+} from 'hslayers-ng/services/utils';
+import {HsLayerSelectorService} from 'hslayers-ng/services/layer-manager';
+import {HsLegendDescriptor} from './legend-descriptor.interface';
+import {HsLogService} from 'hslayers-ng/services/log';
+import {HsStylerService, defaultStyle} from 'hslayers-ng/services/styler';
+import {InterpolatedSource} from 'hslayers-ng/common/layers';
 
 @Injectable({
   providedIn: 'root',

@@ -1,11 +1,17 @@
+import {buffer, filter, first, map, switchMap, take} from 'rxjs/operators';
 import {Injectable, NgZone, inject} from '@angular/core';
 import {Observable, merge} from 'rxjs';
-import {buffer, filter, first, map, switchMap, take} from 'rxjs/operators';
 
-import {Layer} from 'ol/layer';
-import {Source} from 'ol/source';
-import {Map as olMap} from 'ol';
+import Layer from 'ol/layer/Layer';
+import olMap from 'ol/Map';
+import Source from 'ol/source/Source';
 
+import {
+  getQueryFilter,
+  getSwipeSide,
+  setQueryFilter,
+  setSwipeSide,
+} from 'hslayers-ng/common/extensions';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsLayerEditorService} from 'hslayers-ng/components/layer-manager';
@@ -19,12 +25,6 @@ import {HsLogService} from 'hslayers-ng/services/log';
 import {HsMapService} from 'hslayers-ng/services/map';
 import {HsShareUrlService} from 'hslayers-ng/services/share';
 import {SwipeControl} from './swipe-control/swipe.control';
-import {
-  getQueryFilter,
-  getSwipeSide,
-  setQueryFilter,
-  setSwipeSide,
-} from 'hslayers-ng/common/extensions';
 
 export enum SwipeSide {
   Left = 'left',

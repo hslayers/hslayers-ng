@@ -1,4 +1,4 @@
-import {Layer} from 'ol/layer';
+import Layer from 'ol/layer/Layer';
 
 import {AccessRightsModel} from '../access-rights.model';
 import {BoundingBoxObject} from '../bounding-box-object.type';

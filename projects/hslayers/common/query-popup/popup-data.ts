@@ -1,5 +1,6 @@
-import {Feature, Map} from 'ol';
-import {Geometry} from 'ol/geom';
+import Feature from 'ol/Feature';
+import Geometry from 'ol/geom/Geometry';
+import Map from 'ol/Map';
 
 import {HsFeatureLayer} from './query-popup.service.model';
 

@@ -1,6 +1,7 @@
 import {Injectable, inject} from '@angular/core';
 
-import {Control, ScaleLine} from 'ol/control';
+import Control from 'ol/control/Control';
+import ScaleLine from 'ol/control/ScaleLine';
 
 import {HsMapService} from 'hslayers-ng/services/map';
 import {HsPrintLegendService} from './print-legend.service';

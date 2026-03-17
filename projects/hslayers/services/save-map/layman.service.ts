@@ -1,7 +1,7 @@
 import Resumable from 'resumablejs';
 
-import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {computed, Injectable, inject} from '@angular/core';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 
 import {
   Observable,
@@ -13,12 +13,14 @@ import {
   of,
 } from 'rxjs';
 
-import {Feature} from 'ol';
-import {GeoJSON} from 'ol/format';
+import Feature from 'ol/Feature';
+import GeoJSON from 'ol/format/GeoJSON';
+import Geometry from 'ol/geom/Geometry';
+import Layer from 'ol/layer/Layer';
+import Source from 'ol/source/Source';
+import VectorLayer from 'ol/layer/Vector';
+import VectorSource from 'ol/source/Vector';
 import {GeoJSONFeatureCollection} from 'ol/format/GeoJSON';
-import {Geometry} from 'ol/geom';
-import {Layer, Vector as VectorLayer} from 'ol/layer';
-import {Source, Vector as VectorSource} from 'ol/source';
 
 import {
   AccessRightsModel,
@@ -29,6 +31,10 @@ import {
   UpsertLayerObject,
   WfsSyncParams,
 } from 'hslayers-ng/types';
+import {
+  createGetFeatureRequest,
+  createPostFeatureRequest,
+} from 'hslayers-ng/common/layers';
 import {
   DeleteAllLayersResponse,
   DeleteSingleLayerResponse,
@@ -43,15 +49,6 @@ import {
   HsCommonLaymanLayerService,
   isAtLeastVersions,
 } from 'hslayers-ng/common/layman';
-import {HsLanguageService} from 'hslayers-ng/services/language';
-import {HsLogService} from 'hslayers-ng/services/log';
-import {HsMapService} from 'hslayers-ng/services/map';
-import {HsSaverService} from './saver-service.interface';
-import {HsToastService} from 'hslayers-ng/common/toast';
-import {
-  createGetFeatureRequest,
-  createPostFeatureRequest,
-} from 'hslayers-ng/common/layers';
 import {
   getAccessRights,
   getLaymanLayerDescriptor,
@@ -62,6 +59,11 @@ import {
   setHsLaymanSynchronizing,
   setLaymanLayerDescriptor,
 } from 'hslayers-ng/common/extensions';
+import {HsLanguageService} from 'hslayers-ng/services/language';
+import {HsLogService} from 'hslayers-ng/services/log';
+import {HsMapService} from 'hslayers-ng/services/map';
+import {HsSaverService} from './saver-service.interface';
+import {HsToastService} from 'hslayers-ng/common/toast';
 import {normalizeSldComparisonOperators} from 'hslayers-ng/services/utils';
 
 @Injectable({

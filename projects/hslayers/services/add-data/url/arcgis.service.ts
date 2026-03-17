@@ -1,19 +1,19 @@
 import {Injectable, inject} from '@angular/core';
 
+import EsriJSON from 'ol/format/EsriJSON';
+import Layer from 'ol/layer/Layer';
+import Source from 'ol/source/Source';
+import Tile from 'ol/layer/Tile';
+import TileArcGISRest from 'ol/source/TileArcGISRest';
 import TileGrid from 'ol/tilegrid/TileGrid';
+import TileSource from 'ol/source/Tile';
+import VectorImage from 'ol/layer/VectorImage';
+import VectorSource from 'ol/source/Vector';
+import XYZ from 'ol/source/XYZ';
 import {createXYZ} from 'ol/tilegrid';
-import {Layer, Tile, VectorImage} from 'ol/layer';
-import {
-  Source,
-  TileArcGISRest,
-  XYZ,
-  Tile as TileSource,
-  Vector as VectorSource,
-} from 'ol/source';
 import {Options as TileOptions} from 'ol/layer/BaseTile';
+import {tile as tileStrategy} from 'ol/loadingstrategy';
 import {transformExtent} from 'ol/proj';
-import {EsriJSON} from 'ol/format';
-import {tile as tileStrategy} from 'ol/loadingstrategy.js';
 
 import {
   ArcGISRestResponseLayer,
@@ -29,14 +29,14 @@ import {HsAddDataCommonService} from '../common.service';
 import {HsAddDataUrlService} from './add-data-url.service';
 import {HsArcgisGetCapabilitiesService} from 'hslayers-ng/services/get-capabilities';
 import {HsLanguageService} from 'hslayers-ng/services/language';
+import {HsLayoutService} from 'hslayers-ng/services/layout';
+import {HsToastService} from 'hslayers-ng/common/toast';
 import {
   undefineEmptyString,
   addAnchors,
   getPreferredFormat,
   bufferExtent,
 } from 'hslayers-ng/services/utils';
-import {HsLayoutService} from 'hslayers-ng/services/layout';
-import {HsToastService} from 'hslayers-ng/common/toast';
 
 @Injectable({providedIn: 'root'})
 export class HsUrlArcGisService implements HsUrlTypeServiceModel {

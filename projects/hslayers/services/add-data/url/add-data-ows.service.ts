@@ -1,7 +1,7 @@
 import {inject, Injectable} from '@angular/core';
 
-import {Layer} from 'ol/layer';
-import {Source} from 'ol/source';
+import Layer from 'ol/layer/Layer';
+import Source from 'ol/source/Source';
 
 import {HsAddDataCommonService} from '../common.service';
 import {HsAddDataService} from '../add-data.service';
@@ -30,9 +30,9 @@ import {
   OwsConnection,
   UrlDataObject,
 } from 'hslayers-ng/types';
-import {HsHistoryListService} from 'hslayers-ng/common/history-list';
-import {HsAddDataWmsLaymanService} from './wms-layman.service';
 import {HsAddDataWfsLaymanService} from './wfs-layman.service';
+import {HsAddDataWmsLaymanService} from './wms-layman.service';
+import {HsHistoryListService} from 'hslayers-ng/common/history-list';
 
 @Injectable({
   providedIn: 'root',

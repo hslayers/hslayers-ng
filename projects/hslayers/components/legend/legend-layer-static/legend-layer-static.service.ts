@@ -1,11 +1,11 @@
 import {DomSanitizer} from '@angular/platform-browser';
 import {Injectable, inject} from '@angular/core';
 
-import {Layer} from 'ol/layer';
-import {Source} from 'ol/source';
+import Layer from 'ol/layer/Layer';
+import Source from 'ol/source/Source';
 
-import {LayerLegend} from './types/layer-legend.type';
 import {getLegends} from 'hslayers-ng/common/extensions';
+import {LayerLegend} from './types/layer-legend.type';
 
 @Injectable({
   providedIn: 'root',

@@ -1,15 +1,15 @@
 import {Injectable, inject} from '@angular/core';
 
+import Layer from 'ol/layer/Layer';
+import Source from 'ol/source/Source';
 import {BehaviorSubject, Subject} from 'rxjs';
-import {Layer} from 'ol/layer';
-import {Source} from 'ol/source';
 
 import {DatasetType} from 'hslayers-ng/types';
+import {getBase} from 'hslayers-ng/common/extensions';
 import {HsCommonEndpointsService} from 'hslayers-ng/services/endpoints';
 import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsMapService} from 'hslayers-ng/services/map';
-import {getBase} from 'hslayers-ng/common/extensions';
 
 @Injectable({
   providedIn: 'root',

@@ -1,9 +1,15 @@
 import {Injectable, inject} from '@angular/core';
 
-import {Circle, LineString, Point, Polygon} from 'ol/geom';
-import {Cluster, Source, Vector as VectorSource} from 'ol/source';
-import {Feature} from 'ol';
-import {Layer, Vector as VectorLayer} from 'ol/layer';
+import Circle from 'ol/geom/Circle';
+import Cluster from 'ol/source/Cluster';
+import Feature from 'ol/Feature';
+import Layer from 'ol/layer/Layer';
+import LineString from 'ol/geom/LineString';
+import Point from 'ol/geom/Point';
+import Polygon from 'ol/geom/Polygon';
+import Source from 'ol/source/Source';
+import VectorLayer from 'ol/layer/Vector';
+import VectorSource from 'ol/source/Vector';
 
 import {HsConfig} from 'hslayers-ng/config';
 import {HsMapService} from 'hslayers-ng/services/map';

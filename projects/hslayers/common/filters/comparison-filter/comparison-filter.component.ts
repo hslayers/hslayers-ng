@@ -1,3 +1,6 @@
+import Feature from 'ol/Feature';
+import Geometry from 'ol/geom/Geometry';
+import VectorSource from 'ol/source/Vector';
 import {AsyncPipe, NgClass} from '@angular/common';
 import {
   Component,
@@ -13,9 +16,7 @@ import {
   signal,
   viewChild,
 } from '@angular/core';
-import {Feature} from 'ol';
 import {FormControl, FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {Geometry} from 'ol/geom';
 import {
   Observable,
   catchError,
@@ -29,7 +30,6 @@ import {
   take,
   tap,
 } from 'rxjs';
-import {Vector as VectorSource} from 'ol/source';
 import {takeUntilDestroyed, toSignal} from '@angular/core/rxjs-interop';
 import {TranslatePipe} from '@ngx-translate/core';
 

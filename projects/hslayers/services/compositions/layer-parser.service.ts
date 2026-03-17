@@ -1,9 +1,13 @@
 import {Injectable, inject} from '@angular/core';
 
-import {Feature} from 'ol';
-import {GeoJSON} from 'ol/format';
-import {Image as ImageLayer, Layer, Vector as VectorLayer} from 'ol/layer';
-import {ImageStatic, Source, Vector as VectorSource} from 'ol/source';
+import Feature from 'ol/Feature';
+import GeoJSON from 'ol/format/GeoJSON';
+import ImageLayer from 'ol/layer/Image';
+import ImageStatic from 'ol/source/ImageStatic';
+import Layer from 'ol/layer/Layer';
+import Source from 'ol/source/Source';
+import VectorLayer from 'ol/layer/Vector';
+import VectorSource from 'ol/source/Vector';
 
 import {
   HsAddDataOwsService,
@@ -20,8 +24,8 @@ import {HsMapService} from 'hslayers-ng/services/map';
 import {HsStylerService} from 'hslayers-ng/services/styler';
 import {HsToastService} from 'hslayers-ng/common/toast';
 import {HsVectorLayerOptions, OwsConnection} from 'hslayers-ng/types';
-import {SparqlJson} from 'hslayers-ng/common/layers';
 import {setDefinition} from 'hslayers-ng/common/extensions';
+import {SparqlJson} from 'hslayers-ng/common/layers';
 
 @Injectable({
   providedIn: 'root',

@@ -1,14 +1,14 @@
+import {firstValueFrom} from 'rxjs';
 import {
   HttpTestingController,
   provideHttpClientTesting,
 } from '@angular/common/http/testing';
-import {TestBed} from '@angular/core/testing';
-import {firstValueFrom} from 'rxjs';
-import {provideTranslateService} from '@ngx-translate/core';
 import {provideHttpClient} from '@angular/common/http';
+import {provideTranslateService} from '@ngx-translate/core';
+import {TestBed} from '@angular/core/testing';
 
-import {Layer} from 'ol/layer';
-import {Vector as VectorSource} from 'ol/source';
+import Layer from 'ol/layer/Layer';
+import VectorSource from 'ol/source/Vector';
 
 import {HsFiltersService} from 'hslayers-ng/common/filters/filters.service';
 import {HsLayerDescriptor, WfsFeatureAttribute} from 'hslayers-ng/types';

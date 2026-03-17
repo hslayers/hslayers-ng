@@ -3,27 +3,27 @@ import {HttpClient} from '@angular/common/http';
 import {Injectable, inject} from '@angular/core';
 import {Subject, concatMap, debounceTime, map, take} from 'rxjs';
 
+import {
+  getUnitId,
+  setFeatureName,
+  setUnitId,
+} from 'hslayers-ng/common/extensions';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsLogService} from 'hslayers-ng/services/log';
 import {instOf, HsProxyService} from 'hslayers-ng/services/utils';
-import {
-  getUnitId,
-  setFeatureName,
-  setUnitId,
-} from 'hslayers-ng/common/extensions';
 
-import {Feature} from 'ol';
-import {Vector as VectorLayer} from 'ol/layer';
-import {Vector as VectorSource} from 'ol/source';
-import {WKT} from 'ol/format';
+import Feature from 'ol/Feature';
+import VectorLayer from 'ol/layer/Vector';
+import VectorSource from 'ol/source/Vector';
+import WKT from 'ol/format/WKT';
 
 import {HsMapService} from 'hslayers-ng/services/map';
-import {HsSensorUnit, SensorTypes} from './sensor-unit.class';
 import {HsSensorsUnitDialogComponent} from './sensors-unit-dialog.component';
 import {HsSensorsUnitDialogService} from './unit-dialog.service';
+import {HsSensorUnit, SensorTypes} from './sensor-unit.class';
 import {SensLogEndpoint} from './types/senslog-endpoint.type';
 import {SenslogResponse} from './types/senslog-response.type';
 import {SenslogSensor} from './types/senslog-sensor.type';

@@ -1,34 +1,43 @@
+import {catchError, lastValueFrom, of, timeout} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
 import {Injectable, inject} from '@angular/core';
-import {catchError, lastValueFrom, of, timeout} from 'rxjs';
 
-import {Collection, Feature} from 'ol';
-import {Draw, Modify} from 'ol/interaction';
-import {Fill, Icon, Stroke, Style, Text} from 'ol/style';
-import {GeoJSON} from 'ol/format';
-import {Geometry, Point} from 'ol/geom';
-import {Layer, Vector as VectorLayer} from 'ol/layer';
-import {Source, Vector as VectorSource} from 'ol/source';
+import Collection from 'ol/Collection';
+import Draw from 'ol/interaction/Draw';
+import Feature from 'ol/Feature';
+import Fill from 'ol/style/Fill';
+import GeoJSON from 'ol/format/GeoJSON';
+import Geometry from 'ol/geom/Geometry';
+import Icon from 'ol/style/Icon';
+import Layer from 'ol/layer/Layer';
+import Modify from 'ol/interaction/Modify';
+import Point from 'ol/geom/Point';
+import Source from 'ol/source/Source';
+import Stroke from 'ol/style/Stroke';
+import Style from 'ol/style/Style';
+import Text from 'ol/style/Text';
+import VectorLayer from 'ol/layer/Vector';
+import VectorSource from 'ol/source/Vector';
 import {transform} from 'ol/proj';
 
-import {HsConfig} from 'hslayers-ng/config';
-import {HsEventBusService} from 'hslayers-ng/services/event-bus';
-import {HsLanguageService} from 'hslayers-ng/services/language';
-import {
-  instOf,
-  HsProxyService,
-  isLayerDrawable,
-} from 'hslayers-ng/services/utils';
-import {HsLayoutService} from 'hslayers-ng/services/layout';
-import {HsMapService} from 'hslayers-ng/services/map';
-import {HsShareUrlService} from 'hslayers-ng/services/share';
-import {HsToastService} from 'hslayers-ng/common/toast';
-import {RouteProfile, profiles} from './ors-profiles.const';
 import {
   getHighlighted,
   setTitle,
   getTitle,
 } from 'hslayers-ng/common/extensions';
+import {HsConfig} from 'hslayers-ng/config';
+import {HsEventBusService} from 'hslayers-ng/services/event-bus';
+import {HsLanguageService} from 'hslayers-ng/services/language';
+import {HsLayoutService} from 'hslayers-ng/services/layout';
+import {HsMapService} from 'hslayers-ng/services/map';
+import {HsShareUrlService} from 'hslayers-ng/services/share';
+import {HsToastService} from 'hslayers-ng/common/toast';
+import {
+  instOf,
+  HsProxyService,
+  isLayerDrawable,
+} from 'hslayers-ng/services/utils';
+import {RouteProfile, profiles} from './ors-profiles.const';
 
 export type Waypoint = {
   name: string;

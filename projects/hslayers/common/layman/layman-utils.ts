@@ -1,16 +1,18 @@
-import {Layer, Vector as VectorLayer} from 'ol/layer';
-import {Vector as VectorSource, Source} from 'ol/source';
+import Layer from 'ol/layer/Layer';
+import Source from 'ol/source/Source';
+import VectorLayer from 'ol/layer/Vector';
+import VectorSource from 'ol/source/Vector';
 
-import {HsEndpoint, HsLaymanLayerDescriptor} from 'hslayers-ng/types';
-import {TRANSLITERATION_MAP} from './transliteration-map';
+import Feature from 'ol/Feature';
 import {
   getDefinition,
   getHsLaymanSynchronizing,
   getName,
   getTitle,
 } from 'hslayers-ng/common/extensions';
-import {Feature} from 'ol/index';
 import {HsConfig} from 'hslayers-ng/config';
+import {HsEndpoint, HsLaymanLayerDescriptor} from 'hslayers-ng/types';
+import {TRANSLITERATION_MAP} from './transliteration-map';
 
 export const PREFER_RESUMABLE_SIZE_LIMIT = 2 * 1024 * 1024; // 2 MB
 export const SUPPORTED_SRS_LIST = [

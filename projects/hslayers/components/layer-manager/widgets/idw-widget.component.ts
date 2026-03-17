@@ -1,8 +1,8 @@
 import {Component, OnInit, inject} from '@angular/core';
 
 import colorScales from 'colormap/colorScale';
-import {Feature} from 'ol';
-import {Vector as VectorSource} from 'ol/source';
+import Feature from 'ol/Feature';
+import VectorSource from 'ol/source/Vector';
 
 import {HsConfig} from 'hslayers-ng/config';
 import {HsLanguageService} from 'hslayers-ng/services/language';

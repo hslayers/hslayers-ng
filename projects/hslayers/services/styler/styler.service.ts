@@ -1,6 +1,5 @@
 import colormap from 'colormap';
 
-import {DomSanitizer} from '@angular/platform-browser';
 import {
   computed,
   Injectable,
@@ -8,48 +7,32 @@ import {
   WritableSignal,
   inject,
 } from '@angular/core';
+import {DomSanitizer} from '@angular/platform-browser';
 import {Subject} from 'rxjs';
 
-import {Cluster, Vector as VectorSource} from 'ol/source';
+import Cluster from 'ol/source/Cluster';
+import Feature from 'ol/Feature';
+import Geometry from 'ol/geom/Geometry';
+import Icon from 'ol/style/Icon';
+import Layer from 'ol/layer/Layer';
+import Style from 'ol/style/Style';
+import VectorLayer from 'ol/layer/Vector';
+import VectorSource from 'ol/source/Vector';
 import {
   ConstructorParams,
   SldStyleParser as SLDParser,
   SldVersion,
 } from 'geostyler-sld-parser';
-import {Feature, getUid} from 'ol';
 import {
   Filter,
   Style as GeoStylerStyle,
   Rule,
   WellKnownName,
 } from 'geostyler-style';
-import {Geometry} from 'ol/geom';
-import {Icon, Style} from 'ol/style';
-import {Layer, Vector as VectorLayer} from 'ol/layer';
+import {getUid} from 'ol/util';
 import {OlStyleParser as OpenLayersParser} from 'geostyler-openlayers-parser';
 import {StyleFunction, StyleLike, createDefaultStyle} from 'ol/style/Style';
 
-import {
-  HsCommonLaymanService,
-  parseBase64Style,
-  awaitLayerSync,
-  getLaymanFriendlyLayerName,
-  isLayerSynchronizable,
-} from 'hslayers-ng/common/layman';
-import {HsConfig} from 'hslayers-ng/config';
-import {HsConfirmDialogComponent} from 'hslayers-ng/common/confirm';
-import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
-import {HsEventBusService} from 'hslayers-ng/services/event-bus';
-import {HsLayerSynchronizerService} from 'hslayers-ng/services/save-map';
-import {
-  instOf,
-  isFunction,
-  isLayerVectorLayer,
-} from 'hslayers-ng/services/utils';
-import {HsLogService} from 'hslayers-ng/services/log';
-import {HsMapService} from 'hslayers-ng/services/map';
-import {HsQueryVectorService} from 'hslayers-ng/services/query';
-import {HsToastService} from 'hslayers-ng/common/toast';
 import {defaultStyle} from './default-style';
 import {
   getCluster,
@@ -62,6 +45,27 @@ import {
   getHsLaymanSynchronizingSignal,
   setHsLaymanSynchronizing,
 } from 'hslayers-ng/common/extensions';
+import {
+  HsCommonLaymanService,
+  parseBase64Style,
+  awaitLayerSync,
+  getLaymanFriendlyLayerName,
+  isLayerSynchronizable,
+} from 'hslayers-ng/common/layman';
+import {HsConfig} from 'hslayers-ng/config';
+import {HsConfirmDialogComponent} from 'hslayers-ng/common/confirm';
+import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
+import {HsEventBusService} from 'hslayers-ng/services/event-bus';
+import {HsLayerSynchronizerService} from 'hslayers-ng/services/save-map';
+import {HsLogService} from 'hslayers-ng/services/log';
+import {HsMapService} from 'hslayers-ng/services/map';
+import {HsQueryVectorService} from 'hslayers-ng/services/query';
+import {HsToastService} from 'hslayers-ng/common/toast';
+import {
+  instOf,
+  isFunction,
+  isLayerVectorLayer,
+} from 'hslayers-ng/services/utils';
 
 @Injectable({
   providedIn: 'root',

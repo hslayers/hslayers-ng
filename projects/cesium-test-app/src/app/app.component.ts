@@ -1,5 +1,14 @@
 import {Component, OnInit, inject} from '@angular/core';
 
+import GeoJSON from 'ol/format/GeoJSON';
+import ImageLayer from 'ol/layer/Image';
+import KML from 'ol/format/KML';
+import OSM from 'ol/source/OSM';
+import Tile from 'ol/layer/Tile';
+import VectorLayer from 'ol/layer/Vector';
+import VectorSource from 'ol/source/Vector';
+import View from 'ol/View';
+import XYZ from 'ol/source/XYZ';
 import {
   Cartesian3,
   Math as CesiumMath,
@@ -7,20 +16,16 @@ import {
   HeadingPitchRoll,
   Transforms,
 } from 'cesium';
-import {GeoJSON, KML} from 'ol/format';
-import {Image as ImageLayer, Tile, Vector as VectorLayer} from 'ol/layer';
-import {OSM, Vector as VectorSource, XYZ} from 'ol/source';
-import {View} from 'ol';
 import {transform} from 'ol/proj';
 
 import {HsCesiumConfig} from 'hslayers-cesium/src/hscesium-config.service';
 import {HsConfig} from 'hslayers-ng/config';
+import {HslayersCesiumComponent} from 'hslayers-cesium/src/hscesium.component';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {
   HsOverlayConstructorService,
   HsPanelConstructorService,
 } from 'hslayers-ng/services/panel-constructor';
-import {HslayersCesiumComponent} from 'hslayers-cesium/src/hscesium.component';
 
 @Component({
   selector: 'hslayers-cesium-app',

@@ -1,10 +1,11 @@
 import {Injectable, inject} from '@angular/core';
 
+import Layer from 'ol/layer/Layer';
+import Source from 'ol/source/Source';
+import Tile from 'ol/layer/Tile';
 import WMTS, {optionsFromCapabilities} from 'ol/source/WMTS';
+import WMTSCapabilities from 'ol/format/WMTSCapabilities';
 import {Extent} from 'ol/extent';
-import {Layer, Tile} from 'ol/layer';
-import {Source} from 'ol/source';
-import {WMTSCapabilities} from 'ol/format';
 import {transformExtent} from 'ol/proj';
 
 import {

@@ -2,8 +2,8 @@ import {Component, inject} from '@angular/core';
 import {KeyValuePipe, NgClass} from '@angular/common';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 
-import {Feature} from 'ol';
-import {Geometry} from 'ol/geom';
+import Feature from 'ol/Feature';
+import Geometry from 'ol/geom/Geometry';
 
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsSearchService} from './search.service';
@@ -13,6 +13,7 @@ import {setHighlighted} from 'hslayers-ng/common/extensions';
 /**
  * Add search results template to page
  */
+
 @Component({
   selector: 'hs-search-results',
   templateUrl: './search-results.component.html',

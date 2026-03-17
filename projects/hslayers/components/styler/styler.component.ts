@@ -4,21 +4,23 @@ import {DomSanitizer} from '@angular/platform-browser';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 
 import colorScales from 'colormap/colorScale';
-import {Feature} from 'ol';
-import {Layer, Vector as VectorLayer} from 'ol/layer';
-import {Source, Vector as VectorSource} from 'ol/source';
+import Feature from 'ol/Feature';
+import Layer from 'ol/layer/Layer';
+import Source from 'ol/source/Source';
+import VectorLayer from 'ol/layer/Vector';
+import VectorSource from 'ol/source/Vector';
 
 import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
-import {
-  isLayerVectorLayer,
-  normalizeSldComparisonOperators,
-} from 'hslayers-ng/services/utils';
 import {HsPanelBaseComponent} from 'hslayers-ng/common/panels';
 import {HsSaveMapService} from 'hslayers-ng/services/save-map';
 import {HsStylerEditDialogComponent} from './edit-dialog/edit-dialog.component';
 import {HsStylerService} from 'hslayers-ng/services/styler';
 import {HsUploadedFiles} from 'hslayers-ng/common/upload';
+import {
+  isLayerVectorLayer,
+  normalizeSldComparisonOperators,
+} from 'hslayers-ng/services/utils';
 
 @Component({
   selector: 'hs-styles',

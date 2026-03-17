@@ -1,11 +1,16 @@
 import {Injectable, inject} from '@angular/core';
 
-import {Circle, Fill, Stroke, Style} from 'ol/style';
-import {Circle as CircleGeom, Point} from 'ol/geom';
-import {Feature, Geolocation} from 'ol';
-import {Rotate} from 'ol/control';
-import {Vector} from 'ol/source';
-import {Vector as VectorLayer} from 'ol/layer';
+import Circle from 'ol/style/Circle';
+import CircleGeom from 'ol/geom/Circle';
+import Feature from 'ol/Feature';
+import Fill from 'ol/style/Fill';
+import Geolocation from 'ol/Geolocation';
+import Point from 'ol/geom/Point';
+import Rotate from 'ol/control/Rotate';
+import Stroke from 'ol/style/Stroke';
+import Style from 'ol/style/Style';
+import Vector from 'ol/source/Vector';
+import VectorLayer from 'ol/layer/Vector';
 
 import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsMapService} from 'hslayers-ng/services/map';

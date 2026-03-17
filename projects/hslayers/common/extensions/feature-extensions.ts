@@ -1,5 +1,5 @@
 import Feature from 'ol/Feature';
-import {Geometry} from 'ol/geom';
+import Geometry from 'ol/geom/Geometry';
 
 const TITLE = 'title';
 const HIGHLIGHTED = 'highlighted';

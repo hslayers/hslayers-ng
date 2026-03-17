@@ -1,18 +1,18 @@
 import {Injectable, inject} from '@angular/core';
 
+import Feature from 'ol/Feature';
+import Geometry from 'ol/geom/Geometry';
+import VectorLayer from 'ol/layer/Vector';
+import VectorSource from 'ol/source/Vector';
 import {EventsKey} from 'ol/events';
-import {Feature} from 'ol';
-import {Geometry} from 'ol/geom';
-import {Vector as VectorLayer} from 'ol/layer';
-import {Vector as VectorSource} from 'ol/source';
 import {unByKey} from 'ol/Observable';
 
-import {HsCommonEndpointsService} from 'hslayers-ng/services/endpoints';
 import {
   debounce,
   highlightFeatures,
   createNewExtentLayer,
 } from 'hslayers-ng/services/utils';
+import {HsCommonEndpointsService} from 'hslayers-ng/services/endpoints';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsMapCompositionDescriptor} from 'hslayers-ng/types';
 import {HsMapService} from 'hslayers-ng/services/map';

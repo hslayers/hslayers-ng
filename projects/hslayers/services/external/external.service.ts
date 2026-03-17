@@ -1,24 +1,27 @@
 import {Injectable, inject} from '@angular/core';
 
 import BaseLayer from 'ol/layer/Base';
-import {Cluster, Source, Vector as VectorSource} from 'ol/source';
-import {Feature} from 'ol';
-import {Geometry} from 'ol/geom';
-import {Layer, Vector as VectorLayer} from 'ol/layer';
-import {ObjectEvent} from 'ol/Object';
+import Cluster from 'ol/source/Cluster';
+import Feature from 'ol/Feature';
+import Geometry from 'ol/geom/Geometry';
+import Layer from 'ol/layer/Layer';
+import Source from 'ol/source/Source';
+import VectorLayer from 'ol/layer/Vector';
+import VectorSource from 'ol/source/Vector';
 import {buffer, getCenter} from 'ol/extent';
+import {ObjectEvent} from 'ol/Object';
 
-import {DOMFeatureLink} from 'hslayers-ng/types';
-import {
-  DOM_FEATURE_LINKS,
-  getDomFeatureLinks,
-} from 'hslayers-ng/common/extensions';
 import {
   debounce,
   instOf,
   isLayerClustered,
   isLayerVectorLayer,
 } from 'hslayers-ng/services/utils';
+import {
+  DOM_FEATURE_LINKS,
+  getDomFeatureLinks,
+} from 'hslayers-ng/common/extensions';
+import {DOMFeatureLink} from 'hslayers-ng/types';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsLogService} from 'hslayers-ng/services/log';
 import {HsMapService} from 'hslayers-ng/services/map';

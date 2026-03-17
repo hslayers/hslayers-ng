@@ -1,8 +1,8 @@
-import {Feature} from 'ol';
-import {Geometry} from 'ol/geom';
+import Feature from 'ol/Feature';
+import Geometry from 'ol/geom/Geometry';
+import VectorLayer from 'ol/layer/Vector';
+import VectorSource from 'ol/source/Vector';
 import {ReplaySubject} from 'rxjs';
-import {Vector as VectorLayer} from 'ol/layer';
-import {Vector as VectorSource} from 'ol/source';
 
 import {HsPanelItem} from 'hslayers-ng/common/panels';
 import {HsQueryPopupData} from './popup-data';

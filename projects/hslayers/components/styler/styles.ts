@@ -1,4 +1,7 @@
-import {Circle, Fill, Stroke, Style} from 'ol/style';
+import Circle from 'ol/style/Circle';
+import Fill from 'ol/style/Fill';
+import Stroke from 'ol/style/Stroke';
+import Style from 'ol/style/Style';
 
 export const simple_style = new Style({
   fill: new Fill({

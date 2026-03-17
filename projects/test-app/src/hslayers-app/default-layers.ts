@@ -1,14 +1,22 @@
-import {HttpClient} from '@angular/common/http';
 import {catchError, lastValueFrom, takeUntil} from 'rxjs';
+import {HttpClient} from '@angular/common/http';
 
-import {Circle, Fill, Stroke, Style} from 'ol/style';
-import {Feature} from 'ol';
-import {GeoJSON} from 'ol/format';
-import {Image as ImageLayer, Vector as VectorLayer, Tile} from 'ol/layer';
-import type {Layer, Tile as TileLayer} from 'ol/layer';
+import Circle from 'ol/style/Circle';
+import Feature from 'ol/Feature';
+import Fill from 'ol/style/Fill';
+import GeoJSON from 'ol/format/GeoJSON';
+import ImageLayer from 'ol/layer/Image';
 import type ImageSource from 'ol/source/Image';
-import {TileWMS, Vector as VectorSource, XYZ} from 'ol/source';
-import {Point} from 'ol/geom';
+import type Layer from 'ol/layer/Layer';
+import Point from 'ol/geom/Point';
+import Stroke from 'ol/style/Stroke';
+import Style from 'ol/style/Style';
+import Tile from 'ol/layer/Tile';
+import type TileLayer from 'ol/layer/Tile';
+import TileWMS from 'ol/source/TileWMS';
+import VectorLayer from 'ol/layer/Vector';
+import VectorSource from 'ol/source/Vector';
+import XYZ from 'ol/source/XYZ';
 import {transformExtent} from 'ol/proj';
 
 import {HsProxyService} from 'hslayers-ng/services/utils';

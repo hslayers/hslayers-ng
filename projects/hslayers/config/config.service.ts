@@ -1,9 +1,12 @@
 import {Injectable, inject} from '@angular/core';
 import {Subject} from 'rxjs';
 
-import {Feature, View} from 'ol';
-import {Layer, Vector as VectorLayer} from 'ol/layer';
-import {Source, Vector as VectorSource} from 'ol/source';
+import Feature from 'ol/Feature';
+import Layer from 'ol/layer/Layer';
+import Source from 'ol/source/Source';
+import VectorLayer from 'ol/layer/Vector';
+import VectorSource from 'ol/source/Vector';
+import View from 'ol/View';
 
 import {
   AddDataFileType,
@@ -12,11 +15,11 @@ import {
   QueryPopupWidgetsType,
   WidgetItem,
 } from 'hslayers-ng/types';
-import {StyleLike} from 'ol/style/Style';
 import {
   HsConfigValidationRule,
   HsConfigValidationService,
 } from './config-validation.service';
+import {StyleLike} from 'ol/style/Style';
 
 export type ToastPosition =
   | 'top-left'

@@ -1,5 +1,5 @@
-import {Geometry} from 'ol/geom';
-import {Feature} from 'ol/index';
+import Feature from 'ol/Feature';
+import Geometry from 'ol/geom/Geometry';
 
 export type HsFeatureAttribute = {
   name;

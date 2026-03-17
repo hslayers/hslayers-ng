@@ -2,20 +2,24 @@ import {DomSanitizer, SafeHtml} from '@angular/platform-browser';
 import {Injectable, inject} from '@angular/core';
 import {Subject, debounceTime} from 'rxjs';
 
+import CircleStyle from 'ol/style/Circle';
+import Cluster from 'ol/source/Cluster';
 import * as extent from 'ol/extent';
+import Feature from 'ol/Feature';
+import Fill from 'ol/style/Fill';
+import GeoJSON from 'ol/format/GeoJSON';
+import Geometry from 'ol/geom/Geometry';
+import LineString from 'ol/geom/LineString';
+import Polygon from 'ol/geom/Polygon';
+import Select from 'ol/interaction/Select';
+import Stroke from 'ol/style/Stroke';
 import Style, {StyleLike} from 'ol/style/Style';
-import {Circle as CircleStyle, Fill, Stroke} from 'ol/style';
-import {Cluster, Vector as VectorSource} from 'ol/source';
-import {Coordinate} from 'ol/coordinate';
-import {Feature} from 'ol';
-import {GeoJSON, WKT} from 'ol/format';
-import {Geometry, LineString, Polygon} from 'ol/geom';
-import {Select} from 'ol/interaction';
+import VectorSource from 'ol/source/Vector';
+import WKT from 'ol/format/WKT';
 import {click} from 'ol/events/condition';
+import {Coordinate} from 'ol/coordinate';
 import {toLonLat} from 'ol/proj';
 
-import {HsConfig} from 'hslayers-ng/config';
-import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {
   formatLength,
   formatArea,
@@ -23,15 +27,17 @@ import {
   getLayerName,
   isLayerEditable,
 } from 'hslayers-ng/services/utils';
-import {HsMapService} from 'hslayers-ng/services/map';
-import {HsQueryBaseService} from './query-base.service';
 import {
   getFeatures,
   getOnFeatureSelected,
   getQueryable,
   getVirtualAttributes,
 } from 'hslayers-ng/common/extensions';
+import {HsConfig} from 'hslayers-ng/config';
+import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsFeatureAttribute, HsFeatureDescriptor} from 'hslayers-ng/types';
+import {HsMapService} from 'hslayers-ng/services/map';
+import {HsQueryBaseService} from './query-base.service';
 
 const fill = new Fill({
   color: 'rgba(51, 153, 204,0.4)',

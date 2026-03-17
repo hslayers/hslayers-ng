@@ -1,13 +1,15 @@
 import {Injectable, inject} from '@angular/core';
 import {Subject} from 'rxjs';
 
-import {ImageWMS, Source, TileWMS} from 'ol/source';
-import {Layer} from 'ol/layer';
+import ImageWMS from 'ol/source/ImageWMS';
+import Layer from 'ol/layer/Layer';
+import Source from 'ol/source/Source';
+import TileWMS from 'ol/source/TileWMS';
 
+import {getDimensions, setDimension} from 'hslayers-ng/common/extensions';
 import {HsLayerDescriptor, HsWmsLayer} from 'hslayers-ng/types';
 import {HsLogService} from 'hslayers-ng/services/log';
 import {instOf} from 'hslayers-ng/services/utils';
-import {getDimensions, setDimension} from 'hslayers-ng/common/extensions';
 
 @Injectable({
   providedIn: 'root',

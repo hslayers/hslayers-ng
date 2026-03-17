@@ -1,7 +1,7 @@
 import {BehaviorSubject, filter} from 'rxjs';
 import {Component, DestroyRef, OnInit, ViewRef, inject} from '@angular/core';
 
-import {Layer} from 'ol/layer';
+import Layer from 'ol/layer/Layer';
 
 import {HsLayerDescriptor} from 'hslayers-ng/types';
 import {HsLayerSelectorService} from 'hslayers-ng/services/layer-manager';

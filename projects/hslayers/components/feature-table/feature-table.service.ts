@@ -1,18 +1,21 @@
 import {Injectable, inject} from '@angular/core';
 
-import {Cluster, Source, Vector as VectorSource} from 'ol/source';
-import {Feature} from 'ol';
-import {Geometry} from 'ol/geom';
-import {Layer} from 'ol/layer';
+import Cluster from 'ol/source/Cluster';
+import Feature from 'ol/Feature';
+import Geometry from 'ol/geom/Geometry';
+import Layer from 'ol/layer/Layer';
+import Source from 'ol/source/Source';
+import VectorSource from 'ol/source/Vector';
 
-import {HsQueryVectorService} from 'hslayers-ng/services/query';
 import {
   getBase,
   getShowInLayerManager,
   getTitle,
 } from 'hslayers-ng/common/extensions';
 import {HsFeatureDescriptor} from 'hslayers-ng/types';
+import {HsQueryVectorService} from 'hslayers-ng/services/query';
 import {isLayerVectorLayer, isLayerClustered} from 'hslayers-ng/services/utils';
+
 @Injectable({
   providedIn: 'root',
 })

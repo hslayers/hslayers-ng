@@ -1,12 +1,13 @@
-import {Extent} from 'ol/extent';
-import {Projection, transformExtent} from 'ol/proj';
-import {Vector as VectorSource} from 'ol/source';
+import Projection from 'ol/proj/Projection';
+import VectorSource from 'ol/source/Vector';
 import {bbox, tile} from 'ol/loadingstrategy';
 import {
   createGetFeatureRequest,
   createPostFeatureRequest,
 } from './wfs-get-feature';
 import {createXYZ} from 'ol/tilegrid';
+import {Extent} from 'ol/extent';
+import {transformExtent} from 'ol/proj';
 
 export type WfsOptions = {
   /**

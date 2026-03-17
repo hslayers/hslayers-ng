@@ -1,15 +1,15 @@
 import {Injectable, NgZone, inject} from '@angular/core';
 import {ReplaySubject} from 'rxjs';
 
-import {Feature} from 'ol';
-import {Geometry} from 'ol/geom';
+import Feature from 'ol/Feature';
+import Geometry from 'ol/geom/Geometry';
 
+import {getName, getPopUp, getTitle} from 'hslayers-ng/common/extensions';
 import {HsFeatureLayer} from './query-popup.service.model';
 import {HsMapService} from 'hslayers-ng/services/map';
 import {HsPanelItem} from 'hslayers-ng/common/panels';
 import {HsQueryPopupData} from './popup-data';
 import {HsQueryPopupWidgetContainerService} from './query-popup-widget-container.service';
-import {getName, getPopUp, getTitle} from 'hslayers-ng/common/extensions';
 
 @Injectable({
   providedIn: 'root',

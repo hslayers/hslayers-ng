@@ -1,29 +1,25 @@
 import BaseLayer from 'ol/layer/Base';
+import Cluster from 'ol/source/Cluster';
+import Feature from 'ol/Feature';
+import Geometry from 'ol/geom/Geometry';
 import IDW from 'ol-ext/source/IDW';
+import ImageLayer from 'ol/layer/Image';
+import ImageWMS from 'ol/source/ImageWMS';
+import Layer from 'ol/layer/Layer';
+import Projection from 'ol/proj/Projection';
+import Source from 'ol/source/Source';
+import TileArcGISRest from 'ol/source/TileArcGISRest';
+import TileLayer from 'ol/layer/Tile';
+import TileWMS from 'ol/source/TileWMS';
+import VectorImage from 'ol/layer/VectorImage';
+import VectorLayer from 'ol/layer/Vector';
+import VectorSource from 'ol/source/Vector';
+import View from 'ol/View';
+import WMTS from 'ol/source/WMTS';
+import XYZ from 'ol/source/XYZ';
 import {Big} from 'big.js';
-import {
-  Cluster,
-  ImageWMS,
-  Source,
-  TileArcGISRest,
-  TileWMS,
-  Vector as VectorSource,
-  WMTS,
-  XYZ,
-} from 'ol/source';
 import {Extent, isEmpty} from 'ol/extent';
-import {Feature, View} from 'ol';
 import {default as FeatureFormat} from 'ol/format/Feature';
-import {Geometry} from 'ol/geom';
-import {HsLayerDescriptor, HsWmsLayer} from 'hslayers-ng/types';
-import {
-  Image as ImageLayer,
-  Layer,
-  Vector as VectorLayer,
-  Tile as TileLayer,
-  VectorImage,
-} from 'ol/layer';
-import {METERS_PER_UNIT, Projection, transformExtent} from 'ol/proj';
 import {
   getCluster,
   getEditor,
@@ -31,7 +27,10 @@ import {
   getShowInLayerManager,
   getTitle,
 } from 'hslayers-ng/common/extensions';
+import {HsLayerDescriptor, HsWmsLayer} from 'hslayers-ng/types';
 import {instOf, isFunction} from './utils';
+import {METERS_PER_UNIT} from 'ol/proj/Units';
+import {transformExtent} from 'ol/proj';
 
 /**
  * Determines if layer has properties needed for 'Zoom to layer' function.
@@ -39,6 +38,7 @@ import {instOf, isFunction} from './utils';
  * @returns True for layer with BoundingBox property, for
  * WMS layer or for layer, which has source with extent
  */
+
 export function layerIsZoomable(layer: Layer<Source>): boolean {
   if (typeof layer == 'undefined') {
     return false;

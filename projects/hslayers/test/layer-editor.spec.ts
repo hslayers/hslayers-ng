@@ -2,21 +2,23 @@ import {
   BrowserDynamicTestingModule,
   platformBrowserDynamicTesting,
 } from '@angular/platform-browser-dynamic/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {
   CUSTOM_ELEMENTS_SCHEMA,
   provideZoneChangeDetection,
   NgModule,
 } from '@angular/core';
-import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
 import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
 import {provideHttpClient, withInterceptorsFromDi} from '@angular/common/http';
 import {provideHttpClientTesting} from '@angular/common/http/testing';
 
-import {Cluster, Vector as VectorSource} from 'ol/source';
-import {Feature} from 'ol';
-import {Vector as VectorLayer} from 'ol/layer';
+import Cluster from 'ol/source/Cluster';
+import Feature from 'ol/Feature';
+import VectorLayer from 'ol/layer/Vector';
+import VectorSource from 'ol/source/Vector';
 
+import {getCluster} from 'hslayers-ng/common/extensions';
 import {HsAddDataOwsService} from 'hslayers-ng/services/add-data';
 import {
   HsClusterWidgetComponent,
@@ -34,7 +36,6 @@ import {HsShareUrlService} from 'hslayers-ng/services/share';
 import {HsStylerService} from 'hslayers-ng/services/styler';
 import {HsStylerServiceMock} from './styler.service.mock';
 import {HsWmtsGetCapabilitiesService} from 'hslayers-ng/services/get-capabilities';
-import {getCluster} from 'hslayers-ng/common/extensions';
 
 class emptyMock {
   constructor() {}

@@ -1,11 +1,12 @@
 import {HttpClient} from '@angular/common/http';
 import {Injectable, inject} from '@angular/core';
 
-import {Feature} from 'ol';
-import {Geometry} from 'ol/geom';
+import Feature from 'ol/Feature';
+import Geometry from 'ol/geom/Geometry';
 import {Observable, catchError, map, of, timeout} from 'rxjs';
 import {transformExtent} from 'ol/proj';
 
+import {addExtentFeature} from 'hslayers-ng/services/utils';
 import {
   EndpointErrorHandler,
   EndpointErrorHandling,
@@ -22,11 +23,11 @@ import {HsLanguageService} from 'hslayers-ng/services/language';
 import {HsLogService} from 'hslayers-ng/services/log';
 import {HsMapService} from 'hslayers-ng/services/map';
 import {HsToastService} from 'hslayers-ng/common/toast';
-import {addExtentFeature} from 'hslayers-ng/services/utils';
 
 /**
  * Layman GET /layers response wrapper with custom HSLayers properties
  */
+
 export interface HsLaymanGetLayersWrapper {
   endpoint?: HsEndpoint;
   extentFeatureCreated?: (feature: Feature<Geometry>) => void;

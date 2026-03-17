@@ -1,4 +1,4 @@
-import {Vector as VectorSource} from 'ol/source';
+import VectorSource from 'ol/source/Vector';
 
 import {AccessRightsModel} from '../../access-rights.model';
 import {HsVectorLayerOptions} from './vector-layer-options.type';

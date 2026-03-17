@@ -1,6 +1,7 @@
-import {LineString, Polygon} from 'ol/geom';
-import {ProjectionLike, get as getProjection, transform} from 'ol/proj';
+import LineString from 'ol/geom/LineString';
+import Polygon from 'ol/geom/Polygon';
 import {getArea, getDistance} from 'ol/sphere';
+import {ProjectionLike, get as getProjection, transform} from 'ol/proj';
 
 import {Measurement} from 'hslayers-ng/types';
 
@@ -8,6 +9,7 @@ import {Measurement} from 'hslayers-ng/types';
  * @param url - URL for which to determine port number
  * @returns Port number
  */
+
 export function getPortFromUrl(url: string): string {
   try {
     const link = document.createElement('a');

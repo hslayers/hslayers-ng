@@ -1,11 +1,17 @@
+import {catchError, map} from 'rxjs/operators';
 import {HttpClient} from '@angular/common/http';
 import {Injectable, inject} from '@angular/core';
 import {Observable, of} from 'rxjs';
-import {catchError, map} from 'rxjs/operators';
 
-import {Layer} from 'ol/layer';
-import {Source} from 'ol/source';
+import Layer from 'ol/layer/Layer';
+import Source from 'ol/source/Source';
 
+import {
+  getDefinition,
+  getName,
+  getWfsUrl,
+  getWorkspace,
+} from 'hslayers-ng/common/extensions';
 import {HsLanguageService} from 'hslayers-ng/services/language';
 import {
   HsLayerDescriptor,
@@ -14,14 +20,8 @@ import {
   FilterType,
   LogicalOperatorType,
 } from 'hslayers-ng/types';
-import {HsToastService} from 'hslayers-ng/common/toast';
 import {HsProxyService} from 'hslayers-ng/services/utils';
-import {
-  getDefinition,
-  getName,
-  getWfsUrl,
-  getWorkspace,
-} from 'hslayers-ng/common/extensions';
+import {HsToastService} from 'hslayers-ng/common/toast';
 
 @Injectable({
   providedIn: 'root',

@@ -13,16 +13,17 @@ import {Observable, map} from 'rxjs';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {TranslatePipe} from '@ngx-translate/core';
 
-import {Layer} from 'ol/layer';
+import Layer from 'ol/layer/Layer';
 
+import {getTitle} from 'hslayers-ng/common/extensions';
 import {HsDownloadDirective} from 'hslayers-ng/common/download';
 import {HsFeatureCommonService, exportFormats} from '../feature-common.service';
+import {HsFeatureDescriptor} from 'hslayers-ng/types';
 import {HsMapService} from 'hslayers-ng/services/map';
 import {HsQueryAttributeRowComponent} from '../attribute-row/attribute-row.component';
 import {HsQueryVectorService} from 'hslayers-ng/services/query';
-import {getTitle} from 'hslayers-ng/common/extensions';
-import {HsFeatureDescriptor} from 'hslayers-ng/types';
 import {isLayerEditable} from 'hslayers-ng/services/utils';
+
 @Component({
   selector: 'hs-query-feature',
   templateUrl: './feature.component.html',

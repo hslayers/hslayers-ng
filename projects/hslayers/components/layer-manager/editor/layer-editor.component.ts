@@ -1,14 +1,23 @@
 import {Component, computed, inject, input, model, signal} from '@angular/core';
 import {FormsModule} from '@angular/forms';
-import {NgClass} from '@angular/common';
 import {map} from 'rxjs';
+import {NgClass} from '@angular/common';
 import {toObservable} from '@angular/core/rxjs-interop';
 import {TranslatePipe} from '@ngx-translate/core';
 
-import {Feature} from 'ol';
-import {Vector as VectorLayer} from 'ol/layer';
-import {Vector as VectorSource} from 'ol/source';
+import Feature from 'ol/Feature';
+import VectorLayer from 'ol/layer/Vector';
+import VectorSource from 'ol/source/Vector';
 
+import {
+  getBase,
+  getGreyscale,
+  getRemovable,
+  getTitle,
+  getWfsUrl,
+  getWorkspace,
+  setTitle,
+} from 'hslayers-ng/common/extensions';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsConfirmDialogComponent} from 'hslayers-ng/common/confirm';
 import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
@@ -22,15 +31,6 @@ import {
 import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsPanelHelpersModule} from 'hslayers-ng/common/panels';
 import {HsStylerService} from 'hslayers-ng/services/styler';
-import {
-  getBase,
-  getGreyscale,
-  getRemovable,
-  getTitle,
-  getWfsUrl,
-  getWorkspace,
-  setTitle,
-} from 'hslayers-ng/common/extensions';
 
 // Widgets
 import {HsCopyLayerDialogComponent} from '../dialogs/copy-layer-dialog.component';

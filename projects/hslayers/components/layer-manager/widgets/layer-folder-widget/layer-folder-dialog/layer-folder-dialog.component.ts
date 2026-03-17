@@ -19,10 +19,11 @@ import {Observable, debounceTime, filter, fromEvent} from 'rxjs';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {TranslatePipe} from '@ngx-translate/core';
 
-import {Layer} from 'ol/layer';
+import Layer from 'ol/layer/Layer';
 
 import {HsLanguageService} from 'hslayers-ng/services/language';
 
+import {getPath} from 'hslayers-ng/common/extensions';
 import {
   HsDialogComponent,
   HsDialogContainerService,
@@ -32,7 +33,6 @@ import {
   HsLayerManagerFolderService,
   HsLayerManagerService,
 } from 'hslayers-ng/services/layer-manager';
-import {getPath} from 'hslayers-ng/common/extensions';
 
 @Component({
   selector: 'hs-layer-folder-widget-dialog',

@@ -1,6 +1,8 @@
+import Layer from 'ol/layer/Layer';
+import Source from 'ol/source/Source';
+import Tile from 'ol/layer/Tile';
+import XYZ from 'ol/source/XYZ';
 import {Injectable, inject} from '@angular/core';
-import {Layer, Tile} from 'ol/layer';
-import {Source, XYZ} from 'ol/source';
 import {Options as TileOptions} from 'ol/layer/BaseTile';
 
 import {
@@ -10,12 +12,12 @@ import {
   UrlDataObject,
 } from 'hslayers-ng/types';
 import {DuplicateHandling, HsMapService} from 'hslayers-ng/services/map';
+import {getFromComposition} from 'hslayers-ng/common/extensions';
 import {HsAddDataCommonService} from '../common.service';
 import {HsAddDataService} from '../add-data.service';
-import {HsLayoutService} from 'hslayers-ng/services/layout';
-import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsConfig} from 'hslayers-ng/config';
-import {getFromComposition} from 'hslayers-ng/common/extensions';
+import {HsEventBusService} from 'hslayers-ng/services/event-bus';
+import {HsLayoutService} from 'hslayers-ng/services/layout';
 
 @Injectable({providedIn: 'root'})
 export class HsUrlXyzService implements HsUrlTypeServiceModel {

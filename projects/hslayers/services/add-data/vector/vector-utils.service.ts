@@ -1,7 +1,8 @@
 import {Injectable, inject} from '@angular/core';
 
-import {Projection, get as getProjection} from 'ol/proj';
+import Projection from 'ol/proj/Projection';
 import {PROJECTIONS as epsg4326Aliases} from 'ol/proj/epsg4326';
+import {get as getProjection} from 'ol/proj';
 
 import {HsLaymanService} from 'hslayers-ng/services/save-map';
 

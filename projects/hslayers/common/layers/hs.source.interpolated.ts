@@ -1,13 +1,13 @@
-import IDW from 'ol-ext/source/IDW';
 import colormap from 'colormap';
-import {Feature} from 'ol';
-import {GeoJSON} from 'ol/format';
-import {Geometry} from 'ol/geom';
-import {LoadingStrategy} from 'ol/source/Vector';
-import {Projection} from 'ol/proj';
-import {Subject} from 'rxjs';
-import {Vector as VectorSource} from 'ol/source';
+import Feature from 'ol/Feature';
+import GeoJSON from 'ol/format/GeoJSON';
+import Geometry from 'ol/geom/Geometry';
+import IDW from 'ol-ext/source/IDW';
+import Projection from 'ol/proj/Projection';
+import VectorSource from 'ol/source/Vector';
 import {containsExtent, equals} from 'ol/extent';
+import {LoadingStrategy} from 'ol/source/Vector';
+import {Subject} from 'rxjs';
 
 export const NORMALIZED_WEIGHT_PROPERTY_NAME = 'hs_normalized_IDW_value';
 

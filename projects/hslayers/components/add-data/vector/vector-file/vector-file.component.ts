@@ -10,12 +10,13 @@ import {
 } from '@angular/core';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 
-import {Cluster} from 'ol/source';
-import {Feature} from 'ol';
-import {GeoJSON} from 'ol/format';
+import Cluster from 'ol/source/Cluster';
+import Feature from 'ol/Feature';
+import GeoJSON from 'ol/format/GeoJSON';
 
 import {AccessRightsModel} from 'hslayers-ng/types';
 import {DEFAULT_VECTOR_LOAD_TYPE} from '../../enums/load-types.const';
+import {getShowInLayerManager} from 'hslayers-ng/common/extensions';
 import {
   HsAddDataCommonFileService,
   HsAddDataVectorUploadService,
@@ -25,17 +26,16 @@ import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsLanguageService} from 'hslayers-ng/services/language';
 import {HsLayerManagerService} from 'hslayers-ng/services/layer-manager';
+import {HsLayoutService} from 'hslayers-ng/services/layout';
+import {HsMapService} from 'hslayers-ng/services/map';
+import {HsToastService} from 'hslayers-ng/common/toast';
+import {HsUploadComponent, HsUploadedFiles} from 'hslayers-ng/common/upload';
 import {
   undefineEmptyString,
   isLayerClustered,
   isLayerVectorLayer,
 } from 'hslayers-ng/services/utils';
-import {HsLayoutService} from 'hslayers-ng/services/layout';
-import {HsMapService} from 'hslayers-ng/services/map';
-import {HsToastService} from 'hslayers-ng/common/toast';
-import {HsUploadComponent, HsUploadedFiles} from 'hslayers-ng/common/upload';
 import {VectorFileDataType} from '../../common/advanced-options/advanced-options.component';
-import {getShowInLayerManager} from 'hslayers-ng/common/extensions';
 
 @Component({
   selector: 'hs-file-vector',

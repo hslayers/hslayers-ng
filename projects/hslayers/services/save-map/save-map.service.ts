@@ -1,23 +1,28 @@
 import {Injectable, inject} from '@angular/core';
 
-import {Circle, Icon, RegularShape, Style} from 'ol/style';
-import {
-  Cluster,
-  ImageArcGISRest,
-  ImageStatic,
-  ImageWMS,
-  Source,
-  TileArcGISRest,
-  WMTS,
-  XYZ,
-  Vector as VectorSource,
-} from 'ol/source';
-import {EsriJSON, GeoJSON} from 'ol/format';
-import {Feature, Map} from 'ol';
+import Circle from 'ol/style/Circle';
+import Cluster from 'ol/source/Cluster';
+import EsriJSON from 'ol/format/EsriJSON';
+import Feature from 'ol/Feature';
+import GeoJSON from 'ol/format/GeoJSON';
+import Geometry from 'ol/geom/Geometry';
+import Icon from 'ol/style/Icon';
+import ImageArcGISRest from 'ol/source/ImageArcGISRest';
+import ImageLayer from 'ol/layer/Image';
+import ImageStatic from 'ol/source/ImageStatic';
+import ImageWMS from 'ol/source/ImageWMS';
+import Layer from 'ol/layer/Layer';
+import Map from 'ol/Map';
+import RegularShape from 'ol/style/RegularShape';
+import Source from 'ol/source/Source';
+import Style from 'ol/style/Style';
+import Tile from 'ol/layer/Tile';
+import TileArcGISRest from 'ol/source/TileArcGISRest';
+import VectorSource from 'ol/source/Vector';
+import WMTS from 'ol/source/WMTS';
+import XYZ from 'ol/source/XYZ';
 import {FeatureUrlFunction} from 'ol/featureloader';
 import {GeoJSONFeatureCollection} from 'ol/format/GeoJSON';
-import {Geometry} from 'ol/geom';
-import {Image as ImageLayer, Tile, Layer} from 'ol/layer';
 import {transformExtent} from 'ol/proj';
 
 import {
@@ -31,20 +36,6 @@ import {
   SerializedImage,
   UserData,
 } from 'hslayers-ng/types';
-import {
-  getLayerParams,
-  getURL,
-  HsProxyService,
-  instOf,
-  isLayerClustered,
-  isLayerVectorLayer,
-  isLayerWMS,
-  normalizeSldComparisonOperators,
-  getBboxFromObject,
-} from 'hslayers-ng/services/utils';
-import {HsLogService} from 'hslayers-ng/services/log';
-import {HsMapService} from 'hslayers-ng/services/map';
-import {HsShareThumbnailService} from 'hslayers-ng/services/share';
 import {
   getAttribution,
   getBase,
@@ -66,7 +57,21 @@ import {
   getWfsUrl,
   getWorkspace,
 } from 'hslayers-ng/common/extensions';
+import {
+  getLayerParams,
+  getURL,
+  HsProxyService,
+  instOf,
+  isLayerClustered,
+  isLayerVectorLayer,
+  isLayerWMS,
+  normalizeSldComparisonOperators,
+  getBboxFromObject,
+} from 'hslayers-ng/services/utils';
 import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
+import {HsLogService} from 'hslayers-ng/services/log';
+import {HsMapService} from 'hslayers-ng/services/map';
+import {HsShareThumbnailService} from 'hslayers-ng/services/share';
 
 const LOCAL_STORAGE_EXPIRE = 5000;
 

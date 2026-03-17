@@ -1,12 +1,12 @@
 import {inject, Injectable} from '@angular/core';
 
+import Layer from 'ol/layer/Layer';
+import WMTS from 'ol/source/WMTS';
 import WMTSTileGrid from 'ol/tilegrid/WMTS';
-import {Layer} from 'ol/layer';
-import {WMTS} from 'ol/source';
 import {get as getProjection, transform} from 'ol/proj';
 
-import {HsMapService} from 'hslayers-ng/services/map';
 import {getInfoFormat} from 'hslayers-ng/common/extensions';
+import {HsMapService} from 'hslayers-ng/services/map';
 import {paramsToURLWoEncode} from 'hslayers-ng/services/utils';
 
 @Injectable({

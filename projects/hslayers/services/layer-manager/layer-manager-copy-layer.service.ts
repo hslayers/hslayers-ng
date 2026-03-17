@@ -1,13 +1,10 @@
 import {Injectable, inject} from '@angular/core';
 
-import {Cluster, Vector as VectorSource} from 'ol/source';
-import {Feature} from 'ol';
-import {Vector as VectorLayer} from 'ol/layer';
+import Cluster from 'ol/source/Cluster';
+import Feature from 'ol/Feature';
+import VectorLayer from 'ol/layer/Vector';
+import VectorSource from 'ol/source/Vector';
 
-import {HsAddDataOwsService} from 'hslayers-ng/services/add-data';
-import {HsLayerManagerUtilsService} from './layer-manager-utils.service';
-import {HsLayerSelectorService} from './layer-selector.service';
-import {HsMapService} from 'hslayers-ng/services/map';
 import {
   getCachedCapabilities,
   getName,
@@ -24,6 +21,10 @@ import {
   updateLayerParams,
   isLayerClustered,
 } from 'hslayers-ng/services/utils';
+import {HsAddDataOwsService} from 'hslayers-ng/services/add-data';
+import {HsLayerManagerUtilsService} from './layer-manager-utils.service';
+import {HsLayerSelectorService} from './layer-selector.service';
+import {HsMapService} from 'hslayers-ng/services/map';
 
 @Injectable({
   providedIn: 'root',

@@ -1,20 +1,20 @@
 import {Injectable, inject} from '@angular/core';
 
-import {Layer} from 'ol/layer';
-import {Source} from 'ol/source';
+import Layer from 'ol/layer/Layer';
+import Source from 'ol/source/Source';
 
+import {getBase} from 'hslayers-ng/common/extensions';
+import {
+  getMaxLayerZIndex,
+  getMinLayerZIndex,
+  instOf,
+} from 'hslayers-ng/services/utils';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {
   HsLayerManagerFolderService,
   HsLayerManagerService,
 } from 'hslayers-ng/services/layer-manager';
 import {HsMapService} from 'hslayers-ng/services/map';
-import {
-  getMaxLayerZIndex,
-  getMinLayerZIndex,
-  instOf,
-} from 'hslayers-ng/services/utils';
-import {getBase} from 'hslayers-ng/common/extensions';
 
 export class LayerListItem {
   title: string;

@@ -1,51 +1,51 @@
 /* eslint-disable no-eq-null */
-import {Injectable, Renderer2, RendererFactory2, inject} from '@angular/core';
 import {filter} from 'rxjs';
+import {Injectable, Renderer2, RendererFactory2, inject} from '@angular/core';
 
+import Cluster from 'ol/source/Cluster';
+import Control from 'ol/control/Control';
+import DoubleClickZoom from 'ol/interaction/DoubleClickZoom';
+import DragPan from 'ol/interaction/DragPan';
+import DragRotate from 'ol/interaction/DragRotate';
+import DragZoom from 'ol/interaction/DragZoom';
+import Feature from 'ol/Feature';
+import Geometry from 'ol/geom/Geometry';
+import Group from 'ol/layer/Group';
+import ImageArcGISRest from 'ol/source/ImageArcGISRest';
+import ImageTile from 'ol/ImageTile';
+import ImageWMS from 'ol/source/ImageWMS';
 import ImageWrapper from 'ol/Image';
+import KeyboardPan from 'ol/interaction/KeyboardPan';
+import KeyboardZoom from 'ol/interaction/KeyboardZoom';
+import Kinetic from 'ol/Kinetic';
+import Layer from 'ol/layer/Layer';
+import Map from 'ol/Map';
+import MapBrowserEvent from 'ol/MapBrowserEvent';
+import MouseWheelZoom from 'ol/interaction/MouseWheelZoom';
+import OSM from 'ol/source/OSM';
+import PinchRotate from 'ol/interaction/PinchRotate';
+import PinchZoom from 'ol/interaction/PinchZoom';
+import Projection from 'ol/proj/Projection';
 import RenderFeature from 'ol/render/Feature';
-import {
-  Cluster,
-  ImageArcGISRest,
-  ImageWMS,
-  OSM,
-  Source,
-  ImageStatic as Static,
-  TileArcGISRest,
-  TileImage,
-  TileWMS,
-  Vector as VectorSource,
-  WMTS,
-  XYZ,
-} from 'ol/source';
-import {Control, ScaleLine, defaults as controlDefaults} from 'ol/control';
-import {
-  DoubleClickZoom,
-  DragPan,
-  DragRotate,
-  DragZoom,
-  KeyboardPan,
-  KeyboardZoom,
-  MouseWheelZoom,
-  PinchRotate,
-  PinchZoom,
-} from 'ol/interaction';
+import ScaleLine from 'ol/control/ScaleLine';
+import Source from 'ol/source/Source';
+import Static from 'ol/source/ImageStatic';
+import Tile from 'ol/layer/Tile';
+import TileArcGISRest from 'ol/source/TileArcGISRest';
+import TileImage from 'ol/source/TileImage';
+import TileWMS from 'ol/source/TileWMS';
+import VectorLayer from 'ol/layer/Vector';
+import VectorSource from 'ol/source/Vector';
+import View from 'ol/View';
+import WMTS from 'ol/source/WMTS';
+import XYZ from 'ol/source/XYZ';
+import {defaults as controlDefaults} from 'ol/control/defaults';
 import {Extent} from 'ol/extent';
-import {Feature, ImageTile, Kinetic, Map, MapBrowserEvent, View} from 'ol';
-import {Geometry} from 'ol/geom';
-import {Group, Layer, Tile, Vector as VectorLayer} from 'ol/layer';
-import {Projection, transform, transformExtent} from 'ol/proj';
 import {platformModifierKeyOnly as platformModifierKeyOnlyCondition} from 'ol/events/condition';
 import {registerHslayersProj4Defs} from './projections';
+import {transform, transformExtent} from 'ol/proj';
 
 import {BoundingBoxObject} from 'hslayers-ng/types';
-import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
-import {HsConfig} from 'hslayers-ng/config';
-import {HsEventBusService} from 'hslayers-ng/services/event-bus';
-import {HsLanguageService} from 'hslayers-ng/services/language';
-import {HsLayoutService} from 'hslayers-ng/services/layout';
-import {HsLogService} from 'hslayers-ng/services/log';
-import {HsQueuesService} from 'hslayers-ng/services/queues';
 import {
   getDimensions,
   getEnableProxy,
@@ -53,7 +53,14 @@ import {
   getRemovable,
   getTitle,
 } from 'hslayers-ng/common/extensions';
+import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
+import {HsConfig} from 'hslayers-ng/config';
+import {HsEventBusService} from 'hslayers-ng/services/event-bus';
+import {HsLanguageService} from 'hslayers-ng/services/language';
+import {HsLayoutService} from 'hslayers-ng/services/layout';
+import {HsLogService} from 'hslayers-ng/services/log';
 import {HsProxyService, instOf} from 'hslayers-ng/services/utils';
+import {HsQueuesService} from 'hslayers-ng/services/queues';
 
 export enum DuplicateHandling {
   AddDuplicate = 0,
