@@ -81,7 +81,6 @@ export const handleProxyRes = (proxyRes, req, res) => {
   });
 };
 
-// eslint-disable-next-line no-unused-vars
 export const addAuthenticationHeaders = (proxyReq, req, res) => {
   if (req.session.passport && req.session.passport.user) {
     const user = req.session.passport.user;
@@ -93,7 +92,6 @@ export const addAuthenticationHeaders = (proxyReq, req, res) => {
   }
 };
 
-// eslint-disable-next-line no-unused-vars
 export const allowOrigin = (proxyRes, req, res) => {
   var whitelist = JSON.parse(process.env.CORS_WHITELIST);
   var origin = req.header('Origin');
