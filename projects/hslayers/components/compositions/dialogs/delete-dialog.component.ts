@@ -1,4 +1,5 @@
 import {Component, ViewRef, inject} from '@angular/core';
+import {TranslatePipe} from '@ngx-translate/core';
 
 import {HsCompositionsService} from '../compositions.service';
 import {
@@ -8,7 +9,7 @@ import {
 @Component({
   selector: 'hs-compositions-delete-dialog',
   templateUrl: './delete-dialog.component.html',
-  standalone: false,
+  imports: [TranslatePipe],
 })
 export class HsCompositionsDeleteDialogComponent implements HsDialogComponent {
   hsDialogContainerService = inject(HsDialogContainerService);

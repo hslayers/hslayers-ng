@@ -9,4 +9,3 @@ export * from './widgets/clear-layer.component';
 export * from './widgets/dynamic-text.component';
 export * from './widgets/layer-name.component';
 export * from './popup-data';
-export * from './query-popup.module';

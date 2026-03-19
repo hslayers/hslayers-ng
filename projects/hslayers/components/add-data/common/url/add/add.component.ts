@@ -1,12 +1,14 @@
 import {Component, Input, inject} from '@angular/core';
+import {TranslatePipe} from '@ngx-translate/core';
 
 import {HsAddDataUrlService} from 'hslayers-ng/services/add-data';
 import {HsUrlTypeServiceModel, Service} from 'hslayers-ng/types';
+import {HsAddToMapButtonComponent} from 'hslayers-ng/common/add-to-map';
 
 @Component({
   selector: 'hs-url-add',
   templateUrl: './add.component.html',
-  standalone: false,
+  imports: [HsAddToMapButtonComponent, TranslatePipe],
 })
 export class HsUrlAddComponent {
   hsAddDataUrlService = inject(HsAddDataUrlService);

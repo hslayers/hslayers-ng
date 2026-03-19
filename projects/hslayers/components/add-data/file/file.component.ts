@@ -1,14 +1,23 @@
 import {Component, inject} from '@angular/core';
+import {NgClass} from '@angular/common';
 
 import {AddDataFileType, FILES_SUPPORTED} from 'hslayers-ng/types';
 import {AddDataFileValues} from './file-type-values';
+import {HsAddDataVectorFileComponent} from '../vector/vector-file/vector-file.component';
 import {HsConfig} from 'hslayers-ng/config';
+import {HsFileShpComponent} from './shp/shp.component';
+import {HsFileRasterComponent} from './raster/raster.component';
 import {HsLanguageService} from 'hslayers-ng/services/language';
 
 @Component({
   selector: 'hs-add-data-file',
   templateUrl: './file.component.html',
-  standalone: false,
+  imports: [
+    NgClass,
+    HsAddDataVectorFileComponent,
+    HsFileShpComponent,
+    HsFileRasterComponent,
+  ],
 })
 export class HsAddDataFileComponent {
   hsConfig = inject(HsConfig);

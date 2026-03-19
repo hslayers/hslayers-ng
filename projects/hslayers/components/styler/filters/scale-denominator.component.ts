@@ -1,4 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
+import {FormsModule} from '@angular/forms';
+import {TranslatePipe} from '@ngx-translate/core';
 
 import {Rule} from 'geostyler-style';
 
@@ -7,7 +9,7 @@ import {HsStylerPartBaseComponent} from 'hslayers-ng/services/styler';
 @Component({
   selector: 'hs-scale-denominator',
   templateUrl: './scale-denominator.component.html',
-  standalone: false,
+  imports: [FormsModule, TranslatePipe],
 })
 export class HsScaleDenominatorComponent
   extends HsStylerPartBaseComponent

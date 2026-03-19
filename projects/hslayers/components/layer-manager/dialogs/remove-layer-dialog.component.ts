@@ -7,15 +7,15 @@ import {
 import {HsDrawService} from 'hslayers-ng/services/draw';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsMapService} from 'hslayers-ng/services/map';
+import {TranslatePipe} from '@ngx-translate/core';
 
 @Component({
   selector: 'hs-layermanager-remove-layer-dialog',
   templateUrl: './remove-layer-dialog.component.html',
-  standalone: false,
+
+  imports: [TranslatePipe],
 })
-export class HsLayerManagerRemoveLayerDialogComponent
-  implements HsDialogComponent
-{
+export class HsLayerManagerRemoveLayerDialogComponent implements HsDialogComponent {
   hsDialogContainerService = inject(HsDialogContainerService);
   hsEventBusService = inject(HsEventBusService);
   hsDrawService = inject(HsDrawService);

@@ -2,6 +2,8 @@ import {Component, inject} from '@angular/core';
 
 import {HsLayerEditorService} from '../editor/layer-editor.service';
 import {HsLayerEditorWidgetBaseComponent} from './layer-editor-widget-base.component';
+import {HsLegendLayerComponent} from 'hslayers-ng/components/legend';
+import {TranslatePipe} from '@ngx-translate/core';
 
 @Component({
   selector: 'hs-legend-widget',
@@ -15,7 +17,8 @@ import {HsLayerEditorWidgetBaseComponent} from './layer-editor-widget-base.compo
       }
     `,
   ],
-  standalone: false,
+
+  imports: [HsLegendLayerComponent, TranslatePipe],
 })
 export class HsLegendWidgetComponent extends HsLayerEditorWidgetBaseComponent {
   hsLayerEditorService = inject(HsLayerEditorService);

@@ -1,11 +1,15 @@
 import {Component, OnInit} from '@angular/core';
+import {AsyncPipe, NgClass} from '@angular/common';
 
-import {HsPanelBaseComponent} from 'hslayers-ng/common/panels';
+import {
+  HsPanelBaseComponent,
+  HsPanelHeaderComponent,
+} from 'hslayers-ng/common/panels';
 
 @Component({
   selector: 'hs-some-panel',
   templateUrl: './some-panel.component.html',
-  standalone: false,
+  imports: [NgClass, AsyncPipe, HsPanelHeaderComponent],
 })
 export class SomeComponent extends HsPanelBaseComponent implements OnInit {
   /* The name is very important, as it is used to manage panel's visibility */

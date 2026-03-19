@@ -1,5 +1,8 @@
 import {Component, OnInit, inject} from '@angular/core';
 import {filter, merge} from 'rxjs';
+import {FormsModule} from '@angular/forms';
+import {NgbInputDatepicker} from '@ng-bootstrap/ng-bootstrap';
+import {TranslatePipe} from '@ngx-translate/core';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 
 import {HsDimensionDescriptor} from 'hslayers-ng/common/dimensions';
@@ -16,7 +19,8 @@ import {getDimensions} from 'hslayers-ng/common/extensions';
 @Component({
   selector: 'hs-layer-editor-dimensions',
   templateUrl: './layer-editor-dimensions.component.html',
-  standalone: false,
+
+  imports: [FormsModule, NgbInputDatepicker, TranslatePipe],
 })
 export class HsLayerEditorDimensionsComponent
   extends HsLayerEditorWidgetBaseComponent

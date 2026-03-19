@@ -8,6 +8,8 @@ import {
   inject,
 } from '@angular/core';
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
+import {NgTemplateOutlet, KeyValuePipe} from '@angular/common';
+import {TranslatePipe} from '@ngx-translate/core';
 
 import colorScales from 'colormap/colorScale';
 import {HsStylerService} from 'hslayers-ng/services/styler';
@@ -28,12 +30,11 @@ type hsStylerColorMapsKeyValue = {
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
-      // eslint-disable-next-line no-use-before-define
       useExisting: forwardRef(() => ColormapPickerComponent),
       multi: true,
     },
   ],
-  standalone: false,
+  imports: [NgTemplateOutlet, KeyValuePipe, TranslatePipe],
 })
 export class ColormapPickerComponent implements ControlValueAccessor {
   private hsStylerService = inject(HsStylerService);

@@ -1,4 +1,5 @@
 import {Component, ViewRef, inject} from '@angular/core';
+import {TranslatePipe} from '@ngx-translate/core';
 
 import {HsCompositionsParserService} from 'hslayers-ng/services/compositions';
 import {HsCompositionsService} from '../compositions.service';
@@ -11,11 +12,9 @@ import {HsSaveMapManagerService} from 'hslayers-ng/components/save-map';
 @Component({
   selector: 'hs-compositions-overwrite-dialog',
   templateUrl: './overwrite-dialog.component.html',
-  standalone: false,
+  imports: [TranslatePipe],
 })
-export class HsCompositionsOverwriteDialogComponent
-  implements HsDialogComponent
-{
+export class HsCompositionsOverwriteDialogComponent implements HsDialogComponent {
   hsDialogContainerService = inject(HsDialogContainerService);
   hsCompositionsService = inject(HsCompositionsService);
   hsSaveMapManagerService = inject(HsSaveMapManagerService);

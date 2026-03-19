@@ -7,6 +7,8 @@ import {
   ViewRef,
   inject,
 } from '@angular/core';
+import {NgStyle} from '@angular/common';
+import {TranslatePipe} from '@ngx-translate/core';
 
 import {BehaviorSubject} from 'rxjs';
 
@@ -17,11 +19,11 @@ import {HsMapService} from 'hslayers-ng/services/map';
 import {HsQueryPopupServiceModel} from './query-popup.service.model';
 import {HsQueryPopupWidgetContainerService} from './query-popup-widget-container.service';
 import {getFeatures} from 'hslayers-ng/common/extensions';
+import {HsPanelContainerComponent} from 'hslayers-ng/common/panels';
 
 @Component({
   selector: 'hs-query-popup',
   templateUrl: './query-popup.component.html',
-  standalone: false,
   styles: `
     .hs-hover-popup .fa-xmark {
       color: rgb(73, 80, 87);
@@ -42,6 +44,7 @@ import {getFeatures} from 'hslayers-ng/common/extensions';
       background: white;
     }
   `,
+  imports: [NgStyle, HsPanelContainerComponent, TranslatePipe],
 })
 export class HsQueryPopupComponent
   implements OnDestroy, HsDialogComponent, AfterViewInit, OnInit
@@ -86,7 +89,7 @@ export class HsQueryPopupComponent
    */
   popupVisible(): any {
     const DISPLAY_NONE = {
-      'display': 'none',
+      display: 'none',
     };
     if (this.data.service == undefined) {
       return DISPLAY_NONE;
@@ -115,7 +118,7 @@ export class HsQueryPopupComponent
     }
 
     return {
-      'display': featureCount > 0 ? 'block' : 'none',
+      display: featureCount > 0 ? 'block' : 'none',
     };
   }
 }

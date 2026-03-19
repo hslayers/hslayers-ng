@@ -1,5 +1,7 @@
+import {AsyncPipe} from '@angular/common';
 import {Component} from '@angular/core';
 import {Observable, map} from 'rxjs';
+import {TranslatePipe} from '@ngx-translate/core';
 
 import {HsLayerEditorWidgetBaseComponent} from '../layer-editor-widget-base.component';
 import {
@@ -31,7 +33,7 @@ import {getLayerParams, isLayerWMS} from 'hslayers-ng/services/utils';
       }
     `,
   ],
-  standalone: false,
+  imports: [TranslatePipe, AsyncPipe],
 })
 export class HsExtentWidgetComponent extends HsLayerEditorWidgetBaseComponent {
   name = 'extent-widget';

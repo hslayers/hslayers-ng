@@ -1,15 +1,33 @@
 import {Component, OnInit, PLATFORM_ID, inject} from '@angular/core';
-import {isPlatformBrowser} from '@angular/common';
+import {FormsModule} from '@angular/forms';
+import {
+  isPlatformBrowser,
+  NgClass,
+  AsyncPipe,
+  UpperCasePipe,
+} from '@angular/common';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
+import {TranslatePipe} from '@ngx-translate/core';
 
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsMeasureService} from './measure.service';
-import {HsPanelBaseComponent} from 'hslayers-ng/common/panels';
+import {
+  HsPanelBaseComponent,
+  HsPanelHeaderComponent,
+} from 'hslayers-ng/common/panels';
 
 @Component({
   selector: 'hs-measure',
   templateUrl: './measure.component.html',
-  standalone: false,
+
+  imports: [
+    HsPanelHeaderComponent,
+    NgClass,
+    FormsModule,
+    AsyncPipe,
+    UpperCasePipe,
+    TranslatePipe,
+  ],
 })
 export class HsMeasureComponent extends HsPanelBaseComponent implements OnInit {
   private hsEventBusService = inject(HsEventBusService);

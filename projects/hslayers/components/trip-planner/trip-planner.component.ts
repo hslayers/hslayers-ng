@@ -1,16 +1,32 @@
 import {Component, OnInit, inject} from '@angular/core';
+import {FormsModule} from '@angular/forms';
+import {NgClass, AsyncPipe} from '@angular/common';
+import {TranslatePipe} from '@ngx-translate/core';
 
 import {HsConfig} from 'hslayers-ng/config';
 import {HsLanguageService} from 'hslayers-ng/services/language';
 import {HsMapService} from 'hslayers-ng/services/map';
-import {HsPanelBaseComponent} from 'hslayers-ng/common/panels';
+import {
+  HsPanelBaseComponent,
+  HsPanelHeaderComponent,
+} from 'hslayers-ng/common/panels';
 import {HsTripPlannerService, Waypoint} from './trip-planner.service';
 import {setHighlighted} from 'hslayers-ng/common/extensions';
+import {HsTripPlannerLayerSelectorComponent} from './layer-selector.component';
+import {HsTripPlannerProfileSelectorComponent} from './route-profile-selector.component';
 
 @Component({
   selector: 'hs-trip-planner',
   templateUrl: './trip-planner.component.html',
-  standalone: false,
+  imports: [
+    NgClass,
+    HsPanelHeaderComponent,
+    HsTripPlannerLayerSelectorComponent,
+    HsTripPlannerProfileSelectorComponent,
+    FormsModule,
+    AsyncPipe,
+    TranslatePipe,
+  ],
 })
 export class HsTripPlannerComponent
   extends HsPanelBaseComponent

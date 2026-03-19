@@ -8,7 +8,10 @@ import {
   ViewChild,
   inject,
 } from '@angular/core';
+import {FormsModule} from '@angular/forms';
+import {NgClass} from '@angular/common';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
+import {TranslatePipe} from '@ngx-translate/core';
 
 import Cluster from 'ol/source/Cluster';
 import Feature from 'ol/Feature';
@@ -22,12 +25,14 @@ import {
   HsAddDataVectorUploadService,
   HsAddDataVectorService,
 } from 'hslayers-ng/services/add-data';
+import {HsAddToMapButtonComponent} from 'hslayers-ng/common/add-to-map';
 import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsLanguageService} from 'hslayers-ng/services/language';
 import {HsLayerManagerService} from 'hslayers-ng/services/layer-manager';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsMapService} from 'hslayers-ng/services/map';
+import {HsNewLayerFormComponent} from '../../common/new-layer-form/new-layer-form.component';
 import {HsToastService} from 'hslayers-ng/common/toast';
 import {HsUploadComponent, HsUploadedFiles} from 'hslayers-ng/common/upload';
 import {
@@ -40,7 +45,14 @@ import {VectorFileDataType} from '../../common/advanced-options/advanced-options
 @Component({
   selector: 'hs-file-vector',
   templateUrl: 'vector-file.component.html',
-  standalone: false,
+  imports: [
+    FormsModule,
+    HsUploadComponent,
+    NgClass,
+    HsNewLayerFormComponent,
+    HsAddToMapButtonComponent,
+    TranslatePipe,
+  ],
 })
 export class HsAddDataVectorFileComponent implements OnInit, AfterViewInit {
   private hsAddDataVectorService = inject(HsAddDataVectorService);

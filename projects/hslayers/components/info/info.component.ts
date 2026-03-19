@@ -1,6 +1,8 @@
-import {Component, inject} from '@angular/core';
+import {AsyncPipe} from '@angular/common';
+import {Component, CUSTOM_ELEMENTS_SCHEMA, inject} from '@angular/core';
 import {map} from 'rxjs/operators';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
+import {TranslatePipe} from '@ngx-translate/core';
 
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsGuiOverlayBaseComponent} from 'hslayers-ng/common/panels';
@@ -9,7 +11,8 @@ import {getTitle} from 'hslayers-ng/common/extensions';
 @Component({
   selector: 'hs-info',
   templateUrl: './info.component.html',
-  standalone: false,
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  imports: [AsyncPipe, TranslatePipe],
 })
 export class HsInfoComponent extends HsGuiOverlayBaseComponent {
   private hsEventBusService = inject(HsEventBusService);

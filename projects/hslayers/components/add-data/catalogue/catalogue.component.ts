@@ -13,19 +13,19 @@ import {
   HsCommonLaymanService,
   HsLaymanCurrentUserComponent,
 } from 'hslayers-ng/common/layman';
+import {HsCatalogueListItemComponent} from './catalogue-list-item/catalogue-list-item.component';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsLanguageService} from 'hslayers-ng/services/language';
 import {HsLaymanService} from 'hslayers-ng/services/save-map';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
-import {HsPagerModule} from 'hslayers-ng/common/pager';
-import {HsCatalogueListItemComponent} from './catalogue-list-item/catalogue-list-item.component';
+import {HsPagerComponent} from 'hslayers-ng/common/pager';
 
 @Component({
   selector: 'hs-add-data-catalogue',
   templateUrl: './catalogue.component.html',
   imports: [
     FormsModule,
-    HsPagerModule,
+    HsPagerComponent,
     NgbDropdownModule,
     TranslatePipe,
     HsCatalogueListItemComponent,

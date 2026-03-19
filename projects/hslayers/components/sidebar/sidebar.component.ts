@@ -1,5 +1,7 @@
+import {AsyncPipe, NgClass} from '@angular/common';
 import {Component, DestroyRef, OnDestroy, OnInit, inject} from '@angular/core';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
+import {TranslatePipe} from '@ngx-translate/core';
 
 import {Subscription, debounceTime} from 'rxjs';
 
@@ -7,13 +9,22 @@ import {HS_PRMS, HsShareUrlService} from 'hslayers-ng/services/share';
 import {HsButton} from 'hslayers-ng/types';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
+import {HsImpressumComponent} from './impressum.component';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
+import {HsPanelHeaderComponent} from 'hslayers-ng/common/panels';
 import {HsSidebarService} from 'hslayers-ng/services/sidebar';
 
 @Component({
   selector: 'hs-sidebar',
   templateUrl: './sidebar.component.html',
-  standalone: false,
+
+  imports: [
+    NgClass,
+    HsImpressumComponent,
+    AsyncPipe,
+    TranslatePipe,
+    HsPanelHeaderComponent,
+  ],
 })
 export class HsSidebarComponent implements OnInit, OnDestroy {
   hsLayoutService = inject(HsLayoutService);

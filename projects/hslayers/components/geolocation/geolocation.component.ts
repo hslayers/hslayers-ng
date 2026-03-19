@@ -1,11 +1,13 @@
-import { Component, OnInit, inject } from '@angular/core';
+import {Component, OnInit, inject} from '@angular/core';
+import {NgClass, AsyncPipe} from '@angular/common';
+import {TranslatePipe} from '@ngx-translate/core';
 
 import {HsGeolocationService} from './geolocation.service';
 import {HsGuiOverlayBaseComponent} from 'hslayers-ng/common/panels';
 @Component({
   selector: 'hs-geolocation',
   templateUrl: './geolocation.component.html',
-  standalone: false,
+  imports: [NgClass, AsyncPipe, TranslatePipe],
 })
 export class HsGeolocationComponent
   extends HsGuiOverlayBaseComponent

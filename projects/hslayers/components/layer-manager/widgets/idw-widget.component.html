@@ -1,75 +1,79 @@
-@if ((layerDescriptor | async).type === 'IDW') {
-<div class="hs-widget-idw">
-  <div class="hs-widget-header-title">
-    <i class="fa-solid fa-chart-area me-2"></i>
-    <span>{{ "LAYERMANAGER.layerEditor.interpolatedAttribute" | translate }}</span>
-  </div>
-  
-  <div class="hs-widget-content-simple">
-    <div class="mb-3">
-      <label class="form-label small text-muted mb-1">
-        {{ "LAYERMANAGER.layerEditor.interpolatedAttribute" | translate }}
-      </label>
-      <select 
-        class="form-control form-select form-select-sm" 
-        [(ngModel)]="weightAttribute"
-        name="hs-idw-widget-interpolated-attribute" 
-        (change)="setWeight()"
-      >
-        @for (attr of attributes; track attr) {
-        <option [ngValue]="attr">{{ attr }}</option>
-        }
-      </select>
+@if ((layerDescriptor | async).type === "IDW") {
+  <div class="hs-widget-idw">
+    <div class="hs-widget-header-title">
+      <i class="fa-solid fa-chart-area me-2"></i>
+      <span>{{
+        "LAYERMANAGER.layerEditor.interpolatedAttribute" | translate
+      }}</span>
     </div>
 
-    <div class="mb-3">
-      <hs-colormap-picker 
-        (change)="setColorMap()" 
-        [height]="'30vh'" 
-        [(ngModel)]="colorMap"
-        [colorMaps]="colorMaps"
-      />
-    </div>
-
-    <div class="form-check mb-3">
-      <input 
-        class="form-check-input" 
-        type="checkbox" 
-        (change)="setColorMap()" 
-        [(ngModel)]="reversed"
-        [id]="'hs-idw-widget-reversed' + hsConfig.id"
-      />
-      <label class="form-check-label" [for]="'hs-idw-widget-reversed' + hsConfig.id">
-        {{ "COMMON.reversed" | translate }}
-      </label>
-    </div>
-
-    <div class="row g-2">
-      <div class="col-6">
-        <label class="form-label small text-muted mb-1" for="hsIdwMin">
-          {{ "LAYERMANAGER.layerEditor.min" | translate }}
+    <div class="hs-widget-content-simple">
+      <div class="mb-3">
+        <label class="form-label small text-muted mb-1">
+          {{ "LAYERMANAGER.layerEditor.interpolatedAttribute" | translate }}
         </label>
-        <input 
-          class="form-control form-control-sm" 
-          (change)="setBounds()" 
-          [(ngModel)]="min" 
-          name="hsIdwMin" 
-          id="hsIdwMin" 
+        <select
+          class="form-control form-select form-select-sm"
+          [(ngModel)]="weightAttribute"
+          name="hs-idw-widget-interpolated-attribute"
+          (change)="setWeight()"
+        >
+          @for (attr of attributes; track attr) {
+            <option [ngValue]="attr">{{ attr }}</option>
+          }
+        </select>
+      </div>
+
+      <div class="mb-3">
+        <hs-colormap-picker
+          (change)="setColorMap()"
+          [height]="'30vh'"
+          [(ngModel)]="colorMap"
         />
       </div>
-      <div class="col-6">
-        <label class="form-label small text-muted mb-1" for="hsIdwMax">
-          {{ "LAYERMANAGER.layerEditor.max" | translate }}
-        </label>
-        <input 
-          class="form-control form-control-sm" 
-          (change)="setBounds()" 
-          [(ngModel)]="max" 
-          name="hsIdwMax" 
-          id="hsIdwMax" 
+
+      <div class="form-check mb-3">
+        <input
+          class="form-check-input"
+          type="checkbox"
+          (change)="setColorMap()"
+          [(ngModel)]="reversed"
+          [id]="'hs-idw-widget-reversed' + hsConfig.id"
         />
+        <label
+          class="form-check-label"
+          [for]="'hs-idw-widget-reversed' + hsConfig.id"
+        >
+          {{ "COMMON.reversed" | translate }}
+        </label>
+      </div>
+
+      <div class="row g-2">
+        <div class="col-6">
+          <label class="form-label small text-muted mb-1" for="hsIdwMin">
+            {{ "LAYERMANAGER.layerEditor.min" | translate }}
+          </label>
+          <input
+            class="form-control form-control-sm"
+            (change)="setBounds()"
+            [(ngModel)]="min"
+            name="hsIdwMin"
+            id="hsIdwMin"
+          />
+        </div>
+        <div class="col-6">
+          <label class="form-label small text-muted mb-1" for="hsIdwMax">
+            {{ "LAYERMANAGER.layerEditor.max" | translate }}
+          </label>
+          <input
+            class="form-control form-control-sm"
+            (change)="setBounds()"
+            [(ngModel)]="max"
+            name="hsIdwMax"
+            id="hsIdwMax"
+          />
+        </div>
       </div>
     </div>
   </div>
-</div>
 }

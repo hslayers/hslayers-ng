@@ -1,18 +1,33 @@
 import {Component, inject} from '@angular/core';
+import {FormsModule} from '@angular/forms';
+import {NgClass} from '@angular/common';
+import {TranslatePipe} from '@ngx-translate/core';
 
 import {
   HsAddDataCommonFileService,
   HsAddDataCommonService,
   HsAddDataVectorService,
 } from 'hslayers-ng/services/add-data';
+import {HsAddToMapButtonComponent} from 'hslayers-ng/common/add-to-map';
+import {HsCommonUrlComponent} from '../../common/url/url.component';
 import {HsHistoryListService} from 'hslayers-ng/common/history-list';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
+import {HsNewLayerFormComponent} from '../../common/new-layer-form/new-layer-form.component';
 import {HsUrlGeoSparqlService} from './geosparql.service';
+import {HsUrlProgressComponent} from '../../common/url/progress/progress.component';
 
 @Component({
   selector: 'hs-url-geosparql',
   templateUrl: './geosparql.component.html',
-  standalone: false,
+  imports: [
+    FormsModule,
+    HsCommonUrlComponent,
+    HsUrlProgressComponent,
+    NgClass,
+    HsNewLayerFormComponent,
+    HsAddToMapButtonComponent,
+    TranslatePipe,
+  ],
 })
 export class HsUrlGeoSparqlComponent {
   hsAddDataCommonService = inject(HsAddDataCommonService);

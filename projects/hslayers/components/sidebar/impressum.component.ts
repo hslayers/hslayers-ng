@@ -7,7 +7,6 @@ import {HsConfig} from 'hslayers-ng/config';
   selector: 'hs-impressum',
   templateUrl: './impressum.component.html',
   imports: [TranslatePipe],
-  standalone: true,
 })
 export class HsImpressumComponent {
   hsConfig = inject(HsConfig);

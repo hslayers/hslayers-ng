@@ -18,7 +18,6 @@ import {HsQueryPopupWidgetBaseComponent} from '../query-popup-widget-base.compon
   selector: 'hs-dynamic-text',
   templateUrl: './dynamic-text.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: false,
 })
 export class HsDynamicTextComponent
   extends HsQueryPopupWidgetBaseComponent

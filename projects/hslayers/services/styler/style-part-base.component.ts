@@ -2,7 +2,7 @@ import {Component, EventEmitter, Input, Output} from '@angular/core';
 
 @Component({
   template: '<div></div>',
-  standalone: true,
+
 })
 export class HsStylerPartBaseComponent {
   @Output() changes = new EventEmitter<void>();

@@ -15,14 +15,12 @@ import {HS_PRMS, HsShareUrlService} from 'hslayers-ng/services/share';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
-import {HsMapDirective} from './map.directive';
 import {HsMapService} from 'hslayers-ng/services/map';
 import {HslayersService} from '../hslayers.service';
 
 @Component({
   selector: 'hs-map',
   templateUrl: './map.component.html',
-  imports: [HsMapDirective],
 })
 export class HsMapComponent implements AfterViewInit, OnDestroy {
   hsMapService = inject(HsMapService);

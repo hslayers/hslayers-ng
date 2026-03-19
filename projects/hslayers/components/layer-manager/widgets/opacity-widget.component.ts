@@ -1,4 +1,7 @@
 import {Component, inject} from '@angular/core';
+import {DecimalPipe} from '@angular/common';
+import {FormsModule} from '@angular/forms';
+import {TranslatePipe} from '@ngx-translate/core';
 
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsLayerEditorWidgetBaseComponent} from './layer-editor-widget-base.component';
@@ -57,7 +60,8 @@ import {HsLayerEditorWidgetBaseComponent} from './layer-editor-widget-base.compo
       }
     `,
   ],
-  standalone: false,
+
+  imports: [FormsModule, TranslatePipe, DecimalPipe],
 })
 export class HsOpacityWidgetComponent extends HsLayerEditorWidgetBaseComponent {
   private hsEventBusService = inject(HsEventBusService);

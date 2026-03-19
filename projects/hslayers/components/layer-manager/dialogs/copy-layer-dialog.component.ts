@@ -1,4 +1,6 @@
 import {Component, ViewRef, inject} from '@angular/core';
+import {FormsModule} from '@angular/forms';
+import {TranslatePipe} from '@ngx-translate/core';
 
 import {
   HsDialogComponent,
@@ -8,7 +10,7 @@ import {
 @Component({
   selector: 'hs-copy-layer-dialog',
   templateUrl: './copy-layer-dialog.component.html',
-  standalone: false,
+  imports: [FormsModule, TranslatePipe],
 })
 export class HsCopyLayerDialogComponent implements HsDialogComponent {
   hsDialogContainerService = inject(HsDialogContainerService);

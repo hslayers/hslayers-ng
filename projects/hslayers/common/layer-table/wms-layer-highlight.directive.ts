@@ -3,7 +3,6 @@ import {isOverflown} from 'hslayers-ng/services/utils';
 
 @Directive({
   selector: '[hsWmsLayerHighlight]',
-  standalone: true,
 })
 export class WmsLayerHighlightDirective {
   private elRef = inject(ElementRef);

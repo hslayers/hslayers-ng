@@ -1,4 +1,5 @@
 import {Component, ViewRef, inject} from '@angular/core';
+import {NgClass} from '@angular/common';
 
 import {HsConfig, SymbolizerIcon} from 'hslayers-ng/config';
 import {
@@ -7,11 +8,12 @@ import {
   HsDialogItem,
 } from 'hslayers-ng/common/dialogs';
 import {HsIconSymbolizerComponent} from '../icon-symbolizer/icon-symbolizer.component';
+import {TranslatePipe} from '@ngx-translate/core';
 
 @Component({
   selector: 'hs-select-icon-dialog',
   templateUrl: './select-icon-dialog.component.html',
-  standalone: false,
+  imports: [NgClass, TranslatePipe],
 })
 export class HsSelectIconDialogComponent implements HsDialogComponent {
   private hsDialogContainerService = inject(HsDialogContainerService);

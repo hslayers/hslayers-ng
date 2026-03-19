@@ -20,10 +20,12 @@ import {
   startWith,
   timer,
 } from 'rxjs';
-import {isPlatformBrowser} from '@angular/common';
+import {isPlatformBrowser, NgClass} from '@angular/common';
 import {takeUntilDestroyed, toSignal} from '@angular/core/rxjs-interop';
 
+import {debounce} from 'hslayers-ng/services/utils';
 import {HsConfig, HsConfigObject, ToastPosition} from 'hslayers-ng/config';
+import {HsDialogContainerComponent} from 'hslayers-ng/common/dialogs';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsExternalService} from 'hslayers-ng/services/external';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
@@ -33,8 +35,14 @@ import {
   HsOverlayContainerService,
   HsPanelContainerService,
 } from 'hslayers-ng/services/panels';
+import {HsMapComponent} from './map/map.component';
+import {HsPanelContainerComponent} from 'hslayers-ng/common/panels';
+import {
+  HsMiniSidebarComponent,
+  HsSidebarComponent,
+} from 'hslayers-ng/components/sidebar';
+import {HsToastComponent} from 'hslayers-ng/common/toast';
 import {safeTakeUntilDestroyed} from './safeTakeUntilDestroyed';
-import {debounce} from 'hslayers-ng/services/utils';
 
 interface PanState {
   readonly MIN_HEIGHT: number;
@@ -44,11 +52,19 @@ interface PanState {
 }
 
 @Component({
-  // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'hslayers',
   templateUrl: './hslayers.html',
   styles: [],
-  standalone: false,
+  imports: [
+    NgClass,
+    HsMapComponent,
+    HsMapHostDirective,
+    HsPanelContainerComponent,
+    HsSidebarComponent,
+    HsMiniSidebarComponent,
+    HsToastComponent,
+    HsDialogContainerComponent,
+  ],
 })
 export class HslayersComponent implements AfterViewInit, OnInit {
   hsConfig = inject(HsConfig);
@@ -225,9 +241,7 @@ export class HslayersComponent implements AfterViewInit, OnInit {
             '.hs-panelspace-expander',
           ),
           {
-            'recognizers': [
-              [Hammer.Pan, {direction: Hammer.DIRECTION_VERTICAL}],
-            ],
+            recognizers: [[Hammer.Pan, {direction: Hammer.DIRECTION_VERTICAL}]],
             cssProps: {
               touchCallout: 'none',
               contentZooming: 'none',

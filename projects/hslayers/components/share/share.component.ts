@@ -1,8 +1,14 @@
 import {Component, OnInit, inject} from '@angular/core';
+import {FormsModule} from '@angular/forms';
+import {NgClass, AsyncPipe} from '@angular/common';
+import {TranslatePipe} from '@ngx-translate/core';
 
 import {HsConfig} from 'hslayers-ng/config';
 import {HsLanguageService} from 'hslayers-ng/services/language';
-import {HsPanelBaseComponent} from 'hslayers-ng/common/panels';
+import {
+  HsPanelBaseComponent,
+  HsPanelHeaderComponent,
+} from 'hslayers-ng/common/panels';
 import {HsShareService} from './share.service';
 import {HsShareUrlService} from 'hslayers-ng/services/share';
 import {HslayersService} from 'hslayers-ng/core';
@@ -10,7 +16,14 @@ import {HslayersService} from 'hslayers-ng/core';
 @Component({
   selector: 'hs-share',
   templateUrl: './share.component.html',
-  standalone: false,
+
+  imports: [
+    NgClass,
+    HsPanelHeaderComponent,
+    FormsModule,
+    AsyncPipe,
+    TranslatePipe,
+  ],
 })
 export class HsShareComponent extends HsPanelBaseComponent implements OnInit {
   hsShareService = inject(HsShareService);

@@ -7,9 +7,26 @@ import {
   ViewChild,
   inject,
 } from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {NgbAccordionDirective} from '@ng-bootstrap/ng-bootstrap';
+import {
+  FormBuilder,
+  FormGroup,
+  Validators,
+  FormsModule,
+  ReactiveFormsModule,
+} from '@angular/forms';
+import {
+  NgbAccordionDirective,
+  NgbAccordionItem,
+  NgbAccordionHeader,
+  NgbAccordionToggle,
+  NgbAccordionButton,
+  NgbAccordionCollapse,
+  NgbAccordionBody,
+} from '@ng-bootstrap/ng-bootstrap';
+import {NgClass} from '@angular/common';
+import {NgbCollapse} from '@ng-bootstrap/ng-bootstrap/collapse';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
+import {TranslatePipe} from '@ngx-translate/core';
 
 import {FileDataObject, FileDescriptor} from 'hslayers-ng/types';
 import {HsAddDataCommonFileService} from 'hslayers-ng/services/add-data';
@@ -19,9 +36,22 @@ import {HsToastService} from 'hslayers-ng/common/toast';
   selector: 'hs-file-raster-timeseries',
   templateUrl: './raster-timeseries.component.html',
   styleUrls: ['./raster-timeseries.component.scss'],
-  standalone: false,
+  imports: [
+    FormsModule,
+    NgClass,
+    NgbAccordionDirective,
+    NgbAccordionItem,
+    NgbAccordionHeader,
+    NgbAccordionToggle,
+    NgbAccordionButton,
+    NgbCollapse,
+    NgbAccordionCollapse,
+    NgbAccordionBody,
+    ReactiveFormsModule,
+    TranslatePipe,
+  ],
 })
-export class RasterTimeseriesComponent implements OnInit {
+export class HsRasterTimeseriesComponent implements OnInit {
   private fb = inject(FormBuilder);
   private hsToastService = inject(HsToastService);
   private hsAddDataCommonFileService = inject(HsAddDataCommonFileService);

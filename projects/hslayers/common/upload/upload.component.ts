@@ -6,6 +6,10 @@ import {
   Output,
   ViewChild,
 } from '@angular/core';
+import {NgClass} from '@angular/common';
+import {TranslatePipe} from '@ngx-translate/core';
+
+import {HsFileDropDirective} from './file-drop.directive';
 
 export type HsUploadedFiles = {
   fileList: FileList;
@@ -16,7 +20,7 @@ export type HsUploadedFiles = {
 @Component({
   selector: 'hs-file-upload',
   templateUrl: './upload.component.html',
-  standalone: false,
+  imports: [HsFileDropDirective, NgClass, TranslatePipe],
 })
 export class HsUploadComponent {
   @Output() uploaded = new EventEmitter<HsUploadedFiles>();

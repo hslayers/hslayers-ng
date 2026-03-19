@@ -1,5 +1,8 @@
 import {Component, OnInit, inject} from '@angular/core';
+import {NgClass, AsyncPipe} from '@angular/common';
+import {FormsModule} from '@angular/forms';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
+import {TranslatePipe} from '@ngx-translate/core';
 
 import BaseLayer from 'ol/layer/Base';
 import Layer from 'ol/layer/Layer';
@@ -16,14 +19,27 @@ import {HsLanguageService} from 'hslayers-ng/services/language';
 import {HsLegendDescriptor} from './legend-descriptor.interface';
 import {HsLegendService} from './legend.service';
 import {HsMapService} from 'hslayers-ng/services/map';
-import {HsPanelBaseComponent} from 'hslayers-ng/common/panels';
+import {
+  HsPanelBaseComponent,
+  HsPanelHeaderComponent,
+} from 'hslayers-ng/common/panels';
 import {HsQueuesService} from 'hslayers-ng/services/queues';
 import {InterpolatedSource} from 'hslayers-ng/common/layers';
+import {HsLegendLayerComponent} from './legend-layer/legend-layer.component';
+import {FilterPipe} from 'hslayers-ng/common/pipes';
 
 @Component({
   selector: 'hs-legend',
   templateUrl: './legend.component.html',
-  standalone: false,
+  imports: [
+    NgClass,
+    HsPanelHeaderComponent,
+    FormsModule,
+    HsLegendLayerComponent,
+    AsyncPipe,
+    FilterPipe,
+    TranslatePipe,
+  ],
 })
 export class HsLegendComponent extends HsPanelBaseComponent implements OnInit {
   hsLegendService = inject(HsLegendService);

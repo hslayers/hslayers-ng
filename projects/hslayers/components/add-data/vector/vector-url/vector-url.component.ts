@@ -1,4 +1,6 @@
 import {Component, DestroyRef, Input, OnInit, inject} from '@angular/core';
+import {FormsModule} from '@angular/forms';
+import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 
 import Layer from 'ol/layer/Layer';
 import Source from 'ol/source/Source';
@@ -7,15 +9,22 @@ import {
   HsAddDataCommonFileService,
   HsAddDataVectorService,
 } from 'hslayers-ng/services/add-data';
+import {HsAddToMapButtonComponent} from 'hslayers-ng/common/add-to-map';
+import {HsCommonUrlComponent} from '../../common/url/url.component';
 import {HsHistoryListService} from 'hslayers-ng/common/history-list';
+import {HsNewLayerFormComponent} from '../../common/new-layer-form/new-layer-form.component';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
-import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {VectorDataObject} from 'hslayers-ng/types';
 
 @Component({
   selector: 'hs-url-vector',
   templateUrl: 'vector-url.component.html',
-  standalone: false,
+  imports: [
+    FormsModule,
+    HsCommonUrlComponent,
+    HsNewLayerFormComponent,
+    HsAddToMapButtonComponent,
+  ],
 })
 export class HsAddDataVectorUrlComponent implements OnInit {
   hsHistoryListService = inject(HsHistoryListService);

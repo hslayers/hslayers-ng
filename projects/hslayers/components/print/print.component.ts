@@ -1,16 +1,37 @@
 import {Component, OnInit, inject} from '@angular/core';
+import {FormsModule} from '@angular/forms';
+import {NgClass, AsyncPipe} from '@angular/common';
+import {TranslatePipe} from '@ngx-translate/core';
 
-import {HsPanelBaseComponent} from 'hslayers-ng/common/panels';
+import {
+  HsPanelBaseComponent,
+  HsPanelHeaderComponent,
+} from 'hslayers-ng/common/panels';
 import {HsPrintLegendService} from './print-legend.service';
 import {HsPrintScaleService} from './print-scale.service';
 import {HsPrintService} from './print.service';
 import {PrintModel} from './types/print-object.type';
 import {Styler} from './types/styler.type';
+import {HsPrintTextStylerComponent} from './text-styler/text-styler.component';
+import {HsPrintLegendStylerComponent} from './legend-styler/legend-styler.component';
+import {HsPrintImprintStylerComponent} from './imprint-styler/imprint-styler.component';
+import {HsPrintScaleStylerComponent} from './scale-styler/scale-styler.component';
 
 @Component({
   selector: 'hs-print',
   templateUrl: './print.component.html',
-  standalone: false,
+
+  imports: [
+    NgClass,
+    HsPanelHeaderComponent,
+    FormsModule,
+    HsPrintTextStylerComponent,
+    HsPrintLegendStylerComponent,
+    HsPrintImprintStylerComponent,
+    HsPrintScaleStylerComponent,
+    AsyncPipe,
+    TranslatePipe,
+  ],
 })
 export class HsPrintComponent extends HsPanelBaseComponent implements OnInit {
   private hsPrintService = inject(HsPrintService);

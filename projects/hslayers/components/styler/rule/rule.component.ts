@@ -1,4 +1,9 @@
-import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
+import {
+  CdkDragDrop,
+  moveItemInArray,
+  CdkDropList,
+  CdkDrag,
+} from '@angular/cdk/drag-drop';
 import {
   Component,
   EventEmitter,
@@ -7,21 +12,46 @@ import {
   ViewChild,
   inject,
 } from '@angular/core';
+import {
+  NgbDropdown,
+  NgbDropdownToggle,
+  NgbDropdownMenu,
+  NgbDropdownButtonItem,
+  NgbDropdownItem,
+} from '@ng-bootstrap/ng-bootstrap';
+import {NgClass} from '@angular/common';
+import {TranslatePipe} from '@ngx-translate/core';
 
 import {SymbolizerKind} from 'geostyler-style';
 
+import {HsFiltersComponent} from 'hslayers-ng/common/filters';
 import {HsLayerSelectorService} from 'hslayers-ng/services/layer-manager';
+import {HsScaleDenominatorComponent} from '../filters/scale-denominator.component';
 import {
   HsStylerPartBaseComponent,
   HsStylerService,
 } from 'hslayers-ng/services/styler';
+import {HsSymbolizerListItemComponent} from '../symbolizers/symbolizer-list-item/symbolizer-list-item.component';
 import {Kinds} from '../symbolizers/symbolizer-kind.enum';
 
 @Component({
   selector: 'hs-rule',
   templateUrl: './rule.component.html',
   styleUrls: ['../styler.component.scss'],
-  standalone: false,
+  imports: [
+    NgClass,
+    HsFiltersComponent,
+    HsScaleDenominatorComponent,
+    NgbDropdown,
+    NgbDropdownToggle,
+    NgbDropdownMenu,
+    NgbDropdownButtonItem,
+    NgbDropdownItem,
+    CdkDropList,
+    HsSymbolizerListItemComponent,
+    CdkDrag,
+    TranslatePipe,
+  ],
 })
 export class HsRuleComponent extends HsStylerPartBaseComponent {
   hsStylerService = inject(HsStylerService);

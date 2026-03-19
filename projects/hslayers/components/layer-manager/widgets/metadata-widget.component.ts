@@ -1,4 +1,6 @@
+import {AsyncPipe} from '@angular/common';
 import {Component, inject} from '@angular/core';
+import {TranslatePipe} from '@ngx-translate/core';
 
 import {HsLanguageService} from 'hslayers-ng/services/language';
 import {HsLayerDescriptor} from 'hslayers-ng/types';
@@ -16,7 +18,7 @@ import {
 @Component({
   selector: 'hs-metadata-widget',
   templateUrl: './metadata-widget.component.html',
-  standalone: false,
+  imports: [TranslatePipe, AsyncPipe],
 })
 export class HsMetadataWidgetComponent extends HsLayerEditorWidgetBaseComponent {
   hsLanguageService = inject(HsLanguageService);

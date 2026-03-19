@@ -1,16 +1,13 @@
 import {
   AfterViewInit,
   Component,
+  CUSTOM_ELEMENTS_SCHEMA,
   ElementRef,
   OnInit,
   ViewChild,
   signal,
   inject,
 } from '@angular/core';
-import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
-
-import Layer from 'ol/layer/Layer';
-import Source from 'ol/source/Source';
 import {
   catchError,
   debounce,
@@ -24,7 +21,14 @@ import {
   switchMap,
   take,
 } from 'rxjs/operators';
+import {NgClass, AsyncPipe, KeyValuePipe} from '@angular/common';
+import {NgbTooltip, NgbProgressbar} from '@ng-bootstrap/ng-bootstrap';
 import {Observable, fromEvent, merge, of, throwError, timer} from 'rxjs';
+import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
+import {TranslatePipe} from '@ngx-translate/core';
+
+import Layer from 'ol/layer/Layer';
+import Source from 'ol/source/Source';
 
 import {
   getActive,
@@ -45,13 +49,29 @@ import {
   HsLayerSelectorService,
 } from 'hslayers-ng/services/layer-manager';
 import {HslayersService} from 'hslayers-ng/core';
-import {HsPanelBaseComponent} from 'hslayers-ng/common/panels';
+import {HsLayerListComponent} from './logical-list/layer-manager-layerlist.component';
+import {HsLayerPhysicalListComponent} from './physical-list/physical-layerlist.component';
+import {
+  HsPanelBaseComponent,
+  HsPanelHeaderComponent,
+} from 'hslayers-ng/common/panels';
 import {HsRemoveLayerDialogService} from 'hslayers-ng/common/remove-multiple';
 
 @Component({
   selector: 'hs-layer-manager',
   templateUrl: './layer-manager.component.html',
-  standalone: false,
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  imports: [
+    NgClass,
+    HsPanelHeaderComponent,
+    NgbTooltip,
+    NgbProgressbar,
+    HsLayerListComponent,
+    HsLayerPhysicalListComponent,
+    TranslatePipe,
+    AsyncPipe,
+    KeyValuePipe,
+  ],
 })
 export class HsLayerManagerComponent
   extends HsPanelBaseComponent

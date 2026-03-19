@@ -1,8 +1,26 @@
-import {Component, computed, OnInit, signal, inject} from '@angular/core';
+import {
+  Component,
+  CUSTOM_ELEMENTS_SCHEMA,
+  computed,
+  OnInit,
+  signal,
+  inject,
+} from '@angular/core';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {filter} from 'rxjs/operators';
+import {NgClass, AsyncPipe} from '@angular/common';
+import {FormsModule} from '@angular/forms';
+import {
+  NgbDropdown,
+  NgbDropdownToggle,
+  NgbDropdownMenu,
+} from '@ng-bootstrap/ng-bootstrap';
+import {TranslatePipe} from '@ngx-translate/core';
 
-import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
+import {
+  HsCommonLaymanService,
+  HsLaymanCurrentUserComponent,
+} from 'hslayers-ng/common/layman';
 import {HsCompositionsCatalogueService} from './compositions-catalogue.service';
 import {HsCompositionsMapService} from './compositions-map.service';
 import {HsCompositionsParserService} from 'hslayers-ng/services/compositions';
@@ -11,14 +29,32 @@ import {HsConfig} from 'hslayers-ng/config';
 import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
 import {HsLayerSynchronizerService} from 'hslayers-ng/services/save-map';
 import {HsMapCompositionDescriptor} from 'hslayers-ng/types';
-import {HsPanelBaseComponent} from 'hslayers-ng/common/panels';
+import {
+  HsPanelBaseComponent,
+  HsPanelHeaderComponent,
+} from 'hslayers-ng/common/panels';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsCommonEndpointsService} from 'hslayers-ng/services/endpoints';
+import {HsCompositionsListItemComponent} from './compositions-list-item.component';
+import {HsPagerComponent} from 'hslayers-ng/common/pager';
 
 @Component({
   selector: 'hs-compositions',
   templateUrl: './compositions.component.html',
-  standalone: false,
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  imports: [
+    NgClass,
+    HsPanelHeaderComponent,
+    FormsModule,
+    HsLaymanCurrentUserComponent,
+    NgbDropdown,
+    NgbDropdownToggle,
+    NgbDropdownMenu,
+    HsCompositionsListItemComponent,
+    HsPagerComponent,
+    AsyncPipe,
+    TranslatePipe,
+  ],
 })
 export class HsCompositionsComponent
   extends HsPanelBaseComponent
@@ -151,9 +187,8 @@ export class HsCompositionsComponent
    * @param title - Dialog title
    */
   async loadUnsavedDialogBootstrap(record: any): Promise<void> {
-    const {HsCompositionsOverwriteDialogComponent} = await import(
-      './dialogs/overwrite-dialog.component'
-    );
+    const {HsCompositionsOverwriteDialogComponent} =
+      await import('./dialogs/overwrite-dialog.component');
 
     this.hsDialogContainerService.create(
       HsCompositionsOverwriteDialogComponent,

@@ -5,6 +5,7 @@ import {
   OnInit,
   inject,
 } from '@angular/core';
+import {TranslatePipe} from '@ngx-translate/core';
 
 import Layer from 'ol/layer/Layer';
 import Source from 'ol/source/Source';
@@ -21,7 +22,7 @@ import {isLayerEditable} from 'hslayers-ng/services/utils';
   selector: 'hs-clear-layer',
   templateUrl: './clear-layer.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: false,
+  imports: [TranslatePipe],
 })
 export class HsClearLayerComponent
   extends HsQueryPopupWidgetBaseComponent

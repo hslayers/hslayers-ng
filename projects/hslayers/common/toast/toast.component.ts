@@ -7,7 +7,6 @@ import {HsConfig, ToastPosition} from 'hslayers-ng/config';
 
 @Component({
   selector: 'hs-toast',
-  standalone: true,
   imports: [HsToastItemComponent],
   template: `
     @for (toast of hsToastService.toasts; track toast) {

@@ -12,7 +12,7 @@ import {HsClipboardTextComponent} from 'hslayers-ng/common/clipboard-text';
 @Component({
   selector: 'hs-compositions-info-dialog',
   templateUrl: './info-dialog.component.html',
-  standalone: true,
+
   imports: [TranslatePipe, HsClipboardTextComponent, KeyValuePipe],
 })
 export class HsCompositionsInfoDialogComponent implements HsDialogComponent {

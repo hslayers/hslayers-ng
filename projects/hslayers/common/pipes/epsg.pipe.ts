@@ -2,7 +2,6 @@ import {Pipe, PipeTransform} from '@angular/core';
 
 @Pipe({
   name: 'epsg',
-  standalone: true,
 })
 export class EpsgPipe implements PipeTransform {
   epsgDict = new Map([

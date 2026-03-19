@@ -1,3 +1,4 @@
+import {AsyncPipe} from '@angular/common';
 import {Component, OnInit, inject} from '@angular/core';
 
 import Feature from 'ol/Feature';
@@ -6,14 +7,18 @@ import VectorSource from 'ol/source/Vector';
 
 import {HsConfig} from 'hslayers-ng/config';
 import {HsFeatureTableService} from './feature-table.service';
+import {HsLayerFeaturesComponent} from './layer-features.component';
 import {HsMapService} from 'hslayers-ng/services/map';
-import {HsPanelBaseComponent} from 'hslayers-ng/common/panels';
+import {
+  HsPanelBaseComponent,
+  HsPanelHeaderComponent,
+} from 'hslayers-ng/common/panels';
 import {HsSidebarService} from 'hslayers-ng/services/sidebar';
 
 @Component({
   selector: 'hs-feature-table',
   templateUrl: './feature-table.component.html',
-  standalone: false,
+  imports: [HsPanelHeaderComponent, HsLayerFeaturesComponent, AsyncPipe],
 })
 export class HsFeatureTableComponent
   extends HsPanelBaseComponent

@@ -6,7 +6,6 @@ import {Pipe, PipeTransform} from '@angular/core';
  */
 @Pipe({
   name: 'datePreformat',
-  standalone: true,
 })
 export class DatePreformatPipe implements PipeTransform {
   transform(value: string): string {

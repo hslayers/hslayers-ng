@@ -1,15 +1,19 @@
+import {AsyncPipe} from '@angular/common';
 import {Component, OnDestroy, inject} from '@angular/core';
 
 import {Subscription} from 'rxjs';
 
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
-import {HsGuiOverlayBaseComponent} from 'hslayers-ng/common/panels';
+import {
+  HsGuiOverlayBaseComponent,
+  HsPanelContainerComponent,
+} from 'hslayers-ng/common/panels';
 import {HsToolbarPanelContainerService} from 'hslayers-ng/services/panels';
 
 @Component({
   selector: 'hs-toolbar',
   templateUrl: './toolbar.component.html',
-  standalone: false,
+  imports: [HsPanelContainerComponent, AsyncPipe],
 })
 export class HsToolbarComponent
   extends HsGuiOverlayBaseComponent

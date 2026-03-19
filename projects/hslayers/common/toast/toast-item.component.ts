@@ -16,7 +16,6 @@ export type ToastType = 'success' | 'danger' | 'warning' | 'info';
  */
 @Component({
   selector: 'hs-toast-item',
-  standalone: true,
   template: `
     <div
       class="toast show d-flex align-items-center border-0"

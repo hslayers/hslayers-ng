@@ -1,15 +1,28 @@
 import {Component, Input, OnInit, inject} from '@angular/core';
+import {FormsModule} from '@angular/forms';
+import {NgClass} from '@angular/common';
+import {TranslatePipe} from '@ngx-translate/core';
 
+import {EpsgPipe} from 'hslayers-ng/common/pipes';
 import {FileDataObject} from 'hslayers-ng/types';
 import {HsAddDataCommonFileService} from 'hslayers-ng/services/add-data';
+import {HsAdvancedOptionsComponent} from '../advanced-options/advanced-options.component';
 import {HsFileService} from '../../file/file.service';
 import {HsLaymanService} from 'hslayers-ng/services/save-map';
 import {HsUploadedFiles} from 'hslayers-ng/common/upload';
+import {HsSaveToLaymanComponent} from '../save-to-layman/save-to-layman.component';
 
 @Component({
   selector: 'hs-new-layer-form',
   templateUrl: 'new-layer-form.component.html',
-  standalone: false,
+  imports: [
+    FormsModule,
+    NgClass,
+    HsSaveToLaymanComponent,
+    HsAdvancedOptionsComponent,
+    TranslatePipe,
+    EpsgPipe,
+  ],
 })
 export class HsNewLayerFormComponent implements OnInit {
   hsAddDataCommonFileService = inject(HsAddDataCommonFileService);

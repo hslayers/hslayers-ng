@@ -1,4 +1,6 @@
 import {Component, OnInit, inject} from '@angular/core';
+import {NgClass} from '@angular/common';
+import {TranslatePipe} from '@ngx-translate/core';
 
 import {AddDataUrlType, SERVICES_SUPPORTED_BY_URL} from 'hslayers-ng/types';
 import {AddDataUrlValues} from './add-data-url-values';
@@ -7,17 +9,34 @@ import {
   HsAddDataOwsService,
   HsAddDataUrlService,
 } from 'hslayers-ng/services/add-data';
+import {HsAddDataVectorUrlComponent} from '../vector/vector-url/vector-url.component';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
 import {HsLanguageService} from 'hslayers-ng/services/language';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsLogService} from 'hslayers-ng/services/log';
 import {HsShareUrlService} from 'hslayers-ng/services/share';
+import {HsUrlArcGisComponent} from './arcgis/arcgis.component';
+import {HsUrlGeoSparqlComponent} from './geosparql/geosparql.component';
+import {HsUrlWfsComponent} from './wfs/wfs.component';
+import {HsUrlWmsComponent} from './wms/wms.component';
+import {HsUrlWmtsComponent} from './wmts/wmts.component';
+import {HsUrlXyzComponent} from './xyz/xyz.component';
 
 @Component({
   selector: 'hs-add-data-url',
   templateUrl: './add-data-url.component.html',
-  standalone: false,
+  imports: [
+    NgClass,
+    HsUrlArcGisComponent,
+    HsUrlWfsComponent,
+    HsUrlWmsComponent,
+    HsUrlWmtsComponent,
+    HsUrlXyzComponent,
+    HsUrlGeoSparqlComponent,
+    HsAddDataVectorUrlComponent,
+    TranslatePipe,
+  ],
 })
 export class HsAddDataUrlComponent implements OnInit {
   hsConfig = inject(HsConfig);

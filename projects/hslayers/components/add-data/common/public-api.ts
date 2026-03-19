@@ -1,4 +1,3 @@
-export * from './common.module';
 export * from './url/public-api';
 export * from './advanced-options/advanced-options.component';
 export * from './new-layer-form/new-layer-form.component';

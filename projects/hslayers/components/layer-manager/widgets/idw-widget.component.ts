@@ -1,4 +1,8 @@
+import {AsyncPipe} from '@angular/common';
+import {ColormapPickerComponent} from 'hslayers-ng/common/color-map-picker';
 import {Component, OnInit, inject} from '@angular/core';
+import {FormsModule} from '@angular/forms';
+import {TranslatePipe} from '@ngx-translate/core';
 
 import colorScales from 'colormap/colorScale';
 import Feature from 'ol/Feature';
@@ -45,7 +49,8 @@ import {InterpolatedSource} from 'hslayers-ng/common/layers';
       }
     `,
   ],
-  standalone: false,
+
+  imports: [FormsModule, ColormapPickerComponent, TranslatePipe, AsyncPipe],
 })
 /**
  * A widget to configure IDW interpolated layer attribute being

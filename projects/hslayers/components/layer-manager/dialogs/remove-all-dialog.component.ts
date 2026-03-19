@@ -1,4 +1,6 @@
+import {AsyncPipe} from '@angular/common';
 import {Component, Input, ViewRef, inject} from '@angular/core';
+import {TranslatePipe} from '@ngx-translate/core';
 
 import Layer from 'ol/layer/Layer';
 import Source from 'ol/source/Source';
@@ -19,11 +21,9 @@ import {HsMapService} from 'hslayers-ng/services/map';
 @Component({
   selector: 'hs-layermanager-remove-all-dialog',
   templateUrl: './remove-all-dialog.component.html',
-  standalone: false,
+  imports: [TranslatePipe, AsyncPipe],
 })
-export class HsLayerManagerRemoveAllDialogComponent
-  implements HsDialogComponent
-{
+export class HsLayerManagerRemoveAllDialogComponent implements HsDialogComponent {
   hsLayerManagerService = inject(HsLayerManagerService);
   hsDialogContainerService = inject(HsDialogContainerService);
   hsEventBusService = inject(HsEventBusService);

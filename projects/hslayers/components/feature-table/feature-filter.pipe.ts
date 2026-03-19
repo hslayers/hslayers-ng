@@ -2,16 +2,11 @@ import {Pipe, PipeTransform} from '@angular/core';
 
 const featureLimit = 20 as const;
 
-@Pipe({
-  name: 'featureFilter',
-  standalone: false,
-})
+@Pipe({name: 'featureFilter'})
 export class HsFeatureFilterPipe implements PipeTransform {
   /**
    * Transform
    *
-   
-   
    * @returns Filtered features
    */
   transform(features: any[], searchText: string): any[] {
