@@ -1,4 +1,9 @@
-import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
+import {
+  CdkDragDrop,
+  moveItemInArray,
+  CdkDropList,
+  CdkDrag,
+} from '@angular/cdk/drag-drop';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -12,13 +17,16 @@ import {buffer, debounceTime} from 'rxjs';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
 import {HsLayerShiftingService} from 'hslayers-ng/services/layer-shifting';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
+import {NgClass} from '@angular/common';
+import {TranslatePipe} from '@ngx-translate/core';
 
 @Component({
   selector: 'hs-layermanager-physical-layer-list',
   templateUrl: './physical-layerlist.component.html',
   styleUrls: ['./physical-layerlist.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: false,
+
+  imports: [CdkDropList, CdkDrag, NgClass, TranslatePipe],
 })
 export class HsLayerPhysicalListComponent implements OnInit {
   private hsEventBusService = inject(HsEventBusService);

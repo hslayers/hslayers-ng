@@ -6,11 +6,14 @@ import {
   Output,
   inject,
 } from '@angular/core';
+import {FormsModule} from '@angular/forms';
+import {TranslatePipe} from '@ngx-translate/core';
 
 import Feature from 'ol/Feature';
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
 
+import {ColormapPickerComponent} from 'hslayers-ng/common/color-map-picker';
 import {HsLanguageService} from 'hslayers-ng/services/language';
 import {HsStylerService} from 'hslayers-ng/services/styler';
 import {listNumericAttributes} from 'hslayers-ng/services/utils';
@@ -18,7 +21,7 @@ import {listNumericAttributes} from 'hslayers-ng/services/utils';
 @Component({
   selector: 'hs-add-colormap',
   templateUrl: './add-colormap.component.html',
-  standalone: false,
+  imports: [FormsModule, ColormapPickerComponent, TranslatePipe],
 })
 export class HsAddColormapComponent implements OnInit {
   hsLanguageService = inject(HsLanguageService);

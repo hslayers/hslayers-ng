@@ -29,7 +29,7 @@ import {
   HsLayerManagerUtilsService,
 } from 'hslayers-ng/services/layer-manager';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
-import {HsPanelHelpersModule} from 'hslayers-ng/common/panels';
+
 import {HsStylerService} from 'hslayers-ng/services/styler';
 
 // Widgets
@@ -39,11 +39,13 @@ import {HsLayerEditorWidgetContainerService} from '../widgets/layer-editor-widge
 import {HsLayerManagerRemoveLayerDialogComponent} from '../dialogs/remove-layer-dialog.component';
 import {LAYER_EDITOR_WIDGETS} from './widget-config';
 import {layerIsZoomable, layerIsStyleable} from 'hslayers-ng/services/utils';
+import {HsPanelContainerComponent} from 'hslayers-ng/common/panels';
 
 @Component({
   selector: 'hs-layer-editor',
   templateUrl: './layer-editor.component.html',
-  imports: [NgClass, FormsModule, TranslatePipe, HsPanelHelpersModule],
+
+  imports: [NgClass, FormsModule, TranslatePipe, HsPanelContainerComponent],
 })
 export class HsLayerEditorComponent {
   private hsConfig = inject(HsConfig);

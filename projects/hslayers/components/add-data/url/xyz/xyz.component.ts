@@ -1,4 +1,7 @@
 import {Component, inject, OnInit} from '@angular/core';
+import {FormsModule} from '@angular/forms';
+import {NgClass} from '@angular/common';
+import {TranslatePipe} from '@ngx-translate/core';
 
 import {
   HsAddDataCommonService,
@@ -6,12 +9,26 @@ import {
   HsUrlXyzService,
 } from 'hslayers-ng/services/add-data';
 
+import {HsAddToMapButtonComponent} from 'hslayers-ng/common/add-to-map';
+import {HsAddUrlAsToggleComponent} from '../../common/url/add-as-toggle/add-as-toggle.component';
+import {HsCommonUrlComponent} from '../../common/url/url.component';
+import {HsPositionComponent} from '../../common/target-position/target-position.component';
+import {HsUrlProgressComponent} from '../../common/url/progress/progress.component';
 import {UrlDataObject} from 'hslayers-ng/types';
 
 @Component({
   selector: 'hs-url-xyz',
   templateUrl: './xyz.component.html',
-  standalone: false,
+  imports: [
+    HsCommonUrlComponent,
+    HsUrlProgressComponent,
+    FormsModule,
+    HsAddUrlAsToggleComponent,
+    NgClass,
+    HsPositionComponent,
+    HsAddToMapButtonComponent,
+    TranslatePipe,
+  ],
 })
 export class HsUrlXyzComponent implements OnInit {
   hsUrlXyzService = inject(HsUrlXyzService);

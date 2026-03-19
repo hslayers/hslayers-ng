@@ -1,4 +1,6 @@
 import {Component, Input, inject} from '@angular/core';
+import {NgClass, NgStyle} from '@angular/common';
+import {TranslatePipe} from '@ngx-translate/core';
 
 import {HsCompositionsCatalogueService} from './compositions-catalogue.service';
 import {HsCompositionsDeleteDialogComponent} from './dialogs/delete-dialog.component';
@@ -15,7 +17,7 @@ import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
 @Component({
   selector: 'hs-compositions-list-item',
   templateUrl: 'compositions-list-item.component.html',
-  standalone: false,
+  imports: [NgClass, NgStyle, TranslatePipe],
 })
 export class HsCompositionsListItemComponent {
   private hsCompositionsService = inject(HsCompositionsService);
@@ -139,9 +141,8 @@ export class HsCompositionsListItemComponent {
    * @param info - Composition info
    */
   async infoDialogBootstrap(info): Promise<void> {
-    const {HsCompositionsInfoDialogComponent} = await import(
-      './dialogs/info-dialog.component'
-    );
+    const {HsCompositionsInfoDialogComponent} =
+      await import('./dialogs/info-dialog.component');
     this.hsDialogContainerService.create(HsCompositionsInfoDialogComponent, {
       info,
     });

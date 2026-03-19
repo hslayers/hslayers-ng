@@ -1,13 +1,22 @@
+import {AsyncPipe, NgClass} from '@angular/common';
 import {Component, OnInit, inject} from '@angular/core';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
+import {TranslatePipe} from '@ngx-translate/core';
+import {filter} from 'rxjs';
 
 import {HsCommonEndpointsService} from 'hslayers-ng/services/endpoints';
-import {HsCommonLaymanService} from 'hslayers-ng/common/layman';
+import {
+  HsCommonLaymanService,
+  HsLaymanCurrentUserComponent,
+} from 'hslayers-ng/common/layman';
 import {HsConfig} from 'hslayers-ng/config';
-import {HsPanelBaseComponent} from 'hslayers-ng/common/panels';
+import {
+  HsPanelBaseComponent,
+  HsPanelHeaderComponent,
+} from 'hslayers-ng/common/panels';
+import {HsSaveMapFormComponent} from './form/form.component';
 import {HsSaveMapManagerService} from './save-map-manager.service';
 import {HsSaveMapService} from 'hslayers-ng/services/save-map';
-import {filter} from 'rxjs';
 
 @Component({
   selector: 'hs-save-map',
@@ -21,7 +30,15 @@ import {filter} from 'rxjs';
       align-self: center;
     }
   `,
-  standalone: false,
+
+  imports: [
+    NgClass,
+    HsPanelHeaderComponent,
+    HsSaveMapFormComponent,
+    HsLaymanCurrentUserComponent,
+    AsyncPipe,
+    TranslatePipe,
+  ],
 })
 export class HsSaveMapComponent extends HsPanelBaseComponent implements OnInit {
   private hsConfig = inject(HsConfig);

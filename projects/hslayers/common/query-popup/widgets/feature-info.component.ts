@@ -5,6 +5,8 @@ import {
   OnInit,
   inject,
 } from '@angular/core';
+import {NgTemplateOutlet, NgClass} from '@angular/common';
+import {TranslatePipe} from '@ngx-translate/core';
 
 import Feature from 'ol/Feature';
 import Geometry from 'ol/geom/Geometry';
@@ -27,7 +29,7 @@ import {HsQueryVectorService} from 'hslayers-ng/services/query';
   selector: 'hs-feature-info',
   templateUrl: './feature-info.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: false,
+  imports: [NgTemplateOutlet, NgClass, TranslatePipe],
 })
 export class HsFeatureInfoComponent
   extends HsQueryPopupWidgetBaseComponent

@@ -1,9 +1,22 @@
 import {Component, Input, ViewChild} from '@angular/core';
+import {FormsModule} from '@angular/forms';
+import {
+  NgbDropdown,
+  NgbDropdownToggle,
+  NgbDropdownMenu,
+  NgbDropdownButtonItem,
+  NgbDropdownItem,
+} from '@ng-bootstrap/ng-bootstrap';
+import {TranslatePipe} from '@ngx-translate/core';
 
 import {FillSymbolizer, SymbolizerKind} from 'geostyler-style';
 
 import {HsStylerPartBaseComponent} from 'hslayers-ng/services/styler';
 import {Kinds} from '../symbolizer-kind.enum';
+import {HsColorPickerComponent} from '../color-picker/color-picker.component';
+import {HsSliderComponent} from '../slider/slider.component';
+import {HsMarkSymbolizerComponent} from '../mark-symbolizer/mark-symbolizer.component';
+import {HsIconSymbolizerComponent} from '../icon-symbolizer/icon-symbolizer.component';
 
 @Component({
   selector: 'hs-fill-symbolizer',
@@ -15,7 +28,19 @@ import {Kinds} from '../symbolizer-kind.enum';
       }
     `,
   ],
-  standalone: false,
+  imports: [
+    FormsModule,
+    HsColorPickerComponent,
+    HsSliderComponent,
+    NgbDropdown,
+    NgbDropdownToggle,
+    NgbDropdownMenu,
+    NgbDropdownButtonItem,
+    NgbDropdownItem,
+    HsMarkSymbolizerComponent,
+    HsIconSymbolizerComponent,
+    TranslatePipe,
+  ],
 })
 export class HsFillSymbolizerComponent extends HsStylerPartBaseComponent {
   @Input() symbolizer: FillSymbolizer;

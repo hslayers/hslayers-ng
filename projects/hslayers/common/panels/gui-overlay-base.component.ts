@@ -7,7 +7,6 @@ import {HsPanelComponent} from './panel-component.interface';
 
 @Component({
   template: '<div></div>',
-  standalone: true,
 })
 export class HsGuiOverlayBaseComponent implements HsPanelComponent, OnInit {
   name: string;

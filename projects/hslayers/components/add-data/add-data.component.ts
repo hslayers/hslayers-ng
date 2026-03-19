@@ -1,5 +1,7 @@
-import {Component, OnInit, inject} from '@angular/core';
+import {Component, CUSTOM_ELEMENTS_SCHEMA, OnInit, inject} from '@angular/core';
+import {NgClass, AsyncPipe} from '@angular/common';
 import {Observable, of, switchMap} from 'rxjs';
+import {TranslatePipe} from '@ngx-translate/core';
 
 import {
   AddDataUrlType,
@@ -11,21 +13,35 @@ import {
   HsAddDataService,
   HsAddDataUrlService,
 } from 'hslayers-ng/services/add-data';
+import {HsAddDataUrlComponent} from './url/add-data-url.component';
+import {HsAddDataCatalogueComponent} from './catalogue/catalogue.component';
+import {HsAddDataFileComponent} from './file/file.component';
 import {HsConfirmDialogComponent} from 'hslayers-ng/common/confirm';
 import {HsDialogContainerService} from 'hslayers-ng/common/dialogs';
-
 import {
   HsLayerSynchronizerService,
   HsLaymanService,
 } from 'hslayers-ng/services/save-map';
-import {HsPanelBaseComponent} from 'hslayers-ng/common/panels';
+import {
+  HsPanelBaseComponent,
+  HsPanelHeaderComponent,
+} from 'hslayers-ng/common/panels';
 import {HsRemoveLayerDialogService} from 'hslayers-ng/common/remove-multiple';
 import {HsShareUrlService} from 'hslayers-ng/services/share';
 
 @Component({
   selector: 'hs-add-data',
   templateUrl: './add-data.component.html',
-  standalone: false,
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  imports: [
+    NgClass,
+    HsPanelHeaderComponent,
+    HsAddDataUrlComponent,
+    HsAddDataFileComponent,
+    HsAddDataCatalogueComponent,
+    AsyncPipe,
+    TranslatePipe,
+  ],
 })
 export class HsAddDataComponent extends HsPanelBaseComponent implements OnInit {
   hsAddDataService = inject(HsAddDataService);

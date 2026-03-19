@@ -1,15 +1,18 @@
 import {Component, Input} from '@angular/core';
+import {NgClass} from '@angular/common';
+import {TranslatePipe} from '@ngx-translate/core';
 
 import {Rule, Symbolizer} from 'geostyler-style';
 
 import {HsStylerPartBaseComponent} from 'hslayers-ng/services/styler';
 import {Kinds} from '../symbolizer-kind.enum';
+import {HsSymbolizerComponent} from '../symbolizer.component';
 
 @Component({
   selector: 'hs-symbolizer-list-item',
   templateUrl: 'symbolizer-list-item.component.html',
   styleUrls: ['../../styler.component.scss'],
-  standalone: false,
+  imports: [NgClass, HsSymbolizerComponent, TranslatePipe],
 })
 export class HsSymbolizerListItemComponent extends HsStylerPartBaseComponent {
   @Input() symbolizer: Symbolizer;

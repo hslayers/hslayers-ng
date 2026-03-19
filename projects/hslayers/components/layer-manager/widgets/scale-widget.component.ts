@@ -1,4 +1,6 @@
 import {Component, inject, signal, WritableSignal, OnInit} from '@angular/core';
+import {FormsModule} from '@angular/forms';
+import {TranslatePipe} from '@ngx-translate/core';
 
 import {METERS_PER_UNIT} from 'ol/proj/Units';
 
@@ -71,11 +73,13 @@ import {HsMapService} from 'hslayers-ng/services/map';
       }
     `,
   ],
-  standalone: false,
+
+  imports: [FormsModule, TranslatePipe],
 })
 export class HsScaleWidgetComponent
   extends HsLayerEditorWidgetBaseComponent
-  implements OnInit {
+  implements OnInit
+{
   hsMapService = inject(HsMapService);
   hsLanguageService = inject(HsLanguageService);
 

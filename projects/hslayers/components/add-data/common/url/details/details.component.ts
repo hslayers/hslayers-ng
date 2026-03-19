@@ -1,16 +1,33 @@
 import {AfterContentInit, Component, Input, inject} from '@angular/core';
+import {FormsModule} from '@angular/forms';
+import {SlicePipe} from '@angular/common';
+import {TranslatePipe} from '@ngx-translate/core';
 
+import {EpsgPipe} from 'hslayers-ng/common/pipes';
 import {
   AddDataUrlType,
   UrlDataObject,
   HsUrlTypeServiceModel,
 } from 'hslayers-ng/types';
 import {HsAddDataCommonService} from 'hslayers-ng/services/add-data';
+import {HsAddUrlAsToggleComponent} from '../add-as-toggle/add-as-toggle.component';
+import {HsPositionComponent} from '../../target-position/target-position.component';
+import {HsLayerTableComponent} from 'hslayers-ng/common/layer-table';
+import {HsUrlAddComponent} from '../add/add.component';
 
 @Component({
   selector: 'hs-url-details',
   templateUrl: './details.component.html',
-  standalone: false,
+  imports: [
+    FormsModule,
+    HsAddUrlAsToggleComponent,
+    HsPositionComponent,
+    HsLayerTableComponent,
+    HsUrlAddComponent,
+    SlicePipe,
+    TranslatePipe,
+    EpsgPipe,
+  ],
 })
 export class HsUrlDetailsComponent implements AfterContentInit {
   hsAddDataCommonService = inject(HsAddDataCommonService);

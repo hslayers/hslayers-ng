@@ -1,4 +1,5 @@
 import {ChangeDetectionStrategy, Component, Input, OnInit} from '@angular/core';
+import {TranslatePipe} from '@ngx-translate/core';
 
 import {HsLayerDescriptor} from 'hslayers-ng/types';
 import {HsQueryPopupWidgetBaseComponent} from '../query-popup-widget-base.component';
@@ -7,7 +8,7 @@ import {HsQueryPopupWidgetBaseComponent} from '../query-popup-widget-base.compon
   selector: 'hs-layer-name',
   templateUrl: './layer-name.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: false,
+  imports: [TranslatePipe],
 })
 export class HsLayerNameComponent
   extends HsQueryPopupWidgetBaseComponent

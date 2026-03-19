@@ -26,19 +26,19 @@ import {register as projRegister} from 'ol/proj/proj4';
 
 import {HsCesiumConfig, HslayersCesiumComponent} from 'hslayers-cesium';
 import {HsConfig} from 'hslayers-ng/config';
+import {HslayersComponent} from 'hslayers-ng/core';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {
   HsOverlayConstructorService,
   HsPanelConstructorService,
 } from 'hslayers-ng/services/panel-constructor';
-import {InterpolatedSource} from 'hslayers-ng/common/layers';
-import {SparqlJson} from 'hslayers-ng/common/layers';
+import {InterpolatedSource, SparqlJson} from 'hslayers-ng/common/layers';
 
 @Component({
   selector: 'hslayers-cesium-app',
   templateUrl: './app.component.html',
   styleUrls: [],
-  standalone: false,
+  imports: [HslayersComponent],
 })
 export class AppComponent implements OnInit {
   private elementRef = inject(ElementRef);

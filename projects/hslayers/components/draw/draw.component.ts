@@ -9,7 +9,6 @@ import {HsDrawService} from 'hslayers-ng/services/draw';
 import {
   HsPanelBaseComponent,
   HsPanelHeaderComponent,
-  HsPanelHelpersModule,
 } from 'hslayers-ng/common/panels';
 import {HsQueryFeatureListComponent} from 'hslayers-ng/components/query';
 import {HsDrawEditComponent} from './draw-edit/draw-edit.component';
@@ -26,7 +25,6 @@ import {HsDrawPanelComponent} from './draw-panel/draw-panel.component';
     HsDrawPanelComponent,
     HsQueryFeatureListComponent,
     HsPanelHeaderComponent,
-    HsPanelHelpersModule,
   ],
 })
 export class HsDrawComponent extends HsPanelBaseComponent implements OnInit {
@@ -40,9 +38,8 @@ export class HsDrawComponent extends HsPanelBaseComponent implements OnInit {
     this.hsDrawService.layerMetadataDialog
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(async () => {
-        const {HsDrawLayerMetadataDialogComponent} = await import(
-          './draw-layer-metadata/draw-layer-metadata.component'
-        );
+        const {HsDrawLayerMetadataDialogComponent} =
+          await import('./draw-layer-metadata/draw-layer-metadata.component');
         this.hsDialogContainerService.create(
           HsDrawLayerMetadataDialogComponent,
           {},

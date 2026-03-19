@@ -25,10 +25,7 @@ import {HsConfig} from 'hslayers-ng/config';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsUploadComponent} from 'hslayers-ng/common/upload';
 
-@Component({
-  template: '<div></div>',
-  standalone: false,
-})
+@Component({template: '<div></div>'})
 export class HsAddDataFileBaseComponent implements OnInit, AfterViewInit {
   hsAddDataCommonService = inject(HsAddDataCommonService);
   hsAddDataCommonFileService = inject(HsAddDataCommonFileService);

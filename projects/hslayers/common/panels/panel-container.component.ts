@@ -23,7 +23,7 @@ import {HsPanelItem} from './panel-item';
 @Component({
   selector: 'hs-panel-container',
   templateUrl: './panel-container.component.html',
-  standalone: false,
+  imports: [HsPanelHostDirective],
 })
 export class HsPanelContainerComponent implements OnInit, OnDestroy {
   private hsConfig = inject(HsConfig);

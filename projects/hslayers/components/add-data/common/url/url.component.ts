@@ -1,11 +1,16 @@
 import {Component, EventEmitter, Input, Output, inject} from '@angular/core';
+import {FormsModule} from '@angular/forms';
+import {TranslatePipe} from '@ngx-translate/core';
 
-import {HsHistoryListService} from 'hslayers-ng/common/history-list';
+import {
+  HsHistoryListService,
+  HsHistoryListComponent,
+} from 'hslayers-ng/common/history-list';
 
 @Component({
   selector: 'hs-common-url',
   templateUrl: './url.component.html',
-  standalone: false,
+  imports: [FormsModule, HsHistoryListComponent, TranslatePipe],
 })
 export class HsCommonUrlComponent {
   private historyListService = inject(HsHistoryListService);

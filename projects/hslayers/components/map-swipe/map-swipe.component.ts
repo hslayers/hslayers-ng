@@ -4,20 +4,36 @@ import {
   CdkDragDrop,
   moveItemInArray,
   transferArrayItem,
+  CdkDropList,
+  CdkDrag,
 } from '@angular/cdk/drag-drop';
+import {NgClass, NgTemplateOutlet, AsyncPipe} from '@angular/common';
+import {TranslatePipe} from '@ngx-translate/core';
 
 import {
   HsLayerShiftingService,
   LayerListItem,
 } from 'hslayers-ng/services/layer-shifting';
 import {HsMapSwipeService, SwipeSide} from './map-swipe.service';
-import {HsPanelBaseComponent} from 'hslayers-ng/common/panels';
+import {
+  HsPanelBaseComponent,
+  HsPanelHeaderComponent,
+} from 'hslayers-ng/common/panels';
 
 @Component({
   selector: 'hs-map-swipe',
   templateUrl: './map-swipe.component.html',
   styleUrls: ['./map-swipe.component.scss'],
-  standalone: false,
+
+  imports: [
+    NgClass,
+    HsPanelHeaderComponent,
+    CdkDropList,
+    CdkDrag,
+    NgTemplateOutlet,
+    AsyncPipe,
+    TranslatePipe,
+  ],
 })
 export class HsMapSwipeComponent extends HsPanelBaseComponent {
   hsMapSwipeService = inject(HsMapSwipeService);

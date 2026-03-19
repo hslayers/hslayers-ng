@@ -1,8 +1,9 @@
 import {Component, input, output} from '@angular/core';
+import {NgClass} from '@angular/common';
+import {TranslatePipe} from '@ngx-translate/core';
 
 @Component({
   selector: 'hs-add-as-toggle',
-  standalone: false,
   template: `
     <div
       class="d-flex flex-row justify-content-start align-items-center my-2 rounded border"
@@ -67,6 +68,8 @@ import {Component, input, output} from '@angular/core';
       }
     `,
   ],
+
+  imports: [NgClass, TranslatePipe],
 })
 export class HsAddUrlAsToggleComponent {
   isBase = input<boolean>(false);

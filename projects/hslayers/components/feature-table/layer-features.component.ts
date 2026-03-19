@@ -1,8 +1,11 @@
 import {Component, Input, OnInit, inject} from '@angular/core';
+import {FormsModule} from '@angular/forms';
+import {TranslatePipe} from '@ngx-translate/core';
 
 import Feature from 'ol/Feature';
 import Geometry from 'ol/geom/Geometry';
 
+import {HsFeatureFilterPipe} from './feature-filter.pipe';
 import {HsFeatureTableService} from './feature-table.service';
 import {HsLanguageService} from 'hslayers-ng/services/language';
 import {HsMapService} from 'hslayers-ng/services/map';
@@ -33,7 +36,7 @@ type Operation = {
       }
     `,
   ],
-  standalone: false,
+  imports: [FormsModule, TranslatePipe, HsFeatureFilterPipe],
 })
 export class HsLayerFeaturesComponent implements OnInit {
   hsFeatureTableService = inject(HsFeatureTableService);

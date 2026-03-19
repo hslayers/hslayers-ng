@@ -1,14 +1,18 @@
 import {Component, OnInit, inject} from '@angular/core';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
+import {NgClass, AsyncPipe} from '@angular/common';
 
 import {HsConfig} from 'hslayers-ng/config';
 import {HsLanguageService} from 'hslayers-ng/services/language';
-import {HsPanelBaseComponent} from 'hslayers-ng/common/panels';
+import {
+  HsPanelBaseComponent,
+  HsPanelHeaderComponent,
+} from 'hslayers-ng/common/panels';
 
 @Component({
   selector: 'hs-language',
   templateUrl: './language.component.html',
-  standalone: false,
+  imports: [NgClass, HsPanelHeaderComponent, AsyncPipe],
 })
 export class HsLanguageComponent
   extends HsPanelBaseComponent

@@ -11,7 +11,6 @@ import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
 
 @Directive({
   selector: '[hsDownload]',
-  standalone: true,
 })
 export class HsDownloadDirective implements OnDestroy {
   private domSanitizer = inject(DomSanitizer);

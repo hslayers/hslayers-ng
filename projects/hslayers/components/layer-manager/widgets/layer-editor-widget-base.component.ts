@@ -8,10 +8,7 @@ import {HsLayerSelectorService} from 'hslayers-ng/services/layer-manager';
 import {HsPanelComponent} from 'hslayers-ng/common/panels';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 
-@Component({
-  template: '<div></div>',
-  standalone: false,
-})
+@Component({template: '<div></div>'})
 export class HsLayerEditorWidgetBaseComponent
   implements HsPanelComponent, OnInit
 {

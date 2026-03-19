@@ -1,17 +1,28 @@
+import {AsyncPipe, NgClass} from '@angular/common';
 import {Component, DestroyRef, OnInit, inject} from '@angular/core';
 import {Observable, delay, map, startWith} from 'rxjs';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
+import {TranslatePipe} from '@ngx-translate/core';
 
 import {HsButton} from 'hslayers-ng/types';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
+import {HsImpressumComponent} from './impressum.component';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
+import {HsPanelHeaderComponent} from 'hslayers-ng/common/panels';
 import {HsSidebarService} from 'hslayers-ng/services/sidebar';
 
 @Component({
   selector: 'hs-mini-sidebar',
   templateUrl: './sidebar.component.html',
-  standalone: false,
+
+  imports: [
+    NgClass,
+    HsImpressumComponent,
+    AsyncPipe,
+    TranslatePipe,
+    HsPanelHeaderComponent,
+  ],
 })
 export class HsMiniSidebarComponent implements OnInit {
   hsSidebarService = inject(HsSidebarService);

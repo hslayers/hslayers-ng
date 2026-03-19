@@ -1,4 +1,7 @@
+import {ColorSketchModule} from 'ngx-color/sketch';
 import {Component, Input, OnInit, inject} from '@angular/core';
+import {FormsModule} from '@angular/forms';
+import {NgStyle} from '@angular/common';
 
 import {ColorEvent} from 'ngx-color';
 import {FillSymbolizer, MarkSymbolizer, TextSymbolizer} from 'geostyler-style';
@@ -18,7 +21,7 @@ import {HsStylerPartBaseComponent} from 'hslayers-ng/services/styler';
       }
     `,
   ],
-  standalone: false,
+  imports: [FormsModule, NgStyle, ColorSketchModule],
 })
 export class HsColorPickerComponent
   extends HsStylerPartBaseComponent

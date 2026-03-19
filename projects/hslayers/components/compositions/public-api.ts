@@ -8,6 +8,5 @@ export * from './compositions-list-item.component';
 export * from './compositions-map.service';
 export * from './compositions-option-values';
 export * from './compositions.component';
-export * from './compositions.module';
 export * from './compositions.service';
 export * from './compositions-catalogue.service';

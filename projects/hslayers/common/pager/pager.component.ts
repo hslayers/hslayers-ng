@@ -1,4 +1,11 @@
 import {Component, Input} from '@angular/core';
+import {NgClass} from '@angular/common';
+import {
+  NgbDropdown,
+  NgbDropdownToggle,
+  NgbDropdownMenu,
+} from '@ng-bootstrap/ng-bootstrap';
+import {TranslatePipe} from '@ngx-translate/core';
 
 @Component({
   selector: 'hs-pager',
@@ -10,7 +17,13 @@ import {Component, Input} from '@angular/core';
       }
     `,
   ],
-  standalone: false,
+  imports: [
+    NgClass,
+    NgbDropdown,
+    NgbDropdownToggle,
+    NgbDropdownMenu,
+    TranslatePipe,
+  ],
 })
 export class HsPagerComponent {
   @Input() pagerService: any;

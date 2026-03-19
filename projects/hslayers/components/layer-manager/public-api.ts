@@ -12,7 +12,6 @@ export * from './gallery/layer-manager-gallery.component';
 export * from './logical-list/layer-manager-layerlist.component';
 export * from './physical-list/physical-layerlist.component';
 export * from './layer-manager.component';
-export * from './layer-manager.module';
 
 export * from './dialogs/remove-all-dialog.component';
 export * from './dialogs/remove-layer-dialog.component';

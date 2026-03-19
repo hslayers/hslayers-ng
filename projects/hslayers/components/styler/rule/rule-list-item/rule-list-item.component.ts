@@ -1,16 +1,20 @@
 import {Component, Input, OnInit, inject} from '@angular/core';
 import {DomSanitizer, SafeHtml} from '@angular/platform-browser';
+import {FormsModule} from '@angular/forms';
+import {NgClass} from '@angular/common';
+import {TranslatePipe} from '@ngx-translate/core';
 
 import LegendRenderer from 'geostyler-legend/dist/LegendRenderer/LegendRenderer';
 import {Style as GeoStylerStyle} from 'geostyler-style';
 
 import {HsStylerService} from 'hslayers-ng/services/styler';
+import {HsRuleComponent} from '../rule.component';
 
 @Component({
   selector: 'hs-rule-list-item',
   templateUrl: 'rule-list-item.component.html',
   styleUrls: ['../../styler.component.scss'],
-  standalone: false,
+  imports: [FormsModule, NgClass, HsRuleComponent, TranslatePipe],
 })
 export class HsRuleListItemComponent implements OnInit {
   hsStylerService = inject(HsStylerService);

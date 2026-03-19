@@ -1,4 +1,7 @@
 import {Component, Input, inject} from '@angular/core';
+import {FormsModule} from '@angular/forms';
+import {NgClass} from '@angular/common';
+import {TranslatePipe} from '@ngx-translate/core';
 import {take} from 'rxjs';
 
 import {IconSymbolizer} from 'geostyler-style';
@@ -11,7 +14,7 @@ import {SymbolizerIcon} from 'hslayers-ng/config';
 @Component({
   selector: 'hs-icon-symbolizer',
   templateUrl: './icon-symbolizer.component.html',
-  standalone: false,
+  imports: [FormsModule, NgClass, TranslatePipe],
 })
 export class HsIconSymbolizerComponent extends HsStylerPartBaseComponent {
   private hsDialogContainerService = inject(HsDialogContainerService);

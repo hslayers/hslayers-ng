@@ -1,4 +1,6 @@
 import {Component, OnInit, ViewRef, inject} from '@angular/core';
+import {NgClass} from '@angular/common';
+import {TranslatePipe} from '@ngx-translate/core';
 
 import Layer from 'ol/layer/Layer';
 
@@ -41,7 +43,7 @@ export type HsRmLayerDialogResponse = {
       max-width: 18ch;
     }
   `,
-  standalone: false,
+  imports: [NgClass, TranslatePipe],
 })
 export class HsRmLayerDialogComponent implements HsDialogComponent, OnInit {
   hsDialogContainerService = inject(HsDialogContainerService);

@@ -38,6 +38,7 @@ import {
   HsPanelConstructorService,
 } from 'hslayers-ng/services/panel-constructor';
 import {InterpolatedSource, SparqlJson} from 'hslayers-ng/common/layers';
+import {HslayersComponent} from 'hslayers-ng/core/hslayers.component';
 
 export type HslayersNgExternalApi = {
   changeLayerVisibility: (
@@ -53,7 +54,7 @@ export type HslayersNgExternalApi = {
   selector: 'hslayers-app',
   templateUrl: './hslayers-app.component.html',
   styleUrls: [],
-  standalone: false,
+  imports: [HslayersComponent],
 })
 export class HslayersAppComponent {
   hsConfig = inject(HsConfig);

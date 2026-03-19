@@ -1,4 +1,6 @@
 import {Component, OnInit, inject} from '@angular/core';
+import {FormsModule} from '@angular/forms';
+import {TranslatePipe} from '@ngx-translate/core';
 
 import Cluster from 'ol/source/Cluster';
 import Feature from 'ol/Feature';
@@ -41,7 +43,8 @@ import {HsLayerEditorWidgetBaseComponent} from './layer-editor-widget-base.compo
       }
     `,
   ],
-  standalone: false,
+
+  imports: [FormsModule, TranslatePipe],
 })
 export class HsClusterWidgetComponent
   extends HsLayerEditorWidgetBaseComponent
