@@ -1,4 +1,4 @@
-import {CommonModule} from '@angular/common';
+import {NgClass} from '@angular/common';
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {TranslatePipe} from '@ngx-translate/core';
 
@@ -32,7 +32,7 @@ import {TranslatePipe} from '@ngx-translate/core';
       }
     `,
   ],
-  imports: [CommonModule, TranslatePipe],
+  imports: [NgClass, TranslatePipe],
 })
 export class HsAddToMapButtonComponent {
   @Input() disabled: boolean;

@@ -1,4 +1,3 @@
-import {CommonModule} from '@angular/common';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 
@@ -46,7 +45,7 @@ describe('HsMapService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      imports: [CommonModule, HsMapComponent, HsMapDirective],
+      imports: [HsMapComponent, HsMapDirective],
       providers: [
         {provide: HsShareUrlService, useValue: new HsShareUrlServiceMock()},
         {provide: HslayersService, useValue: new emptyMock()},

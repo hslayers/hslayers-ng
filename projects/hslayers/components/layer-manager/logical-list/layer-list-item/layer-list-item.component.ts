@@ -1,4 +1,4 @@
-import {CommonModule} from '@angular/common';
+import {NgClass} from '@angular/common';
 import {
   Component,
   OnInit,
@@ -37,7 +37,7 @@ import {layerInvalid} from 'hslayers-ng/services/utils';
   selector: 'hs-layer-list-item',
   templateUrl: './layer-list-item.component.html',
   imports: [
-    CommonModule,
+    NgClass,
     NgbTooltipModule,
     NgbProgressbarModule,
     TranslatePipe,

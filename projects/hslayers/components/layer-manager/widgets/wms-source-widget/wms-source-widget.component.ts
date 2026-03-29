@@ -1,4 +1,4 @@
-import {CommonModule} from '@angular/common';
+import {AsyncPipe, NgClass} from '@angular/common';
 import {Component, inject} from '@angular/core';
 import {Observable, map, tap} from 'rxjs';
 import {TranslatePipe} from '@ngx-translate/core';
@@ -18,7 +18,7 @@ import {instOf, isLayerWMS} from 'hslayers-ng/services/utils';
 
 @Component({
   selector: 'hs-wms-source-widget',
-  imports: [CommonModule, TranslatePipe],
+  imports: [AsyncPipe, NgClass, TranslatePipe],
   templateUrl: './wms-source-widget.component.html',
 })
 export class HsWmsSourceWidgetComponent extends HsLayerEditorWidgetBaseComponent {

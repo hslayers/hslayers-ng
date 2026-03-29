@@ -5,7 +5,6 @@ import {
   Injectable,
   signal,
 } from '@angular/core';
-import {CommonModule} from '@angular/common';
 import {
   ComponentFixture,
   TestBed,
@@ -81,7 +80,6 @@ describe('compositions', () => {
     TestBed.configureTestingModule({
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
       imports: [
-        CommonModule,
         HsPanelContainerComponent,
         FormsModule,
         TranslatePipe,

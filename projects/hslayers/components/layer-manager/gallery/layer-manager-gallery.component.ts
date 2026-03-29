@@ -4,7 +4,7 @@ import {
   ViewChild,
   inject,
 } from '@angular/core';
-import {CommonModule} from '@angular/common';
+import {AsyncPipe, NgClass, NgStyle} from '@angular/common';
 
 import {NgbDropdown, NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
 import {TranslatePipe} from '@ngx-translate/core';
@@ -24,7 +24,7 @@ import {getBase} from 'hslayers-ng/common/extensions';
   selector: 'hs-layer-manager-gallery',
   templateUrl: './layer-manager-gallery.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [CommonModule, TranslatePipe, NgbDropdownModule],
+  imports: [AsyncPipe, NgClass, NgStyle, TranslatePipe, NgbDropdownModule],
 })
 export class HsLayerManagerGalleryComponent extends HsGuiOverlayBaseComponent {
   hsLayerManagerService = inject(HsLayerManagerService);

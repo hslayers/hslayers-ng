@@ -1,5 +1,4 @@
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
-import {CommonModule} from '@angular/common';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
 import {
@@ -42,7 +41,6 @@ describe('HsAddDataUrlComponent', () => {
     const bed = TestBed.configureTestingModule({
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
       imports: [
-        CommonModule,
         FormsModule,
         TranslatePipe,
         HsAddDataVectorUrlComponent,

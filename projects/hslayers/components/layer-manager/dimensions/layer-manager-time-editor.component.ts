@@ -1,4 +1,4 @@
-import {CommonModule, NgClass} from '@angular/common';
+import {DatePipe, NgClass} from '@angular/common';
 import {Component, Input, OnInit, ViewChild, inject} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {NgbTooltipModule} from '@ng-bootstrap/ng-bootstrap';
@@ -16,7 +16,7 @@ import {HsLayoutService} from 'hslayers-ng/services/layout';
   selector: 'hs-layer-manager-time-editor',
   templateUrl: 'layer-manager-time-editor.component.html',
   imports: [
-    CommonModule,
+    DatePipe,
     TranslatePipe,
     NgClass,
     DatePreformatPipe,
