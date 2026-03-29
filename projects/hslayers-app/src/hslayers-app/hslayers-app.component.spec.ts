@@ -5,7 +5,7 @@ import {TestBed, waitForAsync} from '@angular/core/testing';
 describe('AppComponent', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [HslayersAppComponent],
+      imports: [HslayersAppComponent],
       providers: [{provide: HsConfig, useClass: HsConfigMock}],
     }).compileComponents();
   }));
@@ -13,7 +13,7 @@ describe('AppComponent', () => {
   it('should create the app', () => {
     const fixture = TestBed.createComponent(HslayersAppComponent);
     const app = fixture.componentInstance;
-    expect().toBeTruthy();
+    expect(app).toBeTruthy();
   });
 
   it(`should have as title 'hslayers-workspace'`, () => {

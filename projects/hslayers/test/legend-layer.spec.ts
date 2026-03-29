@@ -1,14 +1,6 @@
 /* eslint-disable prefer-arrow-callback */
-import {
-  BrowserDynamicTestingModule,
-  platformBrowserDynamicTesting,
-} from '@angular/platform-browser-dynamic/testing';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
-import {
-  CUSTOM_ELEMENTS_SCHEMA,
-  provideZoneChangeDetection,
-  NgModule,
-} from '@angular/core';
+import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {provideHttpClient, withInterceptorsFromDi} from '@angular/common/http';
 import {provideHttpClientTesting} from '@angular/common/http/testing';
@@ -37,22 +29,9 @@ import {
 } from 'hslayers-ng/components/legend';
 import {HsMapService} from 'hslayers-ng/services/map';
 import {HsMapServiceMock} from './map.service.mock';
-import {HsPanelHelpersModule} from 'hslayers-ng/common/panels';
-
-@NgModule({providers: [provideZoneChangeDetection()]})
-export class ZoneChangeDetectionModule {}
+import {HsPanelContainerComponent} from 'hslayers-ng/common/panels';
 
 describe('HsLegendLayerComponent', () => {
-  beforeAll(() => {
-    TestBed.resetTestEnvironment();
-    TestBed.initTestEnvironment(
-      [ZoneChangeDetectionModule, BrowserDynamicTestingModule],
-      platformBrowserDynamicTesting(),
-      {
-        teardown: {destroyAfterEach: false},
-      },
-    );
-  });
   let parentComponent: HsLegendComponent;
   let parentFixture: ComponentFixture<HsLegendComponent>;
   let component: HsLegendLayerComponent;
@@ -61,13 +40,15 @@ describe('HsLegendLayerComponent', () => {
   beforeEach(async () => {
     TestBed.configureTestingModule({
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      declarations: [
+      imports: [
+        HsPanelContainerComponent,
+        FormsModule,
+        TranslatePipe,
         HsLegendComponent,
         HsLegendLayerComponent,
         HsLegendLayerVectorComponent,
         HsLegendLayerStaticComponent,
       ],
-      imports: [HsPanelHelpersModule, FormsModule, TranslatePipe],
       providers: [
         HsLegendService,
         {provide: HsConfig, useClass: HsConfigMock},
@@ -89,6 +70,12 @@ describe('HsLegendLayerComponent', () => {
     parentFixture.detectChanges();
     fixture = TestBed.createComponent(HsLegendLayerComponent);
     component = fixture.componentInstance;
+    fixture.componentRef.setInput(
+      'layer',
+      <any>{
+        lyr: new VectorLayer({source: new VectorSource()}),
+      },
+    );
     service = TestBed.inject(HsLegendService);
   });
   it('should create', () => {

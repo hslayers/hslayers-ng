@@ -20,7 +20,6 @@ import {
   HsMissingTranslationHandler,
   HsTranslateLoader,
 } from 'hslayers-ng/services/language';
-import {TranslateTestingModule} from 'hslayers-ng/components/language';
 
 describe('HslayersComponent', () => {
   let component: HslayersComponent;
@@ -28,9 +27,8 @@ describe('HslayersComponent', () => {
   let hsConfig;
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [HslayersComponent, HsMapHostDirective],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      imports: [TranslateTestingModule],
+      imports: [HslayersComponent, HsMapHostDirective],
       providers: [
         {provide: HsConfig, useClass: HsConfigMock},
         provideTranslateService({

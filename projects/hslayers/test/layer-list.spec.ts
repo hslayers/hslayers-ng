@@ -1,9 +1,5 @@
 import {BehaviorSubject, filter, of, share, switchMap} from 'rxjs';
 import {
-  BrowserDynamicTestingModule,
-  platformBrowserDynamicTesting,
-} from '@angular/platform-browser-dynamic/testing';
-import {
   ComponentFixture,
   TestBed,
   fakeAsync,
@@ -12,8 +8,6 @@ import {
 import {
   CUSTOM_ELEMENTS_SCHEMA,
   signal,
-  provideZoneChangeDetection,
-  NgModule,
 } from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
@@ -43,7 +37,7 @@ import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsLayoutServiceMock} from './layout.service.mock';
 import {HsMapService} from 'hslayers-ng/services/map';
 import {HsMapServiceMock} from './map.service.mock';
-import {HsPanelHelpersModule} from 'hslayers-ng/common/panels';
+import {HsPanelContainerComponent} from 'hslayers-ng/common/panels';
 import {HsShareUrlService} from 'hslayers-ng/services/share';
 import {mockHsLayerListService} from './layer-manager-layerlist.service.mock';
 import {wmsGetCapabilitiesResponse} from './data/wms-capabilities';
@@ -111,31 +105,17 @@ HsLayerManagerServiceMock.data = {
   folders: signal(new Map([['other', {layers: [layer, layer2], zIndex: 0}]])),
 };
 
-@NgModule({providers: [provideZoneChangeDetection()]})
-export class ZoneChangeDetectionModule {}
-
 describe('layermanager-layer-list', () => {
   let component: HsLayerListComponent;
   let fixture: ComponentFixture<HsLayerListComponent>;
   let hsConfig: HsConfig;
-
-  beforeAll(() => {
-    TestBed.resetTestEnvironment();
-    TestBed.initTestEnvironment(
-      [ZoneChangeDetectionModule, BrowserDynamicTestingModule],
-      platformBrowserDynamicTesting(),
-      {
-        teardown: {destroyAfterEach: false},
-      },
-    );
-  });
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
       declarations: [],
       imports: [
-        HsPanelHelpersModule,
+        HsPanelContainerComponent,
         FormsModule,
         NgbDropdownModule,
         TranslatePipe,

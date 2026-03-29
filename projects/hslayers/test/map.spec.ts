@@ -1,14 +1,6 @@
-import {
-  BrowserDynamicTestingModule,
-  platformBrowserDynamicTesting,
-} from '@angular/platform-browser-dynamic/testing';
 import {CommonModule} from '@angular/common';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
-import {
-  CUSTOM_ELEMENTS_SCHEMA,
-  provideZoneChangeDetection,
-  NgModule,
-} from '@angular/core';
+import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 
 import Feature from 'ol/Feature';
 import Point from 'ol/geom/Point';
@@ -47,23 +39,10 @@ function mockLanguageService() {
   ]);
 }
 
-@NgModule({providers: [provideZoneChangeDetection()]})
-export class ZoneChangeDetectionModule {}
-
 describe('HsMapService', () => {
   let fixture: ComponentFixture<HsMapComponent>;
   let component: HsMapComponent;
   let service: HsMapService;
-  beforeAll(() => {
-    TestBed.resetTestEnvironment();
-    TestBed.initTestEnvironment(
-      [ZoneChangeDetectionModule, BrowserDynamicTestingModule],
-      platformBrowserDynamicTesting(),
-      {
-        teardown: {destroyAfterEach: false},
-      },
-    );
-  });
   beforeEach(() => {
     TestBed.configureTestingModule({
       schemas: [CUSTOM_ELEMENTS_SCHEMA],

@@ -7,7 +7,7 @@ import {provideHttpClientTesting} from '@angular/common/http/testing';
 
 import {ColorSketchModule} from 'ngx-color/sketch';
 import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
-import {TranslatePipe} from '@ngx-translate/core';
+import {provideTranslateService, TranslatePipe} from '@ngx-translate/core';
 
 import {HsConfig} from 'hslayers-ng/config';
 import {HsConfigMock} from './config.service.mock';
@@ -17,7 +17,7 @@ import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsLayoutServiceMock} from './layout.service.mock';
 import {
   HsPanelHeaderComponent,
-  HsPanelHelpersModule,
+  HsPanelContainerComponent,
 } from 'hslayers-ng/common/panels';
 import {
   HsPrintComponent,
@@ -39,11 +39,8 @@ describe('HsPrintComponent', () => {
   let fixture: ComponentFixture<HsPrintComponent>;
   let service: HsPrintService;
   beforeEach(async () => {
-    
-
     await TestBed.configureTestingModule({
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      declarations: [HsPrintComponent],
       imports: [
         CommonModule,
         FormsModule,
@@ -51,11 +48,12 @@ describe('HsPrintComponent', () => {
         HsPrintScaleStylerComponent,
         HsPrintLegendStylerComponent,
         HsPrintImprintStylerComponent,
-        HsPanelHelpersModule,
+        HsPanelContainerComponent,
         HsPanelHeaderComponent,
         TranslatePipe,
         ColorSketchModule,
         NgbDropdownModule,
+        HsPrintComponent,
       ],
       providers: [
         {
@@ -84,6 +82,7 @@ describe('HsPrintComponent', () => {
         {provide: HsEventBusService, useValue: new HsEventBusServiceMock()},
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
+        provideTranslateService(),
       ],
     }).compileComponents();
   });

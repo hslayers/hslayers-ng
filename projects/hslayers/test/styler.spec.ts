@@ -1,14 +1,8 @@
-import {
-  BrowserDynamicTestingModule,
-  platformBrowserDynamicTesting,
-} from '@angular/platform-browser-dynamic/testing';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {
   CUSTOM_ELEMENTS_SCHEMA,
   signal,
   WritableSignal,
-  provideZoneChangeDetection,
-  NgModule,
 } from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {provideHttpClient, withInterceptorsFromDi} from '@angular/common/http';
@@ -59,22 +53,8 @@ class HsLayerSynchronizerServiceMock {
   constructor() {}
 }
 
-@NgModule({providers: [provideZoneChangeDetection()]})
-export class ZoneChangeDetectionModule {}
-
 describe('HsStyler', () => {
   let layer: WritableSignal<VectorLayer<VectorSource<Feature>>>;
-
-  beforeAll(() => {
-    TestBed.resetTestEnvironment();
-    TestBed.initTestEnvironment(
-      [ZoneChangeDetectionModule, BrowserDynamicTestingModule],
-      platformBrowserDynamicTesting(),
-      {
-        teardown: {destroyAfterEach: false},
-      },
-    );
-  });
 
   let fixture: ComponentFixture<HsStylerComponent>;
   let component: HsStylerComponent;
@@ -104,8 +84,12 @@ describe('HsStyler', () => {
     );
     TestBed.configureTestingModule({
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      declarations: [HsStylerComponent],
-      imports: [FormsModule, TranslatePipe, HsDownloadDirective],
+      imports: [
+        FormsModule,
+        TranslatePipe,
+        HsDownloadDirective,
+        HsStylerComponent,
+      ],
       providers: [
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),

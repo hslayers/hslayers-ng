@@ -1,12 +1,4 @@
-import {
-  BrowserDynamicTestingModule,
-  platformBrowserDynamicTesting,
-} from '@angular/platform-browser-dynamic/testing';
-import {
-  CUSTOM_ELEMENTS_SCHEMA,
-  provideZoneChangeDetection,
-  NgModule,
-} from '@angular/core';
+import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
@@ -16,20 +8,19 @@ import {
   withInterceptorsFromDi,
 } from '@angular/common/http';
 import {lastValueFrom} from 'rxjs';
-import {TranslatePipe} from '@ngx-translate/core';
+import {provideTranslateService, TranslatePipe} from '@ngx-translate/core';
 
 import {
   HsAddDataUrlComponent,
-  HsAddDataVectorModule,
-  HsUrlArcGisModule,
-  HsUrlGeoSparqlModule,
-  HsUrlWfsModule,
-  HsUrlWmsModule,
-  HsUrlWmtsModule,
+  HsAddDataVectorUrlComponent,
+  HsUrlArcGisComponent,
+  HsUrlGeoSparqlComponent,
+  HsUrlWfsComponent,
+  HsUrlWmsComponent,
+  HsUrlWmtsComponent,
 } from 'hslayers-ng/components/add-data';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsConfigMock} from './config.service.mock';
-import {HsLanguageModule} from 'hslayers-ng/components/language';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsLayoutServiceMock} from './layout.service.mock';
 import {HsMapService} from 'hslayers-ng/services/map';
@@ -40,21 +31,7 @@ import {testingServiceEndpoints} from './data/service-endpoints';
 let httpClient;
 let hsWmsGetCapabilitiesService;
 
-@NgModule({providers: [provideZoneChangeDetection()]})
-export class ZoneChangeDetectionModule {}
-
 describe('HsAddDataUrlComponent', () => {
-  beforeAll(() => {
-    TestBed.resetTestEnvironment();
-    TestBed.initTestEnvironment(
-      [ZoneChangeDetectionModule, BrowserDynamicTestingModule],
-      platformBrowserDynamicTesting(),
-      {
-        teardown: {destroyAfterEach: false},
-      },
-    );
-  });
-
   let component: HsAddDataUrlComponent;
   let fixture: ComponentFixture<HsAddDataUrlComponent>;
   let originalTimeout: number;
@@ -64,18 +41,17 @@ describe('HsAddDataUrlComponent', () => {
 
     const bed = TestBed.configureTestingModule({
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      declarations: [HsAddDataUrlComponent],
       imports: [
         CommonModule,
         FormsModule,
         TranslatePipe,
-        HsLanguageModule,
-        HsAddDataVectorModule,
-        HsUrlArcGisModule,
-        HsUrlGeoSparqlModule,
-        HsUrlWfsModule,
-        HsUrlWmsModule,
-        HsUrlWmtsModule,
+        HsAddDataVectorUrlComponent,
+        HsUrlArcGisComponent,
+        HsUrlGeoSparqlComponent,
+        HsUrlWfsComponent,
+        HsUrlWmsComponent,
+        HsUrlWmtsComponent,
+        HsAddDataUrlComponent,
       ],
       providers: [
         {provide: HsMapService, useValue: new HsMapServiceMock()},
@@ -85,6 +61,7 @@ describe('HsAddDataUrlComponent', () => {
           useClass: HsLayoutServiceMock,
         },
         provideHttpClient(withInterceptorsFromDi()),
+        provideTranslateService(),
       ],
     });
     hsWmsGetCapabilitiesService = TestBed.inject(HsWmsGetCapabilitiesService);

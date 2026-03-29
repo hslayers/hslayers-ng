@@ -1,14 +1,5 @@
-import {
-  BrowserDynamicTestingModule,
-  platformBrowserDynamicTesting,
-} from '@angular/platform-browser-dynamic/testing';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
-import {
-  CUSTOM_ELEMENTS_SCHEMA,
-  signal,
-  provideZoneChangeDetection,
-  NgModule,
-} from '@angular/core';
+import {CUSTOM_ELEMENTS_SCHEMA, signal} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {provideHttpClient, withInterceptorsFromDi} from '@angular/common/http';
 import {provideHttpClientTesting} from '@angular/common/http/testing';
@@ -60,21 +51,7 @@ class CommonEndpointsServiceMock {
   endpoints = signal([]);
 }
 
-@NgModule({providers: [provideZoneChangeDetection()]})
-export class ZoneChangeDetectionModule {}
-
 describe('HsSaveMap', () => {
-  beforeAll(() => {
-    TestBed.resetTestEnvironment();
-    TestBed.initTestEnvironment(
-      [ZoneChangeDetectionModule, BrowserDynamicTestingModule],
-      platformBrowserDynamicTesting(),
-      {
-        teardown: {destroyAfterEach: false},
-      },
-    );
-  });
-
   let fixture: ComponentFixture<HsSaveMapComponent>;
   let component: HsSaveMapComponent;
   let service: HsLaymanService;
@@ -82,8 +59,7 @@ describe('HsSaveMap', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      declarations: [HsSaveMapComponent],
-      imports: [FormsModule, TranslatePipe],
+      imports: [FormsModule, TranslatePipe, HsSaveMapComponent],
       providers: [
         HsLaymanService,
         {
@@ -145,7 +121,9 @@ describe('HsSaveMap', () => {
     expect(laymanName).toBe('areas_of_interest');
 
     laymanName = getLayerName(
-      new VectorLayer({properties: {name: 'Aoi', title: 'Areas of interest'}}),
+      new VectorLayer({
+        properties: {name: 'Aoi', title: 'Areas of interest'},
+      }),
     );
     expect(laymanName).toBe('aoi');
   });

@@ -1,13 +1,5 @@
-import {
-  BrowserDynamicTestingModule,
-  platformBrowserDynamicTesting,
-} from '@angular/platform-browser-dynamic/testing';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
-import {
-  CUSTOM_ELEMENTS_SCHEMA,
-  provideZoneChangeDetection,
-  NgModule,
-} from '@angular/core';
+import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {provideHttpClient, withInterceptorsFromDi} from '@angular/common/http';
 import {provideHttpClientTesting} from '@angular/common/http/testing';
@@ -56,9 +48,6 @@ class LaymanBrowserServiceMock {
   }
 }
 
-@NgModule({providers: [provideZoneChangeDetection()]})
-export class ZoneChangeDetectionModule {}
-
 describe('HsDrawPanel', () => {
   const mockQueryBaseService = jasmine.createSpyObj('HsQueryBaseService', [
     'activateQueries',
@@ -80,14 +69,6 @@ describe('HsDrawPanel', () => {
       properties: {title: 'Point'},
       source: new VectorSource({}),
     });
-    TestBed.resetTestEnvironment();
-    TestBed.initTestEnvironment(
-      [ZoneChangeDetectionModule, BrowserDynamicTestingModule],
-      platformBrowserDynamicTesting(),
-      {
-        teardown: {destroyAfterEach: false},
-      },
-    );
   });
 
   let fixture: ComponentFixture<HsDrawPanelComponent>;

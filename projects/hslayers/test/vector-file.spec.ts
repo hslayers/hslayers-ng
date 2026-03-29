@@ -1,14 +1,5 @@
 'use strict';
-import {
-  BrowserDynamicTestingModule,
-  platformBrowserDynamicTesting,
-} from '@angular/platform-browser-dynamic/testing';
-import {
-  CUSTOM_ELEMENTS_SCHEMA,
-  signal,
-  provideZoneChangeDetection,
-  NgModule,
-} from '@angular/core';
+import {CUSTOM_ELEMENTS_SCHEMA, signal} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
@@ -39,30 +30,22 @@ class CommonEndpointsServiceMock {
 
 let mockedMapService;
 
-@NgModule({providers: [provideZoneChangeDetection()]})
-export class ZoneChangeDetectionModule {}
-
 describe('add-layers-vector', () => {
   let component: HsAddDataVectorFileComponent;
   let fixture: ComponentFixture<HsAddDataVectorFileComponent>;
   let service: HsAddDataVectorService;
-  beforeAll(() => {
-    TestBed.resetTestEnvironment();
-    TestBed.initTestEnvironment(
-      [ZoneChangeDetectionModule, BrowserDynamicTestingModule],
-      platformBrowserDynamicTesting(),
-      {
-        teardown: {destroyAfterEach: false},
-      },
-    );
-  });
-
   beforeEach(() => {
     mockedMapService = new HsMapServiceMock();
     TestBed.configureTestingModule({
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      declarations: [HsAddDataVectorFileComponent, HsUploadComponent],
-      imports: [CommonModule, FormsModule, NgbDropdownModule, TranslatePipe],
+      imports: [
+        CommonModule,
+        FormsModule,
+        NgbDropdownModule,
+        TranslatePipe,
+        HsAddDataVectorFileComponent,
+        HsUploadComponent,
+      ],
       providers: [
         HsAddDataVectorService,
         {provide: HsMapService, useValue: mockedMapService},

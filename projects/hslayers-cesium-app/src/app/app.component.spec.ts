@@ -11,7 +11,7 @@ class HsCesiumConfigMock {
 describe('AppComponent', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [AppComponent],
+      imports: [AppComponent],
       providers: [
         {provide: HsConfig, useClass: HsConfigMock},
         {provide: HsCesiumConfig, useValue: new HsCesiumConfigMock()},
@@ -22,7 +22,7 @@ describe('AppComponent', () => {
   it('should create the app', () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    expect().toBeTruthy();
+    expect(app).toBeTruthy();
   });
 
   it(`should have as title 'hslayers-workspace'`, () => {

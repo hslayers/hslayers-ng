@@ -58,7 +58,6 @@ const createMockComposition = (
 @Component({
   selector: 'hs-save-map-advanced-options',
   template: '',
-  standalone: true,
 })
 class MockAdvancedOptionsComponent {
   @Input() thumbnail: any;
