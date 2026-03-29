@@ -22,6 +22,12 @@ const layerManagerVisibilityServiceSpy = jasmine.createSpyObj(
 describe('HsLayerEditorSubLayerCheckboxesComponent', () => {
   let component: HsLayerEditorSubLayerCheckboxesComponent;
   let fixture: ComponentFixture<HsLayerEditorSubLayerCheckboxesComponent>;
+  const defaultSubLayer: HsSublayer = {
+    name: 'defaultLayer',
+    title: 'Default Layer',
+    visible: false,
+    previousVisible: undefined,
+  };
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -40,6 +46,7 @@ describe('HsLayerEditorSubLayerCheckboxesComponent', () => {
     }).compileComponents();
 
     fixture = TestBed.createComponent(HsLayerEditorSubLayerCheckboxesComponent);
+    fixture.componentRef.setInput('subLayer', defaultSubLayer);
     component = fixture.componentInstance;
   });
 

@@ -17,7 +17,7 @@ import {
 } from 'hslayers-ng/components/map-swipe';
 import {
   HsPanelHeaderComponent,
-  HsPanelHelpersModule,
+  HsPanelContainerComponent,
 } from 'hslayers-ng/common/panels';
 import {HsSidebarService} from 'hslayers-ng/services/sidebar';
 
@@ -39,17 +39,15 @@ describe('HsMapSwipeComponent', () => {
   let fixture: ComponentFixture<HsMapSwipeComponent>;
 
   beforeEach(async () => {
-    
-
     await TestBed.configureTestingModule({
-      declarations: [HsMapSwipeComponent],
       imports: [
-        HsPanelHelpersModule,
+        HsPanelContainerComponent,
         HsPanelHeaderComponent,
         TranslatePipe,
         FormsModule,
         DragDropModule,
         CommonModule,
+        HsMapSwipeComponent,
       ],
       providers: [
         HsMapSwipeService,

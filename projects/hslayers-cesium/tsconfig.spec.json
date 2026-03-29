@@ -6,6 +6,9 @@
       "jasmine",
       "node"
     ],
+    "typeRoots": [
+      "../../node_modules/@types"
+    ],
     "resolveJsonModule":true
   },
   "files": [

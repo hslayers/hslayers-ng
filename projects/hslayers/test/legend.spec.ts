@@ -1,8 +1,4 @@
 import {
-  BrowserDynamicTestingModule,
-  platformBrowserDynamicTesting,
-} from '@angular/platform-browser-dynamic/testing';
-import {
   ComponentFixture,
   TestBed,
   fakeAsync,
@@ -10,8 +6,6 @@ import {
 } from '@angular/core/testing';
 import {
   CUSTOM_ELEMENTS_SCHEMA,
-  provideZoneChangeDetection,
-  NgModule,
 } from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {provideHttpClient, withInterceptorsFromDi} from '@angular/common/http';
@@ -35,42 +29,27 @@ import {HsMapService} from 'hslayers-ng/services/map';
 import {HsMapServiceMock} from './map.service.mock';
 import {
   HsPanelHeaderComponent,
-  HsPanelHelpersModule,
+  HsPanelContainerComponent,
 } from 'hslayers-ng/common/panels';
 import {mockLayerUtilsService} from './layer-utils.service.mock';
 
 const layerUtilsMock = mockLayerUtilsService();
-@NgModule({providers: [provideZoneChangeDetection()]})
-export class ZoneChangeDetectionModule {}
 
 describe('HsLegendComponent', () => {
-  beforeAll(() => {
-    TestBed.resetTestEnvironment();
-    TestBed.initTestEnvironment(
-      [ZoneChangeDetectionModule, BrowserDynamicTestingModule],
-      platformBrowserDynamicTesting(),
-      {
-        teardown: {destroyAfterEach: false},
-      },
-    );
-  });
-
   let component: HsLegendComponent;
   let fixture: ComponentFixture<HsLegendComponent>;
   beforeEach(() => {
     const bed = TestBed.configureTestingModule({
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      declarations: [
+      imports: [
+        HsPanelContainerComponent,
+        HsPanelHeaderComponent,
+        TranslatePipe,
+        FormsModule,
         HsLegendComponent,
         HsLegendLayerComponent,
         HsLegendLayerVectorComponent,
         HsLegendLayerStaticComponent,
-      ],
-      imports: [
-        HsPanelHelpersModule,
-        HsPanelHeaderComponent,
-        TranslatePipe,
-        FormsModule,
       ],
       providers: [
         {provide: HsConfig, useClass: HsConfigMock},

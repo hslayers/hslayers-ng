@@ -1,12 +1,4 @@
-import {
-  BrowserDynamicTestingModule,
-  platformBrowserDynamicTesting,
-} from '@angular/platform-browser-dynamic/testing';
-import {
-  CUSTOM_ELEMENTS_SCHEMA,
-  provideZoneChangeDetection,
-  NgModule,
-} from '@angular/core';
+import {CUSTOM_ELEMENTS_SCHEMA, signal} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
@@ -18,45 +10,30 @@ import {
 
 import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
 import {lastValueFrom} from 'rxjs';
+import {provideTranslateService} from '@ngx-translate/core';
 
 import {HsCommonEndpointsService} from 'hslayers-ng/services/endpoints';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsConfigMock} from './config.service.mock';
-import {HsLanguageModule} from 'hslayers-ng/components/language';
 import {HsMapService} from 'hslayers-ng/services/map';
 import {HsMapServiceMock} from './map.service.mock';
-import {HsPanelHelpersModule} from 'hslayers-ng/common/panels';
-import {HsUrlWmsComponent} from 'hslayers-ng//components/add-data';
+import {HsPanelContainerComponent} from 'hslayers-ng/common/panels';
+import {HsUrlWmsComponent} from 'hslayers-ng/components/add-data';
 import {HsUrlWmsService} from 'hslayers-ng/services/add-data';
-import {HsWmsGetCapabilitiesService} from 'hslayers-ng/services/get-capabilities';
 import {testingServiceEndpoints} from './data/service-endpoints';
 
 class HsCommonEndpointsServiceMock {
   constructor() {}
 
-  endpoints = [];
+  endpoints = signal([]);
 }
 
 let httpClient;
-let hsWmsGetCapabilitiesService;
-@NgModule({providers: [provideZoneChangeDetection()]})
-export class ZoneChangeDetectionModule {}
 
 describe('add-data-url', () => {
   let component: HsUrlWmsComponent;
   let fixture: ComponentFixture<HsUrlWmsComponent>;
   let originalTimeout: number;
-  beforeAll(() => {
-    TestBed.resetTestEnvironment();
-    TestBed.initTestEnvironment(
-      [ZoneChangeDetectionModule, BrowserDynamicTestingModule],
-      platformBrowserDynamicTesting(),
-      {
-        teardown: {destroyAfterEach: false},
-      },
-    );
-  });
-
   beforeEach(() => {
     //It is possible to change timeout interval for async tests (using 'done' argument)
     originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
@@ -64,13 +41,12 @@ describe('add-data-url', () => {
 
     TestBed.configureTestingModule({
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      declarations: [HsUrlWmsComponent],
       imports: [
         CommonModule,
-        HsPanelHelpersModule,
+        HsPanelContainerComponent,
         FormsModule,
-        HsLanguageModule,
         NgbDropdownModule,
+        HsUrlWmsComponent,
       ],
       providers: [
         HsUrlWmsService,
@@ -84,21 +60,10 @@ describe('add-data-url', () => {
         },
         {provide: HsMapService, useValue: new HsMapServiceMock()},
         provideHttpClient(withInterceptorsFromDi()),
+        provideTranslateService(),
       ],
     });
-    hsWmsGetCapabilitiesService = TestBed.inject(HsWmsGetCapabilitiesService);
     httpClient = TestBed.inject(HttpClient);
-    //Mock server response
-    hsWmsGetCapabilitiesService.request = async (url) => {
-      const serviceURL = url.includes('?')
-        ? url.substring(0, url.indexOf('?'))
-        : url;
-      return lastValueFrom(
-        httpClient.get(serviceURL + '?service=WMS&request=getCapabilities', {
-          responseType: 'text',
-        }),
-      );
-    };
   });
 
   beforeEach(() => {
@@ -117,17 +82,24 @@ describe('add-data-url', () => {
         if (url == 'https://watlas.lesprojekt.cz/geoserver/layman_wms/ows') {
           return done();
         }
-        hsWmsGetCapabilitiesService.request(url).then((capabilities) => {
-          component.hsUrlWmsService
-            .capabilitiesReceived(capabilities, '')
-            .then(() => {
-              expect(component.hsUrlWmsService.data.srss).toBeDefined();
-              done();
-            })
-            .catch((e) => {
-              done.fail(e);
-            });
-        });
+        const serviceURL = url.includes('?')
+          ? url.substring(0, url.indexOf('?'))
+          : url;
+        lastValueFrom(
+          httpClient.get(serviceURL + '?service=WMS&request=getCapabilities', {
+            responseType: 'text',
+          }),
+        )
+          .then((response) =>
+            component.hsUrlWmsService.capabilitiesReceived(response, ''),
+          )
+          .then(() => {
+            expect(component.hsUrlWmsService.data.srss).toBeDefined();
+            done();
+          })
+          .catch((e) => {
+            done.fail(e);
+          });
       });
     })(url, index);
   });

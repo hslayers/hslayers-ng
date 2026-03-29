@@ -9,10 +9,10 @@ import {
   HttpTestingController,
   provideHttpClientTesting,
 } from '@angular/common/http/testing';
-import {NO_ERRORS_SCHEMA, signal} from '@angular/core';
-import {provideHttpClient, withInterceptorsFromDi} from '@angular/common/http';
+import {signal} from '@angular/core';
+import {provideHttpClient} from '@angular/common/http';
 import {of} from 'rxjs';
-import {provideTranslateService, TranslatePipe} from '@ngx-translate/core';
+import {TranslateModule, TranslatePipe} from '@ngx-translate/core';
 
 import {
   AccessRights,
@@ -135,12 +135,16 @@ describe('HsCommonLaymanAccessRightsComponent', () => {
     };
 
     await TestBed.configureTestingModule({
-      schemas: [NO_ERRORS_SCHEMA],
-      imports: [CommonModule, TranslatePipe, FilterPipe],
+      imports: [
+        CommonModule,
+        TranslatePipe,
+        FilterPipe,
+        TranslateModule.forRoot(),
+        HsCommonLaymanAccessRightsComponent,
+      ],
       providers: [
-        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClient(),
         provideHttpClientTesting(),
-        provideTranslateService(),
         {provide: HsCommonLaymanService, useValue: mockLaymanService},
       ],
     }).compileComponents();
@@ -148,7 +152,9 @@ describe('HsCommonLaymanAccessRightsComponent', () => {
 
   beforeEach(() => {
     commonLaymanMock = TestBed.inject(HsCommonLaymanService);
-    fixture = TestBed.createComponent(HsCommonLaymanAccessRightsComponent);
+    fixture = TestBed.runInInjectionContext(() =>
+      TestBed.createComponent(HsCommonLaymanAccessRightsComponent),
+    );
     component = fixture.componentInstance;
     httpMock = TestBed.inject(HttpTestingController);
   });

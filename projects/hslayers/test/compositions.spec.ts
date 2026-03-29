@@ -4,8 +4,6 @@ import {
   CUSTOM_ELEMENTS_SCHEMA,
   Injectable,
   signal,
-  provideZoneChangeDetection,
-  NgModule,
 } from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {
@@ -41,11 +39,11 @@ import {HsMapService} from 'hslayers-ng/services/map';
 import {HsMapServiceMock} from './map.service.mock';
 import {
   HsPanelHeaderComponent,
-  HsPanelHelpersModule,
+  HsPanelContainerComponent,
 } from 'hslayers-ng/common/panels';
 import {HsSaveMapService} from 'hslayers-ng/services/save-map';
 import {HsSaveMapServiceMock} from './save-map.service.mock';
-import {HsStylerModule} from 'hslayers-ng/components/styler';
+import {HsStylerComponent} from 'hslayers-ng/components/styler';
 import {HsStylerService} from 'hslayers-ng/services/styler';
 import {compositionJson} from './data/composition';
 import {compositionsJson} from './data/compositions';
@@ -55,10 +53,6 @@ import {compositionStyleXml} from './data/composition-style';
 import {createDefaultStyle} from 'ol/style/Style';
 // Remove unused imports for test environment initialization
 import {HsEndpoint} from 'hslayers-ng/types';
-import {
-  BrowserDynamicTestingModule,
-  platformBrowserDynamicTesting,
-} from '@angular/platform-browser-dynamic/testing';
 
 @Injectable()
 class HsCompositionsMickaServiceMock extends HsCompositionsMickaService {
@@ -71,23 +65,9 @@ let mockedMapService;
 let hsConfig: HsConfig;
 let CompositionsCatalogueService: HsCompositionsCatalogueService;
 
-@NgModule({providers: [provideZoneChangeDetection()]})
-export class ZoneChangeDetectionModule {}
-
 describe('compositions', () => {
   let component: HsCompositionsComponent;
   let fixture: ComponentFixture<HsCompositionsComponent>;
-
-  beforeAll(() => {
-    TestBed.resetTestEnvironment();
-    TestBed.initTestEnvironment(
-      [ZoneChangeDetectionModule, BrowserDynamicTestingModule],
-      platformBrowserDynamicTesting(),
-      {
-        teardown: {destroyAfterEach: false},
-      },
-    );
-  });
 
   beforeEach(() => {
     const mockedMapService: any = new HsMapServiceMock();
@@ -100,15 +80,15 @@ describe('compositions', () => {
 
     TestBed.configureTestingModule({
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      declarations: [HsCompositionsComponent],
       imports: [
         CommonModule,
-        HsPanelHelpersModule,
+        HsPanelContainerComponent,
         FormsModule,
         TranslatePipe,
-        HsStylerModule,
+        HsStylerComponent,
         NgbDropdownModule,
         HsPanelHeaderComponent,
+        HsCompositionsComponent,
       ],
       providers: [
         HsCompositionsService,

@@ -1,12 +1,4 @@
-import {
-  BrowserDynamicTestingModule,
-  platformBrowserDynamicTesting,
-} from '@angular/platform-browser-dynamic/testing';
-import {
-  CUSTOM_ELEMENTS_SCHEMA,
-  provideZoneChangeDetection,
-  NgModule,
-} from '@angular/core';
+import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import {TestBed} from '@angular/core/testing';
 
 import Cluster from 'ol/source/Cluster';
@@ -59,9 +51,6 @@ function mockLanguageService() {
 
 const mockedLanguageService = mockLanguageService();
 
-@NgModule({providers: [provideZoneChangeDetection()]})
-export class ZoneChangeDetectionModule {}
-
 describe('HsLayerUtilsService', () => {
   let vectorLayer;
   let tileWMSLayer;
@@ -104,14 +93,6 @@ describe('HsLayerUtilsService', () => {
     imageWMSNoParams = new ImageLayer({
       source: new ImageWMS({params: {}, url: 'http://example'}),
     });
-    TestBed.resetTestEnvironment();
-    TestBed.initTestEnvironment(
-      [ZoneChangeDetectionModule, BrowserDynamicTestingModule],
-      platformBrowserDynamicTesting(),
-      {
-        teardown: {destroyAfterEach: false},
-      },
-    );
   });
 
   beforeEach(() => {

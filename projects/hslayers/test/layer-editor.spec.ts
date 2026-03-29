@@ -1,17 +1,10 @@
-import {
-  BrowserDynamicTestingModule,
-  platformBrowserDynamicTesting,
-} from '@angular/platform-browser-dynamic/testing';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
-import {
-  CUSTOM_ELEMENTS_SCHEMA,
-  provideZoneChangeDetection,
-  NgModule,
-} from '@angular/core';
+import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
 import {provideHttpClient, withInterceptorsFromDi} from '@angular/common/http';
 import {provideHttpClientTesting} from '@angular/common/http/testing';
+import {provideTranslateService} from '@ngx-translate/core';
 
 import Cluster from 'ol/source/Cluster';
 import Feature from 'ol/Feature';
@@ -27,11 +20,11 @@ import {
 } from 'hslayers-ng/components/layer-manager';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsConfigMock} from './config.service.mock';
-import {HsLanguageModule} from 'hslayers-ng/components/language';
 import {HsLayerEditorVectorLayerService} from 'hslayers-ng/services/layer-manager';
+import {HsLayerSelectorService} from 'hslayers-ng/services/layer-manager';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {HsLayoutServiceMock} from './layout.service.mock';
-import {HsPanelHelpersModule} from 'hslayers-ng/common/panels';
+import {HsPanelContainerComponent} from 'hslayers-ng/common/panels';
 import {HsShareUrlService} from 'hslayers-ng/services/share';
 import {HsStylerService} from 'hslayers-ng/services/styler';
 import {HsStylerServiceMock} from './styler.service.mock';
@@ -41,15 +34,13 @@ class emptyMock {
   constructor() {}
 }
 
-@NgModule({providers: [provideZoneChangeDetection()]})
-export class ZoneChangeDetectionModule {}
-
 describe('layermanager editor', () => {
   let component: HsLayerEditorComponent;
   let fixture: ComponentFixture<HsLayerEditorComponent>;
   let clusterWidgetComponent: HsClusterWidgetComponent;
   let clusterWidgetFixture: ComponentFixture<HsClusterWidgetComponent>;
   let layerForCluster;
+  let layerDescriptor;
   let hsConfig: HsConfig;
   beforeAll(() => {
     layerForCluster = new VectorLayer({
@@ -58,26 +49,17 @@ describe('layermanager editor', () => {
       },
       source: new VectorSource({}),
     });
-    TestBed.resetTestEnvironment();
-    TestBed.initTestEnvironment(
-      [ZoneChangeDetectionModule, BrowserDynamicTestingModule],
-      platformBrowserDynamicTesting(),
-      {
-        teardown: {destroyAfterEach: false},
-      },
-    );
   });
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      declarations: [HsClusterWidgetComponent],
       imports: [
-        HsPanelHelpersModule,
+        HsPanelContainerComponent,
         FormsModule,
         NgbDropdownModule,
-        HsLanguageModule,
         HsLayerEditorComponent,
+        HsClusterWidgetComponent,
       ],
       providers: [
         HsLayerEditorService,
@@ -98,31 +80,35 @@ describe('layermanager editor', () => {
         },
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
+        provideTranslateService(),
       ],
     });
     //bed.compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(HsLayerEditorComponent);
-    component = fixture.componentInstance;
-
-    fixture.componentRef.setInput('layer', {
+    layerDescriptor = {
       layer: layerForCluster,
       idString() {
         return 'layerteststringid';
       },
-    });
+    };
+
+    fixture = TestBed.createComponent(HsLayerEditorComponent);
+    component = fixture.componentInstance;
+
+    fixture.componentRef.setInput('layer', layerDescriptor);
+
+    const hsLayerSelectorService = TestBed.inject(HsLayerSelectorService);
+    hsLayerSelectorService.currentLayer = layerDescriptor;
 
     hsConfig = TestBed.inject(HsConfig);
     clusterWidgetFixture = TestBed.createComponent(HsClusterWidgetComponent);
     clusterWidgetFixture.componentInstance.data = {};
     clusterWidgetComponent = clusterWidgetFixture.componentInstance;
-    clusterWidgetComponent.ngOnInit();
+    clusterWidgetFixture.detectChanges();
 
     fixture.detectChanges();
-
-    clusterWidgetComponent.layerDescriptor.next({layer: layerForCluster});
     hsConfig.reverseLayerList = true;
     hsConfig.layersInFeatureTable = [];
   });
