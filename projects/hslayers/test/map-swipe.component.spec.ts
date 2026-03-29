@@ -1,4 +1,3 @@
-import {CommonModule} from '@angular/common';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {DragDropModule} from '@angular/cdk/drag-drop';
 import {FormsModule} from '@angular/forms';
@@ -46,7 +45,6 @@ describe('HsMapSwipeComponent', () => {
         TranslatePipe,
         FormsModule,
         DragDropModule,
-        CommonModule,
         HsMapSwipeComponent,
       ],
       providers: [

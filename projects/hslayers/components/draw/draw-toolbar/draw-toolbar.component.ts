@@ -1,4 +1,4 @@
-import {CommonModule} from '@angular/common';
+import {AsyncPipe, NgClass, NgStyle} from '@angular/common';
 import {Component, inject} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
@@ -42,7 +42,9 @@ import {isLayerDrawable} from 'hslayers-ng/services/utils';
     }
   `,
   imports: [
-    CommonModule,
+    AsyncPipe,
+    NgClass,
+    NgStyle,
     FormsModule,
     NgbDropdownModule,
     TranslatePipe,

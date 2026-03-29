@@ -1,4 +1,3 @@
-import {CommonModule} from '@angular/common';
 import {
   ComponentFixture,
   TestBed,
@@ -136,7 +135,6 @@ describe('HsCommonLaymanAccessRightsComponent', () => {
 
     await TestBed.configureTestingModule({
       imports: [
-        CommonModule,
         TranslatePipe,
         FilterPipe,
         TranslateModule.forRoot(),

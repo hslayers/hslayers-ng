@@ -1,6 +1,5 @@
 'use strict';
 import {CUSTOM_ELEMENTS_SCHEMA, signal} from '@angular/core';
-import {CommonModule} from '@angular/common';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
 import {provideTranslateService, TranslatePipe} from '@ngx-translate/core';
@@ -39,7 +38,6 @@ describe('add-layers-vector', () => {
     TestBed.configureTestingModule({
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
       imports: [
-        CommonModule,
         FormsModule,
         NgbDropdownModule,
         TranslatePipe,

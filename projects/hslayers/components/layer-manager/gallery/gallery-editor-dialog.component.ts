@@ -1,4 +1,4 @@
-import {AsyncPipe, CommonModule} from '@angular/common';
+import {AsyncPipe} from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -55,7 +55,7 @@ import {getBase} from 'hslayers-ng/common/extensions';
       </div>
     </div>
   `,
-  imports: [CommonModule, TranslatePipe, AsyncPipe],
+  imports: [TranslatePipe, AsyncPipe],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HsGalleryEditorDialogComponent

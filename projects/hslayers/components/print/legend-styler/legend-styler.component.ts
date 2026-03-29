@@ -1,4 +1,4 @@
-import {CommonModule} from '@angular/common';
+import {NgStyle} from '@angular/common';
 import {Component, Input, inject} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {TranslatePipe} from '@ngx-translate/core';
@@ -14,7 +14,7 @@ import {LegendObj} from '../types/legend-object.type';
 @Component({
   selector: 'hs-print-legend-styler',
   templateUrl: './legend-styler.component.html',
-  imports: [CommonModule, FormsModule, TranslatePipe, ColorSketchModule],
+  imports: [NgStyle, FormsModule, TranslatePipe, ColorSketchModule],
 })
 export class HsPrintLegendStylerComponent {
   hsLanguageService = inject(HsLanguageService);

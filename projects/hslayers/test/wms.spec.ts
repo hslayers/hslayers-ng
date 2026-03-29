@@ -1,5 +1,4 @@
 import {CUSTOM_ELEMENTS_SCHEMA, signal} from '@angular/core';
-import {CommonModule} from '@angular/common';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
 import {
@@ -42,7 +41,6 @@ describe('add-data-url', () => {
     TestBed.configureTestingModule({
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
       imports: [
-        CommonModule,
         HsPanelContainerComponent,
         FormsModule,
         NgbDropdownModule,
