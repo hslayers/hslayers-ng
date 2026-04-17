@@ -1,7 +1,7 @@
 <div class="card hs-sidebar-list hs-main-panel list-group">
   @if (hsLayoutService.minisidebar) {
   <hs-panel-header class="sidebar-header w-100" name="additional"
-    [title]="'SIDEBAR.additionalPanels' | translate "></hs-panel-header>
+    [panelTabs]="'additionalPanels'" [translationModule]="'SIDEBAR'"></hs-panel-header>
   }
 
   @if (hsLayoutService.sidebarToggleable && {position: hsLayoutService.sidebarPosition | async}; as sidebar) {
