@@ -1,6 +1,8 @@
 import {enableProdMode, provideZoneChangeDetection} from '@angular/core';
 import {platformBrowserDynamic} from '@angular/platform-browser-dynamic';
 
+import {provideHslayers} from 'hslayers-ng/core';
+
 import {AppModule} from '../src/hslayers-app/hslayers-app.module';
 import {environment} from './environments/environment';
 
@@ -18,7 +20,7 @@ setTimeout(() => {
    */
   const bootstrap = () =>
     platformBrowserDynamic().bootstrapModule(AppModule, {
-      applicationProviders: [provideZoneChangeDetection()],
+      applicationProviders: [provideZoneChangeDetection(), provideHslayers()],
     });
   bootstrap().catch((err) => console.log(err));
 }, 0);

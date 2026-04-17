@@ -17,10 +17,10 @@ import {SomeComponent} from './some-panel/some-panel.component';
 import {symbolizerIcons} from './symbolizer-icons';
 import Tile from 'ol/layer/Tile';
 import OSM from 'ol/source/OSM';
+
 /**
  * Boolean flag to control whether to include default layers in the app.
  */
-
 const WITH_LAYERS = true;
 
 @Component({
