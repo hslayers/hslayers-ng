@@ -28,7 +28,7 @@
     "build-watch": "ng build hslayers --watch",
     "find-circular": "npx madge --circular --extensions ts ./projects/hslayers/",
     "test": "ng test hslayers --browsers=ChromeHeadless",
-    "test:ci": "ng test hslayers --browsers=ChromeHeadlessNoSandbox",
+    "test:ci": "ng test hslayers --browsers=ChromeHeadlessNoSandbox --watch=false",
     "test-server": "cd ./projects/hslayers-server && npm test",
     "lint": "eslint --ignore-path .gitignore --fix-dry-run ./",
     "lint-stats": "eslint --ignore-path .gitignore --format node_modules/eslint-stats/byErrorAndWarning.js ./",
