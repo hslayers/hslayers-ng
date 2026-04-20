@@ -1,9 +1,9 @@
 import {enableProdMode, provideZoneChangeDetection} from '@angular/core';
-import {platformBrowserDynamic} from '@angular/platform-browser-dynamic';
+import {bootstrapApplication} from '@angular/platform-browser';
 
 import {provideHslayers} from 'hslayers-ng/core';
 
-import {AppModule} from '../src/hslayers-app/hslayers-app.module';
+import {HslayersAppComponent} from './hslayers-app/hslayers-app.component';
 import {environment} from './environments/environment';
 
 if (environment.production) {
@@ -12,15 +12,16 @@ if (environment.production) {
 
 setTimeout(() => {
   /**
-   * To bootstrap multiple apps save platform to const
-   *   - const platform = platformBrowserDynamic();
-   * Bootstrap each module separately
-   *   - platform.bootstrapModule(<my-module>);
-   * they'll each have separate root injector
+   * To bootstrap multiple apps (multiple root components) from one main file
+   * with isolated root injectors, call `bootstrapApplication(...)` separately
+   * for each root component.
+   *
+   * Each call creates its own environment/root injector. This is the standalone
+   * equivalent of "bootstrap each module separately" from the NgModule era.
    */
-  const bootstrap = () =>
-    platformBrowserDynamic().bootstrapModule(AppModule, {
-      applicationProviders: [provideZoneChangeDetection(), provideHslayers()],
-    });
-  bootstrap().catch((err) => console.log(err));
+  bootstrapApplication(HslayersAppComponent, {
+    providers: [provideZoneChangeDetection(), provideHslayers()],
+  }).catch((err) => {
+    throw err;
+  });
 }, 0);

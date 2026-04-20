@@ -1,8 +1,12 @@
 import {Component, inject} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 
+import Tile from 'ol/layer/Tile';
+import OSM from 'ol/source/OSM';
+
 import {HsConfig} from 'hslayers-ng/config';
 import {HsEventBusService} from 'hslayers-ng/services/event-bus';
+import {HslayersComponent} from 'hslayers-ng/core';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {
   HsOverlayConstructorService,
@@ -15,8 +19,6 @@ import {createDefaultLayers} from './default-layers';
 import {PopupWidgetComponent} from './popup-widget.component';
 import {SomeComponent} from './some-panel/some-panel.component';
 import {symbolizerIcons} from './symbolizer-icons';
-import Tile from 'ol/layer/Tile';
-import OSM from 'ol/source/OSM';
 
 /**
  * Boolean flag to control whether to include default layers in the app.
@@ -27,7 +29,7 @@ const WITH_LAYERS = true;
   selector: 'hslayers-app',
   templateUrl: './hslayers-app.component.html',
   styleUrls: ['./hslayers-app.component.scss'],
-  standalone: false,
+  imports: [HslayersComponent],
 })
 export class HslayersAppComponent {
   hsConfig = inject(HsConfig);
