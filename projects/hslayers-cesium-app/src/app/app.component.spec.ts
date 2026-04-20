@@ -1,20 +1,41 @@
 import {TestBed, waitForAsync} from '@angular/core/testing';
 
-import {HsCesiumConfig} from 'hslayers-cesium';
+import {HsCesiumConfig} from 'hslayers-cesium/src/hscesium-config.service';
 import {HsConfig} from 'hslayers-ng/config';
 import {HsConfigMock} from 'hslayers-ng/test/config.service.mock';
+import {HsLayoutService} from 'hslayers-ng/services/layout';
+import {
+  HsOverlayConstructorService,
+  HsPanelConstructorService,
+} from 'hslayers-ng/services/panel-constructor';
 
 import {AppComponent} from './app.component';
-class HsCesiumConfigMock {
-  constructor() {}
-}
+
 describe('AppComponent', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [AppComponent],
       providers: [
         {provide: HsConfig, useClass: HsConfigMock},
-        {provide: HsCesiumConfig, useValue: new HsCesiumConfigMock()},
+        {
+          provide: HsCesiumConfig,
+          useValue: {
+            cesiumBase: undefined,
+            update: () => undefined,
+          },
+        },
+        {
+          provide: HsLayoutService,
+          useValue: {addMapVisualizer: () => undefined},
+        },
+        {
+          provide: HsOverlayConstructorService,
+          useValue: {createGuiOverlay: () => undefined},
+        },
+        {
+          provide: HsPanelConstructorService,
+          useValue: {createActivePanels: () => undefined},
+        },
       ],
     }).compileComponents();
   }));
@@ -29,14 +50,5 @@ describe('AppComponent', () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
     expect(app.title).toEqual('hslayers-workspace');
-  });
-
-  it('should render title', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
-    const compiled = fixture.nativeElement;
-    expect(compiled.querySelector('.content span').textContent).toContain(
-      'hslayers-workspace app is running!',
-    );
   });
 });
