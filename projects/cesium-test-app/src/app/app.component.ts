@@ -1,7 +1,6 @@
 import {Component, OnInit, inject} from '@angular/core';
 
 import GeoJSON from 'ol/format/GeoJSON';
-import ImageLayer from 'ol/layer/Image';
 import KML from 'ol/format/KML';
 import OSM from 'ol/source/OSM';
 import Tile from 'ol/layer/Tile';
@@ -20,18 +19,20 @@ import {transform} from 'ol/proj';
 
 import {HsCesiumConfig} from 'hslayers-cesium/src/hscesium-config.service';
 import {HsConfig} from 'hslayers-ng/config';
-import {HslayersCesiumComponent} from 'hslayers-cesium/src/hscesium.component';
 import {HsLayoutService} from 'hslayers-ng/services/layout';
 import {
   HsOverlayConstructorService,
   HsPanelConstructorService,
 } from 'hslayers-ng/services/panel-constructor';
+import {HslayersComponent} from 'hslayers-ng/core';
+import {HslayersCesiumComponent} from 'hslayers-cesium/src/hscesium.component';
 
 @Component({
   selector: 'hslayers-cesium-app',
   templateUrl: './app.component.html',
   styleUrls: [],
-  standalone: false,
+  standalone: true,
+  imports: [HslayersComponent],
 })
 export class AppComponent implements OnInit {
   hsConfig = inject(HsConfig);

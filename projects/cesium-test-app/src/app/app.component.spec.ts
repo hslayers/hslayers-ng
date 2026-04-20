@@ -1,24 +1,56 @@
 import {TestBed, waitForAsync} from '@angular/core/testing';
 
-import {HsCesiumConfig} from 'hslayers-cesium';
+import {HsCesiumConfig} from 'hslayers-cesium/src/hscesium-config.service';
 import {HsConfig} from 'hslayers-ng/config';
+import {HsLayoutService} from 'hslayers-ng/services/layout';
+import {
+  HsOverlayConstructorService,
+  HsPanelConstructorService,
+} from 'hslayers-ng/services/panel-constructor';
 
 import {AppComponent} from './app.component';
-class HsConfigMock {
-  constructor() {}
-}
-class HsCesiumConfigMock {
-  constructor() {}
-}
+
 describe('AppComponent', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [AppComponent],
+      imports: [AppComponent],
       providers: [
-        {provide: HsConfig, useClass: HsConfigMock},
-        {provide: HsCesiumConfig, useValue: new HsCesiumConfigMock()},
+        {
+          provide: HsConfig,
+          useValue: {
+            update: () => undefined,
+          },
+        },
+        {
+          provide: HsCesiumConfig,
+          useValue: {
+            cesiumBase: undefined,
+            update: () => undefined,
+            viewerLoaded: {subscribe: () => undefined},
+          },
+        },
+        {
+          provide: HsLayoutService,
+          useValue: {addMapVisualizer: () => undefined},
+        },
+        {
+          provide: HsOverlayConstructorService,
+          useValue: {createGuiOverlay: () => undefined},
+        },
+        {
+          provide: HsPanelConstructorService,
+          useValue: {createActivePanels: () => undefined},
+        },
       ],
     }).compileComponents();
+
+    // Avoid pulling in the full hslayers runtime in unit tests
+    TestBed.overrideComponent(AppComponent, {
+      set: {
+        template: '',
+        imports: [],
+      },
+    });
   }));
 
   it('should create the app', () => {
@@ -33,12 +65,6 @@ describe('AppComponent', () => {
     expect(app.title).toEqual('hslayers-workspace');
   });
 
-  it('should render title', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
-    const compiled = fixture.nativeElement;
-    expect(compiled.querySelector('.content span').textContent).toContain(
-      'hslayers-workspace app is running!',
-    );
-  });
+  // NOTE: We intentionally don't run `fixture.detectChanges()` here because
+  // the component is a heavy integration example that bootstraps hslayers/cesium.
 });

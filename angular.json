@@ -298,7 +298,7 @@
               "projects/test-app/src/assets"
             ],
             "styles": [
-              "projects/test-app/src/styles.sass"
+              "projects/test-app/src/styles.scss"
             ],
             "scripts": []
           }
