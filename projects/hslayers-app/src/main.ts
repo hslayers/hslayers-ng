@@ -17,7 +17,7 @@ setTimeout(() => {
     bootstrapApplication(HslayersAppComponent, {
       providers: [provideZoneChangeDetection(), provideHslayers()],
     }).catch((err) => {
-      throw err;
+      console.error('bootstrap', err);
     });
   });
 }, 0);
