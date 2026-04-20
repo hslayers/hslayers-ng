@@ -112,13 +112,17 @@ export class HsCommonLaymanLayerService {
       ) {
         return response;
       }
-      console.log(
+      this.hsLogService.info(
         'Layman version is less than 2.0, returning response',
         response,
       );
       //Fill missing fields
-      response.wfs!.name = response.name;
-      response.wms!.name = response.name;
+      if (response.wfs) {
+        response.wfs.name ??= response.name;
+      }
+      if (response.wms) {
+        response.wms.name ??= response.name;
+      }
       return response;
     });
     // Store the promise for the request

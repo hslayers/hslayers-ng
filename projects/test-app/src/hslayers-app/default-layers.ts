@@ -46,17 +46,17 @@ export function createDefaultLayers(
   const {httpClient, hsProxyService} = deps;
 
   const imageWmsTSource = new TileWMS({
-    url: 'http://gis.lesprojekt.cz/cgi-bin/mapserv?map=/home/dima/maps/veg_indexy.map&SERVICE=WMS',
+    url: 'https://hub4everybody.com/geoserver/macurajan_wms/ows',
     params: {
-      LAYERS: 'tci',
+      LAYERS: 'sentinel_2_l2a_moisture_index',
     },
   });
   const imageWmsTLayer = new Tile({
     properties: {
-      title: 'Vegetation Satellite Image',
+      title: 'Moisture index WMS-T map',
       base: false,
       removable: false,
-      dimensions: {time: {value: '2020-01-11'}},
+      dimensions: {time: {value: '2022-03-24'}},
     },
     source: imageWmsTSource,
     visible: false,
