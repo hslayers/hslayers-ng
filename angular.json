@@ -11,7 +11,7 @@
         }
       },
       "root": "",
-      "sourceRoot": "projects/",
+      "sourceRoot": "projects/hslayers-app/src",
       "prefix": "app",
       "architect": {
         "build": {

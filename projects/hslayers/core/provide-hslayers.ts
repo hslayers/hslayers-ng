@@ -22,8 +22,9 @@ import {HsAuthInterceptor} from './auth.interceptor';
  * {@link HsAuthInterceptor}, and ngx-translate with {@link HsTranslateLoader} plus
  * {@link HsMissingTranslationHandler}.
  *
- * Pass into `bootstrapModule(..., { applicationProviders: [...] })` (or the equivalent root
- * `EnvironmentProviders` list) when using standalone {@link HslayersComponent}.
+ * Provide these at the app root when using standalone {@link HslayersComponent}, e.g.
+ * `bootstrapApplication(..., { providers: [provideHslayers()] })` or
+ * `bootstrapModule(..., { applicationProviders: [provideHslayers()] })`.
  */
 export function provideHslayers(): EnvironmentProviders {
   return makeEnvironmentProviders([
