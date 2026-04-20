@@ -1,9 +1,9 @@
 import {enableProdMode, provideZoneChangeDetection} from '@angular/core';
-import {platformBrowserDynamic} from '@angular/platform-browser-dynamic';
+import {bootstrapApplication} from '@angular/platform-browser';
 
 import {provideHslayers} from 'hslayers-ng/core';
 
-import {AppModule} from './hslayers-app/hslayers-app.module';
+import {HslayersAppComponent} from './hslayers-app/hslayers-app.component';
 import {environment} from './environments/environment';
 
 if (environment.production) {
@@ -11,14 +11,13 @@ if (environment.production) {
 }
 
 setTimeout(() => {
-  const platform = platformBrowserDynamic();
   const hslayersApps = document.querySelectorAll('hslayers-app');
 
   hslayersApps.forEach(() => {
-    const bootstrap = () =>
-      platform.bootstrapModule(AppModule, {
-        applicationProviders: [provideZoneChangeDetection(), provideHslayers()],
-      });
-    bootstrap().catch((err) => console.log('bootstrap', err));
+    bootstrapApplication(HslayersAppComponent, {
+      providers: [provideZoneChangeDetection(), provideHslayers()],
+    }).catch((err) => {
+      throw err;
+    });
   });
 }, 0);
