@@ -6,7 +6,6 @@ import {HsQueryPopupWidgetBaseComponent} from 'hslayers-ng/common/query-popup';
 @Component({
   selector: 'popup-widget',
   templateUrl: './popup-widget.component.html',
-  standalone: false,
 })
 export class PopupWidgetComponent
   extends HsQueryPopupWidgetBaseComponent
