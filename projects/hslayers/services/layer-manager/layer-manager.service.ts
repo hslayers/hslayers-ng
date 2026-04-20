@@ -163,7 +163,7 @@ export class HsLayerManagerService {
         //Switch to layerDimensionDefinitionChanges
         switchMap((_) => {
           return this.hsEventBusService.layerDimensionDefinitionChanges.pipe(
-            //Continue only for WmsT layers
+            //Continue only for WMS-T layers
             rxjsFilter((layer) =>
               this.hsDimensionTimeService.layerIsWmsT(layer),
             ),

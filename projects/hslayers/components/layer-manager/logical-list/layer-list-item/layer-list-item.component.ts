@@ -84,7 +84,7 @@ export class HsLayerListItemComponent implements OnInit {
   layerTimeChanges = toSignal(
     this.hsDimensionTimeService.layerTimeChanges.pipe(
       filter(({layer}) => layer.layer === this.layer().layer),
-      //When list is recreated on panel toggle we dont automatically get
+      //When list is recreated on panel toggle we don't automatically get
       //update so check all layers to make sure we display time editor if necessary
       startWith(true),
       takeUntilDestroyed(),
