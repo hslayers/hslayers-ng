@@ -30,15 +30,16 @@
     "hslayers-server": "./server.js"
   },
   "dependencies": {
+    "@hono/node-server": "^2.0.0",
     "better-sqlite3": "^12.2.0",
     "connect-sqlite3": "^0.9.11",
     "cors": "^2.8.5",
-    "cors-anywhere": "^0.4.4",
     "dotenv": "^17.2.0",
     "escape-html": "^1.0.3",
     "express": "^5.1.0",
     "express-session": "^1.17.2",
     "got": "^14.0.0",
+    "hono": "^4.12.14",
     "http": "0.0.1-security",
     "http-proxy-middleware": "^3.0.0",
     "passport": "^0.7.0",
