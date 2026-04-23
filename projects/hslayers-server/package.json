@@ -31,7 +31,6 @@
   },
   "dependencies": {
     "@hono/node-server": "^2.0.0",
-    "better-sqlite3": "^12.2.0",
     "connect-sqlite3": "^0.9.11",
     "cors": "^2.8.5",
     "dotenv": "^17.2.0",
