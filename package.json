@@ -121,7 +121,7 @@
     "eslint-plugin-prettier": "^5.5.4",
     "eslint-plugin-tsdoc": "^0.5.2",
     "eslint-stats": "^1.0.1",
-    "globals": "^17.4.0",
+    "globals": "^17.5.0",
     "jasmine-core": "~5.12.1",
     "jasmine-spec-reporter": "~7.0.0",
     "karma": "~6.4.4",
