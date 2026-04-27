@@ -101,7 +101,7 @@
     "@angular-devkit/schematics": "^21.1.3",
     "@angular/build": "^21.1.3",
     "@angular/cli": "^21.2.8",
-    "@angular/compiler-cli": "^21.1.3",
+    "@angular/compiler-cli": "^21.2.10",
     "@compodoc/compodoc": "^1.2.1",
     "@cypress/schematic": "^5.0.0",
     "@eslint/compat": "^2.0.2",
