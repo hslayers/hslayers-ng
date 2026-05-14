@@ -28,18 +28,32 @@ export interface InterpolatedSourceOptions {
   strategy?: LoadingStrategy;
   maxFeaturesInExtent?: number;
   maxFeaturesInCache?: number;
+  useWorker?: boolean | Record<string, unknown>;
 }
+
+export type InterpolatedSourceState = 'loading' | 'no-data' | 'data';
 
 export class InterpolatedSource extends IDW {
   featureCache: VectorSource = new VectorSource({});
   cancelUrlRequest: Subject<void> = new Subject();
   colorMapChanged: Subject<void> = new Subject();
   geoJSONFeatures: string[] = [];
+  private pendingLoads = 0;
+
+  private get source(): VectorSource {
+    return (this as unknown as {getSource(): VectorSource}).getSource();
+  }
+
+  private emit(event: string | {type: string}): void {
+    (
+      this as unknown as {dispatchEvent(event: string | {type: string}): void}
+    ).dispatchEvent(event);
+  }
 
   constructor(public options: InterpolatedSourceOptions) {
     super({
       // Source that contains the data
-      workers: false,
+      useWorker: options.useWorker ?? false,
       source: new VectorSource({
         strategy:
           options.strategy != undefined
@@ -62,16 +76,26 @@ export class InterpolatedSource extends IDW {
               },
         loader: async (extent, resolution, projection, success, failure) => {
           if (options.loader) {
-            this.fillFeatures(
-              await options.loader({
-                extent,
-                resolution,
-                projection,
-                success,
-                failure,
-              }),
-              extent,
-            );
+            this.startLoading();
+            let loadError = false;
+            try {
+              const features =
+                (await options.loader({
+                  extent,
+                  resolution,
+                  projection,
+                  success,
+                  failure,
+                })) ?? [];
+              this.fillFeatures(features, extent);
+              success?.(features);
+            } catch (err) {
+              loadError = true;
+              failure?.();
+              throw err;
+            } finally {
+              this.finishLoading(loadError);
+            }
           }
         },
       }),
@@ -99,9 +123,12 @@ export class InterpolatedSource extends IDW {
       return;
     }
     const ctx = canvas.getContext('2d');
+    if (!ctx) {
+      return;
+    }
 
     if (this.isImageDataMostlyEmpty(imageData)) {
-      this.drawNoData(ctx, canvas);
+      this.drawState(ctx, canvas, this.state);
     } else {
       ctx.putImageData(
         new ImageData(imageData.data, imageData.width, imageData.height),
@@ -111,15 +138,35 @@ export class InterpolatedSource extends IDW {
     }
 
     // Draw full resolution canvas
-    (this as any)._canvas
-      .getContext('2d')
-      .drawImage(
-        canvas,
-        0,
-        0,
-        (this as any)._canvas.width,
-        (this as any)._canvas.height,
-      );
+    const targetCtx = (this as any)._canvas.getContext('2d');
+    if (!targetCtx) {
+      return;
+    }
+    targetCtx.drawImage(
+      canvas,
+      0,
+      0,
+      (this as any)._canvas.width,
+      (this as any)._canvas.height,
+    );
+
+    if ((this as any).worker) {
+      this.emit({type: 'drawend'});
+      (this as any)._updated = true;
+      super.changed();
+    }
+  }
+
+  get hasPendingLoads(): boolean {
+    return this.pendingLoads > 0;
+  }
+
+  get state(): InterpolatedSourceState {
+    if (this.hasPendingLoads) {
+      return 'loading';
+    }
+    const hasFeatures = this.source.getFeatures().length > 0;
+    return hasFeatures ? 'data' : 'no-data';
   }
 
   /**
@@ -211,6 +258,7 @@ export class InterpolatedSource extends IDW {
     } else {
       src.addFeatures(features);
     }
+    super.changed();
   }
 
   /**
@@ -218,7 +266,10 @@ export class InterpolatedSource extends IDW {
    * @param collection - Get request response feature collection
    * @param mapProjection - Map projection
    */
-  parseFeatures(collection: any, mapProjection: string | Projection): void {
+  parseFeatures(
+    collection: any,
+    mapProjection: string | Projection,
+  ): Feature<Geometry>[] | undefined {
     if (collection?.features?.length > 0) {
       const dataProj = (collection.crs || collection.srs) ?? 'EPSG:4326';
       collection.features = collection.features.filter(
@@ -237,6 +288,7 @@ export class InterpolatedSource extends IDW {
       });
       return collection.features;
     }
+    return undefined;
   }
 
   /**
@@ -343,10 +395,35 @@ export class InterpolatedSource extends IDW {
     return true;
   }
 
+  private startLoading(): void {
+    this.pendingLoads += 1;
+    this.emit('imageloadstart');
+    super.changed();
+  }
+
+  private finishLoading(hasError = false): void {
+    this.pendingLoads = Math.max(this.pendingLoads - 1, 0);
+    this.emit(hasError ? 'imageloaderror' : 'imageloadend');
+    super.changed();
+  }
+
+  private drawState(
+    ctx: CanvasRenderingContext2D,
+    canvas: HTMLCanvasElement,
+    state: InterpolatedSourceState,
+  ) {
+    const text = state === 'loading' ? 'LOADING' : 'NO DATA';
+    this.drawLabel(ctx, canvas, text);
+  }
+
   /**
-   * Draw 'NO DATA' label over layers canvas
+   * Draw status label over layer canvas
    */
-  drawNoData(ctx, canvas) {
+  private drawLabel(
+    ctx: CanvasRenderingContext2D,
+    canvas: HTMLCanvasElement,
+    text: string,
+  ) {
     // Set the desired canvas size
     const originalWidth = canvas.width;
     const originalHeight = canvas.height;
@@ -361,7 +438,6 @@ export class InterpolatedSource extends IDW {
     // Scale the context to match the canvas size
     ctx.scale(scale, scale);
 
-    const text = 'NO DATA';
     let fontSize = Math.min(30, Math.min(originalWidth, originalHeight) / 4);
 
     // Set a minimum font size to prevent infinite loop
