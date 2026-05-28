@@ -1,6 +1,6 @@
 import {Injectable, inject} from '@angular/core';
 import {Layer, Tile} from 'ol/layer';
-import {Source, XYZ} from 'ol/source';
+import {OSM, Source, XYZ} from 'ol/source';
 import {Options as TileOptions} from 'ol/layer/BaseTile';
 
 import {
@@ -135,6 +135,10 @@ export class HsUrlXyzService implements HsUrlTypeServiceModel {
       tileUrl = `${tileUrl}${separator}${this.data.apiKeyParam}=${encodeURIComponent(this.data.apiKey)}`;
     }
 
+    // OpenStreetMap sources have their own OpenLayers defaults, including
+    // referrerPolicy, so prefer constructing them explicitly when possible.
+    const isOsmUrl = this.isOpenStreetMapUrl(tileUrl);
+
     // Create source options based on official OpenLayers documentation
     const sourceOptions: any = {
       url: tileUrl,
@@ -146,7 +150,7 @@ export class HsUrlXyzService implements HsUrlTypeServiceModel {
       wrapX: true,
     };
 
-    const source = new XYZ(sourceOptions);
+    const source = isOsmUrl ? new OSM(sourceOptions) : new XYZ(sourceOptions);
 
     const layerOptions: TileOptions<XYZ> = {
       source,
@@ -170,6 +174,15 @@ export class HsUrlXyzService implements HsUrlTypeServiceModel {
     const new_layer = new Tile(layerOptions);
 
     return new_layer;
+  }
+
+  private isOpenStreetMapUrl(url: string): boolean {
+    try {
+      const parsed = new URL(url);
+      return /(^|\.)openstreetmap\.org$/i.test(parsed.hostname);
+    } catch {
+      return false;
+    }
   }
 
   /**
