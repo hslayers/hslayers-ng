@@ -327,3 +327,15 @@ export function undefineEmptyString(str: string): any {
   }
   return str.trim() != '' ? str : undefined;
 }
+
+/**
+ * Check whether URL points to OpenStreetMap domain or one of its subdomains
+ */
+export function isOpenStreetMapUrl(url: string): boolean {
+  try {
+    const parsed = new URL(url);
+    return /(^|\.)openstreetmap\.org$/i.test(parsed.hostname);
+  } catch {
+    return false;
+  }
+}

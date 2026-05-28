@@ -1,9 +1,9 @@
-import Layer from 'ol/layer/Layer';
-import Source from 'ol/source/Source';
-import Tile from 'ol/layer/Tile';
-import XYZ from 'ol/source/XYZ';
 import {Injectable, inject} from '@angular/core';
 import {Options as TileOptions} from 'ol/layer/BaseTile';
+import Layer from 'ol/layer/Layer';
+import Tile from 'ol/layer/Tile';
+import {OSM, XYZ} from 'ol/source';
+import Source from 'ol/source/Source';
 
 import {
   CapabilitiesResponseWrapper,
@@ -13,6 +13,7 @@ import {
 } from 'hslayers-ng/types';
 import {DuplicateHandling, HsMapService} from 'hslayers-ng/services/map';
 import {getFromComposition} from 'hslayers-ng/common/extensions';
+import {isOpenStreetMapUrl} from 'hslayers-ng/services/utils';
 import {HsAddDataCommonService} from '../common.service';
 import {HsAddDataService} from '../add-data.service';
 import {HsConfig} from 'hslayers-ng/config';
@@ -137,6 +138,10 @@ export class HsUrlXyzService implements HsUrlTypeServiceModel {
       tileUrl = `${tileUrl}${separator}${this.data.apiKeyParam}=${encodeURIComponent(this.data.apiKey)}`;
     }
 
+    // OpenStreetMap sources have their own OpenLayers defaults, including
+    // referrerPolicy, so prefer constructing them explicitly when possible.
+    const isOsmUrl = isOpenStreetMapUrl(tileUrl);
+
     // Create source options based on official OpenLayers documentation
     const sourceOptions: any = {
       url: tileUrl,
@@ -148,7 +153,7 @@ export class HsUrlXyzService implements HsUrlTypeServiceModel {
       wrapX: true,
     };
 
-    const source = new XYZ(sourceOptions);
+    const source = isOsmUrl ? new OSM(sourceOptions) : new XYZ(sourceOptions);
 
     const layerOptions: TileOptions<XYZ> = {
       source,
@@ -173,7 +178,6 @@ export class HsUrlXyzService implements HsUrlTypeServiceModel {
 
     return new_layer;
   }
-
   /**
    * Finalize layer retrieval
    */
