@@ -345,7 +345,8 @@
     "minZoom": "Min. zoom",
     "maxZoom": "Max. zoom",
     "infinity": "No constrains",
-    "queryable": "Queryable"
+    "queryable": "Queryable",
+    "refresh": "Refresh"
   },
   "COMPOSITIONS": {
     "addByAddress": "Add composition by address",

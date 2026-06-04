@@ -321,7 +321,8 @@
     "minZoom": "Min. tuvināt",
     "maxZoom": "Maksimālā tālummaiņa",
     "infinity": "Nav ierobežojumu",
-    "queryable": "Pieprasāms"
+    "queryable": "Pieprasāms",
+    "refresh": "Atsvaidzināt"
   },
   "COMPOSITIONS": {
     "addByAddress": "Pievienot kompozīciju pēc adreses",

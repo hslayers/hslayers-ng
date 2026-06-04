@@ -346,7 +346,8 @@
     "minZoom": "Min. zoom",
     "maxZoom": "Max. zoom",
     "infinity": "Žádná omezení",
-    "queryable": "Dotazovatelné"
+    "queryable": "Dotazovatelné",
+    "refresh": "Obnovit"
   },
   "COMPOSITIONS": {
     "addByAddress": "Přidat kompozici z adresy",

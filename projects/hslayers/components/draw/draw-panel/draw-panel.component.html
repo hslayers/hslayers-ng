@@ -18,50 +18,61 @@
     <div class="flex-row w-100 m-auto justify-content-center align-items-center text-primary py-3 py-md-0"
       style="display: flex;">
       <p class="m-0 p-0">{{'DRAW.drawingTo' | translate }}</p>
-      <div ngbDropdown style="max-width: 50%;" placement="bottom">
+      <div ngbDropdown #drawLayerDropdown="ngbDropdown" [autoClose]="'outside'" style="max-width: 50%;"
+        placement="bottom">
         <button type="button" class="btn btn-sm rounded-0 hs-toolbar-button d-flex align-items-center mw-100"
-          ngbDropdownToggle (click)="hsDrawService.fillDrawableLayers()"
+          ngbDropdownToggle
           [ngClass]="{'btn-light btn-outline-danger border-0' : hsDrawService.tmpDrawLayer,'dropdown-toggle' : hsDrawService.drawableLayersAvailable }"
           [disabled]="!hsDrawService.drawableLayersAvailable">
           <div class="text-truncate">{{hsDrawService.selectedLayerString()}}</div>
         </button>
-        <div ngbDropdownMenu style="max-width: 15em;">
-          @if (hsDrawService.drawableLayers.length > 0) {
-          <div class="d-flex align-items-center w-100 flex-column">
-            <label class=" bg-primary w-100 text-light m-0 p-1">{{'DRAW.activeLayers' |
-              translate }}</label>
-            @for (layer of hsDrawService.drawableLayers; track layer) {
-            <a class="dropdown-item text-truncate" data-toggle="tooltip"
-              [title]="'LAYERS.' + getTitle(layer) | translate : {fallbackValue: getTitle(layer)} " (click)="selectLayer(layer)">{{getTitle(layer) |
-              translate }}</a>
-            }<!-- TODO: Remove function call from template -->
-          </div>
-          }
-          @if (hsDrawService.drawableLaymanLayers.length > 0) {
-          <div class="d-flex align-items-center w-100 flex-column">
-            <div class=" bg-primary w-100 text-light m-0 p-1">
-              <div class="d-flex justify-content-between">
-                {{'DRAW.serverLayers' | translate }}
-                <span (click)="onlyMineFilterVisible = !onlyMineFilterVisible" style="cursor: pointer;">
-                  <i class="fa-solid fa-gears"></i>
-                </span>
+        <div ngbDropdownMenu style="max-width: 150%; min-width: 14em;">
+          <div style="max-height: 45vh; overflow-y: auto;">
+            @if (hsDrawService.drawableLayers.length > 0) {
+            <div class="d-flex align-items-center w-100 flex-column">
+              <label class=" bg-primary w-100 text-light m-0 p-1">{{'DRAW.activeLayers' |
+                translate }}</label>
+              @for (layer of hsDrawService.drawableLayers; track layer) {
+              <a class="dropdown-item text-truncate" data-toggle="tooltip"
+                [title]="'LAYERS.' + getTitle(layer) | translate : {fallbackValue: getTitle(layer)} "
+                (click)="selectLayer(layer); drawLayerDropdown.close()">{{getTitle(layer) |
+                translate }}</a>
+              }<!-- TODO: Remove function call from template -->
+            </div>
+            }
+            @if (hsDrawService.drawableLaymanLayers.length > 0) {
+            <div class="d-flex align-items-center w-100 flex-column">
+              <div class=" bg-primary w-100 text-light m-0 p-1">
+                <div class="d-flex justify-content-between">
+                  {{'DRAW.serverLayers' | translate }}
+                  <span (click)="onlyMineFilterVisible = !onlyMineFilterVisible" style="cursor: pointer;">
+                    <i class="fa-solid fa-gears"></i>
+                  </span>
+                </div>
+                @if (onlyMineFilterVisible) {
+                <div class="p-0 input-group-text border-0 justify-content-center bg-white">
+                  <label class="m-0">
+                    <input type="checkbox" name="onlyMine" [(ngModel)]="hsDrawService.onlyMine"
+                      (ngModelChange)="fillDrawableLayers(); onlyMineFilterVisible = !onlyMineFilterVisible">
+                    {{'COMPOSITIONS.onlyMine' | translate }}
+                  </label>
+                </div>
+                }
               </div>
-              @if (onlyMineFilterVisible) {
-              <div class="p-0 input-group-text border-0 justify-content-center bg-white">
-                <label class="m-0">
-                  <input type="checkbox" name="onlyMine" [(ngModel)]="hsDrawService.onlyMine"
-                    (ngModelChange)="hsDrawService.fillDrawableLayers(); onlyMineFilterVisible = !onlyMineFilterVisible">
-                  {{'COMPOSITIONS.onlyMine' | translate }}
-                </label>
-              </div>
+              @for (layer of hsDrawService.drawableLaymanLayers; track layer) {
+              <a class="dropdown-item text-truncate" data-toggle="tooltip"
+                [title]="'LAYERS.' + layer.title | translate : {fallbackValue: layer.title} "
+                (click)="selectLayer(layer); drawLayerDropdown.close()">{{'LAYERS.' + layer.title | translate :
+                {fallbackValue: layer.title} }}</a>
               }
             </div>
-            @for (layer of hsDrawService.drawableLaymanLayers; track layer) {
-            <a class="dropdown-item text-truncate" data-toggle="tooltip" [title]="'LAYERS.' + layer.title | translate : {fallbackValue: layer.title} "
-              (click)="selectLayer(layer)">{{'LAYERS.' + layer.title | translate : {fallbackValue: layer.title} }}</a>
             }
           </div>
-          }
+          <button type="button" class="dropdown-item d-flex align-items-center gap-2 border-top"
+            (click)="fillDrawableLayers($event)">
+            <i class="fa-solid fa-rotate-right"></i>
+            {{'COMMON.reload' | translate}}
+          </button>
         </div>
       </div>
       @if (hsDrawService.tmpDrawLayer) {
@@ -153,20 +164,29 @@
       @if (hsDrawService.snapActive && hsDrawService.drawableLayers.length > 1 && !inToolbar()) {
       <div class="d-flex align-items-center card flex-row justify-content-around mx-3 text-primary">
         <p class="m-0 p-0">{{'DRAW.snapTo' | translate }}:</p>
-        <div ngbDropdown placement="bottom" class="w-50 d-flex justify-content-center">
+        <div ngbDropdown #snapLayerDropdown="ngbDropdown" [autoClose]="'outside'" placement="bottom"
+          class="w-50 d-flex justify-content-center">
           <button ngbDropdownToggle type="button"
-            class="btn btn-sm rounded-0 hs-toolbar-button d-flex align-items-center mw-100"
-            (click)=" hsDrawService.fillDrawableLayers() " style=" font-size: small;">
+            class="btn btn-sm rounded-0 hs-toolbar-button d-flex align-items-center mw-100" style=" font-size: small;">
             <div class="mw-100 text-truncate">{{hsDrawService.snapLayerString()}}</div>
           </button>
-          <div ngbDropdownMenu style="max-width: 150%;">
-            <div class="d-flex align-items-center w-100 flex-column">
-              @for (layer of hsDrawService.drawableLayers; track layer) {
-              <a class="dropdown-item text-truncate" data-toggle="tooltip"
-                [title]="'LAYERS.' + getTitle(layer) | translate : {fallbackValue: getTitle(layer)} " (click)="changeSnapSource(layer)">{{'LAYERS.' + getTitle(layer)
-                | translate : {fallbackValue: getTitle(layer)} }}</a>
-              }<!-- TODO: Remove function call from template -->
+          <div ngbDropdownMenu style="max-width: 150%; min-width: 14em;">
+            <div style="max-height: 45vh; overflow-y: auto;">
+              <div class="d-flex align-items-center w-100 flex-column">
+                @for (layer of hsDrawService.drawableLayers; track layer) {
+                <a class="dropdown-item text-truncate" data-toggle="tooltip"
+                  [title]="'LAYERS.' + getTitle(layer) | translate : {fallbackValue: getTitle(layer)} "
+                  (click)="changeSnapSource(layer); snapLayerDropdown.close()">{{'LAYERS.' + getTitle(layer)
+                  | translate : {fallbackValue: getTitle(layer)} }}</a>
+                }<!-- TODO: Remove function call from template -->
+              </div>
             </div>
+            <button type="button"
+              class="dropdown-item d-flex align-items-center gap-2 border-top justify-content-center pt-2"
+              (click)="fillDrawableLayers($event)">
+              <i class="fa-solid fa-rotate-right"></i>
+              {{'COMMON.refresh' | translate}}
+            </button>
           </div>
         </div>
       </div>
