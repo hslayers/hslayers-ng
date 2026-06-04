@@ -6,7 +6,7 @@ import {takeUntilDestroyed, toObservable} from '@angular/core/rxjs-interop';
 import Circle from 'ol/geom/Circle';
 import Cluster from 'ol/source/Cluster';
 import DragBox from 'ol/interaction/DragBox';
-import Draw from 'ol/interaction/Draw';
+import Draw, {DrawEvent} from 'ol/interaction/Draw';
 import Feature from 'ol/Feature';
 import Layer from 'ol/layer/Layer';
 import MapBrowserEvent from 'ol/MapBrowserEvent';
@@ -15,7 +15,6 @@ import Snap from 'ol/interaction/Snap';
 import Source from 'ol/source/Source';
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
-import {DrawEvent} from 'ol/interaction/Draw';
 import {EventsKey} from 'ol/events';
 import {fromCircle} from 'ol/geom/Polygon';
 import {platformModifierKeyOnly} from 'ol/events/condition';
@@ -70,6 +69,11 @@ type ActivateParams = {
   onDeselected?;
   changeStyle?;
   drawState?: boolean;
+};
+
+type FillDrawableLayersOptions = {
+  loadLaymanLayers?: boolean;
+  limit?: string | number;
 };
 
 export const TMP_LAYER_TITLE = 'tmpDrawLayer';
@@ -504,7 +508,16 @@ export class HsDrawService extends HsDrawServiceParams {
    * Repopulates drawable layers. In case layman connection exists it also creates
    * a list of available server possibilities.
    */
-  async fillDrawableLayers(): Promise<void> {
+  async fillDrawableLayers(
+    options: FillDrawableLayersOptions | boolean = {},
+  ): Promise<void> {
+    const fillOptions =
+      typeof options === 'boolean' ? {loadLaymanLayers: options} : options;
+    const {
+      loadLaymanLayers = this.hsLayoutService.mainpanel === 'draw',
+      limit = '',
+    } = fillOptions;
+
     await this.hsMapService.loaded();
     const drawables = this.hsMapService
       .getLayersArray()
@@ -526,14 +539,18 @@ export class HsDrawService extends HsDrawServiceParams {
     this.addedLayersRemoved = false;
     this.drawableLayers = drawables;
     this.laymanEndpoint = this.hsCommonLaymanService.layman();
-    if (this.laymanEndpoint) {
+    if (this.laymanEndpoint && loadLaymanLayers) {
+      const requestId = ++this.laymanDrawableLayersRequest;
       await lastValueFrom(
         this.hsLaymanBrowserService.queryCatalog(this.laymanEndpoint, {
           onlyMine: this.onlyMine,
-          limit: '',
+          limit,
           query: {},
         }),
       );
+      if (requestId !== this.laymanDrawableLayersRequest) {
+        return;
+      }
       if (this.laymanEndpoint.layers) {
         this.drawableLaymanLayers = this.laymanEndpoint.layers.filter(
           (layer) => {

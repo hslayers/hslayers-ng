@@ -42,10 +42,7 @@ class HsQueryVectorMock {
 }
 
 class LaymanBrowserServiceMock {
-  constructor() {}
-  queryCatalog() {
-    return of([]);
-  }
+  queryCatalog = jasmine.createSpy('queryCatalog').and.returnValue(of([]));
 }
 
 describe('HsDrawPanel', () => {
@@ -74,8 +71,10 @@ describe('HsDrawPanel', () => {
   let fixture: ComponentFixture<HsDrawPanelComponent>;
   let component: HsDrawPanelComponent;
   let service: HsDrawService;
+  let laymanBrowserService: LaymanBrowserServiceMock;
   beforeEach(() => {
     const mockedCommonLaymanService = createMockLaymanService(undefined, {});
+    laymanBrowserService = new LaymanBrowserServiceMock();
 
     TestBed.configureTestingModule({
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -103,7 +102,7 @@ describe('HsDrawPanel', () => {
         },
         {
           provide: HsLaymanBrowserService,
-          useValue: new LaymanBrowserServiceMock(),
+          useValue: laymanBrowserService,
         },
         {provide: HsAddDataOwsService, useValue: new emptyMock()},
         {provide: HsAddDataVectorService, useValue: new emptyMock()},
@@ -125,6 +124,27 @@ describe('HsDrawPanel', () => {
 
   it('Draw component should be available', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('does not query Layman catalog before draw UI requests server layers', async () => {
+    await fixture.whenStable();
+
+    expect(laymanBrowserService.queryCatalog).not.toHaveBeenCalled();
+  });
+
+  it('queries Layman catalog when server draw layers are explicitly requested', async () => {
+    await service.fillDrawableLayers({loadLaymanLayers: true});
+
+    expect(laymanBrowserService.queryCatalog).toHaveBeenCalledOnceWith(
+      jasmine.objectContaining({url: 'http://madeupurl'}),
+      jasmine.objectContaining({
+        onlyMine: true,
+        query: {},
+      }),
+    );
+    expect(
+      laymanBrowserService.queryCatalog.calls.mostRecent().args[1].limit,
+    ).toBe('');
   });
 
   it('Activate drawing', () => {

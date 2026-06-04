@@ -66,6 +66,7 @@ export class HsDrawServiceParams {
   onlyMine = true;
   addedLayersRemoved = false;
   eventHandlers: EventsKey[] = [];
+  laymanDrawableLayersRequest = 0;
 
   public drawingLayerChanges: Subject<{
     layer: Layer<Source>;

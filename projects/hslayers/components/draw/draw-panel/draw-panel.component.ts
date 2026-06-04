@@ -82,6 +82,15 @@ export class HsDrawPanelComponent {
     this.hsDrawService.selectLayer(layer);
   }
 
+  fillDrawableLayers(event?: Event): Promise<void> {
+    event?.stopPropagation();
+    return this.hsDrawService.fillDrawableLayers({
+      loadLaymanLayers:
+        this.inToolbar() || this.hsLayoutService.mainpanel === 'draw',
+      limit: '',
+    });
+  }
+
   updateStyle(): void {
     this.hsDrawService.updateStyle(() => this.changeStyle());
   }

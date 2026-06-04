@@ -91,7 +91,10 @@ export class HsDrawToolbarComponent extends HsGuiOverlayBaseComponent {
   addVisibilityChangeListener(layer: Layer<Source>) {
     layer.on('change:visible', (e) => {
       if (this.drawToolbarExpanded) {
-        this.hsDrawService.fillDrawableLayers();
+        this.hsDrawService.fillDrawableLayers({
+          loadLaymanLayers: true,
+          limit: '',
+        });
       }
     });
   }
@@ -113,7 +116,10 @@ export class HsDrawToolbarComponent extends HsGuiOverlayBaseComponent {
     if (!this.drawToolbarExpanded) {
       this.hsDrawService.stopDrawing();
     } else {
-      this.hsDrawService.fillDrawableLayers();
+      this.hsDrawService.fillDrawableLayers({
+        loadLaymanLayers: true,
+        limit: '',
+      });
     }
   }
 
