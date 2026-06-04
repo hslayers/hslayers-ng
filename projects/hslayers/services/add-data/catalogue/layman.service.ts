@@ -111,7 +111,7 @@ export class HsLaymanBrowserService {
         params,
       })
       .pipe(
-        timeout(5000),
+        timeout(10000),
         map((x) => {
           const data: HsLaymanGetLayersWrapper = {};
           if (Array.isArray(x.body)) {
