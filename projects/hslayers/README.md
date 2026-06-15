@@ -21,7 +21,7 @@ HSLayers-NG is a library which extends OpenLayers functionality by providing a f
 | 14               | 18.x                | 5.3         | ^9.2.2
 | 15               | 19.x                | 5.3         | ^10.4
 | 16               | 20.x                | 5.3         | ^10.5
-| 17               | 21.x                | 5.3         | ^10.8
+| 17               | 21.x                | 5.3         | ~10.8
 
 ## Demo
 
