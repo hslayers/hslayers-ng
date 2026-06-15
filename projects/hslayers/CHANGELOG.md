@@ -1,3 +1,26 @@
+# [17.0.0](https://github.com/hslayers/hslayers-ng/compare/16.4.0...17.0.0) (2026-06-15)
+
+### BREAKING CHANGES
+
+* Angular updated to version 21
+
+### Bug Fixes
+
+* **draw:** do nat fill drawables when not necessary ([c661002](https://github.com/hslayers/hslayers-ng/commit/c66100261f0e1c3a6be2ff5b49a896844f4c5750))
+* **Layman:** Safely fill wms/wfs for Layman 1.x ([4023438](https://github.com/hslayers/hslayers-ng/commit/40234385e4b57a829e51b8adcb1abd82e9a87985))
+* load OSM from composition as OSM source ([0ae1209](https://github.com/hslayers/hslayers-ng/commit/0ae12092f6fb495d73ad0acd7503a6a6418c5581))
+* Provide HSLayers providers ([b4208ab](https://github.com/hslayers/hslayers-ng/commit/b4208abc7328c308bdf7ee00caaae8d5215cd317))
+* **sidebar:** Define panelTabs ([a9fee5c](https://github.com/hslayers/hslayers-ng/commit/a9fee5c4d697e93ba910247214b93f29cd4861fc))
+* **styler:** Align types with actual expectations ([9d3c833](https://github.com/hslayers/hslayers-ng/commit/9d3c8330a187cc9d17601f1ea043c660a482be27))
+* **test:** Disable watch mode for CI tests ([d56c2b3](https://github.com/hslayers/hslayers-ng/commit/d56c2b3e24df693092d8976c452b69637f2f2826))
+
+
+### Features
+
+* loading state for interpolated layers ([4efd97d](https://github.com/hslayers/hslayers-ng/commit/4efd97dae5acb0f0408dd5b4f3ed55c42ac007d9))
+
+
+
 # [16.4.0](https://github.com/hslayers/hslayers-ng/compare/16.3.0...16.4.0) (2026-02-23)
 
 
