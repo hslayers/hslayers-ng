@@ -97,7 +97,7 @@
     "zone.js": "~0.16.2"
   },
   "devDependencies": {
-    "@angular-builders/custom-webpack": "^21.0.3",
+    "@angular-builders/custom-webpack": "^22.0.1",
     "@angular-devkit/schematics": "21.2.17",
     "@angular/build": "21.2.17",
     "@angular/cli": "21.2.17",
@@ -128,7 +128,7 @@
     "karma-chrome-launcher": "~3.2.0",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "^2.2.0",
-    "ng-packagr": "^21.1.0",
+    "ng-packagr": "^22.0.2",
     "prettier": "^3.8.3",
     "puppeteer": "^24.42.0",
     "sass": "^1.99.0",
