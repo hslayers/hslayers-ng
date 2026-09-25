@@ -4,3 +4,4 @@ data/
 .env.*
 !.env.example
 hslayers-server.db-journal
+share-store.json

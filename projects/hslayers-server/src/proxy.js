@@ -1,122 +1,361 @@
 import 'dotenv/config';
-import cors_anywhere from 'cors-anywhere';
 import escape from 'escape-html';
-import { encode as encodeQuerystring, parse as parseQuerystring } from 'node:querystring';
-import { createServer } from 'node:http';
+import { Hono } from 'hono';
+import { cors } from 'hono/cors';
+import { serve } from '@hono/node-server';
+import {
+  encode as encodeQuerystring,
+  parse as parseQuerystring,
+} from 'node:querystring';
 import { networkInterfaces } from 'node:os';
-import packageJson from '../package.json' with { type: 'json'};
+import packageJson from '../package.json' with { type: 'json' };
 import { argv } from './config.js';
+import { classifyGisRequest } from './proxy/classify.js';
+import {
+  validateUpstreamUrl,
+  resolveAndScreen,
+  SsrfError,
+} from './proxy/ssrf.js';
+import {
+  fetchUpstream,
+  cappedStream,
+  getMaxBodyBytes,
+} from './proxy/dispatch.js';
+import { applyIntegration } from './proxy/integrations.js';
 
-// Listen on a specific host via the HOST environment variable
 const host = process.env.HOST || '0.0.0.0';
-// Listen on a specific port via the PORT environment variable
-const port = process.env.PROXY_PORT || 8085;
+const port = Number.parseInt(process.env.PROXY_PORT || '8085', 10);
 
-const cors_proxy = cors_anywhere.createServer({
-  originWhitelist: [], // Allow all origins
-  httpProxyOptions: {
-    // Disable X-Forwarded-* headers since some map servers use it to generate URLs in capabilities
-    xfwd: false,
-    ssl: {
-      //https://nodejs.org/api/tls.html#tlscreatesecurecontextoptions
-      //https://wiki.openssl.org/index.php/List_of_SSL_OP_Flags#Table_of_Options
-      //https://github.com/rwinlib/openssl/blob/b78d57f34d726627aeadcb6867e439dcc4f89e07/include/openssl/ssl.h#L343
-      secureOptions: 1 << 2,
-    },
-  },
-  // Remove X-Forwarded-* headers since some map servers (ArcGIS) use it to generate URLs in capabilities and 'xfwd' option does not guarantee that
-  removeHeaders: ['x-forwarded-for', 'x-forwarded-host', 'x-forwarded-site', 'x-forwarder-server']
-});
-const GEONAMES_APIKEY = process.env.HS_GEONAMES_API_KEY || 'hslayersng';
+const ALLOWED_METHODS = new Set(['GET', 'HEAD', 'POST', 'OPTIONS']);
+const MAX_REDIRECT_HOPS = 3;
 
+/**
+ * Request headers that we are willing to forward to upstream GIS services.
+ * Everything else (Cookie, Authorization, Host, Origin, Referer, any
+ * X-Forwarded-*) is dropped so the gateway cannot be used to leak browser
+ * state or impersonate the caller to the upstream.
+ */
+const SAFE_REQUEST_HEADERS = new Set([
+  'accept',
+  'accept-language',
+  'accept-encoding',
+  'range',
+  'if-none-match',
+  'if-modified-since',
+]);
 
-export const proxy = createServer((req, res) => {
+/**
+ * Response headers we strip before streaming the upstream response back.
+ * Covers hop-by-hop headers plus anything that could set auth state in the
+ * browser (cookies, WWW-Authenticate).
+ */
+const STRIPPED_RESPONSE_HEADERS = new Set([
+  'set-cookie',
+  'www-authenticate',
+  'connection',
+  'keep-alive',
+  'transfer-encoding',
+  'upgrade',
+  'proxy-authenticate',
+  'proxy-authorization',
+  'te',
+  'trailer',
+]);
+
+export const app = new Hono();
+
+app.use(
+  '*',
+  cors({
+    origin: '*',
+    allowMethods: ['GET', 'HEAD', 'POST', 'OPTIONS'],
+    allowHeaders: ['*'],
+    maxAge: 600,
+  }),
+);
+
+app.all('*', async (c) => {
+  const method = c.req.method;
+  if (!ALLOWED_METHODS.has(method)) {
+    return c.text(`Method ${method} not allowed`, 405);
+  }
+
+  const incoming = new URL(c.req.url);
+  const rawEmbedded = incoming.pathname + incoming.search;
+
   if (argv.verbose) {
     console.log('--------------------------------');
-    console.log('Request URL: ' + req.url);
-    console.log('Request headers: ' + JSON.stringify(req.headers));
-    console.log('Request method: ' + req.method);
-    console.log('Request statusCode: ' + req.statusCode);
-    console.log('Request statusMessage: ' + req.statusMessage);
+    console.log('Request URL: ' + rawEmbedded);
+    console.log('Request method: ' + method);
   }
+
+  const stripped = rawEmbedded.replace(/^.*?(\/https?:)/, '$1');
+
+  if (
+    !stripped.startsWith('/http://') &&
+    !stripped.startsWith('/https://')
+  ) {
+    return renderInfoPage(c, rawEmbedded);
+  }
+
+  let embedded;
   try {
-    // Remove any proxy prefix from the URL like /proxy/ or /hslayers-server/proxy/
-    req.url = req.url.replace(/^.*?(\/https?:)/, '$1');
+    const decoded = safelyDecodeUrl(stripped);
+    embedded = encodeUrlPathAndParams(decoded).replace(/^\//, '');
     if (argv.verbose) {
-      console.log('Request URL after removing proxy prefix: ' + req.url);
+      console.log('Normalized upstream URL: ' + embedded);
     }
-    if (!req.url.includes('http://') && !req.url.includes('https://')) {
-      res.setHeader('Content-Type', 'text/html; charset=utf-8');
-      res.write('hslayers-server proxy<br>');
-      res.write('version: ' + packageJson.version + '<br>');
-      res.write('proxy url: ' + `${getIP()}:${port}` + '<br>');
-      res.write('requested url (escaped): ' + escape(req.url) + '<br>');
-      res.end();
-    } else {
-      // tinyurl requests are encoded on client
-      if (req.url.includes('http://tinyurl.com/api-create.php')) {
-        cors_proxy.emit('request', req, res);
-        return;
-      }
-      // Safely handle potentially encoded URLs
-      req.url = safelyDecodeUrl(req.url);
-      if (argv.verbose) {
-        console.log('Request URL after decoding: ' + req.url);
-      }
-      req.url = encodeUrlPathAndParams(req.url);
-      if (argv.verbose) {
-        console.log('Request URL after encoding: ' + req.url);
-      }
-      const [base, tld, pathAndQueryParams] = splitUrlAtTld(req.url);
-      const params = parseQuerystring(pathAndQueryParams.split('?')[1]);
-      if (base.includes('api.geonames') && tld === 'org' && pathAndQueryParams.startsWith('searchJSON')) {
-        if (
-          typeof params.provider == 'undefined' ||
-          params.provider == 'geonames'
-        ) {
-          req.url = `/http://api.geonames.org/searchJSON?name_startsWith=${encodeURIComponent(
-            params.name_startsWith
-          )}&username=${GEONAMES_APIKEY}`;
-        }
-      }
-      if (base.includes('api.openrouteservice') && tld == 'org') {
-        req.headers.authorization = process.env.OPENROUTESERVICE_API_KEY;
-      }
-      cors_proxy.emit('request', req, res);
-    }
-  } catch (ex) {
-    if (argv.verbose) {
-      console.error(ex);
-      console.error(ex.stack);
-      console.error(ex.message);
-      console.error(ex.name);
-      console.error(ex.code);
-      console.error(ex.syscall);
-      console.error(ex.address);
-      console.error(ex.port);
-    }
-    res.writeHead(500, { 'Content-Type': 'text/plain' });
-    res.write('Invalid request\r\n');
-    res.write(ex.message + '\r\n');
-    res.end();
+  } catch (err) {
+    return c.text('Invalid URL: ' + err.message, 400);
   }
-})
-  .listen(port, host, () => {
-    console.log('HSLayers proxy listening on ' + host + ':' + port);
+
+  let body;
+  if (method === 'POST') {
+    try {
+      const buf = await c.req.arrayBuffer();
+      if (buf.byteLength > getMaxBodyBytes()) {
+        return c.text('Request body too large', 413);
+      }
+      if (buf.byteLength > 0) {
+        body = new Uint8Array(buf);
+      }
+    } catch (err) {
+      return c.text('Invalid request body: ' + err.message, 400);
+    }
+  }
+
+  try {
+    return await dispatchWithRedirects({
+      targetUrlString: embedded,
+      method,
+      clientHeaders: c.req.raw.headers,
+      body,
+      hopsRemaining: MAX_REDIRECT_HOPS,
+    });
+  } catch (err) {
+    return handleError(err);
+  }
+});
+
+async function dispatchWithRedirects({
+  targetUrlString,
+  method,
+  clientHeaders,
+  body,
+  hopsRemaining,
+}) {
+  let url;
+  try {
+    url = new URL(targetUrlString);
+  } catch (err) {
+    throw new GatewayError(400, 'Malformed upstream URL: ' + err.message);
+  }
+
+  validateUpstreamUrl(url);
+
+  const classification = classifyGisRequest(url);
+  if (classification.kind === 'reject') {
+    throw new GatewayError(400, classification.reason);
+  }
+
+  const pinnedAddr = await resolveAndScreen(url.hostname);
+
+  const outgoingHeaders = buildUpstreamHeaders(clientHeaders, method);
+  applyIntegration(classification.kind, url, outgoingHeaders);
+
+  if (argv.verbose) {
+    console.log(
+      `Dispatching ${method} ${url.toString()} (kind=${classification.kind}, ip=${pinnedAddr.address})`,
+    );
+  }
+
+  let upstream;
+  try {
+    upstream = await fetchUpstream({
+      url,
+      method,
+      headers: headersToRecord(outgoingHeaders),
+      body,
+      pinnedAddr,
+    });
+  } catch (err) {
+    throw new GatewayError(502, 'Upstream fetch failed: ' + err.message);
+  }
+
+  if (isRedirect(upstream.status)) {
+    const location = upstream.headers.get('location');
+    if (!location) {
+      throw new GatewayError(502, 'Upstream sent redirect with no Location');
+    }
+    if (hopsRemaining <= 0) {
+      throw new GatewayError(508, 'Too many redirects');
+    }
+    const next = new URL(location, url).toString();
+    await safeCancel(upstream.body);
+    return dispatchWithRedirects({
+      targetUrlString: next,
+      method: redirectMethod(method, upstream.status),
+      clientHeaders,
+      body: redirectBody(upstream.status, body),
+      hopsRemaining: hopsRemaining - 1,
+    });
+  }
+
+  return buildClientResponse(upstream);
+}
+
+function buildClientResponse(upstream) {
+  const headers = new Headers();
+  for (const [name, value] of upstream.headers.entries()) {
+    if (STRIPPED_RESPONSE_HEADERS.has(name.toLowerCase())) continue;
+    headers.set(name, value);
+  }
+
+  const contentLength = upstream.headers.get('content-length');
+  const max = getMaxBodyBytes();
+  if (contentLength && Number.parseInt(contentLength, 10) > max) {
+    safeCancel(upstream.body);
+    return new Response(
+      `Upstream response too large (${contentLength} bytes, max ${max})`,
+      {
+        status: 502,
+        headers: { 'content-type': 'text/plain' },
+      },
+    );
+  }
+
+  const capped = cappedStream(upstream.body, max);
+  return new Response(capped, {
+    status: upstream.status,
+    statusText: upstream.statusText,
+    headers,
   });
+}
+
+function buildUpstreamHeaders(clientHeaders, method) {
+  const out = new Headers();
+  for (const [name, value] of clientHeaders.entries()) {
+    if (SAFE_REQUEST_HEADERS.has(name.toLowerCase())) {
+      out.set(name, value);
+    }
+  }
+  if (method === 'POST') {
+    const ct = clientHeaders.get('content-type');
+    if (ct) out.set('content-type', ct);
+  }
+  out.set('user-agent', `hslayers-server/${packageJson.version}`);
+  return out;
+}
+
+function headersToRecord(headers) {
+  const out = {};
+  for (const [name, value] of headers.entries()) {
+    out[name] = value;
+  }
+  return out;
+}
+
+function isRedirect(status) {
+  return (
+    status === 301 ||
+    status === 302 ||
+    status === 303 ||
+    status === 307 ||
+    status === 308
+  );
+}
+
+function redirectMethod(method, status) {
+  return status === 303 ? 'GET' : method;
+}
+
+function redirectBody(status, body) {
+  return status === 303 ? undefined : body;
+}
+
+function safeCancel(stream) {
+  if (stream && typeof stream.cancel === 'function') {
+    return stream.cancel().catch(() => {});
+  }
+  return Promise.resolve();
+}
+
+function renderInfoPage(c, rawPath) {
+  const html =
+    'hslayers-server GIS gateway<br>' +
+    'version: ' +
+    packageJson.version +
+    '<br>' +
+    'gateway url: ' +
+    getIP() +
+    ':' +
+    port +
+    '<br>' +
+    'requested url (escaped): ' +
+    escape(rawPath) +
+    '<br>';
+  return c.html(html);
+}
+
+function handleError(err) {
+  if (argv.verbose) {
+    console.error(err);
+  }
+  if (err instanceof SsrfError) {
+    return new Response('Forbidden: ' + err.message, {
+      status: 403,
+      headers: plainHeaders(),
+    });
+  }
+  if (err instanceof GatewayError) {
+    return new Response(err.message, {
+      status: err.status,
+      headers: plainHeaders(),
+    });
+  }
+  return new Response('Internal gateway error: ' + err.message, {
+    status: 500,
+    headers: plainHeaders(),
+  });
+}
+
+function plainHeaders() {
+  return {
+    'content-type': 'text/plain; charset=utf-8',
+    'access-control-allow-origin': '*',
+  };
+}
+
+class GatewayError extends Error {
+  constructor(status, message) {
+    super(message);
+    this.status = status;
+    this.name = 'GatewayError';
+  }
+}
+
+export const proxy = serve(
+  {
+    fetch: app.fetch,
+    hostname: host,
+    port,
+  },
+  (info) => {
+    console.log(
+      'HSLayers GIS gateway listening on ' + info.address + ':' + info.port,
+    );
+  },
+);
 
 function getIP() {
   const nets = networkInterfaces();
-
   for (const name of Object.keys(nets)) {
     for (const net of nets[name]) {
-      // Skip over non-IPv4 and internal (i.e. 127.0.0.1) addresses
       if (net.family === 'IPv4' && !net.internal) {
         return net.address;
       }
     }
   }
-
   return '0';
 }
 
@@ -126,36 +365,17 @@ function getIP() {
  * @returns Array consisting of [domain, TLD+port, rest of the URL]
  */
 export const splitUrlAtTld = (url) => {
-  // Regular expression to match the TLD with port (assuming it's a simple dot-based TLD)
   const tldWithPortRegex = /\.([a-zA-Z]{2,}|[0-9]{1,3})(?::\d+)?(?:\/|$)/;
-
-  // Use the regex to find the TLD with port in the URL
   const tldWithPortMatch = url.match(tldWithPortRegex);
 
   if (tldWithPortMatch) {
-    // The TLD with port including the dot
     const tldWithPort = tldWithPortMatch[0];
-
-    // Split the URL using the TLD with port as the delimiter
     const parts = url.split(tldWithPort);
-
-    // Remove the leading dot from the TLD
     const cleanedTLD = tldWithPort.slice(1).replace('/', '');
-
-    return [
-      parts[0], // Everything before the TLD with port
-      cleanedTLD, // The TLD with port itself
-      parts[1] || '', // Everything after the TLD with port (if present)
-    ];
-  } else {
-    // No TLD with port found, return the original URL
-    return [
-      url,
-      '',
-      '',
-    ];
+    return [parts[0], cleanedTLD, parts[1] || ''];
   }
-}
+  return [url, '', ''];
+};
 
 /**
  * Takes a decoded URL, splits it into parts and encodes its path and search strings
@@ -165,42 +385,34 @@ export const splitUrlAtTld = (url) => {
  */
 export const encodeUrlPathAndParams = (url) => {
   const [base, tld, pathAndQueryParams] = splitUrlAtTld(url);
-  const encodedPath = pathAndQueryParams.split('?')[0].split('/').map(segment => encodeURIComponent(segment));
+  const encodedPath = pathAndQueryParams
+    .split('?')[0]
+    .split('/')
+    .map((segment) => encodeURIComponent(segment));
   const queryParams = pathAndQueryParams.split('?').slice(1).join('?');
   const params = parseQuerystring(queryParams);
-  return base +
+  return (
+    base +
     '.' +
     tld +
     '/' +
     encodedPath.join('/') +
-    (Object.keys(params).length == 0 ? '' : '?') +
-    encodeQuerystring(params);
-}
+    (Object.keys(params).length === 0 ? '' : '?') +
+    encodeQuerystring(params)
+  );
+};
 
-/**
- * Checks if the URL contains valid percent-encoded sequences
- * @param {string} url URL
- * @returns {boolean} True if the URL is encoded, false otherwise
- */
 function isUrlEncoded(url) {
-  // This regex matches % followed by two hex digits
   return /%[0-9A-Fa-f]{2}/.test(url);
 }
 
-/**
- * Decodes the URL if it contains valid percent-encoded sequences
- * @param {string} url URL
- * @returns {string} The decoded URL
- */
 function safelyDecodeUrl(url) {
   try {
-    // Only decode if the URL appears to be encoded
     if (isUrlEncoded(url)) {
       return decodeURIComponent(url);
     }
     return url;
   } catch (e) {
-    // If decoding fails, return the original URL
     console.warn('Failed to decode URL:', e);
     return url;
   }
